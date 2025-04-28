@@ -1,7 +1,8 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import { usePristineSteps } from 'pages/convert/campaigns/hooks/usePristineSteps'
 import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
+import { renderHook } from 'utils/testing/renderHook'
 
 describe('usePristineSteps()', () => {
     it('returns the initial state', () => {

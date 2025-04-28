@@ -1,7 +1,6 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import useLocalStorage from 'hooks/useLocalStorage'
 import useLocalStorageWithExpiry from 'hooks/useLocalStorageWithExpiry'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/useLocalStorage')
 const useLocalStorageMock = useLocalStorage as jest.Mock

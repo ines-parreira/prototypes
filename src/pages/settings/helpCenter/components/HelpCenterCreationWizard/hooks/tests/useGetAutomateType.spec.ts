@@ -1,7 +1,6 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import useAppSelector from 'hooks/useAppSelector'
 import { HelpCenterAutomateType } from 'models/helpCenter/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useGetAutomateType from '../useGetAutomateType'
 

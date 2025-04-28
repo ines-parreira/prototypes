@@ -1,10 +1,10 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 
 import { useAgentActivity } from '@gorgias/realtime'
 
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useAgentsViewing from '../useAgentsViewing'
 

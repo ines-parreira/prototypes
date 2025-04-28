@@ -1,6 +1,5 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { OrderDirection } from 'models/api/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import CAMPAIGN_PERFORMANCE_ROWS from '../../fixtures/campaignPerformanceRows'
 import { CampaignTableContentCell } from '../../types/CampaignTableContentCell'

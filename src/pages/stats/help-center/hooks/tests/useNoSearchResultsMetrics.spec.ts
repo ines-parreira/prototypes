@@ -1,5 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { useMetric } from 'hooks/reporting/useMetric'
 import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
 import {
@@ -8,6 +6,7 @@ import {
     HelpCenterTrackingEventMember,
     HelpCenterTrackingEventSegment,
 } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useNoSearchResultsMetrics } from '../useNoSearchResultsMetrics'
 

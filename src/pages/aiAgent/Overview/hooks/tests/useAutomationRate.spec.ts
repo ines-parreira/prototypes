@@ -1,11 +1,10 @@
-import { renderHook } from '@testing-library/react-hooks/dom'
-
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { ticketFieldDefinitions } from 'fixtures/customField'
 import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
 import { StatsFilters } from 'models/stat/types'
 import { useAiAgentAutomationRate } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/reporting/useMultipleMetricsTrend')
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)

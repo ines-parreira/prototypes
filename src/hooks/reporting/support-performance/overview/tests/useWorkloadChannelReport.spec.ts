@@ -1,5 +1,4 @@
 import { waitFor } from '@testing-library/react'
-import { renderHook } from '@testing-library/react-hooks'
 
 import { TicketChannel } from 'business/types/ticket'
 import { agents } from 'fixtures/agents'
@@ -14,6 +13,7 @@ import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/util
 import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import { WORKLOAD_BY_CHANNEL_LABEL } from 'services/reporting/constants'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/reporting/distributions')
 const fetchWorkloadPerChannelDistributionMock = assumeMock(

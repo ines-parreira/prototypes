@@ -1,9 +1,9 @@
 import { waitFor } from '@testing-library/react'
-import { renderHook } from '@testing-library/react-hooks'
 
 import { useCreateBillingPaymentMethodSetup } from '@gorgias/api-queries'
 
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useSetupIntent } from '../useSetupIntent'
 

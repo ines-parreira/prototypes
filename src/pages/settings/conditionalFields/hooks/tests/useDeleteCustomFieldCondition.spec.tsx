@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -16,6 +15,7 @@ import { customFieldCondition } from 'fixtures/customFieldCondition'
 import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useDeleteCustomFieldCondition from '../useDeleteCustomFieldCondition'
 

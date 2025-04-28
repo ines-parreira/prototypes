@@ -1,11 +1,11 @@
 import { UseQueryResult } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 import { AxiosResponse } from 'axios'
 
 import { useGetHelpCentersIntegrationIdsForStore } from 'hooks/helpCenter/useGetStoreHelpCenters'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { HelpCentersListPage } from 'models/helpCenter/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('models/helpCenter/queries')
 

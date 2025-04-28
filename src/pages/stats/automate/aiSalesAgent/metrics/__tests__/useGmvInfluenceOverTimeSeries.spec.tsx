@@ -2,7 +2,7 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
-import { act, renderHook } from '@testing-library/react-hooks/dom'
+import { act } from '@testing-library/react-hooks/dom'
 import moment from 'moment'
 
 import { fetchTimeSeries, useTimeSeries } from 'hooks/reporting/useTimeSeries'
@@ -11,6 +11,7 @@ import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import {
     fetchGmvInflueceOverTimeSeries,

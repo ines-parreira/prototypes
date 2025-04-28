@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { UseQueryResult } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -30,6 +29,7 @@ import { initialState } from 'state/stats/statsSlice'
 import { RootState } from 'state/types'
 import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
 import { ticketInsightsSlice } from 'state/ui/stats/ticketInsightsSlice'
+import { renderHook } from 'utils/testing/renderHook'
 
 const mockStore = configureMockStore([thunk])
 

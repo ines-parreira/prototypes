@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { QueryClientProvider, QueryKey } from '@tanstack/react-query'
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import { Product } from 'constants/integrations/types/shopify'
 import {
@@ -12,6 +12,7 @@ import { integrationDataItemProductFixture } from 'fixtures/shopify'
 import * as resources from 'models/integration/resources'
 import { IntegrationDataItem } from 'models/integration/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { usePaginatedProductIntegration } from '../hooks/usePaginatedProductIntegration'
 

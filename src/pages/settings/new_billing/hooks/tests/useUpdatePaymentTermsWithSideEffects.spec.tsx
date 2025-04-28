@@ -1,5 +1,4 @@
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 
 import { useUpdatePaymentTerms } from '@gorgias/api-queries'
 
@@ -11,6 +10,7 @@ import {
     NotificationStyle,
 } from 'state/notifications/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useUpdatePaymentTermsWithSideEffects } from '../useUpdatePaymentTermsWithSideEffects'
 

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { phoneNumberKeys, usePhoneNumberCapabilitiesMap } from '../queries'
 import { fetchPhoneCapabilities } from '../resources'

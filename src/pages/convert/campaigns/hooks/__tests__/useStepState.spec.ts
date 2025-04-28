@@ -1,6 +1,5 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { useStepState } from 'pages/convert/campaigns/hooks/useStepState'
+import { renderHook } from 'utils/testing/renderHook'
 
 describe('useStepState()', () => {
     describe('is edit mode', () => {

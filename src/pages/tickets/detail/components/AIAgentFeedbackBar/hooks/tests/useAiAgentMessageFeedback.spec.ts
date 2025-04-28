@@ -1,7 +1,6 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useAiAgentMessageFeedback from '../useAiAgentMessageFeedback'
 

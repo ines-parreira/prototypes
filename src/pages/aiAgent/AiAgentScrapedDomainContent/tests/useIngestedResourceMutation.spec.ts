@@ -1,5 +1,4 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import {
@@ -7,6 +6,7 @@ import {
     useUpdateIngestedResource,
 } from 'models/helpCenter/queries'
 import { reportError } from 'utils/errors'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { IngestedResourceStatus } from '../constant'
 import { useIngestedResourceMutation } from '../hooks/useIngestedResourceMutation'

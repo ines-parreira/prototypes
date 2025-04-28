@@ -1,6 +1,5 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import useGetBadgeTiers from 'pages/aiAgent/insights/IntentTableWidget/BadgeWithTiers/hooks/useGetBadgeTiers'
+import { renderHook } from 'utils/testing/renderHook'
 
 describe('useGetBadgeTiers Hook', () => {
     test('should return a single tier when values array is empty', () => {

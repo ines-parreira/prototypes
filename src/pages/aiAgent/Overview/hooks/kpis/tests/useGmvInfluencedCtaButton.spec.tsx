@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react'
-import { renderHook } from '@testing-library/react-hooks/dom'
 
 import { useGmvInfluencedCtaButton } from 'pages/aiAgent/Overview/hooks/kpis/useGmvInfluencedCtaButton'
+import { renderHook } from 'utils/testing/renderHook'
 
 describe('useGmvInfluencedCtaButton', () => {
     it('should render nothing when gmvInfluencedLoading = true', () => {

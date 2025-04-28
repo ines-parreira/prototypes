@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -18,6 +18,7 @@ import {
     VoiceMessage,
 } from 'models/integration/types'
 import { RootState } from 'state/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import * as utils from '../../utils'
 import useVoiceMessageValidation from '../useVoiceMessageValidation'

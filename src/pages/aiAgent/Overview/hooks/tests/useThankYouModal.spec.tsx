@@ -1,9 +1,9 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { useLocation } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useIsGoLiveDisabled } from 'pages/aiAgent/Overview/hooks/useIsGoLiveDisabled'
 import { useUpdateAIAgentStoreConfigurationData } from 'pages/aiAgent/Overview/hooks/useUpdateAiAgentStoreConfigurationData'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useThankYouModal } from '../useThankYouModal'
 

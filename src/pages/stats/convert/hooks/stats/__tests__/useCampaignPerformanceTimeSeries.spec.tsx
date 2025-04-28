@@ -1,5 +1,4 @@
 import { UseQueryResult } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 
 import { usePostReporting } from 'models/reporting/queries'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
@@ -8,6 +7,7 @@ import {
     OrderConversionMeasure,
 } from 'pages/stats/convert/clients/constants'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useCampaignPerformanceTimeSeries from '../useCampaignPerformanceTimeSeries'
 

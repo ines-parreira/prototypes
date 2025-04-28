@@ -1,12 +1,13 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import { abGroup, campaignId } from 'fixtures/abGroup'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import * as queries from '../queries'
 import * as resources from '../resources'

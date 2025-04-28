@@ -1,6 +1,7 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import useAutoMerge from 'pages/settings/autoMerge/hooks/useAutoMerge'
+import { renderHook } from 'utils/testing/renderHook'
 
 describe('useAutoMerge', () => {
     it('should return a default auto-merge setting when none is provided', () => {

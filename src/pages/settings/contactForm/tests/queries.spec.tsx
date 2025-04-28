@@ -1,11 +1,11 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 import _get from 'lodash/get'
 
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { buildSDKMocks } from '../../../../rest_api/help_center_api/tests/buildSdkMocks'
 import {

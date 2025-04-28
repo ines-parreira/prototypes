@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useSearchParam } from 'hooks/useSearchParam'
@@ -11,6 +10,7 @@ import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { reportError } from 'utils/errors'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useAiAgentNavigation } from '../useAiAgentNavigation'
 import { usePublicResourcesPooling } from '../usePublicResourcesPooling'

@@ -1,5 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { useProductInsightsTableSetting } from 'hooks/reporting/useProductInsightsTableConfigSetting'
 import { useTableConfigSetting } from 'hooks/reporting/useTableConfigSetting'
 import {
@@ -9,6 +7,7 @@ import {
 import { submitProductInsightsTableConfigView } from 'state/currentAccount/actions'
 import { getProductInsightsTableConfigSettingsJS } from 'state/currentAccount/selectors'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/reporting/useTableConfigSetting')
 const useTableConfigSettingMock = assumeMock(useTableConfigSetting)

@@ -1,10 +1,9 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import {
     ARTICLE_RECOMMENDATION,
     FLOWS,
     ORDER_MANAGEMENT,
 } from 'pages/automate/common/components/constants'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useAutomationFeatures from '../useAutomationFeatures'
 

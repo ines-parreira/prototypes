@@ -1,5 +1,4 @@
 import { UseQueryResult } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
 import { TicketChannel } from 'business/types/ticket'
@@ -22,6 +21,7 @@ import { StatsFilters } from 'models/stat/types'
 import { humanizeChannel } from 'state/ticket/utils'
 import { formatReportingQueryDate, getPreviousPeriod } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)

@@ -1,11 +1,11 @@
 import React from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
 import { Provider } from 'react-redux'
 
 import VoiceDeviceProvider from 'pages/integrations/integration/components/voice/VoiceDeviceProvider'
 import { initialState } from 'state/twilio/voiceDevice'
 import { mockStore } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useVoiceDevice from '../useVoiceDevice'
 

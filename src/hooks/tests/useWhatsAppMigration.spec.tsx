@@ -1,10 +1,9 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import {
     WhatsAppCodeVerificationMethod,
     WhatsAppPhoneNumberStatus,
     WhatsAppPhoneNumberVerificationStatus,
 } from 'models/integration/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useWhatsAppMigration, {
     privateFunctions,

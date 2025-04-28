@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { useParams } from 'react-router-dom'
 
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
@@ -10,6 +9,7 @@ import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/
 import { Level2IntentsPerformance } from 'pages/aiAgent/insights/Level2IntentsPerformance/Level2IntentsPerformance'
 import { getPageStatsFilters } from 'state/stats/selectors'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { IntentsPerformanceProps } from '../widgets/IntentsPerformance/IntentsPerformance'
 

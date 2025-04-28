@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -29,6 +29,7 @@ import { NotificationStatus } from 'state/notifications/types'
 import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { DEFAULT_WAIT_MUSIC_PREFERENCES } from '../../waitMusicLibraryConstants'
 import useVoiceIntegrationGreetingMessage from '../useVoiceIntegrationGreetingMessage'

@@ -1,10 +1,10 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 
 import {
     getWelcomePageAcknowledgedKey,
     useCreateWelcomePageAcknowledged,
 } from 'models/aiAgent/queries'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useWelcomePageAcknowledgedMutation } from '../useWelcomePageAcknowledgedMutation'
 

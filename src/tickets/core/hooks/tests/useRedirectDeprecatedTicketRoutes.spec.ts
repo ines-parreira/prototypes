@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import type { History, Location } from 'history'
 import { fromJS } from 'immutable'
 import { useHistory, useLocation } from 'react-router-dom'
@@ -7,6 +6,7 @@ import { useFlag } from 'core/flags'
 import { ViewType } from 'models/view/types'
 import { getActiveView } from 'state/views/selectors'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useRedirectDeprecatedTicketRoutes from '../useRedirectDeprecatedTicketRoutes'
 

@@ -1,5 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import {
     fetchSatisfiedOrBreachedTicketsTimeSeries,
     useSatisfiedOrBreachedTicketsTimeSeries,
@@ -12,6 +10,7 @@ import { satisfiedOrBreachedTicketsTimeSeriesQueryFactory } from 'models/reporti
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/reporting/useTimeSeries')
 const useTimeSeriesPerDimensionMock = assumeMock(useTimeSeriesPerDimension)

@@ -1,7 +1,6 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { buildNodeCommonProperties } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useSplitLLMPromptTriggerInputs from '../useSplitLLMPromptTriggerInputs'
 

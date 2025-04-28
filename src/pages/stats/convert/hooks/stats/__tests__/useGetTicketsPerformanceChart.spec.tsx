@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 import { act } from 'react-dom/test-utils'
 
@@ -7,6 +6,7 @@ import { Stat } from 'models/stat/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import * as revenueAttributionClient from 'pages/stats/convert/clients/RevenueAttributionClient'
 import { useTicketsPerformanceChart } from 'pages/stats/convert/hooks/stats/useGetTicketsPerformanceChart'
+import { renderHook } from 'utils/testing/renderHook'
 
 describe('useTicketsPerformanceChart', () => {
     const startDate = '2023-02-28T00:00:00.000'

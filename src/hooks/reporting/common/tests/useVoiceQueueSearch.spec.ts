@@ -1,5 +1,5 @@
 import { InfiniteQueryObserverSuccessResult } from '@tanstack/react-query'
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 import { mocked } from 'jest-mock'
 
 import {
@@ -11,6 +11,7 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useInfiniteListVoiceQueues } from '../useInfiniteListVoiceQueues'
 import {

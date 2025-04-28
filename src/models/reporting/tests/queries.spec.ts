@@ -1,5 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { defaultEnrichmentFields } from 'hooks/reporting/useDrillDownData'
 import {
     fetchPostReporting,
@@ -13,6 +11,7 @@ import {
 import { ReportingParams } from 'models/reporting/types'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('models/reporting/resources')
 const postReportingMock = assumeMock(postReporting)

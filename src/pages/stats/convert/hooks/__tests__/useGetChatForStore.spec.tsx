@@ -1,12 +1,12 @@
 import React, { ComponentType } from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 
 import { IntegrationType } from 'models/integration/types'
 import { RootState } from 'state/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useGetChatForStore } from '../useGetChatForStore'
 

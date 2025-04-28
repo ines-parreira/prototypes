@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { Provider } from 'react-redux'
@@ -11,6 +10,7 @@ import { useFlag } from 'core/flags'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getDeactivatedOAuthEmailIntegrations } from 'state/integrations/selectors'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useEmailDisconnectedBanner } from '../useEmailDisconnectedBanner'
 

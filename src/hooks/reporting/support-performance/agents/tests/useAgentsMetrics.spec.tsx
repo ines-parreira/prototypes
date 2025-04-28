@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 import { Provider } from 'react-redux'
 
@@ -28,6 +27,7 @@ import { initialState as agentPerformanceInitialState } from 'state/ui/stats/age
 import { AGENT_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
 import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
 import { assumeMock, mockStore } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/reporting/metricsPerAgent')
 jest.mock('hooks/reporting/useMessagesSentPerHourPerAgent')

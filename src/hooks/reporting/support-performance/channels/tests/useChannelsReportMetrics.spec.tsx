@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 import { Provider } from 'react-redux'
 
@@ -25,6 +24,7 @@ import { RootState } from 'state/types'
 import { agentPerformanceSlice } from 'state/ui/stats/agentPerformanceSlice'
 import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
 import { assumeMock, mockStore } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/reporting/support-performance/useSortedChannels')
 

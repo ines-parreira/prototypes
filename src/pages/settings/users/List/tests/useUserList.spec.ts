@@ -1,4 +1,3 @@
-import { act, renderHook } from '@testing-library/react-hooks'
 import axios from 'axios'
 
 import { listUsers } from '@gorgias/api-client'
@@ -13,6 +12,7 @@ import { UserRole } from 'config/types/user'
 import { agents } from 'fixtures/agents'
 import { OrderDirection } from 'models/api/types'
 import { UserSortableProperties } from 'models/user/types'
+import { act, renderHook } from 'utils/testing/renderHook'
 
 import { STALE_TIME_MS, USERS_PER_PAGE, useUserList } from '../useUserList'
 

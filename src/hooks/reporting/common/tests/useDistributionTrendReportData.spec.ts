@@ -1,5 +1,4 @@
 import { waitFor } from '@testing-library/react'
-import { renderHook } from '@testing-library/react-hooks'
 
 import { TicketChannel } from 'business/types/ticket'
 import { agents } from 'fixtures/agents'
@@ -8,6 +7,7 @@ import { useDistributionTrendReportData } from 'hooks/reporting/common/useDistri
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import { formatMetricValue } from 'pages/stats/common/utils'
+import { renderHook } from 'utils/testing/renderHook'
 
 describe('useDistributionTrendReportData', () => {
     const defaultStatsFilters: StatsFilters = {

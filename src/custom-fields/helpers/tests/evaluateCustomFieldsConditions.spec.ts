@@ -1,5 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import {
     CustomFieldCondition,
     ExpressionFieldSource,
@@ -10,6 +8,7 @@ import {
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { customFieldCondition } from 'fixtures/customFieldCondition'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { evaluateCustomFieldsConditions } from '../evaluateCustomFieldsConditions'
 

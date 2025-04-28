@@ -1,7 +1,7 @@
-import { renderHook } from '@testing-library/react-hooks'
 import LD from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useIsConvertPerformanceViewEnabled } from '../useIsConvertPerformanceViewEnabled'
 

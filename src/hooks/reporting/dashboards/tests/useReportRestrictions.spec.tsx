@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
@@ -16,6 +15,7 @@ import { SatisfactionReportConfig } from 'pages/stats/quality-management/satisfa
 import { AutoQAChart } from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
 import { initialState } from 'state/billing/reducers'
 import { RootState } from 'state/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 const mockStore = configureMockStore<RootState>([])
 

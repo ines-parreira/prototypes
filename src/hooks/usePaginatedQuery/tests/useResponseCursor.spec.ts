@@ -1,7 +1,7 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { AxiosResponse } from 'axios'
 
 import { ApiListResponseCursorPagination } from 'models/api/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useResponseCursor } from '../useResponseCursor'
 

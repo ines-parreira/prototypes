@@ -1,5 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { useTimeSeriesPerDimensionReportData } from 'hooks/reporting/common/useTimeSeriesReportData'
 import { useTrendReportData } from 'hooks/reporting/common/useTrendReportData'
 import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
@@ -11,6 +9,7 @@ import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFil
 import { ReportingGranularity } from 'models/reporting/types'
 import { Period } from 'models/stat/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/reporting/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)

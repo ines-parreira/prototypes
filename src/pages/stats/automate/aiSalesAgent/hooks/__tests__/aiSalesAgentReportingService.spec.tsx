@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { waitFor } from '@testing-library/react'
-import { renderHook } from '@testing-library/react-hooks'
 
 import { TicketChannel } from 'business/types/ticket'
 import { agents } from 'fixtures/agents'
@@ -27,6 +26,7 @@ import {
 } from 'services/reporting/supportPerformanceReportingService'
 import { fromLegacyStatsFilters } from 'state/stats/utils'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('services/reporting/supportPerformanceReportingService')
 

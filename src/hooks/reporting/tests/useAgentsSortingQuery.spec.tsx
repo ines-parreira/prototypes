@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -25,6 +24,7 @@ import {
 import { AGENT_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
 import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
 import { AgentsTableColumn } from 'state/ui/stats/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

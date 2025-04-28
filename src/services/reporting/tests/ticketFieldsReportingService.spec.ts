@@ -1,5 +1,4 @@
 import { UseQueryResult } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
@@ -28,6 +27,7 @@ import * as files from 'utils/file'
 import { saveZippedFiles } from 'utils/file'
 import { getFilterDateRange } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/reporting/timeSeries')
 const useCustomFieldsTicketCountTimeSeriesMock = assumeMock(

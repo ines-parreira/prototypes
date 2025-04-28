@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 import moment from 'moment'
 import { Provider } from 'react-redux'
@@ -43,6 +42,7 @@ import { getSortedAgents } from 'state/ui/stats/agentPerformanceSlice'
 import { createCsv } from 'utils/file'
 import { formatReportingQueryDate } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 const mockStore = configureMockStore()
 jest.mock('hooks/reporting/common/useTableReportData')

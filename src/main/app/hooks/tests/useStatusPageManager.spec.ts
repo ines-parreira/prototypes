@@ -1,6 +1,5 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import statusPageManager from 'services/statusPageManager/statusPageManager'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useStatusPageManager } from '../useStatusPageManager'
 

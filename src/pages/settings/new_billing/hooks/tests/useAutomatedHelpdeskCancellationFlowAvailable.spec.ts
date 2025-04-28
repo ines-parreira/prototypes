@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import {
@@ -7,6 +6,7 @@ import {
     proMonthlyHelpdeskPlan,
     starterHelpdeskPlan,
 } from 'fixtures/productPrices'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { assumeMock } from '../../../../../utils/testing'
 import useAutomatedHelpdeskCancellationFlowAvailable from '../useAutomatedHelpdeskCancellationFlowAvailable'

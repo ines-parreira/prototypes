@@ -1,6 +1,5 @@
 import React, { ComponentType } from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 import LD from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
@@ -11,6 +10,7 @@ import { account } from 'fixtures/account'
 import * as billingFixtures from 'fixtures/billing'
 import { initialState } from 'state/billing/reducers'
 import { RootState } from 'state/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useIsConvertSubscriber } from '../useIsConvertSubscriber'
 

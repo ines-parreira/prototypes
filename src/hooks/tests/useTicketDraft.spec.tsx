@@ -1,6 +1,5 @@
 import React, { ComponentType } from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS, Map } from 'immutable'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
@@ -8,6 +7,7 @@ import configureMockStore from 'redux-mock-store'
 
 import LocalForageManager from 'services/localForageManager/localForageManager'
 import { RootState, StoreDispatch } from 'state/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useTicketDraft from '../useTicketDraft'
 

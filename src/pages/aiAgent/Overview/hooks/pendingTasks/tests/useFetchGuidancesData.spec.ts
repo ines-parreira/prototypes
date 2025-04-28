@@ -1,6 +1,5 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useFetchGuidancesData } from '../useFetchGuidancesData'
 

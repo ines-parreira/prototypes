@@ -1,6 +1,7 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import { mockRequestAnimationFrame } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useWindowSize from '../useWindowSize'
 

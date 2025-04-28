@@ -1,7 +1,7 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { THEME_NAME, themeTokenMap } from '@gorgias/design-tokens'
 import type { ThemeName } from '@gorgias/design-tokens'
+
+import { renderHook } from 'utils/testing/renderHook'
 
 import useActualTheme from '../useActualTheme'
 import useThemeContext from '../useThemeContext'

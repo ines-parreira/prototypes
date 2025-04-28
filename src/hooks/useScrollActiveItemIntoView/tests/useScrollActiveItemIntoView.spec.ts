@@ -1,5 +1,6 @@
-import { renderHook } from '@testing-library/react-hooks/dom'
 import scrollIntoView from 'scroll-into-view-if-needed'
+
+import { renderHook } from 'utils/testing/renderHook'
 
 import useScrollActiveItemIntoView from '../useScrollActiveItemIntoView'
 

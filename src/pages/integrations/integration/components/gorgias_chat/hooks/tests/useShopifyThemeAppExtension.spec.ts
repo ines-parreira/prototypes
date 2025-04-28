@@ -1,6 +1,7 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import { ShopifyIntegration } from 'models/integration/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useShopifyThemeAppExtension from '../useShopifyThemeAppExtension'
 import useThemeAppExtensionInstallation from '../useThemeAppExtensionInstallation'

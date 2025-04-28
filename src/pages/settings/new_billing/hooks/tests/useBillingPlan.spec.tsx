@@ -2,7 +2,6 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -23,6 +22,7 @@ import client from 'models/api/resources'
 import { ProductType } from 'models/billing/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useBillingPlans } from '../useBillingPlan'
 

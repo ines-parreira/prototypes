@@ -1,7 +1,7 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { useParams } from 'react-router-dom'
 
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useViewId from '../useViewId'
 

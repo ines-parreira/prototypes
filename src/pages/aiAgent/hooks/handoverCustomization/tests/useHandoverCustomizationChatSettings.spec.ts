@@ -1,5 +1,5 @@
 import { waitFor } from '@testing-library/react'
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import {
     GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
@@ -15,6 +15,7 @@ import {
 import useSelfServiceChatChannels, {
     SelfServiceChatChannel,
 } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { renderHook } from 'utils/testing/renderHook'
 
 import {
     HandoverCustomizationFormType,

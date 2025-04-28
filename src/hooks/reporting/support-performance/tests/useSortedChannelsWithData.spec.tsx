@@ -1,10 +1,9 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { channels as mockChannels } from 'fixtures/channels'
 import { useChannelsReportMetrics } from 'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
 import { useSortedChannelsWithData } from 'hooks/reporting/support-performance/useSortedChannelsWithData'
 import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock(
     'hooks/reporting/support-performance/channels/useChannelsReportMetrics',

@@ -1,7 +1,6 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 import * as reactQuery from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
-import { renderHook } from '@testing-library/react-hooks'
 
 import { ListTeamsOrderBy, queryKeys } from '@gorgias/api-queries'
 
@@ -15,6 +14,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { fetchTeams } from 'models/team/resources'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useListTeams } from '../useListTeams'
 

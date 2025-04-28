@@ -1,5 +1,4 @@
 import { waitFor } from '@testing-library/react'
-import { renderHook } from '@testing-library/react-hooks'
 
 import { TicketChannel } from 'business/types/ticket'
 import { User } from 'config/types/user'
@@ -40,6 +39,7 @@ import {
     ZERO_TOUCH_TICKETS_LABEL,
 } from 'services/reporting/constants'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/reporting/metricTrends')
 const fetchOpenTicketsTrendMock = assumeMock(fetchOpenTicketsTrend)

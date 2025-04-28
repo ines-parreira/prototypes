@@ -1,6 +1,5 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { useKpis } from 'pages/aiAgent/Overview/hooks/useKpis'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('pages/aiAgent/Overview/hooks/kpis/useCoverageRate', () => ({
     useCoverageRate: jest.fn(() => 'mockCoverageRate'),

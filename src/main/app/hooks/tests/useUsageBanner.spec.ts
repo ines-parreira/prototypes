@@ -1,9 +1,9 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { handleUsageBanner } from 'state/notifications/actions'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useUsageBanner } from '../useUsageBanner'
 

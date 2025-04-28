@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -12,6 +12,7 @@ import {
 import { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import { StoreState } from 'state/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useHelpCenterAIArticlesLibrary } from '../useHelpCenterAIArticlesLibrary'
 

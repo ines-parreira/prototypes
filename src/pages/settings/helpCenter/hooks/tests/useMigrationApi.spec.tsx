@@ -1,6 +1,5 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { getMigrationClient } from 'rest_api/migration_api'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { MigrationApiClientProvider, useMigrationApi } from '../useMigrationApi'
 

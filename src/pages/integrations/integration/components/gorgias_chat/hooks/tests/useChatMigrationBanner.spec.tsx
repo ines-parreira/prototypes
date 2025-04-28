@@ -1,6 +1,5 @@
 import React, { ComponentType } from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS, Map } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
@@ -13,6 +12,7 @@ import { ShopifyIntegrationMeta } from 'models/integration/types/shopify'
 import { getChatInstallationStatus } from 'state/entities/chatInstallationStatus/selectors'
 import { getStoreIntegrations } from 'state/integrations/selectors'
 import { RootState } from 'state/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useChatMigrationBanner from '../useChatMigrationBanner'
 

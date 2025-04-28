@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { renderHook } from '@testing-library/react-hooks/dom'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -11,6 +10,7 @@ import * as tipProvider from 'services/supportPerformanceTipService'
 import { RootState, StoreDispatch } from 'state/types'
 import { PlanName } from 'utils/paywalls'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 jest.mock('hooks/useAppSelector')

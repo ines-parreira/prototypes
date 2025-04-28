@@ -1,5 +1,5 @@
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import { useCreateCustomFieldCondition } from '@gorgias/api-queries'
 
@@ -10,6 +10,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { errorToChildren } from 'utils'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useSaveCondition from '../useSaveCondition'
 import useUpdateCustomFieldCondition from '../useUpdateCustomFieldCondition'

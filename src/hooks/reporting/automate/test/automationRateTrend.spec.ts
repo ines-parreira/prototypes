@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import moment from 'moment/moment'
 
@@ -28,6 +27,7 @@ import {
 } from 'hooks/reporting/automate/useAutomationRateTrend'
 import { StatsFilters } from 'models/stat/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/reporting/automate/useAIAgentUserId')
 const useAIAgentUserIdMock = assumeMock(useAIAgentUserId)

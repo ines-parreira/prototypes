@@ -2,12 +2,12 @@ import {
     InfiniteQueryObserverSuccessResult,
     useInfiniteQuery,
 } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 
 import { listVoiceQueues } from '@gorgias/api-client'
 import { queryKeys } from '@gorgias/api-queries'
 
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useInfiniteListVoiceQueues } from '../useInfiniteListVoiceQueues'
 

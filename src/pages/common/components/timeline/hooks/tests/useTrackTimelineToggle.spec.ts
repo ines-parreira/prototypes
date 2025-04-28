@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS, List } from 'immutable'
 
 import { TicketSummary } from '@gorgias/api-types'
@@ -6,6 +5,7 @@ import { TicketSummary } from '@gorgias/api-types'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { getTicketState } from 'state/ticket/selectors'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useTimeline } from '../useTimeline'
 import { useTrackTimelineToggle } from '../useTrackTimelineToggle'

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 import axios from 'axios'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
@@ -17,6 +17,7 @@ import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useActivation } from '../useActivation'
 import { getStoreConfigurationFixture } from './fixtures/store-configurations.fixture'

@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
@@ -8,6 +7,7 @@ import { Provider } from 'react-redux'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { mockStore } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import {
     OnboardingState,

@@ -1,9 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { dummyAppData, dummyAppListData } from 'fixtures/apps'
 import { IntegrationType } from 'models/integration/constants'
 import { useGetApps, useGetAppsByIds } from 'models/integration/queries'
 import { useListActionsApps } from 'models/workflows/queries'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useApps from '../useApps'
 

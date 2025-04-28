@@ -1,5 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useDashboardData } from 'hooks/reporting/dashboards/useDashboardData'
 import { useDownloadDashboardData } from 'hooks/reporting/dashboards/useDownloadDashboardData'
@@ -12,6 +10,7 @@ import {
 import { OverviewChart } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import { saveZippedFiles } from 'utils/file'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/reporting/dashboards/useDashboardData')
 const useDashboardDataMock = assumeMock(useDashboardData)

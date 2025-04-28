@@ -2,7 +2,7 @@ import React from 'react'
 
 import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
-import { act, renderHook } from '@testing-library/react-hooks/dom'
+import { act } from '@testing-library/react-hooks/dom'
 import moment from 'moment'
 
 import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
@@ -10,6 +10,7 @@ import { fetchPostReporting, usePostReporting } from 'models/reporting/queries'
 import { StatsFilters } from 'models/stat/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import {
     fetchGmvInfluencedTrend,

@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
@@ -10,6 +9,7 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import { getDefaultCustomFieldOperator } from 'pages/common/components/ViewTable/Filters/utils'
 import { updateCustomFieldFilterId } from 'state/views/actions'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useCustomFieldsFilters from '../useCustomFieldsFilters'
 

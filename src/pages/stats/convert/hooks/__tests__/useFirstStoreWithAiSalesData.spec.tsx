@@ -1,6 +1,5 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { AiSalesAgentConversationsDimension } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentConversations'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useFirstStoreWithAiSalesData } from '../useFirstStoreWithAiSalesData'
 

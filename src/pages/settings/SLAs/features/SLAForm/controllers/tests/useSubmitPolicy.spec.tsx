@@ -2,7 +2,6 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
-import { renderHook } from '@testing-library/react-hooks'
 import { Provider } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
@@ -14,6 +13,7 @@ import {
 
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock, mockStore } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { SLAFormValues } from '../useFormValues'
 import useSubmitPolicy from '../useSubmitPolicy'

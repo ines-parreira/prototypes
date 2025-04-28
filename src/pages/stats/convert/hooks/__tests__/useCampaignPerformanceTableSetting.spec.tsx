@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks/dom'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import routerDom, { useParams } from 'react-router-dom'
@@ -24,6 +23,7 @@ import {
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useCampaignPerformanceTableSetting } from '../useCampaignPerformanceTableSetting'
 

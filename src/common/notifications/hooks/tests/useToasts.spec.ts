@@ -1,8 +1,9 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import { notificationSounds } from 'services'
 import { defaultSound } from 'services/NotificationSounds'
 import { getNotificationSettings } from 'state/currentUser/selectors'
+import { renderHook } from 'utils/testing/renderHook'
 
 import type { Notification } from '../../types'
 import getNotificationConfig from '../../utils/getNotificationConfig'

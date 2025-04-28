@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 
 import { shopifyIntegration } from 'fixtures/integrations'
@@ -9,6 +8,7 @@ import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
 } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useTopLocations } from '../useTopLocations'
 

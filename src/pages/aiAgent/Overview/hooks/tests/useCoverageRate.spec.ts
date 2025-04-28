@@ -1,5 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks/dom'
-
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { ticketFieldDefinitions } from 'fixtures/customField'
 import { useAutomationRateTrend } from 'hooks/reporting/automate/useAutomationRateTrend'
@@ -8,6 +6,7 @@ import { StatsFilters } from 'models/stat/types'
 import { useAiAgentAutomationRate } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate'
 import { useCoverageRate } from 'pages/aiAgent/Overview/hooks/kpis/useCoverageRate'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)

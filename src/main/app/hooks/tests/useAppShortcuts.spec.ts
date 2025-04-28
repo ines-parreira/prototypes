@@ -1,8 +1,7 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import useAppDispatch from 'hooks/useAppDispatch'
 import useShortcuts from 'hooks/useShortcuts'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useAppShortcuts from '../useAppShortcuts'
 

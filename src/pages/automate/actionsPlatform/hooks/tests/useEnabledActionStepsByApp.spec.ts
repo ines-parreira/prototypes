@@ -1,10 +1,10 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { ulid } from 'ulidx'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useEnabledActionStepsByApp from '../useEnabledActionStepsByApp'
 

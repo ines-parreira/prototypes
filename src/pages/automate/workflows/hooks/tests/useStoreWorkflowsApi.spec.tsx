@@ -2,7 +2,7 @@ import React, { ComponentType, ReactChildren } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 import LD from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
@@ -17,6 +17,7 @@ import {
 } from 'models/workflows/queries'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useStoreWorkflowsApi } from '../useStoreWorkflowsApi'
 import { useSelfServiceConfigurationUpdateMockSetter } from './fixtures/mockBuilders'

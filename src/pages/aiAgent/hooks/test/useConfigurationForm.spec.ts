@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 
@@ -12,6 +12,7 @@ import { useConfigurationForm } from 'pages/aiAgent/hooks/useConfigurationForm'
 import { notify } from 'state/notifications/actions'
 import { StoreState } from 'state/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { ToneOfVoice } from '../../constants'
 import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'

@@ -1,10 +1,9 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { useBillingState } from 'models/billing/queries'
 import { useGetOnboardingDataByShopName } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingDataByShopName'
 import { useFetchChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
 import { useFetchEmailIntegrationsData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchEmailIntegrationsData'
 import { useFetchFaqHelpCentersData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchFaqHelpCentersData'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useIsGoLiveDisabled } from '../useIsGoLiveDisabled'
 

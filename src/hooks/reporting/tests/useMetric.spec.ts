@@ -1,5 +1,4 @@
 import { UseQueryResult } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 
 import { fetchMetric, useMetric } from 'hooks/reporting/useMetric'
 import {
@@ -9,6 +8,7 @@ import {
 import { fetchPostReporting, usePostReporting } from 'models/reporting/queries'
 import { ReportingQuery } from 'models/reporting/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)

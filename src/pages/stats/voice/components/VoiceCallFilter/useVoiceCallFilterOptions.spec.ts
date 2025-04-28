@@ -1,6 +1,7 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { VoiceCallFilterDirection } from '../../models/types'
 import useVoiceCallFilterOptions from './useVoiceCallFilterOptions'

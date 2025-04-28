@@ -1,7 +1,5 @@
 import React from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
-
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useGetCustomFieldValues } from 'custom-fields/hooks/queries/queries'
 import {
@@ -10,6 +8,7 @@ import {
 } from 'fixtures/axiosResponse'
 import { ticketDropdownFieldDefinition } from 'fixtures/customField'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { STALE_TIME_MS, useCustomFieldValues } from '../useCustomFieldValues'
 

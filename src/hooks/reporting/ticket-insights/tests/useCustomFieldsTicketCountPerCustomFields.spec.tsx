@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { UseQueryResult } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks/dom'
 import _zip from 'lodash/zip'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -24,6 +23,7 @@ import {
 } from 'state/ui/stats/ticketInsightsSlice'
 import { ValueMode } from 'state/ui/stats/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 import { notUndefined } from 'utils/types'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()

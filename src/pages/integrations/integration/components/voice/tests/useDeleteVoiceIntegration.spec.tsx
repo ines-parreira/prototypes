@@ -1,5 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { IntegrationType } from '@gorgias/api-queries'
 
 import { integrationsState } from 'fixtures/integrations'
@@ -7,6 +5,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { PhoneIntegration } from 'models/integration/types'
 import { deleteIntegration } from 'state/integrations/actions'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useDeleteVoiceIntegration } from '../useDeleteVoiceIntegration'
 

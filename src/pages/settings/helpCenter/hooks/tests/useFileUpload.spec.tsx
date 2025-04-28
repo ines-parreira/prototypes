@@ -1,10 +1,10 @@
 import React from 'react'
 
 import { act } from '@testing-library/react'
-import { renderHook } from '@testing-library/react-hooks'
 
 import * as utils from 'common/utils'
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { getSingleHelpCenterResponseFixture } from '../../fixtures/getHelpCentersResponse.fixture'
 import { useFileUpload } from '../useFileUpload'

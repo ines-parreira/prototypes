@@ -1,11 +1,11 @@
 import React from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { RootState, StoreDispatch } from 'state/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useShopifyIntegrationAndScope } from '../useShopifyIntegrationAndScope'
 

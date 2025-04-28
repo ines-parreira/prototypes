@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 
 import { OrderDirection } from '@gorgias/api-queries'
@@ -37,6 +36,7 @@ import { formatData as getTicketInsightsData } from 'services/reporting/ticketFi
 import { AgentsTableColumn } from 'state/ui/stats/types'
 import { createCsv } from 'utils/file'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 const timeSeriesMock = [
     [

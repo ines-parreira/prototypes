@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react'
 
 import { act } from '@testing-library/react'
-import { renderHook } from '@testing-library/react-hooks'
 import { createBrowserHistory } from 'history'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Router } from 'react-router-dom'
@@ -9,6 +8,7 @@ import { Router } from 'react-router-dom'
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useDisplayAiAgentMovedBanner } from '../useDisplayAiAgentMovedBanner'
 

@@ -1,4 +1,6 @@
-import { act, renderHook } from '@testing-library/react-hooks/dom'
+import { act } from '@testing-library/react-hooks/dom'
+
+import { renderHook } from 'utils/testing/renderHook'
 
 import { CHOICE_VALUES_SYMBOL } from '../../constants'
 import { ChoicesTree } from '../../types'

@@ -1,5 +1,4 @@
 import { UseQueryResult } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 
 import { useMetric } from 'hooks/reporting/useMetric'
 import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
@@ -11,6 +10,7 @@ import {
     HelpCenterTrackingEventSegment,
 } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
 import { Components } from 'rest_api/help_center_api/client.generated'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { usePerformanceByArticleMetrics } from '../usePerformanceByArticleMetrics'
 

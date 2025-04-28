@@ -1,6 +1,6 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { useAgentActivity } from '@gorgias/realtime'
+
+import { renderHook } from 'utils/testing/renderHook'
 
 import useViewTickets, { DEBOUNCED_VIEW_TICKETS_DELAY } from '../useViewTickets'
 

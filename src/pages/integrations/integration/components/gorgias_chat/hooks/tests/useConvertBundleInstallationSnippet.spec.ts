@@ -1,6 +1,5 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import * as environment from 'utils/environment'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useConvertBundleInstallationSnippet } from '../useConvertBundleInstallationSnippet'
 

@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
 import { TicketChannel } from 'business/types/ticket'
@@ -22,6 +21,7 @@ import {
     TicketTimeReference,
 } from 'models/stat/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
 jest.mock('models/reporting/queryFactories/ticket-insights/tagsTicketCount')

@@ -1,7 +1,6 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { phoneNumbers } from 'fixtures/newPhoneNumber'
 import * as phoneNumbersSelectors from 'state/entities/phoneNumbers/selectors'
+import { renderHook } from 'utils/testing/renderHook'
 
 import usePhoneNumbers from '../usePhoneNumbers'
 

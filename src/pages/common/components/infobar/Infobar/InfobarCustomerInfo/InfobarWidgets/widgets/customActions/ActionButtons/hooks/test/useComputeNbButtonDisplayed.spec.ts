@@ -1,6 +1,5 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { Button } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useComputeNbButtonDisplayed } from '../useComputeNbButtonDisplayed'
 

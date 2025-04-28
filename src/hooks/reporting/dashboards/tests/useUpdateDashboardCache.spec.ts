@@ -1,11 +1,11 @@
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 
 import { getGetAnalyticsCustomReportQueryOptions } from '@gorgias/api-queries'
 
 import { useUpdateDashboardCache } from 'hooks/reporting/dashboards/useUpdateDashboardCache'
 import { DashboardSchema } from 'pages/stats/dashboards/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('@gorgias/api-queries')
 const getGetAnalyticsCustomReportQueryOptionsMock = assumeMock(

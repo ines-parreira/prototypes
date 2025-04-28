@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { channelConnection } from 'fixtures/channelConnection'
@@ -11,6 +10,7 @@ import {
 } from 'models/convert/settings/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useUpdateSetting } from '../useUpdateSetting'
 

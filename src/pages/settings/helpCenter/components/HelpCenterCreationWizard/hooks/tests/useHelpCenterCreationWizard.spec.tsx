@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -25,6 +25,7 @@ import {
 } from 'pages/settings/helpCenter/fixtures/wizard.fixture'
 import { HelpCenterLayout } from 'pages/settings/helpCenter/types/layout.enum'
 import { StoreState } from 'state/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useHelpCenterCreationWizard } from '../useHelpCenterCreationWizard'
 

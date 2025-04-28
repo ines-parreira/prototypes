@@ -1,7 +1,7 @@
 import React, { ComponentProps } from 'react'
 
 import { render, screen, waitFor } from '@testing-library/react'
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -28,6 +28,7 @@ import {
     IntegrationContext,
     IntegrationContextType,
 } from 'providers/infobar/IntegrationContext'
+import { renderHook } from 'utils/testing/renderHook'
 
 import {
     addCheckoutBillingAddress,

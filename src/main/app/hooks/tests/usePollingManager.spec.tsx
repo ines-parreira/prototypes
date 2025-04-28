@@ -1,10 +1,10 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import pollingManager from 'services/pollingManager'
 import { EqualityOperator } from 'state/rules/types'
 import { getViewFilters } from 'state/views/utils'
+import { renderHook } from 'utils/testing/renderHook'
 
 import usePollingManager from '../usePollingManager'
 

@@ -1,9 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { SLAPolicyMetricType, SLAPolicyMetricUnit } from '@gorgias/api-types'
 
 import { useFlag } from 'core/flags'
 import { slaPolicy3 } from 'pages/settings/SLAs/fixtures/fixtures'
+import { renderHook } from 'utils/testing/renderHook'
 
 import makeMappedFormSLAPolicy from '../makeMappedFormSLAPolicy'
 import useFormValues from '../useFormValues'

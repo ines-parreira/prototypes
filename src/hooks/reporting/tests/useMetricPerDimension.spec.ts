@@ -1,6 +1,5 @@
 import { UseQueryResult } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
-import { renderHook } from '@testing-library/react-hooks'
 
 import { defaultEnrichmentFields } from 'hooks/reporting/useDrillDownData'
 import {
@@ -36,6 +35,7 @@ import { customFieldsTicketCountQueryFactory } from 'models/reporting/queryFacto
 import { postEnrichedReporting } from 'models/reporting/resources'
 import { EnrichmentFields, ReportingQuery } from 'models/reporting/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)

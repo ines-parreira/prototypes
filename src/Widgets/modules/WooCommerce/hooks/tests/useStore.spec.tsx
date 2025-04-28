@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { CombinedState } from 'redux'
@@ -12,6 +11,7 @@ import {
     IntegrationContextType,
 } from 'providers/infobar/IntegrationContext'
 import { RootState, StoreDispatch, StoreState } from 'state/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useStore } from '../useStore'
 

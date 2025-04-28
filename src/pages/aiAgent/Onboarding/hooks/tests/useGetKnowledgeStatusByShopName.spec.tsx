@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 
 import { shopifyIntegration } from 'fixtures/integrations'
@@ -8,6 +7,7 @@ import {
     TemporaryKnowledgeData,
 } from 'pages/aiAgent/Onboarding/components/steps/types'
 import { useGetKnowledgeStatusByShopName } from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgeStatusByShopName'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = useAppSelector as jest.Mock

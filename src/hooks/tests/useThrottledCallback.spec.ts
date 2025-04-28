@@ -1,5 +1,6 @@
-import { renderHook } from '@testing-library/react-hooks/dom'
 import noop from 'lodash/noop'
+
+import { renderHook } from 'utils/testing/renderHook'
 
 import useThrottledCallback from '../useThrottledCallback'
 

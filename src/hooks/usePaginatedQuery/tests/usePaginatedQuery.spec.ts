@@ -1,10 +1,10 @@
 import { UseQueryResult } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 import { AxiosResponse } from 'axios'
 
 import { useSearchParam } from 'hooks/useSearchParam'
 import { ApiListResponseCursorPagination } from 'models/api/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { usePaginatedQuery } from '../usePaginatedQuery'
 import { useResponseCursor } from '../useResponseCursor'

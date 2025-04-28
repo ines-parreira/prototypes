@@ -1,9 +1,9 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { ShopifyIntegration } from 'models/integration/types'
 import { getEnvironment, GorgiasUIEnv } from 'utils/environment'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useThemeAppExtensionInstallation from '../useThemeAppExtensionInstallation'
 

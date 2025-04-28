@@ -1,5 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -7,6 +5,7 @@ import { defaultAutoMergeSettings } from 'pages/settings/autoMerge/constants'
 import useAutoMergeSettings from 'pages/settings/autoMerge/hooks/useAutoMergeSettings'
 import { submitSetting } from 'state/currentAccount/actions'
 import { AccountSettingType } from 'state/currentAccount/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 jest.mock('hooks/useAppSelector', () => jest.fn())

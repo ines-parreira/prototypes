@@ -1,7 +1,6 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import useOrderBy from 'hooks/useOrderBy'
 import { OrderDirection } from 'models/api/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 describe('useOrderBy', () => {
     it('should return orderBy and orderParam null/undefined when there is no default value', () => {

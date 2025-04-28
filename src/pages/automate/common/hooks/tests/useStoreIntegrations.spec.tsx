@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
@@ -16,6 +15,7 @@ import {
 import { IntegrationType } from 'models/integration/types'
 import { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useStoreIntegrations from '../useStoreIntegrations'
 

@@ -1,5 +1,4 @@
 import { UseQueryResult } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 
 import { fetchPostReporting, usePostReporting } from 'models/reporting/queries'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
@@ -19,6 +18,7 @@ import {
 } from 'pages/stats/convert/hooks/stats/useGetTableStat'
 import { getDataFromResult } from 'pages/stats/convert/services/CampaignMetricsHelper'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)

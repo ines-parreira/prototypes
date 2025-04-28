@@ -1,5 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import {
     fetchClosedTicketsTrend,
     fetchZeroTouchTicketsTrend,
@@ -12,6 +10,7 @@ import {
 } from 'hooks/reporting/support-performance/overview/useZeroTouchTicketsMetricTrend'
 import { StatsFilters } from 'models/stat/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/reporting/metricTrends')
 const useZeroTicketsTrendMock = assumeMock(useZeroTouchTicketsTrend)

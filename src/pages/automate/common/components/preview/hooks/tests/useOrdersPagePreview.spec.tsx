@@ -1,8 +1,7 @@
 import React from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
-
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useOrdersPagePreview from '../useOrdersPagePreview'
 

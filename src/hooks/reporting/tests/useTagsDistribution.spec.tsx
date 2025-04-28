@@ -1,5 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { useTagsTicketCount } from 'hooks/reporting/metricsPerPeriod'
 import { useTagsDistribution } from 'hooks/reporting/support-performance/useTagsDistribution'
 import useAppSelector from 'hooks/useAppSelector'
@@ -10,6 +8,7 @@ import {
 import { getTagName } from 'pages/stats/ticket-insights/tags/helpers'
 import { initialState } from 'state/stats/statsSlice'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 const firstTagID = '255148'
 const secondTagID = '487270'

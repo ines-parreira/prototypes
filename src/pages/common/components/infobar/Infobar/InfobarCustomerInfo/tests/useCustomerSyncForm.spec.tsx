@@ -1,5 +1,7 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
+
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useCustomerSyncForm } from '../CustomerSyncForm/useCustomerSyncForm'
 

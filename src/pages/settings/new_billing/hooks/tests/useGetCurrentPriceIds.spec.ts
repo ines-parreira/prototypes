@@ -1,7 +1,6 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import useAppSelector from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useCurrentPriceIds } from '../useGetCurrentPriceIds'
 

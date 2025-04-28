@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -58,6 +58,7 @@ import {
 } from 'state/ui/stats/types'
 import { formatReportingQueryDate } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 const initialState = {
     ui: {

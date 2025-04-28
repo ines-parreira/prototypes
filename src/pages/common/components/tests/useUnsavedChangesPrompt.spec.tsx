@@ -1,11 +1,12 @@
 import React from 'react'
 
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 import * as H from 'history'
 import { createMemoryHistory } from 'history'
 import { Route, Router } from 'react-router-dom'
 
 import history from 'pages/history'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useUnsavedChangesPrompt from '../useUnsavedChangesPrompt'
 
@@ -37,7 +38,9 @@ const renderHookWithRouter = ({
     )
 
     return {
-        ...renderHook(() => useUnsavedChangesPrompt({ when }), { wrapper }),
+        ...renderHook(() => useUnsavedChangesPrompt({ when }), {
+            wrapper,
+        }),
         history,
     }
 }

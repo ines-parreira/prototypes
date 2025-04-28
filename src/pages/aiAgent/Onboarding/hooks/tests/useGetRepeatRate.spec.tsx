@@ -1,4 +1,3 @@
-import { renderHook as reactRenderHook } from '@testing-library/react-hooks'
 import { Provider } from 'react-redux'
 
 import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
@@ -6,6 +5,7 @@ import { AiSalesAgentOrderCustomersMeasure } from 'models/reporting/cubes/ai-sal
 import { StatsFilters } from 'models/stat/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { assumeMock, mockStore } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useGetRepeatRate } from '../useGetRepeatRate'
 
@@ -25,8 +25,8 @@ const filters: StatsFilters = {
     },
 }
 
-const renderHook = (hook: typeof useGetRepeatRate) => {
-    return reactRenderHook(() => hook(filters, 'UTC'), {
+const renderHookWithWrapper = (hook: typeof useGetRepeatRate) => {
+    return renderHook(() => hook(filters, 'UTC'), {
         wrapper: ({ children }) => (
             <Provider store={store}>{children}</Provider>
         ),
@@ -41,7 +41,9 @@ describe('useGetRepeatRate', () => {
             isError: false,
         } as any)
 
-        const { result } = renderHook(() => useGetRepeatRate(filters, 'UTC'))
+        const { result } = renderHookWithWrapper(() =>
+            useGetRepeatRate(filters, 'UTC'),
+        )
 
         expect(result.current.data).toEqual(0)
     })
@@ -53,7 +55,9 @@ describe('useGetRepeatRate', () => {
             isError: true,
         } as any)
 
-        const { result } = renderHook(() => useGetRepeatRate(filters, 'UTC'))
+        const { result } = renderHookWithWrapper(() =>
+            useGetRepeatRate(filters, 'UTC'),
+        )
 
         expect(result.current.data).toEqual(0)
     })
@@ -65,7 +69,9 @@ describe('useGetRepeatRate', () => {
             isError: false,
         } as any)
 
-        const { result } = renderHook(() => useGetRepeatRate(filters, 'UTC'))
+        const { result } = renderHookWithWrapper(() =>
+            useGetRepeatRate(filters, 'UTC'),
+        )
 
         expect(result.current.data).toEqual(0)
     })
@@ -79,7 +85,9 @@ describe('useGetRepeatRate', () => {
             isError: false,
         } as any)
 
-        const { result } = renderHook(() => useGetRepeatRate(filters, 'UTC'))
+        const { result } = renderHookWithWrapper(() =>
+            useGetRepeatRate(filters, 'UTC'),
+        )
 
         expect(result.current.data).toEqual(0)
     })
@@ -98,7 +106,9 @@ describe('useGetRepeatRate', () => {
             isError: false,
         } as any)
 
-        const { result } = renderHook(() => useGetRepeatRate(filters, 'UTC'))
+        const { result } = renderHookWithWrapper(() =>
+            useGetRepeatRate(filters, 'UTC'),
+        )
 
         expect(result.current.data).toEqual(20)
     })

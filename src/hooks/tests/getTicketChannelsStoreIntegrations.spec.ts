@@ -1,5 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { useGetAiAgentIntegrations } from 'hooks/aiAgent/useGetAiAgentIntegrations'
 import { useGetChatIntegrationIdsForStore } from 'hooks/chat/useGetChatIntegrationIdsForStore'
 import { useGetContactFromIntegrationIdsForStore } from 'hooks/contacForm/useGetContactForms'
@@ -10,6 +8,7 @@ import {
 import { useGetHelpCentersIntegrationIdsForStore } from 'hooks/helpCenter/useGetStoreHelpCenters'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/aiAgent/useGetAiAgentIntegrations')
 jest.mock('hooks/chat/useGetChatIntegrationIdsForStore')

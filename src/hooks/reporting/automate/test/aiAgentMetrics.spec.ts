@@ -1,5 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { CUSTOM_FIELD_AI_AGENT_HANDOVER } from 'hooks/reporting/automate/types'
 import { useMetric } from 'hooks/reporting/useMetric'
 import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
@@ -21,6 +19,7 @@ import {
 import { ReportingFilterOperator } from 'models/reporting/types'
 import { formatReportingQueryDate } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import {
     useAIAgentResourcePerTicket,

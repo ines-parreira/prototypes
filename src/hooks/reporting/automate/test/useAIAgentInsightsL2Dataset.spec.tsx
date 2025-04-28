@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 import { useParams } from 'react-router-dom'
 
@@ -29,6 +28,7 @@ import { OrderDirection } from 'models/api/types'
 import { TicketCustomFieldsCube } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { StatsFilters } from 'models/stat/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 const timezone = 'UTC'
 

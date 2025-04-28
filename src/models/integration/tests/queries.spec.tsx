@@ -2,7 +2,6 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import * as reactQuery from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 
 import {
@@ -24,6 +23,7 @@ import { ShopifyCollectionResponse } from 'models/integration/types'
 import { fetchIntegrationProducts as fetchIntegrationProductsByIds } from 'state/integrations/helpers'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('models/integration/resources/shopify', () => ({
     fetchShopifyCollections: jest.fn(),

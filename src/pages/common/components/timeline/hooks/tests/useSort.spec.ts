@@ -1,7 +1,8 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { GorgiasInitialState } from 'types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useSort } from '../useSort'
 

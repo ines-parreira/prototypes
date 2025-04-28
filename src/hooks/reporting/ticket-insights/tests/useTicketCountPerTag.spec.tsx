@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import _keyBy from 'lodash/keyBy'
 import { Provider } from 'react-redux'
@@ -27,6 +27,7 @@ import {
 } from 'state/ui/stats/tagsReportSlice'
 import { getFilterDateRange } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('launchdarkly-react-client-sdk')
 const useFlagsMock = assumeMock(useFlags)

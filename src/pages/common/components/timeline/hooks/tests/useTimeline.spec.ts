@@ -1,9 +1,9 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 
 import { useSearchParam } from 'hooks/useSearchParam'
 import { getCustomerHistory, getLoading } from 'state/customers/selectors'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useTimeline } from '../useTimeline'
 

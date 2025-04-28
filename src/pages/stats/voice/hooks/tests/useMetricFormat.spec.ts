@@ -1,5 +1,3 @@
-import { act, renderHook } from '@testing-library/react-hooks'
-
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useMetric } from 'hooks/reporting/useMetric'
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
@@ -7,6 +5,7 @@ import { voiceCallCountQueryFactory } from 'models/reporting/queryFactories/voic
 import { FilterKey } from 'models/stat/types'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
 import { assumeMock } from 'utils/testing'
+import { act, renderHook } from 'utils/testing/renderHook'
 
 import { useMetricFormat } from '../useMetricFormat'
 

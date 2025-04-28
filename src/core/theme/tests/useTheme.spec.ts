@@ -1,6 +1,6 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { THEME_NAME, themeTokenMap } from '@gorgias/design-tokens'
+
+import { renderHook } from 'utils/testing/renderHook'
 
 import Provider from '../ThemeProvider'
 import useTheme from '../useTheme'
@@ -17,7 +17,9 @@ describe('useTheme', () => {
     })
 
     it('should return the active theme', () => {
-        const { result } = renderHook(() => useTheme(), { wrapper: Provider })
+        const { result } = renderHook(() => useTheme(), {
+            wrapper: Provider,
+        })
 
         expect(result.current).toEqual({
             name: THEME_NAME.Classic,

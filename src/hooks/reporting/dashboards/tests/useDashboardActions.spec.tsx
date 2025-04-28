@@ -5,7 +5,6 @@ import {
     UseMutateFunction,
     UseMutationResult,
 } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 
 import {
     AnalyticsCustomReport,
@@ -41,6 +40,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 const queryClient = mockQueryClient()
 

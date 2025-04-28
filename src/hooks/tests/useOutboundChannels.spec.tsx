@@ -3,7 +3,7 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import React from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook } from 'utils/testing/renderHook'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { Store } from 'redux'

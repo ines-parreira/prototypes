@@ -1,8 +1,7 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { useFlag } from 'core/flags'
 import useElementSize from 'hooks/useElementSize'
 import useSplitTicketView from 'split-ticket-view-toggle/hooks/useSplitTicketView'
+import { renderHook } from 'utils/testing/renderHook'
 
 import type { TicketPartial } from '../../types'
 import useScrollOffset from '../useScrollOffset'

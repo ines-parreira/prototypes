@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 import MockAdapter from 'axios-mock-adapter'
 
 import { SearchType } from '@gorgias/api-queries'
@@ -12,6 +11,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import client from 'models/api/resources'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useSearch from '../useSearch'
 

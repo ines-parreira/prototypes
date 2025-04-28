@@ -1,5 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { useReportRestrictions } from 'hooks/reporting/dashboards/useReportRestrictions'
 import { useRestrictedReportsConfig } from 'hooks/reporting/dashboards/useRestrictedReportsConfig'
 import { ReportsIDs } from 'pages/stats/dashboards/constants'
@@ -9,6 +7,7 @@ import {
     SupportPerformanceOverviewReportConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/reporting/dashboards/useReportRestrictions')
 const useReportRestrictionsMock = assumeMock(useReportRestrictions)

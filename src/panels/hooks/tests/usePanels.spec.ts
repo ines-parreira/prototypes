@@ -1,8 +1,9 @@
 import { MouseEvent as ReactMouseEvent } from 'react'
 
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import { Config } from 'panels/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import usePanels from '../usePanels'
 import useScreenSize from '../useScreenSize'

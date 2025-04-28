@@ -1,4 +1,3 @@
-import { renderHook as reactRenderHook } from '@testing-library/react-hooks'
 import { Provider } from 'react-redux'
 
 import { mockedAverageOrders } from 'pages/aiAgent/Onboarding/components/KnowledgePreview/constants'
@@ -8,6 +7,7 @@ import { useGetRepeatRate } from 'pages/aiAgent/Onboarding/hooks/useGetRepeatRat
 import { useAverageDiscountPercentage } from 'pages/stats/automate/aiSalesAgent/useAverageDiscountPercentage'
 import { useAverageOrdersPerDayTrend } from 'pages/stats/automate/aiSalesAgent/useAverageOrdersPerDayTrend'
 import { assumeMock, mockStore } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useGetKnowledgePreviewData } from '../useGetKnowledgePreviewData'
 
@@ -36,8 +36,8 @@ const mockAverageOrdersPerDayRawData = () =>
         dateTime: item.x,
     }))
 
-const renderHook = (hook: typeof useGetKnowledgePreviewData) => {
-    return reactRenderHook(hook, {
+const renderHookWithWrapper = (hook: typeof useGetKnowledgePreviewData) => {
+    return renderHook(hook, {
         wrapper: ({ children }) => (
             <Provider store={store}>{children}</Provider>
         ),
@@ -73,7 +73,7 @@ describe('useGetKnowledgePreviewData', () => {
     })
 
     it('should return averageOrders values if correctly returned by query', () => {
-        const { result } = renderHook(() =>
+        const { result } = renderHookWithWrapper(() =>
             useGetKnowledgePreviewData({ shopIntegrationId: 1 }),
         )
 
@@ -85,7 +85,7 @@ describe('useGetKnowledgePreviewData', () => {
             data: undefined,
         } as any)
 
-        const { result } = renderHook(() =>
+        const { result } = renderHookWithWrapper(() =>
             useGetKnowledgePreviewData({ shopIntegrationId: 1 }),
         )
 
@@ -99,7 +99,7 @@ describe('useGetKnowledgePreviewData', () => {
             isError: false,
         })
 
-        const { result } = renderHook(() =>
+        const { result } = renderHookWithWrapper(() =>
             useGetKnowledgePreviewData({ shopIntegrationId: 1 }),
         )
 
@@ -116,7 +116,7 @@ describe('useGetKnowledgePreviewData', () => {
             },
         })
 
-        const { result } = renderHook(() =>
+        const { result } = renderHookWithWrapper(() =>
             useGetKnowledgePreviewData({ shopIntegrationId: 1 }),
         )
 
@@ -133,7 +133,7 @@ describe('useGetKnowledgePreviewData', () => {
             },
         })
 
-        const { result } = renderHook(() =>
+        const { result } = renderHookWithWrapper(() =>
             useGetKnowledgePreviewData({ shopIntegrationId: 1 }),
         )
 

@@ -1,11 +1,12 @@
 import { useKnockClient } from '@knocklabs/react'
 import { waitFor } from '@testing-library/react'
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { submitSetting } from 'state/currentUser/actions'
 import { getLDClient } from 'utils/launchDarkly'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { categories, notifications } from '../../data'
 import useSettings from '../useSettings'

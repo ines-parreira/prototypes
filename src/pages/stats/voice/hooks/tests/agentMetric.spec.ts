@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
 import { fetchMetric, useMetric } from 'hooks/reporting/useMetric'
@@ -20,6 +19,7 @@ import { declinedVoiceCallsCountQueryFactory } from 'models/reporting/queryFacto
 import { StatsFilters } from 'models/stat/types'
 import { formatReportingQueryDate, withFilter } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import {
     fetchAnsweredCallsMetric,

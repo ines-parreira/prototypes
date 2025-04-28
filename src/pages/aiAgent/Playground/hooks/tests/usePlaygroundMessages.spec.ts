@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import { useSubmitPlaygroundTicket } from 'models/aiAgent/queries'
 import {
@@ -11,6 +11,7 @@ import {
     DEFAULT_PLAYGROUND_CUSTOMER,
     PLAYGROUND_CUSTOMER_MOCK,
 } from 'pages/aiAgent/constants'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { playgroundMessageFixture } from '../../../fixtures/playgroundMessages.fixture'
 import { getStoreConfigurationFixture } from '../../../fixtures/storeConfiguration.fixtures'

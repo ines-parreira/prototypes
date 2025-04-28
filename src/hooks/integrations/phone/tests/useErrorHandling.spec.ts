@@ -1,11 +1,10 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
 import { isRecoverableError } from 'hooks/integrations/phone/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
 import { State } from 'state/twilio/voiceDevice'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useErrorHandling } from '../useErrorHandling'
 

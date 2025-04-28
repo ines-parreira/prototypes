@@ -1,5 +1,4 @@
 import { UseQueryResult } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 import { AxiosError } from 'axios'
 
 import {
@@ -9,6 +8,7 @@ import {
 import useAppSelector from 'hooks/useAppSelector'
 import { useListStoreMappings } from 'models/storeMapping/queries'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/useAppSelector')
 jest.mock('models/storeMapping/queries')

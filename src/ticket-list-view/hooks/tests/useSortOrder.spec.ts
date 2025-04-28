@@ -1,6 +1,7 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import useLocalStorage from 'hooks/useLocalStorage'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useSortOrder from '../useSortOrder'
 

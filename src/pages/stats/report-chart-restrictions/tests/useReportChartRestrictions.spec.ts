@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 
 import { UserRole } from 'config/types/user'
@@ -35,6 +34,7 @@ import {
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import { STATS_ROUTES } from 'routes/constants'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('state/currentAccount/selectors')
 jest.mock('state/currentUser/selectors')

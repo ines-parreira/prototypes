@@ -1,7 +1,6 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { useGetWelcomePageAcknowledged } from 'models/aiAgent/queries'
 import { WelcomePageAcknowledgedResponse } from 'models/aiAgent/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useWelcomePageAcknowledged } from '../useWelcomePageAcknowledged'
 

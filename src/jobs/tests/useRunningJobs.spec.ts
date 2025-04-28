@@ -1,9 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { useListJobs } from '@gorgias/api-queries'
 import { JobStatus } from '@gorgias/api-types'
 
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useRunningJobs } from '../useRunningJobs'
 

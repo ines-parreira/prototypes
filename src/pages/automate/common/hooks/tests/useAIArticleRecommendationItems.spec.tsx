@@ -1,13 +1,13 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 
 import { AIArticlesRecommendationFixture } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'
 import { ITEMS_PER_PAGE } from 'pages/stats/convert/constants/campaignPerformanceTable'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useTopQuestionsArticles } from '../../components/TopQuestions/useTopQuestionsArticles'
 import {

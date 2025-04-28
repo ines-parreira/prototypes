@@ -1,5 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import {
     HttpResponse,
     ListSlaPolicies200,
@@ -7,6 +5,7 @@ import {
 } from '@gorgias/api-queries'
 
 import { slaPolicy1, UISLAPolicy1 } from 'pages/settings/SLAs/fixtures/fixtures'
+import { renderHook } from 'utils/testing/renderHook'
 
 import makeUISLAPolicy from '../makeUISLAPolicy'
 import useGetSLAPolicies from '../useGetSLAPolicies'

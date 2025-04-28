@@ -1,11 +1,11 @@
 import React from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureStore from 'redux-mock-store'
 
 import { IntegrationType } from 'models/integration/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import {
     getPhoneNumberFromActiveCustomer,

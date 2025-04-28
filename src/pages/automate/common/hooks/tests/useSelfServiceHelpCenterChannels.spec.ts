@@ -1,9 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { TicketChannel } from 'business/types/ticket'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { HelpCenter } from 'models/helpCenter/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useSelfServiceHelpCenterChannels, {
     SelfServiceHelpCenterChannel,

@@ -1,5 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import * as timeSeriesHooks from 'hooks/reporting/timeSeries'
 import { TicketMeasure } from 'models/reporting/cubes/TicketCube'
 import { ReportingGranularity } from 'models/reporting/types'
@@ -20,6 +18,7 @@ import {
     AccountSettingBusinessHours,
     AccountSettingType,
 } from 'state/currentAccount/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 describe('getAggregatedBusiestTimesOfDayData', () => {
     it('should aggregateDataFromCube', () => {

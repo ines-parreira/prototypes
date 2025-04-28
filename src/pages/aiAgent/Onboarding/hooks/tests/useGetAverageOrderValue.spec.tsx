@@ -1,4 +1,3 @@
-import { renderHook as reactRenderHook } from '@testing-library/react-hooks'
 import { Provider } from 'react-redux'
 
 import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
@@ -6,6 +5,7 @@ import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent
 import { StatsFilters } from 'models/stat/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { assumeMock, mockStore } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useGetAverageOrderValue } from '../useGetAverageOrderValue'
 
@@ -25,8 +25,8 @@ const filters: StatsFilters = {
 jest.mock('hooks/reporting/useMetricPerDimension')
 const mockUseMetricPerDimension = assumeMock(useMetricPerDimension)
 
-const renderHook = (hook: typeof useGetAverageOrderValue) => {
-    return reactRenderHook(() => hook(filters, 'UTC'), {
+const renderHookWithWrapper = (hook: typeof useGetAverageOrderValue) => {
+    return renderHook(() => hook(filters, 'UTC'), {
         wrapper: ({ children }) => (
             <Provider store={store}>{children}</Provider>
         ),
@@ -41,7 +41,7 @@ describe('useGetAverageOrderValue', () => {
             isError: false,
         } as any)
 
-        const { result } = renderHook(() =>
+        const { result } = renderHookWithWrapper(() =>
             useGetAverageOrderValue(filters, 'UTC'),
         )
 
@@ -55,7 +55,7 @@ describe('useGetAverageOrderValue', () => {
             isError: true,
         } as any)
 
-        const { result } = renderHook(() =>
+        const { result } = renderHookWithWrapper(() =>
             useGetAverageOrderValue(filters, 'UTC'),
         )
 
@@ -69,7 +69,7 @@ describe('useGetAverageOrderValue', () => {
             isError: false,
         } as any)
 
-        const { result } = renderHook(() =>
+        const { result } = renderHookWithWrapper(() =>
             useGetAverageOrderValue(filters, 'UTC'),
         )
 
@@ -85,7 +85,7 @@ describe('useGetAverageOrderValue', () => {
             isError: false,
         } as any)
 
-        const { result } = renderHook(() =>
+        const { result } = renderHookWithWrapper(() =>
             useGetAverageOrderValue(filters, 'UTC'),
         )
 
@@ -106,7 +106,7 @@ describe('useGetAverageOrderValue', () => {
             isError: false,
         } as any)
 
-        const { result } = renderHook(() =>
+        const { result } = renderHookWithWrapper(() =>
             useGetAverageOrderValue(filters, 'UTC'),
         )
 

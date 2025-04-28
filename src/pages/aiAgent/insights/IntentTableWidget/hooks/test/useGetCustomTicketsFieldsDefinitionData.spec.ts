@@ -1,10 +1,10 @@
 import { UseQueryResult } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 
 import { AI_MANAGED_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { CustomField } from 'custom-fields/types'
 import { ApiListResponseCursorPagination } from 'models/api/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useGetCustomTicketsFieldsDefinitionData } from '../useGetCustomTicketsFieldsDefinitionData'
 

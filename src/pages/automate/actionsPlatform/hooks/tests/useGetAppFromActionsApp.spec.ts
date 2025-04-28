@@ -1,6 +1,5 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { IntegrationType } from 'models/integration/constants'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { App } from '../../types'
 import useGetAppFromActionsApp from '../useGetAppFromActionsApp'

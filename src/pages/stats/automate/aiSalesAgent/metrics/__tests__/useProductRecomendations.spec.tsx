@@ -1,6 +1,6 @@
 import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
-import { act, renderHook } from '@testing-library/react-hooks/dom'
+import { act } from '@testing-library/react-hooks/dom'
 import { fromJS } from 'immutable'
 import moment from 'moment'
 import { Provider } from 'react-redux'
@@ -30,6 +30,7 @@ import { fetchIntegrationProducts as fetchIntegrationProductsByIds } from 'state
 import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock, mockStore } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import {
     fetchProductRecommendations,

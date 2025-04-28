@@ -1,11 +1,10 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { useGetAiAgentIntegrations } from 'hooks/aiAgent/useGetAiAgentIntegrations'
 import {
     AiAgentStoreConfigurationContextType,
     useAiAgentStoreConfigurationContext,
 } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),

@@ -1,10 +1,11 @@
 import { waitFor } from '@testing-library/react'
-import { act, renderHook } from '@testing-library/react-hooks/dom'
+import { act } from '@testing-library/react-hooks/dom'
 
 import { DEBOUNCE_TIME, RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import LocalForageManager from 'services/localForageManager/localForageManager'
 import { flushPromises } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 const mockSetItem = jest.fn().mockResolvedValue(true)
 const mockObserveTableUnsubscribe = jest.fn()

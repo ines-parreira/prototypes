@@ -1,9 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useUntouchWorkflowGraph from '../useUntouchWorkflowGraph'
 

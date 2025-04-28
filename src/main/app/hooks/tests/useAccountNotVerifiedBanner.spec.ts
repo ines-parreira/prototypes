@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 
 import { AlertBannerTypes, BannerCategories, ContextBanner } from 'AlertBanners'
@@ -6,6 +5,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { resendVerificationEmail } from 'state/currentAccount/actions'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useAccountNotVerifiedBanner } from '../useAccountNotVerifiedBanner'
 

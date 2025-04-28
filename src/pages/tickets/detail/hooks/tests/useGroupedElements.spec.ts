@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { Map } from 'immutable'
 
 import { getActionByName } from 'config/actions'
@@ -9,6 +8,7 @@ import {
     isSuggestionEmpty,
 } from 'pages/tickets/detail/components/RuleSuggestion/RuleSuggestion'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useGroupedElements from '../useGroupedElements'
 import useRuleSuggestionForDemos from '../useRuleSuggestionForDemos'

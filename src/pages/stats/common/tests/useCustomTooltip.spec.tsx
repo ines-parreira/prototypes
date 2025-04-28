@@ -1,5 +1,7 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 import { Chart, TooltipModel } from 'chart.js'
+
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useCustomTooltip } from '../useCustomTooltip'
 

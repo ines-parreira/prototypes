@@ -1,6 +1,5 @@
 import React, { ComponentType } from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
 import _keyBy from 'lodash/keyBy'
 import moment from 'moment/moment'
 import { Provider } from 'react-redux'
@@ -53,6 +52,7 @@ import {
 } from 'pages/stats/common/utils'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
 import { RootState } from 'state/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 const mockStore = configureMockStore([thunk])
 

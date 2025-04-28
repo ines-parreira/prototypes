@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
 import { keyBy as _keyBy } from 'lodash'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -16,6 +15,7 @@ import { isNonRootCategory } from 'state/entities/helpCenter/categories'
 import { initialState as helpCenterInitialState } from 'state/entities/helpCenter/reducer'
 import { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useCategoriesOptions from '../hooks/useCategoriesOptions'
 

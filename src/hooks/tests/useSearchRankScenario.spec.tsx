@@ -1,6 +1,6 @@
 import React, { ComponentType } from 'react'
 
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -16,6 +16,7 @@ import useSearchRankScenario, {
 } from 'hooks/useSearchRankScenario'
 import { SearchEngine } from 'models/search/types'
 import { RootState, StoreDispatch } from 'state/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 jest.mock('common/segment')

@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 
 import {
@@ -36,6 +35,7 @@ import { StatsFilters } from 'models/stat/types'
 import { AUTOMATION_RATE_LABEL } from 'pages/stats/self-service/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 const queryClient = mockQueryClient()
 const timezone = 'UTC'

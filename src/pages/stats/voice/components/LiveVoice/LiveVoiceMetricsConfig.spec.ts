@@ -1,5 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/api-queries'
 
 import { agents } from 'fixtures/agents'
@@ -14,6 +12,7 @@ import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/consta
 import * as constants from 'pages/stats/voice/constants/liveVoice'
 import { VoiceMetric } from 'state/ui/stats/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useAverageTalkTimeMetric } from '../../hooks/agentMetrics'
 import { useVoiceCallCountMetric } from '../../hooks/useVoiceCallCountMetric'

@@ -1,5 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { useSanitizedDashboard } from 'hooks/reporting/dashboards/useSanitizedDashboard'
 import {
     DashboardChartSchema,
@@ -10,6 +8,7 @@ import {
 } from 'pages/stats/dashboards/types'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)

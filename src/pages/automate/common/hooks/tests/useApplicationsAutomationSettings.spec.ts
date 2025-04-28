@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -9,6 +9,7 @@ import { ChatApplicationAutomationSettings } from 'models/chatApplicationAutomat
 import { chatApplicationAutomationSettingsUpdated } from 'state/entities/chatsApplicationAutomationSettings/actions'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useApplicationsAutomationSettings from '../useApplicationsAutomationSettings'
 

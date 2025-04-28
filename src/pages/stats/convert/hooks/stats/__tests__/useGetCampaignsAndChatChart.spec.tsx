@@ -1,5 +1,4 @@
 import { UseQueryResult } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
 import { usePostReporting } from 'models/reporting/queries'
@@ -14,6 +13,7 @@ import { useTicketsPerformanceChart } from 'pages/stats/convert/hooks/stats/useG
 import { getDataFromResult } from 'pages/stats/convert/services/CampaignMetricsHelper'
 import { CampaignGraphData } from 'pages/stats/convert/services/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)

@@ -1,8 +1,9 @@
 import { FormEvent } from 'react'
 
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import { TicketStatus } from 'business/types/ticket'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useForm from '../useForm'
 

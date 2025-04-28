@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { VoiceQueueContext } from '../../components/VoiceQueue/VoiceQueueContext'
 import { useVoiceQueueContext } from '../useVoiceQueueContext'
@@ -29,7 +29,9 @@ describe('useVoiceQueueContext', () => {
             )
         }
 
-        const { result } = renderHook(() => useVoiceQueueContext(), { wrapper })
+        const { result } = renderHook(() => useVoiceQueueContext(), {
+            wrapper,
+        })
 
         expect(result.current).toBe(mockContextValue)
     })

@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 
 import { waitFor } from '@testing-library/react'
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 import { produce } from 'immer'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -24,6 +24,7 @@ import {
     fetchStatStarted,
 } from 'state/ui/stats/fetchingMapSlice'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('state/notifications/actions')
 const notifyMock = notify as jest.Mock

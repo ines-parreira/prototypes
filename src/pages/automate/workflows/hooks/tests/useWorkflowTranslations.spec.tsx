@@ -1,7 +1,7 @@
 import React, { ReactChildren } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 import { strict as assert } from 'assert'
 import { ulid } from 'ulidx'
 
@@ -11,6 +11,7 @@ import {
     useUpsertWorkflowConfigurationTranslations,
 } from 'models/workflows/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { VisualBuilderGraph } from '../../models/visualBuilderGraph.types'
 import {

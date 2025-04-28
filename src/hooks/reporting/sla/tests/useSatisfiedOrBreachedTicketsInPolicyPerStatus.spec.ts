@@ -1,5 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import {
     fetchSatisfiedOrBreachedTicketsInPolicyPerStatusTrend,
     useSatisfiedOrBreachedTicketsInPolicyPerStatus,
@@ -15,6 +13,7 @@ import { satisfiedOrBreachedTicketsQueryFactory } from 'models/reporting/queryFa
 import { StatsFilters } from 'models/stat/types'
 import { getPreviousPeriod } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)

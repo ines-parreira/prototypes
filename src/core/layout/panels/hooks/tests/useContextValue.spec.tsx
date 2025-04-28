@@ -1,7 +1,9 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
+
+import { renderHook } from 'utils/testing/renderHook'
 
 import useContextValue from '../useContextValue'
 

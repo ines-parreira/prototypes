@@ -1,5 +1,4 @@
 import { UseQueryResult } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import moment from 'moment/moment'
 
@@ -22,6 +21,7 @@ import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import { AUTOMATION_RATE_LABEL } from 'pages/stats/self-service/constants'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/reporting/automate/timeSeries')
 const useAutomationDatasetTimeSeriesMock = assumeMock(

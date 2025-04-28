@@ -1,9 +1,9 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useAiAgentNavigation } from '../useAiAgentNavigation'
 

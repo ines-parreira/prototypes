@@ -4,7 +4,7 @@ import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queri
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import React from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook } from 'utils/testing/renderHook'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'

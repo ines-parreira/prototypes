@@ -1,6 +1,6 @@
 import { KeyboardEvent } from 'react'
 
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import { customer } from 'fixtures/customer'
 import { ticket } from 'fixtures/ticket'
@@ -13,6 +13,7 @@ import { ViewType } from 'models/view/types'
 import { searchVoiceCallsWithHighlights } from 'models/voiceCall/resources'
 import { useSearch } from 'pages/common/components/Spotlight/useSearch'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('models/customer/resources')
 const searchCustomersWithHighlightsMock = assumeMock(

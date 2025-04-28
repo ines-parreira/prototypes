@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react'
 
 import { waitFor } from '@testing-library/react'
-import { renderHook } from '@testing-library/react-hooks'
 import { Provider } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
@@ -21,6 +20,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { RuleType } from 'state/rules/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useAiAgentEnabled } from '../useAiAgentEnabled'
 

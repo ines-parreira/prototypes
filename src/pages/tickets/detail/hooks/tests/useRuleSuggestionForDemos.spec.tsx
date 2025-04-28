@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 import LD from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
@@ -17,6 +16,7 @@ import {
 } from 'fixtures/productPrices'
 import * as useLocalStorageImports from 'hooks/useLocalStorage'
 import { AccountSettingType } from 'state/currentAccount/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useRuleSuggestionForDemos from '../useRuleSuggestionForDemos'
 

@@ -1,6 +1,5 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { getLDClient } from 'utils/launchDarkly'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useLaunchDarklyClient from '../useLaunchDarklyClient'
 

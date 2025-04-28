@@ -1,5 +1,6 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS, List, Map } from 'immutable'
+
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useOptions } from '../hooks'
 

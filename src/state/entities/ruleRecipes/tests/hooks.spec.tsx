@@ -1,12 +1,12 @@
 import React, { ReactNode } from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { emptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
 import { fetchRuleRecipes } from 'models/ruleRecipe/resources'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useRuleRecipes } from '../hooks'
 

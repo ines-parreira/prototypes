@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import {
     handoverConfigurationKeys,
@@ -11,6 +11,7 @@ import { HandoverConfigurationData } from 'models/aiAgent/types'
 import { AiAgentChannel } from 'pages/aiAgent/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useAiAgentHandoverConfigurationMutation } from '../useAiAgentHandoverConfigurationMutation'
 

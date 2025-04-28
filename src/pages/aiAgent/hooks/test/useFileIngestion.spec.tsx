@@ -1,13 +1,14 @@
 import React from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import {
     useCreateFileIngestion,
     useDeleteFileIngestion,
     useGetFileIngestion,
 } from 'models/helpCenter/queries'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useFileIngestion } from '../useFileIngestion'
 

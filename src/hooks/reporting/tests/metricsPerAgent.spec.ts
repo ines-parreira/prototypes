@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
 import { TicketChannel } from 'business/types/ticket'
@@ -44,6 +43,7 @@ import { zeroTouchTicketsPerAgentQueryFactory } from 'models/reporting/queryFact
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)

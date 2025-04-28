@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { waitFor } from '@testing-library/react'
-import { renderHook } from '@testing-library/react-hooks'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -10,6 +9,7 @@ import { getCategories } from 'state/entities/helpCenter/categories'
 import { initialState as helpCenterInitialState } from 'state/entities/helpCenter/reducer'
 import { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { getSingleHelpCenterResponseFixture } from '../../fixtures/getHelpCentersResponse.fixture'
 import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'

@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { Map as mockMap } from 'immutable'
 
 import { RequirementType } from '@gorgias/api-queries'
@@ -24,6 +23,7 @@ import {
     getTicketFieldState,
 } from 'state/ticket/selectors'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useTicketFieldsCheck } from '../useTicketFieldsCheck'
 

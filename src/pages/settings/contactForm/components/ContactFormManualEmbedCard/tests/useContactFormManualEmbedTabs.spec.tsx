@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 import LD from 'launchdarkly-react-client-sdk'
 
 import useAppSelector from 'hooks/useAppSelector'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { FeatureFlagKey } from '../../../../../../config/featureFlags'
 import { useContactFormManualEmbedInstructionsCardState } from '../useContactFormManualEmbedTabs'

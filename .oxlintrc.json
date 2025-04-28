@@ -17,6 +17,10 @@
         {
             "files": ["**/*.spec.ts", "**/*.spec.tsx"],
             "rules": { "react/no-unescaped-entities": "off" }
+        },
+        {
+            "files": ["src/utils/testing/renderHook.tsx"],
+            "rules": { "no-restricted-imports": "off" }
         }
     ],
     "plugins": ["import", "jsx-a11y", "react", "react-hooks", "typescript"],
@@ -51,6 +55,11 @@
             "error",
             {
                 "paths": [
+                    {
+                        "importNames": ["renderHook"],
+                        "message": "Import 'renderHook' from 'utils/testing/renderHook' using alias: import { renderHook } from 'utils/testing/renderHook'",
+                        "name": "@testing-library/react-hooks"
+                    },
                     {
                         "importNames": ["useDispatch"],
                         "message": "Please use useAppDispatch from /hooks/useAppDispatch instead.",

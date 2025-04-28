@@ -1,7 +1,6 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { getIngestionLogFixture } from 'pages/aiAgent/fixtures/ingestionLog.fixture'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { IngestionLogStatus } from '../../AiAgentScrapedDomainContent/constant'
 import { useGetStoreDomainIngestionLog } from '../useGetStoreDomainIngestionLog'

@@ -1,8 +1,7 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { THEME_NAME } from '@gorgias/design-tokens'
 
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import type { Theme } from '../types'
 import useApplyTheme from '../useApplyTheme'

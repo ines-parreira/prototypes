@@ -1,5 +1,4 @@
 import { UseQueryResult } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 
 import { VoiceCallMeasure } from 'models/reporting/cubes/VoiceCallCube'
@@ -8,6 +7,7 @@ import { voiceCallCountQueryFactory } from 'models/reporting/queryFactories/voic
 import { StatsFilters } from 'models/stat/types'
 import { formatReportingQueryDate } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useVoiceCallCount } from '../useVoiceCallCount'
 

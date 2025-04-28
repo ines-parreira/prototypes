@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import useCurrentFilters, {
     CURRENT_FILTERS,
@@ -18,6 +18,7 @@ import {
     TagFilterInstanceId,
 } from 'models/stat/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { renderHook } from 'utils/testing/renderHook'
 
 const period = {
     start_datetime: '2019-09-19T00:00:00Z',

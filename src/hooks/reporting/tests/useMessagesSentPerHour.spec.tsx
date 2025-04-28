@@ -1,5 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { User } from 'config/types/user'
 import {
     fetchMessagesSentMetric,
@@ -31,6 +29,7 @@ import {
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/reporting/metrics')
 const useMessagesSentMetricMock = assumeMock(useMessagesSentMetric)

@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 import { useLocation } from 'react-router-dom'
 
@@ -10,6 +9,7 @@ import * as helpers from 'pages/common/components/EmailMigrationBanner/helpers'
 import * as migrationBannerHook from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
 import { getEmailMigrationStatus } from 'state/integrations/selectors'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useEmailMigrationBanner } from '../useEmailMigrationBanner'
 

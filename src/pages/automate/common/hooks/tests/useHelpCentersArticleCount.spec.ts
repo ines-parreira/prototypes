@@ -1,6 +1,5 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useHelpCentersArticleCount } from '../useHelpCentersArticleCount'
 

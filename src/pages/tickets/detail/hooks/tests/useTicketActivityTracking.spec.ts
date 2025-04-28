@@ -1,7 +1,6 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import * as activityTracker from 'services/activityTracker'
 import { ActivityEvents } from 'services/activityTracker'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useTicketActivityTracking from '../useTicketActivityTracking'
 

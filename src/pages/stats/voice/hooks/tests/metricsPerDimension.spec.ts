@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
 import {
@@ -14,6 +13,7 @@ import { declinedVoiceCallsCountPerAgentQueryFactory } from 'models/reporting/qu
 import { StatsFilters } from 'models/stat/types'
 import { formatReportingQueryDate } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import {
     fetchAnsweredCallsMetricPerAgent,

@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 
 import { UserRole } from 'config/types/user'
@@ -14,6 +13,7 @@ import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'
 import { getTeamsMinimalWithEmojiJS } from 'state/teams/selectors'
 import { formatReportingQueryDate } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionWithEnrichmentMock = assumeMock(

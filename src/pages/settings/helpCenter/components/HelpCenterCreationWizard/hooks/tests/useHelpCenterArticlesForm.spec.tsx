@@ -1,7 +1,7 @@
 import 'tests/__mocks__/editionManagerContextMock'
 
 import { waitFor } from '@testing-library/react'
-import { act, renderHook } from '@testing-library/react-hooks/dom'
+import { act } from '@testing-library/react-hooks/dom'
 
 import {
     ArticleTemplateType,
@@ -10,6 +10,7 @@ import {
 import { AIArticlesGroupedFixture } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import { ArticleTemplatesGroupedByCategoryFixture } from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
 import { HelpCenterApiArticlesFixture } from 'pages/settings/helpCenter/fixtures/wizard.fixture'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useHelpCenterArticlesForm } from '../useHelpCenterArticlesForm'
 

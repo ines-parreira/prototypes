@@ -1,6 +1,8 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 import writeText from 'copy-to-clipboard'
 import noop from 'lodash/noop'
+
+import { renderHook } from 'utils/testing/renderHook'
 
 import useCopyToClipboard from '../useCopyToClipboard'
 

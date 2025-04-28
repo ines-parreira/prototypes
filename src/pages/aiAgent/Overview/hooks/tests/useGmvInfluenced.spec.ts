@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks/dom'
 import { mockFlags } from 'jest-launchdarkly-mock'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -7,6 +6,7 @@ import { StatsFilters } from 'models/stat/types'
 import { useGmvInfluenced } from 'pages/aiAgent/Overview/hooks/kpis/useGmvInfluenced'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/reporting/useMetricTrend')
 const useMetricTrendMock = assumeMock(useMetricTrend)

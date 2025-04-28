@@ -1,9 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { campaign, campaignId } from 'fixtures/campaign'
 import { CampaignPreview } from 'models/convert/campaign/types'
 import { ConvertDrillDownRowData } from 'pages/stats/common/drill-down/DrillDownFormatters'
 import { useGetCampaignSalesDrillDownData } from 'pages/stats/convert/hooks/useGetCampaignSalesDrillDownData'
+import { renderHook } from 'utils/testing/renderHook'
 
 describe('useGetCampaignSalesDrillDownData', () => {
     const exampleRow = {

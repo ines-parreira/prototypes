@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks/dom'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useIsFirstRender from '../useIsFirstRender'
 

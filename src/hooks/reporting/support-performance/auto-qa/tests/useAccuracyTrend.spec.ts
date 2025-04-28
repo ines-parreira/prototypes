@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 
 import {
@@ -12,6 +11,7 @@ import { accuracyQueryFactory } from 'models/reporting/queryFactories/auto-qa/ac
 import { StatsFilters } from 'models/stat/types'
 import { formatReportingQueryDate, getPreviousPeriod } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/reporting/useMetricTrend')
 const useMetricTrendMock = assumeMock(useMetricTrend)

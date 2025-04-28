@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
 import { TicketChannel } from 'business/types/ticket'
@@ -34,6 +33,7 @@ import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/consta
 import { defaultStatsFilters } from 'state/stats/statsSlice'
 import { getPreviousPeriod } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 const periodStart = moment()
 const periodEnd = periodStart.add(7, 'days')

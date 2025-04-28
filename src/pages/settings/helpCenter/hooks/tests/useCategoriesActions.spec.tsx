@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
 import { Provider } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
@@ -20,6 +19,7 @@ import {
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
 import { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { HELP_CENTER_ROOT_CATEGORY_ID } from '../../constants'
 import { useCategoriesActions } from '../useCategoriesActions'

@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { BannerCategories } from '../../../types'
 import { STORAGE_CLEAR_TIMEOUT } from '../../constants'

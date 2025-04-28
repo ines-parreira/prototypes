@@ -1,10 +1,9 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { useGetOrCreateOnboardingNotificationState } from 'models/aiAgent/queries'
 import {
     OnboardingNotificationState,
     OnboardingNotificationStateResponse,
 } from 'models/aiAgent/types'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { getOnboardingNotificationStateFixture } from '../../fixtures/onboardingNotificationState.fixture'
 import { useOnboardingNotificationState } from '../useOnboardingNotificationState'

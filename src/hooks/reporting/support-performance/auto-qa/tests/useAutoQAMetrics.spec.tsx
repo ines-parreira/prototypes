@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
 import { Provider } from 'react-redux'
 
 import { agents } from 'fixtures/agents'
@@ -28,6 +27,7 @@ import { ReportingGranularity } from 'models/reporting/types'
 import { initialState } from 'state/stats/statsSlice'
 import { getSortedAutoQAAgents } from 'state/ui/stats/autoQAAgentPerformanceSlice'
 import { assumeMock, mockStore } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock(
     'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsPerAgent',

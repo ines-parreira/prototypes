@@ -1,8 +1,9 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import useOrderBy from 'hooks/useOrderBy'
 import { OrderDirection } from 'models/api/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { VoiceCallTableColumnName } from './constants'
 import useVoiceCallTableOrdering from './useVoiceCallTableOrdering'

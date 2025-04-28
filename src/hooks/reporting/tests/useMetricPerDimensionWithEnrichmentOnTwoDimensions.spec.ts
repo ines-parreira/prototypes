@@ -1,5 +1,4 @@
 import { waitFor } from '@testing-library/react'
-import { renderHook } from '@testing-library/react-hooks'
 
 import { useMetricPerDimensionWithEnrichmentOnTwoDimensions } from 'hooks/reporting/useMetricPerDimension'
 import * as withEnrichment from 'hooks/reporting/withEnrichment'
@@ -9,6 +8,7 @@ import { totalNumberofSalesOpportunityConvFromAIAgentQueryFactory } from 'models
 import { postEnrichedReporting } from 'models/reporting/resources'
 import { EnrichmentFields } from 'models/reporting/types'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('models/reporting/queries')
 

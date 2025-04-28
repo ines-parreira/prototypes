@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
 import { OrderDirection } from 'models/api/types'
@@ -15,6 +14,7 @@ import { StatsFilters } from 'models/stat/types'
 import { VoiceCallDisplayStatus, VoiceCallStatus } from 'models/voiceCall/types'
 import { formatReportingQueryDate } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { CALL_LIST_PAGE_SIZE } from '../../constants/voiceOverview'
 import { VoiceCallStatListItem } from '../../models/types'

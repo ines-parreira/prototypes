@@ -1,9 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { SegmentEvent } from 'common/segment'
 import * as segmentTracker from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import * as ticketActions from 'state/ticket/actions'
+import { renderHook } from 'utils/testing/renderHook'
 
 import usePrevNextTicketNavigation from '../usePrevNextTicketNavigation'
 

@@ -1,4 +1,6 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
+
+import { renderHook } from 'utils/testing/renderHook'
 
 import { EmbedMode } from '../types'
 import { DEFAULT_VALUES, usePageEmbedmentForm } from '../usePageEmbedmentForm'

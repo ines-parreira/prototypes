@@ -1,6 +1,8 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import { CursorPaginationMeta } from '@gorgias/api-queries'
+
+import { renderHook } from 'utils/testing/renderHook'
 
 import TicketUpdatesManager from '../../TicketUpdatesManager'
 import { TicketPartial } from '../../types'

@@ -1,8 +1,7 @@
-import { renderHook } from '@testing-library/react-hooks/dom'
-
 import { useGetAccountConfiguration } from 'models/aiAgent/queries'
 import { useGetViewTicketUpdates } from 'models/view/queries'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useTicketViewData } from '../useTicketViewData'
 

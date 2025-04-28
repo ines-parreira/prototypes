@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
@@ -12,6 +11,7 @@ import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
 import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/utils'
 import { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 const renderUseHasAiAgentMenu = (integrations: IntegrationBase[] = []) => {
     const defaultState = {

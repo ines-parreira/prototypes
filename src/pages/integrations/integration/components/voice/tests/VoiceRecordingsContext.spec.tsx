@@ -1,6 +1,5 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { useVoiceRecordingsContext } from 'pages/common/hooks/useVoiceRecordingsContext'
+import { renderHook } from 'utils/testing/renderHook'
 
 describe('VoiceRecordingsContext', () => {
     it('should provide the correct initial state', () => {

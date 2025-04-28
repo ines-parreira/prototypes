@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react-hooks'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -17,6 +16,7 @@ import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/Perso
 import { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { StoreConfiguration } from '../../../../models/aiAgent/types'
 import { assumeMock } from '../../../../utils/testing'

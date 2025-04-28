@@ -1,5 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 
@@ -13,6 +13,7 @@ import {
 import { DEFAULT_IVR_SETTINGS } from 'models/integration/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../../constants'
 import {

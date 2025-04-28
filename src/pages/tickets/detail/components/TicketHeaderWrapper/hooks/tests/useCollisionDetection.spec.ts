@@ -1,6 +1,5 @@
-import { renderHook } from '@testing-library/react-hooks'
-
 import { useFlag } from 'core/flags'
+import { renderHook } from 'utils/testing/renderHook'
 
 import useCollisionDetection from '../useCollisionDetection'
 import useRealtimePresence from '../useRealtimePresence'

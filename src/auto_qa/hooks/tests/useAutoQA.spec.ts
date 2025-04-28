@@ -1,10 +1,12 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 
 import {
     TicketQAScoreDimensionName,
     useListTicketQaScoreDimensions,
     useUpsertTicketQaScoreDimension,
 } from '@gorgias/api-queries'
+
+import { renderHook } from 'utils/testing/renderHook'
 
 import useAutoQA from '../useAutoQA'
 

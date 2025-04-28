@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { Provider } from 'react-redux'
 
 import { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { mockQueryClientProvider } from './reactQueryTestingUtils'
 

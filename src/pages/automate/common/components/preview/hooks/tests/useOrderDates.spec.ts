@@ -1,5 +1,6 @@
-import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
+
+import { renderHook } from 'utils/testing/renderHook'
 
 import useOrderDates from '../useOrderDates'
 
