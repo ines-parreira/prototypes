@@ -1,8 +1,12 @@
 import { useFormContext } from 'react-hook-form'
 
-import { Box, Label } from '@gorgias/merchant-ui-kit'
-
-import { NewToggleButton } from 'pages/common/forms/NewToggleButton'
+import {
+    SettingsCard,
+    SettingsCardContent,
+    SettingsCardHeader,
+    SettingsCardTitle,
+} from 'pages/common/components/SettingsCard'
+import { SettingsFeatureRow } from 'pages/common/components/SettingsCard/SettingsFeatureRow'
 
 import css from './ConversationStartersSettings.less'
 
@@ -15,37 +19,33 @@ export const ConversationStartersSettings = ({
     const isConversationStartersEnabled = watch('isConversationStartersEnabled')
 
     return (
-        <div className={css.wrapper}>
-            <Box className={css.containerTitle} flexDirection="column">
-                <Box>
-                    <strong className={css.title}>Conversation starters</strong>
-                </Box>
-                <Box>
-                    <p className={css.body}>
-                        Display up to 4 AI-generated conversation starters on
-                        product pages. Starters are high-quality, relevant, and
-                        easy to answer, tailored using your existing knowledge.
-                        Note: This overrides Convert campaigns.
-                    </p>
-                </Box>
-            </Box>
-            <Box className={css.settingsGroup}>
-                <Label className={css.label}>
-                    Enable conversation starters
-                    <NewToggleButton
-                        checked={isConversationStartersEnabled}
-                        isDisabled={!isEnabled}
-                        onChange={() =>
-                            setValue(
-                                'isConversationStartersEnabled',
-                                !isConversationStartersEnabled,
-                                { shouldDirty: true },
-                            )
-                        }
-                        stopPropagation
-                    />
-                </Label>
-            </Box>
-        </div>
+        <SettingsCard className={css.card}>
+            <SettingsCardHeader>
+                <SettingsCardTitle>Conversation starters</SettingsCardTitle>
+                <p>
+                    Display up to 4 AI-generated conversation starters on
+                    product pages. Starters are high-quality, relevant, and easy
+                    to answer, tailored using your existing knowledge. Note:
+                    This overrides Convert campaigns.
+                </p>
+            </SettingsCardHeader>
+            <SettingsCardContent>
+                <SettingsFeatureRow
+                    title="Enable conversation starters"
+                    type="toggle"
+                    isChecked={isConversationStartersEnabled}
+                    isDisabled={!isEnabled}
+                    onChange={() =>
+                        setValue(
+                            'isConversationStartersEnabled',
+                            !isConversationStartersEnabled,
+                            {
+                                shouldDirty: true,
+                            },
+                        )
+                    }
+                />
+            </SettingsCardContent>
+        </SettingsCard>
     )
 }

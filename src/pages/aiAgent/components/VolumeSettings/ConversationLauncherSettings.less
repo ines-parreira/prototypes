@@ -2,106 +2,8 @@
 @import (reference) '~css/typography';
 
 :local {
-    .wrapper {
-        border-radius: 8px;
-        border: 1px solid #ececec;
-        background: var(--Neutral-Grey_0, #fff);
-        box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.04);
+    .card {
         max-width: 680px;
-    }
-
-    .containerTitle {
-        background-color: var(--neutral-grey-1);
-        border: 1px solid rgba(236, 236, 236, 1);
-        border-radius: var(--Border-radius-XL, 12px)
-            var(--Border-radius-XL, 12px) 0px 0px;
-
-        flex: 0 0 auto;
-        height: fit-content;
-        max-height: fit-content;
-        padding: @layout-spacing-s;
-    }
-
-    .title {
-        margin-bottom: @layout-spacing-xxs;
-        font-family: @heading-sub-section-semibold-font-family;
-        font-size: @heading-sub-section-semibold-font-size;
-        letter-spacing: @heading-sub-section-semibold-letter-spacing;
-        line-height: @heading-sub-section-semibold-line-height;
-        font-weight: @heading-sub-section-semibold-font-weight;
-        color: var(--neutral-grey-6);
-    }
-
-    .body {
-        font-family: @body-regular-font-family;
-        font-size: @body-regular-font-size;
-        letter-spacing: @body-regular-letter-spacing;
-        line-height: @body-regular-line-height;
-        font-weight: @body-regular-font-weight;
-        color: var(--neutral-grey-5);
-        margin: 0px;
-    }
-
-    .advancedSettingsGroup {
-        padding: 24px 16px;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-        gap: 8px;
-        align-self: stretch;
-        border-radius: 0px 0px var(--Border-radius-XL, 12px)
-            var(--Border-radius-XL, 12px);
-        background-color: var(--neutral-grey-0);
-        cursor: pointer;
-
-        &.disabled {
-            pointer-events: none;
-            cursor: none;
-            opacity: 1;
-        }
-    }
-
-    .settingsGroup {
-        padding: 24px 16px;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-        gap: 8px;
-        align-self: stretch;
-        border-radius: 0px;
-
-        background-color: var(--neutral-grey-0);
-    }
-
-    .label {
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        gap: @layout-spacing-xs;
-        color: var(--neutral-grey-6);
-        font-weight: @body-regular-font-weight;
-    }
-
-    .separator {
-        background-color: var(--neutral-grey-2);
-    }
-
-    .advancedSettings {
-        display: flex;
-        justify-content: space-between;
-        gap: @layout-spacing-xs;
-        cursor: pointer;
-        font-weight: @body-regular-font-weight;
-
-        .disabled & {
-            cursor: not-allowed;
-        }
-    }
-
-    .forwardIcon {
-        color: var(--main-primary);
-        cursor: pointer;
-        font-size: 20px;
     }
 
     .sidebar {
@@ -121,17 +23,22 @@
         overflow-y: auto;
         cursor: pointer;
 
-        transform: translateX(0%);
-        opacity: 1;
-        transition:
-            transform 0.3s ease-in,
-            opacity 0.3s ease-in;
-    }
-
-    .sidebarHidden {
         transform: translateX(100%);
-        opacity: 0;
-        pointer-events: none;
+        display: none;
+        height: 100%;
+
+        &.slideIn {
+            display: block;
+            :global {
+                animation: slide-in 0.3s ease-in-out forwards;
+            }
+        }
+
+        &.slideOut {
+            :global {
+                animation: slide-out 0.3s ease-in-out forwards;
+            }
+        }
     }
 
     .exitIcon {
@@ -190,30 +97,37 @@
         display: flex;
         gap: @layout-spacing-xs;
     }
+}
 
-    .primary {
-        background-color: var(--main-primary);
-        color: white;
-        padding: 8px 16px;
-        border-radius: 8px;
-        border: none;
-        cursor: pointer;
-        font-weight: 500;
+:global {
+    @keyframes slide-in {
+        0% {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
     }
 
-    .secondary {
-        background-color: transparent;
-        color: var(--neutral-grey-6);
-        padding: 8px 16px;
-        border-radius: 8px;
-        border: 1px solid var(--neutral-grey-3);
-        cursor: pointer;
-        font-weight: 500;
-    }
+    @keyframes slide-out {
+        0% {
+            display: block;
+            transform: translateX(0);
+            opacity: 1;
+        }
 
-    .disabled {
-        pointer-events: none;
-        opacity: 0.4;
-        cursor: not-allowed;
+        99% {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        100% {
+            display: none;
+            transform: translateX(100%);
+            opacity: 0;
+        }
     }
 }

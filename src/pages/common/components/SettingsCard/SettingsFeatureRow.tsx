@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
 import { Badge, IconButton } from '@gorgias/merchant-ui-kit'
@@ -9,7 +10,7 @@ import css from './SettingsFeatureRow.less'
 
 type SettingsFeatureRowProps = {
     title: string
-    description: string
+    description?: string
     badgeText?: string
     nbFeatures?: number
     type?: 'badge' | 'link' | 'toggle'
@@ -33,22 +34,34 @@ export const SettingsFeatureRow = ({
     link = '',
 }: SettingsFeatureRowProps) => {
     return (
-        <div className={css.featureRow} onClick={onClick}>
+        <div
+            className={classNames(css.featureRow, {
+                [css.disabled]: isDisabled,
+            })}
+            onClick={onClick}
+        >
             <div className={css.featureRowContent}>
                 <div>{title}</div>
-                <IconTooltip tooltipProps={{ placement: 'top-start' }}>
-                    {description}
-                </IconTooltip>
+                {!!description && (
+                    <IconTooltip tooltipProps={{ placement: 'top-start' }}>
+                        {description}
+                    </IconTooltip>
+                )}
             </div>
 
             {type === 'badge' && (
                 <div className={css.featureRowActions}>
-                    <Badge
-                        type={nbFeatures > 0 ? 'light-success' : 'light-dark'}
-                    >
-                        {badgeText}
-                    </Badge>
+                    {!!badgeText && (
+                        <Badge
+                            type={
+                                nbFeatures > 0 ? 'light-success' : 'light-dark'
+                            }
+                        >
+                            {badgeText}
+                        </Badge>
+                    )}
                     <IconButton
+                        isDisabled={isDisabled}
                         icon="keyboard_arrow_right"
                         fillStyle="ghost"
                         size="small"
@@ -58,6 +71,7 @@ export const SettingsFeatureRow = ({
             {type === 'link' && (
                 <Link className={css.featureRowActions} to={link}>
                     <IconButton
+                        isDisabled={isDisabled}
                         icon="open_in_new"
                         fillStyle="ghost"
                         size="small"

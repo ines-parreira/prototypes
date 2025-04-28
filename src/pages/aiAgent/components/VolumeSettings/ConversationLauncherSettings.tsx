@@ -3,8 +3,15 @@ import { useEffect, useState } from 'react'
 import classNames from 'classnames'
 import { useFormContext } from 'react-hook-form'
 
-import { Box, Button, Label, Separator } from '@gorgias/merchant-ui-kit'
+import { Box, Button, Label } from '@gorgias/merchant-ui-kit'
 
+import {
+    SettingsCard,
+    SettingsCardContent,
+    SettingsCardHeader,
+    SettingsCardTitle,
+} from 'pages/common/components/SettingsCard'
+import { SettingsFeatureRow } from 'pages/common/components/SettingsCard/SettingsFeatureRow'
 import { NewToggleButton } from 'pages/common/forms/NewToggleButton'
 
 import css from './ConversationLauncherSettings.less'
@@ -36,7 +43,8 @@ export const ConversationLauncherAdvancedSettings = ({
     return (
         <div
             className={classNames(css.sidebar, {
-                [css.sidebarHidden]: !isOpen,
+                [css.slideOut]: !isOpen,
+                [css.slideIn]: isOpen,
             })}
         >
             <Box className={css.sidebarHeader}>
@@ -103,69 +111,41 @@ export const ConversationLauncherSettings = () => {
                 isOpen={isSidebarOpen}
                 onClose={() => setSidebarOpen(false)}
             />
-            <div className={css.wrapper}>
-                <Box className={css.containerTitle} flexDirection="column">
-                    <Box>
-                        <strong className={css.title}>
-                            Conversation Launcher
-                        </strong>
-                    </Box>
-                    <Box>
-                        <p className={css.body}>
-                            Launch interactions that drive sales by XY%. Lorem
-                            ipsum placeholder text for Floating Input, and other
-                            helpful content will go here.
-                        </p>
-                    </Box>
-                </Box>
-                <Box className={css.settingsGroup}>
-                    <Label className={css.label}>
-                        Enable Floating Input
-                        <NewToggleButton
-                            checked={isFloatingInputEnabled}
-                            onChange={() =>
-                                setValue(
-                                    'isFloatingInputEnabled',
-                                    !isFloatingInputEnabled,
-                                    {
-                                        shouldDirty: true,
-                                    },
-                                )
-                            }
-                            stopPropagation
-                        />
-                    </Label>
-                </Box>
-
-                <Separator className={css.separator} />
-
-                <Box
-                    className={classNames(css.advancedSettingsGroup, {
-                        [css.disabled]: !isFloatingInputEnabled,
-                    })}
-                >
-                    <Label
-                        className={classNames(css.advancedSettings, {
-                            [css.disabled]: !isFloatingInputEnabled,
-                        })}
+            <SettingsCard className={css.card}>
+                <SettingsCardHeader>
+                    <SettingsCardTitle>Conversation Launcher</SettingsCardTitle>
+                    <p>
+                        Launch interactions that drive sales by XY%. Lorem ipsum
+                        placeholder text for Floating Input, and other helpful
+                        content will go here.
+                    </p>
+                </SettingsCardHeader>
+                <SettingsCardContent>
+                    <SettingsFeatureRow
+                        title="Enable Floating Input"
+                        type="toggle"
+                        isChecked={isFloatingInputEnabled}
+                        onChange={() =>
+                            setValue(
+                                'isFloatingInputEnabled',
+                                !isFloatingInputEnabled,
+                                {
+                                    shouldDirty: true,
+                                },
+                            )
+                        }
+                    />
+                    <SettingsFeatureRow
+                        title="Advanced settings"
+                        isDisabled={!isFloatingInputEnabled}
                         onClick={
                             isFloatingInputEnabled
                                 ? () => setSidebarOpen(true)
                                 : undefined
                         }
-                    >
-                        Advanced settings
-                        <i
-                            className={classNames(
-                                'material-icons',
-                                css.forwardIcon,
-                            )}
-                        >
-                            keyboard_arrow_right
-                        </i>
-                    </Label>
-                </Box>
-            </div>
+                    />
+                </SettingsCardContent>
+            </SettingsCard>
         </>
     )
 }

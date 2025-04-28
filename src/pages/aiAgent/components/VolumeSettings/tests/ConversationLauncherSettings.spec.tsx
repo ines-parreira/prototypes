@@ -51,7 +51,7 @@ describe('ConversationLauncherSettings', () => {
         fireEvent.click(screen.getByText('Advanced settings'))
 
         const sidebar = container.querySelector('[class*="sidebar"]')
-        expect(sidebar).toHaveClass('sidebarHidden')
+        expect(sidebar).toHaveClass('slideOut')
     })
 
     it('opens Advanced settings when toggle is on', () => {
@@ -72,7 +72,7 @@ describe('ConversationLauncherSettings', () => {
 describe('ConversationLauncherAdvancedSettings', () => {
     const mockOnClose = jest.fn()
 
-    it('renders with hidden class when isOpen is false', () => {
+    it('renders with slide out animation class when isOpen is false', () => {
         const { container } = render(
             <Wrapper>
                 <ConversationLauncherAdvancedSettings
@@ -83,7 +83,7 @@ describe('ConversationLauncherAdvancedSettings', () => {
         )
 
         const sidebar = container.querySelector('[class*="sidebar"]')
-        expect(sidebar).toHaveClass('sidebarHidden')
+        expect(sidebar).toHaveClass('slideOut')
     })
 
     it('renders toggle and buttons when open', () => {

@@ -69,8 +69,11 @@ jest.mock('launchdarkly-react-client-sdk')
 const mockedUseFlags = jest.mocked(useFlags)
 
 const getConversationStartersSwitch = (container: HTMLElement) => {
-    const label = within(container).getByText('Enable conversation starters')
-    return within(label.closest('label')!).getByRole('switch')
+    const rowContent = within(container).getByText(
+        'Enable conversation starters',
+    )
+
+    return within(rowContent.closest('.featureRow')!).getByRole('switch')
 }
 
 const getSaveButton = (result: RenderComponentReturn) =>
@@ -403,7 +406,7 @@ describe('VolumeSettings', () => {
     describe('Conversation Launcher', () => {
         const getFloatingInputSwitch = (container: HTMLElement) => {
             const label = within(container).getByText('Enable Floating Input')
-            return within(label.closest('label')!).getByRole('switch')
+            return within(label.closest('.featureRow')!).getByRole('switch')
         }
 
         it('renders floating input toggle correctly', () => {
@@ -440,7 +443,7 @@ describe('VolumeSettings', () => {
             const result = renderComponent()
             const advancedLabel = result.getByText('Advanced settings')
 
-            expect(advancedLabel.closest('label')).toHaveClass('disabled')
+            expect(advancedLabel.closest('.featureRow')).toHaveClass('disabled')
         })
     })
 })
