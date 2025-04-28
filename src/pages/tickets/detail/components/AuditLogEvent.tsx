@@ -436,13 +436,14 @@ export class AuditLogEventContainer extends Component<Props, State> {
             'split_into_ticket',
             'id',
         ])
+        const splitAfterDays = event.getIn(['data', 'after_days']) ?? 10
 
         let elements = [<ActionName key="action-name">Split</ActionName>]
 
         if (splitIntoTicketId) {
             elements = [
                 <Filler key="ticket-closed-for">
-                    Ticket closed for 10+ days.
+                    {`Ticket closed for ${splitAfterDays}+ days.`}
                 </Filler>,
                 <ActionName key="action-name">
                     New{' '}
