@@ -36,6 +36,13 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
           foo
         </a>
       </div>
+      <div
+        class="customerOptions"
+      >
+        <div>
+          CustomerOptionsDropdown
+        </div>
+      </div>
     </div>
     <div>
       CustomerFields
@@ -100,6 +107,13 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
         >
           foo
         </a>
+      </div>
+      <div
+        class="customerOptions"
+      >
+        <div>
+          CustomerOptionsDropdown
+        </div>
       </div>
     </div>
     <div>

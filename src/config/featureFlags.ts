@@ -121,7 +121,6 @@ export enum FeatureFlagKey {
     RevenueDisableUtmParams = 'revenue-disable-utm-params',
     SendCallsToVoicemailPreference = 'send-calls-to-voicemail-preference',
     SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
-    ShopifyCustomerProfileCreation = 'shopify-customer-profile-creation',
     ShopifyHideActionButtons = 'shopify-widget-hide-action-buttons',
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
     ShopifyInventoryItemScopeBanner = 'shopify-inventory-item-scope-banner',

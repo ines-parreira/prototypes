@@ -15,10 +15,8 @@ import {
     SHOPIFY_INTEGRATION_TYPE,
     SMILE_INTEGRATION_TYPE,
 } from 'constants/integration'
-import { useFlag } from 'core/flags'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import InfobarCustomerInfo from '../InfobarCustomerInfo'
 
@@ -39,8 +37,6 @@ jest.mock('../CustomerOptionsDropdown', () => () => (
     <div>CustomerOptionsDropdown</div>
 ))
 
-const useFlagMock = assumeMock(useFlag)
-
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const store = mockStore({
@@ -59,7 +55,6 @@ const minProps: ComponentProps<typeof InfobarCustomerInfo> = {
 describe('<InfobarCustomerInfo/>', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        useFlagMock.mockReturnValue(false)
     })
 
     it('should not render because there is no passed customer', () => {
@@ -308,20 +303,8 @@ describe('<InfobarCustomerInfo/>', () => {
         expect(screen.getByText('Add app'))
     })
 
-    it('should display the button `Edit Customer` because the flag is on', () => {
-        useFlagMock.mockReturnValue(true)
-        render(
-            <Provider store={store}>
-                <InfobarCustomerInfo {...minProps} />
-            </Provider>,
-        )
-
-        expect(screen.getByText('CustomerOptionsDropdown')).toBeInTheDocument()
-    })
-
     it('should display the button `Sync the customer to Shopify', () => {
         const queryClient = mockQueryClient()
-        useFlagMock.mockReturnValue(true)
         const store = mockStore({
             integrations: fromJS({
                 integrations: [
@@ -371,7 +354,6 @@ describe('<InfobarCustomerInfo/>', () => {
     })
 
     it('should not display the button `Sync the customer to Shopify when there is no shopify integration', () => {
-        useFlagMock.mockReturnValue(true)
         const sources = fromJS({
             ticket: {
                 customer: {
@@ -406,51 +388,6 @@ describe('<InfobarCustomerInfo/>', () => {
             </Provider>,
         )
 
-        expect(screen.queryByText('Sync Profile')).not.toBeInTheDocument()
-    })
-
-    it('should not display the button `Sync the customer to Shopify when flag is off', () => {
-        const store = mockStore({
-            integrations: fromJS({
-                integrations: [
-                    { type: HTTP_INTEGRATION_TYPE },
-                    { type: SHOPIFY_INTEGRATION_TYPE },
-                ],
-            }),
-        })
-        const sources = fromJS({
-            ticket: {
-                customer: {
-                    integrations: {},
-                },
-            },
-        })
-
-        const customer = fromJS({
-            integrations: [],
-        })
-
-        const widgets = fromJS({
-            currentContext: 'ticket',
-            _internal: {
-                drag: { isDragging: false },
-                editedItems: [{ template: {} }],
-                hasFetchedWidgets: true,
-            },
-            items: [],
-        })
-
-        render(
-            <Provider store={store}>
-                <InfobarCustomerInfo
-                    {...minProps}
-                    sources={sources}
-                    widgets={widgets}
-                    customer={customer}
-                    isEditing={false}
-                />{' '}
-            </Provider>,
-        )
         expect(screen.queryByText('Sync Profile')).not.toBeInTheDocument()
     })
 })

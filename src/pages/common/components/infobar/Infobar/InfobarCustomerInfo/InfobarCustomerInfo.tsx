@@ -6,8 +6,6 @@ import { Link } from 'react-router-dom'
 
 import { Separator } from '@gorgias/merchant-ui-kit'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
@@ -79,10 +77,6 @@ const InfobarCustomerInfo = ({
     sources,
     widgets,
 }: OwnProps) => {
-    const shopifyCustomerProfileCreationFeatureEnabled = useFlag(
-        FeatureFlagKey.ShopifyCustomerProfileCreation,
-        false,
-    )
     const dispatch = useAppDispatch()
     const hasIntegrations =
         useAppSelector(
@@ -99,7 +93,6 @@ const InfobarCustomerInfo = ({
     const customerIntegrationsData: Map<any, any> = customer.get('integrations')
 
     const shouldSuggestCustomerProfileShopifySync = useShouldShowProfileSync(
-        shopifyCustomerProfileCreationFeatureEnabled,
         isEditing,
         customerIntegrationsData,
     )
@@ -271,13 +264,11 @@ const InfobarCustomerInfo = ({
                             {getDisplayName(customer)}
                         </Link>
                     </div>
-                    {shopifyCustomerProfileCreationFeatureEnabled && (
-                        <div className={css.customerOptions}>
-                            <CustomerOptionsDropdownButton
-                                activeCustomer={customer}
-                            />
-                        </div>
-                    )}
+                    <div className={css.customerOptions}>
+                        <CustomerOptionsDropdownButton
+                            activeCustomer={customer}
+                        />
+                    </div>
                 </div>
                 <CustomerFields customerId={Number(customer.get('id'))} />
                 <Separator className={css.separator} />

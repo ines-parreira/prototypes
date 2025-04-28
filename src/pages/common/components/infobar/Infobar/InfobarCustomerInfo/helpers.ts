@@ -7,7 +7,6 @@ import { IntegrationType } from 'models/integration/types'
 import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
 
 export function useShouldShowProfileSync(
-    shopifyCustomerProfileCreationFeatureEnabled: boolean,
     isEditing: boolean,
     customerIntegrationsData: Map<string, Map<string, string>>,
 ) {
@@ -23,18 +22,8 @@ export function useShouldShowProfileSync(
     }, [customerIntegrationsData])
 
     return useMemo(() => {
-        return (
-            shopifyCustomerProfileCreationFeatureEnabled &&
-            hasShopifyIntegration &&
-            !hasShopifyIntegrationData &&
-            !isEditing
-        )
-    }, [
-        shopifyCustomerProfileCreationFeatureEnabled,
-        isEditing,
-        hasShopifyIntegration,
-        hasShopifyIntegrationData,
-    ])
+        return hasShopifyIntegration && !hasShopifyIntegrationData && !isEditing
+    }, [isEditing, hasShopifyIntegration, hasShopifyIntegrationData])
 }
 
 export function getPhoneNumberFromActiveCustomer(

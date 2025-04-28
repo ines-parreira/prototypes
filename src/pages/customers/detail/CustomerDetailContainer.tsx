@@ -5,14 +5,11 @@ import { connect, ConnectedProps } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import { TicketChannel } from 'business/types/ticket'
-import { FeatureFlagKey } from 'config/featureFlags'
-import useFlag from 'core/flags/hooks/useFlag'
 import useAppSelector from 'hooks/useAppSelector'
 import { RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import { Customer } from 'models/customer/types'
 import { PickedCustomer, pickedCustomerFields } from 'models/search/types'
-import Button from 'pages/common/components/button/Button'
 import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import Modal from 'pages/common/components/modal/Modal'
@@ -47,9 +44,6 @@ export const CustomerDetailContainer = ({
     const customerId = useMemo(() => params.customerId || '', [params])
     const { setRecentItem } = useRecentItems<PickedCustomer>(
         RecentItems.Customers,
-    )
-    const shopifyCustomerProfileCreationFeatureEnabled = useFlag(
-        FeatureFlagKey.ShopifyCustomerProfileCreation,
     )
 
     useEffect(() => {
@@ -105,11 +99,6 @@ export const CustomerDetailContainer = ({
                         buttonProps={{ intent: 'secondary' }}
                         to={createTicketOptions}
                     />
-                    {!shopifyCustomerProfileCreationFeatureEnabled && (
-                        <Button onClick={() => setIsCustomerFormOpen(true)}>
-                            Edit customer
-                        </Button>
-                    )}
                 </div>
             </div>
             <Timeline />

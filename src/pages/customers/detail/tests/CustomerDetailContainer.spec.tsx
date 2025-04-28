@@ -1,7 +1,6 @@
 import React, { ComponentProps } from 'react'
 
 import { waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { createBrowserHistory } from 'history'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -159,27 +158,6 @@ describe('<CustomerDetailContainer />', () => {
                 }),
             ),
         )
-    })
-
-    it('should open modal to update customer', () => {
-        const activeCustomer = fromJS({
-            id: 1,
-        })
-        const { getByText } = renderWithRouter(
-            <Provider store={store}>
-                <CustomerDetailContainer
-                    {...minProps}
-                    activeCustomer={activeCustomer}
-                />
-            </Provider>,
-            {
-                path: '/foo/:customerId?',
-                route: '/foo/1',
-            },
-        )
-
-        userEvent.click(getByText(/Edit customer/))
-        expect(getByText(/Update customer: /i)).toBeTruthy()
     })
 
     it('should call setRecentItems on mount', () => {
