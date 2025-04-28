@@ -106,6 +106,7 @@ describe('VolumeSettings', () => {
 
         mockedUseFlags.mockReturnValue({
             [FeatureFlagKey.ConversationStarters]: true,
+            [FeatureFlagKey.ConvertFloatingChatInput]: true,
         })
 
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -299,6 +300,7 @@ describe('VolumeSettings', () => {
         it('should still trigger Unsaved Changes modal even when toggle is visually disabled', async () => {
             mockedUseFlags.mockReturnValue({
                 [FeatureFlagKey.ConversationStarters]: false,
+                [FeatureFlagKey.ConvertFloatingChatInput]: false,
             })
 
             const result = renderComponent()
@@ -327,6 +329,7 @@ describe('VolumeSettings', () => {
         it('should enable toggle when feature flag is enabled', async () => {
             mockedUseFlags.mockReturnValue({
                 [FeatureFlagKey.ConversationStarters]: true,
+                [FeatureFlagKey.ConvertFloatingChatInput]: true,
             })
 
             const result = renderComponent()
@@ -346,6 +349,19 @@ describe('VolumeSettings', () => {
             await waitFor(() => {
                 getModal(result)
             })
+        })
+
+        it('Should not render Floating Input settings when ConvertFloatingChatInput flag is disabled', () => {
+            mockedUseFlags.mockReturnValue({
+                [FeatureFlagKey.ConversationStarters]: false,
+                [FeatureFlagKey.ConvertFloatingChatInput]: false,
+            })
+
+            const result = renderComponent()
+
+            expect(
+                result.queryByText('Enable Floating Input'),
+            ).not.toBeInTheDocument()
         })
     })
 

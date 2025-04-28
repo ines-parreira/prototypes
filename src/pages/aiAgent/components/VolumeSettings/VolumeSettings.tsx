@@ -38,6 +38,9 @@ export const VolumeSettings = () => {
     const isConversationStartersFeatureEnabled =
         flags[FeatureFlagKey.ConversationStarters]
 
+    const isConvertFloatingChatInputFeatureEnabled =
+        flags[FeatureFlagKey.ConvertFloatingChatInput]
+
     const methods = useForm<SalesVolumeData>({
         values: {
             isConversationStartersEnabled:
@@ -114,7 +117,9 @@ export const VolumeSettings = () => {
                         <ConversationStartersSettings
                             isEnabled={isConversationStartersFeatureEnabled}
                         />
-                        <ConversationLauncherSettings />
+                        {isConvertFloatingChatInputFeatureEnabled && (
+                            <ConversationLauncherSettings />
+                        )}
                         <Box className={css.saveButtonWrapper}>
                             <Button
                                 isDisabled={!isDirty || isSubmitting}

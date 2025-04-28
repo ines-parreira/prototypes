@@ -140,6 +140,7 @@ export enum FeatureFlagKey {
     UseWrapUpTime = 'use-wrap-up-time',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
     ConversationStarters = 'conversation-starters',
+    ConvertFloatingChatInput = 'convert-floating-chat-input',
     EnableCustomerSatisfactionQaFiltersInViews = 'linear.project_csat-qa-filters-in-views.enable_filters',
     RevampNavBarUi = 'linear.project_revamp-navbar-ia-and-components-to-establish-modern-and-scalable-ui.ui-update',
 }
