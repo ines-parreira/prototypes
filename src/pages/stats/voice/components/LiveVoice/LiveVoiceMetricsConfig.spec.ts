@@ -5,7 +5,10 @@ import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/api-queries'
 import { agents } from 'fixtures/agents'
 import { useMetric } from 'hooks/reporting/useMetric'
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
-import { voiceCallAverageWaitTimeQueryFactory } from 'models/reporting/queryFactories/voice/voiceCall'
+import {
+    voiceCallAverageWaitTimeQueryFactory,
+    voiceCallCountQueryFactory,
+} from 'models/reporting/queryFactories/voice/voiceCall'
 import { StatsFilters } from 'models/stat/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import * as constants from 'pages/stats/voice/constants/liveVoice'
@@ -174,6 +177,11 @@ describe('LiveVoiceMetricsConfig', () => {
             metricName: VoiceMetric.QueueInboundMissedCalls,
             size: 4,
             filteringSegment: VoiceCallSegment.inboundMissedCalls,
+            totalCallsQueryFactory: voiceCallCountQueryFactory(
+                filters,
+                timezone,
+                VoiceCallSegment.inboundCalls,
+            ),
         },
         {
             index: 7,
@@ -182,6 +190,11 @@ describe('LiveVoiceMetricsConfig', () => {
             metricName: VoiceMetric.QueueInboundAbandonedCalls,
             size: 4,
             filteringSegment: VoiceCallSegment.inboundAbandonedCalls,
+            totalCallsQueryFactory: voiceCallCountQueryFactory(
+                filters,
+                timezone,
+                VoiceCallSegment.inboundCalls,
+            ),
         },
     ])(
         'should return correct voice call count metric',

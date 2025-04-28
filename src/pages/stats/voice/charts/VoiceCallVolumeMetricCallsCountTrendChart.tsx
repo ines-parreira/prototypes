@@ -12,6 +12,7 @@ type CallsCountDashboardChartProps = DashboardChartProps & {
     hint: string
     segment: VoiceCallSegment
     hideWithAgentsFilter?: boolean
+    multiFormat?: boolean
 }
 
 export const VoiceCallVolumeMetricCallsCountTrendChart = ({
@@ -20,6 +21,7 @@ export const VoiceCallVolumeMetricCallsCountTrendChart = ({
     title,
     hint,
     segment,
+    multiFormat,
     hideWithAgentsFilter = false,
 }: CallsCountDashboardChartProps) => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
@@ -42,6 +44,7 @@ export const VoiceCallVolumeMetricCallsCountTrendChart = ({
             userTimezone={userTimezone}
             chartId={chartId}
             dashboard={dashboard}
+            multiFormat={multiFormat}
         />
     )
 }
@@ -52,6 +55,7 @@ type CallsCountDashboardChartFullProps = DashboardChartProps & {
     segment: VoiceCallSegment
     statsFilters: StatsFilters
     userTimezone: string
+    multiFormat?: boolean
 }
 
 const VoiceCallVolumeMetricCallsCountTrendChartFull = ({
@@ -62,6 +66,7 @@ const VoiceCallVolumeMetricCallsCountTrendChartFull = ({
     segment,
     statsFilters,
     userTimezone,
+    multiFormat,
 }: CallsCountDashboardChartFullProps) => {
     const callsCountTrend = useVoiceCallCountTrend(
         statsFilters,
@@ -78,6 +83,7 @@ const VoiceCallVolumeMetricCallsCountTrendChartFull = ({
             chartId={chartId}
             dashboard={dashboard}
             moreIsBetter={false}
+            multiFormat={multiFormat}
         />
     )
 }

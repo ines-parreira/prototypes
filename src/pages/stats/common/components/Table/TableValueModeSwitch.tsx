@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import { ComponentProps, useRef } from 'react'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
@@ -13,9 +13,11 @@ export const PERCENTAGE_LABEL = '%'
 export const TableValueModeSwitch = ({
     toggleValueMode,
     valueMode,
+    size = 'small',
 }: {
     toggleValueMode: () => void
     valueMode: ValueMode
+    size?: ComponentProps<typeof ToggleButton.Wrapper>['size']
 }) => {
     const totalCountRef = useRef(null)
     const percentageRef = useRef(null)
@@ -24,7 +26,7 @@ export const TableValueModeSwitch = ({
             type={ToggleButton.Type.Label}
             value={valueMode}
             onChange={toggleValueMode}
-            size={'small'}
+            size={size}
         >
             <ToggleButton.Option value={ValueMode.TotalCount}>
                 <span ref={totalCountRef}>{TOTAL_COUNT_LABEL}</span>

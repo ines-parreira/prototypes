@@ -4,7 +4,10 @@ import { LiveCallQueueVoiceCall } from '@gorgias/api-queries'
 
 import { useMetric } from 'hooks/reporting/useMetric'
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
-import { voiceCallAverageWaitTimeQueryFactory } from 'models/reporting/queryFactories/voice/voiceCall'
+import {
+    voiceCallAverageWaitTimeQueryFactory,
+    voiceCallCountQueryFactory,
+} from 'models/reporting/queryFactories/voice/voiceCall'
 import { StatsFilters } from 'models/stat/types'
 import { isFilterEmpty } from 'pages/stats/utils'
 import * as constants from 'pages/stats/voice/constants/liveVoice'
@@ -80,6 +83,12 @@ export const getLiveVoiceMetricCards = (
             true,
         )
 
+    const totalInboundCallsQueryFactory = voiceCallCountQueryFactory(
+        filters,
+        timezone,
+        VoiceCallSegment.inboundCalls,
+    )
+
     return [
         {
             title: constants.CALLS_IN_QUEUE_METRIC_TITLE,
@@ -129,6 +138,8 @@ export const getLiveVoiceMetricCards = (
             hint: constants.INBOUND_MISSED_CALLS_METRIC_HINT,
             fetchData: useLiveInboundMissedCallsCountMetric,
             metricName: VoiceMetric.QueueInboundMissedCalls,
+            showPercentage: true,
+            totalCallsQueryFactory: totalInboundCallsQueryFactory,
             size: 4,
         },
         {
@@ -137,6 +148,8 @@ export const getLiveVoiceMetricCards = (
             fetchData: useLiveInboundAbandonedCallsCountMetric,
             metricName: VoiceMetric.QueueInboundAbandonedCalls,
             shouldHide: isFilteringByAgent,
+            showPercentage: true,
+            totalCallsQueryFactory: totalInboundCallsQueryFactory,
             size: 4,
         },
     ]

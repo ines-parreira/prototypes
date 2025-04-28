@@ -14,7 +14,7 @@ type ToggleButtonContextType = {
     type?: Type
     onChange?: (value: any) => void
     className?: string
-    size?: 'medium' | 'small'
+    size?: 'medium' | 'small' | 'extraSmall'
 }
 
 const ToggleButtonContext = createContext<ToggleButtonContextType>({})

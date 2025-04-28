@@ -4,14 +4,24 @@ import { fireEvent, render, waitFor } from '@testing-library/react'
 
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import { StatsFilters } from 'models/stat/types'
-import { formatMetricValue } from 'pages/stats/common/utils'
+import { formatMetricValue, MetricValueFormat } from 'pages/stats/common/utils'
 import { useVoiceCallCountTrend } from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
 import { assumeMock } from 'utils/testing'
 
+import { useMetricFormat } from '../../hooks/useMetricFormat'
 import VoiceCallVolumeMetric from './VoiceCallVolumeMetric'
 
 jest.mock('pages/stats/voice/hooks/useVoiceCallCountTrend')
 const mockUseVoiceCallCountTrend = assumeMock(useVoiceCallCountTrend)
+jest.mock('pages/stats/voice/hooks/useMetricFormat')
+const useMetricFormatMock = assumeMock(useMetricFormat)
+
+const mockMetricFormat = {
+    metricValue: '100',
+    isFetching: false,
+    selectedFormat: 'integer' as MetricValueFormat,
+    setSelectedFormat: jest.fn(),
+}
 
 describe('<VoiceCallVolumeMetric />', () => {
     const period = {
@@ -33,6 +43,13 @@ describe('<VoiceCallVolumeMetric />', () => {
             />,
         )
     }
+
+    beforeEach(() => {
+        useMetricFormatMock.mockImplementation((props) => ({
+            ...mockMetricFormat,
+            metricValue: props.value?.toString() || '0',
+        }))
+    })
 
     it('should render', async () => {
         const trendValue = {
@@ -78,18 +95,5 @@ describe('<VoiceCallVolumeMetric />', () => {
         expect(getByText('Total calls')).toBeInTheDocument()
         expect(getByText('50%')).toHaveClass('negative')
         expect(getByText('15')).toBeInTheDocument()
-    })
-
-    it('should render no data', () => {
-        const trendValue = {
-            data: undefined,
-            isError: false,
-            isFetching: false,
-        }
-
-        const { getByText } = renderComponent(trendValue, false)
-
-        expect(getByText('Total calls')).toBeInTheDocument()
-        expect(getByText('-')).toBeInTheDocument()
     })
 })

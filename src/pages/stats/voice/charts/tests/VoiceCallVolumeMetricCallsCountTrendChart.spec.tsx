@@ -62,10 +62,12 @@ describe('VoiceCallVolumeMetricCallsCountTrendChart', () => {
                 agents: withDefaultLogicalOperator([agents[0].id]),
             },
             hideWithAgentsFilter: false,
+            multiFormat: false,
         },
         {
             additionalFilters: {},
             hideWithAgentsFilter: false,
+            multiFormat: true,
         },
         {
             additionalFilters: {},
@@ -73,7 +75,7 @@ describe('VoiceCallVolumeMetricCallsCountTrendChart', () => {
         },
     ])(
         'should render and pass correct props',
-        ({ additionalFilters, hideWithAgentsFilter }) => {
+        ({ additionalFilters, hideWithAgentsFilter, multiFormat }) => {
             const metricTrend = {
                 data: { prevValue: 10, value: 15 },
                 isFetching: false,
@@ -102,6 +104,7 @@ describe('VoiceCallVolumeMetricCallsCountTrendChart', () => {
                     hint="Metric Hint"
                     segment={VoiceCallSegment.inboundUnansweredCalls}
                     hideWithAgentsFilter={hideWithAgentsFilter}
+                    multiFormat={multiFormat}
                 />,
             )
 
@@ -117,6 +120,7 @@ describe('VoiceCallVolumeMetricCallsCountTrendChart', () => {
                     chartId: 'test-chart-id',
                     dashboard,
                     moreIsBetter: false,
+                    multiFormat,
                 },
                 {},
             )
