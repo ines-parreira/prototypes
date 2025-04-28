@@ -109,6 +109,7 @@ export const PRODUCT_SUBSCRIPTION_DESCRIPTION: ProductSubscriptionDescriptions =
                 'Lower ticket volume, resolution time, and stress',
                 'Choose a plan based on your usage',
                 'Change plans or cancel at any time',
+                'Increase conversion and drive more revenue',
             ],
         },
         [ProductType.Voice]: {},

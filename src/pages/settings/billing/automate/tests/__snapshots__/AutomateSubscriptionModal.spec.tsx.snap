@@ -127,6 +127,18 @@ exports[`<AutomateSubscriptionModal /> should render for customers already with 
                         Change plans or cancel at any time
                       </div>
                     </div>
+                    <div
+                      class="feature"
+                    >
+                      <i
+                        class="material-icons rounded"
+                      >
+                        check
+                      </i>
+                      <div>
+                        Increase conversion and drive more revenue
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div
@@ -442,6 +454,18 @@ exports[`<AutomateSubscriptionModal /> should render the modal 1`] = `
                       </i>
                       <div>
                         Change plans or cancel at any time
+                      </div>
+                    </div>
+                    <div
+                      class="feature"
+                    >
+                      <i
+                        class="material-icons rounded"
+                      >
+                        check
+                      </i>
+                      <div>
+                        Increase conversion and drive more revenue
                       </div>
                     </div>
                   </div>
