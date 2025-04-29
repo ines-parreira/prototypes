@@ -17,6 +17,7 @@ import BusinessHours from 'pages/settings/businessHours/BusinessHours'
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import SatisfactionSurveyView from 'pages/settings/satisfactionSurveys/SatisfactionSurveyView'
 import SidebarSettings from 'pages/settings/sidebar/SidebarSettings'
+import StoreManagement from 'pages/settings/storeManagement/StoreManagement'
 import ManageTags from 'pages/settings/tags/ManageTags'
 import TicketAssignment from 'pages/settings/ticketAssignment/TicketAssignment'
 import PasswordAnd2FA from 'pages/settings/yourProfile/PasswordAnd2FA'
@@ -212,6 +213,11 @@ export function SettingRoutes() {
                 <Route path={`${path}/order-management/:shopType?/:shopName?`}>
                     {renderAppSettings(PaywalledOrderManagement, {
                         roleParams: [AGENT_ROLE],
+                    })}
+                </Route>
+                <Route path={`${path}/store-management`}>
+                    {renderAppSettings(StoreManagement, {
+                        roleParams: [ADMIN_ROLE, PageSection.StoreManagement],
                     })}
                 </Route>
                 <Route path={`${path}/satisfaction-surveys`} exact>

@@ -55,6 +55,9 @@ export const roleRestrictionConfigs: Record<
     [PageSection.SidebarSettings]: {
         pageHeader: SectionPageHeader.SidebarSettings,
     },
+    [PageSection.StoreManagement]: {
+        pageHeader: SectionPageHeader.StoreManagement,
+    },
     [PageSection.SLAPolicies]: { pageHeader: SectionPageHeader.SLAPolicies },
     [PageSection.Teams]: { pageHeader: SectionPageHeader.Teams },
     [PageSection.TicketAssignment]: {

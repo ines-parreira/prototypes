@@ -21,6 +21,7 @@ export enum PageSection {
     Rules = 'rules',
     SatisfactionSurveys = 'satisfaction-surveys',
     SelfService = 'self-service',
+    StoreManagement = 'store-management',
     SidebarSettings = 'sidebar-settings',
     SLAPolicies = 'sla-policies',
     Teams = 'teams',
@@ -61,4 +62,5 @@ export enum SectionPageHeader {
     TicketFields = 'Ticket fields',
     TwilioSubaccountStatus = 'Twilio Subaccount Status',
     Users = 'Users',
+    StoreManagement = 'Store Management',
 }

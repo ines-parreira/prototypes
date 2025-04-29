@@ -227,6 +227,12 @@ export const NavbarConfig: Category[] = [
         icon: 'business_center',
         links: [
             {
+                requiredFeatureFlags: [FeatureFlagKey.MultiStore],
+                requiredRole: ADMIN_ROLE,
+                to: 'store-management',
+                text: 'Store Management',
+            },
+            {
                 requiredRole: ADMIN_ROLE,
                 to: 'sidebar',
                 text: 'Sidebar',
