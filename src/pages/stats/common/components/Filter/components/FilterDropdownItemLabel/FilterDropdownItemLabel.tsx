@@ -63,7 +63,7 @@ const FilterDropdownItemLabel = ({ label, icon }: Props) => {
             ) : null}
             <div
                 ref={ref}
-                className={classnames(showTooltip && css.rtlOption)}
+                className={classnames(css.label, showTooltip && css.rtlOption)}
                 dangerouslySetInnerHTML={{
                     __html: highlightedLabel,
                 }}
