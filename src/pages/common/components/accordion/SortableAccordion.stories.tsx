@@ -2,8 +2,9 @@ import React, { ComponentProps, useState } from 'react'
 
 import { Meta, Story } from '@storybook/react'
 import { createDragDropManager } from 'dnd-core'
-import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
+
+import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import AccordionBody from './AccordionBody'
 import SortableAccordion from './SortableAccordion'

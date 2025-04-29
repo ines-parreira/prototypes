@@ -5,7 +5,6 @@ import { screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import LD from 'launchdarkly-react-client-sdk'
-import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -31,6 +30,7 @@ import { getHasAutomate } from 'state/billing/selectors'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
+import { DndProvider } from 'utils/wrappers/DndProvider'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

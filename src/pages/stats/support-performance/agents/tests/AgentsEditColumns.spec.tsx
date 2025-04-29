@@ -2,7 +2,6 @@ import React from 'react'
 
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { createDragDropManager } from 'dnd-core'
-import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -23,6 +22,7 @@ import * as currentAccount from 'state/currentAccount/actions'
 import { RootState, StoreDispatch } from 'state/types'
 import { AgentsTableColumn, AgentsTableRow } from 'state/ui/stats/types'
 import { assumeMock } from 'utils/testing'
+import { DndProvider } from 'utils/wrappers/DndProvider'
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 

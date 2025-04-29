@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
-import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Provider as ReduxProvider } from 'react-redux'
 import { DeepPartial } from 'redux'
@@ -21,6 +20,7 @@ import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/ge
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { isNonRootCategory } from 'state/entities/helpCenter/categories'
 import { RootState, StoreDispatch } from 'state/types'
+import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import { CategoriesTableRow } from '../CategoriesTableRow'
 

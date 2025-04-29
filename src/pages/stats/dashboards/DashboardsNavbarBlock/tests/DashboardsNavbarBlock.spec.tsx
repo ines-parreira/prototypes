@@ -2,7 +2,6 @@ import React from 'react'
 
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -20,6 +19,7 @@ import { BASE_STATS_PATH, STATS_ROUTES } from 'routes/constants'
 import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
 import { isTeamLead } from 'utils'
 import { assumeMock } from 'utils/testing'
+import { DndProvider } from 'utils/wrappers/DndProvider'
 
 jest.mock('hooks/reporting/dashboards/useDashboardActions')
 

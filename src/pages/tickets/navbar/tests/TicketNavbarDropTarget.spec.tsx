@@ -1,8 +1,10 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
-import { DndProvider, useDrag } from 'react-dnd'
+import { useDrag } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
+
+import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import TicketNavbarDropTarget, {
     TicketNavbarDropDirection,

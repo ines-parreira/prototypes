@@ -21,7 +21,8 @@
         {
             "files": [
                 "src/utils/testing/renderHook.tsx",
-                "src/utils/wrappers/DateRangePicker.tsx"
+                "src/utils/wrappers/DateRangePicker.tsx",
+                "src/utils/wrappers/DndProvider.tsx"
             ],
             "rules": { "no-restricted-imports": "off" }
         }
@@ -67,6 +68,11 @@
                         ],
                         "message": "Please use DateRangePicker from /utils/wrappers/DateRangePicker instead.",
                         "name": "react-bootstrap-daterangepicker"
+                    },
+                    {
+                        "importNames": ["DndProvider"],
+                        "message": "Please use the wrapper component from 'utils/wrappers/DndProvider' instead.",
+                        "name": "react-dnd"
                     },
                     {
                         "importNames": ["renderHook"],

@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { screen } from '@testing-library/react'
-import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -18,6 +17,7 @@ import { SearchContextProvider } from 'pages/settings/helpCenter/providers/Searc
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
+import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import { CategoriesViews } from '../CategoriesView'
 

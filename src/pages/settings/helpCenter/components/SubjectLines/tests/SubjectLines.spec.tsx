@@ -2,7 +2,6 @@ import React, { FC } from 'react'
 
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -17,6 +16,7 @@ import { initialState as categoriesState } from 'state/entities/helpCenter/categ
 import { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 import { renderWithRouter } from 'utils/testing'
+import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import SubjectLines from '../SubjectLines'
 

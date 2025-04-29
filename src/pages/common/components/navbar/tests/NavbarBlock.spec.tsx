@@ -1,10 +1,10 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
-import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import { ViewCategoryNavbar, ViewVisibility } from 'models/view/types'
+import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import NavbarBlock from '../NavbarBlock'
 

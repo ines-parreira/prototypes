@@ -50,6 +50,11 @@
                         "name": "react-bootstrap-daterangepicker",
                         "importNames": ["DateRangePicker", "default", "Props", "EventHandler"],
                         "message": "Please use DateRangePicker from /utils/wrappers/DateRangePicker instead."
+                    },
+                    {
+                        "name": "react-dnd",
+                        "importNames": ["DndProvider"],
+                        "message": "Please use the wrapper component from 'utils/wrappers/DndProvider' instead."
                     }
                 ]
             }
@@ -96,7 +101,7 @@
             }
         },
         {
-            "files": ["src/utils/testing/renderHook.tsx", "src/utils/wrappers/DateRangePicker.tsx"],
+            "files": ["src/utils/testing/renderHook.tsx", "src/utils/wrappers/DateRangePicker.tsx", "src/utils/wrappers/DndProvider.tsx"],
             "rules": {
                 "no-restricted-imports": "off"
             }

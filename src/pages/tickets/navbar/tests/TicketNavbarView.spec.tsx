@@ -2,7 +2,6 @@ import React, { ComponentProps } from 'react'
 
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Provider } from 'react-redux'
 
@@ -14,6 +13,7 @@ import { View } from 'models/view/types'
 import ViewCount from 'pages/common/components/ViewCount/ViewCount'
 import ViewName from 'pages/common/components/ViewName/ViewName'
 import { mockStore } from 'utils/testing'
+import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import TicketNavbarView from '../TicketNavbarView'
 

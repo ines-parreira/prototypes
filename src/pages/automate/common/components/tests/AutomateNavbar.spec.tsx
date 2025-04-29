@@ -4,7 +4,6 @@ import type { ReactNode } from 'react'
 import { render, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
-import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Provider } from 'react-redux'
 import { StaticRouter } from 'react-router-dom'
@@ -22,6 +21,7 @@ import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfig
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import { RootState } from 'state/types'
 import { assumeMock } from 'utils/testing'
+import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import AutomateNavbar from '../AutomateNavbar'
 

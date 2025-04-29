@@ -1,11 +1,11 @@
 import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
-import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import { OBJECT_TYPE_SETTINGS, OBJECT_TYPES } from 'custom-fields/constants'
 import { ticketDropdownFieldDefinition } from 'fixtures/customField'
+import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import DropdownInputRow from '../DropdownInputRow'
 

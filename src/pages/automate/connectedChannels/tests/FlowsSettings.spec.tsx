@@ -3,13 +3,13 @@ import React from 'react'
 
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { createDragDropManager } from 'dnd-core'
-import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { act } from 'react-dom/test-utils'
 import { MemoryRouter } from 'react-router-dom'
 
 import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import { FlowsSettings } from '../components/FlowsSettings'
 

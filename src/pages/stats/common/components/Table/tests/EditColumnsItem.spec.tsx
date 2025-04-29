@@ -2,10 +2,10 @@ import React, { ComponentProps } from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 import { createDragDropManager } from 'dnd-core'
-import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import { EditColumnsItem } from 'pages/stats/common/components/Table/EditColumnsItem'
+import { DndProvider } from 'utils/wrappers/DndProvider'
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 

@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import { useGetAnalyticsCustomReport } from '@gorgias/api-queries'
@@ -22,6 +21,7 @@ import { OverviewMetric } from 'pages/stats/support-performance/overview/Support
 import { RootState } from 'state/types'
 import { initialState } from 'state/ui/stats/filtersSlice'
 import { assumeMock, renderWithStore } from 'utils/testing'
+import { DndProvider } from 'utils/wrappers/DndProvider'
 
 jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),
