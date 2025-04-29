@@ -6,7 +6,10 @@ import {
 } from 'hooks/reporting/automate/types'
 import { transformIntentName } from 'hooks/reporting/automate/utils'
 import { MergedRecord } from 'hooks/reporting/withEnrichment'
-import { AiSalesAgentOrdersDimension } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
+import {
+    AiSalesAgentOrdersDimension,
+    AiSalesAgentOrdersMeasure,
+} from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { TicketSatisfactionSurveyDimension } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import { VoiceCallDimension } from 'models/reporting/cubes/VoiceCallCube'
 import { EnrichmentFields } from 'models/reporting/types'
@@ -168,7 +171,7 @@ export const formatTicketDrillDownRowData = ({
         intent: intent,
         order: {
             id: row[AiSalesAgentOrdersDimension.OrderId],
-            amount: row[AiSalesAgentOrdersDimension.TotalAmount],
+            amount: row[AiSalesAgentOrdersMeasure.Gmv],
             customer: row[EnrichmentFields.CustomerIntegrationDataByExternalId],
         },
         product: {

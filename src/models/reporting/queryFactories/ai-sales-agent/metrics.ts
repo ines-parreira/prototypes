@@ -152,6 +152,7 @@ export const totalNumberOfOrderDrillDownQueryFactory = (
         AiSalesAgentOrdersDimension.TotalAmount,
         AiSalesAgentOrdersDimension.CustomerId,
     ],
+    measures: [AiSalesAgentOrdersMeasure.Gmv],
     limit: DRILLDOWN_QUERY_LIMIT,
     ...(sorting
         ? {

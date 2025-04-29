@@ -294,7 +294,7 @@ describe('totalNumberOfOrderDrillDownQueryFactory', () => {
                 'UTC',
             ),
         ).toEqual({
-            measures: ['AiSalesAgentOrders.count'],
+            measures: ['AiSalesAgentOrders.gmv'],
             dimensions: [
                 AiSalesAgentOrdersDimension.TicketId,
                 AiSalesAgentOrdersDimension.OrderId,
@@ -337,7 +337,7 @@ describe('totalNumberOfOrderDrillDownQueryFactory', () => {
                 OrderDirection.Desc,
             ),
         ).toEqual({
-            measures: ['AiSalesAgentOrders.count'],
+            measures: ['AiSalesAgentOrders.gmv'],
             dimensions: [
                 AiSalesAgentOrdersDimension.TicketId,
                 AiSalesAgentOrdersDimension.OrderId,
