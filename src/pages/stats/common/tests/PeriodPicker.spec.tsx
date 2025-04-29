@@ -1,11 +1,9 @@
-import React from 'react'
-
 import { render } from '@testing-library/react'
 import moment from 'moment-timezone'
-import { Props as MockDateRangePickerProps } from 'react-bootstrap-daterangepicker'
 
 import { useTheme } from 'core/theme'
 import { PeriodPickerContainer, Props } from 'pages/stats/common/PeriodPicker'
+import { Props as MockDateRangePickerProps } from 'utils/wrappers/DateRangePicker'
 
 const periodPickerClassListMockSpy = jest.fn()
 const periodPickerRangesClassListMockSpy = jest.fn()

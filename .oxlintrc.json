@@ -19,7 +19,10 @@
             "rules": { "react/no-unescaped-entities": "off" }
         },
         {
-            "files": ["src/utils/testing/renderHook.tsx"],
+            "files": [
+                "src/utils/testing/renderHook.tsx",
+                "src/utils/wrappers/DateRangePicker.tsx"
+            ],
             "rules": { "no-restricted-imports": "off" }
         }
     ],
@@ -55,6 +58,16 @@
             "error",
             {
                 "paths": [
+                    {
+                        "importNames": [
+                            "DateRangePicker",
+                            "default",
+                            "EventHandler",
+                            "Props"
+                        ],
+                        "message": "Please use DateRangePicker from /utils/wrappers/DateRangePicker instead.",
+                        "name": "react-bootstrap-daterangepicker"
+                    },
                     {
                         "importNames": ["renderHook"],
                         "message": "Import 'renderHook' from 'utils/testing/renderHook' using alias: import { renderHook } from 'utils/testing/renderHook'",

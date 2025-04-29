@@ -8,14 +8,16 @@ import React, {
 } from 'react'
 
 import moment, { Moment } from 'moment-timezone'
-import DateRangePicker, {
-    Props as DateRangeProps,
-    EventHandler,
-} from 'react-bootstrap-daterangepicker'
 import { Tooltip } from 'reactstrap'
 
 import { useTheme } from 'core/theme'
 import useUpdateEffect from 'hooks/useUpdateEffect'
+import {
+    type BaseDateRangePicker,
+    DateRangePicker,
+    type Props as DateRangeProps,
+    EventHandler,
+} from 'utils/wrappers/DateRangePicker'
 
 import css from './DatePicker.less'
 
@@ -70,7 +72,7 @@ export const DatePicker = ({
     additionalPickerClassName,
     userTimezone,
 }: DatePickerProps) => {
-    const datePickerRef = useRef<DateRangePicker>(null)
+    const datePickerRef = useRef<BaseDateRangePicker>(null)
     const [isTooltipOpen, setIsTooltipOpen] = useState(false)
     const [tooltipTarget, setTooltipTarget] = useState<HTMLElement | null>(null)
     const dateRangerPickerElement = useRef<HTMLElement>()

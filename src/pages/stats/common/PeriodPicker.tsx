@@ -1,10 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import moment, { Moment } from 'moment-timezone'
-import DateRangePicker, {
-    Props as DateRangeProps,
-    EventHandler,
-} from 'react-bootstrap-daterangepicker'
 import { connect } from 'react-redux'
 import { Tooltip } from 'reactstrap'
 
@@ -23,6 +19,12 @@ import {
 import { getDefaultSetOfRanges } from 'pages/stats/constants'
 import { getTimezone } from 'state/currentUser/selectors'
 import { RootState } from 'state/types'
+import {
+    type BaseDateRangePicker,
+    DateRangePicker,
+    type Props as DateRangeProps,
+    EventHandler,
+} from 'utils/wrappers/DateRangePicker'
 
 export type Props = {
     endDatetime: Moment
@@ -82,7 +84,7 @@ export const PeriodPickerContainer = ({
 }: Props & Partial<DateRangeProps>) => {
     const [startDate, setStartDate] = useState(startDatetime)
     const [endDate, setEndDate] = useState(endDatetime)
-    const datePickerRef = useRef<DateRangePicker>(null)
+    const datePickerRef = useRef<BaseDateRangePicker>(null)
     const dateRangerPickerElement = useRef<HTMLElement>()
     const [isTooltipOpen, setIsTooltipOpen] = useState(false)
     const [tooltipTarget, setTooltipTarget] = useState<HTMLElement | null>(null)
