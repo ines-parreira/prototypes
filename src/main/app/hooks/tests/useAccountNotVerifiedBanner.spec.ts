@@ -63,7 +63,7 @@ describe('useAccountNotVerifiedBanner', () => {
             category: BannerCategories.ACCOUNT_NOT_VERIFIED,
             instanceId: BannerCategories.ACCOUNT_NOT_VERIFIED,
             type: AlertBannerTypes.Warning,
-            message: 'Your email address is not verified.',
+            message: 'Your account is not verified. Please check your email.',
             CTA: expect.objectContaining({
                 type: 'action',
                 text: 'Resend verification email',
