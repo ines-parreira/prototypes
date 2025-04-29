@@ -1,7 +1,6 @@
-import { useState } from 'react'
-
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useMetric } from 'hooks/reporting/useMetric'
+import useSessionStorage from 'hooks/useSessionStorage'
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
 import { voiceCallCountQueryFactory } from 'models/reporting/queryFactories/voice/voiceCall'
 import {
@@ -15,6 +14,7 @@ type Args = {
     value?: number | null
     queryFactory?: ReturnType<typeof voiceCallCountQueryFactory>
     defaultValueFormat?: MetricValueFormat
+    storageKey?: string
 }
 
 export const useMetricFormat = ({
@@ -22,10 +22,12 @@ export const useMetricFormat = ({
     value,
     queryFactory,
     defaultValueFormat = 'integer',
+    storageKey = 'voice-metric-format',
 }: Args) => {
-    const [selectedFormat, setSelectedFormat] =
-        useState<MetricValueFormat>(defaultValueFormat)
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
+    const [selectedFormat, setSelectedFormat] =
+        useSessionStorage<MetricValueFormat>(storageKey, defaultValueFormat)
+
     const defaultQueryFactory = voiceCallCountQueryFactory(
         cleanStatsFilters,
         userTimezone,

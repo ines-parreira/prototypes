@@ -43,6 +43,8 @@ describe('useMetricFormat', () => {
             isFetching: false,
             isError: false,
         })
+
+        sessionStorage.clear()
     })
 
     it('should initialize with default values', () => {

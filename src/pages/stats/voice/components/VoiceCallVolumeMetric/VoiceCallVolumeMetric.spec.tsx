@@ -1,11 +1,8 @@
-import React from 'react'
+import { fireEvent, waitFor } from '@testing-library/react'
 
-import { fireEvent, render, waitFor } from '@testing-library/react'
-
-import { MetricTrend } from 'hooks/reporting/useMetricTrend'
-import { StatsFilters } from 'models/stat/types'
 import { formatMetricValue, MetricValueFormat } from 'pages/stats/common/utils'
 import { useVoiceCallCountTrend } from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
+import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 import { assumeMock } from 'utils/testing'
 
 import { useMetricFormat } from '../../hooks/useMetricFormat'
@@ -28,19 +25,25 @@ describe('<VoiceCallVolumeMetric />', () => {
         end_datetime: '2021-02-03T23:59:59.999Z',
         start_datetime: '2021-02-03T00:00:00.000Z',
     }
-    const renderComponent = (trendValue: MetricTrend, moreIsBetter = true) => {
-        const statsFilters: StatsFilters = {
+    const defaultProps = {
+        title: 'Total calls',
+        hint: 'Total number of inbound and outbound calls',
+        statsFilters: {
             period,
-        }
-        mockUseVoiceCallCountTrend.mockReturnValue(trendValue)
-        return render(
-            <VoiceCallVolumeMetric
-                title={'Total calls'}
-                hint={'Total number of inbound and outbound calls'}
-                statsFilters={statsFilters}
-                metricTrend={trendValue}
-                moreIsBetter={moreIsBetter}
-            />,
+        },
+        metricTrend: {
+            data: {
+                prevValue: 10,
+                value: 15,
+            },
+            isError: false,
+            isFetching: false,
+        },
+    }
+    const renderComponent = (componentProps = {}) => {
+        mockUseVoiceCallCountTrend.mockReturnValue(defaultProps.metricTrend)
+        return renderWithStoreAndQueryClientProvider(
+            <VoiceCallVolumeMetric {...defaultProps} {...componentProps} />,
         )
     }
 
@@ -61,7 +64,9 @@ describe('<VoiceCallVolumeMetric />', () => {
             isFetching: false,
         }
 
-        const { getByText, container } = renderComponent(trendValue)
+        const { getByText, container } = renderComponent({
+            metricTrend: trendValue,
+        })
 
         expect(getByText('Total calls')).toBeInTheDocument()
         expect(getByText('50%')).toHaveClass('positive')
@@ -80,17 +85,60 @@ describe('<VoiceCallVolumeMetric />', () => {
         })
     })
 
-    it('should render less is better', () => {
-        const trendValue = {
-            data: {
-                prevValue: 10,
-                value: 15,
+    it.each([
+        {
+            componentProps: {
+                multiFormat: true,
+                chartId: 'test-chart-id',
+                metricTrend: {
+                    data: {
+                        prevValue: 10,
+                        value: 15,
+                    },
+                    isError: false,
+                    isFetching: false,
+                },
             },
-            isError: false,
-            isFetching: false,
-        }
+            expectedArgs: {
+                value: 15,
+                isPercentageEnabled: true,
+                defaultValueFormat: 'percent',
+                storageKey: 'test-chart-id',
+            },
+        },
+        {
+            componentProps: {
+                multiFormat: false,
+                chartId: 'test-chart-id',
+                metricTrend: {
+                    data: {
+                        prevValue: 11,
+                        value: 12,
+                    },
+                    isError: false,
+                    isFetching: false,
+                },
+            },
+            expectedArgs: {
+                value: 12,
+                isPercentageEnabled: false,
+                defaultValueFormat: 'integer',
+                storageKey: 'test-chart-id',
+            },
+        },
+    ])(
+        'should send correct args to useMetricFormat',
+        ({ componentProps, expectedArgs }) => {
+            renderComponent(componentProps)
 
-        const { getByText } = renderComponent(trendValue, false)
+            expect(useMetricFormatMock).toHaveBeenCalledWith(expectedArgs)
+        },
+    )
+
+    it('should render less is better', () => {
+        const { getByText } = renderComponent({
+            moreIsBetter: false,
+        })
 
         expect(getByText('Total calls')).toBeInTheDocument()
         expect(getByText('50%')).toHaveClass('negative')

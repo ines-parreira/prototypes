@@ -56,6 +56,7 @@ function VoiceCallVolumeMetric({
         isPercentageEnabled: multiFormat,
         value: voiceCallsCount,
         defaultValueFormat: multiFormat ? 'percent' : 'integer',
+        storageKey: chartId,
     })
 
     return (

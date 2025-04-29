@@ -91,6 +91,7 @@ describe('LiveVoiceMetricCard', () => {
                 hint: 'Test Hint',
                 fetchData: () => ({ data: { value: 100 } }),
                 metricValueFormat: inputMetricValueFormat,
+                metricName: 'Test Metric',
             }
 
             renderComponent(props)
@@ -98,6 +99,7 @@ describe('LiveVoiceMetricCard', () => {
             expect(useMetricFormatMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     defaultValueFormat: outputMetricValueFormat,
+                    storageKey: 'Test Metric',
                 }),
             )
 

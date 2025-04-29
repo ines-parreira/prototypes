@@ -78,6 +78,7 @@ const LiveVoiceMetricCardFull = ({
         value,
         queryFactory: totalCallsQueryFactory,
         defaultValueFormat: showPercentage ? 'percent' : metricValueFormat,
+        storageKey: metricName,
     })
 
     return (
