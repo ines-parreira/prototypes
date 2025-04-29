@@ -53,6 +53,7 @@ type Props = {
     value?: boolean | number | string | Array<number | string> | null
     contained?: boolean
     shouldFlip?: boolean
+    fallbackPlacements?: Placement[]
 } & Pick<HTMLAttributes<HTMLDivElement>, 'id'>
 
 type DropdownContextState = Pick<Props, 'isMultiple' | 'onToggle' | 'value'> & {
@@ -81,6 +82,7 @@ const Dropdown = forwardRef(
             value,
             contained = false,
             shouldFlip = true,
+            fallbackPlacements,
             ...props
         }: Props,
         ref: Ref<HTMLElement> | null | undefined,
@@ -92,7 +94,12 @@ const Dropdown = forwardRef(
                 offsetMiddleware(offset),
                 shouldFlip &&
                     flip({
-                        fallbackPlacements: ['right', 'bottom', 'top', 'left'],
+                        fallbackPlacements: fallbackPlacements ?? [
+                            'right',
+                            'bottom',
+                            'top',
+                            'left',
+                        ],
                         padding: safeDistance,
                     }),
                 size({

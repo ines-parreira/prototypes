@@ -1,17 +1,15 @@
 import { useRef, useState } from 'react'
 
-import {
-    ListVoiceQueuesOrderBy,
-    useListVoiceQueues,
-    VoiceQueue,
-} from '@gorgias/api-queries'
+import { useGetVoiceQueue, VoiceQueue } from '@gorgias/api-queries'
 import { Button, Label, Skeleton } from '@gorgias/merchant-ui-kit'
 
+import { useVoiceQueueSearch } from 'hooks/reporting/common/useVoiceQueueSearch'
 import useId from 'hooks/useId'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
+import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import SelectInputBox, {
     SelectInputBoxContext,
@@ -19,6 +17,7 @@ import SelectInputBox, {
 
 import { PHONE_INTEGRATION_BASE_URL } from './constants'
 import CreateNewQueueModal from './CreateNewQueueModal'
+import VoiceQueueSelectFieldEmpty from './VoiceQueueSelectFieldEmpty'
 
 import css from './VoiceQueueSelectField.less'
 
@@ -28,7 +27,7 @@ type VoiceQueueSelectProps = {
     onChange: (queueId: number) => void
 }
 
-function VoiceQueueSelectField({
+export default function VoiceQueueSelectField({
     value,
     onChange,
     name,
@@ -41,20 +40,31 @@ function VoiceQueueSelectField({
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
 
-    // todo: we'll need to fetch more pages of data once we figure out pagination
-    const { data, isFetching, error, refetch } = useListVoiceQueues(
+    const {
+        onLoad,
+        voiceQueues: options,
+        shouldLoadMore,
+        isLoading,
+        isError,
+        refetch,
+    } = useVoiceQueueSearch()
+
+    const selectedOption = options?.find((queue) => queue.id === value)
+
+    const { data: voiceQueue } = useGetVoiceQueue(
+        value ?? 0,
         {
-            order_by: ListVoiceQueuesOrderBy.CreatedDatetimeDesc,
-            limit: 100,
+            with_integrations: true,
         },
         {
             query: {
-                refetchOnWindowFocus: false,
+                enabled: !selectedOption && !!value,
+                staleTime: 60_000,
             },
         },
     )
-    const options = data?.data?.data
-    const selectedQueue = options?.find((queue) => queue.id === value)
+
+    const selectedQueue = selectedOption ?? voiceQueue?.data
 
     const selectedQueueName = value
         ? (selectedQueue?.name ?? `Queue #${value}`)
@@ -64,11 +74,22 @@ function VoiceQueueSelectField({
         return queue?.name ?? `Queue #${queue.id}`
     }
 
-    if (isFetching) {
+    const createNewQueueModal = (
+        <CreateNewQueueModal
+            isOpen={isCreateNewModalOpen}
+            onClose={() => setIsCreateNewModalOpen(false)}
+            onCreateSuccess={(id) => {
+                refetch()
+                onChange(id)
+            }}
+        />
+    )
+
+    if (isLoading) {
         return <LoadingSkeleton />
     }
 
-    if (!!error) {
+    if (isError) {
         return (
             <div className={css.error}>
                 <p>
@@ -84,35 +105,15 @@ function VoiceQueueSelectField({
 
     if (options?.length === 0) {
         return (
-            <div className={css.noQueues}>
-                <div className={css.description}>
-                    <div className={css.title}>No call queues yet?</div>
-                    <div>
-                        Queues route calls to the right team for faster
-                        responses. We apply default settings to get you started,
-                        which you can customize anytime.
-                    </div>
-                </div>
-                <Button
-                    leadingIcon="add"
-                    fillStyle={'ghost'}
-                    className={css.button}
-                    onClick={() => {
+            <>
+                <VoiceQueueSelectFieldEmpty
+                    onAddClick={() => {
                         setIsDropdownOpen(false)
                         setIsCreateNewModalOpen(true)
                     }}
-                >
-                    Create New Call Queue
-                </Button>
-                <CreateNewQueueModal
-                    isOpen={isCreateNewModalOpen}
-                    onClose={() => setIsCreateNewModalOpen(false)}
-                    onCreateSuccess={(id) => {
-                        refetch()
-                        onChange(id)
-                    }}
                 />
-            </div>
+                {createNewQueueModal}
+            </>
         )
     }
 
@@ -133,7 +134,7 @@ function VoiceQueueSelectField({
                 floating={floatingRef}
                 ref={targetRef}
                 placeholder={'Select queue'}
-                isDisabled={isFetching}
+                isDisabled={isLoading}
             >
                 <SelectInputBoxContext.Consumer>
                     {(context) => (
@@ -143,22 +144,26 @@ function VoiceQueueSelectField({
                             ref={floatingRef}
                             target={targetRef}
                             value={value}
-                            placement="bottom-start"
+                            fallbackPlacements={['bottom', 'top']}
                         >
                             <DropdownSearch autoFocus />
                             <DropdownBody>
-                                {options?.map((option) => (
-                                    <DropdownItem
-                                        key={option.id}
-                                        option={{
-                                            label: getQueueName(option),
-                                            value: option.id,
-                                        }}
-                                        onClick={() => onChange(option.id)}
-                                        shouldCloseOnSelect
-                                        className={css.dropdownItem}
-                                    />
-                                ))}
+                                <InfiniteScroll
+                                    onLoad={onLoad}
+                                    shouldLoadMore={shouldLoadMore}
+                                >
+                                    {options?.map((option) => (
+                                        <DropdownItem
+                                            key={option.id}
+                                            option={{
+                                                label: getQueueName(option),
+                                                value: option.id,
+                                            }}
+                                            onClick={() => onChange(option.id)}
+                                            shouldCloseOnSelect
+                                        />
+                                    ))}
+                                </InfiniteScroll>
                             </DropdownBody>
                             <Button
                                 intent="secondary"
@@ -190,19 +195,10 @@ function VoiceQueueSelectField({
                 </a>
                 .
             </div>
-            <CreateNewQueueModal
-                isOpen={isCreateNewModalOpen}
-                onClose={() => setIsCreateNewModalOpen(false)}
-                onCreateSuccess={(id) => {
-                    refetch()
-                    onChange(id)
-                }}
-            />
+            {createNewQueueModal}
         </fieldset>
     )
 }
-
-export default VoiceQueueSelectField
 
 const LoadingSkeleton = () => {
     return (

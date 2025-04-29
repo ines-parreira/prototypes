@@ -21,9 +21,17 @@ function VoiceQueueSummary({ queue_id }: VoiceQueueSummaryProps) {
         data: queueData,
         isLoading,
         refetch,
-    } = useGetVoiceQueue(queue_id, {
-        with_integrations: true,
-    })
+    } = useGetVoiceQueue(
+        queue_id,
+        {
+            with_integrations: true,
+        },
+        {
+            query: {
+                staleTime: 60_000,
+            },
+        },
+    )
     const queue = queueData?.data
 
     const teamIds = queue?.linked_targets.filter(

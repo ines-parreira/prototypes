@@ -70,7 +70,7 @@ describe('<VoiceQueuesFilter />', () => {
             onLoad: jest.fn(),
             voiceQueues: someVoiceQueues,
             shouldLoadMore: false,
-        })
+        } as unknown as ReturnType<typeof useVoiceQueueSearch>)
     })
 
     it('should render correctly', () => {

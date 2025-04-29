@@ -227,7 +227,7 @@ describe('FiltersPanel', () => {
             onLoad: jest.fn(),
             voiceQueues: [],
             shouldLoadMore: false,
-        })
+        } as unknown as ReturnType<typeof useVoiceQueueSearch>)
     })
 
     it.each(supportedFilters)(
