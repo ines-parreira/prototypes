@@ -33,27 +33,27 @@ export const ChartLegend = ({
             className={classNames(css.legend, {
                 [css.legendOnLeft]: legendOnLeft,
             })}
-            items={data.map(({ label, tooltip, isDisabled }, index) => ({
-                label,
-                tooltip,
-                isDisabled,
-                color: chartColors(index),
-                ...(toggleLegend && {
-                    isChecked:
-                        linesVisibility?.[index] ??
-                        chart?.isDatasetVisible(index),
-                    onChange: () => {
-                        chart?.setDatasetVisibility(
-                            index,
-                            !chart.isDatasetVisible(index),
-                        )
-                        setLinesVisibility((prevValue) => ({
-                            ...prevValue,
-                            [index]: chart?.isDatasetVisible(index),
-                        }))
-                        chart?.update()
-                    },
-                }),
-            }))}
+            items={data.map(({ label, tooltip, isDisabled }, index) => {
+                const isChecked =
+                    linesVisibility?.[index] ?? chart?.isDatasetVisible(index)
+
+                return {
+                    label,
+                    tooltip,
+                    isDisabled,
+                    color: chartColors(index),
+                    ...(toggleLegend && {
+                        isChecked,
+                        onChange: () => {
+                            chart?.setDatasetVisibility(index, !isChecked)
+                            setLinesVisibility((prevValue) => ({
+                                ...prevValue,
+                                [index]: !isChecked,
+                            }))
+                            chart?.update()
+                        },
+                    }),
+                }
+            })}
         />
     ) : null
