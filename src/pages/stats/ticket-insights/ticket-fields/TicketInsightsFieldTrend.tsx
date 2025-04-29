@@ -1,4 +1,4 @@
-import { useTicketsFieldTrend } from 'hooks/reporting/useTicketsFieldTrend'
+import { useTicketsFieldTimeSeries } from 'hooks/reporting/ticket-insights/useTicketsFieldTimeSeries'
 import ChartCard from 'pages/stats/common/components/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { formatLabeledTooltipTimeSeriesData } from 'pages/stats/common/utils'
@@ -20,7 +20,7 @@ export function TicketInsightsFieldTrend({
         legendDatasetVisibility,
         granularity,
         isFetching,
-    } = useTicketsFieldTrend()
+    } = useTicketsFieldTimeSeries()
 
     const { hint, title } =
         TicketInsightsFieldsMetricConfig[

@@ -6,33 +6,31 @@ import _sortBy from 'lodash/sortBy'
 
 import { useCustomFieldsTicketCount } from 'hooks/reporting/metricsPerCustomField'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
-import {
-    Entity,
-    useTicketTimeReference,
-} from 'hooks/reporting/ticket-insights/useTicketTimeReference'
 import { useCustomFieldsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
-import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import { TicketCustomFieldsDimension } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'models/reporting/queryFactories/utils'
+import { TicketTimeReference } from 'models/stat/types'
 import { TICKET_CUSTOM_FIELDS_NEW_SEPARATOR } from 'pages/stats/utils'
-import { getSelectedCustomField } from 'state/ui/stats/ticketInsightsSlice'
 
 const DATASET_VISIBILITY_ITEMS = 3
 
-export const useTicketsFieldTrend = (topAmount = 10) => {
+export const useCustomFieldsTimeSeries = ({
+    selectedCustomFieldId,
+    ticketFieldsTicketTimeReference,
+    topAmount = 10,
+}: {
+    selectedCustomFieldId: number | null
+    ticketFieldsTicketTimeReference?: TicketTimeReference
+    topAmount?: number
+}) => {
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
-    const selectedCustomField = useAppSelector(getSelectedCustomField)
-
-    const [ticketFieldsTicketTimeReference] = useTicketTimeReference(
-        Entity.TicketField,
-    )
 
     const { data = {}, isFetching } = useCustomFieldsTicketCountTimeSeries(
         cleanStatsFilters,
         userTimezone,
         granularity,
-        String(selectedCustomField.id),
+        String(selectedCustomFieldId),
         OrderDirection.Desc,
         true,
         ticketFieldsTicketTimeReference,
@@ -41,7 +39,7 @@ export const useTicketsFieldTrend = (topAmount = 10) => {
     const customFieldsTicketCount = useCustomFieldsTicketCount(
         cleanStatsFilters,
         userTimezone,
-        String(selectedCustomField.id),
+        String(selectedCustomFieldId),
         OrderDirection.Desc,
         ticketFieldsTicketTimeReference,
     )

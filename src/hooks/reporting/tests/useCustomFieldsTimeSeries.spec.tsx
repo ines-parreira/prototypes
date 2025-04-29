@@ -6,16 +6,16 @@ import thunk from 'redux-thunk'
 
 import { useCustomFieldsTicketCount } from 'hooks/reporting/metricsPerCustomField'
 import { useCustomFieldsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
-import { useTicketsFieldTrend } from 'hooks/reporting/useTicketsFieldTrend'
+import { useCustomFieldsTimeSeries } from 'hooks/reporting/useCustomFieldsTimeSeries'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { ReportingGranularity } from 'models/reporting/types'
+import { TicketTimeReference } from 'models/stat/types'
 import { initialState } from 'state/stats/statsSlice'
 import { RootState } from 'state/types'
 import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
-import { ticketInsightsSlice } from 'state/ui/stats/ticketInsightsSlice'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -28,15 +28,14 @@ const useCustomFieldsTicketCountTimeSeriesMock = assumeMock(
 jest.mock('hooks/reporting/metricsPerCustomField')
 const useCustomFieldsTicketCountMock = assumeMock(useCustomFieldsTicketCount)
 
-describe('useTicketsFieldTrend', () => {
+describe('useCustomFieldsTrend', () => {
+    const selectedCustomFieldId = 2
+    const ticketFieldsTicketTimeReference = TicketTimeReference.CreatedAt
     const defaultState = {
         stats: initialState,
         ui: {
             stats: {
                 filters: uiStatsInitialState,
-                [ticketInsightsSlice.name]: {
-                    selectedCustomField: { id: 2 },
-                },
             },
         },
     } as RootState
@@ -71,12 +70,21 @@ describe('useTicketsFieldTrend', () => {
         isFetching: false,
     })
 
-    it('should return tickets trend', () => {
-        const { result } = renderHook(() => useTicketsFieldTrend(), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(defaultState)}>{children}</Provider>
-            ),
-        })
+    it('should return custom fields trend', () => {
+        const { result } = renderHook(
+            () =>
+                useCustomFieldsTimeSeries({
+                    selectedCustomFieldId,
+                    ticketFieldsTicketTimeReference,
+                }),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            },
+        )
 
         expect(result.current).toEqual({
             isFetching: false,

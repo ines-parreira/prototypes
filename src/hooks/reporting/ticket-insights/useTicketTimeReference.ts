@@ -37,7 +37,9 @@ const getEffectiveTicketTimeReference = (
         : DEFAULT_TICKET_TIME_REFERENCE
 }
 
-export const useTicketTimeReference = (entity: Entity) => {
+export const useTicketTimeReference = (
+    entity: Entity,
+): [TicketTimeReference, (value: TicketTimeReference) => void] => {
     const isReportingExtendFieldAndTagEnabled = useFlag(
         FeatureFlagKey.ReportingExtendFieldAndTag,
     )

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 
-import { useTicketsFieldTrend } from 'hooks/reporting/useTicketsFieldTrend'
+import { useTicketsFieldTimeSeries } from 'hooks/reporting/ticket-insights/useTicketsFieldTimeSeries'
 import { ReportingGranularity } from 'models/reporting/types'
 import { TicketInsightsFieldTrend } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
 import { assumeMock } from 'utils/testing'
@@ -17,8 +17,8 @@ jest.mock(
         }) as typeof import('@gorgias/merchant-ui-kit'),
 )
 
-jest.mock('hooks/reporting/useTicketsFieldTrend')
-const useTicketsFieldTrendMock = assumeMock(useTicketsFieldTrend)
+jest.mock('hooks/reporting/ticket-insights/useTicketsFieldTimeSeries')
+const useTicketsFieldTrendMock = assumeMock(useTicketsFieldTimeSeries)
 
 describe('<TicketInsightsFieldTrend>', () => {
     const data = [
@@ -33,7 +33,7 @@ describe('<TicketInsightsFieldTrend>', () => {
     ]
 
     const useTicketsFieldTrendReturnValue: ReturnType<
-        typeof useTicketsFieldTrend
+        typeof useTicketsFieldTimeSeries
     > = {
         data: data,
         granularity: ReportingGranularity.Month,
