@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 
-import Draggable from 'react-draggable'
-
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import CheckBox from 'pages/common/forms/CheckBox'
+import { Draggable } from 'utils/wrappers/Draggable'
 
 import css from './ImageRepositioningModal.less'
 

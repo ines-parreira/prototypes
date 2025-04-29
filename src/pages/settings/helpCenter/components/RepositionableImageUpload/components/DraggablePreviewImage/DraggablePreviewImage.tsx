@@ -1,7 +1,8 @@
-import React, { FunctionComponent, useState } from 'react'
+import { FunctionComponent, useState } from 'react'
 
 import classNames from 'classnames'
-import Draggable from 'react-draggable'
+
+import { Draggable } from 'utils/wrappers/Draggable'
 
 import { replaceUploadUrls } from '../../../../utils/helpCenter.utils'
 import {
