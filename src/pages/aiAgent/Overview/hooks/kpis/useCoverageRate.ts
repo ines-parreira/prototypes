@@ -72,7 +72,8 @@ export const useCoverageRate = (
 
         if (
             (aiAgentAutomationRateValue ?? 0).toFixed(4) ===
-            automationRateData.value.toFixed(4)
+                automationRateData.value.toFixed(4) &&
+            automationRateData.value !== 0
         ) {
             return {
                 title: 'Coverage Rate',

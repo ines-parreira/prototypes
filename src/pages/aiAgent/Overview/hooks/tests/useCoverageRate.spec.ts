@@ -195,5 +195,39 @@ describe('useCoverageRate', () => {
                 })
             },
         )
+
+        it('should return Global Coverage Rate when global automation rate and AI agent automation rate are 0', () => {
+            useAutomationRateTrendMock.mockReturnValue({
+                isFetching: false,
+                data: {
+                    value: 0,
+                    prevValue: 0,
+                },
+            } as any)
+
+            useAiAgentAutomationRateMock.mockReturnValue({
+                isLoading: false,
+                value: 0,
+                prevValue: 0,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useCoverageRate(filters, timezone),
+            )
+
+            expect(result.current).toEqual({
+                'data-candu-id': 'ai-agent-overview-kpi-coverage-rate',
+                title: 'Automation Rate',
+                hint: {
+                    link: 'https://link.gorgias.com/mnp',
+                    linkText: 'How is it calculated?',
+                    title: 'Automated interactions as a percent of all customer interactions.',
+                },
+                metricFormat: 'decimal-to-percent',
+                value: 0,
+                prevValue: 0,
+                isLoading: false,
+            })
+        })
     })
 })
