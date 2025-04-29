@@ -71,9 +71,7 @@ export default function VoiceQueueStatusToggle({ queueId, isEnabled }: Props) {
                             target="queue-status-tooltip"
                             placement="bottom"
                         >
-                            Enable or disable this queue to manage call routing
-                            during holidays or special events. Disabled queues
-                            won&apos;t receive any calls.
+                            {`Manage call routing during holidays or special events by enabling or disabling this queue. When disabled, the queue won't accept calls, and incoming calls will be redirected to voicemail.`}
                         </Tooltip>
                         <i
                             id="queue-status-tooltip"
