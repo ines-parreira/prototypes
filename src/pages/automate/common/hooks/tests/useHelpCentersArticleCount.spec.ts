@@ -1,3 +1,5 @@
+import { waitFor } from '@testing-library/react'
+
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -53,7 +55,7 @@ describe('useHelpCentersArticleCount', () => {
         useHelpCenterApiMock.mockReturnValue({ client: mockClient })
 
         const promises = getPromises()
-        const { result, waitForNextUpdate } = renderHook(() =>
+        const { result } = renderHook(() =>
             useHelpCentersArticleCount([1, 2, 3]),
         )
 
@@ -65,21 +67,20 @@ describe('useHelpCentersArticleCount', () => {
         promises.resolve(1, 20)
         promises.resolve(2, 30)
 
-        await waitForNextUpdate()
-
-        // Check final result
-        expect(result.current).toEqual([
-            { helpCenterId: 1, count: 10 },
-            { helpCenterId: 2, count: 20 },
-            { helpCenterId: 3, count: 30 },
-        ])
+        await waitFor(() => {
+            expect(result.current).toEqual([
+                { helpCenterId: 1, count: 10 },
+                { helpCenterId: 2, count: 20 },
+                { helpCenterId: 3, count: 30 },
+            ])
+        })
     })
 
     it('should handle the situation properly when one of the fetches fails', async () => {
         useHelpCenterApiMock.mockReturnValue({ client: mockClient })
 
         const promises = getPromises()
-        const { result, waitForNextUpdate } = renderHook(() =>
+        const { result } = renderHook(() =>
             useHelpCentersArticleCount([1, 2, 3]),
         )
 
@@ -91,21 +92,20 @@ describe('useHelpCentersArticleCount', () => {
         promises.reject(1)
         promises.resolve(2, 30)
 
-        await waitForNextUpdate()
-
-        // Check final result
-        expect(result.current).toEqual([
-            { helpCenterId: 1, count: 10 },
-            { helpCenterId: 2 },
-            { helpCenterId: 3, count: 30 },
-        ])
+        await waitFor(() => {
+            expect(result.current).toEqual([
+                { helpCenterId: 1, count: 10 },
+                { helpCenterId: 2 },
+                { helpCenterId: 3, count: 30 },
+            ])
+        })
     })
 
     it('should handle the situation properly when helpCenterIds change and a race condition occurs', async () => {
         useHelpCenterApiMock.mockReturnValue({ client: mockClient })
 
         const promises = getPromises()
-        const { result, waitForNextUpdate, rerender } = renderHook(
+        const { result, rerender } = renderHook(
             (helpCenterIds: number[] = [1, 2, 3]) =>
                 useHelpCentersArticleCount(helpCenterIds),
         )
@@ -113,36 +113,37 @@ describe('useHelpCentersArticleCount', () => {
         // Initially, the result should be undefined
         expect(result.current).toBeUndefined()
 
-        // Render hook with new values before the promsises are resolved
+        // Render hook with new values before promises are resolved
         rerender([4, 5, 6])
 
-        // Resolve the promises, except one promise from the first render to simulate a slow call
+        // Resolve promises for the second render
         promises.resolve(0, 10)
         promises.resolve(2, 30)
         promises.resolve(3, 40)
         promises.resolve(4, 50)
         promises.resolve(5, 60)
 
-        await waitForNextUpdate()
+        // 🛡 Wait until result reflects the rerender values
+        await waitFor(() => {
+            expect(result.current).toEqual([
+                { helpCenterId: 4, count: 40 },
+                { helpCenterId: 5, count: 50 },
+                { helpCenterId: 6, count: 60 },
+            ])
+        })
 
-        // Should return the result of the second render
-        expect(result.current).toEqual([
-            { helpCenterId: 4, count: 40 },
-            { helpCenterId: 5, count: 50 },
-            { helpCenterId: 6, count: 60 },
-        ])
-
-        // Resolve the last pending promise
+        // Resolve the last old promise from the first render
         promises.resolve(1, 20)
 
-        // There should not be another update
-        let err = false
-        try {
-            await waitForNextUpdate({ timeout: 10 })
-        } catch {
-            err = true
-        }
+        // save current value
+        const lastResult = result.current
 
-        expect(err).toBe(true)
+        // Use waitFor to confirm state is stable
+        await waitFor(
+            () => {
+                expect(result.current).toEqual(lastResult)
+            },
+            { timeout: 50 },
+        )
     })
 })

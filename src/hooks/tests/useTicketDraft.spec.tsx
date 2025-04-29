@@ -1,7 +1,7 @@
 import React, { ComponentType } from 'react'
 
+import { waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
-import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -51,14 +51,15 @@ describe('useTicketDraft hook', () => {
             mockGetTableObject,
         )
 
-        const { waitForNextUpdate } = renderHook(() => useTicketDraft(true), {
+        renderHook(() => useTicketDraft(true), {
             wrapper: (({ children }: { children: React.ReactNode }) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             )) as unknown as ComponentType,
         })
-        await act(async () => await waitForNextUpdate())
 
-        expect(mockSetItem).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(mockSetItem).toHaveBeenCalled()
+        })
     })
 
     it('should save draft when ticket is new, a draft exists and new ticket state is not empty', async () => {
@@ -67,14 +68,15 @@ describe('useTicketDraft hook', () => {
             mockGetTableObject,
         )
 
-        const { waitForNextUpdate } = renderHook(() => useTicketDraft(true), {
+        renderHook(() => useTicketDraft(true), {
             wrapper: (({ children }: { children: React.ReactNode }) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             )) as unknown as ComponentType,
         })
-        await act(async () => await waitForNextUpdate())
 
-        expect(mockSetItem).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(mockSetItem).toHaveBeenCalled()
+        })
     })
 
     it('should save draft when ticket is new, ticket form is filled then emptied', async () => {
@@ -95,24 +97,21 @@ describe('useTicketDraft hook', () => {
             </Provider>
         )) as unknown as ComponentType
 
-        const { rerender, waitForNextUpdate } = renderHook(
-            () => useTicketDraft(true),
-            {
-                wrapper,
-                initialProps: {
-                    ticket: fromJS({
-                        ...defaultTicket,
-                        subject: '',
-                        tags: [{ name: 'during-business-hours' }],
-                    }),
-                },
+        const { rerender } = renderHook(() => useTicketDraft(true), {
+            wrapper,
+            initialProps: {
+                ticket: fromJS({
+                    ...defaultTicket,
+                    subject: '',
+                    tags: [{ name: 'during-business-hours' }],
+                }),
             },
-        )
+        })
 
         rerender({ ticket: defaultState.ticket })
 
-        await act(async () => await waitForNextUpdate())
-
-        expect(mockSetItem).toHaveBeenCalledTimes(2)
+        await waitFor(() => {
+            expect(mockSetItem).toHaveBeenCalledTimes(2)
+        })
     })
 })

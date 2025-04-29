@@ -1,3 +1,4 @@
+import { waitFor } from '@testing-library/react'
 import axios from 'axios'
 
 import { listUsers } from '@gorgias/api-client'
@@ -62,20 +63,23 @@ describe('useUserList', () => {
             isError: false,
         } as unknown as ReturnType<typeof useListUsers>)
 
-        const { waitForNextUpdate } = renderHook(() => useUserList())
-        await waitForNextUpdate()
+        renderHook(() => useUserList())
 
-        expect(mockedUseListUsers).toHaveBeenCalledWith(
-            {
-                order_by: ListUsersOrderBy.NameAsc,
-                relationships: [ListUsersRelationshipsItem.AvailabilityStatus],
-                limit: USERS_PER_PAGE,
-                cursor: undefined,
-            },
-            {
-                query: { staleTime: STALE_TIME_MS, keepPreviousData: true },
-            },
-        )
+        await waitFor(() => {
+            expect(mockedUseListUsers).toHaveBeenCalledWith(
+                {
+                    order_by: ListUsersOrderBy.NameAsc,
+                    relationships: [
+                        ListUsersRelationshipsItem.AvailabilityStatus,
+                    ],
+                    limit: USERS_PER_PAGE,
+                    cursor: undefined,
+                },
+                {
+                    query: { staleTime: STALE_TIME_MS, keepPreviousData: true },
+                },
+            )
+        })
     })
 
     it('should provide users property', async () => {
@@ -85,10 +89,10 @@ describe('useUserList', () => {
             isError: false,
         } as unknown as ReturnType<typeof useListUsers>)
 
-        const { result, waitForNextUpdate } = renderHook(() => useUserList())
-        await waitForNextUpdate()
-
-        expect(result.current).toHaveProperty('users')
+        const { result } = renderHook(() => useUserList())
+        await waitFor(() => {
+            expect(result.current).toHaveProperty('users')
+        })
     })
 
     it('should provide pagination functions and state', async () => {
@@ -98,13 +102,13 @@ describe('useUserList', () => {
             isError: false,
         } as unknown as ReturnType<typeof useListUsers>)
 
-        const { result, waitForNextUpdate } = renderHook(() => useUserList())
-        await waitForNextUpdate()
-
-        expect(result.current).toHaveProperty('hasPrevItems')
-        expect(result.current).toHaveProperty('hasNextItems')
-        expect(typeof result.current.fetchPrevItems).toBe('function')
-        expect(typeof result.current.fetchNextItems).toBe('function')
+        const { result } = renderHook(() => useUserList())
+        await waitFor(() => {
+            expect(result.current).toHaveProperty('hasPrevItems')
+            expect(result.current).toHaveProperty('hasNextItems')
+            expect(typeof result.current.fetchPrevItems).toBe('function')
+            expect(typeof result.current.fetchNextItems).toBe('function')
+        })
     })
 
     it('should provide ordering function', async () => {
@@ -114,10 +118,10 @@ describe('useUserList', () => {
             isError: false,
         } as unknown as ReturnType<typeof useListUsers>)
 
-        const { result, waitForNextUpdate } = renderHook(() => useUserList())
-        await waitForNextUpdate()
-
-        expect(typeof result.current.setOrderBy).toBe('function')
+        const { result } = renderHook(() => useUserList())
+        await waitFor(() => {
+            expect(typeof result.current.setOrderBy).toBe('function')
+        })
     })
 
     it('should track ordering usage', async () => {
@@ -127,7 +131,7 @@ describe('useUserList', () => {
             isError: false,
         } as unknown as ReturnType<typeof useListUsers>)
 
-        const { result, waitForNextUpdate } = renderHook(() => useUserList())
+        const { result } = renderHook(() => useUserList())
 
         act(() => {
             result.current.setOrderBy(
@@ -135,11 +139,14 @@ describe('useUserList', () => {
                 OrderDirection.Asc,
             )
         })
-        await waitForNextUpdate()
-
-        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.SettingsUsersSort, {
-            orderBy: UserSortableProperties.Email,
-            orderDir: OrderDirection.Asc,
+        await waitFor(() => {
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.SettingsUsersSort,
+                {
+                    orderBy: UserSortableProperties.Email,
+                    orderDir: OrderDirection.Asc,
+                },
+            )
         })
     })
 
@@ -150,10 +157,10 @@ describe('useUserList', () => {
             isError: false,
         } as unknown as ReturnType<typeof useListUsers>)
 
-        const { result, waitForNextUpdate } = renderHook(() => useUserList())
-        await waitForNextUpdate()
-
-        expect(typeof result.current.setSearch).toBe('function')
+        const { result } = renderHook(() => useUserList())
+        await waitFor(() => {
+            expect(typeof result.current.setSearch).toBe('function')
+        })
     })
 
     it('should track sorting usage', async () => {
@@ -163,14 +170,16 @@ describe('useUserList', () => {
             isError: false,
         } as unknown as ReturnType<typeof useListUsers>)
 
-        const { result, waitForNextUpdate } = renderHook(() => useUserList())
+        const { result } = renderHook(() => useUserList())
 
         act(() => {
             result.current.setSearch('foo')
         })
-        await waitForNextUpdate()
-
-        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.SettingsUsersSearch)
+        await waitFor(() => {
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.SettingsUsersSearch,
+            )
+        })
     })
 
     it('should handle error state', async () => {
@@ -180,10 +189,10 @@ describe('useUserList', () => {
             isError: true,
         } as unknown as ReturnType<typeof useListUsers>)
 
-        const { result, waitForNextUpdate } = renderHook(() => useUserList())
-        await waitForNextUpdate()
-
-        expect(result.current.isError).toBe(true)
+        const { result } = renderHook(() => useUserList())
+        await waitFor(() => {
+            expect(result.current.isError).toBe(true)
+        })
     })
 
     it('should call listUsers once when we filter out users from page 1, but still have next cursor', async () => {
@@ -204,17 +213,18 @@ describe('useUserList', () => {
             isError: false,
         } as unknown as ReturnType<typeof useListUsers>)
 
-        const { waitForNextUpdate } = renderHook(() => useUserList())
-        await waitForNextUpdate()
+        renderHook(() => useUserList())
 
-        expect(mockedListUsers).toHaveBeenNthCalledWith(
-            1,
-            {
-                order_by: ListUsersOrderBy.NameAsc,
-                cursor: 'next-cursor',
-                limit: USERS_PER_PAGE - 1,
-            },
-            { cancelToken: expect.any(axios.CancelToken) },
-        )
+        await waitFor(() => {
+            expect(mockedListUsers).toHaveBeenNthCalledWith(
+                1,
+                {
+                    order_by: ListUsersOrderBy.NameAsc,
+                    cursor: 'next-cursor',
+                    limit: USERS_PER_PAGE - 1,
+                },
+                { cancelToken: expect.any(axios.CancelToken) },
+            )
+        })
     })
 })

@@ -1,5 +1,5 @@
+import { waitFor } from '@testing-library/react'
 import moment from 'moment/moment'
-import { act } from 'react-dom/test-utils'
 
 import { TicketChannel } from 'business/types/ticket'
 import { Stat } from 'models/stat/types'
@@ -55,12 +55,11 @@ describe('useTicketsPerformanceChart', () => {
 
     it('should return data in correct format', async () => {
         // act
-        const { result, waitForNextUpdate } = renderHook(() =>
+        const { result } = renderHook(() =>
             useTicketsPerformanceChart(...hookArgs),
         )
-        await act(async () => await waitForNextUpdate())
-
-        // assert
-        expect(result.current).toMatchSnapshot()
+        await waitFor(() => {
+            expect(result.current).toMatchSnapshot()
+        })
     })
 })

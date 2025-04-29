@@ -1,3 +1,4 @@
+import { waitFor } from '@testing-library/react'
 import { act } from '@testing-library/react-hooks'
 
 import { renderHook } from 'utils/testing/renderHook'
@@ -40,7 +41,7 @@ describe('useDelayedAsyncFn hook', () => {
     it('should not set loading to true if async call is not pending', async () => {
         const mockAsync = () =>
             new Promise((resolve) => setTimeout(resolve, 100))
-        const { result, waitForNextUpdate } = renderHook(() =>
+        const { result } = renderHook(() =>
             useDelayedAsyncFn(mockAsync, [], 200),
         )
 
@@ -49,12 +50,10 @@ describe('useDelayedAsyncFn hook', () => {
             void result.current[1]()
             jest.advanceTimersByTime(100)
         })
-        await waitForNextUpdate()
-        act(() => {
-            jest.advanceTimersByTime(100)
-        })
 
-        expect(result.current[0].loading).toBe(false)
+        await waitFor(() => {
+            expect(result.current[0].loading).toBe(false)
+        })
     })
 
     it('should clear the previous timeout on a new function call', () => {

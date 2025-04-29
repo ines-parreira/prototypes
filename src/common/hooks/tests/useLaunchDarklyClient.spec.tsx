@@ -1,3 +1,5 @@
+import { waitFor } from '@testing-library/react'
+
 import { getLDClient } from 'utils/launchDarkly'
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -20,17 +22,15 @@ describe('useLaunchDarklyClient', () => {
     })
 
     it('should initialize LaunchDarkly client and set the state correctly', async () => {
-        const { result, waitForNextUpdate } = renderHook(() =>
-            useLaunchDarklyClient(),
-        )
+        const { result } = renderHook(() => useLaunchDarklyClient())
 
         expect(result.current.ldClient).toBeNull()
         expect(result.current.isLdInitialized).toBe(false)
 
-        await waitForNextUpdate()
-
-        expect(result.current.ldClient).toBe(mockLDClient)
-        expect(result.current.isLdInitialized).toBe(true)
+        await waitFor(() => {
+            expect(result.current.ldClient).toBe(mockLDClient)
+            expect(result.current.isLdInitialized).toBe(true)
+        })
         expect(mockWaitForInitialization).toHaveBeenCalled()
     })
 

@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
 import { act } from '@testing-library/react-hooks'
 
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -31,16 +32,19 @@ describe('useMicrophonePermissions', () => {
             writable: true,
         })
 
-        const { waitForNextUpdate } = render()
+        render()
 
-        expect(queryPermissionsMock).toHaveBeenCalledTimes(1)
+        await waitFor(() => {
+            expect(queryPermissionsMock).toHaveBeenCalledTimes(1)
+        })
 
         await act(async () => {
-            await waitForNextUpdate()
             jest.advanceTimersByTime(5000)
         })
 
-        expect(queryPermissionsMock).toHaveBeenCalledTimes(2)
+        await waitFor(() => {
+            expect(queryPermissionsMock).toHaveBeenCalledTimes(2)
+        })
     })
 
     it('should support custom refetch interval', async () => {
@@ -54,16 +58,19 @@ describe('useMicrophonePermissions', () => {
             writable: true,
         })
 
-        const { waitForNextUpdate } = render(1000)
+        render(1000)
 
-        expect(queryPermissionsMock).toHaveBeenCalledTimes(1)
+        await waitFor(() => {
+            expect(queryPermissionsMock).toHaveBeenCalledTimes(1)
+        })
 
         await act(async () => {
-            await waitForNextUpdate()
             jest.advanceTimersByTime(1000)
         })
 
-        expect(queryPermissionsMock).toHaveBeenCalledTimes(2)
+        await waitFor(() => {
+            expect(queryPermissionsMock).toHaveBeenCalledTimes(2)
+        })
     })
 
     it('should return permissionDenied when permission is denied', async () => {
@@ -77,11 +84,11 @@ describe('useMicrophonePermissions', () => {
             writable: true,
         })
 
-        const { result, waitForNextUpdate } = render()
+        const { result } = render()
 
-        await waitForNextUpdate()
-
-        expect(result.current.permissionDenied).toBe(true)
+        await waitFor(() => {
+            expect(result.current.permissionDenied).toBe(true)
+        })
     })
 
     it('should not recheck permissions when permission is granted', async () => {
@@ -95,14 +102,15 @@ describe('useMicrophonePermissions', () => {
             writable: true,
         })
 
-        const { waitForNextUpdate } = render()
+        render()
 
         await act(async () => {
-            await waitForNextUpdate()
             jest.advanceTimersByTime(5000)
         })
 
-        expect(queryPermissionsMock).toHaveBeenCalledTimes(1)
+        await waitFor(() => {
+            expect(queryPermissionsMock).toHaveBeenCalledTimes(1)
+        })
     })
 
     it.each(['granted', 'prompt'])(
@@ -118,11 +126,11 @@ describe('useMicrophonePermissions', () => {
                 writable: true,
             })
 
-            const { result, waitForNextUpdate } = render()
+            const { result } = render()
 
-            await waitForNextUpdate()
-
-            expect(result.current.permissionDenied).toBe(false)
+            await waitFor(() => {
+                expect(result.current.permissionDenied).toBe(false)
+            })
         },
     )
 })

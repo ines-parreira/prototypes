@@ -1,6 +1,5 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
 import { act } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -79,18 +78,17 @@ describe('useGetAiAgentFeedback', () => {
             mockFeedback,
         )
 
-        const { result, waitForNextUpdate } = renderHook(
-            () => useGetAiAgentFeedback(),
-            { wrapper },
-        )
+        const { result } = renderHook(() => useGetAiAgentFeedback(), {
+            wrapper,
+        })
 
         expect(result.current.isLoading).toBe(true)
 
-        await waitForNextUpdate()
-
-        expect(result.current.isLoading).toBe(false)
-        expect(result.current.data).toBe(mockFeedback)
-        expect(getAIAgentTicketMessagesFeedback).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(false)
+            expect(result.current.data).toBe(mockFeedback)
+            expect(getAIAgentTicketMessagesFeedback).toHaveBeenCalled()
+        })
     })
 })
 

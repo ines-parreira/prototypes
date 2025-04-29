@@ -1,3 +1,4 @@
+import { waitFor } from '@testing-library/react'
 import { act } from '@testing-library/react-hooks'
 import { produce } from 'immer'
 import { ulid } from 'ulidx'
@@ -153,11 +154,13 @@ describe('useWorkflowEditor()', () => {
             }),
         } as unknown as ReturnType<typeof useUpsertWorkflowConfiguration>)
 
-        const { result, waitForNextUpdate } = renderHookWithQueryClientProvider(
-            () => useWorkflowEditor(configuration.id, false),
+        const { result } = renderHookWithQueryClientProvider(() =>
+            useWorkflowEditor(configuration.id, false),
         )
-        await waitForNextUpdate()
-        expect(result.current.configuration.is_draft).toBe(true)
+
+        await waitFor(() => {
+            expect(result.current.configuration.is_draft).toBe(true)
+        })
 
         await act(async () => {
             await result.current.handleSave()
@@ -168,9 +171,10 @@ describe('useWorkflowEditor()', () => {
             data: configuration,
         } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-        await waitForNextUpdate()
-        expect(result.current.configuration.is_draft).toBe(true)
-        expect(result.current.currentLanguage).toBe('en-US')
+        await waitFor(() => {
+            expect(result.current.configuration.is_draft).toBe(true)
+            expect(result.current.currentLanguage).toBe('en-US')
+        })
 
         await act(async () => {
             await result.current.handlePublish()
@@ -181,8 +185,9 @@ describe('useWorkflowEditor()', () => {
             data: configuration,
         } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-        await waitForNextUpdate()
-        expect(result.current.configuration.is_draft).toBe(false)
+        await waitFor(() => {
+            expect(result.current.configuration.is_draft).toBe(false)
+        })
     })
 
     it('should reflect changes on workflow name and language', async () => {
@@ -244,25 +249,26 @@ describe('useWorkflowEditor()', () => {
                 }),
         } as unknown as ReturnType<typeof useUpsertWorkflowConfiguration>)
 
-        const { result, waitForNextUpdate, rerender } =
-            renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(configuration.id, false),
-            )
+        const { result, rerender } = renderHookWithQueryClientProvider(() =>
+            useWorkflowEditor(configuration.id, false),
+        )
 
-        await waitForNextUpdate()
-        expect(result.current.isFetchPending).toBe(false)
-        expect(result.current.configuration.name).toBe('remote name')
-        expect(result.current.isDirty).toBe(false)
+        await waitFor(() => {
+            expect(result.current.isFetchPending).toBe(false)
+            expect(result.current.configuration.name).toBe('remote name')
+            expect(result.current.isDirty).toBe(false)
+        })
 
         act(() =>
             result.current.dispatch({ type: 'SET_NAME', name: 'local name' }),
         )
 
         rerender()
-        await waitForNextUpdate()
 
-        expect(result.current.visualBuilderGraph.name).toBe('local name')
-        expect(result.current.isDirty).toBe(true)
+        await waitFor(() => {
+            expect(result.current.visualBuilderGraph.name).toBe('local name')
+            expect(result.current.isDirty).toBe(true)
+        })
 
         await act(async () => {
             await result.current.handleSave()
@@ -274,27 +280,28 @@ describe('useWorkflowEditor()', () => {
             data: configuration,
         } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-        await waitForNextUpdate()
-        expect(result.current.isSavePending).toBe(false)
-        expect(result.current.isDirty).toBe(false)
-        expect(result.current.currentLanguage).toBe('en-US')
+        await waitFor(() => {
+            expect(result.current.isSavePending).toBe(false)
+            expect(result.current.isDirty).toBe(false)
+            expect(result.current.currentLanguage).toBe('en-US')
+        })
 
         act(() => {
             result.current.dispatch({ type: 'SET_NAME', name: 'updated' })
         })
 
-        await waitForNextUpdate()
-
-        expect(result.current.isDirty).toBe(true)
+        await waitFor(() => {
+            expect(result.current.isDirty).toBe(true)
+        })
 
         act(() => {
             result.current.handleDiscard()
         })
 
-        await waitForNextUpdate()
-
-        expect(result.current.isDirty).toBe(false)
-        expect(result.current.visualBuilderGraph.name).toBe('local name')
+        await waitFor(() => {
+            expect(result.current.isDirty).toBe(false)
+            expect(result.current.visualBuilderGraph.name).toBe('local name')
+        })
     })
 
     it('should keep selected language after saving configuration', async () => {
@@ -354,11 +361,13 @@ describe('useWorkflowEditor()', () => {
             }),
         } as unknown as ReturnType<typeof useUpsertWorkflowConfiguration>)
 
-        const { result, waitForNextUpdate } = renderHookWithQueryClientProvider(
-            () => useWorkflowEditor(configuration.id, false),
+        const { result } = renderHookWithQueryClientProvider(() =>
+            useWorkflowEditor(configuration.id, false),
         )
-        await waitForNextUpdate()
-        expect(result.current.currentLanguage).toBe('de-DE')
+
+        await waitFor(() => {
+            expect(result.current.currentLanguage).toBe('de-DE')
+        })
 
         await act(async () => {
             result.current.switchLanguage('pt-BR')
@@ -370,8 +379,9 @@ describe('useWorkflowEditor()', () => {
             data: configuration,
         } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-        await waitForNextUpdate()
-        expect(result.current.currentLanguage).toBe('pt-BR')
+        await waitFor(() => {
+            expect(result.current.currentLanguage).toBe('pt-BR')
+        })
     })
 
     it('should handle debounced validation with large workflow configuration', async () => {

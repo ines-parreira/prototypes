@@ -1,3 +1,4 @@
+import { waitFor } from '@testing-library/react'
 import { act } from '@testing-library/react-hooks'
 
 import { renderHook } from 'utils/testing/renderHook'
@@ -58,20 +59,22 @@ describe('useAsyncFn', () => {
         it('should resolve a value derived from args when invoked', async () => {
             const hook = renderUseAsyncFn()
 
-            expect.assertions(4)
-
             const [, callback] = hook.result.current
 
-            act(() => {
-                void callback(2, 7)
+            await act(async () => {
+                await callback(2, 7)
             })
+
             hook.rerender({ fn: (...args) => adder(...args) })
-            await hook.waitForNextUpdate()
+
+            await waitFor(() => {
+                const [state] = hook.result.current
+                expect(state.loading).toBe(false)
+            })
 
             const [state] = hook.result.current
 
             expect(adder).toBeCalledTimes(1)
-            expect(state.loading).toEqual(false)
             expect(state.error).toEqual(undefined)
             expect(state.value).toEqual(9)
         })
@@ -106,8 +109,9 @@ describe('useAsyncFn', () => {
             queuedPromises[1].resolve()
             queuedPromises[0].resolve()
         })
-        await hook.waitForNextUpdate()
-        expect(hook.result.current[0]).toEqual({ loading: false, value: 2 })
+        await waitFor(() => {
+            expect(hook.result.current[0]).toEqual({ loading: false, value: 2 })
+        })
     })
 
     it('should keep the value of initialState when loading', async () => {
@@ -132,8 +136,9 @@ describe('useAsyncFn', () => {
         expect(hook.result.current[0].loading).toBe(true)
         expect(hook.result.current[0].value).toBe('init state')
 
-        await hook.waitForNextUpdate()
-        expect(hook.result.current[0].loading).toBe(false)
-        expect(hook.result.current[0].value).toBe('new state')
+        await waitFor(() => {
+            expect(hook.result.current[0].loading).toBe(false)
+            expect(hook.result.current[0].value).toBe('new state')
+        })
     })
 })

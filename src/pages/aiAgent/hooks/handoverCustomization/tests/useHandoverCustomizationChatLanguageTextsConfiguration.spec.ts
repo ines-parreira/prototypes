@@ -104,19 +104,21 @@ describe('useHandoverCustomizationChatLanguageConfiguration', () => {
 
     describe('texts fetching', () => {
         it('should fetch application texts on mount', async () => {
-            const { waitForNextUpdate } = renderHook(() =>
+            renderHook(() =>
                 useHandoverCustomizationChatLanguageTextsConfiguration(
                     mockIntegration,
                 ),
             )
 
-            await waitForNextUpdate()
-
-            expect(mockGetApplicationTexts).toHaveBeenCalledWith('test-app-id')
+            await waitFor(() => {
+                expect(mockGetApplicationTexts).toHaveBeenCalledWith(
+                    'test-app-id',
+                )
+            })
         })
 
         it('should control the loading state during the fetching process', async () => {
-            const { result, waitForNextUpdate } = renderHook(() =>
+            const { result } = renderHook(() =>
                 useHandoverCustomizationChatLanguageTextsConfiguration(
                     mockIntegration,
                 ),
@@ -124,13 +126,13 @@ describe('useHandoverCustomizationChatLanguageConfiguration', () => {
 
             expect(result.current.isLoading).toBe(true)
 
-            await waitForNextUpdate()
-
-            expect(result.current.isLoading).toBe(false)
+            await waitFor(() => {
+                expect(result.current.isLoading).toBe(false)
+            })
         })
 
         it('should fetch new texts when integration changes', async () => {
-            const { rerender, waitForNextUpdate } = renderHook(
+            const { rerender } = renderHook(
                 ({ integration }) =>
                     useHandoverCustomizationChatLanguageTextsConfiguration(
                         integration,
@@ -138,9 +140,9 @@ describe('useHandoverCustomizationChatLanguageConfiguration', () => {
                 { initialProps: { integration: mockIntegration } },
             )
 
-            await waitForNextUpdate()
-
-            expect(mockGetApplicationTexts).toHaveBeenCalledTimes(1)
+            await waitFor(() => {
+                expect(mockGetApplicationTexts).toHaveBeenCalledTimes(1)
+            })
 
             const newIntegration = {
                 ...mockIntegration,
@@ -150,28 +152,30 @@ describe('useHandoverCustomizationChatLanguageConfiguration', () => {
 
             rerender({ integration: newIntegration as any })
 
-            await waitForNextUpdate()
-
-            expect(mockGetApplicationTexts).toHaveBeenCalledTimes(2)
-            expect(mockGetApplicationTexts).toHaveBeenCalledWith('new-app-id')
+            await waitFor(() => {
+                expect(mockGetApplicationTexts).toHaveBeenCalledTimes(2)
+                expect(mockGetApplicationTexts).toHaveBeenCalledWith(
+                    'new-app-id',
+                )
+            })
         })
 
         it('should handle loading error when fetching texts', async () => {
             mockGetApplicationTexts.mockRejectedValue(new Error('Test error'))
 
-            const { result, waitForNextUpdate } = renderHook(() =>
+            const { result } = renderHook(() =>
                 useHandoverCustomizationChatLanguageTextsConfiguration(
                     mockIntegration,
                 ),
             )
 
-            await waitForNextUpdate()
-
-            expect(result.current.hasLoadingError).toBe(true)
-            expect(result.current.isLoading).toBe(false)
-            expect(result.current.multiLanguageTexts).toEqual(
-                multiLanguageInitialTextsEmptyData,
-            )
+            await waitFor(() => {
+                expect(result.current.hasLoadingError).toBe(true)
+                expect(result.current.isLoading).toBe(false)
+                expect(result.current.multiLanguageTexts).toEqual(
+                    multiLanguageInitialTextsEmptyData,
+                )
+            })
         })
 
         it('should handle single language texts response when the response is single language', async () => {
@@ -179,23 +183,24 @@ describe('useHandoverCustomizationChatLanguageConfiguration', () => {
             mockGetApplicationTexts.mockResolvedValue(singleLanguageTexts)
             mockIsTextsMultiLanguage.mockReturnValue(false)
 
-            const { result, waitForNextUpdate } = renderHook(() =>
+            const { result } = renderHook(() =>
                 useHandoverCustomizationChatLanguageTextsConfiguration(
                     mockIntegration,
                 ),
             )
 
-            await waitForNextUpdate()
-
-            expect(mockIsTextsMultiLanguage).toHaveBeenCalledWith(
-                singleLanguageTexts,
-            )
-            expect(result.current.multiLanguageTexts).toHaveProperty(
-                LanguageChat.EnglishUs,
-            )
-            expect(
-                result.current.multiLanguageTexts[LanguageChat.EnglishUs].texts,
-            ).toEqual(singleLanguageTexts.texts)
+            await waitFor(() => {
+                expect(mockIsTextsMultiLanguage).toHaveBeenCalledWith(
+                    singleLanguageTexts,
+                )
+                expect(result.current.multiLanguageTexts).toHaveProperty(
+                    LanguageChat.EnglishUs,
+                )
+                expect(
+                    result.current.multiLanguageTexts[LanguageChat.EnglishUs]
+                        .texts,
+                ).toEqual(singleLanguageTexts.texts)
+            })
 
             // validate that the other languages are created and are empty
             for (const language of Object.keys(
@@ -217,25 +222,25 @@ describe('useHandoverCustomizationChatLanguageConfiguration', () => {
             mockGetApplicationTexts.mockResolvedValue(multiLanguageTexts)
             mockIsTextsMultiLanguage.mockReturnValue(true)
 
-            const { result, waitForNextUpdate } = renderHook(() =>
+            const { result } = renderHook(() =>
                 useHandoverCustomizationChatLanguageTextsConfiguration(
                     mockIntegration,
                 ),
             )
 
-            await waitForNextUpdate()
-
-            expect(result.current.multiLanguageTexts).toEqual(
-                multiLanguageTexts,
-            )
-            expect(
-                result.current.multiLanguageTexts[LanguageChat.EnglishUs].texts
-                    .offlineMessage,
-            ).toBe('Test offline message english')
-            expect(
-                result.current.multiLanguageTexts[LanguageChat.FrenchFr].texts
-                    .offlineMessage,
-            ).toBe('Test offline message french')
+            await waitFor(() => {
+                expect(result.current.multiLanguageTexts).toEqual(
+                    multiLanguageTexts,
+                )
+                expect(
+                    result.current.multiLanguageTexts[LanguageChat.EnglishUs]
+                        .texts.offlineMessage,
+                ).toBe('Test offline message english')
+                expect(
+                    result.current.multiLanguageTexts[LanguageChat.FrenchFr]
+                        .texts.offlineMessage,
+                ).toBe('Test offline message french')
+            })
 
             // languages with no texts should be empty
             for (const language of [
@@ -256,63 +261,61 @@ describe('useHandoverCustomizationChatLanguageConfiguration', () => {
 
     describe('Update texts', () => {
         it('should call integrationsActions.updateApplicationTexts with correct parameters when updateMultiLanguageTexts is called', async () => {
-            const { result, waitForNextUpdate } = renderHook(() =>
+            const { result } = renderHook(() =>
                 useHandoverCustomizationChatLanguageTextsConfiguration(
                     mockIntegration,
                 ),
             )
 
-            await waitForNextUpdate()
+            await waitFor(() => {
+                const updatedTexts = createMockTextsMultiLanguage()
+                updatedTexts[LanguageChat.EnglishUs].texts.offlineMessage =
+                    'Updated offline message english'
+                updatedTexts[LanguageChat.FrenchFr].texts.offlineMessage =
+                    'Updated offline message french'
 
-            const updatedTexts = createMockTextsMultiLanguage()
-            updatedTexts[LanguageChat.EnglishUs].texts.offlineMessage =
-                'Updated offline message english'
-            updatedTexts[LanguageChat.FrenchFr].texts.offlineMessage =
-                'Updated offline message french'
+                act(() => {
+                    result.current.updateMultiLanguageTexts(updatedTexts)
+                })
 
-            act(() => {
-                result.current.updateMultiLanguageTexts(updatedTexts)
+                expect(mockUpdateApplicationTexts).toHaveBeenCalledWith(
+                    'test-app-id',
+                    updatedTexts,
+                )
             })
-
-            expect(mockUpdateApplicationTexts).toHaveBeenCalledWith(
-                'test-app-id',
-                updatedTexts,
-            )
         })
 
         it('should update multiLanguageTexts state after successful update', async () => {
-            const { result, waitForNextUpdate } = renderHook(() =>
+            const { result } = renderHook(() =>
                 useHandoverCustomizationChatLanguageTextsConfiguration(
                     mockIntegration,
                 ),
             )
 
-            await waitForNextUpdate()
+            await waitFor(() => {
+                const updatedTexts = createMockTextsMultiLanguage()
+                updatedTexts[LanguageChat.EnglishUs].texts.offlineMessage =
+                    'Updated offline message english'
+                updatedTexts[LanguageChat.FrenchFr].texts.offlineMessage =
+                    'Updated offline message french'
 
-            const updatedTexts = createMockTextsMultiLanguage()
-            updatedTexts[LanguageChat.EnglishUs].texts.offlineMessage =
-                'Updated offline message english'
-            updatedTexts[LanguageChat.FrenchFr].texts.offlineMessage =
-                'Updated offline message french'
+                // Mock the update to return the updated texts
+                mockUpdateApplicationTexts.mockResolvedValue()
 
-            // Mock the update to return the updated texts
-            mockUpdateApplicationTexts.mockResolvedValue()
+                act(() => {
+                    result.current.updateMultiLanguageTexts(updatedTexts)
+                })
 
-            act(() => {
-                result.current.updateMultiLanguageTexts(updatedTexts)
+                expect(result.current.multiLanguageTexts).toEqual(updatedTexts)
+                expect(
+                    result.current.multiLanguageTexts[LanguageChat.EnglishUs]
+                        .texts.offlineMessage,
+                ).toBe('Updated offline message english')
+                expect(
+                    result.current.multiLanguageTexts[LanguageChat.FrenchFr]
+                        .texts.offlineMessage,
+                ).toBe('Updated offline message french')
             })
-
-            await waitForNextUpdate()
-
-            expect(result.current.multiLanguageTexts).toEqual(updatedTexts)
-            expect(
-                result.current.multiLanguageTexts[LanguageChat.EnglishUs].texts
-                    .offlineMessage,
-            ).toBe('Updated offline message english')
-            expect(
-                result.current.multiLanguageTexts[LanguageChat.FrenchFr].texts
-                    .offlineMessage,
-            ).toBe('Updated offline message french')
 
             // languages with no texts should be empty
             for (const language of [
@@ -331,13 +334,15 @@ describe('useHandoverCustomizationChatLanguageConfiguration', () => {
         })
 
         it('should handle axios error when updating application texts', async () => {
-            const { result, waitForNextUpdate } = renderHook(() =>
+            const { result } = renderHook(() =>
                 useHandoverCustomizationChatLanguageTextsConfiguration(
                     mockIntegration,
                 ),
             )
 
-            await waitForNextUpdate()
+            await waitFor(() => {
+                expect(result.current).toBeDefined()
+            })
 
             const expectedAxiosError = new AxiosError('Failed to update')
 
@@ -346,34 +351,38 @@ describe('useHandoverCustomizationChatLanguageConfiguration', () => {
                 'Failed to update with friendly message',
             )
 
+            let caughtError: unknown
+
             await act(async () => {
                 try {
                     await result.current.updateMultiLanguageTexts(
                         createMockTextsMultiLanguage(),
                     )
                 } catch (error) {
-                    expect(error).toBeInstanceOf(Error)
-                    const err = error as AxiosError
-
-                    expect(parseToFriendlyErrorMessage).toHaveBeenCalledWith(
-                        expectedAxiosError,
-                    )
-
-                    expect(err.message).toBe(
-                        'Failed to update with friendly message',
-                    )
+                    caughtError = error
                 }
             })
+
+            expect(caughtError).toBeInstanceOf(Error)
+
+            const err = caughtError as AxiosError
+
+            expect(parseToFriendlyErrorMessage).toHaveBeenCalledWith(
+                expectedAxiosError,
+            )
+            expect(err.message).toBe('Failed to update with friendly message')
         })
 
         it('should handle generic error when updating application texts', async () => {
-            const { result, waitForNextUpdate } = renderHook(() =>
+            const { result } = renderHook(() =>
                 useHandoverCustomizationChatLanguageTextsConfiguration(
                     mockIntegration,
                 ),
             )
 
-            await waitForNextUpdate()
+            await waitFor(() => {
+                expect(result.current).toBeDefined()
+            })
 
             const expectedGenericError = new Error('Failed to update')
 
@@ -417,13 +426,15 @@ describe('useHandoverCustomizationChatLanguageConfiguration', () => {
             )
 
             // Render the hook with initial state
-            const { result, waitForNextUpdate } = renderHook(() =>
+            const { result } = renderHook(() =>
                 useHandoverCustomizationChatLanguageTextsConfiguration(
                     mockIntegration,
                 ),
             )
 
-            await waitForNextUpdate()
+            await waitFor(() => {
+                expect(result.current).toBeDefined()
+            })
 
             //initial state
             expect(result.current.isLoading).toBe(false)

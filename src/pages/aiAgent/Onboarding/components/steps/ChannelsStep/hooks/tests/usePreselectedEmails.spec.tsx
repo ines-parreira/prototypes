@@ -1,6 +1,5 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
@@ -169,15 +168,16 @@ describe('usePreselectedEmails', () => {
                 },
             ])
 
-            const { result, waitForNextUpdate } = renderUsePreselectedEmails({
+            const { result } = renderUsePreselectedEmails({
                 storeId: 4,
                 onboardingEmailIntegrationIds: undefined,
                 shopifyIntegrations,
             })
 
             expect(result.current).toEqual([])
-            await waitForNextUpdate()
-            expect(result.current).toEqual([1])
+            await waitFor(() => {
+                expect(result.current).toEqual([1])
+            })
         })
     })
 })

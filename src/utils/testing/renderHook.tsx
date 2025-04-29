@@ -1,9 +1,26 @@
 import {
     renderHook as baseRenderHook,
+    RenderHookResult as BaseRenderHookResult,
     act as reactHooksAct,
     RenderHookOptions,
-    RenderHookResult,
 } from '@testing-library/react-hooks'
+
+/**
+ * @deprecated waitForNextUpdate is removed.
+ * Please use `waitFor` from '@testing-library/react' instead.
+ */
+export type WaitForNextUpdate = never
+
+export type RenderHookResult<Props, Result> = Omit<
+    BaseRenderHookResult<Props, Result>,
+    'waitForNextUpdate'
+> & {
+    /**
+     * @deprecated waitForNextUpdate is removed.
+     * Please use `waitFor` from '@testing-library/react' instead.
+     */
+    waitForNextUpdate?: WaitForNextUpdate
+}
 
 /**
  * Wrapper around `renderHook` that supports:
@@ -20,11 +37,10 @@ export function renderHook<Props, Result = unknown>(
     return baseRenderHook(callback, {
         wrapper: options?.wrapper,
         ...options,
-    })
+    }) as unknown as RenderHookResult<Props, Result>
 }
 
 // Re-export the current `act` from react-hooks (can be swapped later)
 export const act = reactHooksAct
 
-// Re-export these types for convenience
-export type { RenderHookOptions, RenderHookResult }
+export type { RenderHookOptions }

@@ -102,28 +102,27 @@ describe('useSettings', () => {
     })
 
     it('should return expected properties', async () => {
-        const { result, waitForNextUpdate } = renderHook(() => useSettings())
+        const { result } = renderHook(() => useSettings())
 
-        await act(async () => await waitForNextUpdate())
-
-        expect(result.current).toHaveProperty('save')
-        expect(result.current).toHaveProperty('settings')
-        expect(result.current).toHaveProperty('onChangeChannel')
-        expect(result.current).toHaveProperty('onChangeSound')
-        expect(result.current).toHaveProperty('onChangeVolume')
+        await waitFor(() => {
+            expect(result.current).toHaveProperty('save')
+            expect(result.current).toHaveProperty('settings')
+            expect(result.current).toHaveProperty('onChangeChannel')
+            expect(result.current).toHaveProperty('onChangeSound')
+            expect(result.current).toHaveProperty('onChangeVolume')
+        })
     })
 
     it.each(notificationsWithSettings.map((config) => [config.type]))(
         'should include %s event',
         async (notificationType) => {
-            const { result, waitForNextUpdate } = renderHook(() =>
-                useSettings(),
-            )
-            await act(async () => await waitForNextUpdate())
+            const { result } = renderHook(() => useSettings())
 
-            expect(
-                result.current.settings.events[notificationType],
-            ).toBeDefined()
+            await waitFor(() => {
+                expect(
+                    result.current.settings.events[notificationType],
+                ).toBeDefined()
+            })
         },
     )
 
@@ -136,13 +135,14 @@ describe('useSettings', () => {
             },
         })
 
-        const { result, waitForNextUpdate } = renderHook(() => useSettings())
+        const { result } = renderHook(() => useSettings())
 
-        await act(async () => await waitForNextUpdate())
-        expect(
-            result.current.settings.events['user.mentioned'].channels,
-        ).toEqual({
-            in_app_feed: true,
+        await waitFor(() => {
+            expect(
+                result.current.settings.events['user.mentioned'].channels,
+            ).toEqual({
+                in_app_feed: true,
+            })
         })
     })
 
@@ -161,20 +161,23 @@ describe('useSettings', () => {
             },
         })
 
-        const { result, waitForNextUpdate } = renderHook(() => useSettings())
+        const { result } = renderHook(() => useSettings())
 
-        await act(async () => await waitForNextUpdate())
-        expect(
-            result.current.settings.events['user.mentioned'].channels,
-        ).toEqual({
-            in_app_feed: true,
+        await waitFor(() => {
+            expect(
+                result.current.settings.events['user.mentioned'].channels,
+            ).toEqual({
+                in_app_feed: true,
+            })
         })
     })
 
     it('should update settings when handleChangeChannel is called', async () => {
-        const { result, waitForNextUpdate } = renderHook(() => useSettings())
+        const { result } = renderHook(() => useSettings())
 
-        await act(async () => await waitForNextUpdate())
+        await waitFor(() => {
+            expect(result.current.settings).toBeDefined()
+        })
 
         act(() => {
             result.current.onChangeChannel(
@@ -184,46 +187,54 @@ describe('useSettings', () => {
             )
         })
 
-        expect(
-            result.current.settings.events['user.mentioned'].channels[
-                'in_app_feed'
-            ],
-        ).toBe(false)
+        await waitFor(() => {
+            expect(
+                result.current.settings.events['user.mentioned'].channels[
+                    'in_app_feed'
+                ],
+            ).toBe(false)
+        })
     })
 
     it('should update settings when handleChangeSound is called', async () => {
-        const { result, waitForNextUpdate } = renderHook(() => useSettings())
+        const { result } = renderHook(() => useSettings())
 
-        await act(async () => await waitForNextUpdate())
-
-        act(() => {
+        await waitFor(() => {
             result.current.onChangeSound('user.mentioned', 'definite')
         })
 
-        expect(result.current.settings.events['user.mentioned'].sound).toBe(
-            'definite',
-        )
+        await waitFor(() => {
+            expect(result.current.settings.events['user.mentioned'].sound).toBe(
+                'definite',
+            )
+        })
     })
 
     it('should update settings when handleChangeVolume is called', async () => {
-        const { result, waitForNextUpdate } = renderHook(() => useSettings())
+        const { result } = renderHook(() => useSettings())
 
-        await act(async () => await waitForNextUpdate())
+        await waitFor(() => {
+            expect(result.current.settings).toBeDefined()
+        })
 
         act(() => {
             result.current.onChangeVolume(10)
         })
 
-        expect(result.current.settings.volume).toBe(10)
+        await waitFor(() => {
+            expect(result.current.settings.volume).toBe(10)
+        })
     })
 
     it('should save settings when save is called', async () => {
-        const { result, waitForNextUpdate } = renderHook(() => useSettings())
+        const { result } = renderHook(() => useSettings())
 
-        await act(async () => await waitForNextUpdate())
+        await waitFor(() => {
+            result.current.onChangeSound('user.mentioned', 'definite')
+        })
 
-        await act(async () => {
-            await result.current.save()
+        await waitFor(() => {
+            result.current.save()
         })
 
         await waitFor(() => {
@@ -255,9 +266,13 @@ describe('useSettings', () => {
             },
         })
 
-        const { result, waitForNextUpdate } = renderHook(() => useSettings())
+        const { result } = renderHook(() => useSettings())
 
-        await act(async () => await waitForNextUpdate())
+        await waitFor(() => {
+            expect(
+                Object.keys(result.current.settings.events).length,
+            ).toBeGreaterThan(0)
+        })
 
         act(() => {
             result.current.onChangeChannel(

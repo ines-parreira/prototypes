@@ -1,3 +1,5 @@
+import { waitFor } from '@testing-library/react'
+
 import { defaultEnrichmentFields } from 'hooks/reporting/useDrillDownData'
 import {
     fetchPostReporting,
@@ -45,16 +47,13 @@ describe('Reporting queries', () => {
 
     describe('usePostReporting', () => {
         it('should call postReporting and return the result', async () => {
-            const { result, waitForNextUpdate } = renderHook(
-                () => usePostReporting(cubeQueries),
-                {
-                    wrapper: mockQueryClientProvider(),
-                },
-            )
-            await waitForNextUpdate()
-
-            expect(postReportingMock).toHaveBeenCalledWith(cubeQueries)
-            expect(result.current.data?.data.data).toEqual([42])
+            const { result } = renderHook(() => usePostReporting(cubeQueries), {
+                wrapper: mockQueryClientProvider(),
+            })
+            await waitFor(() => {
+                expect(postReportingMock).toHaveBeenCalledWith(cubeQueries)
+                expect(result.current.data?.data.data).toEqual([42])
+            })
         })
     })
 
@@ -65,18 +64,15 @@ describe('Reporting queries', () => {
                 enrichment_fields: defaultEnrichmentFields,
             }
 
-            const { waitForNextUpdate } = renderHook(
-                () => useEnrichedPostReporting(payload),
-                {
-                    wrapper: mockQueryClientProvider(),
-                },
-            )
-            await waitForNextUpdate()
-
-            expect(postEnrichedReportingMock).toHaveBeenCalledWith(
-                payload.query,
-                payload.enrichment_fields,
-            )
+            renderHook(() => useEnrichedPostReporting(payload), {
+                wrapper: mockQueryClientProvider(),
+            })
+            await waitFor(() => {
+                expect(postEnrichedReportingMock).toHaveBeenCalledWith(
+                    payload.query,
+                    payload.enrichment_fields,
+                )
+            })
         })
     })
 

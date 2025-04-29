@@ -1,5 +1,6 @@
 import { KeyboardEvent } from 'react'
 
+import { waitFor } from '@testing-library/react'
 import { act } from '@testing-library/react-hooks'
 
 import { customer } from 'fixtures/customer'
@@ -200,6 +201,7 @@ describe('useSearch', () => {
             }: {
                 useState: (value: unknown) => [string, (value: string) => void]
             } = jest.requireActual('react')
+
             const [state, setState] = useState('foo')
             return {
                 state,
@@ -208,9 +210,12 @@ describe('useSearch', () => {
             }
         })
 
-        const { result, waitForNextUpdate } = renderHook(() => useSearch())
+        const { result } = renderHook(() => useSearch())
 
-        await act(async () => await waitForNextUpdate())
+        await waitFor(() => {
+            expect(result.current.searchQuery).toBeDefined()
+        })
+
         act(() => {
             result.current.reinitializeSearchQuery()
         })

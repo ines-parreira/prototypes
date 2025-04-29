@@ -1,6 +1,7 @@
 import React, { ReactChildren } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
 import { act } from '@testing-library/react-hooks'
 import { strict as assert } from 'assert'
 import { ulid } from 'ulidx'
@@ -108,43 +109,51 @@ describe('useWorkflowTranslations', () => {
     })
 
     it('loads translations', async () => {
-        const { result, waitForNextUpdate } = renderHook(
+        const { result } = renderHook(
             () => useWorkflowTranslations('id', ['en-US'], false, true),
             renderHookOptions,
         )
-        await waitForNextUpdate()
-        expect(result.current).toEqual(
-            expect.objectContaining({
-                currentLanguage: 'en-US',
-                areTranslationsDirty: false,
-            }),
-        )
+        await waitFor(() => {
+            expect(result.current).toEqual(
+                expect.objectContaining({
+                    currentLanguage: 'en-US',
+                    areTranslationsDirty: false,
+                }),
+            )
+        })
     })
 
     it('switch language then discard changes', async () => {
-        const { result, waitForNextUpdate } = renderHook(
+        const { result } = renderHook(
             () => useWorkflowTranslations('id', ['en-US'], false, true),
             renderHookOptions,
         )
-        await waitForNextUpdate()
+
+        await waitFor(() => {
+            expect(result.current.currentLanguage).toBe('en-US')
+        })
 
         act(() => {
             graph = result.current.switchLanguage(graph, 'fr-FR')
         })
+
         expect(
             graph.nodes[0].type === 'channel_trigger' &&
                 graph.nodes[0].data.label === '',
         ).toBeTruthy()
+
         expect(result.current).toEqual(
             expect.objectContaining({
                 currentLanguage: 'fr-FR',
                 areTranslationsDirty: true,
             }),
         )
+
         // discard
         act(() => {
             result.current.discardTranslations()
         })
+
         expect(result.current).toEqual(
             expect.objectContaining({
                 currentLanguage: 'en-US',
@@ -154,7 +163,7 @@ describe('useWorkflowTranslations', () => {
     })
 
     it('saves translations', async () => {
-        const { result, waitForNextUpdate, rerender } = renderHook(
+        const { result, rerender } = renderHook(
             (availableLanguages: LanguageCode[]) =>
                 useWorkflowTranslations('id', availableLanguages, false, true),
             {
@@ -162,13 +171,17 @@ describe('useWorkflowTranslations', () => {
                 ...renderHookOptions,
             } as any,
         )
-        await waitForNextUpdate()
+
+        await waitFor(() => {
+            expect(result.current.currentLanguage).toBe('en-US')
+        })
+
         act(() => {
             graph = result.current.switchLanguage(graph, 'fr-FR')
         })
-        // we switched to french that was not existing in available_languages, now it exists
-        // we simulate the prop change passed as hook argument
+
         rerender(['en-US', 'fr-FR'])
+
         assert(graph.nodes[0].type === 'channel_trigger')
         graph.nodes[0].data.label = 'french text'
 
@@ -190,25 +203,29 @@ describe('useWorkflowTranslations', () => {
     })
 
     it('removes stale translations', async () => {
-        const { result, waitForNextUpdate, rerender } = renderHook(
+        const { result, rerender } = renderHook(
             (availableLanguages: LanguageCode[]) =>
                 useWorkflowTranslations('id', availableLanguages, false, true),
             {
-                ...renderHookOptions,
                 initialProps: ['en-US'] as LanguageCode[],
+                ...renderHookOptions,
             } as any,
         )
-        await waitForNextUpdate()
+
+        await waitFor(() => {
+            expect(result.current.currentLanguage).toBe('en-US')
+        })
+
         act(() => {
             graph = result.current.switchLanguage(graph, 'fr-FR')
         })
-        // we switched to french that was not existing in available_languages, now it exists
-        // we simulate the prop change passed as hook argument
+
         rerender(['en-US', 'fr-FR'])
+
         assert(graph.nodes[0].type === 'channel_trigger')
         graph.nodes[0].data.label = 'french text'
 
-        // remove node
+        // Remove one node
         graph.nodes.splice(1, 1)
 
         await act(async () => {

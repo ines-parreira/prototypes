@@ -1,3 +1,4 @@
+import { waitFor } from '@testing-library/react'
 import { act } from '@testing-library/react-hooks'
 
 import { ShopifyIntegration } from 'models/integration/types'
@@ -61,20 +62,20 @@ describe('useShopifyThemeAppExtension', () => {
             shouldUseThemeAppExtensionInstallation: true,
         })
 
-        const { result, waitForNextUpdate } = renderHook(() =>
+        const { result } = renderHook(() =>
             useShopifyThemeAppExtension({
                 shopifyIntegration: { id: 123 } as ShopifyIntegration,
                 appUuid: 'appUuid',
             }),
         )
 
-        await waitForNextUpdate()
-
-        expect(global.fetch).toHaveBeenCalledTimes(1)
-        expect(global.fetch).toHaveBeenCalledWith(
-            '/integrations/shopify/123/gorgias-theme-app-extension/status/appUuid',
-        )
-        expect(result.current.isInstalled).toBe(true)
+        await waitFor(() => {
+            expect(global.fetch).toHaveBeenCalledTimes(1)
+            expect(global.fetch).toHaveBeenCalledWith(
+                '/integrations/shopify/123/gorgias-theme-app-extension/status/appUuid',
+            )
+            expect(result.current.isInstalled).toBe(true)
+        })
     })
 
     it('should handle fetch error', async () => {
