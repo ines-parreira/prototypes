@@ -51,6 +51,7 @@ export type RuleEngineData = {
     ticketView: TicketViewData
     pageInteractions: PageInteractionsData
     isActivationEnabled: boolean
+    isConvertFloatingChatInputEnabled: boolean
 }
 
 export type RuleEngineRoutes = {

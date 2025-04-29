@@ -149,8 +149,8 @@ describe('usePendingTasksRuleEngine', () => {
     it.each([
         {
             scopes: [AiAgentScope.Support, AiAgentScope.Sales],
-            pendingTasks: 7,
-            completedTasks: 13,
+            pendingTasks: 6,
+            completedTasks: 14,
         },
         {
             scopes: [AiAgentScope.Support],

@@ -18,10 +18,11 @@ import { assumeMock, mockStore } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('models/aiAgent/queries')
+jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
+
 const useGetStoresConfigurationForAccountMock = assumeMock(
     useGetStoresConfigurationForAccount,
 )
-
 describe('useAiAgentType', () => {
     describe('getAiAgentTypeFromScopes', () => {
         it('should return undefined when empty scope list', () => {

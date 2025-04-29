@@ -14,6 +14,7 @@ describe('EnableInputLauncherOnChatTask', () => {
         const task = new EnableInputLauncherOnChatTask(
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
+                isConvertFloatingChatInputEnabled: true,
             }),
             buildRuleEngineRoutes(),
         )
@@ -29,6 +30,7 @@ describe('EnableInputLauncherOnChatTask', () => {
         const task = new EnableInputLauncherOnChatTask(
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
+                isConvertFloatingChatInputEnabled: false,
             }),
             buildRuleEngineRoutes(),
         )
@@ -45,6 +47,7 @@ describe('EnableInputLauncherOnChatTask', () => {
         const task = new EnableInputLauncherOnChatTask(
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
+                isConvertFloatingChatInputEnabled: false,
             }),
             buildRuleEngineRoutes(),
         )

@@ -152,6 +152,9 @@ const useNavigationItems = (
     const isSalesMetricsEnabled =
         !!flags[FeatureFlagKey.StandaloneAIAgentSalesMetrics]
 
+    const isConvertFloatingChatInputEnabled =
+        !!flags[FeatureFlagKey.ConvertFloatingChatInput]
+
     return useMemo<NavigationItem[]>(() => {
         if (isStandaloneMenuEnabled) {
             return [
@@ -213,7 +216,9 @@ const useNavigationItems = (
                     title: SALES,
                     dataCanduId: 'ai-agent-navbar-sales',
                     items:
-                        isSalesMetricsEnabled || isConversationStartersEnabled
+                        isSalesMetricsEnabled ||
+                        isConversationStartersEnabled ||
+                        isConvertFloatingChatInputEnabled
                             ? ([
                                   (isSalesMetricsEnabled ||
                                       isConversationStartersEnabled) && {
@@ -221,7 +226,8 @@ const useNavigationItems = (
                                       title: STRATEGY,
                                       exact: true,
                                   },
-                                  isConversationStartersEnabled && {
+                                  (isConvertFloatingChatInputEnabled ||
+                                      isConversationStartersEnabled) && {
                                       route: routes.volume,
                                       title: VOLUME,
                                   },
@@ -293,6 +299,7 @@ const useNavigationItems = (
         isSalesMetricsEnabled,
         isGorgiasUser,
         isStandaloneMenuEnabled,
+        isConvertFloatingChatInputEnabled,
         routes,
     ])
 }

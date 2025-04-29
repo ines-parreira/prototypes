@@ -146,6 +146,10 @@ export const usePendingTasksRuleEngine = ({
     })
 
     const isActivationEnabled = useFlag(FeatureFlagKey.AiAgentActivation, false)
+    const isConvertFloatingChatInputEnabled = useFlag(
+        FeatureFlagKey.ConvertFloatingChatInput,
+        false,
+    )
 
     useEffect(() => {
         if (isReady) {
@@ -166,6 +170,7 @@ export const usePendingTasksRuleEngine = ({
                         ticketView: ticketViewData,
                         pageInteractions: pageInteractionsData,
                         isActivationEnabled,
+                        isConvertFloatingChatInputEnabled,
                     },
                     {
                         aiAgentRoutes: routes,
@@ -187,6 +192,7 @@ export const usePendingTasksRuleEngine = ({
         ticketViewData,
         pageInteractionsData,
         isActivationEnabled,
+        isConvertFloatingChatInputEnabled,
     ]) /* eslint-enable react-hooks/exhaustive-deps */
 
     if (shouldFakeTasks) {

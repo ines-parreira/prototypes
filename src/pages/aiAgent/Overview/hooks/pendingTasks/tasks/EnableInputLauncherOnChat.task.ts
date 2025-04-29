@@ -17,6 +17,7 @@ export class EnableInputLauncherOnChatTask extends Task {
     // No guidances including draft ones
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
         return (
+            data.isConvertFloatingChatInputEnabled &&
             data.aiAgentStoreConfiguration.scopes.includes(
                 AiAgentScope.Sales,
             ) &&
