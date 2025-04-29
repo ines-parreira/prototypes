@@ -8,6 +8,7 @@ import {
     IngestionLogStatus,
     POLLING_INTERVAL,
 } from '../AiAgentScrapedDomainContent/constant'
+import { getTheLatestIngestionLog } from '../AiAgentScrapedDomainContent/utils'
 
 export const useGetStoreDomainIngestionLog = ({
     helpCenterId,
@@ -31,22 +32,28 @@ export const useGetStoreDomainIngestionLog = ({
             enabled: !!storeUrl,
             refetchOnWindowFocus: false,
             refetchInterval: (data) => {
-                const log = data?.find(
+                const logs = data?.filter(
                     (log) => log.source === 'domain' && log.url === storeUrl,
                 )
-                return shouldPoll && log?.status === IngestionLogStatus.Pending
+                const latestLog = getTheLatestIngestionLog(logs)
+                return shouldPoll &&
+                    latestLog?.status === IngestionLogStatus.Pending
                     ? POLLING_INTERVAL
                     : false
             },
         },
     )
 
-    const storeDomainIngestionLog = useMemo(
+    const storeDomainIngestionLogs = useMemo(
         () =>
-            ingestionLogs?.find(
+            ingestionLogs?.filter(
                 (log) => log.source === 'domain' && log.url === storeUrl,
             ),
         [ingestionLogs, storeUrl],
+    )
+
+    const storeDomainIngestionLog = getTheLatestIngestionLog(
+        storeDomainIngestionLogs,
     )
 
     useEffect(() => {

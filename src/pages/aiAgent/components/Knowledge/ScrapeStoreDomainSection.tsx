@@ -1,10 +1,12 @@
-import { Button, Label } from '@gorgias/merchant-ui-kit'
+import { Button, Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useId from 'hooks/useId'
 import SyncDomainConfirmationModal from 'pages/aiAgent/AiAgentScrapedDomainContent/SyncDomainConfirmationModal'
 import {
     getFormattedSyncDate,
     getFormattedSyncDatetime,
+    getNextSyncDate,
+    isSyncLessThan24Hours,
 } from 'pages/aiAgent/AiAgentScrapedDomainContent/utils'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { usePollStoreDomainIngestionLog } from 'pages/aiAgent/hooks/usePollStoreDomainIngestionLog'
@@ -27,6 +29,7 @@ export const ScrapeStoreDomainSection = ({
 }: Props) => {
     const id = useId()
     const syncDateId = `syncDate-${id}`
+    const syncButtonId = `syncButton-${id}`
 
     const { routes } = useAiAgentNavigation({ shopName })
     const onManage = () => {
@@ -54,6 +57,8 @@ export const ScrapeStoreDomainSection = ({
     const latestSync = storeDomainIngestionLog?.latest_sync
     const syncDateString = getFormattedSyncDate(latestSync)
     const syncDateTimeString = getFormattedSyncDatetime(latestSync)
+    const isSyncLessThan24h = isSyncLessThan24Hours(latestSync)
+    const nextSyncDate = getNextSyncDate(latestSync)
 
     return (
         <>
@@ -91,15 +96,25 @@ export const ScrapeStoreDomainSection = ({
                     )}
                     <div>
                         <Button
+                            id={syncButtonId}
                             intent="secondary"
                             fillStyle="ghost"
                             onClick={handleTriggerSync}
                             leadingIcon="sync"
                             isLoading={syncIsPending}
-                            isDisabled={!storeDomain || isFetchLoading}
+                            isDisabled={
+                                !storeDomain ||
+                                isFetchLoading ||
+                                isSyncLessThan24h
+                            }
                         >
                             Sync
                         </Button>
+                        {isSyncLessThan24h && (
+                            <Tooltip target={syncButtonId}>
+                                {`Your store website was synced less than 24h ago. You can sync again on ${nextSyncDate}.`}
+                            </Tooltip>
+                        )}
                         <Button
                             intent="primary"
                             fillStyle="ghost"
