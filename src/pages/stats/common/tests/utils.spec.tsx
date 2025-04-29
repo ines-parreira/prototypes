@@ -470,6 +470,7 @@ describe('stats components utils', () => {
             ])
         })
     })
+
     describe('periodPickerMaxSpanDays', () => {
         it('returns placeholder when no max span and no min date provided', () => {
             expect(periodPickerMaxSpanDays()).toEqual(NOT_AVAILABLE_PLACEHOLDER)

@@ -14,15 +14,18 @@ import { TicketTimeReference } from 'models/stat/types'
 import { TICKET_CUSTOM_FIELDS_NEW_SEPARATOR } from 'pages/stats/utils'
 
 const DATASET_VISIBILITY_ITEMS = 3
+const DEFAULT_TOP_AMOUNT = 10
 
 export const useCustomFieldsTimeSeries = ({
     selectedCustomFieldId,
     ticketFieldsTicketTimeReference,
-    topAmount = 10,
+    topAmount = DEFAULT_TOP_AMOUNT,
+    datasetVisibilityItems = DATASET_VISIBILITY_ITEMS,
 }: {
     selectedCustomFieldId: number | null
     ticketFieldsTicketTimeReference?: TicketTimeReference
     topAmount?: number
+    datasetVisibilityItems?: number
 }) => {
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
 
@@ -86,10 +89,17 @@ export const useCustomFieldsTimeSeries = ({
             legendDatasetVisibility: _fromPairs(
                 topData.map((_, index) => [
                     index,
-                    index < DATASET_VISIBILITY_ITEMS,
+                    index < datasetVisibilityItems,
                 ]),
             ),
         }),
-        [sortedData, granularity, isFetching, topAmount, topData],
+        [
+            sortedData,
+            granularity,
+            isFetching,
+            topAmount,
+            topData,
+            datasetVisibilityItems,
+        ],
     )
 }

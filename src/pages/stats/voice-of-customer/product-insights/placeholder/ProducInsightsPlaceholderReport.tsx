@@ -5,10 +5,8 @@ import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/common/layout/DashboardGridCell'
 import DashboardSection from 'pages/stats/common/layout/DashboardSection'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
-import {
-    ProductInsightsChart,
-    ProductInsightsPlaceholderReportConfig,
-} from 'pages/stats/voice-of-customer/product-insights/placeholder/ProductInsightsReportConfig'
+import { ProductInsightsChart } from 'pages/stats/voice-of-customer/product-insights/ProductInsightsMetricConfig'
+import { ProductInsightsPlaceholderReportConfig } from 'pages/stats/voice-of-customer/product-insights/ProductInsightsReportConfig'
 
 export const ProductInsightsPlaceholderReport = () => {
     const getGridCellSize = useGridSize()
@@ -49,6 +47,15 @@ export const ProductInsightsPlaceholderReport = () => {
                 <DashboardGridCell size={getGridCellSize(6)}>
                     <DashboardComponent
                         chart={ProductInsightsChart.TicketVolumeChart}
+                        config={ProductInsightsPlaceholderReportConfig}
+                    />
+                </DashboardGridCell>
+                <DashboardGridCell size={getGridCellSize(6)}>
+                    <div>Top products per AI Intent </div>
+                </DashboardGridCell>
+                <DashboardGridCell size={getGridCellSize(6)}>
+                    <DashboardComponent
+                        chart={ProductInsightsChart.TopAIIntentsOverTimeChart}
                         config={ProductInsightsPlaceholderReportConfig}
                     />
                 </DashboardGridCell>

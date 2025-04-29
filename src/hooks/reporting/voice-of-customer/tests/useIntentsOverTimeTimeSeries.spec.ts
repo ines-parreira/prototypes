@@ -39,6 +39,7 @@ describe('useIntentsOverTimeTimeSeries', () => {
         expect(useCustomFieldsTrendMock).toHaveBeenCalledWith({
             selectedCustomFieldId: 2,
             ticketFieldsTicketTimeReference: TicketTimeReference.CreatedAt,
+            datasetVisibilityItems: 5,
             topAmount: 5,
         })
         expect(result.current).toEqual(response)

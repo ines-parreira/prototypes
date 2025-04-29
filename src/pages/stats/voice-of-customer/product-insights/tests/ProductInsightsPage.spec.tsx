@@ -9,6 +9,7 @@ import { ReportingGranularity } from 'models/reporting/types'
 import { DrillDownModal } from 'pages/stats/common/drill-down/DrillDownModal'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import { TopAIIntentsOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TopAIIntentsOverTimeChart'
 import { ProductInsightsEditColumns } from 'pages/stats/voice-of-customer/product-insights/placeholder/ProductInsightsEditColumns'
 import {
     PRODUCT_INSIGHTS_PAGE_TITLE,
@@ -25,6 +26,10 @@ jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 jest.mock('hooks/reporting/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)
+jest.mock(
+    'pages/stats/voice-of-customer/product-insights/components/TopAIIntentsOverTimeChart',
+)
+const TopAIIntentsOverTimeChartMock = assumeMock(TopAIIntentsOverTimeChart)
 
 jest.mock(
     'pages/stats/voice-of-customer/product-insights/placeholder/ProductInsightsEditColumns',
@@ -46,6 +51,7 @@ describe('ProductInsightsPage', () => {
         ProductInsightsEditColumnsMock.mockImplementation(() => <div />)
         DrillDownModalMock.mockImplementation(() => <div />)
         FiltersPanelWrapperMock.mockImplementation(() => <div />)
+        TopAIIntentsOverTimeChartMock.mockImplementation(() => <div />)
         useStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: statsFilters,
             userTimezone: 'UTC',
@@ -64,5 +70,14 @@ describe('ProductInsightsPage', () => {
         expect(
             screen.queryByText(PRODUCT_INSIGHTS_PAGE_TITLE, { exact: false }),
         ).toBeTruthy()
+    })
+
+    it('should render children charts', () => {
+        renderWithStore(<ProductInsightsPage />, state)
+
+        expect(ProductInsightsEditColumnsMock).toHaveBeenCalled()
+        expect(DrillDownModalMock).toHaveBeenCalled()
+        expect(FiltersPanelWrapperMock).toHaveBeenCalled()
+        expect(TopAIIntentsOverTimeChartMock).toHaveBeenCalled()
     })
 })

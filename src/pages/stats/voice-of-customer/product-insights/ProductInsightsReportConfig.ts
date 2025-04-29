@@ -3,6 +3,7 @@ import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import { ReportsIDs } from 'pages/stats/dashboards/constants'
 import { ChartType, ReportConfig } from 'pages/stats/dashboards/types'
 import { AGENT_PERFORMANCE_SECTION_TITLE } from 'pages/stats/support-performance/agents/AgentsTableChart'
+import { TopAIIntentsOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TopAIIntentsOverTimeChart'
 import { TICKET_VOLUME_CHART_LABEL } from 'pages/stats/voice-of-customer/product-insights/constants'
 import { ProductInsightsTableChart } from 'pages/stats/voice-of-customer/product-insights/placeholder/ProductInsightsTableChart'
 import { TicketVolumeChart } from 'pages/stats/voice-of-customer/product-insights/placeholder/TicketVolumeChart'
@@ -10,16 +11,15 @@ import {
     CHART_TITLE,
     TotalProductSentimentOverTimeChartPlaceholder,
 } from 'pages/stats/voice-of-customer/product-insights/placeholder/TotalProductSentimentOverTimeChartPlaceholder'
+import {
+    ProductInsightsChart,
+    ProductInsightsMetricConfig,
+} from 'pages/stats/voice-of-customer/product-insights/ProductInsightsMetricConfig'
 import { VOICE_OF_CUSTOMER_ROUTES } from 'routes/constants'
-
-export enum ProductInsightsChart {
-    TotalProductSentimentOverTimeChartPlaceholder = 'total_product_sentiment_over_time_chart_placeholder',
-    ProductInsightsTableChartPlaceholder = 'product_insights_table_chart_placeholder',
-    TicketVolumeChart = 'ticket_volume_chart',
-}
 
 export const PRODUCT_INSIGHTS_PERSISTENT_FILTERS: StaticFilter[] = [
     FilterKey.Period,
+    FilterKey.AggregationWindow,
 ]
 
 export const PRODUCT_INSIGHTS_OPTIONAL_FILTERS = [
@@ -60,6 +60,18 @@ export const ProductInsightsPlaceholderReportConfig: ReportConfig<ProductInsight
                 description: TICKET_VOLUME_CHART_LABEL,
                 csvProducer: null,
                 chartType: ChartType.Table,
+            },
+            [ProductInsightsChart.TopAIIntentsOverTimeChart]: {
+                chartComponent: TopAIIntentsOverTimeChart,
+                label: ProductInsightsMetricConfig[
+                    ProductInsightsChart.TopAIIntentsOverTimeChart
+                ].title,
+                description:
+                    ProductInsightsMetricConfig[
+                        ProductInsightsChart.TopAIIntentsOverTimeChart
+                    ].hint,
+                csvProducer: null,
+                chartType: ChartType.Graph,
             },
         },
         reportFilters: {
