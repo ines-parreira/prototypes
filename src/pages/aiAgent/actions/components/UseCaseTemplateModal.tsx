@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { ulid } from 'ulidx'
 
-import { Chip, Label, Skeleton } from '@gorgias/merchant-ui-kit'
+import { Button, Chip, Label, Skeleton } from '@gorgias/merchant-ui-kit'
 
 import orderSelectionIcon from 'assets/img/workflows/icons/order-selection-sm-neutral.svg'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
@@ -33,7 +33,6 @@ import {
     transformWorkflowConfigurationIntoVisualBuilderGraph,
     WorkflowConfigurationBuilder,
 } from 'pages/automate/workflows/models/workflowConfiguration.model'
-import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -178,10 +177,22 @@ const UseCaseTemplateModal = ({ template, onClose }: Props) => {
 
     return (
         <Modal isOpen onClose={onClose} size="medium">
-            <ModalHeader title={template.name} />
+            <ModalHeader
+                title={
+                    <div>
+                        {template.name}
+                        <div
+                            data-candu-id={`action-libray-use-cases-modal-header-${template.id}`}
+                        />
+                    </div>
+                }
+            />
             <ModalBody>
                 {step === 'selection' ? (
                     <>
+                        <div
+                            data-candu-id={`action-libray-use-cases-modal-selection-${template.id}`}
+                        />
                         <Label className={css.label}>
                             First, select the apps you need to perform this
                             Action
@@ -316,10 +327,13 @@ const UseCaseTemplateModal = ({ template, onClose }: Props) => {
                                 )
                             })}
                         </div>
-                        <div data-candu-id="action-libray-use-cases-modal"></div>
                     </>
                 ) : (
                     <div className={css.container}>
+                        <div
+                            data-candu-id={`action-libray-use-cases-modal-confirmation-${template.id}`}
+                        />
+
                         <div>
                             <Label className={css.label}>
                                 AI Agent will perform the following steps

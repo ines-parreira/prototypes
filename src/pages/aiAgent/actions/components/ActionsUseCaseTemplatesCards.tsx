@@ -1,15 +1,17 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import classnames from 'classnames'
 import _orderBy from 'lodash/orderBy'
 import { useHistory, useParams } from 'react-router-dom'
 
+import { Button } from '@gorgias/merchant-ui-kit'
+
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
 import { ActionTemplate } from 'pages/automate/actionsPlatform/types'
-import Button from 'pages/common/components/button/Button'
 import { TemplateCard } from 'pages/common/components/TemplateCard'
 
+import { useSearchParam } from '../../../../hooks/useSearchParam'
 import UseCaseTemplateCard from './UseCaseTemplateCard'
 
 import css from './ActionsUseCaseTemplatesCards.less'
@@ -27,7 +29,10 @@ const ActionsUseCaseTemplatesCards = ({
 }: Props) => {
     const history = useHistory()
 
-    const { shopName } = useParams<{ shopName: string }>()
+    const { shopName } = useParams<{
+        shopName: string
+    }>()
+    const [templateId] = useSearchParam('use_case_template')
     const { routes } = useAiAgentNavigation({ shopName })
 
     const getIsActionStepEnabled = useGetIsActionStepEnabled()
@@ -59,7 +64,11 @@ const ActionsUseCaseTemplatesCards = ({
     return (
         <div className={css.container}>
             {sortedTemplates.slice(0, max).map((template) => (
-                <UseCaseTemplateCard key={template.id} template={template} />
+                <UseCaseTemplateCard
+                    key={template.id}
+                    template={template}
+                    isOpenDefault={templateId === template.id}
+                />
             ))}
             {sortedTemplates.length > max && (
                 <div className={css.seeAll}>

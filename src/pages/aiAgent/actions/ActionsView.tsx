@@ -98,6 +98,7 @@ const ActionsView = () => {
                                 <BrowseAllActionsButton />
                             </div>
                         </div>
+                        <div data-candu-id="action-use-case-recommendations" />
                         <ActionsList actions={storeWfConfigurations} />
                     </div>
                 </StoreTrackstarProvider>

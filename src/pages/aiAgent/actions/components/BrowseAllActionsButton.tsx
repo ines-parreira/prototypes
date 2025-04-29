@@ -1,7 +1,8 @@
 import { Link, useParams } from 'react-router-dom'
 
+import { Button } from '@gorgias/merchant-ui-kit'
+
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import Button from 'pages/common/components/button/Button'
 
 export default function BrowseAllActionsButton() {
     const { shopName } = useParams<{
