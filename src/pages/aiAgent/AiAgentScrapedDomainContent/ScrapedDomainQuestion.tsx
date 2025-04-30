@@ -85,7 +85,7 @@ const ScrapedDomainQuestion = ({ question, detail, onUpdateStatus }: Props) => {
             </div>
             <div className={css.contentBody}>
                 <div className={css.bodySemibold}>Answer</div>
-                <div>{detail?.translation.excerpt}</div>
+                <div>{detail?.translation.content}</div>
             </div>
             <div>
                 <ControlledCollapsibleDetails
