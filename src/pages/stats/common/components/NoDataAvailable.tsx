@@ -1,17 +1,23 @@
+import { CSSProperties } from 'react'
+
 import classnames from 'classnames'
 
-import css from './NoDataAvailable.less'
+import css from 'pages/stats/common/components/NoDataAvailable.less'
 
 type Props = {
     title?: string
     description?: string
     className?: string
-    style?: React.CSSProperties
+    style?: CSSProperties
 }
 
+export const NO_DATA_AVAILABLE_COMPONENT_TITLE = 'No data available'
+export const NO_DATA_AVAILABLE_COMPONENT_TEXT =
+    'Try adjusting filters to get results.'
+
 export function NoDataAvailable({
-    title = 'No data available',
-    description = 'Try adjusting filters to get results.',
+    title = NO_DATA_AVAILABLE_COMPONENT_TITLE,
+    description = NO_DATA_AVAILABLE_COMPONENT_TEXT,
     className,
     style,
 }: Props) {

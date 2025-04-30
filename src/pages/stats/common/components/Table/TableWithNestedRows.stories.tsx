@@ -89,7 +89,6 @@ const exampleColumnConfig = {
 }
 
 const defaultProps: Partial<ComponentProps<typeof TableWithNestedRows>> = {
-    // RowComponent: RowComponent,
     rows: exampleRowData,
     perPage: 2,
     columnOrder: [SomeColumn.A, SomeColumn.B],

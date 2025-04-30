@@ -17,7 +17,9 @@ export const useGetCustomTicketsFieldsDefinitionData = () => {
     )
 
     return {
-        outcomeCustomFieldId: outcomeCustomField?.id || -1,
-        intentCustomFieldId: intentCustomField?.id || -1,
+        outcomeCustomFieldId:
+            outcomeCustomField?.id || TICKET_FIELD_ID_NOT_AVAILABLE,
+        intentCustomFieldId:
+            intentCustomField?.id || TICKET_FIELD_ID_NOT_AVAILABLE,
     }
 }

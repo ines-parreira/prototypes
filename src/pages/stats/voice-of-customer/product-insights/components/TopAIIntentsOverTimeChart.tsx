@@ -5,8 +5,8 @@ import { formatLabeledTimeSeriesData } from 'pages/stats/common/utils'
 import { LINES_COLORS } from 'pages/stats/constants'
 import {
     ProductInsightsChart,
-    ProductInsightsMetricConfig,
-} from 'pages/stats/voice-of-customer/product-insights/ProductInsightsMetricConfig'
+    ProductInsightsChartConfig,
+} from 'pages/stats/voice-of-customer/product-insights/ProductInsightsChartConfig'
 
 export function TopAIIntentsOverTimeChart() {
     const {
@@ -18,7 +18,7 @@ export function TopAIIntentsOverTimeChart() {
     } = useIntentsOverTimeTimeSeries()
 
     const { hint, title } =
-        ProductInsightsMetricConfig[
+        ProductInsightsChartConfig[
             ProductInsightsChart.TopAIIntentsOverTimeChart
         ]
 

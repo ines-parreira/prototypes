@@ -60,6 +60,8 @@ describe('TableWithNestedRows', () => {
         RowComponent: mockRowComponent,
         rows: exampleRows,
         perPage: 10,
+        currentPage: 1,
+        setCurrentPage: jest.fn(),
         columnOrder: [Column.Name, Column.Value],
         leadColumn: Column.Name,
         sortingOrder: {

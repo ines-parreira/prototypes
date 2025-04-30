@@ -3,9 +3,10 @@ export enum ProductInsightsChart {
     ProductInsightsTableChartPlaceholder = 'product_insights_table_chart_placeholder',
     TicketVolumeChart = 'ticket_volume_chart',
     TopAIIntentsOverTimeChart = 'top_ai_intents_over_time_chart',
+    TopProductsPerIntentChartPlaceholder = 'top_products_per_intent_chart_placeholder',
 }
 
-export const ProductInsightsMetricConfig = {
+export const ProductInsightsChartConfig = {
     [ProductInsightsChart.TopAIIntentsOverTimeChart]: {
         title: 'Top AI Intents over time',
         hint: {

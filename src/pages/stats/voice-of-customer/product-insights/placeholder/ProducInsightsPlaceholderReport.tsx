@@ -5,7 +5,7 @@ import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/common/layout/DashboardGridCell'
 import DashboardSection from 'pages/stats/common/layout/DashboardSection'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
-import { ProductInsightsChart } from 'pages/stats/voice-of-customer/product-insights/ProductInsightsMetricConfig'
+import { ProductInsightsChart } from 'pages/stats/voice-of-customer/product-insights/ProductInsightsChartConfig'
 import { ProductInsightsPlaceholderReportConfig } from 'pages/stats/voice-of-customer/product-insights/ProductInsightsReportConfig'
 
 export const ProductInsightsPlaceholderReport = () => {
@@ -51,7 +51,12 @@ export const ProductInsightsPlaceholderReport = () => {
                     />
                 </DashboardGridCell>
                 <DashboardGridCell size={getGridCellSize(6)}>
-                    <div>Top products per AI Intent </div>
+                    <DashboardComponent
+                        chart={
+                            ProductInsightsChart.TopProductsPerIntentChartPlaceholder
+                        }
+                        config={ProductInsightsPlaceholderReportConfig}
+                    />
                 </DashboardGridCell>
                 <DashboardGridCell size={getGridCellSize(6)}>
                     <DashboardComponent

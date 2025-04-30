@@ -8,9 +8,11 @@ import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFil
 import { ReportingGranularity } from 'models/reporting/types'
 import { DrillDownModal } from 'pages/stats/common/drill-down/DrillDownModal'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
+import { ChartsActionMenu } from 'pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import { TopAIIntentsOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TopAIIntentsOverTimeChart'
 import { ProductInsightsEditColumns } from 'pages/stats/voice-of-customer/product-insights/placeholder/ProductInsightsEditColumns'
+import { TopProductsPerIntentChart } from 'pages/stats/voice-of-customer/product-insights/placeholder/TopProductsPerIntentChart'
 import {
     PRODUCT_INSIGHTS_PAGE_TITLE,
     ProductInsightsPage,
@@ -35,7 +37,12 @@ jest.mock(
     'pages/stats/voice-of-customer/product-insights/placeholder/ProductInsightsEditColumns',
 )
 const ProductInsightsEditColumnsMock = assumeMock(ProductInsightsEditColumns)
-
+jest.mock('pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu')
+const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
+jest.mock(
+    'pages/stats/voice-of-customer/product-insights/placeholder/TopProductsPerIntentChart',
+)
+const TopProductsPerIntentChartMock = assumeMock(TopProductsPerIntentChart)
 describe('ProductInsightsPage', () => {
     const statsFilters = {
         period: {
@@ -48,8 +55,10 @@ describe('ProductInsightsPage', () => {
     }
 
     beforeEach(() => {
+        TopProductsPerIntentChartMock.mockImplementation(() => <div />)
         ProductInsightsEditColumnsMock.mockImplementation(() => <div />)
         DrillDownModalMock.mockImplementation(() => <div />)
+        ChartsActionMenuMock.mockImplementation(() => <div />)
         FiltersPanelWrapperMock.mockImplementation(() => <div />)
         TopAIIntentsOverTimeChartMock.mockImplementation(() => <div />)
         useStatsFiltersMock.mockReturnValue({

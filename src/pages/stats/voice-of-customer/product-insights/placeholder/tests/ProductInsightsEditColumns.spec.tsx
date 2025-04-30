@@ -21,6 +21,7 @@ describe('ProductInsightsEditColumns', () => {
     beforeEach(() => {
         EditTableColumnsMock.mockImplementation(() => <div />)
     })
+
     it('should call the EditTableColumns with Product Insights specific props', () => {
         render(<ProductInsightsEditColumns />)
 

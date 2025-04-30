@@ -8,13 +8,18 @@ import { TICKET_VOLUME_CHART_LABEL } from 'pages/stats/voice-of-customer/product
 import { ProductInsightsTableChart } from 'pages/stats/voice-of-customer/product-insights/placeholder/ProductInsightsTableChart'
 import { TicketVolumeChart } from 'pages/stats/voice-of-customer/product-insights/placeholder/TicketVolumeChart'
 import {
+    TOP_PRODUCTS_PER_INTENT_HINT,
+    TOP_PRODUCTS_PER_INTENT_TITLE,
+    TopProductsPerIntentChart,
+} from 'pages/stats/voice-of-customer/product-insights/placeholder/TopProductsPerIntentChart'
+import {
     CHART_TITLE,
     TotalProductSentimentOverTimeChartPlaceholder,
 } from 'pages/stats/voice-of-customer/product-insights/placeholder/TotalProductSentimentOverTimeChartPlaceholder'
 import {
     ProductInsightsChart,
-    ProductInsightsMetricConfig,
-} from 'pages/stats/voice-of-customer/product-insights/ProductInsightsMetricConfig'
+    ProductInsightsChartConfig,
+} from 'pages/stats/voice-of-customer/product-insights/ProductInsightsChartConfig'
 import { VOICE_OF_CUSTOMER_ROUTES } from 'routes/constants'
 
 export const PRODUCT_INSIGHTS_PERSISTENT_FILTERS: StaticFilter[] = [
@@ -63,13 +68,20 @@ export const ProductInsightsPlaceholderReportConfig: ReportConfig<ProductInsight
             },
             [ProductInsightsChart.TopAIIntentsOverTimeChart]: {
                 chartComponent: TopAIIntentsOverTimeChart,
-                label: ProductInsightsMetricConfig[
+                label: ProductInsightsChartConfig[
                     ProductInsightsChart.TopAIIntentsOverTimeChart
                 ].title,
                 description:
-                    ProductInsightsMetricConfig[
+                    ProductInsightsChartConfig[
                         ProductInsightsChart.TopAIIntentsOverTimeChart
                     ].hint,
+                csvProducer: null,
+                chartType: ChartType.Graph,
+            },
+            [ProductInsightsChart.TopProductsPerIntentChartPlaceholder]: {
+                chartComponent: TopProductsPerIntentChart,
+                label: TOP_PRODUCTS_PER_INTENT_TITLE,
+                description: TOP_PRODUCTS_PER_INTENT_HINT.title,
                 csvProducer: null,
                 chartType: ChartType.Graph,
             },

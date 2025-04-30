@@ -8,6 +8,7 @@ import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFil
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
+import { NO_DATA_AVAILABLE_COMPONENT_TEXT } from 'pages/stats/common/components/NoDataAvailable'
 import ScoredSurveysChart from 'pages/stats/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysChart'
 import ScoredSurveysTable from 'pages/stats/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable'
 import { formatReportingQueryDate } from 'utils/reporting'
@@ -105,7 +106,7 @@ describe('<CommentHighlightsChart/>', () => {
 
         expect(screen.getByText('No data available')).toBeInTheDocument()
         expect(
-            screen.getByText('Try adjusting filters to get results.'),
+            screen.getByText(NO_DATA_AVAILABLE_COMPONENT_TEXT),
         ).toBeInTheDocument()
     })
 

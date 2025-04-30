@@ -15,6 +15,7 @@ import {
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import DonutChart from 'pages/stats/common/components/charts/DonutChart/DonutChart'
+import { NO_DATA_AVAILABLE_COMPONENT_TEXT } from 'pages/stats/common/components/NoDataAvailable'
 import AverageSurveyScoreDonutChart from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
 import { SatisfactionAverageSurveyScoreMetric } from 'state/ui/stats/types'
 import { formatReportingQueryDate } from 'utils/reporting'
@@ -142,7 +143,7 @@ describe('<AverageSurveyScoreDonutChart/>', () => {
 
         expect(screen.getByText('No data available')).toBeInTheDocument()
         expect(
-            screen.getByText('Try adjusting filters to get results.'),
+            screen.getByText(NO_DATA_AVAILABLE_COMPONENT_TEXT),
         ).toBeInTheDocument()
     })
 

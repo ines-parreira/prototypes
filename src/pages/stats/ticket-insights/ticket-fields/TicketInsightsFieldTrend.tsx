@@ -8,7 +8,6 @@ import {
     TicketInsightsFieldsMetric,
     TicketInsightsFieldsMetricConfig,
 } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
-import css from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend.less'
 
 export function TicketInsightsFieldTrend({
     chartId,
@@ -45,7 +44,6 @@ export function TicketInsightsFieldTrend({
                 displayLegend
                 toggleLegend
                 legendOnLeft
-                wrapperclassNames={css.chart}
                 skeletonHeight={328}
                 defaultDatasetVisibility={legendDatasetVisibility}
                 options={{

@@ -9,8 +9,8 @@ import { LINES_COLORS } from 'pages/stats/constants'
 import { TopAIIntentsOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TopAIIntentsOverTimeChart'
 import {
     ProductInsightsChart,
-    ProductInsightsMetricConfig,
-} from 'pages/stats/voice-of-customer/product-insights/ProductInsightsMetricConfig'
+    ProductInsightsChartConfig,
+} from 'pages/stats/voice-of-customer/product-insights/ProductInsightsChartConfig'
 import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/voice-of-customer/useIntentsOverTimeTimeSeries')
@@ -24,7 +24,7 @@ const ChartCardMock = assumeMock(ChartCard)
 
 describe('TopAIIntentsOverTimeChart', () => {
     const { hint, title } =
-        ProductInsightsMetricConfig[
+        ProductInsightsChartConfig[
             ProductInsightsChart.TopAIIntentsOverTimeChart
         ]
 

@@ -1,4 +1,4 @@
-import React, { FC, UIEventHandler, useState } from 'react'
+import React, { FC, UIEventHandler, useCallback, useState } from 'react'
 
 import classNames from 'classnames'
 
@@ -34,6 +34,8 @@ type Props<
     perPage: number
     columnOrder: Columns[]
     leadColumn: Columns
+    currentPage: number
+    setCurrentPage: (page: number) => void
     sortingOrder: {
         column: Columns
         direction: OrderDirection
@@ -54,6 +56,7 @@ type Props<
             }
         }
     >
+    isScrollable?: boolean
 }
 
 export const TableWithNestedRows = <
@@ -70,17 +73,23 @@ export const TableWithNestedRows = <
     sortingOrder,
     columnConfig,
     getSetOrderHandler,
+    currentPage,
+    setCurrentPage,
+    isScrollable = true,
 }: Props<RowProps, Columns>) => {
     const [ref, { width }] = useMeasure<HTMLDivElement>()
     const [isTableScrolled, setIsTableScrolled] = useState(false)
-    const handleScroll: UIEventHandler<HTMLDivElement> = (event) => {
-        if (event.currentTarget.scrollLeft > 0) {
-            setIsTableScrolled(true)
-        } else {
-            setIsTableScrolled(false)
-        }
-    }
-    const [currentPage, setCurrentPage] = useState(1)
+    const handleScroll: UIEventHandler<HTMLDivElement> = useCallback(
+        (event) => {
+            if (isScrollable && event.currentTarget.scrollLeft > 0) {
+                setIsTableScrolled(true)
+            } else {
+                setIsTableScrolled(false)
+            }
+        },
+        [isScrollable],
+    )
+
     const hasPagination = rows.length > perPage
 
     return (

@@ -11,6 +11,7 @@ export const MOBILE_EXPAND_COLUMN_WIDTH = 10
 export const DEFAULT_MARGIN = 8
 
 export const TableWithNestedRowsCell = ({
+    className,
     isLeadColumn,
     isTableScrolled,
     children,
@@ -18,6 +19,7 @@ export const TableWithNestedRowsCell = ({
     hasChildren,
     onClick,
 }: PropsWithChildren<{
+    className?: string
     isLeadColumn: boolean
     isTableScrolled?: boolean
     level: number
@@ -29,12 +31,15 @@ export const TableWithNestedRowsCell = ({
     return (
         <BodyCell
             innerClassName={css.small}
-            className={classNames({
-                [css.withShadow]: isLeadColumn && isTableScrolled,
-                [css.sticky]: isLeadColumn,
-                [css.leadColumn]: isLeadColumn,
-            })}
-            style={{ left: `${EXPAND_COLUMN_WIDTH}px` }}
+            className={classNames(
+                {
+                    [css.withShadow]: isLeadColumn && isTableScrolled,
+                    [css.sticky]: isLeadColumn,
+                    [css.leadColumn]: isLeadColumn,
+                },
+                className,
+            )}
+            style={isLeadColumn ? { left: `${EXPAND_COLUMN_WIDTH}px` } : {}}
             innerStyle={{
                 ...(!hasChildren && { paddingLeft: 0 }),
                 marginLeft: `${
