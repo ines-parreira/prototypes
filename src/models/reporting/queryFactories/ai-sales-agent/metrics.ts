@@ -355,7 +355,7 @@ export const productClicksQueryFactory = (
     filters: StatsFilters,
     timezone: string,
 ): ReportingQuery<ConvertTrackingEventsCube> => ({
-    measures: [ConvertTrackingEventsMeasure.Clicks],
+    measures: [ConvertTrackingEventsMeasure.UniqClicks],
     dimensions: [ConvertTrackingEventsDimension.ProductId],
     filters: [
         {
@@ -397,7 +397,7 @@ export const productBoughtQueryFactory = (
     filters: StatsFilters,
     timezone: string,
 ): ReportingQuery<AiSalesAgentOrdersCube> => ({
-    measures: [AiSalesAgentOrdersMeasure.Count],
+    measures: [AiSalesAgentOrdersMeasure.UniqCount],
     dimensions: [AiSalesAgentOrdersDimension.InfluencedProductId],
     filters: [
         {

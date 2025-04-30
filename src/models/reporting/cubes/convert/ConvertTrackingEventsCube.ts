@@ -2,6 +2,7 @@ import { Cube } from 'models/reporting/types'
 
 export enum ConvertTrackingEventsMeasure {
     Clicks = 'CampaignEvents.clicks',
+    UniqClicks = 'CampaignEvents.uniqClicks',
 }
 
 export enum ConvertTrackingEventsDimension {

@@ -86,12 +86,12 @@ const useProductRecommendations = (filters: StatsFilters, timezone: string) => {
         const clickTotals = mapMetrics(
             clickTotalData,
             ConvertTrackingEventsDimension.ProductId,
-            ConvertTrackingEventsMeasure.Clicks,
+            ConvertTrackingEventsMeasure.UniqClicks,
         )
         const boughtTotals = mapMetrics(
             boughtTotalData,
             AiSalesAgentOrdersDimension.InfluencedProductId,
-            AiSalesAgentOrdersMeasure.Count,
+            AiSalesAgentOrdersMeasure.UniqCount,
         )
 
         return productsData.data.map((product) => ({
