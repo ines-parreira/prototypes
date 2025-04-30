@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import cn from 'classnames'
 
-import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { Banner, Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import {
     getGorgiasChatLanguageByCode,
@@ -143,66 +143,74 @@ const HandoverCustomizationChatFallbackSettings = ({ integration }: Props) => {
     }
 
     return (
-        <>
+        <div>
             <div
                 className={cn(
-                    commonCss.sectionContainer,
                     commonCss.formContainer,
+                    css.fallbackFormContainer,
                 )}
             >
-                <div
-                    className={cn(
-                        'd-flex flex-row justify-content-between align-items-center mb-2',
-                        css.fallbackSettingsLanguageContainer,
-                    )}
-                >
-                    <div className="d-flex flex-row align-items-center">
-                        <Label
-                            htmlFor="handover-customization-fallback-message"
-                            label={'Error message'}
-                            className={css.fallbackMessageTitle}
-                        >
-                            Error Message
-                        </Label>
+                <Banner variant="inline" className={css.fallbackBanner}>
+                    Enter a message, not Guidance. It will be sent as-is to
+                    customers during error.
+                </Banner>
+                <div className={cn(commonCss.sectionContainer)}>
+                    <div
+                        className={cn(
+                            'd-flex flex-row justify-content-between align-items-center mb-2',
+                            css.fallbackSettingsLanguageContainer,
+                        )}
+                    >
+                        <div className="d-flex flex-row align-items-center">
+                            <Label
+                                htmlFor="handover-customization-fallback-message"
+                                label={'Error message'}
+                                className={css.fallbackMessageTitle}
+                            >
+                                Error Message
+                            </Label>
 
-                        <IconTooltip className={css.icon} icon="info">
-                            During an error, a predefined message will be sent
-                            to the customer.
-                        </IconTooltip>
+                            <IconTooltip className={css.icon} icon="info">
+                                During an error, a predefined message will be
+                                sent to the customer.
+                            </IconTooltip>
+                        </div>
+
+                        {availableLanguageItems.length > 1 && (
+                            <SelectField
+                                fixedWidth
+                                aria-label="Select language"
+                                options={availableLanguageItems}
+                                value={selectedLanguageCode}
+                                onChange={onSelectedLanguageChange}
+                            />
+                        )}
                     </div>
 
-                    {availableLanguageItems.length > 1 && (
-                        <SelectField
-                            fixedWidth
-                            aria-label="Select language"
-                            options={availableLanguageItems}
-                            value={selectedLanguageCode}
-                            onChange={onSelectedLanguageChange}
-                        />
-                    )}
+                    <InputField
+                        id="handover-customization-fallback-message"
+                        maxLength={
+                            formFieldsConfiguration.fallbackMessage.maxLength
+                        }
+                        name="handover-customization-fallback-message"
+                        aria-label="Error message"
+                        role="textbox"
+                        placeholder="Please leave your email address and we’ll get back to you."
+                        onChange={onFallbackMessageChange}
+                        value={
+                            formValues[selectedLanguageCode]?.fallbackMessage
+                        }
+                    />
+                    <Caption className="caption-regular mt-1">
+                        If an error occurs, AI Agent will send this exact
+                        message to the customer. If left blank, the default
+                        message will be used:{' '}
+                        <i>
+                            “Please leave your email address and we’ll get back
+                            to you.”
+                        </i>
+                    </Caption>
                 </div>
-
-                <InputField
-                    id="handover-customization-fallback-message"
-                    maxLength={
-                        formFieldsConfiguration.fallbackMessage.maxLength
-                    }
-                    name="handover-customization-fallback-message"
-                    aria-label="Error message"
-                    role="textbox"
-                    placeholder="Please leave your email address and we’ll get back to you."
-                    onChange={onFallbackMessageChange}
-                    value={formValues[selectedLanguageCode]?.fallbackMessage}
-                />
-                <Caption className="caption-regular mt-1">
-                    AI Agent will send the exact text if it encounters an
-                    unexpected error handing over. By default, it sends the
-                    following message:{' '}
-                    <i>
-                        “Please leave your email address and we’ll get back to
-                        you.”
-                    </i>
-                </Caption>
             </div>
 
             <section className="mb-0">
@@ -226,7 +234,7 @@ const HandoverCustomizationChatFallbackSettings = ({ integration }: Props) => {
                     Cancel
                 </Button>
             </section>
-        </>
+        </div>
     )
 }
 

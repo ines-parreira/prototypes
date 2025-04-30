@@ -105,16 +105,16 @@ const HandoverCustomizationChatOfflineSettings = ({ integration }: Props) => {
                 >
                     <Label
                         htmlFor="handover-customization-offline-instructions"
-                        label={'Offline instructions'}
+                        label={'Guidance'}
                         className={`${css.offlineInstructionsTitle} mb-2`}
                     >
-                        Instructions
+                        Guidance
                     </Label>
                     <TextArea
                         id="handover-customization-offline-instructions"
                         rows={5}
                         name="handover-customization-offline-instructions"
-                        aria-label="Offline instructions"
+                        aria-label="Guidance"
                         role="textbox"
                         maxLength={
                             formFieldsConfiguration.offlineInstructions
@@ -126,8 +126,7 @@ const HandoverCustomizationChatOfflineSettings = ({ integration }: Props) => {
                         error={undefined}
                     />
                     <Caption className="caption-regular mt-1">
-                        {`Write optional instructions for AI Agent to follow during handover. 
-                    By default, AI Agent generates a message using your tone of voice.`}
+                        {`AI Agent will use these instructions to craft the handover message it sends to customers. If left blank, it will generate a generic message using your tone of voice.`}
                     </Caption>
                 </div>
 

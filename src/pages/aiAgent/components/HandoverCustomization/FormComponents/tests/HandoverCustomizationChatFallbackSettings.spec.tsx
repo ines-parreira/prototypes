@@ -103,9 +103,14 @@ describe('HandoverCustomizationChatFallbackSettings', () => {
         // Check the textarea is rendered
         screen.getByRole('textbox', { name: 'Error message' })
 
+        // Check that the banner is rendered
+        screen.getByText(
+            /Enter a message, not Guidance. It will be sent as-is to customers during error./i,
+        )
+
         // Check the caption is rendered
         screen.getByText(
-            /AI Agent will send the exact text if it encounters an unexpected error handing over/i,
+            /If an error occurs, AI Agent will send this exact message to the customer/i,
         )
 
         // Check Save and Cancel buttons are rendered

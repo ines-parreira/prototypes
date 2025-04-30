@@ -137,10 +137,10 @@ const HandoverCustomizationChatOnlineSettings = ({ integration }: Props) => {
                 >
                     <Label
                         htmlFor="handover-customization-online-instructions"
-                        label={'Online instructions'}
+                        label={'Guidance'}
                         className={`${css.onlineInstructionsTitle} mb-2`}
                     >
-                        Instructions
+                        Guidance
                     </Label>
                     <TextArea
                         id="handover-customization-online-instructions"
@@ -148,7 +148,7 @@ const HandoverCustomizationChatOnlineSettings = ({ integration }: Props) => {
                         name="handover-customization-online-instructions"
                         placeholder={`Apologize and acknowledge the issue. Tell the customer that you’re connecting them with someone.`}
                         role="textbox"
-                        aria-label="Online instructions"
+                        aria-label="Guidance"
                         value={formValues.onlineInstructions}
                         maxLength={
                             formFieldsConfiguration.onlineInstructions.maxLength
@@ -157,9 +157,7 @@ const HandoverCustomizationChatOnlineSettings = ({ integration }: Props) => {
                         error={undefined}
                     />
                     <Caption className="caption-regular mt-1">
-                        {`Write optional instructions for AI Agent to follow during
-                    handover. By default, AI Agent generates a message using
-                    your tone of voice.`}
+                        {`AI Agent will use these instructions to craft the handover message it sends to customers. If left blank, it will generate a generic message using your tone of voice.`}
                     </Caption>
                 </div>
 

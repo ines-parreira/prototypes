@@ -91,18 +91,18 @@ describe('HandoverCustomizationOfflineSettings', () => {
         // Check the loading spinner is rendered
         screen.getByText(/loading/i)
 
-        expect(screen.queryByText(/offline instructions/i)).toBeNull()
+        expect(screen.queryByText(/Guidance/i)).toBeNull()
     })
 
     it('renders correctly with all UI elements', () => {
         renderComponent()
 
-        screen.getByText('Offline instructions')
+        screen.getByText('Guidance')
         // text area
         screen.getByRole('textbox')
 
         screen.getByText(
-            /Write optional instructions for AI Agent to follow during handover./i,
+            /AI Agent will use these instructions to craft the handover message it sends to customers./i,
         )
 
         // Check the toggle is rendered
@@ -127,7 +127,7 @@ describe('HandoverCustomizationOfflineSettings', () => {
         screen.getByText('Cancel')
     })
 
-    it('should load form with intial values loaded from the form hook', () => {
+    it('should load form with initial values loaded from the form hook', () => {
         const mockedForm = {
             ...mockOfflineValuesForm,
             formValues: {

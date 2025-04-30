@@ -98,14 +98,14 @@ describe('HandoverCustomizationChatOnlineSettings', () => {
         renderComponent(mockedIntegration)
 
         // Check for main section headers
-        screen.getByText('Online instructions')
+        screen.getByText('Guidance')
 
         // Check for TextArea
         screen.getByRole('textbox')
 
         // Check for caption text
         screen.getByText(
-            /Write optional instructions for AI Agent to follow during handover/i,
+            /AI Agent will use these instructions to craft the handover message it sends to customers./i,
         )
 
         // Check for alert about chat preferences
@@ -165,7 +165,7 @@ describe('HandoverCustomizationChatOnlineSettings', () => {
 
             fireEvent.change(
                 screen.getByRole('textbox', {
-                    name: 'Online instructions',
+                    name: 'Guidance',
                 }),
                 { target: { value: 'New instructions' } },
             )
