@@ -12,9 +12,14 @@ export class Create3to5GuidancesTask extends Task {
         )
     }
 
+    protected isAvailable(data: RuleEngineData): boolean {
+        return !!data?.guidances
+    }
+
     // Less than 3 guidances created, but at least one guidance created
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
-        return data.guidances.length > 0 && data.guidances.length < 3
+        const guidances = data?.guidances || []
+        return guidances.length > 0 && guidances.length < 3
     }
 
     protected getFeatureUrl({

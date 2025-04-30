@@ -95,6 +95,7 @@ describe('<AiAgentNewGuidance />', () => {
         mockedUseGuidanceArticles.mockReturnValue({
             guidanceArticles: [],
             isGuidanceArticleListLoading: false,
+            isFetched: true,
         })
         mockedUseGuidanceAiSuggestions.mockReturnValue({
             guidanceAISuggestions: [

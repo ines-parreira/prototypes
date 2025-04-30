@@ -19,6 +19,10 @@ export class EnableAIAgentOnEmailTask extends Task {
         )
     }
 
+    protected isAvailable(data: RuleEngineData): boolean {
+        return !!data?.aiAgentStoreConfiguration
+    }
+
     // Email channel should be deactivated in ai agent store configuration
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
         return (

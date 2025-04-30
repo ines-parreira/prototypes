@@ -32,4 +32,14 @@ describe('TestAIAgent', () => {
         )
         expect(task.display).toBe(false)
     })
+
+    it('should not display if request failed', () => {
+        const task = new TestAIAgentTask(
+            buildRuleEngineData({
+                aiAgentPlaygroundExecutions: undefined,
+            }),
+            buildRuleEngineRoutes(),
+        )
+        expect(task.available).toBe(false)
+    })
 })

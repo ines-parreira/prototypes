@@ -127,4 +127,27 @@ describe('ConnectYourDefaultEmail', () => {
         )
         expect(task.display).toBe(false)
     })
+
+    it('should not display the task if the request failed', () => {
+        const emailIntegrations = EmailIntegrationsDataFixture.start()
+            .withEmailIntegration({
+                isDefault: true,
+            })
+            .build()
+
+        const task = new ConnectYourDefaultEmailTask(
+            buildRuleEngineData({
+                aiAgentStoreConfiguration:
+                    AiAgentStoreConfigurationFixture.start()
+                        .withConnectedEmailIntegrations({
+                            email: emailIntegrations[0].address,
+                            id: emailIntegrations[0].id,
+                        })
+                        .build(),
+                emailIntegrations: undefined,
+            }),
+            buildRuleEngineRoutes(),
+        )
+        expect(task.available).toBe(false)
+    })
 })

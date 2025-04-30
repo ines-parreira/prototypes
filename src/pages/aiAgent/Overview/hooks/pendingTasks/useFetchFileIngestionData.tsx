@@ -14,19 +14,22 @@ export const useFetchFileIngestionData = ({
     enabled = true,
     refetchOnWindowFocus = true,
 }: UseFetchFileIngestionArgs) => {
-    const { data: snippetHelpCenterData, isLoading: isLoadingHelpCenter } =
-        useGetHelpCenterList(
-            {
-                type: 'snippet',
-                per_page: 1,
-                shop_name: storeName,
-            },
-            { enabled, refetchOnWindowFocus },
-        )
+    const {
+        data: snippetHelpCenterData,
+        isLoading: isLoadingHelpCenter,
+        isFetched: isFetchedHelpCenter,
+    } = useGetHelpCenterList(
+        {
+            type: 'snippet',
+            per_page: 1,
+            shop_name: storeName,
+        },
+        { enabled, refetchOnWindowFocus },
+    )
 
     const snippetHelpCenterId = snippetHelpCenterData?.data?.data[0]?.id
 
-    const { data, isLoading } = useGetFileIngestion(
+    const { data, isLoading, isFetched } = useGetFileIngestion(
         {
             help_center_id: snippetHelpCenterId!,
         },
@@ -39,6 +42,7 @@ export const useFetchFileIngestionData = ({
     return {
         data: data?.data,
         isLoading: isLoading || isLoadingHelpCenter,
+        isFetched: isFetched || isFetchedHelpCenter,
     }
 }
 

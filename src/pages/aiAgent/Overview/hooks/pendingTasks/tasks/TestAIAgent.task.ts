@@ -12,9 +12,13 @@ export class TestAIAgentTask extends Task {
         )
     }
 
+    protected isAvailable(data: RuleEngineData): boolean {
+        return !!data?.aiAgentPlaygroundExecutions
+    }
+
     // No playground executions
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
-        return data.aiAgentPlaygroundExecutions.count === 0
+        return (data.aiAgentPlaygroundExecutions?.count ?? 0) === 0
     }
 
     protected getFeatureUrl({

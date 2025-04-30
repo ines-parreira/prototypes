@@ -14,6 +14,10 @@ export class GiveFeedbackAIAgentTask extends Task {
         )
     }
 
+    protected isAvailable(data: RuleEngineData): boolean {
+        return !!data?.aiAgentStoreConfiguration || !!data?.ticketView
+    }
+
     // AI Agent store was created at least 7 days ago
     protected shouldBeDisplayed({
         aiAgentStoreConfiguration,
@@ -29,11 +33,11 @@ export class GiveFeedbackAIAgentTask extends Task {
         data: RuleEngineData
         routes: RuleEngineRoutes
     }): string {
-        if (!ticketViewData.viewId) {
+        if (!ticketViewData?.viewId) {
             return '/app/views'
         }
 
-        if (!ticketViewData.ticketId) {
+        if (!ticketViewData?.ticketId) {
             return `/app/views/${ticketViewData.viewId}`
         }
 

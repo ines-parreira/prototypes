@@ -69,8 +69,13 @@ describe.each([
             .withUnlistedGuidance()
             .build(),
     },
+    {
+        type: 'IS UNDEFINIED',
+        display: false,
+        guidances: undefined,
+    },
 ])('Create3to5Guidances', ({ guidances, display, type }) => {
-    it(`should ${display ? '' : 'not '}display the task if ${guidances.length} guidances ${type ? `of type ${type} ` : ''}exists`, () => {
+    it(`should ${display ? '' : 'not '}display the task if ${guidances?.length ?? 0} guidances ${type ? `of type ${type} ` : ''}exists`, () => {
         const task = new Create3to5GuidancesTask(
             buildRuleEngineData({
                 guidances,

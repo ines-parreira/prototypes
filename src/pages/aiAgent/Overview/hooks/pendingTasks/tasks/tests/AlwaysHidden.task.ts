@@ -11,6 +11,11 @@ export class AlwaysHiddenTask extends Task {
         )
     }
 
+    protected isAvailable(): boolean {
+        // This task is always available
+        return true
+    }
+
     protected shouldBeDisplayed(): boolean {
         return true
     }

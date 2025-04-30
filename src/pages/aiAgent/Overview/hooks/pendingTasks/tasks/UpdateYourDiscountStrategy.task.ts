@@ -14,6 +14,10 @@ export class UpdateYourDiscountStrategyTask extends Task {
         )
     }
 
+    protected isAvailable(data: RuleEngineData): boolean {
+        return !!data?.aiAgentStoreConfiguration
+    }
+
     // Has no discount strategy level activated
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
         return (

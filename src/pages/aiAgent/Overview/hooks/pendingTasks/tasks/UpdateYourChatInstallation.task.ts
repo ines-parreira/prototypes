@@ -12,11 +12,25 @@ export class UpdateYourChatInstallationTask extends Task {
         )
     }
 
+    protected isAvailable(data: RuleEngineData): boolean {
+        return (
+            !!data?.chatIntegrationsStatus || !!data?.pageInteractions !== null
+        )
+    }
+
     // If a chat is installed and there are page interactions
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
+        if (
+            data.pageInteractions === null ||
+            (data.pageInteractions &&
+                Object.keys(data.pageInteractions).length === 0)
+        ) {
+            return false
+        }
+
         return (
             data.pageInteractions.isConvertChatInstallSnippetEnabled &&
-            data.chatIntegrationsStatus.some((c) => c.installed) &&
+            (data.chatIntegrationsStatus ?? []).some((c) => c.installed) &&
             data.pageInteractions.pageInteractions.length > 0
         )
     }
@@ -32,7 +46,7 @@ export class UpdateYourChatInstallationTask extends Task {
             return ''
         }
 
-        const firstChatInstalled = data.chatIntegrationsStatus.find(
+        const firstChatInstalled = (data.chatIntegrationsStatus ?? []).find(
             (c) => c.installed,
         )!
         return `/app/settings/channels/gorgias_chat/${firstChatInstalled.chatId}/installation`

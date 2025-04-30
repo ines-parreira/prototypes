@@ -12,9 +12,13 @@ export class CreateAnActionTask extends Task {
         )
     }
 
+    protected isAvailable(data: RuleEngineData): boolean {
+        return !!data?.actions
+    }
+
     // No action available
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
-        return data.actions.length === 0
+        return (data?.actions?.length ?? 0) === 0
     }
 
     protected getFeatureUrl({

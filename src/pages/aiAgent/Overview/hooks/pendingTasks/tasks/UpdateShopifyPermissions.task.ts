@@ -12,11 +12,15 @@ export class UpdateShopifyPermissionsTask extends Task {
         )
     }
 
+    protected isAvailable(data: RuleEngineData): boolean {
+        return !!data?.shopifyIntegration
+    }
+
     // Shopify integration must have required scope
     protected shouldBeDisplayed({
         shopifyIntegration,
     }: RuleEngineData): boolean {
-        return !shopifyIntegration.hasRequiredPermissions
+        return !shopifyIntegration?.hasRequiredPermissions
     }
 
     protected getFeatureUrl({
@@ -25,6 +29,6 @@ export class UpdateShopifyPermissionsTask extends Task {
         data: RuleEngineData
         routes: RuleEngineRoutes
     }): string {
-        return `/api/integrations/${shopifyIntegration.integrationId}/sync_permissions`
+        return `/api/integrations/${shopifyIntegration?.integrationId}/sync_permissions`
     }
 }

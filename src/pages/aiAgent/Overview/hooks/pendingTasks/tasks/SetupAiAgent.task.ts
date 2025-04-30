@@ -13,6 +13,11 @@ export class SetupAiAgentTask extends Task {
         )
     }
 
+    protected isAvailable(__data: RuleEngineData): boolean {
+        // This task is always available
+        return true
+    }
+
     // This task is a particular one, it should always be displayed because it's outside of the rule engine
     protected shouldBeDisplayed(__data: RuleEngineData): boolean {
         return true

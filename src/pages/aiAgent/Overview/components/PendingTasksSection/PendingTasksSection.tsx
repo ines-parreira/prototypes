@@ -28,6 +28,7 @@ type Props = {
     stores: Store[]
     onStoreChange: (store: Store) => void
     isLoading: boolean
+    isFetched: boolean
     pendingTasks: Task[]
     completedTasks: Task[]
 }
@@ -38,6 +39,7 @@ export const PendingTasksSection = ({
     onStoreChange,
     completedTasks,
     isLoading,
+    isFetched,
     pendingTasks,
 }: Props) => {
     const [isPendingTasksExpanded, setIsPendingTasksExpanded] = useState(false)
@@ -65,6 +67,9 @@ export const PendingTasksSection = ({
         ? pendingTasks
         : pendingTasks.slice(0, maxTasks)
 
+    // If both values are true, it means that one of the requests is cancelled or blocked
+    const isLoadingState = isLoading && isFetched ? false : isLoading
+
     return (
         <OverviewCard>
             <div className={css.innerCard}>
@@ -91,7 +96,7 @@ export const PendingTasksSection = ({
                     />
                 )}
                 <PendingTasksCompletionBar
-                    isLoading={isLoading}
+                    isLoading={isLoadingState}
                     totalTasks={pendingTasks.length + completedTasks.length}
                     totalTasksCompleted={completedTasks?.length}
                 />
@@ -103,8 +108,8 @@ export const PendingTasksSection = ({
                                 id={pendingTasksCollapsibleId}
                                 role="region"
                             >
-                                {isLoading && loadingTasks}
-                                {!isLoading &&
+                                {isLoadingState && loadingTasks}
+                                {!isLoadingState &&
                                     tasksToDisplay?.map((task) => (
                                         <div
                                             className={css.pendingTaskWrapper}
@@ -115,7 +120,7 @@ export const PendingTasksSection = ({
                                                 caption={task.caption}
                                                 type={task.type}
                                                 ctaUrl={task.featureUrl}
-                                                isLoading={isLoading}
+                                                isLoading={isLoadingState}
                                             />
                                         </div>
                                     ))}
@@ -125,7 +130,7 @@ export const PendingTasksSection = ({
                             <div className={css.expanderContainer}>
                                 <Expander
                                     controlId={pendingTasksCollapsibleId}
-                                    isLoading={isLoading}
+                                    isLoading={isLoadingState}
                                     isExpanded={isPendingTasksExpanded}
                                     onClick={() =>
                                         setIsPendingTasksExpanded(

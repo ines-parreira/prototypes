@@ -12,6 +12,10 @@ export class VerifyYourEmailDomainTask extends Task {
         )
     }
 
+    protected isAvailable(data: RuleEngineData): boolean {
+        return !!data?.aiAgentStoreConfiguration
+    }
+
     // Email channel should be activated
     // AND at least one email integration connected to the ai agent store configuration is not verified
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
@@ -38,7 +42,7 @@ export class VerifyYourEmailDomainTask extends Task {
     }
 
     private getFirstUnverifiedEmailIntegration(data: RuleEngineData) {
-        const notVerifiedEmailIntegrationsIds = data.emailIntegrations
+        const notVerifiedEmailIntegrationsIds = (data.emailIntegrations ?? [])
             .filter((emailIntegration) => !emailIntegration.isVerified)
             .map((ei) => ei.id)
 

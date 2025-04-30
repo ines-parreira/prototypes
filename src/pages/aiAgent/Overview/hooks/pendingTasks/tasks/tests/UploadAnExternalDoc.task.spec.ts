@@ -52,4 +52,14 @@ describe('UploadAnExternalDoc', () => {
             expect(task.display).toBe(false)
         },
     )
+
+    it('should not display if request failed', () => {
+        const task = new UploadAnExternalDocTask(
+            buildRuleEngineData({
+                fileIngestion: undefined,
+            }),
+            buildRuleEngineRoutes(),
+        )
+        expect(task.available).toBe(false)
+    })
 })

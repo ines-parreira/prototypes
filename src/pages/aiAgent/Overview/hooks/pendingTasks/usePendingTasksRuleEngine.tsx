@@ -39,6 +39,7 @@ export const usePendingTasksRuleEngine = ({
 
     const {
         isLoading: aiAgentStoreConfigurationIsLoading,
+        isFetched: aiAgentStoreConfigurationIsFetched,
         data: aiAgentStoreConfigurationData,
         error: aiAgentStoreConfigurationInError,
     } = useFetchAiAgentStoreConfigurationData({
@@ -48,32 +49,45 @@ export const usePendingTasksRuleEngine = ({
         refetchOnWindowFocus,
     })
 
-    const { isLoading: faqHelpCentersDataIsLoading, data: faqHelpCentersData } =
-        useFetchFaqHelpCentersData({ enabled: !shouldFakeTasks })
+    const {
+        isLoading: faqHelpCentersDataIsLoading,
+        isFetched: FaqHelpCentersDataIsFetched,
+        data: faqHelpCentersData,
+    } = useFetchFaqHelpCentersData({ enabled: !shouldFakeTasks })
 
-    const { isLoading: fileIngestionDataIsLoading, data: fileIngestionData } =
-        useFetchFileIngestionData({
-            storeName,
-            enabled: !shouldFakeTasks,
-            refetchOnWindowFocus,
-        })
+    const {
+        isLoading: fileIngestionDataIsLoading,
+        isFetched: fileIngestionDataIsFetched,
+        data: fileIngestionData,
+    } = useFetchFileIngestionData({
+        storeName,
+        enabled: !shouldFakeTasks,
+        refetchOnWindowFocus,
+    })
 
-    const { isLoading: guidancesDataIsLoading, data: guidancesData } =
-        useFetchGuidancesData({
-            storeName,
-            enabled: !shouldFakeTasks,
-            refetchOnWindowFocus,
-        })
+    const {
+        isLoading: guidancesDataIsLoading,
+        isFetched: guidancesDataIsFetched,
+        data: guidancesData,
+    } = useFetchGuidancesData({
+        storeName,
+        enabled: !shouldFakeTasks,
+        refetchOnWindowFocus,
+    })
 
-    const { isLoading: actionsDataIsLoading, data: actionsData } =
-        useFetchActionsData({
-            storeName,
-            enabled: !shouldFakeTasks,
-            refetchOnWindowFocus,
-        })
+    const {
+        isLoading: actionsDataIsLoading,
+        isFetched: actionDataIsFetched,
+        data: actionsData,
+    } = useFetchActionsData({
+        storeName,
+        enabled: !shouldFakeTasks,
+        refetchOnWindowFocus,
+    })
 
     const {
         isLoading: aiAgentPlaygroundExecutionsDataIsLoading,
+        isFetched: aiAgentPlaygroundExecutionsDataIsFetched,
         data: aiAgentPlaygroundExecutionsData,
     } = useFetchAiAgentPlaygroundExecutionsData({
         accountDomain,
@@ -96,6 +110,7 @@ export const usePendingTasksRuleEngine = ({
 
     const {
         isLoading: chatIntegrationsStatusDataIsLoading,
+        isFetched: chatIntegrationsStatusDataIsFetched,
         data: chatIntegrationsStatusData,
     } = useFetchChatIntegrationsStatusData({
         chatIds: aiAgentStoreConfigurationData?.monitoredChatIntegrations ?? [],
@@ -105,6 +120,7 @@ export const usePendingTasksRuleEngine = ({
 
     const {
         isLoading: pageInteractionsDataIsLoading,
+        isFetched: pageInteractionsDataIsFetched,
         data: pageInteractionsData,
     } = useFetchPageInteractionsData({
         storeName,
@@ -123,18 +139,17 @@ export const usePendingTasksRuleEngine = ({
         ticketViewDataIsLoading ||
         pageInteractionsDataIsLoading
 
-    const isReady =
-        !!aiAgentStoreConfigurationData &&
-        !!faqHelpCentersData &&
-        !!fileIngestionData &&
-        !!guidancesData &&
-        !!actionsData &&
-        !!aiAgentPlaygroundExecutionsData &&
-        !!emailIntegrationsData &&
-        !!shopifyPermissionsData &&
-        !!chatIntegrationsStatusData &&
-        !!ticketViewData &&
-        !!pageInteractionsData
+    const isFetched =
+        aiAgentStoreConfigurationIsFetched &&
+        FaqHelpCentersDataIsFetched &&
+        fileIngestionDataIsFetched &&
+        guidancesDataIsFetched &&
+        actionDataIsFetched &&
+        aiAgentPlaygroundExecutionsDataIsFetched &&
+        chatIntegrationsStatusDataIsFetched &&
+        pageInteractionsDataIsFetched
+
+    const isReady = !!aiAgentStoreConfigurationData
 
     // Use memo instead of useEffect
     const [{ completedTasks, pendingTasks }, setTasks] = useState<{
@@ -198,6 +213,7 @@ export const usePendingTasksRuleEngine = ({
     if (shouldFakeTasks) {
         return {
             isLoading: false,
+            isFetched: true,
             pendingTasks: [],
             completedTasks: [],
         }
@@ -207,6 +223,7 @@ export const usePendingTasksRuleEngine = ({
     if (aiAgentStoreConfigurationInError) {
         return {
             isLoading: false,
+            isFetched: true,
             pendingTasks: [
                 // This task does
                 new SetupAiAgentTask({
@@ -219,6 +236,7 @@ export const usePendingTasksRuleEngine = ({
 
     return {
         isLoading,
+        isFetched,
         pendingTasks,
         completedTasks,
     }

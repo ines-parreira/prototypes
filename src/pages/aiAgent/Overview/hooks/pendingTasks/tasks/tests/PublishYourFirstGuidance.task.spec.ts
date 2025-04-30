@@ -60,4 +60,12 @@ describe('PublishYourFirstGuidance', () => {
         )
         expect(task.display).toBe(false)
     })
+
+    it('should not display the task if guidances is missing', () => {
+        const task = new PublishYourFirstGuidanceTask(
+            buildRuleEngineData({}),
+            buildRuleEngineRoutes(),
+        )
+        expect(task.display).toBe(false)
+    })
 })

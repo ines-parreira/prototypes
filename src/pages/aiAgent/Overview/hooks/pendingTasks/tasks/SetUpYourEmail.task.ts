@@ -12,10 +12,14 @@ export class SetUpYourEmailTask extends Task {
         )
     }
 
+    protected isAvailable(data: RuleEngineData): boolean {
+        return !!data?.emailIntegrations
+    }
+
     // No email integration has been set up yet (excluding default)
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
         // TODO: add condition "Email selected in onboarding settings is other provider" when settings API is connected
-        return !data.emailIntegrations.filter(
+        return !(data.emailIntegrations ?? []).filter(
             (emailIntegration) => !emailIntegration.isDefault,
         ).length
     }

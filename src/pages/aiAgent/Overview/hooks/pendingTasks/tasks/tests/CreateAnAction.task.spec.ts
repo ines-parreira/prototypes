@@ -36,4 +36,25 @@ describe('CreateAnAction', () => {
             expect(task.display).toBe(false)
         },
     )
+
+    it('should display if there is no action defined', () => {
+        const task = new CreateAnActionTask(
+            buildRuleEngineData({
+                actions: ActionsDataFixture.start().withoutAction().build(),
+            }),
+            buildRuleEngineRoutes(),
+        )
+        expect(task.available).toBe(true)
+        expect(task.display).toBe(true)
+    })
+
+    it('should not display if request failed', () => {
+        const task = new CreateAnActionTask(
+            buildRuleEngineData({
+                actions: undefined,
+            }),
+            buildRuleEngineRoutes(),
+        )
+        expect(task.available).toBe(false)
+    })
 })

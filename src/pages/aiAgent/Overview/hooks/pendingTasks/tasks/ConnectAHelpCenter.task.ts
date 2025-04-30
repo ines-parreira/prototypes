@@ -12,13 +12,17 @@ export class ConnectAHelpCenterTask extends Task {
         )
     }
 
+    protected isAvailable(data: RuleEngineData): boolean {
+        return !!data?.aiAgentStoreConfiguration && !!data?.faqHelpCenters
+    }
+
     // Help center id should not be set in ai agent store configuration
     // and there should be at least one faq help center created
     // REMARK: I think the condition on the faq help centers is redundant, as the help center id should be null if there are no faq help centers
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
         return (
             data.aiAgentStoreConfiguration.helpCenterId === null &&
-            data.faqHelpCenters.length > 0
+            (data.faqHelpCenters?.length ?? 0) > 0
         )
     }
 

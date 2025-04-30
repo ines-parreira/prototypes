@@ -31,6 +31,7 @@ describe('PendingTasksSection', () => {
                 completedTasks={completedTasks}
                 pendingTasks={pendingTasks}
                 isLoading={true}
+                isFetched={false}
                 onStoreChange={() => {}}
                 selectedStore={{
                     id: 1,
@@ -60,6 +61,7 @@ describe('PendingTasksSection', () => {
                 completedTasks={completedTasks}
                 pendingTasks={pendingTasks}
                 isLoading={false}
+                isFetched={true}
                 onStoreChange={() => {}}
                 selectedStore={{
                     id: 1,
@@ -87,6 +89,7 @@ describe('PendingTasksSection', () => {
                 completedTasks={completedTasks}
                 pendingTasks={pendingTasks}
                 isLoading={false}
+                isFetched={true}
                 onStoreChange={() => {}}
                 selectedStore={{
                     id: 1,
@@ -118,6 +121,7 @@ describe('PendingTasksSection', () => {
                 completedTasks={completedTasks}
                 pendingTasks={pendingTasks}
                 isLoading={false}
+                isFetched={true}
                 onStoreChange={() => {}}
                 selectedStore={{
                     id: 1,
@@ -144,6 +148,7 @@ describe('PendingTasksSection', () => {
                 completedTasks={completedTasks}
                 pendingTasks={[]}
                 isLoading={false}
+                isFetched={true}
                 onStoreChange={() => {}}
                 selectedStore={{
                     id: 1,
@@ -173,6 +178,7 @@ describe('PendingTasksSection', () => {
                 completedTasks={completedTasks}
                 pendingTasks={pendingTasks}
                 isLoading={false}
+                isFetched={true}
                 onStoreChange={() => {}}
                 selectedStore={{
                     id: 1,

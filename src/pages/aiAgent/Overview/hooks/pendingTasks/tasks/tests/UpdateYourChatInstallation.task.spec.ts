@@ -89,4 +89,20 @@ describe('UpdateYourChatInstallation', () => {
         )
         expect(task.display).toBe(false)
     })
+
+    it('should not display the task if page interactions is missing', () => {
+        const chatIntegrationsStatus = ChatIntegrationsStatusDataFixture.start()
+            .withChatIntegrationStatus({ isInstalled: false })
+            .withChatIntegrationStatus({ isInstalled: true })
+            .build()
+
+        const task = new UpdateYourChatInstallationTask(
+            buildRuleEngineData({
+                chatIntegrationsStatus,
+            }),
+            buildRuleEngineRoutes(),
+        )
+        expect(task.display).toBe(false)
+        expect(task.available).toBe(true)
+    })
 })

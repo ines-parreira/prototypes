@@ -11,7 +11,7 @@ export const useFetchActionsData = ({
     storeName,
     refetchOnWindowFocus = true,
 }: Args) => {
-    const { data, isLoading } = useGetStoreWorkflowsConfigurations(
+    const { data, isLoading, isFetched } = useGetStoreWorkflowsConfigurations(
         {
             storeName,
             storeType: 'shopify',
@@ -23,6 +23,7 @@ export const useFetchActionsData = ({
     return {
         data,
         isLoading,
+        isFetched,
     }
 }
 

@@ -12,9 +12,13 @@ export class SetYourActionsLiveTask extends Task {
         )
     }
 
+    protected isAvailable(data: RuleEngineData): boolean {
+        return !!data?.actions
+    }
+
     // Has at least 1 draft action
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
-        return data.actions.some((action) => action.is_draft)
+        return (data.actions ?? []).some((action) => action.is_draft)
     }
 
     protected getFeatureUrl({

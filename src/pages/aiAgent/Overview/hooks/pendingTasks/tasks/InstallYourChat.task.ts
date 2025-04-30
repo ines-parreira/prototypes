@@ -12,9 +12,13 @@ export class InstallYourChatTask extends Task {
         )
     }
 
+    protected isAvailable(data: RuleEngineData): boolean {
+        return !!data?.chatIntegrationsStatus
+    }
+
     // At least 1 chat integration is not installed
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
-        return data.chatIntegrationsStatus.some((c) => !c.installed)
+        return (data?.chatIntegrationsStatus ?? []).some((c) => !c.installed)
     }
 
     protected getFeatureUrl({
@@ -28,7 +32,7 @@ export class InstallYourChatTask extends Task {
             return ''
         }
 
-        const firstChatNotInstalled = data.chatIntegrationsStatus.find(
+        const firstChatNotInstalled = (data?.chatIntegrationsStatus ?? []).find(
             (c) => !c.installed,
         )!
         return `/app/settings/channels/gorgias_chat/${firstChatNotInstalled.chatId}/installation`

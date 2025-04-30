@@ -16,15 +16,18 @@ export const useGuidanceArticles = (
     guidanceHelpCenterId: number,
     overrides?: Parameters<typeof useGetHelpCenterArticleList>[2],
 ) => {
-    const { data, isLoading: isGuidanceArticleListLoading } =
-        useGetHelpCenterArticleList(
-            guidanceHelpCenterId,
-            GUIDANCE_ARTICLES_QUERY_PARAMS,
-            {
-                ...overrides,
-                refetchOnWindowFocus: false,
-            },
-        )
+    const {
+        data,
+        isLoading: isGuidanceArticleListLoading,
+        isFetched,
+    } = useGetHelpCenterArticleList(
+        guidanceHelpCenterId,
+        GUIDANCE_ARTICLES_QUERY_PARAMS,
+        {
+            ...overrides,
+            refetchOnWindowFocus: false,
+        },
+    )
 
     const guidanceArticles = useMemo(
         () => (data ? data.data.map(mapArticleApiToGuidanceArticle) : []),
@@ -34,5 +37,6 @@ export const useGuidanceArticles = (
     return {
         guidanceArticles,
         isGuidanceArticleListLoading,
+        isFetched,
     }
 }

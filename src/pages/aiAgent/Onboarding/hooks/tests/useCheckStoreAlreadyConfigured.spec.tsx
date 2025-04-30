@@ -50,6 +50,7 @@ describe('useCheckStoreAlreadyConfigured', () => {
         mockUseFetchAiAgentStoreConfigurationData.mockReturnValue({
             data: undefined,
             isLoading: true,
+            isFetched: false,
             error: false,
         })
 
@@ -65,6 +66,7 @@ describe('useCheckStoreAlreadyConfigured', () => {
         mockUseFetchAiAgentStoreConfigurationData.mockReturnValue({
             data: undefined,
             isLoading: false,
+            isFetched: true,
             error: false,
         })
 
@@ -83,6 +85,7 @@ describe('useCheckStoreAlreadyConfigured', () => {
         mockUseFetchAiAgentStoreConfigurationData.mockReturnValue({
             data: mockData,
             isLoading: false,
+            isFetched: true,
             error: false,
         })
 

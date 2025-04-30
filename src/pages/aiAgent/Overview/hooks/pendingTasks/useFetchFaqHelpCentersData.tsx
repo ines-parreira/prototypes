@@ -6,7 +6,7 @@ type Args = {
 }
 /** Fetch all help-centers and filter out only the one that are  */
 export const useFetchFaqHelpCentersData = ({ enabled }: Args) => {
-    const { isLoading, data } = useGetHelpCenterList(
+    const { isLoading, isFetched, data } = useGetHelpCenterList(
         { type: 'faq', per_page: HELP_CENTER_MAX_CREATION },
         {
             staleTime: 1000 * 60 * 5,
@@ -18,6 +18,7 @@ export const useFetchFaqHelpCentersData = ({ enabled }: Args) => {
     return {
         data: data?.data.data,
         isLoading,
+        isFetched,
     }
 }
 

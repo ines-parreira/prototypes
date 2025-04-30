@@ -61,6 +61,7 @@ describe('useGuidanceAiSuggestions', () => {
         mockedUseGuidanceArticles.mockReturnValue({
             guidanceArticles,
             isGuidanceArticleListLoading: false,
+            isFetched: true,
         })
         mockedUseAppSelector.mockImplementation((selector) =>
             selector({
@@ -126,6 +127,7 @@ describe('useGuidanceAiSuggestions', () => {
         mockedUseGuidanceArticles.mockReturnValue({
             guidanceArticles: [],
             isGuidanceArticleListLoading: false,
+            isFetched: true,
         })
 
         mockedUseGetAIGeneratedGuidances([])
@@ -151,6 +153,7 @@ describe('useGuidanceAiSuggestions', () => {
         mockedUseGuidanceArticles.mockReturnValue({
             guidanceArticles: [],
             isGuidanceArticleListLoading: false,
+            isFetched: true,
         })
 
         const aiGuidances = [
@@ -181,6 +184,7 @@ describe('useGuidanceAiSuggestions', () => {
         mockedUseGuidanceArticles.mockReturnValue({
             guidanceArticles: [],
             isGuidanceArticleListLoading: false,
+            isFetched: true,
         })
 
         const aiGuidances = [
@@ -211,6 +215,7 @@ describe('useGuidanceAiSuggestions', () => {
         mockedUseGuidanceArticles.mockReturnValue({
             guidanceArticles: [],
             isGuidanceArticleListLoading: false,
+            isFetched: true,
         })
         const aiGuidances = [
             { ...getAIGuidanceFixture('1'), review_action: 'none' },

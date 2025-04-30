@@ -12,9 +12,13 @@ export class UploadAnExternalDocTask extends Task {
         )
     }
 
+    protected isAvailable(data: RuleEngineData): boolean {
+        return !!data?.fileIngestion
+    }
+
     // Email channel should be deactivated in ai agent store configuration
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
-        return data.fileIngestion.length === 0
+        return (data?.fileIngestion?.length ?? 0) === 0
     }
 
     protected getFeatureUrl({

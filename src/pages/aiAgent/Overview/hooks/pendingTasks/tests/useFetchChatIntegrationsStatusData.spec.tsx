@@ -43,6 +43,7 @@ describe('useFetchChatIntegrationsStatusData', () => {
         expect(hook.result.current).toEqual({
             data: undefined,
             isLoading: true,
+            isFetched: false,
         })
     })
 
@@ -100,6 +101,7 @@ describe('useFetchChatIntegrationsStatusData', () => {
                 },
             ],
             isLoading: false,
+            isFetched: true,
         })
     })
 
@@ -165,6 +167,7 @@ describe('useFetchChatIntegrationsStatusData', () => {
                 },
             ],
             isLoading: false,
+            isFetched: true,
         })
     })
 })

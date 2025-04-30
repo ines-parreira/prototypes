@@ -59,7 +59,7 @@ export const PendingTasksSectionConnected = () => {
         [setSelectedStoreToStorage],
     )
 
-    const { isLoading, pendingTasks, completedTasks } =
+    const { isLoading, isFetched, pendingTasks, completedTasks } =
         usePendingTasksRuleEngine({
             accountDomain,
             storeName: selectedStore.name,
@@ -73,6 +73,7 @@ export const PendingTasksSectionConnected = () => {
             selectedStore={selectedStore}
             onStoreChange={setSelectedStoreAndPersist}
             isLoading={isLoading}
+            isFetched={isFetched}
             pendingTasks={pendingTasks}
             completedTasks={completedTasks}
         />

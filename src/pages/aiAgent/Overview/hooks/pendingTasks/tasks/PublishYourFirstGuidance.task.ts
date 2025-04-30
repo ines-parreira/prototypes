@@ -11,9 +11,16 @@ export class PublishYourFirstGuidanceTask extends Task {
             routes,
         )
     }
+    protected isAvailable(data: RuleEngineData): boolean {
+        return !!data?.guidances
+    }
 
     // Only draft guidances
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
+        if (!data?.guidances) {
+            return false
+        }
+
         return (
             data.guidances.length > 0 &&
             data.guidances.filter((g) => g.visibility === 'UNLISTED').length ===

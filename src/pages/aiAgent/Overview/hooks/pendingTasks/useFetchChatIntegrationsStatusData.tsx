@@ -29,55 +29,61 @@ export const useFetchChatIntegrationsStatusData = ({
     )
     const chatIntegrations = useAppSelector(getChatIntegrations)
 
-    const { isLoading, data } = useQuery(['aiAgentChatInstallationStatus'], {
-        queryFn: () => {
-            const mappedChats = chatIds
-                .map((chatId) => {
-                    const chat = chatIntegrations.find((i) => i.id === chatId)
-                    return {
+    const { isLoading, isFetched, data } = useQuery(
+        ['aiAgentChatInstallationStatus'],
+        {
+            queryFn: () => {
+                const mappedChats = chatIds
+                    .map((chatId) => {
+                        const chat = chatIntegrations.find(
+                            (i) => i.id === chatId,
+                        )
+                        return {
+                            chatId,
+                            updatedAt: chat?.updated_datetime,
+                            appId: chat?.meta.app_id,
+                        }
+                    })
+                    .sort((a, b) => {
+                        if (!a.updatedAt) {
+                            return 1
+                        }
+                        if (!b.updatedAt) {
+                            return -1
+                        }
+
+                        return new Date(b.updatedAt).getTime() >
+                            new Date(a.updatedAt).getTime()
+                            ? -1
+                            : 1
+                    })
+                    .filter(
+                        (
+                            chat,
+                        ): chat is {
+                            chatId: number
+                            appId: string
+                            updatedAt: string
+                        } => !!chat.appId,
+                    )
+
+                const promises = mappedChats.map(({ chatId, appId }) =>
+                    getInstallationStatus(appId).then((status) => ({
+                        ...status,
                         chatId,
-                        updatedAt: chat?.updated_datetime,
-                        appId: chat?.meta.app_id,
-                    }
-                })
-                .sort((a, b) => {
-                    if (!a.updatedAt) {
-                        return 1
-                    }
-                    if (!b.updatedAt) {
-                        return -1
-                    }
-
-                    return new Date(b.updatedAt).getTime() >
-                        new Date(a.updatedAt).getTime()
-                        ? -1
-                        : 1
-                })
-                .filter(
-                    (
-                        chat,
-                    ): chat is {
-                        chatId: number
-                        appId: string
-                        updatedAt: string
-                    } => !!chat.appId,
+                    })),
                 )
-
-            const promises = mappedChats.map(({ chatId, appId }) =>
-                getInstallationStatus(appId).then((status) => ({
-                    ...status,
-                    chatId,
-                })),
-            )
-            return Promise.all(promises)
+                return Promise.all(promises)
+            },
+            enabled,
+            refetchOnWindowFocus,
         },
-        enabled,
-        refetchOnWindowFocus,
-    })
+    )
 
     return {
         data,
         isLoading,
+        isFetched,
     }
 }
 

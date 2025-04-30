@@ -36,10 +36,11 @@ export const useFetchPageInteractionsData = ({
         )
     }, [storeName, storeType, timezone])
 
-    const { isLoading, data: cubeData } = usePostReporting<
-        [CubeData],
-        CubeData
-    >(query, { refetchOnWindowFocus })
+    const {
+        isLoading,
+        isFetched,
+        data: cubeData,
+    } = usePostReporting<[CubeData], CubeData>(query, { refetchOnWindowFocus })
 
     // The data fetched by the current hook is only used in cases
     // where this feature flag is enabled, for simplicity we decided
@@ -60,6 +61,7 @@ export const useFetchPageInteractionsData = ({
 
     return {
         isLoading,
+        isFetched,
         data,
     }
 }

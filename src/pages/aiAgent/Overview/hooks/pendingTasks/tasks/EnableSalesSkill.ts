@@ -18,6 +18,10 @@ export class EnableSalesSkill extends Task {
         )
     }
 
+    protected isAvailable(data: RuleEngineData): boolean {
+        return !!data?.aiAgentStoreConfiguration
+    }
+
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
         const conf = data.aiAgentStoreConfiguration
         const emailSet = conf.emailChannelDeactivatedDatetime === null

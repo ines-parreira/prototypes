@@ -87,11 +87,13 @@ const useTicketViewDataMock = assumeMock(useTicketViewData)
 describe('usePendingTasksRuleEngine', () => {
     useFetchFaqHelpCentersDataMock.mockReturnValue({
         isLoading: false,
+        isFetched: true,
         data: HelpCenterDataFixture.start().withNoHelpCenter().build(),
     })
 
     useFetchFileIngestionDataMock.mockReturnValue({
         isLoading: false,
+        isFetched: true,
         data: FileIngestionDataFixture.start()
             .withSuccessfulIngestedFile()
             .build(),
@@ -99,16 +101,20 @@ describe('usePendingTasksRuleEngine', () => {
 
     useFetchGuidancesDataMock.mockReturnValue({
         isLoading: false,
+        isFetched: true,
+
         data: GuidancesDataFixture.start().withPublicGuidance().build(),
     })
 
     useFetchActionsDataMock.mockReturnValue({
         isLoading: false,
+        isFetched: true,
         data: ActionsDataFixture.start().withoutAction().build(),
     })
 
     useFetchAiAgentPlaygroundExecutionsDataMock.mockReturnValue({
         isLoading: false,
+        isFetched: true,
         data: AiAgentPlaygroundExecutionsDataFixture.start()
             .withoutExecution()
             .build(),
@@ -128,6 +134,7 @@ describe('usePendingTasksRuleEngine', () => {
 
     useFetchChatIntegrationsStatusDataMock.mockReturnValue({
         isLoading: false,
+        isFetched: true,
         data: ChatIntegrationsStatusDataFixture.start()
             .withoutChatIntegrationStatus()
             .build(),
@@ -140,6 +147,7 @@ describe('usePendingTasksRuleEngine', () => {
 
     useFetchPageInteractionsDataMock.mockReturnValue({
         isLoading: false,
+        isFetched: true,
         data: PageInteractionsDataFixture.start()
             .withoutPageInteraction()
             .withConvertChatInstallSnippetEnabled()
@@ -168,6 +176,7 @@ describe('usePendingTasksRuleEngine', () => {
             useFetchAiAgentStoreConfigurationDataMock.mockReturnValue({
                 error: undefined,
                 isLoading: false,
+                isFetched: true,
                 data: AiAgentStoreConfigurationFixture.start()
                     .withCreatedDatetime(
                         moment().subtract(10, 'days').toISOString(),
@@ -204,6 +213,7 @@ describe('usePendingTasksRuleEngine', () => {
         useFetchAiAgentStoreConfigurationDataMock.mockReturnValue({
             error: {},
             isLoading: false,
+            isFetched: true,
             data: undefined,
         })
 

@@ -12,10 +12,13 @@ export class ReviewAIGeneratedGuidancesTask extends Task {
         )
     }
 
+    protected isAvailable(data: RuleEngineData): boolean {
+        return !!data?.guidances
+    }
     // Have at least 1 AI guidance generated in unlisted visibility
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
         return (
-            data.guidances.filter(
+            (data.guidances ?? []).filter(
                 (g) =>
                     g.templateKey?.startsWith('ai_guidance') &&
                     g.visibility === 'UNLISTED',

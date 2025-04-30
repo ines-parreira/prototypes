@@ -119,4 +119,21 @@ describe('VerifyYourEmailDomain', () => {
         )
         expect(task.display).toBe(false)
     })
+
+    it('should not display the task if there is no integration, but not set in store configuration', () => {
+        const aiAgentStoreConfiguration =
+            AiAgentStoreConfigurationFixture.start()
+                .withConnectedEmailIntegrations()
+                .build()
+
+        const task = new VerifyYourEmailDomainTask(
+            buildRuleEngineData({
+                aiAgentStoreConfiguration,
+            }),
+            buildRuleEngineRoutes(),
+        )
+
+        expect(task.available).toBe(true)
+        expect(task.display).toBe(false)
+    })
 })

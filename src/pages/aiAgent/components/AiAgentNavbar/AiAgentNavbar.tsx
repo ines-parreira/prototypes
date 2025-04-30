@@ -23,7 +23,6 @@ export const AiAgentNavbar = () => {
     const isActionsInternalPlatformEnabled = useFlag(
         FeatureFlagKey.ActionsInternalPlatform,
     )
-
     if (
         (!hasAutomate && !hasAiAgentPreview) ||
         storeIntegrations.length === 0

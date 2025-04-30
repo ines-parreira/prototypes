@@ -40,16 +40,16 @@ import { type TicketViewData } from './useTicketViewData'
 
 export type RuleEngineData = {
     aiAgentStoreConfiguration: AiAgentStoreConfigurationData
-    faqHelpCenters: FaqHelpCentersData
-    fileIngestion: FileIngestionData
-    guidances: GuidancesData
-    actions: ActionsData
-    aiAgentPlaygroundExecutions: AiAgentPlaygroundExecutionsData
-    emailIntegrations: EmailIntegrationsData
-    shopifyIntegration: ShopifyPermissionsData
-    chatIntegrationsStatus: ChatIntegrationsStatusData
-    ticketView: TicketViewData
-    pageInteractions: PageInteractionsData
+    faqHelpCenters?: FaqHelpCentersData
+    fileIngestion?: FileIngestionData
+    guidances?: GuidancesData
+    actions?: ActionsData
+    aiAgentPlaygroundExecutions?: AiAgentPlaygroundExecutionsData
+    emailIntegrations?: EmailIntegrationsData
+    shopifyIntegration?: ShopifyPermissionsData
+    chatIntegrationsStatus?: ChatIntegrationsStatusData
+    ticketView?: TicketViewData
+    pageInteractions: PageInteractionsData | null
     isActivationEnabled: boolean
     isConvertFloatingChatInputEnabled: boolean
 }
@@ -131,7 +131,9 @@ export const runRuleEngine = (
     )
 
     const tasks = aiAgentType
-        ? tasksPerAiAgentType[aiAgentType](data, routes)
+        ? tasksPerAiAgentType[aiAgentType](data, routes).filter(
+              (task) => task.available,
+          )
         : []
 
     const completedTasks = tasks.filter((task) => !task.display)

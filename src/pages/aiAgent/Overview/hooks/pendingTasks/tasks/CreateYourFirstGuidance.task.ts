@@ -12,9 +12,13 @@ export class CreateYourFirstGuidanceTask extends Task {
         )
     }
 
+    protected isAvailable(data: RuleEngineData): boolean {
+        return !!data?.guidances
+    }
+
     // No guidances including draft ones
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
-        return data.guidances.length === 0
+        return (data?.guidances?.length ?? 0) === 0
     }
 
     protected getFeatureUrl({

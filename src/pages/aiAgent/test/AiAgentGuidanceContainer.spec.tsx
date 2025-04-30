@@ -80,6 +80,7 @@ const helpCenter = {
 const defaultGuidanceArticleProps: ReturnType<typeof useGuidanceArticles> = {
     guidanceArticles: [],
     isGuidanceArticleListLoading: false,
+    isFetched: true,
 }
 const defaultGuidanceArticleMutationProps: ReturnType<
     typeof useGuidanceArticleMutation

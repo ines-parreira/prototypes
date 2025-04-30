@@ -12,7 +12,7 @@ export const useFetchAiAgentStoreConfigurationData = ({
     enabled,
     refetchOnWindowFocus = true,
 }: Args) => {
-    const { data, isLoading, error } = useGetStoreConfigurationPure(
+    const { data, isLoading, error, isFetched } = useGetStoreConfigurationPure(
         {
             accountDomain,
             storeName,
@@ -25,6 +25,7 @@ export const useFetchAiAgentStoreConfigurationData = ({
         data: data?.data.storeConfiguration,
         isLoading,
         error,
+        isFetched,
     }
 }
 

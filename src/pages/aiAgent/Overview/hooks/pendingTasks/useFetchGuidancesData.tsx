@@ -12,23 +12,26 @@ export const useFetchGuidancesData = ({
     enabled,
     refetchOnWindowFocus = true,
 }: Args) => {
-    const { isLoading: isLoadingGuidanceHelpCenter, data: guidanceHelpCenter } =
-        useGetHelpCenterList(
-            {
-                type: 'guidance',
-                per_page: HELP_CENTER_MAX_CREATION,
-                shop_name: storeName,
-            },
-            {
-                staleTime: 1000 * 60 * 5,
-                refetchOnWindowFocus: false,
-                enabled,
-            },
-        )
+    const {
+        isLoading: isLoadingGuidanceHelpCenter,
+        data: guidanceHelpCenter,
+        isFetched: isFetchedGuidanceHelpCenter,
+    } = useGetHelpCenterList(
+        {
+            type: 'guidance',
+            per_page: HELP_CENTER_MAX_CREATION,
+            shop_name: storeName,
+        },
+        {
+            staleTime: 1000 * 60 * 5,
+            refetchOnWindowFocus: false,
+            enabled,
+        },
+    )
 
     const guidanceHelpCenterId = guidanceHelpCenter?.data?.data[0]?.id
 
-    const { guidanceArticles, isGuidanceArticleListLoading } =
+    const { guidanceArticles, isGuidanceArticleListLoading, isFetched } =
         useGuidanceArticles(guidanceHelpCenterId!, {
             enabled: !!guidanceHelpCenterId,
             refetchOnWindowFocus,
@@ -37,6 +40,7 @@ export const useFetchGuidancesData = ({
     return {
         data: guidanceArticles,
         isLoading: isGuidanceArticleListLoading || isLoadingGuidanceHelpCenter,
+        isFetched: isFetchedGuidanceHelpCenter || isFetched,
     }
 }
 

@@ -12,7 +12,7 @@ export const useFetchAiAgentPlaygroundExecutionsData = ({
     enabled,
     refetchOnWindowFocus = true,
 }: Args) => {
-    const { data, isLoading } = useGetPlaygroundExecutions(
+    const { data, isLoading, isFetched } = useGetPlaygroundExecutions(
         {
             accountDomain,
             storeName,
@@ -23,6 +23,7 @@ export const useFetchAiAgentPlaygroundExecutionsData = ({
     return {
         data: data?.data,
         isLoading,
+        isFetched,
     }
 }
 

@@ -14,6 +14,10 @@ export class EnableInputLauncherOnChatTask extends Task {
         )
     }
 
+    protected isAvailable(data: RuleEngineData): boolean {
+        return !!data?.aiAgentStoreConfiguration
+    }
+
     // No guidances including draft ones
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
         return (

@@ -15,6 +15,17 @@ describe('CreateYourFirstGuidance', () => {
         expect(task.display).toBe(true)
     })
 
+    it('should not display guidance as we did not fullfill request', () => {
+        const task = new CreateYourFirstGuidanceTask(
+            buildRuleEngineData({
+                guidances: undefined,
+            }),
+            buildRuleEngineRoutes(),
+        )
+
+        expect(task.available).toBe(false)
+    })
+
     it.each([
         {
             type: 'PUBLIC',

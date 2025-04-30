@@ -12,6 +12,10 @@ export class ConnectYourDefaultEmailTask extends Task {
         )
     }
 
+    protected isAvailable(data: RuleEngineData): boolean {
+        return !!data?.aiAgentStoreConfiguration && !!data?.emailIntegrations
+    }
+
     // Email channel should be activated
     // AND there should be at least one email integration
     // AND the default email must be connected to the ai agent store configuration
@@ -23,7 +27,7 @@ export class ConnectYourDefaultEmailTask extends Task {
             return false
         }
 
-        const defaultEmailIntegration = data.emailIntegrations.find(
+        const defaultEmailIntegration = (data?.emailIntegrations ?? []).find(
             (emailIntegration) => emailIntegration.isDefault,
         )
 
