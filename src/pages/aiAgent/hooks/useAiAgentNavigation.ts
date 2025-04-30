@@ -128,9 +128,8 @@ export type NavigationItem = {
 
 const useNavigationItems = (
     routes: ReturnType<typeof getAiAgentNavigationRoutes>,
+    flags: LDFlagSet,
 ) => {
-    const flags = useFlags()
-
     const isGorgiasUser =
         flags[FeatureFlagKey.FollowUpAiAgentPreviewMode] &&
         (window.USER_IMPERSONATED || window.DEVELOPMENT)
@@ -143,8 +142,7 @@ const useNavigationItems = (
     const isAiAgentScrapeStoreDomainEnabled =
         flags[FeatureFlagKey.AiAgentScrapeStoreDomain]
 
-    const isStandaloneMenuEnabled =
-        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
+    const isStandaloneMenuEnabled = flags[FeatureFlagKey.ConvAiStandaloneMenu]
 
     const isConversationStartersEnabled =
         !!flags[FeatureFlagKey.ConversationStarters]
@@ -312,7 +310,7 @@ export const useAiAgentNavigation = ({ shopName }: { shopName: string }) => {
         [shopName, flags],
     )
 
-    const navigationItems = useNavigationItems(routes)
+    const navigationItems = useNavigationItems(routes, flags)
 
     return { navigationItems, routes }
 }
