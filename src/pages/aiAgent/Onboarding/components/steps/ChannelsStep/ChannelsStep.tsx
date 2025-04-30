@@ -65,7 +65,10 @@ import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import ColorField from 'pages/common/forms/ColorField'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
-import { getCurrentDomain } from 'state/currentAccount/selectors'
+import {
+    getCurrentDomain,
+    getDefaultIntegrationSettings,
+} from 'state/currentAccount/selectors'
 import { createGorgiasChatIntegration } from 'state/integrations/actions'
 import {
     getIntegrationsByTypes,
@@ -338,14 +341,20 @@ export const ChannelsStep: React.FC<StepProps> = ({
         getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES),
     )
 
+    const defaultIntegrations = useAppSelector(getDefaultIntegrationSettings)
+
     const emailChannels = useMemo(() => {
         return emailIntegrations.map((integration) => ({
             email: integration.meta.address,
             id: integration.id,
-            isDefault: integration.meta.preferred,
+            isDefault: defaultIntegrations?.data?.email === integration.id,
             isDisabled: usedEmailIntegrations.includes(integration.id),
         }))
-    }, [emailIntegrations, usedEmailIntegrations])
+    }, [
+        emailIntegrations,
+        usedEmailIntegrations,
+        defaultIntegrations?.data?.email,
+    ])
 
     const logChannelViewEvent = (
         updatedField: keyof ChannelsFormValues,
