@@ -1,12 +1,23 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { Label } from '@gorgias/merchant-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import {
+    INITIAL_FORM_VALUES,
+    SIGNATURE_MAX_LENGTH,
+} from 'pages/aiAgent/constants'
+import { FormValues, UpdateValue } from 'pages/aiAgent/types'
+import {
+    SettingsCard,
+    SettingsCardContent,
+    SettingsCardHeader,
+    SettingsCardTitle,
+} from 'pages/common/components/SettingsCard'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import TextArea from 'pages/common/forms/TextArea'
-
-import { INITIAL_FORM_VALUES, SIGNATURE_MAX_LENGTH } from '../../../constants'
-import { FormValues, UpdateValue } from '../../../types'
 
 import css from './SignatureFormComponent.less'
 
@@ -30,6 +41,8 @@ export const SignatureFormComponent = ({
         !isRequired ||
         isBlurred === false ||
         (signature && signature.trim() && signature.length > 0)
+    const isSettingsRevampEnabled =
+        useFlags()[FeatureFlagKey.AiAgentSettingsRevamp]
 
     const handleChange = (newValue: unknown) => {
         if (typeof newValue !== 'string') return
@@ -40,31 +53,71 @@ export const SignatureFormComponent = ({
 
     return (
         <div className={css.formGroup}>
-            <Label isRequired={isRequired} className={css.subsectionHeader}>
-                Signature
-                <IconTooltip className={css.icon}>
-                    This will override the current email signature in your email
-                    settings.
-                </IconTooltip>
-            </Label>
-            <TextArea
-                id="signature-text-area"
-                innerClassName={css.formInputEditor}
-                placeholder="AI Agent email signature"
-                value={initialValue}
-                onChange={handleChange}
-                onBlur={() => setIsBlurred(true)}
-                maxLength={SIGNATURE_MAX_LENGTH}
-                error={
-                    !isSignatureValid
-                        ? 'Email signature is required.'
-                        : undefined
-                }
-            />
-            {isSignatureValid && (
-                <div className={css.formInputFooterInfo}>
-                    {`At the end of emails you can disclose that the message was created by AI, or provide a custom name for AI Agent. Do not include greetings (e.g. "Best regards"). Greetings will already be included in the message above the signature.`}
-                </div>
+            {!isSettingsRevampEnabled && (
+                <>
+                    <Label
+                        isRequired={isRequired}
+                        className={css.subsectionHeader}
+                    >
+                        Signature
+                        <IconTooltip className={css.icon}>
+                            This will override the current email signature in
+                            your email settings.
+                        </IconTooltip>
+                    </Label>
+                    <TextArea
+                        id="signature-text-area"
+                        innerClassName={css.formInputEditor}
+                        placeholder="AI Agent email signature"
+                        value={initialValue}
+                        onChange={handleChange}
+                        onBlur={() => setIsBlurred(true)}
+                        maxLength={SIGNATURE_MAX_LENGTH}
+                        error={
+                            !isSignatureValid
+                                ? 'Email signature is required.'
+                                : undefined
+                        }
+                    />
+                    {isSignatureValid && (
+                        <div className={css.formInputFooterInfo}>
+                            {`At the end of emails you can disclose that the message was created by AI, or provide a custom name for AI Agent. Do not include greetings (e.g. "Best regards"). Greetings will already be included in the message above the signature.`}
+                        </div>
+                    )}
+                </>
+            )}
+            {isSettingsRevampEnabled && (
+                <SettingsCard>
+                    <SettingsCardHeader>
+                        <SettingsCardTitle
+                            id="signature-text-area"
+                            isRequired={isRequired}
+                        >
+                            Signature
+                        </SettingsCardTitle>
+                        At the end of emails you can disclose that the message
+                        was created by AI, or provide a custom name for AI
+                        Agent. Do not include greetings (e.g. &quot;Best
+                        regards&quot;). Greetings will already be included in
+                        the message above the signature.
+                    </SettingsCardHeader>
+                    <SettingsCardContent>
+                        <TextArea
+                            aria-labelledby="signature-text-area"
+                            innerClassName={css.formInputEditor}
+                            placeholder="AI Agent email signature"
+                            value={initialValue}
+                            onChange={handleChange}
+                            onBlur={() => setIsBlurred(true)}
+                            maxLength={SIGNATURE_MAX_LENGTH}
+                            error={
+                                !isSignatureValid
+                                    ? 'Email signature is required.'
+                                    : undefined
+                            }
+                        />
+                    </SettingsCardContent>
+                </SettingsCard>
             )}
         </div>
     )

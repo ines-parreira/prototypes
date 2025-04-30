@@ -1,130 +1,164 @@
-import React from 'react'
-
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import '@testing-library/jest-dom'
 
-import { INITIAL_FORM_VALUES } from '../../../constants'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { INITIAL_FORM_VALUES } from 'pages/aiAgent/constants'
+
 import { SignatureFormComponent } from '../FormComponents/SignatureFormComponent'
 
-describe('SignatureFormComponent', () => {
-    const mockUpdateValue = jest.fn()
+describe.each([true, false])(
+    'SignatureFormComponent',
+    (isSettingRevampEnabled) => {
+        const mockUpdateValue = jest.fn()
 
-    const renderComponent = (signature: string | null, isRequired = true) => {
-        render(
-            <SignatureFormComponent
-                isRequired={isRequired}
-                signature={signature}
-                updateValue={mockUpdateValue}
-            />,
-        )
-    }
+        const renderComponent = (
+            signature: string | null,
+            isRequired = true,
+        ) => {
+            render(
+                <SignatureFormComponent
+                    isRequired={isRequired}
+                    signature={signature}
+                    updateValue={mockUpdateValue}
+                />,
+            )
+        }
 
-    test('renders the component correctly', () => {
-        renderComponent(INITIAL_FORM_VALUES.signature)
+        beforeEach(() => {
+            ;(useFlags as jest.Mock).mockReturnValue({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: isSettingRevampEnabled,
+            })
+        })
 
-        // Check if the label and tooltip are rendered
-        expect(screen.getByText('Signature')).toBeInTheDocument()
-        expect(
-            screen.getByText(
-                /At the end of emails you can disclose that the message was created by AI/i,
-            ),
-        ).toBeInTheDocument()
+        test('renders the component correctly', () => {
+            renderComponent(INITIAL_FORM_VALUES.signature)
 
-        // Check if the textarea is rendered with correct placeholder
-        const textArea = screen.getByPlaceholderText('AI Agent email signature')
-        expect(textArea).toBeInTheDocument()
-        expect(textArea).toHaveValue(INITIAL_FORM_VALUES.signature)
-    })
+            // Check if the label and tooltip are rendered
+            expect(screen.getByText('Signature')).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    /At the end of emails you can disclose that the message was created by AI/i,
+                ),
+            ).toBeInTheDocument()
 
-    test('shows initial value correctly when signature is provided', () => {
-        renderComponent('Initial signature')
+            // Check if the textarea is rendered with correct placeholder
+            const textArea = screen.getByPlaceholderText(
+                'AI Agent email signature',
+            )
+            expect(textArea).toBeInTheDocument()
+            expect(textArea).toHaveValue(INITIAL_FORM_VALUES.signature)
+        })
 
-        const textArea = screen.getByPlaceholderText('AI Agent email signature')
-        expect(textArea).toHaveValue('Initial signature')
-    })
+        test('shows initial value correctly when signature is provided', () => {
+            renderComponent('Initial signature')
 
-    test('calls updateValue when the user types in the textarea', () => {
-        renderComponent(null)
+            const textArea = screen.getByPlaceholderText(
+                'AI Agent email signature',
+            )
+            expect(textArea).toHaveValue('Initial signature')
+        })
 
-        const textArea = screen.getByPlaceholderText('AI Agent email signature')
+        test('calls updateValue when the user types in the textarea', () => {
+            renderComponent(null)
 
-        // Simulate typing
-        fireEvent.change(textArea, { target: { value: 'New signature' } })
-        fireEvent.blur(textArea)
+            const textArea = screen.getByPlaceholderText(
+                'AI Agent email signature',
+            )
 
-        expect(mockUpdateValue).toHaveBeenCalledWith(
-            'signature',
-            'New signature',
-        )
-    })
+            // Simulate typing
+            fireEvent.change(textArea, { target: { value: 'New signature' } })
+            fireEvent.blur(textArea)
 
-    test('displays an error message when the signature is blurred and invalid', () => {
-        renderComponent('')
+            expect(mockUpdateValue).toHaveBeenCalledWith(
+                'signature',
+                'New signature',
+            )
+        })
 
-        const textArea = screen.getByPlaceholderText('AI Agent email signature')
+        test('displays an error message when the signature is blurred and invalid', () => {
+            renderComponent('')
 
-        // Simulate blur event (leaving the textarea)
-        fireEvent.blur(textArea)
+            const textArea = screen.getByPlaceholderText(
+                'AI Agent email signature',
+            )
 
-        expect(
-            screen.getByText('Email signature is required.'),
-        ).toBeInTheDocument()
-    })
+            // Simulate blur event (leaving the textarea)
+            fireEvent.blur(textArea)
 
-    test('does not display error message when signature is valid', () => {
-        renderComponent('Valid signature')
+            expect(
+                screen.getByText('Email signature is required.'),
+            ).toBeInTheDocument()
+        })
 
-        const textArea = screen.getByPlaceholderText('AI Agent email signature')
+        test('does not display error message when signature is valid', () => {
+            renderComponent('Valid signature')
 
-        // Simulate blur event
-        fireEvent.blur(textArea)
+            const textArea = screen.getByPlaceholderText(
+                'AI Agent email signature',
+            )
 
-        // Error message should not be present
-        expect(screen.queryByText('Email signature is required.')).toBeNull()
-    })
+            // Simulate blur event
+            fireEvent.blur(textArea)
 
-    test('displays info message when signature is valid', () => {
-        renderComponent('Valid signature')
+            // Error message should not be present
+            expect(
+                screen.queryByText('Email signature is required.'),
+            ).toBeNull()
+        })
 
-        const textArea = screen.getByPlaceholderText('AI Agent email signature')
+        test('displays info message when signature is valid', () => {
+            renderComponent('Valid signature')
 
-        // Simulate blur event
-        fireEvent.blur(textArea)
+            const textArea = screen.getByPlaceholderText(
+                'AI Agent email signature',
+            )
 
-        // Check if the info message is displayed
-        expect(
-            screen.getByText(
-                /At the end of emails you can disclose that the message was created by AI/i,
-            ),
-        ).toBeInTheDocument()
-    })
+            // Simulate blur event
+            fireEvent.blur(textArea)
 
-    test('does not show error if input is modified after an invalid state', () => {
-        renderComponent('')
+            // Check if the info message is displayed
+            expect(
+                screen.getByText(
+                    /At the end of emails you can disclose that the message was created by AI/i,
+                ),
+            ).toBeInTheDocument()
+        })
 
-        const textArea = screen.getByPlaceholderText('AI Agent email signature')
+        test('does not show error if input is modified after an invalid state', () => {
+            renderComponent('')
 
-        // Simulate blur event
-        fireEvent.blur(textArea)
+            const textArea = screen.getByPlaceholderText(
+                'AI Agent email signature',
+            )
 
-        // Error message should be present
-        expect(
-            screen.getByText('Email signature is required.'),
-        ).toBeInTheDocument()
+            // Simulate blur event
+            fireEvent.blur(textArea)
 
-        // Now type something to fix the error
-        fireEvent.change(textArea, { target: { value: 'Corrected signature' } })
+            // Error message should be present
+            expect(
+                screen.getByText('Email signature is required.'),
+            ).toBeInTheDocument()
 
-        // Error message should disappear
-        expect(screen.queryByText('Email signature is required.')).toBeNull()
-    })
+            // Now type something to fix the error
+            fireEvent.change(textArea, {
+                target: { value: 'Corrected signature' },
+            })
 
-    test('does not show error if signature is not required', () => {
-        renderComponent('', false)
+            // Error message should disappear
+            expect(
+                screen.queryByText('Email signature is required.'),
+            ).toBeNull()
+        })
 
-        expect(
-            screen.queryByText('Email signature is required.'),
-        ).not.toBeInTheDocument()
-    })
-})
+        test('does not show error if signature is not required', () => {
+            renderComponent('', false)
+
+            expect(
+                screen.queryByText('Email signature is required.'),
+            ).not.toBeInTheDocument()
+        })
+    },
+)
