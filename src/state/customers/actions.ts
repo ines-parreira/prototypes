@@ -214,6 +214,7 @@ export function fetchCustomerHistory(
                 params: {
                     customer_id: customerId,
                     limit: 100,
+                    trashed: false,
                 },
             })
             .then((json) => json?.data)
