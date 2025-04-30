@@ -3,8 +3,10 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import cssNavbar from 'assets/css/navbar.less'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
-import AutomateNavbarPaywallNavbarLink from 'pages/automate/common/components/AutomateNavbarPaywallNavbarLink'
+import AutomateNavbarPaywallLink from 'pages/automate/common/components/AutomateNavbarPaywallNavbarLink'
 import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
@@ -33,80 +35,87 @@ export default function AutomateStatsNavbar({ commonNavLinkProps }: Props) {
     const isAiAgentStatsPageEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AIAgentStatsPage]
 
-    const isAiSalesAgentEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.StandaloneAiSalesAnalyticsPage]
-
     //TODO after Automate reports refactoring is done
     return (
         <div className={cssNavbar.menu}>
             {!hasAutomate ? (
-                <AutomateNavbarPaywallNavbarLink to={OVERVIEW_PATH} isNested>
+                <AutomateNavbarPaywallLink to={OVERVIEW_PATH} isNested>
                     {PAGE_TITLE_OVERVIEW}
-                </AutomateNavbarPaywallNavbarLink>
+                </AutomateNavbarPaywallLink>
             ) : (
                 <>
-                    <div
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested,
-                        )}
-                        data-candu-id="statistics-automate-link-overview"
+                    <AutomateStatsLink
+                        {...commonNavLinkProps}
+                        to={OVERVIEW_PATH}
+                        canduId="statistics-automate-link-overview"
                     >
-                        <NavbarLink {...commonNavLinkProps} to={OVERVIEW_PATH}>
-                            {PAGE_TITLE_OVERVIEW}
-                        </NavbarLink>
-                    </div>
+                        {PAGE_TITLE_OVERVIEW}
+                    </AutomateStatsLink>
 
                     {isAiAgentStatsPageEnabled && (
-                        <div
-                            className={classNames(
-                                cssNavbar['link-wrapper'],
-                                cssNavbar.isNested,
-                            )}
-                            data-candu-id="statistics-automate-ai-agent"
-                        >
-                            <NavbarLink
-                                {...commonNavLinkProps}
-                                to={AI_AGENT_PATH}
-                            >
-                                {PAGE_TITLE_AI_AGENT}
-                            </NavbarLink>
-                        </div>
-                    )}
-
-                    {isAiSalesAgentEnabled && (
-                        <div
-                            className={classNames(
-                                cssNavbar['link-wrapper'],
-                                cssNavbar.isNested,
-                            )}
-                            data-candu-id="statistics-ai-sales-agent"
-                        >
-                            <NavbarLink
-                                {...commonNavLinkProps}
-                                to={AI_SALES_AGENT_PATH}
-                            >
-                                {LINK_AI_SALES_AGENT_TEXT}
-                            </NavbarLink>
-                        </div>
-                    )}
-
-                    <div
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested,
-                        )}
-                        data-candu-id="statistics-automate-performance-by-feature"
-                    >
-                        <NavbarLink
+                        <AutomateStatsLink
                             {...commonNavLinkProps}
-                            to={PERFORMANCE_BY_FEATURE_PATH}
+                            to={AI_AGENT_PATH}
+                            canduId="statistics-automate-link-ai-agent"
                         >
-                            {PAGE_TITLE_PERFORMANCE_BY_FEATURES}
-                        </NavbarLink>
-                    </div>
+                            {PAGE_TITLE_AI_AGENT}
+                        </AutomateStatsLink>
+                    )}
+
+                    <AiSalesAgentStatsLink
+                        commonNavLinkProps={commonNavLinkProps}
+                    />
+
+                    <AutomateStatsLink
+                        {...commonNavLinkProps}
+                        to={PERFORMANCE_BY_FEATURE_PATH}
+                        canduId="statistics-automate-performance-by-feature"
+                    >
+                        {PAGE_TITLE_PERFORMANCE_BY_FEATURES}
+                    </AutomateStatsLink>
                 </>
             )}
         </div>
     )
 }
+
+const AiSalesAgentStatsLink = ({ commonNavLinkProps }: Props) => {
+    const isAiSalesAgentAnalyticsEnabled: boolean | undefined = useFlag(
+        FeatureFlagKey.StandaloneAiSalesAnalyticsPage,
+    )
+
+    const canUseAiSalesAgent = useCanUseAiSalesAgent()
+
+    if (!isAiSalesAgentAnalyticsEnabled) return null
+
+    const LinkComponent = canUseAiSalesAgent
+        ? AutomateStatsLink
+        : AutomateNavbarPaywallLink
+
+    return (
+        <LinkComponent
+            {...commonNavLinkProps}
+            to={AI_SALES_AGENT_PATH}
+            canduId="statistics-ai-sales-agent"
+            isNested
+        >
+            {LINK_AI_SALES_AGENT_TEXT}
+        </LinkComponent>
+    )
+}
+
+const AutomateStatsLink = ({
+    children,
+    canduId,
+    ...props
+}: {
+    children: React.ReactNode
+    canduId?: string
+} & NavbarLinkProps) => (
+    <div
+        className={classNames(cssNavbar['link-wrapper'], cssNavbar.isNested)}
+        data-candu-id={canduId}
+    >
+        <NavbarLink {...props}>{children}</NavbarLink>
+    </div>
+)

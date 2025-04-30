@@ -4,5 +4,5 @@
         "source.fixAll.oxc": "explicit",
         "source.fixAll.stylelint": "explicit"
     },
-    "jest.jestCommandLine": "yarn jest"
+    "jest.jestCommandLine": "npx jest"
 }

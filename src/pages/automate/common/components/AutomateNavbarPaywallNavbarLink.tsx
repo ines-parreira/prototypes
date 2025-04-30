@@ -12,11 +12,13 @@ import css from './AutomateNavbarPaywallNavbarLink.less'
 type Props = {
     children: ReactNode
     isNested?: boolean
+    canduId?: string
 } & NavbarLinkProps
 
 const AutomateNavbarPaywallNavbarLink = ({
     children,
     isNested,
+    canduId,
     ...props
 }: Props) => {
     return (
@@ -24,6 +26,7 @@ const AutomateNavbarPaywallNavbarLink = ({
             className={classnames(cssNavbar['link-wrapper'], {
                 [cssNavbar.isNested]: isNested,
             })}
+            data-candu-id={canduId}
         >
             <NavbarLink className={css.item} {...props}>
                 <div className={css.name}>{children}</div>
