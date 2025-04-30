@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import _debounce from 'lodash/debounce'
 import { DropTargetMonitor } from 'react-dnd'
 import { connect, ConnectedProps } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 
-import navbarCss from 'assets/css/navbar.less'
 import { ActiveContent, Navbar } from 'common/navigation'
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
+import { Navigation } from 'components/Navigation/Navigation'
 import {
     UserRole,
     UserSetting,
@@ -28,10 +28,6 @@ import { Section, SectionDraft } from 'models/section/types'
 import { createUserSetting, updateUserSetting } from 'models/user/resources'
 import { fetchViewsPaginated, updateView } from 'models/view/resources'
 import { View, ViewCategoryNavbar, ViewVisibility } from 'models/view/types'
-import CreateTicketNavbarButton from 'pages/common/components/CreateTicket/CreateTicketNavbarButton'
-import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
-import PlaceCallNavbarButton from 'pages/common/components/PlaceCallNavbarButton'
-import RecentChats from 'pages/common/components/RecentChats'
 import useAutoScrollOnDragging from 'pages/common/hooks/useAutoScrollOnDragging'
 import { tryLocalStorage } from 'services/common/utils'
 import GorgiasApi from 'services/gorgiasApi'
@@ -77,22 +73,25 @@ import {
 import { hasRole, isTicketPath } from 'utils'
 import { systemViewIcons } from 'utils/views'
 
-import DeleteSectionModal from './DeleteSectionModal'
-import SectionFormModal from './SectionFormModal'
-import TicketNavbarContent, { TicketNavbarElement } from './TicketNavbarContent'
+import DeleteSectionModal from '../DeleteSectionModal'
+import SectionFormModal from '../SectionFormModal'
 import TicketNavbarDropTarget, {
     TicketNavbarDragObject,
     TicketNavbarDropDirection,
     TicketNavbarDropResult,
-} from './TicketNavbarDropTarget'
-import TicketNavbarViewLink from './TicketNavbarViewLink'
+} from '../TicketNavbarDropTarget'
+import { ViewCategories, ViewCategoriesIcons } from './constants'
+import { CreateTicketNavbarButtonV2 } from './CreateTicketNavbarButtonV2'
+import { PlaceCallNavbarButtonV2 } from './PlaceCallNavbarButtonV2'
+import { RecentChatsV2 } from './RecentChatsV2'
+import { TicketNavbarBlockV2 } from './TicketNavbarBlockV2'
+import TicketNavbarContentV2, {
+    TicketNavbarElement,
+} from './TicketNavbarContentV2'
+import TicketNavbarViewLink from './TicketNavbarViewLinkV2'
+import { useStoredNavigationSections } from './useStoredNavigationSections'
 
-import css from './TicketNavbar.less'
-
-const viewCategories = {
-    public: 'Shared views',
-    private: 'Private views',
-}
+import css from './TicketNavbarV2.less'
 
 type OwnProps = {
     disableResize?: boolean
@@ -445,123 +444,126 @@ export function TicketNavbarContainer({
         [],
     )
 
+    const { handleNavigationStateChange, navigationValues } =
+        useStoredNavigationSections(categories)
+
     const { scrollableAreaRef } = useAutoScrollOnDragging()
 
     return (
         <Navbar
             activeContent={ActiveContent.Tickets}
             disableResize={disableResize}
-            headerContent={
-                <>
-                    <CreateTicketNavbarButton
-                        isDisabled={window.location.pathname.includes(
-                            '/ticket/new',
-                        )}
-                    />
-                    <PlaceCallNavbarButton />
-                </>
-            }
             navbarContentRef={scrollableAreaRef}
+            title="Tickets"
+            navbarRevampId="navbar-v2"
+            headerContent={
+                <div className={css.headerContent}>
+                    <CreateTicketNavbarButtonV2 />
+                    <PlaceCallNavbarButtonV2 />
+                </div>
+            }
             splitTicketViewToggle={
                 isTicketPath(window.location.pathname) && !showGlobalNav ? (
                     <SplitTicketViewToggle />
                 ) : undefined
             }
-            title="Tickets"
-            navbarRevampId="navbar-v2"
         >
-            <RecentChats />
+            <RecentChatsV2 />
             {!!systemTopElements.length && (
-                <div
-                    data-appcues="new-system-views"
-                    className={navbarCss.category}
-                >
+                <div data-appcues="new-system-views" className={css.navigation}>
                     {systemTopElements.map((element) => (
                         <TicketNavbarViewLink
                             key={`view-${element.data.id}`}
+                            view={element.data as View}
+                            viewCount={viewsCount[element.data.id]}
                             icon={
                                 systemViewIcons[
                                     (element.data as View)
                                         .slug as keyof typeof systemViewIcons
                                 ]
                             }
-                            view={element.data as View}
-                            viewCount={viewsCount[element.data.id]}
                         />
                     ))}
                 </div>
             )}
-            {categories.map((category) => (
-                <TicketNavbarDropTarget
-                    type={TicketNavbarElementType.Category}
-                    key={category}
-                    accept={TicketNavbarElementType.Category}
-                    canDrop={(item) =>
-                        item.type === TicketNavbarElementType.Category
-                    }
-                    onDrop={handleCategoryDrop}
-                >
-                    <NavbarBlock
-                        actions={
-                            (category === 'public' && isAgent) ||
-                            category === 'private'
-                                ? [
-                                      {
-                                          label: 'Create view',
-                                          onClick: () =>
-                                              history.push(
-                                                  `/app/tickets/new/${category}`,
-                                              ),
-                                      },
-                                      {
-                                          label: 'Create section',
-                                          onClick: () =>
-                                              handleCreateSectionClick(
-                                                  category === 'private',
-                                              ),
-                                      },
-                                  ]
-                                : undefined
+            <Navigation.Root
+                value={navigationValues}
+                onValueChange={handleNavigationStateChange}
+                className={css.navigation}
+            >
+                {categories.map((category) => (
+                    <TicketNavbarDropTarget
+                        type={TicketNavbarElementType.Category}
+                        key={category}
+                        accept={TicketNavbarElementType.Category}
+                        onDrop={handleCategoryDrop}
+                        canDrop={(item) =>
+                            item.type === TicketNavbarElementType.Category
                         }
-                        title={viewCategories[category]}
-                        value={category}
-                        className={css.navbarBlock}
                     >
-                        <TicketNavbarContent
-                            {...((category === 'public' && isAgent) ||
-                            category === 'private'
-                                ? {
-                                      onSectionDeleteClick:
-                                          handleSectionDeleteClick,
-                                      onSectionRenameClick:
-                                          handleSectionRenameClick,
-                                  }
-                                : {})}
-                            elements={
-                                category === 'public'
-                                    ? sharedElements
-                                    : privateElements
+                        <TicketNavbarBlockV2
+                            title={ViewCategories[category]}
+                            icon={ViewCategoriesIcons[category]}
+                            value={category}
+                            className={css.navbarBlock}
+                            actions={
+                                (category === 'public' && isAgent) ||
+                                category === 'private'
+                                    ? [
+                                          {
+                                              label: 'Create view',
+                                              onClick: () =>
+                                                  history.push(
+                                                      `/app/tickets/new/${category}`,
+                                                  ),
+                                          },
+                                          {
+                                              label: 'Create section',
+                                              onClick: () =>
+                                                  handleCreateSectionClick(
+                                                      category === 'private',
+                                                  ),
+                                          },
+                                      ]
+                                    : undefined
                             }
-                            isMovingItem={isMovingItem}
-                            onSubmitMoveItem={handleSubmitMoveItem}
-                            isPrivate={category === 'private'}
-                        />
-                    </NavbarBlock>
-                </TicketNavbarDropTarget>
-            ))}
+                        >
+                            <TicketNavbarContentV2
+                                {...((category === 'public' && isAgent) ||
+                                category === 'private'
+                                    ? {
+                                          onSectionDeleteClick:
+                                              handleSectionDeleteClick,
+                                          onSectionRenameClick:
+                                              handleSectionRenameClick,
+                                      }
+                                    : {})}
+                                elements={
+                                    category === 'public'
+                                        ? sharedElements
+                                        : privateElements
+                                }
+                                isMovingItem={isMovingItem}
+                                onSubmitMoveItem={handleSubmitMoveItem}
+                                isPrivate={category === 'private'}
+                            />
+                        </TicketNavbarBlockV2>
+                    </TicketNavbarDropTarget>
+                ))}
+            </Navigation.Root>
             {!!systemBottomElements.length && (
-                <div className={navbarCss.category}>
+                <div className={css.navigation}>
                     {systemBottomElements.map((element) => (
                         <TicketNavbarViewLink
                             key={`view-${element.data.id}`}
+                            view={element.data as View}
+                            viewCount={viewsCount[element.data.id]}
                             icon={
                                 systemViewIcons[
                                     (element.data as View)
                                         .slug as keyof typeof systemViewIcons
                                 ]
                             }
-                            view={element.data as View}
-                            viewCount={viewsCount[element.data.id]}
                         />
                     ))}
                 </div>

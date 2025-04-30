@@ -1,0 +1,45 @@
+@import (reference) '~css/typography';
+
+:local {
+    .recentChatsContainer {
+        margin-top: var(--layout-spacing-s);
+        display: flex;
+        flex-direction: column;
+        padding: 0 var(--layout-spacing-xs);
+    }
+
+    .recentChatsList {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .menuItem {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: var(--layout-spacing-xs);
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+
+        i {
+            font-size: 20px;
+        }
+    }
+
+    .hasSomethingNew {
+        &,
+        & > * {
+            color: var(--navbar-chat-ticket-new);
+        }
+
+        span {
+            font-weight: 600;
+        }
+    }
+
+    .chat-title {
+        display: flex;
+        align-items: center;
+    }
+}

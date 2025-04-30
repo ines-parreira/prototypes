@@ -14,7 +14,6 @@ import { user } from 'fixtures/users'
 import { view } from 'fixtures/views'
 import client from 'models/api/resources'
 import { View, ViewType, ViewVisibility } from 'models/view/types'
-import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
 import { useSplitTicketViewSwitcher } from 'split-ticket-view-toggle'
 import { NotificationStatus } from 'state/notifications/types'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
@@ -24,7 +23,8 @@ import { DndProvider } from 'utils/wrappers/DndProvider'
 import DeleteSectionModal from '../DeleteSectionModal'
 import SectionFormModal from '../SectionFormModal'
 import TicketNavbarContent from '../TicketNavbarContent'
-import { TicketNavbarContainer } from '../TicketNavbarV2'
+import { TicketNavbarBlockV2 } from '../v2/TicketNavbarBlockV2'
+import { TicketNavbarContainer } from '../v2/TicketNavbarV2'
 
 jest.mock('launchdarkly-react-client-sdk', () => ({
     useFlags: jest.fn(),
@@ -35,35 +35,38 @@ jest.mock('common/navigation', () => ({
     Navbar: ({ children }: { children: ReactNode }) => <div>{children}</div>,
 }))
 
-jest.mock('pages/common/components/RecentChats', () => () => (
-    <div>RecentChats</div>
-))
-jest.mock(
-    'pages/common/components/navbar/NavbarBlock',
-    () =>
-        ({ actions, children }: ComponentProps<typeof NavbarBlock>) => (
-            <div data-testid="NavbarBlock">
-                NavbarBlock:{' '}
-                {actions?.map((value) => (
-                    <span
-                        data-testid={`NavbarBlock-${value.label}`}
-                        key={value.label}
-                        onClick={value.onClick}
-                    >
-                        {value.label}
-                    </span>
-                ))}
-                {children}
-            </div>
-        ),
-)
+jest.mock('../v2/RecentChatsV2', () => ({
+    RecentChatsV2: () => <div>RecentChatsV2</div>,
+}))
+jest.mock('../v2/TicketNavbarBlockV2', () => ({
+    TicketNavbarBlockV2: ({
+        actions,
+        children,
+    }: ComponentProps<typeof TicketNavbarBlockV2>) => (
+        <div data-testid="NavbarBlock">
+            NavbarBlock:{' '}
+            {actions?.map((value) => (
+                <span
+                    data-testid={`NavbarBlock-${value.label}`}
+                    key={value.label}
+                    onClick={value.onClick}
+                >
+                    {value.label}
+                </span>
+            ))}
+            {children}
+        </div>
+    ),
+}))
 
 jest.mock('split-ticket-view-toggle')
 const useSplitTicketViewSwitcherMock = useSplitTicketViewSwitcher as jest.Mock
 
-jest.mock('../TicketNavbarViewLink', () => ({ view }: { view: View }) => (
-    <span>{view.name}</span>
-))
+jest.mock('../v2/TicketNavbarViewLinkV2', () => ({
+    TicketNavbarViewLinkV2: ({ view }: { view: View }) => (
+        <span>{view.name}</span>
+    ),
+}))
 jest.mock(
     '../SectionFormModal',
     () =>
@@ -113,7 +116,7 @@ jest.mock(
         ),
 )
 jest.mock(
-    '../TicketNavbarContent',
+    '../v2/TicketNavbarContentV2',
     () =>
         ({
             elements,
@@ -143,7 +146,7 @@ jest.mock(
 )
 const mockedServer = new MockAdapter(client)
 
-describe('<TicketNavbar/>', () => {
+describe('<TicketNavbarV2/>', () => {
     const minProps = {
         activeViewId: 4,
         activeViewIdSet: jest.fn(),

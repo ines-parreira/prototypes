@@ -1,0 +1,105 @@
+import { useCallback, useEffect, useState } from 'react'
+
+import classnames from 'classnames'
+import { fromJS, List, Map } from 'immutable'
+import { Link, useLocation } from 'react-router-dom'
+
+import navbarCss from 'assets/css/navbar.less'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { Navigation } from 'components/Navigation/Navigation'
+import { MAX_RECENT_CHATS } from 'config/recentChats'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import usePrevious from 'hooks/usePrevious'
+import SourceIcon from 'pages/common/components/SourceIcon'
+import { closePanels } from 'state/layout/actions'
+import { activeViewIdSet } from 'state/ui/views/actions'
+import { setViewActive } from 'state/views/actions'
+import { isCurrentlyOnTicket } from 'utils'
+
+import css from './RecentChatsV2.less'
+
+type ItemProps = {
+    recentTicket: Map<any, any>
+    position: number
+}
+
+const RecentChatsItem = ({ recentTicket, position }: ItemProps) => {
+    const dispatch = useAppDispatch()
+    const channel = recentTicket.get('channel')
+    const customer: Map<any, any> = recentTicket.get('customer') || fromJS({})
+    const customerName =
+        customer.get('name') ||
+        customer.get('email') ||
+        `Customer #${customer.get('id') as number}`
+
+    const isActive = isCurrentlyOnTicket(recentTicket.get('id'))
+    const linkClasses = classnames(css.menuItem, {
+        [css.hasSomethingNew]: recentTicket.get('is_unread') && !isActive,
+    })
+
+    const onClick = () => {
+        logEvent(SegmentEvent.RecentActivityClicked, {
+            position,
+            ticket: recentTicket.toJS(),
+        })
+        dispatch(closePanels())
+        dispatch(setViewActive(fromJS({})))
+        dispatch(activeViewIdSet(null))
+    }
+
+    return (
+        <Navigation.SectionItem
+            as={Link}
+            to={`/app/ticket/${recentTicket.get('id') as number}`}
+            className={linkClasses}
+            title={customerName}
+            onClick={onClick}
+            isSelected={isActive}
+        >
+            <SourceIcon type={channel} />
+            <span>{customerName}</span>
+        </Navigation.SectionItem>
+    )
+}
+
+export const RecentChatsV2 = () => {
+    const location = useLocation()
+    const previousPathname = usePrevious(location.pathname)
+    const chats = useAppSelector((state) => state.chats)
+
+    const [dummyState, setDummyState] = useState(false)
+
+    const forceUpdate = useCallback(() => {
+        setDummyState(!dummyState)
+    }, [dummyState])
+
+    useEffect(() => {
+        if (location.pathname !== previousPathname) {
+            forceUpdate()
+        }
+    }, [forceUpdate, location, previousPathname])
+
+    const tickets = chats.get('tickets') as List<Map<any, any>>
+
+    if (!tickets || tickets.isEmpty()) {
+        return null
+    }
+
+    return (
+        <div className={css.recentChatsContainer}>
+            <h4 className={navbarCss['category-title']}>
+                <span>Chat & messaging</span>
+            </h4>
+            <div className={css.recentChatsList}>
+                {tickets.slice(0, MAX_RECENT_CHATS).map((e, index) => (
+                    <RecentChatsItem
+                        key={e!.get('id')}
+                        recentTicket={e!}
+                        position={index! + 1}
+                    />
+                ))}
+            </div>
+        </div>
+    )
+}

@@ -2,14 +2,14 @@ import { render, screen } from '@testing-library/react'
 
 import { useFlag } from 'core/flags'
 
-import { TicketNavBarRevampWrapper } from '../TicketNavBarRevampWrapper'
+import { TicketNavBarRevampWrapper } from '../v2/TicketNavBarRevampWrapper'
 
 // Mock the child components
 jest.mock('../TicketNavbar', () => ({
     __esModule: true,
     default: jest.fn(() => <div data-testid="ticket-navbar-v1" />),
 }))
-jest.mock('../TicketNavbarV2', () => ({
+jest.mock('../v2/TicketNavbarV2', () => ({
     __esModule: true,
     default: jest.fn(() => <div data-testid="ticket-navbar-v2" />),
 }))

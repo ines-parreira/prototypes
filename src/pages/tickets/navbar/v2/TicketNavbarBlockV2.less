@@ -1,0 +1,83 @@
+:local {
+    .navbarBlockTriggerContainer {
+        width: 100%;
+        position: relative;
+
+        &:hover {
+            .actionToggle {
+                opacity: 1;
+            }
+        }
+    }
+
+    .title {
+        color: var(--navigation-text-item);
+        flex-grow: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: bottom;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 8px;
+
+        > i {
+            font-size: 20px;
+        }
+    }
+
+    .toggle {
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--navigation-text-item) !important;
+        font-size: 14px;
+        line-height: 20px;
+        padding: 3px 6px;
+        transform: translateY(-1px);
+
+        > i {
+            font-size: 16px !important;
+            color: var(--navigation-text-item);
+        }
+
+        &:hover,
+        &:focus {
+            background-color: var(--navbar-block-toggle-hover-background-color);
+            color: var(--navbar-block-toggle-hover-color) !important;
+            box-shadow: unset;
+        }
+
+        &:active {
+            background-color: var(
+                --navbar-block-toggle-active-background-color
+            ) !important;
+            color: var(--navbar-block-toggle-active-color);
+        }
+    }
+
+    .action {
+        font-size: 13px;
+        padding-left: 7px;
+        line-height: 24px;
+        font-weight: 400;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .actionToggle {
+        position: absolute;
+        opacity: 0;
+        right: 20px;
+        bottom: 4px;
+        z-index: 10;
+    }
+
+    .isDragged {
+        opacity: 0.5;
+    }
+}

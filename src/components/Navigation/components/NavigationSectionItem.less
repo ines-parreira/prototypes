@@ -5,9 +5,10 @@
         .body-regular();
         width: 100%;
         height: 28px;
-        padding: 4px var(--layout-spacing-s);
+        padding: 4px 12px;
         color: var(--navigation-text-item);
         border-radius: 8px;
+        border: 1px solid transparent;
 
         &:hover {
             outline: none;
@@ -21,18 +22,17 @@
             color: var(--navigation-text-item);
         }
 
-        &[aria-current='page'],
-        &[data-selected='true'] {
+        &[aria-current='page']:not(:hover),
+        &[data-selected='true']:not(:hover) {
             .body-semibold();
             background: var(--navigation-border);
             border: 1px solid var(--navigation-selected);
-            outline: var(--navigation-border) 1px solid;
             color: var(--navigation-title-item);
         }
 
         &[data-display-type='indent'] {
-            padding-right: var(--layout-spacing-s);
-            padding-left: var(--layout-spacing-m);
+            margin-left: var(--layout-spacing-m);
+            width: calc(100% - var(--layout-spacing-m));
         }
     }
 }
