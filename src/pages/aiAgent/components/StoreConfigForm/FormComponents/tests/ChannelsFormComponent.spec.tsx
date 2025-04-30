@@ -26,61 +26,77 @@ jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
 }))
 
 // Mock all imported components
-jest.mock('../../../ConfigurationSection/ConfigurationSection', () => ({
-    ConfigurationSection: ({
-        children,
-        title,
-    }: {
-        children: React.ReactNode
-        title: string
-    }) => (
-        <div data-testid="configuration-section" data-title={title}>
-            {children}
-        </div>
-    ),
-}))
-
-jest.mock('../SettingsBanner', () => ({
-    SettingsBanner: ({ type }: { type: string }) => (
-        <div data-testid="settings-banner" data-type={type}>
-            settings banner {type}
-        </div>
-    ),
-}))
-
-jest.mock('../ChannelToggleInput', () => ({
-    ChannelToggleInput: ({
-        isToggled,
-        onUpdate,
-        channel,
-        isDisabled,
-    }: {
-        isToggled: boolean
-        onUpdate: (isToggled: boolean) => void
-        channel: string
-        isDisabled: boolean
-    }) => (
-        <div
-            data-testid={`channel-toggle-${channel}`}
-            data-toggled={isToggled}
-            data-disabled={isDisabled}
-            onClick={() => onUpdate(!isToggled)}
-        >
-            channel toggle {channel}
-        </div>
-    ),
-}))
-
-jest.mock('../ChatSettingsFormComponent', () => ({
-    ChatSettingsFormComponent: ({ isRequired }: { isRequired: boolean }) => (
-        <div data-testid="chat-settings-form" data-required={isRequired}>
-            chat settings form
-        </div>
-    ),
-}))
+jest.mock(
+    'pages/aiAgent/components/ConfigurationSection/ConfigurationSection',
+    () => ({
+        ConfigurationSection: ({
+            children,
+            title,
+        }: {
+            children: React.ReactNode
+            title: string
+        }) => (
+            <div data-testid="configuration-section" data-title={title}>
+                {children}
+            </div>
+        ),
+    }),
+)
 
 jest.mock(
-    '../../../HandoverCustomization/HandoverCustomizationChatSettingsComponent',
+    'pages/aiAgent/components/StoreConfigForm/FormComponents/SettingsBanner',
+    () => ({
+        SettingsBanner: ({ type }: { type: string }) => (
+            <div data-testid="settings-banner" data-type={type}>
+                settings banner {type}
+            </div>
+        ),
+    }),
+)
+
+jest.mock(
+    'pages/aiAgent/components/StoreConfigForm/FormComponents/ChannelToggleInput',
+    () => ({
+        ChannelToggleInput: ({
+            isToggled,
+            onUpdate,
+            channel,
+            isDisabled,
+        }: {
+            isToggled: boolean
+            onUpdate: (isToggled: boolean) => void
+            channel: string
+            isDisabled: boolean
+        }) => (
+            <div
+                data-testid={`channel-toggle-${channel}`}
+                data-toggled={isToggled}
+                data-disabled={isDisabled}
+                onClick={() => onUpdate(!isToggled)}
+            >
+                channel toggle {channel}
+            </div>
+        ),
+    }),
+)
+
+jest.mock(
+    'pages/aiAgent/components/StoreConfigForm/FormComponents/ChatSettingsFormComponent',
+    () => ({
+        ChatSettingsFormComponent: ({
+            isRequired,
+        }: {
+            isRequired: boolean
+        }) => (
+            <div data-testid="chat-settings-form" data-required={isRequired}>
+                chat settings form
+            </div>
+        ),
+    }),
+)
+
+jest.mock(
+    'pages/aiAgent/components/HandoverCustomization/HandoverCustomizationChatSettingsComponent',
     () => ({
         HandoverCustomizationChatSettingsComponent: ({
             shopName,
@@ -97,21 +113,27 @@ jest.mock(
     }),
 )
 
-jest.mock('../EmailFormComponent', () => ({
-    EmailFormComponent: ({ isRequired }: { isRequired: boolean }) => (
-        <div data-testid="email-form" data-required={isRequired}>
-            email form
-        </div>
-    ),
-}))
+jest.mock(
+    'pages/aiAgent/components/StoreConfigForm/FormComponents/EmailFormComponent',
+    () => ({
+        EmailFormComponent: ({ isRequired }: { isRequired: boolean }) => (
+            <div data-testid="email-form" data-required={isRequired}>
+                email form
+            </div>
+        ),
+    }),
+)
 
-jest.mock('../SignatureFormComponent', () => ({
-    SignatureFormComponent: ({ isRequired }: { isRequired: boolean }) => (
-        <div data-testid="signature-form" data-required={isRequired}>
-            signature form
-        </div>
-    ),
-}))
+jest.mock(
+    'pages/aiAgent/components/StoreConfigForm/FormComponents/SignatureFormComponent',
+    () => ({
+        SignatureFormComponent: ({ isRequired }: { isRequired: boolean }) => (
+            <div data-testid="signature-form" data-required={isRequired}>
+                signature form
+            </div>
+        ),
+    }),
+)
 
 describe('ChannelsFormComponent', () => {
     const mockProps = {

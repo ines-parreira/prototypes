@@ -1,23 +1,22 @@
-import React, { Fragment } from 'react'
+import { Fragment } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link } from 'react-router-dom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
+import { ConfigurationSection } from 'pages/aiAgent/components/ConfigurationSection/ConfigurationSection'
+import { HandoverCustomizationChatSettingsComponent } from 'pages/aiAgent/components/HandoverCustomization/HandoverCustomizationChatSettingsComponent'
+import { SettingsBannerType } from 'pages/aiAgent/components/StoreConfigForm/constants'
+import { ChannelToggleInput } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/ChannelToggleInput'
+import { ChatSettingsFormComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/ChatSettingsFormComponent'
+import { EmailFormComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/EmailFormComponent'
+import { SettingsBanner } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/SettingsBanner'
+import { SignatureFormComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/SignatureFormComponent'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { getHasAutomate } from 'state/billing/selectors'
-
-import { FormValues, UpdateValue } from '../../../types'
-import { ConfigurationSection } from '../../ConfigurationSection/ConfigurationSection'
-import { HandoverCustomizationChatSettingsComponent } from '../../HandoverCustomization/HandoverCustomizationChatSettingsComponent'
-import { SettingsBannerType } from '../constants'
-import { ChannelToggleInput } from './ChannelToggleInput'
-import { ChatSettingsFormComponent } from './ChatSettingsFormComponent'
-import { EmailFormComponent } from './EmailFormComponent'
-import { SettingsBanner } from './SettingsBanner'
-import { SignatureFormComponent } from './SignatureFormComponent'
 
 import css from '../StoreConfigForm.less'
 
@@ -60,6 +59,9 @@ export const ChannelsFormComponent = ({
     const isAiAgentActivationEnabled =
         useFlags()[FeatureFlagKey.AiAgentActivation]
 
+    const isSettingsRevampEnabled =
+        useFlags()[FeatureFlagKey.AiAgentSettingsRevamp]
+
     const hasAutomate = useAppSelector(getHasAutomate)
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
 
@@ -69,14 +71,16 @@ export const ChannelsFormComponent = ({
         <>
             {isAiAgentChatEnabled && (
                 <ConfigurationSection
-                    title="Chat settings"
+                    title={isSettingsRevampEnabled ? 'Chat' : 'Chat settings'}
                     data-candu-id="ai-agent-configuration-chat-settings"
                     isBeta={true}
                 >
-                    <SettingsBanner
-                        type={SettingsBannerType.Chat}
-                        deactivatedDatetime={chatChannelDeactivatedDatetime}
-                    />
+                    {!isSettingsRevampEnabled && (
+                        <SettingsBanner
+                            type={SettingsBannerType.Chat}
+                            deactivatedDatetime={chatChannelDeactivatedDatetime}
+                        />
+                    )}
                     {!isAiAgentActivationEnabled && (
                         <div className={css.sectionBlock}>
                             <ChannelToggleInput
@@ -90,6 +94,10 @@ export const ChannelsFormComponent = ({
                                 }
                                 channel="chat"
                                 isDisabled={!hasAutomate}
+                                deactivatedDatetime={
+                                    chatChannelDeactivatedDatetime
+                                }
+                                type={SettingsBannerType.Chat}
                             />
                         </div>
                     )}
@@ -112,23 +120,28 @@ export const ChannelsFormComponent = ({
                 </ConfigurationSection>
             )}
             <ConfigurationSection
-                title="Email settings"
+                title={isSettingsRevampEnabled ? 'Email' : 'Email settings'}
                 subtitle={
-                    <Fragment>
-                        When enabled, AI Agent will also handle tickets created
-                        via{' '}
-                        <Link to={routes.automationOrderManagement}>
-                            {'Order Management'}
-                        </Link>{' '}
-                        and <Link to={routes.automationFlows}>{'Flows'}</Link>
-                    </Fragment>
+                    !isSettingsRevampEnabled && (
+                        <Fragment>
+                            When enabled, AI Agent will also handle tickets
+                            created via{' '}
+                            <Link to={routes.automationOrderManagement}>
+                                {'Order Management'}
+                            </Link>{' '}
+                            and{' '}
+                            <Link to={routes.automationFlows}>{'Flows'}</Link>
+                        </Fragment>
+                    )
                 }
                 data-candu-id="ai-agent-configuration-email-settings"
             >
-                <SettingsBanner
-                    type={SettingsBannerType.Email}
-                    deactivatedDatetime={emailChannelDeactivatedDatetime}
-                />
+                {!isSettingsRevampEnabled && (
+                    <SettingsBanner
+                        type={SettingsBannerType.Email}
+                        deactivatedDatetime={emailChannelDeactivatedDatetime}
+                    />
+                )}
                 {!isAiAgentActivationEnabled && (
                     <div className={css.sectionBlock}>
                         <ChannelToggleInput
@@ -140,6 +153,14 @@ export const ChannelsFormComponent = ({
                             }}
                             channel="email"
                             isDisabled={!hasAutomate}
+                            deactivatedDatetime={
+                                emailChannelDeactivatedDatetime
+                            }
+                            type={SettingsBannerType.Email}
+                            orderManagementRoute={
+                                routes.automationOrderManagement
+                            }
+                            flowsRoute={routes.automationFlows}
                         />
                     </div>
                 )}
