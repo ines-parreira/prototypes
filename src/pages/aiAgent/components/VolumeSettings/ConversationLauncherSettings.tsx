@@ -41,61 +41,69 @@ export const ConversationLauncherAdvancedSettings = ({
     }
 
     return (
-        <div
-            className={classNames(css.sidebar, {
-                [css.slideOut]: !isOpen,
-                [css.slideIn]: isOpen,
-            })}
-        >
-            <Box className={css.sidebarHeader}>
-                <p className={css.sidebarTitle}>
-                    Floating Input: Advanced Settings
-                </p>
-                <i
-                    className={classNames('material-icons', css.exitIcon)}
-                    onClick={onClose}
-                >
-                    keyboard_tab
-                </i>
-            </Box>
+        <>
+            <div
+                className={classNames(css.drawerOverlay, {
+                    [css.slideOut]: !isOpen,
+                    [css.slideIn]: isOpen,
+                })}
+            />
+            <div
+                className={classNames(css.sidebar, {
+                    [css.slideOut]: !isOpen,
+                    [css.slideIn]: isOpen,
+                })}
+            >
+                <Box className={css.sidebarHeader}>
+                    <p className={css.sidebarTitle}>
+                        Floating Input: Advanced Settings
+                    </p>
+                    <i
+                        className={classNames('material-icons', css.exitIcon)}
+                        onClick={onClose}
+                    >
+                        keyboard_tab
+                    </i>
+                </Box>
 
-            <Box className={css.sidebarBody}>
-                <Label className={css.sidebarToggleRow}>
-                    <div className={css.desktopSwitch}>
-                        Enable on Desktop only
-                        <p className={css.desktopSwitchDescription}>
-                            When enabled, the Conversation Launcher will only be
-                            displayed on desktop.
-                        </p>
-                    </div>
-                    <NewToggleButton
-                        checked={localValue}
-                        onChange={() => setLocalValue(!localValue)}
-                        stopPropagation
-                    />
-                </Label>
-            </Box>
+                <Box className={css.sidebarBody}>
+                    <Label className={css.sidebarToggleRow}>
+                        <div className={css.desktopSwitch}>
+                            Enable on Desktop only
+                            <p className={css.desktopSwitchDescription}>
+                                When enabled, the Conversation Launcher will
+                                only be displayed on desktop.
+                            </p>
+                        </div>
+                        <NewToggleButton
+                            checked={localValue}
+                            onChange={() => setLocalValue(!localValue)}
+                            stopPropagation
+                        />
+                    </Label>
+                </Box>
 
-            <div className={css.sidebarFooter}>
-                <Button
-                    isDisabled={isFloatingInputDesktopOnly === localValue}
-                    onClick={handleUpdate}
-                    intent="primary"
-                    type="submit"
-                >
-                    Update
-                </Button>
+                <div className={css.sidebarFooter}>
+                    <Button
+                        isDisabled={isFloatingInputDesktopOnly === localValue}
+                        onClick={handleUpdate}
+                        intent="primary"
+                        type="submit"
+                    >
+                        Update
+                    </Button>
 
-                <Button
-                    isDisabled={false}
-                    onClick={onClose}
-                    intent="secondary"
-                    size="medium"
-                >
-                    Cancel
-                </Button>
+                    <Button
+                        isDisabled={false}
+                        onClick={onClose}
+                        intent="secondary"
+                        size="medium"
+                    >
+                        Cancel
+                    </Button>
+                </div>
             </div>
-        </div>
+        </>
     )
 }
 
