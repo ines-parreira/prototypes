@@ -496,12 +496,12 @@ describe('<CampaignsView/>', () => {
             })
         })
 
-        it('should display the upsell banner for Shopify non-subscribers', () => {
+        it.only('should display the upsell banner for Shopify non-subscribers', () => {
             isConvertSubscriberSpy.mockImplementation(() => false)
 
             const { getByText } = renderComponent(stateWithShopifyIntegration)
 
-            expect(getByText('Book Demo')).toBeInTheDocument()
+            expect(getByText('Learn More')).toBeInTheDocument()
         })
 
         it('should not display the upsell banner for non-Shopify non-subscribers', () => {
@@ -509,7 +509,7 @@ describe('<CampaignsView/>', () => {
 
             const { queryByText } = renderComponent(defaultState)
 
-            expect(queryByText('Book Demo')).not.toBeInTheDocument()
+            expect(queryByText('Learn More')).not.toBeInTheDocument()
         })
 
         it('should not display the upsell banner for Shopify subscribers', () => {

@@ -37,12 +37,4 @@ describe('ConvertPaywallView', () => {
             getByText('Transform visitors into loyal customers.'),
         ).toBeInTheDocument()
     })
-
-    it('always has custom CTA and modal', () => {
-        const mockedState = getStateWithHelpdeskPlan()
-
-        const { getByText } = renderWithStore(mockedState)
-
-        expect(getByText('Book Demo')).toBeInTheDocument()
-    })
 })

@@ -20,6 +20,3 @@ export const CONVERT_NAVBAR_COLLAPSED_SECTIONS_KEY =
     'convert:navbar:collapsed-cvt-sections'
 
 export const CONVERT_PRODUCT_LINK = 'https://www.gorgias.com/products/convert'
-
-export const CONVERT_BOOK_DEMO_LINK =
-    'https://www.gorgias.com/demo/customers/convert?utm_source=product&utm_medium=in_product'

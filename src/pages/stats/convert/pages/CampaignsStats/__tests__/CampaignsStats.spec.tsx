@@ -128,7 +128,11 @@ describe('CampaignsStats', () => {
         const { getByText, queryByText } = renderWithStore(mockedState)
 
         expect(queryByText('ConvertStatsContent')).not.toBeInTheDocument()
-        expect(getByText('Book Demo')).toBeInTheDocument()
+        expect(
+            getByText(
+                'Meet Gorgias Convert - Your onsite revenue generation toolkit 🤩',
+            ),
+        ).toBeInTheDocument()
 
         expect(history.location.pathname).toEqual(
             '/app/stats/convert/campaigns/subscribe',
@@ -147,7 +151,11 @@ describe('CampaignsStats', () => {
         const { getByText, queryByText } = renderWithStore(mockedState)
 
         expect(queryByText('ConvertStatsContent')).not.toBeInTheDocument()
-        expect(getByText('Book Demo')).toBeInTheDocument()
+        expect(
+            getByText(
+                'Meet Gorgias Convert - Your onsite revenue generation toolkit 🤩',
+            ),
+        ).toBeInTheDocument()
 
         expect(history.location.pathname).toEqual(
             '/app/convert/123/performance/subscribe',
@@ -160,7 +168,7 @@ describe('CampaignsStats', () => {
         const { queryByText } = renderWithStore(mockedState)
 
         expect(queryByText('ConvertStatsContent')).not.toBeInTheDocument()
-        expect(queryByText('Book Demo')).not.toBeInTheDocument()
+        expect(queryByText('Learn More')).not.toBeInTheDocument()
     })
 
     it('should render stats for Convert subscriber', () => {

@@ -70,7 +70,11 @@ describe('<ClickTrackingSettingsView />', () => {
                 /With the Gorgias click tracking service you can now track clicks/,
             ),
         ).not.toBeInTheDocument()
-        expect(screen.getByText('Book Demo')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Meet Gorgias Convert - Your onsite revenue generation toolkit 🤩',
+            ),
+        ).toBeInTheDocument()
     })
 
     it('should render if the account has the feature flag', () => {

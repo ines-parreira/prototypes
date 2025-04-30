@@ -12,10 +12,7 @@ import PaywallViewHeader from 'pages/common/components/PaywallView/PaywallViewHe
 import PaywallViewLeftContainer from 'pages/common/components/PaywallView/PaywallViewLeftContainer'
 import PaywallViewRightContainer from 'pages/common/components/PaywallView/PaywallViewRightContainer'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
-import {
-    CONVERT_BOOK_DEMO_LINK,
-    CONVERT_PRODUCT_LINK,
-} from 'pages/convert/common/constants'
+import { CONVERT_PRODUCT_LINK } from 'pages/convert/common/constants'
 
 import { ConvertFeatures, PaywallConfig } from './constants'
 
@@ -37,7 +34,6 @@ const ConvertPaywallView = ({
         paywallTitle,
         descriptions,
         greyButtonText,
-        primaryButtonText,
         slidesData,
     } = PaywallConfig[convertFeature]
     const isConvertSubscriber = useIsConvertSubscriber()
@@ -65,15 +61,6 @@ const ConvertPaywallView = ({
                     </PaywallViewChecklist>
 
                     <PaywallViewActionButtons>
-                        <LinkButton
-                            data-candu-id="convert-paywall-select-plan"
-                            className="mr-2"
-                            target="_blank"
-                            intent="primary"
-                            href={CONVERT_BOOK_DEMO_LINK}
-                        >
-                            {primaryButtonText}
-                        </LinkButton>
                         <LinkButton
                             target="blank"
                             data-candu-id="convert-paywall-learn-more"

@@ -8,7 +8,6 @@ export enum ConvertFeatures {
 export type PaywallFeature = {
     headerTitle: string
     greyButtonText: string
-    primaryButtonText: string
     paywallTitle: string
     descriptions: string[]
     slidesData: CarouselData[]
@@ -18,7 +17,6 @@ export const PaywallConfig: Record<ConvertFeatures, PaywallFeature> = {
     [ConvertFeatures.Default]: {
         headerTitle: 'Convert',
         greyButtonText: 'Learn more',
-        primaryButtonText: 'Book Demo',
         paywallTitle:
             'Meet Gorgias Convert - Your onsite revenue generation toolkit 🤩',
         descriptions: [

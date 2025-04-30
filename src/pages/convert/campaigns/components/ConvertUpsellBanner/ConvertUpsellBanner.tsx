@@ -1,6 +1,4 @@
 import Button from 'pages/common/components/button/Button'
-import LinkButton from 'pages/common/components/button/LinkButton'
-import { CONVERT_BOOK_DEMO_LINK } from 'pages/convert/common/constants'
 import { assetsUrl } from 'utils'
 
 import css from './ConvertUpsellBanner.less'
@@ -19,16 +17,6 @@ const ConvertUpsellBanner = () => {
                         unique discount code with just one click!
                     </p>
                     <div className={css.buttonGroup}>
-                        <div className={css.buttonWrapper}>
-                            <LinkButton
-                                className="mr-2"
-                                target="_blank"
-                                intent="primary"
-                                href={CONVERT_BOOK_DEMO_LINK}
-                            >
-                                Book Demo
-                            </LinkButton>
-                        </div>
                         <div className={css.buttonWrapper}>
                             <a
                                 href="https://www.gorgias.com/products/convert"
