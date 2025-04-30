@@ -1122,21 +1122,29 @@ export const StoreConfigForm = ({
                     </section>
                 </form>
 
-                <TicketPreview
-                    toneOfVoice={formValues.toneOfVoice}
-                    signature={formValues.signature}
-                    customToneOfVoiceGuidance={
-                        formValues.customToneOfVoiceGuidance
-                    }
-                    customToneOfVoicePreview={latestCustomToneOfVoicePreview}
-                    isLoadingCustomToneOfVoicePreview={
-                        isCustomToneOfVoicePreviewLoading
-                    }
-                    onGenerateCustomToneOfVoicePreview={
-                        onGenerateCustomToneOfVoicePreview
-                    }
-                    isError={isError}
-                />
+                <div
+                    className={classNames({
+                        [css.ticketPreviewContainer]: isSettingsRevampEnabled,
+                    })}
+                >
+                    <TicketPreview
+                        toneOfVoice={formValues.toneOfVoice}
+                        signature={formValues.signature}
+                        customToneOfVoiceGuidance={
+                            formValues.customToneOfVoiceGuidance
+                        }
+                        customToneOfVoicePreview={
+                            latestCustomToneOfVoicePreview
+                        }
+                        isLoadingCustomToneOfVoicePreview={
+                            isCustomToneOfVoicePreviewLoading
+                        }
+                        onGenerateCustomToneOfVoicePreview={
+                            onGenerateCustomToneOfVoicePreview
+                        }
+                        isError={isError}
+                    />
+                </div>
             </div>
             {isSettingsRevampEnabled && (
                 <StoreConfigDrawer

@@ -1,11 +1,11 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
 
 import '@testing-library/jest-dom'
 
-import { ToneOfVoice } from '../../constants'
-import { TicketPreview } from '../TicketPreview'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { TicketPreview } from 'pages/aiAgent/AiAgentOnboardingWizard/TicketPreview'
+import { ToneOfVoice } from 'pages/aiAgent/constants'
 
 describe('TicketPreview', () => {
     const signature = 'Best regards, AI Agent'
@@ -142,42 +142,58 @@ describe('TicketPreview', () => {
         expect(generatePreviewBtn).toBeAriaDisabled()
     })
 
-    it('renders the error message for custom tone of voice', () => {
-        render(
-            <TicketPreview
-                toneOfVoice={ToneOfVoice.Custom}
-                signature={signature}
-                customToneOfVoiceGuidance="This is a custom tone of voice guidance"
-                isError
-                onGenerateCustomToneOfVoicePreview={() => {}}
-            />,
-        )
+    it.each([[false], [true]])(
+        'renders the error message for custom tone of voice when the FF of the revamp is %s',
+        (isSettingsRevampedEnabled) => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]:
+                    isSettingsRevampedEnabled,
+            })
 
-        expect(
-            screen.getByText(
-                'Preview could not be generated. Make sure instructions are not vague or contradictory and try again.',
-            ),
-        ).toBeInTheDocument()
-    })
+            render(
+                <TicketPreview
+                    toneOfVoice={ToneOfVoice.Custom}
+                    signature={signature}
+                    customToneOfVoiceGuidance="This is a custom tone of voice guidance"
+                    isError
+                    onGenerateCustomToneOfVoicePreview={() => {}}
+                />,
+            )
 
-    it('renders the skeleton for for custom tone of voice and disables button', () => {
-        render(
-            <TicketPreview
-                toneOfVoice={ToneOfVoice.Custom}
-                signature={signature}
-                customToneOfVoiceGuidance="This is a custom tone of voice guidance"
-                isLoadingCustomToneOfVoicePreview
-                onGenerateCustomToneOfVoicePreview={() => {}}
-            />,
-        )
-        const generatePreviewBtn = screen.getByRole('button', {
-            name: 'Loading... Generate preview',
-        })
-        const skeletonElement = document.querySelector(
-            '.react-loading-skeleton',
-        )
-        expect(skeletonElement).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'Preview could not be generated. Make sure instructions are not vague or contradictory and try again.',
+                ),
+            ).toBeInTheDocument()
+        },
+    )
 
-        expect(generatePreviewBtn).toBeAriaDisabled()
-    })
+    it.each([[false], [true]])(
+        'renders the skeleton for for custom tone of voice and disables button when the FF of the revamp is %s',
+        (isSettingsRevampedEnabled) => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]:
+                    isSettingsRevampedEnabled,
+            })
+
+            render(
+                <TicketPreview
+                    toneOfVoice={ToneOfVoice.Custom}
+                    signature={signature}
+                    customToneOfVoiceGuidance="This is a custom tone of voice guidance"
+                    isLoadingCustomToneOfVoicePreview
+                    onGenerateCustomToneOfVoicePreview={() => {}}
+                />,
+            )
+            const generatePreviewBtn = screen.getByRole('button', {
+                name: 'Loading... Generate preview',
+            })
+            const skeletonElement = document.querySelector(
+                '.react-loading-skeleton',
+            )
+            expect(skeletonElement).toBeInTheDocument()
+
+            expect(generatePreviewBtn).toBeAriaDisabled()
+        },
+    )
 })

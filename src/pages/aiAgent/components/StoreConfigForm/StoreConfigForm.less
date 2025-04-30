@@ -5,10 +5,10 @@
     .storeConfigSettings {
         display: flex;
         flex-direction: row;
-        gap: @layout-spacing-xl;
     }
+
     .automateView {
-        max-width: 728px; // because 680 + 24 + 24 (paddings)
+        padding: @layout-spacing-l;
 
         .section {
             margin-bottom: @layout-spacing-l;
@@ -142,5 +142,11 @@
         color: var(--main-primary);
         text-decoration: underline;
         cursor: pointer;
+    }
+
+    .ticketPreviewContainer {
+        padding: @layout-spacing-l;
+        background-color: var(--neutral-grey-1);
+        border-left: 1px solid var(--neutral-grey-2);
     }
 }

@@ -112,8 +112,8 @@ importers:
         specifier: 2.0.3
         version: 2.0.3
       '@gorgias/merchant-ui-kit':
-        specifier: 0.30.4
-        version: 0.30.4(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(reactstrap@8.9.0(react-dom@17.0.2(react@17.0.2))(react@17.0.2))
+        specifier: 0.31.0
+        version: 0.31.0(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(reactstrap@8.9.0(react-dom@17.0.2(react@17.0.2))(react@17.0.2))
       '@gorgias/realtime':
         specifier: ^0.9.1
         version: 0.9.1(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)
@@ -2940,8 +2940,8 @@ packages:
   '@gorgias/event-tracker-utils@1.0.1':
     resolution: {integrity: sha512-q3p9eb/ooIga/5tJCLryVIuRIaI+E2fjIJoJsUVTse8BwYW14pvcK/0G87fHAOEDezbTCFacm3KisxxgeTIarw==, tarball: https://npm.pkg.github.com/download/@gorgias/event-tracker-utils/1.0.1/25a551ebe4ce428f03e1157f60263b2ef049d5c7}
 
-  '@gorgias/merchant-ui-kit@0.30.4':
-    resolution: {integrity: sha512-ouHXhbKMzqCeWPZ14UwtDdJeNG8ugZE33UzbKEIIld1/ANqBDJWyj5/H6cE1z8UtA6wRe83p3iRwTAa9jnMqEw==, tarball: https://npm.pkg.github.com/download/@gorgias/merchant-ui-kit/0.30.4/b6612e7d7187667cc414f5b4b111a03ec4821609}
+  '@gorgias/merchant-ui-kit@0.31.0':
+    resolution: {integrity: sha512-EO4EOshPynEzyZv6HQrEWHtKjETjAuiV3bbnfYep5S477qJRTHjaXkToLKCp/4ggIPd9qBgH13V/iNfasBwhpw==, tarball: https://npm.pkg.github.com/download/@gorgias/merchant-ui-kit/0.31.0/dbe81fcba79708b187f2abf302b80abffd819891}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^17
@@ -14706,7 +14706,7 @@ snapshots:
 
   '@gorgias/event-tracker-utils@1.0.1': {}
 
-  '@gorgias/merchant-ui-kit@0.30.4(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(reactstrap@8.9.0(react-dom@17.0.2(react@17.0.2))(react@17.0.2))':
+  '@gorgias/merchant-ui-kit@0.31.0(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(reactstrap@8.9.0(react-dom@17.0.2(react@17.0.2))(react@17.0.2))':
     dependencies:
       '@floating-ui/react': 0.25.1(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@gorgias/design-tokens': 0.5.0
