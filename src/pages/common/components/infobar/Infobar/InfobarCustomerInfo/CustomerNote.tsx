@@ -1,7 +1,6 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 
 import classnames from 'classnames'
-import { Map } from 'immutable'
 
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
@@ -14,21 +13,17 @@ import { countLines } from 'utils/string'
 import css from './CustomerNote.less'
 
 export default function CustomerNote({
-    customer,
+    customerId,
+    initialNote,
 }: {
-    customer: Map<any, any>
+    customerId: number
+    initialNote: string | undefined
 }) {
     const dispatch = useAppDispatch()
-    const [note, setNote] = useState(customer.get('note') || '')
+    const [note, setNote] = useState(initialNote || '')
     const [isLoading, setIsLoading] = useState<boolean>()
     const [isError, setIsError] = useState<boolean>()
     const [isDirty, setDirty] = useState<boolean>()
-
-    useEffect(() => {
-        if (!isDirty) {
-            setNote(customer.get('note'))
-        }
-    }, [customer, isDirty])
 
     const updateNote = (event: ChangeEvent<HTMLTextAreaElement>) => {
         setNote(event.currentTarget.value)
@@ -45,7 +40,7 @@ export default function CustomerNote({
 
         try {
             await dispatch(
-                submitCustomer({ note } as CustomerDraft, customer.get('id')),
+                submitCustomer({ note } as CustomerDraft, customerId),
             )
         } catch {
             setIsError(true)

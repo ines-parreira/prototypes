@@ -222,6 +222,7 @@ const InfobarCustomerInfo = ({
     if (!customer || customer.isEmpty()) {
         return null
     }
+
     let chatIntegrationData: Map<any, any> | null = null
     if (customerIntegrationsData) {
         chatIntegrationData = customerIntegrationsData.find(
@@ -282,7 +283,10 @@ const InfobarCustomerInfo = ({
                     customerId={customer.get('id', '')}
                     customerName={customer.get('name', '')}
                 >
-                    <CustomerNote customer={customer} />
+                    <CustomerNote
+                        customerId={Number(customer.get('id'))}
+                        initialNote={customer.get('note')}
+                    />
                 </CustomerChannels>
                 <Separator className={css.separator} />
                 <CustomerTimelineWidget

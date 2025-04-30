@@ -1,7 +1,4 @@
-import React from 'react'
-
 import { act, fireEvent, render, screen } from '@testing-library/react'
-import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -30,28 +27,31 @@ describe('<CustomerNote />', () => {
         'An error occurred while posting this note. Please try again in a few seconds.'
 
     const id = 111
-    const props = { customer: fromJS({ id, note }) }
+    const props = { customerId: id, initialNote: note }
 
     beforeEach(() => {
         submitCustomerMock.mockReturnValue(() => Promise.resolve())
     })
 
-    it.each([null, 'this customer is nice\n and happy'])(
-        'should display note when provided',
-        (note) => {
-            render(
-                <Provider store={mockStore({})}>
-                    <CustomerNote
-                        {...props}
-                        customer={fromJS({ id: 1, note })}
-                    />
-                </Provider>,
-            )
-            expect(screen.getByPlaceholderText(notePlaceholder)).toHaveValue(
-                note ?? '',
-            )
-        },
-    )
+    it('should display an empty note when no note is provided', () => {
+        render(
+            <Provider store={mockStore({})}>
+                <CustomerNote {...props} initialNote={undefined} />
+            </Provider>,
+        )
+        expect(screen.getByPlaceholderText(notePlaceholder)).toHaveValue('')
+    })
+
+    it('should display note when provided', () => {
+        render(
+            <Provider store={mockStore({})}>
+                <CustomerNote {...props} />
+            </Provider>,
+        )
+        expect(screen.getByPlaceholderText(notePlaceholder)).toHaveValue(
+            note ?? '',
+        )
+    })
 
     it('should display loading state because the note is being saved', async () => {
         render(
