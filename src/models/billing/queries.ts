@@ -28,7 +28,13 @@ export const useBillingState = (
 ) => {
     return useQuery({
         ...getBillingStateQuery,
-        ...overrides,
+        ...{
+            ...overrides,
+            query: {
+                staleTime: 1 * 60 * 60 * 1000, // cache for 1 hour
+                refetchOnWindowFocus: true,
+            },
+        },
     })
 }
 
