@@ -99,7 +99,7 @@ import {
 } from 'pages/convert/campaigns/containers/CampaignTemplateCustomizeView'
 import ClickTrackingPaywallView from 'pages/convert/clickTracking/components/ClickTrackingPaywallView/ClickTrackingPaywallView'
 import ClickTrackingSettingsView from 'pages/convert/clickTracking/components/ClickTrackingSettingsView/ClickTrackingSettingsView'
-import ConvertNavbar from 'pages/convert/common/components/ConvertNavbar/ConvertNavbar'
+import { ConvertNavbarContainer } from 'pages/convert/common/components/ConvertNavbar/ConvertNavbarContainer'
 import {
     CONVERT_ROUTING_CAMPAIGN_PARAM,
     CONVERT_ROUTING_PARAM,
@@ -1151,7 +1151,10 @@ export function ConvertRoutes() {
             <Switch>
                 <Route
                     render={() => (
-                        <App content={ConvertContent} navbar={ConvertNavbar} />
+                        <App
+                            content={ConvertContent}
+                            navbar={ConvertNavbarContainer}
+                        />
                     )}
                 />
             </Switch>
@@ -1253,7 +1256,9 @@ export function ConvertContent() {
                     notReadyFallback={
                         <Route
                             render={() => (
-                                <App navbar={ConvertNavbar}>{null}</App>
+                                <App navbar={ConvertNavbarContainer}>
+                                    {null}
+                                </App>
                             )}
                         />
                     }

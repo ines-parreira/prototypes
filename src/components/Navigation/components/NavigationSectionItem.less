@@ -9,6 +9,9 @@
         color: var(--navigation-text-item);
         border-radius: 8px;
         border: 1px solid transparent;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
 
         &:hover {
             outline: none;
@@ -31,8 +34,8 @@
         }
 
         &[data-display-type='indent'] {
-            margin-left: var(--layout-spacing-m);
-            width: calc(100% - var(--layout-spacing-m));
+            margin-left: var(--layout-spacing-xs);
+            width: calc(100% - var(--layout-spacing-xs));
         }
     }
 }
