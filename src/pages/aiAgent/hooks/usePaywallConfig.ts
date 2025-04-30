@@ -108,5 +108,37 @@ export const usePaywallConfig = (
                 hideLearnMore: true,
                 showRoiCalculator: false,
             }
+        case AIAgentPaywallFeatures.Stats:
+            return {
+                title: 'for Sales',
+                subtitle:
+                    'Introducing AI Agent for Sales, your team’s newest member to drive conversion. ',
+                descriptions: [
+                    'Provides 24/7 pre-sales assistance to guide shoppers, answer questions, and reduce drop-off.',
+                    'Offer dynamic discounts to convert hesitant buyers without compromising margins.',
+                    'Personalize product recommendations using real-time data and customer input.',
+                    'Turn search into a revenue-driving engine with intelligent product discovery.',
+                ],
+                toggleElements: [
+                    {
+                        title: 'Sales Strategy',
+                        contentSrc: SalesStrategy,
+                        type: 'image',
+                    },
+                    {
+                        title: 'Dynamic Discount',
+                        contentSrc: DynamicDiscount,
+                        type: 'image',
+                    },
+                    {
+                        title: 'Product Recommendations',
+                        contentSrc: ProductRecommendations,
+                        type: 'image',
+                    },
+                ],
+                contentSubtitle: 'Sales features',
+                hideLearnMore: true,
+                showRoiCalculator: false,
+            }
     }
 }

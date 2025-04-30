@@ -194,7 +194,9 @@ export const AiAgentPaywallView = ({
                     {content}
                 </section>
             </div>
+
             <div className={css.background}></div>
+
             <AutomateSubscriptionModal
                 confirmLabel="Subscribe"
                 isOpen={isAutomationModalOpened}

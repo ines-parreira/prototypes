@@ -4,11 +4,26 @@ import { screen } from '@testing-library/react'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { RootState } from 'state/types'
 import { initialState } from 'state/ui/stats/filtersSlice'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import AiSalesAgentSalesOverview from '../AiSalesAgentSalesOverview'
+
+jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
+const mockUseCanUseAiSalesAgent = jest.mocked(useCanUseAiSalesAgent)
+
+jest.mock('pages/aiAgent/Activation/hooks/useActivation', () => ({
+    useActivation: jest.fn(() => ({
+        earlyAccessModal: null,
+        showEarlyAccessModal: jest.fn(),
+    })),
+}))
+
+jest.mock('pages/aiAgent/AiAgentPaywallView', () => ({
+    AiAgentPaywallView: () => <div>ai-agent-paywall</div>,
+}))
 
 const mockUseFirstStoreWithAiSalesDataState: {
     isLoading: boolean
@@ -113,6 +128,7 @@ describe('AiSalesAgentSalesOverview', () => {
         mockUseFlags.mockReturnValue({
             [FeatureFlagKey.StandaloneAiSalesDiscountSection]: false,
         })
+        mockUseCanUseAiSalesAgent.mockReturnValue(true)
     })
 
     it('should render when store data is ready', () => {
@@ -174,5 +190,21 @@ describe('AiSalesAgentSalesOverview', () => {
             screen.getByText('gmv-influenced-over-time-chart'),
         ).toBeInTheDocument()
         expect(screen.getByText('top-products-table')).toBeInTheDocument()
+    })
+
+    it('should render paywall when user does not have access to Ai Sales Agent', () => {
+        mockUseCanUseAiSalesAgent.mockReturnValue(false)
+
+        renderComponent()
+
+        expect(screen.getByText('ai-agent-paywall')).toBeInTheDocument()
+    })
+
+    it('should not render paywall when user has access to Ai Sales Agent', () => {
+        mockUseCanUseAiSalesAgent.mockReturnValue(true)
+
+        renderComponent()
+
+        expect(screen.queryByText('ai-agent-paywall')).not.toBeInTheDocument()
     })
 })
