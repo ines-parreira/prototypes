@@ -167,27 +167,31 @@ describe('ChannelsFormComponent', () => {
             { id: 1, name: 'Test Channel' },
         ])
     })
-    it('should render ai agent chat section when chat feature flag is enabled', () => {
-        // Disable the chat feature flag
-        ;(useFlags as jest.Mock).mockReturnValue({
-            [FeatureFlagKey.AiAgentChat]: true,
-        })
+    it.each([true, false])(
+        'should render ai agent chat section when chat feature flag is enabled and settings revamp is %s',
+        (isSettingRevampEnabled) => {
+            // Disable the chat feature flag
+            ;(useFlags as jest.Mock).mockReturnValue({
+                [FeatureFlagKey.AiAgentChat]: true,
+                [FeatureFlagKey.AiAgentSettingsRevamp]: isSettingRevampEnabled,
+            })
 
-        render(
-            <BrowserRouter>
-                <ChannelsFormComponent {...mockProps} />
-            </BrowserRouter>,
-        )
+            render(
+                <BrowserRouter>
+                    <ChannelsFormComponent {...mockProps} />
+                </BrowserRouter>,
+            )
 
-        // Chat components should not be present
-        screen.getByText('channel toggle chat')
-        screen.getByText('chat settings form')
+            // Chat components should not be present
+            screen.getByText('channel toggle chat')
+            screen.getByText('chat settings form')
 
-        // Email components should still be present
-        screen.getByText('channel toggle email')
-        screen.getByText('email form')
-        screen.getByText('signature form')
-    })
+            // Email components should still be present
+            screen.getByText('channel toggle email')
+            screen.getByText('email form')
+            screen.getByText('signature form')
+        },
+    )
     it('should hide email and chat toggles when AiAgentActivation feature flag is enabled and ai agent chat is enabled', () => {
         // Disable the chat feature flag
         ;(useFlags as jest.Mock).mockReturnValue({
@@ -282,33 +286,41 @@ describe('ChannelsFormComponent', () => {
         expect(emailToggle).toHaveAttribute('data-disabled', 'true')
     })
 
-    it('passes correct isRequired prop to form components based on deactivated datetime', () => {
-        const propsWithDeactivatedChat = {
-            ...mockProps,
-            chatChannelDeactivatedDatetime: new Date().toISOString(),
-            emailChannelDeactivatedDatetime: null,
-        }
+    it.each([true, false])(
+        'passes correct isRequired prop to form components based on deactivated datetime and settings revamp is %s',
+        (isSettingRevampEnabled) => {
+            ;(useFlags as jest.Mock).mockReturnValue({
+                [FeatureFlagKey.AiAgentChat]: true,
+                [FeatureFlagKey.AiAgentSettingsRevamp]: isSettingRevampEnabled,
+            })
 
-        render(
-            <BrowserRouter>
-                <ChannelsFormComponent {...propsWithDeactivatedChat} />
-            </BrowserRouter>,
-        )
+            const propsWithDeactivatedChat = {
+                ...mockProps,
+                chatChannelDeactivatedDatetime: new Date().toISOString(),
+                emailChannelDeactivatedDatetime: null,
+            }
 
-        // Chat settings should not be required when deactivated
-        expect(screen.getByText('chat settings form')).toHaveAttribute(
-            'data-required',
-            'false',
-        )
+            render(
+                <BrowserRouter>
+                    <ChannelsFormComponent {...propsWithDeactivatedChat} />
+                </BrowserRouter>,
+            )
 
-        // Email settings should be required when not deactivated
-        expect(screen.getByText('email form')).toHaveAttribute(
-            'data-required',
-            'true',
-        )
-        expect(screen.getByText('signature form')).toHaveAttribute(
-            'data-required',
-            'true',
-        )
-    })
+            // Chat settings should not be required when deactivated
+            expect(screen.getByText('chat settings form')).toHaveAttribute(
+                'data-required',
+                'false',
+            )
+
+            // Email settings should be required when not deactivated
+            expect(screen.getByText('email form')).toHaveAttribute(
+                'data-required',
+                'true',
+            )
+            expect(screen.getByText('signature form')).toHaveAttribute(
+                'data-required',
+                'true',
+            )
+        },
+    )
 })

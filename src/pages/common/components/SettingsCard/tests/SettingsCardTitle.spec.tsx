@@ -23,5 +23,10 @@ describe('SettingsCard Components', () => {
             render(<SettingsCardTitle ref={ref}>Test Title</SettingsCardTitle>)
             expect(ref).toHaveBeenCalled()
         })
+
+        it('should render with required asterisk', () => {
+            render(<SettingsCardTitle isRequired>Test Title</SettingsCardTitle>)
+            expect(screen.getByText('Test Title')).toHaveTextContent('*')
+        })
     })
 })
