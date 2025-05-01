@@ -1,23 +1,16 @@
-import React, { useCallback, useEffect, useMemo } from 'react'
+import React, { useCallback, useEffect } from 'react'
 
 import cn from 'classnames'
 
 import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
-import { Label } from 'gorgias-design-system/Input/Label'
 import { GorgiasChatIntegration } from 'models/integration/types'
 import { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import { useHandoverCustomizationChatOnlineSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOnlineSettingsForm'
 import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
-import { formFieldsConfiguration } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatOnlineSettingsForm.utils'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Caption from 'pages/common/forms/Caption/Caption'
-import TextArea from 'pages/common/forms/TextArea'
 
-import ChatPreferencesAutoReplyWaitTimeSettings from './ChatPreferencesAutoReplyWaitTimeSettings'
-import ChatPreferencesEmailCaptureSettings from './ChatPreferencesEmailCaptureSettings'
+import { HandoverCustomizationChatOnlineSettingsFields } from './HandoverCustomizationChatOnlineSettingsFields'
 
-import commonCss from './HandoverCommonSettings.less'
 import css from './HandoverCustomizationChatOnlineSettings.less'
 
 type Props = {
@@ -38,12 +31,6 @@ const HandoverCustomizationChatOnlineSettings = ({ integration }: Props) => {
     })
 
     const { setIsFormDirty, setActionCallback } = useAiAgentFormChangesContext()
-
-    const chatPreferencesLink = useMemo(
-        () =>
-            `/app/settings/channels/gorgias_chat/${integration.id}/preferences`,
-        [integration],
-    )
 
     const onOnlineInstructionsChange = useCallback(
         (value: string) => {
@@ -126,74 +113,18 @@ const HandoverCustomizationChatOnlineSettings = ({ integration }: Props) => {
 
     return (
         <div>
-            <div
-                className={cn(commonCss.formContainer, css.onlineFormContainer)}
-            >
-                <div
-                    className={cn(
-                        commonCss.sectionContainer,
-                        css.onlineInstructionsContainer,
-                    )}
-                >
-                    <Label
-                        htmlFor="handover-customization-online-instructions"
-                        label={'Guidance'}
-                        className={`${css.onlineInstructionsTitle} mb-2`}
-                    >
-                        Guidance
-                    </Label>
-                    <TextArea
-                        id="handover-customization-online-instructions"
-                        rows={5}
-                        name="handover-customization-online-instructions"
-                        placeholder={`Apologize and acknowledge the issue. Tell the customer that you’re connecting them with someone.`}
-                        role="textbox"
-                        aria-label="Guidance"
-                        value={formValues.onlineInstructions}
-                        maxLength={
-                            formFieldsConfiguration.onlineInstructions.maxLength
-                        }
-                        onChange={onOnlineInstructionsChange}
-                        error={undefined}
-                    />
-                    <Caption className="caption-regular mt-1">
-                        {`AI Agent will use these instructions to craft the handover message it sends to customers. If left blank, it will generate a generic message using your tone of voice.`}
-                    </Caption>
-                </div>
-
-                <Alert type={AlertType.Info} icon="info">
-                    Changes to the settings below will be reflected in your{' '}
-                    <a
-                        href={chatPreferencesLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Chat preferences.
-                    </a>
-                </Alert>
-
-                <div className={commonCss.sectionContainer}>
-                    <ChatPreferencesEmailCaptureSettings
-                        isEnabled={formValues.emailCaptureEnabled}
-                        emailCaptureEnforcement={
-                            formValues.emailCaptureEnforcement
-                        }
-                        onToggleEnablement={onEmailCaptureEnabledChange}
-                        onEmailCaptureEnforcementChange={
-                            onEmailCaptureEnforcementChange
-                        }
-                    />
-                </div>
-
-                <div className={commonCss.sectionContainer}>
-                    <ChatPreferencesAutoReplyWaitTimeSettings
-                        isEnabled={formValues.autoResponderEnabled}
-                        autoResponderReply={formValues.autoResponderReply}
-                        onToggleEnablement={onAutoResponderEnabledChange}
-                        onAutoResponderReplyChange={onAutoResponderReplyChange}
-                    />
-                </div>
-            </div>
+            <HandoverCustomizationChatOnlineSettingsFields
+                values={formValues}
+                integrationId={integration.id}
+                isLoading={isLoading}
+                onOnlineInstructionsChange={onOnlineInstructionsChange}
+                onEmailCaptureEnabledChange={onEmailCaptureEnabledChange}
+                onEmailCaptureEnforcementChange={
+                    onEmailCaptureEnforcementChange
+                }
+                onAutoResponderEnabledChange={onAutoResponderEnabledChange}
+                onAutoResponderReplyChange={onAutoResponderReplyChange}
+            />
 
             <section className="mb-0">
                 <Button
