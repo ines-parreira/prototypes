@@ -10,7 +10,6 @@
         pointer-events: initial;
         display: flex;
         flex-direction: column;
-        min-width: 384px;
         max-width: 444px;
 
         & > .messages {
@@ -58,6 +57,7 @@
 
     .agentMessage.active {
         margin: 0px;
+        scroll-margin-bottom: 40px;
         transition:
             opacity 360ms ease-out,
             transform 360ms ease-out;
@@ -65,6 +65,7 @@
 
     .customerMessage.active {
         margin: 0px;
+        scroll-margin-bottom: 40px;
         display: flex;
         flex-direction: column;
         gap: 16px;

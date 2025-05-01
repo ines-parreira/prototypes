@@ -100,6 +100,10 @@ const AiAgentChatConversation: FC<Props> = ({
                 setIdx((prev) => {
                     if (prev < groupedMessages.length) {
                         newMessages[prev].classList.add(css.active)
+                        newMessages[prev].scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'nearest',
+                        })
                         return prev + 1
                     }
 

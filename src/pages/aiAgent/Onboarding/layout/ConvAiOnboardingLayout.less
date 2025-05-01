@@ -25,13 +25,13 @@
         align-items: center;
         padding: @layout-spacing-s 0;
         width: 100%;
-        position: sticky;
         top: 0;
         background-color: var(--neutral-grey-1);
         padding: @layout-spacing-s @layout-spacing-m;
 
         @media @tablets-up {
-            padding: @layout-spacing-xl 0 @layout-spacing-m;
+            margin-left: -8vw;
+            padding: @layout-spacing-m 0 0 @layout-spacing-m;
         }
     }
 
@@ -62,7 +62,7 @@
             flex-direction: column;
             justify-content: flex-start;
             min-width: 400px;
-            padding: 0 8% @layout-spacing-m;
+            padding: 0 8vw @layout-spacing-m;
             gap: @layout-spacing-m;
             max-width: 100%;
             overflow: auto;
@@ -93,7 +93,10 @@
 
         @media @tablets-up {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
+            padding-top: 24px;
+            padding-bottom: 48px;
+            gap: 8px;
 
             background: var(
                 --linear-grey-magenta,
@@ -115,9 +118,7 @@
         @media @tablets-up {
             display: initial;
             align-self: flex-end;
-            position: sticky;
-            top: 24px;
-            right: 24px;
+            margin-right: var(--layout-spacing-m);
             z-index: 3; // To be above the chat preview
         }
     }
@@ -125,11 +126,19 @@
     .ghostContainer {
         @media @tablets-up {
             width: 100%;
-            height: 100%;
             display: flex;
             justify-content: inherit;
             align-items: inherit;
-            margin-bottom: @layout-spacing-m;
+            padding: 0 24px 0 24px;
+
+            &.loading {
+                align-self: flex-start;
+                height: 100%;
+            }
+
+            [class*='ChatIntegrationPreview--dialog--'] {
+                max-height: 75vh;
+            }
         }
     }
 
@@ -138,11 +147,6 @@
 
         width: 67%;
         text-align: center;
-
-        @media @tablets-up {
-            position: absolute;
-            bottom: @layout-spacing-m;
-        }
     }
 
     .progressTrackerContainer {

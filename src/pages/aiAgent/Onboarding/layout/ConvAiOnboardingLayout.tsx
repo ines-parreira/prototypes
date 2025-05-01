@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
 
+import classNames from 'classnames'
 import { useParams } from 'react-router-dom'
 
 import { useHideBanners } from 'AlertBanners/hooks/useHideBanners'
@@ -82,7 +83,9 @@ export const OnboardingPreviewContainer: React.FC<{
                     <CloseButton onClose={onCloseAction} />
                 </div>
                 {isLoading && (
-                    <div className={css.ghostContainer}>
+                    <div
+                        className={classNames(css.ghostContainer, css.loading)}
+                    >
                         <LoadingPulserIcon icon={icon} />
                     </div>
                 )}
