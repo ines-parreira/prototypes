@@ -20,7 +20,7 @@ export const TEST = 'Test'
 export const PREVIEW = 'Preview'
 export const SALES = 'Sales Skills'
 export const STRATEGY = 'Strategy'
-export const VOLUME = 'Volume'
+export const CUSTOMER_ENGAGEMENT = 'Customer Engagement'
 export const ANALYTICS = 'Analytics'
 
 export const SIGNATURE_MAX_LENGTH = 250

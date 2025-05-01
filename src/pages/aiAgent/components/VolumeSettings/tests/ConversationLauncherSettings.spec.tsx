@@ -1,7 +1,11 @@
 import { ReactNode } from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
+import { ldClientMock } from 'jest-launchdarkly-mock'
 import { FormProvider, useForm } from 'react-hook-form'
+import { MemoryRouter } from 'react-router-dom'
+
+import { getLDClient } from 'utils/launchDarkly'
 
 import {
     ConversationLauncherAdvancedSettings,
@@ -25,19 +29,46 @@ const Wrapper = ({
 }) => {
     const methods = useForm<FormValues>({ defaultValues })
 
-    return <FormProvider {...methods}>{children}</FormProvider>
+    return (
+        <MemoryRouter>
+            <FormProvider {...methods}>{children}</FormProvider>
+        </MemoryRouter>
+    )
 }
 
 describe('ConversationLauncherSettings', () => {
-    it('renders the main Conversation Launcher title', () => {
+    const getCardTitle = () => {
+        return screen.getAllByText('Ask Anything Input')[0]
+    }
+
+    beforeEach(() => {
+        ldClientMock.allFlags.mockReturnValue({})
+        let client = getLDClient()
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        client = ldClientMock
+    })
+
+    it('renders the main Ask Anything Input title', () => {
         render(
             <Wrapper>
                 <ConversationLauncherSettings />
             </Wrapper>,
         )
 
-        expect(screen.getByText('Conversation Launcher')).toBeInTheDocument()
-        expect(screen.getByText('Enable Floating Input')).toBeInTheDocument()
+        expect(getCardTitle()).toBeInTheDocument()
+        expect(
+            screen.getByText('Unlock up to ~5% additional GMV'),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Drive more sales by adding an always-on input field that encourages shoppers to start a conversation.',
+            ),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByAltText(
+                'image showing an example of the ask anything input',
+            ),
+        ).toBeInTheDocument()
         expect(screen.getByText('Advanced settings')).toBeInTheDocument()
     })
 
@@ -63,9 +94,7 @@ describe('ConversationLauncherSettings', () => {
 
         fireEvent.click(screen.getByText('Advanced settings'))
 
-        expect(
-            screen.getByText('Floating Input: Advanced Settings'),
-        ).toBeVisible()
+        expect(screen.getByText('Enable on Desktop only')).toBeVisible()
     })
 })
 
@@ -96,9 +125,7 @@ describe('ConversationLauncherAdvancedSettings', () => {
             </Wrapper>,
         )
 
-        expect(
-            screen.getByText('Floating Input: Advanced Settings'),
-        ).toBeInTheDocument()
+        expect(screen.getByText('Enable on Desktop only')).toBeInTheDocument()
         expect(screen.getByRole('switch')).toBeInTheDocument()
         expect(screen.getByRole('button', { name: 'Update' })).toHaveAttribute(
             'aria-disabled',

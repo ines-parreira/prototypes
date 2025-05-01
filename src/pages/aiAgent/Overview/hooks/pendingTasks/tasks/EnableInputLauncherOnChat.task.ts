@@ -36,6 +36,6 @@ export class EnableInputLauncherOnChatTask extends Task {
         data: RuleEngineData
         routes: RuleEngineRoutes
     }): string {
-        return aiAgentRoutes.volume
+        return aiAgentRoutes.customerEngagement
     }
 }

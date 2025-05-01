@@ -2,17 +2,29 @@ import { useEffect, useState } from 'react'
 
 import classNames from 'classnames'
 import { useFormContext } from 'react-hook-form'
+import { useParams } from 'react-router'
 
 import { Box, Button, Label } from '@gorgias/merchant-ui-kit'
 
-import {
-    SettingsCard,
-    SettingsCardContent,
-    SettingsCardHeader,
-    SettingsCardTitle,
-} from 'pages/common/components/SettingsCard'
+import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { SettingsFeatureRow } from 'pages/common/components/SettingsCard/SettingsFeatureRow'
 import { NewToggleButton } from 'pages/common/forms/NewToggleButton'
+import { assetsUrl } from 'utils'
+import { getLDClient } from 'utils/launchDarkly'
+
+import {
+    EngagementSettingsCard,
+    EngagementSettingsCardContent,
+    EngagementSettingsCardContentWrapper,
+    EngagementSettingsCardDescription,
+    EngagementSettingsCardFooter,
+    EngagementSettingsCardImage,
+    EngagementSettingsCardTitle,
+} from './card/EngagementSettingsCard'
+import { EngagementSettingsCardImpact } from './card/EngagementSettingsCardImpact'
+import { EngagementSettingsCardLinkButton } from './card/EngagementSettingsCardLinkButton'
+import { EngagementSettingsCardToggle } from './card/EngagementSettingsCardToggle'
 
 import css from './ConversationLauncherSettings.less'
 
@@ -55,9 +67,7 @@ export const ConversationLauncherAdvancedSettings = ({
                 })}
             >
                 <Box className={css.sidebarHeader}>
-                    <p className={css.sidebarTitle}>
-                        Floating Input: Advanced Settings
-                    </p>
+                    <p className={css.sidebarTitle}>Ask Anything Input</p>
                     <i
                         className={classNames('material-icons', css.exitIcon)}
                         onClick={onClose}
@@ -71,8 +81,8 @@ export const ConversationLauncherAdvancedSettings = ({
                         <div className={css.desktopSwitch}>
                             Enable on Desktop only
                             <p className={css.desktopSwitchDescription}>
-                                When enabled, the Conversation Launcher will
-                                only be displayed on desktop.
+                                When enabled, the Ask Anything input will only
+                                be displayed on desktop.
                             </p>
                         </div>
                         <NewToggleButton
@@ -113,25 +123,55 @@ export const ConversationLauncherSettings = () => {
     const { watch, setValue } = useFormContext()
     const isFloatingInputEnabled = watch('isFloatingInputEnabled')
 
+    const { storeConfiguration } = useAiAgentStoreConfigurationContext()
+
+    const { shopName } = useParams<{ shopName: string }>()
+
+    const flags = getLDClient().allFlags()
+    const routes = getAiAgentNavigationRoutes(shopName, flags)
+
     return (
         <>
             <ConversationLauncherAdvancedSettings
                 isOpen={isSidebarOpen}
                 onClose={() => setSidebarOpen(false)}
             />
-            <SettingsCard className={css.card}>
-                <SettingsCardHeader>
-                    <SettingsCardTitle>Conversation Launcher</SettingsCardTitle>
-                    <p>
-                        Launch interactions that drive sales by XY%. Lorem ipsum
-                        placeholder text for Floating Input, and other helpful
-                        content will go here.
-                    </p>
-                </SettingsCardHeader>
-                <SettingsCardContent>
-                    <SettingsFeatureRow
-                        title="Enable Floating Input"
-                        type="toggle"
+
+            <EngagementSettingsCard>
+                <EngagementSettingsCardContentWrapper>
+                    <EngagementSettingsCardImage
+                        alt="image showing an example of the ask anything input"
+                        src={assetsUrl(
+                            '/img/ai-agent/ai_agent_floating_input.png',
+                        )}
+                    />
+
+                    <EngagementSettingsCardContent>
+                        <EngagementSettingsCardTitle>
+                            Ask Anything Input
+                        </EngagementSettingsCardTitle>
+
+                        <EngagementSettingsCardDescription>
+                            Drive more sales by adding an always-on input field
+                            that encourages shoppers to start a conversation.
+                        </EngagementSettingsCardDescription>
+
+                        {storeConfiguration?.floatingChatInputConfiguration
+                            ?.isEnabled ? (
+                            <EngagementSettingsCardLinkButton
+                                href={routes.analytics}
+                                icon="insights"
+                                text="Track Performance"
+                            />
+                        ) : (
+                            <EngagementSettingsCardImpact
+                                icon="lock"
+                                impact="Unlock up to ~5% additional GMV"
+                            />
+                        )}
+                    </EngagementSettingsCardContent>
+
+                    <EngagementSettingsCardToggle
                         isChecked={isFloatingInputEnabled}
                         onChange={() =>
                             setValue(
@@ -143,6 +183,9 @@ export const ConversationLauncherSettings = () => {
                             )
                         }
                     />
+                </EngagementSettingsCardContentWrapper>
+
+                <EngagementSettingsCardFooter>
                     <SettingsFeatureRow
                         title="Advanced settings"
                         isDisabled={!isFloatingInputEnabled}
@@ -152,8 +195,8 @@ export const ConversationLauncherSettings = () => {
                                 : undefined
                         }
                     />
-                </SettingsCardContent>
-            </SettingsCard>
+                </EngagementSettingsCardFooter>
+            </EngagementSettingsCard>
         </>
     )
 }

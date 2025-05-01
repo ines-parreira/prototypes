@@ -725,11 +725,11 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                         />
                     </AiAgentErrorBoundary>
                     <AiAgentErrorBoundary
-                        section="ai-agent-volume"
+                        section="ai-agent-customer-engagement"
                         team={SentryTeam.MARKETING}
                     >
                         <Route
-                            path={`${path}/sales/volume`}
+                            path={`${path}/sales/customer-engagement`}
                             exact
                             component={AiAgentVolume}
                         />

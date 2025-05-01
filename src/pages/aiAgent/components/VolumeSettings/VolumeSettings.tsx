@@ -9,7 +9,6 @@ import { Box, Button } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { ConversationPreview } from 'pages/aiAgent/components/VolumeSettings/ConversationPreview'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
@@ -107,32 +106,28 @@ export const VolumeSettings = () => {
             />
 
             <FormProvider {...methods}>
-                <Box className={css.container} flexDirection="row">
-                    <Box
-                        className={css.leftColumn}
-                        flexDirection="column"
-                        flexGrow={1}
-                    >
-                        <p className={css.headTitle}>Chat Widget</p>
-                        <ConversationStartersSettings
-                            isEnabled={isConversationStartersFeatureEnabled}
-                        />
-                        {isConvertFloatingChatInputFeatureEnabled && (
-                            <ConversationLauncherSettings />
-                        )}
-                        <Box className={css.saveButtonWrapper}>
-                            <Button
-                                isDisabled={!isDirty || isSubmitting}
-                                onClick={handleSubmit(onSave)}
-                                intent="primary"
-                                type="submit"
-                            >
-                                Save Changes
-                            </Button>
-                        </Box>
-                    </Box>
+                <Box
+                    className={css.container}
+                    flexDirection="column"
+                    flexGrow={1}
+                >
+                    <ConversationStartersSettings
+                        isEnabled={isConversationStartersFeatureEnabled}
+                    />
+                    {isConvertFloatingChatInputFeatureEnabled && (
+                        <ConversationLauncherSettings />
+                    )}
 
-                    <ConversationPreview />
+                    <Box className={css.saveButtonWrapper}>
+                        <Button
+                            isDisabled={!isDirty || isSubmitting}
+                            onClick={handleSubmit(onSave)}
+                            intent="primary"
+                            type="submit"
+                        >
+                            Save Changes
+                        </Button>
+                    </Box>
                 </Box>
             </FormProvider>
         </>

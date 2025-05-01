@@ -8,6 +8,7 @@ import {
     ACTIONS,
     ANALYTICS,
     CHANNELS,
+    CUSTOMER_ENGAGEMENT,
     GENERAL,
     GUIDANCE,
     KNOWLEDGE,
@@ -19,7 +20,6 @@ import {
     STRATEGY,
     SUPPORT_ACTIONS,
     TEST,
-    VOLUME,
 } from 'pages/aiAgent/constants'
 
 export const getAiAgentBasePath = (shopName: string, flags: LDFlagSet) => {
@@ -73,7 +73,7 @@ export const getAiAgentNavigationRoutes = (
         knowledge: `${basePath}/knowledge`,
         knowledgeSources: `${basePath}/knowledge/sources`,
         sales: `${basePath}/sales`,
-        volume: `${basePath}/sales/volume`,
+        customerEngagement: `${basePath}/sales/customer-engagement`,
         analytics: `${basePath}/sales/analytics`,
         pagesContent: `${basePath}/knowledge/sources/pages-content`,
         productsContent: `${basePath}/knowledge/sources/products-content`,
@@ -226,8 +226,8 @@ const useNavigationItems = (
                                   },
                                   (isConvertFloatingChatInputEnabled ||
                                       isConversationStartersEnabled) && {
-                                      route: routes.volume,
-                                      title: VOLUME,
+                                      route: routes.customerEngagement,
+                                      title: CUSTOMER_ENGAGEMENT,
                                   },
                                   isSalesMetricsEnabled && {
                                       route: routes.analytics,

@@ -3,6 +3,7 @@ import React from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, waitFor, within } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
+import { ldClientMock } from 'jest-launchdarkly-mock'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
@@ -17,6 +18,7 @@ import * as chatColorHook from 'pages/aiAgent/Onboarding/hooks/useGetChatIntegra
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { getLDClient } from 'utils/launchDarkly'
 import { renderWithRouter } from 'utils/testing'
 
 import { VolumeSettings } from '../VolumeSettings'
@@ -25,7 +27,7 @@ const queryClient = mockQueryClient()
 const mockStore = configureMockStore([thunk])()
 
 let history = createMemoryHistory({
-    initialEntries: ['/shopify/test-store/volume'],
+    initialEntries: ['/shopify/test-store/customer-engagement'],
 })
 
 const renderComponent = () =>
@@ -36,8 +38,8 @@ const renderComponent = () =>
             </QueryClientProvider>
         </Provider>,
         {
-            path: `/:shopType/:shopName/volume`,
-            route: '/shopify/test-store/volume',
+            path: `/:shopType/:shopName/customer-engagement`,
+            route: '/shopify/test-store/customer-engagement',
             history,
         },
     )
@@ -70,10 +72,19 @@ const mockedUseFlags = jest.mocked(useFlags)
 
 const getConversationStartersSwitch = (container: HTMLElement) => {
     const rowContent = within(container).getByText(
-        'Enable conversation starters',
+        'Suggested Product Questions',
     )
 
-    return within(rowContent.closest('.featureRow')!).getByRole('switch')
+    return within(rowContent.closest('.cardContentWrapper')!).getByRole(
+        'switch',
+    )
+}
+
+const getFloatingInputSwitch = (container: HTMLElement) => {
+    const label = within(container).getByText(
+        'Drive more sales by adding an always-on input field that encourages shoppers to start a conversation.',
+    )
+    return within(label.closest('.cardContentWrapper')!).getByRole('switch')
 }
 
 const getSaveButton = (result: RenderComponentReturn) =>
@@ -104,7 +115,7 @@ describe('VolumeSettings', () => {
         jest.clearAllMocks()
 
         history = createMemoryHistory({
-            initialEntries: ['/shopify/test-store/volume'],
+            initialEntries: ['/shopify/test-store/customer-engagement'],
         })
 
         mockedUseFlags.mockReturnValue({
@@ -124,36 +135,18 @@ describe('VolumeSettings', () => {
             conversationColor: '#000000',
             mainColor: '#000000',
         })
+
+        ldClientMock.allFlags.mockReturnValue({})
+        let client = getLDClient()
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        client = ldClientMock
     })
 
     it('renders conversation starters toggle correctly', () => {
         const result = renderComponent()
 
-        result.getByText('Conversation starters')
-        result.getByText('Enable conversation starters')
-    })
-
-    it('shows preview messages', () => {
-        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
-            storeConfiguration: {
-                ...storeConfiguration,
-                isConversationStartersEnabled: true,
-                floatingChatInputConfiguration: {
-                    isEnabled: true,
-                    isDesktopOnly: true,
-                },
-            },
-            isLoading: false,
-            updateStoreConfiguration: mockUpdateStoreConfiguration,
-            createStoreConfiguration: jest.fn(),
-            isPendingCreateOrUpdate: false,
-        })
-
-        const result = renderComponent()
-
-        result.getByText('Can this product be used daily?')
-        result.getByText('Is this suitable for sensitive skin?')
-        result.getByText('Does this contain fragrances?')
+        getConversationStartersSwitch(result.container)
+        getFloatingInputSwitch(result.container)
     })
 
     it('should render save button disabled by default', () => {
@@ -395,7 +388,7 @@ describe('VolumeSettings', () => {
         click(getDiscardButton(result))
 
         act(() => {
-            history.push('/shopify/test-store/volume')
+            history.push('/shopify/test-store/customer-engagement')
         })
 
         await waitFor(() => {
@@ -404,14 +397,11 @@ describe('VolumeSettings', () => {
     })
 
     describe('Conversation Launcher', () => {
-        const getFloatingInputSwitch = (container: HTMLElement) => {
-            const label = within(container).getByText('Enable Floating Input')
-            return within(label.closest('.featureRow')!).getByRole('switch')
-        }
-
         it('renders floating input toggle correctly', () => {
             const result = renderComponent()
-            result.getByText('Enable Floating Input')
+            result.getByText(
+                'Drive more sales by adding an always-on input field that encourages shoppers to start a conversation.',
+            )
         })
 
         it('enables save button when floating input toggle is clicked', () => {
@@ -435,7 +425,7 @@ describe('VolumeSettings', () => {
             click(advancedSettingsLabel)
 
             expect(
-                result.getByText('Floating Input: Advanced Settings'),
+                result.getByText('Enable on Desktop only'),
             ).toBeInTheDocument()
         })
 

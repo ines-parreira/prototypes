@@ -1,14 +1,22 @@
 import { useFormContext } from 'react-hook-form'
+import { useParams } from 'react-router'
+
+import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { assetsUrl } from 'utils'
+import { getLDClient } from 'utils/launchDarkly'
 
 import {
-    SettingsCard,
-    SettingsCardContent,
-    SettingsCardHeader,
-    SettingsCardTitle,
-} from 'pages/common/components/SettingsCard'
-import { SettingsFeatureRow } from 'pages/common/components/SettingsCard/SettingsFeatureRow'
-
-import css from './ConversationStartersSettings.less'
+    EngagementSettingsCard,
+    EngagementSettingsCardContent,
+    EngagementSettingsCardContentWrapper,
+    EngagementSettingsCardDescription,
+    EngagementSettingsCardImage,
+    EngagementSettingsCardTitle,
+} from './card/EngagementSettingsCard'
+import { EngagementSettingsCardImpact } from './card/EngagementSettingsCardImpact'
+import { EngagementSettingsCardLinkButton } from './card/EngagementSettingsCardLinkButton'
+import { EngagementSettingsCardToggle } from './card/EngagementSettingsCardToggle'
 
 export const ConversationStartersSettings = ({
     isEnabled,
@@ -18,23 +26,51 @@ export const ConversationStartersSettings = ({
     const { watch, setValue } = useFormContext()
     const isConversationStartersEnabled = watch('isConversationStartersEnabled')
 
+    const { shopName } = useParams<{ shopName: string }>()
+
+    const flags = getLDClient().allFlags()
+    const routes = getAiAgentNavigationRoutes(shopName, flags)
+
+    const { storeConfiguration } = useAiAgentStoreConfigurationContext()
+
     return (
-        <SettingsCard className={css.card}>
-            <SettingsCardHeader>
-                <SettingsCardTitle>Conversation starters</SettingsCardTitle>
-                <p>
-                    Display up to 4 AI-generated conversation starters on
-                    product pages. Starters are high-quality, relevant, and easy
-                    to answer, tailored using your existing knowledge. Note:
-                    This overrides Convert campaigns.
-                </p>
-            </SettingsCardHeader>
-            <SettingsCardContent>
-                <SettingsFeatureRow
-                    title="Enable conversation starters"
-                    type="toggle"
-                    isChecked={isConversationStartersEnabled}
+        <EngagementSettingsCard>
+            <EngagementSettingsCardContentWrapper>
+                <EngagementSettingsCardImage
+                    alt="image showing an example of the conversation starters"
+                    src={assetsUrl(
+                        '/img/ai-agent/ai_agent_conversation_starters.png',
+                    )}
+                />
+
+                <EngagementSettingsCardContent>
+                    <EngagementSettingsCardTitle>
+                        Suggested Product Questions
+                    </EngagementSettingsCardTitle>
+
+                    <EngagementSettingsCardDescription>
+                        Show up to 4 dynamic, AI-generated questions on product
+                        pages, based on what shoppers are most likely to ask, to
+                        resolve doubts quickly and drive more conversions.
+                    </EngagementSettingsCardDescription>
+
+                    {storeConfiguration?.isConversationStartersEnabled ? (
+                        <EngagementSettingsCardLinkButton
+                            href={routes.analytics}
+                            icon="insights"
+                            text="Track Performance"
+                        />
+                    ) : (
+                        <EngagementSettingsCardImpact
+                            icon="people"
+                            impact="87% of Gorgias merchants use Suggested Product Questions"
+                        />
+                    )}
+                </EngagementSettingsCardContent>
+
+                <EngagementSettingsCardToggle
                     isDisabled={!isEnabled}
+                    isChecked={isConversationStartersEnabled}
                     onChange={() =>
                         setValue(
                             'isConversationStartersEnabled',
@@ -45,7 +81,7 @@ export const ConversationStartersSettings = ({
                         )
                     }
                 />
-            </SettingsCardContent>
-        </SettingsCard>
+            </EngagementSettingsCardContentWrapper>
+        </EngagementSettingsCard>
     )
 }

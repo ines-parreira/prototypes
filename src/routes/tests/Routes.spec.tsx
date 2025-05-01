@@ -565,7 +565,7 @@ describe('<Routes/>', () => {
                 <Provider store={mockStore(defaultState)}>
                     <MemoryRouter
                         initialEntries={[
-                            '/app/ai-agent/shopify/test-shop/sales/volume',
+                            '/app/ai-agent/shopify/test-shop/sales/customer-engagement',
                         ]}
                     >
                         <Routes />
