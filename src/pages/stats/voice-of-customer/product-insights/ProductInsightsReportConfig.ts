@@ -59,13 +59,6 @@ export const ProductInsightsPlaceholderReportConfig: ReportConfig<ProductInsight
                 csvProducer: null,
                 chartType: ChartType.Table,
             },
-            [ProductInsightsChart.ProductInsightsTableChartPlaceholder]: {
-                chartComponent: ProductInsightsTableChart,
-                label: TICKET_VOLUME_CHART_LABEL,
-                description: TICKET_VOLUME_CHART_LABEL,
-                csvProducer: null,
-                chartType: ChartType.Table,
-            },
             [ProductInsightsChart.TopAIIntentsOverTimeChart]: {
                 chartComponent: TopAIIntentsOverTimeChart,
                 label: ProductInsightsChartConfig[
@@ -77,6 +70,13 @@ export const ProductInsightsPlaceholderReportConfig: ReportConfig<ProductInsight
                     ].hint,
                 csvProducer: null,
                 chartType: ChartType.Graph,
+            },
+            [ProductInsightsChart.ProductInsightsTableChartPlaceholder]: {
+                chartComponent: ProductInsightsTableChart,
+                label: TICKET_VOLUME_CHART_LABEL,
+                description: TICKET_VOLUME_CHART_LABEL,
+                csvProducer: null,
+                chartType: ChartType.Table,
             },
             [ProductInsightsChart.TopProductsPerIntentChartPlaceholder]: {
                 chartComponent: TopProductsPerIntentChart,

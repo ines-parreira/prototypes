@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 
-import { useIntentsOverTimeTimeSeries } from 'hooks/reporting/voice-of-customer/useIntentsOverTimeTimeSeries'
+import { useAIIntentsTimeSeries } from 'hooks/reporting/voice-of-customer/useAIIntentsTimeSeries'
 import { ReportingGranularity } from 'models/reporting/types'
 import ChartCard from 'pages/stats/common/components/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
@@ -13,10 +13,8 @@ import {
 } from 'pages/stats/voice-of-customer/product-insights/ProductInsightsChartConfig'
 import { assumeMock } from 'utils/testing'
 
-jest.mock('hooks/reporting/voice-of-customer/useIntentsOverTimeTimeSeries')
-const useIntentsOverTimeTimeSeriesMock = assumeMock(
-    useIntentsOverTimeTimeSeries,
-)
+jest.mock('hooks/reporting/voice-of-customer/useAIIntentsTimeSeries')
+const useIntentsOverTimeTimeSeriesMock = assumeMock(useAIIntentsTimeSeries)
 jest.mock('pages/stats/common/components/charts/LineChart/LineChart')
 const LineChartMock = assumeMock(LineChart)
 jest.mock('pages/stats/common/components/ChartCard')
@@ -40,7 +38,7 @@ describe('TopAIIntentsOverTimeChart', () => {
     ]
 
     const useTopAIIntentsOverTimeReturnValue: ReturnType<
-        typeof useIntentsOverTimeTimeSeries
+        typeof useAIIntentsTimeSeries
     > = {
         data: data,
         granularity: ReportingGranularity.Month,

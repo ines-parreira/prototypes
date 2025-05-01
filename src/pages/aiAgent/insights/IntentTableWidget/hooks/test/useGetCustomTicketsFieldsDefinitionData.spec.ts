@@ -1,6 +1,6 @@
 import { UseQueryResult } from '@tanstack/react-query'
 
-import { AI_MANAGED_TYPES } from 'custom-fields/constants'
+import { AI_MANAGED_TYPES, MANAGED_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { CustomField } from 'custom-fields/types'
 import { ApiListResponseCursorPagination } from 'models/api/types'
@@ -18,7 +18,7 @@ describe('useGetCustomTicketsFieldsDefinitionData', () => {
                 data: [
                     { id: '1', managed_type: AI_MANAGED_TYPES.AI_OUTCOME },
                     { id: '2', managed_type: AI_MANAGED_TYPES.AI_INTENT },
-                    { id: '3', managed_type: 'OTHER_TYPE' },
+                    { id: '3', managed_type: MANAGED_TYPES.SENTIMENT },
                 ],
             },
         } as unknown as UseQueryResult<
@@ -35,6 +35,7 @@ describe('useGetCustomTicketsFieldsDefinitionData', () => {
         expect(result.current).toEqual({
             outcomeCustomFieldId: '1',
             intentCustomFieldId: '2',
+            sentimentCustomFieldId: '3',
         })
     })
 
@@ -57,6 +58,7 @@ describe('useGetCustomTicketsFieldsDefinitionData', () => {
         expect(result.current).toEqual({
             outcomeCustomFieldId: -1,
             intentCustomFieldId: -1,
+            sentimentCustomFieldId: -1,
         })
     })
 
@@ -75,6 +77,7 @@ describe('useGetCustomTicketsFieldsDefinitionData', () => {
         expect(result.current).toEqual({
             outcomeCustomFieldId: -1,
             intentCustomFieldId: -1,
+            sentimentCustomFieldId: -1,
         })
     })
 })

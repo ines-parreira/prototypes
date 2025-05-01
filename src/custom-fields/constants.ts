@@ -104,6 +104,7 @@ export const MANAGED_TYPES = {
     PRODUCT: 'product',
     RESOLUTION: 'resolution',
     CUSTOMER_TYPE: 'customer_type',
+    SENTIMENT: 'sentiment',
     ...AI_MANAGED_TYPES,
 }
 

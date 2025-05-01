@@ -1,4 +1,4 @@
-import { useIntentsOverTimeTimeSeries } from 'hooks/reporting/voice-of-customer/useIntentsOverTimeTimeSeries'
+import { useAIIntentsTimeSeries } from 'hooks/reporting/voice-of-customer/useAIIntentsTimeSeries'
 import ChartCard from 'pages/stats/common/components/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { formatLabeledTimeSeriesData } from 'pages/stats/common/utils'
@@ -15,7 +15,7 @@ export function TopAIIntentsOverTimeChart() {
         legendDatasetVisibility,
         granularity,
         isFetching,
-    } = useIntentsOverTimeTimeSeries()
+    } = useAIIntentsTimeSeries()
 
     const { hint, title } =
         ProductInsightsChartConfig[

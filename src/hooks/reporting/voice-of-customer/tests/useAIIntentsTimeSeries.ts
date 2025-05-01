@@ -1,5 +1,5 @@
 import { useCustomFieldsTimeSeries } from 'hooks/reporting/useCustomFieldsTimeSeries'
-import { useIntentsOverTimeTimeSeries } from 'hooks/reporting/voice-of-customer/useIntentsOverTimeTimeSeries'
+import { useAIIntentsTimeSeries } from 'hooks/reporting/voice-of-customer/useAIIntentsTimeSeries'
 import { ReportingGranularity } from 'models/reporting/types'
 import { TicketTimeReference } from 'models/stat/types'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
@@ -15,7 +15,7 @@ const useGetCustomTicketsFieldsDefinitionDataMock = assumeMock(
     useGetCustomTicketsFieldsDefinitionData,
 )
 
-describe('useIntentsOverTimeTimeSeries', () => {
+describe('useAIIntentsTimeSeries', () => {
     const response: ReturnType<typeof useCustomFieldsTimeSeries> = {
         isFetching: false,
         data: [],
@@ -31,10 +31,11 @@ describe('useIntentsOverTimeTimeSeries', () => {
     useGetCustomTicketsFieldsDefinitionDataMock.mockReturnValue({
         intentCustomFieldId: 2,
         outcomeCustomFieldId: 3,
+        sentimentCustomFieldId: 4,
     })
 
     it('should return intents custom field trend', () => {
-        const { result } = renderHook(() => useIntentsOverTimeTimeSeries())
+        const { result } = renderHook(() => useAIIntentsTimeSeries())
 
         expect(useCustomFieldsTrendMock).toHaveBeenCalledWith({
             selectedCustomFieldId: 2,

@@ -85,6 +85,7 @@ describe('Level2IntentsPerformance', () => {
         mockUseGetCustomTicketsFieldsDefinitionData.mockReturnValue({
             intentCustomFieldId: 1,
             outcomeCustomFieldId: 2,
+            sentimentCustomFieldId: 3,
         })
         mockGetPageStatsFilters.mockReturnValue({
             period: {

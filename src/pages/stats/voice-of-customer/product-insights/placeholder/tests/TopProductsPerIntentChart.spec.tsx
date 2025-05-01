@@ -28,6 +28,7 @@ describe('TopProductsPerIntentChart', () => {
         useGetCustomTicketsFieldsDefinitionDataMock.mockReturnValue({
             intentCustomFieldId: TICKET_FIELD_ID_NOT_AVAILABLE,
             outcomeCustomFieldId: TICKET_FIELD_ID_NOT_AVAILABLE,
+            sentimentCustomFieldId: TICKET_FIELD_ID_NOT_AVAILABLE,
         })
 
         render(<TopProductsPerIntentChart />)
@@ -42,6 +43,7 @@ describe('TopProductsPerIntentChart', () => {
         useGetCustomTicketsFieldsDefinitionDataMock.mockReturnValue({
             intentCustomFieldId,
             outcomeCustomFieldId: 456,
+            sentimentCustomFieldId: 789,
         })
 
         render(<TopProductsPerIntentChart />)

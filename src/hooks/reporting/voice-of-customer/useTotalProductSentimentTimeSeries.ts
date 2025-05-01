@@ -2,15 +2,15 @@ import { useCustomFieldsTimeSeries } from 'hooks/reporting/useCustomFieldsTimeSe
 import { TicketTimeReference } from 'models/stat/types'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 
-const AMOUNT_OF_INTENTS_TO_SHOW = 5
+const AMOUNT_OF_SENTIMENTS_TO_SHOW = 2
 
-export const useIntentsOverTimeTimeSeries = () => {
-    const { intentCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
+export const useTotalProductSentimentTimeSeries = () => {
+    const { sentimentCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
 
     return useCustomFieldsTimeSeries({
-        selectedCustomFieldId: intentCustomFieldId,
+        selectedCustomFieldId: sentimentCustomFieldId,
         ticketFieldsTicketTimeReference: TicketTimeReference.CreatedAt,
-        topAmount: AMOUNT_OF_INTENTS_TO_SHOW,
-        datasetVisibilityItems: AMOUNT_OF_INTENTS_TO_SHOW,
+        topAmount: AMOUNT_OF_SENTIMENTS_TO_SHOW,
+        datasetVisibilityItems: AMOUNT_OF_SENTIMENTS_TO_SHOW,
     })
 }
