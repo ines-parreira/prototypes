@@ -62,8 +62,8 @@ export const ConversationStartersSettings = ({
                         />
                     ) : (
                         <EngagementSettingsCardImpact
-                            icon="people"
-                            impact="87% of Gorgias merchants use Suggested Product Questions"
+                            icon="lock"
+                            impact="Unlock up to ~5% additional GMV"
                         />
                     )}
                 </EngagementSettingsCardContent>

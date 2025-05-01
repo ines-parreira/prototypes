@@ -52,9 +52,7 @@ describe('ConversationStartersSettings', () => {
             ),
         ).toBeInTheDocument()
         expect(
-            screen.getByText(
-                '87% of Gorgias merchants use Suggested Product Questions',
-            ),
+            screen.getByText('Unlock up to ~5% additional GMV'),
         ).toBeInTheDocument()
         expect(
             screen.getByAltText(
