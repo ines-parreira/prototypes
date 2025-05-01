@@ -55,7 +55,7 @@ export const getNotificationParams = (
                     'Delight customers with instant and personalized answers, automating up to 60% of your tickets!',
                 redirectTo: routes.main,
             }
-        case AiAgentNotificationType.DomainScrapingFinished:
+        case AiAgentNotificationType.ScrapingProcessingFinished:
             return {
                 title: 'Your AI Agent knowledge is ready!',
                 subtitle:
@@ -99,10 +99,9 @@ export const getNotificationReceivedDatetimePayload = (
             return {
                 meetAiAgentNotificationReceivedDatetime: receivedDatetime,
             }
-        case AiAgentNotificationType.DomainScrapingFinished:
+        case AiAgentNotificationType.ScrapingProcessingFinished:
             return {
-                domainScrapingFinishedNotificationReceivedDatetime:
-                    receivedDatetime,
+                scrapingProcessingFinishedDatetime: receivedDatetime,
             }
         case AiAgentNotificationType.FirstAiAgentTicket:
             return {
@@ -132,8 +131,8 @@ export const isNotificationAlreadyReceived = (
             return !!onboardingNotificationState.activateAiAgentNotificationReceivedDatetime
         case AiAgentNotificationType.MeetAiAgent:
             return !!onboardingNotificationState.meetAiAgentNotificationReceivedDatetime
-        case AiAgentNotificationType.DomainScrapingFinished:
-            return !!onboardingNotificationState.domainScrapingFinishedNotificationReceivedDatetime
+        case AiAgentNotificationType.ScrapingProcessingFinished:
+            return !!onboardingNotificationState.scrapingProcessingFinishedDatetime
         case AiAgentNotificationType.FirstAiAgentTicket:
             return !!onboardingNotificationState.firstAiAgentTicketNotificationReceivedDatetime
         default:
@@ -154,8 +153,8 @@ export const getNotificationReceivedDatetime = (
             return onboardingNotificationState.activateAiAgentNotificationReceivedDatetime
         case AiAgentNotificationType.MeetAiAgent:
             return onboardingNotificationState.meetAiAgentNotificationReceivedDatetime
-        case AiAgentNotificationType.DomainScrapingFinished:
-            return onboardingNotificationState.domainScrapingFinishedNotificationReceivedDatetime
+        case AiAgentNotificationType.ScrapingProcessingFinished:
+            return onboardingNotificationState.scrapingProcessingFinishedDatetime
         case AiAgentNotificationType.FirstAiAgentTicket:
             return onboardingNotificationState.firstAiAgentTicketNotificationReceivedDatetime
         default:

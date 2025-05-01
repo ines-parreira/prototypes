@@ -109,11 +109,11 @@ describe('getNotificationParams', () => {
         })
     })
 
-    it('should return correct params for DomainScrapingFinished', () => {
+    it('should return correct params for ScrapingProcessingFinished', () => {
         const payload = {
             ...basePayload,
             ai_agent_notification_type:
-                AiAgentNotificationType.DomainScrapingFinished,
+                AiAgentNotificationType.ScrapingProcessingFinished,
         }
 
         const result = getNotificationParams(payload, null)
@@ -183,13 +183,11 @@ describe('getNotificationReceivedDatetimePayload', () => {
         )
     })
 
-    it('should return correct received datetime payload for DomainScrapingFinished', () => {
+    it('should return correct received datetime payload for ScrapingProcessingFinished', () => {
         const result = getNotificationReceivedDatetimePayload(
-            AiAgentNotificationType.DomainScrapingFinished,
+            AiAgentNotificationType.ScrapingProcessingFinished,
         )
-        expect(result).toHaveProperty(
-            'domainScrapingFinishedNotificationReceivedDatetime',
-        )
+        expect(result).toHaveProperty('scrapingProcessingFinishedDatetime')
     })
 
     it('should return an empty object for unsupported notification types', () => {
@@ -283,14 +281,13 @@ describe('isNotificationAlreadyReceived', () => {
         expect(result).toBe(true)
     })
 
-    it('should return true if DomainScrapingFinished notification has been received', () => {
+    it('should return true if ScrapingProcessingFinished notification has been received', () => {
         const state = {
             ...baseState,
-            domainScrapingFinishedNotificationReceivedDatetime:
-                '2024-12-01T12:00:00Z',
+            scrapingProcessingFinishedDatetime: '2024-12-01T12:00:00Z',
         }
         const result = isNotificationAlreadyReceived(
-            AiAgentNotificationType.DomainScrapingFinished,
+            AiAgentNotificationType.ScrapingProcessingFinished,
             state,
         )
         expect(result).toBe(true)
@@ -376,13 +373,12 @@ describe('getNotificationReceivedDatetime', () => {
         expect(result).toBe('2024-12-01T12:00:00Z')
     })
 
-    it('should return correct received datetime for DomainScrapingFinished', () => {
+    it('should return correct received datetime for ScrapingProcessingFinished', () => {
         const result = getNotificationReceivedDatetime(
-            AiAgentNotificationType.DomainScrapingFinished,
+            AiAgentNotificationType.ScrapingProcessingFinished,
             {
                 ...baseState,
-                domainScrapingFinishedNotificationReceivedDatetime:
-                    '2024-12-01T12:00:00Z',
+                scrapingProcessingFinishedDatetime: '2024-12-01T12:00:00Z',
             },
         )
         expect(result).toBe('2024-12-01T12:00:00Z')

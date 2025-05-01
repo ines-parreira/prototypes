@@ -12,7 +12,7 @@ export const getOnboardingNotificationStateFixture = (
     activateAiAgentNotificationReceivedDatetime: null,
     meetAiAgentNotificationReceivedDatetime: null,
     firstAiAgentTicketNotificationReceivedDatetime: null,
-    domainScrapingFinishedNotificationReceivedDatetime: null,
+    scrapingProcessingFinishedDatetime: null,
     onboardingState: null,
     ...props,
 })
