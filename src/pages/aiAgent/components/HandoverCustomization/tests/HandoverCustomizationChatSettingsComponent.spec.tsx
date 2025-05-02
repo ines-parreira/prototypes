@@ -1,27 +1,12 @@
-import { fireEvent, screen } from '@testing-library/react'
-import { useFlags } from 'launchdarkly-react-client-sdk'
+import { render, screen } from '@testing-library/react'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
-import { useHandoverCustomizationChatFallbackSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatFallbackSettingsForm'
-import { useHandoverCustomizationChatOfflineSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOfflineSettingsForm'
-import { useHandoverCustomizationChatOnlineSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOnlineSettingsForm'
 import { useHandoverCustomizationChatSettings } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatSettings'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { HandoverCustomizationChatSettingsComponent } from '../HandoverCustomizationChatSettingsComponent'
 
 jest.mock(
     'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatSettings',
-)
-jest.mock(
-    'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOfflineSettingsForm',
-)
-jest.mock(
-    'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOnlineSettingsForm',
-)
-jest.mock(
-    'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatFallbackSettingsForm',
 )
 
 // Mock the imported components
@@ -61,56 +46,15 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
         isHandoverSectionDisabled: false,
     }
 
-    const mockedUseHandoverCustomizationChatOfflineSettingsFormProps = {
-        isLoading: false,
-        isSaving: false,
-        formValues: {},
-        updateValue: jest.fn(),
-        handleOnSave: jest.fn(),
-        handleOnCancel: jest.fn(),
-    }
-
-    const mockedUseHandoverCustomizationChatOnlineSettingsFormProps = {
-        isLoading: false,
-        isSaving: false,
-        formValues: {},
-        updateValue: jest.fn(),
-        handleOnSave: jest.fn(),
-        handleOnCancel: jest.fn(),
-    }
-
-    const mockedUseHandoverCustomizationChatFallbackSettingsFormProps = {
-        isLoading: false,
-        isSaving: false,
-        formValues: {},
-    }
-
     beforeEach(() => {
         jest.clearAllMocks()
         ;(useHandoverCustomizationChatSettings as jest.Mock).mockReturnValue(
             mockedUseHandoverCustomizationChatSettingsProps,
         )
-        ;(
-            useHandoverCustomizationChatOfflineSettingsForm as jest.Mock
-        ).mockReturnValue(
-            mockedUseHandoverCustomizationChatOfflineSettingsFormProps,
-        )
-        ;(
-            useHandoverCustomizationChatOnlineSettingsForm as jest.Mock
-        ).mockReturnValue(
-            mockedUseHandoverCustomizationChatOnlineSettingsFormProps,
-        )
-        ;(
-            useHandoverCustomizationChatFallbackSettingsForm as jest.Mock
-        ).mockReturnValue(
-            mockedUseHandoverCustomizationChatFallbackSettingsFormProps,
-        )
     })
 
     it('renders the component correctly', () => {
-        renderWithStoreAndQueryClientProvider(
-            <HandoverCustomizationChatSettingsComponent {...mockProps} />,
-        )
+        render(<HandoverCustomizationChatSettingsComponent {...mockProps} />)
 
         expect(useHandoverCustomizationChatSettings).toHaveBeenCalledWith(
             mockProps,
@@ -136,9 +80,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
             monitoredChatIntegrationIds: [],
         }
 
-        renderWithStoreAndQueryClientProvider(
-            <HandoverCustomizationChatSettingsComponent {...props} />,
-        )
+        render(<HandoverCustomizationChatSettingsComponent {...props} />)
 
         expect(useHandoverCustomizationChatSettings).toHaveBeenCalledWith(props)
 
@@ -170,9 +112,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 monitoredChatIntegrationIds: [14],
             }
 
-            renderWithStoreAndQueryClientProvider(
-                <HandoverCustomizationChatSettingsComponent {...props} />,
-            )
+            render(<HandoverCustomizationChatSettingsComponent {...props} />)
 
             expect(useHandoverCustomizationChatSettings).toHaveBeenCalledWith(
                 props,
@@ -183,7 +123,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
         })
 
         it('should render the chat selection if there is more than one chat channel', () => {
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <HandoverCustomizationChatSettingsComponent
                     {...mockProps}
                     monitoredChatIntegrationIds={[14, 15]}
@@ -196,246 +136,48 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
     })
 
     describe('Handover customization settings', () => {
-        describe('without settings revamp', () => {
-            it('should render the handover customization settings when there is one chat channel', () => {
-                ;(
-                    useHandoverCustomizationChatSettings as jest.Mock
-                ).mockReturnValue({
-                    ...mockedUseHandoverCustomizationChatSettingsProps,
-                    availableChats: [mockChatChannels[0]],
-                    selectedChat: mockChatChannels[0],
-                })
-
-                const props = {
-                    ...mockProps,
-                    monitoredChatIntegrationIds: [14],
-                }
-
-                renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent {...props} />,
-                )
-
-                expect(
-                    useHandoverCustomizationChatSettings,
-                ).toHaveBeenCalledWith(props)
-
-                // sections should be rendered
-                screen.getByText(/mocked offline settings/i)
-                screen.getByText(/mocked online settings/i)
-                screen.getByText(/mocked fallback settings/i)
+        it('should render the handover customization settings when there is one chat channel', () => {
+            ;(
+                useHandoverCustomizationChatSettings as jest.Mock
+            ).mockReturnValue({
+                ...mockedUseHandoverCustomizationChatSettingsProps,
+                availableChats: [mockChatChannels[0]],
+                selectedChat: mockChatChannels[0],
             })
 
-            it('should render the handover customization settings when there are more than one chat channel', () => {
-                const props = {
-                    ...mockProps,
-                    monitoredChatIntegrationIds: [14, 15],
-                }
+            const props = {
+                ...mockProps,
+                monitoredChatIntegrationIds: [14],
+            }
 
-                renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent {...props} />,
-                )
+            render(<HandoverCustomizationChatSettingsComponent {...props} />)
 
-                expect(
-                    useHandoverCustomizationChatSettings,
-                ).toHaveBeenCalledWith(props)
+            expect(useHandoverCustomizationChatSettings).toHaveBeenCalledWith(
+                props,
+            )
 
-                // sections should be rendered
-                screen.getByText(/mocked offline settings/i)
-                screen.getByText(/mocked online settings/i)
-                screen.getByText(/mocked fallback settings/i)
-            })
+            // sections should not be rendered
+            screen.getByText(/mocked offline settings/i)
+            screen.getByText(/mocked online settings/i)
+            screen.getByText(/mocked fallback settings/i)
         })
 
-        describe('with settings revamp', () => {
-            const getChatOfflineRow = () => {
-                return screen.getAllByText(/When Chat is offline/i)[0]
+        it('should render the handover customization settings when there are more than one chat channel', () => {
+            const props = {
+                ...mockProps,
+                monitoredChatIntegrationIds: [14, 15],
             }
 
-            const getChatOfflineDrawerTitle = () => {
-                return screen.getAllByText(/When Chat is offline/i)[1]
-            }
+            render(<HandoverCustomizationChatSettingsComponent {...props} />)
 
-            const getChatOnlineRow = () => {
-                return screen.getAllByText(/When Chat is online/i)[0]
-            }
+            expect(useHandoverCustomizationChatSettings).toHaveBeenCalledWith(
+                props,
+            )
 
-            const getChatOnlineDrawerTitle = () => {
-                return screen.getAllByText(/When Chat is online/i)[1]
-            }
-
-            const getChatErrorRow = () => {
-                return screen.getAllByText(/When an error occurs/i)[0]
-            }
-
-            const getChatErrorDrawerTitle = () => {
-                return screen.getAllByText(/When an error occurs/i)[1]
-            }
-
-            beforeEach(() => {
-                ;(useFlags as jest.Mock).mockReturnValue({
-                    [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-                })
-            })
-
-            it('should render the handover customization settings when there is one chat channel', () => {
-                ;(
-                    useHandoverCustomizationChatSettings as jest.Mock
-                ).mockReturnValue({
-                    ...mockedUseHandoverCustomizationChatSettingsProps,
-                    availableChats: [mockChatChannels[0]],
-                    selectedChat: mockChatChannels[0],
-                })
-
-                const props = {
-                    ...mockProps,
-                    monitoredChatIntegrationIds: [14],
-                }
-
-                renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent {...props} />,
-                )
-
-                expect(
-                    useHandoverCustomizationChatSettings,
-                ).toHaveBeenCalledWith(props)
-
-                expect(getChatOfflineRow()).toBeInTheDocument()
-                expect(getChatOnlineRow()).toBeInTheDocument()
-                expect(getChatErrorRow()).toBeInTheDocument()
-            })
-
-            it('should render the handover customization settings when there are more than one chat channel', () => {
-                const props = {
-                    ...mockProps,
-                    monitoredChatIntegrationIds: [14, 15],
-                }
-
-                renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent {...props} />,
-                )
-
-                expect(
-                    useHandoverCustomizationChatSettings,
-                ).toHaveBeenCalledWith(props)
-
-                expect(getChatOfflineRow()).toBeInTheDocument()
-                expect(getChatOnlineRow()).toBeInTheDocument()
-                expect(getChatErrorRow()).toBeInTheDocument()
-            })
-
-            it('should render the chat options in the handover instructions when there are more than one chat channel', () => {
-                const props = {
-                    ...mockProps,
-                    monitoredChatIntegrationIds: [14, 15],
-                }
-
-                renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent {...props} />,
-                )
-
-                expect(
-                    useHandoverCustomizationChatSettings,
-                ).toHaveBeenCalledWith(props)
-
-                expect(screen.getByText('26 Shopify Chat')).toBeInTheDocument()
-                expect(screen.getByRole('textbox')).toBeInTheDocument()
-            })
-
-            it('should open drawer when clicking on offline chat row', () => {
-                ;(
-                    useHandoverCustomizationChatSettings as jest.Mock
-                ).mockReturnValue({
-                    ...mockedUseHandoverCustomizationChatSettingsProps,
-                    availableChats: [mockChatChannels[0]],
-                    selectedChat: mockChatChannels[0],
-                })
-
-                const props = {
-                    ...mockProps,
-                    monitoredChatIntegrationIds: [14],
-                }
-
-                renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent {...props} />,
-                )
-
-                expect(
-                    useHandoverCustomizationChatSettings,
-                ).toHaveBeenCalledWith(props)
-
-                fireEvent.click(getChatOfflineRow())
-
-                const drawerTitle = getChatOfflineDrawerTitle()
-
-                expect(drawerTitle).toBeInTheDocument()
-                expect(drawerTitle.closest('.drawer-container')).toHaveStyle(
-                    'z-index: 20',
-                )
-            })
-
-            it('should open drawer when clicking on online chat row', () => {
-                ;(
-                    useHandoverCustomizationChatSettings as jest.Mock
-                ).mockReturnValue({
-                    ...mockedUseHandoverCustomizationChatSettingsProps,
-                    availableChats: [mockChatChannels[0]],
-                    selectedChat: mockChatChannels[0],
-                })
-
-                const props = {
-                    ...mockProps,
-                    monitoredChatIntegrationIds: [14],
-                }
-
-                renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent {...props} />,
-                )
-
-                expect(
-                    useHandoverCustomizationChatSettings,
-                ).toHaveBeenCalledWith(props)
-
-                fireEvent.click(getChatOnlineRow())
-
-                const drawerTitle = getChatOnlineDrawerTitle()
-
-                expect(drawerTitle).toBeInTheDocument()
-                expect(drawerTitle.closest('.drawer-container')).toHaveStyle(
-                    'z-index: 20',
-                )
-            })
-
-            it('should open drawer when clicking on online chat row', () => {
-                ;(
-                    useHandoverCustomizationChatSettings as jest.Mock
-                ).mockReturnValue({
-                    ...mockedUseHandoverCustomizationChatSettingsProps,
-                    availableChats: [mockChatChannels[0]],
-                    selectedChat: mockChatChannels[0],
-                })
-
-                const props = {
-                    ...mockProps,
-                    monitoredChatIntegrationIds: [14],
-                }
-
-                renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent {...props} />,
-                )
-
-                expect(
-                    useHandoverCustomizationChatSettings,
-                ).toHaveBeenCalledWith(props)
-
-                fireEvent.click(getChatErrorRow())
-
-                const drawerTitle = getChatErrorDrawerTitle()
-
-                expect(drawerTitle).toBeInTheDocument()
-                expect(drawerTitle.closest('.drawer-container')).toHaveStyle(
-                    'z-index: 20',
-                )
-            })
+            // sections should not be rendered
+            screen.getByText(/mocked offline settings/i)
+            screen.getByText(/mocked online settings/i)
+            screen.getByText(/mocked fallback settings/i)
         })
     })
 })

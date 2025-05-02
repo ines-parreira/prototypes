@@ -1,8 +1,8 @@
+import React from 'react'
+
 import { fireEvent, render, screen } from '@testing-library/react'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { Language } from 'constants/languages'
 import {
     GorgiasChatAutoResponderReply,
@@ -92,34 +92,26 @@ describe('HandoverCustomizationChatOnlineSettings', () => {
             setIsFormDirty: mockSetIsFormDirty,
             setActionCallback: mockSetActionCallback,
         })
-        ;(useFlags as jest.Mock).mockReturnValue({
-            [FeatureFlagKey.AiAgentSettingsRevamp]: false,
-        })
     })
 
     it('renders component with all required elements', () => {
         renderComponent(mockedIntegration)
 
         // Check for main section headers
-        expect(screen.getByText('Guidance')).toBeInTheDocument()
-        expect(screen.queryByText('Online instructions')).toBeNull()
+        screen.getByText('Guidance')
 
         // Check for TextArea
-        expect(screen.getByRole('textbox')).toBeInTheDocument()
+        screen.getByRole('textbox')
 
         // Check for caption text
-        expect(
-            screen.getByText(
-                /AI Agent will use these instructions to craft the handover message it sends to customers./i,
-            ),
-        ).toBeInTheDocument()
+        screen.getByText(
+            /AI Agent will use these instructions to craft the handover message it sends to customers./i,
+        )
 
         // Check for alert about chat preferences
-        expect(
-            screen.getByText(
-                /Changes to the settings below will be reflected in your/i,
-            ),
-        ).toBeInTheDocument()
+        screen.getByText(
+            /Changes to the settings below will be reflected in your/i,
+        )
 
         // Check for link to chat preferences
         const chatPreferencesLink = screen.getByRole('link', {
@@ -133,250 +125,170 @@ describe('HandoverCustomizationChatOnlineSettings', () => {
         expect(chatPreferencesLink.getAttribute('target')).toBe('_blank')
 
         // Check for mocked child components
-        expect(screen.getByText(/Enable email capture/i)).toBeInTheDocument()
+        screen.getByText(/Enable email capture/i)
 
-        expect(screen.getByText(/Send wait time/i)).toBeInTheDocument()
+        screen.getByText(/Send wait time/i)
 
         // Check for buttons
-        expect(screen.getByText('Save Changes')).toBeInTheDocument()
-        expect(screen.getByText('Cancel')).toBeInTheDocument()
+        screen.getByText('Save Changes')
+        screen.getByText('Cancel')
     })
 
-    it('renders component with all required elements in the new setting design', () => {
-        ;(useFlags as jest.Mock).mockReturnValue({
-            [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+    it('should show loading spinner when isLoading is true', () => {
+        ;(
+            useHandoverCustomizationChatOnlineSettingsForm as jest.Mock
+        ).mockReturnValue({
+            isLoading: true,
         })
 
         renderComponent(mockedIntegration)
 
-        // Check for main section headers
-        expect(screen.getByText('Instructions')).toBeInTheDocument()
-        expect(screen.queryByText('Guidance')).toBeNull()
+        screen.getByLabelText('Loading')
 
-        // Check for TextArea
-        expect(screen.getByRole('textbox')).toBeInTheDocument()
-
-        // Check for caption text
-        expect(
-            screen.getByText(
-                /Write optional instructions for AI Agent to follow during handover./i,
-            ),
-        ).toBeInTheDocument()
-
-        // Check for alert about chat preferences
-        expect(
-            screen.getByText(
-                /Changes to the settings below will be reflected in your/i,
-            ),
-        ).toBeInTheDocument()
-
-        // Check for link to chat preferences
-        const chatPreferencesLink = screen.getByRole('link', {
-            name: 'Chat preferences.',
-        })
-
-        expect(chatPreferencesLink.getAttribute('href')).toBe(
-            `/app/settings/channels/gorgias_chat/${mockedIntegration.id}/preferences`,
-        )
-
-        expect(chatPreferencesLink.getAttribute('target')).toBe('_blank')
-
-        // Check for mocked child components
-        expect(screen.getByText(/Enable email capture/i)).toBeInTheDocument()
-
-        expect(screen.getByText(/Send wait time/i)).toBeInTheDocument()
-
-        // Check for buttons
-        expect(screen.getByText('Save Changes')).toBeInTheDocument()
-        expect(screen.getByText('Cancel')).toBeInTheDocument()
+        expect(screen.queryByText('Instructions')).toBeNull()
     })
 
-    it.each([true, false])(
-        'should show loading spinner when isLoading is true and settings revamp is %s',
-        (isSettingsRevamp) => {
-            ;(useFlags as jest.Mock).mockReturnValue({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: isSettingsRevamp,
-            })
-            ;(
-                useHandoverCustomizationChatOnlineSettingsForm as jest.Mock
-            ).mockReturnValue({
-                isLoading: true,
-            })
+    it('should build the correct action callback when the component is mounted', () => {
+        renderComponent()
 
-            renderComponent(mockedIntegration)
+        expect(mockSetActionCallback).toHaveBeenCalledWith(
+            StoreConfigFormSection.handoverCustomizationOnlineSettings,
+            expect.objectContaining({
+                onDiscard: mockHandleOnCancel,
+            }),
+        )
+    })
 
-            screen.getByLabelText('Loading')
-
-            expect(screen.queryByText('Instructions')).toBeNull()
-        },
-    )
-
-    it.each([true, false])(
-        'should build the correct action callback when the component is mounted when settings revamp is %s',
-        (isSettingsRevamp) => {
-            ;(useFlags as jest.Mock).mockReturnValue({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: isSettingsRevamp,
-            })
-
+    describe('Form Interactions', () => {
+        it('should handle online instructions changes', async () => {
             renderComponent()
 
-            expect(mockSetActionCallback).toHaveBeenCalledWith(
-                StoreConfigFormSection.handoverCustomizationOnlineSettings,
-                expect.objectContaining({
-                    onDiscard: mockHandleOnCancel,
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'Guidance',
                 }),
+                { target: { value: 'New instructions' } },
             )
-        },
-    )
 
-    describe.each([true, false])(
-        'Form Interactions when settings revamp is %s',
-        (isSettingsRevamp) => {
-            beforeEach(() => {
-                ;(useFlags as jest.Mock).mockReturnValue({
-                    [FeatureFlagKey.AiAgentSettingsRevamp]: isSettingsRevamp,
-                })
-            })
-
-            it('should handle online instructions changes', async () => {
-                renderComponent()
-
-                fireEvent.change(
-                    screen.getByRole('textbox', {
-                        name: isSettingsRevamp ? 'Instructions' : 'Guidance',
-                    }),
-                    { target: { value: 'New instructions' } },
-                )
-
-                expect(mockUpdateValue).toHaveBeenCalledWith(
-                    'onlineInstructions',
-                    'New instructions',
-                )
-            })
-
-            it('should handle email capture toggle change', () => {
-                renderComponent()
-
-                const toggle = screen.getByRole('switch', {
-                    name: /Enable email capture/i,
-                })
-                fireEvent.click(toggle)
-
-                expect(mockUpdateValue).toHaveBeenCalledWith(
-                    'emailCaptureEnabled',
-                    true,
-                )
-            })
-
-            it('should handle email capture enforcement change', () => {
-                renderComponent()
-                const option = screen.getByRole('radio', {
-                    name: /Required/i,
-                })
-
-                fireEvent.click(option)
-
-                expect(mockUpdateValue).toHaveBeenCalledWith(
-                    'emailCaptureEnforcement',
-                    GorgiasChatEmailCaptureType.AlwaysRequired,
-                )
-            })
-
-            it('should handle send wait time toggle change', () => {
-                renderComponent()
-
-                const toggle = screen.getByRole('switch', {
-                    name: /Provide auto-reply wait time in the chat/i,
-                })
-                fireEvent.click(toggle)
-
-                expect(mockUpdateValue).toHaveBeenCalledWith(
-                    'autoResponderEnabled',
-                    true,
-                )
-            })
-
-            it('should handle auto responder reply change', () => {
-                renderComponent()
-                const option = screen.getByRole('radio', {
-                    name: /In a few minutes/i,
-                })
-                fireEvent.click(option)
-
-                expect(mockUpdateValue).toHaveBeenCalledWith(
-                    'autoResponderReply',
-                    GorgiasChatAutoResponderReply.ReplyInMinutes,
-                )
-            })
-
-            test.each([true, false])(
-                'should set isFormDirty to %s when there are changes coming from the form hook',
-                (hasChanges) => {
-                    ;(
-                        useHandoverCustomizationChatOnlineSettingsForm as jest.Mock
-                    ).mockReturnValue({
-                        ...mockOnlineValuesForm,
-                        hasChanges,
-                    })
-                    renderComponent()
-
-                    expect(mockSetIsFormDirty).toHaveBeenCalledWith(
-                        StoreConfigFormSection.handoverCustomizationOnlineSettings,
-                        hasChanges,
-                    )
-                },
+            expect(mockUpdateValue).toHaveBeenCalledWith(
+                'onlineInstructions',
+                'New instructions',
             )
-        },
-    )
+        })
 
-    describe.each([true, false])(
-        'Save and Cancel Actions when settings revamp is %s',
-        (isSettingsRevamp) => {
-            beforeEach(() => {
-                ;(useFlags as jest.Mock).mockReturnValue({
-                    [FeatureFlagKey.AiAgentSettingsRevamp]: isSettingsRevamp,
-                })
+        it('should handle email capture toggle change', () => {
+            renderComponent()
+
+            const toggle = screen.getByRole('switch', {
+                name: /Enable email capture/i,
+            })
+            fireEvent.click(toggle)
+
+            expect(mockUpdateValue).toHaveBeenCalledWith(
+                'emailCaptureEnabled',
+                true,
+            )
+        })
+
+        it('should handle email capture enforcement change', () => {
+            renderComponent()
+            const option = screen.getByRole('radio', {
+                name: /Required/i,
             })
 
-            it('should disable save button when isSaving is true', () => {
+            fireEvent.click(option)
+
+            expect(mockUpdateValue).toHaveBeenCalledWith(
+                'emailCaptureEnforcement',
+                GorgiasChatEmailCaptureType.AlwaysRequired,
+            )
+        })
+
+        it('should handle send wait time toggle change', () => {
+            renderComponent()
+
+            const toggle = screen.getByRole('switch', {
+                name: /Provide auto-reply wait time in the chat/i,
+            })
+            fireEvent.click(toggle)
+
+            expect(mockUpdateValue).toHaveBeenCalledWith(
+                'autoResponderEnabled',
+                true,
+            )
+        })
+
+        it('should handle auto responder reply change', () => {
+            renderComponent()
+            const option = screen.getByRole('radio', {
+                name: /In a few minutes/i,
+            })
+            fireEvent.click(option)
+
+            expect(mockUpdateValue).toHaveBeenCalledWith(
+                'autoResponderReply',
+                GorgiasChatAutoResponderReply.ReplyInMinutes,
+            )
+        })
+
+        test.each([true, false])(
+            'should set isFormDirty to %s when there are changes coming from the form hook',
+            (hasChanges) => {
                 ;(
                     useHandoverCustomizationChatOnlineSettingsForm as jest.Mock
                 ).mockReturnValue({
                     ...mockOnlineValuesForm,
-                    isLoading: false,
-                    isSaving: true,
+                    hasChanges,
                 })
-
                 renderComponent()
 
-                const saveButton = screen.getByRole('button', {
-                    name: 'Save Changes',
-                })
+                expect(mockSetIsFormDirty).toHaveBeenCalledWith(
+                    StoreConfigFormSection.handoverCustomizationOnlineSettings,
+                    hasChanges,
+                )
+            },
+        )
+    })
 
-                expect(saveButton).toHaveAttribute('aria-disabled', 'true')
+    describe('Save and Cancel Actions', () => {
+        it('should disable save button when isSaving is true', () => {
+            ;(
+                useHandoverCustomizationChatOnlineSettingsForm as jest.Mock
+            ).mockReturnValue({
+                ...mockOnlineValuesForm,
+                isLoading: false,
+                isSaving: true,
             })
 
-            it('should handle save button click', () => {
-                renderComponent()
+            renderComponent()
 
-                const saveButton = screen.getByRole('button', {
-                    name: 'Save Changes',
-                })
-                fireEvent.click(saveButton)
-
-                expect(mockHandleOnSave).toHaveBeenCalled()
+            const saveButton = screen.getByRole('button', {
+                name: 'Save Changes',
             })
 
-            it('should handle cancel button click', () => {
-                renderComponent()
+            expect(saveButton).toHaveAttribute('aria-disabled', 'true')
+        })
 
-                const cancelButton = screen.getByRole('button', {
-                    name: 'Cancel',
-                })
-                fireEvent.click(cancelButton)
+        it('should handle save button click', () => {
+            renderComponent()
 
-                expect(mockHandleOnCancel).toHaveBeenCalled()
+            const saveButton = screen.getByRole('button', {
+                name: 'Save Changes',
             })
-        },
-    )
+            fireEvent.click(saveButton)
+
+            expect(mockHandleOnSave).toHaveBeenCalled()
+        })
+
+        it('should handle cancel button click', () => {
+            renderComponent()
+
+            const cancelButton = screen.getByRole('button', {
+                name: 'Cancel',
+            })
+            fireEvent.click(cancelButton)
+
+            expect(mockHandleOnCancel).toHaveBeenCalled()
+        })
+    })
 })

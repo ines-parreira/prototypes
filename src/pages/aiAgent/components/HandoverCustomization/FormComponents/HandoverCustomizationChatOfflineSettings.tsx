@@ -2,15 +2,18 @@ import React, { useCallback, useEffect } from 'react'
 
 import cn from 'classnames'
 
-import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { Button, LoadingSpinner, ToggleField } from '@gorgias/merchant-ui-kit'
 
+import { Label } from 'gorgias-design-system/Input/Label'
 import { GorgiasChatIntegration } from 'models/integration/types'
 import { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import { useHandoverCustomizationChatOfflineSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOfflineSettingsForm'
 import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
+import { formFieldsConfiguration } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatOfflineSettingsForm.utils'
+import Caption from 'pages/common/forms/Caption/Caption'
+import TextArea from 'pages/common/forms/TextArea'
 
-import { HandoverCustomizationChatOfflineSettingsFields } from './HandoverCustomizationChatOfflineSettingsFields'
-
+import commonCss from './HandoverCommonSettings.less'
 import css from './HandoverCustomizationChatOfflineSettings.less'
 
 type Props = {
@@ -93,12 +96,62 @@ const HandoverCustomizationChatOfflineSettings = ({ integration }: Props) => {
 
     return (
         <div>
-            <HandoverCustomizationChatOfflineSettingsFields
-                values={formValues}
-                onOfflineInstructionsChange={onOfflineInstructionsChange}
-                onBusinessHoursChange={onBusinessHoursToggle}
-                isLoading={isLoading || isSaving}
-            />
+            <div className={commonCss.formContainer}>
+                <div
+                    className={cn(
+                        commonCss.sectionContainer,
+                        css.offlineInstructionsContainer,
+                    )}
+                >
+                    <Label
+                        htmlFor="handover-customization-offline-instructions"
+                        label={'Guidance'}
+                        className={`${css.offlineInstructionsTitle} mb-2`}
+                    >
+                        Guidance
+                    </Label>
+                    <TextArea
+                        id="handover-customization-offline-instructions"
+                        rows={5}
+                        name="handover-customization-offline-instructions"
+                        aria-label="Guidance"
+                        role="textbox"
+                        maxLength={
+                            formFieldsConfiguration.offlineInstructions
+                                .maxLength
+                        }
+                        placeholder={`Apologize and acknowledge the issue.`}
+                        onChange={onOfflineInstructionsChange}
+                        value={formValues.offlineInstructions}
+                        error={undefined}
+                    />
+                    <Caption className="caption-regular mt-1">
+                        {`AI Agent will use these instructions to craft the handover message it sends to customers. If left blank, it will generate a generic message using your tone of voice.`}
+                    </Caption>
+                </div>
+
+                <div className="d-flex align-items-center">
+                    <ToggleField
+                        value={formValues.shareBusinessHours}
+                        name="share-business-hours-toggle"
+                        id="share-business-hours-toggle"
+                        aria-label="Share business hours in handover message"
+                        onChange={onBusinessHoursToggle}
+                    />
+
+                    <span className="body-semibold">
+                        Share business hours in handover message
+                    </span>
+                    <a
+                        href="/app/settings/business-hours"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={cn(css.link, css.businessHoursLink)}
+                    >
+                        View Business Hours
+                    </a>
+                </div>
+            </div>
 
             <section className="mb-0">
                 <Button
