@@ -1,7 +1,7 @@
-import classNames from 'classnames'
 import { NavLink } from 'react-router-dom'
 
 import { Navigation } from 'components/Navigation/Navigation'
+import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import useCanAddContactFormFlag from 'pages/convert/common/hooks/useContactFormFlag'
 
@@ -74,7 +74,7 @@ export const ConvertNavbarSectionBlockV2 = ({
                             className={css.item}
                         >
                             Performance
-                            <ConvertNavbarSubscribeIcon />
+                            <UpgradeIcon />
                         </Navigation.SectionItem>
                     ))}
                 <Navigation.SectionItem
@@ -106,7 +106,7 @@ export const ConvertNavbarSectionBlockV2 = ({
                         className={css.item}
                     >
                         Click tracking
-                        <ConvertNavbarSubscribeIcon />
+                        <UpgradeIcon />
                     </Navigation.SectionItem>
                 )}
                 {settingsEnabled ? (
@@ -134,13 +134,5 @@ export const ConvertNavbarSectionBlockV2 = ({
                 )}
             </Navigation.SectionContent>
         </Navigation.Section>
-    )
-}
-
-function ConvertNavbarSubscribeIcon() {
-    return (
-        <i className={classNames('material-icons', css.icon)}>
-            arrow_circle_up
-        </i>
     )
 }
