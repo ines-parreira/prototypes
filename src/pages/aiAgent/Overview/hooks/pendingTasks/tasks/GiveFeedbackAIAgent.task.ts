@@ -6,8 +6,8 @@ import { Task } from './Task'
 export class GiveFeedbackAIAgentTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
-            'Give feedback to your AI Agent',
-            'Coach AI Agent to improve its performance',
+            'Give AI Agent feedback',
+            'Review tickets to validate quality and spot improvement',
             'RECOMMENDED',
             data,
             routes,
