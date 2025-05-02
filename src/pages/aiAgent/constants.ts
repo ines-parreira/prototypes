@@ -210,6 +210,8 @@ export const AI_AGENT_TAGS_SET = new Set(Object.values(AI_AGENT_TAGS))
 
 export const AI_AGENT_NAVBAR_COLLAPSED_SECTIONS_KEY =
     'ai-agent:navbar:collapsed-sections'
+export const AI_AGENT_NAVBAR_EXPANDED_SECTIONS_KEY =
+    'ai-agent:navbar:expanded-sections'
 export const AI_AGENT_MAX_EXPANDED_SECTIONS_BY_DEFAULT = 3
 
 export const CHANGES_SAVED_SUCCESS = 'Changes saved successfully'
