@@ -100,7 +100,13 @@ export const ToneOfVoiceFormComponent = (
                                 Tone of Voice allows you to customize how your
                                 AI Agent communicates with your customers.
                                 Choose the personality that matches your brand.{' '}
-                                <a href="">See examples</a>.
+                                <a
+                                    href="https://docs.gorgias.com/en-US/customize-how-ai-agent-behaves-567324"
+                                    target="_blank"
+                                >
+                                    See examples
+                                </a>
+                                .
                             </p>
                         </SettingsCardHeader>
                         <SettingsCardContent>
