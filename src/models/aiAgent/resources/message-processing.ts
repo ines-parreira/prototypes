@@ -60,6 +60,7 @@ const mockTicket = (body: CreatePlaygroundBody) => {
 
 export const submitAiAgentTicket = async (
     body: AiAgentInput,
+    sessionId?: string,
     abortController?: AbortController,
 ) => {
     return await apiClient.post<AiAgentResponse>(
@@ -68,6 +69,7 @@ export const submitAiAgentTicket = async (
         {
             params: {
                 playground: true,
+                test_mode_session_id: sessionId,
             },
             signal: abortController?.signal,
         },
@@ -76,10 +78,11 @@ export const submitAiAgentTicket = async (
 
 export const createContextAndSubmitPlaygroundTicket = async (
     body: CreatePlaygroundBody,
+    sessionId?: string,
     abortController?: AbortController,
 ) => {
     const mockedTicket = mockTicket(body)
-    return await submitAiAgentTicket(mockedTicket, abortController)
+    return await submitAiAgentTicket(mockedTicket, sessionId, abortController)
 }
 
 export const generateCustomToneOfVoicePreview = async (body: AiAgentInput) => {

@@ -30,7 +30,11 @@ import {
     createContextAndGenerateCustomToneOfVoicePreview,
     createContextAndSubmitPlaygroundTicket,
 } from './resources/message-processing'
-import { getPlaygroundExecutions } from './resources/playground'
+import {
+    createTestSession,
+    getPlaygroundExecutions,
+    getTestSessionLogs,
+} from './resources/playground'
 import {
     GetOnboardingNotificationStateParams,
     GetPlaygroundExecutionsParams,
@@ -207,6 +211,32 @@ export const useSearchCustomer = (
         queryFn: () => searchCustomer(params),
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
+        ...overrides,
+    })
+}
+
+export const useCreateTestSessionMutation = (
+    overrides?: MutationOverrides<typeof createTestSession>,
+) => {
+    return useMutation({
+        mutationFn: (params) => createTestSession(...params),
+        ...overrides,
+    })
+}
+
+export const testSessionLogsKeys = {
+    all: () => ['aiAgentTestSessionLogs'] as const,
+    logs: (testSessionId: string) =>
+        [...testSessionLogsKeys.all(), testSessionId] as const,
+}
+
+export const useGetTestSessionLogs = (
+    testSessionId: string,
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof getTestSessionLogs>>>,
+) => {
+    return useQuery({
+        queryKey: testSessionLogsKeys.logs(testSessionId),
+        queryFn: () => getTestSessionLogs(testSessionId),
         ...overrides,
     })
 }

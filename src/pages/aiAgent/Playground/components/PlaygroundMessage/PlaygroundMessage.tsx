@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 
@@ -23,7 +23,7 @@ import { PlaygroundChannels } from '../PlaygroundChat/PlaygroundChat.types'
 import css from './PlaygroundMessage.less'
 
 export const AI_AGENT_SENDER = 'AI Agent'
-export const GREETING_MESSAGE = 'Hey there 👋'
+export const GREETING_MESSAGE_TEXT = 'Hey there 👋'
 
 type Props = {
     withAnimation?: boolean

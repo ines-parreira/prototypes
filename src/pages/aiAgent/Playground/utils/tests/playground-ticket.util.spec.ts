@@ -89,6 +89,7 @@ describe('playground-ticket util', () => {
                 "subject": "",
                 "tags": "[]",
               },
+              "trigger": "ticket-message-created",
             }
         `)
     })

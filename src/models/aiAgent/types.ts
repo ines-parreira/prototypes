@@ -282,3 +282,20 @@ export type HandoverConfigurationData = {
 export type HandoverConfigurationResponse = {
     handoverConfigurations: HandoverConfigurationData[]
 }
+
+export type TestModeSession = {
+    id: string
+    accountId: number
+    creatorUserId: number
+    createdDatetime: string
+}
+
+export type CreateTestSessionResponse = {
+    testModeSession: TestModeSession
+}
+
+export type GetTestSessionLogsResponse = {
+    logs: string[]
+    id: string
+    status: 'in-progress' | 'finished' | 'idle'
+}

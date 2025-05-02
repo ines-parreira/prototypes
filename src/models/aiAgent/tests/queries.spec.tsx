@@ -1,11 +1,18 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 import * as reactQuery from '@tanstack/react-query'
 import { mockFlags } from 'jest-launchdarkly-mock'
 
 import { FeatureFlagKey } from 'config/featureFlags'
-import { CreatePlaygroundBody } from 'models/aiAgentPlayground/types'
+import {
+    useCreateTestSessionMutation,
+    useGetTestSessionLogs,
+} from 'models/aiAgent/queries'
+import {
+    CreatePlaygroundBody,
+    GetTestSessionLogsResponse,
+    TestSessionLogType,
+    TicketOutcome,
+} from 'models/aiAgentPlayground/types'
 import { getAIGuidanceFixture } from 'pages/aiAgent/fixtures/aiGuidance.fixture'
 import { customToneOfVoicePreviewFixture } from 'pages/aiAgent/fixtures/customToneOfVoicePreview.fixture'
 import { getHandoverConfigurationsFixture } from 'pages/aiAgent/fixtures/handoverConfiguration.fixture'
@@ -45,6 +52,7 @@ import {
 } from '../resources/configuration'
 import * as guidanceResources from '../resources/guidances'
 import { createContextAndGenerateCustomToneOfVoicePreview } from '../resources/message-processing'
+import { createTestSession, getTestSessionLogs } from '../resources/playground'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     useHelpCenterApi: jest.fn(),
@@ -103,6 +111,14 @@ const mockedAIGuidances = [
         batch_datetime: '2024-04-18T12:21:00.531Z',
     },
 ]
+
+jest.mock('models/aiAgent/resources/playground', () => ({
+    createTestSession: jest.fn(),
+    getTestSessionLogs: jest.fn(),
+}))
+
+const mockCreateTestSession = jest.mocked(createTestSession)
+const mockGetTestSessionLogs = jest.mocked(getTestSessionLogs)
 
 describe('queries', () => {
     beforeEach(() => {
@@ -775,6 +791,125 @@ describe('queries', () => {
             await expect(mutationFn([storeName])).resolves.toEqual(
                 mockDataToBeUpserted,
             )
+        })
+    })
+
+    describe('useCreateTestSessionMutation', () => {
+        it('should call useMutation with the correct parameters', async () => {
+            const mockResponse = { sessionId: 'test-session-123' }
+            mockCreateTestSession.mockResolvedValue(mockResponse as any)
+
+            renderHook(() => useCreateTestSessionMutation(), { wrapper })
+
+            expect(useMutationSpy).toHaveBeenCalledWith({
+                mutationFn: expect.any(Function),
+            })
+
+            const mutationFn = (
+                useMutationSpy.mock.calls[0][0] as unknown as {
+                    mutationFn: () => any
+                }
+            ).mutationFn
+
+            await expect(mutationFn()).resolves.toEqual(mockResponse)
+        })
+
+        it('should handle errors correctly', async () => {
+            const mockError = new Error('Test error')
+            mockCreateTestSession.mockRejectedValue(mockError)
+
+            renderHook(() => useCreateTestSessionMutation(), { wrapper })
+
+            const mutationFn = (
+                useMutationSpy.mock.calls[0][0] as unknown as {
+                    mutationFn: () => any
+                }
+            ).mutationFn
+
+            await expect(mutationFn()).rejects.toThrow('Test error')
+        })
+    })
+
+    describe('useGetTestSessionLogs', () => {
+        const testSessionId = 'test-session-123'
+
+        it('should call useQuery with the correct parameters', async () => {
+            const mockResponse: GetTestSessionLogsResponse = {
+                id: testSessionId,
+                status: 'finished',
+                logs: [
+                    {
+                        id: 'log-1',
+                        accountId: 123,
+                        testModeSessionId: testSessionId,
+                        aiAgentExecutionId: 'exec-1',
+                        type: TestSessionLogType.AI_AGENT_INSIGHT,
+                        createdDatetime: '2023-01-01T12:00:00Z',
+                        data: {
+                            message: 'Test insight',
+                            isSalesOpportunity: false,
+                            isSalesDiscount: false,
+                            isSalesOpportunityFieldId: null,
+                            isSalesDiscountFieldId: null,
+                            outcome: TicketOutcome.CLOSE,
+                        },
+                    },
+                ],
+            }
+
+            mockGetTestSessionLogs.mockResolvedValue(mockResponse)
+
+            renderHook(() => useGetTestSessionLogs(testSessionId), { wrapper })
+
+            expect(useQuerySpy).toHaveBeenCalledWith({
+                queryKey: ['aiAgentTestSessionLogs', testSessionId],
+                queryFn: expect.any(Function),
+            })
+
+            const queryFn = (
+                useQuerySpy.mock.calls[0][0] as unknown as {
+                    queryFn: () => any
+                }
+            ).queryFn
+
+            await expect(queryFn()).resolves.toEqual(mockResponse)
+        })
+
+        it('should apply overrides correctly', () => {
+            const overrides = {
+                staleTime: 5000,
+                cacheTime: 10000,
+                retry: false,
+                enabled: false,
+            }
+
+            renderHook(() => useGetTestSessionLogs(testSessionId, overrides), {
+                wrapper,
+            })
+
+            expect(useQuerySpy).toHaveBeenCalledWith({
+                queryKey: ['aiAgentTestSessionLogs', testSessionId],
+                queryFn: expect.any(Function),
+                staleTime: 5000,
+                cacheTime: 10000,
+                retry: false,
+                enabled: false,
+            })
+        })
+
+        it('should handle error states correctly', async () => {
+            const mockError = new Error('Failed to fetch logs')
+            mockGetTestSessionLogs.mockRejectedValue(mockError)
+
+            renderHook(() => useGetTestSessionLogs(testSessionId), { wrapper })
+
+            const queryFn = (
+                useQuerySpy.mock.calls[0][0] as unknown as {
+                    queryFn: () => any
+                }
+            ).queryFn
+
+            await expect(queryFn()).rejects.toThrow('Failed to fetch logs')
         })
     })
 })

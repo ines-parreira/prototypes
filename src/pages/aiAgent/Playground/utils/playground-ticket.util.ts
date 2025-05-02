@@ -125,6 +125,7 @@ export const createMockHttpIntegrationPayload = ({
         meta,
         channel_integration_id,
     }),
+    trigger: 'ticket-message-created',
     ticket: {
         account: {
             domain,

@@ -10,7 +10,7 @@ import {
 
 import { DEFAULT_PLAYGROUND_CUSTOMER } from '../../../constants'
 import { getSubmitPlaygroundTicketResponseFixture } from '../../../fixtures/submitPlaygroundTicketResponse.fixture'
-import { GREETING_MESSAGE } from '../../components/PlaygroundMessage/PlaygroundMessage'
+import { GREETING_MESSAGE_TEXT } from '../../components/PlaygroundMessage/PlaygroundMessage'
 import {
     getPlaygroundMessageMeta,
     mapPlaygroundFormValuesToMessage,
@@ -195,7 +195,7 @@ describe('playground-message utils', () => {
         it('should return greeting type for greeting message', () => {
             const message: PlaygroundMessage = {
                 type: MessageType.MESSAGE,
-                content: GREETING_MESSAGE,
+                content: GREETING_MESSAGE_TEXT,
                 sender: 'User',
                 createdDatetime: '2021-07-29T09:00:00Z',
             }

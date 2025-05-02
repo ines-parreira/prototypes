@@ -1,5 +1,8 @@
-import { PlaygroundExecutions } from '../types'
-import { apiClient } from './configuration'
+import { GetTestSessionLogsResponse } from 'models/aiAgentPlayground/types'
+
+import { CreateTestSessionResponse, PlaygroundExecutions } from '../types'
+import { apiClient as configurationApiClient } from './configuration'
+import { apiClient as aiAgentApiClient } from './message-processing'
 
 /**
  * Endpoints "/accounts/<gorgiasDomain>/stores/<storeName>/playground/executions-count"
@@ -8,7 +11,23 @@ export const getPlaygroundExecutions = async (
     accountDomain: string,
     storeName: string,
 ) => {
-    return await apiClient.get<PlaygroundExecutions>(
+    return await configurationApiClient.get<PlaygroundExecutions>(
         `/config/accounts/${accountDomain}/stores/${storeName}/playground/executions-count`,
     )
+}
+
+export const createTestSession = async () => {
+    const response = await aiAgentApiClient.post<CreateTestSessionResponse>(
+        '/api/test-mode-session',
+    )
+
+    return response.data
+}
+
+export const getTestSessionLogs = async (testSessionId: string) => {
+    const response = await aiAgentApiClient.get<GetTestSessionLogsResponse>(
+        `/api/test-mode-session/${testSessionId}/logs`,
+    )
+
+    return response.data
 }

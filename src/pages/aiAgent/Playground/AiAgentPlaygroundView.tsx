@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { isAxiosError } from 'axios'
 import { Redirect } from 'react-router-dom'

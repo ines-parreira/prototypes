@@ -1,34 +1,46 @@
 import { act } from '@testing-library/react-hooks'
 
-import { useSubmitPlaygroundTicket } from 'models/aiAgent/queries'
+import { useFlag } from 'core/flags'
 import {
     AiAgentMessageType,
     MessageType,
+    TestSessionLogType,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
-import {
-    AI_AGENT,
-    DEFAULT_PLAYGROUND_CUSTOMER,
-    PLAYGROUND_CUSTOMER_MOCK,
-} from 'pages/aiAgent/constants'
+import { AI_AGENT, DEFAULT_PLAYGROUND_CUSTOMER } from 'pages/aiAgent/constants'
 import { renderHook } from 'utils/testing/renderHook'
 
-import { playgroundMessageFixture } from '../../../fixtures/playgroundMessages.fixture'
+import {
+    playgroundCustomerMessage,
+    playgroundMessageFixture,
+} from '../../../fixtures/playgroundMessages.fixture'
 import { getStoreConfigurationFixture } from '../../../fixtures/storeConfiguration.fixtures'
 import { getSubmitPlaygroundTicketResponseFixture } from '../../../fixtures/submitPlaygroundTicketResponse.fixture'
-import { PlaygroundChannels } from '../../components/PlaygroundChat/PlaygroundChat.types'
-import { getTicketCustomer } from '../../utils/playground-ticket.util'
+import { usePlaygroundApi } from '../usePlaygroundApi'
 import { usePlaygroundMessages } from '../usePlaygroundMessages'
+import { usePlaygroundPolling } from '../usePlaygroundPolling'
+import { useTestSession } from '../useTestSession'
 
-jest.mock('models/aiAgent/queries', () => ({
-    useSubmitPlaygroundTicket: jest.fn(),
+// Mock the hooks
+jest.mock('../usePlaygroundApi', () => ({
+    usePlaygroundApi: jest.fn(),
 }))
-const mockedUseSubmitPlaygroundTicket = jest.mocked(useSubmitPlaygroundTicket)
+const mockedUsePlaygroundApi = jest.mocked(usePlaygroundApi)
 
-jest.mock('../../utils/playground-ticket.util', () => ({
-    getTicketCustomer: jest.fn(),
+jest.mock('../usePlaygroundPolling', () => ({
+    usePlaygroundPolling: jest.fn(),
 }))
-const mockedGetTicketCustomer = jest.mocked(getTicketCustomer)
+const mockedUsePlaygroundPolling = jest.mocked(usePlaygroundPolling)
+
+jest.mock('../useTestSession', () => ({
+    useTestSession: jest.fn(),
+}))
+const mockedUseTestSession = jest.mocked(useTestSession)
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockedUseFlag = jest.mocked(useFlag)
 
 jest.mock('utils/errors', () => ({
     reportError: jest.fn(),
@@ -41,20 +53,36 @@ const defaultParams = {
     httpIntegrationId: 1,
     currentUserFirstName: 'Acme',
     channel: 'email' as const,
+    channelIntegrationId: 123,
 }
 
 describe('usePlaygroundMessages hook', () => {
     beforeEach(() => {
-        mockedGetTicketCustomer.mockReturnValue(
-            Promise.resolve(PLAYGROUND_CUSTOMER_MOCK),
+        // Setup mocks for each test
+        const submitMessageMock = jest.fn(() =>
+            Promise.resolve(getSubmitPlaygroundTicketResponseFixture()),
         )
-        mockedUseSubmitPlaygroundTicket.mockReturnValue({
-            mutateAsync: () =>
-                Promise.resolve({
-                    data: getSubmitPlaygroundTicketResponseFixture(),
-                }),
-            isLoading: false,
-        } as unknown as ReturnType<typeof useSubmitPlaygroundTicket>)
+
+        mockedUsePlaygroundApi.mockReturnValue({
+            submitMessage: submitMessageMock,
+            isSubmitting: false,
+            abortCurrentRequest: jest.fn(),
+        })
+
+        mockedUseTestSession.mockReturnValue({
+            testSessionId: '123',
+            createTestSession: jest.fn(() => Promise.resolve('123')),
+            isTestSessionLoading: false,
+        })
+
+        mockedUseFlag.mockReturnValue(false)
+
+        mockedUsePlaygroundPolling.mockReturnValue({
+            isPolling: false,
+            startPolling: jest.fn(),
+            stopPolling: jest.fn(),
+            testSessionLogs: undefined,
+        })
 
         jest.useFakeTimers().setSystemTime(new Date('2020-01-01'))
     })
@@ -65,145 +93,183 @@ describe('usePlaygroundMessages hook', () => {
         )
 
         expect(result.current.messages.length).toBe(1)
-        expect(result.current.messages[0]).toMatchInlineSnapshot(`
-            {
-              "content": "Hi Acme!<br/><br/>Welcome to your AI Agent test area.<br/><br/>Your test area lets you search for an <b>existing customer</b> to see how your AI Agent would respond <b>based on your resources and the customer’s order history.</b><br/><br/>If you want to improve the response, you can edit your resources and re-test your question.",
-              "createdDatetime": "2020-01-01T00:00:00.000Z",
-              "sender": "AI Agent",
-              "type": "MESSAGE",
-            }
-        `)
+        expect(result.current.messages[0]).toMatchObject({
+            content: expect.stringContaining(
+                'Welcome to your AI Agent test area',
+            ),
+            createdDatetime: '2020-01-01T00:00:00.000Z',
+            sender: 'AI Agent',
+            type: 'MESSAGE',
+        })
     })
 
-    it('should submit a ticket', async () => {
-        const onSubmit = jest.fn(() =>
-            Promise.resolve({
-                data: getSubmitPlaygroundTicketResponseFixture(),
-            }),
+    it('should submit a message', async () => {
+        const submitMessageMock = jest.fn(() =>
+            Promise.resolve(getSubmitPlaygroundTicketResponseFixture()),
         )
-        mockedUseSubmitPlaygroundTicket.mockReturnValue({
-            mutateAsync: onSubmit,
-        } as unknown as ReturnType<typeof useSubmitPlaygroundTicket>)
+
+        mockedUsePlaygroundApi.mockReturnValue({
+            submitMessage: submitMessageMock,
+            isSubmitting: false,
+            abortCurrentRequest: jest.fn(),
+        })
 
         const { result } = renderHook(() =>
             usePlaygroundMessages(defaultParams),
         )
-        const message = playgroundMessageFixture
+
         await act(async () => {
-            await result.current.onMessageSend(message, {
+            await result.current.onMessageSend(playgroundMessageFixture, {
                 customer: DEFAULT_PLAYGROUND_CUSTOMER,
             })
         })
 
-        expect(onSubmit).toHaveBeenCalledWith([
-            {
-                account_id: 1,
-                body_text: message.content,
-                created_datetime: message.createdDatetime,
-                customer_email: 'oliver.smith@foobar.com',
-                domain: 'acme',
-                channel: 'email',
-                from_agent: true,
-                _playground_options: {
-                    shopName: defaultParams.storeData.storeName,
-                },
-                http_integration_id: 1,
-                subject: '',
-                customer: PLAYGROUND_CUSTOMER_MOCK,
-                meta: undefined,
-                messages: [
-                    {
-                        bodyText: message.content,
-                        createdDatetime: message.createdDatetime,
-                        fromAgent: true,
-                        meta: undefined,
-                    },
-                ],
-                _action_serialized_state: undefined,
-            },
-            new AbortController(),
-        ])
+        expect(submitMessageMock).toHaveBeenCalledWith({
+            messages: expect.arrayContaining([
+                expect.objectContaining({
+                    content: playgroundMessageFixture.content,
+                    createdDatetime: playgroundMessageFixture.createdDatetime,
+                }),
+            ]),
+            customer: DEFAULT_PLAYGROUND_CUSTOMER,
+            subject: undefined,
+            channel: 'email',
+            storeData: defaultParams.storeData,
+            channelAvailability: undefined,
+            testSessionId: '123',
+            createTestSession: expect.any(Function),
+        })
 
         // Initial message + user message + AI response
         expect(result.current.messages.length).toBe(3)
     })
 
-    it('should use mock playground customer when customer is not found', async () => {
-        mockedGetTicketCustomer.mockReturnValue(Promise.reject())
-        const onSubmit = jest.fn(() =>
-            Promise.resolve({
-                data: getSubmitPlaygroundTicketResponseFixture(),
-            }),
-        )
-        mockedUseSubmitPlaygroundTicket.mockReturnValue({
-            mutateAsync: onSubmit,
-        } as unknown as ReturnType<typeof useSubmitPlaygroundTicket>)
-        const { result } = renderHook(() =>
-            usePlaygroundMessages(defaultParams),
-        )
-        const message = playgroundMessageFixture
-        await act(async () => {
-            await result.current.onMessageSend(message, {
-                customer: DEFAULT_PLAYGROUND_CUSTOMER,
-            })
+    it('should handle errors during message submission', async () => {
+        const errorMock = new Error('Submission failed')
+
+        mockedUsePlaygroundApi.mockReturnValue({
+            submitMessage: jest.fn(() => Promise.reject(errorMock)),
+            isSubmitting: false,
+            abortCurrentRequest: jest.fn(),
         })
 
-        expect(onSubmit).toHaveBeenCalledWith(
-            expect.arrayContaining([
-                expect.objectContaining({
-                    customer: PLAYGROUND_CUSTOMER_MOCK,
-                }),
-            ]),
-        )
-    })
-
-    it('should add error message when error occurs', async () => {
-        const onSubmit = () => Promise.reject(new Error('Error'))
-        mockedUseSubmitPlaygroundTicket.mockReturnValue({
-            mutateAsync: onSubmit,
-        } as unknown as ReturnType<typeof useSubmitPlaygroundTicket>)
         const { result } = renderHook(() =>
             usePlaygroundMessages(defaultParams),
         )
+
         await act(async () => {
             await result.current.onMessageSend(playgroundMessageFixture, {
                 customer: DEFAULT_PLAYGROUND_CUSTOMER,
             })
         })
 
+        // Should have error message
         expect(result.current.messages.length).toBe(3)
-        expect(result.current.messages[2]).toEqual(
-            expect.objectContaining({
-                type: MessageType.ERROR,
+        expect(result.current.messages[2].type).toBe(MessageType.ERROR)
+    })
+
+    it('should cancel previous request on new conversation', async () => {
+        const abortMock = jest.fn()
+
+        mockedUsePlaygroundApi.mockReturnValue({
+            submitMessage: jest.fn(),
+            isSubmitting: false,
+            abortCurrentRequest: abortMock,
+        })
+
+        const { result } = renderHook(() =>
+            usePlaygroundMessages(defaultParams),
+        )
+
+        act(() => {
+            result.current.onNewConversation()
+        })
+
+        expect(abortMock).toHaveBeenCalled()
+        expect(result.current.messages.length).toBe(1) // Reset to initial message
+    })
+
+    it('should add greeting message for chat channel with first customer message', async () => {
+        mockedUseFlag.mockReturnValue(false)
+        mockedUsePlaygroundApi.mockReturnValue({
+            submitMessage: jest.fn(() =>
+                Promise.resolve(getSubmitPlaygroundTicketResponseFixture()),
+            ),
+            isSubmitting: false,
+            abortCurrentRequest: jest.fn(),
+        })
+
+        const { result } = renderHook(() =>
+            usePlaygroundMessages({
+                ...defaultParams,
+                channel: 'chat',
             }),
         )
+
+        await act(async () => {
+            await result.current.onMessageSend(playgroundCustomerMessage, {
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+            })
+        })
+
+        // Should add the greeting message
+        expect(result.current.messages.length).toBe(5)
+        expect(result.current.messages[2]).toMatchObject({
+            content: 'Hey there 👋',
+            type: MessageType.MESSAGE,
+            sender: AI_AGENT,
+        })
+    })
+
+    it('should update waiting response state based on action display', async () => {
+        const response = getSubmitPlaygroundTicketResponseFixture({
+            postProcessing: {
+                internalNote: '',
+                htmlReply: null,
+                chatTicketMessageMeta: {
+                    ai_agent_message_type:
+                        AiAgentMessageType.WAIT_FOR_CLOSE_TICKET_CONFIRMATION,
+                },
+                isSalesOpportunity: false,
+            },
+        })
+
+        mockedUsePlaygroundApi.mockReturnValue({
+            submitMessage: jest.fn(() => Promise.resolve(response)),
+            isSubmitting: false,
+            abortCurrentRequest: jest.fn(),
+        })
+
+        const { result } = renderHook(() =>
+            usePlaygroundMessages({
+                ...defaultParams,
+                channel: 'chat',
+            }),
+        )
+
+        await act(async () => {
+            await result.current.onMessageSend(playgroundMessageFixture, {
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+            })
+        })
+
+        expect(result.current.isWaitingResponse).toBeTruthy()
     })
 
     it('should not add internal note when postProcess internal note is empty string', async () => {
-        const onSubmit = () =>
-            Promise.resolve({
-                data: {
-                    generate: {
-                        output: {
-                            generated_message: 'Message',
-                            outcome: TicketOutcome.CLOSE,
-                        },
-                    },
-                    qa: {
-                        output: {
-                            validate_outcome: true,
-                            validate_generated_message: true,
-                        },
-                    },
-                    postProcessing: {
-                        internalNote: '',
-                        htmlReply: 'reply',
-                    },
-                },
-            })
-        mockedUseSubmitPlaygroundTicket.mockReturnValue({
-            mutateAsync: onSubmit,
-        } as unknown as ReturnType<typeof useSubmitPlaygroundTicket>)
+        const response = getSubmitPlaygroundTicketResponseFixture({
+            postProcessing: {
+                internalNote: '',
+                htmlReply: 'reply',
+                isSalesOpportunity: false,
+            },
+        })
+
+        mockedUsePlaygroundApi.mockReturnValue({
+            submitMessage: jest.fn(() => Promise.resolve(response)),
+            isSubmitting: false,
+            abortCurrentRequest: jest.fn(),
+        })
 
         const { result } = renderHook(() =>
             usePlaygroundMessages(defaultParams),
@@ -215,210 +281,358 @@ describe('usePlaygroundMessages hook', () => {
             })
         })
 
-        expect(result.current.messages.length).toBe(4)
-        expect(result.current.messages.map((m) => m.type)).toEqual([
-            'MESSAGE',
-            'MESSAGE',
-            'MESSAGE',
-            'TICKET_EVENT',
-        ])
+        const messageTypes = result.current.messages.map((m) => m.type)
+        expect(messageTypes).not.toContain('INTERNAL_NOTE')
     })
 
     it('should add internal note when postProcess internal note is not empty string', async () => {
-        const onSubmit = () =>
-            Promise.resolve({
-                data: {
-                    generate: {
-                        output: {
-                            generated_message: 'Message',
-                            outcome: TicketOutcome.CLOSE,
-                        },
-                    },
-                    qa: {
-                        output: {
-                            validate_outcome: true,
-                            validate_generated_message: true,
-                        },
-                    },
-                    postProcessing: {
-                        internalNote: 'internal note',
-                        htmlReply: 'reply',
-                    },
-                },
-            })
-        mockedUseSubmitPlaygroundTicket.mockReturnValue({
-            mutateAsync: onSubmit,
-        } as unknown as ReturnType<typeof useSubmitPlaygroundTicket>)
+        const response = getSubmitPlaygroundTicketResponseFixture({
+            postProcessing: {
+                internalNote: 'internal note',
+                htmlReply: 'reply',
+                isSalesOpportunity: false,
+            },
+        })
+
+        mockedUsePlaygroundApi.mockReturnValue({
+            submitMessage: jest.fn(() => Promise.resolve(response)),
+            isSubmitting: false,
+            abortCurrentRequest: jest.fn(),
+        })
+
         const { result } = renderHook(() =>
             usePlaygroundMessages(defaultParams),
         )
+
         await act(async () => {
             await result.current.onMessageSend(playgroundMessageFixture, {
                 customer: DEFAULT_PLAYGROUND_CUSTOMER,
             })
         })
-        expect(result.current.messages.length).toBe(5)
-        expect(result.current.messages.map((m) => m.type)).toEqual([
-            'MESSAGE',
-            'MESSAGE',
-            'MESSAGE',
-            'INTERNAL_NOTE',
-            'TICKET_EVENT',
-        ])
+
+        const messageTypes = result.current.messages.map((m) => m.type)
+        expect(messageTypes).toContain('INTERNAL_NOTE')
     })
 
-    describe('when channel is chat', () => {
-        it('should not throw error when mock data and no email integration', async () => {
-            const { result } = renderHook(() =>
-                usePlaygroundMessages({
-                    ...defaultParams,
-                    storeData: getStoreConfigurationFixture({
-                        monitoredEmailIntegrations: [],
-                    }),
-                    channel: 'chat',
-                }),
-            )
-            await act(async () => {
-                await result.current.onMessageSend(playgroundMessageFixture, {
-                    customer: DEFAULT_PLAYGROUND_CUSTOMER,
-                })
+    describe('test session logs', () => {
+        it('should process test session logs and add them to messages', async () => {
+            // Mock the new architecture flag
+            mockedUseFlag.mockReturnValue(true)
+
+            // Mock initial state
+            mockedUsePlaygroundPolling.mockReturnValue({
+                isPolling: true,
+                startPolling: jest.fn(),
+                stopPolling: jest.fn(),
+                testSessionLogs: undefined,
             })
 
-            // Should be more than 1 message if onMessageSend succeeded
-            expect(result.current.messages).not.toBe(1)
-        })
+            const { result, rerender } = renderHook(() =>
+                usePlaygroundMessages(defaultParams),
+            )
 
-        it('should change initial message when channel changed', () => {
-            const { result, rerender } = renderHook(
-                ({ channel }: { channel: PlaygroundChannels }) =>
-                    usePlaygroundMessages({ ...defaultParams, channel }),
-                { initialProps: { channel: 'chat' } },
-            )
-            expect(result.current.messages[0]).toEqual(
-                expect.objectContaining({
-                    type: MessageType.MESSAGE,
-                    sender: AI_AGENT,
-                    content:
-                        'Hi Acme<br/><br/>Welcome to your AI Agent test area.<br/><br/>You can use this to send messages to AI Agent in the same way your customers do and test how it responds. If you want to improve the response, you can edit your resources and re-test your question.',
-                }),
-            )
-            rerender({ channel: 'email' })
-            expect(result.current.messages[0]).toEqual(
-                expect.objectContaining({
-                    type: MessageType.MESSAGE,
-                    sender: AI_AGENT,
-                    content:
-                        'Hi Acme!<br/><br/>Welcome to your AI Agent test area.<br/><br/>Your test area lets you search for an <b>existing customer</b> to see how your AI Agent would respond <b>based on your resources and the customer’s order history.</b><br/><br/>If you want to improve the response, you can edit your resources and re-test your question.',
-                }),
-            )
-        })
+            // Initial message
+            expect(result.current.messages.length).toBe(1)
 
-        it('should return wait for close ticket confirmation', async () => {
-            const onSubmit = () =>
-                Promise.resolve({
-                    data: getSubmitPlaygroundTicketResponseFixture({
-                        postProcessing: {
-                            internalNote: '',
-                            htmlReply: null,
-                            chatTicketMessageMeta: {
-                                ai_agent_message_type:
-                                    AiAgentMessageType.WAIT_FOR_CLOSE_TICKET_CONFIRMATION,
-                            },
+            // Update with test session logs
+            const testSessionLogs = {
+                id: '123',
+                status: 'in-progress' as const,
+                logs: [
+                    {
+                        id: 'log-1',
+                        accountId: 456,
+                        testModeSessionId: 'session-123',
+                        aiAgentExecutionId: 'exec-123',
+                        type: TestSessionLogType.AI_AGENT_INSIGHT,
+                        createdDatetime: '2023-03-15T12:00:00Z',
+                        data: {
+                            message: 'Insight message',
                             isSalesOpportunity: false,
+                            isSalesDiscount: false,
+                            isSalesOpportunityFieldId: null,
+                            isSalesDiscountFieldId: null,
+                            outcome: TicketOutcome.CLOSE,
                         },
-                        qa: {
-                            output: {
-                                validate_outcome: false,
-                                validate_generated_message: false,
-                            },
-                        },
-                    }),
-                })
-            mockedUseSubmitPlaygroundTicket.mockReturnValue({
-                mutateAsync: onSubmit,
-            } as unknown as ReturnType<typeof useSubmitPlaygroundTicket>)
-            const { result } = renderHook(() =>
-                usePlaygroundMessages({ ...defaultParams, channel: 'chat' }),
-            )
-            await act(async () => {
-                await result.current.onMessageSend(playgroundMessageFixture, {
-                    customer: DEFAULT_PLAYGROUND_CUSTOMER,
-                })
-            })
-
-            expect(result.current.messages.length).toBe(5)
-            expect(result.current.isWaitingResponse).toBeTruthy()
-            expect(result.current.messages[4]).toEqual(
-                expect.objectContaining({
-                    type: MessageType.TICKET_EVENT,
-                    outcome: TicketOutcome.WAIT,
-                }),
-            )
-        })
-
-        it('should send "Hey there" message when chat channel and this is first customer message', async () => {
-            const { result } = renderHook(() =>
-                usePlaygroundMessages({ ...defaultParams, channel: 'chat' }),
-            )
-
-            await act(async () => {
-                await result.current.onMessageSend(playgroundMessageFixture, {
-                    customer: DEFAULT_PLAYGROUND_CUSTOMER,
-                })
-            })
-
-            const greetingMessage = result.current.messages[2]
-            expect(result.current.messages.length).toBe(5)
-            expect(greetingMessage).toEqual(
-                expect.objectContaining({
-                    content: 'Hey there 👋',
-                    type: MessageType.MESSAGE,
-                    sender: AI_AGENT,
-                }),
-            )
-        })
-    })
-
-    describe('when channel is email', () => {
-        it('should throw error when no email integration', async () => {
-            const { result } = renderHook(() =>
-                usePlaygroundMessages({
-                    ...defaultParams,
-                    storeData: getStoreConfigurationFixture({
-                        monitoredEmailIntegrations: [],
-                    }),
-                }),
-            )
-            try {
-                await act(async () => {
-                    await result.current.onMessageSend(
-                        playgroundMessageFixture,
-                        {
-                            customer: DEFAULT_PLAYGROUND_CUSTOMER,
-                        },
-                    )
-                })
-            } catch (e) {
-                if (e instanceof Error) {
-                    expect(e.message).toBe(
-                        'Monitored Email Integration not found in storeConfiguration',
-                    )
-                }
+                    },
+                ],
             }
+
+            mockedUsePlaygroundPolling.mockReturnValue({
+                isPolling: true,
+                startPolling: jest.fn(),
+                stopPolling: jest.fn(),
+                testSessionLogs,
+            })
+
+            // Trigger re-render with new test session logs
+            rerender()
+
+            // Should have initial message + insight message + placeholder
+            expect(result.current.messages.length).toBe(3)
+            expect(result.current.messages[1].type).toBe(
+                MessageType.INTERNAL_NOTE,
+            )
+            expect(
+                (result.current.messages[1] as { content: string }).content,
+            ).toBe('Insight message')
+            expect(result.current.messages[2].type).toBe(
+                MessageType.PLACEHOLDER,
+            )
         })
 
-        it('should not add "Hey there" message with first customer message', async () => {
-            const { result } = renderHook(() =>
-                usePlaygroundMessages({ ...defaultParams, channel: 'email' }),
+        it('should remove placeholder when session is finished', async () => {
+            mockedUseFlag.mockReturnValue(true)
+
+            const { result, rerender } = renderHook(() =>
+                usePlaygroundMessages(defaultParams),
             )
 
+            // Initial state with in-progress session
+            const inProgressLogs = {
+                id: '123',
+                status: 'in-progress' as const,
+                logs: [
+                    {
+                        id: 'log-1',
+                        accountId: 456,
+                        testModeSessionId: 'session-123',
+                        aiAgentExecutionId: 'exec-123',
+                        type: TestSessionLogType.AI_AGENT_REPLY,
+                        createdDatetime: '2023-03-15T12:00:00Z',
+                        data: {
+                            message: 'Reply message',
+                            isSalesOpportunity: false,
+                            isSalesDiscount: false,
+                            isSalesOpportunityFieldId: null,
+                            isSalesDiscountFieldId: null,
+                            outcome: TicketOutcome.CLOSE,
+                        },
+                    },
+                ],
+            }
+
+            mockedUsePlaygroundPolling.mockReturnValue({
+                isPolling: true,
+                startPolling: jest.fn(),
+                stopPolling: jest.fn(),
+                testSessionLogs: inProgressLogs,
+            })
+
+            rerender()
+
+            // Should have initial message + reply + placeholder
+            expect(result.current.messages.length).toBe(3)
+            expect(result.current.messages[2].type).toBe(
+                MessageType.PLACEHOLDER,
+            )
+
+            // Update to finished session
+            const finishedLogs = {
+                ...inProgressLogs,
+                status: 'finished' as const,
+                logs: [
+                    ...inProgressLogs.logs,
+                    {
+                        id: 'log-2',
+                        accountId: 456,
+                        testModeSessionId: 'session-123',
+                        aiAgentExecutionId: 'exec-123',
+                        type: TestSessionLogType.AI_AGENT_EXECUTION_FINISHED,
+                        createdDatetime: '2023-03-15T12:01:00Z',
+                        data: {
+                            message: '',
+                            isSalesOpportunity: false,
+                            isSalesDiscount: false,
+                            isSalesOpportunityFieldId: null,
+                            isSalesDiscountFieldId: null,
+                            outcome: TicketOutcome.CLOSE,
+                        },
+                    },
+                ],
+            }
+
+            mockedUsePlaygroundPolling.mockReturnValue({
+                isPolling: false,
+                startPolling: jest.fn(),
+                stopPolling: jest.fn(),
+                testSessionLogs: finishedLogs,
+            })
+
+            rerender()
+
+            // Should have initial message + reply + execution finished, no placeholder
+            expect(result.current.messages.length).toBe(3)
+            expect(result.current.messages[2].type).toBe(
+                MessageType.TICKET_EVENT,
+            )
+
+            // isWaitingResponse should be false when session is finished
+            expect(result.current.isWaitingResponse).toBe(false)
+        })
+
+        it('should not add duplicate messages for the same logs', async () => {
+            mockedUseFlag.mockReturnValue(true)
+
+            const { result, rerender } = renderHook(() =>
+                usePlaygroundMessages(defaultParams),
+            )
+
+            // Initial logs
+            const testSessionLogs = {
+                id: '123',
+                status: 'in-progress' as const,
+                logs: [
+                    {
+                        id: 'log-1',
+                        accountId: 456,
+                        testModeSessionId: 'session-123',
+                        aiAgentExecutionId: 'exec-123',
+                        type: TestSessionLogType.AI_AGENT_INSIGHT,
+                        createdDatetime: '2023-03-15T12:00:00Z',
+                        data: {
+                            message: 'Insight message',
+                            isSalesOpportunity: false,
+                            isSalesDiscount: false,
+                            isSalesOpportunityFieldId: null,
+                            isSalesDiscountFieldId: null,
+                            outcome: TicketOutcome.CLOSE,
+                        },
+                    },
+                ],
+            }
+
+            mockedUsePlaygroundPolling.mockReturnValue({
+                isPolling: true,
+                startPolling: jest.fn(),
+                stopPolling: jest.fn(),
+                testSessionLogs,
+            })
+
+            rerender()
+
+            // Should have initial + insight message + placeholder
+            expect(result.current.messages.length).toBe(3)
+
+            // Add a new log but keep the old one too
+            const updatedLogs = {
+                ...testSessionLogs,
+                logs: [
+                    ...testSessionLogs.logs,
+                    {
+                        id: 'log-2',
+                        accountId: 456,
+                        testModeSessionId: 'session-123',
+                        aiAgentExecutionId: 'exec-123',
+                        type: TestSessionLogType.AI_AGENT_REPLY,
+                        createdDatetime: '2023-03-15T12:01:00Z',
+                        data: {
+                            message: 'Reply message',
+                            isSalesOpportunity: false,
+                            isSalesDiscount: false,
+                            isSalesOpportunityFieldId: null,
+                            isSalesDiscountFieldId: null,
+                            outcome: TicketOutcome.CLOSE,
+                        },
+                    },
+                ],
+            }
+
+            mockedUsePlaygroundPolling.mockReturnValue({
+                isPolling: true,
+                startPolling: jest.fn(),
+                stopPolling: jest.fn(),
+                testSessionLogs: updatedLogs,
+            })
+
+            rerender()
+
+            // Should only add the new message, not duplicate the insight
+            expect(result.current.messages.length).toBe(4)
+            expect(result.current.messages[1].type).toBe(
+                MessageType.INTERNAL_NOTE,
+            )
+            expect(
+                (result.current.messages[1] as { content: string }).content,
+            ).toBe('Insight message')
+            expect(result.current.messages[2].type).toBe(MessageType.MESSAGE)
+            expect(
+                (result.current.messages[2] as { content: string }).content,
+            ).toBe('Reply message')
+        })
+
+        it('should handle null response from handleAiAgentTestSessionLog', async () => {
+            mockedUseFlag.mockReturnValue(true)
+
+            const { result, rerender } = renderHook(() =>
+                usePlaygroundMessages(defaultParams),
+            )
+
+            // Logs with an unknown type that will return null
+            const testSessionLogs = {
+                id: '123',
+                status: 'in-progress' as const,
+                logs: [
+                    {
+                        id: 'log-1',
+                        accountId: 456,
+                        testModeSessionId: 'session-123',
+                        aiAgentExecutionId: 'exec-123',
+                        type: 'unknown-type' as TestSessionLogType,
+                        createdDatetime: '2023-03-15T12:00:00Z',
+                        data: {
+                            message: 'Unknown message',
+                            isSalesOpportunity: false,
+                            isSalesDiscount: false,
+                            isSalesOpportunityFieldId: null,
+                            isSalesDiscountFieldId: null,
+                            outcome: TicketOutcome.CLOSE,
+                        },
+                    },
+                ],
+            }
+
+            mockedUsePlaygroundPolling.mockReturnValue({
+                isPolling: true,
+                startPolling: jest.fn(),
+                stopPolling: jest.fn(),
+                testSessionLogs,
+            })
+
+            rerender()
+
+            // Should only have initial message + placeholder, unknown log type message is filtered out
+            expect(result.current.messages.length).toBe(2)
+            expect(result.current.messages[1].type).toBe(
+                MessageType.PLACEHOLDER,
+            )
+        })
+
+        it('should start polling when sending message with new agentic architecture', async () => {
+            // Enable the flag for new architecture
+            mockedUseFlag.mockReturnValue(true)
+
+            const startPollingMock = jest.fn()
+            mockedUsePlaygroundPolling.mockReturnValue({
+                isPolling: false,
+                startPolling: startPollingMock,
+                stopPolling: jest.fn(),
+                testSessionLogs: undefined,
+            })
+
+            const { result } = renderHook(() =>
+                usePlaygroundMessages(defaultParams),
+            )
+
+            // Send a message
             await act(async () => {
                 await result.current.onMessageSend(playgroundMessageFixture, {
                     customer: DEFAULT_PLAYGROUND_CUSTOMER,
                 })
             })
 
-            expect(result.current.messages.length).toBe(3)
+            // Should start polling for test session logs
+            expect(startPollingMock).toHaveBeenCalled()
         })
     })
 })

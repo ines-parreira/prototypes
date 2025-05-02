@@ -57,6 +57,13 @@ export const playgroundTicketEventMessageFixture: PlaygroundTicketEventMessage =
         createdDatetime: '2021-06-01T12:00:00',
     }
 
+export const playgroundCustomerMessage: PlaygroundTextMessage = {
+    type: MessageType.MESSAGE,
+    content: 'Hello, how can I help you?',
+    sender: 'customer',
+    createdDatetime: '2021-06-01T12:00:00',
+}
+
 export const playgroundAttachmentFixture: AiAgentAttachment = {
     name: 'Dark Roast',
     content_type: 'application/productCard',

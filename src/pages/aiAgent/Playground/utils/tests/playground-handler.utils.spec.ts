@@ -2,13 +2,18 @@ import {
     AgentSkill,
     AiAgentMessageType,
     MessageType,
+    TestSessionLog,
+    TestSessionLogType,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
 
 import { getStoreConfigurationFixture } from '../../../fixtures/storeConfiguration.fixtures'
 import { getSubmitPlaygroundTicketResponseFixture } from '../../../fixtures/submitPlaygroundTicketResponse.fixture'
 import { AI_AGENT_SENDER } from '../../components/PlaygroundMessage/PlaygroundMessage'
-import { handleAiAgentResponse } from '../playground-handler.utils'
+import {
+    handleAiAgentResponse,
+    handleAiAgentTestSessionLog,
+} from '../playground-handler.utils'
 
 const DATE = new Date('2020-01-01')
 
@@ -444,5 +449,146 @@ describe('playground-handler.utils', () => {
                 )
             },
         )
+    })
+
+    describe('handleAiAgentTestSessionLog', () => {
+        const testDatetime = '2023-03-15T12:00:00Z'
+
+        it('should return internal note for AI_AGENT_INSIGHT type', () => {
+            const log: TestSessionLog = {
+                id: '123',
+                accountId: 456,
+                testModeSessionId: 'session-123',
+                aiAgentExecutionId: 'exec-123',
+                type: TestSessionLogType.AI_AGENT_INSIGHT,
+                createdDatetime: testDatetime,
+                data: {
+                    message: 'Insight message',
+                    isSalesOpportunity: false,
+                    isSalesDiscount: false,
+                    isSalesOpportunityFieldId: null,
+                    isSalesDiscountFieldId: null,
+                    outcome: TicketOutcome.CLOSE,
+                },
+            }
+
+            const result = handleAiAgentTestSessionLog(log)
+
+            expect(result).toEqual({
+                sender: AI_AGENT_SENDER,
+                type: MessageType.INTERNAL_NOTE,
+                content: 'Insight message',
+                createdDatetime: testDatetime,
+            })
+        })
+
+        it('should return support message for AI_AGENT_REPLY type with no sales opportunity', () => {
+            const log: TestSessionLog = {
+                id: '123',
+                accountId: 456,
+                testModeSessionId: 'session-123',
+                aiAgentExecutionId: 'exec-123',
+                type: TestSessionLogType.AI_AGENT_REPLY,
+                createdDatetime: testDatetime,
+                data: {
+                    message: 'Reply message',
+                    isSalesOpportunity: false,
+                    isSalesDiscount: false,
+                    isSalesOpportunityFieldId: null,
+                    isSalesDiscountFieldId: null,
+                    outcome: TicketOutcome.CLOSE,
+                },
+            }
+
+            const result = handleAiAgentTestSessionLog(log)
+
+            expect(result).toEqual({
+                sender: AI_AGENT_SENDER,
+                type: MessageType.MESSAGE,
+                content: 'Reply message',
+                agentSkill: AgentSkill.SUPPORT,
+                createdDatetime: testDatetime,
+            })
+        })
+
+        it('should return sales message for AI_AGENT_REPLY type with sales opportunity', () => {
+            const log: TestSessionLog = {
+                id: '123',
+                accountId: 456,
+                testModeSessionId: 'session-123',
+                aiAgentExecutionId: 'exec-123',
+                type: TestSessionLogType.AI_AGENT_REPLY,
+                createdDatetime: testDatetime,
+                data: {
+                    message: 'Sales reply message',
+                    isSalesOpportunity: true,
+                    isSalesDiscount: false,
+                    isSalesOpportunityFieldId: 789,
+                    isSalesDiscountFieldId: null,
+                    outcome: TicketOutcome.CLOSE,
+                },
+            }
+
+            const result = handleAiAgentTestSessionLog(log)
+
+            expect(result).toEqual({
+                sender: AI_AGENT_SENDER,
+                type: MessageType.MESSAGE,
+                content: 'Sales reply message',
+                agentSkill: AgentSkill.SALES,
+                createdDatetime: testDatetime,
+            })
+        })
+
+        it('should return ticket event for AI_AGENT_EXECUTION_FINISHED type', () => {
+            const log: TestSessionLog = {
+                id: '123',
+                accountId: 456,
+                testModeSessionId: 'session-123',
+                aiAgentExecutionId: 'exec-123',
+                type: TestSessionLogType.AI_AGENT_EXECUTION_FINISHED,
+                createdDatetime: testDatetime,
+                data: {
+                    message: '',
+                    isSalesOpportunity: false,
+                    isSalesDiscount: false,
+                    isSalesOpportunityFieldId: null,
+                    isSalesDiscountFieldId: null,
+                    outcome: TicketOutcome.HANDOVER,
+                },
+            }
+
+            const result = handleAiAgentTestSessionLog(log)
+
+            expect(result).toEqual({
+                sender: AI_AGENT_SENDER,
+                type: MessageType.TICKET_EVENT,
+                outcome: TicketOutcome.HANDOVER,
+                createdDatetime: testDatetime,
+            })
+        })
+
+        it('should return null for unknown log type', () => {
+            const log = {
+                id: '123',
+                accountId: 456,
+                testModeSessionId: 'session-123',
+                aiAgentExecutionId: 'exec-123',
+                type: 'unknown-type' as TestSessionLogType,
+                createdDatetime: testDatetime,
+                data: {
+                    message: '',
+                    isSalesOpportunity: false,
+                    isSalesDiscount: false,
+                    isSalesOpportunityFieldId: null,
+                    isSalesDiscountFieldId: null,
+                    outcome: TicketOutcome.CLOSE,
+                },
+            }
+
+            const result = handleAiAgentTestSessionLog(log as TestSessionLog)
+
+            expect(result).toBeNull()
+        })
     })
 })

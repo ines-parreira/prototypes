@@ -77,6 +77,7 @@ export type AiAgentInput = {
     // Property for AI Agent to identify actions
     _action_serialized_state?: unknown
     _playground_options?: CreatePlaygroundOptions
+    trigger: string
     ticket: {
         id: string
         tags: string
@@ -279,4 +280,35 @@ export enum PlaygroundStep {
 
 export type AiAgentCustomToneOfVoiceResponse = {
     ai_answer: string
+}
+
+export type TestSessionLogData = {
+    message: string
+    isSalesOpportunity: boolean
+    isSalesDiscount: boolean
+    isSalesOpportunityFieldId: number | null
+    isSalesDiscountFieldId: number | null
+    outcome: TicketOutcome
+}
+
+export enum TestSessionLogType {
+    AI_AGENT_REPLY = 'ai-agent-reply',
+    AI_AGENT_EXECUTION_FINISHED = 'ai-agent-execution-finished',
+    AI_AGENT_INSIGHT = 'ai-agent-insight',
+}
+
+export type TestSessionLog = {
+    id: string
+    accountId: number
+    testModeSessionId: string
+    aiAgentExecutionId: string
+    type: TestSessionLogType
+    createdDatetime: string
+    data: TestSessionLogData
+}
+
+export type GetTestSessionLogsResponse = {
+    id: string
+    status: 'in-progress' | 'finished' | 'idle'
+    logs: TestSessionLog[]
 }

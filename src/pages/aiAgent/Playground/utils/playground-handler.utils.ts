@@ -5,6 +5,8 @@ import {
     AiAgentResponse,
     MessageType,
     PlaygroundMessage,
+    TestSessionLog,
+    TestSessionLogType,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
 
@@ -162,4 +164,35 @@ export const handleAiAgentResponse = ({
     }
 
     return getChatChannelMessagesFromResponse(aiAgentResponse)
+}
+
+export const handleAiAgentTestSessionLog = (log: TestSessionLog) => {
+    switch (log.type) {
+        case TestSessionLogType.AI_AGENT_INSIGHT:
+            return {
+                sender: AI_AGENT_SENDER,
+                type: MessageType.INTERNAL_NOTE as const,
+                content: log.data.message,
+                createdDatetime: log.createdDatetime,
+            }
+        case TestSessionLogType.AI_AGENT_REPLY:
+            return {
+                sender: AI_AGENT_SENDER,
+                type: MessageType.MESSAGE as const,
+                content: log.data.message,
+                agentSkill: log.data.isSalesOpportunity
+                    ? AgentSkill.SALES
+                    : AgentSkill.SUPPORT,
+                createdDatetime: log.createdDatetime,
+            }
+        case TestSessionLogType.AI_AGENT_EXECUTION_FINISHED:
+            return {
+                sender: AI_AGENT_SENDER,
+                type: MessageType.TICKET_EVENT as const,
+                createdDatetime: log.createdDatetime,
+                outcome: log.data.outcome,
+            }
+        default:
+            return null
+    }
 }

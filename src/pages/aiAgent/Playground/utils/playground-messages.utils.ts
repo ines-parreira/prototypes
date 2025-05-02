@@ -23,7 +23,7 @@ import {
 } from '../components/PlaygroundChat/PlaygroundChat.types'
 import {
     AI_AGENT_SENDER,
-    GREETING_MESSAGE,
+    GREETING_MESSAGE_TEXT,
 } from '../components/PlaygroundMessage/PlaygroundMessage'
 
 type PlaygroundMessageMeta = {
@@ -59,7 +59,7 @@ export const getPlaygroundMessageMeta = ({
 
     if (
         message.type === MessageType.MESSAGE &&
-        message.content === GREETING_MESSAGE
+        message.content === GREETING_MESSAGE_TEXT
     ) {
         return {
             ai_agent_message_type: AiAgentMessageType.GREETING,

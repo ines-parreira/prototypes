@@ -1,12 +1,12 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import axios from 'axios'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { useSubmitPlaygroundTicket } from 'models/aiAgent/queries'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import {
-    isApiEligiblePlaygroundMessage,
     MessageType,
     PlaygroundMessage,
     PlaygroundPromptMessage,
@@ -14,26 +14,39 @@ import {
 } from 'models/aiAgentPlayground/types'
 import { reportError } from 'utils/errors'
 
-import { PLAYGROUND_CUSTOMER_MOCK } from '../../constants'
 import {
     PlaygroundChannelAvailability,
     PlaygroundChannels,
 } from '../components/PlaygroundChat/PlaygroundChat.types'
 import {
     AI_AGENT_SENDER,
-    GREETING_MESSAGE,
+    GREETING_MESSAGE_TEXT,
     PlaygroundGenericErrorMessage,
 } from '../components/PlaygroundMessage/PlaygroundMessage'
 import { PlaygroundCustomer } from '../types'
-import { handleAiAgentResponse } from '../utils/playground-handler.utils'
 import {
-    getLastShopperMessage,
+    handleAiAgentResponse,
+    handleAiAgentTestSessionLog,
+} from '../utils/playground-handler.utils'
+import {
     getPlaygroundInitialMessage,
-    getPlaygroundMessageMeta,
-    mapPlaygroundMessagesToServerMessages,
     shouldDisplayActions,
 } from '../utils/playground-messages.utils'
-import { getTicketCustomer } from '../utils/playground-ticket.util'
+import { usePlaygroundApi } from './usePlaygroundApi'
+import { usePlaygroundPolling } from './usePlaygroundPolling'
+import { useTestSession } from './useTestSession'
+
+const PLACEHOLDER_MESSAGE: PlaygroundMessage = {
+    sender: AI_AGENT_SENDER,
+    type: MessageType.PLACEHOLDER,
+    createdDatetime: new Date().toISOString(),
+}
+const GREETING_MESSAGE: PlaygroundMessage = {
+    sender: AI_AGENT_SENDER,
+    type: MessageType.MESSAGE,
+    content: GREETING_MESSAGE_TEXT,
+    createdDatetime: new Date().toISOString(),
+}
 
 export const usePlaygroundMessages = ({
     storeData,
@@ -54,6 +67,10 @@ export const usePlaygroundMessages = ({
     channelIntegrationId?: number
     channelAvailability?: PlaygroundChannelAvailability
 }) => {
+    const isNewAgenticArchitectureEnabled = useFlag(
+        FeatureFlagKey.AiAgentUseNewAgenticArchitecture,
+    )
+
     const initialMessages: PlaygroundMessage[] = useMemo(
         () => [
             {
@@ -69,8 +86,26 @@ export const usePlaygroundMessages = ({
         [channel, currentUserFirstName],
     )
 
+    const { testSessionId, createTestSession } = useTestSession()
+
+    const { testSessionLogs, startPolling, stopPolling, isPolling } =
+        usePlaygroundPolling({
+            testSessionId: testSessionId ?? '',
+        })
+
+    const { submitMessage, isSubmitting, abortCurrentRequest } =
+        usePlaygroundApi({
+            gorgiasDomain,
+            accountId,
+            httpIntegrationId,
+            channelIntegrationId,
+            isNewAgenticArchitectureEnabled,
+        })
+
     const [messages, setMessages] =
         useState<PlaygroundMessage[]>(initialMessages)
+
+    const processedLogIds = useRef(new Set<string>())
 
     const [isWaitingResponse, setIsWaitingResponse] = useState(false)
 
@@ -79,23 +114,12 @@ export const usePlaygroundMessages = ({
         setIsWaitingResponse(false)
     }, [initialMessages])
 
-    // We don't care what is in this object we just want to resend it to the AI Agent
-    const actionSerializedStateRef = useRef<unknown>()
-
-    const abortControllerRef = useRef<AbortController>()
-
-    const { mutateAsync: submitPlaygroundTicket, isLoading: isSubmitting } =
-        useSubmitPlaygroundTicket()
-
     const onNewConversation = useCallback(() => {
-        if (abortControllerRef.current) {
-            abortControllerRef.current.abort()
-        }
-
-        actionSerializedStateRef.current = undefined
+        abortCurrentRequest()
+        stopPolling()
         setMessages(initialMessages)
         setIsWaitingResponse(false)
-    }, [initialMessages])
+    }, [initialMessages, abortCurrentRequest, stopPolling])
 
     const processMessages = useCallback(
         async (
@@ -105,84 +129,30 @@ export const usePlaygroundMessages = ({
                 subject,
             }: { customer: PlaygroundCustomer; subject?: string },
         ) => {
-            // Simulate an async API call to process the message
-
-            const filteredMessages = newMessages.filter(
-                isApiEligiblePlaygroundMessage,
-            )
-
-            const lastMessage = getLastShopperMessage(filteredMessages)
-
-            let messageCustomer = PLAYGROUND_CUSTOMER_MOCK
             try {
-                messageCustomer = await getTicketCustomer({
-                    customer_email: customer.email,
-                    account_id: accountId,
-                    http_integration_id: httpIntegrationId,
+                const response = await submitMessage({
+                    messages: newMessages,
+                    customer,
+                    subject,
+                    channel,
+                    storeData,
+                    channelAvailability,
+                    testSessionId,
+                    createTestSession,
                 })
-            } catch (error) {
-                reportError(error, {
-                    tags: { team: SentryTeam.AI_AGENT },
-                    extra: {
-                        context: 'Error during get customer for playground',
-                        customer,
-                        accountId,
-                    },
-                })
-            }
 
-            try {
-                const abortController = new AbortController()
-                abortControllerRef.current = abortController
-
-                const { data: aiAgentResponse } = await submitPlaygroundTicket([
-                    {
-                        domain: gorgiasDomain,
-                        customer_email: customer.email,
-                        body_text: lastMessage.content,
-                        created_datetime: lastMessage.createdDatetime,
-                        from_agent: lastMessage.sender === AI_AGENT_SENDER,
-                        channel,
-                        customer: messageCustomer,
-                        messages: mapPlaygroundMessagesToServerMessages(
-                            filteredMessages,
-                            channel,
-                        ),
-                        meta: getPlaygroundMessageMeta({
-                            message: lastMessage,
-                            // If the only message is coming from the user, it's the first message and we should mark it as such
-                            firstShopperMessage:
-                                channel === 'chat' &&
-                                filteredMessages.filter(
-                                    (m) => m.sender !== AI_AGENT_SENDER,
-                                ).length === 1,
-                            channelAvailability:
-                                channel === 'chat'
-                                    ? channelAvailability
-                                    : undefined,
-                        }),
-                        subject: subject ?? '',
-                        http_integration_id: httpIntegrationId,
-                        account_id: accountId,
-                        _action_serialized_state:
-                            actionSerializedStateRef.current,
-                        _playground_options: {
-                            shopName: storeData.storeName,
-                        },
-                        channel_integration_id: channelIntegrationId,
-                    },
-                    abortController,
-                ])
-                actionSerializedStateRef.current =
-                    aiAgentResponse._action_serialized_state
+                if (isNewAgenticArchitectureEnabled) {
+                    startPolling()
+                    return
+                }
 
                 const aiAgentMessages = handleAiAgentResponse({
                     channel,
-                    aiAgentResponse,
+                    aiAgentResponse: response,
                     storeData,
                 })
 
-                if (shouldDisplayActions(aiAgentResponse)) {
+                if (shouldDisplayActions(response)) {
                     setIsWaitingResponse(true)
                 }
 
@@ -235,13 +205,14 @@ export const usePlaygroundMessages = ({
         [
             accountId,
             channel,
-            gorgiasDomain,
-            httpIntegrationId,
             onNewConversation,
             storeData,
-            submitPlaygroundTicket,
-            channelIntegrationId,
+            submitMessage,
+            createTestSession,
             channelAvailability,
+            testSessionId,
+            isNewAgenticArchitectureEnabled,
+            startPolling,
         ],
     )
 
@@ -257,22 +228,13 @@ export const usePlaygroundMessages = ({
             // Add placeholder only for real message processing as for action response is fast and we don't need it
             if (newMessage.type !== MessageType.PROMPT) {
                 // Add placeholder and user message to the chat
-                const placeholderMessage: PlaygroundMessage = {
-                    sender: AI_AGENT_SENDER,
-                    type: MessageType.PLACEHOLDER,
-                    createdDatetime: new Date().toISOString(),
-                }
-                const greetingMessage: PlaygroundMessage = {
-                    sender: AI_AGENT_SENDER,
-                    type: MessageType.MESSAGE,
-                    content: GREETING_MESSAGE,
-                    createdDatetime: new Date().toISOString(),
-                }
 
                 const messagesToAdd =
-                    channel === 'chat' && messages.length === 1
-                        ? [greetingMessage, placeholderMessage]
-                        : [placeholderMessage]
+                    channel === 'chat' &&
+                    !isNewAgenticArchitectureEnabled &&
+                    messages.length === 1
+                        ? [GREETING_MESSAGE, PLACEHOLDER_MESSAGE]
+                        : [PLACEHOLDER_MESSAGE]
 
                 newMessages.push(...messagesToAdd)
             }
@@ -284,13 +246,60 @@ export const usePlaygroundMessages = ({
 
             await processMessages(newMessages, { customer, subject })
         },
-        [channel, messages, processMessages],
+        [channel, messages, processMessages, isNewAgenticArchitectureEnabled],
     )
+
+    useEffect(() => {
+        if (!testSessionLogs) return
+
+        if (testSessionLogs.status === 'finished') {
+            setIsWaitingResponse(false)
+        }
+
+        if (testSessionLogs.logs.length > 0) {
+            setMessages((prevMessages) => {
+                // Remove placeholder
+                const messagesWithoutPlaceholder = prevMessages.filter(
+                    (message) => message.type !== MessageType.PLACEHOLDER,
+                )
+
+                // Track existing message timestamps to avoid duplicates
+                const newLogs = testSessionLogs.logs.filter(
+                    (log) => !processedLogIds.current.has(log.id),
+                )
+
+                // Process only new logs
+                const newMessages = newLogs
+                    .map((log) => {
+                        const message = handleAiAgentTestSessionLog(log)
+                        if (message) {
+                            // Add the log id to the processed set to avoid duplicates
+                            processedLogIds.current.add(log.id)
+                        }
+                        return message
+                    })
+                    .filter(
+                        (message): message is NonNullable<typeof message> =>
+                            message !== null,
+                    )
+
+                const shouldShowPlaceholder =
+                    testSessionLogs.status !== 'finished'
+
+                // Add the new processed messages with placeholder
+                return [
+                    ...messagesWithoutPlaceholder,
+                    ...newMessages,
+                    ...(shouldShowPlaceholder ? [PLACEHOLDER_MESSAGE] : []),
+                ]
+            })
+        }
+    }, [testSessionLogs])
 
     return {
         messages,
         onMessageSend,
-        isMessageSending: isSubmitting,
+        isMessageSending: isSubmitting || isPolling,
         onNewConversation,
         isWaitingResponse,
     }
