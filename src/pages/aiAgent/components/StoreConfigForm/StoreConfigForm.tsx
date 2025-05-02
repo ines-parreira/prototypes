@@ -118,6 +118,8 @@ export const StoreConfigForm = ({
         shouldDisplayOldSettingsPage || tab === 'channels'
     const shouldDisplayGeneralSections =
         shouldDisplayOldSettingsPage || tab === 'general'
+    const shouldDisplayTOVPreview =
+        tab === 'general' || !isSettingsRevampEnabled
 
     const dispatch = useAppDispatch()
 
@@ -1122,29 +1124,32 @@ export const StoreConfigForm = ({
                     </section>
                 </form>
 
-                <div
-                    className={classNames({
-                        [css.ticketPreviewContainer]: isSettingsRevampEnabled,
-                    })}
-                >
-                    <TicketPreview
-                        toneOfVoice={formValues.toneOfVoice}
-                        signature={formValues.signature}
-                        customToneOfVoiceGuidance={
-                            formValues.customToneOfVoiceGuidance
-                        }
-                        customToneOfVoicePreview={
-                            latestCustomToneOfVoicePreview
-                        }
-                        isLoadingCustomToneOfVoicePreview={
-                            isCustomToneOfVoicePreviewLoading
-                        }
-                        onGenerateCustomToneOfVoicePreview={
-                            onGenerateCustomToneOfVoicePreview
-                        }
-                        isError={isError}
-                    />
-                </div>
+                {shouldDisplayTOVPreview && (
+                    <div
+                        className={classNames({
+                            [css.ticketPreviewContainer]:
+                                isSettingsRevampEnabled,
+                        })}
+                    >
+                        <TicketPreview
+                            toneOfVoice={formValues.toneOfVoice}
+                            signature={formValues.signature}
+                            customToneOfVoiceGuidance={
+                                formValues.customToneOfVoiceGuidance
+                            }
+                            customToneOfVoicePreview={
+                                latestCustomToneOfVoicePreview
+                            }
+                            isLoadingCustomToneOfVoicePreview={
+                                isCustomToneOfVoicePreviewLoading
+                            }
+                            onGenerateCustomToneOfVoicePreview={
+                                onGenerateCustomToneOfVoicePreview
+                            }
+                            isError={isError}
+                        />
+                    </div>
+                )}
             </div>
             {isSettingsRevampEnabled && (
                 <StoreConfigDrawer

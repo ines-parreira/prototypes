@@ -9,6 +9,7 @@ import { mockFlags } from 'jest-launchdarkly-mock'
 import { keyBy } from 'lodash'
 import moment from 'moment'
 import { Provider } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -116,6 +117,12 @@ jest.mock('hooks/useSearchParam', () => ({
 }))
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useParams: jest.fn().mockReturnValue({ tab: 'general' }),
+}))
+
+const mockUseParams = jest.mocked(useParams)
 const mockUseSearchParam = jest.mocked(useSearchParam)
 const mockSetSearchParam = jest.fn()
 
@@ -2094,6 +2101,45 @@ describe('<StoreConfigForm />', () => {
                 shopName: 'test-shop',
                 silentNotification: true,
             })
+        })
+    })
+
+    describe('ticket preview visibility', () => {
+        it.each(['general', 'channels'])(
+            'should show ticket preview when FF settings revamp is disabled and tab is %s',
+            (tab) => {
+                mockFlags({
+                    [FeatureFlagKey.AiAgentSettingsRevamp]: false,
+                })
+                mockUseParams.mockReturnValue({ tab })
+                renderComponent()
+
+                expect(screen.getByText(/Ticket preview/i)).toBeInTheDocument()
+            },
+        )
+
+        it('should not show ticket preview when tab channels and FF settings revamp is enabled', () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+            })
+            mockUseParams.mockReturnValue({ tab: 'channels' })
+            renderComponent()
+
+            expect(
+                screen.queryByText(/Example of AI Agent's Tone of Voice/i),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show ticket preview when tab is general and FF settings revamp is enabled', () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+            })
+            mockUseParams.mockReturnValue({ tab: 'general' })
+            renderComponent()
+
+            expect(
+                screen.getByText(/Example of AI Agent's Tone of Voice/i),
+            ).toBeInTheDocument()
         })
     })
 })
