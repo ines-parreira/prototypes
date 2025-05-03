@@ -1,4 +1,3 @@
-import { TicketVia } from 'business/types/ticket'
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -47,17 +46,24 @@ const AIAgentFeedbackBar = () => {
         !!selectedMessage && isTrialMessageFromAIAgent(selectedMessage)
 
     const handleSelectFirstMessage = () => {
-        dispatch(
-            changeTicketMessage({
-                message: publicAIMessages.find(
-                    (message) => message.via === TicketVia.Api,
-                ),
-            }),
+        if (!ticketFeedback?.messages) return
+
+        const messageWithFeedback = publicAIMessages.find((msg) =>
+            ticketFeedback.messages.some((fb) => fb.messageId === msg.id),
         )
-        logEventWithSampling(
-            SegmentEvent.AiAgentFeedbackFirstMessageButtonClicked,
-            {},
-        )
+
+        if (messageWithFeedback) {
+            dispatch(
+                changeTicketMessage({
+                    message: messageWithFeedback,
+                }),
+            )
+
+            logEventWithSampling(
+                SegmentEvent.AiAgentFeedbackFirstMessageButtonClicked,
+                {},
+            )
+        }
     }
 
     const updateTicketMessageFeedbackSummary = (summary: string) => {

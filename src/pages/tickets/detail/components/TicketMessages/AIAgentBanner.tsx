@@ -30,24 +30,29 @@ const AIAgentBanner = ({
         refetchOnWindowFocus: false,
     })
 
-    const messageIds = useMemo(
-        () => messages.map((message) => message.id),
-        [messages],
-    )
-
     const ticketFeedback = data?.data
 
-    const messageFeedback = ticketFeedback?.messages
-        // Creating a shallow copy to not mutate the original array
-        ?.slice()
-        // We want to get the last message that contains feedback
-        ?.reverse()
-        ?.find((messageFeedback) =>
-            messageIds.includes(messageFeedback.messageId),
-        )
+    const lastMessageWithFeedback = useMemo(() => {
+        if (!ticketFeedback?.messages) return null
 
-    const resourceWithFeedback =
-        useAIAgentResourcesWithFeedback(messageFeedback)
+        // Create a shallow copy before reversing to avoid mutating props
+        const reversedMessages = [...messages].reverse()
+
+        for (const message of reversedMessages) {
+            const feedback = ticketFeedback.messages.find(
+                (feedback) => feedback.messageId === message.id,
+            )
+            if (feedback) {
+                return { message, feedback }
+            }
+        }
+
+        return null
+    }, [messages, ticketFeedback])
+
+    const resourceWithFeedback = useAIAgentResourcesWithFeedback(
+        lastMessageWithFeedback?.feedback,
+    )
 
     // If message is not public, it is an internal note created by AI Agent
     const isMessagePublic = message.public
@@ -55,21 +60,25 @@ const AIAgentBanner = ({
     const isTrialMessage = isTrialMessageFromAIAgent(message)
 
     const allowsFeedback =
-        messageFeedback?.allowsFeedback || isMessagePublic || isTrialMessage
+        lastMessageWithFeedback?.feedback.allowsFeedback ||
+        isMessagePublic ||
+        isTrialMessage
 
     const { messageSummaryContainer, messageSummaryHasError } = useMemo(() => {
         const messageSummaryElement = document.createElement('div')
-        messageSummaryElement.innerHTML = messageFeedback?.summary || ''
+        messageSummaryElement.innerHTML =
+            lastMessageWithFeedback?.feedback.summary || ''
 
         const messageSummaryHasError =
             messageSummaryElement.querySelector(
                 '[data-error-summary="true"]',
             ) !== null
 
-        const messageSummaryContainer = messageFeedback?.summary ? (
+        const messageSummaryContainer = lastMessageWithFeedback?.feedback
+            .summary ? (
             <div
                 dangerouslySetInnerHTML={{
-                    __html: messageFeedback?.summary,
+                    __html: lastMessageWithFeedback?.feedback.summary,
                 }}
             />
         ) : null
@@ -78,7 +87,7 @@ const AIAgentBanner = ({
             messageSummaryContainer,
             messageSummaryHasError,
         }
-    }, [messageFeedback?.summary])
+    }, [lastMessageWithFeedback?.feedback.summary])
 
     const messageToDisplay = isMessagePublic
         ? messageSummaryContainer
@@ -122,8 +131,8 @@ const AIAgentBanner = ({
             )}
             {shouldDisplayAiAgentFeedback && (
                 <AIAgentFeedback
-                    message={message}
-                    messageFeedback={messageFeedback}
+                    message={lastMessageWithFeedback?.message || message}
+                    messageFeedback={lastMessageWithFeedback?.feedback}
                     isTrialMessage={isTrialMessage}
                     isTwoStepMessage={isTwoStepMessage}
                 />
