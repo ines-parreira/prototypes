@@ -1,7 +1,9 @@
 import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
     getGorgiasChatLanguageByCode,
     getLanguagesFromChatConfig,
@@ -101,29 +103,94 @@ describe('HandoverCustomizationChatFallbackSettings', () => {
         renderComponent()
 
         // Check the textarea is rendered
-        screen.getByRole('textbox', { name: 'Error message' })
+        expect(
+            screen.getByRole('textbox', { name: 'Error message' }),
+        ).toBeInTheDocument()
 
         // Check that the banner is rendered
-        screen.getByText(
-            /Enter a message, not Guidance. It will be sent as-is to customers during error./i,
-        )
+        expect(
+            screen.getByText(
+                /Enter a message, not Guidance. It will be sent as-is to customers during error./i,
+            ),
+        ).toBeInTheDocument()
 
         // Check the caption is rendered
-        screen.getByText(
-            /If an error occurs, AI Agent will send this exact message to the customer/i,
-        )
+        expect(
+            screen.getByText(
+                /If an error occurs, AI Agent will send this exact message to the customer/i,
+            ),
+        ).toBeInTheDocument()
 
         // Check Save and Cancel buttons are rendered
-        screen.getByText('Save Changes')
-        screen.getByText('Cancel')
+        expect(screen.getByText('Save Changes')).toBeInTheDocument()
+        expect(screen.getByText('Cancel')).toBeInTheDocument()
     })
 
-    it('renders the language selector when there are multiple languages', () => {
+    it('renders correctly with all UI elements in the new setting design', () => {
+        ;(useFlags as jest.Mock).mockReturnValue({
+            [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+        })
+
         renderComponent()
 
-        // Check the language selector is rendered
-        screen.getByLabelText('Select language')
+        // Check the textarea is rendered
+        expect(
+            screen.getByRole('textbox', { name: 'Error message' }),
+        ).toBeInTheDocument()
+
+        // Check that the banner is not rendered
+        expect(
+            screen.queryByText(
+                /Enter a message, not Guidance. It will be sent as-is to customers during error./i,
+            ),
+        ).toBeNull()
+
+        // Check the caption is rendered
+        expect(
+            screen.getByText(
+                /AI Agent will send the exact text if it encounters an unexpected error handing over./i,
+            ),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByText(
+                /If an error occurs, AI Agent will send this exact message to the customer/i,
+            ),
+        ).toBeNull()
+
+        // Check Save and Cancel buttons are rendered
+        expect(screen.getByText('Save Changes')).toBeInTheDocument
+        expect(screen.getByText('Cancel')).toBeInTheDocument()
     })
+
+    it.each([true, false])(
+        'renders the language selector when there are multiple languages and isSettingsRevamp is %s',
+        (isSettingsRevamp) => {
+            ;(useFlags as jest.Mock).mockReturnValue({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: isSettingsRevamp,
+            })
+
+            renderComponent()
+
+            // Check the language selector is rendered
+            screen.getByLabelText('Select language')
+        },
+    )
+
+    it.each([true, false])(
+        'does not render the language selector when there is only one language and isSettingsRevamp is %s',
+        (isSettingsRevamp) => {
+            ;(useFlags as jest.Mock).mockReturnValue({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: isSettingsRevamp,
+            })
+            ;(getLanguagesFromChatConfig as jest.Mock).mockReturnValue([
+                'en-US',
+            ])
+            renderComponent()
+
+            // Check the language selector is not rendered
+            expect(screen.queryByLabelText('Select language')).toBeNull()
+        },
+    )
 
     it('does not render the language selector when there is only one language', () => {
         ;(getLanguagesFromChatConfig as jest.Mock).mockReturnValue(['en-US'])
@@ -220,44 +287,71 @@ describe('HandoverCustomizationChatFallbackSettings', () => {
             screen.getByRole('textbox', { name: 'Error message' }),
         ).toHaveValue('Spanish error message')
     })
-    it('renders correctly with initial language selected', () => {
-        renderComponent()
-
-        // Check if English is selected initially
-        screen.getByText('English')
-
-        // Check if textarea is rendered with correct value
-        expect(
-            screen.getByRole('textbox', { name: 'Error message' }),
-        ).toHaveValue('English error message')
-    })
-
-    it('changes language and displays corresponding error message', async () => {
-        renderComponent()
-
-        // Open the language dropdown
-        const languageSelect = screen.getByLabelText('Select language')
-        fireEvent.click(languageSelect)
-
-        // Select French
-        const frenchOption = await screen.findByText('French')
-        fireEvent.click(frenchOption)
-
-        // Should display French error message
-        expect(
-            screen.getByRole('textbox', { name: 'Error message' }),
-        ).toHaveValue('French error message')
-    })
-
-    describe('handover customization fallback error text', () => {
-        it('renders the fallback initial error text from the context', () => {
+    it.each([true, false])(
+        'renders correctly with initial language selected and isSettingsRevamp is %s',
+        (isSettingsRevamp) => {
+            ;(useFlags as jest.Mock).mockReturnValue({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: isSettingsRevamp,
+            })
             renderComponent()
+
+            // Check if English is selected initially
+            screen.getByText('English')
 
             // Check if textarea is rendered with correct value
             expect(
                 screen.getByRole('textbox', { name: 'Error message' }),
             ).toHaveValue('English error message')
-        })
+        },
+    )
+
+    it.each([true, false])(
+        'changes language and displays corresponding error message when language is selected and isSettingsRevamp is %s',
+        async (isSettingsRevamp) => {
+            ;(useFlags as jest.Mock).mockReturnValue({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: isSettingsRevamp,
+            })
+            renderComponent()
+
+            // Open the language dropdown
+            const languageSelect = screen.getByLabelText('Select language')
+            fireEvent.click(languageSelect)
+
+            // Select French
+            const frenchOption = await screen.findByText('French')
+            fireEvent.click(frenchOption)
+
+            // Should display French error message
+            expect(
+                screen.getByRole('textbox', { name: 'Error message' }),
+            ).toHaveValue('French error message')
+        },
+    )
+
+    describe('handover customization fallback error text', () => {
+        describe.each([true, false])(
+            'handover customization fallback error text when isSettingsRevamp is %s',
+            (isSettingsRevamp) => {
+                beforeEach(() => {
+                    ;(useFlags as jest.Mock).mockReturnValue({
+                        [FeatureFlagKey.AiAgentSettingsRevamp]:
+                            isSettingsRevamp,
+                    })
+                })
+
+                it('renders the fallback initial error text from the context', () => {
+                    mockFormValues['en-US'].fallbackMessage =
+                        'English error message'
+
+                    renderComponent()
+
+                    // Check if textarea is rendered with correct value
+                    expect(
+                        screen.getByRole('textbox', { name: 'Error message' }),
+                    ).toHaveValue('English error message')
+                })
+            },
+        )
 
         it('renders the placeholder text when the textarea is empty', () => {
             mockFormValues['en-US'].fallbackMessage = ''
@@ -288,46 +382,54 @@ describe('HandoverCustomizationChatFallbackSettings', () => {
         })
     })
 
-    describe('form handlers', () => {
-        it('calls handleOnCancel when Cancel button is clicked', () => {
-            renderComponent()
+    describe.each([true, false])(
+        'form handlers when isSettingsRevamp is %s',
+        (isSettingsRevamp) => {
+            beforeEach(() => {
+                ;(useFlags as jest.Mock).mockReturnValue({
+                    [FeatureFlagKey.AiAgentSettingsRevamp]: isSettingsRevamp,
+                })
+            })
+            it('calls handleOnCancel when Cancel button is clicked', () => {
+                renderComponent()
 
-            const cancelButton = screen.getByText('Cancel')
-            fireEvent.click(cancelButton)
+                const cancelButton = screen.getByText('Cancel')
+                fireEvent.click(cancelButton)
 
-            expect(mockHandleOnCancel).toHaveBeenCalled()
-        })
-
-        it('calls handleOnSave when Save Changes button is clicked', () => {
-            renderComponent()
-
-            const saveButton = screen.getByText('Save Changes')
-            fireEvent.click(saveButton)
-
-            expect(mockHandleOnSave).toHaveBeenCalled()
-        })
-
-        it('should disable the save button when the form is saving', () => {
-            ;(
-                useHandoverCustomizationChatFallbackSettingsForm as jest.Mock
-            ).mockReturnValue({
-                isSaving: true,
-                formValues: mockFormValues,
-                updateValue: mockUpdateValue,
-                handleOnSave: mockHandleOnSave,
-                handleOnCancel: mockHandleOnCancel,
-                hasChanges: true,
+                expect(mockHandleOnCancel).toHaveBeenCalled()
             })
 
-            renderComponent()
+            it('calls handleOnSave when Save Changes button is clicked', () => {
+                renderComponent()
 
-            const saveButton = screen.getByRole('button', {
-                name: 'Save Changes',
+                const saveButton = screen.getByText('Save Changes')
+                fireEvent.click(saveButton)
+
+                expect(mockHandleOnSave).toHaveBeenCalled()
             })
 
-            expect(saveButton).toHaveAttribute('aria-disabled', 'true')
-        })
-    })
+            it('should disable the save button when the form is saving', () => {
+                ;(
+                    useHandoverCustomizationChatFallbackSettingsForm as jest.Mock
+                ).mockReturnValue({
+                    isSaving: true,
+                    formValues: mockFormValues,
+                    updateValue: mockUpdateValue,
+                    handleOnSave: mockHandleOnSave,
+                    handleOnCancel: mockHandleOnCancel,
+                    hasChanges: true,
+                })
+
+                renderComponent()
+
+                const saveButton = screen.getByRole('button', {
+                    name: 'Save Changes',
+                })
+
+                expect(saveButton).toHaveAttribute('aria-disabled', 'true')
+            })
+        },
+    )
     test.each([true, false])(
         'should set isFormDirty to %s when there are changes coming from the form hook',
         (hasChanges) => {

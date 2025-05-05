@@ -23,6 +23,9 @@ import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import AiAgentConfigurationContainer from '../AiAgentConfigurationContainer'
 import { getStoreConfigurationFixture } from '../fixtures/storeConfiguration.fixtures'
+import { useHandoverCustomizationChatFallbackSettingsForm } from '../hooks/handoverCustomization/useHandoverCustomizationChatFallbackSettingsForm'
+import { useHandoverCustomizationChatOfflineSettingsForm } from '../hooks/handoverCustomization/useHandoverCustomizationChatOfflineSettingsForm'
+import { useHandoverCustomizationChatOnlineSettingsForm } from '../hooks/handoverCustomization/useHandoverCustomizationChatOnlineSettingsForm'
 import { useGetOrCreateSnippetHelpCenter } from '../hooks/useGetOrCreateSnippetHelpCenter'
 import * as useStoreConfigurationFormHookModule from '../hooks/useStoreConfigurationForm'
 import { useAiAgentStoreConfigurationContext } from '../providers/AiAgentStoreConfigurationContext'
@@ -85,6 +88,40 @@ jest.mock('pages/aiAgent/hooks/useFileIngestion', () => ({
         ingestedFiles: [],
     }),
 }))
+
+jest.mock(
+    'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOfflineSettingsForm',
+)
+jest.mock(
+    'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOnlineSettingsForm',
+)
+jest.mock(
+    'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatFallbackSettingsForm',
+)
+
+const mockedUseHandoverCustomizationChatOfflineSettingsFormProps = {
+    isLoading: false,
+    isSaving: false,
+    formValues: {},
+    updateValue: jest.fn(),
+    handleOnSave: jest.fn(),
+    handleOnCancel: jest.fn(),
+}
+
+const mockedUseHandoverCustomizationChatOnlineSettingsFormProps = {
+    isLoading: false,
+    isSaving: false,
+    formValues: {},
+    updateValue: jest.fn(),
+    handleOnSave: jest.fn(),
+    handleOnCancel: jest.fn(),
+}
+
+const mockedUseHandoverCustomizationChatFallbackSettingsFormProps = {
+    isLoading: false,
+    isSaving: false,
+    formValues: {},
+}
 
 const mockStore = configureMockStore([thunk])
 
@@ -220,6 +257,21 @@ const setupMocks = ({
 describe('AiAgentConfigurationContainer', () => {
     beforeEach(() => {
         jest.resetAllMocks()
+        ;(
+            useHandoverCustomizationChatOfflineSettingsForm as jest.Mock
+        ).mockReturnValue(
+            mockedUseHandoverCustomizationChatOfflineSettingsFormProps,
+        )
+        ;(
+            useHandoverCustomizationChatOnlineSettingsForm as jest.Mock
+        ).mockReturnValue(
+            mockedUseHandoverCustomizationChatOnlineSettingsFormProps,
+        )
+        ;(
+            useHandoverCustomizationChatFallbackSettingsForm as jest.Mock
+        ).mockReturnValue(
+            mockedUseHandoverCustomizationChatFallbackSettingsFormProps,
+        )
     })
 
     it('renders loader if loading store configuration', () => {

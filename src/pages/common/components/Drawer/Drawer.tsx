@@ -131,7 +131,7 @@ const Drawer = ({
             >
                 {isLoading ? (
                     <Container fluid className="page-container">
-                        <Loader />
+                        <Loader role="status" aria-label="Loading..." />
                     </Container>
                 ) : (
                     children

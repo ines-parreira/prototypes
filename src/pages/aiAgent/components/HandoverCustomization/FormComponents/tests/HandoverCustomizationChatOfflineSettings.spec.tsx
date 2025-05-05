@@ -1,6 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { GorgiasChatIntegration } from 'models/integration/types'
 import { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import { useHandoverCustomizationChatOfflineSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOfflineSettingsForm'
@@ -78,43 +80,57 @@ describe('HandoverCustomizationOfflineSettings', () => {
         })
     })
 
-    it('should render the loading state when the form data is loading', () => {
-        ;(
-            useHandoverCustomizationChatOfflineSettingsForm as jest.Mock
-        ).mockReturnValue({
-            ...mockOfflineValuesForm,
-            isLoading: true,
-        })
+    it.each([true, false])(
+        'should render the loading state when the form data is loading and isSettingsRevamp is %s',
+        (isSettingsRevamp) => {
+            ;(useFlags as jest.Mock).mockReturnValue({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: isSettingsRevamp,
+            })
+            ;(
+                useHandoverCustomizationChatOfflineSettingsForm as jest.Mock
+            ).mockReturnValue({
+                ...mockOfflineValuesForm,
+                isLoading: true,
+            })
 
-        renderComponent()
+            renderComponent()
 
-        // Check the loading spinner is rendered
-        screen.getByText(/loading/i)
+            // Check the loading spinner is rendered
+            screen.getByText(/loading/i)
 
-        expect(screen.queryByText(/Guidance/i)).toBeNull()
-    })
+            expect(screen.queryByText(/Guidance/i)).toBeNull()
+        },
+    )
 
     it('renders correctly with all UI elements', () => {
         renderComponent()
 
-        screen.getByText('Guidance')
-        // text area
+        expect(screen.getByText('Guidance')).toBeInTheDocument() // text area
         screen.getByRole('textbox')
 
-        screen.getByText(
-            /AI Agent will use these instructions to craft the handover message it sends to customers./i,
-        )
+        // text area
+        expect(screen.getByRole('textbox')).toBeInTheDocument()
+
+        expect(
+            screen.getByText(
+                /AI Agent will use these instructions to craft the handover message it sends to customers./i,
+            ),
+        ).toBeInTheDocument()
 
         // Check the toggle is rendered
-        screen.getByRole('checkbox', {
-            name: /Share business hours in handover message/i,
-        })
+        expect(
+            screen.getByRole('checkbox', {
+                name: /Share business hours in handover message/i,
+            }),
+        ).toBeInTheDocument()
 
         // explanation text
-        screen.getByText('Share business hours in handover message')
+        expect(
+            screen.getByText('Share business hours in handover message'),
+        ).toBeInTheDocument()
 
         // link
-        screen.getByText('View Business Hours')
+        expect(screen.getByText('View Business Hours')).toBeInTheDocument()
 
         // Check business hours link
         const link = screen.getByText('View Business Hours')
@@ -123,83 +139,60 @@ describe('HandoverCustomizationOfflineSettings', () => {
         expect(link).toHaveAttribute('target', '_blank')
 
         // Check buttons are rendered
-        screen.getByText('Save Changes')
-        screen.getByText('Cancel')
+        expect(screen.getByText('Save Changes')).toBeInTheDocument()
+        expect(screen.getByText('Cancel')).toBeInTheDocument()
     })
 
-    it('should load form with initial values loaded from the form hook', () => {
-        const mockedForm = {
-            ...mockOfflineValuesForm,
-            formValues: {
-                offlineInstructions: 'Initial instructions',
-                shareBusinessHours: true,
-            },
-        }
-
-        ;(
-            useHandoverCustomizationChatOfflineSettingsForm as jest.Mock
-        ).mockReturnValue(mockedForm)
+    it('renders correctly with all UI elements in the new setting design', () => {
+        ;(useFlags as jest.Mock).mockReturnValue({
+            [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+        })
 
         renderComponent()
 
-        screen.getByText('Initial instructions')
+        expect(screen.getByText('Instructions')).toBeInTheDocument()
+        expect(screen.queryByText('Guidance')).toBeNull()
 
+        // text area
+        expect(screen.getByRole('textbox')).toBeInTheDocument()
+
+        expect(
+            screen.getByText(
+                /Write optional instructions for AI Agent to follow during handover./i,
+            ),
+        ).toBeInTheDocument()
+
+        // Check the toggle is rendered
         expect(
             screen.getByRole('checkbox', {
                 name: /Share business hours in handover message/i,
             }),
-        ).toBeChecked()
+        ).toBeInTheDocument()
+
+        // explanation text
+        expect(
+            screen.getByText('Share business hours in handover message'),
+        ).toBeInTheDocument()
+
+        // link
+        expect(screen.getByText('View Business Hours')).toBeInTheDocument()
+
+        // Check business hours link
+        const link = screen.getByText('View Business Hours')
+        expect(link).toHaveAttribute('href', '/app/settings/business-hours')
+        expect(link).toHaveAttribute('target', '_blank')
+
+        // Check buttons are rendered
+        expect(screen.getByText('Save Changes')).toBeInTheDocument()
+        expect(screen.getByText('Cancel')).toBeInTheDocument()
     })
 
-    it('should build the correct action callback when the component is mounted', () => {
-        renderComponent()
-
-        expect(mockSetActionCallback).toHaveBeenCalledWith(
-            StoreConfigFormSection.handoverCustomizationOfflineSettings,
-            expect.objectContaining({
-                onDiscard: mockHandleOnCancel,
-            }),
-        )
-    })
-
-    describe('offline instructions', () => {
-        it('should render the placeholder text when the textarea is empty', () => {
-            const mockedForm = {
-                ...mockOfflineValuesForm,
-                formValues: {
-                    offlineInstructions: '',
-                    shareBusinessHours: false,
-                },
-            }
-            ;(
-                useHandoverCustomizationChatOfflineSettingsForm as jest.Mock
-            ).mockReturnValue(mockedForm)
-
-            renderComponent()
-
-            expect(
-                screen.getByPlaceholderText(
-                    /Apologize and acknowledge the issue./i,
-                ),
-            ).toHaveValue('')
-        })
-        it('should change the offline instructions when the user types in the text area', () => {
-            renderComponent()
-
-            const textArea = screen.getByRole('textbox')
-            fireEvent.change(textArea, {
-                target: { value: 'New instructions' },
+    it.each([true, false])(
+        'should load form with initial values loaded from the form hook and isSettingsRevamp is %s',
+        (isSettingsRevamp) => {
+            ;(useFlags as jest.Mock).mockReturnValue({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: isSettingsRevamp,
             })
-
-            expect(mockUpdateValue).toHaveBeenCalledWith(
-                'offlineInstructions',
-                'New instructions',
-            )
-        })
-    })
-
-    describe('share business hours', () => {
-        it('should change the share business hours when the user clicks the checkbox', () => {
             const mockedForm = {
                 ...mockOfflineValuesForm,
                 formValues: {
@@ -214,35 +207,113 @@ describe('HandoverCustomizationOfflineSettings', () => {
 
             renderComponent()
 
-            const checkbox = screen.getByRole('checkbox', {
-                name: /Share business hours in handover message/i,
+            screen.getByText('Initial instructions')
+
+            expect(
+                screen.getByRole('checkbox', {
+                    name: /Share business hours in handover message/i,
+                }),
+            ).toBeChecked()
+        },
+    )
+
+    it.each([true, false])(
+        'should build the correct action callback when the component is mounted and isSettingsRevamp is %s',
+        (isSettingsRevamp) => {
+            ;(useFlags as jest.Mock).mockReturnValue({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: isSettingsRevamp,
             })
 
-            fireEvent.click(checkbox)
-
-            expect(mockUpdateValue).toHaveBeenCalledWith(
-                'shareBusinessHours',
-                false,
-            )
-        })
-
-        it('should trigger save when the user clicks the save button with no changes', () => {
             renderComponent()
 
-            const saveButton = screen.getByText('Save Changes')
-            fireEvent.click(saveButton)
+            expect(mockSetActionCallback).toHaveBeenCalledWith(
+                StoreConfigFormSection.handoverCustomizationOfflineSettings,
+                expect.objectContaining({
+                    onDiscard: mockHandleOnCancel,
+                }),
+            )
+        },
+    )
 
-            expect(mockHandleOnSave).toHaveBeenCalled()
-        })
+    describe.each([true, false])(
+        'offline instructions and isSettingsRevamp is %s',
+        (isSettingsRevamp) => {
+            beforeEach(() => {
+                ;(useFlags as jest.Mock).mockReturnValue({
+                    [FeatureFlagKey.AiAgentSettingsRevamp]: isSettingsRevamp,
+                })
+            })
 
-        describe('form handlers', () => {
-            it('calls handleOnCancel when Cancel button is clicked', () => {
+            it('should render the placeholder text when the textarea is empty', () => {
+                const mockedForm = {
+                    ...mockOfflineValuesForm,
+                    formValues: {
+                        offlineInstructions: '',
+                        shareBusinessHours: false,
+                    },
+                }
+                ;(
+                    useHandoverCustomizationChatOfflineSettingsForm as jest.Mock
+                ).mockReturnValue(mockedForm)
+
                 renderComponent()
 
-                const cancelButton = screen.getByText('Cancel')
-                fireEvent.click(cancelButton)
+                expect(
+                    screen.getByPlaceholderText(
+                        /Apologize and acknowledge the issue./i,
+                    ),
+                ).toHaveValue('')
+            })
+            it('should change the offline instructions when the user types in the text area', () => {
+                renderComponent()
 
-                expect(mockHandleOnCancel).toHaveBeenCalled()
+                const textArea = screen.getByRole('textbox')
+                fireEvent.change(textArea, {
+                    target: { value: 'New instructions' },
+                })
+
+                expect(mockUpdateValue).toHaveBeenCalledWith(
+                    'offlineInstructions',
+                    'New instructions',
+                )
+            })
+        },
+    )
+
+    describe.each([true, false])(
+        'share business hours and isSettingsRevamp is %s',
+        (isSettingsRevamp) => {
+            beforeEach(() => {
+                ;(useFlags as jest.Mock).mockReturnValue({
+                    [FeatureFlagKey.AiAgentSettingsRevamp]: isSettingsRevamp,
+                })
+            })
+
+            it('should change the share business hours when the user clicks the checkbox', () => {
+                const mockedForm = {
+                    ...mockOfflineValuesForm,
+                    formValues: {
+                        offlineInstructions: 'Initial instructions',
+                        shareBusinessHours: true,
+                    },
+                }
+
+                ;(
+                    useHandoverCustomizationChatOfflineSettingsForm as jest.Mock
+                ).mockReturnValue(mockedForm)
+
+                renderComponent()
+
+                const checkbox = screen.getByRole('checkbox', {
+                    name: /Share business hours in handover message/i,
+                })
+
+                fireEvent.click(checkbox)
+
+                expect(mockUpdateValue).toHaveBeenCalledWith(
+                    'shareBusinessHours',
+                    false,
+                )
             })
 
             it('calls handleOnSave when Save Changes button is clicked', () => {
@@ -254,24 +325,44 @@ describe('HandoverCustomizationOfflineSettings', () => {
                 expect(mockHandleOnSave).toHaveBeenCalled()
             })
 
-            it('should disable the save button when the form is saving', () => {
-                ;(
-                    useHandoverCustomizationChatOfflineSettingsForm as jest.Mock
-                ).mockReturnValue({
-                    ...mockOfflineValuesForm,
-                    isSaving: true,
+            describe('form handlers', () => {
+                it('calls handleOnCancel when Cancel button is clicked', () => {
+                    renderComponent()
+
+                    const cancelButton = screen.getByText('Cancel')
+                    fireEvent.click(cancelButton)
+
+                    expect(mockHandleOnCancel).toHaveBeenCalled()
                 })
 
-                renderComponent()
+                it('calls handleOnSave when Save Changes button is clicked', () => {
+                    renderComponent()
 
-                const saveButton = screen.getByRole('button', {
-                    name: 'Save Changes',
+                    const saveButton = screen.getByText('Save Changes')
+                    fireEvent.click(saveButton)
+
+                    expect(mockHandleOnSave).toHaveBeenCalled()
                 })
 
-                expect(saveButton).toHaveAttribute('aria-disabled', 'true')
+                it('should disable the save button when the form is saving', () => {
+                    ;(
+                        useHandoverCustomizationChatOfflineSettingsForm as jest.Mock
+                    ).mockReturnValue({
+                        ...mockOfflineValuesForm,
+                        isSaving: true,
+                    })
+
+                    renderComponent()
+
+                    const saveButton = screen.getByRole('button', {
+                        name: 'Save Changes',
+                    })
+
+                    expect(saveButton).toHaveAttribute('aria-disabled', 'true')
+                })
             })
-        })
-    })
+        },
+    )
 
     test.each([true, false])(
         'should set isFormDirty to %s when there are changes coming from the form hook',
