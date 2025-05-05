@@ -95,7 +95,7 @@ const defaultUseAiAgentOnboardingNotification = {
 }
 
 const renderComponent = () => {
-    render(
+    return render(
         <PlaygroundChat
             storeData={getStoreConfigurationFixture()}
             accountData={getAccountConfigurationWithHttpIntegrationFixture()}
@@ -685,6 +685,22 @@ describe('PlaygroundChat', () => {
                     subject: undefined,
                 },
             )
+        })
+
+        it('should call onNewConversation when component unmounts', () => {
+            const onNewConversation = jest.fn()
+            mockedUsePlaygroundMessages.mockReturnValue({
+                ...defaultUsePlaygroundMessagesProps,
+                onNewConversation,
+            })
+
+            const { unmount } = renderComponent()
+
+            expect(onNewConversation).not.toHaveBeenCalled()
+
+            unmount()
+
+            expect(onNewConversation).toHaveBeenCalledTimes(1)
         })
     })
 })

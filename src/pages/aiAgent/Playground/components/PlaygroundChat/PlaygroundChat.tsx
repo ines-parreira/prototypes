@@ -77,10 +77,10 @@ export const PlaygroundChat = ({
         snippetHelpCenterId: storeData.snippetHelpCenterId,
     })
 
-    const handleNewConversation = () => {
+    const handleNewConversation = useCallback(() => {
         onNewConversation()
         clearForm()
-    }
+    }, [onNewConversation, clearForm])
 
     const onPromptMessage = (prompt: PlaygroundPromptType) => {
         const playgroundMessage = mapPlaygroundPromptToMessage(
@@ -181,6 +181,15 @@ export const PlaygroundChat = ({
 
     const isInitialMessage =
         messages.filter((m) => m.sender !== AI_AGENT_SENDER).length === 0
+
+    // Cleans up conversation state on unmount or when storeData changes.
+    // Essential when navigating between pages, as React Query's cached storeData
+    // wouldn't trigger a full component reload.
+    useEffect(() => {
+        return () => {
+            handleNewConversation()
+        }
+    }, [storeData, handleNewConversation])
 
     return (
         <div className={css.container}>
