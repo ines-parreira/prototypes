@@ -1,0 +1,27 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import '~css/typography';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: row;
+        gap: @layout-spacing-s;
+        padding: @layout-spacing-s;
+        border-radius: 8px;
+        border: 1px solid var(--accessory-magenta-2);
+        background: var(--accessory-magenta-1);
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .icon {
+        color: var(--accessory-magenta-25);
+    }
+
+    .title {
+        .heading-subsection-semibold();
+    }
+    .description {
+        .body-regular();
+    }
+}

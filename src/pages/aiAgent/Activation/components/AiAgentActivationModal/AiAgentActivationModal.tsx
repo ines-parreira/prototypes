@@ -1,10 +1,12 @@
 import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
+import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { ActivationProgress } from 'pages/aiAgent/Activation/components/ActivationProgress/ActivationProgress'
 import {
     StoreActivation,
     AiAgentActivationStoreCard as StoreCard,
 } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
+import { AiAgentSalesBanner } from 'pages/aiAgent/Activation/components/AiAgentSalesBanner/AiAgentSalesBanner'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 
@@ -22,6 +24,7 @@ type Props = {
     onSupportChatChange: (storeName: string, value: boolean) => void
     onSupportEmailChange: (storeName: string, value: boolean) => void
     onSaveClick: () => void
+    onLearnMoreClick: () => void
 }
 export const AiAgentActivationModal = ({
     isOpen,
@@ -35,7 +38,10 @@ export const AiAgentActivationModal = ({
     onSupportChatChange,
     onSupportEmailChange,
     onSaveClick,
+    onLearnMoreClick,
 }: Props) => {
+    const canUseAiSalesAgent = useCanUseAiSalesAgent()
+
     const storeActivationList = Object.entries(storeActivations)
     return (
         <Modal
@@ -59,28 +65,36 @@ export const AiAgentActivationModal = ({
                         <LoadingSpinner size="big" />
                     </div>
                 ) : (
-                    <div className={css.storeCardsList}>
-                        {storeActivationList.map(([storeName, store]) => (
-                            <StoreCard
-                                key={storeName}
-                                isDisabled={isSaveLoading}
-                                store={store}
-                                onSalesChange={(value) =>
-                                    onSalesChange(storeName, value)
-                                }
-                                onSupportChange={(value) =>
-                                    onSupportChange(storeName, value)
-                                }
-                                onSupportChatChange={(value) =>
-                                    onSupportChatChange(storeName, value)
-                                }
-                                onSupportEmailChange={(value) =>
-                                    onSupportEmailChange(storeName, value)
-                                }
-                                closeModal={onClose}
+                    <>
+                        {!canUseAiSalesAgent && (
+                            <AiAgentSalesBanner
+                                className={css.banner}
+                                onClick={onLearnMoreClick}
                             />
-                        ))}
-                    </div>
+                        )}
+                        <div className={css.storeCardsList}>
+                            {storeActivationList.map(([storeName, store]) => (
+                                <StoreCard
+                                    key={storeName}
+                                    isDisabled={isSaveLoading}
+                                    store={store}
+                                    onSalesChange={(value) =>
+                                        onSalesChange(storeName, value)
+                                    }
+                                    onSupportChange={(value) =>
+                                        onSupportChange(storeName, value)
+                                    }
+                                    onSupportChatChange={(value) =>
+                                        onSupportChatChange(storeName, value)
+                                    }
+                                    onSupportEmailChange={(value) =>
+                                        onSupportEmailChange(storeName, value)
+                                    }
+                                    closeModal={onClose}
+                                />
+                            ))}
+                        </div>
+                    </>
                 )}
             </ModalBody>
 

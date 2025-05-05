@@ -85,12 +85,15 @@ export const useActivation = (
         }
     }, [saveStoreConfigurations])
 
+    const showEarlyAccessModal = () => setIsPreviewModalVisible(true)
+
     return {
         isOnNewPlan,
-        showEarlyAccessModal: () => setIsPreviewModalVisible(true),
+        showEarlyAccessModal,
         showActivationModal: () => setIsModalVisible(true),
         activationModal: (
             <AiAgentActivationModal
+                onLearnMoreClick={showEarlyAccessModal}
                 isOpen={isModalVisible}
                 isSaveLoading={isSaveLoading}
                 isFetchLoading={isFetchLoading}

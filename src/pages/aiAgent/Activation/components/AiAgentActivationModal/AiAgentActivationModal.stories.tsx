@@ -111,6 +111,7 @@ const meta: Meta<typeof AiAgentActivationModal> = {
         onSupportChatChange: action('onSupportChatChange'),
         onSupportEmailChange: action('onSupportEmailChange'),
         onSaveClick: action('onSaveClick'),
+        onLearnMoreClick: action('onLearnMoreClick'),
     },
     decorators: [(Story) => <Story />],
 }

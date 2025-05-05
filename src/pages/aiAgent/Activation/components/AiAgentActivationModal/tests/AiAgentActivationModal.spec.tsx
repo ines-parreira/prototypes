@@ -1,6 +1,10 @@
 import { ComponentProps } from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
+import { assumeMock } from 'utils/testing'
 
 import { getStoreConfigurationFixture } from '../../../hooks/tests/fixtures/store-configurations.fixture'
 import { StoreActivation } from '../../AiAgentActivationStoreCard/AiAgentActivationStoreCard'
@@ -39,6 +43,9 @@ jest.mock(
         ),
     }),
 )
+
+jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
+const useCanUseAiSalesAgentMock = assumeMock(useCanUseAiSalesAgent)
 
 describe('AiAgentActivationModal', () => {
     const mockStoreActivations: Record<string, StoreActivation> = {
@@ -104,6 +111,7 @@ describe('AiAgentActivationModal', () => {
         onSupportChatChange: jest.fn(),
         onSupportEmailChange: jest.fn(),
         onSaveClick: jest.fn(),
+        onLearnMoreClick: jest.fn(),
     }
 
     beforeEach(() => {
@@ -220,5 +228,41 @@ describe('AiAgentActivationModal', () => {
         fireEvent.click(closeButtons[0])
 
         expect(defaultProps.onClose).toHaveBeenCalled()
+    })
+
+    it('should show the banner when not on usd-6 plan', () => {
+        useCanUseAiSalesAgentMock.mockReturnValue(false)
+
+        render(<AiAgentActivationModal {...defaultProps} />)
+
+        expect(
+            screen.getByText('Upgrade AI Agent with Sales Skills'),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Increase your chat conversation rate and maximize revenue opportunities.',
+            ),
+        ).toBeInTheDocument()
+
+        const learnMoreButton = screen.getByRole('button', {
+            name: /Learn More/,
+        })
+        userEvent.click(learnMoreButton)
+        expect(defaultProps.onLearnMoreClick).toHaveBeenCalled()
+    })
+
+    it('should not show the banner when on usd-6 plan', () => {
+        useCanUseAiSalesAgentMock.mockReturnValue(true)
+
+        render(<AiAgentActivationModal {...defaultProps} />)
+
+        expect(
+            screen.queryByText('Upgrade AI Agent with Sales Skills'),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByText(
+                'Increase your chat conversation rate and maximize revenue opportunities.',
+            ),
+        ).not.toBeInTheDocument()
     })
 })
