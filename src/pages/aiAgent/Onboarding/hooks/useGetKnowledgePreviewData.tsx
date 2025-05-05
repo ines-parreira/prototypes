@@ -31,21 +31,46 @@ type KnowledgePreviewData = {
     isRepeatRateLoading?: boolean
 }
 
+const generateRandomValuesForLastMonth = (): { x: string; y: number }[] => {
+    const today = moment()
+    const startOfLastMonth = today.clone().subtract(1, 'month').startOf('month')
+    const endOfLastMonth = today.clone().subtract(1, 'month').endOf('month')
+
+    const daysInLastMonth = endOfLastMonth.diff(startOfLastMonth, 'days') + 1
+    return Array.from({ length: daysInLastMonth }, (_, index) => {
+        const currentDate = startOfLastMonth.clone().add(index, 'days')
+        return {
+            x: currentDate.toDate().toLocaleDateString('en', {
+                day: 'numeric',
+                month: 'short',
+            }),
+            y: Math.floor(Math.random() * (99 - 10 + 1)) + 10, // Random y value between 10 and 99
+        }
+    })
+}
+
+const fakeProcessedAverageOrdersPerDayTrend = [
+    {
+        values: generateRandomValuesForLastMonth(),
+        label: 'Line',
+    },
+]
+
 const useProcessedAverageOrdersPerDayTrend = (
     filters: StatsFilters,
     timezone: string,
 ): TwoDimensionalDataItem[] | undefined => {
-    const { data: averageOrdersPerDay } = useAverageOrdersPerDayTrend(
+    const { data } = useAverageOrdersPerDayTrend(
         filters,
         timezone,
         ReportingGranularity.Day,
     )
 
     const getFormattedValues = () => {
-        if (averageOrdersPerDay === undefined) return undefined
-        return [
+        if (data === undefined) return undefined
+        const averageOrdersPerDay = [
             {
-                values: averageOrdersPerDay[0].map((item) => ({
+                values: data[0].map((item) => ({
                     x: new Date(item.dateTime).toLocaleDateString('en', {
                         day: 'numeric',
                         month: 'short',
@@ -55,8 +80,19 @@ const useProcessedAverageOrdersPerDayTrend = (
                 label: 'Line',
             },
         ]
+
+        // Check if all "y" values are 0
+        const allYValuesAreZero = averageOrdersPerDay[0].values.every(
+            (item) => item.y === 0,
+        )
+
+        if (allYValuesAreZero) {
+            return fakeProcessedAverageOrdersPerDayTrend
+        }
+
+        return averageOrdersPerDay
     }
-    return useMemo(getFormattedValues, [averageOrdersPerDay])
+    return useMemo(getFormattedValues, [data])
 }
 
 export const useGetKnowledgePreviewData = ({

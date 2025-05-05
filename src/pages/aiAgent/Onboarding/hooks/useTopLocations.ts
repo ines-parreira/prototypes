@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 import moment from 'moment'
 
 import { useMetric } from 'hooks/reporting/useMetric'
@@ -16,6 +18,29 @@ import { StatsFilters } from 'models/stat/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { getTimezone } from 'state/currentUser/selectors'
 import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
+
+const fakeTopLocations = [
+    {
+        id: 'New York',
+        title: 'New York',
+        percentage: 30,
+    },
+    {
+        id: 'Los Angeles',
+        title: 'Los Angeles',
+        percentage: 25,
+    },
+    {
+        id: 'Chicago',
+        title: 'Chicago',
+        percentage: 20,
+    },
+    {
+        id: 'Houston',
+        title: 'Houston',
+        percentage: 15,
+    },
+]
 
 export const useTopLocations = ({ shopName }: { shopName: string }) => {
     const shopifyIntegration: ShopifyIntegration = useAppSelector(
@@ -48,19 +73,32 @@ export const useTopLocations = ({ shopName }: { shopName: string }) => {
 
     const totalCount = Number(totalOrdersMetric.data?.value ?? 0)
 
-    const data = (topLocationsMetric.data?.allData || []).map((record) => {
-        const city = record[AiSalesAgentOrdersDimension.ShippingCity] ?? ''
-        const count = Number(record[AiSalesAgentOrdersMeasure.Count] ?? 0)
-        const percentage = totalCount
-            ? Number(((count / totalCount) * 100).toFixed(1))
-            : 0
+    const data = useMemo(() => {
+        let topLocations = (topLocationsMetric.data?.allData || []).map(
+            (record) => {
+                const city =
+                    record[AiSalesAgentOrdersDimension.ShippingCity] ?? ''
+                const count = Number(
+                    record[AiSalesAgentOrdersMeasure.Count] ?? 0,
+                )
+                const percentage = totalCount
+                    ? Number(((count / totalCount) * 100).toFixed(1))
+                    : 0
 
-        return {
-            id: city,
-            title: city,
-            percentage,
+                return {
+                    id: city,
+                    title: city,
+                    percentage,
+                }
+            },
+        )
+
+        if (topLocations.length > 0) {
+            return topLocations
         }
-    })
+
+        return fakeTopLocations
+    }, [topLocationsMetric.data, totalCount])
 
     return {
         data,

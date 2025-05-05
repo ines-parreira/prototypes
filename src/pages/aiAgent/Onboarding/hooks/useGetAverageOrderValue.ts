@@ -6,6 +6,8 @@ import { averageOrderValuePreviewQueryFactory } from 'models/reporting/queryFact
 import { StatsFilters } from 'models/stat/types'
 import safeDivide from 'pages/stats/automate/aiSalesAgent/util/safeDivide'
 
+const fakeAverageOrderValue = 150
+
 export const useGetAverageOrderValue = (
     filters: StatsFilters,
     timezone: string,
@@ -15,14 +17,22 @@ export const useGetAverageOrderValue = (
     )
 
     const formattedData = useMemo(() => {
-        if (!data || data.allData.length === 0 || isFetching || isError) {
+        if (isFetching) {
             return 0
+        }
+
+        if (!data || data.allData.length === 0 || isError) {
+            return fakeAverageOrderValue
         }
 
         const value = safeDivide(
             Number(data.allData[0][AiSalesAgentOrdersMeasure.GmvUsd]),
             Number(data.allData[0][AiSalesAgentOrdersMeasure.Count]),
         )
+
+        if (value === 0 || isNaN(value)) {
+            return fakeAverageOrderValue
+        }
 
         return value
     }, [data, isFetching, isError])

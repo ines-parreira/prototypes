@@ -48,7 +48,7 @@ describe('useGetAverageOrderValue', () => {
         expect(result.current.data).toEqual(0)
     })
 
-    it('should return 0 if it has an error', () => {
+    it('should return 0 if it has an error - return mocked data', () => {
         mockUseMetricPerDimension.mockReturnValue({
             data: undefined,
             isFetching: false,
@@ -59,10 +59,10 @@ describe('useGetAverageOrderValue', () => {
             useGetAverageOrderValue(filters, 'UTC'),
         )
 
-        expect(result.current.data).toEqual(0)
+        expect(result.current.data).toEqual(150)
     })
 
-    it('should return 0 if there is no data', () => {
+    it('should return 0 if there is no data - return mocked value', () => {
         mockUseMetricPerDimension.mockReturnValue({
             data: undefined,
             isFetching: false,
@@ -73,7 +73,7 @@ describe('useGetAverageOrderValue', () => {
             useGetAverageOrderValue(filters, 'UTC'),
         )
 
-        expect(result.current.data).toEqual(0)
+        expect(result.current.data).toEqual(150)
     })
 
     it('should return 0 if allData is empty', () => {
@@ -89,7 +89,7 @@ describe('useGetAverageOrderValue', () => {
             useGetAverageOrderValue(filters, 'UTC'),
         )
 
-        expect(result.current.data).toEqual(0)
+        expect(result.current.data).toEqual(150)
     })
 
     it('should return averageOrdersValue if correctly returned by query', () => {

@@ -1,59 +1,6 @@
 import { TopElement } from 'pages/aiAgent/Onboarding/components/TopElementsCard/types'
 import { Product } from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
 
-export const mockedCategories: TopElement[] = [
-    {
-        id: 'category-1',
-        title: 'Clothes',
-        percentage: 50,
-    },
-    {
-        id: 'category-2',
-        title: 'Makeup',
-        percentage: 25,
-    },
-    {
-        id: 'category-3',
-        title: 'Jewelry',
-        percentage: 10,
-    },
-]
-
-export const mockedProducts: Product[] = [
-    {
-        id: 1,
-        title: 'Nike Air Max plus',
-        description: '1593 sales',
-        price: 199,
-        featuredImage:
-            'https://athlete-shift.myshopify.com/cdn/shop/products/8cd561824439482e3cea5ba8e3a6e2f6.jpg?v=1661766740&width=533',
-    },
-    {
-        id: 2,
-        title: 'Nike Air Max plus',
-        description: '1593 sales',
-        price: 199,
-        featuredImage:
-            'https://athlete-shift.myshopify.com/cdn/shop/products/8cd561824439482e3cea5ba8e3a6e2f6.jpg?v=1661766740&width=533',
-    },
-    {
-        id: 3,
-        title: 'Nike Air Max plus',
-        description: '1593 sales',
-        price: 199,
-        featuredImage:
-            'https://athlete-shift.myshopify.com/cdn/shop/products/8cd561824439482e3cea5ba8e3a6e2f6.jpg?v=1661766740&width=533',
-    },
-    {
-        id: 4,
-        title: 'Nike Air Max plus',
-        description: '1593 sales',
-        price: 199,
-        featuredImage:
-            'https://athlete-shift.myshopify.com/cdn/shop/products/8cd561824439482e3cea5ba8e3a6e2f6.jpg?v=1661766740&width=533',
-    },
-]
-
 export const mockedAverageOrders = [
     {
         label: 'Line',
@@ -97,3 +44,38 @@ export const mockedAverageOrders = [
         ],
     },
 ]
+
+export const mockedCategories: TopElement[] = [
+    {
+        id: 'category-1',
+        title: 'Clothes',
+        percentage: 50,
+    },
+    {
+        id: 'category-2',
+        title: 'Makeup',
+        percentage: 25,
+    },
+    {
+        id: 'category-3',
+        title: 'Jewelry',
+        percentage: 10,
+    },
+]
+
+const generateRandomNumber = (min: number, max: number): number => {
+    return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+const generateMockedProducts = (count: number): Product[] => {
+    return Array.from({ length: count }, (_, index) => ({
+        id: index + 1,
+        title: 'Skin care cream',
+        description: `${generateRandomNumber(100, 5000)} sales`, // Random sales count between 100 and 5000
+        price: generateRandomNumber(10, 100), // Random price between $10 and $100
+        featuredImage:
+            require('assets/img/ai-agent/ai-sales-agent-product-card.png') as string,
+    }))
+}
+
+export const mockedProducts: Product[] = generateMockedProducts(10) // Generate 10 dynamic products

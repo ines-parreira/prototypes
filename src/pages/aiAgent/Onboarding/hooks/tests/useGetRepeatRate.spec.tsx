@@ -48,7 +48,7 @@ describe('useGetRepeatRate', () => {
         expect(result.current.data).toEqual(0)
     })
 
-    it('should return 0 if it has an error', () => {
+    it('should return 0 if it has an error - return mocked data', () => {
         mockUseMetricPerDimension.mockReturnValue({
             data: undefined,
             isFetching: false,
@@ -59,10 +59,10 @@ describe('useGetRepeatRate', () => {
             useGetRepeatRate(filters, 'UTC'),
         )
 
-        expect(result.current.data).toEqual(0)
+        expect(result.current.data).toEqual(22)
     })
 
-    it('should return 0 if there is no data', () => {
+    it('should return 0 if there is no data - return mocked data', () => {
         mockUseMetricPerDimension.mockReturnValue({
             data: undefined,
             isFetching: false,
@@ -73,10 +73,10 @@ describe('useGetRepeatRate', () => {
             useGetRepeatRate(filters, 'UTC'),
         )
 
-        expect(result.current.data).toEqual(0)
+        expect(result.current.data).toEqual(22)
     })
 
-    it('should return 0 if allData is empty', () => {
+    it('should return 0 if allData is empty - return mocked data', () => {
         mockUseMetricPerDimension.mockReturnValue({
             data: {
                 allData: [],
@@ -89,7 +89,7 @@ describe('useGetRepeatRate', () => {
             useGetRepeatRate(filters, 'UTC'),
         )
 
-        expect(result.current.data).toEqual(0)
+        expect(result.current.data).toEqual(22)
     })
 
     it('should return averageOrdersValue if correctly returned by query', () => {
