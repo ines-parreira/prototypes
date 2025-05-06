@@ -42,6 +42,7 @@ import AiAgentMainViewContainer from 'pages/aiAgent/AiAgentMainViewContainer'
 import AiAgentOnboardingWizard from 'pages/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizard'
 import { AiAgentPreviewModeSettingsContainer } from 'pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsContainer'
 import { AiAgentSales } from 'pages/aiAgent/AiAgentSales'
+import { AiAgentSalesStrategy } from 'pages/aiAgent/AiAgentSalesStrategy'
 import AiAgentScrapedDomainProductsContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainProductsContainer'
 import AiAgentScrapedDomainQuestionsContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainQuestionsContainer'
 import { AiAgentVolume } from 'pages/aiAgent/AiAgentVolume'
@@ -53,6 +54,7 @@ import { OptimizeContainer } from 'pages/aiAgent/insights/OptimizeContainer/Opti
 import { AiAgentOnboarding } from 'pages/aiAgent/Onboarding/components/AiAgentOnboarding/AiAgentOnboarding'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { AiAgentOverview } from 'pages/aiAgent/Overview/AiAgentOverview'
+import { SalesPaywallMiddleware } from 'pages/aiAgent/Overview/middlewares/SalesPaywallMiddleware'
 import { AiAgentPlaygroundContainer } from 'pages/aiAgent/Playground/AiAgentPlaygroundContainer'
 import { AiAgentAccountConfigurationProvider } from 'pages/aiAgent/providers/AiAgentAccountConfigurationProvider'
 import { AiAgentErrorBoundary } from 'pages/aiAgent/providers/AiAgentErrorBoundary'
@@ -721,7 +723,7 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                         <Route
                             path={`${path}/sales`}
                             exact
-                            component={AiAgentSales}
+                            component={SalesPaywallMiddleware(AiAgentSales)}
                         />
                     </AiAgentErrorBoundary>
                     <AiAgentErrorBoundary
@@ -731,7 +733,7 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                         <Route
                             path={`${path}/sales/customer-engagement`}
                             exact
-                            component={AiAgentVolume}
+                            component={SalesPaywallMiddleware(AiAgentVolume)}
                         />
                     </AiAgentErrorBoundary>
                     <AiAgentErrorBoundary
@@ -741,7 +743,19 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                         <Route
                             path={`${path}/sales/analytics`}
                             exact
-                            component={AiAgentAnalytics}
+                            component={SalesPaywallMiddleware(AiAgentAnalytics)}
+                        />
+                    </AiAgentErrorBoundary>
+                    <AiAgentErrorBoundary
+                        section="ai-agent-sales-strategy"
+                        team={SentryTeam.MARKETING}
+                    >
+                        <Route
+                            path={`${path}/sales/strategy`}
+                            exact
+                            component={SalesPaywallMiddleware(
+                                AiAgentSalesStrategy,
+                            )}
                         />
                     </AiAgentErrorBoundary>
                 </AiAgentStoreConfigurationProvider>

@@ -73,6 +73,7 @@ export const getAiAgentNavigationRoutes = (
         knowledge: `${basePath}/knowledge`,
         knowledgeSources: `${basePath}/knowledge/sources`,
         sales: `${basePath}/sales`,
+        salesStrategy: `${basePath}/sales/strategy`,
         customerEngagement: `${basePath}/sales/customer-engagement`,
         analytics: `${basePath}/sales/analytics`,
         pagesContent: `${basePath}/knowledge/sources/pages-content`,
@@ -218,9 +219,14 @@ const useNavigationItems = (
                         isConversationStartersEnabled ||
                         isConvertFloatingChatInputEnabled
                             ? ([
+                                  isSalesMetricsEnabled && {
+                                      route: routes.analytics,
+                                      title: ANALYTICS,
+                                      exact: true,
+                                  },
                                   (isSalesMetricsEnabled ||
                                       isConversationStartersEnabled) && {
-                                      route: routes.sales,
+                                      route: routes.salesStrategy,
                                       title: STRATEGY,
                                       exact: true,
                                   },
@@ -228,10 +234,7 @@ const useNavigationItems = (
                                       isConversationStartersEnabled) && {
                                       route: routes.customerEngagement,
                                       title: CUSTOMER_ENGAGEMENT,
-                                  },
-                                  isSalesMetricsEnabled && {
-                                      route: routes.analytics,
-                                      title: ANALYTICS,
+                                      exact: true,
                                   },
                               ].filter((x) => !!x) as NavigationItem[])
                             : undefined,
