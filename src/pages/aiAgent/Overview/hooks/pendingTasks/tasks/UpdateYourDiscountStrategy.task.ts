@@ -34,6 +34,6 @@ export class UpdateYourDiscountStrategyTask extends Task {
         data: RuleEngineData
         routes: RuleEngineRoutes
     }): string {
-        return aiAgentRoutes.sales
+        return aiAgentRoutes.salesStrategy
     }
 }
