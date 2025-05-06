@@ -132,28 +132,29 @@ export const useStoreActivations = ({
         storeNames,
         false,
     )
+
+    const { data: helpCenterListData } = useGetHelpCenterList(
+        { type: 'faq', per_page: HELP_CENTER_MAX_CREATION },
+        {
+            staleTime: 1000 * 60 * 5,
+            refetchOnWindowFocus: false,
+        },
+    )
+
     useEffect(() => {
         dispatch({
             type: 'UPDATE_STORE_CONFIGURATION',
             storeConfigurations,
             selfServiceChatChannels,
+            helpCentersFaq: helpCenterListData?.data.data,
+            flags: flagsRef.current,
         })
-    }, [selfServiceChatChannels, storeConfigurations, dispatch])
-
-    useGetHelpCenterList(
-        { type: 'faq', per_page: HELP_CENTER_MAX_CREATION },
-        {
-            staleTime: 1000 * 60 * 5,
-            refetchOnWindowFocus: false,
-            onSuccess: (helpCenters) => {
-                dispatch({
-                    type: 'UPDATE_HELP_CENTER_FAQ',
-                    helpCenters: helpCenters?.data.data,
-                    flags: flagsRef.current,
-                })
-            },
-        },
-    )
+    }, [
+        selfServiceChatChannels,
+        storeConfigurations,
+        dispatch,
+        helpCenterListData,
+    ])
 
     const { isLoading: isSaveLoading, upsertStoresConfiguration } =
         useStoresConfigurationMutation({ accountDomain })

@@ -36,10 +36,7 @@ type UpdateStoreConfiguration = {
     type: 'UPDATE_STORE_CONFIGURATION'
     storeConfigurations: StoreConfiguration[]
     selfServiceChatChannels: Record<string, SelfServiceChatChannel[]>
-}
-type UpdateHelpCenterFaq = {
-    type: 'UPDATE_HELP_CENTER_FAQ'
-    helpCenters?: Components.Schemas.GetHelpCenterDto[]
+    helpCentersFaq?: Components.Schemas.GetHelpCenterDto[]
     flags: LDFlagSet
 }
 export type ACTION_TYPE =
@@ -48,7 +45,6 @@ export type ACTION_TYPE =
     | ToggleSupportChatAction
     | ToggleSupportEmailAction
     | UpdateStoreConfiguration
-    | UpdateHelpCenterFaq
 
 const toggleSupport = (
     state: State,
@@ -221,16 +217,35 @@ const toggleSales = (
     }
 }
 
-const updateHelpCenterFaq = (
+export const storeConfigurationToState = (
     state: State,
-    { helpCenters, flags }: UpdateHelpCenterFaq,
+    {
+        storeConfigurations,
+        selfServiceChatChannels,
+        helpCentersFaq,
+        flags,
+    }: UpdateStoreConfiguration,
 ): State => {
-    const hasHelpCenterFaq = (helpCenters ?? []).length > 0
-    return Object.entries(state).reduce<Record<string, StoreActivation>>(
-        (acc, [storeName, store]) => {
+    const hasHelpCenterFaq = (helpCentersFaq ?? []).length > 0
+
+    return storeConfigurations.reduce<Record<string, StoreActivation>>(
+        (acc, storeConfiguration) => {
+            const {
+                storeName,
+                scopes,
+                chatChannelDeactivatedDatetime,
+                emailChannelDeactivatedDatetime,
+                monitoredEmailIntegrations,
+                helpCenterId,
+            } = storeConfiguration
+
             const isMissingKnowledge =
-                store.configuration.helpCenterId === null && hasHelpCenterFaq
-            const hasKnowledgeAlert = store.alerts.some(
+                helpCenterId === null ||
+                !helpCentersFaq?.some((it) => it.id === helpCenterId) ||
+                !hasHelpCenterFaq
+
+            const alerts = state[storeName]?.alerts ?? []
+            const hasKnowledgeAlert = alerts.some(
                 (it) => it.kind === KNOWLEDGE_ALERT_KIND,
             )
 
@@ -244,53 +259,9 @@ const updateHelpCenterFaq = (
                     to: getAiAgentNavigationRoutes(storeName, flags).knowledge,
                 },
             }
-
-            const alerts = store.alerts
             if (isMissingKnowledge && !hasKnowledgeAlert) {
                 alerts.push(knowledgeAlert)
             }
-            acc[storeName] = {
-                ...store,
-                support: {
-                    ...store.support,
-                    chat: {
-                        ...store.support.chat,
-                        enabled: isMissingKnowledge
-                            ? false
-                            : store.support.chat.enabled,
-                    },
-                    email: {
-                        ...store.support.email,
-                        enabled: isMissingKnowledge
-                            ? false
-                            : store.support.email.enabled,
-                    },
-                },
-                sales: {
-                    ...store.sales,
-                    enabled: isMissingKnowledge ? false : store.sales.enabled,
-                },
-                alerts,
-            }
-            return acc
-        },
-        {},
-    )
-}
-
-export const storeConfigurationToState = (
-    _state: State,
-    { storeConfigurations, selfServiceChatChannels }: UpdateStoreConfiguration,
-): State => {
-    return storeConfigurations.reduce<Record<string, StoreActivation>>(
-        (state, storeConfiguration) => {
-            const {
-                storeName,
-                scopes,
-                chatChannelDeactivatedDatetime,
-                emailChannelDeactivatedDatetime,
-                monitoredEmailIntegrations,
-            } = storeConfiguration
 
             const availableChatsForStore = selfServiceChatChannels[
                 storeName
@@ -304,21 +275,24 @@ export const storeConfigurationToState = (
             const isChatEnabled =
                 scopes.includes(AiAgentScope.Support) &&
                 !chatChannelDeactivatedDatetime &&
-                !isChatIntegrationMissing
+                !isChatIntegrationMissing &&
+                !isMissingKnowledge
 
             const isEmailEnabled =
                 scopes.includes(AiAgentScope.Support) &&
-                !emailChannelDeactivatedDatetime
+                !emailChannelDeactivatedDatetime &&
+                !isMissingKnowledge
 
             const aiSalesAgentEmailEnabled = getAiSalesAgentEmailEnabledFlag()
             const salesIsDisabled = aiSalesAgentEmailEnabled
                 ? !isChatEnabled && !isEmailEnabled
                 : !isChatEnabled
 
-            state[storeName] = {
+            acc[storeName] = {
+                ...state[storeName],
                 name: storeName,
                 title: storeName,
-                alerts: [],
+                alerts,
                 configuration: storeConfiguration,
                 support: {
                     enabled: isChatEnabled || isEmailEnabled,
@@ -341,7 +315,7 @@ export const storeConfigurationToState = (
                     isDisabled: salesIsDisabled,
                 },
             }
-            return state
+            return acc
         },
         {},
     )
@@ -357,8 +331,6 @@ export const reducer = (state: State, action: ACTION_TYPE): State => {
             return toggleSupportEmail(state, action)
         case 'CHANGE_SALES':
             return toggleSales(state, action)
-        case 'UPDATE_HELP_CENTER_FAQ':
-            return updateHelpCenterFaq(state, action)
         case 'UPDATE_STORE_CONFIGURATION':
             return storeConfigurationToState(state, action)
     }
