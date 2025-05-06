@@ -27,20 +27,23 @@ const AIAgentTicketFeedback: React.FC<Props> = ({ ticketFeedback }) => {
             )?.public,
     ).length
 
-    const guidanceCount = ticketFeedback.messages.reduce(
-        (count, message) => count + message.guidance.length,
-        0,
-    )
+    const guidanceCount = new Set(
+        ticketFeedback.messages.flatMap((message) =>
+            message.guidance.map((g) => g.id),
+        ),
+    ).size
 
-    const actionCount = ticketFeedback.messages.reduce(
-        (count, message) => count + message.actions.length,
-        0,
-    )
+    const actionCount = new Set(
+        ticketFeedback.messages.flatMap((message) =>
+            message.actions.map((a) => a.id),
+        ),
+    ).size
 
-    const knowledgeCount = ticketFeedback.messages.reduce(
-        (count, message) => count + message.knowledge.length,
-        0,
-    )
+    const knowledgeCount = new Set(
+        ticketFeedback.messages.flatMap((message) =>
+            message.knowledge.map((k) => k.id),
+        ),
+    ).size
 
     const orders = ticketFeedback.messages.reduce<
         {

@@ -141,6 +141,11 @@ describe('AIAgentTicketFeedback', () => {
                                         id: 1,
                                         name: 'Cancelling an order',
                                     },
+                                    // Duplicated guidance should not be counted
+                                    {
+                                        id: 1,
+                                        name: 'Cancelling an order',
+                                    },
                                     {
                                         id: 2,
                                         name: 'How to make your cat do the laundry',
@@ -171,6 +176,12 @@ describe('AIAgentTicketFeedback', () => {
                                 guidance: [],
                                 actions: [],
                                 knowledge: [
+                                    {
+                                        type: 'article',
+                                        id: 234,
+                                        name: 'How To Order a Pizza',
+                                    },
+                                    // Duplicated knowledge should not be counted
                                     {
                                         type: 'article',
                                         id: 234,
@@ -208,6 +219,12 @@ describe('AIAgentTicketFeedback', () => {
                                 guidance: [],
                                 knowledge: [],
                                 actions: [
+                                    {
+                                        id: 1,
+                                        name: 'Snooze',
+                                        type: 'soft_action',
+                                    },
+                                    // Duplicated action should not be counted
                                     {
                                         id: 1,
                                         name: 'Snooze',
