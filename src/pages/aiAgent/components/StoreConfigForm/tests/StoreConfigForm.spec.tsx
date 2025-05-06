@@ -1512,15 +1512,13 @@ describe('<StoreConfigForm />', () => {
             renderComponent()
 
             // Add tags
-            await userEvent.click(
-                screen.getByRole('button', { name: 'Add Tag' }),
-            )
+            userEvent.click(screen.getByRole('button', { name: 'Add Tag' }))
 
             // Save changes
             const saveButton = screen.getByRole('button', {
                 name: /save changes/i,
             })
-            await userEvent.click(saveButton)
+            userEvent.click(saveButton)
 
             expect(mockOnSubmit).toHaveBeenCalled()
         })
@@ -1540,15 +1538,13 @@ describe('<StoreConfigForm />', () => {
             renderComponent()
 
             // Add tags
-            await userEvent.click(
-                screen.getByRole('button', { name: 'Add Tag' }),
-            )
+            userEvent.click(screen.getByRole('button', { name: 'Add Tag' }))
 
             // Save changes
             const saveButton = screen.getByRole('button', {
                 name: /save changes/i,
             })
-            await userEvent.click(saveButton)
+            userEvent.click(saveButton)
 
             expect(mockOnSubmit).toHaveBeenCalled()
         })
@@ -1673,7 +1669,7 @@ describe('<StoreConfigForm />', () => {
             renderComponent()
 
             // Click on the Tags row to open the drawer
-            await userEvent.click(screen.getAllByText('Tags')[0])
+            userEvent.click(screen.getAllByText('Tags')[0])
 
             expect(getDrawer()).toBeVisible()
             expect(getDrawer()).toBeInTheDocument()
@@ -1707,13 +1703,13 @@ describe('<StoreConfigForm />', () => {
             renderComponent()
 
             // Open the drawer by clicking on Tags
-            await userEvent.click(screen.getAllByText('Tags')[0])
+            userEvent.click(screen.getAllByText('Tags')[0])
 
             // Save changes
             const saveButton = within(getDrawer()).getByRole('button', {
                 name: /save changes/i,
             })
-            await userEvent.click(saveButton)
+            userEvent.click(saveButton)
 
             expect(mockOnSubmit).toHaveBeenCalled()
         })
@@ -1726,19 +1722,17 @@ describe('<StoreConfigForm />', () => {
             renderComponent()
 
             // Open the drawer by clicking on Tags
-            await userEvent.click(screen.getAllByText('Tags')[0])
+            userEvent.click(screen.getAllByText('Tags')[0])
 
-            await userEvent.click(
-                screen.getByRole('button', { name: /add tag/i }),
-            )
-            await userEvent.click(screen.getByText(/choose tag/i))
+            userEvent.click(screen.getByRole('button', { name: /add tag/i }))
+            userEvent.click(screen.getByText(/choose tag/i))
             await userEvent.type(screen.getAllByRole('textbox')[1], 'Test')
 
             // Save changes
             const saveButton = within(getDrawer()).getByRole('button', {
                 name: /save changes/i,
             })
-            await userEvent.click(saveButton)
+            userEvent.click(saveButton)
 
             expect(updateValueMocked).toHaveBeenCalledWith('tags', [
                 {
@@ -1755,19 +1749,17 @@ describe('<StoreConfigForm />', () => {
             renderComponent()
 
             // Open the drawer by clicking on Ticket Fields
-            await userEvent.click(screen.getAllByText('Ticket Fields')[0])
-            await userEvent.click(
+            userEvent.click(screen.getAllByText('Ticket Fields')[0])
+            userEvent.click(
                 screen.getByRole('button', { name: /add ticket field/i }),
             )
-            await userEvent.click(
-                screen.getByText(ticketInputFieldDefinition.label),
-            )
+            userEvent.click(screen.getByText(ticketInputFieldDefinition.label))
 
             // Save changes
             const saveButton = within(getDrawer()).getByRole('button', {
                 name: /save changes/i,
             })
-            await userEvent.click(saveButton)
+            userEvent.click(saveButton)
 
             expect(updateValueMocked).toHaveBeenCalledWith('customFieldIds', [
                 123,
@@ -1781,18 +1773,16 @@ describe('<StoreConfigForm />', () => {
 
             renderComponent()
 
-            // Open the drawer by clicking on Handover Topics
-            await userEvent.click(screen.getByText('Handover topics'))
-            await userEvent.click(
-                screen.getByRole('button', { name: /add topic/i }),
-            )
+            // Open the drawer by clicking on the handover topics link
+            userEvent.click(screen.getByText('handover topics'))
+            userEvent.click(screen.getByRole('button', { name: /add topic/i }))
             await userEvent.type(screen.getAllByRole('textbox')[1], 'Test')
 
             // Save changes
             const saveButton = within(getDrawer()).getByRole('button', {
                 name: /save changes/i,
             })
-            await userEvent.click(saveButton)
+            userEvent.click(saveButton)
 
             expect(updateValueMocked).toHaveBeenCalledWith('excludedTopics', [
                 'Test',
@@ -1813,16 +1803,14 @@ describe('<StoreConfigForm />', () => {
             renderComponent()
 
             // Open the drawer by clicking on Tags
-            await userEvent.click(screen.getAllByText('Tags')[0])
+            userEvent.click(screen.getAllByText('Tags')[0])
 
             // Add tags
-            await userEvent.click(
-                screen.getByRole('button', { name: 'Add Tag' }),
-            )
+            userEvent.click(screen.getByRole('button', { name: 'Add Tag' }))
 
             // Cancel changes
             const cancelButton = screen.getByRole('button', { name: /cancel/i })
-            await userEvent.click(cancelButton)
+            userEvent.click(cancelButton)
 
             expect(mockOnSubmit).not.toHaveBeenCalled()
         })
@@ -1835,17 +1823,17 @@ describe('<StoreConfigForm />', () => {
             renderComponent()
 
             // Open Tags drawer
-            await userEvent.click(screen.getAllByText('Tags')[0])
+            userEvent.click(screen.getAllByText('Tags')[0])
             expect(within(getDrawer()).getByText('Tags')).toBeVisible()
 
             // Close drawer
             const cancelButton = within(getDrawer()).getByRole('button', {
                 name: /cancel/i,
             })
-            await userEvent.click(cancelButton)
+            userEvent.click(cancelButton)
 
             // Open Ticket Fields drawer
-            await userEvent.click(screen.getAllByText('Ticket Fields')[0])
+            userEvent.click(screen.getAllByText('Ticket Fields')[0])
             expect(
                 within(getDrawer()).getAllByText('Ticket Fields')[0],
             ).toBeVisible()
@@ -1977,7 +1965,7 @@ describe('<StoreConfigForm />', () => {
             renderComponent()
 
             const handoverLink = screen.getByText('Define')
-            await userEvent.click(handoverLink)
+            userEvent.click(handoverLink)
 
             expect(screen.getByRole('dialog')).toBeInTheDocument()
             expect(screen.getByText('Handover Topics')).toBeInTheDocument()
@@ -1987,10 +1975,10 @@ describe('<StoreConfigForm />', () => {
             renderComponent()
 
             const handoverLink = screen.getByText('Define')
-            await userEvent.click(handoverLink)
+            userEvent.click(handoverLink)
 
             const closeButton = screen.getByRole('button', { name: '' })
-            await userEvent.click(closeButton)
+            userEvent.click(closeButton)
 
             await waitFor(() => {
                 expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
@@ -2001,10 +1989,10 @@ describe('<StoreConfigForm />', () => {
             renderComponent()
 
             const handoverLink = screen.getByText('Define')
-            await userEvent.click(handoverLink)
+            userEvent.click(handoverLink)
 
             const cancelButton = screen.getByRole('button', { name: 'Cancel' })
-            await userEvent.click(cancelButton)
+            userEvent.click(cancelButton)
 
             await waitFor(() => {
                 expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
@@ -2027,12 +2015,12 @@ describe('<StoreConfigForm />', () => {
             renderComponent()
 
             const handoverLink = screen.getByText('Define')
-            await userEvent.click(handoverLink)
+            userEvent.click(handoverLink)
 
             const saveButton = screen.getByRole('button', {
                 name: 'Confirm Topics',
             })
-            await userEvent.click(saveButton)
+            userEvent.click(saveButton)
 
             await waitFor(() => {
                 expect(reportError).toHaveBeenCalledWith(mockError, {
@@ -2107,7 +2095,7 @@ describe('<StoreConfigForm />', () => {
 
             renderComponent()
 
-            await userEvent.click(
+            userEvent.click(
                 screen.getByRole('button', { name: 'Save Changes' }),
             )
 

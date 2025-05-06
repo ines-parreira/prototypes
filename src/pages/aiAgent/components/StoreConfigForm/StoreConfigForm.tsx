@@ -1017,34 +1017,25 @@ export const StoreConfigForm = ({
                                                     over to your team. Choose
                                                     how AI Agent behaves when
                                                     handing over tickets, and
-                                                    add specific handover topics
+                                                    add specific{' '}
+                                                    <a
+                                                        href="#"
+                                                        onClick={() => {
+                                                            setIsDrawerOpen(
+                                                                true,
+                                                            )
+                                                            setActiveDrawerContent(
+                                                                'excludedTopics',
+                                                            )
+                                                        }}
+                                                    >
+                                                        handover topics
+                                                    </a>{' '}
                                                     that should never be
                                                     resolved by AI Agent.
                                                 </p>
                                             </SettingsCardHeader>
                                             <SettingsCardContent>
-                                                <SettingsFeatureRow
-                                                    title="Handover topics"
-                                                    description="Define topics that should always be handed over to your team."
-                                                    badgeText={
-                                                        formValues
-                                                            .excludedTopics
-                                                            ?.length === 0
-                                                            ? 'No topics'
-                                                            : `${formValues.excludedTopics?.length} topics`
-                                                    }
-                                                    nbFeatures={
-                                                        formValues
-                                                            .excludedTopics
-                                                            ?.length ?? 0
-                                                    }
-                                                    onClick={() => {
-                                                        setIsDrawerOpen(true)
-                                                        setActiveDrawerContent(
-                                                            'excludedTopics',
-                                                        )
-                                                    }}
-                                                />
                                                 <SettingsFeatureRow
                                                     title="Tell customers when handing over"
                                                     description="When enabled, AI Agent will promptly respond and tell customers their request is being handed over for further assistance. When disabled, AI Agent will not respond before handing over."
