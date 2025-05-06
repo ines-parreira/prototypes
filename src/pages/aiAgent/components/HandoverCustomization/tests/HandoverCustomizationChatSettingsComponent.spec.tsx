@@ -1,4 +1,5 @@
 import { fireEvent, screen } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -8,6 +9,7 @@ import { useHandoverCustomizationChatOfflineSettingsForm } from 'pages/aiAgent/h
 import { useHandoverCustomizationChatOnlineSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOnlineSettingsForm'
 import { useHandoverCustomizationChatSettings } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatSettings'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
+import { renderWithRouter } from 'utils/testing'
 
 import { HandoverCustomizationChatSettingsComponent } from '../HandoverCustomizationChatSettingsComponent'
 
@@ -495,5 +497,23 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 expect(drawerTitle).not.toBeVisible()
             })
         })
+    })
+
+    it('renders chat handover behavior link with correct URL', () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+        })
+
+        renderWithRouter(
+            <HandoverCustomizationChatSettingsComponent {...mockProps} />,
+        )
+
+        const link = screen.getByText(/Chat's handover behavior/i)
+        expect(link).toBeInTheDocument()
+        expect(link).toHaveAttribute(
+            'href',
+            'https://docs.gorgias.com/en-US/customize-how-ai-agent-hands-over-chats-to-live-agents-(beta)-1316578?utm_source=scaled_success&utm_medium=product&utm_campaign=learn-more-ai-handovers-channel-settings',
+        )
+        expect(link).toHaveAttribute('target', '_blank')
     })
 })

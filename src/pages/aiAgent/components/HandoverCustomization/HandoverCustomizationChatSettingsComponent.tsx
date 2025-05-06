@@ -209,12 +209,20 @@ export const HandoverCustomizationChatSettingsComponent = ({
                             <SettingsCardTitle>
                                 Handover instructions
                             </SettingsCardTitle>
-                            AI Agent automatically hands over ticket to your
-                            team whenever it lacks confidence in an answer,
-                            encounters a listed handover topic, or does not find
-                            any relevant knowledge to answer the shopper&apos;s
-                            question. Further customize your Chat&apos;s
-                            handover behavior below.
+                            <p>
+                                AI Agent automatically hands over ticket to your
+                                team whenever it lacks confidence in an answer,
+                                encounters a listed handover topic, or does not
+                                find any relevant knowledge to answer the
+                                shopper&apos;s question. Further customize your{' '}
+                                <a
+                                    href="https://docs.gorgias.com/en-US/customize-how-ai-agent-hands-over-chats-to-live-agents-(beta)-1316578?utm_source=scaled_success&utm_medium=product&utm_campaign=learn-more-ai-handovers-channel-settings"
+                                    target="_blank"
+                                >
+                                    Chat&apos;s handover behavior
+                                </a>{' '}
+                                below.
+                            </p>
                         </SettingsCardHeader>
                         <SettingsCardContent id="handover-customization-container">
                             {availableChats && availableChats.length > 1 && (
