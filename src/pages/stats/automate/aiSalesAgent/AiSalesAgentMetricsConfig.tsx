@@ -153,7 +153,7 @@ export const AiSalesAgentMetricsWithDrillDownConfig: Record<
     [AiSalesAgentChart.AiSalesAgentTotalSalesConv]: {
         title: 'Conversations',
         hint: {
-            title: 'The number of conversations handled or influenced by the AI Agent for Sales.',
+            title: 'The number of conversations handled using Shopping Assistant skills.',
         },
         useTrend: useTotalSalesOpportunityAIConvTrend,
         fetchTrend: fetchTotalSalesOpportunityAIConvTrend,
@@ -168,7 +168,7 @@ export const AiSalesAgentMetricsWithDrillDownConfig: Record<
     [AiSalesAgentChart.AiSalesAgentSuccessRate]: {
         title: 'Success rate',
         hint: {
-            title: 'The percentage of AI Agent for Sales interactions that were successfully automated without human escalation.',
+            title: 'The percentage of Shopping Assistant conversations that were fully resolved without human escalation.',
         },
         useTrend: useSuccessRateTrend,
         fetchTrend: fetchSuccessRateTrend,
@@ -180,9 +180,9 @@ export const AiSalesAgentMetricsWithDrillDownConfig: Record<
         domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesDiscountOffered]: {
-        title: 'Discount codes offered',
+        title: 'Discount offered',
         hint: {
-            title: 'Number of discount codes that were sent by AI Agent for Sales. ',
+            title: 'The number of discount codes sent by Shopping Assistant.',
         },
         useTrend: useDiscountCodesOfferedTrend,
         fetchTrend: fetchDiscountCodesOfferedTrend,
@@ -194,9 +194,9 @@ export const AiSalesAgentMetricsWithDrillDownConfig: Record<
         drillDownMetric: AiSalesAgentChart.AiSalesDiscountOffered,
     },
     [AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders]: {
-        title: 'Number of orders influenced',
+        title: 'Orders influenced',
         hint: {
-            title: 'The number of orders influenced within 7 days of a conversation with the AI Agent for Sales, without human intervention.',
+            title: 'The number of orders placed within 7 days of a Shopping Assistant conversation, without a direct handover.',
         },
         useTrend: useTotalNumberOfOrdersTrend,
         fetchTrend: fetchTotalNumberOfOrdersTrend,
@@ -210,7 +210,7 @@ export const AiSalesAgentMetricsWithDrillDownConfig: Record<
     [AiSalesAgentChart.AiSalesAgentTotalProductRecommendations]: {
         title: 'Product recommendations',
         hint: {
-            title: 'The number of product recommendations made by the AI Agent for Sales.',
+            title: 'The number of products recommended by Shopping Assistant.',
         },
         useTrend: useTotalProductRecommendations,
         fetchTrend: fetchTotalProductRecommendations,
@@ -230,9 +230,9 @@ export const AiSalesAgentMetricConfig: Record<
 > = {
     ...AiSalesAgentMetricsWithDrillDownConfig,
     [AiSalesAgentChart.AiSalesAgentGmv]: {
-        title: 'GMV influenced $',
+        title: 'GMV Influenced',
         hint: {
-            title: 'The revenue generated from orders placed during or within 7 days after a conversation with the AI Agent for Sales, without human intervention.',
+            title: 'Revenue from orders placed within 7 days of a Shopping Assistant conversation, without human help.',
         },
         useTrend: useGmvInfluencedTrend,
         fetchTrend: fetchGmvInfluencedTrend,
@@ -242,9 +242,9 @@ export const AiSalesAgentMetricConfig: Record<
         domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesAgentGmvInfluenced]: {
-        title: 'GMV influenced %',
+        title: 'GMV Influence Rate',
         hint: {
-            title: 'The percentage of revenue generated from AI-influenced orders, relative to all revenue.',
+            title: 'The percentage of your store’s total revenue influenced by Shopping Assistant.',
         },
         useTrend: useGmvInfluencedRateTrend,
         fetchTrend: fetchGmvInfluencedRateTrend,
@@ -254,9 +254,9 @@ export const AiSalesAgentMetricConfig: Record<
         domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesAgentRoiRate]: {
-        title: 'ROI rate',
+        title: 'ROI',
         hint: {
-            title: 'The return on investment, calculated as the ratio between the GMV generated and the cost of the AI Agent for Sales.',
+            title: 'The return on investment from Shopping Assistant, based on revenue generated and your cost.',
         },
         useTrend: useRoiRateTrend,
         fetchTrend: fetchRoiRateTrend,
@@ -268,7 +268,7 @@ export const AiSalesAgentMetricConfig: Record<
     [AiSalesAgentChart.AiSalesAgentAverageOrderValue]: {
         title: 'Average order value',
         hint: {
-            title: 'The average revenue per order influenced by the AI Agent for Sales.',
+            title: 'The average value of orders placed within 7 days of a conversation with Shopping Assistant.',
         },
         useTrend: useAverageOrderValueTrend,
         fetchTrend: fetchAverageOrderValueTrend,
@@ -278,7 +278,7 @@ export const AiSalesAgentMetricConfig: Record<
         domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesAgentProductClickRate]: {
-        title: 'Click rate',
+        title: 'Click through rate',
         hint: {
             title: 'The percentage of product recommendations clicked by customers.',
         },
@@ -290,7 +290,7 @@ export const AiSalesAgentMetricConfig: Record<
         domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesAgentProductBuyRate]: {
-        title: 'Buy rate',
+        title: 'Converted recommendations',
         hint: {
             title: 'The percentage of product recommendations that led to a purchase.',
         },
@@ -305,7 +305,7 @@ export const AiSalesAgentMetricConfig: Record<
     [AiSalesAgentChart.AiSalesAgentConversionRate]: {
         title: 'Conversion rate',
         hint: {
-            title: 'The percentage of AI Agent for Sales interactions that resulted in a sale.',
+            title: 'The percentage of Shopping Assistant interactions after which an order was placed within 7 days.',
         },
         useTrend: useConversionRateTrend,
         fetchTrend: fetchConversionRateTrend,
@@ -317,7 +317,7 @@ export const AiSalesAgentMetricConfig: Record<
     [AiSalesAgentChart.AiSalesTimeSavedByAgent]: {
         title: 'Time saved by agents',
         hint: {
-            title: 'The estimated time saved by AI Agent for Sales in assisting customers with their purchases, reducing manual workload for human agents.',
+            title: 'The estimated time that human agents would have spent on conversations handled autonomously by Shopping Assistant.',
         },
         useTrend: useTimeSavedByAgentTrend,
         fetchTrend: fetchTimeSavedByAgentTrend,
@@ -330,7 +330,7 @@ export const AiSalesAgentMetricConfig: Record<
     [AiSalesAgentChart.AiSalesDiscountApplied]: {
         title: 'Discount codes applied',
         hint: {
-            title: 'Number of discount codes sent by AI Agent for Sales used by customer to make a purchase.',
+            title: 'The number of purchases placed using discount codes sent by Shopping Assistant.',
         },
         useTrend: useDiscountCodesAppliedTrend,
         fetchTrend: fetchDiscountCodesAppliedTrend,
@@ -340,9 +340,9 @@ export const AiSalesAgentMetricConfig: Record<
         domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesDiscountRateApplied]: {
-        title: '% discount applied',
+        title: 'Discount usage',
         hint: {
-            title: 'Percentage of discount codes sent by AI Agent for Sales used by customers for a purchase over the discount codes sent.',
+            title: 'The percentage of discounts sent by Shopping Assistant that customers apply.',
         },
         useTrend: useDiscountCodesRateAppliedTrend,
         fetchTrend: fetchDiscountCodesRateAppliedTrend,
@@ -352,9 +352,9 @@ export const AiSalesAgentMetricConfig: Record<
         domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesAverageDiscount]: {
-        title: 'Average discount used',
+        title: 'Average discount amount',
         hint: {
-            title: 'Average discount (in $) of all the codes used by customers for a purchase.',
+            title: 'The average discount ($) offered by Shopping Assistant and applied by customers.',
         },
         useTrend: useDiscountCodesAverageValueTrend,
         fetchTrend: fetchDiscountCodesAverageValueTrend,
@@ -378,9 +378,9 @@ export const AiSalesAgentChartConfig: Record<
     }
 > = {
     [AiSalesAgentChart.AiSalesAgentGmvInfluencedOverTime]: {
-        title: 'GMV influenced % over time ',
+        title: 'GMV influence rate (%) over time',
         hint: {
-            title: 'The percentage of revenue influenced by the AI Agent for Sales over a specific period of time.',
+            title: 'The percentage of your store’s total GMV influenced by Shopping Assistant, shown over time.',
         },
         useTimeSeries: useGmvInfluenceOverTimeSeries,
         fetchTimeSeries: fetchGmvInflueceOverTimeSeries,

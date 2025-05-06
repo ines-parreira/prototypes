@@ -132,7 +132,7 @@ describe('PersonalityStep - With prepopulated data', () => {
 
         await waitFor(() => {
             expect(
-                screen.queryByText(/Maximum discount percentage/),
+                screen.queryByText(/Fixed discount \(%\)/),
             ).toBeInTheDocument()
         })
 
@@ -191,12 +191,12 @@ describe('PersonalityStep - Empty state', () => {
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Strikes a balance between educating the customer and encouraging them to make a purchase.',
+                'Strike a balance between providing educational information and encouraging a purchase.',
             ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'The Sales AI Agent offers discounts at a level optimized for both conversions and profit.',
+                'Use discounts selectively based on customer behavior and likelihood to convert.',
             ),
         ).toBeInTheDocument()
     })
@@ -214,7 +214,7 @@ describe('PersonalityStep - Empty state', () => {
 
             expect(
                 screen.getByText(
-                    'Prioritizes driving the sale with a strong focus on persuasion and urgency.',
+                    'Drive purchases by confidently recommending products and encouraging immediate action.',
                 ),
             ).toBeInTheDocument()
         })
@@ -233,7 +233,7 @@ describe('PersonalityStep - Empty state', () => {
 
             expect(
                 screen.getByText(
-                    'The Sales AI Agent frequently uses discounts to maximize sales, prioritizing conversions over margins.',
+                    'Use discounts often to maximize conversions and reduce cart abandonment.',
                 ),
             ).toBeInTheDocument()
         })
@@ -252,7 +252,7 @@ describe('PersonalityStep - Empty state', () => {
 
             expect(
                 screen.getByText(
-                    'The Sales AI Agent will not offer any discounts under any circumstances.',
+                    'Sell at full price, focusing on value. Offering discounts boosts conversion by ~50%.',
                 ),
             ).toBeInTheDocument()
         })
@@ -268,9 +268,8 @@ describe('PersonalityStep - Empty state', () => {
     it('should update the max percentage discount when valid discount', async () => {
         renderComponent()
 
-        const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
-            /Maximum discount percentage/,
-        )
+        const maxDiscountInput =
+            screen.getByLabelText<HTMLInputElement>(/Fixed discount \(%\)/)
 
         // Remove the default value
         userEvent.clear(maxDiscountInput)
@@ -297,7 +296,7 @@ describe('PersonalityStep - Empty state', () => {
 
             expect(
                 screen.getByText(
-                    'The Sales AI Agent will not offer any discounts under any circumstances.',
+                    'Sell at full price, focusing on value. Offering discounts boosts conversion by ~50%.',
                 ),
             ).toBeInTheDocument()
         })
@@ -319,7 +318,7 @@ describe('PersonalityStep - Empty state', () => {
 
             expect(
                 screen.getByText(
-                    'The Sales AI Agent frequently uses discounts to maximize sales, prioritizing conversions over margins.',
+                    'Use discounts often to maximize conversions and reduce cart abandonment.',
                 ),
             ).toBeInTheDocument()
         })
@@ -336,15 +335,14 @@ describe('PersonalityStep - Empty state', () => {
         renderComponent()
 
         await waitFor(() => {
-            const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
-                /Maximum discount percentage/,
-            )
+            const maxDiscountInput =
+                screen.getByLabelText<HTMLInputElement>(/Fixed discount \(%\)/)
             fireEvent.change(maxDiscountInput, { target: { value: '0' } })
             expect(maxDiscountInput.value).toBe('0')
 
             expect(
                 screen.getByText(
-                    'The Sales AI Agent will not offer any discounts under any circumstances.',
+                    'Sell at full price, focusing on value. Offering discounts boosts conversion by ~50%.',
                 ),
             ).toBeInTheDocument()
         })
@@ -354,9 +352,8 @@ describe('PersonalityStep - Empty state', () => {
         renderComponent()
 
         await waitFor(() => {
-            const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
-                /Maximum discount percentage/,
-            )
+            const maxDiscountInput =
+                screen.getByLabelText<HTMLInputElement>(/Fixed discount \(%\)/)
             fireEvent.change(maxDiscountInput, { target: { value: '101' } })
             expect(maxDiscountInput.value).toBe('101')
 
@@ -371,7 +368,7 @@ describe('PersonalityStep - Empty state', () => {
 
         await waitFor(() => {
             expect(
-                screen.queryByText(/Maximum discount percentage/),
+                screen.queryByText(/Fixed discount \(%\)/),
             ).toBeInTheDocument()
         })
 
@@ -389,14 +386,13 @@ describe('PersonalityStep - Empty state', () => {
 
         await waitFor(() => {
             expect(
-                screen.queryByText(/Maximum discount percentage/),
+                screen.queryByText(/Fixed discount \(%\)/),
             ).toBeInTheDocument()
         })
 
         await waitFor(() => {
-            const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
-                /Maximum discount percentage/,
-            )
+            const maxDiscountInput =
+                screen.getByLabelText<HTMLInputElement>(/Fixed discount \(%\)/)
             fireEvent.change(maxDiscountInput, { target: { value: '90' } })
             expect(maxDiscountInput.value).toBe('90')
         })
@@ -656,13 +652,13 @@ describe('PersonalityStep - Onboarding mutation', () => {
 
             expect(
                 screen.getByText(
-                    'Strikes a balance between educating the customer and encouraging them to make a purchase.',
+                    'Strike a balance between providing educational information and encouraging a purchase.',
                 ),
             ).toBeInTheDocument()
 
             expect(
                 screen.getByText(
-                    'The Sales AI Agent offers discounts at a level optimized for both conversions and profit.',
+                    'Use discounts selectively based on customer behavior and likelihood to convert.',
                 ),
             ).toBeInTheDocument()
 
@@ -729,9 +725,8 @@ describe('PersonalityStep - Onboarding mutation', () => {
         it('should call doUpdateOnboardingMutation when values are changed', async () => {
             renderComponent()
 
-            const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
-                /Maximum discount percentage/,
-            )
+            const maxDiscountInput =
+                screen.getByLabelText<HTMLInputElement>(/Fixed discount \(%\)/)
             fireEvent.change(maxDiscountInput, { target: { value: '0' } })
             expect(maxDiscountInput.value).toBe('0')
 

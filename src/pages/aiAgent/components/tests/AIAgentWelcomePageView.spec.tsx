@@ -135,22 +135,27 @@ describe('<AIAgentWelcomePageView />', () => {
 
         expect(
             screen.getByText(
-                /Introducing AI Agent - with Support and Sales skills, your team’s newest member for seamless customer interactions/,
+                /Introducing AI Agent: Your new team member that drives sales and automates support in 1:1 conversations./,
             ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                /Lead customers to fast resolutions in seconds, not hours/,
+                /Stay available 24\/7 across chat, email, and more — without extra headcount/,
             ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                /Enhance team productivity, reducing workload & response times by automating up to 60% of your tickets/,
+                /Automate FAQs and order updates so your team can focus on high-impact work/,
             ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                /Offer tailored discounts and product recommendations to drive personalized shopping experiences/,
+                /Convert more with tailored product recommendations and smart discounts based on real-time data/,
+            ),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                /Train the AI to match your brand voice, policies, and sales strategy/,
             ),
         ).toBeInTheDocument()
         expect(screen.getByText(/AI Agent Skills/)).toBeInTheDocument()

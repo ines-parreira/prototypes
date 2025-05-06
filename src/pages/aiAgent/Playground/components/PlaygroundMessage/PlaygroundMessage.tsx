@@ -153,6 +153,11 @@ export const PlaygroundGenericErrorMessage = ({
     </div>
 )
 
+const agentSkillText = {
+    [AgentSkill.SALES]: 'Shopping Assistant',
+    [AgentSkill.SUPPORT]: 'Support Agent',
+}
+
 type MessageContainerProps = {
     children: ReactNode
     channel: PlaygroundChannels
@@ -236,7 +241,7 @@ const MessageContainer = ({
                             type={'magenta'}
                             corner="square"
                         >
-                            {agentSkill}
+                            {agentSkillText[agentSkill]}
                         </Badge>
                     )}
                     <i

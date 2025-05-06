@@ -10,7 +10,7 @@ import { Task } from './Task'
 export class EnableSalesSkill extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
-            'Enable AI Agent for Sales',
+            'Enable Shopping Assistant',
             'Boost GMV through automated sales',
             'BASIC',
             data,

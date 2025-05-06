@@ -70,7 +70,7 @@ const history = createMemoryHistory({
 })
 
 const maxDiscountInput = (): HTMLInputElement =>
-    screen.getByLabelText(/Maximum discount percentage/)
+    screen.getByLabelText(/Fixed discount \(%\)/)
 
 describe('<SalesSettings />', () => {
     beforeEach(() => {
@@ -133,7 +133,7 @@ describe('<SalesSettings />', () => {
 
             expect(
                 screen.getByText(
-                    'Prioritizes driving the sale with a strong focus on persuasion and urgency.',
+                    'Drive purchases by confidently recommending products and encouraging immediate action.',
                 ),
             ).toBeInTheDocument()
         })
@@ -152,7 +152,7 @@ describe('<SalesSettings />', () => {
 
             expect(
                 screen.getByText(
-                    'The Sales AI Agent frequently uses discounts to maximize sales, prioritizing conversions over margins.',
+                    'Use discounts often to maximize conversions and reduce cart abandonment.',
                 ),
             ).toBeInTheDocument()
         })
@@ -171,7 +171,7 @@ describe('<SalesSettings />', () => {
 
             expect(
                 screen.getByText(
-                    'The Sales AI Agent will not offer any discounts under any circumstances.',
+                    'Sell at full price, focusing on value. Offering discounts boosts conversion by ~50%.',
                 ),
             ).toBeInTheDocument()
         })
@@ -206,9 +206,7 @@ describe('<SalesSettings />', () => {
             isPendingCreateOrUpdate: false,
         })
         renderComponent()
-        expect(
-            screen.queryByText(/Set persuasion level/),
-        ).not.toBeInTheDocument()
+        expect(screen.queryByText(/Selling style/)).not.toBeInTheDocument()
     })
 
     it('should update the max percentage discount when valid discount', async () => {
@@ -250,7 +248,7 @@ describe('<SalesSettings />', () => {
 
             expect(
                 screen.getByText(
-                    'The Sales AI Agent will not offer any discounts under any circumstances.',
+                    'Sell at full price, focusing on value. Offering discounts boosts conversion by ~50%.',
                 ),
             ).toBeInTheDocument()
         })
@@ -269,7 +267,7 @@ describe('<SalesSettings />', () => {
 
             expect(
                 screen.getByText(
-                    'The Sales AI Agent frequently uses discounts to maximize sales, prioritizing conversions over margins.',
+                    'Use discounts often to maximize conversions and reduce cart abandonment.',
                 ),
             ).toBeInTheDocument()
         })

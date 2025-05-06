@@ -377,7 +377,7 @@ export const PersonalityStep: FC<StepProps> = ({
                                     htmlFor="salesDiscountStrategyLevel"
                                     className={css.cardTitle}
                                 >
-                                    Set your discount strategy
+                                    Discount Strategy
                                 </label>
                                 <IconTooltip>
                                     Define how often AI Agent should use
@@ -407,10 +407,10 @@ export const PersonalityStep: FC<StepProps> = ({
                             <hr className={css.separator} />
                             <div className={css.percentageSection}>
                                 <Label htmlFor="percentage-discount">
-                                    Maximum discount percentage
+                                    Fixed discount (%)
                                     <IconTooltip>
-                                        Set the maximum discount that AI Agent
-                                        will offer customers
+                                        Choose the discount amount Shopping
+                                        Assistant offers.
                                     </IconTooltip>
                                 </Label>
                                 <InputField

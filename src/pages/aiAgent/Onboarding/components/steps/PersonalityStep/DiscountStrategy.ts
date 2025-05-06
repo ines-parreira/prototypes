@@ -16,22 +16,22 @@ export const DiscountStrategyLabels: Record<
     [DiscountStrategy.NoDiscount]: {
         label: 'No Discount',
         description:
-            'The Sales AI Agent will not offer any discounts under any circumstances.',
+            'Sell at full price, focusing on value. Offering discounts boosts conversion by ~50%.',
     },
     [DiscountStrategy.Minimal]: {
-        label: 'Minimal',
+        label: 'Conservative',
         description:
-            'The Sales AI Agent will rarely use discounts and only in strategic cases.',
+            'Offer discounts only in rare cases, such as when a high-intent customer hesitates at checkout.',
     },
     [DiscountStrategy.Balanced]: {
-        label: 'Balanced',
+        label: 'Strategic',
         description:
-            'The Sales AI Agent offers discounts at a level optimized for both conversions and profit.',
+            'Use discounts selectively based on customer behavior and likelihood to convert.',
     },
     [DiscountStrategy.Maximized]: {
-        label: 'Maximized',
+        label: 'Generous',
         description:
-            'The Sales AI Agent frequently uses discounts to maximize sales, prioritizing conversions over margins.',
+            'Use discounts often to maximize conversions and reduce cart abandonment.',
     },
 }
 export const DiscountStrategySteps = Object.entries(DiscountStrategyLabels).map(

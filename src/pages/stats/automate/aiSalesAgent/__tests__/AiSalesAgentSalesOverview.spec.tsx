@@ -133,7 +133,7 @@ describe('AiSalesAgentSalesOverview', () => {
 
     it('should render when store data is ready', () => {
         renderComponent()
-        expect(screen.getByText('AI Agent Sales')).toBeInTheDocument()
+        expect(screen.getByText('Shopping Assistant')).toBeInTheDocument()
         expect(screen.getByText('download-button')).toBeInTheDocument()
         expect(screen.getByText('filters-panel')).toBeInTheDocument()
         expect(screen.getByText('analytics-footer')).toBeInTheDocument()
@@ -157,7 +157,7 @@ describe('AiSalesAgentSalesOverview', () => {
         })
 
         renderComponent()
-        expect(await screen.findByText('Discount code')).toBeInTheDocument()
+        expect(await screen.findByText('Discounts')).toBeInTheDocument()
     })
 
     it('should not render discount section when feature flag is disabled', () => {
@@ -166,19 +166,17 @@ describe('AiSalesAgentSalesOverview', () => {
         })
 
         renderComponent()
-        expect(screen.queryByText('Discount code')).not.toBeInTheDocument()
+        expect(screen.queryByText('Discounts')).not.toBeInTheDocument()
     })
 
     it('should render all main metric sections', () => {
         renderComponent()
         expect(screen.getByText('Main metrics')).toBeInTheDocument()
-        expect(screen.getByText('Order data')).toBeInTheDocument()
+        expect(screen.getByText('Orders')).toBeInTheDocument()
         expect(
-            screen.getByText('AI Agent Sales performance'),
+            screen.getByText('Shopping Assistant performance'),
         ).toBeInTheDocument()
-        expect(
-            screen.getByText('Product recommendations performance'),
-        ).toBeInTheDocument()
+        expect(screen.getByText('Product recommendations')).toBeInTheDocument()
     })
 
     it('should render all chart components', () => {

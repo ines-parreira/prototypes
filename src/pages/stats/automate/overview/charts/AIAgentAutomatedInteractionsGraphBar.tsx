@@ -31,7 +31,7 @@ export const AI_AGENT_CHART_FIELDS = [
     },
     {
         field: AIAgentSkills.AIAgentSales,
-        label: 'AI Agent Sales',
+        label: 'Shopping Assistant',
     },
 ]
 

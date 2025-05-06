@@ -220,12 +220,12 @@ export const SalesSettings = () => {
                                     htmlFor="salesPersuasionLevel"
                                     className={css.title}
                                 >
-                                    Set persuasion level
+                                    Selling Style
                                 </label>
                                 <IconTooltip>
                                     AI Agent will take into account your custom
-                                    persuasion level in the way in interacts
-                                    with customers.
+                                    selling style in the way it interacts with
+                                    customers.
                                 </IconTooltip>
                             </div>
                             <div>
@@ -258,7 +258,7 @@ export const SalesSettings = () => {
                                     htmlFor="salesDiscountStrategyLevel"
                                     className={css.title}
                                 >
-                                    Set your discount strategy
+                                    Discount Strategy
                                 </label>
                                 <IconTooltip>
                                     Define how often AI Agent should use
@@ -294,10 +294,10 @@ export const SalesSettings = () => {
 
                             <div className={css.maxDiscountContainer}>
                                 <Label htmlFor="percentage-discount">
-                                    Maximum discount percentage
+                                    Fixed discount (%)
                                     <IconTooltip>
-                                        Set the maximum discount that AI Agent
-                                        will offer customers
+                                        Choose the discount amount Shopping
+                                        Assistant offers.
                                     </IconTooltip>
                                 </Label>
 

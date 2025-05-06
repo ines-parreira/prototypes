@@ -95,7 +95,7 @@ export const EarlyAccessModal = ({
                             rel="noopener noreferrer"
                         >
                             <i className="material-icons">menu_book</i> Learn
-                            more about AI Agent for Sales
+                            more about Shopping Assistant
                         </a>
                     </div>
                 }
@@ -111,7 +111,7 @@ export const EarlyAccessModal = ({
                 <Card className={cn(css.card, css.earlyAccessPlanCard)}>
                     <CardHeader className={css.header}>
                         <CardTitle className={css.cardTitle}>
-                            AI Agent with Support & Sales Skills
+                            AI Agent with Support & Shopping Assistant Skills
                         </CardTitle>
                         <CardCaption
                             className={css.caption}
@@ -184,7 +184,9 @@ export const EarlyAccessModal = ({
                                             check_circle
                                         </i>
                                     </span>
-                                    <span className={css.skillName}>Sales</span>
+                                    <span className={css.skillName}>
+                                        Shopping Assistant
+                                    </span>
                                     <Badge className={css.badge} type="magenta">
                                         new
                                     </Badge>

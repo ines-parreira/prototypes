@@ -15,17 +15,17 @@ export const PersuasionLevelLabels: Record<
     [PersuasionLevel.Educational]: {
         label: 'Educational',
         description:
-            'Focuses on providing detailed information to guide the customer without pressure.',
+            'Provide helpful information to build customer confidence, without pressure.',
     },
     [PersuasionLevel.Moderate]: {
         label: 'Moderate',
         description:
-            'Strikes a balance between educating the customer and encouraging them to make a purchase.',
+            'Strike a balance between providing educational information and encouraging a purchase.',
     },
     [PersuasionLevel.Assertive]: {
-        label: 'Assertive',
+        label: 'Promotional',
         description:
-            'Prioritizes driving the sale with a strong focus on persuasion and urgency.',
+            'Drive purchases by confidently recommending products and encouraging immediate action.',
     },
 }
 

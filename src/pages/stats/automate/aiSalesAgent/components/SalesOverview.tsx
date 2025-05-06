@@ -78,7 +78,7 @@ const SalesOverview = () => {
                     </DashboardGridCell>
                 </DashboardSection>
 
-                <DashboardSection title="Order data">
+                <DashboardSection title="Orders">
                     <DashboardGridCell size={12}>
                         <Skeleton height={300} />
                     </DashboardGridCell>
@@ -145,7 +145,7 @@ const SalesOverview = () => {
                     />
                 </DashboardGridCell>
             </DashboardSection>
-            <DashboardSection title="Order data">
+            <DashboardSection title="Orders">
                 <DashboardGridCell size={getGridCellSize(6)}>
                     <RenderChart
                         chart={
@@ -161,7 +161,7 @@ const SalesOverview = () => {
                     />
                 </DashboardGridCell>
             </DashboardSection>
-            <DashboardSection title="AI Agent Sales performance">
+            <DashboardSection title="Shopping Assistant performance">
                 <DashboardGridCell size={getGridCellSize(4)}>
                     <RenderChart
                         chart={AiSalesAgentChart.AiSalesAgentSuccessRate}
@@ -182,7 +182,7 @@ const SalesOverview = () => {
                 </DashboardGridCell>
             </DashboardSection>
             {isDiscountSectionVisible && (
-                <DashboardSection title="Discount code">
+                <DashboardSection title="Discounts">
                     <DashboardGridCell size={getGridCellSize(3)}>
                         <RenderChart
                             chart={AiSalesAgentChart.AiSalesDiscountOffered}
@@ -209,7 +209,7 @@ const SalesOverview = () => {
                     </DashboardGridCell>
                 </DashboardSection>
             )}
-            <DashboardSection title="Product recommendations performance">
+            <DashboardSection title="Product recommendations">
                 <DashboardGridCell size={getGridCellSize(4)}>
                     <RenderChart
                         chart={

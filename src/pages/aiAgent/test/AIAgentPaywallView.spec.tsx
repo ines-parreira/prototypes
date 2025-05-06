@@ -96,7 +96,7 @@ describe('<AiAgentPaywallView />', () => {
     it('changes image to Sales when the corresponding option is selected', async () => {
         renderComponent()
 
-        await userEvent.click(screen.getByText('Sales'))
+        await userEvent.click(screen.getByText('Shopping Assistant'))
 
         expect(screen.getAllByRole('radio')[1]).toBeChecked()
     })

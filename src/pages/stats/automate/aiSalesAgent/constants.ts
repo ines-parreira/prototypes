@@ -2,9 +2,9 @@ import { ProductTableColumn } from './types/productTable'
 
 export const MIN_DATE_FOR_SALES_AGENT_STATS = '2025-02-21'
 
-export const PAGE_TITLE_AI_SALES_AGENT_SALES_OVERVIEW = 'AI Agent Sales'
+export const PAGE_TITLE_AI_SALES_AGENT_SALES_OVERVIEW = 'Shopping Assistant'
 
-export const LINK_AI_SALES_AGENT_TEXT = 'AI Agent Sales'
+export const LINK_AI_SALES_AGENT_TEXT = 'Shopping Assistant'
 
 export const GMV_OVERTIME_LABEL = 'Gmv Influenced Over Time'
 

@@ -121,9 +121,12 @@ describe('PlaygroundMessage', () => {
         )
     })
 
-    it.each(['SALES', 'SUPPORT'] as AgentSkill[])(
-        "should render agent's skill badge if it is $0",
-        (skill) => {
+    it.each([
+        { skill: AgentSkill.SALES, text: 'Shopping Assistant' },
+        { skill: AgentSkill.SUPPORT, text: 'Support Agent' },
+    ])(
+        "should render agent's skill badge if it is $skill",
+        ({ skill, text }) => {
             renderComponent({
                 message: {
                     ...playgroundMessageFixture,
@@ -131,7 +134,7 @@ describe('PlaygroundMessage', () => {
                     agentSkill: skill,
                 },
             })
-            expect(screen.getByText(skill)).toBeInTheDocument()
+            expect(screen.getByText(text)).toBeInTheDocument()
         },
     )
 

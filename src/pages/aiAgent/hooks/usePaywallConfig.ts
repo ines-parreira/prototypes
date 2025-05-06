@@ -33,14 +33,14 @@ export const usePaywallConfig = (
                 ],
                 toggleElements: [
                     {
-                        title: 'Support',
+                        title: 'Support Agent',
                         contentSrc: assetsUrl(
                             '/video/ai-agent_paywall_support.mp4',
                         ),
                         type: 'video',
                     },
                     {
-                        title: 'Sales',
+                        title: 'Shopping Assistant',
                         contentSrc: SalesStrategy,
                         type: 'image',
                     },
@@ -51,13 +51,13 @@ export const usePaywallConfig = (
             }
         case AIAgentPaywallFeatures.SalesWaitlist:
             return {
-                title: 'for Sales',
+                title: 'with Shopping Assistant skills',
                 subtitle:
-                    'Introducing AI Agent for Sales, your team’s newest member to drive conversion.',
+                    'Sell more with a Shopping Assistant that drives conversions and elevates the shopping experience.',
                 descriptions: [
-                    'Provides 24/7 pre-sales assistance to guide shoppers, answer questions, and reduce drop-off.',
-                    'Offers dynamic discounts to convert hesitant buyers without compromising margins.',
-                    'Personalizes product recommendations using real-time data and customer input.',
+                    'Offer 24/7 tailored assistance to guide shoppers, answer questions, and reduce drop-off',
+                    'Offer smart discounts to convert shoppers while protecting margins',
+                    'Personalize product recommendations with historical purchase data and real-time browsing behavior',
                 ],
                 toggleElements: [
                     {
@@ -82,24 +82,25 @@ export const usePaywallConfig = (
             }
         case AIAgentPaywallFeatures.SalesSetup:
             return {
-                title: 'for Support & Sales',
+                title: '',
                 subtitle:
-                    'Introducing AI Agent - with Support and Sales skills, your team’s newest member for seamless customer interactions.',
+                    'Introducing AI Agent: Your new team member that drives sales and automates support in 1:1 conversations.',
                 descriptions: [
-                    'Lead customers to fast resolutions in seconds, not hours.',
-                    'Enhance team productivity, reducing workload & response times by automating up to 60% of your tickets.',
-                    'Offer tailored discounts and product recommendations to drive personalized shopping experiences.',
+                    'Stay available 24/7 across chat, email, and more — without extra headcount',
+                    'Automate FAQs and order updates so your team can focus on high-impact work',
+                    'Convert more with tailored product recommendations and smart discounts based on real-time data',
+                    'Train the AI to match your brand voice, policies, and sales strategy',
                 ],
                 toggleElements: [
                     {
-                        title: 'Support',
+                        title: 'Support Agent',
                         contentSrc: assetsUrl(
                             '/video/ai-agent_paywall_support.mp4',
                         ),
                         type: 'video',
                     },
                     {
-                        title: 'Sales',
+                        title: 'Shopping Assistant',
                         contentSrc: SalesStrategy,
                         type: 'image',
                     },
@@ -108,16 +109,16 @@ export const usePaywallConfig = (
                 hideLearnMore: true,
                 showRoiCalculator: false,
             }
+
         case AIAgentPaywallFeatures.Stats:
             return {
-                title: 'for Sales',
+                title: 'with Shopping Assistant skills',
                 subtitle:
-                    'Introducing AI Agent for Sales, your team’s newest member to drive conversion. ',
+                    'Sell more with a Shopping Assistant that drives conversions and elevates the shopping experience.',
                 descriptions: [
-                    'Provides 24/7 pre-sales assistance to guide shoppers, answer questions, and reduce drop-off.',
-                    'Offer dynamic discounts to convert hesitant buyers without compromising margins.',
-                    'Personalize product recommendations using real-time data and customer input.',
-                    'Turn search into a revenue-driving engine with intelligent product discovery.',
+                    'Offer 24/7 tailored assistance to guide shoppers, answer questions, and reduce drop-off',
+                    'Offer smart discounts to convert shoppers while protecting margins',
+                    'Personalize product recommendations with historical purchase data and real-time browsing behavior',
                 ],
                 toggleElements: [
                     {

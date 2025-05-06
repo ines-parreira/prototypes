@@ -9,7 +9,7 @@ import cssNavbar from 'assets/css/navbar.less'
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { ShopType } from 'models/selfServiceConfiguration/types'
-import { SALES, SETTINGS } from 'pages/aiAgent/constants'
+import { SETTINGS } from 'pages/aiAgent/constants'
 import {
     NavigationItem,
     useAiAgentNavigation,
@@ -91,13 +91,6 @@ export const AiAgentNavbarSectionBlock = ({
 
     const itemName = (item: NavigationItem) => {
         switch (item.title) {
-            case SALES:
-                return (
-                    <div className={css.item}>
-                        {item.title}
-                        <Badge type="blue">BETA</Badge>
-                    </div>
-                )
             case SETTINGS:
                 return (
                     <div className={css.item}>

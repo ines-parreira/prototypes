@@ -7,7 +7,7 @@ export class EnableInputLauncherOnChatTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
             'Enable Input Launcher on Chat',
-            'Increase AI Agent for Sales GMV’s influenced by X%',
+            'Increase Shopping Assistant GMV’s influenced by X%',
             'RECOMMENDED',
             data,
             routes,

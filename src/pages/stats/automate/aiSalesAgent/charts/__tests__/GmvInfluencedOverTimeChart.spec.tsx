@@ -121,7 +121,7 @@ describe('<GmvInfluencedOverTimeChart />', () => {
         render(<GmvInfluencedOverTimeChart />)
 
         expect(
-            screen.getByText('GMV influenced % over time'),
+            screen.getByText('GMV influence rate (%) over time'),
         ).toBeInTheDocument()
     })
 })
