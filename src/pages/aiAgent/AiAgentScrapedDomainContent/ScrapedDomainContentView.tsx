@@ -71,7 +71,7 @@ function ScrapedDomainContentView<
     const description =
         pageType === CONTENT_TYPE.QUESTION
             ? 'AI Agent automatically generates questions and answers from your website content to use as knowledge.'
-            : 'AI Agent uses product details from your store website and your Shopify integration.'
+            : 'AI Agent uses product details from your Shopify app and store website.'
 
     // TO DO: uncomment when this task (https://linear.app/gorgias/issue/AIKNL-287/createremove-a-resource-fromin-ml-recommender-when-ingested-resource) is implemented
     // const handleToggleChange = ({

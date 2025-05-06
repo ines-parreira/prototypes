@@ -173,7 +173,7 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
         renderComponent()
         expect(
             screen.getByText(
-                'Your store website is currently being synced. You will be notified once complete. In the meantime, AI Agent may not have your latest content.',
+                'Your store website is syncing. This may take a while. You will be notified once it is complete. In the meantime, the AI Agent may not have your latest content.',
             ),
         ).toBeInTheDocument()
     })
@@ -188,7 +188,7 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
 
         expect(
             screen.getByText(
-                'Your store website is currently being synced. You will be notified once complete. In the meantime, AI Agent may not have your latest content.',
+                'Your store website is syncing. This may take a while. You will be notified once it is complete. In the meantime, the AI Agent may not have your latest content.',
             ),
         ).toBeInTheDocument()
 
@@ -197,7 +197,7 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
 
         expect(
             screen.queryByText(
-                'Your store website is currently being synced. You will be notified once complete. In the meantime, AI Agent may not have your latest content.',
+                'Your store website is syncing. This may take a while. You will be notified once it is complete. In the meantime, the AI Agent may not have your latest content.',
             ),
         ).not.toBeInTheDocument()
     })

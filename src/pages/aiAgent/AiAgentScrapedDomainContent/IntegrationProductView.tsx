@@ -40,9 +40,8 @@ const IntegrationProductView = ({ product }: Props) => {
                     <span className="body-semibold">Images</span>
                     {product.images?.length > MAX_IMAGES && (
                         <span className={css.imageCount}>
-                            {' '}
-                            (showing {MAX_IMAGES} of {product.images?.length}
-                            images)
+                            {` (showing ${MAX_IMAGES} of ${product.images?.length}
+                             images)`}
                         </span>
                     )}
                     <div className={css.imageGrid}>

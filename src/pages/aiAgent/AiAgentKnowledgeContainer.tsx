@@ -4,7 +4,7 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useParams } from 'react-router-dom'
 
 import { Card } from '@gorgias/analytics-ui-kit'
-import { Banner, Button, Label } from '@gorgias/merchant-ui-kit'
+import { Button, Label } from '@gorgias/merchant-ui-kit'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -21,20 +21,17 @@ import HelpCenterSelect, {
 } from 'pages/automate/common/components/HelpCenterSelect'
 import Loader from 'pages/common/components/Loader/Loader'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import history from 'pages/history'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { reportError } from 'utils/errors'
 
-import { IngestionLogStatus } from './AiAgentScrapedDomainContent/constant'
-import { useIngestionDomainBannerDismissed } from './AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed'
+import SyncIngestionDomainBanner from './AiAgentScrapedDomainContent/SyncIngestionDomainBanner'
 import { ConfigurationSection } from './components/ConfigurationSection/ConfigurationSection'
 import { ScrapeStoreDomainSection } from './components/Knowledge/ScrapeStoreDomainSection'
 import { CreatePublicSourcesSection } from './components/StoreConfigForm/StoreConfigForm'
 import { AI_AGENT, INITIAL_FORM_VALUES, KNOWLEDGE } from './constants'
-import { useAiAgentNavigation } from './hooks/useAiAgentNavigation'
 import { useGetOrCreateSnippetHelpCenter } from './hooks/useGetOrCreateSnippetHelpCenter'
 import { getFormValuesFromStoreConfiguration } from './hooks/utils/configurationForm.utils'
 
@@ -61,8 +58,6 @@ export const AiAgentKnowledgeContainer = () => {
     const { shopName } = useParams<{
         shopName: string
     }>()
-
-    const { routes } = useAiAgentNavigation({ shopName })
 
     const {
         isLoading: isStoreConfigLoading,
@@ -198,82 +193,8 @@ export const AiAgentKnowledgeContainer = () => {
         storeConfiguration?.helpCenterId,
     ])
 
-    const { isDismissed, dismissBanner } = useIngestionDomainBannerDismissed({
-        shopName,
-        isSourcePage: true,
-    })
-
     if (isStoreConfigLoading || isLoadingHelpCenters) {
         return <Loader data-testid="loader" />
-    }
-
-    const onReview = () => {
-        history.push(routes.pagesContent)
-    }
-
-    const reviewButton = (
-        <Button fillStyle="ghost" onClick={onReview}>
-            Review
-        </Button>
-    )
-
-    const PendingBanner = () => (
-        <Banner
-            variant="inline"
-            icon
-            type="loading"
-            fillStyle="fill"
-            onClose={dismissBanner}
-            className={css.banner}
-        >
-            Your store website is currently being synced. You will be notified
-            once complete. In the meantime, AI Agent may not have your latest
-            content.
-        </Banner>
-    )
-
-    const SuccessBanner = () => (
-        <Banner
-            variant="inline"
-            icon
-            type="success"
-            fillStyle="fill"
-            onClose={dismissBanner}
-            className={css.banner}
-            action={reviewButton}
-        >
-            Your store website has been synced successfully and is in use by AI
-            Agent. Review newly generated content for accuracy.
-        </Banner>
-    )
-
-    const FailedBanner = () => (
-        <Banner
-            variant="inline"
-            icon
-            type="error"
-            fillStyle="fill"
-            onClose={dismissBanner}
-            className={css.banner}
-        >
-            We couldn’t sync your store website. AI Agent is using your previous
-            content. Please try again or contact support if the issue persists.
-        </Banner>
-    )
-
-    const IngestionDomainBanner = () => {
-        if (isDismissed || !syncStoreDomainStatus) return null
-
-        switch (syncStoreDomainStatus) {
-            case IngestionLogStatus.Pending:
-                return <PendingBanner />
-            case IngestionLogStatus.Successful:
-                return <SuccessBanner />
-            case IngestionLogStatus.Failed:
-                return <FailedBanner />
-            default:
-                return null
-        }
     }
 
     return (
@@ -291,9 +212,14 @@ export const AiAgentKnowledgeContainer = () => {
             <form onSubmit={onSubmit} className={css.container}>
                 {isAiAgentScrapeStoreDomainEnabled ? (
                     <>
-                        <IngestionDomainBanner />
+                        <SyncIngestionDomainBanner
+                            syncStoreDomainStatus={syncStoreDomainStatus}
+                            shopName={shopName}
+                            isSourcePage={true}
+                            className={css.banner}
+                        />
                         <ConfigurationSection
-                            subtitle="AI Agent uses your knowledge answer customer questions and resolve requests."
+                            subtitle="AI Agent uses your knowledge to answer customer questions and resolve requests."
                             data-candu-id="ai-agent-configuration-knowledge-copy"
                         >
                             <div className={css.cardsContainer}>

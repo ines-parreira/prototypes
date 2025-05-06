@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import classnames from 'classnames'
 import ReactDOM from 'react-dom'
 
+import useKey from 'hooks/useKey'
 import { SCREEN_SIZE, useScreenSize } from 'hooks/useScreenSize'
 import Loader from 'pages/common/components/Loader/Loader'
 import settingsCss from 'pages/settings/settings.less'
@@ -38,6 +39,19 @@ export const ScrapedDomainSelectedModal = ({
     const screenSize = useScreenSize()
     const [isFullscreen, setIsFullscreen] = useState(
         isOpened && screenSize === SCREEN_SIZE.SMALL,
+    )
+
+    useKey(
+        'Escape',
+        (event) => {
+            if (isOpened && onBackdropClick) {
+                event.stopPropagation()
+
+                onBackdropClick()
+            }
+        },
+        undefined,
+        [isOpened, onBackdropClick],
     )
 
     useEffect(() => {

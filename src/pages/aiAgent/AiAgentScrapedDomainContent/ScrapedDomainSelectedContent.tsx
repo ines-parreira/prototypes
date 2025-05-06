@@ -78,7 +78,7 @@ const SelectedProductView = ({
                                     height={20}
                                 />
                                 <span className="body-semibold">
-                                    From your store integration
+                                    From your Shopify app
                                 </span>
                             </AccordionHeader>
                             <AccordionBody>
