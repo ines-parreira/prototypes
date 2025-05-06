@@ -1,3 +1,5 @@
+import _uniq from 'lodash/uniq'
+
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
 import { useListStoreMappings } from 'models/storeMapping/queries'
@@ -39,8 +41,10 @@ export const usePreselectedEmails = ({
     )
 
     if (hasOnboardingEmailIntegrations) {
-        return onboardingEmailIntegrationIds.filter((it) =>
-            emailIntegrations.find((email) => email.id === it),
+        return _uniq(
+            onboardingEmailIntegrationIds.filter((it) =>
+                emailIntegrations.find((email) => email.id === it),
+            ),
         )
     }
 

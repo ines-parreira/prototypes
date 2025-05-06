@@ -61,6 +61,20 @@ describe('usePreselectedEmails', () => {
         )
     }
 
+    it('should filter out duplicated onboarding email integrations', () => {
+        const shopifyIntegrations = [
+            getIntegration(4, IntegrationType.Shopify),
+        ] as any as ShopifyIntegration[]
+
+        const { result } = renderUsePreselectedEmails({
+            storeId: 4,
+            onboardingEmailIntegrationIds: [1, 1, 4],
+            shopifyIntegrations,
+        })
+
+        expect(result.current).toEqual([1])
+    })
+
     describe('when single store', () => {
         const shopifyIntegrations = [
             getIntegration(4, IntegrationType.Shopify),

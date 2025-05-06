@@ -25,6 +25,7 @@ import {
 } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep'
 import { usePreselectedChat } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedChat'
 import { usePreselectedEmails } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedEmails'
+import { useSelectedEmailsBeforeRedirect } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/useSelectedEmailsBeforeRedirect'
 import { conversationExamples } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/conversationsExamples'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
@@ -96,6 +97,13 @@ jest.mock(
 )
 const usePreselectedEmailsMock = assumeMock(usePreselectedEmails)
 
+jest.mock(
+    'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/useSelectedEmailsBeforeRedirect',
+)
+const useSelectedEmailsBeforeRedirectMock = assumeMock(
+    useSelectedEmailsBeforeRedirect,
+)
+
 jest.mock('pages/aiAgent/Onboarding/hooks/useTransformToneOfVoiceConversations')
 const useTransformToneOfVoiceConversationsMock = assumeMock(
     useTransformToneOfVoiceConversations,
@@ -153,6 +161,11 @@ describe('ChannelsStep', () => {
 
             usePreselectedEmailsMock.mockReturnValue([])
             usePreselectedChatMock.mockReturnValue([])
+            useSelectedEmailsBeforeRedirectMock.mockReturnValue({
+                selectedEmailsBeforeRedirect: [],
+                setSelectedEmailsBeforeRedirect: jest.fn(),
+                clearSelectedEmailsBeforeRedirect: jest.fn(),
+            })
 
             useGetOnboardingsMock.mockReturnValue({
                 data: [defaultOnboardingData],
@@ -744,6 +757,11 @@ describe('ChannelsStep', () => {
         ) => {
             usePreselectedChatMock.mockReturnValue([3])
             usePreselectedEmailsMock.mockReturnValue([5])
+            useSelectedEmailsBeforeRedirectMock.mockReturnValue({
+                selectedEmailsBeforeRedirect: [],
+                setSelectedEmailsBeforeRedirect: jest.fn(),
+                clearSelectedEmailsBeforeRedirect: jest.fn(),
+            })
 
             useGetOnboardingDataMock.mockReturnValue({
                 data: {

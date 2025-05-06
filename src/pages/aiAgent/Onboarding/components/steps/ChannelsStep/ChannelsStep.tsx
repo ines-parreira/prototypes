@@ -78,6 +78,8 @@ import {
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
+import { useSelectedEmailsBeforeRedirect } from './hooks/useSelectedEmailsBeforeRedirect'
+
 export const emailSortingCallback = (a: EmailItem, b: EmailItem) => {
     if (a.isDisabled && !b.isDisabled) {
         return 1
@@ -280,8 +282,15 @@ export const ChannelsStep: React.FC<StepProps> = ({
         }
     }
 
+    const {
+        selectedEmailsBeforeRedirect,
+        setSelectedEmailsBeforeRedirect,
+        clearSelectedEmailsBeforeRedirect,
+    } = useSelectedEmailsBeforeRedirect()
+
     const preRenderEmails = [
         ...(data?.emailIntegrationIds ?? []),
+        ...selectedEmailsBeforeRedirect,
         getRedirectionEmail(),
     ].filter((entry) => entry !== undefined)
 
@@ -294,6 +303,14 @@ export const ChannelsStep: React.FC<StepProps> = ({
         chatChannels,
     })
 
+    const filteredPreselectedEmails = useMemo(
+        () =>
+            preselectedEmails.filter(
+                (entry) => !usedEmailIntegrations.includes(entry),
+            ),
+        [preselectedEmails, usedEmailIntegrations],
+    )
+
     const methods = useForm<ChannelsFormValues>({
         // Before the next step is visited we always
         // pre-select both the integrations
@@ -301,10 +318,8 @@ export const ChannelsStep: React.FC<StepProps> = ({
             emailChannelEnabled:
                 data?.currentStepName === WizardStepEnum.CHANNELS
                     ? true
-                    : !!data?.emailIntegrationIds?.length,
-            emailIntegrationIds: preselectedEmails.filter(
-                (entry) => !usedEmailIntegrations.includes(entry),
-            ),
+                    : !!filteredPreselectedEmails?.length,
+            emailIntegrationIds: filteredPreselectedEmails,
             chatChannelEnabled:
                 data?.currentStepName === WizardStepEnum.CHANNELS
                     ? true
@@ -429,6 +444,8 @@ export const ChannelsStep: React.FC<StepProps> = ({
     }
 
     const goToNextStep = () => {
+        clearSelectedEmailsBeforeRedirect()
+
         const nextStep = validSteps[currentStep]?.step
 
         goToStep(nextStep)
@@ -462,12 +479,18 @@ export const ChannelsStep: React.FC<StepProps> = ({
     }
 
     const onBackClick = () => {
+        clearSelectedEmailsBeforeRedirect()
+
         const previousStep = validSteps[currentStep - 2]?.step
 
         goToStep(previousStep)
     }
 
     const redirectToEmailIntegration = (url: string) => {
+        if (emailIntegrationIds.length > 0) {
+            setSelectedEmailsBeforeRedirect(emailIntegrationIds)
+        }
+
         redirectToIntegration(url, IntegrationType.Email)
     }
 
