@@ -18,7 +18,7 @@ import { assumeMock } from 'utils/testing'
 import PhoneNumberCreateForm from '../PhoneNumberCreateForm'
 import * as phoneNumberUtils from '../utils'
 
-const QueryClientProvider = mockQueryClientProvider()
+const QueryClientProvider = mockQueryClientProvider().QueryClientProvider
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const store = mockStore({
     entities: {

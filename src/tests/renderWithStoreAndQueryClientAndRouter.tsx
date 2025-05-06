@@ -20,7 +20,8 @@ export const renderWithStoreAndQueryClientAndRouter = (
     },
 ) => {
     const store = mockStore(state)
-    const MockQueryClientProvider = mockQueryClientProvider()
+    const MockQueryClientProvider =
+        mockQueryClientProvider().QueryClientProvider
     const history =
         routing.history ||
         createMemoryHistory({ initialEntries: [routing.route || '/'] })

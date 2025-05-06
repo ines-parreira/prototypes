@@ -75,7 +75,7 @@ jest.mock(
     }),
 )
 
-const QueryClientProvider = mockQueryClientProvider()
+const QueryClientProvider = mockQueryClientProvider().QueryClientProvider
 
 const defaultState = {}
 

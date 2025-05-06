@@ -12,7 +12,8 @@ export const renderWithStoreAndQueryClientProvider = (
     state: Partial<RootState> = {},
 ) => {
     const store = mockStore(state)
-    const MockQueryClientProvider = mockQueryClientProvider()
+    const MockQueryClientProvider =
+        mockQueryClientProvider().QueryClientProvider
     return {
         ...render(element, {
             wrapper: ({ children }: any) => (

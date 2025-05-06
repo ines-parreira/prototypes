@@ -48,7 +48,7 @@ describe('Reporting queries', () => {
     describe('usePostReporting', () => {
         it('should call postReporting and return the result', async () => {
             const { result } = renderHook(() => usePostReporting(cubeQueries), {
-                wrapper: mockQueryClientProvider(),
+                wrapper: mockQueryClientProvider().QueryClientProvider,
             })
             await waitFor(() => {
                 expect(postReportingMock).toHaveBeenCalledWith(cubeQueries)
@@ -65,7 +65,7 @@ describe('Reporting queries', () => {
             }
 
             renderHook(() => useEnrichedPostReporting(payload), {
-                wrapper: mockQueryClientProvider(),
+                wrapper: mockQueryClientProvider().QueryClientProvider,
             })
             await waitFor(() => {
                 expect(postEnrichedReportingMock).toHaveBeenCalledWith(

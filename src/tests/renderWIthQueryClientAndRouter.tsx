@@ -10,7 +10,8 @@ export const renderWithQueryClientAndRouter = (
     element: ReactElement,
     route: string = '/',
 ) => {
-    const MockQueryClientProvider = mockQueryClientProvider()
+    const MockQueryClientProvider =
+        mockQueryClientProvider().QueryClientProvider
     const history = createMemoryHistory({ initialEntries: [route] })
     return {
         ...render(element, {

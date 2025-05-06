@@ -46,7 +46,7 @@ export function mockQueryClientProvider() {
     const TestQueryClientProvider: FC = (props) => (
         <QueryClientProvider client={queryClient} {...props} />
     )
-    return TestQueryClientProvider
+    return { QueryClientProvider: TestQueryClientProvider, queryClient }
 }
 
 export const renderWithQueryClientProvider = (ui: ReactElement) => {

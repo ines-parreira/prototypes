@@ -1,6 +1,7 @@
 import { waitFor } from '@testing-library/react'
 
-import { useUpsertStoreConfigurationPure } from 'models/aiAgent/queries'
+import { storeConfigurationKeys } from 'models/aiAgent/queries'
+import { upsertStoreConfiguration } from 'models/aiAgent/resources/configuration'
 import { AiAgentScope, OnboardingData } from 'models/aiAgent/types'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
@@ -11,15 +12,13 @@ import { useUpdateAIAgentStoreConfigurationData } from 'pages/aiAgent/Overview/h
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 import { assumeMock } from 'utils/testing'
 
-jest.mock('models/aiAgent/queries')
+jest.mock('models/aiAgent/resources/configuration')
+const mockUpsertStoreConfiguration = jest.mocked(upsertStoreConfiguration)
 jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingDataByShopName')
 jest.mock(
     'pages/aiAgent/Overview/hooks/pendingTasks/useFetchAiAgentStoreConfigurationData',
 )
 
-const mockUseUpsertStoreConfigurationPure = assumeMock(
-    useUpsertStoreConfigurationPure,
-)
 const mockUseGetOnboardingDataByShopName = assumeMock(
     useGetOnboardingDataByShopName,
 )
@@ -65,34 +64,32 @@ describe('useUpdateAIAgentStoreConfigurationData', () => {
             typeof useFetchAiAgentStoreConfigurationData
         >)
 
-        const mockMutate = jest.fn((_, { onSuccess }) => onSuccess?.())
-
-        mockUseUpsertStoreConfigurationPure.mockReturnValue({
-            mutate: mockMutate,
-            isLoading: false,
-        } as unknown as ReturnType<typeof useUpsertStoreConfigurationPure>)
-
-        const { result } = renderHookWithStoreAndQueryClientProvider(() =>
-            useUpdateAIAgentStoreConfigurationData(accountDomain, storeName),
-        )
+        const { result, queryClient } =
+            renderHookWithStoreAndQueryClientProvider(() =>
+                useUpdateAIAgentStoreConfigurationData(
+                    accountDomain,
+                    storeName,
+                ),
+            )
 
         result.current.updateStoreConfig()
 
+        jest.spyOn(queryClient, 'invalidateQueries')
+
         await waitFor(() => {
-            expect(mockMutate).toHaveBeenCalledTimes(1)
-            expect(mockMutate).toHaveBeenCalledWith(
-                [
-                    accountDomain,
-                    {
-                        ...mockStoreConfiguration,
-                        emailChannelDeactivatedDatetime: null, // Since email integration exists
-                        chatChannelDeactivatedDatetime:
-                            '2024-03-10T00:00:00.000Z', // Since no chat integration exists
-                        scopes: [AiAgentScope.Support], // No chat integration, so no Sales scope
-                    },
-                ],
-                expect.objectContaining({ onSuccess: expect.any(Function) }),
+            expect(mockUpsertStoreConfiguration).toHaveBeenCalledTimes(1)
+            expect(mockUpsertStoreConfiguration).toHaveBeenCalledWith(
+                accountDomain,
+                {
+                    ...mockStoreConfiguration,
+                    emailChannelDeactivatedDatetime: null, // Since email integration exists
+                    chatChannelDeactivatedDatetime: '2024-03-10T00:00:00.000Z', // Since no chat integration exists
+                    scopes: [AiAgentScope.Support], // No chat integration, so no Sales scope
+                },
             )
+            expect(queryClient.invalidateQueries).toHaveBeenCalledWith({
+                queryKey: storeConfigurationKeys.all(),
+            })
         })
     })
 
@@ -109,12 +106,6 @@ describe('useUpdateAIAgentStoreConfigurationData', () => {
             typeof useFetchAiAgentStoreConfigurationData
         >)
 
-        const mockMutate = jest.fn()
-        mockUseUpsertStoreConfigurationPure.mockReturnValue({
-            mutate: mockMutate,
-            isLoading: false,
-        } as unknown as ReturnType<typeof useUpsertStoreConfigurationPure>)
-
         const consoleWarnSpy = jest
             .spyOn(console, 'warn')
             .mockImplementation(() => {})
@@ -125,7 +116,7 @@ describe('useUpdateAIAgentStoreConfigurationData', () => {
 
         result.current.updateStoreConfig()
 
-        expect(mockMutate).not.toHaveBeenCalled()
+        expect(mockUpsertStoreConfiguration).not.toHaveBeenCalled()
         expect(consoleWarnSpy).toHaveBeenCalledWith(
             '🚀 ~ updateStoreConfig: Data is still loading, aborting update',
         )

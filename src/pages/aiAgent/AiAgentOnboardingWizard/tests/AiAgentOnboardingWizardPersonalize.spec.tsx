@@ -56,7 +56,7 @@ jest.mock('../../hooks/useCustomToneOfVoicePreview')
 
 const mockuseCustomToneofVoicePreview = jest.mocked(useCustomToneOfVoicePreview)
 
-const QueryClientProvider = mockQueryClientProvider()
+const QueryClientProvider = mockQueryClientProvider().QueryClientProvider
 const defaultState = {}
 const defaultProps = {
     shopType: 'shopify',

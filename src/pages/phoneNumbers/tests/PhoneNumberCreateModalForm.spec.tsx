@@ -13,7 +13,7 @@ import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import PhoneNumberCreateModalForm from '../PhoneNumberCreateModalForm'
 import * as phoneNumberUtils from '../utils'
 
-const QueryClientProvider = mockQueryClientProvider()
+const QueryClientProvider = mockQueryClientProvider().QueryClientProvider
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({})
 

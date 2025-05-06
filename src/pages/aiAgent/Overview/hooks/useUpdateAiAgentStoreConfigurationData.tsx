@@ -1,6 +1,9 @@
 import { useQueryClient } from '@tanstack/react-query'
 
-import { useUpsertStoreConfigurationPure } from 'models/aiAgent/queries'
+import {
+    storeConfigurationKeys,
+    useUpsertStoreConfigurationPure,
+} from 'models/aiAgent/queries'
 import { AiAgentScope } from 'models/aiAgent/types'
 import { useGetOnboardingDataByShopName } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingDataByShopName'
 import { useFetchAiAgentStoreConfigurationData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchAiAgentStoreConfigurationData'
@@ -32,11 +35,9 @@ export const useUpdateAIAgentStoreConfigurationData = (
     } = useUpsertStoreConfigurationPure({
         onSuccess: () => {
             // Invalidate and refetch store configuration to keep UI in sync
-            queryClient.invalidateQueries([
-                'storeConfiguration',
-                accountDomain,
-                storeName,
-            ])
+            queryClient.invalidateQueries({
+                queryKey: storeConfigurationKeys.all(),
+            })
         },
     })
 

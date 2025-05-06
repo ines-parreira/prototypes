@@ -42,7 +42,7 @@ const mockedIntegration = {
     },
 } as unknown as GorgiasChatIntegration
 
-const QueryClientProvider = mockQueryClientProvider()
+const QueryClientProvider = mockQueryClientProvider().QueryClientProvider
 
 const defaultState = {}
 

@@ -19,7 +19,7 @@ jest.mock(
 
 jest.mock('pages/aiAgent/providers/AiAgentFormChangesContext')
 
-const QueryClientProvider = mockQueryClientProvider()
+const QueryClientProvider = mockQueryClientProvider().QueryClientProvider
 
 const defaultState = {}
 

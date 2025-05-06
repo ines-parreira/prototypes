@@ -28,7 +28,7 @@ jest.mock('../AiAgentOnboardingWizardPersonalize', () => ({
     __esModule: true,
     default: () => <div>Personalize AI Agent </div>,
 }))
-const QueryClientProvider = mockQueryClientProvider()
+const QueryClientProvider = mockQueryClientProvider().QueryClientProvider
 
 const mockUseAiAgentStoreConfigurationContext = assumeMock(
     useAiAgentStoreConfigurationContext,
