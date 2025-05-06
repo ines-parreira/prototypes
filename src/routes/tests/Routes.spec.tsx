@@ -1,4 +1,4 @@
-import { ComponentType, PropsWithChildren, ReactNode } from 'react'
+import React, { ComponentType, PropsWithChildren, ReactNode } from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
@@ -129,6 +129,12 @@ jest.mock(
         useReportChartRestrictions: jest.fn(),
     }),
 )
+
+jest.mock('pages/aiAgent/Overview/middlewares/SalesPaywallMiddleware', () => ({
+    SalesPaywallMiddleware:
+        (ChildComponent: React.ComponentType<any>) => () => <ChildComponent />,
+}))
+
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
 const mockHistory = createBrowserHistory()

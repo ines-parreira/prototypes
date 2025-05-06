@@ -5,47 +5,90 @@ import { useParams } from 'react-router-dom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
+import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
 import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import { SALES } from 'pages/aiAgent/constants'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
-import { getHasAutomate } from 'state/billing/selectors'
+import { AIButton } from 'pages/common/components/AIButton/AIButton'
+import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
 
 import css from './SalesPaywallMiddleware.less'
 
+type PaywallWrapperProps = {
+    children: React.ReactNode
+}
+const PaywallWrapper = ({ children }: PaywallWrapperProps) => {
+    const { shopName } = useParams<{
+        shopName: string
+    }>()
+
+    return (
+        <AiAgentLayout shopName={shopName} title={SALES} fullscreen>
+            <div className={css.wrapper}>{children}</div>
+        </AiAgentLayout>
+    )
+}
+
 export const SalesPaywallMiddleware =
     (ChildComponent: React.ComponentType<any>) => (): React.ReactElement => {
-        const { shopName } = useParams<{
-            shopName: string
-        }>()
         const flags = useFlags()
-        const isSalesPageEnabled =
-            flags[FeatureFlagKey.StandaloneAIAgentSalesPage]
         const hasAutomate = useAppSelector(getHasAutomate)
-
-        const automatePaywallView = (
-            <AiAgentPaywallView
-                aiAgentPaywallFeature={AIAgentPaywallFeatures.Automate}
-            />
+        const { earlyAccessModal, showEarlyAccessModal } = useActivation(
+            window.location.pathname,
         )
 
-        const salesPaywallView = (
-            <AiAgentPaywallView
-                aiAgentPaywallFeature={AIAgentPaywallFeatures.SalesWaitlist}
-            >
-                <div data-candu-id="ai-agent-waitlist" />
-            </AiAgentPaywallView>
-        )
+        const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
+        const hasNewAutomatePlan = (currentAutomatePlan?.generation ?? 0) >= 6
 
-        if (!isSalesPageEnabled) {
+        const isAiSalesBetaUser = !!flags[FeatureFlagKey.AiSalesAgentBeta]
+        const isAiSalesAlphaDemoUser =
+            !!flags[FeatureFlagKey.AiSalesAgentBypassPlanCheck]
+
+        const showUpgradePaywall = isAiSalesBetaUser && !hasNewAutomatePlan
+        const showSalesSettings =
+            (isAiSalesBetaUser && hasNewAutomatePlan) || isAiSalesAlphaDemoUser
+
+        if (!hasAutomate) {
             return (
-                <AiAgentLayout shopName={shopName} title={SALES}>
-                    <div className={css.wrapper}>
-                        {hasAutomate ? salesPaywallView : automatePaywallView}
-                    </div>
-                </AiAgentLayout>
+                <PaywallWrapper>
+                    <AiAgentPaywallView
+                        aiAgentPaywallFeature={AIAgentPaywallFeatures.Automate}
+                    />
+                </PaywallWrapper>
             )
         }
 
-        return <ChildComponent />
+        if (showUpgradePaywall) {
+            return (
+                <PaywallWrapper>
+                    <AiAgentPaywallView
+                        aiAgentPaywallFeature={AIAgentPaywallFeatures.Upgrade}
+                    >
+                        <AIButton
+                            intent="primary"
+                            size="medium"
+                            onClick={showEarlyAccessModal}
+                        >
+                            Upgrade Now
+                        </AIButton>
+                    </AiAgentPaywallView>
+                    {earlyAccessModal}
+                </PaywallWrapper>
+            )
+        }
+
+        if (showSalesSettings) {
+            return <ChildComponent />
+        }
+
+        return (
+            <PaywallWrapper>
+                <AiAgentPaywallView
+                    aiAgentPaywallFeature={AIAgentPaywallFeatures.SalesWaitlist}
+                >
+                    <div data-candu-id="ai-agent-waitlist" />
+                </AiAgentPaywallView>
+            </PaywallWrapper>
+        )
     }

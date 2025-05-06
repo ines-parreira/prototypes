@@ -65,4 +65,22 @@ describe('<AiAgentLayout />', () => {
         })
         expect(ticketViewButton).not.toBeInTheDocument()
     })
+
+    it('should hide the title and the navigation when fullscreen = true', () => {
+        renderComponent({ fullscreen: true })
+
+        const title = screen.queryByText(AI_AGENT)
+        const navigation = screen.queryByRole('navigation')
+        expect(title).not.toBeInTheDocument()
+        expect(navigation).not.toBeInTheDocument()
+    })
+
+    it('should render the title and the navigation when fullscreen = false', () => {
+        renderComponent({ fullscreen: false })
+
+        const title = screen.queryByText(AI_AGENT)
+        const navigation = screen.queryByRole('navigation')
+        expect(title).toBeInTheDocument()
+        expect(navigation).toBeInTheDocument()
+    })
 })

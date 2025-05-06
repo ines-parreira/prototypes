@@ -108,7 +108,7 @@ export enum AIAgentPaywallFeatures {
     Automate = 'Automate',
     SalesWaitlist = 'SalesWaitlist',
     SalesSetup = 'SalesSetup',
-    Stats = 'Stats',
+    Upgrade = 'Upgrade',
 }
 
 export type HandoverCustomizationChatOnlineSettingsFormValues = {

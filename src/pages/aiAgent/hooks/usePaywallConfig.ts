@@ -109,8 +109,7 @@ export const usePaywallConfig = (
                 hideLearnMore: true,
                 showRoiCalculator: false,
             }
-
-        case AIAgentPaywallFeatures.Stats:
+        case AIAgentPaywallFeatures.Upgrade:
             return {
                 title: 'with Shopping Assistant skills',
                 subtitle:

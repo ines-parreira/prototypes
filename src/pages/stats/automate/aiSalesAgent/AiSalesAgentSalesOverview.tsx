@@ -22,7 +22,7 @@ const AiSalesAgentSalesOverview = () => {
         return (
             <>
                 <AiAgentPaywallView
-                    aiAgentPaywallFeature={AIAgentPaywallFeatures.Stats}
+                    aiAgentPaywallFeature={AIAgentPaywallFeatures.Upgrade}
                 >
                     <AIButton
                         intent="primary"
