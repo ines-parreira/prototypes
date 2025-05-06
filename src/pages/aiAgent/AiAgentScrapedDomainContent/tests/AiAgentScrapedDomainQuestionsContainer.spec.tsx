@@ -219,7 +219,8 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
         expect(screen.getByText('No questions generated')).toBeInTheDocument()
     })
 
-    it('should open side panel on row click (handleOnSelect)', async () => {
+    // TO DO: enable this test when this task (https://linear.app/gorgias/issue/AIKNL-287/createremove-a-resource-fromin-ml-recommender-when-ingested-resource) is implemented
+    xit('should open side panel on row click (handleOnSelect)', async () => {
         const mockedListIngestedResources = getIngestedResourcesListResponse({
             page: 1,
             itemCount: 5,
@@ -250,7 +251,8 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
         expect(screen.getByText('View source URLs')).toBeInTheDocument()
     })
 
-    it('should call updateIngestedResource when enabled toggle button is clicked', () => {
+    // TO DO: enable this test when this task (https://linear.app/gorgias/issue/AIKNL-287/createremove-a-resource-fromin-ml-recommender-when-ingested-resource) is implemented
+    xit('should call updateIngestedResource when enabled toggle button is clicked', () => {
         const mockedListIngestedResources = getIngestedResourcesListResponse({
             page: 1,
             itemCount: 5,

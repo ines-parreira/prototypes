@@ -1,8 +1,6 @@
 import classnames from 'classnames'
 import Skeleton from 'react-loading-skeleton'
 
-import { ToggleField } from '@gorgias/merchant-ui-kit'
-
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -69,29 +67,29 @@ function ScrapedDomainContentView<
     fetchPrevItems,
     searchValue,
     onSearch,
-    onUpdateStatus,
 }: Props<T>) {
     const description =
         pageType === CONTENT_TYPE.QUESTION
             ? 'AI Agent automatically generates questions and answers from your website content to use as knowledge.'
             : 'AI Agent uses product details from your store website and your Shopify integration.'
 
-    const handleToggleChange = ({
-        id,
-        currentStatus,
-    }: {
-        id: number
-        currentStatus?: string
-    }) => {
-        if (onUpdateStatus) {
-            onUpdateStatus(id, {
-                status:
-                    currentStatus === IngestedResourceStatus.Disabled
-                        ? IngestedResourceStatus.Enabled
-                        : IngestedResourceStatus.Disabled,
-            })
-        }
-    }
+    // TO DO: uncomment when this task (https://linear.app/gorgias/issue/AIKNL-287/createremove-a-resource-fromin-ml-recommender-when-ingested-resource) is implemented
+    // const handleToggleChange = ({
+    //     id,
+    //     currentStatus,
+    // }: {
+    //     id: number
+    //     currentStatus?: string
+    // }) => {
+    //     if (onUpdateStatus) {
+    //         onUpdateStatus(id, {
+    //             status:
+    //                 currentStatus === IngestedResourceStatus.Disabled
+    //                     ? IngestedResourceStatus.Enabled
+    //                     : IngestedResourceStatus.Disabled,
+    //         })
+    //     }
+    // }
     const displayEmptyState = !isLoading && contents?.length === 0
 
     const ProductImage = ({ image }: { image: string | undefined }) => {
@@ -107,26 +105,27 @@ function ScrapedDomainContentView<
         return <div className={classnames(css.productImage, css.color)} />
     }
 
-    const QuestionToggle = ({ content }: { content: T }) => {
-        return (
-            <div
-                onClick={(e) => {
-                    e.stopPropagation()
-                }}
-            >
-                <ToggleField
-                    value={content.status === IngestedResourceStatus.Enabled}
-                    onChange={() =>
-                        handleToggleChange({
-                            id: content.id,
-                            currentStatus: content.status,
-                        })
-                    }
-                    className={css.toggleInput}
-                />
-            </div>
-        )
-    }
+    // TO DO: uncomment when this task (https://linear.app/gorgias/issue/AIKNL-287/createremove-a-resource-fromin-ml-recommender-when-ingested-resource) is implemented
+    // const QuestionToggle = ({ content }: { content: T }) => {
+    //     return (
+    //         <div
+    //             onClick={(e) => {
+    //                 e.stopPropagation()
+    //             }}
+    //         >
+    //             <ToggleField
+    //                 value={content.status === IngestedResourceStatus.Enabled}
+    //                 onChange={() =>
+    //                     handleToggleChange({
+    //                         id: content.id,
+    //                         currentStatus: content.status,
+    //                     })
+    //                 }
+    //                 className={css.toggleInput}
+    //             />
+    //         </div>
+    //     )
+    // }
 
     return (
         <>
@@ -176,9 +175,8 @@ function ScrapedDomainContentView<
                                     onClick={() => onSelect(content)}
                                 >
                                     <BodyCell>
-                                        {pageType === CONTENT_TYPE.QUESTION ? (
-                                            <QuestionToggle content={content} />
-                                        ) : (
+                                        {pageType ===
+                                        CONTENT_TYPE.QUESTION ? null : (
                                             <ProductImage
                                                 image={content.image?.src}
                                             />

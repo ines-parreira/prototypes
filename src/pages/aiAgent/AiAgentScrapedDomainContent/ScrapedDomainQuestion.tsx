@@ -1,13 +1,8 @@
-import { useEffect, useState } from 'react'
-
-import { useHistory, useParams } from 'react-router'
-
-import { Banner, Button, ToggleField } from '@gorgias/merchant-ui-kit'
+import { useState } from 'react'
 
 import { ArticleWithLocalTranslation } from 'models/helpCenter/types'
 import ControlledCollapsibleDetails from 'pages/tickets/detail/components/TicketVoiceCall/ControlledCollapsibleDetails'
 
-import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import { IngestedResourceStatus } from './constant'
 import { IngestedResourceWithArticleId } from './types'
 
@@ -22,35 +17,38 @@ type Props = {
     ) => void
 }
 
-const ScrapedDomainQuestion = ({ question, detail, onUpdateStatus }: Props) => {
-    const history = useHistory()
-    const { shopName } = useParams<{
-        shopName: string
-    }>()
-    const { routes } = useAiAgentNavigation({ shopName })
-
+const ScrapedDomainQuestion = ({ question, detail }: Props) => {
     const [isOpen, setIsOpen] = useState(false)
-    const [isEnabled, setIsEnabled] = useState(
-        question?.status === IngestedResourceStatus.Enabled,
-    )
 
-    useEffect(() => {
-        setIsEnabled(question?.status === IngestedResourceStatus.Enabled)
-    }, [question])
+    // TO DO: uncomment when this task (https://linear.app/gorgias/issue/AIKNL-287/createremove-a-resource-fromin-ml-recommender-when-ingested-resource) is implemented
+    // const history = useHistory()
+    // const { shopName } = useParams<{
+    //     shopName: string
+    // }>()
+    // const { routes } = useAiAgentNavigation({ shopName })
 
-    const handleToggleChange = ({ id }: { id?: number }) => {
-        if (onUpdateStatus && id) {
-            onUpdateStatus(id, {
-                status: isEnabled
-                    ? IngestedResourceStatus.Disabled
-                    : IngestedResourceStatus.Enabled,
-            })
-        }
-    }
+    // const [isEnabled, setIsEnabled] = useState(
+    //     question?.status === IngestedResourceStatus.Enabled,
+    // )
+
+    // useEffect(() => {
+    //     setIsEnabled(question?.status === IngestedResourceStatus.Enabled)
+    // }, [question])
+
+    // const handleToggleChange = ({ id }: { id?: number }) => {
+    //     if (onUpdateStatus && id) {
+    //         onUpdateStatus(id, {
+    //             status: isEnabled
+    //                 ? IngestedResourceStatus.Disabled
+    //                 : IngestedResourceStatus.Enabled,
+    //         })
+    //     }
+    // }
 
     return (
         <div className={css.contentContainer}>
-            <ToggleField
+            {/* TO DO: uncomment when this task (https://linear.app/gorgias/issue/AIKNL-287/createremove-a-resource-fromin-ml-recommender-when-ingested-resource) is implemented */}
+            {/* <ToggleField
                 name={`toggle-question-details`}
                 label="Available for AI Agent"
                 value={isEnabled}
@@ -78,7 +76,7 @@ const ScrapedDomainQuestion = ({ question, detail, onUpdateStatus }: Props) => {
             >
                 Disable this content if incorrect. Create or update Guidance
                 with accurate information for AI Agent.
-            </Banner>
+            </Banner> */}
             <div className={css.contentBody}>
                 <div className={css.bodySemibold}>Question</div>
                 <div>{question?.title}</div>
