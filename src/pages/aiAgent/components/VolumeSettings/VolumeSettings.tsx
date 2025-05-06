@@ -3,6 +3,7 @@ import { useCallback } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useParams } from 'react-router'
 import { z } from 'zod'
 
 import { Box, Button } from '@gorgias/merchant-ui-kit'
@@ -12,11 +13,13 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import { ConversationLauncherSettings } from './ConversationLauncherSettings'
 import { ConversationStartersSettings } from './ConversationStartersSettings'
+import { usePotentialImpact } from './hooks/usePotentialImpact'
 
 import css from './VolumeSettings.less'
 
@@ -96,6 +99,15 @@ export const VolumeSettings = () => {
         [updateStoreConfiguration, storeConfiguration, dispatch],
     )
 
+    const { shopName } = useParams<{
+        shopName: string
+    }>()
+    const storeIntegration = useStoreIntegrationByShopName(shopName)
+
+    const { isPotentialImpactLoading, potentialImpact } = usePotentialImpact(
+        storeIntegration?.id,
+    )
+
     return (
         <>
             <UnsavedChangesPrompt
@@ -113,9 +125,14 @@ export const VolumeSettings = () => {
                 >
                     <ConversationStartersSettings
                         isEnabled={isConversationStartersFeatureEnabled}
+                        potentialImpact={potentialImpact}
+                        isPotentialImpactLoading={isPotentialImpactLoading}
                     />
                     {isConvertFloatingChatInputFeatureEnabled && (
-                        <ConversationLauncherSettings />
+                        <ConversationLauncherSettings
+                            potentialImpact={potentialImpact}
+                            isPotentialImpactLoading={isPotentialImpactLoading}
+                        />
                     )}
 
                     <Box className={css.saveButtonWrapper}>

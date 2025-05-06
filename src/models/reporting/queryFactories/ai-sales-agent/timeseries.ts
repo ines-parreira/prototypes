@@ -21,6 +21,9 @@ const createGmvTimeSeriesQuery = (
     timezone: string,
     granularity: ReportingGranularity,
     additionalFilters: ReportingFilter[] = [],
+    measure:
+        | AiSalesAgentOrdersMeasure.Gmv
+        | AiSalesAgentOrdersMeasure.GmvUsd = AiSalesAgentOrdersMeasure.Gmv,
 ): TimeSeriesQuery<AiSalesAgentOrdersCube> => {
     const baseFilters = statsFiltersToReportingFilters(
         aiSalesAgentOrdersDefaultFiltersMembers,
@@ -28,7 +31,7 @@ const createGmvTimeSeriesQuery = (
     )
 
     return {
-        measures: [AiSalesAgentOrdersMeasure.Gmv],
+        measures: [measure],
         dimensions: [],
         timeDimensions: [
             {
@@ -72,23 +75,54 @@ export const influencedGmvTimeSeriesQueryFactory = (
     timezone: string,
     granularity: ReportingGranularity,
 ): TimeSeriesQuery<AiSalesAgentOrdersCube> =>
-    createGmvTimeSeriesQuery(filters, timezone, granularity, [
-        {
-            member: AiSalesAgentOrdersDimension.IsInfluenced,
-            operator: ReportingFilterOperator.Equals,
-            values: ['1'],
-        },
-    ])
+    createGmvTimeSeriesQuery(
+        filters,
+        timezone,
+        granularity,
+        [
+            {
+                member: AiSalesAgentOrdersDimension.IsInfluenced,
+                operator: ReportingFilterOperator.Equals,
+                values: ['1'],
+            },
+        ],
+        AiSalesAgentOrdersMeasure.Gmv,
+    )
 
 export const gmvTimeSeriesQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
 ): TimeSeriesQuery<AiSalesAgentOrdersCube> =>
-    createGmvTimeSeriesQuery(filters, timezone, granularity, [
-        {
-            member: AiSalesAgentOrdersDimension.IsInfluenced,
-            operator: ReportingFilterOperator.Equals,
-            values: ['0'],
-        },
-    ])
+    createGmvTimeSeriesQuery(
+        filters,
+        timezone,
+        granularity,
+        [
+            {
+                member: AiSalesAgentOrdersDimension.IsInfluenced,
+                operator: ReportingFilterOperator.Equals,
+                values: ['0'],
+            },
+        ],
+        AiSalesAgentOrdersMeasure.Gmv,
+    )
+
+export const gmvUsdTimeSeriesQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+): TimeSeriesQuery<AiSalesAgentOrdersCube> =>
+    createGmvTimeSeriesQuery(
+        filters,
+        timezone,
+        granularity,
+        [
+            {
+                member: AiSalesAgentOrdersDimension.IsInfluenced,
+                operator: ReportingFilterOperator.Equals,
+                values: ['0'],
+            },
+        ],
+        AiSalesAgentOrdersMeasure.GmvUsd,
+    )

@@ -51,7 +51,10 @@ describe('ConversationLauncherSettings', () => {
     it('renders the main Ask Anything Input title', () => {
         render(
             <Wrapper>
-                <ConversationLauncherSettings />
+                <ConversationLauncherSettings
+                    isPotentialImpactLoading={false}
+                    potentialImpact="Unlock up to ~5% additional GMV"
+                />
             </Wrapper>,
         )
 
@@ -75,7 +78,10 @@ describe('ConversationLauncherSettings', () => {
     it('does not allow opening Advanced settings when toggle is off', () => {
         const { container } = render(
             <Wrapper>
-                <ConversationLauncherSettings />
+                <ConversationLauncherSettings
+                    isPotentialImpactLoading={false}
+                    potentialImpact="Unlock up to ~5% additional GMV"
+                />
             </Wrapper>,
         )
 
@@ -88,7 +94,10 @@ describe('ConversationLauncherSettings', () => {
     it('opens Advanced settings when toggle is on', () => {
         render(
             <Wrapper defaultValues={{ isFloatingInputEnabled: true }}>
-                <ConversationLauncherSettings />
+                <ConversationLauncherSettings
+                    isPotentialImpactLoading={false}
+                    potentialImpact="Unlock up to ~5% additional GMV"
+                />
             </Wrapper>,
         )
 

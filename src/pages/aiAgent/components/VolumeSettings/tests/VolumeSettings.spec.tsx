@@ -54,6 +54,18 @@ const newStoreConfig = {
 
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
 jest.mock('pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor')
+jest.mock(
+    'pages/aiAgent/components/VolumeSettings/hooks/usePotentialImpact',
+    () => {
+        return {
+            usePotentialImpact: jest.fn(() => ({
+                potentialImpact: 'Potential Impact',
+                isLoading: false,
+            })),
+        }
+    },
+)
+jest.mock('pages/settings/helpCenter/hooks/useStoreIntegrationByShopName')
 
 const mockUseGetChatIntegrationColor = jest.mocked(
     chatColorHook.useGetChatIntegrationColor,

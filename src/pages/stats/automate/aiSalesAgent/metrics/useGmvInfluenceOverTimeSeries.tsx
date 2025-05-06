@@ -14,7 +14,10 @@ import {
 } from 'models/reporting/queryFactories/ai-sales-agent/timeseries'
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
-import { calculateRate } from 'pages/stats/automate/aiSalesAgent/metrics/utils'
+import {
+    calculateRate,
+    getStatsByMeasure,
+} from 'pages/stats/automate/aiSalesAgent/metrics/utils'
 
 import { GMV_OVERTIME_LABEL } from '../constants'
 
@@ -38,12 +41,6 @@ const calculateRates = (
 
     return rates
 }
-
-export const getStatsByMeasure = (
-    measure: string,
-    dataItems?: TimeSeriesDataItem[][],
-): TimeSeriesDataItem[] =>
-    dataItems?.find((arr) => arr.some((item) => item.label === measure)) || []
 
 const useGmvInfluenceOverTimeSeries = (
     filters: StatsFilters,

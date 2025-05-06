@@ -117,7 +117,13 @@ export const ConversationLauncherAdvancedSettings = ({
     )
 }
 
-export const ConversationLauncherSettings = () => {
+export const ConversationLauncherSettings = ({
+    isPotentialImpactLoading,
+    potentialImpact,
+}: {
+    isPotentialImpactLoading: boolean
+    potentialImpact: string | null
+}) => {
     const [isSidebarOpen, setSidebarOpen] = useState(false)
 
     const { watch, setValue } = useFormContext()
@@ -166,7 +172,8 @@ export const ConversationLauncherSettings = () => {
                         ) : (
                             <EngagementSettingsCardImpact
                                 icon="lock"
-                                impact="Unlock up to ~5% additional GMV"
+                                impact={potentialImpact}
+                                isLoading={isPotentialImpactLoading}
                             />
                         )}
                     </EngagementSettingsCardContent>

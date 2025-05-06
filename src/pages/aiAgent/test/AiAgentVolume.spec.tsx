@@ -20,6 +20,7 @@ const queryClient = mockQueryClient()
 
 jest.mock('pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor')
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
+jest.mock('pages/settings/helpCenter/hooks/useStoreIntegrationByShopName')
 
 const mockUseGetChatIntegrationColor = jest.mocked(
     chatColorHook.useGetChatIntegrationColor,

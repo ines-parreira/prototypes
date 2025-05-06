@@ -20,8 +20,12 @@ import { EngagementSettingsCardToggle } from './card/EngagementSettingsCardToggl
 
 export const ConversationStartersSettings = ({
     isEnabled,
+    potentialImpact,
+    isPotentialImpactLoading,
 }: {
     isEnabled: boolean
+    potentialImpact: string | null
+    isPotentialImpactLoading: boolean
 }) => {
     const { watch, setValue } = useFormContext()
     const isConversationStartersEnabled = watch('isConversationStartersEnabled')
@@ -63,7 +67,8 @@ export const ConversationStartersSettings = ({
                     ) : (
                         <EngagementSettingsCardImpact
                             icon="lock"
-                            impact="Unlock up to ~5% additional GMV"
+                            impact={potentialImpact}
+                            isLoading={isPotentialImpactLoading}
                         />
                     )}
                 </EngagementSettingsCardContent>

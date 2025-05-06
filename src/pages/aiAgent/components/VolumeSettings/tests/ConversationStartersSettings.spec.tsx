@@ -39,7 +39,11 @@ describe('ConversationStartersSettings', () => {
     it('renders the toggle with correct label and unchecked by default', () => {
         render(
             <Wrapper>
-                <ConversationStartersSettings isEnabled={true} />
+                <ConversationStartersSettings
+                    isEnabled={true}
+                    isPotentialImpactLoading={false}
+                    potentialImpact="Unlock up to ~5% additional GMV"
+                />
             </Wrapper>,
         )
 
@@ -67,7 +71,11 @@ describe('ConversationStartersSettings', () => {
     it('shows the toggle as checked if value is true', () => {
         render(
             <Wrapper defaultValues={{ isConversationStartersEnabled: true }}>
-                <ConversationStartersSettings isEnabled={true} />
+                <ConversationStartersSettings
+                    isEnabled={true}
+                    isPotentialImpactLoading={false}
+                    potentialImpact="Unlock up to ~5% additional GMV"
+                />
             </Wrapper>,
         )
 
@@ -77,7 +85,11 @@ describe('ConversationStartersSettings', () => {
     it('disables the toggle when isEnabled is false', () => {
         render(
             <Wrapper>
-                <ConversationStartersSettings isEnabled={false} />
+                <ConversationStartersSettings
+                    isEnabled={false}
+                    isPotentialImpactLoading={false}
+                    potentialImpact="Unlock up to ~5% additional GMV"
+                />
             </Wrapper>,
         )
 
@@ -88,7 +100,11 @@ describe('ConversationStartersSettings', () => {
     it('updates the value when toggled', () => {
         render(
             <Wrapper>
-                <ConversationStartersSettings isEnabled={true} />
+                <ConversationStartersSettings
+                    isEnabled={true}
+                    isPotentialImpactLoading={false}
+                    potentialImpact="Unlock up to ~5% additional GMV"
+                />
             </Wrapper>,
         )
 
