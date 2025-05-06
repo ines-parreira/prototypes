@@ -15,6 +15,7 @@ import {
     GorgiasChatAvatarNameType,
     GorgiasChatAvatarSettings,
 } from 'models/integration/types'
+import TypingMessage from 'pages/aiAgent/Onboarding/components/TypingMessage/TypingMessage'
 import { removeATags } from 'pages/aiAgent/utils/removeATags'
 import { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import AgentMessages from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AgentMessages'
@@ -34,12 +35,13 @@ type Props = {
     className?: string
     innerRef?: Ref<HTMLDivElement>
     conversationColor: string
-    messages: ConversationMessage[]
+    messages?: ConversationMessage[]
     chatTitle?: string
     avatar?: GorgiasChatAvatarSettings
     language?: string
     user: Map<any, any>
     removeLinksFromMessages?: boolean
+    isTyping?: boolean
 }
 
 const AiAgentChatConversation: FC<Props> = ({
@@ -51,9 +53,12 @@ const AiAgentChatConversation: FC<Props> = ({
     user,
     messages,
     removeLinksFromMessages,
+    isTyping = false,
 }) => {
     const [, setIdx] = useState(0)
     const sanitizedMessage = useMemo(() => {
+        if (!messages) return []
+
         if (removeLinksFromMessages) {
             return messages.map((message) => {
                 return {
@@ -126,6 +131,8 @@ const AiAgentChatConversation: FC<Props> = ({
     }
 
     useEffect(() => {
+        if (isTyping) return
+
         const newMessages: HTMLElement[] = Array.from(content.current?.children)
 
         resetMessages(newMessages)
@@ -136,7 +143,7 @@ const AiAgentChatConversation: FC<Props> = ({
                 clearInterval(addMessage)
             }
         }
-    }, [groupedMessages, showMessages, addMessage])
+    }, [groupedMessages, showMessages, addMessage, isTyping])
 
     return (
         <div ref={innerRef} className={classnames(css.content, className)}>
@@ -178,6 +185,18 @@ const AiAgentChatConversation: FC<Props> = ({
                             />
                         </div>
                     ),
+                )}
+
+                {isTyping && (
+                    <div
+                        className={classnames(
+                            css.active,
+                            css.agentMessage,
+                            css.message,
+                        )}
+                    >
+                        <TypingMessage color={conversationColor} />
+                    </div>
                 )}
             </div>
         </div>

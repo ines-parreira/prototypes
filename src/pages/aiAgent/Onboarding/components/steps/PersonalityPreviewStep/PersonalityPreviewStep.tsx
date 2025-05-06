@@ -45,7 +45,7 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
 
     const { validSteps } = useSteps({ shopName, isStoreSelected })
 
-    const { data, isLoading } = useGetOnboardingData(shopName)
+    const { data } = useGetOnboardingData(shopName)
 
     useCheckStoreIntegration()
     useCheckOnboardingCompleted()
@@ -132,35 +132,30 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
                 />
             </OnboardingContentContainer>
             <OnboardingPreviewContainer
-                isLoading={isPreviewLoading || isLoading}
+                isLoading={false}
                 icon={''}
                 caption="Here’s a sample conversation with your AI Agent, crafted using a friendly tone of voice. You can adjust its personality in Settings anytime."
             >
                 <div className={css.previewContainer}>
-                    <div>
-                        <ChatIntegrationPreview
+                    <ChatIntegrationPreview
+                        {...{
+                            ...chatPreviewSettings,
+                            mainColor:
+                                mainColor ?? chatPreviewSettings.mainColor,
+                        }}
+                    >
+                        <AiAgentChatConversation
                             {...{
-                                ...chatPreviewSettings,
-                                mainColor:
-                                    mainColor ?? chatPreviewSettings.mainColor,
+                                ...agentChatConversationSettings,
+                                conversationColor:
+                                    conversationColor ??
+                                    agentChatConversationSettings.conversationColor,
                             }}
-                        >
-                            <AiAgentChatConversation
-                                {...{
-                                    ...agentChatConversationSettings,
-                                    conversationColor:
-                                        conversationColor ??
-                                        agentChatConversationSettings.conversationColor,
-                                }}
-                                messages={
-                                    previewConversation
-                                        ? previewConversation.messages
-                                        : []
-                                }
-                                removeLinksFromMessages
-                            />
-                        </ChatIntegrationPreview>
-                    </div>
+                            messages={previewConversation?.messages}
+                            isTyping={isPreviewLoading}
+                            removeLinksFromMessages
+                        />
+                    </ChatIntegrationPreview>
                 </div>
             </OnboardingPreviewContainer>
         </OnboardingBody>

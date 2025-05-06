@@ -611,6 +611,19 @@ describe('PersonalityStep - Preview information', () => {
             ),
         ).toBeInTheDocument()
     })
+
+    it('renders the loading preview', async () => {
+        useTransformToneOfVoiceConversationsMock.mockReturnValue({
+            previewConversation: undefined,
+            isLoading: true,
+            isPreviewLoading: true,
+            preview: undefined,
+        })
+
+        renderComponent()
+
+        expect(screen.getByTestId('typing-message-bubble')).toBeInTheDocument()
+    })
 })
 
 describe('PersonalityStep - Onboarding mutation', () => {

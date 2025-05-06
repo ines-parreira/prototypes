@@ -649,32 +649,28 @@ export const ChannelsStep: React.FC<StepProps> = ({
                     {renderContent()}
                 </OnboardingContentContainer>
                 <OnboardingPreviewContainer
-                    isLoading={isPreviewLoading}
+                    isLoading={false}
                     icon={''}
+                    caption="This is a sample conversation with AI Agent. It will evolve as you onboard."
                 >
                     <div className={css.previewContainer}>
-                        <div>
-                            <ChatIntegrationPreview
+                        <ChatIntegrationPreview
+                            {...{
+                                ...chatPreviewSettings,
+                                mainColor: mainColor ?? newChatColor,
+                            }}
+                        >
+                            <AiAgentChatConversation
                                 {...{
-                                    ...chatPreviewSettings,
-                                    mainColor: mainColor ?? newChatColor,
+                                    ...agentChatConversationSettings,
+                                    conversationColor:
+                                        conversationColor ?? newChatColor,
+                                    removeLinksFromMessages: true,
                                 }}
-                            >
-                                <AiAgentChatConversation
-                                    {...{
-                                        ...agentChatConversationSettings,
-                                        conversationColor:
-                                            conversationColor ?? newChatColor,
-                                        removeLinksFromMessages: true,
-                                    }}
-                                    messages={
-                                        previewConversation
-                                            ? previewConversation.messages
-                                            : []
-                                    }
-                                />
-                            </ChatIntegrationPreview>
-                        </div>
+                                messages={previewConversation?.messages}
+                                isTyping={isPreviewLoading}
+                            />
+                        </ChatIntegrationPreview>
                     </div>
                 </OnboardingPreviewContainer>
             </OnboardingBody>

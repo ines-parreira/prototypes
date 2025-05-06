@@ -133,8 +133,8 @@ export const useTransformToneOfVoiceConversations = (
 
                 if (
                     _isEqual(
-                        Object.keys(cachedConversations),
-                        Object.keys(conversationExamples),
+                        Object.keys(cachedConversations).sort(),
+                        Object.keys(conversationExamples).sort(),
                     )
                 ) {
                     onSuccess(cachedConversations)
@@ -238,7 +238,8 @@ export const useTransformToneOfVoiceConversations = (
             !isPreviewLoading &&
             isMlPreviewEnabled !== undefined &&
             previewId &&
-            !outputConversations?.[previewId]
+            (!outputConversations?.[previewId] ||
+                isPreviewLoading === undefined)
         ) {
             setIsPreviewLoading(true)
             const singleConversation = inputConversations.find(

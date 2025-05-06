@@ -102,12 +102,8 @@ export const PersonalityStep: FC<StepProps> = ({
 
     const { validSteps } = useSteps({ shopName, isStoreSelected })
 
-    const { data, isLoading: isLoadingOnboardingData } =
-        useGetOnboardingData(shopName)
-    const {
-        mutate: doUpdateOnboardingMutation,
-        isLoading: isUpdatingOnboarding,
-    } = useUpdateOnboarding()
+    const { data } = useGetOnboardingData(shopName)
+    const { mutate: doUpdateOnboardingMutation } = useUpdateOnboarding()
 
     const { mainColor, conversationColor } = useGetChatIntegrationColor({
         shopName,
@@ -117,8 +113,6 @@ export const PersonalityStep: FC<StepProps> = ({
     const storeIntegration = useAppSelector(
         getShopifyIntegrationByShopName(shopName),
     ).toJS()
-
-    const isLoading = isLoadingOnboardingData || isUpdatingOnboarding
 
     useCheckStoreIntegration()
     useCheckOnboardingCompleted()
@@ -434,7 +428,7 @@ export const PersonalityStep: FC<StepProps> = ({
                     </div>
                 </OnboardingContentContainer>
                 <OnboardingPreviewContainer
-                    isLoading={isLoading || isPreviewLoading}
+                    isLoading={false}
                     icon={''}
                     caption="This is a sample conversation with AI Agent. It will evolve as you onboard."
                 >
@@ -454,6 +448,7 @@ export const PersonalityStep: FC<StepProps> = ({
                                         agentChatConversationSettings.conversationColor,
                                 }}
                                 messages={preview}
+                                isTyping={isPreviewLoading}
                                 removeLinksFromMessages
                             />
                         </ChatIntegrationPreview>

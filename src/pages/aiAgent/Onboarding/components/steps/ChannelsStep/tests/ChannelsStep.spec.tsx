@@ -685,6 +685,21 @@ describe('ChannelsStep', () => {
             ).toBeInTheDocument()
         })
 
+        it('renders the loading preview', async () => {
+            useTransformToneOfVoiceConversationsMock.mockReturnValue({
+                previewConversation: undefined,
+                isLoading: true,
+                isPreviewLoading: true,
+                preview: undefined,
+            })
+
+            renderWithProvider()
+
+            expect(
+                screen.getByTestId('typing-message-bubble'),
+            ).toBeInTheDocument()
+        })
+
         it('navigates to the skillset step when Back is clicked and there is an integration', async () => {
             renderWithProvider()
 
