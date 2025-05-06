@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import { Product } from 'constants/integrations/types/shopify'
 import ControlledCollapsibleDetails from 'pages/tickets/detail/components/TicketVoiceCall/ControlledCollapsibleDetails'
+import { sanitizeHtmlMinimal } from 'utils/html'
 
 import css from './IntegrationProductView.less'
 
@@ -67,7 +68,7 @@ const IntegrationProductView = ({ product }: Props) => {
                     <div
                         className={css.description}
                         dangerouslySetInnerHTML={{
-                            __html: product.body_html,
+                            __html: sanitizeHtmlMinimal(product.body_html),
                         }}
                     />
                 </div>

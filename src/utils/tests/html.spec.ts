@@ -7,6 +7,7 @@ import {
     removeLinksFromHtml,
     sanitizeHtmlDefault,
     sanitizeHtmlForFacebookMessenger,
+    sanitizeHtmlMinimal,
     textToHTML,
     trimHTML,
     unescapeQuoteEntities,
@@ -211,6 +212,85 @@ describe('html util', () => {
                 </table>
             `
             expect(sanitizeHtmlDefault(tablehtml)).toBe(tablehtml)
+        })
+    })
+
+    describe('sanitizeHtmlMinimal', () => {
+        it("should return entry parameter if it's not a string", () => {
+            expect(sanitizeHtmlMinimal(undefined as any)).toBe(undefined)
+            expect(sanitizeHtmlMinimal(null as any)).toBe(null)
+            expect(sanitizeHtmlMinimal(12 as any)).toBe(12)
+        })
+        it('should remove comments from html', () => {
+            expect(sanitizeHtmlMinimal('<p><!-->hey</p>')).toBe('<p>hey</p>')
+            expect(sanitizeHtmlMinimal('<p><!--[if IE9]>hey</p>')).toBe(
+                '<p></p>',
+            )
+            expect(
+                sanitizeHtmlMinimal('<p><!--[if IE9]>hey<![endif]--></p>'),
+            ).toBe('<p></p>')
+            expect(sanitizeHtmlMinimal('<p><!-- hola senor -->hey</p>')).toBe(
+                '<p>hey</p>',
+            )
+            expect(
+                sanitizeHtmlMinimal('<p><!-- hola senor -->--> hey</p>'),
+            ).toBe('<p>--&gt; hey</p>')
+        })
+        it('should remove multiple consecutive <br> tags and keeps only one', () => {
+            const input = '<p>Hello</p><br><br><br><br><p>World</p>'
+            const output = sanitizeHtmlMinimal(input)
+            expect(output).toBe('<p>Hello</p><br /><p>World</p>')
+        })
+        it('should remove empty <p>&nbsp;</p> and <p>  </p> tags', () => {
+            const input = '<p>Hi</p><p>&nbsp;</p><p> </p><p>There</p>'
+            const output = sanitizeHtmlMinimal(input)
+            expect(output).toBe('<p>Hi</p><p>There</p>')
+        })
+        it('should remove all `o` - outlook tags', () => {
+            expect(
+                sanitizeHtmlMinimal('<o:PixelsPerInch>96</o:PixelsPerInch>'),
+            ).toBe('')
+        })
+        it('should keep only allowed tags: div, img, a, p, br, ul, li', () => {
+            const inputHtml = `
+                <div>
+                    <h1>Heading</h1>
+                    <p>This is a <a href="https://example.com">link</a>.</p>
+                    <ul>
+                        <li>Item 1</li>
+                        <li>Item 2</li>
+                    </ul>
+                    <img src="image.jpg" onerror="alert('hack')" />
+                    <script>alert('bad')</script>
+                    <br>
+                </div>
+            `
+
+            const expectedOutput = `
+                <div>
+                    <div>Heading</div>
+                    <p>This is a <a href="https://example.com">link</a>.</p>
+                    <ul>
+                        <li>Item 1</li>
+                        <li>Item 2</li>
+                    </ul>
+                    <img src="image.jpg" />
+                    <br />
+                </div>
+            `.trim()
+
+            expect(
+                sanitizeHtmlMinimal(inputHtml).replace(/\s+/g, ' ').trim(),
+            ).toBe(expectedOutput.replace(/\s+/g, ' ').trim())
+        })
+        it('should remove meta tags using exclusiveFilter', () => {
+            const htmlWithMeta = `
+                <meta charset="utf-8">
+                <p>This is a test.</p>
+            `
+            expect(sanitizeHtmlMinimal(htmlWithMeta).trim()).toBe(
+                '<p>This is a test.</p>',
+            )
         })
     })
 

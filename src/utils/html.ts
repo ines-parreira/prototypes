@@ -130,6 +130,45 @@ export function sanitizeHtmlDefault(html: string): string {
     })
 }
 
+export function sanitizeHtmlMinimal(html: string): string {
+    if (typeof html !== 'string') return html
+
+    // Remove broken HTML comment, empty <p> tags and multiple <br> tags
+    const sanitizedHtml = html
+        .replace('<!-->', '')
+        .replace(/(<br\s*\/?>\s*){2,}/gi, '<br>')
+        .replace(/<p>\s*(?:&nbsp;|\s)*<\/p>/gi, '')
+
+    return sanitizeHtml(sanitizedHtml, {
+        allowedTags: ['div', 'img', 'a', 'p', 'br', 'span', 'ul', 'li'],
+        allowedAttributes: {
+            a: ['href', 'title'],
+            img: ['src', 'alt'],
+        },
+        nonTextTags: [
+            'style',
+            'script',
+            'textarea',
+            'noscript',
+            'title',
+            'o:pixelsperinch',
+        ],
+        transformTags: {
+            a: sanitizeHtml.simpleTransform('a', {
+                target: '_blank',
+                rel: 'noreferrer noopener',
+            }),
+            h1: 'div',
+            h2: 'div',
+            h3: 'div',
+            h4: 'div',
+            h5: 'div',
+            h6: 'div',
+        },
+        exclusiveFilter: (frame) => frame.tag === 'meta',
+    })
+}
+
 /**
  * Remove all HTML tags except div, img, a and br.
  * Convert <a> tags from `<a href="http://x.io">this is a link</a>` to `this is a link: http://x.io`
