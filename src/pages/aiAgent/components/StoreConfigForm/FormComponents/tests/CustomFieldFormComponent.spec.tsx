@@ -1,5 +1,8 @@
 import { fireEvent, render, within } from '@testing-library/react'
 
+import { RequirementType } from '@gorgias/api-queries'
+
+import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { CustomField } from 'custom-fields/types'
 
@@ -33,16 +36,25 @@ describe('CustomFieldsFormComponent', () => {
                         id: 1,
                         label: 'Returns',
                         required: false,
+                        managed_type: null,
+                        requirement_type: RequirementType.Visible,
+                        object_type: OBJECT_TYPES.TICKET,
                     },
                     {
                         id: 2,
                         label: 'WISMO',
                         required: true,
+                        managed_type: null,
+                        requirement_type: RequirementType.Visible,
+                        object_type: OBJECT_TYPES.TICKET,
                     },
                     {
                         id: 3,
                         label: 'Shipping',
                         required: false,
+                        managed_type: null,
+                        requirement_type: RequirementType.Visible,
+                        object_type: OBJECT_TYPES.TICKET,
                     },
                 ] as CustomField[],
             },

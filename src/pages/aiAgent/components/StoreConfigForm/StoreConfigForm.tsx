@@ -20,6 +20,9 @@ import { Button, Label, ToggleField } from '@gorgias/merchant-ui-kit'
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
+import { OBJECT_TYPES } from 'custom-fields/constants'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { CustomField } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
@@ -214,6 +217,16 @@ export const StoreConfigForm = ({
         isChatChannelEnabled,
         isEmailChannelEnabled,
     } = useStoreConfigurationForm(shopName, faqHelpCenters)
+
+    const { data: { data: accountCustomFields = [] } = {} } =
+        useCustomFieldDefinitions({
+            archived: false,
+            object_type: OBJECT_TYPES.TICKET,
+        })
+
+    const availableCustomFields = accountCustomFields.filter(
+        (field: CustomField) => formValues.customFieldIds?.includes(field.id),
+    )
 
     const { updateSettingsAfterAiAgentEnabled } = useAiAgentEnabled({
         monitoredEmailIntegrations: formValues.monitoredEmailIntegrations ?? [],
@@ -963,21 +976,18 @@ export const StoreConfigForm = ({
                                                 />
                                                 <SettingsFeatureRow
                                                     title="Ticket Fields"
-                                                    description=" Tags and Ticket Fields selected will be
+                                                    description="Ticket Fields selected will be
                                                         filled out automatically by AI Agent,
                                                         helping categorize and prioritize
                                                         tickets with less manual work."
                                                     nbFeatures={
-                                                        formValues
-                                                            .customFieldIds
-                                                            ?.length ?? 0
+                                                        availableCustomFields?.length ??
+                                                        0
                                                     }
                                                     badgeText={
-                                                        formValues
-                                                            .customFieldIds
-                                                            ?.length === 0
+                                                        !availableCustomFields?.length
                                                             ? 'No ticket fields'
-                                                            : `${formValues.customFieldIds?.length} ticket fields`
+                                                            : `${availableCustomFields?.length} ticket fields`
                                                     }
                                                     onClick={() => {
                                                         setIsDrawerOpen(true)

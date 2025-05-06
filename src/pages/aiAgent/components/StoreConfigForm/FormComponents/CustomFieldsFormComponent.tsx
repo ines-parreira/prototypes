@@ -57,7 +57,7 @@ export const CustomFieldsFormComponent = ({
             accountCustomFields.filter(
                 (field) =>
                     // Only non-managed custom fields
-                    !field.managed_type &&
+                    field.managed_type === null &&
                     // Only non-conditional custom fields
                     field.requirement_type !== RequirementType.Conditional &&
                     !customFieldIds?.includes(field.id),

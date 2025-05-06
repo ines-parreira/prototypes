@@ -18,6 +18,10 @@ import { logEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { billingState } from 'fixtures/billing'
+import {
+    ticketDropdownFieldDefinition,
+    ticketInputFieldDefinition,
+} from 'fixtures/customField'
 import * as useLocalStorageImports from 'hooks/useLocalStorage'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
@@ -47,7 +51,7 @@ import { initialState as articlesState } from 'state/entities/helpCenter/article
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { reportError } from 'utils/errors'
-import { renderWithRouter } from 'utils/testing'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import { StoreConfigForm } from '../StoreConfigForm'
 
@@ -276,6 +280,10 @@ jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
 
 const mockedUseCustomFieldDefinitions = jest.mocked(useCustomFieldDefinitions)
 
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
+
+const mockUseCustomFieldDefinitions = assumeMock(useCustomFieldDefinitions)
+
 describe('<StoreConfigForm />', () => {
     const storeConfiguration: StoreConfiguration = {
         shopType: 'shopify',
@@ -437,6 +445,15 @@ describe('<StoreConfigForm />', () => {
                         managed_type: null,
                         requirement_type: 'visible',
                     },
+                ],
+            },
+        } as any)
+
+        mockUseCustomFieldDefinitions.mockReturnValue({
+            data: {
+                data: [
+                    ticketInputFieldDefinition,
+                    ticketDropdownFieldDefinition,
                 ],
             },
         } as any)
@@ -1735,7 +1752,6 @@ describe('<StoreConfigForm />', () => {
             mockFlags({
                 [FeatureFlagKey.AiAgentSettingsRevamp]: true,
             })
-
             renderComponent()
 
             // Open the drawer by clicking on Ticket Fields
@@ -1743,7 +1759,9 @@ describe('<StoreConfigForm />', () => {
             await userEvent.click(
                 screen.getByRole('button', { name: /add ticket field/i }),
             )
-            await userEvent.click(screen.getByText(/test field/i))
+            await userEvent.click(
+                screen.getByText(ticketInputFieldDefinition.label),
+            )
 
             // Save changes
             const saveButton = within(getDrawer()).getByRole('button', {
@@ -2140,6 +2158,142 @@ describe('<StoreConfigForm />', () => {
             expect(
                 screen.getByText(/Example of AI Agent's Tone of Voice/i),
             ).toBeInTheDocument()
+        })
+    })
+
+    describe('custom fields', () => {
+        it('should not display the custom fields settings card when FF settings revamp is disabled', () => {
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    customFieldIds: [
+                        ticketInputFieldDefinition.id,
+                        ticketDropdownFieldDefinition.id,
+                    ],
+                },
+            })
+            renderComponent()
+
+            expect(
+                screen.queryByText('2 ticket fields'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should display the correct number of available custom fields in the settings card when FF settings revamp is enabled', () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+            })
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    customFieldIds: [
+                        ticketInputFieldDefinition.id,
+                        ticketDropdownFieldDefinition.id,
+                    ],
+                },
+            })
+            renderComponent()
+
+            expect(screen.getByText('2 ticket fields')).toBeInTheDocument()
+        })
+
+        it('should display "No ticket fields" when no custom fields are available and FF settings revamp is enabled', () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+            })
+            mockUseCustomFieldDefinitions.mockReturnValue({
+                data: { data: [] },
+            } as any)
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    customFieldIds: [
+                        ticketInputFieldDefinition.id,
+                        ticketDropdownFieldDefinition.id,
+                    ],
+                },
+            })
+            renderComponent()
+
+            expect(screen.getByText('No ticket fields')).toBeInTheDocument()
+        })
+
+        it('should display "No ticket fields" when availableCustomFields is undefined and FF settings revamp is enabled', () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+            })
+            mockUseCustomFieldDefinitions.mockReturnValue({
+                data: { data: undefined },
+            } as any)
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    customFieldIds: [
+                        ticketInputFieldDefinition.id,
+                        ticketDropdownFieldDefinition.id,
+                    ],
+                },
+            })
+            renderComponent()
+
+            expect(screen.getByText('No ticket fields')).toBeInTheDocument()
+        })
+
+        it('should display "No ticket fields" when formValues.customFields is null and FF settings revamp is enabled', () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+            })
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    customFieldIds: null,
+                },
+            })
+            renderComponent()
+
+            expect(screen.getByText('No ticket fields')).toBeInTheDocument()
+        })
+
+        it('should display "No ticket fields" when availableCustomFields is empty after filtering and FF settings revamp is enabled', () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+            })
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    customFieldIds: [],
+                },
+            })
+
+            renderComponent()
+
+            expect(screen.getByText('No ticket fields')).toBeInTheDocument()
+        })
+
+        it('should handle undefined availableCustomFields and use 0 as fallback when FF settings revamp is enabled', () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+            })
+            mockUseCustomFieldDefinitions.mockReturnValue({
+                data: { data: undefined },
+            } as any)
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    customFieldIds: [],
+                },
+            })
+
+            renderComponent()
+
+            expect(screen.getByText('No ticket fields')).toBeInTheDocument()
         })
     })
 })

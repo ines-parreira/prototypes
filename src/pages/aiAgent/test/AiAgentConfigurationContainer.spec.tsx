@@ -99,6 +99,10 @@ jest.mock(
     'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatFallbackSettingsForm',
 )
 
+jest.mock('models/rule/resources', () => ({
+    listRules: () => Promise.resolve({ data: [] }),
+}))
+
 const mockedUseHandoverCustomizationChatOfflineSettingsFormProps = {
     isLoading: false,
     isSaving: false,
