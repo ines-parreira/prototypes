@@ -296,7 +296,7 @@ describe('<AiAgentActivationStoreCard />', () => {
 
         expect(
             getByText(
-                'Sales can only be activated on the channel where Support is activated.',
+                'Shopping Assistant can only be activated on the channel where Support Agent is activated.',
             ),
         ).toBeInTheDocument()
 

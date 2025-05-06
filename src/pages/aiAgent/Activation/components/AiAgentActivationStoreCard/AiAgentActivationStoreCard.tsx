@@ -112,8 +112,8 @@ export const AiAgentActivationStoreCard = ({
         !!flags[FeatureFlagKey.AiSalesAgentActivationEmailSettings]
 
     const salesBlockCopy = aiSalesEmailEnabled
-        ? 'Sales can only be activated on the channel where Support is activated.'
-        : 'Sales can only be activated when Support for Chat is activated.'
+        ? 'Shopping Assistant can only be activated on the channel where Support Agent is activated.'
+        : 'Shopping Assistant can only be activated when Support Agent for Chat is activated.'
 
     return (
         <div className={css.storeCard}>
@@ -164,7 +164,7 @@ export const AiAgentActivationStoreCard = ({
             <div className={cn(css.section, css.skillSection)}>
                 <div>
                     <div className={css.heading}>
-                        <div className={css.title}>Support</div>
+                        <div className={css.title}>Support Agent</div>
                         <NewToggleButton
                             isDisabled={
                                 isDisabledCore ||
@@ -331,7 +331,7 @@ export const AiAgentActivationStoreCard = ({
                     })}
                 >
                     <div className={css.heading}>
-                        <div className={css.title}>Sales</div>
+                        <div className={css.title}>Shopping Assistant</div>
                         <NewToggleButton
                             isDisabled={isDisabledCore || sales.isDisabled}
                             checked={sales.enabled}
