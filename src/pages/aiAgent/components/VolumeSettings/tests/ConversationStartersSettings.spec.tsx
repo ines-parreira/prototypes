@@ -48,7 +48,7 @@ describe('ConversationStartersSettings', () => {
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Show up to 4 dynamic, AI-generated questions on product pages, based on what shoppers are most likely to ask, to resolve doubts quickly and drive more conversions.',
+                'Show up to 3 dynamic, AI-generated questions on product pages, based on what shoppers are most likely to ask, to resolve doubts quickly and drive more conversions.',
             ),
         ).toBeInTheDocument()
         expect(
