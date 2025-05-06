@@ -148,5 +148,8 @@
         padding: @layout-spacing-l;
         background-color: var(--neutral-grey-1);
         border-left: 1px solid var(--neutral-grey-2);
+        min-width: calc(
+            428px + @layout-spacing-l + @layout-spacing-l
+        ); // 428px is the width of the ticket preview, 2x @layout-spacing-l is for the padding
     }
 }

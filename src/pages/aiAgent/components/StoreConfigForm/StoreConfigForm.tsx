@@ -1134,13 +1134,12 @@ export const StoreConfigForm = ({
                     </section>
                 </form>
 
-                {shouldDisplayTOVPreview && (
-                    <div
-                        className={classNames({
-                            [css.ticketPreviewContainer]:
-                                isSettingsRevampEnabled,
-                        })}
-                    >
+                <div
+                    className={classNames({
+                        [css.ticketPreviewContainer]: isSettingsRevampEnabled,
+                    })}
+                >
+                    {shouldDisplayTOVPreview && (
                         <TicketPreview
                             toneOfVoice={formValues.toneOfVoice}
                             signature={formValues.signature}
@@ -1158,8 +1157,8 @@ export const StoreConfigForm = ({
                             }
                             isError={isError}
                         />
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
             {isSettingsRevampEnabled && (
                 <StoreConfigDrawer
