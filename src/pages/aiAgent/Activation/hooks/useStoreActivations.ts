@@ -124,7 +124,7 @@ export const useStoreActivations = ({
     const {
         storeConfigurations,
         storeNames,
-        isLoading: isFetchLoading,
+        isLoading: isStoreConfigurationLoading,
     } = useStoreConfigurations(accountDomain, singleStoreName)
 
     const selfServiceChatChannels = useSelfServiceChatChannelsMultiStore(
@@ -133,13 +133,14 @@ export const useStoreActivations = ({
         false,
     )
 
-    const { data: helpCenterListData } = useGetHelpCenterList(
-        { type: 'faq', per_page: HELP_CENTER_MAX_CREATION },
-        {
-            staleTime: 1000 * 60 * 5,
-            refetchOnWindowFocus: false,
-        },
-    )
+    const { data: helpCenterListData, isLoading: isHelpCenterListLoading } =
+        useGetHelpCenterList(
+            { type: 'faq', per_page: HELP_CENTER_MAX_CREATION },
+            {
+                staleTime: 1000 * 60 * 5,
+                refetchOnWindowFocus: false,
+            },
+        )
 
     useEffect(() => {
         dispatch({
@@ -189,7 +190,7 @@ export const useStoreActivations = ({
     return {
         storeActivations: state,
         progressPercentage: computeActivationPercentage(state),
-        isFetchLoading,
+        isFetchLoading: isStoreConfigurationLoading || isHelpCenterListLoading,
         isSaveLoading,
         changeSales: (storeName: string, newValue: boolean) => {
             dispatch({ type: 'CHANGE_SALES', storeName, newValue })

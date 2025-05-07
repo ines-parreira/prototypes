@@ -51,6 +51,12 @@ jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
                 name: 'Chat Channel 1',
             },
         },
+        {
+            value: {
+                id: 2,
+                name: 'Chat Channel 2',
+            },
+        },
     ],
 }))
 
@@ -80,6 +86,13 @@ const storeWithoutAlert = {
     configuration: {
         shopType: 'shopify',
         shopName: 'steve-madden',
+        monitoredChatIntegrations: [1],
+        monitoredEmailIntegrations: [
+            {
+                id: 1,
+                email: 'foo@example.com',
+            },
+        ],
     },
 } as any as StoreActivation
 const storeWithIntegrationMissing = {
@@ -238,7 +251,7 @@ describe('<AiAgentActivationStoreCard />', () => {
         await waitFor(() => {
             expect(getByRole('tooltip')).toHaveTextContent('integrated emails:')
             expect(getByRole('tooltip')).toHaveTextContent('foo@example.com')
-            expect(getByRole('tooltip')).toHaveTextContent(
+            expect(getByRole('tooltip')).not.toHaveTextContent(
                 'another@example.com',
             )
             expect(getByRole('tooltip')).not.toHaveTextContent(
@@ -273,6 +286,7 @@ describe('<AiAgentActivationStoreCard />', () => {
         await waitFor(() => {
             expect(getByRole('tooltip')).toHaveTextContent('integrated chats:')
             expect(getByRole('tooltip')).toHaveTextContent('Chat Channel 1')
+            expect(getByRole('tooltip')).not.toHaveTextContent('Chat Channel 2')
         })
     })
 

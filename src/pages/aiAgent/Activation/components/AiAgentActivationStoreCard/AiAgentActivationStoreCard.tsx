@@ -85,11 +85,19 @@ export const AiAgentActivationStoreCard = ({
         configuration.shopType,
         configuration.storeName,
     )
-    const selector = useMemo(
+    const selectedChats = useMemo(() => {
+        return chatChannels.filter((chatChannel) =>
+            configuration.monitoredChatIntegrations.includes(
+                chatChannel.value.id,
+            ),
+        )
+    }, [chatChannels, configuration.monitoredChatIntegrations])
+
+    const getIntegrationsByEmail = useMemo(
         () => getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES),
         [],
     )
-    const emailIntegrations = useAppSelector(selector)
+    const emailIntegrations = useAppSelector(getIntegrationsByEmail)
     const usedEmailIntegrations = useGetUsedEmailIntegrations(
         configuration.storeName,
     )
@@ -103,6 +111,13 @@ export const AiAgentActivationStoreCard = ({
             }))
             .filter((item) => item.isDisabled === false)
     }, [emailIntegrations, usedEmailIntegrations])
+    const selectedEmails = useMemo(() => {
+        return emailItems.filter((emailItem) =>
+            configuration.monitoredEmailIntegrations.some(
+                (emailIntegration) => emailIntegration.id === emailItem.id,
+            ),
+        )
+    }, [emailItems, configuration.monitoredEmailIntegrations])
 
     const { routes } = useAiAgentNavigation({ shopName: name })
 
@@ -220,7 +235,7 @@ export const AiAgentActivationStoreCard = ({
                                             Activate Support for integrated
                                             chats.
                                         </span>
-                                        {chatChannels.length > 0 && (
+                                        {selectedChats.length > 0 && (
                                             <IconTooltip
                                                 className={css.icon}
                                                 tooltipProps={{
@@ -229,7 +244,7 @@ export const AiAgentActivationStoreCard = ({
                                             >
                                                 integrated chats:
                                                 <div>
-                                                    {chatChannels.map(
+                                                    {selectedChats.map(
                                                         (channel) => (
                                                             <div
                                                                 key={
@@ -297,7 +312,7 @@ export const AiAgentActivationStoreCard = ({
                                             Activate Support for integrated
                                             emails.
                                         </span>
-                                        {emailItems.length > 0 && (
+                                        {selectedEmails.length > 0 && (
                                             <IconTooltip
                                                 className={css.icon}
                                                 tooltipProps={{
@@ -306,7 +321,7 @@ export const AiAgentActivationStoreCard = ({
                                             >
                                                 integrated emails:
                                                 <div>
-                                                    {emailItems.map(
+                                                    {selectedEmails.map(
                                                         (channel) => (
                                                             <div
                                                                 key={channel.id}
