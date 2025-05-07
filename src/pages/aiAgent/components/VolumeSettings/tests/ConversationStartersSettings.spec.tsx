@@ -48,7 +48,7 @@ describe('ConversationStartersSettings', () => {
         )
 
         expect(
-            screen.getByText('Suggested Product Questions'),
+            screen.getByText('Suggested product questions'),
         ).toBeInTheDocument()
         expect(
             screen.getByText(

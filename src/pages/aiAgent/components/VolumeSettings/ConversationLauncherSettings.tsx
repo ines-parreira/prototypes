@@ -67,7 +67,7 @@ export const ConversationLauncherAdvancedSettings = ({
                 })}
             >
                 <Box className={css.sidebarHeader}>
-                    <p className={css.sidebarTitle}>Ask Anything Input</p>
+                    <p className={css.sidebarTitle}>Ask anything input</p>
                     <i
                         className={classNames('material-icons', css.exitIcon)}
                         onClick={onClose}
@@ -81,7 +81,7 @@ export const ConversationLauncherAdvancedSettings = ({
                         <div className={css.desktopSwitch}>
                             Enable on Desktop only
                             <p className={css.desktopSwitchDescription}>
-                                When enabled, the Ask Anything input will only
+                                When enabled, the Ask anything input will only
                                 be displayed on desktop.
                             </p>
                         </div>
@@ -146,7 +146,7 @@ export const ConversationLauncherSettings = ({
             <EngagementSettingsCard>
                 <EngagementSettingsCardContentWrapper>
                     <EngagementSettingsCardImage
-                        alt="image showing an example of the ask anything input"
+                        alt="image showing an example of the Ask anything input"
                         src={assetsUrl(
                             '/img/ai-agent/ai_agent_floating_input.png',
                         )}
@@ -154,7 +154,7 @@ export const ConversationLauncherSettings = ({
 
                     <EngagementSettingsCardContent>
                         <EngagementSettingsCardTitle>
-                            Ask Anything Input
+                            Ask anything input
                         </EngagementSettingsCardTitle>
 
                         <EngagementSettingsCardDescription>

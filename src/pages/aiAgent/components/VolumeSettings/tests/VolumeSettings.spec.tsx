@@ -84,7 +84,7 @@ const mockedUseFlags = jest.mocked(useFlags)
 
 const getConversationStartersSwitch = (container: HTMLElement) => {
     const rowContent = within(container).getByText(
-        'Suggested Product Questions',
+        'Suggested product questions',
     )
 
     return within(rowContent.closest('.cardContentWrapper')!).getByRole(

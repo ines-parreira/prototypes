@@ -38,7 +38,7 @@ const Wrapper = ({
 
 describe('ConversationLauncherSettings', () => {
     const getCardTitle = () => {
-        return screen.getAllByText('Ask Anything Input')[0]
+        return screen.getAllByText('Ask anything input')[0]
     }
 
     beforeEach(() => {
@@ -48,7 +48,7 @@ describe('ConversationLauncherSettings', () => {
         client = ldClientMock
     })
 
-    it('renders the main Ask Anything Input title', () => {
+    it('renders the main Ask anything input title', () => {
         render(
             <Wrapper>
                 <ConversationLauncherSettings
@@ -69,7 +69,7 @@ describe('ConversationLauncherSettings', () => {
         ).toBeInTheDocument()
         expect(
             screen.getByAltText(
-                'image showing an example of the ask anything input',
+                'image showing an example of the Ask anything input',
             ),
         ).toBeInTheDocument()
         expect(screen.getByText('Advanced settings')).toBeInTheDocument()

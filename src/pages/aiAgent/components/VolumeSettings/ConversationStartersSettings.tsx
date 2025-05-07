@@ -49,7 +49,7 @@ export const ConversationStartersSettings = ({
 
                 <EngagementSettingsCardContent>
                     <EngagementSettingsCardTitle>
-                        Suggested Product Questions
+                        Suggested product questions
                     </EngagementSettingsCardTitle>
 
                     <EngagementSettingsCardDescription>
