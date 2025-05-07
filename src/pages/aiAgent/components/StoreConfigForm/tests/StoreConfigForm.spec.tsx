@@ -8,6 +8,7 @@ import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { keyBy } from 'lodash'
 import moment from 'moment'
+import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
@@ -2148,6 +2149,68 @@ describe('<StoreConfigForm />', () => {
             )
 
             expect(screen.queryByDisplayValue('topic1')).not.toBeInTheDocument()
+        })
+
+        it('should open the confirmation modal when clicking on the backdrop of the drawer with changes', async () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+            })
+
+            renderComponent()
+
+            // Open the drawer by clicking on Tags
+            await userEvent.click(screen.getAllByText('Tags')[0])
+
+            // Add tags
+            await userEvent.click(
+                screen.getByRole('button', { name: /add tag/i }),
+            )
+            await userEvent.click(screen.getAllByText(/choose tag/i)[0])
+            await userEvent.type(screen.getAllByRole('textbox')[1], 'Test')
+
+            // Click on the backdrop
+            await userEvent.click(screen.getByRole('presentation'))
+
+            expect(
+                screen.getByText(
+                    /Your changes to this page will be lost if you don’t save them./i,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should close the confirmation modal when clicking on the close button', async () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+            })
+
+            renderComponent()
+
+            act(async () => {
+                // Open the drawer by clicking on Tags
+                await userEvent.click(screen.getAllByText('Tags')[0])
+
+                // Add tags
+                await userEvent.click(
+                    screen.getByRole('button', { name: /add tag/i }),
+                )
+
+                await userEvent.click(screen.getAllByText(/choose tag/i)[0])
+                await userEvent.type(screen.getAllByRole('textbox')[1], 'Test')
+
+                // Click on the backdrop
+                await userEvent.click(screen.getByRole('presentation'))
+
+                const closeButton = screen.getAllByRole('button', {
+                    name: /close/i,
+                })[0]
+                await userEvent.click(closeButton)
+            })
+
+            expect(
+                screen.queryByText(
+                    /Your changes to this page will be lost if you don’t save them./i,
+                ),
+            ).not.toBeInTheDocument()
         })
     })
 

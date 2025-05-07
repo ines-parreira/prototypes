@@ -11,6 +11,7 @@ type StoreConfigDrawerProps = {
     isLoading: boolean
     onClose: () => void
     onSave: () => void
+    onBackdropClick: () => void
 }
 
 export const StoreConfigDrawer = (props: StoreConfigDrawerProps) => {
@@ -21,7 +22,7 @@ export const StoreConfigDrawer = (props: StoreConfigDrawerProps) => {
             aria-label={props.title}
             open={props.open}
             portalRootId="app-root"
-            onBackdropClick={props.onClose}
+            onBackdropClick={props.onBackdropClick}
         >
             <Drawer.Header className={css.drawerHeader}>
                 {props.title}

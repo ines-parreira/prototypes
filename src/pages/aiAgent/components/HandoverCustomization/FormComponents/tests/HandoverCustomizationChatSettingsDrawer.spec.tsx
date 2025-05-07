@@ -34,8 +34,9 @@ const mockOfflineForm = {
     isLoading: false,
     isSaving: false,
     formValues: {},
+    hasChanges: false,
     updateValue: jest.fn(),
-    handleOnSave: jest.fn(),
+    handleOnSave: jest.fn(() => Promise.resolve()),
     handleOnCancel: jest.fn(),
 }
 
@@ -43,8 +44,9 @@ const mockOnlineForm = {
     isLoading: false,
     isSaving: false,
     formValues: {},
+    hasChanges: false,
     updateValue: jest.fn(),
-    handleOnSave: jest.fn(),
+    handleOnSave: jest.fn(() => Promise.resolve()),
     handleOnCancel: jest.fn(),
 }
 
@@ -52,8 +54,9 @@ const mockFallbackForm = {
     isLoading: false,
     isSaving: false,
     formValues: {},
+    hasChanges: false,
     updateValue: jest.fn(),
-    handleOnSave: jest.fn(),
+    handleOnSave: jest.fn(() => Promise.resolve()),
     handleOnCancel: jest.fn(),
 }
 
@@ -62,6 +65,7 @@ const defaultProps: HandoverCustomizationChatSettingsDrawerProps = {
     activeContent: 'offline',
     onClose: jest.fn(),
     open: true,
+    setIsFormDirty: jest.fn(),
 }
 
 const renderDrawer = (
@@ -113,18 +117,119 @@ describe('HandoverCustomizationChatSettingsDrawer', () => {
         expect(mockOfflineForm.handleOnCancel).toHaveBeenCalled()
     })
 
+    it('calls onBackdropClick when user clicks on backdrop', async () => {
+        const onClose = jest.fn()
+        renderDrawer({ ...defaultProps, onClose })
+
+        const backdrop = screen.getByRole('presentation')
+        await userEvent.click(backdrop)
+
+        expect(onClose).toHaveBeenCalled()
+    })
+
     it('calls onSave and onClose when drawer is saved', async () => {
         const onClose = jest.fn()
-        mockOfflineForm.handleOnSave.mockResolvedValue(undefined)
-
         renderDrawer({ ...defaultProps, onClose })
 
         const saveButton = screen.getByRole('button', { name: /save changes/i })
         await userEvent.click(saveButton)
 
-        expect(mockOfflineForm.handleOnSave).toHaveBeenCalled()
         expect(onClose).toHaveBeenCalled()
+        expect(mockOfflineForm.handleOnSave).toHaveBeenCalled()
     })
+
+    it('calls onSave and not onClose when drawer is saved and there are an error', async () => {
+        mockOfflineForm.handleOnSave.mockImplementation(() =>
+            Promise.reject('Error'),
+        )
+        const onClose = jest.fn()
+        renderDrawer({ ...defaultProps, onClose })
+
+        const saveButton = screen.getByRole('button', { name: /save changes/i })
+        userEvent.click(saveButton)
+
+        expect(onClose).not.toHaveBeenCalled()
+        expect(mockOfflineForm.handleOnSave).toHaveBeenCalled()
+    })
+
+    it('open the unsaved changes modal when user clicks on backdrop and there are unsaved changes for the offline content', async () => {
+        ;(
+            useHandoverCustomizationChatOfflineSettingsForm as jest.Mock
+        ).mockReturnValue({ ...mockOfflineForm, hasChanges: true })
+        const onClose = jest.fn()
+
+        renderDrawer({ ...defaultProps, onClose })
+
+        await userEvent.click(screen.getByRole('presentation'))
+
+        expect(onClose).not.toHaveBeenCalled()
+        expect(
+            screen.queryByText(
+                /Your changes to this page will be lost if you don’t save them./i,
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('open the unsaved changes modal when user clicks on backdrop and there are unsaved changes for the online content', async () => {
+        ;(
+            useHandoverCustomizationChatOnlineSettingsForm as jest.Mock
+        ).mockReturnValue({ ...mockOnlineForm, hasChanges: true })
+        const onClose = jest.fn()
+
+        renderDrawer({ ...defaultProps, activeContent: 'online', onClose })
+
+        await userEvent.click(screen.getByRole('presentation'))
+
+        expect(onClose).not.toHaveBeenCalled()
+        expect(
+            screen.queryByText(
+                /Your changes to this page will be lost if you don’t save them./i,
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('open the unsaved changes modal when user clicks on backdrop and there are unsaved changes for the error content', async () => {
+        ;(
+            useHandoverCustomizationChatFallbackSettingsForm as jest.Mock
+        ).mockReturnValue({ ...mockFallbackForm, hasChanges: true })
+        const onClose = jest.fn()
+
+        renderDrawer({ ...defaultProps, activeContent: 'error', onClose })
+
+        await userEvent.click(screen.getByRole('presentation'))
+
+        expect(onClose).not.toHaveBeenCalled()
+        expect(
+            screen.queryByText(
+                /Your changes to this page will be lost if you don’t save them./i,
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it.each([
+        { activeContent: 'offline', onClose: mockOfflineForm.handleOnCancel },
+        { activeContent: 'online', onClose: mockOnlineForm.handleOnCancel },
+        { activeContent: 'error', onClose: mockFallbackForm.handleOnCancel },
+    ])(
+        'does not open the unsaved changes modal when user clicks on backdrop and there are no unsaved changes for the %s content',
+        async ({ activeContent, onClose }) => {
+            renderDrawer({
+                ...defaultProps,
+                activeContent:
+                    activeContent as HandoverCustomizationChatSettingsDrawerContent,
+                onClose,
+            })
+
+            await userEvent.click(screen.getByRole('presentation'))
+
+            expect(onClose).toHaveBeenCalled()
+            expect(
+                screen.queryByText(
+                    /Your changes to this page will be lost if you don’t save them./i,
+                ),
+            ).not.toBeInTheDocument()
+        },
+    )
 
     it('displays loading state when isLoading is true', () => {
         ;(

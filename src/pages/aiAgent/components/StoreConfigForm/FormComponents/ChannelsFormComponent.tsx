@@ -13,6 +13,7 @@ import { ChatSettingsFormComponent } from 'pages/aiAgent/components/StoreConfigF
 import { EmailFormComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/EmailFormComponent'
 import { SettingsBanner } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/SettingsBanner'
 import { SignatureFormComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/SignatureFormComponent'
+import { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
@@ -35,6 +36,11 @@ type Props = {
     isEmailChannelEnabled: boolean
     emailChannelDeactivatedDatetime: string | null | undefined
     updateEmailChannelDeactivatedDatetime: (datetime: string | null) => void
+
+    setIsFormDirty: (
+        element: StoreConfigFormSection,
+        isFormDirty: boolean,
+    ) => void
 }
 
 export const ChannelsFormComponent = ({
@@ -52,6 +58,8 @@ export const ChannelsFormComponent = ({
     isEmailChannelEnabled,
     emailChannelDeactivatedDatetime,
     updateEmailChannelDeactivatedDatetime,
+
+    setIsFormDirty,
 }: Props) => {
     const isAiAgentChatEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentChat]
@@ -116,6 +124,7 @@ export const ChannelsFormComponent = ({
                         shopName={shopName}
                         shopType={shopType}
                         monitoredChatIntegrationIds={monitoredChatIntegrations}
+                        setIsFormDirty={setIsFormDirty}
                     />
                 </ConfigurationSection>
             )}

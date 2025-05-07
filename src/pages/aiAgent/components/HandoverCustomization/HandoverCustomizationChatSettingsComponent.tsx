@@ -6,6 +6,7 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import {
     HandoverCustomizationFormType,
     useHandoverCustomizationChatSettings,
@@ -35,12 +36,17 @@ type Props = {
     shopName: string
     shopType: string
     monitoredChatIntegrationIds: number[] | null
+    setIsFormDirty: (
+        element: StoreConfigFormSection,
+        isFormDirty: boolean,
+    ) => void
 }
 
 export const HandoverCustomizationChatSettingsComponent = ({
     shopName,
     shopType,
     monitoredChatIntegrationIds,
+    setIsFormDirty,
 }: Props) => {
     const isSettingsRevampEnabled =
         useFlags()[FeatureFlagKey.AiAgentSettingsRevamp]
@@ -282,6 +288,7 @@ export const HandoverCustomizationChatSettingsComponent = ({
                             open={isDrawerOpen}
                             onClose={() => setIsDrawerOpen(false)}
                             activeContent={activeDrawerContent}
+                            setIsFormDirty={setIsFormDirty}
                         />
                     )}
                 </>

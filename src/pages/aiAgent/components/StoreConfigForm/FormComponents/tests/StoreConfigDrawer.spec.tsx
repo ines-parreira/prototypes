@@ -15,6 +15,7 @@ describe('StoreConfigDrawer', () => {
         isLoading: false,
         onClose: jest.fn(),
         onSave: jest.fn(),
+        onBackdropClick: jest.fn(),
     }
 
     it('should render drawer with correct title and content', () => {
@@ -48,7 +49,7 @@ describe('StoreConfigDrawer', () => {
         expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
-    it('should call onClose when clicking on backdrop', async () => {
+    it('should call onBackdropClick when clicking on backdrop', async () => {
         render(<StoreConfigDrawer {...defaultProps} />)
 
         // Simulate a click on the backdrop
@@ -57,7 +58,7 @@ describe('StoreConfigDrawer', () => {
             await userEvent.click(backdrop)
         }
 
-        expect(defaultProps.onClose).toHaveBeenCalled()
+        expect(defaultProps.onBackdropClick).toHaveBeenCalled()
     })
 
     it('should not render the drawer when isOpen is false', () => {

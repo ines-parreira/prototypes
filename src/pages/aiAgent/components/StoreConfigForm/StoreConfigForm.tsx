@@ -71,6 +71,7 @@ import {
     SettingsCardTitle,
 } from 'pages/common/components/SettingsCard'
 import { SettingsFeatureRow } from 'pages/common/components/SettingsCard/SettingsFeatureRow'
+import UnsavedChangesModal from 'pages/common/components/UnsavedChangesModal'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import ListField from 'pages/common/forms/ListField'
 import history from 'pages/history'
@@ -467,6 +468,8 @@ export const StoreConfigForm = ({
                 setIsDrawerOpen(false)
             },
         })
+
+        setIsDrawerDirty(false)
     }, [
         isAiAgentWasEnabledForChat,
         isAiAgentWasEnabledForEmail,
@@ -584,6 +587,7 @@ export const StoreConfigForm = ({
         customFieldIds: formValues.customFieldIds ?? [],
         excludedTopics: formValues.excludedTopics ?? [],
     })
+    const [isDrawerDirty, setIsDrawerDirty] = useState(false)
 
     useEffect(() => {
         setActiveDrawerValues({
@@ -603,16 +607,29 @@ export const StoreConfigForm = ({
             activeDrawerContent,
             activeDrawerValues[activeDrawerContent],
         )
+        setIsFormDirty(StoreConfigFormSection.generalSettings, false)
         onSubmit()
     }
 
     const onCloseDrawer = () => {
-        setIsDrawerOpen(false)
+        if (
+            JSON.stringify(formValues[activeDrawerContent]) !==
+            JSON.stringify(activeDrawerValues[activeDrawerContent])
+        ) {
+            setIsDrawerDirty(true)
+        } else {
+            setIsDrawerOpen(false)
+        }
+    }
+
+    const onDiscardUnsavedChanges = () => {
         setActiveDrawerValues({
-            tags: formValues.tags ?? [],
-            customFieldIds: formValues.customFieldIds ?? [],
-            excludedTopics: formValues.excludedTopics ?? [],
+            ...activeDrawerValues,
+            [activeDrawerContent]: formValues[activeDrawerContent] ?? [],
         })
+        setIsDrawerOpen(false)
+        setIsDrawerDirty(false)
+        setIsFormDirty(StoreConfigFormSection.generalSettings, false)
     }
 
     const drawerContent = {
@@ -622,6 +639,10 @@ export const StoreConfigForm = ({
                     tags={activeDrawerValues.tags ?? []}
                     onTagsUpdate={(tags: Tag[]) => {
                         setActiveDrawerValues({ ...activeDrawerValues, tags })
+                        setIsFormDirty(
+                            StoreConfigFormSection.generalSettings,
+                            true,
+                        )
                     }}
                 />
             ),
@@ -632,12 +653,16 @@ export const StoreConfigForm = ({
             content: (
                 <CustomFieldsFormComponent
                     data-testid="ai-agent-store-configuration-custom-fields-form-component"
-                    updateValue={(key, value) =>
+                    updateValue={(key, value) => {
                         setActiveDrawerValues({
                             ...activeDrawerValues,
                             [key]: value,
                         })
-                    }
+                        setIsFormDirty(
+                            StoreConfigFormSection.generalSettings,
+                            true,
+                        )
+                    }}
                     customFieldIds={activeDrawerValues.customFieldIds}
                     isStoreCreated={!isCreate}
                 />
@@ -657,6 +682,10 @@ export const StoreConfigForm = ({
                                 ...activeDrawerValues,
                                 excludedTopics: excludedTopics.toJS(),
                             })
+                            setIsFormDirty(
+                                StoreConfigFormSection.generalSettings,
+                                true,
+                            )
                         }}
                         placeholder="e.g. Invoice and billing, Data privacy, or Complaints"
                         maxLength={EXCLUDED_TOPIC_MAX_LENGTH}
@@ -674,6 +703,12 @@ export const StoreConfigForm = ({
     return (
         <>
             <StoreConfigUnsavedChangesPrompt />
+            <UnsavedChangesModal
+                onDiscard={onDiscardUnsavedChanges}
+                isOpen={isDrawerDirty}
+                onClose={() => setIsDrawerDirty(false)}
+                onSave={onSaveDrawer}
+            />
             <div className={css.storeConfigSettings}>
                 <form
                     onSubmit={(e) => e.preventDefault()}
@@ -773,6 +808,7 @@ export const StoreConfigForm = ({
                                     deactivatedDatetime,
                                 )
                             }}
+                            setIsFormDirty={setIsFormDirty}
                         />
                     )}
 
@@ -1163,8 +1199,9 @@ export const StoreConfigForm = ({
                 <StoreConfigDrawer
                     title={drawerContent[activeDrawerContent].title}
                     open={isDrawerOpen}
-                    onClose={onCloseDrawer}
                     onSave={onSaveDrawer}
+                    onClose={onDiscardUnsavedChanges}
+                    onBackdropClick={onCloseDrawer}
                     isLoading={
                         isPendingCreateOrUpdate ||
                         isLoadingOnboardingNotificationState

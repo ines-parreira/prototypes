@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import {
     GorgiasChatEmailCaptureType,
     GorgiasChatIntegration,
@@ -6,9 +8,11 @@ import { HandoverCustomizationChatFallbackSettingsFields } from 'pages/aiAgent/c
 import { HandoverCustomizationChatOfflineSettingsFields } from 'pages/aiAgent/components/HandoverCustomization/FormComponents/HandoverCustomizationChatOfflineSettingsFields'
 import { HandoverCustomizationChatOnlineSettingsFields } from 'pages/aiAgent/components/HandoverCustomization/FormComponents/HandoverCustomizationChatOnlineSettingsFields'
 import { StoreConfigDrawer } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/StoreConfigDrawer'
+import { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import { useHandoverCustomizationChatFallbackSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatFallbackSettingsForm'
 import { useHandoverCustomizationChatOfflineSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOfflineSettingsForm'
 import { useHandoverCustomizationChatOnlineSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOnlineSettingsForm'
+import UnsavedChangesModal from 'pages/common/components/UnsavedChangesModal'
 
 export type HandoverCustomizationChatSettingsDrawerContent =
     | 'offline'
@@ -19,6 +23,10 @@ export type HandoverCustomizationChatSettingsDrawerProps = {
     activeContent: HandoverCustomizationChatSettingsDrawerContent
     open: boolean
     onClose: () => void
+    setIsFormDirty: (
+        element: StoreConfigFormSection,
+        isFormDirty: boolean,
+    ) => void
 }
 
 const HandoverCustomizationChatSettingsDrawer = ({
@@ -26,6 +34,7 @@ const HandoverCustomizationChatSettingsDrawer = ({
     open,
     activeContent,
     onClose,
+    setIsFormDirty,
 }: HandoverCustomizationChatSettingsDrawerProps) => {
     const {
         isLoading: isLoadingOffline,
@@ -34,6 +43,7 @@ const HandoverCustomizationChatSettingsDrawer = ({
         updateValue: updateValueOffline,
         handleOnSave: handleOnSaveOffline,
         handleOnCancel: handleOnCancelOffline,
+        hasChanges: hasChangesOffline,
     } = useHandoverCustomizationChatOfflineSettingsForm({
         integration,
     })
@@ -45,6 +55,7 @@ const HandoverCustomizationChatSettingsDrawer = ({
         updateValue: updateValueOnline,
         handleOnSave: handleOnSaveOnline,
         handleOnCancel: handleOnCancelOnline,
+        hasChanges: hasChangesOnline,
     } = useHandoverCustomizationChatOnlineSettingsForm({
         integration,
     })
@@ -56,20 +67,10 @@ const HandoverCustomizationChatSettingsDrawer = ({
         updateValue: updateValueFallback,
         handleOnSave: handleOnSaveFallback,
         handleOnCancel: handleOnCancelFallback,
+        hasChanges: hasChangesFallback,
     } = useHandoverCustomizationChatFallbackSettingsForm({
         integration,
     })
-
-    const onSaveDrawer = async () => {
-        await drawerContent[activeContent].onSave().then(() => {
-            onClose()
-        })
-    }
-
-    const onCloseDrawer = () => {
-        drawerContent[activeContent].onClose()
-        onClose()
-    }
 
     const drawerContent = {
         offline: {
@@ -139,16 +140,83 @@ const HandoverCustomizationChatSettingsDrawer = ({
         },
     }
 
+    const [isDrawerDirty, setIsDrawerDirty] = useState(false)
+
+    const onSaveDrawer = async () => {
+        try {
+            await drawerContent[activeContent].onSave()
+            setIsDrawerDirty(false)
+            setIsFormDirty(StoreConfigFormSection.channelSettings, false)
+            onClose()
+        } catch {}
+    }
+
+    const onCloseDrawer = () => {
+        let hasChanges = false
+
+        switch (activeContent) {
+            case 'offline':
+                if (hasChangesOffline) {
+                    hasChanges = true
+                }
+                break
+            case 'online':
+                if (hasChangesOnline) {
+                    hasChanges = true
+                }
+                break
+            case 'error':
+                if (hasChangesFallback) {
+                    hasChanges = true
+                }
+                break
+        }
+
+        if (hasChanges) {
+            setIsDrawerDirty(true)
+        } else {
+            drawerContent[activeContent].onClose()
+            onClose()
+        }
+    }
+
+    const onHandleDiscardUnsavedChanges = () => {
+        setIsDrawerDirty(false)
+        setIsFormDirty(StoreConfigFormSection.channelSettings, false)
+        onClose()
+
+        switch (activeContent) {
+            case 'online':
+                handleOnCancelOnline()
+                break
+            case 'offline':
+                handleOnCancelOffline()
+                break
+            case 'error':
+                handleOnCancelFallback()
+                break
+        }
+    }
+
     return (
-        <StoreConfigDrawer
-            title={drawerContent[activeContent].title}
-            open={open}
-            onClose={() => onCloseDrawer()}
-            onSave={() => onSaveDrawer()}
-            isLoading={drawerContent[activeContent].isLoading}
-        >
-            {drawerContent[activeContent].content}
-        </StoreConfigDrawer>
+        <>
+            <StoreConfigDrawer
+                title={drawerContent[activeContent].title}
+                open={open}
+                onClose={onHandleDiscardUnsavedChanges}
+                onSave={onSaveDrawer}
+                onBackdropClick={onCloseDrawer}
+                isLoading={drawerContent[activeContent].isLoading}
+            >
+                {drawerContent[activeContent].content}
+            </StoreConfigDrawer>
+            <UnsavedChangesModal
+                onDiscard={onHandleDiscardUnsavedChanges}
+                isOpen={isDrawerDirty}
+                onClose={() => setIsDrawerDirty(false)}
+                onSave={onSaveDrawer}
+            />
+        </>
     )
 }
 

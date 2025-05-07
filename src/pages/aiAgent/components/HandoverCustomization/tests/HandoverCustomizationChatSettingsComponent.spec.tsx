@@ -1,4 +1,5 @@
 import { fireEvent, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
@@ -110,7 +111,10 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
 
     it('renders the component correctly', () => {
         renderWithStoreAndQueryClientProvider(
-            <HandoverCustomizationChatSettingsComponent {...mockProps} />,
+            <HandoverCustomizationChatSettingsComponent
+                {...mockProps}
+                setIsFormDirty={() => jest.fn()}
+            />,
         )
 
         expect(useHandoverCustomizationChatSettings).toHaveBeenCalledWith(
@@ -138,7 +142,10 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
         }
 
         renderWithStoreAndQueryClientProvider(
-            <HandoverCustomizationChatSettingsComponent {...props} />,
+            <HandoverCustomizationChatSettingsComponent
+                {...props}
+                setIsFormDirty={() => jest.fn()}
+            />,
         )
 
         expect(useHandoverCustomizationChatSettings).toHaveBeenCalledWith(props)
@@ -172,7 +179,10 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
             }
 
             renderWithStoreAndQueryClientProvider(
-                <HandoverCustomizationChatSettingsComponent {...props} />,
+                <HandoverCustomizationChatSettingsComponent
+                    {...props}
+                    setIsFormDirty={() => jest.fn()}
+                />,
             )
 
             expect(useHandoverCustomizationChatSettings).toHaveBeenCalledWith(
@@ -188,6 +198,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 <HandoverCustomizationChatSettingsComponent
                     {...mockProps}
                     monitoredChatIntegrationIds={[14, 15]}
+                    setIsFormDirty={() => jest.fn()}
                 />,
             )
 
@@ -213,12 +224,11 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 }
 
                 renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent {...props} />,
+                    <HandoverCustomizationChatSettingsComponent
+                        {...props}
+                        setIsFormDirty={() => jest.fn()}
+                    />,
                 )
-
-                expect(
-                    useHandoverCustomizationChatSettings,
-                ).toHaveBeenCalledWith(props)
 
                 // sections should not be rendered
                 screen.getByText(/mocked offline settings/i)
@@ -233,12 +243,11 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 }
 
                 renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent {...props} />,
+                    <HandoverCustomizationChatSettingsComponent
+                        {...props}
+                        setIsFormDirty={() => jest.fn()}
+                    />,
                 )
-
-                expect(
-                    useHandoverCustomizationChatSettings,
-                ).toHaveBeenCalledWith(props)
 
                 // sections should be rendered
                 screen.getByText(/mocked offline settings/i)
@@ -288,12 +297,11 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 }
 
                 renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent {...props} />,
+                    <HandoverCustomizationChatSettingsComponent
+                        {...props}
+                        setIsFormDirty={() => jest.fn()}
+                    />,
                 )
-
-                expect(
-                    useHandoverCustomizationChatSettings,
-                ).toHaveBeenCalledWith(props)
 
                 expect(getChatOfflineRow()).toBeInTheDocument()
                 expect(getChatOnlineRow()).toBeInTheDocument()
@@ -307,12 +315,11 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 }
 
                 renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent {...props} />,
+                    <HandoverCustomizationChatSettingsComponent
+                        {...props}
+                        setIsFormDirty={() => jest.fn()}
+                    />,
                 )
-
-                expect(
-                    useHandoverCustomizationChatSettings,
-                ).toHaveBeenCalledWith(props)
 
                 expect(getChatOfflineRow()).toBeInTheDocument()
                 expect(getChatOnlineRow()).toBeInTheDocument()
@@ -326,12 +333,11 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 }
 
                 renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent {...props} />,
+                    <HandoverCustomizationChatSettingsComponent
+                        {...props}
+                        setIsFormDirty={() => jest.fn()}
+                    />,
                 )
-
-                expect(
-                    useHandoverCustomizationChatSettings,
-                ).toHaveBeenCalledWith(props)
 
                 expect(screen.getByText('26 Shopify Chat')).toBeInTheDocument()
                 expect(screen.getByRole('textbox')).toBeInTheDocument()
@@ -344,12 +350,11 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 }
 
                 renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent {...props} />,
+                    <HandoverCustomizationChatSettingsComponent
+                        {...props}
+                        setIsFormDirty={() => jest.fn()}
+                    />,
                 )
-
-                expect(
-                    useHandoverCustomizationChatSettings,
-                ).toHaveBeenCalledWith(props)
 
                 fireEvent.click(getChatOfflineRow())
 
@@ -368,12 +373,11 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 }
 
                 renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent {...props} />,
+                    <HandoverCustomizationChatSettingsComponent
+                        {...props}
+                        setIsFormDirty={() => jest.fn()}
+                    />,
                 )
-
-                expect(
-                    useHandoverCustomizationChatSettings,
-                ).toHaveBeenCalledWith(props)
 
                 fireEvent.click(getChatOnlineRow())
 
@@ -392,12 +396,11 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 }
 
                 renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent {...props} />,
+                    <HandoverCustomizationChatSettingsComponent
+                        {...props}
+                        setIsFormDirty={() => jest.fn()}
+                    />,
                 )
-
-                expect(
-                    useHandoverCustomizationChatSettings,
-                ).toHaveBeenCalledWith(props)
 
                 fireEvent.click(getChatErrorRow())
 
@@ -421,6 +424,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 renderWithStoreAndQueryClientProvider(
                     <HandoverCustomizationChatSettingsComponent
                         {...mockProps}
+                        setIsFormDirty={() => jest.fn()}
                     />,
                 )
                 fireEvent.click(getChatOfflineRow())
@@ -440,6 +444,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 renderWithStoreAndQueryClientProvider(
                     <HandoverCustomizationChatSettingsComponent
                         {...mockProps}
+                        setIsFormDirty={() => jest.fn()}
                     />,
                 )
                 fireEvent.click(getChatOnlineRow())
@@ -459,6 +464,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 renderWithStoreAndQueryClientProvider(
                     <HandoverCustomizationChatSettingsComponent
                         {...mockProps}
+                        setIsFormDirty={() => jest.fn()}
                     />,
                 )
                 fireEvent.click(getChatErrorRow())
@@ -481,12 +487,11 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 }
 
                 renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent {...props} />,
+                    <HandoverCustomizationChatSettingsComponent
+                        {...props}
+                        setIsFormDirty={() => jest.fn()}
+                    />,
                 )
-
-                expect(
-                    useHandoverCustomizationChatSettings,
-                ).toHaveBeenCalledWith(props)
 
                 fireEvent.click(getChatOfflineRow())
 
@@ -494,6 +499,26 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 expect(drawerTitle).toBeVisible()
 
                 fireEvent.click(screen.getByRole('button', { name: /cancel/i }))
+                expect(drawerTitle).not.toBeVisible()
+            })
+
+            it('should close drawer when clicking on cancel button if there are changes', async () => {
+                renderWithStoreAndQueryClientProvider(
+                    <HandoverCustomizationChatSettingsComponent
+                        {...mockProps}
+                        setIsFormDirty={() => jest.fn()}
+                    />,
+                )
+
+                fireEvent.click(getChatOfflineRow())
+                await userEvent.type(screen.getAllByRole('textbox')[0], 'test')
+
+                const drawerTitle = getChatOfflineDrawerTitle()
+
+                expect(drawerTitle).toBeVisible()
+
+                fireEvent.click(screen.getByRole('button', { name: /cancel/i }))
+
                 expect(drawerTitle).not.toBeVisible()
             })
         })
@@ -505,7 +530,10 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
         })
 
         renderWithRouter(
-            <HandoverCustomizationChatSettingsComponent {...mockProps} />,
+            <HandoverCustomizationChatSettingsComponent
+                {...mockProps}
+                setIsFormDirty={() => jest.fn()}
+            />,
         )
 
         const link = screen.getByText(/Chat's handover behavior/i)
