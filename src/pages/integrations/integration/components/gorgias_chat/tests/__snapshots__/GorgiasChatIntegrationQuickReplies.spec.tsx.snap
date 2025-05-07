@@ -101,6 +101,22 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
           <div
             class="container"
           >
+            <button
+              class="d-flex align-items-center addButton btn btn-secondary disabled"
+              disabled=""
+              type="button"
+            >
+              <i
+                class="material-icons md-2"
+              >
+                add
+              </i>
+              <span
+                class="ml-2"
+              >
+                Add Quick Reply
+              </span>
+            </button>
             <div
               class="row row"
             >
@@ -167,22 +183,6 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                 </i>
               </div>
             </div>
-            <button
-              class="d-flex align-items-center btn btn-secondary disabled"
-              disabled=""
-              type="button"
-            >
-              <i
-                class="material-icons md-2"
-              >
-                add
-              </i>
-              <span
-                class="ml-2"
-              >
-                Add Quick Reply
-              </span>
-            </button>
           </div>
           <div>
             <button
@@ -544,6 +544,21 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
           <div
             class="container"
           >
+            <button
+              class="d-flex align-items-center addButton btn btn-secondary"
+              type="button"
+            >
+              <i
+                class="material-icons md-2"
+              >
+                add
+              </i>
+              <span
+                class="ml-2"
+              >
+                Add Quick Reply
+              </span>
+            </button>
             <div
               class="row row"
             >
@@ -608,21 +623,6 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                 </i>
               </div>
             </div>
-            <button
-              class="d-flex align-items-center btn btn-secondary"
-              type="button"
-            >
-              <i
-                class="material-icons md-2"
-              >
-                add
-              </i>
-              <span
-                class="ml-2"
-              >
-                Add Quick Reply
-              </span>
-            </button>
           </div>
           <div>
             <button

@@ -3,7 +3,7 @@
 exports[`ListField component should render with no items and an "add" button 1`] = `
 <div>
   <button
-    class="d-flex align-items-center btn btn-secondary"
+    class="d-flex align-items-center addButton btn btn-secondary"
     type="button"
   >
     <i
@@ -17,6 +17,16 @@ exports[`ListField component should render with no items and an "add" button 1`]
 
 exports[`ListField component should render with some items and an "add" button 1`] = `
 <div>
+  <button
+    class="d-flex align-items-center addButton btn btn-secondary"
+    type="button"
+  >
+    <i
+      class="material-icons md-2"
+    >
+      add
+    </i>
+  </button>
   <div
     class="row row"
   >
@@ -81,8 +91,14 @@ exports[`ListField component should render with some items and an "add" button 1
       </i>
     </div>
   </div>
+</div>
+`;
+
+exports[`ListField component should render with the max number of items and no "add" button 1`] = `
+<div>
   <button
-    class="d-flex align-items-center btn btn-secondary"
+    class="d-flex align-items-center addButton btn btn-secondary disabled"
+    disabled=""
     type="button"
   >
     <i
@@ -91,11 +107,6 @@ exports[`ListField component should render with some items and an "add" button 1
       add
     </i>
   </button>
-</div>
-`;
-
-exports[`ListField component should render with the max number of items and no "add" button 1`] = `
-<div>
   <div
     class="row row"
   >
@@ -160,16 +171,5 @@ exports[`ListField component should render with the max number of items and no "
       </i>
     </div>
   </div>
-  <button
-    class="d-flex align-items-center btn btn-secondary disabled"
-    disabled=""
-    type="button"
-  >
-    <i
-      class="material-icons md-2"
-    >
-      add
-    </i>
-  </button>
 </div>
 `;

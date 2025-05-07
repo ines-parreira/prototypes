@@ -184,15 +184,6 @@ export const CustomFieldsFormComponent = ({
                 </div>
             </div>
             <div className={css.formGroup}>
-                {customFieldIds && (
-                    <StoreCustomFieldsList
-                        customFieldIds={customFieldIds}
-                        accountCustomFieldMap={accountCustomFieldMap}
-                        onDelete={
-                            handleCustomFieldRemovalFromStoreConfiguration
-                        }
-                    />
-                )}
                 <SelectFilter
                     isDisabled={state.isSelectDisabled}
                     disabledTooltipText="All ticket fields added"
@@ -201,6 +192,7 @@ export const CustomFieldsFormComponent = ({
                     value={state.selectedCustomFields}
                     label="Add Ticket Field"
                     searchPlaceholder="Ticket Fields"
+                    className={css.selectFilter}
                 >
                     {availableSelectCustomFieldOptions.map((field) => (
                         <SelectFilter.Item
@@ -210,6 +202,15 @@ export const CustomFieldsFormComponent = ({
                         />
                     ))}
                 </SelectFilter>
+                {customFieldIds && (
+                    <StoreCustomFieldsList
+                        customFieldIds={customFieldIds}
+                        accountCustomFieldMap={accountCustomFieldMap}
+                        onDelete={
+                            handleCustomFieldRemovalFromStoreConfiguration
+                        }
+                    />
+                )}
             </div>
         </>
     )

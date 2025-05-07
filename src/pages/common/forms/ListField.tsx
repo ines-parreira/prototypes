@@ -58,6 +58,20 @@ export default class ListField extends Component<Props> {
 
         return (
             <div className={className}>
+                <Button
+                    className={classNames(
+                        'd-flex align-items-center',
+                        css.addButton,
+                    )}
+                    disabled={disabled === true || items.size === maxItems}
+                    onClick={this.addRow}
+                    {...(dataCanduId ? { 'data-candu-id': dataCanduId } : {})}
+                >
+                    <i className="material-icons md-2">add</i>
+                    {addLabel !== undefined ? (
+                        <span className="ml-2">{addLabel}</span>
+                    ) : null}
+                </Button>
                 {items.map((item, index) => (
                     <Row key={index} className={css.row}>
                         <Col className="flex-grow pr-0">
@@ -97,17 +111,6 @@ export default class ListField extends Component<Props> {
                         </Col>
                     </Row>
                 ))}
-                <Button
-                    className="d-flex align-items-center"
-                    disabled={disabled === true || items.size === maxItems}
-                    onClick={this.addRow}
-                    {...(dataCanduId ? { 'data-candu-id': dataCanduId } : {})}
-                >
-                    <i className="material-icons md-2">add</i>
-                    {addLabel !== undefined ? (
-                        <span className="ml-2">{addLabel}</span>
-                    ) : null}
-                </Button>
             </div>
         )
     }

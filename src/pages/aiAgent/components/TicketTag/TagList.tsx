@@ -1,5 +1,6 @@
+import { Button } from '@gorgias/merchant-ui-kit'
+
 import { Tag } from 'models/aiAgent/types'
-import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import InputField from 'pages/common/forms/input/InputField'
@@ -43,6 +44,16 @@ const TagList = ({ tags, onTagsUpdate }: Props) => {
                     </div>
                 </div>
             )}
+            <Button
+                className={css.addButton}
+                intent="secondary"
+                onClick={() =>
+                    onTagsUpdate([...tags, { name: '', description: '' }])
+                }
+                leadingIcon="add"
+            >
+                Add Tag
+            </Button>
             {tags.map((t, index) => (
                 <div key={`${index}${t.name}`} className={css.body}>
                     <div className={css.tag}>
@@ -73,16 +84,6 @@ const TagList = ({ tags, onTagsUpdate }: Props) => {
                     </IconButton>
                 </div>
             ))}
-            <Button
-                className={css.addButton}
-                intent="secondary"
-                onClick={() =>
-                    onTagsUpdate([...tags, { name: '', description: '' }])
-                }
-                leadingIcon="add"
-            >
-                Add Tag
-            </Button>
         </div>
     )
 }
