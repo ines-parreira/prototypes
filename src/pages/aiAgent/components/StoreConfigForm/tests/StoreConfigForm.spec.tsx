@@ -1848,6 +1848,307 @@ describe('<StoreConfigForm />', () => {
 
             expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
         })
+
+        it('should update activeDrawerValues when tags in formValues change', async () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+            })
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    tags: [{ name: 'tag1', description: 'tag1' }],
+                },
+            })
+
+            const { rerender } = renderComponent()
+
+            await userEvent.click(screen.getAllByText('Tags')[0])
+
+            expect(screen.getByText('tag1')).toBeInTheDocument()
+            expect(screen.queryByText('tag2')).not.toBeInTheDocument()
+
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    tags: [
+                        { name: 'tag1', description: 'tag1' },
+                        { name: 'tag2', description: 'tag2' },
+                    ],
+                },
+            })
+
+            rerender(
+                <Provider store={mockedStore}>
+                    <QueryClientProvider client={queryClient}>
+                        <AiAgentFormChangesProvider>
+                            <StoreConfigForm
+                                shopName="test-shop"
+                                accountDomain="test-domain"
+                                shopType="shopify"
+                                faqHelpCenters={
+                                    [
+                                        {
+                                            id: 1,
+                                            name: 'help center 1',
+                                            type: 'faq',
+                                        },
+                                        {
+                                            id: 2,
+                                            name: 'help center 2',
+                                            type: 'faq',
+                                        },
+                                    ] as unknown as HelpCenter[]
+                                }
+                            />
+                        </AiAgentFormChangesProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            expect(screen.getByText('tag2')).toBeInTheDocument()
+        })
+
+        it('should update activeDrawerValues when tags in formValues change with an undefined value', async () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+            })
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    tags: [{ name: 'tag1', description: 'tag1' }],
+                },
+            })
+
+            const { rerender } = renderComponent()
+
+            await userEvent.click(screen.getAllByText('Tags')[0])
+
+            expect(screen.getByText('tag1')).toBeInTheDocument()
+
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    tags: undefined as any,
+                },
+            })
+
+            rerender(
+                <Provider store={mockedStore}>
+                    <QueryClientProvider client={queryClient}>
+                        <AiAgentFormChangesProvider>
+                            <StoreConfigForm
+                                shopName="test-shop"
+                                accountDomain="test-domain"
+                                shopType="shopify"
+                                faqHelpCenters={
+                                    [
+                                        {
+                                            id: 1,
+                                            name: 'help center 1',
+                                            type: 'faq',
+                                        },
+                                        {
+                                            id: 2,
+                                            name: 'help center 2',
+                                            type: 'faq',
+                                        },
+                                    ] as unknown as HelpCenter[]
+                                }
+                            />
+                        </AiAgentFormChangesProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            expect(screen.queryByText('tag1')).not.toBeInTheDocument()
+        })
+
+        it('should update activeDrawerValues when customFieldIds in formValues change', async () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+            })
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    customFieldIds: [ticketInputFieldDefinition.id],
+                },
+            })
+
+            const { rerender } = renderComponent()
+
+            await userEvent.click(screen.getByText('Ticket Fields'))
+
+            screen.debug(document.body, Infinity)
+            expect(
+                screen.getByDisplayValue(ticketInputFieldDefinition.label),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByDisplayValue(ticketDropdownFieldDefinition.label),
+            ).not.toBeInTheDocument()
+
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    customFieldIds: [
+                        ticketInputFieldDefinition.id,
+                        ticketDropdownFieldDefinition.id,
+                    ],
+                },
+            })
+
+            rerender(
+                <Provider store={mockedStore}>
+                    <QueryClientProvider client={queryClient}>
+                        <AiAgentFormChangesProvider>
+                            <StoreConfigForm
+                                shopName="test-shop"
+                                accountDomain="test-domain"
+                                shopType="shopify"
+                                faqHelpCenters={
+                                    [
+                                        {
+                                            id: 1,
+                                            name: 'help center 1',
+                                            type: 'faq',
+                                        },
+                                        {
+                                            id: 2,
+                                            name: 'help center 2',
+                                            type: 'faq',
+                                        },
+                                    ] as unknown as HelpCenter[]
+                                }
+                            />
+                        </AiAgentFormChangesProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            expect(
+                screen.getByDisplayValue(ticketDropdownFieldDefinition.label),
+            ).toBeInTheDocument()
+        })
+
+        it('should update activeDrawerValues when excludedTopics in formValues change', async () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+            })
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    excludedTopics: ['topic1'],
+                },
+            })
+
+            const { rerender } = renderComponent()
+
+            await userEvent.click(screen.getByText('Handover topics'))
+
+            expect(screen.getByDisplayValue('topic1')).toBeInTheDocument()
+            expect(screen.queryByDisplayValue('topic2')).not.toBeInTheDocument()
+
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    excludedTopics: ['topic1', 'topic2'],
+                },
+            })
+
+            rerender(
+                <Provider store={mockedStore}>
+                    <QueryClientProvider client={queryClient}>
+                        <AiAgentFormChangesProvider>
+                            <StoreConfigForm
+                                shopName="test-shop"
+                                accountDomain="test-domain"
+                                shopType="shopify"
+                                faqHelpCenters={
+                                    [
+                                        {
+                                            id: 1,
+                                            name: 'help center 1',
+                                            type: 'faq',
+                                        },
+                                        {
+                                            id: 2,
+                                            name: 'help center 2',
+                                            type: 'faq',
+                                        },
+                                    ] as unknown as HelpCenter[]
+                                }
+                            />
+                        </AiAgentFormChangesProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            expect(screen.getByDisplayValue('topic2')).toBeInTheDocument()
+        })
+
+        it('should update activeDrawerValues when excludedTopics is undefined in formValues change', async () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+            })
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    excludedTopics: ['topic1'],
+                },
+            })
+
+            const { rerender } = renderComponent()
+
+            await userEvent.click(screen.getByText('Handover topics'))
+
+            expect(screen.getByDisplayValue('topic1')).toBeInTheDocument()
+
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    excludedTopics: undefined as any,
+                },
+            })
+
+            rerender(
+                <Provider store={mockedStore}>
+                    <QueryClientProvider client={queryClient}>
+                        <AiAgentFormChangesProvider>
+                            <StoreConfigForm
+                                shopName="test-shop"
+                                accountDomain="test-domain"
+                                shopType="shopify"
+                                faqHelpCenters={
+                                    [
+                                        {
+                                            id: 1,
+                                            name: 'help center 1',
+                                            type: 'faq',
+                                        },
+                                        {
+                                            id: 2,
+                                            name: 'help center 2',
+                                            type: 'faq',
+                                        },
+                                    ] as unknown as HelpCenter[]
+                                }
+                            />
+                        </AiAgentFormChangesProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            expect(screen.queryByDisplayValue('topic1')).not.toBeInTheDocument()
+        })
     })
 
     describe('Agent Deactivation', () => {

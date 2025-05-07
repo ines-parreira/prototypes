@@ -585,6 +585,14 @@ export const StoreConfigForm = ({
         excludedTopics: formValues.excludedTopics ?? [],
     })
 
+    useEffect(() => {
+        setActiveDrawerValues({
+            tags: formValues.tags ?? [],
+            customFieldIds: formValues.customFieldIds ?? [],
+            excludedTopics: formValues.excludedTopics ?? [],
+        })
+    }, [formValues.tags, formValues.customFieldIds, formValues.excludedTopics])
+
     const onSaveDrawer = async () => {
         const updatedFormValues = {
             ...formValues,
