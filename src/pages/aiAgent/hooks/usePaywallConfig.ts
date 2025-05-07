@@ -24,7 +24,7 @@ export const usePaywallConfig = (
             return {
                 title: 'with Automate features',
                 subtitle:
-                    "Introducing AI Agent - with Support and Sales skills, your team's newest member for seamless customer interactions.",
+                    'Introducing AI Agent: Your new team member that drives sales and automates support in 1:1 conversations.',
                 descriptions: [
                     'Leads customers to fast resolutions in seconds, not hours.',
                     'Enhances team productivity, reducing workload & response times by automating up to 60% of your tickets.',

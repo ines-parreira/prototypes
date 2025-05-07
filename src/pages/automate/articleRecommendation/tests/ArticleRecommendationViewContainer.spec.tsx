@@ -76,6 +76,6 @@ describe('<ArticleRecommendationPreview />', () => {
                 route: '/app/automation/shopify/test-shop/article-recommendation',
             },
         )
-        expect(screen.getByText(/Introducing AI Agent /)).toBeInTheDocument()
+        expect(screen.getByText(/Introducing AI Agent/)).toBeInTheDocument()
     })
 })
