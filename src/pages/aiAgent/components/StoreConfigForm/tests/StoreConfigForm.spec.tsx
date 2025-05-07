@@ -2049,7 +2049,7 @@ describe('<StoreConfigForm />', () => {
 
             const { rerender } = renderComponent()
 
-            await userEvent.click(screen.getByText('Handover topics'))
+            await userEvent.click(screen.getByText('handover topics'))
 
             expect(screen.getByDisplayValue('topic1')).toBeInTheDocument()
             expect(screen.queryByDisplayValue('topic2')).not.toBeInTheDocument()
@@ -2107,7 +2107,7 @@ describe('<StoreConfigForm />', () => {
 
             const { rerender } = renderComponent()
 
-            await userEvent.click(screen.getByText('Handover topics'))
+            await userEvent.click(screen.getByText('handover topics'))
 
             expect(screen.getByDisplayValue('topic1')).toBeInTheDocument()
 
