@@ -45,7 +45,8 @@ export const SalesPaywallMiddleware =
         const isAiSalesAlphaDemoUser =
             !!flags[FeatureFlagKey.AiSalesAgentBypassPlanCheck]
 
-        const showUpgradePaywall = isAiSalesBetaUser && !hasNewAutomatePlan
+        const showUpgradePaywall =
+            isAiSalesBetaUser && !hasNewAutomatePlan && !isAiSalesAlphaDemoUser
         const showSalesSettings =
             (isAiSalesBetaUser && hasNewAutomatePlan) || isAiSalesAlphaDemoUser
 

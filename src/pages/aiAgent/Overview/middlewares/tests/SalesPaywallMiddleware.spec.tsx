@@ -171,6 +171,31 @@ describe('SalesPaywallMiddleware', () => {
         expect(screen.queryByText(/Paywall View Mock/)).not.toBeInTheDocument()
     })
 
+    it('should render the child component when it has automate + beta user on generation 5 plan + alpha/demo user', () => {
+        mockFlags({
+            [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: true,
+            [FeatureFlagKey.AiSalesAgentBeta]: true,
+        })
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getHasAutomate) {
+                return true
+            }
+
+            if (selector === getCurrentAutomatePlan) {
+                return {
+                    generation: 5,
+                }
+            }
+
+            return undefined
+        })
+
+        renderMiddleware()
+        expect(screen.getByTestId('mock-child-component')).toBeInTheDocument()
+        expect(screen.queryByText(/Layout Mock/)).not.toBeInTheDocument()
+        expect(screen.queryByText(/Paywall View Mock/)).not.toBeInTheDocument()
+    })
+
     it.each([{ generation: 5 }, { generation: 6 }])(
         'should render waitlist paywall when it has automate + any generation plan and not part of demo/alpha/beta',
         ({ generation }) => {
