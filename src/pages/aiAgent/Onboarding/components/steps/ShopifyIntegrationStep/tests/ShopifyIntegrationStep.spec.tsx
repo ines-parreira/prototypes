@@ -299,20 +299,6 @@ describe('ShopifyIntegrationStep', () => {
         ).toBeInTheDocument()
     })
 
-    it('navigates to the SKILLSET step when Back is clicked', async () => {
-        const integrations = [
-            { id: 1, name: 'Test Store', type: 'shopify' },
-            { id: 2, name: 'Test Store 2', type: 'shopify' },
-        ]
-        renderComponent(integrations as StoreIntegration[])
-
-        fireEvent.click(screen.getByText(/Back/i))
-
-        await waitFor(() => {
-            expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.SKILLSET)
-        })
-    })
-
     it('navigates to the CHANNELS step when Next is clicked', async () => {
         const integrations = [
             { id: 1, name: 'Test Store', type: 'shopify' },

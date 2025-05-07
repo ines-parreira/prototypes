@@ -75,8 +75,8 @@ const history = createMemoryHistory({
 })
 
 const defaultProps: StepProps = {
-    currentStep: 6,
-    totalSteps: 6,
+    currentStep: 2,
+    totalSteps: 5,
     goToStep: jest.fn(),
 }
 
@@ -220,7 +220,7 @@ describe('KnowledgeStep', () => {
         expect((await screen.findAllByText('Top Locations')).length).toBe(4)
     })
 
-    it('navigates to the sales personality step when Back is clicked', () => {
+    it('navigates to the channels step when Back is clicked', () => {
         renderWithProvider()
 
         jest.runAllTimers()
@@ -228,7 +228,7 @@ describe('KnowledgeStep', () => {
         fireEvent.click(screen.getByText(/Back/i))
 
         expect(defaultProps.goToStep).toHaveBeenCalledWith(
-            WizardStepEnum.KNOWLEDGE,
+            WizardStepEnum.CHANNELS,
         )
     })
 
@@ -241,7 +241,7 @@ describe('KnowledgeStep', () => {
 
         jest.runAllTimers()
 
-        const nextButton = screen.getByText('Finish')
+        const nextButton = screen.getByText('Next')
 
         act(() => {
             userEvent.click(nextButton)

@@ -69,10 +69,9 @@ const useTransformToneOfVoiceConversationsMock = assumeMock(
 )
 
 const goToStep = jest.fn()
-
 const defaultProps: StepProps = {
-    currentStep: 4,
-    totalSteps: 6,
+    currentStep: 2,
+    totalSteps: 4,
     goToStep,
 }
 
@@ -104,7 +103,7 @@ describe('PersonalityStep - With prepopulated data', () => {
                 salesPersuasionLevel: PersuasionLevel.Moderate,
                 salesDiscountStrategyLevel: DiscountStrategy.Balanced,
                 salesDiscountMax: 0.1,
-                scopes: [AiAgentScopes.SALES],
+                scopes: [AiAgentScopes.SUPPORT, AiAgentScopes.SALES],
                 shopName: shopifyIntegration.meta.shop_name,
                 currentStepName: WizardStepEnum.SALES_PERSONALITY,
             },
@@ -139,7 +138,9 @@ describe('PersonalityStep - With prepopulated data', () => {
         fireEvent.click(screen.getByText(/Next/i))
 
         await waitFor(() => {
-            expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.KNOWLEDGE)
+            expect(goToStep).toHaveBeenCalledWith(
+                WizardStepEnum.PERSONALITY_PREVIEW,
+            )
         })
     })
 })
@@ -375,9 +376,7 @@ describe('PersonalityStep - Empty state', () => {
         fireEvent.click(screen.getByText(/Back/i))
 
         await waitFor(() => {
-            expect(goToStep).toHaveBeenCalledWith(
-                WizardStepEnum.SALES_PERSONALITY,
-            )
+            expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.CHANNELS)
         })
     })
 
@@ -400,7 +399,9 @@ describe('PersonalityStep - Empty state', () => {
         fireEvent.click(screen.getByText(/Next/i))
 
         await waitFor(() => {
-            expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.KNOWLEDGE)
+            expect(goToStep).toHaveBeenCalledWith(
+                WizardStepEnum.PERSONALITY_PREVIEW,
+            )
         })
     })
 })
@@ -697,8 +698,7 @@ describe('PersonalityStep - Onboarding mutation', () => {
                                 AiAgentScopes.SUPPORT,
                             ],
                             shopName: shopifyIntegration.meta.shop_name,
-
-                            currentStepName: WizardStepEnum.KNOWLEDGE,
+                            currentStepName: WizardStepEnum.PERSONALITY_PREVIEW,
                             salesDiscountMax: 0.08,
                             salesDiscountStrategyLevel: 'balanced',
                             salesPersuasionLevel: 'balanced',
@@ -758,7 +758,7 @@ describe('PersonalityStep - Onboarding mutation', () => {
                             ],
                             shopName: shopifyIntegration.meta.shop_name,
 
-                            currentStepName: WizardStepEnum.KNOWLEDGE,
+                            currentStepName: WizardStepEnum.PERSONALITY_PREVIEW,
                             salesDiscountMax: null,
                             salesDiscountStrategyLevel: 'none',
                             salesPersuasionLevel: 'aggressive',

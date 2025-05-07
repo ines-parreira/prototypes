@@ -18,14 +18,12 @@ import { KnowledgeStep } from 'pages/aiAgent/Onboarding/components/steps/Knowled
 import { PersonalityPreviewStep } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/PersonalityPreviewStep'
 import { PersonalityStep } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersonalityStep'
 import { ShopifyIntegrationStep } from 'pages/aiAgent/Onboarding/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep'
-import { SkillsetStep } from 'pages/aiAgent/Onboarding/components/steps/SkillsetStep/SkillsetStep'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
 import { ConvAiOnboardingLayout } from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
-import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 
 export const AiAgentOnboarding = () => {
-    const [selectedScope, setSelectedScope] = useState<AiAgentScopes[]>([])
     const [isStoreSelected, setIsStoreSelected] = useState(false)
     const { shopName, step, shopType } = useParams<{
         shopName: string
@@ -34,7 +32,6 @@ export const AiAgentOnboarding = () => {
     }>()
     const { validSteps } = useSteps({
         shopName,
-        selectedScope,
         isStoreSelected,
     })
     const { routes } = useAiAgentNavigation({ shopName })
@@ -114,12 +111,7 @@ export const AiAgentOnboarding = () => {
             case WizardStepEnum.SALES_PERSONALITY:
                 return <PersonalityStep {...stepProps} />
             default:
-                return (
-                    <SkillsetStep
-                        {...stepProps}
-                        setSelectedScope={setSelectedScope}
-                    />
-                )
+                return <ChannelsStep {...stepProps} />
         }
     }
 

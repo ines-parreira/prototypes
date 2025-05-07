@@ -19,6 +19,7 @@ import StatusBadge, {
 } from 'pages/aiAgent/Onboarding/components/StatusBadge'
 import css from 'pages/aiAgent/Onboarding/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep.less'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
+import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding/hooks/useAiAgentScopesForAutomationPlan'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding/hooks/useCheckStoreAlreadyConfigured'
 import { useCreateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useCreateOnboarding'
@@ -74,6 +75,7 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
     const { redirectToIntegration } = useOnboardingIntegrationRedirection()
     const shopifyIntegrations = useShopifyIntegrations()
     const { emailIntegrations, defaultIntegration } = useEmailIntegrations()
+    const scopes = useAiAgentScopesForAutomationPlan()
 
     useCheckOnboardingCompleted()
     useCheckStoreAlreadyConfigured()
@@ -197,7 +199,7 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
         }
 
         const updatedData: Partial<OnboardingData> = {
-            scopes: data?.scopes,
+            scopes,
             gorgiasDomain: accountDomain,
             shopName: selectedShop,
             currentStepName:

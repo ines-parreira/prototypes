@@ -2,12 +2,10 @@ import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/Pers
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 
 export enum WizardStepEnum {
-    SKILLSET = 'skillset',
     EMAIL_INTEGRATION = 'email integration',
     SHOPIFY_INTEGRATION = 'shopify integration',
     CHANNELS = 'channels',
     PERSONALITY_PREVIEW = 'personality preview',
-    // This is skipped if it does not have sales skillset.
     SALES_PERSONALITY = 'sales personality',
     KNOWLEDGE = 'knowledge',
     HANDOVER = 'handover',

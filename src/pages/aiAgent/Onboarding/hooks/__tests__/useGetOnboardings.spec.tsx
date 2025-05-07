@@ -20,7 +20,7 @@ const defaultOnboarding = {
     salesDiscountMax: 0.8,
     scopes: [AiAgentScopes.SUPPORT, AiAgentScopes.SALES],
     shopName: shopifyIntegration.meta.shop_name,
-    currentStepName: WizardStepEnum.SKILLSET,
+    currentStepName: WizardStepEnum.SHOPIFY_INTEGRATION,
 }
 
 describe('useGetOnboardings', () => {

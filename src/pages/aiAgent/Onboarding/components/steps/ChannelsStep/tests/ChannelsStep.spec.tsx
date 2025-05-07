@@ -11,10 +11,6 @@ import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
-import {
-    AUTOMATION_PRODUCT_ID,
-    firstTierMonthlyAutomationPlan,
-} from 'fixtures/productPrices'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { EmailItem } from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
@@ -30,6 +26,8 @@ import { conversationExamples } from 'pages/aiAgent/Onboarding/components/steps/
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
+import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding/hooks/useAiAgentScopesForAutomationPlan'
+import { useCreateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useCreateOnboarding'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { useGetOnboardings } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardings'
 import { useTransformToneOfVoiceConversations } from 'pages/aiAgent/Onboarding/hooks/useTransformToneOfVoiceConversations'
@@ -82,6 +80,10 @@ const mutateUpdateOnboardingMock = jest.fn()
 jest.mock('pages/aiAgent/Onboarding/hooks/useUpdateOnboarding')
 const useUpdateOnboardingMock = assumeMock(useUpdateOnboarding)
 
+const mutateCreateOnboardingMock = jest.fn()
+jest.mock('pages/aiAgent/Onboarding/hooks/useCreateOnboarding')
+const useCreateOnboardingMock = assumeMock(useCreateOnboarding)
+
 jest.mock('pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration', () => ({
     __esModule: true,
     default: jest.fn(),
@@ -109,9 +111,15 @@ const useTransformToneOfVoiceConversationsMock = assumeMock(
     useTransformToneOfVoiceConversations,
 )
 
+jest.mock('pages/aiAgent/Onboarding/hooks/useAiAgentScopesForAutomationPlan')
+const useAiAgentScopesForAutomationPlanMock = assumeMock(
+    useAiAgentScopesForAutomationPlan,
+)
+
 const goToStep = jest.fn()
 
-const title = /Next, which channels would you like/
+const firstStepTitle = /Welcome to AI Agent!/
+const notFirstStepTitle = /Next, which channels would you like/
 
 const history = createMemoryHistory({
     initialEntries: [
@@ -120,8 +128,8 @@ const history = createMemoryHistory({
 })
 
 const defaultProps: StepProps = {
-    currentStep: 2,
-    totalSteps: 3,
+    currentStep: 1,
+    totalSteps: 4,
     goToStep,
 }
 
@@ -172,16 +180,25 @@ describe('ChannelsStep', () => {
                 isLoading: false,
             } as any)
 
+            useAiAgentScopesForAutomationPlanMock.mockReturnValue([
+                AiAgentScopes.SUPPORT,
+                AiAgentScopes.SALES,
+            ])
+
             useGetOnboardingDataMock.mockReturnValue({
                 data: {
-                    id: 1,
                     salesPersuasionLevel: PersuasionLevel.Moderate,
                     salesDiscountStrategyLevel: DiscountStrategy.Balanced,
                     salesDiscountMax: 0.8,
                     scopes: [AiAgentScopes.SUPPORT, AiAgentScopes.SALES],
                     shopName: shopifyIntegration.meta.shop_name,
-                    currentStepName: WizardStepEnum.SKILLSET,
+                    currentStepName: WizardStepEnum.SHOPIFY_INTEGRATION,
                 },
+                isLoading: false,
+            } as any)
+
+            useCreateOnboardingMock.mockReturnValue({
+                mutate: mutateCreateOnboardingMock,
                 isLoading: false,
             } as any)
 
@@ -221,6 +238,11 @@ describe('ChannelsStep', () => {
                     onSuccess()
                 },
             )
+            mutateCreateOnboardingMock.mockImplementation(
+                (data: any, { onSuccess }: { onSuccess: () => {} }) => {
+                    onSuccess()
+                },
+            )
 
             useTransformToneOfVoiceConversationsMock.mockReturnValue({
                 previewConversation: conversationExamples.default,
@@ -243,11 +265,34 @@ describe('ChannelsStep', () => {
         })
 
         it('renders the component with main title and cards', async () => {
-            renderWithProvider()
+            renderWithProvider(undefined, {
+                ...defaultProps,
+                currentStep: 1,
+                totalSteps: 4,
+            })
 
             // Components are rendered
             await waitFor(() => {
-                expect(screen.getByText(title)).toBeInTheDocument()
+                expect(screen.getByText(firstStepTitle)).toBeInTheDocument()
+
+                expect(
+                    screen.getByText(
+                        'Enable your AI Agent to respond to customers via email.',
+                    ),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('renders the component with main title and cards', async () => {
+            renderWithProvider(undefined, {
+                ...defaultProps,
+                currentStep: 2,
+                totalSteps: 5,
+            })
+
+            // Components are rendered
+            await waitFor(() => {
+                expect(screen.getByText(notFirstStepTitle)).toBeInTheDocument()
 
                 expect(
                     screen.getByText(
@@ -301,11 +346,9 @@ describe('ChannelsStep', () => {
             userEvent.click(nextButton)
 
             await waitFor(() => {
-                expect(mutateUpdateOnboardingMock).toHaveBeenCalledWith(
+                expect(mutateCreateOnboardingMock).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        data: expect.objectContaining({
-                            emailIntegrationIds: [7],
-                        }),
+                        emailIntegrationIds: [7],
                     }),
                     expect.anything(),
                 )
@@ -454,7 +497,7 @@ describe('ChannelsStep', () => {
 
             // Components are rendered
             await waitFor(() => {
-                expect(screen.getByText(title)).toBeInTheDocument()
+                expect(screen.getByText(firstStepTitle)).toBeInTheDocument()
 
                 expect(
                     screen.getByText(
@@ -500,7 +543,7 @@ describe('ChannelsStep', () => {
 
             // Components are rendered
             await waitFor(() => {
-                expect(screen.getByText(title)).toBeInTheDocument()
+                expect(screen.getByText(firstStepTitle)).toBeInTheDocument()
 
                 expect(
                     screen.getByText(
@@ -559,7 +602,7 @@ describe('ChannelsStep', () => {
 
             // Components are rendered
             await waitFor(() => {
-                expect(screen.getByText(title)).toBeInTheDocument()
+                expect(screen.getByText(firstStepTitle)).toBeInTheDocument()
 
                 expect(
                     screen.getByText(
@@ -619,7 +662,7 @@ describe('ChannelsStep', () => {
 
             // Components are rendered
             await waitFor(() => {
-                expect(screen.getByText(title)).toBeInTheDocument()
+                expect(screen.getByText(firstStepTitle)).toBeInTheDocument()
 
                 expect(
                     screen.getByText(
@@ -700,21 +743,15 @@ describe('ChannelsStep', () => {
             ).toBeInTheDocument()
         })
 
-        it('navigates to the skillset step when Back is clicked and there is an integration', async () => {
-            renderWithProvider()
-
-            userEvent.click(screen.getByText(/Back/i))
-
-            await waitFor(() => {
-                expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.SKILLSET)
-            })
-        })
-
         it('navigates to the shopify integration step when Back is clicked and there is no integration', async () => {
             mockUseShopifyIntegrationAndScope.mockReturnValue({
                 integration: false,
             })
-            renderWithProvider(undefined, { ...defaultProps, currentStep: 3 })
+            renderWithProvider(undefined, {
+                ...defaultProps,
+                currentStep: 2,
+                totalSteps: 5,
+            })
 
             userEvent.click(screen.getByText(/Back/i))
 
@@ -932,7 +969,7 @@ describe('ChannelsStep', () => {
                     salesDiscountMax: 0.8,
                     scopes: [AiAgentScopes.SUPPORT, AiAgentScopes.SALES],
                     shopName: shopifyIntegration.meta.shop_name,
-                    currentStepName: WizardStepEnum.SKILLSET,
+                    currentStepName: WizardStepEnum.SHOPIFY_INTEGRATION,
                 },
                 isLoading: false,
             })
@@ -989,30 +1026,6 @@ describe('ChannelsStep', () => {
             })
 
             renderWithProvider()
-
-            expect(screen.getByText('Loading...')).toBeInTheDocument()
-        })
-
-        it('should render loading state when the onboarding is being created', () => {
-            useGetOnboardingDataMock.mockReturnValue({
-                data: undefined,
-                isLoading: false,
-            })
-
-            const state = {
-                ...defaultState,
-                currentAccount: fromJS({
-                    current_subscription: {
-                        products: {
-                            [AUTOMATION_PRODUCT_ID]:
-                                firstTierMonthlyAutomationPlan.plan_id,
-                        },
-                    },
-                    domain: 'test.com',
-                }),
-            }
-
-            renderWithProvider(state)
 
             expect(screen.getByText('Loading...')).toBeInTheDocument()
         })

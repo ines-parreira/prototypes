@@ -9,7 +9,9 @@ import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-const useCheckStoreIntegration = (shouldCheck: boolean = true): null => {
+const useCheckStoreIntegration = (options?: { shouldCheck: boolean }): null => {
+    const shouldCheck = options?.shouldCheck ?? true
+
     const { shopName } = useParams<{ shopName: string }>()
     const { data, isLoading } = useGetOnboardingData(shopName)
     const history = useHistory()

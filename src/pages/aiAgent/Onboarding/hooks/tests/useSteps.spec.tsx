@@ -1,17 +1,14 @@
 import { fromJS } from 'immutable'
 
-import {
-    AUTOMATION_PRODUCT_ID,
-    firstTierMonthlyAutomationPlan,
-    products,
-} from 'fixtures/productPrices'
-import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { products } from 'fixtures/productPrices'
+import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding/hooks/useAiAgentScopesForAutomationPlan'
 import { useShopifyIntegrations } from 'pages/aiAgent/Onboarding/hooks/useShopifyIntegrations'
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 import { RootState } from 'state/types'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
+import { assumeMock } from 'utils/testing'
 
 import { useSteps } from '../useSteps'
 
@@ -26,7 +23,11 @@ const mockUseShopifyIntegrationAndScope =
     useShopifyIntegrationAndScope as jest.Mock
 const mockUseEmailIntegrations = useEmailIntegrations as jest.Mock
 const mockUseShopifyIntegrations = useShopifyIntegrations as jest.Mock
-const mockUseGetOnboardingData = useGetOnboardingData as jest.Mock
+
+jest.mock('pages/aiAgent/Onboarding/hooks/useAiAgentScopesForAutomationPlan')
+const useAiAgentScopesForAutomationPlanMock = assumeMock(
+    useAiAgentScopesForAutomationPlan,
+)
 
 const initialState = {
     billing: fromJS({
@@ -48,10 +49,11 @@ describe('useSteps', () => {
             emailIntegrations: [{}],
             defaultIntegration: {},
         })
-        mockUseGetOnboardingData.mockReturnValue({
-            data: null,
-            isLoading: false,
-        })
+
+        useAiAgentScopesForAutomationPlanMock.mockReturnValue([
+            AiAgentScopes.SUPPORT,
+            AiAgentScopes.SALES,
+        ])
     })
 
     it('should return all steps when no integrations exist and data is loading', () => {
@@ -64,10 +66,6 @@ describe('useSteps', () => {
             emailIntegrations: null,
             defaultIntegration: null,
         })
-        mockUseGetOnboardingData.mockReturnValue({
-            data: null,
-            isLoading: true,
-        })
 
         const { result } = renderHookWithStoreAndQueryClientProvider(
             () => useSteps({ shopName: 'test-shop' }),
@@ -75,7 +73,6 @@ describe('useSteps', () => {
         )
 
         expect(result.current.validSteps).toEqual([
-            { step: WizardStepEnum.SKILLSET, condition: true },
             { step: WizardStepEnum.SHOPIFY_INTEGRATION, condition: true },
             { step: WizardStepEnum.EMAIL_INTEGRATION, condition: true },
             { step: WizardStepEnum.CHANNELS, condition: true },
@@ -83,7 +80,6 @@ describe('useSteps', () => {
             { step: WizardStepEnum.PERSONALITY_PREVIEW, condition: true },
             { step: WizardStepEnum.KNOWLEDGE, condition: true },
         ])
-        expect(result.current.totalSteps).toBe(7)
     })
 
     it('should exclude steps based on integration and email data', () => {
@@ -93,24 +89,26 @@ describe('useSteps', () => {
         )
 
         expect(result.current.validSteps).toEqual([
-            { step: WizardStepEnum.SKILLSET, condition: true },
             { step: WizardStepEnum.CHANNELS, condition: true },
+            {
+                step: WizardStepEnum.SALES_PERSONALITY,
+                condition: true,
+            },
             { step: WizardStepEnum.PERSONALITY_PREVIEW, condition: true },
             { step: WizardStepEnum.KNOWLEDGE, condition: true },
         ])
         expect(result.current.totalSteps).toBe(4)
     })
 
-    it('should include SALES_PERSONALITY step when AiAgentScopes.SALES is in data.scopes', () => {
-        mockUseGetOnboardingData.mockReturnValue({
-            data: { scopes: [AiAgentScopes.SALES] },
-        })
-
+    it('should include SALES_PERSONALITY step when plan supports AI Agent Sales', () => {
+        useAiAgentScopesForAutomationPlanMock.mockReturnValue([
+            AiAgentScopes.SUPPORT,
+            AiAgentScopes.SALES,
+        ])
         const { result } = renderHookWithStoreAndQueryClientProvider(
             () =>
                 useSteps({
                     shopName: 'test-shop',
-                    selectedScope: [AiAgentScopes.SALES],
                 }),
             initialState,
         )
@@ -121,33 +119,20 @@ describe('useSteps', () => {
         })
     })
 
-    it('should exclude SKILLSET step when pricing is usd-6', async () => {
-        mockUseGetOnboardingData.mockReturnValue({
-            data: { id: '123' },
-            isLoading: false,
-        })
-
+    it('should not include SALES_PERSONALITY step when when plan does not support AI Agent Sales', () => {
+        useAiAgentScopesForAutomationPlanMock.mockReturnValue([
+            AiAgentScopes.SUPPORT,
+        ])
         const { result } = renderHookWithStoreAndQueryClientProvider(
             () =>
                 useSteps({
                     shopName: 'test-shop',
                 }),
-            {
-                ...initialState,
-                currentAccount: fromJS({
-                    current_subscription: {
-                        products: {
-                            [AUTOMATION_PRODUCT_ID]:
-                                firstTierMonthlyAutomationPlan.plan_id,
-                        },
-                    },
-                    domain: 'test.com',
-                }),
-            },
+            initialState,
         )
 
         expect(result.current.validSteps).not.toContainEqual({
-            step: WizardStepEnum.SKILLSET,
+            step: WizardStepEnum.SALES_PERSONALITY,
             condition: true,
         })
     })

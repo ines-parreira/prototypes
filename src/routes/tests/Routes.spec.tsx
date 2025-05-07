@@ -637,7 +637,7 @@ describe('<Routes/>', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.getByText(/Welcome to AI Agent!/i),
+                    screen.getByText(/First, let's connect your/i),
                 ).toBeInTheDocument()
             })
         })

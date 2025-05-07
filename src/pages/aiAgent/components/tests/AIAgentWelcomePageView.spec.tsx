@@ -18,9 +18,8 @@ import { WIZARD_UPDATE_QUERY_KEY } from 'pages/aiAgent/constants'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useWelcomePageAcknowledgedMutation } from 'pages/aiAgent/hooks/useWelcomePageAcknowledgedMutation'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
-import { useGetSkillsetStep } from '../../Onboarding/hooks/useGetSkillsetStep'
 import {
     AiAgentWelcomePageProps,
     AIAgentWelcomePageView,
@@ -70,9 +69,6 @@ jest.mock('common/segment', () => ({
     },
 }))
 
-jest.mock('pages/aiAgent/Onboarding/hooks/useGetSkillsetStep')
-const useGetSkillsetStepMock = assumeMock(useGetSkillsetStep)
-
 mockFlags({
     [FeatureFlagKey.AiAgentOnboardingWizard]: false,
 })
@@ -116,9 +112,6 @@ describe('<AIAgentWelcomePageView />', () => {
         })
         ;(useWelcomePageAcknowledgedMutation as jest.Mock).mockReturnValue({
             isLoading: false,
-        })
-        useGetSkillsetStepMock.mockReturnValue({
-            hasSkillsetStep: true,
         })
     })
 
@@ -197,7 +190,7 @@ describe('<AIAgentWelcomePageView />', () => {
         await userEvent.click(button)
 
         expect(historyPushSpy).toHaveBeenCalledWith({
-            pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding`,
+            pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/channels`,
             search: '',
         })
     })
@@ -205,9 +198,6 @@ describe('<AIAgentWelcomePageView />', () => {
     it('should redirect to AiAgentOnboardingWizard page when Set up AI Agent button is clicked with the skillset step skipped', async () => {
         const history = createMemoryHistory()
         const historyPushSpy = jest.spyOn(history, 'push')
-        useGetSkillsetStepMock.mockReturnValue({
-            hasSkillsetStep: false,
-        })
 
         renderWithProvider({}, history)
 
@@ -242,7 +232,7 @@ describe('<AIAgentWelcomePageView />', () => {
         await userEvent.click(button)
 
         expect(historyPushSpy).toHaveBeenCalledWith({
-            pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding`,
+            pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/channels`,
             search: `?${WIZARD_UPDATE_QUERY_KEY}=true`,
         })
     })
@@ -265,7 +255,7 @@ describe('<AIAgentWelcomePageView />', () => {
         await userEvent.click(button)
 
         expect(historyPushSpy).toHaveBeenCalledWith({
-            pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding`,
+            pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/channels`,
             search: '',
         })
     })
@@ -273,9 +263,6 @@ describe('<AIAgentWelcomePageView />', () => {
     it('should redirect to the new onboarding page without search params when Continue Set Up button is clicked and the skillset step is skipped', async () => {
         const history = createMemoryHistory()
         const historyPushSpy = jest.spyOn(history, 'push')
-        useGetSkillsetStepMock.mockReturnValue({
-            hasSkillsetStep: false,
-        })
 
         mockFlags({
             [FeatureFlagKey.ConvAiStandaloneMenu]: true,

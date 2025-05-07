@@ -3,26 +3,30 @@ import { useMemo } from 'react'
 import { OnboardingData } from 'models/aiAgent/types'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
+import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding/hooks/useAiAgentScopesForAutomationPlan'
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 
 import { useGetOnboardings } from './useGetOnboardings'
 
 type OnboardingDataWithoutId = Omit<OnboardingData, 'id'>
 
-export const defaultOnboardingData: OnboardingDataWithoutId = {
+export const defaultOnboardingData = (
+    scopes: AiAgentScopes[],
+): OnboardingDataWithoutId => ({
+    scopes,
     salesPersuasionLevel: PersuasionLevel.Moderate,
     salesDiscountStrategyLevel: DiscountStrategy.Balanced,
     salesDiscountMax: 0.08,
-    scopes: [AiAgentScopes.SUPPORT],
     shopName: '',
     shopType: 'shopify',
     emailIntegrationIds: [],
     chatIntegrationIds: [],
-    currentStepName: WizardStepEnum.SKILLSET,
-}
+    currentStepName: WizardStepEnum.SHOPIFY_INTEGRATION,
+})
 
 export const useGetOnboardingData = (shopName?: string) => {
     const { data: onboardingList, isLoading, isFetching } = useGetOnboardings()
+    const scopes = useAiAgentScopesForAutomationPlan()
 
     const data = useMemo(():
         | OnboardingData
@@ -42,8 +46,8 @@ export const useGetOnboardingData = (shopName?: string) => {
         if (onGoingOnboarding) {
             return onGoingOnboarding
         }
-        return defaultOnboardingData
-    }, [shopName, onboardingList])
+        return defaultOnboardingData(scopes)
+    }, [shopName, onboardingList, scopes])
 
     return { data, isLoading: isLoading || isFetching }
 }

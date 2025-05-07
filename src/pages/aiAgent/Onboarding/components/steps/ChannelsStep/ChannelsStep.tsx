@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { fromJS } from 'immutable'
@@ -37,6 +37,7 @@ import { usePreselectedChat } from 'pages/aiAgent/Onboarding/components/steps/Ch
 import { usePreselectedEmails } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedEmails'
 import { createChatConfiguration } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/utils/createGorgiasConfiguration'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
+import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding/hooks/useAiAgentScopesForAutomationPlan'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding/hooks/useCheckStoreAlreadyConfigured'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
@@ -64,7 +65,6 @@ import useSelfServiceChatChannels, {
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import ColorField from 'pages/common/forms/ColorField'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import {
     getCurrentDomain,
     getDefaultIntegrationSettings,
@@ -118,7 +118,6 @@ export const ChannelsStep: React.FC<StepProps> = ({
     const chatDropdownRef = useRef<HTMLDivElement | null>(null)
     const chatColorPickerRef = useRef<HTMLDivElement | null>(null)
     const emailDropdownRef = useRef<HTMLDivElement | null>(null)
-    const [isOnboardingComplete, setIsOnboardingComplete] = useState(false)
 
     const { shopName } = useParams<{ shopName: string }>()
     const { validSteps } = useSteps({ shopName, isStoreSelected })
@@ -150,7 +149,6 @@ export const ChannelsStep: React.FC<StepProps> = ({
     const [redirectionIntegrationId] = useState(integrationId)
     const [redirectionIntegrationType] = useState(integrationType)
     const { mutate: doCreateOnboardingMutation } = useCreateOnboarding()
-    const automatePlanId = useAppSelector(getCurrentAutomatePlan)?.plan_id ?? ''
 
     const storesName = useMemo(
         () =>
@@ -170,8 +168,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
     const isLoading =
         isLoadingOnboardingData ||
         isUpdatingOnboarding ||
-        isLoadingStoreConfigurations ||
-        !isOnboardingComplete
+        isLoadingStoreConfigurations
 
     const usedEmailIntegrations = useGetUsedEmailIntegrations()
     const usedChatChannels = useMemo(() => {
@@ -185,65 +182,10 @@ export const ChannelsStep: React.FC<StepProps> = ({
     }, [storeConfigurations])
 
     const dispatch = useAppDispatch()
+    const scopes = useAiAgentScopesForAutomationPlan()
+    const isFirstStep = currentStep === 1
 
-    const setOnboarding = useCallback(async () => {
-        if (
-            !isLoadingOnboardingData &&
-            automatePlanId.includes('usd-6') &&
-            !data?.shopName
-        ) {
-            await doCreateOnboardingMutation(
-                {
-                    shopName,
-                    currentStepName: WizardStepEnum.CHANNELS,
-                    scopes: [AiAgentScopes.SALES, AiAgentScopes.SUPPORT],
-                    gorgiasDomain: accountDomain,
-                },
-                {
-                    onSuccess: () => {
-                        setIsOnboardingComplete(true)
-                    },
-                    onError: () => {
-                        dispatch(
-                            notify({
-                                status: NotificationStatus.Error,
-                                message: 'Could not create onboarding',
-                            }),
-                        )
-                        setIsOnboardingComplete(true)
-                    },
-                },
-            )
-        }
-
-        if (
-            !isLoadingOnboardingData &&
-            !isOnboardingComplete &&
-            (!automatePlanId.includes('usd-6') ||
-                (automatePlanId.includes('usd-6') && !!data?.shopName))
-        ) {
-            setIsOnboardingComplete(true)
-        }
-    }, [
-        isLoadingOnboardingData,
-        isOnboardingComplete,
-        automatePlanId,
-        data?.shopName,
-        accountDomain,
-        shopName,
-        doCreateOnboardingMutation,
-        dispatch,
-    ])
-
-    useEffect(() => {
-        const runOnboardingCheck = async () => {
-            await setOnboarding()
-        }
-
-        runOnboardingCheck()
-    }, [setOnboarding])
-
-    useCheckStoreIntegration(isOnboardingComplete)
+    useCheckStoreIntegration({ shouldCheck: !isFirstStep })
     useCheckOnboardingCompleted()
     useCheckStoreAlreadyConfigured()
 
@@ -452,29 +394,36 @@ export const ChannelsStep: React.FC<StepProps> = ({
     }
 
     const onNextClick = (savedIntegrationId?: number) => {
-        if (data && 'id' in data) {
-            const updatedData = {
-                ...data,
-                preview: preview,
-                currentStepName: validSteps[currentStep]?.step,
-                emailIntegrationIds: emailChannelEnabled
-                    ? emailIntegrationIds
-                    : [],
-                chatIntegrationIds: chatChannelEnabled
-                    ? savedIntegrationId
-                        ? [...chatIntegrationIds, savedIntegrationId]
-                        : chatIntegrationIds
-                    : [],
-            }
+        const updatedData = {
+            ...data,
+            shopName,
+            scopes,
+            preview,
+            gorgiasDomain: accountDomain,
+            currentStepName: validSteps[currentStep]?.step,
+            emailIntegrationIds: emailChannelEnabled ? emailIntegrationIds : [],
+            chatIntegrationIds: chatChannelEnabled
+                ? savedIntegrationId
+                    ? [...chatIntegrationIds, savedIntegrationId]
+                    : chatIntegrationIds
+                : [],
+        }
 
+        if (data && 'id' in data) {
             doUpdateOnboardingMutation(
-                { id: data.id as string, data: updatedData },
+                { id: data.id, data: updatedData },
                 {
                     onSuccess: () => {
                         goToNextStep()
                     },
                 },
             )
+        } else {
+            doCreateOnboardingMutation(updatedData, {
+                onSuccess: () => {
+                    goToNextStep()
+                },
+            })
         }
     }
 
@@ -631,6 +580,21 @@ export const ChannelsStep: React.FC<StepProps> = ({
         )
     }
 
+    const renderTitle = () => {
+        return isFirstStep ? (
+            <MainTitle
+                titleBlack="Welcome to AI Agent!"
+                titleMagenta="Select your channels"
+                secondaryTitle="to get started."
+            />
+        ) : (
+            <MainTitle
+                titleBlack="Next, which channels would you like "
+                titleMagenta="to connect"
+            />
+        )
+    }
+
     return (
         <FormProvider {...methods}>
             <OnboardingBody>
@@ -641,10 +605,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
                     onBackClick={onBackClick}
                     isLoading={isLoading || isCreatingChat}
                 >
-                    <MainTitle
-                        titleBlack="Next, which channels would you like "
-                        titleMagenta="to connect"
-                    />
+                    {renderTitle()}
                     <Separator />
                     {renderContent()}
                 </OnboardingContentContainer>

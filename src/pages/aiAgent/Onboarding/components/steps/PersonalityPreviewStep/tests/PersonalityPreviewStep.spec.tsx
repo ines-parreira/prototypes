@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, fireEvent } from '@testing-library/react'
+import { act, fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import { fromJS, Map } from 'immutable'
@@ -13,6 +13,7 @@ import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import { PersonalityPreviewStep } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/PersonalityPreviewStep'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
+import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding/hooks/useAiAgentScopesForAutomationPlan'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { useTransformToneOfVoiceConversations } from 'pages/aiAgent/Onboarding/hooks/useTransformToneOfVoiceConversations'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
@@ -31,6 +32,11 @@ const mockUpdateOnboardingMock = assumeMock(useUpdateOnboarding)
 jest.mock('pages/aiAgent/Onboarding/hooks/useTransformToneOfVoiceConversations')
 const useTransformToneOfVoiceConversationsMock = assumeMock(
     useTransformToneOfVoiceConversations,
+)
+
+jest.mock('pages/aiAgent/Onboarding/hooks/useAiAgentScopesForAutomationPlan')
+const useAiAgentScopesForAutomationPlanMock = assumeMock(
+    useAiAgentScopesForAutomationPlan,
 )
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
@@ -53,13 +59,19 @@ const queryClient = new QueryClient()
 
 const goToStep = jest.fn()
 
-const renderComponent = (state?: RootState) => {
+const renderComponent = ({
+    currentStep,
+    totalSteps,
+}: {
+    currentStep: number
+    totalSteps: number
+}) => {
     return renderWithRouter(
         <QueryClientProvider client={queryClient}>
-            <Provider store={mockStore(state ?? defaultState)}>
+            <Provider store={mockStore(defaultState)}>
                 <PersonalityPreviewStep
-                    currentStep={3}
-                    totalSteps={6}
+                    currentStep={currentStep}
+                    totalSteps={totalSteps}
                     goToStep={goToStep}
                 />
             </Provider>
@@ -74,106 +86,111 @@ const renderComponent = (state?: RootState) => {
 
 describe('<PersonalityPreviewStep />', () => {
     describe.each([
-        ['sales', [AiAgentScopes.SALES], WizardStepEnum.PERSONALITY_PREVIEW],
-        ['support', [AiAgentScopes.SUPPORT], WizardStepEnum.KNOWLEDGE],
-        [
-            'mixed',
-            [AiAgentScopes.SALES, AiAgentScopes.SUPPORT],
-            WizardStepEnum.PERSONALITY_PREVIEW,
-        ],
-    ])('with scope defined as %s', (scopeName, scopes, nextStep) => {
-        beforeEach(() => {
-            useGetOnboardingDataMock.mockReturnValue({
-                isLoading: false,
-                data: {
-                    id: '1',
-                    salesPersuasionLevel: PersuasionLevel.Moderate,
-                    salesDiscountStrategyLevel: DiscountStrategy.Balanced,
-                    salesDiscountMax: 0.8,
-                    scopes,
-                    shopName: shopifyIntegration.meta.shop_name,
-                    currentStepName: WizardStepEnum.PERSONALITY_PREVIEW,
-                },
+        {
+            description: 'support',
+            scopes: [AiAgentScopes.SUPPORT],
+            currentStep: 2,
+            totalSteps: 3,
+            previousStep: WizardStepEnum.CHANNELS,
+        },
+        {
+            description: 'support + sales',
+            scopes: [AiAgentScopes.SALES, AiAgentScopes.SUPPORT],
+            currentStep: 3,
+            totalSteps: 4,
+            previousStep: WizardStepEnum.SALES_PERSONALITY,
+        },
+    ])(
+        'with scope defined as $description',
+        ({ scopes, currentStep, totalSteps, previousStep }) => {
+            beforeEach(() => {
+                useAiAgentScopesForAutomationPlanMock.mockReturnValue(scopes)
+                useGetOnboardingDataMock.mockReturnValue({
+                    isLoading: false,
+                    data: {
+                        id: '1',
+                        salesPersuasionLevel: PersuasionLevel.Moderate,
+                        salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+                        salesDiscountMax: 0.8,
+                        scopes,
+                        shopName: shopifyIntegration.meta.shop_name,
+                        currentStepName: WizardStepEnum.PERSONALITY_PREVIEW,
+                    },
+                })
+
+                mockUpdateOnboardingMock.mockReturnValue({
+                    mutate: jest.fn(),
+                    isLoading: false,
+                } as any)
+
+                useTransformToneOfVoiceConversationsMock.mockReturnValue({
+                    previewConversation: conversationExamples.default,
+                    isPreviewLoading: false,
+                    isLoading: false,
+                    preview: undefined,
+                })
+
+                renderComponent({ currentStep, totalSteps })
             })
 
-            mockUpdateOnboardingMock.mockReturnValue({
-                mutate: jest.fn(),
-                isLoading: false,
-            } as any)
-
-            useTransformToneOfVoiceConversationsMock.mockReturnValue({
-                previewConversation: conversationExamples.default,
-                isPreviewLoading: false,
-                isLoading: false,
-                preview: undefined,
-            })
-        })
-
-        it('should render with the title', () => {
-            const screen = renderComponent()
-
-            expect(
-                screen.getByText('Now see how your AI Agent will respond to'),
-            ).toBeInTheDocument()
-        })
-
-        it('should select the first personality preview', () => {
-            const screen = renderComponent()
-
-            expect(screen.getAllByRole('radio')[0]).not.toHaveAttribute(
-                'aria-busy',
-            )
-
-            expect(screen.getAllByRole('radio')[0]).toHaveAttribute(
-                'aria-checked',
-                'true',
-            )
-            expect(screen.getAllByRole('radio')[1]).toHaveAttribute(
-                'aria-checked',
-                'false',
-            )
-        })
-
-        it('should allow selecting any preview item', () => {
-            const screen = renderComponent()
-
-            expect(screen.getAllByRole('radio')[0]).toHaveAttribute(
-                'aria-checked',
-                'true',
-            )
-            expect(screen.getAllByRole('radio')[1]).toHaveAttribute(
-                'aria-checked',
-                'false',
-            )
-
-            act(() => {
-                fireEvent.click(screen.getAllByRole('radio')[1])
+            it('should render with the title', () => {
+                expect(
+                    screen.getByText(
+                        'Now see how your AI Agent will respond to',
+                    ),
+                ).toBeInTheDocument()
             })
 
-            expect(screen.getAllByRole('radio')[0]).toHaveAttribute(
-                'aria-checked',
-                'false',
-            )
-            expect(screen.getAllByRole('radio')[1]).toHaveAttribute(
-                'aria-checked',
-                'true',
-            )
-        })
+            it('should select the first personality preview', () => {
+                expect(screen.getAllByRole('radio')[0]).not.toHaveAttribute(
+                    'aria-busy',
+                )
 
-        it('navigates to the previous step when Back is clicked', async () => {
-            const screen = renderComponent()
+                expect(screen.getAllByRole('radio')[0]).toHaveAttribute(
+                    'aria-checked',
+                    'true',
+                )
+                expect(screen.getAllByRole('radio')[1]).toHaveAttribute(
+                    'aria-checked',
+                    'false',
+                )
+            })
 
-            await userEvent.click(screen.getByRole('button', { name: 'Back' }))
+            it('should allow selecting any preview item', () => {
+                expect(screen.getAllByRole('radio')[0]).toHaveAttribute(
+                    'aria-checked',
+                    'true',
+                )
+                expect(screen.getAllByRole('radio')[1]).toHaveAttribute(
+                    'aria-checked',
+                    'false',
+                )
 
-            expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.CHANNELS)
-        })
+                act(() => {
+                    fireEvent.click(screen.getAllByRole('radio')[1])
+                })
 
-        it('navigates to the next step when Next is clicked', async () => {
-            const screen = renderComponent()
+                expect(screen.getAllByRole('radio')[0]).toHaveAttribute(
+                    'aria-checked',
+                    'false',
+                )
+                expect(screen.getAllByRole('radio')[1]).toHaveAttribute(
+                    'aria-checked',
+                    'true',
+                )
+            })
 
-            await userEvent.click(screen.getByRole('button', { name: 'Next' }))
+            it('navigates to the previous step when Back is clicked', async () => {
+                userEvent.click(screen.getByRole('button', { name: 'Back' }))
 
-            expect(goToStep).toHaveBeenCalledWith(nextStep)
-        })
-    })
+                expect(goToStep).toHaveBeenCalledWith(previousStep)
+            })
+
+            it('navigates to the next step when Next is clicked', async () => {
+                userEvent.click(screen.getByRole('button', { name: 'Next' }))
+
+                expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.KNOWLEDGE)
+            })
+        },
+    )
 })

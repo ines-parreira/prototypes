@@ -29,7 +29,7 @@ const defaultOnboarding = {
     salesDiscountMax: 0.8,
     scopes: [AiAgentScopes.SUPPORT, AiAgentScopes.SALES],
     shopName: shopifyIntegration.meta.shop_name,
-    currentStepName: WizardStepEnum.SKILLSET,
+    currentStepName: WizardStepEnum.SHOPIFY_INTEGRATION,
 }
 
 describe('useUpdateOnboarding', () => {
@@ -55,7 +55,7 @@ describe('useUpdateOnboarding', () => {
 
         result.current.mutate({
             id: '1',
-            data: { currentStepName: WizardStepEnum.SKILLSET },
+            data: { currentStepName: WizardStepEnum.SHOPIFY_INTEGRATION },
         })
 
         await waitFor(() => {
@@ -73,7 +73,7 @@ describe('useUpdateOnboarding', () => {
 
         result.current.mutate({
             id: '1',
-            data: { currentStepName: WizardStepEnum.SKILLSET },
+            data: { currentStepName: WizardStepEnum.SHOPIFY_INTEGRATION },
         })
 
         await waitFor(() => {

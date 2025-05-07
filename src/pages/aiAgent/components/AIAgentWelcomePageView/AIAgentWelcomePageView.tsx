@@ -17,7 +17,6 @@ import { WIZARD_UPDATE_QUERY_KEY } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { useWelcomePageAcknowledgedMutation } from 'pages/aiAgent/hooks/useWelcomePageAcknowledgedMutation'
-import { useGetSkillsetStep } from 'pages/aiAgent/Onboarding/hooks/useGetSkillsetStep'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 
@@ -37,7 +36,6 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
     const { isLoading } = useWelcomePageAcknowledgedMutation({
         shopName: props.shopName,
     })
-    const { hasSkillsetStep } = useGetSkillsetStep()
     const {
         isAdmin,
         isLoading: isLoadingOnboardingNotificationState,
@@ -105,7 +103,7 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
         })
 
         const path = aiAgentNavigation.routes.onboardingWizardStep(
-            hasSkillsetStep ? undefined : WizardStepEnum.CHANNELS,
+            WizardStepEnum.CHANNELS,
         )
 
         history.push({
@@ -121,7 +119,6 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
         isAdmin,
         isOnUpdateOnboardingWizard,
         props.shopName,
-        hasSkillsetStep,
     ])
 
     useEffect(() => {

@@ -64,7 +64,9 @@ describe('useCheckStoreIntegration', () => {
             isLoading: true,
         })
 
-        const { result } = renderHook(() => useCheckStoreIntegration(false))
+        const { result } = renderHook(() =>
+            useCheckStoreIntegration({ shouldCheck: false }),
+        )
 
         expect(mockHistoryPush).not.toHaveBeenCalled()
         expect(result.current).toBeNull()

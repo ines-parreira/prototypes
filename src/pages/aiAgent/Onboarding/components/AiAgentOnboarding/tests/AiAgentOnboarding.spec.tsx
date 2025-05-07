@@ -22,7 +22,6 @@ import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/Pers
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import useTopProducts from 'pages/aiAgent/Onboarding/components/TopProductsCard/hooks'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
-import { useGetSkillsetStep } from 'pages/aiAgent/Onboarding/hooks/useGetSkillsetStep'
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
@@ -73,9 +72,6 @@ jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData', () => ({
 jest.mock('pages/aiAgent/Onboarding/components/TopProductsCard/hooks')
 const useTopProductsMock = assumeMock(useTopProducts)
 
-jest.mock('pages/aiAgent/Onboarding/hooks/useGetSkillsetStep')
-const useGetSkillsetStepMock = assumeMock(useGetSkillsetStep)
-
 const mockUseShopifyIntegrationAndScope =
     useShopifyIntegrationAndScope as jest.Mock
 const mockUseEmailIntegrations = useEmailIntegrations as jest.Mock
@@ -85,7 +81,7 @@ const queryClient = new QueryClient()
 const history = createMemoryHistory()
 
 const renderComponent = (
-    initialRoute = '/app/ai-agent/onboarding/skillset',
+    initialRoute = '/app/ai-agent/onboarding/shopify integration',
     defaultPath = '/app/ai-agent/onboarding/:step',
 ) => {
     history.push(initialRoute)
@@ -125,10 +121,6 @@ describe('AiAgentOnboarding', () => {
             data: [],
         })
 
-        useGetSkillsetStepMock.mockReturnValue({
-            hasSkillsetStep: true,
-        })
-
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.ConvAiOnboarding]: true,
         }))
@@ -146,7 +138,10 @@ describe('AiAgentOnboarding', () => {
         renderComponent()
         jest.runAllTimers()
 
-        expect(screen.getByText(/Welcome to AI Agent!/i)).toBeInTheDocument()
+        expect(
+            screen.getByText(/First, let's connect your/i),
+        ).toBeInTheDocument()
+        expect(screen.getByText(/Shopify account/i)).toBeInTheDocument()
     })
 
     it('should redirect to the main page if feature flag is disabled', () => {
@@ -169,16 +164,20 @@ describe('AiAgentOnboarding', () => {
         jest.runAllTimers()
 
         await waitFor(() => {
-            expect(screen.getByText(/Select your skills/)).toBeInTheDocument()
+            expect(
+                screen.getByText(/First, let's connect your/i),
+            ).toBeInTheDocument()
         })
 
         // Click Next
-        await userEvent.click(screen.getByText(/Next/i))
+        userEvent.click(
+            screen.getByRole('button', {
+                name: /Next/i,
+            }),
+        )
 
         await waitFor(() => {
-            expect(history.location.pathname).toContain(
-                WizardStepEnum.SHOPIFY_INTEGRATION,
-            )
+            expect(history.location.pathname).toContain(WizardStepEnum.CHANNELS)
         })
     })
 
@@ -195,7 +194,7 @@ describe('AiAgentOnboarding', () => {
         })
 
         // Click Back
-        await userEvent.click(screen.getByText(/Back/i))
+        userEvent.click(screen.getByText(/Back/i))
 
         await waitFor(() => {
             expect(history.location.pathname).toContain(

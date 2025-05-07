@@ -1039,7 +1039,7 @@ export function AiAgentBaseRoutes({ match: { path } }: RouteComponentProps) {
                     render={({ history }) =>
                         handleRedirect(
                             history,
-                            `${path}/onboarding/${WizardStepEnum.SKILLSET}`,
+                            `${path}/onboarding/${WizardStepEnum.SHOPIFY_INTEGRATION}`,
                         )
                     }
                 />
@@ -1051,7 +1051,7 @@ export function AiAgentBaseRoutes({ match: { path } }: RouteComponentProps) {
                     render={({ history, match }) =>
                         handleRedirect(
                             history,
-                            `${path}/${match.params.shopType}/${match.params.shopName}/onboarding/${WizardStepEnum.SKILLSET}`,
+                            `${path}/${match.params.shopType}/${match.params.shopName}/onboarding/${WizardStepEnum.CHANNELS}`,
                         )
                     }
                 />
