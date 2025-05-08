@@ -15,6 +15,7 @@ import {
 } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
+import { useFetchChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
 import { useSelfServiceChatChannelsMultiStore } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 import safeDivide from 'pages/stats/automate/aiSalesAgent/util/safeDivide'
@@ -127,6 +128,20 @@ export const useStoreActivations = ({
         isLoading: isStoreConfigurationLoading,
     } = useStoreConfigurations(accountDomain, singleStoreName)
 
+    const chatIds = useMemo(() => {
+        return storeConfigurations.flatMap(
+            (storeConfiguration) =>
+                storeConfiguration.monitoredChatIntegrations,
+        )
+    }, [storeConfigurations])
+    const {
+        data: chatIntegrationStatus,
+        isLoading: isChatIntegrationsStatusLoading,
+    } = useFetchChatIntegrationsStatusData({
+        enabled: !!chatIds.length,
+        chatIds,
+    })
+
     const selfServiceChatChannels = useSelfServiceChatChannelsMultiStore(
         SHOPIFY_INTEGRATION_TYPE,
         storeNames,
@@ -149,12 +164,14 @@ export const useStoreActivations = ({
             selfServiceChatChannels,
             helpCentersFaq: helpCenterListData?.data.data,
             flags: flagsRef.current,
+            chatIntegrationStatus,
         })
     }, [
         selfServiceChatChannels,
         storeConfigurations,
         dispatch,
         helpCenterListData,
+        chatIntegrationStatus,
     ])
 
     const { isLoading: isSaveLoading, upsertStoresConfiguration } =
@@ -190,7 +207,10 @@ export const useStoreActivations = ({
     return {
         storeActivations: state,
         progressPercentage: computeActivationPercentage(state),
-        isFetchLoading: isStoreConfigurationLoading || isHelpCenterListLoading,
+        isFetchLoading:
+            isStoreConfigurationLoading ||
+            isHelpCenterListLoading ||
+            isChatIntegrationsStatusLoading,
         isSaveLoading,
         changeSales: (storeName: string, newValue: boolean) => {
             dispatch({ type: 'CHANGE_SALES', storeName, newValue })

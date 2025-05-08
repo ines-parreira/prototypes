@@ -4,6 +4,7 @@ import { fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { KNOWLEDGE_ALERT_KIND } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { AlertType } from 'pages/common/components/Alert/Alert'
 import { renderWithRouter } from 'utils/testing'
 
@@ -113,6 +114,7 @@ const storeWithAlert = {
     ...storeWithoutAlert,
     alerts: [
         {
+            kind: KNOWLEDGE_ALERT_KIND,
             type: AlertType.Warning,
             message:
                 'At least one knowledge source required. Update your knowledge tab to be able to activate AI Agent.',

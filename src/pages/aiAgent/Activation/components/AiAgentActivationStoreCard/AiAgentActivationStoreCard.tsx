@@ -45,6 +45,8 @@ export type StoreActivation = {
         chat: {
             enabled: boolean
             isIntegrationMissing?: boolean
+            isInstallationMissing?: boolean
+            availableChats?: number[]
         }
         email: {
             enabled: boolean
@@ -140,9 +142,9 @@ export const AiAgentActivationStoreCard = ({
                     </div>
                 </div>
 
-                {alerts?.map((alert, index) => (
+                {alerts?.map((alert) => (
                     <Alert
-                        key={index}
+                        key={`${name}_${alert.kind.description}`}
                         className={css.alert}
                         type={alert.type}
                         icon
@@ -183,7 +185,8 @@ export const AiAgentActivationStoreCard = ({
                         <NewToggleButton
                             isDisabled={
                                 isDisabledCore ||
-                                (support.chat.isIntegrationMissing &&
+                                ((support.chat.isIntegrationMissing ||
+                                    support.chat.isInstallationMissing) &&
                                     support.email.isIntegrationMissing)
                             }
                             checked={support.enabled}
@@ -199,13 +202,14 @@ export const AiAgentActivationStoreCard = ({
                                     labelClassName={css.channelLabel}
                                     isDisabled={
                                         isDisabledCore ||
-                                        support.chat.isIntegrationMissing
+                                        !!support.chat.isIntegrationMissing ||
+                                        !!support.chat.isInstallationMissing
                                     }
                                     isChecked={support.chat.enabled}
                                     onChange={onSupportChatChange}
                                 >
                                     Chat
-                                    {support.chat.isIntegrationMissing ? (
+                                    {!!support.chat.isIntegrationMissing && (
                                         <>
                                             <img
                                                 id="support__chat__icon"
@@ -218,54 +222,78 @@ export const AiAgentActivationStoreCard = ({
                                                 selected for this store.
                                             </Tooltip>
                                         </>
-                                    ) : undefined}
+                                    )}
+                                    {!!support.chat.isInstallationMissing && (
+                                        <>
+                                            <img
+                                                id="support__chat__icon"
+                                                className={css.warningIcon}
+                                                alt="warning"
+                                                src={warningIcon}
+                                            />
+                                            <Tooltip target="support__chat__icon">
+                                                A chat integration must be
+                                                installed for this store.
+                                            </Tooltip>
+                                        </>
+                                    )}
                                 </CheckBox>
                             </div>
                             <div className={css.channelCaption}>
-                                {support.chat.isIntegrationMissing ? (
+                                {!!support.chat.isIntegrationMissing && (
                                     <Link
                                         to={routes.settingsChannels}
                                         onClick={closeModal}
                                     >
                                         Select Integration for Chat
                                     </Link>
-                                ) : (
-                                    <div className={css.labelContainer}>
-                                        <span>
-                                            Activate Support for integrated
-                                            chats.
-                                        </span>
-                                        {selectedChats.length > 0 && (
-                                            <IconTooltip
-                                                className={css.icon}
-                                                tooltipProps={{
-                                                    placement: 'top-start',
-                                                }}
-                                            >
-                                                integrated chats:
-                                                <div>
-                                                    {selectedChats.map(
-                                                        (channel) => (
-                                                            <div
-                                                                key={
-                                                                    channel
-                                                                        .value
-                                                                        .id
-                                                                }
-                                                            >
-                                                                {
-                                                                    channel
-                                                                        .value
-                                                                        .name
-                                                                }
-                                                            </div>
-                                                        ),
-                                                    )}
-                                                </div>
-                                            </IconTooltip>
-                                        )}
-                                    </div>
                                 )}
+                                {!!support.chat.isInstallationMissing && (
+                                    <Link
+                                        to={`/app/settings/channels/gorgias_chat/${support.chat.availableChats?.at(0)}/installation`}
+                                        onClick={closeModal}
+                                    >
+                                        Install Chat
+                                    </Link>
+                                )}
+                                {!support.chat.isIntegrationMissing &&
+                                    !support.chat.isInstallationMissing && (
+                                        <div className={css.labelContainer}>
+                                            <span>
+                                                Activate Support for integrated
+                                                chats.
+                                            </span>
+                                            {selectedChats.length > 0 && (
+                                                <IconTooltip
+                                                    className={css.icon}
+                                                    tooltipProps={{
+                                                        placement: 'top-start',
+                                                    }}
+                                                >
+                                                    integrated chats:
+                                                    <div>
+                                                        {selectedChats.map(
+                                                            (channel) => (
+                                                                <div
+                                                                    key={
+                                                                        channel
+                                                                            .value
+                                                                            .id
+                                                                    }
+                                                                >
+                                                                    {
+                                                                        channel
+                                                                            .value
+                                                                            .name
+                                                                    }
+                                                                </div>
+                                                            ),
+                                                        )}
+                                                    </div>
+                                                </IconTooltip>
+                                            )}
+                                        </div>
+                                    )}
                             </div>
                         </div>
 
@@ -282,7 +310,7 @@ export const AiAgentActivationStoreCard = ({
                                     onChange={onSupportEmailChange}
                                 >
                                     Email
-                                    {support.email.isIntegrationMissing ? (
+                                    {!!support.email.isIntegrationMissing && (
                                         <>
                                             <img
                                                 id="support__email__icon"
@@ -295,7 +323,7 @@ export const AiAgentActivationStoreCard = ({
                                                 selected for this store.
                                             </Tooltip>
                                         </>
-                                    ) : undefined}
+                                    )}
                                 </CheckBox>
                             </div>
                             <div className={css.channelCaption}>

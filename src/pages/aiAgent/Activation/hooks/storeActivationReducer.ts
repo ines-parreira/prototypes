@@ -6,6 +6,7 @@ import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { StoreActivation } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
 import { getAiSalesAgentEmailEnabledFlag } from 'pages/aiAgent/Activation/utils'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { ChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
 import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { AlertType } from 'pages/common/components/Alert/Alert'
 import { type Components } from 'rest_api/help_center_api/client.generated'
@@ -38,6 +39,7 @@ type UpdateStoreConfiguration = {
     selfServiceChatChannels: Record<string, SelfServiceChatChannel[]>
     helpCentersFaq?: Components.Schemas.GetHelpCenterDto[]
     flags: LDFlagSet
+    chatIntegrationStatus?: ChatIntegrationsStatusData
 }
 export type ACTION_TYPE =
     | ToggleSalesAction
@@ -223,6 +225,7 @@ export const storeConfigurationToState = (
         storeConfigurations,
         selfServiceChatChannels,
         helpCentersFaq,
+        chatIntegrationStatus,
         flags,
     }: UpdateStoreConfiguration,
 ): State => {
@@ -263,20 +266,32 @@ export const storeConfigurationToState = (
                 alerts.push(knowledgeAlert)
             }
 
-            const availableChatsForStore = selfServiceChatChannels[
-                storeName
-            ].map((it) => it.value.id)
+            const availableChatsForStore = selfServiceChatChannels[storeName]
+            const availableMonitoredChat =
+                storeConfiguration.monitoredChatIntegrations.filter((it) =>
+                    availableChatsForStore.some((chat) => chat.value.id === it),
+                )
 
-            const isChatIntegrationMissing =
-                !storeConfiguration.monitoredChatIntegrations.filter((it) =>
-                    availableChatsForStore.includes(it),
-                ).length
+            const isChatIntegrationMissing = !availableMonitoredChat.length
+            let isChatInstallationMissing: boolean
+            if (isChatIntegrationMissing) {
+                isChatInstallationMissing = false
+            } else {
+                isChatInstallationMissing = !chatIntegrationStatus
+                    ?.filter((status) =>
+                        availableChatsForStore.some(
+                            (chat) => chat.value.id === status.chatId,
+                        ),
+                    )
+                    .some((it) => it.installed)
+            }
 
             const isChatEnabled =
                 scopes.includes(AiAgentScope.Support) &&
                 !chatChannelDeactivatedDatetime &&
                 !isChatIntegrationMissing &&
-                !isMissingKnowledge
+                !isMissingKnowledge &&
+                !isChatInstallationMissing
 
             const isEmailEnabled =
                 scopes.includes(AiAgentScope.Support) &&
@@ -299,6 +314,10 @@ export const storeConfigurationToState = (
                     chat: {
                         enabled: isChatEnabled,
                         isIntegrationMissing: isChatIntegrationMissing,
+                        isInstallationMissing: isChatInstallationMissing,
+                        availableChats: availableChatsForStore.map(
+                            (it) => it.value.id,
+                        ),
                     },
                     email: {
                         enabled: isEmailEnabled,

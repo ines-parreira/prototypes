@@ -36,6 +36,7 @@ describe('storeActivationReducer', () => {
                 selfServiceChatChannels: {
                     'Test Store': [{ value: { id: 1 } } as any],
                 },
+                chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
                 helpCentersFaq,
                 flags,
             })
@@ -63,6 +64,7 @@ describe('storeActivationReducer', () => {
                 selfServiceChatChannels: {
                     'Test Store': [{ value: { id: 1 } } as any],
                 },
+                chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
                 helpCentersFaq,
                 flags,
             })
@@ -96,6 +98,7 @@ describe('storeActivationReducer', () => {
                 selfServiceChatChannels: {
                     'Test Store': [{ value: { id: 1 } } as any],
                 },
+                chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
                 helpCentersFaq,
                 flags,
             })
@@ -123,6 +126,7 @@ describe('storeActivationReducer', () => {
                 selfServiceChatChannels: {
                     'Test Store': [{ value: { id: 1 } } as any],
                 },
+                chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
                 helpCentersFaq,
                 flags,
             })
@@ -149,6 +153,7 @@ describe('storeActivationReducer', () => {
                 selfServiceChatChannels: {
                     'Test Store': [{ value: { id: 1 } } as any],
                 },
+                chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
                 helpCentersFaq,
                 flags,
             })
@@ -196,6 +201,9 @@ describe('storeActivationReducer', () => {
                     selfServiceChatChannels: {
                         'Test Store': [{ value: { id: 1 } } as any],
                     },
+                    chatIntegrationStatus: [
+                        { chatId: 1, installed: true } as any,
+                    ],
                     helpCentersFaq,
                     flags,
                 })
@@ -219,6 +227,48 @@ describe('storeActivationReducer', () => {
         )
     })
 
+    it('should disable chat when no chat installed', () => {
+        const state = reducer(EMPTY_STATE, {
+            type: 'UPDATE_STORE_CONFIGURATION',
+            storeConfigurations: [mockStoreConfig],
+            selfServiceChatChannels: {
+                'Test Store': [{ value: { id: 1 } } as any],
+            },
+            chatIntegrationStatus: [{ chatId: 1, installed: false } as any],
+            helpCentersFaq,
+            flags,
+        })
+
+        expect(state['Test Store'].support.chat.enabled).toBe(false)
+        expect(state['Test Store'].support.chat.isIntegrationMissing).toBe(
+            false,
+        )
+        expect(state['Test Store'].support.chat.isInstallationMissing).toBe(
+            true,
+        )
+        expect(state['Test Store'].support.chat.availableChats).toEqual([1])
+    })
+
+    it('should disable chat when no chat not in selfservice', () => {
+        const state = reducer(EMPTY_STATE, {
+            type: 'UPDATE_STORE_CONFIGURATION',
+            storeConfigurations: [mockStoreConfig],
+            selfServiceChatChannels: {
+                'Test Store': [],
+            },
+            chatIntegrationStatus: [{ chatId: 1, installed: false } as any],
+            helpCentersFaq,
+            flags,
+        })
+
+        expect(state['Test Store'].support.chat.enabled).toBe(false)
+        expect(state['Test Store'].support.chat.isIntegrationMissing).toBe(true)
+        expect(state['Test Store'].support.chat.isInstallationMissing).toBe(
+            false,
+        )
+        expect(state['Test Store'].support.chat.availableChats).toEqual([])
+    })
+
     describe('when getAiSalesAgentEmailEnabledFlag is false', () => {
         beforeEach(() => {
             jest.mock('pages/aiAgent/Activation/utils', () => ({
@@ -240,6 +290,7 @@ describe('storeActivationReducer', () => {
                 selfServiceChatChannels: {
                     'Test Store': [{ value: { id: 1 } } as any],
                 },
+                chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
                 helpCentersFaq,
                 flags,
             })
@@ -278,6 +329,7 @@ describe('storeActivationReducer', () => {
                 selfServiceChatChannels: {
                     'Test Store': [{ value: { id: 1 } } as any],
                 },
+                chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
                 helpCentersFaq,
                 flags,
             })
@@ -315,6 +367,7 @@ describe('storeActivationReducer', () => {
                 selfServiceChatChannels: {
                     'Test Store': [{ value: { id: 1 } } as any],
                 },
+                chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
                 helpCentersFaq,
                 flags,
             })
@@ -346,6 +399,7 @@ describe('storeActivationReducer', () => {
                 selfServiceChatChannels: {
                     'Test Store': [{ value: { id: 1 } } as any],
                 },
+                chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
                 helpCentersFaq,
                 flags,
             })
@@ -376,6 +430,7 @@ describe('storeActivationReducer', () => {
                 selfServiceChatChannels: {
                     'Test Store': [{ value: { id: 1 } } as any],
                 },
+                chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
                 helpCentersFaq,
                 flags,
             })
