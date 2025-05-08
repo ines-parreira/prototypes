@@ -229,6 +229,7 @@ describe('SalesPaywallMiddleware', () => {
 
     it('should render the child component when it has automate + beta user on generation 5 plan + alpha/demo user', () => {
         mockFlags({
+            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
             [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: true,
             [FeatureFlagKey.AiSalesAgentBeta]: true,
         })
