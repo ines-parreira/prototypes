@@ -1,5 +1,6 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/layout';
 @import (reference) '~css/typography.less';
+@import '~css/new/mixins';
 
 :local {
     .salesSettingsTitle {
@@ -12,6 +13,11 @@
 
     .salesSettingsContent {
         display: flex;
+        width: 50%;
+
+        @media @mobiles, @tablets {
+            width: 100%;
+        }
     }
 
     .settings {
@@ -43,6 +49,7 @@
         .description {
             color: var(--neutral-grey-6) !important;
             border-color: var(--accessory-magenta-2);
+            max-width: 100%;
         }
     }
 
