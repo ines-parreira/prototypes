@@ -42,7 +42,8 @@ export const getAiAgentNavigationRoutes = (
     const basePath = getAiAgentBasePath(shopName, flags)
     const automationBasePath = '/app/automation'
     const isStandaloneMenuEnabled = flags[FeatureFlagKey.ConvAiStandaloneMenu]
-    const isStandaloneOnboardingEnabled = flags[FeatureFlagKey.ConvAiOnboarding]
+    const isStandaloneOnboardingEnabled =
+        flags[FeatureFlagKey.AiShoppingAssistantEnabled]
 
     const guidancePath = isStandaloneMenuEnabled
         ? 'knowledge/guidance'
@@ -149,7 +150,7 @@ const useNavigationItems = (
         !!flags[FeatureFlagKey.ConversationStarters]
 
     const isSalesMetricsEnabled =
-        !!flags[FeatureFlagKey.StandaloneAIAgentSalesMetrics]
+        !!flags[FeatureFlagKey.AiShoppingAssistantEnabled]
 
     const isConvertFloatingChatInputEnabled =
         !!flags[FeatureFlagKey.ConvertFloatingChatInput]

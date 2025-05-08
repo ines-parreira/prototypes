@@ -85,16 +85,16 @@ describe('<AutomateStatsNavbar />', () => {
             })
         })
 
-        it('should not display the AI Sales Agent link when StandaloneAiSalesAnalyticsPage flag is disabled', () => {
+        it('should not display the AI Sales Agent link when AiShoppingAssistantEnabled flag is disabled', () => {
             // Set up mock for the parent component's hasAutomate check
             mockUseAppSelector.mockImplementation((selector) => {
                 if (selector === getHasAutomate) return true
                 return undefined
             })
 
-            // Explicitly mock the StandaloneAiSalesAnalyticsPage flag to be false
+            // Explicitly mock the AiShoppingAssistantEnabled flag to be false
             mockUseFlag.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.StandaloneAiSalesAnalyticsPage)
+                if (flag === FeatureFlagKey.AiShoppingAssistantEnabled)
                     return false
                 return false
             })
@@ -108,10 +108,10 @@ describe('<AutomateStatsNavbar />', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should display the AI Sales Agent link as a normal link when StandaloneAiSalesAnalyticsPage flag is enabled and account has a new automate plan', () => {
+        it('should display the AI Sales Agent link as a normal link when AiShoppingAssistantEnabled flag is enabled and account has a new automate plan', () => {
             // Set up mocks for all the selectors and flags that the component will check
             mockUseFlag.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.StandaloneAiSalesAnalyticsPage)
+                if (flag === FeatureFlagKey.AiShoppingAssistantEnabled)
                     return true
                 return false
             })
@@ -143,7 +143,7 @@ describe('<AutomateStatsNavbar />', () => {
 
         it('should display the AI Sales Agent link as a normal link when account is trialing', () => {
             mockUseFlag.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.StandaloneAiSalesAnalyticsPage)
+                if (flag === FeatureFlagKey.AiShoppingAssistantEnabled)
                     return true
                 return false
             })
@@ -175,7 +175,7 @@ describe('<AutomateStatsNavbar />', () => {
 
         it('should display the AI Sales Agent link as a normal link when AiSalesAgentBypassPlanCheck flag is enabled', () => {
             mockUseFlag.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.StandaloneAiSalesAnalyticsPage)
+                if (flag === FeatureFlagKey.AiShoppingAssistantEnabled)
                     return true
                 if (flag === FeatureFlagKey.AiSalesAgentBypassPlanCheck)
                     return true
@@ -209,7 +209,7 @@ describe('<AutomateStatsNavbar />', () => {
 
         it('should display the AI Sales Agent link as a paywall link when plan generation < 6 and no bypasses are active', () => {
             mockUseFlag.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.StandaloneAiSalesAnalyticsPage)
+                if (flag === FeatureFlagKey.AiShoppingAssistantEnabled)
                     return true
                 if (flag === FeatureFlagKey.AiSalesAgentBypassPlanCheck)
                     return false

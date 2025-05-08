@@ -108,7 +108,7 @@ describe('<AIAgentWelcomePageView />', () => {
         mockFlags({
             [FeatureFlagKey.AiAgentOnboardingWizard]: false,
             [FeatureFlagKey.ConvAiStandaloneMenu]: true,
-            [FeatureFlagKey.ConvAiOnboarding]: true,
+            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
         })
         ;(useWelcomePageAcknowledgedMutation as jest.Mock).mockReturnValue({
             isLoading: false,
@@ -243,7 +243,7 @@ describe('<AIAgentWelcomePageView />', () => {
 
         mockFlags({
             [FeatureFlagKey.ConvAiStandaloneMenu]: true,
-            [FeatureFlagKey.ConvAiOnboarding]: true,
+            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
         })
 
         renderWithProvider({}, history)
@@ -266,7 +266,7 @@ describe('<AIAgentWelcomePageView />', () => {
 
         mockFlags({
             [FeatureFlagKey.ConvAiStandaloneMenu]: true,
-            [FeatureFlagKey.ConvAiOnboarding]: true,
+            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
         })
 
         renderWithProvider({}, history)

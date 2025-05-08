@@ -25,8 +25,7 @@ export const useGmvInfluenced = ({
     showEarlyAccessModal: () => void
     showActivationModal: () => void
 }): KpiMetric => {
-    const hasAnalytics =
-        useFlags()[FeatureFlagKey.StandaloneAiSalesAnalyticsPage]
+    const hasAnalytics = useFlags()[FeatureFlagKey.AiShoppingAssistantEnabled]
 
     const { currency } = useCurrency()
 

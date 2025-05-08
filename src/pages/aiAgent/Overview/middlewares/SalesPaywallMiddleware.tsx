@@ -50,6 +50,9 @@ export const SalesPaywallMiddleware =
         const showSalesSettings =
             (isAiSalesBetaUser && hasNewAutomatePlan) || isAiSalesAlphaDemoUser
 
+        const isAiShoppingAssistantEnabled =
+            !!flags[FeatureFlagKey.AiShoppingAssistantEnabled]
+
         if (!hasAutomate) {
             return (
                 <PaywallWrapper>
@@ -60,27 +63,31 @@ export const SalesPaywallMiddleware =
             )
         }
 
-        if (showUpgradePaywall) {
-            return (
-                <PaywallWrapper>
-                    <AiAgentPaywallView
-                        aiAgentPaywallFeature={AIAgentPaywallFeatures.Upgrade}
-                    >
-                        <AIButton
-                            intent="primary"
-                            size="medium"
-                            onClick={showEarlyAccessModal}
+        if (isAiShoppingAssistantEnabled) {
+            if (showUpgradePaywall) {
+                return (
+                    <PaywallWrapper>
+                        <AiAgentPaywallView
+                            aiAgentPaywallFeature={
+                                AIAgentPaywallFeatures.Upgrade
+                            }
                         >
-                            Upgrade Now
-                        </AIButton>
-                    </AiAgentPaywallView>
-                    {earlyAccessModal}
-                </PaywallWrapper>
-            )
-        }
+                            <AIButton
+                                intent="primary"
+                                size="medium"
+                                onClick={showEarlyAccessModal}
+                            >
+                                Upgrade Now
+                            </AIButton>
+                        </AiAgentPaywallView>
+                        {earlyAccessModal}
+                    </PaywallWrapper>
+                )
+            }
 
-        if (showSalesSettings) {
-            return <ChildComponent />
+            if (showSalesSettings) {
+                return <ChildComponent />
+            }
         }
 
         return (

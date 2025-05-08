@@ -33,7 +33,7 @@ const useGmvInfluencedInput = {
 describe('useGmvInfluenced', () => {
     beforeEach(() => {
         mockFlags({
-            [FeatureFlagKey.StandaloneAiSalesAnalyticsPage]: true,
+            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
         })
     })
 
@@ -133,9 +133,9 @@ describe('useGmvInfluenced', () => {
         })
     })
 
-    it(`should be hidden when feature flag ${FeatureFlagKey.StandaloneAiSalesAnalyticsPage} is disabled`, () => {
+    it(`should be hidden when feature flag ${FeatureFlagKey.AiShoppingAssistantEnabled} is disabled`, () => {
         mockFlags({
-            [FeatureFlagKey.StandaloneAiSalesAnalyticsPage]: false,
+            [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
         })
         useCurrencyMock.mockReturnValue({
             currency: 'USD',
@@ -152,9 +152,9 @@ describe('useGmvInfluenced', () => {
         expect(result.current.hidden).toBe(true)
     })
 
-    it(`should not be hidden when feature flag ${FeatureFlagKey.StandaloneAiSalesAnalyticsPage} is enabled`, () => {
+    it(`should not be hidden when feature flag ${FeatureFlagKey.AiShoppingAssistantEnabled} is enabled`, () => {
         mockFlags({
-            [FeatureFlagKey.StandaloneAiSalesAnalyticsPage]: true,
+            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
         })
         useCurrencyMock.mockReturnValue({
             currency: 'USD',

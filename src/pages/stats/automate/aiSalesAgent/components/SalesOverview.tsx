@@ -29,7 +29,7 @@ import { AiSalesAgentReportConfig } from '../AiSalesAgentReportConfig'
 const SalesOverview = () => {
     const getGridCellSize = useGridSize()
     const isDiscountSectionVisible: boolean | undefined =
-        useFlags()[FeatureFlagKey.StandaloneAiSalesDiscountSection]
+        useFlags()[FeatureFlagKey.AiShoppingAssistantEnabled]
     const { shopName } = useParams<{
         shopName: string
     }>()

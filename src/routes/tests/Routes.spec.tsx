@@ -542,9 +542,9 @@ describe('<Routes/>', () => {
             )
         })
 
-        it('should render sales page when flag standalone-ai-agent-sales-page is enabled', () => {
+        it('should render sales page when flag ai-shopping-assistant-enabled is enabled', () => {
             mockFlags({
-                [FeatureFlagKey.StandaloneAIAgentSalesPage]: true,
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
             })
 
             render(
@@ -564,7 +564,7 @@ describe('<Routes/>', () => {
 
         it('should render volume page under sales', () => {
             mockFlags({
-                [FeatureFlagKey.StandaloneAIAgentSalesPage]: true,
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
             })
 
             render(
@@ -584,7 +584,7 @@ describe('<Routes/>', () => {
 
         it('should render analytics page under sales', () => {
             mockFlags({
-                [FeatureFlagKey.StandaloneAIAgentSalesPage]: true,
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
             })
 
             render(

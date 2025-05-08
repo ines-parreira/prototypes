@@ -351,8 +351,7 @@ describe('useAiAgentNavigation', () => {
             useFlagsMock.mockReturnValue({
                 [FeatureFlagKey.ConvAiStandaloneMenu]: true,
                 [FeatureFlagKey.FollowUpAiAgentPreviewMode]: true,
-                [FeatureFlagKey.StandaloneAIAgentSalesPage]: true,
-                [FeatureFlagKey.StandaloneAIAgentSalesMetrics]: true,
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
             })
         })
 
@@ -389,7 +388,7 @@ describe('useAiAgentNavigation', () => {
             )
         })
 
-        it('should return /sales/analytics path when the StandaloneAiAgentSalesMetrics feature-flag is enabled', () => {
+        it('should return /sales/analytics path when the AiShoppingAssistantEnabled feature-flag is enabled', () => {
             const { result } = renderHook(() =>
                 useAiAgentNavigation({ shopName: 'test' }),
             )
@@ -413,16 +412,23 @@ describe('useAiAgentNavigation', () => {
     describe('useNavigationItems', () => {
         describe('onboardingWizardStep', () => {
             describe.each([
-                { convAiStandaloneMenu: false, convAiOnboarding: false },
-                { convAiStandaloneMenu: false, convAiOnboarding: true },
+                {
+                    convAiStandaloneMenu: false,
+                    aiShoppingAssistantEnabled: false,
+                },
+                {
+                    convAiStandaloneMenu: false,
+                    aiShoppingAssistantEnabled: true,
+                },
             ])(
-                'when ConvAiStandaloneMenu=$convAiStandaloneMenu and ConvAiOnboarding=$convAiOnboarding',
-                ({ convAiStandaloneMenu, convAiOnboarding }) => {
+                'when ConvAiStandaloneMenu=$convAiStandaloneMenu and AiShoppingAssistantEnabled=$aiShoppingAssistantEnabled',
+                ({ convAiStandaloneMenu, aiShoppingAssistantEnabled }) => {
                     it('should return legacy automation route for ai-agent support set up', () => {
                         useFlagsMock.mockReturnValue({
                             [FeatureFlagKey.ConvAiStandaloneMenu]:
                                 convAiStandaloneMenu,
-                            [FeatureFlagKey.ConvAiOnboarding]: convAiOnboarding,
+                            [FeatureFlagKey.AiShoppingAssistantEnabled]:
+                                aiShoppingAssistantEnabled,
                         })
                         const { result } = renderHook(() =>
                             useAiAgentNavigation({ shopName: 'my-shop' }),
@@ -438,11 +444,11 @@ describe('useAiAgentNavigation', () => {
             )
         })
 
-        describe('when ConvAiStandaloneMenu=true and ConvAiOnboarding=false', () => {
+        describe('when ConvAiStandaloneMenu=true and AiShoppingAssistantEnabled=false', () => {
             it('should return ai-agent route for ai-agent support set up', () => {
                 useFlagsMock.mockReturnValue({
                     [FeatureFlagKey.ConvAiStandaloneMenu]: true,
-                    [FeatureFlagKey.ConvAiOnboarding]: false,
+                    [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
                 })
                 const { result } = renderHook(() =>
                     useAiAgentNavigation({ shopName: 'my-shop' }),
@@ -454,11 +460,11 @@ describe('useAiAgentNavigation', () => {
             })
         })
 
-        describe('when ConvAiStandaloneMenu=true and ConvAiOnboarding=true', () => {
+        describe('when ConvAiStandaloneMenu=true and AiShoppingAssistantEnabled=true', () => {
             it('should return ai-agent route for ai-agent sales set up when no step', () => {
                 useFlagsMock.mockReturnValue({
                     [FeatureFlagKey.ConvAiStandaloneMenu]: true,
-                    [FeatureFlagKey.ConvAiOnboarding]: true,
+                    [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
                 })
                 const { result } = renderHook(() =>
                     useAiAgentNavigation({ shopName: 'my-shop' }),
@@ -472,7 +478,7 @@ describe('useAiAgentNavigation', () => {
             it('should return ai-agent route for ai-agent sales set up when step', () => {
                 useFlagsMock.mockReturnValue({
                     [FeatureFlagKey.ConvAiStandaloneMenu]: true,
-                    [FeatureFlagKey.ConvAiOnboarding]: true,
+                    [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
                 })
                 const { result } = renderHook(() =>
                     useAiAgentNavigation({ shopName: 'my-shop' }),

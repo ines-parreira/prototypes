@@ -16,7 +16,7 @@ export const AiAgentSales = () => {
     }>()
     const flags = useFlags()
     const isStandaloneMenuEnabled = flags[FeatureFlagKey.ConvAiStandaloneMenu]
-    const isSalesPageEnabled = flags[FeatureFlagKey.StandaloneAIAgentSalesPage]
+    const isSalesPageEnabled = flags[FeatureFlagKey.AiShoppingAssistantEnabled]
     const history = useHistory()
     const analyticsRoute = getAiAgentNavigationRoutes(shopName, flags).analytics
 

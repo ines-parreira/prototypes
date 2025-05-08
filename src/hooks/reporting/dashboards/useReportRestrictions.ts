@@ -27,7 +27,7 @@ export const useReportRestrictions = () => {
     const isAiAgentStatsPageEnabled =
         useFlags()[FeatureFlagKey.AIAgentStatsPage]
     const isStandaloneSalesOverviewEnabled =
-        useFlags()[FeatureFlagKey.StandaloneAiSalesAnalyticsPage]
+        useFlags()[FeatureFlagKey.AiShoppingAssistantEnabled]
     const isReportingVoiceOfCustomerEnabled =
         useFlags()[FeatureFlagKey.ReportingVoiceOfCustomer]
     const isAutomateAIAgentInteractionsEnabled: boolean | undefined =

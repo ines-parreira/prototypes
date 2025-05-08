@@ -140,7 +140,7 @@ describe('KpiSection', () => {
 
         it('should render view report button when given sales analytics feature flag is true', () => {
             mockFlags({
-                [FeatureFlagKey.StandaloneAiSalesAnalyticsPage]: true,
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
             })
 
             useAiAgentTypeMock.mockReturnValue({
@@ -159,7 +159,7 @@ describe('KpiSection', () => {
             (aiAgentType) => {
                 const history = createMemoryHistory()
                 mockFlags({
-                    [FeatureFlagKey.StandaloneAiSalesAnalyticsPage]: true,
+                    [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
                 })
 
                 useAiAgentTypeMock.mockReturnValue({
@@ -186,7 +186,7 @@ describe('KpiSection', () => {
         it('should redirect to AI Agent Support Analytics when AI Agent type is support', () => {
             const history = createMemoryHistory()
             mockFlags({
-                [FeatureFlagKey.StandaloneAiSalesAnalyticsPage]: true,
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
             })
 
             useAiAgentTypeMock.mockReturnValue({

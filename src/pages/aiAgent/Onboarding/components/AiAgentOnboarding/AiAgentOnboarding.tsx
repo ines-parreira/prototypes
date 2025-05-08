@@ -38,7 +38,7 @@ export const AiAgentOnboarding = () => {
     const history = useHistory()
 
     const isConvAiOnboardingEnabled =
-        useFlags()[FeatureFlagKey.ConvAiOnboarding]
+        useFlags()[FeatureFlagKey.AiShoppingAssistantEnabled]
 
     const currentIndex = validSteps.findIndex(
         (validStep) => validStep.step === step,

@@ -85,90 +85,146 @@ describe('SalesPaywallMiddleware', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should render upgrade paywall when it has automate + beta user not on generation 6 plan', () => {
-        useAppSelectorMock.mockImplementation((selector) => {
-            if (selector === getHasAutomate) {
-                return true
-            }
-
-            if (selector === getCurrentAutomatePlan) {
-                return {
-                    generation: 5,
+    describe('isAiShoppingAssistantEnabled', () => {
+        it('should render upgrade paywall when it has automate + beta user not on generation 6 plan', () => {
+            useAppSelectorMock.mockImplementation((selector) => {
+                if (selector === getHasAutomate) {
+                    return true
                 }
-            }
 
-            return undefined
+                if (selector === getCurrentAutomatePlan) {
+                    return {
+                        generation: 5,
+                    }
+                }
+
+                return undefined
+            })
+            mockFlags({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
+                [FeatureFlagKey.AiSalesAgentBeta]: true,
+            })
+
+            renderMiddleware()
+
+            expect(
+                screen.queryByTestId('mock-child-component'),
+            ).not.toBeInTheDocument()
+
+            const paywallView = screen.getByText(/Paywall View Mock/)
+            expect(paywallView).toBeInTheDocument()
+            expect(paywallView).toHaveTextContent(
+                `Paywall View Mock - Feature: ${AIAgentPaywallFeatures.Upgrade}`,
+            )
+            // Check if candu div is NOT rendered inside paywall
+            expect(
+                paywallView.querySelector(
+                    '[data-candu-id="ai-agent-waitlist"]',
+                ),
+            ).not.toBeInTheDocument()
         })
-        mockFlags({
-            [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
-            [FeatureFlagKey.AiSalesAgentBeta]: true,
+
+        it('should render the child component when it has automate + beta user on generation 6 plan', () => {
+            mockFlags({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
+                [FeatureFlagKey.AiSalesAgentBeta]: true,
+            })
+            useAppSelectorMock.mockImplementation((selector) => {
+                if (selector === getHasAutomate) {
+                    return true
+                }
+
+                if (selector === getCurrentAutomatePlan) {
+                    return {
+                        generation: 6,
+                    }
+                }
+
+                return undefined
+            })
+
+            renderMiddleware()
+            expect(
+                screen.getByTestId('mock-child-component'),
+            ).toBeInTheDocument()
+            expect(screen.queryByText(/Layout Mock/)).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(/Paywall View Mock/),
+            ).not.toBeInTheDocument()
         })
 
-        renderMiddleware()
+        it('should render the child component when it has automate + alpha/demo user', () => {
+            mockFlags({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: true,
+                [FeatureFlagKey.AiSalesAgentBeta]: false,
+            })
+            useAppSelectorMock.mockImplementation((selector) => {
+                if (selector === getHasAutomate) {
+                    return true
+                }
 
-        expect(
-            screen.queryByTestId('mock-child-component'),
-        ).not.toBeInTheDocument()
+                if (selector === getCurrentAutomatePlan) {
+                    return {
+                        generation: 6,
+                    }
+                }
 
-        const paywallView = screen.getByText(/Paywall View Mock/)
-        expect(paywallView).toBeInTheDocument()
-        expect(paywallView).toHaveTextContent(
-            `Paywall View Mock - Feature: ${AIAgentPaywallFeatures.Upgrade}`,
-        )
-        // Check if candu div is NOT rendered inside paywall
-        expect(
-            paywallView.querySelector('[data-candu-id="ai-agent-waitlist"]'),
-        ).not.toBeInTheDocument()
+                return undefined
+            })
+
+            renderMiddleware()
+            expect(
+                screen.getByTestId('mock-child-component'),
+            ).toBeInTheDocument()
+            expect(screen.queryByText(/Layout Mock/)).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(/Paywall View Mock/),
+            ).not.toBeInTheDocument()
+        })
     })
 
-    it('should render the child component when it has automate + beta user on generation 6 plan', () => {
-        mockFlags({
-            [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
-            [FeatureFlagKey.AiSalesAgentBeta]: true,
-        })
-        useAppSelectorMock.mockImplementation((selector) => {
-            if (selector === getHasAutomate) {
-                return true
-            }
-
-            if (selector === getCurrentAutomatePlan) {
-                return {
-                    generation: 6,
+    describe('isAiShoppingAssistantEnabled false', () => {
+        it('should render waitlist paywall when it has automate + beta user not on generation 6 plan', () => {
+            useAppSelectorMock.mockImplementation((selector) => {
+                if (selector === getHasAutomate) {
+                    return true
                 }
-            }
 
-            return undefined
-        })
-
-        renderMiddleware()
-        expect(screen.getByTestId('mock-child-component')).toBeInTheDocument()
-        expect(screen.queryByText(/Layout Mock/)).not.toBeInTheDocument()
-        expect(screen.queryByText(/Paywall View Mock/)).not.toBeInTheDocument()
-    })
-
-    it('should render the child component when it has automate + alpha/demo user', () => {
-        mockFlags({
-            [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: true,
-            [FeatureFlagKey.AiSalesAgentBeta]: false,
-        })
-        useAppSelectorMock.mockImplementation((selector) => {
-            if (selector === getHasAutomate) {
-                return true
-            }
-
-            if (selector === getCurrentAutomatePlan) {
-                return {
-                    generation: 6,
+                if (selector === getCurrentAutomatePlan) {
+                    return {
+                        generation: 5,
+                    }
                 }
-            }
 
-            return undefined
+                return undefined
+            })
+            mockFlags({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
+                [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
+                [FeatureFlagKey.AiSalesAgentBeta]: true,
+            })
+
+            renderMiddleware()
+
+            expect(
+                screen.queryByTestId('mock-child-component'),
+            ).not.toBeInTheDocument()
+
+            const paywallView = screen.getByText(/Paywall View Mock/)
+            expect(paywallView).toBeInTheDocument()
+            expect(paywallView).toHaveTextContent(
+                `Paywall View Mock - Feature: ${AIAgentPaywallFeatures.SalesWaitlist}`,
+            )
+            // Check if candu div is NOT rendered inside paywall
+            expect(
+                paywallView.querySelector(
+                    '[data-candu-id="ai-agent-waitlist"]',
+                ),
+            ).toBeInTheDocument()
         })
-
-        renderMiddleware()
-        expect(screen.getByTestId('mock-child-component')).toBeInTheDocument()
-        expect(screen.queryByText(/Layout Mock/)).not.toBeInTheDocument()
-        expect(screen.queryByText(/Paywall View Mock/)).not.toBeInTheDocument()
     })
 
     it('should render the child component when it has automate + beta user on generation 5 plan + alpha/demo user', () => {

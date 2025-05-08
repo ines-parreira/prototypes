@@ -113,8 +113,7 @@ export const KpiSection = ({
     showActivationModal,
 }: Props) => {
     const { isLoading, aiAgentType } = useAiAgentTypeForAccount()
-    const hasAnalytics =
-        useFlags()[FeatureFlagKey.StandaloneAiSalesAnalyticsPage]
+    const hasAnalytics = useFlags()[FeatureFlagKey.AiShoppingAssistantEnabled]
 
     const analyticsLink = useMemo(() => {
         if (isLoading) {

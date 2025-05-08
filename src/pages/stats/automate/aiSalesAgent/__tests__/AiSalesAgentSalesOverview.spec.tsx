@@ -126,7 +126,7 @@ describe('AiSalesAgentSalesOverview', () => {
         mockUseFirstStoreWithAiSalesDataState.isLoading = false
         mockUseFirstStoreWithAiSalesDataState.storeId = 123
         mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.StandaloneAiSalesDiscountSection]: false,
+            [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
         })
         mockUseCanUseAiSalesAgent.mockReturnValue(true)
     })
@@ -153,7 +153,7 @@ describe('AiSalesAgentSalesOverview', () => {
 
     it('should render discount section when feature flag is enabled', async () => {
         mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.StandaloneAiSalesDiscountSection]: true,
+            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
         })
 
         renderComponent()
@@ -162,7 +162,7 @@ describe('AiSalesAgentSalesOverview', () => {
 
     it('should not render discount section when feature flag is disabled', () => {
         mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.StandaloneAiSalesDiscountSection]: false,
+            [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
         })
 
         renderComponent()

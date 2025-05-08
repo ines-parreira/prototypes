@@ -122,7 +122,7 @@ describe('AiAgentOnboarding', () => {
         })
 
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.ConvAiOnboarding]: true,
+            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
         }))
     })
 
@@ -146,7 +146,7 @@ describe('AiAgentOnboarding', () => {
 
     it('should redirect to the main page if feature flag is disabled', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.ConvAiOnboarding]: false,
+            [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
         }))
 
         renderComponent()

@@ -81,7 +81,7 @@ export default function AutomateStatsNavbar({ commonNavLinkProps }: Props) {
 
 const AiSalesAgentStatsLink = ({ commonNavLinkProps }: Props) => {
     const isAiSalesAgentAnalyticsEnabled: boolean | undefined = useFlag(
-        FeatureFlagKey.StandaloneAiSalesAnalyticsPage,
+        FeatureFlagKey.AiShoppingAssistantEnabled,
     )
 
     const canUseAiSalesAgent = useCanUseAiSalesAgent()
