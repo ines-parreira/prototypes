@@ -59,6 +59,7 @@ jobs:
       build-dir: ${{ needs.workspace-vars.outputs.build-dir }}
       artifact: production-build
       release: production-${{ inputs.force-deploy-commit != '' && inputs.force-deploy-commit || github.sha }}
+      force-deploy-commit: ${{ inputs.force-deploy-commit != '' && inputs.force-deploy-commit || github.sha }}
 
   deploy-production:
     name: Deploy production
