@@ -1,31 +1,76 @@
-import { fromJS } from 'immutable'
+import { useListTickets } from '@gorgias/api-queries'
 
 import { useSearchParam } from 'hooks/useSearchParam'
-import { getCustomerHistory, getLoading } from 'state/customers/selectors'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
+import { TICKET_FETCH_STALE_TIME, TICKET_FETCHED_LIMIT } from '../../constants'
 import { useTimeline } from '../useTimeline'
 
+jest.mock('@gorgias/api-queries', () => ({
+    ...jest.requireActual('@gorgias/api-queries'),
+    useListTickets: jest.fn(),
+}))
 jest.mock('hooks/useAppSelector', () => jest.fn((selector) => selector()))
 jest.mock('hooks/useSearchParam')
 jest.mock('state/customers/selectors')
 
 const useSearchParamMock = assumeMock(useSearchParam)
-const getCustomerHistoryMock = assumeMock(getCustomerHistory)
-const getLoadingMock = assumeMock(getLoading)
+const useListTicketsMock = assumeMock(useListTickets)
 
 describe('useTimeline', () => {
     const mockSetTimelineShopperId = jest.fn()
-    const mockCustomerHistory = {
-        tickets: [{ id: 1 }, { id: 2 }],
-    }
-    const mockLoading = fromJS({ history: true })
+    const ticketList = [
+        {
+            id: 1,
+        },
+        {
+            id: 2,
+        },
+    ]
 
     beforeEach(() => {
-        getLoadingMock.mockReturnValue(mockLoading)
+        useListTicketsMock.mockReturnValue({
+            data: {
+                data: { data: ticketList },
+            },
+            isLoading: true as boolean,
+        } as ReturnType<typeof useListTickets>)
         useSearchParamMock.mockReturnValue([null, mockSetTimelineShopperId])
-        getCustomerHistoryMock.mockReturnValue(fromJS(mockCustomerHistory))
+    })
+
+    it('should call useListTicket with correct params', () => {
+        const { rerender } = renderHook((id?: number) => useTimeline(id))
+
+        expect(useListTicketsMock).toHaveBeenCalledWith(
+            {
+                trashed: false,
+                limit: TICKET_FETCHED_LIMIT,
+                customer_id: undefined,
+            },
+            {
+                query: {
+                    enabled: false,
+                    staleTime: TICKET_FETCH_STALE_TIME,
+                },
+            },
+        )
+
+        rerender(123)
+
+        expect(useListTicketsMock).toHaveBeenLastCalledWith(
+            {
+                trashed: false,
+                limit: TICKET_FETCHED_LIMIT,
+                customer_id: 123,
+            },
+            {
+                query: {
+                    enabled: true,
+                    staleTime: TICKET_FETCH_STALE_TIME,
+                },
+            },
+        )
     })
 
     it('should return timeline not displayed when no shopper ID', () => {
@@ -44,10 +89,10 @@ describe('useTimeline', () => {
         expect(result.current.timelineShopperId).toBe('123')
     })
 
-    it('should return customer history tickets', () => {
+    it('should return customer ticket list', () => {
         const { result } = renderHook(() => useTimeline())
 
-        expect(result.current.tickets).toEqual(mockCustomerHistory.tickets)
+        expect(result.current.tickets).toEqual(ticketList)
     })
 
     it('should return loading state', () => {
@@ -56,21 +101,8 @@ describe('useTimeline', () => {
         expect(result.current.isLoading).toBe(true)
     })
 
-    it('should return hasTriedLoading from customer history', () => {
-        getCustomerHistoryMock.mockReturnValue(
-            fromJS({
-                ...mockCustomerHistory,
-                triedLoading: true,
-            }),
-        )
-
-        const { result } = renderHook(() => useTimeline())
-
-        expect(result.current.hasTriedLoading).toBe(true)
-    })
-
     describe('opening / closing Timeline', () => {
-        it('should set shopper ID t when opening timeline', () => {
+        it('should set shopper ID when opening timeline', () => {
             useSearchParamMock.mockReturnValue(['ok', mockSetTimelineShopperId])
             const { result } = renderHook(() => useTimeline())
 
@@ -83,6 +115,17 @@ describe('useTimeline', () => {
             const { result } = renderHook(() => useTimeline())
 
             result.current.closeTimeline()
+
+            expect(mockSetTimelineShopperId).toHaveBeenCalledWith(null)
+        })
+
+        it('should clear shopper ID when customer ID changes', () => {
+            useSearchParamMock.mockReturnValue([
+                '456',
+                mockSetTimelineShopperId,
+            ])
+
+            renderHook(() => useTimeline(123))
 
             expect(mockSetTimelineShopperId).toHaveBeenCalledWith(null)
         })

@@ -4,8 +4,6 @@ import _isUndefined from 'lodash/isUndefined'
 import { notify as updateNotification } from 'reapop'
 import { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
 
-import { ListTicketsResult } from '@gorgias/api-queries'
-
 import * as viewsConfig from 'config/views'
 import client from 'models/api/resources'
 import { Customer, CustomerDraft } from 'models/customer/types'
@@ -13,7 +11,7 @@ import { ViewType } from 'models/view/types'
 import history from 'pages/history'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import type { RootState, StoreDispatch } from 'state/types'
+import type { StoreDispatch } from 'state/types'
 import { onApiError } from 'state/utils'
 import { isCurrentlyOnCustomerPage } from 'utils'
 
@@ -195,68 +193,6 @@ export function bulkDeleteCustomer(ids: List<any>) {
                     }`
                     dispatch({ type: types.BULK_DELETE_ERROR })
                     void dispatch(updateNotification(notification.payload))
-                },
-            )
-    }
-}
-
-export function fetchCustomerHistory(
-    customerId: number,
-    options: { successCondition?: (T: RootState) => boolean } = {},
-) {
-    return (dispatch: StoreDispatch, getState: () => RootState) => {
-        dispatch({
-            type: types.FETCH_CUSTOMER_HISTORY_START,
-        })
-
-        return client
-            .get<ListTicketsResult>(`/api/tickets/`, {
-                params: {
-                    customer_id: customerId,
-                    limit: 100,
-                    trashed: false,
-                },
-            })
-            .then((json) => json?.data)
-            .then(
-                (resp) => {
-                    const state = getState()
-
-                    let shouldTriggerSuccess = true
-                    if (options.successCondition) {
-                        shouldTriggerSuccess = options.successCondition(state)
-                    }
-
-                    if (shouldTriggerSuccess) {
-                        dispatch({
-                            type: types.FETCH_CUSTOMER_HISTORY_SUCCESS,
-                            resp,
-                        })
-                    }
-
-                    return Promise.resolve(resp)
-                },
-                (
-                    error: AxiosError<{
-                        response?: { status: number }
-                        error?: { msg?: string }
-                    }>,
-                ) => {
-                    const reason =
-                        "Couldn't fetch customer's tickets. Please try again in a few minutes."
-                    // TODO(customers-migration): remove this condition when the migration is done
-                    if (error.response?.status === 404) {
-                        return dispatch(
-                            onApiError(error, reason, {
-                                type: types.FETCH_CUSTOMER_HISTORY_ERROR,
-                            }),
-                        ) as unknown as Promise<void>
-                    }
-                    return dispatch({
-                        type: types.FETCH_CUSTOMER_HISTORY_ERROR,
-                        error,
-                        reason,
-                    }) as unknown as Promise<void>
                 },
             )
     }

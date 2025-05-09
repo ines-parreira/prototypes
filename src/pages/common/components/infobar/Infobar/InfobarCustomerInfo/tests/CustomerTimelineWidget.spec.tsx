@@ -63,7 +63,6 @@ describe('CustomerTimelineButton', () => {
         isOpen: false,
         timelineShopperId: null,
         isLoading: false,
-        hasTriedLoading: true,
         tickets,
         openTimeline: openTimelineMock,
         closeTimeline: closeTimelineMock,

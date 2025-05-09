@@ -113,32 +113,6 @@ exports[`customers actions fetch customer fetches customer 1`] = `
 ]
 `;
 
-exports[`customers actions fetch customer history 1`] = `
-[
-  {
-    "type": "FETCH_CUSTOMER_HISTORY_START",
-  },
-  {
-    "resp": {
-      "data": [
-        {
-          "id": 1,
-        },
-      ],
-    },
-    "type": "FETCH_CUSTOMER_HISTORY_SUCCESS",
-  },
-]
-`;
-
-exports[`customers actions fetch customer history 2`] = `
-[
-  {
-    "type": "FETCH_CUSTOMER_HISTORY_START",
-  },
-]
-`;
-
 exports[`customers actions merge customers 1`] = `
 [
   {

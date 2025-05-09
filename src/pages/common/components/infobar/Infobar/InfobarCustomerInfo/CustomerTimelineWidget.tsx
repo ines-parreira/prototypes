@@ -21,14 +21,8 @@ const ForumIcon = () => (
 )
 
 export function CustomerTimelineWidget({ isEditing, customerId }: Props) {
-    const {
-        tickets,
-        isOpen,
-        hasTriedLoading,
-        isLoading,
-        openTimeline,
-        closeTimeline,
-    } = useTimeline()
+    const { tickets, isOpen, isLoading, openTimeline, closeTimeline } =
+        useTimeline(customerId)
 
     useTrackTimelineToggle()
 
@@ -37,8 +31,8 @@ export function CustomerTimelineWidget({ isEditing, customerId }: Props) {
     const widgetContext = useAppSelector(getContext)
 
     const ticketCount = tickets.length
-    const hasNoTickets = hasTriedLoading && ticketCount === 0
-    const hasNoHistory = hasTriedLoading && ticketCount < 2
+    const hasNoTickets = !isLoading && ticketCount === 0
+    const hasNoHistory = !isLoading && ticketCount < 2
     const { openTicketCount, snoozedTicketCount } = getTicketsCount(tickets)
 
     const showToggle = !(
