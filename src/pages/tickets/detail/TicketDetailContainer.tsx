@@ -36,8 +36,11 @@ import pendingMessageManager from 'services/pendingMessageManager/pendingMessage
 import shortcutManager from 'services/shortcutManager'
 import socketManager from 'services/socketManager/socketManager'
 import { JoinEventType } from 'services/socketManager/types'
-import { fetchCustomer } from 'state/customers/actions'
-import { DEPRECATED_getActiveCustomer } from 'state/customers/selectors'
+import { fetchCustomer, fetchCustomerHistory } from 'state/customers/actions'
+import {
+    DEPRECATED_getActiveCustomer,
+    getCustomersState,
+} from 'state/customers/selectors'
 import {
     prepare,
     prepareTicketMessage,
@@ -95,7 +98,9 @@ export const TicketDetailContainer = ({
     canSendMessage,
     clearTicket,
     currentUser,
+    customers,
     fetchCustomer,
+    fetchCustomerHistory,
     fetchTicket,
     findAndSetCustomer,
     goToNextTicket,
@@ -443,6 +448,27 @@ export const TicketDetailContainer = ({
         }
     })
 
+    // Fetch the ticket's customer history (tickets + events).
+    useEffect(() => {
+        if (
+            ticketIdParam !== 'new' &&
+            customer &&
+            !customers.getIn(['customerHistory', 'triedLoading'])
+        ) {
+            const customerId = customer.get('id')
+
+            if (!customerId) {
+                return
+            }
+
+            void fetchCustomerHistory(customerId, {
+                successCondition: (state) =>
+                    state.ticket.getIn(['customer', 'id']) === customerId,
+            })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [customer, customers, ticketIdParam])
+
     // if the ticket in the reducer is not the one asked, we fetch it and display it
     useEffect(() => {
         if ((ticket.get('id', '') as number).toString() !== ticketIdParam) {
@@ -668,6 +694,7 @@ const connector = connect(
         activeView: getActiveView(state),
         activeCustomer: DEPRECATED_getActiveCustomer(state),
         currentUser: state.currentUser,
+        customers: getCustomersState(state),
         ticket: state.ticket,
         newMessage: state.newMessage,
         canSendMessage: canSend(state),
@@ -676,6 +703,7 @@ const connector = connect(
     {
         clearTicket,
         fetchCustomer,
+        fetchCustomerHistory,
         fetchTicket,
         findAndSetCustomer,
         goToNextTicket,

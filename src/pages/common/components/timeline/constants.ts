@@ -8,9 +8,6 @@ import { FilterKey, SortableKey, SortOption } from './types'
 
 export const TIMELINE_SEARCH_PARAM = 'timelineShopperId'
 
-export const TICKET_FETCH_STALE_TIME = 1000 * 60 * 10 // 10 minutes
-export const TICKET_FETCHED_LIMIT = 100
-
 export const MIN_RANGE_DATE = moment(new Date('2015-01-01'))
     .startOf('day')
     .toDate()

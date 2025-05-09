@@ -15,7 +15,7 @@ type Props = ConnectedProps<typeof connector> & {
     sourceCustomer: Map<any, any>
     display: boolean
     onClose: () => void
-    onSuccess?: () => void
+    onSuccess: () => void
     isTicketContext: boolean
 }
 

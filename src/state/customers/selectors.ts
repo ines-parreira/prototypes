@@ -16,6 +16,12 @@ export const getLoading = createSelector(
         (state.getIn(['_internal', 'loading']) as Map<any, any>) || fromJS({}),
 )
 
+export const getCustomerHistory = createSelector(
+    getCustomersState,
+    (state: CustomersState) =>
+        (state.get('customerHistory') as Map<any, any>) || fromJS({}),
+)
+
 export const getCustomers = createSelector(
     getCustomersState,
     (state: CustomersState) => (state.get('items') as List<any>) || fromJS([]),

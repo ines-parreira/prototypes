@@ -1,5 +1,6 @@
-import { ComponentProps } from 'react'
+import React, { ComponentProps } from 'react'
 
+import { waitFor } from '@testing-library/react'
 import { createBrowserHistory } from 'history'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -130,6 +131,33 @@ describe('<CustomerDetailContainer />', () => {
         )
 
         expect(getByText(/Loading customer/i)).toBeTruthy()
+    })
+
+    it('should fetch history of customer', async () => {
+        const activeCustomer = fromJS({
+            id: 1,
+        }) as Map<any, any>
+        renderWithRouter(
+            <Provider store={store}>
+                <CustomerDetailContainer
+                    {...minProps}
+                    activeCustomer={activeCustomer}
+                />
+            </Provider>,
+            {
+                path: '/foo/:customerId?',
+                route: '/foo/1',
+            },
+        )
+
+        await waitFor(() =>
+            expect(minProps.fetchCustomerHistory).toHaveBeenCalledWith(
+                activeCustomer.get('id'),
+                expect.objectContaining({
+                    successCondition: expect.any(Function),
+                }),
+            ),
+        )
     })
 
     it('should call setRecentItems on mount', () => {

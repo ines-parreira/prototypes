@@ -1,8 +1,11 @@
 import { fromJS } from 'immutable'
 
+import { TicketStatus } from 'business/types/ticket'
 import { ViewType } from 'models/view/types'
 import * as types from 'state/customers/constants'
 import reducer, { initialState } from 'state/customers/reducers'
+import * as newMessageTypes from 'state/newMessage/constants'
+import * as ticketTypes from 'state/ticket/constants'
 import { GorgiasAction } from 'state/types'
 import * as viewTypes from 'state/views/constants'
 
@@ -156,6 +159,115 @@ describe('customers reducers', () => {
                     customerId: 2,
                 },
             ),
+        ).toMatchSnapshot()
+    })
+
+    it('fetch customer history', () => {
+        const fetchCustomerHistoryStartState = reducer(initialState, {
+            type: types.FETCH_CUSTOMER_HISTORY_START,
+        })
+        // start
+        expect(fetchCustomerHistoryStartState.toJS()).toMatchSnapshot()
+
+        // success
+        expect(
+            reducer(fetchCustomerHistoryStartState, {
+                type: types.FETCH_CUSTOMER_HISTORY_SUCCESS,
+                resp: {
+                    meta: {
+                        item_count: 2,
+                    },
+                    data: [
+                        { id: 1, created_datetime: '2018-01-01' },
+                        { id: 2, created_datetime: '2018-01-02' },
+                        { id: 3, created_datetime: '2018-01-05' },
+                        { id: 4, created_datetime: '2018-01-04' },
+                        { id: 5, created_datetime: '2018-01-03' },
+                    ],
+                },
+            }).toJS(),
+        ).toMatchSnapshot()
+
+        // success but no history
+        expect(
+            reducer(fetchCustomerHistoryStartState, {
+                type: types.FETCH_CUSTOMER_HISTORY_SUCCESS,
+                resp: {
+                    meta: {
+                        item_count: 1,
+                    },
+                    data: [{ id: 1 }],
+                },
+            }).toJS(),
+        ).toMatchSnapshot()
+
+        // error
+        expect(
+            reducer(fetchCustomerHistoryStartState, {
+                type: types.FETCH_CUSTOMER_HISTORY_ERROR,
+            }).toJS(),
+        ).toMatchSnapshot()
+    })
+
+    it('clear ticket', () => {
+        expect(
+            reducer(initialState, {
+                type: ticketTypes.CLEAR_TICKET,
+            }).toJS(),
+        ).toMatchSnapshot()
+    })
+
+    it('should update history on new message', () => {
+        const state = initialState.setIn(
+            ['customerHistory', 'tickets'],
+            fromJS([
+                {
+                    id: 1,
+                    excerpt: 'OK',
+                    messages_count: 1,
+                    status: TicketStatus.Open,
+                },
+                {
+                    id: 2,
+                    excerpt: 'Alright',
+                    messages_count: 3,
+                    status: TicketStatus.Open,
+                },
+            ]),
+        )
+
+        expect(
+            reducer(state, {
+                type: newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_SUCCESS,
+                resp: {
+                    body_text: 'Glad to have helped you!',
+                    ticket_id: 2,
+                },
+            }).toJS(),
+        ).toMatchSnapshot()
+    })
+
+    it('should update history ticket on partial update', () => {
+        const state = initialState.setIn(
+            ['customerHistory', 'tickets'],
+            fromJS([
+                { id: 1, excerpt: 'OK', status: TicketStatus.Open },
+                { id: 2, excerpt: 'Alright', status: TicketStatus.Open },
+            ]),
+        )
+
+        expect(
+            reducer(state, {
+                type: ticketTypes.TICKET_PARTIAL_UPDATE_SUCCESS,
+                resp: {
+                    id: 1,
+                    assignee_user: {
+                        name: 'New Assignee',
+                    },
+                    subject: 'New subject',
+                    status: TicketStatus.Closed,
+                },
+            }).toJS(),
         ).toMatchSnapshot()
     })
 

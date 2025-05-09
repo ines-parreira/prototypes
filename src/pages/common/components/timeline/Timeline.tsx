@@ -42,7 +42,7 @@ export function Timeline({ ticketId = 0, onLoaded }: Props) {
         object_type: ObjectType.Ticket,
     })
 
-    const { tickets, isLoading } = useTimeline()
+    const { tickets, isLoading, hasTriedLoading } = useTimeline()
 
     const { rangeFilter, rangeFilteredTickets, setRangeFilter } =
         useRangeFilter(tickets)
@@ -71,12 +71,12 @@ export function Timeline({ ticketId = 0, onLoaded }: Props) {
         )
     }
 
-    if (!hasCalledOnLoaded && !isLoading) {
+    if (hasTriedLoading && !hasCalledOnLoaded) {
         setHasCalledOnLoaded(true)
         onLoaded?.()
     }
 
-    if (!isLoading && tickets.length === 0) {
+    if (hasTriedLoading && tickets.length === 0) {
         return (
             <NoResults>This customer doesn’t have any tickets yet.</NoResults>
         )
