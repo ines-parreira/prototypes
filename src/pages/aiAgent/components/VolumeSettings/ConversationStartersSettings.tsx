@@ -54,7 +54,8 @@ export const ConversationStartersSettings = ({
 
                     <EngagementSettingsCardDescription>
                         Show up to 3 dynamic, AI-generated questions on product
-                        pages, based on what shoppers are most likely to ask, to
+                        pages, based on what shoppers are most likely to
+                        ask—automatically generated from your product content—to
                         resolve doubts quickly and drive more conversions.
                     </EngagementSettingsCardDescription>
 
