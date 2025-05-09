@@ -17,6 +17,7 @@ import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
+import { usePublicResourcesList } from 'pages/aiAgent/hooks/usePublicResourcesList'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
@@ -32,6 +33,9 @@ jest.mock('common/segment')
 const mockLogEvent = jest.mocked(logEvent)
 jest.mock('models/helpCenter/queries')
 const useGetHelpCenterListMock = assumeMock(useGetHelpCenterList)
+
+jest.mock('pages/aiAgent/hooks/usePublicResourcesList')
+const usePublicResourcesListMock = assumeMock(usePublicResourcesList)
 
 jest.mock('state/billing/selectors', () => ({
     ...jest.requireActual('state/billing/selectors'),
@@ -281,6 +285,7 @@ describe('useActivation', () => {
             return false
         })
         useGetHelpCenterListMock.mockReturnValue({ data: undefined } as any)
+        usePublicResourcesListMock.mockReturnValue({ data: undefined } as any)
     })
 
     describe('activationButton', () => {

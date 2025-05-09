@@ -13,6 +13,8 @@ jest.mock('pages/aiAgent/Activation/utils', () => ({
 }))
 
 const helpCentersFaq = [{ id: 1 } as Components.Schemas.GetHelpCenterDto]
+const STORE_HELP_CENTER_ID = 1
+const STORE_SNIPPET_HELP_CENTER_ID = 42
 
 describe('storeActivationReducer', () => {
     const EMPTY_STATE = {}
@@ -25,7 +27,8 @@ describe('storeActivationReducer', () => {
         emailChannelDeactivatedDatetime: null,
         monitoredChatIntegrations: [1],
         monitoredEmailIntegrations: [{ id: 2, email: 'test@example.com' }],
-        helpCenterId: 1,
+        helpCenterId: STORE_HELP_CENTER_ID,
+        snippetHelpCenterId: STORE_SNIPPET_HELP_CENTER_ID,
     } as any
 
     describe('when getAiSalesAgentEmailEnabledFlag is true', () => {
@@ -176,25 +179,35 @@ describe('storeActivationReducer', () => {
 
         it.each([
             {
-                description: 'no knowledge (undefined)',
+                description: 'no knowledge (undefined) and no public resources',
                 helpCentersFaq: undefined,
-                helpCenterId: 1,
+                helpCenterId: STORE_HELP_CENTER_ID,
+                publicResources: {
+                    'Test Store': [],
+                },
             },
             {
-                description: 'no knowledge (empty)',
+                description: 'no knowledge (empty) and no public resources',
                 helpCentersFaq: [],
-                helpCenterId: 1,
+                helpCenterId: STORE_HELP_CENTER_ID,
+                publicResources: {
+                    'Test Store': [],
+                },
             },
             {
-                description: 'helpcenter not find in knowledge',
+                description:
+                    'helpcenter not find in knowledge and no public resources',
                 helpCentersFaq: [
                     { id: 2 } as Components.Schemas.GetHelpCenterDto,
                 ],
-                helpCenterId: 1,
+                helpCenterId: STORE_HELP_CENTER_ID,
+                publicResources: {
+                    'Test Store': [],
+                },
             },
         ])(
             'should show an alert and disable email + chat when $description',
-            ({ helpCentersFaq, helpCenterId }) => {
+            ({ helpCentersFaq, helpCenterId, publicResources }) => {
                 const state = reducer(EMPTY_STATE, {
                     type: 'UPDATE_STORE_CONFIGURATION',
                     storeConfigurations: [{ ...mockStoreConfig, helpCenterId }],
@@ -206,6 +219,7 @@ describe('storeActivationReducer', () => {
                     ],
                     helpCentersFaq,
                     flags,
+                    publicResources,
                 })
 
                 expect(state['Test Store'].support.email.enabled).toBe(false)
@@ -223,6 +237,55 @@ describe('storeActivationReducer', () => {
                         type: 'warning',
                     },
                 ])
+            },
+        )
+
+        it.each([
+            {
+                description:
+                    'helpcenter found in knowledge and no public resources',
+                helpCentersFaq: [
+                    {
+                        id: STORE_HELP_CENTER_ID,
+                    } as Components.Schemas.GetHelpCenterDto,
+                ],
+                helpCenterId: STORE_HELP_CENTER_ID,
+                publicResources: {
+                    'Test Store': [],
+                },
+            },
+            {
+                description:
+                    'no helpcenter found in knowledge and has public resources',
+                helpCentersFaq: [
+                    { id: 2 } as Components.Schemas.GetHelpCenterDto,
+                ],
+                helpCenterId: STORE_HELP_CENTER_ID,
+                publicResources: {
+                    'Test Store': [{ id: 1 } as any],
+                },
+            },
+        ])(
+            'should have no alert when $description',
+            ({ helpCentersFaq, helpCenterId, publicResources }) => {
+                const state = reducer(EMPTY_STATE, {
+                    type: 'UPDATE_STORE_CONFIGURATION',
+                    storeConfigurations: [{ ...mockStoreConfig, helpCenterId }],
+                    selfServiceChatChannels: {
+                        'Test Store': [{ value: { id: 1 } } as any],
+                    },
+                    chatIntegrationStatus: [
+                        { chatId: 1, installed: true } as any,
+                    ],
+                    helpCentersFaq,
+                    flags,
+                    publicResources,
+                })
+
+                expect(state['Test Store'].support.email.enabled).toBe(true)
+                expect(state['Test Store'].support.chat.enabled).toBe(true)
+                expect(state['Test Store'].sales.enabled).toBe(false)
+                expect(state['Test Store'].alerts).toHaveLength(0)
             },
         )
     })

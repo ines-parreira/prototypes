@@ -5,6 +5,7 @@ import { LDFlagSet } from 'launchdarkly-react-client-sdk'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { StoreActivation } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
 import { getAiSalesAgentEmailEnabledFlag } from 'pages/aiAgent/Activation/utils'
+import { SourceItem } from 'pages/aiAgent/components/PublicSourcesSection/types'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { ChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
 import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
@@ -40,6 +41,7 @@ type UpdateStoreConfiguration = {
     helpCentersFaq?: Components.Schemas.GetHelpCenterDto[]
     flags: LDFlagSet
     chatIntegrationStatus?: ChatIntegrationsStatusData
+    publicResources?: Record<string, SourceItem[]>
 }
 export type ACTION_TYPE =
     | ToggleSalesAction
@@ -227,6 +229,7 @@ export const storeConfigurationToState = (
         helpCentersFaq,
         chatIntegrationStatus,
         flags,
+        publicResources,
     }: UpdateStoreConfiguration,
 ): State => {
     const hasHelpCenterFaq = (helpCentersFaq ?? []).length > 0
@@ -242,16 +245,15 @@ export const storeConfigurationToState = (
                 helpCenterId,
             } = storeConfiguration
 
-            const isMissingKnowledge =
-                helpCenterId === null ||
-                !helpCentersFaq?.some((it) => it.id === helpCenterId) ||
-                !hasHelpCenterFaq
+            const hasHelpCenter =
+                helpCenterId !== null &&
+                !!helpCentersFaq?.some((it) => it.id === helpCenterId) &&
+                hasHelpCenterFaq
+            const hasPublicUrls = !!publicResources?.[storeName].length
 
-            const alerts = state[storeName]?.alerts ?? []
-            const hasKnowledgeAlert = alerts.some(
-                (it) => it.kind === KNOWLEDGE_ALERT_KIND,
-            )
+            const isMissingKnowledge = !hasHelpCenter && !hasPublicUrls
 
+            const alerts: StoreActivation['alerts'] = []
             const knowledgeAlert = {
                 kind: KNOWLEDGE_ALERT_KIND,
                 type: AlertType.Warning,
@@ -262,7 +264,7 @@ export const storeConfigurationToState = (
                     to: getAiAgentNavigationRoutes(storeName, flags).knowledge,
                 },
             }
-            if (isMissingKnowledge && !hasKnowledgeAlert) {
+            if (isMissingKnowledge) {
                 alerts.push(knowledgeAlert)
             }
 

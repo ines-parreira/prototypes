@@ -13,6 +13,7 @@ import {
     State,
     useStoreActivationReducer,
 } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
+import { usePublicResourcesList } from 'pages/aiAgent/hooks/usePublicResourcesList'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
 import { useFetchChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
@@ -148,6 +149,13 @@ export const useStoreActivations = ({
         false,
     )
 
+    const {
+        isLoading: isPublicResourcesListLoading,
+        sourceItems: publicResources,
+    } = usePublicResourcesList({
+        shopNames: storeConfigurations.map((it) => it.storeName),
+    })
+
     const { data: helpCenterListData, isLoading: isHelpCenterListLoading } =
         useGetHelpCenterList(
             { type: 'faq', per_page: HELP_CENTER_MAX_CREATION },
@@ -165,6 +173,7 @@ export const useStoreActivations = ({
             helpCentersFaq: helpCenterListData?.data.data,
             flags: flagsRef.current,
             chatIntegrationStatus,
+            publicResources,
         })
     }, [
         selfServiceChatChannels,
@@ -172,6 +181,7 @@ export const useStoreActivations = ({
         dispatch,
         helpCenterListData,
         chatIntegrationStatus,
+        publicResources,
     ])
 
     const { isLoading: isSaveLoading, upsertStoresConfiguration } =
@@ -210,7 +220,8 @@ export const useStoreActivations = ({
         isFetchLoading:
             isStoreConfigurationLoading ||
             isHelpCenterListLoading ||
-            isChatIntegrationsStatusLoading,
+            isChatIntegrationsStatusLoading ||
+            isPublicResourcesListLoading,
         isSaveLoading,
         changeSales: (storeName: string, newValue: boolean) => {
             dispatch({ type: 'CHANGE_SALES', storeName, newValue })

@@ -39,8 +39,11 @@ export const helpCenterKeys = {
     details: () => ['help-center'] as const,
     detail: (helpCenterId: number) =>
         [...helpCenterKeys.details(), helpCenterId] as const,
-    list: (queryParams: Paths.ListHelpCenters.QueryParameters) =>
-        [...helpCenterKeys.all(), queryParams] as const,
+    list: (
+        queryParams:
+            | Paths.ListHelpCenters.QueryParameters
+            | Paths.ListHelpCenters.QueryParameters[],
+    ) => [...helpCenterKeys.all(), queryParams] as const,
     articles: (
         helpCenterId: number,
         queryParams?: Paths.ListArticles.QueryParameters,
@@ -72,6 +75,20 @@ export const helpCenterKeys = {
             'article-ingestion-logs',
             queryParams,
         ].filter(Boolean),
+    articleIngestionLogsListRoot: () => [
+        ...helpCenterKeys.all(),
+        'article-ingestion-logs',
+    ],
+    articleIngestionLogsList: (
+        params: {
+            helpCenterId: number
+            queryParams?: Paths.GetArticleIngestionLogs.QueryParameters
+        }[],
+    ) => [
+        ...helpCenterKeys.articleIngestionLogsListRoot(),
+        'article-ingestion-logs',
+        params,
+    ],
     ingestionLogs: (
         helpCenterId: number,
         queryParams?: Paths.GetIngestionLogs.QueryParameters,
@@ -351,6 +368,28 @@ export const useGetHelpCenterList = (
     })
 }
 
+export const useGetHelpCenterListMulti = (
+    queryParams: Paths.ListHelpCenters.QueryParameters[],
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getHelpCenterList>>[]
+    >,
+) => {
+    const { client: helpCenterClient } = useHelpCenterApi()
+    return useQuery({
+        queryFn: async () => {
+            const promises = queryParams.map((queryParams) => {
+                return getHelpCenterList(helpCenterClient, queryParams)
+            })
+            return await Promise.all(promises)
+        },
+        queryKey: helpCenterKeys.list(queryParams),
+        ...overrides,
+        enabled:
+            !!helpCenterClient &&
+            (overrides === undefined || overrides.enabled),
+    })
+}
+
 export const useGetArticleIngestionLogs = (
     pathParams: Paths.GetArticleIngestionLogs.PathParameters &
         Paths.GetArticleIngestionLogs.QueryParameters,
@@ -365,6 +404,46 @@ export const useGetArticleIngestionLogs = (
         queryKey: helpCenterKeys.articleIngestionLogs(
             pathParams.help_center_id,
             pathParams.ids ? { ids: pathParams.ids } : undefined,
+        ),
+        ...overrides,
+        enabled:
+            !!helpCenterClient &&
+            (overrides === undefined || overrides.enabled),
+    })
+}
+
+export const useGetArticleIngestionLogsList = (
+    pathParams: (Paths.GetArticleIngestionLogs.PathParameters &
+        Paths.GetArticleIngestionLogs.QueryParameters)[],
+    overrides?: UseQueryOptions<
+        Awaited<{
+            helpCenterId: number
+            ingestionLogs: Awaited<ReturnType<typeof getArticleIngestionLogs>>
+        }>[]
+    >,
+) => {
+    const { client: helpCenterClient } = useHelpCenterApi()
+    return useQuery({
+        queryFn: async () => {
+            const promises = pathParams.map((pathParam) =>
+                getArticleIngestionLogs(helpCenterClient, pathParam).then(
+                    (res) => {
+                        return {
+                            helpCenterId: pathParam.help_center_id,
+                            ingestionLogs: res,
+                        }
+                    },
+                ),
+            )
+            return await Promise.all(promises)
+        },
+        queryKey: helpCenterKeys.articleIngestionLogsList(
+            pathParams.map(
+                ({ help_center_id: helpCenterId, ...queryParams }) => ({
+                    helpCenterId,
+                    ...queryParams,
+                }),
+            ),
         ),
         ...overrides,
         enabled:
