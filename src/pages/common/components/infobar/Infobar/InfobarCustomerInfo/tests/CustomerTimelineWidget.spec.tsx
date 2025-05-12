@@ -5,11 +5,11 @@ import { TicketSummary } from '@gorgias/api-types'
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { useTimelineData } from 'pages/common/components/timeline/hooks/useTimelineData'
-import { useTimelinePanel } from 'pages/common/components/timeline/hooks/useTimelinePanel'
-import { useTrackTimelineToggle } from 'pages/common/components/timeline/hooks/useTrackTimelineToggle'
 import { getContext } from 'state/widgets/selectors'
 import { WidgetEnvironment } from 'state/widgets/types'
+import { useTimelineData } from 'timeline/hooks/useTimelineData'
+import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
+import { useTrackTimelineToggle } from 'timeline/hooks/useTrackTimelineToggle'
 import { assumeMock } from 'utils/testing'
 
 import { CustomerTimelineWidget } from '../CustomerTimelineWidget'
@@ -28,13 +28,13 @@ jest.mock('state/widgets/selectors', () => ({
     ...jest.requireActual('state/widgets/selectors'),
     getContext: jest.fn(),
 }))
-jest.mock('pages/common/components/timeline/hooks/useTimelineData', () => ({
+jest.mock('timeline/hooks/useTimelineData', () => ({
     useTimelineData: jest.fn(),
 }))
-jest.mock('pages/common/components/timeline/hooks/useTimelinePanel', () => ({
+jest.mock('timeline/hooks/useTimelinePanel', () => ({
     useTimelinePanel: jest.fn(),
 }))
-jest.mock('pages/common/components/timeline/hooks/useTrackTimelineToggle')
+jest.mock('timeline/hooks/useTrackTimelineToggle')
 
 const useAppDispatchMock = assumeMock(useAppDispatch)
 const getContextMock = assumeMock(getContext)

@@ -8,16 +8,14 @@ import thunk from 'redux-thunk'
 
 import useFlag from 'core/flags/hooks/useFlag'
 import { customer } from 'fixtures/customer'
-import Timeline from 'pages/common/components/timeline/Timeline'
 import { RootState, StoreDispatch } from 'state/types'
+import Timeline from 'timeline/Timeline'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import { CustomerDetailContainer } from '../CustomerDetailContainer'
 
 jest.mock('core/flags/hooks/useFlag')
-jest.mock('pages/common/components/timeline/Timeline', () =>
-    jest.fn(() => <div>Timeline</div>),
-)
+jest.mock('timeline/Timeline', () => jest.fn(() => <div>Timeline</div>))
 jest.mock('pages/customers/common/components/CustomerForm', () => () => (
     <div>CustomerForm</div>
 ))

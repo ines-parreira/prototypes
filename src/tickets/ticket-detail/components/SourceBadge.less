@@ -1,0 +1,45 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .badge {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 0 0 auto;
+        color: var(--neutral-grey-6);
+        background-color: var(--neutral-grey-3);
+        border-radius: 4px;
+        .icon {
+            display: block;
+            width: auto;
+            height: auto;
+            &:before {
+                display: block;
+            }
+        }
+
+        &.small {
+            height: 28px;
+            width: 28px;
+            padding: 4px;
+            .icon {
+                font-size: 18px;
+                &:before {
+                    font-size: 18px;
+                }
+            }
+        }
+
+        &.medium {
+            height: 36px;
+            width: 36px;
+            padding: 6px;
+            .icon {
+                font-size: 24px;
+                &:before {
+                    font-size: 24px;
+                }
+            }
+        }
+    }
+}

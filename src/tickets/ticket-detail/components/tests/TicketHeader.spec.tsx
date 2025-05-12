@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import type { TicketSummary } from '@gorgias/api-queries'
 
@@ -48,12 +47,10 @@ describe('TicketHeader', () => {
         expect(screen.getByText('snoozed')).toBeInTheDocument()
     })
 
-    it('should render the close button if an `onClose` function is given', () => {
-        const onClose = jest.fn()
-        render(<TicketHeader ticket={ticket} onClose={onClose} />)
+    it('should render the provided additional action', () => {
+        const ActionButton = () => <button>Action</button>
+        render(<TicketHeader ticket={ticket} AdditionalAction={ActionButton} />)
 
-        const el = screen.getByText('close')
-        userEvent.click(el)
-        expect(onClose).toHaveBeenCalled()
+        expect(screen.getByText('Action')).toBeInTheDocument()
     })
 })

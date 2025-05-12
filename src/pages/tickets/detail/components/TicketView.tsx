@@ -5,11 +5,11 @@ import classnames from 'classnames'
 import { IconButton } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { useTimelinePanel } from 'pages/common/components/timeline/hooks/useTimelinePanel'
-import Timeline from 'pages/common/components/timeline/Timeline'
 import TicketBody from 'pages/tickets/detail/components/TicketBody'
 import { getBody, getTicketState } from 'state/ticket/selectors'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
+import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
+import Timeline from 'timeline/Timeline'
 
 import { SubmitArgs } from '../TicketDetailContainer'
 

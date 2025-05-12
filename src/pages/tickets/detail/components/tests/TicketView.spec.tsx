@@ -3,9 +3,9 @@ import { ComponentProps } from 'react'
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { useTimelinePanel } from 'pages/common/components/timeline/hooks/useTimelinePanel'
-import Timeline from 'pages/common/components/timeline/Timeline'
 import { getBody, getTicketState } from 'state/ticket/selectors'
+import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
+import Timeline from 'timeline/Timeline'
 import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import TicketView, { TIMELINE_CLOSE_BUTTON_ID } from '../TicketView'
@@ -20,10 +20,8 @@ jest.mock('state/ticket/selectors', () => {
         getTicketState: jest.fn(),
     }
 })
-jest.mock('pages/common/components/timeline/Timeline', () =>
-    jest.fn(() => <div>Timeline</div>),
-)
-jest.mock('pages/common/components/timeline/hooks/useTimelinePanel', () => ({
+jest.mock('timeline/Timeline', () => jest.fn(() => <div>Timeline</div>))
+jest.mock('timeline/hooks/useTimelinePanel', () => ({
     useTimelinePanel: jest.fn(),
 }))
 

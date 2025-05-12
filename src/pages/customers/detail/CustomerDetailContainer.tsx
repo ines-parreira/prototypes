@@ -13,7 +13,6 @@ import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicke
 import Loader from 'pages/common/components/Loader/Loader'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import Timeline from 'pages/common/components/timeline/Timeline'
 import CustomerForm from 'pages/customers/common/components/CustomerForm'
 import { fetchCustomer } from 'state/customers/actions'
 import * as customersHelpers from 'state/customers/helpers'
@@ -23,6 +22,7 @@ import {
     makeGetActiveCustomerChannelsByType,
 } from 'state/customers/selectors'
 import { RootState } from 'state/types'
+import Timeline from 'timeline/Timeline'
 
 import css from './CustomerDetailContainer.less'
 

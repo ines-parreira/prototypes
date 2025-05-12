@@ -1,3 +1,5 @@
+import { FC } from 'react'
+
 import { TicketSummary } from '@gorgias/api-queries'
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
@@ -10,10 +12,14 @@ type Props = {
     readOnly?: boolean
     summary?: TicketSummary
     ticketId: number
-    onClose?: () => void
+    AdditionalHeaderAction?: FC
 }
 
-export function TicketDetail({ summary, ticketId, onClose }: Props) {
+export function TicketDetail({
+    summary,
+    ticketId,
+    AdditionalHeaderAction,
+}: Props) {
     const { isLoading, ticket } = useTicket(ticketId)
     const headerData = ticket || summary
 
@@ -21,7 +27,10 @@ export function TicketDetail({ summary, ticketId, onClose }: Props) {
         <div className={css.container}>
             <div className={css.content}>
                 {!!headerData && (
-                    <TicketHeader ticket={headerData} onClose={onClose} />
+                    <TicketHeader
+                        ticket={headerData}
+                        AdditionalAction={AdditionalHeaderAction}
+                    />
                 )}
                 {isLoading || !ticket ? (
                     <div className={css.loading}>

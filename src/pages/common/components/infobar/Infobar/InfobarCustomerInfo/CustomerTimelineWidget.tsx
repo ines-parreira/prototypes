@@ -4,11 +4,11 @@ import { TicketSummary } from '@gorgias/api-queries'
 import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { useTimelineData } from 'pages/common/components/timeline/hooks/useTimelineData'
-import { useTimelinePanel } from 'pages/common/components/timeline/hooks/useTimelinePanel'
-import { useTrackTimelineToggle } from 'pages/common/components/timeline/hooks/useTrackTimelineToggle'
 import { getContext } from 'state/widgets/selectors'
 import { WidgetEnvironment } from 'state/widgets/types'
+import { useTimelineData } from 'timeline/hooks/useTimelineData'
+import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
+import { useTrackTimelineToggle } from 'timeline/hooks/useTrackTimelineToggle'
 
 import css from './CustomerTimelineWidget.less'
 
