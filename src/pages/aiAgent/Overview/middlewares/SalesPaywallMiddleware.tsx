@@ -77,7 +77,8 @@ export const SalesPaywallMiddleware =
         const showUpgradePaywall =
             isAiSalesBetaUser &&
             !hasNewAutomatePlan &&
-            !currentStoreHasActiveTrial
+            !currentStoreHasActiveTrial &&
+            !isAiSalesAlphaDemoUser
         const showSalesSettings =
             (isAiSalesBetaUser && hasNewAutomatePlan) ||
             isAiSalesAlphaDemoUser ||
