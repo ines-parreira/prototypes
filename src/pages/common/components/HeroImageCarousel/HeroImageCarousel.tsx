@@ -1,8 +1,9 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 import classNames from 'classnames'
 import _isString from 'lodash/isString'
-import Slider from 'react-slick'
+
+import Slider, { SliderRef } from 'utils/wrappers/Slider'
 
 import Button from '../button/Button'
 
@@ -40,7 +41,7 @@ const HeroImageCarousel = ({
     onClose,
 }: Props) => {
     const [currentSlide, setCurrentSlide] = useState(0)
-    const sliderRef = useRef<Slider | null>(null)
+    const sliderRef = useRef<SliderRef | null>(null)
 
     const buttonLabel = slides[currentSlide].footerButton
     const handleButtonClick = () => {

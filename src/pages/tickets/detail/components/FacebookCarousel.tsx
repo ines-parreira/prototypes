@@ -1,9 +1,9 @@
 import _get from 'lodash/get'
-import Slider from 'react-slick'
 import { Card, CardBody, CardImg, CardSubtitle, CardTitle } from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'
 import Group from 'pages/common/components/layout/Group'
+import Slider from 'utils/wrappers/Slider'
 
 import { FacebookCarouselTemplate } from '../../../../models/ticket/types'
 

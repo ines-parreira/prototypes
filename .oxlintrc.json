@@ -23,7 +23,8 @@
                 "src/utils/testing/renderHook.tsx",
                 "src/utils/wrappers/DateRangePicker.tsx",
                 "src/utils/wrappers/DndProvider.tsx",
-                "src/utils/wrappers/Draggable.tsx"
+                "src/utils/wrappers/Draggable.tsx",
+                "src/utils/wrappers/Slider.tsx"
             ],
             "rules": { "no-restricted-imports": "off" }
         }
@@ -74,6 +75,11 @@
                         "importNames": ["default", "DraggableEventHandler"],
                         "message": "Please use the wrapper component from 'utils/wrappers/Draggable' instead.",
                         "name": "react-draggable"
+                    },
+                    {
+                        "importNames": ["default", "Settings"],
+                        "message": "Please use the wrapper component from 'utils/wrappers/Slider' instead.",
+                        "name": "react-slick"
                     },
                     {
                         "importNames": ["DndProvider"],

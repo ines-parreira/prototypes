@@ -1,6 +1,6 @@
-import React, { MouseEvent } from 'react'
+import { MouseEvent } from 'react'
 
-import Slider from 'react-slick'
+import Slider from 'utils/wrappers/Slider'
 
 import css from './Carousel.less'
 

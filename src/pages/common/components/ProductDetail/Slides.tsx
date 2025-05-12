@@ -1,12 +1,12 @@
 import React, { ReactNode, useRef, useState } from 'react'
 
 import classNames from 'classnames'
-import Slider from 'react-slick'
 import { Modal } from 'reactstrap'
 
 import { useAppNode } from 'appNode'
 import IconButton from 'pages/common/components/button/IconButton'
 import { assetsUrl } from 'utils'
+import Slider from 'utils/wrappers/Slider'
 
 import { ProductDetail } from './types'
 

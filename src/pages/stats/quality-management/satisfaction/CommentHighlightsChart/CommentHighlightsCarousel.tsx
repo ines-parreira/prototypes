@@ -1,8 +1,7 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import _truncate from 'lodash/truncate'
 import { Link } from 'react-router-dom'
-import Slider from 'react-slick'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
@@ -17,6 +16,7 @@ import { Separator } from 'pages/common/components/Separator/Separator'
 import StarRating from 'pages/common/components/StarRating'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
 import css from 'pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCarousel.less'
+import Slider from 'utils/wrappers/Slider'
 
 const VIEW_TICKET = 'View Ticket'
 const MAX_COMMENT_LENGTH = 350
