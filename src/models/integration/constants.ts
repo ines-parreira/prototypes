@@ -134,3 +134,4 @@ export const DEFAULT_RECORDING_NOTIFICATION = {
     text_to_speech_content:
         'This call may be recorded for notetaking, training, or record-keeping purposes.',
 }
+export const RECORDING_NOTIFICATION_MAX_DURATION = 1 * 60

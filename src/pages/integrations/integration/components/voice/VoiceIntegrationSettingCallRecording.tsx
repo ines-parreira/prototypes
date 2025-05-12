@@ -5,6 +5,7 @@ import { CustomRecordingType } from '@gorgias/api-types'
 import { Label, ToggleField } from '@gorgias/merchant-ui-kit'
 
 import { FormField } from 'core/forms'
+import { RECORDING_NOTIFICATION_MAX_DURATION } from 'models/integration/constants'
 
 import VoiceMessageField from './VoiceMessageField'
 
@@ -42,6 +43,9 @@ function VoiceIntegrationSettingCallRecording() {
                             field={VoiceMessageField}
                             name="meta.recording_notification"
                             allowNone
+                            maxRecordingDuration={
+                                RECORDING_NOTIFICATION_MAX_DURATION
+                            }
                             horizontal={true}
                             shouldUpload={true}
                             customRecordingType={
