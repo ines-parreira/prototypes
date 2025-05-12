@@ -5,7 +5,12 @@ import _pick from 'lodash/pick'
 import { connect, ConnectedProps } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { EditableUserProfile, User, UserSetting } from 'config/types/user'
+import {
+    EditableUserProfile,
+    User,
+    UserRole,
+    UserSetting,
+} from 'config/types/user'
 import { submitSetting, updateCurrentUser } from 'state/currentUser/actions'
 import { getPreferences } from 'state/currentUser/selectors'
 import { StoreDispatch, StoreState } from 'state/types'
@@ -47,6 +52,8 @@ class YourProfileContainer extends Component<Props> {
             )
         }
 
+        const isGorgiasAgent =
+            currentUser.getIn(['role', 'name']) === UserRole.GorgiasAgent
         return (
             <YourProfileView
                 currentUser={prunedCurrentUser}
@@ -62,6 +69,7 @@ class YourProfileContainer extends Component<Props> {
                     ) => Promise<unknown>
                 }
                 preferences={this.props.preferences}
+                isGorgiasAgent={isGorgiasAgent}
             />
         )
     }

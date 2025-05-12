@@ -44,6 +44,7 @@ const minProps: ComponentProps<typeof YourProfileView> = {
         resolvedName: THEME_NAME.Dark,
         tokens: {} as ColorTokens,
     },
+    isGorgiasAgent: false,
 }
 
 const TIMEZONES = ['UTC', 'EST']
@@ -164,6 +165,26 @@ describe('YourProfileView', () => {
                 expect(yourBio).toHaveAttribute('type', 'text')
                 expect(yourBio).toHaveValue(user.bio)
                 expect(yourBio).not.toBeRequired()
+                expect(yourBio).not.toBeDisabled()
+            })
+
+            it('should render bio input disabled for the Gorgias Support Agent', () => {
+                const props: ComponentProps<typeof YourProfileView> = {
+                    ...minProps,
+                    isGorgiasAgent: true,
+                }
+                const { getByLabelText } = render(
+                    <Provider store={mockedStore(defaultState)}>
+                        <YourProfileView {...props} />
+                    </Provider>,
+                )
+                const yourBio = getByLabelText(/Your bio/)
+
+                expect(yourBio).toHaveAttribute('name', 'bio')
+                expect(yourBio).toHaveAttribute('type', 'text')
+                expect(yourBio).toHaveValue(user.bio)
+                expect(yourBio).not.toBeRequired()
+                expect(yourBio).toBeDisabled()
             })
         })
 
@@ -172,6 +193,27 @@ describe('YourProfileView', () => {
                 const { getByLabelText } = render(
                     <Provider store={mockedStore(defaultState)}>
                         <YourProfileView {...minProps} />
+                    </Provider>,
+                )
+                const timezone = getByLabelText(/Timezone/)
+                const options = within(timezone).getAllByRole('option')
+                expect(options).toHaveLength(2)
+
+                const [utcOption, estOption] = options as HTMLOptionElement[]
+                expect(utcOption).toHaveTextContent('(UTC+0) UTC')
+                expect(utcOption.selected).toBe(false)
+                expect(estOption).toHaveTextContent('(UTC+1) EST')
+                expect(estOption.selected).toBe(true)
+            })
+
+            it('should render timezone select for the Gorgias Support Agent', () => {
+                const props: ComponentProps<typeof YourProfileView> = {
+                    ...minProps,
+                    isGorgiasAgent: true,
+                }
+                const { getByLabelText } = render(
+                    <Provider store={mockedStore(defaultState)}>
+                        <YourProfileView {...props} />
                     </Provider>,
                 )
                 const timezone = getByLabelText(/Timezone/)

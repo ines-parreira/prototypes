@@ -78,6 +78,7 @@ type Props = {
         notification: boolean,
     ) => Promise<unknown>
     preferences: Map<any, any>
+    isGorgiasAgent: boolean
 } & WithThemeProps
 
 type State = {
@@ -157,7 +158,15 @@ export class YourProfileView extends Component<Props, State> {
             this.state,
             // metadata is not editable from this component
             // so there is no point to send potential outdated data.
-            Object.keys(_omit(defaultContent, ['meta', 'language'])),
+            Object.keys(
+                _omit(defaultContent, [
+                    'meta',
+                    'language',
+                    ...(this.props.isGorgiasAgent
+                        ? ['bio', 'email', 'name']
+                        : []),
+                ]),
+            ),
         ) as EditableUserProfile
 
         this.setState({ isLoading: true })
@@ -248,6 +257,7 @@ export class YourProfileView extends Component<Props, State> {
                                             this.setState({ name })
                                         }}
                                         className={settingsCss.inputField}
+                                        isDisabled={this.props.isGorgiasAgent}
                                     />
                                     <InputField
                                         type="email"
@@ -261,6 +271,7 @@ export class YourProfileView extends Component<Props, State> {
                                             this._onEmailChange(email)
                                         }}
                                         className={settingsCss.inputField}
+                                        isDisabled={this.props.isGorgiasAgent}
                                     />
                                     {hasChangedEmail ? (
                                         <InputField
@@ -301,6 +312,7 @@ export class YourProfileView extends Component<Props, State> {
                                             this.setState({ bio })
                                         }}
                                         className={settingsCss.inputField}
+                                        isDisabled={this.props.isGorgiasAgent}
                                     />
                                 </div>
                                 <div className={settingsCss.headingSection}>
