@@ -17,7 +17,7 @@ import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 import GorgiasApi from 'services/gorgiasApi'
 import { fetchInvoices, updateInvoiceInList } from 'state/billing/actions'
 import { invoices as getInvoices } from 'state/billing/selectors'
-import { Invoice, PaymentIntentStatus, PaymentType } from 'state/billing/types'
+import { Invoice, PaymentIntentStatus } from 'state/billing/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -137,9 +137,6 @@ const PaymentsHistoryView = () => {
                     </thead>
                     <tbody>
                         {invoices.map((invoice) => {
-                            const paidWithShopify =
-                                invoice.metadata.payment_service ===
-                                PaymentType.Shopify
                             const isPaid = invoice.paid
                             const paymentIntent = invoice.payment_intent
 
@@ -187,16 +184,14 @@ const PaymentsHistoryView = () => {
                                     </td>
                                     <td className="align-middle">
                                         <div className={css.actions}>
-                                            {!paidWithShopify && (
-                                                <a
-                                                    href={invoice.invoice_pdf}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className={css.downloadLink}
-                                                >
-                                                    Download PDF
-                                                </a>
-                                            )}
+                                            <a
+                                                href={invoice.invoice_pdf}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className={css.downloadLink}
+                                            >
+                                                Download PDF
+                                            </a>
                                             {paymentIntent?.status ===
                                                 PaymentIntentStatus.RequiresConfirmation && (
                                                 <Button
@@ -214,28 +209,27 @@ const PaymentsHistoryView = () => {
                                                     Confirm
                                                 </Button>
                                             )}
-                                            {!paidWithShopify &&
-                                                [
-                                                    PaymentIntentStatus.RequiresSource,
-                                                    PaymentIntentStatus.RequiresPaymentMethod,
-                                                ].includes(
-                                                    paymentIntent?.status,
-                                                ) && (
-                                                    <Button
-                                                        intent="primary"
-                                                        isLoading={
-                                                            invoice.id ===
-                                                            invoiceBeingPaid?.id
-                                                        }
-                                                        onClick={() => {
-                                                            void retryPayment(
-                                                                invoice,
-                                                            )
-                                                        }}
-                                                    >
-                                                        Retry Payment
-                                                    </Button>
-                                                )}
+                                            {[
+                                                PaymentIntentStatus.RequiresSource,
+                                                PaymentIntentStatus.RequiresPaymentMethod,
+                                            ].includes(
+                                                paymentIntent?.status,
+                                            ) && (
+                                                <Button
+                                                    intent="primary"
+                                                    isLoading={
+                                                        invoice.id ===
+                                                        invoiceBeingPaid?.id
+                                                    }
+                                                    onClick={() => {
+                                                        void retryPayment(
+                                                            invoice,
+                                                        )
+                                                    }}
+                                                >
+                                                    Retry Payment
+                                                </Button>
+                                            )}
                                         </div>
                                     </td>
                                 </tr>
