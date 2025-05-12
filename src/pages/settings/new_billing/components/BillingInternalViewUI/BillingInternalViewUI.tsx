@@ -54,7 +54,7 @@ export function BillingInternalViewUI({
                     availableCoupons={helpdeskOnlyCoupons}
                 />
                 <ProductCardForCoupon
-                    productName="Automate"
+                    productName="AI Agent"
                     isTrialing={isTrialing}
                     endOfTrialDatetime={endOfTrialDatetime}
                     currentCoupon={isAutomateCoupon ? currentCoupon : null}
