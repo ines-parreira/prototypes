@@ -9,7 +9,7 @@ import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
 import { ticketInputFieldDefinition } from 'fixtures/customField'
 import { assumeMock, getLastMockCall } from 'utils/testing'
 
-import { useTimeline } from '../hooks/useTimeline'
+import { useTimelineData } from '../hooks/useTimelineData'
 import { RangeFilter } from '../RangeFilter'
 import TicketCard from '../TicketCard'
 import Timeline from '../Timeline'
@@ -26,18 +26,8 @@ jest.mock('common/segment', () => ({
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
     useCustomFieldDefinitions: jest.fn(),
 }))
-jest.mock('hooks/useAppSelector', () => (fn: () => unknown) => fn())
-jest.mock('state/customers/selectors', () => {
-    const original = jest.requireActual('state/customers/selectors')
-
-    return {
-        ...original,
-        getCustomerHistory: jest.fn(),
-        getLoading: jest.fn(),
-    }
-})
-jest.mock('../hooks/useTimeline', () => ({
-    useTimeline: jest.fn(),
+jest.mock('../hooks/useTimelineData', () => ({
+    useTimelineData: jest.fn(),
 }))
 jest.mock('../TicketCard', () => jest.fn(() => <div>TicketCard</div>))
 jest.mock('../DisplayedDate', () => jest.fn(() => 'Mocked DatetimeLabel'))
@@ -49,7 +39,7 @@ const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 const TicketCardMock = assumeMock(TicketCard)
 const useFlagMock = assumeMock(useFlag)
 const rangeFilterMock = assumeMock(RangeFilter)
-const useTimelineMock = assumeMock(useTimeline)
+const useTimelineDataMock = assumeMock(useTimelineData)
 const defaultFieldDefinitions = {
     data: apiListCursorPaginationResponse([ticketInputFieldDefinition]),
     isLoading: false,
@@ -75,43 +65,40 @@ describe('<Timeline />', () => {
     } as TicketSummary
     const defaultTimelineReturnValue = {
         isLoading: false,
-        hasTriedLoading: true,
-        isOpen: false,
-        timelineShopperId: null,
         tickets: [ticket1, ticket2, ticket3],
-        openTimeline: jest.fn(),
-        closeTimeline: jest.fn(),
     }
     beforeEach(() => {
         useCustomFieldDefinitionsMock.mockReturnValue(defaultFieldDefinitions)
         useFlagMock.mockReturnValue(false)
-        useTimelineMock.mockReturnValue(defaultTimelineReturnValue)
+        useTimelineDataMock.mockReturnValue(defaultTimelineReturnValue)
     })
 
     it('should render loading spinner', () => {
-        useTimelineMock.mockReturnValue({
+        useTimelineDataMock.mockReturnValue({
             ...defaultTimelineReturnValue,
             isLoading: true,
         })
 
-        render(<Timeline />)
+        render(<Timeline shopperId={null} />)
 
         expect(screen.getByRole('status')).toBeInTheDocument()
     })
 
     it('should call onLoaded when triedLoading is true and hasCalledOnLoaded is false', () => {
         const onLoaded = jest.fn()
-        const { rerender } = render(<Timeline onLoaded={onLoaded} />)
+        const { rerender } = render(
+            <Timeline shopperId={null} onLoaded={onLoaded} />,
+        )
 
         expect(onLoaded).toHaveBeenCalledTimes(1)
 
         // Should not call onLoaded again
-        rerender(<Timeline onLoaded={onLoaded} />)
+        rerender(<Timeline onLoaded={onLoaded} shopperId={null} />)
         expect(onLoaded).toHaveBeenCalledTimes(1)
     })
 
     it('should call useCustomFieldDefinitions with correct params', () => {
-        render(<Timeline />)
+        render(<Timeline shopperId={null} />)
 
         expect(useCustomFieldDefinitionsMock).toHaveBeenCalledWith({
             archived: false,
@@ -125,7 +112,7 @@ describe('<Timeline />', () => {
             isLoading: true,
         } as ReturnType<typeof useCustomFieldDefinitions>)
 
-        render(<Timeline />)
+        render(<Timeline shopperId={null} />)
 
         expect(TicketCard).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -136,9 +123,18 @@ describe('<Timeline />', () => {
         )
     })
 
+    it('should call useTimelineData with correct params', () => {
+        const { rerender } = render(<Timeline shopperId={null} />)
+
+        expect(useTimelineDataMock).toHaveBeenCalledWith(undefined)
+
+        rerender(<Timeline shopperId={123} />)
+        expect(useTimelineDataMock).toHaveBeenCalledWith(123)
+    })
+
     it('should call TicketCard for each ticket with a channel, in correct order, with correct props', () => {
         const ticketId = 3
-        render(<Timeline ticketId={ticketId} />)
+        render(<Timeline ticketId={ticketId} shopperId={null} />)
 
         expect(TicketCard).toHaveBeenCalledTimes(2)
         expect(TicketCard).toHaveBeenNthCalledWith(
@@ -168,7 +164,7 @@ describe('<Timeline />', () => {
     })
 
     it('should log event and redirect when Link is clicked', () => {
-        render(<Timeline />)
+        render(<Timeline shopperId={null} />)
 
         const link = screen.getAllByText('TicketCard')[0].parentElement
         link?.click()
@@ -180,12 +176,12 @@ describe('<Timeline />', () => {
 
     describe('Empty state', () => {
         it('should say that they are no tickets yet', () => {
-            useTimelineMock.mockReturnValue({
+            useTimelineDataMock.mockReturnValue({
                 ...defaultTimelineReturnValue,
                 tickets: [],
             })
 
-            render(<Timeline />)
+            render(<Timeline shopperId={null} />)
 
             expect(
                 screen.getByText('This customer doesn’t have any tickets yet.'),
@@ -195,7 +191,7 @@ describe('<Timeline />', () => {
         it('should say that there are no matching tickets', () => {
             useFlagMock.mockReturnValue(true)
 
-            render(<Timeline />)
+            render(<Timeline shopperId={null} />)
 
             fireEvent.click(screen.getByText('All'))
             fireEvent.click(screen.getByText('Closed'))
@@ -207,14 +203,14 @@ describe('<Timeline />', () => {
 
     describe('Range filtering', () => {
         it('should not render range filter when feature flag is off', () => {
-            render(<Timeline />)
+            render(<Timeline shopperId={null} />)
 
             expect(screen.queryByText('RangeFilter')).toBeNull()
         })
 
         it('should should correctly filter tickets by range', () => {
             useFlagMock.mockReturnValue(true)
-            render(<Timeline />)
+            render(<Timeline shopperId={null} />)
 
             TicketCardMock.mockClear()
 
@@ -231,14 +227,14 @@ describe('<Timeline />', () => {
 
     describe('Status filtering', () => {
         it('should not render status filter when feature flag is off', () => {
-            render(<Timeline />)
+            render(<Timeline shopperId={null} />)
 
             expect(screen.queryByText('status')).toBeNull()
         })
 
         it('should should correctly filter tickets by status', () => {
             useFlagMock.mockReturnValue(true)
-            render(<Timeline />)
+            render(<Timeline shopperId={null} />)
 
             TicketCardMock.mockClear()
 
@@ -259,14 +255,14 @@ describe('<Timeline />', () => {
 
     describe('Sorting', () => {
         it('should not render the sort trigger when feature flag is off', () => {
-            render(<Timeline />)
+            render(<Timeline shopperId={null} />)
 
             expect(screen.queryByRole('combobox')).toBeNull()
         })
 
         it('should call sort tickets when a SelectField option is clicked', () => {
             useFlagMock.mockReturnValue(true)
-            render(<Timeline />)
+            render(<Timeline shopperId={null} />)
 
             TicketCardMock.mockClear()
 

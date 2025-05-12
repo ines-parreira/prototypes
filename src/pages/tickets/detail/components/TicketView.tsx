@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import { IconButton } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { useTimeline } from 'pages/common/components/timeline/hooks/useTimeline'
+import { useTimelinePanel } from 'pages/common/components/timeline/hooks/useTimelinePanel'
 import Timeline from 'pages/common/components/timeline/Timeline'
 import TicketBody from 'pages/tickets/detail/components/TicketBody'
 import { getBody, getTicketState } from 'state/ticket/selectors'
@@ -40,7 +40,11 @@ export const TicketView = ({
     const ticket = useAppSelector(getTicketState)
     const ticketBody = useAppSelector(getBody)
 
-    const { isOpen: isTimelineOpen, closeTimeline } = useTimeline()
+    const {
+        isOpen: isTimelineOpen,
+        closeTimeline,
+        shopperId,
+    } = useTimelinePanel()
 
     const isShopperTyping = useMemo(
         () => ticket.getIn(['_internal', 'isShopperTyping']) as boolean,
@@ -89,6 +93,7 @@ export const TicketView = ({
                     <div className={classnames(css.timelineContainer, 'pb-4')}>
                         <Timeline
                             ticketId={ticket.get('id')}
+                            shopperId={shopperId}
                             onLoaded={onTimelineLoaded}
                         />
                     </div>

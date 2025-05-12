@@ -291,7 +291,7 @@ const InfobarCustomerInfo = ({
                 <Separator className={css.separator} />
                 <CustomerTimelineWidget
                     isEditing={isEditing}
-                    customerId={Number(customer.get('id'))}
+                    shopperId={Number(customer.get('id'))}
                 />
             </div>
 
