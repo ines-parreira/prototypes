@@ -1,0 +1,69 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .navbarLink {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: var(--layout-spacing-xs);
+    }
+
+    .actionsContainer {
+        position: relative;
+
+        .toggle {
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--navigation-text-item) !important;
+            font-size: 14px;
+            line-height: 20px;
+            padding: 3px 6px;
+            transform: translateY(-1px);
+            position: absolute;
+            right: 20px;
+            bottom: 4px;
+            z-index: 10;
+
+            > i {
+                font-size: 16px !important;
+                color: var(--navigation-text-item);
+            }
+
+            &:hover,
+            &:focus {
+                background-color: var(
+                    --navbar-block-toggle-hover-background-color
+                );
+                color: var(--navbar-block-toggle-hover-color) !important;
+                box-shadow: unset;
+            }
+
+            &:active {
+                background-color: var(
+                    --navbar-block-toggle-active-background-color
+                ) !important;
+                color: var(--navbar-block-toggle-active-color);
+            }
+        }
+    }
+
+    .name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .action {
+        .body-regular();
+        width: 207px;
+        text-overflow: inherit;
+        white-space: pre-line;
+        text-align: center;
+        &:hover {
+            background: var(--white);
+        }
+    }
+}
