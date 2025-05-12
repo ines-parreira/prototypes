@@ -1,0 +1,33 @@
+:local {
+    .container {
+        display: grid;
+        grid-template-columns: 1fr 2fr 3fr auto;
+        justify-items: start;
+    }
+
+    .container:hover {
+        cursor: pointer;
+        background-color: var(--neutral-grey-1);
+        color: var(--neutral-grey-6);
+
+        :global(.icon-go-to-store) {
+            color: var(--main-primary);
+        }
+    }
+
+    .storeName {
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .goToIcon {
+        font-size: 20px;
+        color: var(--neutral-grey-4);
+    }
+
+    .storeUrl {
+        color: var(--neutral-grey-5);
+    }
+}

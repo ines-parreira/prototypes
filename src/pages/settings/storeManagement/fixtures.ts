@@ -1,0 +1,266 @@
+export const storeMappingFixture = [
+    {
+        name: 'test-1',
+        type: 'shopify',
+        url: 'www.test-1.com',
+        id: '1',
+        channels: [
+            { type: 'email', id: '1', name: 'Email', address: 'address1' },
+            { type: 'chat', id: '2', name: 'Chat', address: 'address2' },
+            {
+                type: 'facebook',
+                id: '3',
+                name: 'Facebook',
+                address: 'address3',
+            },
+        ],
+    },
+    {
+        name: 'test-2',
+        type: 'bigcommerce',
+        url: 'www.test-2.com',
+        id: '2',
+        channels: [
+            {
+                type: 'help-center',
+                id: '4',
+                name: 'Helpcenter',
+                address: 'address4',
+            },
+            {
+                type: 'contact_form',
+                id: '5',
+                name: 'Contact Form',
+                address: 'address5',
+            },
+            {
+                type: 'whatsapp',
+                id: '6',
+                name: 'WhatsApp',
+                address: 'address6',
+            },
+        ],
+    },
+    {
+        name: 'test-3',
+        type: 'magento2',
+        url: 'www.test-3.com',
+        id: '3',
+        channels: [
+            { type: 'email', id: '7', name: 'Email', address: 'address7' },
+            { type: 'chat', id: '8', name: 'Chat', address: 'address8' },
+            {
+                type: 'facebook',
+                id: '9',
+                name: 'Facebook',
+                address: 'address9',
+            },
+            {
+                type: 'help-center',
+                id: '10',
+                name: 'Helpcenter',
+                address: 'address10',
+            },
+        ],
+    },
+    {
+        name: 'test-4',
+        type: 'shopify',
+        url: 'www.test-4.com',
+        id: '4',
+        channels: [
+            {
+                type: 'contact_form',
+                id: '11',
+                name: 'Contact Form',
+                address: 'address11',
+            },
+            {
+                type: 'whatsapp',
+                id: '12',
+                name: 'WhatsApp',
+                address: 'address12',
+            },
+            {
+                type: 'email',
+                id: '13',
+                name: 'Email',
+                address: 'address13',
+            },
+        ],
+    },
+    {
+        name: 'test-5',
+        type: 'bigcommerce',
+        url: 'www.test-5.com',
+        id: '5',
+        channels: [
+            { type: 'chat', id: '14', name: 'Chat', address: 'address14' },
+            {
+                type: 'facebook',
+                id: '15',
+                name: 'Facebook',
+                address: 'address15',
+            },
+            {
+                type: 'help-center',
+                id: '16',
+                name: 'Helpcenter',
+                address: 'address16',
+            },
+            {
+                type: 'contact_form',
+                id: '17',
+                name: 'Contact Form',
+                address: 'address17',
+            },
+        ],
+    },
+    {
+        name: 'test-6',
+        type: 'magento2',
+        url: 'www.test-6.com',
+        id: '6',
+        channels: [
+            {
+                type: 'whatsapp',
+                id: '18',
+                name: 'WhatsApp',
+                address: 'address18',
+            },
+            {
+                type: 'email',
+                id: '19',
+                name: 'Email',
+                address: 'address19',
+            },
+            { type: 'chat', id: '20', name: 'Chat', address: 'address20' },
+        ],
+    },
+    {
+        name: 'test-7',
+        type: 'shopify',
+        url: 'www.test-7.com',
+        id: '7',
+        channels: [
+            {
+                type: 'facebook',
+                id: '21',
+                name: 'Facebook',
+                address: 'address21',
+            },
+            {
+                type: 'help-center',
+                id: '22',
+                name: 'Helpcenter',
+                address: 'address22',
+            },
+            {
+                type: 'contact_form',
+                id: '23',
+                name: 'Contact Form',
+                address: 'address23',
+            },
+        ],
+    },
+    {
+        name: 'test-8',
+        type: 'bigcommerce',
+        url: 'www.test-8.com',
+        id: '8',
+        channels: [
+            {
+                type: 'whatsapp',
+                id: '24',
+                name: 'WhatsApp',
+                address: 'address24',
+            },
+            {
+                type: 'email',
+                id: '25',
+                name: 'Email',
+                address: 'address25',
+            },
+            { type: 'chat', id: '26', name: 'Chat', address: 'address26' },
+            {
+                type: 'facebook',
+                id: '27',
+                name: 'Facebook',
+                address: 'address27',
+            },
+        ],
+    },
+    {
+        name: 'test-9',
+        type: 'magento2',
+        url: 'www.test-9.com',
+        id: '9',
+        channels: [
+            {
+                type: 'help-center',
+                id: '28',
+                name: 'Helpcenter',
+                address: 'address28',
+            },
+            {
+                type: 'contact_form',
+                id: '29',
+                name: 'Contact Form',
+                address: 'address29',
+            },
+            {
+                type: 'whatsapp',
+                id: '30',
+                name: 'WhatsApp',
+                address: 'address30',
+            },
+        ],
+    },
+    {
+        name: 'test-10',
+        type: 'shopify',
+        url: 'www.test-10.com',
+        id: '10',
+        channels: [
+            {
+                type: 'email',
+                id: '31',
+                name: 'Email',
+                address: 'address31',
+            },
+            { type: 'chat', id: '32', name: 'Chat', address: 'address32' },
+            {
+                type: 'facebook',
+                id: '33',
+                name: 'Facebook',
+                address: 'address33',
+            },
+        ],
+    },
+    {
+        name: 'test-11',
+        type: 'bigcommerce',
+        url: 'www.test-11.com',
+        id: '11',
+        channels: [
+            {
+                type: 'help-center',
+                id: '34',
+                name: 'Helpcenter',
+                address: 'address34',
+            },
+            {
+                type: 'contact_form',
+                id: '35',
+                name: 'Contact Form',
+                address: 'address35',
+            },
+            {
+                type: 'whatsapp',
+                id: '36',
+                name: 'WhatsApp',
+                address: 'address36',
+            },
+        ],
+    },
+]

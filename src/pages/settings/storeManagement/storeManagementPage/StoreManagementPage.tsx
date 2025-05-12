@@ -4,7 +4,9 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import PageHeader from 'pages/common/components/PageHeader'
 
-const StoreManagement = () => {
+import { StoreManagementTable } from '../storeManagementTable/storeManagementTable'
+
+const StoreManagementPage = () => {
     const isMultiStoreEnabled = useFlag(FeatureFlagKey.MultiStore, false)
 
     if (!isMultiStoreEnabled) {
@@ -14,8 +16,9 @@ const StoreManagement = () => {
     return (
         <div className="full-width">
             <PageHeader title="Store Management" />
+            <StoreManagementTable />
         </div>
     )
 }
 
-export default StoreManagement
+export default StoreManagementPage

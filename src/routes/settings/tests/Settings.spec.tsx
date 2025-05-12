@@ -25,7 +25,6 @@ import {
 } from 'routes/constants'
 import { assumeMock } from 'utils/testing'
 
-import StoreManagement from '../../../pages/settings/storeManagement/StoreManagement'
 import { Billing } from '../Billing'
 import { Channels } from '../Channels'
 import { ConditionalFields } from '../ConditionalFields'
@@ -293,12 +292,6 @@ const testingMap = [
         exact: undefined,
         path: `${basePath}/order-management/:shopType?/:shopName?`,
         component: PaywalledOrderManagement,
-    },
-    {
-        callOrder: 32,
-        exact: undefined,
-        path: `${basePath}/store-management`,
-        component: StoreManagement,
     },
 ]
 

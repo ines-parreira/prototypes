@@ -17,7 +17,6 @@ import BusinessHours from 'pages/settings/businessHours/BusinessHours'
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import SatisfactionSurveyView from 'pages/settings/satisfactionSurveys/SatisfactionSurveyView'
 import SidebarSettings from 'pages/settings/sidebar/SidebarSettings'
-import StoreManagement from 'pages/settings/storeManagement/StoreManagement'
 import ManageTags from 'pages/settings/tags/ManageTags'
 import TicketAssignment from 'pages/settings/ticketAssignment/TicketAssignment'
 import PasswordAnd2FA from 'pages/settings/yourProfile/PasswordAnd2FA'
@@ -50,6 +49,7 @@ import { Macros } from './Macros'
 import { PhoneNumbers } from './PhoneNumbers'
 import { Rules } from './Rules'
 import { SLA } from './SLA'
+import { StoreManagement } from './StoreManagement'
 import { Teams } from './Teams'
 import { Users } from './Users'
 
@@ -216,9 +216,7 @@ export function SettingRoutes() {
                     })}
                 </Route>
                 <Route path={`${path}/store-management`}>
-                    {renderAppSettings(StoreManagement, {
-                        roleParams: [ADMIN_ROLE, PageSection.StoreManagement],
-                    })}
+                    <StoreManagement />
                 </Route>
                 <Route path={`${path}/satisfaction-surveys`} exact>
                     {renderAppSettings(SatisfactionSurveyView, {

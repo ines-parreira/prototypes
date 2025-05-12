@@ -5,7 +5,8 @@ import { render, screen } from '@testing-library/react'
 import { useFlag } from 'core/flags'
 
 import { assumeMock } from '../../../../utils/testing'
-import StoreManagement from '../StoreManagement'
+import StoreManagementPage from '../storeManagementPage/StoreManagementPage'
+import { StoreManagementProvider } from '../StoreManagementProvider'
 
 jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)
@@ -17,7 +18,11 @@ describe('StoreManagement', () => {
     it('renders the component when the MultiStore feature flag is enabled', () => {
         useFlagMock.mockImplementation(() => true)
 
-        render(<StoreManagement />)
+        render(
+            <StoreManagementProvider>
+                <StoreManagementPage />
+            </StoreManagementProvider>,
+        )
 
         expect(screen.getByText('Store Management')).toBeInTheDocument()
     })
@@ -25,7 +30,11 @@ describe('StoreManagement', () => {
     it('does not render the component when the MultiStore feature flag is disabled', () => {
         useFlagMock.mockImplementation(() => false)
 
-        const { container } = render(<StoreManagement />)
+        const { container } = render(
+            <StoreManagementProvider>
+                <StoreManagementPage />
+            </StoreManagementProvider>,
+        )
 
         expect(container.firstChild).toBeNull()
     })
