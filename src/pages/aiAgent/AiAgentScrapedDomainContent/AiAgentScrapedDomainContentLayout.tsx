@@ -77,7 +77,7 @@ const AiAgentScrapedDomainContentLayout = ({
                     syncStoreDomainStatus={syncStoreDomainStatus}
                 />
                 <div>
-                    <SecondaryNavbar className={css.contentWrapper}>
+                    <SecondaryNavbar>
                         {headerNavbarItems.map(({ route, title }) => (
                             <NavLink key={route} to={route} exact={true}>
                                 {title}
