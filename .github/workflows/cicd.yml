@@ -87,7 +87,6 @@ jobs:
     needs:
       - workspace-vars
       - install-dependencies
-      - quality-check
       - build-staging
     uses: ./.github/workflows/deploy.yml
     secrets: inherit
