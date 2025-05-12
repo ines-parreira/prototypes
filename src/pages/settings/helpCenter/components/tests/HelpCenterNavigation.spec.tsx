@@ -87,7 +87,7 @@ describe('HelpCenterNavigation', () => {
         )
     })
 
-    it('should not render the automate tab when `hasAutomate` is false', () => {
+    it('should not render the AI Agent tab when `hasAutomate` is false', () => {
         mockGetHasAutomate.mockReturnValue(false)
         renderWithStoreAndQueryClientProvider(
             <HelpCenterNavigation
@@ -96,7 +96,7 @@ describe('HelpCenterNavigation', () => {
             />,
             defaultState,
         )
-        expect(screen.queryByText(/Automate/i)).not.toBeInTheDocument()
+        expect(screen.queryByText(/AI Agent/i)).not.toBeInTheDocument()
     })
 
     it('should display automate menu item', () => {
@@ -108,7 +108,7 @@ describe('HelpCenterNavigation', () => {
             />,
             defaultState,
         )
-        expect(screen.getByText(/Automate/i)).toBeInTheDocument()
+        expect(screen.getByText(/AI Agent/i)).toBeInTheDocument()
     })
 
     it('should display a red dot whenever shop name is not provided', () => {
@@ -119,7 +119,7 @@ describe('HelpCenterNavigation', () => {
         expect(screen.getByAltText('status icon')).toBeInTheDocument()
     })
 
-    it('should have "upgrade to automate" if newChannelsView ff is off and hasAutomate = false', () => {
+    it('should have "upgrade to AI Agent" if newChannelsView ff is off and hasAutomate = false', () => {
         mockUseFlags.mockReturnValue({
             'new-channels-view': false,
             'change-automate-settings-button-position': true,
@@ -133,7 +133,7 @@ describe('HelpCenterNavigation', () => {
             defaultState,
         )
 
-        const button = screen.getByText(/Upgrade to automate/i)
+        const button = screen.getByText(/Upgrade to AI Agent/i)
         expect(button).toBeInTheDocument()
         button.click()
         expect(log).toHaveBeenCalledWith(

@@ -186,7 +186,7 @@ describe('<AiAgentPaywallView />', () => {
         })
     })
 
-    it('opens Automate subscription modal on button click', async () => {
+    it('opens AI Agent subscription modal on button click', async () => {
         renderComponent({
             aiAgentPaywallFeature: AIAgentPaywallFeatures.Automate,
         })

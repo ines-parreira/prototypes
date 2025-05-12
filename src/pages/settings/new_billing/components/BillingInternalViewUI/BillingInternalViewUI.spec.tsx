@@ -182,7 +182,7 @@ describe('BillingInternalViewUI', () => {
         // Then a modal should show up
         const modal = screen.getByRole('dialog')
         expect(
-            within(modal).getByText(/Apply Helpdesk and Automate coupon/i),
+            within(modal).getByText(/Apply Helpdesk and AI Agent coupon/i),
         ).toBeInTheDocument()
 
         // with a dropdown having the list of available coupons

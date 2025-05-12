@@ -257,7 +257,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
 </div>
 `;
 
-exports[`<AutomateNavbar /> render() should render automate navbar for admin without Automate and without legacy automate features 1`] = `
+exports[`<AutomateNavbar /> render() should render automate navbar for admin without AI Agent and without legacy automate features 1`] = `
 <div>
   <div
     class="sidebar"
@@ -546,7 +546,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
 </div>
 `;
 
-exports[`<AutomateNavbar /> render() should render automate navbar for agent without Automate and without legacy automate features 1`] = `
+exports[`<AutomateNavbar /> render() should render automate navbar for agent without AI Agent and without legacy automate features 1`] = `
 <div>
   <div
     class="sidebar"

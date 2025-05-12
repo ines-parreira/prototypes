@@ -144,7 +144,7 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                                     }}
                                     leadingIcon="bolt"
                                 >
-                                    Go to Automate settings
+                                    Go to AI Agent settings
                                 </Button>
                             ) : (
                                 <Button
@@ -162,7 +162,7 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                                         icon="warning"
                                         className={css.connectStoreWarning}
                                     >
-                                        Connect store to enable Automate
+                                        Connect store to enable AI Agent
                                     </ButtonIconLabel>
                                 </Button>
                             )

@@ -170,7 +170,7 @@ const ContactFormSettingsView = (): JSX.Element => {
                                         icon="warning"
                                         className={css.connectStoreWarning}
                                     >
-                                        Connect store to enable Automate
+                                        Connect store to enable AI Agent
                                     </ButtonIconLabel>
                                 </Button>
                             )
@@ -250,7 +250,7 @@ const ContactFormSettingsView = (): JSX.Element => {
                         <>
                             <AutomateSubscriptionButton
                                 fillStyle="ghost"
-                                label="Upgrade to Automate"
+                                label="Upgrade to AI Agent"
                                 onClick={() => {
                                     logContactFormEvent('Upsell')
                                     setIsAutomationModalOpened(true)

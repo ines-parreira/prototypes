@@ -13,7 +13,7 @@ exports[`<ConnectToShopSection /> renders in disabled state while fetching data 
     <p
       class="connectDescription"
     >
-      A store connection is required to use Automate features and enable auto-embedding for Shopify stores.
+      A store connection is required to use AI Agent features and enable auto-embedding for Shopify stores.
     </p>
     <button
       aria-disabled="false"

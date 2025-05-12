@@ -962,8 +962,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                 </Label>
                                 <div className={css.connectStoreDescription}>
                                     {state.showSelectStoreField
-                                        ? 'Connect a store to use Automate features in chat and to enable 1-click install for Shopify.'
-                                        : 'Connect a store to enable Automate features in chat. You can always connect a store later.'}
+                                        ? 'Connect a store to use AI Agent features in chat and to enable 1-click install for Shopify.'
+                                        : 'Connect a store to enable AI Agent features in chat. You can always connect a store later.'}
                                 </div>
                                 <StoreNameDropdown
                                     storeIntegrationId={storeIntegrationId}

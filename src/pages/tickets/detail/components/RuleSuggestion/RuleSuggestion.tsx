@@ -203,7 +203,7 @@ export default function RuleSuggestion({ ticket, isCollapsed }: Props) {
                 notify({
                     status: NotificationStatus.Success,
                     message:
-                        'We notified your account admin of your interest in an Automate demo.',
+                        'We notified your account admin of your interest in an AI Agent demo.',
                 }),
             )
         }
@@ -300,8 +300,8 @@ export default function RuleSuggestion({ ticket, isCollapsed }: Props) {
             Wish you could free up time to focus on higher impact tickets?
             Repetitive tickets like these can be fully Automated.{' '}
             {canInstall
-                ? 'Book an Automate demo to learn more.'
-                : 'Ask your account admin to book an Automate demo and learn more.'}
+                ? 'Book an AI Agent demo to learn more.'
+                : 'Ask your account admin to book an AI Agent demo and learn more.'}
         </span>
     )
     return (

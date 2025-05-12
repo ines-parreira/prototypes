@@ -56,7 +56,7 @@ const CancelAAOModal = ({
     const automateFeatures = useAutomationFeatures()
 
     const from: string = currentUser.get('email')
-    const subject = `Remove Automate - ${domain}`
+    const subject = `Remove AI Agent - ${domain}`
 
     const [isOpenModalWithReasons, setIsOpenModalWithReasons] = useState(false)
 
@@ -130,7 +130,7 @@ const CancelAAOModal = ({
                         </div>
                     )}
                     <div>
-                        {`You'll lose access to Automate and AI features like:`}
+                        {`You'll lose access to AI Agent and AI features like:`}
                     </div>
                     <div className={css.features}>
                         {automateFeatures.map((feature) => (

@@ -38,13 +38,13 @@ export const AutomatedInteractionsMetric = ({
                             {' '}
                             Automation Playbook
                         </a>{' '}
-                        for tactical tips on how to use Automate to its full
+                        for tactical tips on how to use AI Agent to its full
                         potential. Visit
                         <a target="blank" href="/app/settings/billing">
                             {' '}
                             billing
                         </a>{' '}
-                        to make sure your Automate plan is the right size for
+                        to make sure your AI Agent plan is the right size for
                         you.
                     </PerformanceTip>
                 )

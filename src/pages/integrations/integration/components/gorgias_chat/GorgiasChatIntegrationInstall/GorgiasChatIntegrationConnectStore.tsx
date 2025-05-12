@@ -148,8 +148,8 @@ const GorgiasChatIntegrationConnectStore = ({
                                 confirmationButtonIntent="destructive"
                                 confirmationContent={
                                     isOneClickInstallation
-                                        ? 'Disconnecting this store will remove Automate features and uninstall the chat from your store, removing it from all pages.'
-                                        : 'Disconnecting this store will remove Automate features from your chat widget.'
+                                        ? 'Disconnecting this store will remove AI Agent features and uninstall the chat from your store, removing it from all pages.'
+                                        : 'Disconnecting this store will remove AI Agent features from your chat widget.'
                                 }
                                 confirmationTitle={<b>Disconnect store?</b>}
                                 confirmLabel="Disconnect"
@@ -177,8 +177,8 @@ const GorgiasChatIntegrationConnectStore = ({
                 <ModalBody className={css.modalBody}>
                     <div>
                         {storeIntegration
-                            ? 'A store connection is required to use Automate features and enable auto-embedding for Shopify stores.'
-                            : 'Connect a store to use Automate features in chat and to enable 1-click install for Shopify.'}
+                            ? 'A store connection is required to use AI Agent features and enable auto-embedding for Shopify stores.'
+                            : 'Connect a store to use AI Agent features in chat and to enable 1-click install for Shopify.'}
                     </div>
                     <StoreNameDropdown
                         gorgiasChatIntegrations={fromJS(

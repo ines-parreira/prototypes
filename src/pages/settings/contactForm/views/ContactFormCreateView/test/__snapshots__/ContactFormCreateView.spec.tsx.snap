@@ -245,7 +245,7 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
             <p
               class="body-regular description mb8"
             >
-              A store connection is required to use Automate features and enable auto-embedding for Shopify stores.
+              A store connection is required to use AI Agent features and enable auto-embedding for Shopify stores.
             </p>
             <div>
               <div

@@ -16,11 +16,11 @@ describe('<AutoCloseSpamModal/>', () => {
         handleInstallationError: _noop,
         handleDefaultSettings: _noop,
     }
-    it('should render the autoclose spam body when Automate is subscribed', () => {
+    it('should render the autoclose spam body when AI Agent is subscribed', () => {
         const { container } = render(<AutoCloseSpamModal {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })
-    it('should render the autoclose spam body when Automate is not subscribed', () => {
+    it('should render the autoclose spam body when AI Agent is not subscribed', () => {
         const { container } = render(<AutoCloseSpamModal {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })

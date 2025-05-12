@@ -18,7 +18,7 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
           class="align-items-center"
         >
           <span>
-            Automate overview
+            AI Agent overview
           </span>
         </h1>
         <div>
@@ -339,7 +339,7 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                         href="https://link.gorgias.com/aut"
                         target="blank"
                       >
-                        Automate features
+                        AI Agent features
                       </a>
                        
                       to improve your automation rate across all of your channels.
@@ -418,7 +418,7 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                         Automation Playbook
                       </a>
                        
-                      for tactical tips on how to use Automate to its full potential. Visit
+                      for tactical tips on how to use AI Agent to its full potential. Visit
                       <a
                         href="/app/settings/billing"
                         target="blank"
@@ -427,7 +427,7 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                         billing
                       </a>
                        
-                      to make sure your Automate plan is the right size for you.
+                      to make sure your AI Agent plan is the right size for you.
                     </div>
                   </div>
                 </div>
@@ -797,7 +797,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                 class="align-items-center"
               >
                 <span>
-                  Automate overview
+                  AI Agent overview
                 </span>
               </h1>
               <div>
@@ -1118,7 +1118,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                               href="https://link.gorgias.com/aut"
                               target="blank"
                             >
-                              Automate features
+                              AI Agent features
                             </a>
                              
                             to improve your automation rate across all of your channels.
@@ -1197,7 +1197,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                               Automation Playbook
                             </a>
                              
-                            for tactical tips on how to use Automate to its full potential. Visit
+                            for tactical tips on how to use AI Agent to its full potential. Visit
                             <a
                               href="/app/settings/billing"
                               target="blank"
@@ -1206,7 +1206,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                               billing
                             </a>
                              
-                            to make sure your Automate plan is the right size for you.
+                            to make sure your AI Agent plan is the right size for you.
                           </div>
                         </div>
                       </div>
@@ -1692,7 +1692,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
               class="align-items-center"
             >
               <span>
-                Automate overview
+                AI Agent overview
               </span>
             </h1>
             <div>
@@ -2013,7 +2013,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                             href="https://link.gorgias.com/aut"
                             target="blank"
                           >
-                            Automate features
+                            AI Agent features
                           </a>
                            
                           to improve your automation rate across all of your channels.
@@ -2092,7 +2092,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                             Automation Playbook
                           </a>
                            
-                          for tactical tips on how to use Automate to its full potential. Visit
+                          for tactical tips on how to use AI Agent to its full potential. Visit
                           <a
                             href="/app/settings/billing"
                             target="blank"
@@ -2101,7 +2101,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                             billing
                           </a>
                            
-                          to make sure your Automate plan is the right size for you.
+                          to make sure your AI Agent plan is the right size for you.
                         </div>
                       </div>
                     </div>
@@ -2524,7 +2524,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                 class="align-items-center"
               >
                 <span>
-                  Automate overview
+                  AI Agent overview
                 </span>
               </h1>
               <div>
@@ -2845,7 +2845,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                               href="https://link.gorgias.com/aut"
                               target="blank"
                             >
-                              Automate features
+                              AI Agent features
                             </a>
                              
                             to improve your automation rate across all of your channels.
@@ -2924,7 +2924,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                               Automation Playbook
                             </a>
                              
-                            for tactical tips on how to use Automate to its full potential. Visit
+                            for tactical tips on how to use AI Agent to its full potential. Visit
                             <a
                               href="/app/settings/billing"
                               target="blank"
@@ -2933,7 +2933,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                               billing
                             </a>
                              
-                            to make sure your Automate plan is the right size for you.
+                            to make sure your AI Agent plan is the right size for you.
                           </div>
                         </div>
                       </div>
@@ -3419,7 +3419,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
               class="align-items-center"
             >
               <span>
-                Automate overview
+                AI Agent overview
               </span>
             </h1>
             <div>
@@ -3740,7 +3740,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                             href="https://link.gorgias.com/aut"
                             target="blank"
                           >
-                            Automate features
+                            AI Agent features
                           </a>
                            
                           to improve your automation rate across all of your channels.
@@ -3819,7 +3819,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                             Automation Playbook
                           </a>
                            
-                          for tactical tips on how to use Automate to its full potential. Visit
+                          for tactical tips on how to use AI Agent to its full potential. Visit
                           <a
                             href="/app/settings/billing"
                             target="blank"
@@ -3828,7 +3828,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                             billing
                           </a>
                            
-                          to make sure your Automate plan is the right size for you.
+                          to make sure your AI Agent plan is the right size for you.
                         </div>
                       </div>
                     </div>
@@ -4251,7 +4251,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                 class="align-items-center"
               >
                 <span>
-                  Automate overview
+                  AI Agent overview
                 </span>
               </h1>
               <div>
@@ -4572,7 +4572,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                               href="https://link.gorgias.com/aut"
                               target="blank"
                             >
-                              Automate features
+                              AI Agent features
                             </a>
                              
                             to improve your automation rate across all of your channels.
@@ -4651,7 +4651,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                               Automation Playbook
                             </a>
                              
-                            for tactical tips on how to use Automate to its full potential. Visit
+                            for tactical tips on how to use AI Agent to its full potential. Visit
                             <a
                               href="/app/settings/billing"
                               target="blank"
@@ -4660,7 +4660,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                               billing
                             </a>
                              
-                            to make sure your Automate plan is the right size for you.
+                            to make sure your AI Agent plan is the right size for you.
                           </div>
                         </div>
                       </div>
@@ -5146,7 +5146,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
               class="align-items-center"
             >
               <span>
-                Automate overview
+                AI Agent overview
               </span>
             </h1>
             <div>
@@ -5467,7 +5467,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                             href="https://link.gorgias.com/aut"
                             target="blank"
                           >
-                            Automate features
+                            AI Agent features
                           </a>
                            
                           to improve your automation rate across all of your channels.
@@ -5546,7 +5546,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                             Automation Playbook
                           </a>
                            
-                          for tactical tips on how to use Automate to its full potential. Visit
+                          for tactical tips on how to use AI Agent to its full potential. Visit
                           <a
                             href="/app/settings/billing"
                             target="blank"
@@ -5555,7 +5555,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                             billing
                           </a>
                            
-                          to make sure your Automate plan is the right size for you.
+                          to make sure your AI Agent plan is the right size for you.
                         </div>
                       </div>
                     </div>
@@ -5974,7 +5974,7 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
           class="align-items-center"
         >
           <span>
-            Automate overview
+            AI Agent overview
           </span>
         </h1>
         <div>
@@ -6295,7 +6295,7 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                         href="https://link.gorgias.com/aut"
                         target="blank"
                       >
-                        Automate features
+                        AI Agent features
                       </a>
                        
                       to improve your automation rate across all of your channels.
@@ -6374,7 +6374,7 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                         Automation Playbook
                       </a>
                        
-                      for tactical tips on how to use Automate to its full potential. Visit
+                      for tactical tips on how to use AI Agent to its full potential. Visit
                       <a
                         href="/app/settings/billing"
                         target="blank"
@@ -6383,7 +6383,7 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                         billing
                       </a>
                        
-                      to make sure your Automate plan is the right size for you.
+                      to make sure your AI Agent plan is the right size for you.
                     </div>
                   </div>
                 </div>
@@ -6732,7 +6732,7 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
           class="align-items-center"
         >
           <span>
-            Automate overview
+            AI Agent overview
           </span>
         </h1>
         <div>
@@ -7053,7 +7053,7 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                         href="https://link.gorgias.com/aut"
                         target="blank"
                       >
-                        Automate features
+                        AI Agent features
                       </a>
                        
                       to improve your automation rate across all of your channels.
@@ -7132,7 +7132,7 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                         Automation Playbook
                       </a>
                        
-                      for tactical tips on how to use Automate to its full potential. Visit
+                      for tactical tips on how to use AI Agent to its full potential. Visit
                       <a
                         href="/app/settings/billing"
                         target="blank"
@@ -7141,7 +7141,7 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                         billing
                       </a>
                        
-                      to make sure your Automate plan is the right size for you.
+                      to make sure your AI Agent plan is the right size for you.
                     </div>
                   </div>
                 </div>
@@ -7507,7 +7507,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
           class="align-items-center"
         >
           <span>
-            Automate overview
+            AI Agent overview
           </span>
         </h1>
         <div>
@@ -7828,7 +7828,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                         href="https://link.gorgias.com/aut"
                         target="blank"
                       >
-                        Automate features
+                        AI Agent features
                       </a>
                        
                       to improve your automation rate across all of your channels.
@@ -7907,7 +7907,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                         Automation Playbook
                       </a>
                        
-                      for tactical tips on how to use Automate to its full potential. Visit
+                      for tactical tips on how to use AI Agent to its full potential. Visit
                       <a
                         href="/app/settings/billing"
                         target="blank"
@@ -7916,7 +7916,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                         billing
                       </a>
                        
-                      to make sure your Automate plan is the right size for you.
+                      to make sure your AI Agent plan is the right size for you.
                     </div>
                   </div>
                 </div>
@@ -8282,7 +8282,7 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
           class="align-items-center"
         >
           <span>
-            Automate overview
+            AI Agent overview
           </span>
         </h1>
         <div>
@@ -8603,7 +8603,7 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                         href="https://link.gorgias.com/aut"
                         target="blank"
                       >
-                        Automate features
+                        AI Agent features
                       </a>
                        
                       to improve your automation rate across all of your channels.
@@ -8682,7 +8682,7 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                         Automation Playbook
                       </a>
                        
-                      for tactical tips on how to use Automate to its full potential. Visit
+                      for tactical tips on how to use AI Agent to its full potential. Visit
                       <a
                         href="/app/settings/billing"
                         target="blank"
@@ -8691,7 +8691,7 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                         billing
                       </a>
                        
-                      to make sure your Automate plan is the right size for you.
+                      to make sure your AI Agent plan is the right size for you.
                     </div>
                   </div>
                 </div>

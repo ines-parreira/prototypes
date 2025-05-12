@@ -6,8 +6,8 @@ export const HELP_URL =
 export const PAGE_TITLE_PERFORMANCE_BY_FEATURES = 'Performance by feature'
 export const PAGE_TITLE_OVERVIEW = 'Overview'
 export const PAGE_TITLE_AI_AGENT = 'AI Agent'
-export const PAGE_TITLE_AUTOMATE_PAYWALL = 'Automate overview'
-export const GORGIAS_AUTOMATE_BADGE = 'GORGIAS AUTOMATE'
+export const PAGE_TITLE_AUTOMATE_PAYWALL = 'AI Agent overview'
+export const GORGIAS_AUTOMATE_BADGE = 'GORGIAS AI Agent'
 
 export const ROUTE_OLD_PERFORMANCE_BY_FEATURES = 'automation-add-on-features'
 export const ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES = 'performance-by-features'

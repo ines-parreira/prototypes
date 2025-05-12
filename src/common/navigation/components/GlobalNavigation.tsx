@@ -79,9 +79,9 @@ export default function GlobalNavigation() {
                         hasRole(currentUser, UserRole.Agent) && (
                             <GlobalNavigationItem
                                 icon="bolt"
-                                label="Automate"
+                                label="AI Agent"
                                 isActive={activeItem === 'automate'}
-                                tooltip={<span>Automate</span>}
+                                tooltip={<span>AI Agent</span>}
                                 url="/app/automation"
                                 data-candu-id="global-navigation-menu-automation-page"
                             />

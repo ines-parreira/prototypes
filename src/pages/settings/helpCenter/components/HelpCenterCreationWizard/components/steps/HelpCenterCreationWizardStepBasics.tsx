@@ -396,7 +396,7 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
                         </Label>
                         <div className={css.connectStoreDescription}>
                             {isAutomate
-                                ? 'Connect a store to use Automate features and to enable auto-embedding to your website.'
+                                ? 'Connect a store to use AI Agent features and to enable auto-embedding to your website.'
                                 : newHelpCenter.platformType ===
                                     PlatformType.ECOMMERCE
                                   ? 'Connect a store to enable auto-embedding (Shopify only) to your website.'

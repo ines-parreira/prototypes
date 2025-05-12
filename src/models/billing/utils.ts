@@ -108,7 +108,7 @@ export function getProductLabel(plan: Plan): string | undefined {
 }
 
 const productNames: Record<ProductType, string> = {
-    [ProductType.Automation]: 'Automate',
+    [ProductType.Automation]: 'AI Agent',
     [ProductType.Helpdesk]: 'Helpdesk',
     [ProductType.SMS]: 'SMS',
     [ProductType.Voice]: 'Voice',
@@ -138,7 +138,7 @@ function getPlanPricePerCadence(plan: Plan): string {
  * @description
  *    Returns a string such as
  *    "2,000 tickets/month" for a Helpdesk plan
- *    "150 automated interactions/month" for an Automate plan
+ *    "150 automated interactions/month" for an AI Agent plan
  *    "25 tickets/month" for a Voice or Sms plan
  *    "25 clicks/month" for a Convert plan
  *
@@ -165,7 +165,7 @@ export function getPlanUnitsPerCadence(plan: Plan): string {
  * @description
  *    Returns a string such as
  *    "Pro, $360/month, 2,000 tickets/month" for a Helpdesk plan
- *    "$143/month, 150 automated interactions/month" for an Automate plan
+ *    "$143/month, 150 automated interactions/month" for an AI Agent plan
  *    "$20/month, 25 tickets/month" for a Voice or Sms plan
  *    "$20/month, 25 clicks/month" for a Convert plan
  *

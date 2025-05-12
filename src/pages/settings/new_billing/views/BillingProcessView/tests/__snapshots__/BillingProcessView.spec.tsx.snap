@@ -247,7 +247,7 @@ exports[`UsageAndPlansView should render 1`] = `
                   <div
                     class="heading-subsection-semibold"
                   >
-                    Automate
+                    AI Agent
                   </div>
                 </div>
                 <button

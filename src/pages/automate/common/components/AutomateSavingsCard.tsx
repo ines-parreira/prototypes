@@ -56,7 +56,7 @@ export const AutomateSavingsCard = ({
                 <div className={css.headings}>
                     <div className={css.wrapper}>
                         <h2 className={css.heading}>
-                            Automate saved your team
+                            AI Agent saved your team
                         </h2>
                         <div className={css.valuesContainer}>
                             <div className={css.values}>
@@ -104,7 +104,7 @@ export const AutomateSavingsCard = ({
                     <div className={css.divider} />
                     <div className={css.wrapper}>
                         <h2 className={css.heading}>
-                            Automate saved your customers
+                            AI Agent saved your customers
                         </h2>
                         <div className={css.valuesContainer}>
                             <div className={css.values}>
@@ -141,7 +141,7 @@ export const AutomateSavingsCard = ({
                                             In average resolution time
                                         </p>
                                         <HintTooltip
-                                            title="How much faster Gorgias Automate is helping your team resolve interactions, based on your average resolution time."
+                                            title="How much faster Gorgias AI Agent is helping your team resolve interactions, based on your average resolution time."
                                             link="https://link.gorgias.com/ec5"
                                         />
                                     </div>

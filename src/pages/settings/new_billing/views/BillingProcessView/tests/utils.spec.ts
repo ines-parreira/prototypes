@@ -59,7 +59,7 @@ describe('setHelpdeskNotification', () => {
 describe('setAutomationNotification', () => {
     const onClick = jest.fn()
 
-    it('renders new Automate subscription message', () => {
+    it('renders new AI Agent subscription message', () => {
         const oldPlan = undefined
         const newPlan = basicMonthlyAutomationPlan
 
@@ -87,7 +87,7 @@ describe('setAutomationNotification', () => {
             ...basicMonthlyAutomationPlan,
             amount: 20000,
             num_quota_tickets: 350,
-            name: 'New Automate Plan',
+            name: 'New AI Agent Plan',
         }
         const periodEnd = '2023-06-30'
         const cadence = Cadence.Month
@@ -113,7 +113,7 @@ describe('setAutomationNotification', () => {
             ...basicMonthlyAutomationPlan,
             amount: 1000,
             num_quota_tickets: 350,
-            name: 'New Automate Plan',
+            name: 'New AI Agent Plan',
         }
         const periodEnd = '2023-06-30'
         const cadence = Cadence.Month
@@ -128,7 +128,7 @@ describe('setAutomationNotification', () => {
         })
 
         expect(notification?.message).toContain(
-            `Your Automate subscription will change to <strong>${newPlan.num_quota_tickets} automated interactions/month</strong> on <strong>${periodEnd}</strong>.`,
+            `Your AI Agent subscription will change to <strong>${newPlan.num_quota_tickets} automated interactions/month</strong> on <strong>${periodEnd}</strong>.`,
         )
         expect(notification?.buttons?.length).toBe(0)
     })

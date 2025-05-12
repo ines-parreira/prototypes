@@ -85,23 +85,23 @@ describe('BillingScheduledDowngrades', () => {
         ],
         [
             basicMonthlyAutomationPlan,
-            'Your subscription to Automate will end at the end of your billing cycle on March 31st 2023.',
+            'Your subscription to AI Agent will end at the end of your billing cycle on March 31st 2023.',
         ],
         [
             basicYearlyAutomationPlan,
-            'Your subscription to Automate will end at the end of your billing cycle on March 31st 2023.',
+            'Your subscription to AI Agent will end at the end of your billing cycle on March 31st 2023.',
         ],
         [
             proMonthlyAutomationPlan,
-            'Your subscription to Automate will end at the end of your billing cycle on March 31st 2023.',
+            'Your subscription to AI Agent will end at the end of your billing cycle on March 31st 2023.',
         ],
         [
             advancedMonthlyAutomatePlan,
-            'Your subscription to Automate will end at the end of your billing cycle on March 31st 2023.',
+            'Your subscription to AI Agent will end at the end of your billing cycle on March 31st 2023.',
         ],
         [
             automate05YearlyMeteredPlan,
-            'Your subscription to Automate will end at the end of your billing cycle on March 31st 2023.',
+            'Your subscription to AI Agent will end at the end of your billing cycle on March 31st 2023.',
         ],
         [
             voicePlan1,

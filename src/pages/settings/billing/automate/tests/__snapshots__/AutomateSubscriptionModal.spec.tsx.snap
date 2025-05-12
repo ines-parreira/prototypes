@@ -53,7 +53,7 @@ exports[`<AutomateSubscriptionModal /> should render for customers already with 
               <h5
                 class="modal-title"
               >
-                Manage Automate
+                Manage AI Agent
               </h5>
               <button
                 aria-label="Close"
@@ -84,7 +84,7 @@ exports[`<AutomateSubscriptionModal /> should render for customers already with 
                       class="title"
                     >
                       Ready to upgrade with 
-                      Automate
+                      AI Agent
                       ?
                     </div>
                   </div>
@@ -382,7 +382,7 @@ exports[`<AutomateSubscriptionModal /> should render the modal 1`] = `
               <h5
                 class="modal-title"
               >
-                Subscribe to Automate
+                Subscribe to AI Agent
               </h5>
               <button
                 aria-label="Close"
@@ -413,7 +413,7 @@ exports[`<AutomateSubscriptionModal /> should render the modal 1`] = `
                       class="title"
                     >
                       Ready to upgrade with 
-                      Automate
+                      AI Agent
                       ?
                     </div>
                   </div>

@@ -193,7 +193,7 @@ const ROICalculator = () => {
         }
     }, [salaryType])
 
-    // Calculate the cost without and with Automate and the saved amount in percentage
+    // Calculate the cost without and with AI Agent and the saved amount in percentage
     useEffect(() => {
         const salary = salaryValue.replace(/[^0-9.]/g, '')
         const agentCostPerTicket =
@@ -465,7 +465,7 @@ const ROICalculator = () => {
                     <div className={css.resultRowBackground}>
                         <div className={css.withoutAutomate}>
                             <div className={css.resultTitle}>
-                                Without Automate
+                                Without AI Agent
                             </div>
                             <div
                                 className={classNames(

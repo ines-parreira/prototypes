@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AutoReplyFAQModal/> should render the autoclose spam body when Automate is subscribed 1`] = `
+exports[`<AutoReplyFAQModal/> should render the autoclose spam body when AI Agent is subscribed 1`] = `
 <div
   class="managedRule autoReplyFAQ"
 >
@@ -212,7 +212,7 @@ exports[`<AutoReplyFAQModal/> should render the autoclose spam body when Automat
 </div>
 `;
 
-exports[`<AutoReplyFAQModal/> should render the autoclose spam body when Automate is subscribed 2`] = `
+exports[`<AutoReplyFAQModal/> should render the autoclose spam body when AI Agent is subscribed 2`] = `
 <div
   class="managedRule autoReplyFAQ"
 >

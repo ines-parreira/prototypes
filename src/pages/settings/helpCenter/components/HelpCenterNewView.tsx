@@ -477,7 +477,7 @@ const HelpCenterNewView = ({
                                     // this type cast is safe as all values are string
                                     handleChangeShopifyStore(value as string)
                                 }}
-                                caption="Connect this Help Center to a Shopify store to enable Automate features."
+                                caption="Connect this Help Center to a Shopify store to enable AI Agent features."
                             />
                         )}
                     </section>

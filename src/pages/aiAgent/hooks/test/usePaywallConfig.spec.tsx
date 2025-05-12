@@ -25,14 +25,14 @@ describe('usePaywallConfig', () => {
         )
 
         const expectedConfig: PaywallFeature = {
-            title: 'with Automate features',
+            title: '',
             subtitle:
                 'Introducing AI Agent: Your new team member that drives sales and automates support in 1:1 conversations.',
             descriptions: [
                 'Leads customers to fast resolutions in seconds, not hours.',
                 'Enhances team productivity, reducing workload & response times by automating up to 60% of your tickets.',
                 'Offers tailored discounts and product recommendations to drive personalized shopping experiences.',
-                'Automate features: Flows with logic to answer FAQs, suggest products, and manage orders by status.',
+                'AI Agent features: Flows with logic to answer FAQs, suggest products, and manage orders by status.',
             ],
             toggleElements: [
                 {
@@ -138,14 +138,14 @@ describe('usePaywallConfig', () => {
         )
 
         const expectedConfig: PaywallFeature = {
-            title: 'with Automate features',
+            title: '',
             subtitle:
                 'Introducing AI Agent: Your new team member that drives sales and automates support in 1:1 conversations.',
             descriptions: [
                 'Leads customers to fast resolutions in seconds, not hours.',
                 'Enhances team productivity, reducing workload & response times by automating up to 60% of your tickets.',
                 'Offers tailored discounts and product recommendations to drive personalized shopping experiences.',
-                'Automate features: Flows with logic to answer FAQs, suggest products, and manage orders by status.',
+                'AI Agent features: Flows with logic to answer FAQs, suggest products, and manage orders by status.',
             ],
             toggleElements: [
                 {

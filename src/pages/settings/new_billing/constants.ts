@@ -33,7 +33,7 @@ export const PRODUCT_INFO = {
         bannerLink: '/app/settings',
     },
     [ProductType.Automation]: {
-        title: 'Automate',
+        title: 'AI Agent',
         icon: 'bolt',
         counter: 'automated interactions',
         perTicket: 'per automated interaction',

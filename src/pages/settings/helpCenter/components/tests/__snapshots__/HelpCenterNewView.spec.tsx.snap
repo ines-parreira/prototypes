@@ -558,7 +558,7 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
             <div
               class="caption"
             >
-              Connect this Help Center to a Shopify store to enable Automate features.
+              Connect this Help Center to a Shopify store to enable AI Agent features.
             </div>
           </div>
         </section>

@@ -25,7 +25,7 @@ const HelpCenterWizardOrderManagement = ({
                 Order management
             </div>
             <div className="mb-4">
-                Cards displayed are set globally for all channels from Automate
+                Cards displayed are set globally for all channels from AI Agent
                 settings.
             </div>
             <ToggleInput

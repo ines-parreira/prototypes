@@ -112,7 +112,7 @@ describe('chatsApplicationAutomationSettings reducers', () => {
     })
 
     describe('chatApplicationAutomationSettingsUpdated action', () => {
-        it('updates existing application Automate settings in the state', () => {
+        it('updates existing application AI Agent settings in the state', () => {
             const state = reducer(
                 {
                     [applicationAutomationSettings1.applicationId.toString()]:
@@ -157,7 +157,7 @@ describe('chatsApplicationAutomationSettings reducers', () => {
             })
         })
 
-        it('adds new application Automate settings in the state', () => {
+        it('adds new application AI Agent settings in the state', () => {
             const state = reducer(
                 {
                     [applicationAutomationSettings1.applicationId.toString()]:

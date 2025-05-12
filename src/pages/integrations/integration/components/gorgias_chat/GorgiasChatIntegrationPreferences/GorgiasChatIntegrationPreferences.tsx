@@ -1026,7 +1026,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends Component<
                                             }
                                         />
                                         <p className="mb-3">
-                                            Automate features are always
+                                            AI Agent features are always
                                             available, if enabled. When live
                                             chat is unavailable, customers can
                                             message your team with{' '}

@@ -429,7 +429,7 @@ const HelpCenterCreationWizardStepAutomate = ({ helpCenter }: Props) => {
                 <div>
                     <Label isRequired={isStoreRequired}>Connect a store</Label>
                     <div className={css.connectStoreDescription}>
-                        A store connection is required to enable Automate
+                        A store connection is required to enable AI Agent
                         features.
                     </div>
                     <SelectField

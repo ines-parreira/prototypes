@@ -79,8 +79,8 @@ describe('usePaywallConfig', () => {
         )
 
         const expectedConfig: PaywallFeature = {
-            headerTitle: 'Automate overview',
-            paywallLogoAlt: 'Gorgias Automate',
+            headerTitle: 'AI Agent overview',
+            paywallLogoAlt: 'Gorgias AI Agent',
             paywallLogo:
                 'https://mockedurl.com/img/self-service/automate-logo.svg',
             paywallTitle:
@@ -176,7 +176,7 @@ describe('usePaywallConfig', () => {
             paywallLogo: '',
             paywallLogoAlt: 'Gorgias Chat Preview',
             paywallTitle:
-                'Connect a store to your Chat to use Automate features',
+                'Connect a store to your Chat to use AI Agent features',
             showRoiCalculator: false,
             slidesData: [
                 {
@@ -199,7 +199,7 @@ describe('usePaywallConfig', () => {
             paywallLogo: '',
             paywallLogoAlt: 'Gorgias Contact Form Preview',
             paywallTitle:
-                'Connect a Contact Form to your store to use Automate features',
+                'Connect a Contact Form to your store to use AI Agent features',
             showRoiCalculator: false,
             hideLearnMore: true,
             descriptions: [
@@ -230,7 +230,7 @@ describe('usePaywallConfig', () => {
             paywallLogo: '',
             paywallLogoAlt: 'Gorgias Help Center Preview',
             paywallTitle:
-                'Connect a Help Center to your store to use Automate features',
+                'Connect a Help Center to your store to use AI Agent features',
             showRoiCalculator: false,
             hideLearnMore: true,
             descriptions: [

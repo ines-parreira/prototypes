@@ -17,11 +17,11 @@ describe('<AutoReplyReturnModal/>', () => {
         handleInstallationError: _noop,
         handleDefaultSettings: _noop,
     }
-    it('should render the instalation modal when Automate is subscribed', () => {
+    it('should render the instalation modal when AI Agent is subscribed', () => {
         const { container } = render(<AutoReplyReturnModal {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })
-    it('should render the instalation modal when Automate is not subscribed', () => {
+    it('should render the instalation modal when AI Agent is not subscribed', () => {
         const { container } = render(<AutoReplyReturnModal {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })

@@ -83,7 +83,7 @@ describe('<AutomateNavbar />', () => {
     )
 
     describe('render()', () => {
-        it('should render automate navbar for agent without Automate and without legacy automate features', () => {
+        it('should render automate navbar for agent without AI Agent and without legacy automate features', () => {
             const { container } = render(
                 <Provider
                     store={mockStore({
@@ -142,7 +142,7 @@ describe('<AutomateNavbar />', () => {
             expect(container).toMatchSnapshot()
         })
 
-        it('should render automate navbar for admin without Automate and without legacy automate features', () => {
+        it('should render automate navbar for admin without AI Agent and without legacy automate features', () => {
             const { container } = render(
                 <Provider
                     store={mockStore({

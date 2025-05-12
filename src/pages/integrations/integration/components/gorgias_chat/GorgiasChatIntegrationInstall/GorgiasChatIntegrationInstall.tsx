@@ -175,7 +175,7 @@ const GorgiasChatIntegrationInstall = ({
                                 Connect store
                             </div>
                             <div className={css.connectStoreDescription}>
-                                A store connection is required to use Automate
+                                A store connection is required to use AI Agent
                                 features in chat and to enable{' '}
                                 {shouldUseThemeAppExtensionInstallation
                                     ? 'quick'

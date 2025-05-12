@@ -51,7 +51,7 @@ describe('AutomateSubscriptionButton', () => {
         expect(mockUpgradeButton).toHaveBeenLastCalledWith(minProps)
     })
 
-    it('should pass label "Upgrade" and undefined onClick and the state with Automate checked and basic plan modal opened to the upgrade button for the starter plan', () => {
+    it('should pass label "Upgrade" and undefined onClick and the state with AI Agent checked and basic plan modal opened to the upgrade button for the starter plan', () => {
         const availablePlansWithStarterPlan = _cloneDeep(products)
         products[0].prices.push(starterHelpdeskPlan)
 

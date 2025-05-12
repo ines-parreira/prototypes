@@ -93,7 +93,7 @@ exports[`<HelpCenterStartView /> should render the About component 1`] = `
             <p />
             <p />
             <h2>
-              For Automate subscribers only:
+              For AI Agent subscribers only:
             </h2>
             <ul>
               <li>

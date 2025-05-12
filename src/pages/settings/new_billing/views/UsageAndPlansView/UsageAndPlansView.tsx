@@ -306,7 +306,7 @@ const UsageAndPlansView = ({
                                 className={css.tooltip}
                                 autohide={false}
                             >
-                                To change billing frequency, update Automate to
+                                To change billing frequency, update AI Agent to
                                 a non-legacy plan
                             </Tooltip>
                         </div>

@@ -109,7 +109,7 @@ describe('<HelpCenterCreationWizardStepBasics />', () => {
         expect(platformTypeLabel).not.toBeInTheDocument()
     })
 
-    it('renders wizard with platform type when non Automate account', () => {
+    it('renders wizard with platform type when non AI Agent account', () => {
         renderComponent({ automateType: HelpCenterAutomateType.NON_AUTOMATE })
 
         const platformTypeLabel = screen.getByText(/Select a platform type/i)

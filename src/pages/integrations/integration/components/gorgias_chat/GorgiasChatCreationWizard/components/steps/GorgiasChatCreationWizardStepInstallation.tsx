@@ -237,7 +237,7 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                                 Connect store
                             </div>
                             <p className={css.sectionHeadingLabel}>
-                                Connect a store to use Automate features in chat
+                                Connect a store to use AI Agent features in chat
                                 and to enable{' '}
                                 {shouldUseThemeAppExtensionInstallation
                                     ? 'quick'

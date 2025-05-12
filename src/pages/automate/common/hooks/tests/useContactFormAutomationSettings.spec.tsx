@@ -18,7 +18,7 @@ describe('useContactFormAutomationSettings()', () => {
         order_management: { enabled: false },
     }
 
-    it('should return Automate settings', () => {
+    it('should return AI Agent settings', () => {
         mockUseContactFormsAutomationSettings.mockReturnValue({
             contactFormsAutomationSettings: {
                 [contactFormId]: automationSettings,
@@ -33,7 +33,7 @@ describe('useContactFormAutomationSettings()', () => {
         expect(result.current.automationSettings).toBe(automationSettings)
     })
 
-    it('should return default Automate settings', () => {
+    it('should return default AI Agent settings', () => {
         mockUseContactFormsAutomationSettings.mockReturnValue({
             contactFormsAutomationSettings: {},
             handleContactFormAutomationSettingsUpdate: jest.fn(),
@@ -48,7 +48,7 @@ describe('useContactFormAutomationSettings()', () => {
         )
     })
 
-    it('should allow to update Automate settings', () => {
+    it('should allow to update AI Agent settings', () => {
         const mockHandleContactFormAutomationSettingsUpdate = jest.fn()
 
         mockUseContactFormsAutomationSettings.mockReturnValue({
@@ -73,7 +73,7 @@ describe('useContactFormAutomationSettings()', () => {
         )
     })
 
-    it('should allow to update Automate settings with notification message', () => {
+    it('should allow to update AI Agent settings with notification message', () => {
         const mockHandleContactFormAutomationSettingsUpdate = jest.fn()
 
         mockUseContactFormsAutomationSettings.mockReturnValue({

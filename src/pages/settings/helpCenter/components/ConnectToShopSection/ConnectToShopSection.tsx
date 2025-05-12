@@ -61,7 +61,7 @@ export const ConnectToShopSection = ({
             <h3 className={css.title}>Connect store</h3>
 
             <p className={css.connectDescription}>
-                A store connection is required to use Automate features and
+                A store connection is required to use AI Agent features and
                 enable auto-embedding for Shopify stores.
             </p>
 
@@ -84,7 +84,7 @@ export const ConnectToShopSection = ({
                         </Button>
                         <ConfirmButton
                             confirmationButtonIntent="destructive"
-                            confirmationContent="Disconnecting this help center from the store will uninstall it, and make Auto-embedding and Automate features unavailable."
+                            confirmationContent="Disconnecting this help center from the store will uninstall it, and make Auto-embedding and AI Agent features unavailable."
                             confirmationTitle={<b>Disconnect store?</b>}
                             confirmLabel="Disconnect"
                             fillStyle="ghost"
@@ -187,7 +187,7 @@ export const ConnectToShopSection = ({
             >
                 <>
                     <div className={css.selectStoreLabel}>
-                        A store connection is required to use Automate features
+                        A store connection is required to use AI Agent features
                         and enable auto-embedding for Shopify stores.
                     </div>
                     {shopName && selectedShop !== shopName && showWarning && (

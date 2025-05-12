@@ -37,7 +37,7 @@ describe('isAutomate', () => {
         [basicMonthlyHelpdeskPlan, false],
         [basicMonthlyAutomationPlan, true],
     ])(
-        'should validate if the price is of Automate price',
+        'should validate if the price is of AI Agent price',
         (plan, expectedResult) => {
             expect(isAutomate(plan)).toBe(expectedResult)
         },

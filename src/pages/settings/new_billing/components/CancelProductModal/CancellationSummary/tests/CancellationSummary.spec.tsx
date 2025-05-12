@@ -92,7 +92,7 @@ describe('CancellationSummary', () => {
                         strickenOut: true,
                     },
                     {
-                        title: 'Automate',
+                        title: 'AI Agent',
                         label: null,
                         cadence: 'year',
                         quotaAmount: 100,
@@ -168,7 +168,7 @@ describe('CancellationSummary', () => {
                         strickenOut: false,
                     },
                     {
-                        title: 'Automate',
+                        title: 'AI Agent',
                         label: null,
                         cadence: 'year',
                         quotaAmount: 100,
@@ -253,7 +253,7 @@ describe('CancellationSummary', () => {
                         strickenOut: true,
                     },
                     {
-                        title: 'Automate',
+                        title: 'AI Agent',
                         label: null,
                         cadence: 'year',
                         quotaAmount: 100,

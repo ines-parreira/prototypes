@@ -217,7 +217,7 @@ describe('UpcomingInvoiceCard', () => {
                 availableCoupons: availableCoupons,
                 isModalOpen: true,
                 onCloseModal: expect.any(Function),
-                title: 'Apply Helpdesk and Automate coupon',
+                title: 'Apply Helpdesk and AI Agent coupon',
             },
             {},
         )
@@ -248,7 +248,7 @@ describe('UpcomingInvoiceCard', () => {
                 availableCoupons: availableCoupons,
                 isModalOpen: true,
                 onCloseModal: expect.any(Function),
-                title: 'Apply Helpdesk and Automate coupon',
+                title: 'Apply Helpdesk and AI Agent coupon',
             },
             {},
         )

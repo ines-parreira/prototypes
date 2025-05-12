@@ -136,7 +136,7 @@ describe('billing selectors', () => {
     })
 
     describe('getAvailableAutomatePlans', () => {
-        it('should return the Automate plans', () => {
+        it('should return the AI Agent plans', () => {
             const plans = selectors.getAvailableAutomatePlans(state)
 
             plans.forEach((plan) => {
@@ -184,7 +184,7 @@ describe('billing selectors', () => {
     })
 
     describe('getCurrentAutomationProduct', () => {
-        it('should return the current Automate product', () => {
+        it('should return the current AI Agent product', () => {
             expect(
                 selectors.getCurrentAutomatePlan({
                     ...state,
@@ -436,7 +436,7 @@ describe('billing selectors', () => {
     })
 
     describe('getAutomationPrices', () => {
-        it('should return the Automate prices', () => {
+        it('should return the AI Agent prices', () => {
             expect(selectors.getAvailableAutomatePlans(state)).toMatchSnapshot()
         })
     })

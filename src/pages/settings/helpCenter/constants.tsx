@@ -256,7 +256,7 @@ export const HELP_CENTER_STEPS_DESCRIPTIONS: Partial<
         ai: "View and edit pre-written articles generated from your customers' top asked questions. <b>You can import your own articles after onboarding.</b>",
     },
     [HelpCenterCreationWizardStep.Automate]:
-        'Start getting the most from Automate now.',
+        'Start getting the most from AI Agent now.',
 }
 
 export enum PlatformType {

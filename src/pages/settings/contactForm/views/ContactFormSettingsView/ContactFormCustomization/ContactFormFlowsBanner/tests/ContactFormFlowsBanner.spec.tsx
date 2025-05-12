@@ -65,7 +65,7 @@ describe('<ContactFormFlowsBanner />', () => {
         expect(container).toBeEmptyDOMElement()
     })
 
-    it('should not render banner if Automate settings are not loaded', () => {
+    it('should not render banner if AI Agent settings are not loaded', () => {
         mockUseContactFormAutomationSettings.mockReturnValue({
             automationSettings: CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS,
             isFetchPending: true,

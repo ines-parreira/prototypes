@@ -247,7 +247,7 @@ export default function UpcomingInvoiceCard({
                 ) : null}
             </div>
             <AddSalesCouponModal
-                title={'Apply Helpdesk and Automate coupon'}
+                title={'Apply Helpdesk and AI Agent coupon'}
                 onCloseModal={() => {
                     setIsModalOpen(false)
                 }}

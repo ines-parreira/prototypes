@@ -7,7 +7,7 @@ import { BaseAutomateMetricProps } from './types'
 import { getTrendProps, toDuration } from './utils'
 
 export const DECREASE_IN_RESOLUTION_TIME_TOOLTIP = {
-    title: 'How much faster Gorgias Automate is helping your team resolve interactions, based on your average resolution time.',
+    title: 'How much faster Gorgias AI Agent is helping your team resolve interactions, based on your average resolution time.',
     link: 'https://link.gorgias.com/ec5',
     linkText: 'How is it calculated?',
 }

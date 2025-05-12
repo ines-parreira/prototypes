@@ -90,7 +90,7 @@ export const HelpCenterNavigation: React.FC<Props> = ({
             <NavLink to={`${baseURL}/publish-track`}>Publish & Track</NavLink>
             {hasAutomate && (
                 <NavLink to={`${baseURL}/automate`}>
-                    Automate
+                    AI Agent
                     {!helpCenterShopName && (
                         <img
                             alt="status icon"
@@ -104,7 +104,7 @@ export const HelpCenterNavigation: React.FC<Props> = ({
                 <>
                     <AutomateSubscriptionButton
                         fillStyle="ghost"
-                        label="Upgrade to Automate"
+                        label="Upgrade to AI Agent"
                         onClick={() => {
                             logHelpCenterEvent('Upsell')
                             setIsAutomationModalOpened(true)

@@ -48,7 +48,7 @@ export const useMainNavigationItems = (
             },
             {
                 url: '/app/automation',
-                label: 'Automate',
+                label: 'AI Agent',
                 icon: 'bolt',
                 name: MenuItemName.Automate,
                 segmentProp: { link: 'automation' },

@@ -688,7 +688,7 @@ describe('UsageAndPlansView', () => {
         )
     })
 
-    it('should trigger call for meet AI agent notification if it has an active Automate subscription', () => {
+    it('should trigger call for meet AI agent notification if it has an active AI Agent subscription', () => {
         const alteredBilling = {
             ...mockedBilling,
             currentProductsUsage: {

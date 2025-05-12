@@ -28,7 +28,7 @@ const description: Partial<Record<GorgiasChatCreationWizardSteps, string>> = {
     [GorgiasChatCreationWizardSteps.Branding]:
         "Give the chat widget your brand's look and feel",
     [GorgiasChatCreationWizardSteps.Automate]:
-        'Quickly activate Automate features to start instantly answering common questions',
+        'Quickly activate AI Agent features to start instantly answering common questions',
     [GorgiasChatCreationWizardSteps.Installation]:
         'Install the chat widget on your website and make it available for customers',
 }
@@ -78,7 +78,7 @@ const GorgiasChatCreationWizardStep: React.FC<Props> = ({
             <div className={css.preview}>
                 {showPreviewPlaceholder ? (
                     <div className={css.previewPlaceholder}>
-                        Connect a store to use Automate features in Chat
+                        Connect a store to use AI Agent features in Chat
                     </div>
                 ) : (
                     <div className={css.previewCenter}>{preview}</div>

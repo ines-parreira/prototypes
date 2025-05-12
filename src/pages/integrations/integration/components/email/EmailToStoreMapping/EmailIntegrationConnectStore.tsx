@@ -109,7 +109,7 @@ const EmailIntegrationConnectStore = ({ integration }: Props) => {
         <div className={css.container}>
             <h3 className={css.header}>Connect Store</h3>
             <div className={css.description}>
-                A store connection is required to use Automate features with
+                A store connection is required to use AI Agent features with
                 this email address.
             </div>
             {storeIntegration ? (
@@ -181,7 +181,7 @@ const EmailIntegrationConnectStore = ({ integration }: Props) => {
                 />
                 <ModalBody className={css.modalBody}>
                     <div>
-                        Connect a store to use Automate features with this email
+                        Connect a store to use AI Agent features with this email
                         address.
                     </div>
                     <StoreNameDropdown

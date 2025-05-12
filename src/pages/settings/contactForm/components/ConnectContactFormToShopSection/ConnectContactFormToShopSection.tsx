@@ -44,7 +44,7 @@ export const ConnectContactFormToShopSection = ({
                     settingsCss.mb8,
                 )}
             >
-                A store connection is required to use Automate features and
+                A store connection is required to use AI Agent features and
                 enable auto-embedding for Shopify stores.
             </p>
 

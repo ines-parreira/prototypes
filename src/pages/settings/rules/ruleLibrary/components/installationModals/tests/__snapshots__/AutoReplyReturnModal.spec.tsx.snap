@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AutoReplyReturnModal/> should render the instalation modal when Automate is not subscribed 1`] = `
+exports[`<AutoReplyReturnModal/> should render the instalation modal when AI Agent is not subscribed 1`] = `
 <div
   class="managedRule autoReplyReturn"
 >
@@ -170,7 +170,7 @@ exports[`<AutoReplyReturnModal/> should render the instalation modal when Automa
 </div>
 `;
 
-exports[`<AutoReplyReturnModal/> should render the instalation modal when Automate is subscribed 1`] = `
+exports[`<AutoReplyReturnModal/> should render the instalation modal when AI Agent is subscribed 1`] = `
 <div
   class="managedRule autoReplyReturn"
 >

@@ -128,7 +128,7 @@ describe('<AutomateSubscriptionModal />', () => {
             { location: undefined },
         )
         expect(
-            screen.getByText(`Ready to upgrade with Automate?`),
+            screen.getByText(`Ready to upgrade with AI Agent?`),
         ).toBeInTheDocument()
     })
 })

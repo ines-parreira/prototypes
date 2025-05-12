@@ -179,7 +179,7 @@ describe('<TicketInfobarContainer />', () => {
         )
     })
 
-    it('should not show the AI Feedback tab when Automate feature not enabled', () => {
+    it('should not show the AI Feedback tab when AI Agent feature not enabled', () => {
         getHasAutomateMock.mockReturnValue(false)
 
         renderWithRouter(

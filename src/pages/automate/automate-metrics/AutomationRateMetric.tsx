@@ -55,7 +55,7 @@ export const AutomationRateMetric = ({
                     >
                         Set up all{' '}
                         <a target="blank" href="https://link.gorgias.com/aut">
-                            Automate features
+                            AI Agent features
                         </a>{' '}
                         to improve your automation rate across all of your
                         channels.

@@ -45,10 +45,10 @@ const mockStore = configureMockStore()
 const queryClient = mockQueryClient()
 describe('AutomatePaywallView', () => {
     const paywallConfig = {
-        headerTitle: 'Automate',
+        headerTitle: 'AI Agent',
         paywallLogo: 'logo-url',
         paywallLogoAlt: 'logo-alt',
-        paywallTitle: 'Automate Title',
+        paywallTitle: 'AI Agent Title',
         descriptions: ['Description 1', 'Description 2'],
         showRoiCalculator: true,
         slidesWidth: 500,
@@ -103,9 +103,9 @@ describe('AutomatePaywallView', () => {
             <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />,
         )
 
-        expect(screen.getByText('Automate')).toBeInTheDocument()
+        expect(screen.getByText('AI Agent')).toBeInTheDocument()
         expect(screen.getByAltText('logo-alt')).toBeInTheDocument()
-        expect(screen.getByText('Automate Title')).toBeInTheDocument()
+        expect(screen.getByText('AI Agent Title')).toBeInTheDocument()
         expect(screen.getByText('Description 1')).toBeInTheDocument()
         expect(screen.getByText('Description 2')).toBeInTheDocument()
         expect(
@@ -137,7 +137,7 @@ describe('AutomatePaywallView', () => {
             <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />,
         )
 
-        expect(screen.queryByText('Automate')).not.toBeInTheDocument()
+        expect(screen.queryByText('AI Agent')).not.toBeInTheDocument()
     })
 
     it('hide the logo when it is not provided', () => {

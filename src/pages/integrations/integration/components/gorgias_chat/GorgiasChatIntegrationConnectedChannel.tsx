@@ -36,8 +36,8 @@ const GorgiasChatIntegrationConnectedChannel = () => {
                     fillStyle="ghost"
                     label={
                         changeAutomateSettingButtomPosition
-                            ? 'Upgrade to Automate'
-                            : 'Upgrade your chat with automate'
+                            ? 'Upgrade to AI Agent'
+                            : 'Upgrade your chat with AI Agent'
                     }
                     onClick={() => {
                         logChatEvent('Upsell')

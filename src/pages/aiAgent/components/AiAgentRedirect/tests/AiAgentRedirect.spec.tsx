@@ -70,7 +70,7 @@ describe('RedirectToAiAgentStore', () => {
         }))
     })
 
-    test('redirects to overview page when user has Automate and a store', () => {
+    test('redirects to overview page when user has AI Agent and a store', () => {
         mockUseAppSelector.mockImplementation((selector) => {
             if (selector === getHasAutomate) return true
             if (selector === getShopifyIntegrationsSortedByName)

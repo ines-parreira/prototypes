@@ -295,7 +295,7 @@ describe('useMeetAiAgentNotifications', () => {
         ).not.toHaveBeenCalled()
     })
 
-    it('should call the custom hooks with enabled false if account does not have Automate subscription', () => {
+    it('should call the custom hooks with enabled false if account does not have AI Agent subscription', () => {
         mockGetHasAutomate.mockReturnValue(false)
 
         renderHook(() => useMeetAiAgentNotifications(), {
@@ -332,7 +332,7 @@ describe('useMeetAiAgentNotifications', () => {
         })
     })
 
-    it('should not trigger notification if account does not have Automate subscription', () => {
+    it('should not trigger notification if account does not have AI Agent subscription', () => {
         mockGetHasAutomate.mockReturnValue(false)
 
         renderHook(() => useMeetAiAgentNotifications(), {

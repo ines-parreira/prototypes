@@ -42,7 +42,7 @@ const AutomationSubscriptionAction = () => {
     return (
         <>
             <AutomateSubscriptionButton
-                label="Get Automate Features"
+                label="Get AI Agent Features"
                 size="small"
                 onClick={() => {
                     setIsAutomationSubscriptionModalOpen(true)

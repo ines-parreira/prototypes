@@ -148,7 +148,7 @@ export default function StatsNavbarView() {
                     </div>
                 </NavbarBlock>
             )}
-            <NavbarBlock icon="bolt" title="Automate">
+            <NavbarBlock icon="bolt" title="AI Agent">
                 <AutomateStatsNavbar
                     commonNavLinkProps={COMMON_NAV_LINK_PROPS}
                 />

@@ -219,7 +219,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                 <p
                   class="mb-3"
                 >
-                  Automate features are always available, if enabled. When live chat is unavailable, customers can message your team with
+                  AI Agent features are always available, if enabled. When live chat is unavailable, customers can message your team with
                    
                   <a
                     href="https://docs.gorgias.com/en-US/gorgias-chat---contact-form-88573"

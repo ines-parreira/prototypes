@@ -126,7 +126,7 @@ describe('useEnableArticleRecommendation', () => {
         expect(updateSelfServiceConfigurationSSP).not.toHaveBeenCalled()
     })
 
-    it('Should not call if Automate is not enabled', async () => {
+    it('Should not call if AI Agent is not enabled', async () => {
         ;(getHasAutomate as unknown as jest.Mock).mockReturnValue(false)
 
         const { result } = renderHook(useEnableArticleRecommendation, {

@@ -66,7 +66,7 @@ const useHelpCentersAutomationSettings = (
 
             void dispatch(
                 notify({
-                    message: 'Failed to fetch Automate settings',
+                    message: 'Failed to fetch AI Agent settings',
                     status: NotificationStatus.Error,
                 }),
             )
@@ -115,7 +115,7 @@ const useHelpCentersAutomationSettings = (
 
                 void dispatch(
                     notify({
-                        message: 'Failed to update Automate settings',
+                        message: 'Failed to update AI Agent settings',
                         status: NotificationStatus.Error,
                     }),
                 )

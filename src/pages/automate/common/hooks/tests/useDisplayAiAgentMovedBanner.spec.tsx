@@ -36,7 +36,7 @@ describe('useDisplayAiAgentMovedBanner', () => {
         mockUseAppSelector.mockReturnValue(true)
     })
 
-    it('should return true when accessing Automate pages with required conditions met', () => {
+    it('should return true when accessing AI Agent pages with required conditions met', () => {
         const { result } = renderHook(() => useDisplayAiAgentMovedBanner(), {
             wrapper,
         })

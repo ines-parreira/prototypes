@@ -119,7 +119,7 @@ export const useBillingPlans = ({
         [helpdeskAvailablePlansPriceIds, currentHelpdeskPlan],
     )
 
-    // Automate
+    // AI Agent
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
     const automateAvailablePlans = useAppSelector(
         getAvailableAutomatePlans,
@@ -518,7 +518,7 @@ export const useBillingPlans = ({
             }
         }
 
-        // handle subscribe for Automate plan
+        // handle subscribe for AI Agent plan
         if (selectedPlans[ProductType.Automation].isSelected) {
             if (isNewAutomationPlan && !isPlanCadenceChanged) {
                 const notification = setAutomationNotification({
@@ -580,16 +580,16 @@ export const useBillingPlans = ({
             }
         }
 
-        // update subscription for Helpdesk and Automate plans
+        // update subscription for Helpdesk and AI Agent plans
         if (Object.keys(plansToBeUpdated).length > 0) {
-            // Automate has been removed while in free trial
+            // AI Agent has been removed while in free trial
             if (
                 notifications.length === 0 &&
                 !!currentAutomatePlan &&
                 selectedPlans[ProductType.Automation].isSelected === false
             ) {
                 notifications.push({
-                    message: 'You have removed Automate from your subscription',
+                    message: 'You have removed AI Agent from your subscription',
                     status: NotificationStatus.Success,
                     style: NotificationStyle.Alert,
                 })

@@ -128,7 +128,7 @@ describe('<ContactFormEntrypointPreview />', () => {
 
         expect(screen.getByText('Write your message')).toBeInTheDocument()
     })
-    it('should render component with form when Contact Form does not have Automate subscription', () => {
+    it('should render component with form when Contact Form does not have AI Agent subscription', () => {
         mockGetHasAutomate.mockReturnValue(false)
         renderComponent({
             contactForm: {

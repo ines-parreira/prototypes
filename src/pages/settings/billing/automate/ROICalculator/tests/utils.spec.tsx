@@ -59,7 +59,7 @@ describe('formatValue', () => {
 })
 
 describe('getAutomateSubscriptionPrice', () => {
-    it('should get the Automate subscription price', () => {
+    it('should get the AI Agent subscription price', () => {
         const automateSubscriptionPrices = [
             {
                 num_quota_tickets: 1000,

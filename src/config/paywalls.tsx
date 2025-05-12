@@ -81,7 +81,7 @@ export const paywallConfigs: Partial<Record<AccountFeature, PaywallConfig>> = {
         header: PAGE_TITLE_AUTOMATE_PAYWALL,
         description: (
             <div>
-                With Gorgias Automate, you can track your automation performance
+                With Gorgias AI Agent, you can track your automation performance
                 and leverage insights to improve.
             </div>
         ),

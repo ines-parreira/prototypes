@@ -33,7 +33,7 @@ describe('<AutoReplyWismoModal/>', () => {
             helpCenter: { articles: {}, categories: {}, helpCenters: {} },
         } as unknown as RootState['entities'],
     })
-    it('should render the autoclose spam body when Automate is subscribed', () => {
+    it('should render the autoclose spam body when AI Agent is subscribed', () => {
         const { container } = render(
             <Provider store={store}>
                 <AutoReplyWismoModal {...minProps} />
@@ -41,7 +41,7 @@ describe('<AutoReplyWismoModal/>', () => {
         )
         expect(container.firstChild).toMatchSnapshot()
     })
-    it('should render the autoclose spam body when Automate is not subscribed', () => {
+    it('should render the autoclose spam body when AI Agent is not subscribed', () => {
         const { container } = render(
             <Provider store={store}>
                 <AutoReplyWismoModal {...minProps} />

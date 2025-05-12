@@ -144,8 +144,8 @@ const AutomateSubscriptionModal = ({
     const header = headerDescription
         ? headerDescription
         : hasAutomate
-          ? 'Manage Automate'
-          : 'Subscribe to Automate'
+          ? 'Manage AI Agent'
+          : 'Subscribe to AI Agent'
 
     const onConfirm = () => {
         logEvent(SegmentEvent.AutomatePaywallModalUpsellSubscribe, {
