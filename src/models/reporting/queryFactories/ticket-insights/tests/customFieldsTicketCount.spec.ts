@@ -1,3 +1,4 @@
+import { BREAKDOWN_FIELD, VALUE_FIELD } from 'hooks/reporting/withBreakdown'
 import { OrderDirection } from 'models/api/types'
 import {
     TicketDimension,
@@ -67,12 +68,8 @@ describe('customFieldsTicketCountQueryFactory', () => {
             )
 
             expect(query).toEqual({
-                measures: [
-                    TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
-                ],
-                dimensions: [
-                    TicketCustomFieldsDimension.TicketCustomFieldsValueString,
-                ],
+                measures: [VALUE_FIELD],
+                dimensions: [BREAKDOWN_FIELD],
                 timezone,
                 segments: [],
                 filters: [
@@ -111,12 +108,8 @@ describe('customFieldsTicketCountQueryFactory', () => {
             )
 
             expect(query).toEqual({
-                measures: [
-                    TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
-                ],
-                dimensions: [
-                    TicketCustomFieldsDimension.TicketCustomFieldsValueString,
-                ],
+                measures: [VALUE_FIELD],
+                dimensions: [BREAKDOWN_FIELD],
                 timezone,
                 segments: [],
                 filters: [
@@ -143,12 +136,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                         ],
                     },
                 ],
-                order: [
-                    [
-                        TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
-                        sorting,
-                    ],
-                ],
+                order: [[VALUE_FIELD, sorting]],
             })
         })
     })
@@ -162,12 +150,8 @@ describe('customFieldsTicketCountQueryFactory', () => {
             )
 
             const expected = {
-                measures: [
-                    TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
-                ],
-                dimensions: [
-                    TicketCustomFieldsDimension.TicketCustomFieldsValueString,
-                ],
+                measures: [VALUE_FIELD],
+                dimensions: [BREAKDOWN_FIELD],
                 timezone,
                 segments: [],
                 filters: [
@@ -224,12 +208,8 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 )
 
             const expected = {
-                measures: [
-                    TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
-                ],
-                dimensions: [
-                    TicketCustomFieldsDimension.TicketCustomFieldsValueString,
-                ],
+                measures: [VALUE_FIELD],
+                dimensions: [BREAKDOWN_FIELD],
                 timezone,
                 segments: [],
                 filters: [

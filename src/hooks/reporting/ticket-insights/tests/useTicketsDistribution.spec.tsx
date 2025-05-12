@@ -4,18 +4,16 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { stripEscapedQuotes } from 'hooks/reporting/common/utils'
 import { useCustomFieldsTicketCount } from 'hooks/reporting/metricsPerCustomField'
 import { useTicketsDistribution } from 'hooks/reporting/ticket-insights/useTicketsDistribution'
 import { ReportingMetricItem } from 'hooks/reporting/useMetricPerDimension'
-import { Cubes } from 'models/reporting/cubes'
-import {
-    TicketCustomFieldsDimension,
-    TicketCustomFieldsMeasure,
-} from 'models/reporting/cubes/TicketCustomFieldsCube'
+import { BREAKDOWN_FIELD, VALUE_FIELD } from 'hooks/reporting/withBreakdown'
+import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
 import { initialState } from 'state/stats/statsSlice'
 import { RootState } from 'state/types'
 import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
-import { ticketInsightsSlice } from 'state/ui/stats/ticketInsightsSlice'
+import { calculatePercentage } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -25,44 +23,43 @@ jest.mock('hooks/reporting/metricsPerCustomField')
 const useCustomFieldsTicketCountMock = assumeMock(useCustomFieldsTicketCount)
 
 const transformData = (
-    data: ReportingMetricItem<Cubes>,
+    data: ReportingMetricItem,
     totalValue: number,
     maxValue: number,
-    ticketCountField: string = TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
-    customFieldDimension: string = TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+    ticketCountField: string = VALUE_FIELD,
+    customFieldDimension: string = BREAKDOWN_FIELD,
 ) => ({
-    category: data[customFieldDimension],
+    category: data[String(stripEscapedQuotes(customFieldDimension))],
     value: Number(data[ticketCountField]),
     valueInPercentage: (100 * Number(data[ticketCountField])) / totalValue,
     gaugePercentage: (100 * Number(data[ticketCountField])) / maxValue,
 })
 
 describe('useTicketsDistribution', () => {
+    const selectedCustomFieldId = 2
     const defaultState = {
         stats: initialState,
         ui: {
             stats: {
-                [ticketInsightsSlice.name]: {
-                    selectedCustomField: { id: 2 },
-                },
                 filters: uiStatsInitialState,
             },
         },
     } as RootState
 
     const maxTicketCount = 16
-    const ticketsCountTotal = 20
+    const ticketsCountTotal = 26
     const allData = [
         {
-            [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
-                'Level 0',
-            [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]: '4',
+            [BREAKDOWN_FIELD]: 'Level 0',
+            [VALUE_FIELD]: '4',
         },
         {
-            [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
-                'Level 0::Level 1',
-            [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]:
-                String(maxTicketCount),
+            [BREAKDOWN_FIELD]: 'Level 0::Level 1',
+            [VALUE_FIELD]: String(maxTicketCount),
+        },
+        {
+            [BREAKDOWN_FIELD]: '\"Level 0::Level 1\"',
+            [VALUE_FIELD]: '6',
         },
     ]
 
@@ -73,12 +70,87 @@ describe('useTicketsDistribution', () => {
         } as any)
     })
 
-    it('should return tickets distribution', () => {
-        const { result } = renderHook(() => useTicketsDistribution(), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(defaultState)}>{children}</Provider>
+    it('should return placeholder for missing dimension value', () => {
+        const data = [
+            {
+                [BREAKDOWN_FIELD]: null,
+                [VALUE_FIELD]: '4',
+            },
+        ]
+
+        useCustomFieldsTicketCountMock.mockReturnValue({
+            data: { allData: data },
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(
+            () => useTicketsDistribution(selectedCustomFieldId),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            },
+        )
+
+        expect(result.current).toEqual({
+            isFetching: false,
+            outsideTopTotal: 0,
+            outsideTopTotalPercentage: 0,
+            outsideTopTotalGaugePercentage: 0,
+            ticketsCountTotal: 4,
+            topData: data.map((item) =>
+                transformData(
+                    {
+                        ...item,
+                        [BREAKDOWN_FIELD]: NOT_AVAILABLE_PLACEHOLDER,
+                    },
+                    4,
+                    4,
+                ),
             ),
         })
+    })
+
+    it('should return 0 when no data', () => {
+        useCustomFieldsTicketCountMock.mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(
+            () => useTicketsDistribution(selectedCustomFieldId),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            },
+        )
+
+        expect(result.current).toEqual({
+            isFetching: false,
+            outsideTopTotal: 0,
+            outsideTopTotalPercentage: 0,
+            outsideTopTotalGaugePercentage: 100,
+            ticketsCountTotal: 0,
+            topData: [],
+        })
+    })
+
+    it('should return tickets distribution', () => {
+        const { result } = renderHook(
+            () => useTicketsDistribution(selectedCustomFieldId),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            },
+        )
 
         expect(result.current).toEqual({
             isFetching: false,
@@ -87,7 +159,16 @@ describe('useTicketsDistribution', () => {
             outsideTopTotalGaugePercentage: 0,
             ticketsCountTotal,
             topData: allData.map((item) =>
-                transformData(item, ticketsCountTotal, maxTicketCount),
+                transformData(
+                    {
+                        ...item,
+                        [BREAKDOWN_FIELD]: stripEscapedQuotes(
+                            item[BREAKDOWN_FIELD],
+                        ),
+                    },
+                    ticketsCountTotal,
+                    maxTicketCount,
+                ),
             ),
         })
     })
@@ -96,25 +177,32 @@ describe('useTicketsDistribution', () => {
         const maxTicketCount = 145
         const ticketsCountTotal = 190
         const allData = new Array(20).fill(null).map((_, index) => ({
-            [TicketCustomFieldsDimension.TicketCustomFieldsValueString]: `Level ${index}`,
-            [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]: `${index}`,
+            [BREAKDOWN_FIELD]: `Level ${index}`,
+            [VALUE_FIELD]: `${index}`,
         }))
 
         useCustomFieldsTicketCountMock.mockReturnValue({
             data: { allData },
             isFetching: false,
         } as any)
-        const { result } = renderHook(() => useTicketsDistribution(), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(defaultState)}>{children}</Provider>
-            ),
-        })
+        const { result } = renderHook(
+            () => useTicketsDistribution(selectedCustomFieldId),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            },
+        )
 
         expect(result.current).toEqual({
             isFetching: false,
             outsideTopTotal: maxTicketCount,
-            outsideTopTotalPercentage:
-                (100 * maxTicketCount) / ticketsCountTotal,
+            outsideTopTotalPercentage: calculatePercentage(
+                maxTicketCount,
+                ticketsCountTotal,
+            ),
             outsideTopTotalGaugePercentage: 100,
             ticketsCountTotal: ticketsCountTotal,
             topData: allData

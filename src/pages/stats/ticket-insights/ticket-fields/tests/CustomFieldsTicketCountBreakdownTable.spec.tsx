@@ -11,10 +11,6 @@ import { useCustomFieldsTicketCountPerCustomFields } from 'hooks/reporting/ticke
 import { getPeriodDateTimes } from 'hooks/reporting/useTimeSeries'
 import { BREAKDOWN_FIELD, VALUE_FIELD } from 'hooks/reporting/withBreakdown'
 import { OrderDirection } from 'models/api/types'
-import {
-    TicketCustomFieldsDimension,
-    TicketCustomFieldsMeasure,
-} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { ReportingGranularity } from 'models/reporting/types'
 import { NoDataAvailable } from 'pages/stats/common/components/NoDataAvailable'
 import {
@@ -75,17 +71,16 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
     } as RootState
     const exampleData = [
         {
-            [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]: 668,
-            [TicketCustomFieldsDimension.TicketCustomFieldsValueString]: 'abc',
+            [VALUE_FIELD]: 668,
+            [BREAKDOWN_FIELD]: 'abc',
             initialCustomFieldValue: ['abc::xyz'],
             decile: 9,
             totalsDecile: 7,
             percentage: 100,
             children: [
                 {
-                    [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]: 668,
-                    [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
-                        'xyz',
+                    [VALUE_FIELD]: 668,
+                    [BREAKDOWN_FIELD]: 'xyz',
                     initialCustomFieldValue: null,
                     decile: 9,
                     totalsDecile: 7,

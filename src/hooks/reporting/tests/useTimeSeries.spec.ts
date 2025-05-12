@@ -1,5 +1,6 @@
 import { AxiosResponse } from 'axios'
 
+import { stripEscapedQuotes } from 'hooks/reporting/common/utils'
 import {
     fetchTimeSeries,
     fetchTimeSeriesPerDimension,
@@ -227,6 +228,7 @@ describe('TimeSeriesPerDimension', () => {
     const ticketField = 'customTag'
     const ticketFieldL2_1 = 'subTag'
     const ticketFieldL2_2 = 'subTag2'
+    const unEscapedField = '\"anotherCustomTag::subTag\"'
     const defaultTimeDimension = {
         dimension:
             TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
@@ -235,7 +237,7 @@ describe('TimeSeriesPerDimension', () => {
     }
     const defaultQuery: TimeSeriesQuery<HelpdeskMessageCubeWithJoins> = {
         measures: [VALUE_FIELD],
-        dimensions: [TicketCustomFieldsDimension.TicketCustomFieldsValueString],
+        dimensions: [BREAKDOWN_FIELD],
         filters: [
             {
                 member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
@@ -258,6 +260,12 @@ describe('TimeSeriesPerDimension', () => {
             [VALUE_FIELD]: '139',
             [BREAKDOWN_FIELD]: `${ticketField}${TAG_SEPARATOR}${ticketFieldL2_2}`,
         },
+        {
+            [TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime]:
+                '2022-01-02T04:00:00',
+            [VALUE_FIELD]: '55',
+            [BREAKDOWN_FIELD]: unEscapedField,
+        },
     ]
     const defaultResult = {
         annotation: {
@@ -270,7 +278,7 @@ describe('TimeSeriesPerDimension', () => {
     }
 
     describe('useTimeSeriesPerDimension', () => {
-        it('should return separate time series per dimension value', () => {
+        it('should return separate time series per escaped dimension value', () => {
             renderHook(() =>
                 useTimeSeriesPerDimension({
                     ...defaultQuery,
@@ -284,6 +292,147 @@ describe('TimeSeriesPerDimension', () => {
                 } as unknown as AxiosResponse<
                     ReportingResponse<typeof defaultData>
                 >),
+            ).toEqual({
+                [`${ticketField}${TAG_SEPARATOR}${ticketFieldL2_1}`]: [
+                    [
+                        {
+                            dateTime: '2022-01-02T00:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 65,
+                        },
+                        {
+                            dateTime: '2022-01-02T01:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T02:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T03:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T04:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                    ],
+                ],
+                [`${ticketField}${TAG_SEPARATOR}${ticketFieldL2_2}`]: [
+                    [
+                        {
+                            dateTime: '2022-01-02T00:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T01:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T02:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T03:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T04:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 139,
+                        },
+                    ],
+                ],
+                [`${stripEscapedQuotes(unEscapedField)}`]: [
+                    [
+                        {
+                            dateTime: '2022-01-02T00:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T01:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T02:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T03:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T04:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 55,
+                        },
+                    ],
+                ],
+            })
+        })
+
+        it('should return separate time series per dimension value', () => {
+            const query: TimeSeriesQuery<HelpdeskMessageCubeWithJoins> = {
+                measures: [VALUE_FIELD],
+                dimensions: [
+                    TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+                ],
+                filters: [
+                    {
+                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [customFieldId],
+                    },
+                ],
+                timeDimensions: [defaultTimeDimension],
+            }
+            const data = [
+                {
+                    [TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime]:
+                        '2022-01-02T00:00:00',
+                    [VALUE_FIELD]: '65',
+                    [TicketCustomFieldsDimension.TicketCustomFieldsValueString]: `${ticketField}${TAG_SEPARATOR}${ticketFieldL2_1}`,
+                },
+                {
+                    [TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime]:
+                        '2022-01-02T04:00:00',
+                    [VALUE_FIELD]: '139',
+                    [TicketCustomFieldsDimension.TicketCustomFieldsValueString]: `${ticketField}${TAG_SEPARATOR}${ticketFieldL2_2}`,
+                },
+            ]
+            const result = {
+                annotation: {
+                    title: 'foo title',
+                    shortTitle: 'foo',
+                    type: 'array',
+                },
+                data: data,
+                query: query,
+            }
+
+            renderHook(() =>
+                useTimeSeriesPerDimension({
+                    ...query,
+                }),
+            )
+            const select = usePostReportingMock.mock.calls[0][1]?.select
+
+            expect(
+                select?.({
+                    data: result,
+                } as unknown as AxiosResponse<ReportingResponse<typeof data>>),
             ).toEqual({
                 [`${ticketField}${TAG_SEPARATOR}${ticketFieldL2_1}`]: [
                     [
@@ -413,6 +562,35 @@ describe('TimeSeriesPerDimension', () => {
                             dateTime: '2022-01-02T04:00:00.000',
                             label: VALUE_FIELD,
                             value: 139,
+                        },
+                    ],
+                ],
+                [`${stripEscapedQuotes(unEscapedField)}`]: [
+                    [
+                        {
+                            dateTime: '2022-01-02T00:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T01:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T02:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T03:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T04:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 55,
                         },
                     ],
                 ],

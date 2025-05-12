@@ -29,7 +29,8 @@ export const activeParams: ListParams = {
 }
 
 export const selectDropdownTextFields = (field: CustomField) =>
-    field.definition.data_type === 'text' &&
+    (field.definition.data_type === 'text' ||
+        field.definition.data_type === 'boolean') &&
     field.definition.input_settings.input_type === 'dropdown'
 
 export const CustomFieldSelect = ({

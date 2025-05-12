@@ -11,3 +11,8 @@ export const getCsvFileNameWithDates = (period: Period, reportName: string) => {
 
     return `${periodPrefix}-${reportName}-${export_datetime}.csv`
 }
+
+export const stripEscapedQuotes = (str: string | null) => {
+    if (str === null) return null
+    return str.replace(/^"/, '').replace(/"$/, '')
+}

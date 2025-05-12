@@ -5,6 +5,7 @@ export enum TicketCustomFieldsMeasure {
 }
 
 export enum TicketCustomFieldsDimension {
+    TicketCustomFieldsValue = 'TicketCustomFieldsEnriched.value',
     TicketCustomFieldsValueString = 'TicketCustomFieldsEnriched.valueString',
 }
 

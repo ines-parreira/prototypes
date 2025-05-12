@@ -35,7 +35,7 @@ import { notUndefined } from 'utils/types'
 const breakdownTimeSeries = (
     timeSeriesData: Record<string, TimeSeriesDataItem[][]>,
     order: TicketInsightsOrder,
-    breakdownField: TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+    breakdownField: TicketCustomFieldsDimension.TicketCustomFieldsValue,
     valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
 ): WithChildren<TicketCustomFieldsTicketCountTimeSeriesData>[] => {
     const timeSeriesObjects = Object.keys(timeSeriesData).map((key) => ({

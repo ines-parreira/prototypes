@@ -75,12 +75,15 @@ const NoDataFallback = () => {
     return <NoDataAvailable style={{ minHeight: 300 }} />
 }
 
-type CustomField = Omit<ReturnType<typeof getSelectedCustomField>, 'isLoading'>
+type SelectedCustomField = {
+    id: number
+    label: string
+}
 
 const TicketDistributionTable = ({
     selectedCustomField,
 }: {
-    selectedCustomField: CustomField
+    selectedCustomField: SelectedCustomField
 }) => {
     const {
         isFetching,
@@ -89,7 +92,7 @@ const TicketDistributionTable = ({
         outsideTopTotal,
         outsideTopTotalPercentage,
         outsideTopTotalGaugePercentage,
-    } = useTicketsDistribution()
+    } = useTicketsDistribution(selectedCustomField.id)
 
     const [ticketFieldsTicketTimeReference] = useTicketTimeReference(
         Entity.TicketField,
@@ -101,114 +104,119 @@ const TicketDistributionTable = ({
         return <LoadingFallback />
     }
 
-    if (topData.length > 0) {
-        return (
-            <TableWrapper className={css.table}>
-                <TableBody>
-                    {topData.map((item, index) => (
-                        <TableBodyRow key={index}>
-                            <DistributionCategoryCell
-                                key={item.category}
-                                progress={item.gaugePercentage}
-                                width={getWidth(320, 160)}
-                                category={item.category}
-                            />
-                            <BodyCell justifyContent="right" width={80}>
-                                <DrillDownModalTrigger
-                                    highlighted
-                                    metricData={{
-                                        title: `${
-                                            selectedCustomField.label
-                                        } | ${formatCategory(item.category)}`,
-                                        metricName:
-                                            TicketFieldsMetric.TicketCustomFieldsTicketCount,
-                                        customFieldId: selectedCustomField.id,
-                                        customFieldValue: [item.category],
-                                        ticketTimeReference:
-                                            ticketFieldsTicketTimeReference,
-                                    }}
-                                >
-                                    {formatMetricValue(
-                                        item.value,
-                                        'decimal',
-                                        NOT_AVAILABLE_PLACEHOLDER,
-                                    )}
-                                </DrillDownModalTrigger>
-                            </BodyCell>
-                            <BodyCell justifyContent="right" width={80}>
-                                {formatMetricValue(
-                                    item.valueInPercentage,
-                                    'percent-refined',
-                                    NOT_AVAILABLE_PLACEHOLDER,
-                                )}
-                            </BodyCell>
-                        </TableBodyRow>
-                    ))}
+    if (topData.length === 0) {
+        return <NoDataFallback />
+    }
 
-                    {outsideTopTotal ? (
-                        <TableBodyRow>
-                            <BodyCell justifyContent="left">
-                                <GaugeAddon
-                                    progress={outsideTopTotalGaugePercentage}
-                                    color={OUTSIDE_TOP_DATA.color}
-                                >
-                                    {OUTSIDE_TOP_DATA.title}
-                                </GaugeAddon>
-                            </BodyCell>
-                            <BodyCell justifyContent="right" width={80}>
-                                {formatMetricValue(
-                                    outsideTopTotal,
-                                    'decimal',
-                                    NOT_AVAILABLE_PLACEHOLDER,
-                                )}
-                            </BodyCell>
-                            <BodyCell justifyContent="right" width={80}>
-                                {formatMetricValue(
-                                    outsideTopTotalPercentage,
-                                    'percent-refined',
-                                    NOT_AVAILABLE_PLACEHOLDER,
-                                )}
-                            </BodyCell>
-                        </TableBodyRow>
-                    ) : null}
-
-                    <TableBodyRow className={css.lastRow}>
-                        <BodyCell
-                            className={css.total}
+    return (
+        <TableWrapper className={css.table}>
+            <TableBody>
+                {topData.map((item, index) => (
+                    <TableBodyRow key={index}>
+                        <DistributionCategoryCell
+                            key={item.category}
+                            progress={item.gaugePercentage}
                             width={getWidth(320, 160)}
-                        >
-                            Total
-                        </BodyCell>
+                            category={item.category}
+                        />
                         <BodyCell justifyContent="right" width={80}>
                             <DrillDownModalTrigger
                                 highlighted
                                 metricData={{
-                                    title: `${selectedCustomField.label} | Total`,
+                                    title: `${
+                                        selectedCustomField.label
+                                    } | ${formatCategory(item.category)}`,
                                     metricName:
                                         TicketFieldsMetric.TicketCustomFieldsTicketCount,
                                     customFieldId: selectedCustomField.id,
-                                    customFieldValue: null,
+                                    customFieldValue: [item.category],
                                     ticketTimeReference:
                                         ticketFieldsTicketTimeReference,
                                 }}
                             >
-                                {formatMetricValue(ticketsCountTotal)}
+                                {formatMetricValue(
+                                    item.value,
+                                    'decimal',
+                                    NOT_AVAILABLE_PLACEHOLDER,
+                                )}
                             </DrillDownModalTrigger>
                         </BodyCell>
                         <BodyCell justifyContent="right" width={80}>
-                            100%
+                            {formatMetricValue(
+                                item.valueInPercentage,
+                                'percent-refined',
+                                NOT_AVAILABLE_PLACEHOLDER,
+                            )}
                         </BodyCell>
                     </TableBodyRow>
-                </TableBody>
-            </TableWrapper>
-        )
-    }
+                ))}
 
-    return <NoDataFallback />
+                {outsideTopTotal ? (
+                    <TableBodyRow>
+                        <BodyCell justifyContent="left">
+                            <GaugeAddon
+                                progress={outsideTopTotalGaugePercentage}
+                                color={OUTSIDE_TOP_DATA.color}
+                            >
+                                {OUTSIDE_TOP_DATA.title}
+                            </GaugeAddon>
+                        </BodyCell>
+                        <BodyCell justifyContent="right" width={80}>
+                            {formatMetricValue(
+                                outsideTopTotal,
+                                'decimal',
+                                NOT_AVAILABLE_PLACEHOLDER,
+                            )}
+                        </BodyCell>
+                        <BodyCell justifyContent="right" width={80}>
+                            {formatMetricValue(
+                                outsideTopTotalPercentage,
+                                'percent-refined',
+                                NOT_AVAILABLE_PLACEHOLDER,
+                            )}
+                        </BodyCell>
+                    </TableBodyRow>
+                ) : null}
+
+                <TableBodyRow className={css.lastRow}>
+                    <BodyCell className={css.total} width={getWidth(320, 160)}>
+                        Total
+                    </BodyCell>
+                    <BodyCell justifyContent="right" width={80}>
+                        <DrillDownModalTrigger
+                            highlighted
+                            metricData={{
+                                title: `${selectedCustomField.label} | Total`,
+                                metricName:
+                                    TicketFieldsMetric.TicketCustomFieldsTicketCount,
+                                customFieldId: selectedCustomField.id,
+                                customFieldValue: null,
+                                ticketTimeReference:
+                                    ticketFieldsTicketTimeReference,
+                            }}
+                        >
+                            {formatMetricValue(ticketsCountTotal)}
+                        </DrillDownModalTrigger>
+                    </BodyCell>
+                    <BodyCell justifyContent="right" width={80}>
+                        100%
+                    </BodyCell>
+                </TableBodyRow>
+            </TableBody>
+        </TableWrapper>
+    )
 }
 
 const useSelectedCustomField = () => {
-    return useAppSelector(getSelectedCustomField)
+    const selectedCustomField = useAppSelector(getSelectedCustomField)
+    const selectedCustomFieldId = selectedCustomField.id
+    if (selectedCustomFieldId === null) {
+        return null
+    }
+    return {
+        id: selectedCustomFieldId,
+        label: selectedCustomField.label,
+    }
 }
 
 export const TicketDistributionChart = ({
@@ -231,7 +239,7 @@ export const TicketDistributionChart = ({
             chartId={chartId}
             noPadding={true}
         >
-            {selectedCustomField.id == null ? (
+            {selectedCustomField === null ? (
                 <NoDataFallback />
             ) : (
                 <TicketDistributionTable

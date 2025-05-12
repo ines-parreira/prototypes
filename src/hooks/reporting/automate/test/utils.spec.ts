@@ -8,6 +8,7 @@ import {
 } from 'fixtures/aiAgentInsights'
 import { AutomateStatsMeasureLabelMap } from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
 import {
+    BREAKDOWN_FIELD,
     CUSTOM_FIELD_COUNT,
     TICKET_COUNT,
 } from 'hooks/reporting/automate/types'
@@ -33,7 +34,6 @@ import {
 } from 'hooks/reporting/automate/utils'
 import { QueryReturnType } from 'hooks/reporting/useMetricPerDimension'
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
-import { BREAKDOWN_FIELD } from 'hooks/reporting/withBreakdown'
 import { OrderDirection } from 'models/api/types'
 import { Cubes } from 'models/reporting/cubes'
 import { AutomationBillingEventMeasure } from 'models/reporting/cubes/automate/AutomationBillingEventCube'

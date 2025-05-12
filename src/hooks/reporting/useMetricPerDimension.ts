@@ -14,13 +14,13 @@ import {
 import { OrderDirection } from 'models/api/types'
 import { DrillDownReportingQuery } from 'models/job/types'
 import { Cubes } from 'models/reporting/cubes'
-import { TicketCustomFieldsCube } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
     fetchPostReporting,
     useEnrichedPostReporting,
     UseEnrichedPostReportingQueryData,
     usePostReporting,
 } from 'models/reporting/queries'
+import { CustomFieldsReportingQuery } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {
     postEnrichedReporting,
     postReporting,
@@ -179,7 +179,7 @@ export const fetchMetricPerDimension = async <TCube extends Cubes>(
 }
 
 export function useMetricPerDimensionWithBreakdown(
-    query: ReportingQuery<TicketCustomFieldsCube>,
+    query: CustomFieldsReportingQuery,
 ): MetricWithBreakdown {
     const metricData = usePostReporting<
         WithChildren<TicketCustomFieldsTicketCountData>[],

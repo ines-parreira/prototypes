@@ -1,3 +1,4 @@
+import { BREAKDOWN_FIELD, VALUE_FIELD } from 'hooks/reporting/withBreakdown'
 import { OrderDirection } from 'models/api/types'
 import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
 import {
@@ -50,15 +51,22 @@ const createdTicketFilter = (filters: StatsFilters) => ({
     ],
 })
 
+export type CustomFieldsReportingQuery = Omit<
+    ReportingQuery<TicketCustomFieldsCube>,
+    'dimensions'
+> & {
+    dimensions: [typeof BREAKDOWN_FIELD]
+}
+
 export const customFieldsTicketCountQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     customFieldId: string,
     sorting?: OrderDirection,
     additionalFilters?: ReportingFilter[],
-): ReportingQuery<TicketCustomFieldsCube> => ({
-    measures: [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount],
-    dimensions: [TicketCustomFieldsDimension.TicketCustomFieldsValueString],
+): CustomFieldsReportingQuery => ({
+    measures: [VALUE_FIELD],
+    dimensions: [BREAKDOWN_FIELD],
     timezone,
     segments: [],
     filters: [

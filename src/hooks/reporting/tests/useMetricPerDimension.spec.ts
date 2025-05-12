@@ -18,7 +18,6 @@ import {
 } from 'hooks/reporting/withBreakdown'
 import { withEnrichment } from 'hooks/reporting/withEnrichment'
 import { TicketCubeWithJoins } from 'models/reporting/cubes/TicketCube'
-import { TicketCustomFieldsCube } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
     TicketMessagesCube,
     TicketMessagesDimension,
@@ -31,7 +30,10 @@ import {
 } from 'models/reporting/queries'
 import { medianFirstResponseTimeMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
 import { messagesSentMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
-import { customFieldsTicketCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import {
+    CustomFieldsReportingQuery,
+    customFieldsTicketCountQueryFactory,
+} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import { postEnrichedReporting } from 'models/reporting/resources'
 import { EnrichmentFields, ReportingQuery } from 'models/reporting/types'
 import { assumeMock } from 'utils/testing'
@@ -233,7 +235,7 @@ describe('useMetricPerDimensionWithBreakdown', () => {
     const ticketField = 'customTag'
     const ticketFieldL2_1 = 'subTag'
     const ticketFieldL2_2 = 'subTag2'
-    const query: ReportingQuery<TicketCustomFieldsCube> =
+    const query: CustomFieldsReportingQuery =
         customFieldsTicketCountQueryFactory(
             {
                 period: {

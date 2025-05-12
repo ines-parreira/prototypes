@@ -16,7 +16,7 @@ import { notUndefined } from 'utils/types'
 
 export const TAG_SEPARATOR = '::'
 export const BREAKDOWN_FIELD =
-    TicketCustomFieldsDimension.TicketCustomFieldsValueString
+    TicketCustomFieldsDimension.TicketCustomFieldsValue
 export const VALUE_FIELD =
     TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
 
@@ -26,7 +26,7 @@ export const withBreakdown = <
     >,
 >(
     res: TData,
-    breakdownField: TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+    breakdownField: TicketCustomFieldsDimension.TicketCustomFieldsValue,
     valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
 ): UsePostReportingQueryData<
     WithChildren<TicketCustomFieldsTicketCountData>[]
@@ -71,8 +71,8 @@ type WithChildren<T> = T & { children: WithChildren<T>[] }
 
 export const selectWithBreakdown = (
     data: TicketCustomFieldsTicketCountData[],
-    breakdownField: TicketCustomFieldsDimension.TicketCustomFieldsValueString,
-    valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+    breakdownField: typeof BREAKDOWN_FIELD,
+    valueField: typeof VALUE_FIELD,
 ): WithChildren<TicketCustomFieldsTicketCountData>[] => {
     const hierarchy = data.map((element) => {
         const tags = String(element[breakdownField]).split(TAG_SEPARATOR)
@@ -101,7 +101,7 @@ export const selectWithBreakdown = (
 
 const orderIteratee = (
     column: TicketInsightsOrder['column'],
-    breakdownField: TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+    breakdownField: TicketCustomFieldsDimension.TicketCustomFieldsValue,
     valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
 ) => {
     switch (column) {
@@ -118,7 +118,7 @@ const orderIteratee = (
 export const selectTimeSeriesWithBreakdown = (
     data: TicketCustomFieldsTicketCountTimeSeriesData[],
     order: TicketInsightsOrder,
-    breakdownField: TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+    breakdownField: TicketCustomFieldsDimension.TicketCustomFieldsValue,
     valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
 ): WithChildren<TicketCustomFieldsTicketCountTimeSeriesData>[] => {
     const hierarchy = data.map((element) => {
@@ -165,10 +165,10 @@ const compact = <
     data: WithChildren<Data>[],
     merge: (
         data: WithChildren<Data>[],
-        breakdownField: TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+        breakdownField: TicketCustomFieldsDimension.TicketCustomFieldsValue,
         valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
     ) => WithChildren<Data>,
-    breakdownField: TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+    breakdownField: TicketCustomFieldsDimension.TicketCustomFieldsValue,
     valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
 ) => {
     const grouped = _groupBy(data, (el) => el[breakdownField])
@@ -180,7 +180,7 @@ const compact = <
 
 const mergeValues = (
     data: WithChildren<TicketCustomFieldsTicketCountData>[],
-    breakdownField: TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+    breakdownField: TicketCustomFieldsDimension.TicketCustomFieldsValue,
     valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
 ): WithChildren<TicketCustomFieldsTicketCountData> =>
     data.reduce((acc, currVal) => ({
@@ -200,7 +200,7 @@ const mergeTimeSeries =
     (order: TicketInsightsOrder) =>
     (
         data: WithChildren<TicketCustomFieldsTicketCountTimeSeriesData>[],
-        breakdownField: TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+        breakdownField: TicketCustomFieldsDimension.TicketCustomFieldsValue,
         valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
     ): WithChildren<TicketCustomFieldsTicketCountTimeSeriesData> =>
         data.reduce((acc, currVal) => {

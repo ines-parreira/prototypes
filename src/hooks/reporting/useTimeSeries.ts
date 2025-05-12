@@ -2,6 +2,8 @@ import { UseQueryResult } from '@tanstack/react-query'
 import _groupBy from 'lodash/groupBy'
 import moment from 'moment-timezone'
 
+import { stripEscapedQuotes } from 'hooks/reporting/common/utils'
+import { BREAKDOWN_FIELD } from 'hooks/reporting/withBreakdown'
 import { DataResponse } from 'hooks/reporting/withDeciles'
 import { Cubes } from 'models/reporting/cubes'
 import { fetchPostReporting, usePostReporting } from 'models/reporting/queries'
@@ -91,7 +93,21 @@ const selectPerDimension =
     <TCube extends Cubes>(query: TimeSeriesQuery<TCube>) =>
     (res: DataResponse['data']['data']): TimeSeriesPerDimension => {
         const { dimensions } = query
-        return objectMap(_groupBy(res, dimensions[0]), select(query))
+        let escapedResponse = res
+        const dimension = dimensions[0]
+
+        if (dimension === BREAKDOWN_FIELD) {
+            escapedResponse = res.map((item) => {
+                return {
+                    ...item,
+                    [BREAKDOWN_FIELD]: stripEscapedQuotes(
+                        item[BREAKDOWN_FIELD],
+                    ),
+                }
+            })
+        }
+
+        return objectMap(_groupBy(escapedResponse, dimension), select(query))
     }
 
 export function useTimeSeries<TCube extends Cubes>(

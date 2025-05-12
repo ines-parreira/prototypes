@@ -10,6 +10,7 @@ import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
+import { NO_DATA_AVAILABLE_COMPONENT_TITLE } from 'pages/stats/common/components/NoDataAvailable'
 import {
     OUTSIDE_TOP_DATA,
     TicketDistributionChart,
@@ -87,13 +88,15 @@ describe('<TicketDistributionTable>', () => {
         isFetching: false,
     }
 
-    useTicketsDistributionMock.mockReturnValue(
-        useTicketsDistributionReturnValue,
-    )
-    getSelectedCustomFieldMock.mockReturnValue({
-        id: 123,
-        label: 'someLabel',
-        isLoading: false,
+    beforeEach(() => {
+        useTicketsDistributionMock.mockReturnValue(
+            useTicketsDistributionReturnValue,
+        )
+        getSelectedCustomFieldMock.mockReturnValue({
+            id: 123,
+            label: 'someLabel',
+            isLoading: false,
+        })
     })
 
     it('should render the table', () => {
@@ -144,6 +147,24 @@ describe('<TicketDistributionTable>', () => {
         expect(screen.getByText('50%')).toBeInTheDocument()
     })
 
+    it('should render no data when no selected Custom Field', () => {
+        getSelectedCustomFieldMock.mockReturnValue({
+            id: null,
+            label: '',
+            isLoading: false,
+        })
+
+        render(
+            <Provider store={mockStore({})}>
+                <TicketDistributionChart />
+            </Provider>,
+        )
+
+        expect(
+            screen.getByText(NO_DATA_AVAILABLE_COMPONENT_TITLE),
+        ).toBeInTheDocument()
+    })
+
     it('should render no data', () => {
         useTicketsDistributionMock.mockReturnValue({
             ...useTicketsDistributionReturnValue,
@@ -156,7 +177,9 @@ describe('<TicketDistributionTable>', () => {
             </Provider>,
         )
 
-        expect(screen.getByText('No data available')).toBeInTheDocument()
+        expect(
+            screen.getByText(NO_DATA_AVAILABLE_COMPONENT_TITLE),
+        ).toBeInTheDocument()
     })
 
     it('should render the table with skeletons on loading', () => {
