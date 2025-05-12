@@ -25,7 +25,7 @@ export type CategoryLink = {
 }
 
 export type Category = {
-    icon: string
+    icon?: string
     links: CategoryLink[]
     name: string
     shouldRender?: (flags: LDFlagSet) => boolean

@@ -1,12 +1,15 @@
 import React from 'react'
 
 import { screen } from '@testing-library/react'
+import type { Location } from 'history'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
+import { useLocation } from 'react-router-dom'
 
 import { logEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { closePanels } from 'state/layout/actions'
@@ -51,13 +54,27 @@ jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
     ]),
 }))
 
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+jest.mock('../NewUI', () => () => <div>New UI</div>)
+const mockUseFlag = useFlag as jest.Mock
+
 const mockedHasRole = assumeMock(hasRole)
 const mockedLogEvent = assumeMock(logEvent)
 const mockedGetCurrentUser = assumeMock(getCurrentUser)
 const mockedGetCurrentAccountState = assumeMock(getCurrentAccountState)
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
+    useLocation: jest.fn(),
+}))
+const useLocationMock = assumeMock(useLocation)
+
 describe('<SettingsNavbar />', () => {
     beforeEach(() => {
+        useLocationMock.mockReturnValue({ pathname: '/' } as Location)
+        mockUseFlag.mockReturnValue(false)
         jest.replaceProperty(config, 'NavbarConfig', [
             {
                 name: 'Category',
@@ -89,9 +106,13 @@ describe('<SettingsNavbar />', () => {
                 ],
             },
         ])
-        renderWithRouter(<SettingsNavbar />, { path: '/' })
+        useLocationMock.mockReturnValue({
+            pathname: '/app/settings/whatever',
+        } as Location)
+        renderWithRouter(<SettingsNavbar />)
 
         expect(screen.getByText('Link')).toBeInTheDocument()
+        expect(screen.getByText('Link')).toHaveClass('active')
     })
 
     it('should not render a category if the `shouldRender` function returns false', () => {
@@ -109,14 +130,14 @@ describe('<SettingsNavbar />', () => {
                 ],
             },
         ])
-        renderWithRouter(<SettingsNavbar />, { path: '/' })
+        renderWithRouter(<SettingsNavbar />)
 
         expect(screen.queryByText('Link')).not.toBeInTheDocument()
     })
 
     it('should dispatch `closePanels` action when a link is clicked and call logEvent', () => {
         mockedGetCurrentAccountState.mockReturnValue(fromJS({}))
-        renderWithRouter(<SettingsNavbar />, { path: '/' })
+        renderWithRouter(<SettingsNavbar />)
 
         screen.getByText('Link').click()
 
@@ -135,9 +156,7 @@ describe('<SettingsNavbar />', () => {
         )
         mockedHasRole.mockReturnValue(false)
 
-        const { rerenderComponent } = renderWithRouter(<SettingsNavbar />, {
-            path: '/',
-        })
+        const { rerenderComponent } = renderWithRouter(<SettingsNavbar />)
 
         expect(mockedHasRole).toHaveBeenNthCalledWith(1, 'toto', 'toto')
         expect(screen.queryByText('Link')).not.toBeInTheDocument()
@@ -174,9 +193,76 @@ describe('<SettingsNavbar />', () => {
             ['matchesFalse']: false,
         })
 
-        renderWithRouter(<SettingsNavbar />, { path: '/' })
+        renderWithRouter(<SettingsNavbar />)
 
         expect(screen.getByText('True')).toBeInTheDocument()
         expect(screen.queryByText('False')).not.toBeInTheDocument()
+    })
+
+    it('should render new UI when flag is enabled', () => {
+        mockUseFlag.mockReturnValue(true)
+
+        renderWithRouter(<SettingsNavbar />)
+
+        expect(screen.getByText('New UI')).toBeInTheDocument()
+        expect(screen.queryByText('Link')).not.toBeInTheDocument()
+    })
+
+    it('should handle alternate text if user does not have a password', () => {
+        jest.replaceProperty(config, 'NavbarConfig', [
+            {
+                name: 'Category',
+                links: [
+                    {
+                        to: 'password-2fa',
+                        text: 'Link',
+                    },
+                ],
+            },
+        ])
+        mockedGetCurrentUser.mockReturnValue(fromJS({}))
+        renderWithRouter(<SettingsNavbar />)
+
+        expect(screen.queryByText('2FA')).toBeInTheDocument()
+    })
+
+    it('should not set `integrations` as active when on `integrations/mine`', () => {
+        useLocationMock.mockReturnValue({
+            pathname: '/app/settings/integrations/mine',
+        } as Location)
+        jest.replaceProperty(config, 'NavbarConfig', [
+            {
+                name: 'Category',
+                links: [
+                    {
+                        to: 'integrations',
+                        text: 'Link',
+                    },
+                ],
+            },
+        ])
+        renderWithRouter(<SettingsNavbar />)
+
+        expect(screen.getByText('Link')).not.toHaveClass('active')
+    })
+
+    it('should not set `integrations` as active when on `integrations/http`', () => {
+        useLocationMock.mockReturnValue({
+            pathname: '/app/settings/integrations/http',
+        } as Location)
+        jest.replaceProperty(config, 'NavbarConfig', [
+            {
+                name: 'Category',
+                links: [
+                    {
+                        to: 'integrations',
+                        text: 'Link',
+                    },
+                ],
+            },
+        ])
+        renderWithRouter(<SettingsNavbar />)
+
+        expect(screen.getByText('Link')).not.toHaveClass('active')
     })
 })

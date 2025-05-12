@@ -6,6 +6,8 @@ import { useLocation } from 'react-router-dom'
 import css from 'assets/css/navbar.less'
 import { ActiveContent, Navbar } from 'common/navigation'
 import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
@@ -17,6 +19,7 @@ import { closePanels } from 'state/layout/actions'
 import { hasRole } from 'utils'
 
 import { NavbarConfig } from './config'
+import NewUI from './NewUI'
 import SettingsNavbarLink from './SettingsNavbarLink'
 
 const SettingsNavbar = () => {
@@ -27,131 +30,150 @@ const SettingsNavbar = () => {
     const featureFlags = useFlags()
     const hasAutomate = useAppSelector(getHasAutomate)
     const integrations = useStoreIntegrations()
+    const hasNewNavbarUi = useFlag(FeatureFlagKey.RevampNavBarUi)
 
     return (
         <Navbar activeContent={ActiveContent.Settings} title="Settings">
-            {NavbarConfig.map(({ name, icon, links, shouldRender }, index) => {
-                if (!!shouldRender && !shouldRender(featureFlags)) return null
+            {hasNewNavbarUi ? (
+                <NewUI />
+            ) : (
+                NavbarConfig.map(
+                    ({ name, icon, links, shouldRender }, index) => {
+                        if (!!shouldRender && !shouldRender(featureFlags))
+                            return null
 
-                const displayedLinks = links
-                    .filter((link) => !link.isHidden)
-                    .map(
-                        ({
-                            to,
-                            text,
-                            requiredRole,
-                            requiredFeatureFlags,
-                            shouldRender,
-                            extra,
-                            outerExtra,
-                        }) => {
-                            let computedText = text
-                            if (
-                                (requiredRole &&
-                                    !hasRole(currentUser, requiredRole)) ||
-                                (requiredFeatureFlags &&
-                                    !requiredFeatureFlags.every(
-                                        (flag) => featureFlags[flag],
-                                    )) ||
-                                (shouldRender &&
-                                    !shouldRender({
-                                        hasAutomate,
-                                        integrations,
-                                    }))
-                            ) {
-                                return null
-                            }
+                        const displayedLinks = links
+                            .filter((link) => !link.isHidden)
+                            .map(
+                                ({
+                                    to,
+                                    text,
+                                    requiredRole,
+                                    requiredFeatureFlags,
+                                    shouldRender,
+                                    extra,
+                                    outerExtra,
+                                }) => {
+                                    let computedText = text
+                                    if (
+                                        (requiredRole &&
+                                            !hasRole(
+                                                currentUser,
+                                                requiredRole,
+                                            )) ||
+                                        (requiredFeatureFlags &&
+                                            !requiredFeatureFlags.every(
+                                                (flag) => featureFlags[flag],
+                                            )) ||
+                                        (shouldRender &&
+                                            !shouldRender({
+                                                hasAutomate,
+                                                integrations,
+                                            }))
+                                    ) {
+                                        return null
+                                    }
 
-                            if (to === 'password-2fa') {
-                                computedText = buildPasswordAnd2FaText(
-                                    currentUser.get('has_password'),
-                                )
-                            }
+                                    if (to === 'password-2fa') {
+                                        computedText = buildPasswordAnd2FaText(
+                                            currentUser.get('has_password'),
+                                        )
+                                    }
 
-                            let isActive =
-                                pathname.startsWith(`/app/settings/${to}`) ||
-                                (/settings\/?$/.test(pathname) &&
-                                    to === 'channels/email')
+                                    let isActive =
+                                        pathname.startsWith(
+                                            `/app/settings/${to}`,
+                                        ) ||
+                                        (/settings\/?$/.test(pathname) &&
+                                            to === 'channels/email')
 
-                            if (
-                                isActive &&
-                                pathname.includes('integrations/mine') &&
-                                to.match(/.*integrations(\/)?$/)
-                            ) {
-                                isActive = false
-                            }
+                                    if (
+                                        isActive &&
+                                        pathname.includes(
+                                            'integrations/mine',
+                                        ) &&
+                                        to.match(/.*integrations(\/)?$/)
+                                    ) {
+                                        isActive = false
+                                    }
 
-                            // TODO(@Manuel): remove this edge case once the http integration has its own route
-                            if (
-                                isActive &&
-                                pathname.includes('integrations/http') &&
-                                to.match(/.*integrations(\/)?$/)
-                            ) {
-                                isActive = false
-                            }
+                                    // TODO(@Manuel): remove this edge case once the http integration has its own route
+                                    if (
+                                        isActive &&
+                                        pathname.includes(
+                                            'integrations/http',
+                                        ) &&
+                                        to.match(/.*integrations(\/)?$/)
+                                    ) {
+                                        isActive = false
+                                    }
 
-                            return (
-                                <div
-                                    key={to}
-                                    className={classnames(
-                                        css['link-wrapper'],
-                                        css.isNested,
-                                    )}
-                                    data-candu-id={`settings-link-${_kebabCase(
-                                        computedText,
-                                    )}`}
-                                >
-                                    <SettingsNavbarLink
-                                        to={to}
-                                        isActive={isActive}
-                                        computedText={computedText}
-                                        extra={extra}
-                                        onClick={() => {
-                                            logEvent(
-                                                SegmentEvent.SettingsNavigationClicked,
-                                                {
-                                                    title: text,
-                                                    account_domain:
-                                                        account.get('domain'),
-                                                },
-                                            )
-                                            dispatch(closePanels())
-                                        }}
-                                    />
-                                    {outerExtra}
-                                </div>
+                                    return (
+                                        <div
+                                            key={to}
+                                            className={classnames(
+                                                css['link-wrapper'],
+                                                css.isNested,
+                                            )}
+                                            data-candu-id={`settings-link-${_kebabCase(
+                                                computedText,
+                                            )}`}
+                                        >
+                                            <SettingsNavbarLink
+                                                to={to}
+                                                isActive={isActive}
+                                                computedText={computedText}
+                                                extra={extra}
+                                                onClick={() => {
+                                                    logEvent(
+                                                        SegmentEvent.SettingsNavigationClicked,
+                                                        {
+                                                            title: text,
+                                                            account_domain:
+                                                                account.get(
+                                                                    'domain',
+                                                                ),
+                                                        },
+                                                    )
+                                                    dispatch(closePanels())
+                                                }}
+                                            />
+                                            {outerExtra}
+                                        </div>
+                                    )
+                                },
                             )
-                        },
-                    )
-                    .filter((link) => link)
+                            .filter((link) => link)
 
-                // Hide the category if there's nothing to display
-                if (!displayedLinks.length) {
-                    return null
-                }
+                        // Hide the category if there's nothing to display
+                        if (!displayedLinks.length) {
+                            return null
+                        }
 
-                return (
-                    <div
-                        className={css.category}
-                        key={index}
-                        data-candu-id={`settings-category-${_kebabCase(name)}`}
-                    >
-                        <h4 className={css['category-title']}>
-                            <i
-                                className={classnames(
-                                    'material-icons',
-                                    css.icon,
-                                )}
+                        return (
+                            <div
+                                className={css.category}
+                                key={index}
+                                data-candu-id={`settings-category-${_kebabCase(name)}`}
                             >
-                                {icon}
-                            </i>
-                            {name}
-                        </h4>
+                                <h4 className={css['category-title']}>
+                                    <i
+                                        className={classnames(
+                                            'material-icons',
+                                            css.icon,
+                                        )}
+                                    >
+                                        {icon}
+                                    </i>
+                                    {name}
+                                </h4>
 
-                        <div className={css.menu}>{displayedLinks}</div>
-                    </div>
+                                <div className={css.menu}>{displayedLinks}</div>
+                            </div>
+                        )
+                    },
                 )
-            })}
+            )}
         </Navbar>
     )
 }

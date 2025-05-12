@@ -288,3 +288,14 @@ export const NavbarConfig: Category[] = [
         ],
     },
 ]
+
+export const Sections = {
+    Productivity: 'Productivity',
+    Ticket: 'Ticket & Customer data',
+    TicketManagement: 'Ticket management',
+    Channels: 'Channels',
+    Apps: 'Apps',
+    Account: 'Account',
+    Advanced: 'Advanced',
+    Profile: 'Profile',
+}
