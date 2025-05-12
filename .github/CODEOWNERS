@@ -155,3 +155,6 @@ src/pages/aiAgent/test/AiAgentVolume.spec.tsx @gorgias/conv-ai-expansion
 src/pages/aiAgent/utils/handoverCustomization* @gorgias/conv-ai-expansion
 src/pages/aiAgent/hooks/handoverCustomization* @gorgias/conv-ai-expansion
 src/pages/aiAgent/components/HandoverCustomization* @gorgias/conv-ai-expansion
+
+# CRM Customer Story scope @gorgias/crm-customer-story
+src/pages/customers @gorgias/crm-customer-story
