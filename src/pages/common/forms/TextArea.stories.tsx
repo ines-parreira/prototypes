@@ -1,6 +1,6 @@
-import React, { ComponentProps, useState } from 'react'
+import { ComponentProps, useState } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import TextArea from './TextArea'
 
@@ -61,10 +61,14 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<ComponentProps<typeof TextArea>> = (props) => {
-    const [value, setValue] = useState('')
+type Story = StoryObj<typeof TextArea>
 
-    return <TextArea {...props} value={value} onChange={setValue} />
+const Template: Story = {
+    render: function Template({ ...props }) {
+        const [value, setValue] = useState('')
+
+        return <TextArea {...props} value={value} onChange={setValue} />
+    },
 }
 
 const templateParameters = {
@@ -86,19 +90,21 @@ const defaultProps: Partial<ComponentProps<typeof TextArea>> = {
     placeholder: 'Update me',
 }
 
-export const Default = Template.bind({})
-Default.parameters = templateParameters
-Default.args = defaultProps
+export const Default = {
+    ...Template,
+    parameters: templateParameters,
+    args: defaultProps,
+}
 
-export const LongTextOnMount: Story<ComponentProps<typeof TextArea>> = (
-    props,
-) => <TextArea {...props} />
-LongTextOnMount.args = {
-    ...defaultProps,
-    autoRowHeight: true,
-    value: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '.repeat(
-        15,
-    ),
+export const LongTextOnMount: Story = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        autoRowHeight: true,
+        value: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '.repeat(
+            15,
+        ),
+    },
 }
 
 export default storyConfig

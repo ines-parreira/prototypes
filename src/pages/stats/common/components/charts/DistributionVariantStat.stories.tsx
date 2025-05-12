@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import DistributionVariantStat, {
     DistributionStatVariant,
@@ -11,13 +11,15 @@ const storyConfig: Meta = {
     component: DistributionVariantStat,
 }
 
-const Template: Story<ComponentProps<typeof DistributionVariantStat>> = (
-    props,
-) => (
-    <div style={{ height: '250px' }}>
-        <DistributionVariantStat {...props} />
-    </div>
-)
+type Story = StoryObj<typeof DistributionVariantStat>
+
+const Template: Story = {
+    render: (props) => (
+        <div style={{ height: '250px' }}>
+            <DistributionVariantStat {...props} />
+        </div>
+    ),
+}
 
 const defaultProps: ComponentProps<typeof DistributionVariantStat> = {
     minValue: 0,
@@ -26,9 +28,14 @@ const defaultProps: ComponentProps<typeof DistributionVariantStat> = {
     currentValue: 3,
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
-export const Star = Template.bind({})
-Star.args = { ...defaultProps, variant: DistributionStatVariant.Star }
+export const Default = {
+    ...Template,
+    args: defaultProps,
+}
+
+export const Star = {
+    ...Template,
+    args: { ...defaultProps, variant: DistributionStatVariant.Star },
+}
 
 export default storyConfig

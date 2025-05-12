@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { Meta, StoryFn } from '@storybook/react'
 
@@ -37,9 +37,8 @@ const storyConfig: Meta = {
         },
         trailIcon: {
             description: 'Icon to display after the text.',
-            control: { type: null },
         },
-        className: { control: { type: null } },
+        className: { control: { type: 'text' } },
     },
 }
 

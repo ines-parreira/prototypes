@@ -1,6 +1,6 @@
-import React, { ComponentProps, ContextType } from 'react'
+import { ComponentProps, ContextType } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import _noop from 'lodash/noop'
 
 import { DropdownContext } from './Dropdown'
@@ -20,15 +20,15 @@ const storyConfig: Meta = {
     component: DropdownQuickSelect,
 }
 
-const DefaultTemplate: (
-    context?: ContextType<typeof DropdownContext>,
-) => Story<ComponentProps<typeof DropdownQuickSelect>> =
-    (context = mockContext) =>
-    (props) => (
-        <DropdownContext.Provider value={context}>
-            <DropdownQuickSelect {...props} />
-        </DropdownContext.Provider>
-    )
+const DefaultTemplate: StoryObj<typeof DropdownQuickSelect> = {
+    render: function DefaultTemplate(props) {
+        return (
+            <DropdownContext.Provider value={mockContext}>
+                <DropdownQuickSelect {...props} />
+            </DropdownContext.Provider>
+        )
+    },
+}
 
 const defaultProps: Omit<
     ComponentProps<typeof DropdownQuickSelect>,
@@ -52,22 +52,26 @@ const defaultArgTypes = {
     },
 }
 
-export const Default = DefaultTemplate().bind({})
-Default.args = defaultProps
-Default.argTypes = defaultArgTypes
+export const Default = {
+    ...DefaultTemplate,
+    args: defaultProps,
+    argTypes: defaultArgTypes,
+}
 
-export const Selected = DefaultTemplate({
+export const Selected = {
+    ...DefaultTemplate,
     ...mockContext,
     value: ['tacos', 'pizza'],
-}).bind({})
-Selected.args = defaultProps
-Selected.argTypes = defaultArgTypes
+    args: defaultProps,
+    argTypes: defaultArgTypes,
+}
 
-export const Partial = DefaultTemplate({
+export const Partial = {
+    ...DefaultTemplate,
     ...mockContext,
     value: ['tacos'],
-}).bind({})
-Partial.args = defaultProps
-Partial.argTypes = defaultArgTypes
+    args: defaultProps,
+    argTypes: defaultArgTypes,
+}
 
 export default storyConfig

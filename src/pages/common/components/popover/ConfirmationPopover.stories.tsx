@@ -1,7 +1,7 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { action } from '@storybook/addon-actions'
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import IconButton from 'pages/common/components/button/IconButton'
 
@@ -35,47 +35,53 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<ComponentProps<typeof ConfirmationPopover>> = (props) => (
-    <ConfirmationPopover
-        {...props}
-        onConfirm={() => {
-            action('clicked!')()
-        }}
-    >
-        {({ uid, onDisplayConfirmation, elementRef }) => (
-            <IconButton
-                id={uid}
-                onClick={onDisplayConfirmation}
-                ref={elementRef}
+const Template: StoryObj<typeof ConfirmationPopover> = {
+    render: function Template(props) {
+        return (
+            <ConfirmationPopover
+                {...props}
+                onConfirm={() => {
+                    action('clicked!')()
+                }}
             >
-                add
-            </IconButton>
-        )}
-    </ConfirmationPopover>
-)
+                {({ uid, onDisplayConfirmation, elementRef }) => (
+                    <IconButton
+                        id={uid}
+                        onClick={onDisplayConfirmation}
+                        ref={elementRef}
+                    >
+                        add
+                    </IconButton>
+                )}
+            </ConfirmationPopover>
+        )
+    },
+}
 
-const FormTemplate: Story<ComponentProps<typeof ConfirmationPopover>> = (
-    props,
-) => (
-    <form
-        onSubmit={(e) => {
-            e.preventDefault()
-            action('submit!')(e)
-        }}
-    >
-        <ConfirmationPopover {...props}>
-            {({ uid, onDisplayConfirmation, elementRef }) => (
-                <IconButton
-                    id={uid}
-                    onClick={onDisplayConfirmation}
-                    ref={elementRef}
-                >
-                    add
-                </IconButton>
-            )}
-        </ConfirmationPopover>
-    </form>
-)
+const FormTemplate: StoryObj<typeof ConfirmationPopover> = {
+    render: function FormTemplate(props) {
+        return (
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    action('submit!')(e)
+                }}
+            >
+                <ConfirmationPopover {...props}>
+                    {({ uid, onDisplayConfirmation, elementRef }) => (
+                        <IconButton
+                            id={uid}
+                            onClick={onDisplayConfirmation}
+                            ref={elementRef}
+                        >
+                            add
+                        </IconButton>
+                    )}
+                </ConfirmationPopover>
+            </form>
+        )
+    },
+}
 
 const templateParameters = {
     controls: {
@@ -90,12 +96,16 @@ const defaultProps: Partial<ComponentProps<typeof ConfirmationPopover>> = {
     title: "I'm a title",
 }
 
-export const Main = Template.bind({})
-Main.args = defaultProps
-Main.parameters = templateParameters
+export const Main = {
+    ...Template,
+    args: defaultProps,
+    parameters: templateParameters,
+}
 
-export const WithinForm = FormTemplate.bind({})
-WithinForm.args = { ...defaultProps, buttonProps: { type: 'submit' } }
-WithinForm.parameters = templateParameters
+export const WithinForm = {
+    ...FormTemplate,
+    args: { ...defaultProps, buttonProps: { type: 'submit' } },
+    parameters: templateParameters,
+}
 
 export default storyConfig

@@ -1,11 +1,9 @@
-import React, { ComponentProps } from 'react'
-
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import { personNames } from 'fixtures/personNames'
 import Shoutout from 'pages/stats/common/components/Shoutout/Shoutout'
 
-const storyConfig: Meta = {
+const storyConfig: Meta<typeof Shoutout> = {
     title: 'Stats/Shoutout',
     component: Shoutout,
     parameters: {
@@ -29,52 +27,64 @@ const storyConfig: Meta = {
         },
         persons: {
             control: {
-                type: 'array',
+                type: 'object',
             },
         },
     },
 }
 
-const Template: Story<ComponentProps<typeof Shoutout>> = ({ ...props }) => (
-    <div style={{ maxWidth: 280, margin: '0 auto' }}>
-        <Shoutout {...props} />
-    </div>
-)
+type Story = StoryObj<typeof Shoutout>
 
-export const SinglePerson = Template.bind({})
-SinglePerson.args = {
-    metricName: 'Satisfaction score',
-    value: '4.76',
-    persons: [
-        {
-            name: 'Alex Gonzales',
-        },
-    ],
-    multiplePersonsLabel: '1 agent', // unnecessary here
+const Template: Story = {
+    render: (props) => (
+        <div style={{ maxWidth: 280, margin: '0 auto' }}>
+            <Shoutout {...props} />
+        </div>
+    ),
 }
 
-export const MultiplePersons = Template.bind({})
-MultiplePersons.args = {
-    metricName: 'First response time',
-    value: '4.25m',
-    persons: getPersonList(4),
-    multiplePersonsLabel: `4 agents`,
+export const SinglePerson = {
+    ...Template,
+    args: {
+        metricName: 'Satisfaction score',
+        value: '4.76',
+        persons: [
+            {
+                name: 'Alex Gonzales',
+            },
+        ],
+        multiplePersonsLabel: '1 agent', // unnecessary here
+    },
 }
 
-export const ExceedingPersons = Template.bind({})
-ExceedingPersons.args = {
-    metricName: 'First response time',
-    value: '4.25m',
-    persons: getPersonList(),
-    multiplePersonsLabel: `${getPersonList().length} agents`,
+export const MultiplePersons = {
+    ...Template,
+    args: {
+        metricName: 'First response time',
+        value: '4.25m',
+        persons: getPersonList(4),
+        multiplePersonsLabel: `4 agents`,
+    },
 }
 
-export const NoData = Template.bind({})
-NoData.args = {
-    metricName: 'First response time',
-    value: null,
-    persons: [],
-    multiplePersonsLabel: `0 agents`,
+export const ExceedingPersons = {
+    ...Template,
+    args: {
+        metricName: 'First response time',
+        value: '4.25m',
+        persons: getPersonList(),
+        multiplePersonsLabel: `${getPersonList().length} agents`,
+    },
+}
+
+export const NoData = {
+    ...Template,
+    args: {
+        metricName: 'First response time',
+        value: null,
+        persons: [],
+        multiplePersonsLabel: `0 agents`,
+    },
 }
 
 export default storyConfig

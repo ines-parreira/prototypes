@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import { IntegrationType } from 'models/integration/constants'
 import ActionsPlatformTemplatesFilters from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplatesFilters'
@@ -10,32 +10,36 @@ const storyConfig: Meta = {
     component: ActionsPlatformTemplatesFilters,
 }
 
-const TemplateAction: Story<
+const TemplateAction: StoryObj<
     ComponentProps<typeof ActionsPlatformTemplatesFilters>
-> = () => {
-    return (
-        <ActionsPlatformTemplatesFilters
-            app={{
-                id: 'id',
-                name: 'name',
-                icon: 'icon',
-                type: IntegrationType.Shopify,
-            }}
-            apps={[
-                {
+> = {
+    render: function TemplateAction() {
+        return (
+            <ActionsPlatformTemplatesFilters
+                app={{
                     id: 'id',
                     name: 'name',
                     icon: 'icon',
                     type: IntegrationType.Shopify,
-                },
-            ]}
-            name="NameOne"
-            onAppChange={() => {}}
-            onNameChange={() => {}}
-        />
-    )
+                }}
+                apps={[
+                    {
+                        id: 'id',
+                        name: 'name',
+                        icon: 'icon',
+                        type: IntegrationType.Shopify,
+                    },
+                ]}
+                name="NameOne"
+                onAppChange={() => {}}
+                onNameChange={() => {}}
+            />
+        )
+    },
 }
 
-export const Test = TemplateAction.bind({})
+export const Test = {
+    ...TemplateAction,
+}
 
 export default storyConfig

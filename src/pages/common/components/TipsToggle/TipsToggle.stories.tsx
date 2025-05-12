@@ -1,6 +1,6 @@
-import React, { ComponentProps, useState } from 'react'
+import { ComponentProps, useState } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import TipsToggle from './TipsToggle'
 
@@ -9,23 +9,23 @@ const storyConfig: Meta = {
     component: TipsToggle,
 }
 
-const Template: Story<ComponentProps<typeof TipsToggle>> = ({
-    isVisible,
-    onClick,
-    ...other
-}) => {
-    const [isVisibleLocal, setIsVisibleLocal] = useState(isVisible)
+type TemplateProps = ComponentProps<typeof TipsToggle>
 
-    return (
-        <TipsToggle
-            {...other}
-            isVisible={isVisibleLocal}
-            onClick={() => {
-                setIsVisibleLocal(!isVisibleLocal)
-                onClick(!isVisibleLocal)
-            }}
-        />
-    )
+const Template: StoryObj<TemplateProps> = {
+    render: function Template({ isVisible, onClick, ...other }) {
+        const [isVisibleLocal, setIsVisibleLocal] = useState(isVisible)
+
+        return (
+            <TipsToggle
+                {...other}
+                isVisible={isVisibleLocal}
+                onClick={() => {
+                    setIsVisibleLocal(!isVisibleLocal)
+                    onClick(!isVisibleLocal)
+                }}
+            />
+        )
+    },
 }
 
 const defaultProps: Partial<ComponentProps<typeof TipsToggle>> = {
@@ -33,11 +33,13 @@ const defaultProps: Partial<ComponentProps<typeof TipsToggle>> = {
     isVisible: true,
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
-Default.argTypes = {
-    onClick: {
-        action: 'Clicked !',
+export const Default = {
+    ...Template,
+    args: defaultProps,
+    argTypes: {
+        onClick: {
+            action: 'Clicked !',
+        },
     },
 }
 

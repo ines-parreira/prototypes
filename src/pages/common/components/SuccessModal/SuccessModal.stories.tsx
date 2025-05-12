@@ -1,6 +1,4 @@
-import React, { ComponentProps } from 'react'
-
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import SuccessModal, { SuccessModalIcon } from './SuccessModal'
 
@@ -9,23 +7,27 @@ const storyConfig: Meta = {
     component: SuccessModal,
 }
 
-const Template: Story<ComponentProps<typeof SuccessModal>> = (props) => (
-    <SuccessModal {...props} />
-)
+const Template: StoryObj<typeof SuccessModal> = {
+    render: function Template(props) {
+        return <SuccessModal {...props} />
+    },
+}
 
-export const Default = Template.bind({})
-Default.args = {
-    icon: SuccessModalIcon.PartyPopper,
-    buttonLabel: 'Got it',
-    children: (
-        <>
-            <div className="heading-page-semibold mb-2">All set!</div>
-            <div className="heading-subsection-regular">
-                Your chat is now available on your website.
-            </div>
-        </>
-    ),
-    isOpen: true,
+export const Default = {
+    ...Template,
+    args: {
+        icon: SuccessModalIcon.PartyPopper,
+        buttonLabel: 'Got it',
+        children: (
+            <>
+                <div className="heading-page-semibold mb-2">All set!</div>
+                <div className="heading-subsection-regular">
+                    Your chat is now available on your website.
+                </div>
+            </>
+        ),
+        isOpen: true,
+    },
 }
 
 export default storyConfig

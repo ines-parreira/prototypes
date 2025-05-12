@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import { VisibilityStatus } from 'models/helpCenter/types'
 
@@ -50,52 +50,65 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<SelectVisibilityStatusProps> = ({
-    status,
-    isParentUnlisted,
-    showNotification,
-    setShowNotification,
-    type,
-}) => {
-    const [newStatus, setStatus] = useState(status)
-    const onChange = (newStatus: VisibilityStatus) => setStatus(newStatus)
-    return (
-        <SelectVisibilityStatus
-            status={newStatus}
-            onChange={onChange}
-            type={type}
-            showNotification={showNotification}
-            setShowNotification={setShowNotification}
-            isParentUnlisted={isParentUnlisted}
-        />
-    )
+type Story = StoryObj<typeof SelectVisibilityStatus>
+
+const Template: Story = {
+    render: function Template({
+        status,
+        isParentUnlisted,
+        showNotification,
+        setShowNotification,
+        type,
+    }) {
+        const [newStatus, setStatus] = useState(status)
+        const onChange = (newStatus: VisibilityStatus) => setStatus(newStatus)
+        return (
+            <SelectVisibilityStatus
+                status={newStatus}
+                onChange={onChange}
+                type={type}
+                showNotification={showNotification}
+                setShowNotification={setShowNotification}
+                isParentUnlisted={isParentUnlisted}
+            />
+        )
+    },
 }
 
 const defaultProps: Partial<SelectVisibilityStatusProps> = {
     status: 'PUBLIC',
 }
 
-export const Public = Template.bind({})
+export const Public = {
+    ...Template,
+    args: defaultProps,
+}
 Public.args = defaultProps
 
 const unlistedProps: Partial<SelectVisibilityStatusProps> = {
     status: 'UNLISTED',
 }
-export const Unlisted = Template.bind({})
-Unlisted.args = unlistedProps
+export const Unlisted = {
+    ...Template,
+    args: unlistedProps,
+}
 
 const publicUnlistedProps: Partial<SelectVisibilityStatusProps> = {
     isParentUnlisted: true,
 }
-export const PublicButUnlisted = Template.bind({})
-PublicButUnlisted.args = publicUnlistedProps
+export const PublicButUnlisted = {
+    ...Template,
+    args: publicUnlistedProps,
+}
 
 const showNotification: Partial<SelectVisibilityStatusProps> = {
     status: 'PUBLIC',
     isParentUnlisted: true,
     showNotification: true,
 }
-export const ShowNotification = Template.bind({})
-ShowNotification.args = showNotification
+export const ShowNotification = {
+    ...Template,
+    args: showNotification,
+}
 
 export default storyConfig

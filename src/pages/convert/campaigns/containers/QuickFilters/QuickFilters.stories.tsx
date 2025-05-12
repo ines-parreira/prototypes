@@ -1,6 +1,4 @@
-import React, { ComponentProps } from 'react'
-
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import { QuickFilters } from './QuickFilters'
 
@@ -9,31 +7,35 @@ const storyConfig: Meta = {
     component: QuickFilters,
 }
 
-const Template: Story<ComponentProps<typeof QuickFilters>> = (props) => (
-    <QuickFilters {...props} />
-)
+type Story = StoryObj<typeof QuickFilters>
 
-export const Default = Template.bind({})
-Default.args = {
-    defaultActiveFilters: [],
-    filters: [
-        {
-            id: '1',
-            label: 'Contains product cards',
-        },
-        {
-            id: '2',
-            label: 'Contains discount codes',
-        },
-        {
-            id: '3',
-            label: 'Triggered on exit intent',
-        },
-        {
-            id: '4',
-            label: 'Triggered outside business hours',
-        },
-    ],
+const Template: Story = {
+    render: (props) => <QuickFilters {...props} />,
+}
+
+export const Default = {
+    ...Template,
+    args: {
+        defaultActiveFilters: [],
+        filters: [
+            {
+                id: '1',
+                label: 'Contains product cards',
+            },
+            {
+                id: '2',
+                label: 'Contains discount codes',
+            },
+            {
+                id: '3',
+                label: 'Triggered on exit intent',
+            },
+            {
+                id: '4',
+                label: 'Triggered outside business hours',
+            },
+        ],
+    },
 }
 
 export default storyConfig

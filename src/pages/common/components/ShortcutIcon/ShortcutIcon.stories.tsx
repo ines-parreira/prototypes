@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import ShortcutIcon from './ShortcutIcon'
 
@@ -16,10 +16,11 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<ComponentProps<typeof ShortcutIcon>> = ({
-    children,
-    ...props
-}) => <ShortcutIcon {...props}>{children}</ShortcutIcon>
+const Template: StoryObj<typeof ShortcutIcon> = {
+    render: function Template({ children, ...props }) {
+        return <ShortcutIcon {...props}>{children}</ShortcutIcon>
+    },
+}
 
 const templateParameters = {
     controls: {
@@ -31,8 +32,10 @@ const defaultProps: Partial<ComponentProps<typeof ShortcutIcon>> = {
     children: '⇧',
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
-Default.parameters = templateParameters
+export const Default = {
+    ...Template,
+    args: defaultProps,
+    parameters: templateParameters,
+}
 
 export default storyConfig

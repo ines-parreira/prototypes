@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -13,53 +13,65 @@ const storyConfig: Meta = {
     component: GroupAddon,
 }
 
-const Template: Story<ComponentProps<typeof GroupAddon>> = (props) => {
-    return (
-        <>
-            <p>
-                <InputGroup>
-                    <TextInput />
-                    <GroupAddon {...props}>.postfix</GroupAddon>
-                </InputGroup>
-            </p>
-            <p>
-                <InputGroup>
-                    <GroupAddon {...props}>prefix.</GroupAddon>
-                    <TextInput />
-                </InputGroup>
-            </p>
-            <p>
-                <InputGroup>
-                    <TextInput />
-                    <GroupAddon {...props}>.middlefix.</GroupAddon>
-                    <TextInput />
-                </InputGroup>
-            </p>
-            <p>
-                <InputGroup>
-                    <Button>Button</Button>
-                    <GroupAddon {...props}>prefix.</GroupAddon>
-                    <TextInput />
-                </InputGroup>
-            </p>
-            <p>
-                <InputGroup>
-                    <TextInput />
-                    <GroupAddon {...props}>prefix.</GroupAddon>
-                    <Button>Button</Button>
-                </InputGroup>
-            </p>
-            <p>
-                <InputGroup isDisabled>
-                    <TextInput value="disabled" />
-                    <GroupAddon {...props}>.disabled.postifix</GroupAddon>
-                </InputGroup>
-            </p>
-        </>
-    )
+type TemplateProps = ComponentProps<typeof GroupAddon>
+
+const Template: StoryObj<TemplateProps> = {
+    render: function Template({ ...props }) {
+        return (
+            <>
+                <p>
+                    <InputGroup>
+                        <TextInput />
+                        <GroupAddon {...props}>.postfix</GroupAddon>
+                    </InputGroup>
+                </p>
+                <p>
+                    <InputGroup>
+                        <GroupAddon {...props}>prefix.</GroupAddon>
+                        <TextInput />
+                    </InputGroup>
+                </p>
+                <p>
+                    <InputGroup>
+                        <TextInput />
+                        <GroupAddon {...props}>.middlefix.</GroupAddon>
+                        <TextInput />
+                    </InputGroup>
+                </p>
+                <p>
+                    <InputGroup>
+                        <Button>Button</Button>
+                        <GroupAddon {...props}>prefix.</GroupAddon>
+                        <TextInput />
+                    </InputGroup>
+                </p>
+                <p>
+                    <InputGroup>
+                        <TextInput />
+                        <GroupAddon {...props}>prefix.</GroupAddon>
+                        <Button>Button</Button>
+                    </InputGroup>
+                </p>
+                <p>
+                    <InputGroup isDisabled>
+                        <TextInput value="disabled" />
+                        <GroupAddon {...props}>.disabled.postifix</GroupAddon>
+                    </InputGroup>
+                </p>
+            </>
+        )
+    },
 }
 
-export const Default = Template.bind({})
-Default.parameters = { controls: { include: ['className', 'isDisabled'] } }
+const templateParameters = {
+    controls: {
+        include: ['className', 'isDisabled'],
+    },
+}
+
+export const Default = {
+    ...Template,
+    parameters: templateParameters,
+}
 
 export default storyConfig

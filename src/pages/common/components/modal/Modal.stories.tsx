@@ -1,6 +1,6 @@
-import React, { ComponentProps, useState } from 'react'
+import { ComponentProps, useState } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -24,43 +24,35 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<
+const Template: StoryObj<
     Partial<ComponentProps<typeof Modal> & ComponentProps<typeof ModalHeader>>
-> = ({
-    children,
-    subtitle,
-    title,
-    ...props
-}: Partial<
-    ComponentProps<typeof Modal> & ComponentProps<typeof ModalHeader>
->) => {
-    const [isOpen, setIsOpen] = useState(false)
+> = {
+    render: function Template({ children, subtitle, title, ...props }) {
+        const [isOpen, setIsOpen] = useState(false)
 
-    return (
-        <>
-            <Button onClick={() => setIsOpen(true)}>Open me</Button>
-            <Modal
-                {...props}
-                onClose={() => setIsOpen(false)}
-                isOpen={isOpen}
-                container={document.getElementById('root') as Element}
-            >
-                <ModalHeader subtitle={subtitle} title={title} />
-                <ModalBody>{children}</ModalBody>
-                <ModalActionsFooter>
-                    <Button intent="secondary" onClick={() => setIsOpen(false)}>
-                        Close
-                    </Button>
-                    <Button onClick={() => setIsOpen(false)}>Cool</Button>
-                </ModalActionsFooter>
-            </Modal>
-        </>
-    )
-}
-
-const templateParameters = {
-    controls: {
-        exclude: ['children', 'container', 'isOpen', 'onClose'],
+        return (
+            <>
+                <Button onClick={() => setIsOpen(true)}>Open me</Button>
+                <Modal
+                    {...props}
+                    onClose={() => setIsOpen(false)}
+                    isOpen={isOpen}
+                    container={document.getElementById('root') as Element}
+                >
+                    <ModalHeader subtitle={subtitle} title={title} />
+                    <ModalBody>{children}</ModalBody>
+                    <ModalActionsFooter>
+                        <Button
+                            intent="secondary"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            Close
+                        </Button>
+                        <Button onClick={() => setIsOpen(false)}>Cool</Button>
+                    </ModalActionsFooter>
+                </Modal>
+            </>
+        )
     },
 }
 
@@ -75,82 +67,88 @@ const defaultProps: Partial<
     isOpen: false,
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
-Default.parameters = templateParameters
-
-const TemplateWithExtraFooterInfo: Story<
-    Partial<ComponentProps<typeof Modal> & ComponentProps<typeof ModalHeader>>
-> = ({
-    children,
-    subtitle,
-    title,
-    ...props
-}: Partial<
-    ComponentProps<typeof Modal> & ComponentProps<typeof ModalHeader>
->) => {
-    const [isOpen, setIsOpen] = useState(false)
-
-    return (
-        <>
-            <Button onClick={() => setIsOpen(true)}>Open me</Button>
-            <Modal
-                {...props}
-                onClose={() => setIsOpen(false)}
-                isOpen={isOpen}
-                container={document.getElementById('root') as Element}
-            >
-                <ModalHeader subtitle={subtitle} title={title} />
-                <ModalBody>{children}</ModalBody>
-                <ModalActionsFooter extra="Mythology is cool">
-                    <Button intent="secondary" onClick={() => setIsOpen(false)}>
-                        Close
-                    </Button>
-                    <Button onClick={() => setIsOpen(false)}>Cool</Button>
-                </ModalActionsFooter>
-            </Modal>
-        </>
-    )
+export const Default = {
+    ...Template,
+    args: defaultProps,
 }
 
-export const WithExtraFooterInfo = TemplateWithExtraFooterInfo.bind({})
-WithExtraFooterInfo.args = defaultProps
-WithExtraFooterInfo.parameters = templateParameters
-
-const WithCustomFooterTemplate: Story<
+const TemplateWithExtraFooterInfo: StoryObj<
     Partial<ComponentProps<typeof Modal> & ComponentProps<typeof ModalHeader>>
-> = ({
-    children,
-    subtitle,
-    title,
-    ...props
-}: Partial<
-    ComponentProps<typeof Modal> & ComponentProps<typeof ModalHeader>
->) => {
-    const [isOpen, setIsOpen] = useState(false)
+> = {
+    render: function TemplateWithExtraFooterInfo({
+        children,
+        subtitle,
+        title,
+        ...props
+    }) {
+        const [isOpen, setIsOpen] = useState(false)
 
-    return (
-        <>
-            <Button onClick={() => setIsOpen(true)}>Open me</Button>
-            <Modal
-                {...props}
-                onClose={() => setIsOpen(false)}
-                isOpen={isOpen}
-                container={document.getElementById('root') as Element}
-            >
-                <ModalHeader subtitle={subtitle} title={title} />
-                <ModalBody>{children}</ModalBody>
-                <ModalFooter className={css.footer}>
-                    <span>Zeus and Hera are his parents</span>
-                    <span>Amazons are his children</span>
-                </ModalFooter>
-            </Modal>
-        </>
-    )
+        return (
+            <>
+                <Button onClick={() => setIsOpen(true)}>Open me</Button>
+                <Modal
+                    {...props}
+                    onClose={() => setIsOpen(false)}
+                    isOpen={isOpen}
+                    container={document.getElementById('root') as Element}
+                >
+                    <ModalHeader subtitle={subtitle} title={title} />
+                    <ModalBody>{children}</ModalBody>
+                    <ModalActionsFooter extra="Mythology is cool">
+                        <Button
+                            intent="secondary"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            Close
+                        </Button>
+                        <Button onClick={() => setIsOpen(false)}>Cool</Button>
+                    </ModalActionsFooter>
+                </Modal>
+            </>
+        )
+    },
 }
 
-export const WithCustomFooter = WithCustomFooterTemplate.bind({})
-WithCustomFooter.args = defaultProps
-WithCustomFooter.parameters = templateParameters
+export const WithExtraFooterInfo = {
+    ...TemplateWithExtraFooterInfo,
+    args: defaultProps,
+}
+
+const WithCustomFooterTemplate: StoryObj<
+    Partial<ComponentProps<typeof Modal> & ComponentProps<typeof ModalHeader>>
+> = {
+    render: function WithCustomFooterTemplate({
+        children,
+        subtitle,
+        title,
+        ...props
+    }) {
+        const [isOpen, setIsOpen] = useState(false)
+
+        return (
+            <>
+                <Button onClick={() => setIsOpen(true)}>Open me</Button>
+                <Modal
+                    {...props}
+                    onClose={() => setIsOpen(false)}
+                    isOpen={isOpen}
+                    container={document.getElementById('root') as Element}
+                >
+                    <ModalHeader subtitle={subtitle} title={title} />
+                    <ModalBody>{children}</ModalBody>
+                    <ModalFooter className={css.footer}>
+                        <span>Zeus and Hera are his parents</span>
+                        <span>Amazons are his children</span>
+                    </ModalFooter>
+                </Modal>
+            </>
+        )
+    },
+}
+
+export const WithCustomFooter = {
+    ...WithCustomFooterTemplate,
+    args: defaultProps,
+}
 
 export default storyConfig

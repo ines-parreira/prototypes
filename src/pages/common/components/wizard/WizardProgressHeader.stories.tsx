@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import Button from 'pages/common/components/button/Button'
 import Group from 'pages/common/components/layout/Group'
@@ -14,59 +14,67 @@ const storyConfig: Meta = {
     component: WizardProgressHeader,
 }
 
-const Template: Story<ComponentProps<typeof WizardProgressHeader>> = () => {
-    return (
-        <Wizard
-            startAt="branding"
-            steps={['basics', 'branding', 'installation']}
-        >
-            <WizardProgressHeader
-                labels={{
-                    basics: 'Set up the basics',
-                    branding: 'Branding',
-                    installation: 'Installation',
-                }}
-                className="mb-3"
-            />
+type TemplateProps = ComponentProps<typeof WizardProgressHeader>
 
-            <WizardStep name="basics" />
+const Template: StoryObj<TemplateProps> = {
+    render: function Template() {
+        return (
+            <Wizard
+                startAt="branding"
+                steps={['basics', 'branding', 'installation']}
+            >
+                <WizardProgressHeader
+                    labels={{
+                        basics: 'Set up the basics',
+                        branding: 'Branding',
+                        installation: 'Installation',
+                    }}
+                    className="mb-3"
+                />
 
-            <WizardStep name="branding" />
+                <WizardStep name="basics" />
 
-            <WizardStep name="installation" />
+                <WizardStep name="branding" />
 
-            <WizardContext.Consumer>
-                {(context) => (
-                    <>
-                        <Group>
-                            <Button
-                                intent="secondary"
-                                onClick={() =>
-                                    context?.setActiveStep(
-                                        context.previousStep!,
-                                    )
-                                }
-                                isDisabled={!context?.previousStep}
-                            >
-                                Previous step
-                            </Button>
+                <WizardStep name="installation" />
 
-                            <Button
-                                onClick={() =>
-                                    context?.setActiveStep(context.nextStep!)
-                                }
-                                isDisabled={!context?.nextStep}
-                            >
-                                Next step
-                            </Button>
-                        </Group>
-                    </>
-                )}
-            </WizardContext.Consumer>
-        </Wizard>
-    )
+                <WizardContext.Consumer>
+                    {(context) => (
+                        <>
+                            <Group>
+                                <Button
+                                    intent="secondary"
+                                    onClick={() =>
+                                        context?.setActiveStep(
+                                            context.previousStep!,
+                                        )
+                                    }
+                                    isDisabled={!context?.previousStep}
+                                >
+                                    Previous step
+                                </Button>
+
+                                <Button
+                                    onClick={() =>
+                                        context?.setActiveStep(
+                                            context.nextStep!,
+                                        )
+                                    }
+                                    isDisabled={!context?.nextStep}
+                                >
+                                    Next step
+                                </Button>
+                            </Group>
+                        </>
+                    )}
+                </WizardContext.Consumer>
+            </Wizard>
+        )
+    },
 }
 
-export const Default = Template.bind({})
+export const Default = {
+    ...Template,
+}
 
 export default storyConfig

@@ -1,7 +1,7 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { action } from '@storybook/addon-actions'
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import {
     bigCommerceLineItemFixture,
@@ -16,9 +16,11 @@ const storyConfig: Meta = {
     argTypes: {},
 }
 
-const Template: Story<ComponentProps<typeof ModifiersPopover>> = (props) => (
-    <ModifiersPopover {...props} />
-)
+const Template: StoryObj<typeof ModifiersPopover> = {
+    render: function Template(props) {
+        return <ModifiersPopover {...props} />
+    },
+}
 
 const defaultProps: ComponentProps<typeof ModifiersPopover> = {
     storeHash: 'Hello',
@@ -30,7 +32,9 @@ const defaultProps: ComponentProps<typeof ModifiersPopover> = {
     setReference: () => action('Reference set'),
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
+export const Default = {
+    ...Template,
+    args: defaultProps,
+}
 
 export default storyConfig

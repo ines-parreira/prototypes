@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import { assetsUrl } from 'utils'
 
@@ -21,9 +21,11 @@ const storyConfig: Meta = {
     decorators: [],
 }
 
-const Template: Story<ComponentProps<typeof HeroImageCarousel>> = (props) => (
-    <HeroImageCarousel {...props} />
-)
+const Template: StoryObj<typeof HeroImageCarousel> = {
+    render: function Template(props) {
+        return <HeroImageCarousel {...props} />
+    },
+}
 
 const defaultProps: ComponentProps<typeof HeroImageCarousel> = {
     slides: [
@@ -135,19 +137,29 @@ const singleSlideWithButton: ComponentProps<typeof HeroImageCarousel> = {
     ],
     singleSlideButtonTitle: 'I am the button',
 }
-export const Default = Template.bind({})
-Default.args = defaultProps
+export const Default = {
+    ...Template,
+    args: defaultProps,
+}
 
-export const WithHeadingAndDescriptionProps = Template.bind({})
-WithHeadingAndDescriptionProps.args = withHeadingAndDescriptionProps
+export const WithHeadingAndDescriptionProps = {
+    ...Template,
+    args: withHeadingAndDescriptionProps,
+}
 
-export const WithHeadingProps = Template.bind({})
-WithHeadingProps.args = withHeadingProps
+export const WithHeadingProps = {
+    ...Template,
+    args: withHeadingProps,
+}
 
-export const WithDescriptionProps = Template.bind({})
-WithDescriptionProps.args = withDescriptionProps
+export const WithDescriptionProps = {
+    ...Template,
+    args: withDescriptionProps,
+}
 
-export const SingleSlideWithButton = Template.bind({})
-SingleSlideWithButton.args = singleSlideWithButton
+export const SingleSlideWithButton = {
+    ...Template,
+    args: singleSlideWithButton,
+}
 
 export default storyConfig

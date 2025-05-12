@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import HeaderTitle from 'pages/common/components/HeaderTitle'
 
@@ -39,12 +39,16 @@ const templateParameters = {
     },
 }
 
-const Template: Story<ComponentProps<typeof HeaderTitle>> = (props) => (
-    <HeaderTitle {...props} />
-)
+const Template: StoryObj<typeof HeaderTitle> = {
+    render: function Template(props) {
+        return <HeaderTitle {...props} />
+    },
+}
 
-export const Default = Template.bind({})
-Default.args = defaultProps
-Default.parameters = templateParameters
+export const Default = {
+    ...Template,
+    args: defaultProps,
+    parameters: templateParameters,
+}
 
 export default storyConfig

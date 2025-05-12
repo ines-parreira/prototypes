@@ -1,14 +1,14 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import TrendBadge from 'pages/stats/common/components/TrendBadge/index'
 
-const storyConfig: Meta = {
+const storyConfig: Meta<typeof TrendBadge> = {
     title: 'Stats/TrendBadge',
     component: TrendBadge,
     argTypes: {
-        type: {
+        interpretAs: {
             control: {
                 type: 'select',
             },
@@ -16,9 +16,11 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<ComponentProps<typeof TrendBadge>> = (props) => (
-    <TrendBadge {...props} />
-)
+type Story = StoryObj<typeof TrendBadge>
+
+const Template: Story = {
+    render: (props) => <TrendBadge {...props} />,
+}
 
 const defaultProps: ComponentProps<typeof TrendBadge> = {
     className: '',
@@ -27,38 +29,48 @@ const defaultProps: ComponentProps<typeof TrendBadge> = {
     interpretAs: 'more-is-better',
 }
 
-export const Neutral = Template.bind({})
-Neutral.args = defaultProps
-
-export const NoInterpretation = Template.bind({})
-NoInterpretation.args = {
-    ...defaultProps,
-    value: 10,
-    prevValue: 4,
-    interpretAs: undefined,
+export const Neutral = {
+    ...Template,
+    args: defaultProps,
 }
 
-export const PositiveBadge = Template.bind({})
-PositiveBadge.args = {
-    ...defaultProps,
-    value: 2,
-    prevValue: 1,
+export const NoInterpretation = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        value: 10,
+        prevValue: 4,
+        interpretAs: undefined,
+    },
 }
 
-export const NegativeBadge = Template.bind({})
-NegativeBadge.args = {
-    ...defaultProps,
-    value: 2,
-    prevValue: 4,
+export const PositiveBadge = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        value: 2,
+        prevValue: 1,
+    },
 }
 
-export const BadgeWithTooltip = Template.bind({})
-BadgeWithTooltip.args = {
-    ...defaultProps,
-    value: 15,
-    prevValue: 8,
-    tooltipData: {
-        period: 'Feb 01, 2022 - Feb 05, 2022',
+export const NegativeBadge = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        value: 2,
+        prevValue: 4,
+    },
+}
+
+export const BadgeWithTooltip = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        value: 15,
+        prevValue: 8,
+        tooltipData: {
+            period: 'Feb 01, 2022 - Feb 05, 2022',
+        },
     },
 }
 

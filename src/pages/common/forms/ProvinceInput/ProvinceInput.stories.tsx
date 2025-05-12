@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import ProvinceInput from './ProvinceInput'
 
@@ -9,14 +9,16 @@ const storyConfig: Meta = {
     component: ProvinceInput,
 }
 
-const Template: Story<ComponentProps<typeof ProvinceInput>> = ({
-    ...other
-}: ComponentProps<typeof ProvinceInput>) => {
-    return (
-        <div style={{ width: '300px' }}>
-            <ProvinceInput {...other} />
-        </div>
-    )
+type Story = StoryObj<typeof ProvinceInput>
+
+const Template: Story = {
+    render: function Template({ ...props }) {
+        return (
+            <div style={{ width: '300px' }}>
+                <ProvinceInput {...props} />
+            </div>
+        )
+    },
 }
 
 const templateParameters = {
@@ -42,8 +44,10 @@ const defaultProps: Partial<ComponentProps<typeof ProvinceInput>> = {
     isRequired: true,
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
-Default.parameters = templateParameters
+export const Default = {
+    ...Template,
+    args: defaultProps,
+    parameters: templateParameters,
+}
 
 export default storyConfig

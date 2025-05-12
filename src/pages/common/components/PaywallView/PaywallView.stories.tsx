@@ -1,5 +1,3 @@
-import React, { ComponentProps } from 'react'
-
 import { Meta, StoryObj } from '@storybook/react'
 import { MemoryRouter } from 'react-router-dom'
 
@@ -28,9 +26,6 @@ const meta: Meta = {
     argTypes: {
         children: {
             description: 'Content to display in the paywall view.',
-            control: {
-                type: null,
-            },
         },
     },
     decorators: [
@@ -56,7 +51,7 @@ const meta: Meta = {
 
 export default meta
 
-type Story = StoryObj<ComponentProps<typeof PaywallView>>
+type Story = StoryObj<typeof PaywallView>
 
 export const Default: Story = {
     render: (args) => <PaywallView {...args} />,

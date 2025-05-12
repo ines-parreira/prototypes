@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 
+import type { Preview } from '@storybook/react'
 import {
     ArcElement,
     BarController,
@@ -15,15 +16,16 @@ import {
     Tooltip,
 } from 'chart.js'
 
-import { ThemeProvider, useSetTheme } from '../src/core/theme'
+import { ThemeProvider, useSetTheme } from '../src/core/theme/index.ts'
 import { initLaunchDarkly } from '../src/utils/launchDarkly.ts'
 import { decorator as LDDecorator } from './launchdarkly-js-client-sdk.tsx'
 
+// @ts-expect-error
 initLaunchDarkly()
 
 require('@storybook/addon-console')
 
-require('assets/css/main.less')
+require('../src/assets/css/main.less')
 require('./style.less')
 
 export const parameters = {
@@ -80,25 +82,6 @@ Chart.register(
     ArcElement,
 )
 
-export const preview = {
-    parameters,
-    globalTypes: {
-        theme: {
-            name: 'Theme',
-            description: 'Global theme for components',
-            defaultValue: 'light',
-            toolbar: {
-                icon: 'circlehollow',
-                items: [
-                    { value: 'light', icon: 'circlehollow', title: 'Light' },
-                    { value: 'dark', icon: 'circle', title: 'Dark' },
-                ],
-                showName: true,
-            },
-        },
-    },
-}
-
 const ThemeBlock = ({ background, children }) => (
     <div
         style={{
@@ -118,7 +101,7 @@ const ThemeConsumer = ({ children, theme }) => {
 
     useEffect(() => {
         setTheme(theme)
-    }, [theme])
+    }, [theme, setTheme])
 
     return children
 }
@@ -140,6 +123,25 @@ const withTheme = (StoryFn, context) => {
     )
 }
 
-export const decorators = [withTheme, LDDecorator]
+export const preview: Preview = {
+    parameters,
+    globalTypes: {
+        theme: {
+            name: 'Theme',
+            description: 'Global theme for components',
+            defaultValue: 'light',
+            toolbar: {
+                icon: 'circlehollow',
+                items: [
+                    { value: 'light', icon: 'circlehollow', title: 'Light' },
+                    { value: 'dark', icon: 'circle', title: 'Dark' },
+                ],
+                showName: true,
+            },
+        },
+    },
+    // @ts-expect-error LDDecorator types mismatch
+    decorators: [withTheme, LDDecorator],
+}
 
 export default preview

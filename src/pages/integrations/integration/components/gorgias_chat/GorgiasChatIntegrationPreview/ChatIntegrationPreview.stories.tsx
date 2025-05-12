@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -40,13 +40,15 @@ const storyConfig: Meta = {
     argTypes: {},
 }
 
-const Template: Story<ComponentProps<typeof ChatIntegrationPreview>> = (
-    props,
-) => (
-    <Provider store={configureMockStore()(defaultState)}>
-        <ChatIntegrationPreview {...props} />
-    </Provider>
-)
+type Story = StoryObj<typeof ChatIntegrationPreview>
+
+const Template: Story = {
+    render: (props) => (
+        <Provider store={configureMockStore()(defaultState)}>
+            <ChatIntegrationPreview {...props} />
+        </Provider>
+    ),
+}
 
 const defaultProps: ComponentProps<typeof ChatIntegrationPreview> = {
     name: 'My chat',
@@ -74,157 +76,185 @@ const defaultProps: ComponentProps<typeof ChatIntegrationPreview> = {
     useMainColorOutsideBusinessHours: false,
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
-
-export const Offline = Template.bind({})
-Offline.args = {
-    ...defaultProps,
-    isOnline: false,
-    offlineIntroductionText: 'Leave us a message',
+export const Default = {
+    ...Template,
+    args: defaultProps,
 }
 
-export const WithoutButton = Template.bind({})
-WithoutButton.args = { ...defaultProps, hideButton: true }
-
-export const WithoutIntroductionText = Template.bind({})
-WithoutIntroductionText.args = { ...defaultProps, introductionText: undefined }
-
-export const WithoutMessages = Template.bind({})
-WithoutMessages.args = {
-    ...defaultProps,
-    children: <div className={css.content} />,
+export const Offline = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        isOnline: false,
+        offlineIntroductionText: 'Leave us a message',
+    },
 }
 
-export const WithoutPoweredBy = Template.bind({})
-WithoutPoweredBy.args = {
-    ...defaultProps,
-    renderPoweredBy: false,
+export const WithoutButton = {
+    ...Template,
+    args: { ...defaultProps, hideButton: true },
 }
 
-export const WithoutFooter = Template.bind({})
-WithoutFooter.args = {
-    ...defaultProps,
-    renderFooter: false,
+export const WithoutIntroductionText = {
+    ...Template,
+    args: { ...defaultProps, introductionText: undefined },
 }
 
-export const WithoutAutoResponder = Template.bind({})
-WithoutAutoResponder.args = {
-    ...defaultProps,
-    autoResponderEnabled: false,
+export const WithoutMessages = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        children: <div className={css.content} />,
+    },
 }
 
-export const WithGoBackButton = Template.bind({})
-WithGoBackButton.args = {
-    ...defaultProps,
-    showGoBackButton: true,
+export const WithoutPoweredBy = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        renderPoweredBy: false,
+    },
 }
 
-export const WithGoBackButtonAndAnimations = Template.bind({})
-WithGoBackButtonAndAnimations.args = {
-    ...defaultProps,
-    showGoBackButton: true,
-    enableAnimations: true,
+export const WithoutFooter = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        renderFooter: false,
+    },
 }
 
-export const WithAgentMessagesAnimations = Template.bind({})
-WithAgentMessagesAnimations.args = {
-    ...defaultProps,
-    children: (
-        <MessageContent
-            conversationColor=""
-            currentUser={fromJS(user)}
-            customerInitialMessages={['Hello']}
-            agentMessages={[
-                {
-                    content:
-                        'Hi 👋  Our sizes are made for all shapes and body types. Check out this standard size chart for a measurement guide and international conversion.',
-                    isHtml: false,
-                    attachments: [],
-                },
-                {
-                    content: 'Was this helpful?',
-                    isHtml: false,
-                    attachments: [],
-                },
-            ]}
-            enableAgentMessagesAnimations
-        />
-    ),
+export const WithoutAutoResponder = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        autoResponderEnabled: false,
+    },
 }
 
-export const WithProductCards = Template.bind({})
-WithProductCards.args = {
-    ...defaultProps,
-    children: (
-        <MessageContent
-            conversationColor=""
-            currentUser={fromJS(user)}
-            customerInitialMessages={['Hello']}
-            agentMessages={[
-                {
-                    content:
-                        'Hi 👋  Our sizes are made for all shapes and body types. Check out this standard size chart for a measurement guide and international conversion.',
-                    isHtml: false,
-                    attachments: [
-                        {
-                            content_type: AttachmentEnum.Product,
-                            name: 'ADIDAS | SUPERSTAR 80S',
-                            size: 0,
-                            url: 'https://test.com/products/test-product1',
-                            extra: {
-                                price: '120.5',
-                                variant_name: 'ADIDAS | SUPERSTAR 80S',
-                                product_link:
-                                    'https://test.com/products/test-product1',
-                                currency: 'USD',
-                                featured_image:
-                                    'https://cdn.mos.cms.futurecdn.net/gPvyaz76tASn87RCGuSdDc.jpg',
-                                product_id: 1,
-                                variant_id: 2,
+export const WithGoBackButton = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        showGoBackButton: true,
+    },
+}
+
+export const WithGoBackButtonAndAnimations = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        showGoBackButton: true,
+        enableAnimations: true,
+    },
+}
+
+export const WithAgentMessagesAnimations = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        children: (
+            <MessageContent
+                conversationColor=""
+                currentUser={fromJS(user)}
+                customerInitialMessages={['Hello']}
+                agentMessages={[
+                    {
+                        content:
+                            'Hi 👋  Our sizes are made for all shapes and body types. Check out this standard size chart for a measurement guide and international conversion.',
+                        isHtml: false,
+                        attachments: [],
+                    },
+                    {
+                        content: 'Was this helpful?',
+                        isHtml: false,
+                        attachments: [],
+                    },
+                ]}
+                enableAgentMessagesAnimations
+            />
+        ),
+    },
+}
+
+export const WithProductCards = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        children: (
+            <MessageContent
+                conversationColor=""
+                currentUser={fromJS(user)}
+                customerInitialMessages={['Hello']}
+                agentMessages={[
+                    {
+                        content:
+                            'Hi 👋  Our sizes are made for all shapes and body types. Check out this standard size chart for a measurement guide and international conversion.',
+                        isHtml: false,
+                        attachments: [
+                            {
+                                content_type: AttachmentEnum.Product,
+                                name: 'ADIDAS | SUPERSTAR 80S',
+                                size: 0,
+                                url: 'https://test.com/products/test-product1',
+                                extra: {
+                                    price: '120.5',
+                                    variant_name: 'ADIDAS | SUPERSTAR 80S',
+                                    product_link:
+                                        'https://test.com/products/test-product1',
+                                    currency: 'USD',
+                                    featured_image:
+                                        'https://cdn.mos.cms.futurecdn.net/gPvyaz76tASn87RCGuSdDc.jpg',
+                                    product_id: 1,
+                                    variant_id: 2,
+                                },
                             },
-                        },
-                        {
-                            content_type: AttachmentEnum.Product,
-                            name: 'CONVERSE | CHUCK TAYLOR ALL STAR',
-                            size: 0,
-                            url: 'https://test.com/products/test-product2',
-                            extra: {
-                                price: '145.5',
-                                variant_name:
-                                    'CONVERSE | CHUCK TAYLOR ALL STAR',
-                                product_link:
-                                    'https://test.com/products/test-product2',
-                                currency: 'USD',
-                                featured_image:
-                                    'https://cdn.mos.cms.futurecdn.net/gPvyaz76tASn87RCGuSdDc.jpg',
-                                product_id: 3,
-                                variant_id: 4,
+                            {
+                                content_type: AttachmentEnum.Product,
+                                name: 'CONVERSE | CHUCK TAYLOR ALL STAR',
+                                size: 0,
+                                url: 'https://test.com/products/test-product2',
+                                extra: {
+                                    price: '145.5',
+                                    variant_name:
+                                        'CONVERSE | CHUCK TAYLOR ALL STAR',
+                                    product_link:
+                                        'https://test.com/products/test-product2',
+                                    currency: 'USD',
+                                    featured_image:
+                                        'https://cdn.mos.cms.futurecdn.net/gPvyaz76tASn87RCGuSdDc.jpg',
+                                    product_id: 3,
+                                    variant_id: 4,
+                                },
                             },
-                        },
-                    ],
-                },
-                {
-                    content: 'Was this helpful?',
-                    isHtml: false,
-                    attachments: [],
-                },
-            ]}
-            enableAgentMessagesAnimations
-        />
-    ),
+                        ],
+                    },
+                    {
+                        content: 'Was this helpful?',
+                        isHtml: false,
+                        attachments: [],
+                    },
+                ]}
+                enableAgentMessagesAnimations
+            />
+        ),
+    },
 }
 
-export const CustomFontImpact = Template.bind({})
-CustomFontImpact.args = {
-    ...defaultProps,
-    mainFontFamily: 'Impact',
+export const CustomFontImpact = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        mainFontFamily: 'Impact',
+    },
 }
 
-export const CustomFontDeliciousHandrawn = Template.bind({})
-CustomFontImpact.args = {
-    ...defaultProps,
-    mainFontFamily: 'Delicious Handrawn',
+export const CustomFontDeliciousHandrawn = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        mainFontFamily: 'Delicious Handrawn',
+    },
 }
 
 export default storyConfig

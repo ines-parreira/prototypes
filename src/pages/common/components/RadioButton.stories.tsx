@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import RadioButton from './RadioButton'
 
@@ -16,9 +16,11 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<ComponentProps<typeof RadioButton>> = (props) => (
-    <RadioButton {...props} />
-)
+const Template: StoryObj<typeof RadioButton> = {
+    render: function Template(props) {
+        return <RadioButton {...props} />
+    },
+}
 
 const templateParameters = {
     controls: {
@@ -33,8 +35,10 @@ const defaultProps: Partial<ComponentProps<typeof RadioButton>> = {
     isSelected: false,
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
-Default.parameters = templateParameters
+export const Default = {
+    ...Template,
+    args: defaultProps,
+    parameters: templateParameters,
+}
 
 export default storyConfig

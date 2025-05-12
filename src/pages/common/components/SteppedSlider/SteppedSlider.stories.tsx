@@ -10,7 +10,7 @@ const storyConfig: Meta<typeof SteppedSlider> = {
     argTypes: {
         steps: {
             control: {
-                type: 'array',
+                type: 'object',
             },
         },
         stepKey: {

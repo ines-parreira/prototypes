@@ -1,18 +1,20 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import DashboardGrid from './DashboardGrid'
 import DashboardGridCell from './DashboardGridCell'
 
-const storyConfig: Meta = {
+const storyConfig: Meta<typeof DashboardGrid> = {
     title: 'Stats/DashboardGrid',
     component: DashboardGrid,
 }
 
-const Template: Story<ComponentProps<typeof DashboardGrid>> = (props) => (
-    <DashboardGrid {...props} />
-)
+type Story = StoryObj<typeof DashboardGrid>
+
+const Template: Story = {
+    render: (props) => <DashboardGrid {...props} />,
+}
 
 const defaultProps: ComponentProps<typeof DashboardGrid> = {
     className: '',
@@ -37,7 +39,9 @@ const defaultProps: ComponentProps<typeof DashboardGrid> = {
     ),
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
+export const Default = {
+    ...Template,
+    args: defaultProps,
+}
 
 export default storyConfig

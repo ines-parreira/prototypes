@@ -1,6 +1,4 @@
-import { ComponentProps } from 'react'
-
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import { ToggleCard } from './ToggleCard'
 
@@ -16,45 +14,55 @@ const storyConfig: Meta = {
     },
 } as Meta
 
-const Template: Story<ComponentProps<typeof ToggleCard>> = (args) => (
-    <ToggleCard {...args}></ToggleCard>
-)
-
-export const Default = Template.bind({})
-Default.args = {
-    checked: true,
-    onChange: (current) => !current,
-    title: 'Toggle Card',
-    subtitle: '',
-    style: {},
+const Template: StoryObj<typeof ToggleCard> = {
+    render: function Template(args) {
+        return <ToggleCard {...args}></ToggleCard>
+    },
 }
 
-export const Enabled = Template.bind({})
-Enabled.args = {
-    checked: true,
-    onChange: (current) => !current,
-    title: 'Toggle Card',
-    subtitle: 'Subtitle',
-    style: {},
+export const Default = {
+    ...Template,
+    args: {
+        checked: true,
+        onChange: (current: boolean) => !current,
+        title: 'Toggle Card',
+        subtitle: '',
+        style: {},
+    },
 }
 
-export const Disabled = Template.bind({})
-Disabled.args = {
-    checked: false,
-    onChange: (current) => !current,
-    title: 'Toggle Card',
-    subtitle: 'Subtitle',
-    style: {},
+export const Enabled = {
+    ...Template,
+    args: {
+        checked: true,
+        onChange: (current: boolean) => !current,
+        title: 'Toggle Card',
+        subtitle: 'Subtitle',
+        style: {},
+    },
 }
 
-export const WithContent = Template.bind({})
-WithContent.args = {
-    checked: true,
-    onChange: (current) => !current,
-    title: 'Toggle Card',
-    subtitle: 'Subtitle',
-    children: `I'm a child content`,
-    style: {},
+export const Disabled = {
+    ...Template,
+    args: {
+        checked: false,
+        onChange: (current: boolean) => !current,
+        title: 'Toggle Card',
+        subtitle: 'Subtitle',
+        style: {},
+    },
+}
+
+export const WithContent = {
+    ...Template,
+    args: {
+        checked: true,
+        onChange: (current: boolean) => !current,
+        title: 'Toggle Card',
+        subtitle: 'Subtitle',
+        children: `I'm a child content`,
+        style: {},
+    },
 }
 
 export default storyConfig

@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import {
     ChatWorkload,
@@ -17,9 +17,11 @@ const storyConfig: Meta = {
     component: GaugeChart,
 }
 
-const Template: Story<ComponentProps<typeof GaugeChart>> = (props) => (
-    <GaugeChart {...props} />
-)
+type Story = StoryObj<typeof GaugeChart>
+
+const Template: Story = {
+    render: (props) => <GaugeChart {...props} />,
+}
 
 const defaultProps: ComponentProps<typeof GaugeChart> = {
     data: [
@@ -31,7 +33,9 @@ const defaultProps: ComponentProps<typeof GaugeChart> = {
     ],
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
+export const Default = {
+    ...Template,
+    args: defaultProps,
+}
 
 export default storyConfig

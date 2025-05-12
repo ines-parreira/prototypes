@@ -1,13 +1,10 @@
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import { BrowserRouter } from 'react-router-dom'
 
 import { GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS } from 'config/integrations/gorgias_chat'
 import { Language } from 'constants/languages'
 
-import {
-    GorgiasChatIntegrationLanguagesTable,
-    GorgiasChatIntegrationLanguagesTableProps,
-} from './GorgiasChatIntegrationLanguagesTable'
+import { GorgiasChatIntegrationLanguagesTable } from './GorgiasChatIntegrationLanguagesTable'
 import { GorgiasChatIntegrationLanguagesTableRow } from './GorgiasChatIntegrationLanguagesTableRow'
 import { LanguageItemRow } from './types'
 
@@ -47,13 +44,17 @@ const storyConfig: Meta = {
     title: 'Chat/LanguagesTable',
 }
 
-const Template: Story<GorgiasChatIntegrationLanguagesTableProps> = (props) => (
-    <GorgiasChatIntegrationLanguagesTable {...props} />
-)
+type Story = StoryObj<typeof GorgiasChatIntegrationLanguagesTable>
 
-export const Default = Template.bind({})
-Default.args = {
-    children: <GorgiasChatIntegrationLanguagesTableChildren />,
+const Template: Story = {
+    render: (props) => <GorgiasChatIntegrationLanguagesTable {...props} />,
+}
+
+export const Default = {
+    ...Template,
+    args: {
+        children: <GorgiasChatIntegrationLanguagesTableChildren />,
+    },
 }
 
 export default storyConfig

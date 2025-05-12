@@ -1,6 +1,6 @@
-import React, { ComponentProps, useState } from 'react'
+import { ComponentProps, useState } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import TimedeltaPicker from './TimedeltaPicker'
 
@@ -20,22 +20,26 @@ const storyConfig: Meta = {
         },
         units: {
             control: {
-                type: 'array',
+                type: 'object',
             },
         },
     },
 }
 
-const Template: Story<ComponentProps<typeof TimedeltaPicker>> = (props) => {
-    const [selectedValue, setSelectedValue] = useState<string>('')
+type Story = StoryObj<typeof TimedeltaPicker>
 
-    return (
-        <TimedeltaPicker
-            {...props}
-            value={selectedValue}
-            onChange={setSelectedValue}
-        />
-    )
+const Template: Story = {
+    render: function Template({ ...props }) {
+        const [selectedValue, setSelectedValue] = useState<string>('')
+
+        return (
+            <TimedeltaPicker
+                {...props}
+                value={selectedValue}
+                onChange={setSelectedValue}
+            />
+        )
+    },
 }
 
 const defaultProps: Partial<ComponentProps<typeof TimedeltaPicker>> = {
@@ -53,8 +57,10 @@ const templateParameters = {
     },
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
-Default.parameters = templateParameters
+export const Default = {
+    ...Template,
+    args: defaultProps,
+    parameters: templateParameters,
+}
 
 export default storyConfig

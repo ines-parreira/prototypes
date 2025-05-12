@@ -1,5 +1,3 @@
-import React, { ComponentProps } from 'react'
-
 import { Meta, StoryObj } from '@storybook/react'
 
 import LearnMoreLink from './LearnMoreLink'
@@ -15,7 +13,7 @@ const meta: Meta = {
 
 export default meta
 
-type Story = StoryObj<ComponentProps<typeof LearnMoreLink>>
+type Story = StoryObj<typeof LearnMoreLink>
 
 export const Default: Story = {
     render: (args) => <LearnMoreLink {...args} />,

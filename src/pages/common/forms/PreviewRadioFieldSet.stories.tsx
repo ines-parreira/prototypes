@@ -1,5 +1,3 @@
-import React, { ComponentProps } from 'react'
-
 import { Meta, StoryObj } from '@storybook/react'
 
 import previewDark from 'assets/img/help-center/preview-dark.svg'
@@ -22,7 +20,7 @@ const meta: Meta = {
 
 export default meta
 
-type Story = StoryObj<ComponentProps<typeof PreviewRadioFieldSet>>
+type Story = StoryObj<typeof PreviewRadioFieldSet>
 
 export const Default: Story = {
     render: (args) => <PreviewRadioFieldSet {...args} />,

@@ -1,6 +1,6 @@
-import React, { ComponentProps, useState } from 'react'
+import { ComponentProps, useState } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import ToggleInput from './ToggleInput'
 
@@ -27,21 +27,22 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<ComponentProps<typeof ToggleInput>> = ({
-    children,
-    ...other
-}: ComponentProps<typeof ToggleInput>) => {
-    const [isToggled, setIsToggled] = useState(false)
+type Story = StoryObj<typeof ToggleInput>
 
-    return (
-        <ToggleInput
-            {...other}
-            isToggled={isToggled}
-            onClick={(nextValue) => setIsToggled(nextValue)}
-        >
-            {children}
-        </ToggleInput>
-    )
+const Template: Story = {
+    render: function Template({ children, ...other }) {
+        const [isToggled, setIsToggled] = useState(false)
+
+        return (
+            <ToggleInput
+                {...other}
+                isToggled={isToggled}
+                onClick={(nextValue) => setIsToggled(nextValue)}
+            >
+                {children}
+            </ToggleInput>
+        )
+    },
 }
 
 const defaultProps: Partial<ComponentProps<typeof ToggleInput>> = {
@@ -55,8 +56,10 @@ const templateParameters = {
     },
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
-Default.parameters = templateParameters
+export const Default = {
+    ...Template,
+    args: defaultProps,
+    parameters: templateParameters,
+}
 
 export default storyConfig

@@ -1,6 +1,6 @@
-import React, { ComponentProps, useState } from 'react'
+import { ComponentProps, useState } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import CheckBox from './CheckBox'
 
@@ -37,14 +37,18 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<ComponentProps<typeof CheckBox>> = (props) => {
-    const [isChecked, setIsChecked] = useState(false)
+type TemplateProps = ComponentProps<typeof CheckBox>
 
-    return (
-        <CheckBox {...props} isChecked={isChecked} onChange={setIsChecked}>
-            Check me
-        </CheckBox>
-    )
+const Template: StoryObj<TemplateProps> = {
+    render: function Template({ ...props }) {
+        const [isChecked, setIsChecked] = useState(false)
+
+        return (
+            <CheckBox {...props} isChecked={isChecked} onChange={setIsChecked}>
+                Check me
+            </CheckBox>
+        )
+    },
 }
 
 const defaultProps: Partial<ComponentProps<typeof CheckBox>> = {
@@ -58,8 +62,10 @@ const templateParameters = {
     },
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
-Default.parameters = templateParameters
+export const Default = {
+    ...Template,
+    args: defaultProps,
+    parameters: templateParameters,
+}
 
 export default storyConfig

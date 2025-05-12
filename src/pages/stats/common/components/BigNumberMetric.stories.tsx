@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 
@@ -14,34 +14,45 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<ComponentProps<typeof BigNumberMetric>> = (props) => (
-    <BigNumberMetric {...props} />
-)
+type Story = StoryObj<typeof BigNumberMetric>
+
+const Template: Story = {
+    render: (props) => <BigNumberMetric {...props} />,
+}
 
 const defaultProps: ComponentProps<typeof BigNumberMetric> = {
     className: '',
     children: '123',
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
-
-export const LoadingState = Template.bind({})
-LoadingState.args = {
-    ...defaultProps,
-    isLoading: true,
+export const Default = {
+    ...Template,
+    args: defaultProps,
 }
 
-export const WithTrendBadge = Template.bind({})
-WithTrendBadge.args = {
-    ...defaultProps,
-    trendBadge: <TrendBadge value={123} prevValue={100} />,
+export const LoadingState = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        isLoading: true,
+    },
 }
 
-export const WithoutDataAndWithTrendBadge = Template.bind({})
-WithoutDataAndWithTrendBadge.args = {
-    children: '-',
-    trendBadge: <TrendBadge value={0} prevValue={0} />,
+export const WithTrendBadge = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        trendBadge: <TrendBadge value={123} prevValue={100} />,
+    },
+}
+
+export const WithoutDataAndWithTrendBadge = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        children: '-',
+        trendBadge: <TrendBadge value={0} prevValue={0} />,
+    },
 }
 
 export default storyConfig

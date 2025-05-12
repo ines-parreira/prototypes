@@ -1,6 +1,6 @@
-import React, { ComponentProps, useRef } from 'react'
+import { useRef } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -11,23 +11,24 @@ const storyConfig: Meta = {
     component: UncontrolledDropdown,
 }
 
-const ExampleTemplate: Story<ComponentProps<typeof UncontrolledDropdown>> = (
-    props,
-) => {
-    const buttonRef = useRef<HTMLButtonElement>(null)
+const ExampleTemplate: StoryObj<typeof UncontrolledDropdown> = {
+    render: function ExampleTemplate(props) {
+        const buttonRef = useRef<HTMLButtonElement>(null)
 
-    return (
-        <>
-            <Button ref={buttonRef}>Click me</Button>
-
-            <UncontrolledDropdown {...props} target={buttonRef}>
-                Hello
-            </UncontrolledDropdown>
-        </>
-    )
+        return (
+            <>
+                <Button ref={buttonRef}>Click me</Button>
+                <UncontrolledDropdown {...props} target={buttonRef}>
+                    Hello
+                </UncontrolledDropdown>
+            </>
+        )
+    },
 }
 
-export const Example = ExampleTemplate.bind({})
-Example.parameters = { controls: { include: ['placement'] } }
+export const Example = {
+    ...ExampleTemplate,
+    parameters: { controls: { include: ['placement'] } },
+}
 
 export default storyConfig

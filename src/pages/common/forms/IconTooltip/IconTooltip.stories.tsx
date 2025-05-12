@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import { Label } from '@gorgias/merchant-ui-kit'
 
@@ -11,15 +11,18 @@ const storyConfig: Meta = {
     component: IconTooltip,
 }
 
-const IconTooltipStory: Story<ComponentProps<typeof IconTooltip>> = ({
-    children,
-    ...props
-}: ComponentProps<typeof Label>) => (
-    <Label {...props}>
-        Some label
-        <IconTooltip {...props}>{children}</IconTooltip>
-    </Label>
-)
+type IconTooltipStoryProps = ComponentProps<typeof IconTooltip>
+
+const IconTooltipStory: StoryObj<IconTooltipStoryProps> = {
+    render: function Template({ children, ...props }) {
+        return (
+            <Label {...props}>
+                Some label
+                <IconTooltip {...props}>{children}</IconTooltip>
+            </Label>
+        )
+    },
+}
 
 const defaultProps: ComponentProps<typeof Label> = {
     children: 'More information here',
@@ -31,8 +34,10 @@ const templateParameters = {
     },
 }
 
-export const Default = IconTooltipStory.bind({})
-Default.args = defaultProps
-Default.parameters = templateParameters
+export const Default = {
+    ...IconTooltipStory,
+    args: defaultProps,
+    parameters: templateParameters,
+}
 
 export default storyConfig

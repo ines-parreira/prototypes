@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import { OrderDirection } from 'models/api/types'
 
@@ -14,42 +14,61 @@ const storyConfig: Meta = {
     component: HeaderCell,
 }
 
-const HeaderCellTemplate: Story<ComponentProps<typeof HeaderCell>> = (
-    props,
-) => (
-    <TableWrapper>
-        <TableHead>
-            {['Column 1', 'Column 2', 'Column 3'].map((value, index) => (
-                <HeaderCell key={index} style={{ width: '33%' }} {...props}>
-                    {value}
-                </HeaderCell>
-            ))}
-        </TableHead>
-    </TableWrapper>
-)
-const HeaderCellPropertyTemplate: Story<
-    ComponentProps<typeof HeaderCellProperty>
-> = (props) => (
-    <TableWrapper>
-        <TableHead>
-            <HeaderCellProperty {...props} />
-        </TableHead>
-    </TableWrapper>
-)
+type Story = StoryObj<typeof HeaderCellProperty>
 
-export const Default = HeaderCellTemplate.bind({})
-Default.args = {
-    className: 'test-cell',
-    size: 'normal',
+const HeaderCellTemplate: Story = {
+    render: function Template(props) {
+        return (
+            <TableWrapper>
+                <TableHead>
+                    {['Column 1', 'Column 2', 'Column 3'].map(
+                        (value, index) => (
+                            <HeaderCell
+                                key={index}
+                                style={{ width: '33%' }}
+                                {...props}
+                            >
+                                {value}
+                            </HeaderCell>
+                        ),
+                    )}
+                </TableHead>
+            </TableWrapper>
+        )
+    },
 }
 
-export const WithProperty = HeaderCellPropertyTemplate.bind({})
-WithProperty.args = {
-    className: 'test-cell',
-    title: 'Column title example',
-    direction: OrderDirection.Asc,
-    isOrderedBy: true,
-    tooltip: 'Test tooltip data',
+const HeaderCellPropertyTemplate: StoryObj<
+    ComponentProps<typeof HeaderCellProperty>
+> = {
+    render: function Template(props) {
+        return (
+            <TableWrapper>
+                <TableHead>
+                    <HeaderCellProperty {...props} />
+                </TableHead>
+            </TableWrapper>
+        )
+    },
+}
+
+export const Default = {
+    ...HeaderCellTemplate,
+    args: {
+        className: 'test-cell',
+        size: 'normal',
+    },
+}
+
+export const WithProperty = {
+    ...HeaderCellPropertyTemplate,
+    args: {
+        className: 'test-cell',
+        title: 'Column title example',
+        direction: OrderDirection.Asc,
+        isOrderedBy: true,
+        tooltip: 'Test tooltip data',
+    },
 }
 
 export default storyConfig

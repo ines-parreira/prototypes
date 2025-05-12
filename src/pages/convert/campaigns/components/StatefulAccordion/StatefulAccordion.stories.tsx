@@ -1,6 +1,4 @@
-import React, { ComponentProps } from 'react'
-
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import Accordion from 'pages/common/components/accordion/Accordion'
 
@@ -18,44 +16,54 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<ComponentProps<typeof Accordion>> = (props) => (
-    <Accordion {...props} />
-)
+type Story = StoryObj<typeof StatefulAccordion>
 
-export const Default = Template.bind({})
-Default.args = {
-    children: (
-        <StatefulAccordion title="Set up the basics">
-            Lorem ipsum dolor
-        </StatefulAccordion>
-    ),
+const Template: Story = {
+    render: (props) => <Accordion {...props} />,
 }
 
-export const Count = Template.bind({})
-Count.args = {
-    children: (
-        <StatefulAccordion count={1} title="Set up the basics">
-            Lorem ipsum dolor
-        </StatefulAccordion>
-    ),
+export const Default = {
+    ...Template,
+    args: {
+        children: (
+            <StatefulAccordion title="Set up the basics">
+                Lorem ipsum dolor
+            </StatefulAccordion>
+        ),
+    },
 }
 
-export const Valid = Template.bind({})
-Valid.args = {
-    children: (
-        <StatefulAccordion isValid title="Set up the basics">
-            Lorem ipsum dolor
-        </StatefulAccordion>
-    ),
+export const Count = {
+    ...Template,
+    args: {
+        children: (
+            <StatefulAccordion count={1} title="Set up the basics">
+                Lorem ipsum dolor
+            </StatefulAccordion>
+        ),
+    },
 }
 
-export const Invalid = Template.bind({})
-Invalid.args = {
-    children: (
-        <StatefulAccordion isInvalid title="Set up the basics">
-            Lorem ipsum dolor
-        </StatefulAccordion>
-    ),
+export const Valid = {
+    ...Template,
+    args: {
+        children: (
+            <StatefulAccordion isValid title="Set up the basics">
+                Lorem ipsum dolor
+            </StatefulAccordion>
+        ),
+    },
+}
+
+export const Invalid = {
+    ...Template,
+    args: {
+        children: (
+            <StatefulAccordion isInvalid title="Set up the basics">
+                Lorem ipsum dolor
+            </StatefulAccordion>
+        ),
+    },
 }
 
 export default storyConfig

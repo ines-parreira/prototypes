@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { Meta, StoryFn } from '@storybook/react'
 import { Button } from 'reactstrap'
@@ -27,9 +27,6 @@ const storyConfig: Meta = {
         },
         customActions: {
             description: 'Custom JSX you want to use as actions.',
-            control: {
-                type: null,
-            },
         },
         icon: {
             description:

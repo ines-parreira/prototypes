@@ -1,6 +1,6 @@
-import React, { ComponentProps, useState } from 'react'
+import { ComponentProps, useState } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import CountryInput from './CountryInput'
 
@@ -9,21 +9,22 @@ const storyConfig: Meta = {
     component: CountryInput,
 }
 
-const Template: Story<ComponentProps<typeof CountryInput>> = ({
-    value,
-    ...other
-}: ComponentProps<typeof CountryInput>) => {
-    const [countryCode, setCountryCode] = useState(value || 'US')
+type TemplateProps = ComponentProps<typeof CountryInput>
 
-    return (
-        <div style={{ width: '300px' }}>
-            <CountryInput
-                {...other}
-                onChange={setCountryCode}
-                value={countryCode}
-            />
-        </div>
-    )
+const Template: StoryObj<TemplateProps> = {
+    render: function Template({ value, ...other }) {
+        const [countryCode, setCountryCode] = useState(value || 'US')
+
+        return (
+            <div style={{ width: '300px' }}>
+                <CountryInput
+                    {...other}
+                    onChange={setCountryCode}
+                    value={countryCode}
+                />
+            </div>
+        )
+    },
 }
 
 const templateParameters = {
@@ -46,8 +47,10 @@ const defaultProps: Partial<ComponentProps<typeof CountryInput>> = {
     popularCountries: ['AU', 'CA', 'GB', 'US'],
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
-Default.parameters = templateParameters
+export const Default = {
+    ...Template,
+    args: defaultProps,
+    parameters: templateParameters,
+}
 
 export default storyConfig

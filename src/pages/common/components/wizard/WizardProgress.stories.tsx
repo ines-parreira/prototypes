@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import Wizard from './Wizard'
 import WizardProgress from './WizardProgress'
@@ -11,24 +11,30 @@ const storyConfig: Meta = {
     component: WizardProgress,
 }
 
-const Template: Story<ComponentProps<typeof WizardProgress>> = (props) => {
-    return (
-        <Wizard startAt="bar" steps={['foo', 'bar', 'baz']}>
-            <WizardStep name="foo" />
+type TemplateProps = ComponentProps<typeof WizardProgress>
 
-            <WizardStep name="bar" />
+const Template: StoryObj<TemplateProps> = {
+    render: function Template({ ...props }) {
+        return (
+            <Wizard startAt="bar" steps={['foo', 'bar', 'baz']}>
+                <WizardStep name="foo" />
 
-            <WizardStep name="baz" />
+                <WizardStep name="bar" />
 
-            <WizardProgress {...props}>
-                {(activeStepIndex, totalSteps) =>
-                    `${activeStepIndex} out of ${totalSteps}`
-                }
-            </WizardProgress>
-        </Wizard>
-    )
+                <WizardStep name="baz" />
+
+                <WizardProgress {...props}>
+                    {(activeStepIndex, totalSteps) =>
+                        `${activeStepIndex} out of ${totalSteps}`
+                    }
+                </WizardProgress>
+            </Wizard>
+        )
+    },
 }
 
-export const Default = Template.bind({})
+export const Default = {
+    ...Template,
+}
 
 export default storyConfig

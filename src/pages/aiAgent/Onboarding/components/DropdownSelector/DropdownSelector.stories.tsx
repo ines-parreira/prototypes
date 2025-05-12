@@ -15,6 +15,9 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
+    render: function Template(args) {
+        return <DropdownSelector {...args} />
+    },
     args: {
         items: [
             { id: 1, name: 'Item 1' },
@@ -25,5 +28,6 @@ export const Default: Story = {
         selectedKey: 1,
         getItemKey: (item: { id: number }) => item.id,
         getItemLabel: (item: { name: string }) => item.name,
+        setSelectedKey: () => {},
     },
 }

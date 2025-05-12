@@ -1,5 +1,3 @@
-import React, { ComponentProps } from 'react'
-
 import { Meta, StoryObj } from '@storybook/react'
 
 import Status, { StatusType } from './Status'
@@ -11,7 +9,8 @@ const meta: Meta<typeof Status> = {
         type: {
             description: 'The color of the status dot',
             control: {
-                type: StatusType,
+                type: 'select',
+                options: Object.values(StatusType),
             },
         },
         children: {
@@ -25,7 +24,7 @@ const meta: Meta<typeof Status> = {
 
 export default meta
 
-type Story = StoryObj<ComponentProps<typeof Status>>
+type Story = StoryObj<typeof Status>
 
 export const Success: Story = {
     render: (args) => <Status {...args} />,

@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import CopyText, { CopyTextProps } from './CopyText'
 
@@ -14,11 +14,14 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<CopyTextProps> = () => {
-    return <CopyText text="Copy this text" />
+const Template: StoryObj<CopyTextProps> = {
+    render: function Template() {
+        return <CopyText text="Copy this text" />
+    },
 }
 
-export const Default = Template.bind({})
-Default.args = {}
-
+export const Default = {
+    ...Template,
+    args: {},
+}
 export default storyConfig

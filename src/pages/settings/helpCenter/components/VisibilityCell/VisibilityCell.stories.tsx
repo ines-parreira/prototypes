@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import VisibilityCell, { VisibilityCellProps } from './VisibilityCell'
 
@@ -16,8 +16,10 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<VisibilityCellProps> = ({ status }) => {
-    return <VisibilityCell status={status} />
+type Story = StoryObj<typeof VisibilityCell>
+
+const Template: Story = {
+    render: ({ status }) => <VisibilityCell status={status} />,
 }
 
 const defaultProps: Partial<VisibilityCellProps> = {
@@ -30,8 +32,10 @@ const templateParameters = {
     },
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
-Default.parameters = templateParameters
+export const Default = {
+    ...Template,
+    args: defaultProps,
+    parameters: templateParameters,
+}
 
 export default storyConfig

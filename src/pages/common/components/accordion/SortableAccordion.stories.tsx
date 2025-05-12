@@ -1,6 +1,6 @@
-import React, { ComponentProps, useState } from 'react'
+import { ComponentProps, useState } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import { createDragDropManager } from 'dnd-core'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
@@ -52,57 +52,66 @@ const storyConfig: Meta = {
 
 type Item = { id: string; isDisabled?: boolean }
 
-const Template: Story<
+const Template: StoryObj<
     ComponentProps<typeof SortableAccordion> & { items: Item[] }
-> = ({ items, ...props }) => {
-    const [orderedItems, setOrderedItems] = useState(items)
+> = {
+    render: function Template({ items, ...props }) {
+        const [orderedItems, setOrderedItems] = useState(items)
 
-    return (
-        <SortableAccordion
-            {...props}
-            onReorder={(reorderedItems) => {
-                setOrderedItems(
-                    reorderedItems.map(
-                        (id) => items.find((item) => item.id === id) as Item,
-                    ),
-                )
-            }}
-        >
-            {orderedItems.map((item) => (
-                <SortableAccordionItem
-                    key={item.id}
-                    id={item.id}
-                    isDisabled={item.isDisabled}
-                >
-                    <SortableAccordionHeader>
-                        Header {item.id}
-                    </SortableAccordionHeader>
-                    <AccordionBody>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Suspendisse malesuada lacus ex, sit amet blandit leo
-                        lobortis eget.
-                    </AccordionBody>
-                </SortableAccordionItem>
-            ))}
-        </SortableAccordion>
-    )
+        return (
+            <SortableAccordion
+                {...props}
+                onReorder={(reorderedItems) => {
+                    setOrderedItems(
+                        reorderedItems.map(
+                            (id) =>
+                                items.find((item) => item.id === id) as Item,
+                        ),
+                    )
+                }}
+            >
+                {orderedItems.map((item) => (
+                    <SortableAccordionItem
+                        key={item.id}
+                        id={item.id}
+                        isDisabled={item.isDisabled}
+                    >
+                        <SortableAccordionHeader>
+                            Header {item.id}
+                        </SortableAccordionHeader>
+                        <AccordionBody>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Suspendisse malesuada lacus ex, sit amet
+                            blandit leo lobortis eget.
+                        </AccordionBody>
+                    </SortableAccordionItem>
+                ))}
+            </SortableAccordion>
+        )
+    },
 }
 
-export const Default = Template.bind({})
-Default.args = {
-    items: [{ id: '1' }, { id: '2' }, { id: '3' }],
+export const Default = {
+    ...Template,
+    args: {
+        items: [{ id: '1' }, { id: '2' }, { id: '3' }],
+    },
 }
 
-export const Disabled = Template.bind({})
-Disabled.args = {
-    items: [{ id: '1' }, { id: '2' }, { id: '3' }],
-    isDisabled: true,
+export const Disabled = {
+    ...Template,
+    args: {
+        items: [{ id: '1' }, { id: '2' }, { id: '3' }],
+        isDisabled: true,
+    },
 }
 
-export const WithDisabledItem = Template.bind({})
-WithDisabledItem.args = {
-    type: 'sortable-accordion-with-disabled-item',
-    items: [{ id: '1', isDisabled: true }, { id: '2' }, { id: '3' }],
+export const WithDisabledItem = {
+    ...Template,
+    args: {
+        type: 'sortable-accordion-with-disabled-item',
+        items: [{ id: '1', isDisabled: true }, { id: '2' }, { id: '3' }],
+    },
 }
 
 export default storyConfig

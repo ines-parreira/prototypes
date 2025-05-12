@@ -1,5 +1,5 @@
-/* eslint-disable */
 import type { ComponentType, ReactNode } from 'react'
+import React from 'react'
 
 import { FeatureFlagKey } from '../src/config/featureFlags'
 
@@ -21,7 +21,7 @@ let _mockClient = {
 
 export const useFlags = () => _flags
 export const withLDConsumer =
-    (_: unknown) =>
+    (__: unknown) =>
     (WrappedComponent: ComponentType<unknown>) =>
     (props: object) => {
         const allProps = { ...props }

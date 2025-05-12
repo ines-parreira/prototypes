@@ -1,6 +1,4 @@
-import React, { ComponentProps } from 'react'
-
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import Screen from './Screen'
 import Screens from './Screens'
@@ -18,21 +16,25 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<ComponentProps<typeof Screen>> = (props) => (
-    <Screens activeScreen="artemis">
-        <Screen {...props}>
-            {`The current screen is "${props.name}"`} <br />
-            <span>
-                Screen allows users to conditionally render content while
-                controlling a wrapper Screens component.
-            </span>
-        </Screen>
-    </Screens>
-)
+const Template: StoryObj<typeof Screen> = {
+    render: (props) => (
+        <Screens activeScreen="artemis">
+            <Screen {...props}>
+                {`The current screen is "${props.name}"`} <br />
+                <span>
+                    Screen allows users to conditionally render content while
+                    controlling a wrapper Screens component.
+                </span>
+            </Screen>
+        </Screens>
+    ),
+}
 
-export const Default = Template.bind({})
-Default.args = {
-    name: 'artemis',
+export const Default = {
+    ...Template,
+    args: {
+        name: 'artemis',
+    },
 }
 
 export default storyConfig

@@ -1,6 +1,4 @@
-import React, { ComponentProps } from 'react'
-
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import { ArrowPagination } from './ArrowPagination'
 
@@ -47,21 +45,27 @@ const storyConfig: Meta = {
     },
 }
 
-const DefaultTemplate: Story<ComponentProps<typeof ArrowPagination>> = (
-    props,
-) => <ArrowPagination {...props} />
-
-export const Default = DefaultTemplate.bind({})
-Default.args = {}
-
-export const FirstPage = DefaultTemplate.bind({})
-FirstPage.args = {
-    isPreviousDisabled: true,
+const DefaultTemplate: StoryObj<typeof ArrowPagination> = {
+    render: (props) => <ArrowPagination {...props} />,
 }
 
-export const LastPage = DefaultTemplate.bind({})
-LastPage.args = {
-    isNextDisabled: true,
+export const Default = {
+    ...DefaultTemplate,
+    args: {},
+}
+
+export const FirstPage = {
+    ...DefaultTemplate,
+    args: {
+        isPreviousDisabled: true,
+    },
+}
+
+export const LastPage = {
+    ...DefaultTemplate,
+    args: {
+        isNextDisabled: true,
+    },
 }
 
 export default storyConfig

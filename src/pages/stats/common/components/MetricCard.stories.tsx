@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import MetricCard from './MetricCard'
 import PerformanceTip from './PerformanceTip'
@@ -10,9 +10,11 @@ const storyConfig: Meta = {
     component: MetricCard,
 }
 
-const Template: Story<ComponentProps<typeof MetricCard>> = (props) => (
-    <MetricCard {...props} />
-)
+type Story = StoryObj<typeof MetricCard>
+
+const Template: Story = {
+    render: (props) => <MetricCard {...props} />,
+}
 
 const defaultProps: ComponentProps<typeof MetricCard> = {
     className: '',
@@ -26,7 +28,9 @@ const defaultProps: ComponentProps<typeof MetricCard> = {
     ),
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
+export const Default = {
+    ...Template,
+    args: defaultProps,
+}
 
 export default storyConfig

@@ -1,6 +1,6 @@
-import React, { ComponentProps, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import _noop from 'lodash/noop'
 
 import Button from 'pages/common/components/button/Button'
@@ -15,51 +15,53 @@ const storyConfig: Meta = {
     component: DropdownItemLabel,
 }
 
-const DefaultTemplate: Story<ComponentProps<typeof DropdownItemLabel>> = (
-    props,
-) => <DropdownItemLabel {...props} />
+const DefaultTemplate: StoryObj<typeof DropdownItemLabel> = {
+    render: function DefaultTemplate(props) {
+        return <DropdownItemLabel {...props} />
+    },
+}
 
-const ExampleTemplate: Story<ComponentProps<typeof DropdownItemLabel>> = (
-    props,
-) => {
-    const [isOpen, setIsOpen] = useState(false)
-    const buttonRef = useRef<HTMLButtonElement>(null)
+const ExampleTemplate: StoryObj<typeof DropdownItemLabel> = {
+    render: function ExampleTemplate(props) {
+        const [isOpen, setIsOpen] = useState(false)
+        const buttonRef = useRef<HTMLButtonElement>(null)
 
-    return (
-        <div id="example-container">
-            <Button onClick={() => setIsOpen(!isOpen)} ref={buttonRef}>
-                Click me
-            </Button>
+        return (
+            <div id="example-container">
+                <Button onClick={() => setIsOpen(!isOpen)} ref={buttonRef}>
+                    Click me
+                </Button>
 
-            <Dropdown
-                isOpen={isOpen}
-                onToggle={setIsOpen}
-                root={document.getElementById('example-container')!}
-                target={buttonRef}
-            >
-                <DropdownBody>
-                    <DropdownItem
-                        option={{
-                            label: 'Maxi best-of menu',
-                            value: 'foo',
-                        }}
-                        onClick={_noop}
-                    >
-                        <DropdownItemLabel {...props} />
-                    </DropdownItem>
-                    <DropdownItem
-                        option={{
-                            label: 'Best-of menu',
-                            value: 'bar',
-                        }}
-                        onClick={_noop}
-                    >
-                        <DropdownItemLabel {...props} />
-                    </DropdownItem>
-                </DropdownBody>
-            </Dropdown>
-        </div>
-    )
+                <Dropdown
+                    isOpen={isOpen}
+                    onToggle={setIsOpen}
+                    root={document.getElementById('example-container')!}
+                    target={buttonRef}
+                >
+                    <DropdownBody>
+                        <DropdownItem
+                            option={{
+                                label: 'Maxi best-of menu',
+                                value: 'foo',
+                            }}
+                            onClick={_noop}
+                        >
+                            <DropdownItemLabel {...props} />
+                        </DropdownItem>
+                        <DropdownItem
+                            option={{
+                                label: 'Best-of menu',
+                                value: 'bar',
+                            }}
+                            onClick={_noop}
+                        >
+                            <DropdownItemLabel {...props} />
+                        </DropdownItem>
+                    </DropdownBody>
+                </Dropdown>
+            </div>
+        )
+    },
 }
 
 const defaultProps = {
@@ -76,10 +78,14 @@ const defaultProps = {
     ),
 }
 
-export const Default = DefaultTemplate.bind({})
-Default.args = defaultProps
+export const Default = {
+    ...DefaultTemplate,
+    args: defaultProps,
+}
 
-export const Example = ExampleTemplate.bind({})
-Example.args = defaultProps
+export const Example = {
+    ...ExampleTemplate,
+    args: defaultProps,
+}
 
 export default storyConfig

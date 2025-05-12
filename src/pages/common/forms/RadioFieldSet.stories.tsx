@@ -1,6 +1,6 @@
-import React, { ComponentProps, useState } from 'react'
+import { ComponentProps, useState } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import RadioFieldSet from './RadioFieldSet'
 
@@ -21,16 +21,20 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<ComponentProps<typeof RadioFieldSet>> = (props) => {
-    const [selectedValue, setSelectedValue] = useState<string | null>(null)
+type Story = StoryObj<typeof RadioFieldSet>
 
-    return (
-        <RadioFieldSet
-            {...props}
-            selectedValue={selectedValue}
-            onChange={setSelectedValue}
-        />
-    )
+const Template: Story = {
+    render: function Template({ ...props }) {
+        const [selectedValue, setSelectedValue] = useState<string | null>(null)
+
+        return (
+            <RadioFieldSet
+                {...props}
+                selectedValue={selectedValue}
+                onChange={setSelectedValue}
+            />
+        )
+    },
 }
 
 const templateParameters = {
@@ -57,31 +61,39 @@ const defaultProps: Partial<ComponentProps<typeof RadioFieldSet>> = {
     isDisabled: false,
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
-Default.parameters = templateParameters
+export const Default = {
+    ...Template,
+    args: defaultProps,
+    parameters: templateParameters,
+}
 
-export const WithLabel = Template.bind({})
-WithLabel.args = {
-    ...defaultProps,
-    label: 'With some content',
+export const WithLabel = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        label: 'With some content',
+    },
 }
 WithLabel.parameters = templateParameters
 
-export const WithCaptions = Template.bind({})
-WithCaptions.args = {
-    ...defaultProps,
-    options: defaultProps.options!.map((option) => ({
-        ...option,
-        caption: `${option.value} food`,
-    })),
+export const WithCaptions = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        options: defaultProps.options!.map((option) => ({
+            ...option,
+            caption: `${option.value} food`,
+        })),
+    },
 }
 WithCaptions.parameters = templateParameters
 
-export const WithHorizontalLayout = Template.bind({})
-WithHorizontalLayout.args = {
-    ...defaultProps,
-    isHorizontal: true,
+export const WithHorizontalLayout = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        isHorizontal: true,
+    },
 }
 WithHorizontalLayout.parameters = templateParameters
 

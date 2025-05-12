@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import { EditingStateEnum } from '../../constants'
 import EditingState, { EditingStateProps } from './EditingState'
@@ -18,8 +18,10 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<EditingStateProps> = ({ state }) => {
-    return <EditingState state={state} />
+type Story = StoryObj<typeof EditingState>
+
+const Template: Story = {
+    render: ({ state }) => <EditingState state={state} />,
 }
 
 const defaultProps: Partial<EditingStateProps> = {
@@ -32,8 +34,10 @@ const templateParameters = {
     },
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
-Default.parameters = templateParameters
+export const Default = {
+    ...Template,
+    args: defaultProps,
+    parameters: templateParameters,
+}
 
 export default storyConfig

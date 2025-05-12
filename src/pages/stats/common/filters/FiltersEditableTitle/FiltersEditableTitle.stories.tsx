@@ -1,40 +1,48 @@
-import React, { ComponentProps } from 'react'
-
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { FiltersEditableTitle } from 'pages/stats/common/filters/FiltersEditableTitle/FiltersEditableTitle'
 
-const storyConfig: Meta = {
+const storyConfig: Meta<typeof FiltersEditableTitle> = {
     component: FiltersEditableTitle,
     title: 'Stats/Filters/FiltersEditableTitle',
 }
 
-const Template: Story<ComponentProps<typeof FiltersEditableTitle>> = (
-    props,
-) => {
-    return (
+type Story = StoryObj<typeof FiltersEditableTitle>
+
+const Template: Story = {
+    render: (props) => (
         <Provider store={configureMockStore()({})}>
             <FiltersEditableTitle {...props} />
         </Provider>
-    )
+    ),
 }
 
-export const Default = Template.bind({})
-
-Default.args = {
-    title: 'Team 1 Filter',
-    isEditMode: false,
-    errorType: 'non-existent',
+export const Default = {
+    ...Template,
+    args: {
+        title: 'Team 1 Filter',
+        isEditMode: false,
+        errorType: 'non-existent',
+    },
 }
 
-export const DefaultWithError = Template.bind({})
+const DefaultWithErrorTemplate: Story = {
+    render: (props) => (
+        <Provider store={configureMockStore()({})}>
+            <FiltersEditableTitle {...props} />
+        </Provider>
+    ),
+}
 
-DefaultWithError.args = {
-    title: 'Team 2 Filter',
-    isEditMode: true,
-    error: 'Tags Filter is already in use. Please create another name for your saved filters.',
+export const DefaultWithError = {
+    ...DefaultWithErrorTemplate,
+    args: {
+        title: 'Team 2 Filter',
+        isEditMode: true,
+        error: 'Tags Filter is already in use. Please create another name for your saved filters.',
+    },
 }
 
 export default storyConfig

@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import { BrowserRouter } from 'react-router-dom'
 
 import LinkAlert from './LinkAlert'
@@ -42,32 +42,35 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<ComponentProps<typeof LinkAlert>> = (props) => (
-    <LinkAlert {...props} />
-)
+const Template: StoryObj<typeof LinkAlert> = {
+    render: function Template(props) {
+        return <LinkAlert {...props} />
+    },
+}
 
 const defaultProps: ComponentProps<typeof LinkAlert> = {
     children: 'This is an alert !',
     actionLabel: 'Click me',
 }
 
-export const Info = Template.bind({})
-Info.args = { ...defaultProps }
-
-export const ActionLink = Template.bind({})
-ActionLink.args = {
-    ...defaultProps,
-    actionHref: 'https://www.gorgias.com',
+export const Info = {
+    ...Template,
+    args: defaultProps,
 }
 
-export const ActionWithActionHandler = Template.bind({})
-ActionWithActionHandler.args = {
-    ...defaultProps,
-    actionLabel: 'Click me',
+export const ActionLink = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        actionHref: 'https://www.gorgias.com',
+    },
 }
-ActionWithActionHandler.argTypes = {
-    onAction: {
-        action: 'Clicked !',
+
+export const ActionWithActionHandler = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        actionLabel: 'Click me',
     },
 }
 

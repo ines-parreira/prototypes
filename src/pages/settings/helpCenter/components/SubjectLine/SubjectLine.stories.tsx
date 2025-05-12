@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import { noop as _noop } from 'lodash'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
@@ -21,17 +21,21 @@ const defaultProps: SubjectLineProps = {
     value: '',
 }
 
-const Template: Story<SubjectLineProps> = (args) => {
-    const [value, setValue] = useState(args.value)
-    const onChange = (nextValue: string) => {
-        setValue(nextValue)
-    }
+type Story = StoryObj<typeof SubjectLine>
 
-    return (
-        <DndProvider backend={HTML5Backend}>
-            <SubjectLine {...args} onChange={onChange} value={value} />
-        </DndProvider>
-    )
+const Template: Story = {
+    render: function Template(args) {
+        const [value, setValue] = useState(args.value)
+        const onChange = (nextValue: string) => {
+            setValue(nextValue)
+        }
+
+        return (
+            <DndProvider backend={HTML5Backend}>
+                <SubjectLine {...args} onChange={onChange} value={value} />
+            </DndProvider>
+        )
+    },
 }
 
 const templateParameters = {
@@ -40,8 +44,10 @@ const templateParameters = {
     },
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
-Default.parameters = templateParameters
+export const Default = {
+    ...Template,
+    args: defaultProps,
+    parameters: templateParameters,
+}
 
 export default storyConfig

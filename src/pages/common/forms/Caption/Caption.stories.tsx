@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import Caption from './Caption'
 
@@ -30,23 +30,28 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<ComponentProps<typeof Caption>> = (props) => (
-    <Caption {...props} />
-)
+type TemplateProps = ComponentProps<typeof Caption>
 
-const TemplateWithCustomStyle: Story<ComponentProps<typeof Caption>> = ({
-    children,
-    ...props
-}: ComponentProps<typeof Caption>) => (
-    <Caption
-        {...props}
-        style={{
-            color: '#f24f66',
-        }}
-    >
-        {children}
-    </Caption>
-)
+const Template: StoryObj<TemplateProps> = {
+    render: function Template({ ...props }) {
+        return <Caption {...props} />
+    },
+}
+
+const TemplateWithCustomStyle: StoryObj<TemplateProps> = {
+    render: function TemplateWithCustomStyle({ children, ...props }) {
+        return (
+            <Caption
+                {...props}
+                style={{
+                    color: '#f24f66',
+                }}
+            >
+                {children}
+            </Caption>
+        )
+    },
+}
 
 const defaultProps: Partial<ComponentProps<typeof Caption>> = {
     children: 'Name',
@@ -58,12 +63,16 @@ const templateParameters = {
     },
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
-Default.parameters = templateParameters
+export const Default = {
+    ...Template,
+    args: defaultProps,
+    parameters: templateParameters,
+}
 
-export const CustomStyle = TemplateWithCustomStyle.bind({})
-CustomStyle.args = defaultProps
-CustomStyle.parameters = templateParameters
+export const CustomStyle = {
+    ...TemplateWithCustomStyle,
+    args: defaultProps,
+    parameters: templateParameters,
+}
 
 export default storyConfig

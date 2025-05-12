@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import { Map } from 'immutable'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
@@ -48,19 +48,36 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<ComponentProps<typeof Tip>> = (props) => (
-    <Tip {...props} />
-)
+type TemplateProps = ComponentProps<typeof Tip>
+
+const Template: StoryObj<TemplateProps> = {
+    render: function Template({ ...props }) {
+        return <Tip {...props} />
+    },
+}
 
 const defaultProps: ComponentProps<typeof Tip> = {
     storageKey: 'default',
     actionLabel: 'Got It',
     children: 'This is a tip!',
 }
-export const Info = Template.bind({})
-Info.args = { ...defaultProps }
 
-export const WithIcon = Template.bind({})
-WithIcon.args = { ...defaultProps, icon: true }
+const templateParameters = {
+    controls: {
+        include: ['storageKey', 'actionLabel', 'icon'],
+    },
+}
+
+export const Info = {
+    ...Template,
+    args: defaultProps,
+    parameters: templateParameters,
+}
+
+export const WithIcon = {
+    ...Template,
+    args: { ...defaultProps, icon: true },
+    parameters: templateParameters,
+}
 
 export default storyConfig

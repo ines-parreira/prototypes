@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import LinkButton from './LinkButton'
 
@@ -26,9 +26,11 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<ComponentProps<typeof LinkButton>> = (props) => (
-    <LinkButton {...props} />
-)
+const Template: StoryObj<typeof LinkButton> = {
+    render: function Template(props) {
+        return <LinkButton {...props} />
+    },
+}
 const templateParameters = {
     controls: {
         include: [
@@ -53,22 +55,28 @@ const defaultProps: ComponentProps<typeof LinkButton> = {
     size: 'medium',
 }
 
-export const Primary = Template.bind({})
-Primary.args = defaultProps
-Primary.parameters = templateParameters
-
-export const Secondary = Template.bind({})
-Secondary.args = {
-    ...defaultProps,
-    intent: 'secondary',
+export const Primary = {
+    ...Template,
+    args: defaultProps,
+    parameters: templateParameters,
 }
-Secondary.parameters = templateParameters
 
-export const Destructive = Template.bind({})
-Destructive.args = {
-    ...defaultProps,
-    intent: 'destructive',
+export const Secondary = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        intent: 'secondary',
+    },
+    parameters: templateParameters,
 }
-Destructive.parameters = templateParameters
+
+export const Destructive = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        intent: 'destructive',
+    },
+    parameters: templateParameters,
+}
 
 export default storyConfig

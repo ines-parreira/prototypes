@@ -1,6 +1,4 @@
-import React, { ComponentProps } from 'react'
-
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import GaugeAddon from 'pages/stats/common/components/charts/GaugeAddon'
 
@@ -12,13 +10,17 @@ const storyConfig: Meta = {
     },
 }
 
-const FirstGauge: Story<ComponentProps<typeof GaugeAddon>> = () => (
-    <div style={{ width: '200px' }}>
-        <GaugeAddon progress={50} color="#EDEAFF">
-            Lorem ipsum dolor sit 50%
-        </GaugeAddon>
-    </div>
-)
+type Story = StoryObj<typeof GaugeAddon>
 
-export const Default = FirstGauge.bind({})
+const FirstGauge: Story = {
+    render: () => (
+        <div style={{ width: '200px' }}>
+            <GaugeAddon progress={50} color="#EDEAFF">
+                Lorem ipsum dolor sit 50%
+            </GaugeAddon>
+        </div>
+    ),
+}
+
+export const Default = FirstGauge
 export default storyConfig

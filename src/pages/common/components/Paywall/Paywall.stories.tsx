@@ -1,6 +1,6 @@
-import React, { ComponentProps, useState } from 'react'
+import { ComponentProps, useState } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import { MemoryRouter } from 'react-router-dom'
 
 import gorgiasChatSSPaywall from 'assets/img/paywalls/screens/gorgias_chat_ssp_automate.png'
@@ -30,20 +30,14 @@ const storyConfig: Meta = {
         },
         previewImage: {
             description: 'Custom JSX you want to use as actions.',
-            control: {
-                type: null,
-            },
         },
         pageHeader: {
             description: 'Custom JSX you want to use as header.',
-            control: {
-                type: null,
-            },
         },
         renderFilterShadow: {
             description: 'Use CSS filter shadow instead od box-shadow.',
             control: {
-                type: null,
+                type: 'boolean',
             },
         },
         updateType: {
@@ -54,7 +48,7 @@ const storyConfig: Meta = {
         testimonial: {
             description: 'Customer testimonial object.',
             control: {
-                type: null,
+                type: 'object',
             },
         },
         customCta: {
@@ -69,7 +63,7 @@ const storyConfig: Meta = {
             description:
                 'Custom JSX you want to use for a modal (linked manually to customCta).',
             control: {
-                type: null,
+                type: 'object',
             },
         },
         shouldKeepPrice: {
@@ -97,28 +91,30 @@ const storyConfig: Meta = {
     ],
 }
 
-const Template: Story<ComponentProps<typeof Paywall>> = (props) => (
-    <Paywall {...props} />
-)
+const Template: StoryObj<typeof Paywall> = {
+    render: (props) => <Paywall {...props} />,
+}
 
-const WithModalTemplate: Story<ComponentProps<typeof Paywall>> = (props) => {
-    const [isModalOpened, setModalOpened] = useState(false)
+const WithModalTemplate: StoryObj<typeof Paywall> = {
+    render: function Template(props) {
+        const [isModalOpened, setModalOpened] = useState(false)
 
-    const toggle = () => setModalOpened(!isModalOpened)
-    return (
-        <Paywall
-            {...props}
-            customCta={<Button onClick={toggle}>Upgrade me !</Button>}
-            modal={
-                <Modal
-                    isOpen={isModalOpened}
-                    onClose={() => setModalOpened(false)}
-                >
-                    <ModalBody>Hi there !</ModalBody>
-                </Modal>
-            }
-        />
-    )
+        const toggle = () => setModalOpened(!isModalOpened)
+        return (
+            <Paywall
+                {...props}
+                customCta={<Button onClick={toggle}>Upgrade me !</Button>}
+                modal={
+                    <Modal
+                        isOpen={isModalOpened}
+                        onClose={() => setModalOpened(false)}
+                    >
+                        <ModalBody>Hi there !</ModalBody>
+                    </Modal>
+                }
+            />
+        )
+    },
 }
 
 const defaultProps: ComponentProps<typeof Paywall> = {
@@ -127,26 +123,33 @@ const defaultProps: ComponentProps<typeof Paywall> = {
     description: 'This is a very cool feature.',
     previewImage: overviewStatsPaywall,
 }
-export const Default = Template.bind({})
-Default.args = defaultProps
-
-export const WithPageHeader = Template.bind({})
-WithPageHeader.args = { ...defaultProps, pageHeader: 'Page Header' }
-
-export const WithFilterShadow = Template.bind({})
-WithFilterShadow.args = {
-    ...defaultProps,
-    renderFilterShadow: true,
-    previewImage: gorgiasChatSSPaywall,
+export const Default = {
+    ...Template,
+    args: defaultProps,
 }
 
-export const WithTestimonial = Template.bind({})
-WithTestimonial.args = {
-    ...defaultProps,
-    testimonial: testimonialFixture,
+export const WithPageHeader = {
+    ...Template,
+    args: { ...defaultProps, pageHeader: 'Page Header' },
 }
 
-export const WithModal = WithModalTemplate.bind({})
-WithModal.args = defaultProps
+export const WithFilterShadow = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        renderFilterShadow: true,
+        previewImage: gorgiasChatSSPaywall,
+    },
+}
+
+export const WithTestimonial = {
+    ...Template,
+    args: { ...defaultProps, testimonial: testimonialFixture },
+}
+
+export const WithModal = {
+    ...WithModalTemplate,
+    args: defaultProps,
+}
 
 export default storyConfig

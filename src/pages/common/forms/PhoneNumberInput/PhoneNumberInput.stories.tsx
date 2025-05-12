@@ -1,6 +1,6 @@
-import React, { ComponentProps, useState } from 'react'
+import { ComponentProps, useState } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import PhoneNumberInput from './PhoneNumberInput'
 
@@ -9,21 +9,22 @@ const storyConfig: Meta = {
     component: PhoneNumberInput,
 }
 
-const Template: Story<ComponentProps<typeof PhoneNumberInput>> = ({
-    value,
-    ...other
-}: ComponentProps<typeof PhoneNumberInput>) => {
-    const [phoneNumber, setPhoneNumber] = useState(value || '')
+type Story = StoryObj<typeof PhoneNumberInput>
 
-    return (
-        <div style={{ width: '300px' }}>
-            <PhoneNumberInput
-                {...other}
-                onChange={setPhoneNumber}
-                value={phoneNumber}
-            />
-        </div>
-    )
+const Template: Story = {
+    render: function Template({ ...props }) {
+        const [phoneNumber, setPhoneNumber] = useState(props.value || '')
+
+        return (
+            <div style={{ width: '300px' }}>
+                <PhoneNumberInput
+                    {...props}
+                    onChange={setPhoneNumber}
+                    value={phoneNumber}
+                />
+            </div>
+        )
+    },
 }
 
 const templateParameters = {
@@ -37,8 +38,10 @@ const defaultProps: Partial<ComponentProps<typeof PhoneNumberInput>> = {
     value: '',
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
-Default.parameters = templateParameters
+export const Default = {
+    ...Template,
+    args: defaultProps,
+    parameters: templateParameters,
+}
 
 export default storyConfig

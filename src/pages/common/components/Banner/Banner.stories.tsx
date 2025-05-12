@@ -1,6 +1,4 @@
-import React, { ComponentProps } from 'react'
-
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import standlonePreview from 'assets/img/presentationals/standalone-self-service-portal.png'
 
@@ -11,9 +9,11 @@ const storyConfig: Meta = {
     component: Banner,
 }
 
-const Template: Story<ComponentProps<typeof Banner>> = (props) => (
-    <Banner {...props} />
-)
+const Template: StoryObj<typeof Banner> = {
+    render: function Template(props) {
+        return <Banner {...props} />
+    },
+}
 
 const defaultProps = {
     children: (
@@ -28,13 +28,17 @@ const defaultProps = {
     title: 'We created a help center for sfbicycles to help you get started.',
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
+export const Default = {
+    ...Template,
+    args: defaultProps,
+}
 
-export const Dismissible = Template.bind({})
-Dismissible.args = {
-    ...defaultProps,
-    dismissible: true,
+export const Dismissible = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        dismissible: true,
+    },
 }
 
 export default storyConfig

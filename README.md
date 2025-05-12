@@ -13,6 +13,8 @@ It's built using ReactJS + Redux + many other smaller tools.
         - [PNPM Catalogs](#pnpm-catalogs)
     - [Development](#development)
         - [Storybook](#storybook)
+            - [Story Guidelines](#story-guidelines)
+            - [Storybook Folder Structure](#storybook-folder-structure)
         - [Design tokens](#design-tokens)
     - [Testing](#testing)
         - [General testing](#general-testing)
@@ -90,8 +92,26 @@ The [HMR](https://webpack.js.org/concepts/hot-module-replacement) should work ou
 Start the Storybook with:
 
 ```bash
-pnpm storybook
+pnpm storybook:dev
 ```
+
+#### Story Guidelines
+
+1. Create a story for each state of the component.
+2. Think about forwarding refs and memoized components
+3. Each component that is shared should be placed in `pages/common` folder and needs to have a file `{fileName}.stories.tsx` for stories.
+4. [Use args](https://storybook.js.org/docs/writing-stories#using-args) and never hardcode the props passed to the story → Allow UI [Controls](https://storybook.js.org/docs/essentials/controls) to manipulate the component.
+5. [Use decorators](https://storybook.js.org/docs/writing-stories#using-decorators) if your component has dependencies that need to be injected (e.g. drag and drop provider).
+
+#### Storybook Folder Structure
+
+- **General**: Composable components e.g. buttons, icon, text that we will reuse to build the rest of our component library
+- **Navigation**: Components related to navigation like menu, breadcrumbs, page header, dropdowns
+- **Data Entry**: Forms related components (inputs, checkboxes, uploads etc.)
+- **Data Display**: Badges, Cards, Images, Lists, Avatars, Tables etc.
+- **Charts (could be nested in Data Display)**: This falls in the data display category but we can make its own category if it gets big enough
+- **Feedback**: Components that we display as consequence of an user action like Alerts, Notifications, Modals, Loaders
+- **Layout**: Components that we use to build a page skeleton like grid system, dividers
 
 ### Design tokens
 

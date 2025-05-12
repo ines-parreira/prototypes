@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import { BrowserRouter } from 'react-router-dom'
 
 import { Language } from 'constants/languages'
@@ -8,6 +8,7 @@ import {
     GorgiasChatIntegrationLanguagesTableRow,
     GorgiasChatIntegrationLanguagesTableRowProps,
 } from './GorgiasChatIntegrationLanguagesTableRow'
+import { LanguageItemRow } from './types'
 
 const storyConfig: Meta = {
     argTypes: {},
@@ -16,20 +17,20 @@ const storyConfig: Meta = {
     title: 'Chat/LanguagesTableRow',
 }
 
-const Template: Story<GorgiasChatIntegrationLanguagesTableRowProps> = ({
-    language,
-    onClickDelete,
-    onClickSetDefault,
-}) => {
-    return (
-        <GorgiasChatIntegrationLanguagesTable>
-            <GorgiasChatIntegrationLanguagesTableRow
-                language={language}
-                onClickSetDefault={onClickSetDefault}
-                onClickDelete={onClickDelete}
-            />
-        </GorgiasChatIntegrationLanguagesTable>
-    )
+type Story = StoryObj<typeof GorgiasChatIntegrationLanguagesTableRow>
+
+const Template: Story = {
+    render: ({ language, onClickDelete, onClickSetDefault }) => {
+        return (
+            <GorgiasChatIntegrationLanguagesTable>
+                <GorgiasChatIntegrationLanguagesTableRow
+                    language={language}
+                    onClickSetDefault={onClickSetDefault}
+                    onClickDelete={onClickDelete}
+                />
+            </GorgiasChatIntegrationLanguagesTable>
+        )
+    },
 }
 
 const defaultProps: Partial<GorgiasChatIntegrationLanguagesTableRowProps> = {
@@ -42,40 +43,48 @@ const defaultProps: Partial<GorgiasChatIntegrationLanguagesTableRowProps> = {
     },
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
+export const Default = {
+    ...Template,
+    args: defaultProps,
+}
 
-export const DefaultWithActions = Template.bind({})
-DefaultWithActions.args = {
-    language: {
-        language: Language.EnglishUs,
-        primary: true,
-        label: 'English (US)',
-        link: '/integrations/1/chat/languages/en-US',
-        showActions: true,
-    },
-    onClickSetDefault: (lang) => {
-        alert(`Set '${lang.language}' as default`)
-    },
-    onClickDelete: (lang) => {
-        alert(`Delete '${lang.language}'`)
+export const DefaultWithActions = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        language: {
+            language: Language.EnglishUs,
+            primary: true,
+            label: 'English (US)',
+            link: '/integrations/1/chat/languages/en-US',
+            showActions: true,
+        },
+        onClickSetDefault: (lang: LanguageItemRow) => {
+            alert(`Set '${lang.language}' as default`)
+        },
+        onClickDelete: (lang: LanguageItemRow) => {
+            alert(`Delete '${lang.language}'`)
+        },
     },
 }
 
-export const NotDefaultWithActions = Template.bind({})
-NotDefaultWithActions.args = {
-    language: {
-        language: Language.EnglishUs,
-        primary: false,
-        label: 'English (US)',
-        link: '/integrations/1/chat/languages/en-US',
-        showActions: true,
-    },
-    onClickSetDefault: (lang) => {
-        alert(`Set '${lang.language}' as default`)
-    },
-    onClickDelete: (lang) => {
-        alert(`Delete '${lang.language}'`)
+export const NotDefaultWithActions = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        language: {
+            language: Language.EnglishUs,
+            primary: false,
+            label: 'English (US)',
+            link: '/integrations/1/chat/languages/en-US',
+            showActions: true,
+        },
+        onClickSetDefault: (lang: LanguageItemRow) => {
+            alert(`Set '${lang.language}' as default`)
+        },
+        onClickDelete: (lang: LanguageItemRow) => {
+            alert(`Delete '${lang.language}'`)
+        },
     },
 }
 

@@ -1,6 +1,6 @@
-import React, { ComponentProps, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import _noop from 'lodash/noop'
 
 import Button from 'pages/common/components/button/Button'
@@ -16,92 +16,98 @@ const storyConfig: Meta = {
     component: DropdownSection,
 }
 
-const DefaultTemplate: Story<ComponentProps<typeof DropdownSection>> = (
-    props,
-) => (
-    <DropdownContext.Provider
-        value={{
-            getHighlightedLabel: () => null,
-            onQueryChange: _noop,
-            isMultiple: false,
-            onToggle: _noop,
-            query: '',
-            value: '',
-        }}
-    >
-        <DropdownSection {...props} />
-    </DropdownContext.Provider>
-)
-
-const ExampleTemplate: Story<ComponentProps<typeof DropdownSection>> = (
-    props,
-) => {
-    const [isOpen, setIsOpen] = useState(false)
-    const buttonRef = useRef<HTMLButtonElement>(null)
-
-    return (
-        <div id="example-container">
-            <Button onClick={() => setIsOpen(!isOpen)} ref={buttonRef}>
-                Click me
-            </Button>
-
-            <Dropdown
-                isOpen={isOpen}
-                onToggle={setIsOpen}
-                root={document.getElementById('example-container')!}
-                target={buttonRef}
+const DefaultTemplate: StoryObj<typeof DropdownSection> = {
+    render: function DefaultTemplate(props) {
+        return (
+            <DropdownContext.Provider
+                value={{
+                    getHighlightedLabel: () => null,
+                    onQueryChange: _noop,
+                    isMultiple: false,
+                    onToggle: _noop,
+                    query: '',
+                    value: '',
+                }}
             >
-                <DropdownSearch />
-
-                <DropdownBody>
-                    <DropdownSection {...props}>
-                        <DropdownItem
-                            option={{
-                                label: 'Maxi best-of menu',
-                                value: 'foo',
-                            }}
-                            onClick={_noop}
-                        />
-                        <DropdownItem
-                            option={{
-                                label: 'Best-of menu',
-                                value: 'bar',
-                            }}
-                            onClick={_noop}
-                        />
-                    </DropdownSection>
-
-                    <DropdownSection {...props}>
-                        <DropdownItem
-                            option={{
-                                label: 'Fries',
-                                value: 'foo',
-                            }}
-                            onClick={_noop}
-                        />
-                        <DropdownItem
-                            option={{
-                                label: 'Chips',
-                                value: 'bar',
-                            }}
-                            onClick={_noop}
-                        />
-                    </DropdownSection>
-                </DropdownBody>
-            </Dropdown>
-        </div>
-    )
+                <DropdownSection {...props} />
+            </DropdownContext.Provider>
+        )
+    },
 }
 
-export const Default = DefaultTemplate.bind({})
-Default.args = {
-    children: <div>Bar</div>,
-    title: 'Foo',
+const ExampleTemplate: StoryObj<typeof DropdownSection> = {
+    render: function ExampleTemplate(props) {
+        const [isOpen, setIsOpen] = useState(false)
+        const buttonRef = useRef<HTMLButtonElement>(null)
+
+        return (
+            <div id="example-container">
+                <Button onClick={() => setIsOpen(!isOpen)} ref={buttonRef}>
+                    Click me
+                </Button>
+
+                <Dropdown
+                    isOpen={isOpen}
+                    onToggle={setIsOpen}
+                    root={document.getElementById('example-container')!}
+                    target={buttonRef}
+                >
+                    <DropdownSearch />
+
+                    <DropdownBody>
+                        <DropdownSection {...props}>
+                            <DropdownItem
+                                option={{
+                                    label: 'Maxi best-of menu',
+                                    value: 'foo',
+                                }}
+                                onClick={_noop}
+                            />
+                            <DropdownItem
+                                option={{
+                                    label: 'Best-of menu',
+                                    value: 'bar',
+                                }}
+                                onClick={_noop}
+                            />
+                        </DropdownSection>
+
+                        <DropdownSection {...props}>
+                            <DropdownItem
+                                option={{
+                                    label: 'Fries',
+                                    value: 'foo',
+                                }}
+                                onClick={_noop}
+                            />
+                            <DropdownItem
+                                option={{
+                                    label: 'Chips',
+                                    value: 'bar',
+                                }}
+                                onClick={_noop}
+                            />
+                        </DropdownSection>
+                    </DropdownBody>
+                </Dropdown>
+            </div>
+        )
+    },
 }
 
-export const Example = ExampleTemplate.bind({})
-Example.args = {
-    title: 'Foo',
+export const Default = {
+    ...DefaultTemplate,
+    args: {
+        children: <div>Bar</div>,
+        title: 'Foo',
+    },
+}
+
+export const Example = {
+    ...ExampleTemplate,
+    args: {
+        title: 'Foo',
+    },
 }
 
 export default storyConfig

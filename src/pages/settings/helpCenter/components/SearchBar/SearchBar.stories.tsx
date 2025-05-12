@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import { getSingleHelpCenterResponseFixture as helpCenter } from '../../fixtures/getHelpCentersResponse.fixture'
 import {
@@ -53,31 +53,37 @@ const DumpResultsComponent = () => {
     )
 }
 
-const DefaultTemplate: Story<TemplateProps> = ({
-    algolia_api_key,
-    algolia_app_id,
-    algolia_index_name,
-    ...rest
-}) => (
-    <SearchContextProvider
-        helpCenter={{
-            ...helpCenter,
-            algolia_api_key,
-            algolia_app_id,
-            algolia_index_name,
-        }}
-    >
-        <SearchBar {...rest} />
+type Story = StoryObj<TemplateProps>
 
-        <DumpResultsComponent />
-    </SearchContextProvider>
-)
+const DefaultTemplate: Story = {
+    render: ({
+        algolia_api_key,
+        algolia_app_id,
+        algolia_index_name,
+        ...rest
+    }) => (
+        <SearchContextProvider
+            helpCenter={{
+                ...helpCenter,
+                algolia_api_key,
+                algolia_app_id,
+                algolia_index_name,
+            }}
+        >
+            <SearchBar {...rest} />
 
-export const Default = DefaultTemplate.bind({})
-Default.args = {
-    algolia_api_key: 'my-api-key',
-    algolia_app_id: 'my-app-id',
-    algolia_index_name: 'my-index',
+            <DumpResultsComponent />
+        </SearchContextProvider>
+    ),
+}
+
+export const Default = {
+    ...DefaultTemplate,
+    args: {
+        algolia_api_key: 'my-api-key',
+        algolia_app_id: 'my-app-id',
+        algolia_index_name: 'my-index',
+    },
 }
 
 export default storyConfig

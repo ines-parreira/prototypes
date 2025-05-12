@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import Button from './Button'
 import ButtonIconLabel from './ButtonIconLabel'
@@ -17,17 +17,21 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<ComponentProps<typeof ButtonIconLabel>> = (props) => (
-    <ButtonIconLabel {...props} />
-)
+const Template: StoryObj<typeof ButtonIconLabel> = {
+    render: function Template(props) {
+        return <ButtonIconLabel {...props} />
+    },
+}
 
-const UsageTemplate: Story<ComponentProps<typeof ButtonIconLabel>> = (
-    props,
-) => (
-    <Button>
-        <ButtonIconLabel {...props} />
-    </Button>
-)
+const UsageTemplate: StoryObj<typeof ButtonIconLabel> = {
+    render: function UsageTemplate(props) {
+        return (
+            <Button>
+                <ButtonIconLabel {...props} />
+            </Button>
+        )
+    },
+}
 
 const defaultProps: ComponentProps<typeof ButtonIconLabel> = {
     children: 'Click me!',
@@ -35,19 +39,23 @@ const defaultProps: ComponentProps<typeof ButtonIconLabel> = {
     position: 'left',
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
-Default.parameters = {
-    controls: {
-        exclude: ['className'],
+export const Default = {
+    ...Template,
+    args: defaultProps,
+    parameters: {
+        controls: {
+            exclude: ['className'],
+        },
     },
 }
 
-export const Usage = UsageTemplate.bind({})
-Usage.args = defaultProps
-Usage.parameters = {
-    controls: {
-        exclude: ['className'],
+export const Usage = {
+    ...UsageTemplate,
+    args: defaultProps,
+    parameters: {
+        controls: {
+            exclude: ['className'],
+        },
     },
 }
 

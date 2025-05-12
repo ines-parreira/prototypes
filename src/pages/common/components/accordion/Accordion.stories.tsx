@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import { ToggleField } from '@gorgias/merchant-ui-kit'
 
@@ -36,9 +36,11 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<ComponentProps<typeof Accordion>> = (props) => (
-    <Accordion {...props} />
-)
+const Template: StoryObj<typeof Accordion> = {
+    render: function Template(props) {
+        return <Accordion {...props} />
+    },
+}
 
 const defaultProps: Partial<ComponentProps<typeof Accordion>> = {
     children: (
@@ -71,197 +73,209 @@ const defaultProps: Partial<ComponentProps<typeof Accordion>> = {
     ),
 }
 
-export const Default = Template.bind({})
-Default.args = {
-    ...defaultProps,
+export const Default = {
+    ...Template,
+    args: {
+        ...defaultProps,
+    },
 }
 
-export const WithDefaultExpandedItem = Template.bind({})
-WithDefaultExpandedItem.args = {
-    children: (
-        <>
-            <AccordionItem>
-                <AccordionHeader>Header 1</AccordionHeader>
-                <AccordionBody>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget.
-                </AccordionBody>
-            </AccordionItem>
-            <AccordionItem id="2">
-                <AccordionHeader>Header 2</AccordionHeader>
-                <AccordionBody>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget.
-                </AccordionBody>
-            </AccordionItem>
-            <AccordionItem>
-                <AccordionHeader>Header 3</AccordionHeader>
-                <AccordionBody>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget.
-                </AccordionBody>
-            </AccordionItem>
-        </>
-    ),
-    defaultExpandedItem: '2',
+export const WithDefaultExpandedItem = {
+    ...Template,
+    args: {
+        children: (
+            <>
+                <AccordionItem>
+                    <AccordionHeader>Header 1</AccordionHeader>
+                    <AccordionBody>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Suspendisse malesuada lacus ex, sit amet blandit leo
+                        lobortis eget.
+                    </AccordionBody>
+                </AccordionItem>
+                <AccordionItem id="2">
+                    <AccordionHeader>Header 2</AccordionHeader>
+                    <AccordionBody>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Suspendisse malesuada lacus ex, sit amet blandit leo
+                        lobortis eget.
+                    </AccordionBody>
+                </AccordionItem>
+                <AccordionItem>
+                    <AccordionHeader>Header 3</AccordionHeader>
+                    <AccordionBody>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Suspendisse malesuada lacus ex, sit amet blandit leo
+                        lobortis eget.
+                    </AccordionBody>
+                </AccordionItem>
+            </>
+        ),
+        defaultExpandedItem: '2',
+    },
 }
 
-export const WithDisabledItem = Template.bind({})
-WithDisabledItem.args = {
-    children: (
-        <>
-            <AccordionItem isDisabled>
-                <AccordionHeader>Header 1</AccordionHeader>
-                <AccordionBody>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget.
-                </AccordionBody>
-            </AccordionItem>
-            <AccordionItem>
-                <AccordionHeader>Header 2</AccordionHeader>
-                <AccordionBody>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget.
-                </AccordionBody>
-            </AccordionItem>
-            <AccordionItem>
-                <AccordionHeader>Header 3</AccordionHeader>
-                <AccordionBody>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget.
-                </AccordionBody>
-            </AccordionItem>
-        </>
-    ),
+export const WithDisabledItem = {
+    ...Template,
+    args: {
+        children: (
+            <>
+                <AccordionItem isDisabled>
+                    <AccordionHeader>Header 1</AccordionHeader>
+                    <AccordionBody>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Suspendisse malesuada lacus ex, sit amet blandit leo
+                        lobortis eget.
+                    </AccordionBody>
+                </AccordionItem>
+                <AccordionItem>
+                    <AccordionHeader>Header 2</AccordionHeader>
+                    <AccordionBody>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Suspendisse malesuada lacus ex, sit amet blandit leo
+                        lobortis eget.
+                    </AccordionBody>
+                </AccordionItem>
+                <AccordionItem>
+                    <AccordionHeader>Header 3</AccordionHeader>
+                    <AccordionBody>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Suspendisse malesuada lacus ex, sit amet blandit leo
+                        lobortis eget.
+                    </AccordionBody>
+                </AccordionItem>
+            </>
+        ),
+    },
 }
 
-export const WithToggleInput = Template.bind({})
-WithToggleInput.args = {
-    children: (
-        <>
-            <AccordionItem>
-                <AccordionHeader>
-                    <ToggleField value={true} />
-                    Header 1
-                </AccordionHeader>
-                <AccordionBody>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget.
-                </AccordionBody>
-            </AccordionItem>
-            <AccordionItem>
-                <AccordionHeader>
-                    <ToggleField value={true} />
-                    Header 2
-                </AccordionHeader>
-                <AccordionBody>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget.
-                </AccordionBody>
-            </AccordionItem>
-            <AccordionItem>
-                <AccordionHeader>
-                    <ToggleField value={false} />
-                    Header 3
-                </AccordionHeader>
-                <AccordionBody>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget.
-                </AccordionBody>
-            </AccordionItem>
-        </>
-    ),
+export const WithToggleInput = {
+    ...Template,
+    args: {
+        children: (
+            <>
+                <AccordionItem>
+                    <AccordionHeader>
+                        <ToggleField value={true} />
+                        Header 1
+                    </AccordionHeader>
+                    <AccordionBody>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Suspendisse malesuada lacus ex, sit amet blandit leo
+                        lobortis eget.
+                    </AccordionBody>
+                </AccordionItem>
+                <AccordionItem>
+                    <AccordionHeader>
+                        <ToggleField value={true} />
+                        Header 2
+                    </AccordionHeader>
+                    <AccordionBody>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Suspendisse malesuada lacus ex, sit amet blandit leo
+                        lobortis eget.
+                    </AccordionBody>
+                </AccordionItem>
+                <AccordionItem>
+                    <AccordionHeader>
+                        <ToggleField value={false} />
+                        Header 3
+                    </AccordionHeader>
+                    <AccordionBody>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Suspendisse malesuada lacus ex, sit amet blandit leo
+                        lobortis eget.
+                    </AccordionBody>
+                </AccordionItem>
+            </>
+        ),
+    },
 }
 
-export const WithInput = Template.bind({})
-WithInput.args = {
-    children: (
-        <>
-            <AccordionItem>
-                <AccordionHeader>
-                    <InputField className="flex-grow-1" />
-                </AccordionHeader>
-                <AccordionBody>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget.
-                </AccordionBody>
-            </AccordionItem>
-            <AccordionItem>
-                <AccordionHeader>
-                    <InputField className="flex-grow-1" />
-                </AccordionHeader>
-                <AccordionBody>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget.
-                </AccordionBody>
-            </AccordionItem>
-            <AccordionItem>
-                <AccordionHeader>
-                    <InputField className="flex-grow-1" />
-                </AccordionHeader>
-                <AccordionBody>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget.
-                </AccordionBody>
-            </AccordionItem>
-        </>
-    ),
+export const WithInput = {
+    ...Template,
+    args: {
+        children: (
+            <>
+                <AccordionItem>
+                    <AccordionHeader>
+                        <InputField className="flex-grow-1" />
+                    </AccordionHeader>
+                    <AccordionBody>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Suspendisse malesuada lacus ex, sit amet blandit leo
+                        lobortis eget.
+                    </AccordionBody>
+                </AccordionItem>
+                <AccordionItem>
+                    <AccordionHeader>
+                        <InputField className="flex-grow-1" />
+                    </AccordionHeader>
+                    <AccordionBody>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Suspendisse malesuada lacus ex, sit amet blandit leo
+                        lobortis eget.
+                    </AccordionBody>
+                </AccordionItem>
+                <AccordionItem>
+                    <AccordionHeader>
+                        <InputField className="flex-grow-1" />
+                    </AccordionHeader>
+                    <AccordionBody>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Suspendisse malesuada lacus ex, sit amet blandit leo
+                        lobortis eget.
+                    </AccordionBody>
+                </AccordionItem>
+            </>
+        ),
+    },
 }
 
-export const WithAction = Template.bind({})
-WithAction.args = {
-    children: (
-        <>
-            <AccordionItem>
-                <AccordionHeader
-                    action={<CheckBox style={{ marginLeft: 20 }} />}
-                >
-                    Header 1
-                </AccordionHeader>
-                <AccordionBody>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget.
-                </AccordionBody>
-            </AccordionItem>
-            <AccordionItem>
-                <AccordionHeader
-                    action={<CheckBox style={{ marginLeft: 20 }} />}
-                >
-                    Header 2
-                </AccordionHeader>
-                <AccordionBody>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget.
-                </AccordionBody>
-            </AccordionItem>
-            <AccordionItem>
-                <AccordionHeader
-                    action={<CheckBox style={{ marginLeft: 20 }} />}
-                >
-                    Header 3
-                </AccordionHeader>
-                <AccordionBody>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget.
-                </AccordionBody>
-            </AccordionItem>
-        </>
-    ),
+export const WithAction = {
+    ...Template,
+    args: {
+        children: (
+            <>
+                <AccordionItem>
+                    <AccordionHeader
+                        action={<CheckBox style={{ marginLeft: 20 }} />}
+                    >
+                        Header 1
+                    </AccordionHeader>
+                    <AccordionBody>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Suspendisse malesuada lacus ex, sit amet blandit leo
+                        lobortis eget.
+                    </AccordionBody>
+                </AccordionItem>
+                <AccordionItem>
+                    <AccordionHeader
+                        action={<CheckBox style={{ marginLeft: 20 }} />}
+                    >
+                        Header 2
+                    </AccordionHeader>
+                    <AccordionBody>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Suspendisse malesuada lacus ex, sit amet blandit leo
+                        lobortis eget.
+                    </AccordionBody>
+                </AccordionItem>
+                <AccordionItem>
+                    <AccordionHeader
+                        action={<CheckBox style={{ marginLeft: 20 }} />}
+                    >
+                        Header 3
+                    </AccordionHeader>
+                    <AccordionBody>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Suspendisse malesuada lacus ex, sit amet blandit leo
+                        lobortis eget.
+                    </AccordionBody>
+                </AccordionItem>
+            </>
+        ),
+    },
 }
 
 export default storyConfig

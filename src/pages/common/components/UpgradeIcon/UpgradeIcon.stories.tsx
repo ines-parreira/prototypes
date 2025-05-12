@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import UpgradeIcon from './UpgradeIcon'
 
@@ -9,13 +9,19 @@ const storyConfig: Meta = {
     component: UpgradeIcon,
 }
 
-const Template: Story<ComponentProps<typeof UpgradeIcon>> = (props) => (
-    <UpgradeIcon {...props} />
-)
+type TemplateProps = ComponentProps<typeof UpgradeIcon>
+
+const Template: StoryObj<TemplateProps> = {
+    render: function Template({ ...props }) {
+        return <UpgradeIcon {...props} />
+    },
+}
 
 const defaultProps = {}
 
-export const Default = Template.bind({})
-Default.args = defaultProps
+export const Default = {
+    ...Template,
+    args: defaultProps,
+}
 
 export default storyConfig

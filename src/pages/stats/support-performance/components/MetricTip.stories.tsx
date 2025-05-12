@@ -1,10 +1,10 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import MetricTip from 'pages/stats/support-performance/components/MetricTip'
 
-const storyConfig: Meta = {
+const storyConfig: Meta<typeof MetricTip> = {
     title: 'Stats/MetricTooltip',
     component: MetricTip,
     argTypes: {
@@ -16,9 +16,11 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<ComponentProps<typeof MetricTip>> = (props) => (
-    <MetricTip {...props}>{'Content of the tip'}</MetricTip>
-)
+type Story = StoryObj<typeof MetricTip>
+
+const Template: Story = {
+    render: (props) => <MetricTip {...props}>{'Content of the tip'}</MetricTip>,
+}
 
 const defaultProps: ComponentProps<typeof MetricTip> = {
     className: '',
@@ -26,7 +28,9 @@ const defaultProps: ComponentProps<typeof MetricTip> = {
     type: 'neutral',
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
+export const Default = {
+    ...Template,
+    args: defaultProps,
+}
 
 export default storyConfig

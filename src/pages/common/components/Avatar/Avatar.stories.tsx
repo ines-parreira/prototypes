@@ -1,6 +1,4 @@
-import React, { ComponentProps } from 'react'
-
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import personAvatarUrl from 'assets/img/avatar-example.png'
 
@@ -18,84 +16,96 @@ const storyConfig: Meta = {
     },
 }
 
-const AllSizesTemplate: Story<ComponentProps<typeof Avatar>> = ({
-    ...props
-}) => (
-    <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start' }}>
-        {[24, 36, 48, 100].map((size) => (
-            <Avatar key={size} {...props} size={size} />
-        ))}
-    </div>
-)
-
-export const WithImage = AllSizesTemplate.bind({})
-WithImage.args = {
-    name: 'John Born',
-    url: personAvatarUrl,
-    shape: 'round',
+const AllSizesTemplate: StoryObj<typeof Avatar> = {
+    render: function AllSizesTemplate(props) {
+        return (
+            <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start' }}>
+                {[24, 36, 48, 100].map((size) => (
+                    <Avatar key={size} {...props} size={size} />
+                ))}
+            </div>
+        )
+    },
 }
 
-export const WithImageSquared = AllSizesTemplate.bind({})
-WithImageSquared.args = {
-    name: 'John Born',
-    url: personAvatarUrl,
-    shape: 'square',
+export const WithImage = {
+    ...AllSizesTemplate,
+    args: {
+        name: 'John Born',
+        url: personAvatarUrl,
+        shape: 'round',
+    },
 }
 
-export const WithInitials = AllSizesTemplate.bind({})
-WithInitials.args = {
-    name: 'John Born',
-    shape: 'round',
+export const WithImageSquared = {
+    ...AllSizesTemplate,
+    args: {
+        name: 'John Born',
+        url: personAvatarUrl,
+        shape: 'square',
+    },
 }
 
-export const WithInitialsSquared = AllSizesTemplate.bind({})
-WithInitialsSquared.args = {
-    name: 'John Born',
-    shape: 'square',
+export const WithInitials = {
+    ...AllSizesTemplate,
+    args: {
+        name: 'John Born',
+        shape: 'round',
+    },
 }
 
-const TwoAvatarsTemplate: Story<ComponentProps<typeof Avatar>> = ({
-    ...props
-}) => (
-    <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start' }}>
-        <Avatar url={personAvatarUrl} {...props} />
-        <Avatar {...props} />
-    </div>
-)
-
-export const WithStatus: Story<ComponentProps<typeof Avatar>> =
-    TwoAvatarsTemplate.bind({})
-
-WithStatus.args = {
-    size: 48,
-    name: 'John Born',
-    shape: 'round',
-    badgeColor: '#24D69D',
-    badgeBorderColor: 'transparent',
+export const WithInitialsSquared = {
+    ...AllSizesTemplate,
+    args: {
+        name: 'John Born',
+        shape: 'square',
+    },
 }
 
-export const WithStatusSquared: Story<ComponentProps<typeof Avatar>> =
-    TwoAvatarsTemplate.bind({})
-
-WithStatusSquared.args = {
-    size: 48,
-    name: 'John Born',
-    shape: 'square',
-    badgeColor: '#24D69D',
-    badgeBorderColor: 'transparent',
+const TwoAvatarsTemplate: StoryObj<typeof Avatar> = {
+    render: function TwoAvatarsTemplate(props) {
+        return (
+            <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start' }}>
+                <Avatar url={personAvatarUrl} {...props} />
+                <Avatar {...props} />
+            </div>
+        )
+    },
 }
 
-export const WithStatusAndToltip: Story<ComponentProps<typeof Avatar>> =
-    TwoAvatarsTemplate.bind({})
+export const WithStatus = {
+    ...TwoAvatarsTemplate,
+    args: {
+        size: 48,
+        name: 'John Born',
+        shape: 'round',
+        badgeColor: '#24D69D',
+        badgeBorderColor: 'transparent',
+    },
+}
 
-WithStatusAndToltip.args = {
-    size: 48,
-    name: 'John Born',
-    shape: 'round',
-    badgeColor: '#24D69D',
-    badgeBorderColor: 'transparent',
-    withTooltip: true,
-    tooltipText: 'Online',
+export const WithStatusSquared = {
+    ...TwoAvatarsTemplate,
+    args: {
+        size: 48,
+        name: 'John Born',
+        shape: 'square',
+        badgeColor: '#24D69D',
+        badgeBorderColor: 'transparent',
+    },
+}
+
+export const WithStatusAndToltip = {
+    ...TwoAvatarsTemplate,
+    args: {
+        size: 48,
+        name: 'John Born',
+        shape: 'round',
+        badgeColor: '#24D69D',
+        badgeBorderColor: 'transparent',
+        withTooltip: true,
+        tooltipText: 'Online',
+    },
 }
 
 export default storyConfig

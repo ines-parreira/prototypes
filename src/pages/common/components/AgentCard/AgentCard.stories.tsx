@@ -1,5 +1,3 @@
-import React, { ComponentProps } from 'react'
-
 import { Meta, StoryObj } from '@storybook/react'
 
 import AgentCard from './AgentCard'
@@ -31,7 +29,7 @@ const meta: Meta<typeof AgentCard> = {
 
 export default meta
 
-type Story = StoryObj<ComponentProps<typeof AgentCard>>
+type Story = StoryObj<typeof AgentCard>
 
 export const Default: Story = {
     render: (args) => <AgentCard {...args} />,

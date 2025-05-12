@@ -1,6 +1,4 @@
-import React, { ComponentProps } from 'react'
-
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import Segmented from './Segmented'
 
@@ -9,41 +7,47 @@ const storyConfig: Meta = {
     component: Segmented,
 }
 
-const Template: Story<ComponentProps<typeof Segmented>> = (props) => (
-    <Segmented {...props} />
-)
-
-export const Basic = Template.bind({})
-Basic.args = {
-    options: [
-        {
-            value: 'self-service',
-            label: 'Self-Service',
-        },
-        {
-            value: 'article-recommendation',
-            label: 'Article Recommendation',
-        },
-    ],
-    value: 'self-service',
-    onChange: () => null,
+const Template: StoryObj<typeof Segmented> = {
+    render: function Template(props) {
+        return <Segmented {...props} />
+    },
 }
 
-export const Disabled = Template.bind({})
-Disabled.args = {
-    options: [
-        {
-            value: 'self-service',
-            label: 'Self-Service',
-        },
-        {
-            value: 'article-recommendation',
-            label: 'Article Recommendation',
-            disabled: true,
-        },
-    ],
-    value: 'self-service',
-    onChange: () => null,
+export const Basic = {
+    ...Template,
+    args: {
+        options: [
+            {
+                value: 'self-service',
+                label: 'Self-Service',
+            },
+            {
+                value: 'article-recommendation',
+                label: 'Article Recommendation',
+            },
+        ],
+        value: 'self-service',
+        onChange: () => null,
+    },
+}
+
+export const Disabled = {
+    ...Template,
+    args: {
+        options: [
+            {
+                value: 'self-service',
+                label: 'Self-Service',
+            },
+            {
+                value: 'article-recommendation',
+                label: 'Article Recommendation',
+                disabled: true,
+            },
+        ],
+        value: 'self-service',
+        onChange: () => null,
+    },
 }
 
 export default storyConfig

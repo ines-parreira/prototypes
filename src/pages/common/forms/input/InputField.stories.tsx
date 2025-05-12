@@ -1,6 +1,6 @@
-import React, { ComponentProps, CSSProperties, useState } from 'react'
+import { ComponentProps, CSSProperties, useState } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import IconInput from './IconInput'
 import InputField from './InputField'
@@ -55,12 +55,14 @@ const storyConfig: Meta = {
     },
 }
 
-const SimpleInputTemplate: Story<ComponentProps<typeof InputField>> = (
-    props: ComponentProps<typeof InputField>,
-) => {
-    const [value, setValue] = useState('')
+type SimpleInputTemplateProps = ComponentProps<typeof InputField>
 
-    return <InputField {...props} onChange={setValue} value={value} />
+const SimpleInputTemplate: StoryObj<SimpleInputTemplateProps> = {
+    render: function Template({ ...props }) {
+        const [value, setValue] = useState('')
+
+        return <InputField {...props} onChange={setValue} value={value} />
+    },
 }
 
 const pointerEvents: CSSProperties['pointerEvents'] = 'inherit'
@@ -70,26 +72,28 @@ const iconStyle = {
     pointerEvents,
 }
 
-const InputWithIconsTemplate: Story<ComponentProps<typeof InputField>> = (
-    props: ComponentProps<typeof InputField>,
-) => {
-    const [value, setValue] = useState('')
+type InputWithIconsTemplateProps = ComponentProps<typeof InputField>
 
-    return (
-        <InputField
-            {...props}
-            value={value}
-            onChange={setValue}
-            prefix={<IconInput icon="search" />}
-            suffix={
-                <IconInput
-                    style={iconStyle}
-                    icon="block"
-                    onClick={() => setValue('')}
-                />
-            }
-        />
-    )
+const InputWithIconsTemplate: StoryObj<InputWithIconsTemplateProps> = {
+    render: function Template({ ...props }) {
+        const [value, setValue] = useState('')
+
+        return (
+            <InputField
+                {...props}
+                value={value}
+                onChange={setValue}
+                prefix={<IconInput icon="search" />}
+                suffix={
+                    <IconInput
+                        style={iconStyle}
+                        icon="block"
+                        onClick={() => setValue('')}
+                    />
+                }
+            />
+        )
+    },
 }
 
 const defaultProps: Partial<
@@ -111,12 +115,16 @@ const templateParameters = {
     },
 }
 
-export const SimpleInput = SimpleInputTemplate.bind({})
-SimpleInput.args = defaultProps
-SimpleInput.parameters = templateParameters
+export const SimpleInput = {
+    ...SimpleInputTemplate,
+    args: defaultProps,
+    parameters: templateParameters,
+}
 
-export const InputWithIcons = InputWithIconsTemplate.bind({})
-InputWithIcons.args = defaultProps
-InputWithIcons.parameters = templateParameters
+export const InputWithIcons = {
+    ...InputWithIconsTemplate,
+    args: defaultProps,
+    parameters: templateParameters,
+}
 
 export default storyConfig

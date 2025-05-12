@@ -1,7 +1,7 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { action } from '@storybook/addon-actions'
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import _omit from 'lodash/omit'
 
 import ConfirmButton from './ConfirmButton'
@@ -39,31 +39,39 @@ const storyConfig: Meta = {
         },
         confirmationContent: {
             control: {
-                type: null,
+                type: 'text',
             },
         },
     },
 }
 
-const Template: Story<ComponentProps<typeof ConfirmButton>> = (props) => (
-    <ConfirmButton
-        {...props}
-        onConfirm={() => {
-            action('clicked!')()
-        }}
-    />
-)
+const Template: StoryObj<typeof ConfirmButton> = {
+    render: function Template(props) {
+        return (
+            <ConfirmButton
+                {...props}
+                onConfirm={() => {
+                    action('clicked!')()
+                }}
+            />
+        )
+    },
+}
 
-const FormTemplate: Story<ComponentProps<typeof ConfirmButton>> = (props) => (
-    <form
-        onSubmit={(e) => {
-            e.preventDefault()
-            action('submit!')(e)
-        }}
-    >
-        <ConfirmButton {..._omit(props, 'onConfirm')} />
-    </form>
-)
+const FormTemplate: StoryObj<typeof ConfirmButton> = {
+    render: function FormTemplate(props) {
+        return (
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    action('submit!')(e)
+                }}
+            >
+                <ConfirmButton {..._omit(props, 'onConfirm')} />
+            </form>
+        )
+    },
+}
 
 const templateParameters = {
     controls: {
@@ -93,15 +101,19 @@ const defaultProps: ComponentProps<typeof ConfirmButton> = {
     confirmationTitle: "I'm a title",
 }
 
-export const Main = Template.bind({})
-Main.args = defaultProps
-Main.parameters = templateParameters
-
-export const WithinForm = FormTemplate.bind({})
-WithinForm.args = {
-    ...defaultProps,
-    type: 'submit',
+export const Main = {
+    ...Template,
+    args: defaultProps,
+    parameters: templateParameters,
 }
-WithinForm.parameters = templateParameters
+
+export const WithinForm = {
+    ...FormTemplate,
+    args: {
+        ...defaultProps,
+        type: 'submit',
+    },
+    parameters: templateParameters,
+}
 
 export default storyConfig

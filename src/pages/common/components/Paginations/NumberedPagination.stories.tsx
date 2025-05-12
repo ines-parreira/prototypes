@@ -1,6 +1,4 @@
-import React, { ComponentProps } from 'react'
-
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import { NumberedPagination } from './NumberedPagination'
 
@@ -71,25 +69,31 @@ const storyConfig: Meta = {
     },
 }
 
-const DefaultTemplate: Story<ComponentProps<typeof NumberedPagination>> = (
-    props,
-) => <NumberedPagination {...props} />
-
-export const Default = DefaultTemplate.bind({})
-Default.args = {
-    count: 8,
+const DefaultTemplate: StoryObj<typeof NumberedPagination> = {
+    render: (props) => <NumberedPagination {...props} />,
 }
 
-export const SmallSize = DefaultTemplate.bind({})
-SmallSize.args = {
-    count: 10,
-    size: 'small',
+export const Default = {
+    ...DefaultTemplate,
+    args: {
+        count: 8,
+    },
 }
 
-export const LargeCount = DefaultTemplate.bind({})
-LargeCount.args = {
-    count: 60,
-    page: 12,
+export const SmallSize = {
+    ...DefaultTemplate,
+    args: {
+        count: 10,
+        size: 'small',
+    },
+}
+
+export const LargeCount = {
+    ...DefaultTemplate,
+    args: {
+        count: 60,
+        page: 12,
+    },
 }
 
 export default storyConfig

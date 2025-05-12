@@ -1,19 +1,21 @@
-import React, { ComponentProps, useState } from 'react'
+import { ComponentProps, useState } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import TipsToggle from 'pages/common/components/TipsToggle/TipsToggle'
 
 import DashboardSection from './DashboardSection'
 
-const storyConfig: Meta = {
+const storyConfig: Meta<typeof DashboardSection> = {
     title: 'Stats/DashboardSection',
     component: DashboardSection,
 }
 
-const Template: Story<ComponentProps<typeof DashboardSection>> = (props) => (
-    <DashboardSection {...props} />
-)
+type Story = StoryObj<typeof DashboardSection>
+
+const Template: Story = {
+    render: (props) => <DashboardSection {...props} />,
+}
 
 const defaultProps: ComponentProps<typeof DashboardSection> = {
     className: '',
@@ -21,27 +23,29 @@ const defaultProps: ComponentProps<typeof DashboardSection> = {
     children: 'Content section',
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
-
-const WithTitleExtraTemplate: Story<ComponentProps<typeof DashboardSection>> = (
-    props,
-) => {
-    const [isVisible, setIsVisible] = useState(true)
-
-    return (
-        <DashboardSection
-            {...props}
-            titleExtra={
-                <TipsToggle isVisible={isVisible} onClick={setIsVisible} />
-            }
-        />
-    )
+export const Default = {
+    ...Template,
+    args: defaultProps,
 }
 
-export const WithTitleExtra = WithTitleExtraTemplate.bind({})
-WithTitleExtra.args = {
-    ...defaultProps,
+const WithTitleExtraTemplate: Story = {
+    render: function WithTitleExtra(props) {
+        const [isVisible, setIsVisible] = useState(true)
+
+        return (
+            <DashboardSection
+                {...props}
+                titleExtra={
+                    <TipsToggle isVisible={isVisible} onClick={setIsVisible} />
+                }
+            />
+        )
+    },
+}
+
+export const WithTitleExtra = {
+    ...WithTitleExtraTemplate,
+    args: { ...defaultProps },
 }
 
 export default storyConfig

@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import { fromJS } from 'immutable'
 import { MemoryRouter } from 'react-router-dom'
 
@@ -14,9 +14,11 @@ const storyConfig: Meta = {
     decorators: [(story) => <MemoryRouter>{story()}</MemoryRouter>],
 }
 
-const Template: Story<ComponentProps<typeof TableStat>> = (props) => (
-    <TableStat {...props} />
-)
+type Story = StoryObj<typeof TableStat>
+
+const Template: Story = {
+    render: (props) => <TableStat {...props} />,
+}
 
 const defaultProps: ComponentProps<typeof TableStat> = {
     context: { tagColors: null },
@@ -25,21 +27,27 @@ const defaultProps: ComponentProps<typeof TableStat> = {
     config: fromJS({}),
 }
 
-export const Default = Template.bind({})
-Default.args = defaultProps
-
-export const WithExpand = Template.bind({})
-WithExpand.args = {
-    ...defaultProps,
-    data: fromJS(ticketsClosedPerAgent.data.data),
-    meta: fromJS(ticketsClosedPerAgent.meta),
-    config: fromJS({ tableOptions: { showLines: 1 } }),
+export const Default = {
+    ...Template,
+    args: defaultProps,
 }
 
-export const NoData = Template.bind({})
-NoData.args = {
-    ...defaultProps,
-    data: fromJS({ lines: [] }),
+export const WithExpand = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        data: fromJS(ticketsClosedPerAgent.data.data),
+        meta: fromJS(ticketsClosedPerAgent.meta),
+        config: fromJS({ tableOptions: { showLines: 1 } }),
+    },
+}
+
+export const NoData = {
+    ...Template,
+    args: {
+        ...defaultProps,
+        data: fromJS({ lines: [] }),
+    },
 }
 
 export default storyConfig

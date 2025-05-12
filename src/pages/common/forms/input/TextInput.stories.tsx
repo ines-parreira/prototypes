@@ -1,6 +1,6 @@
-import React, { ComponentProps, useState } from 'react'
+import { useState } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import IconInput from './IconInput'
 import TextInput from './TextInput'
@@ -38,24 +38,30 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<ComponentProps<typeof TextInput>> = (props) => {
-    const [value, setValue] = useState('')
+type Story = StoryObj<typeof TextInput>
 
-    return <TextInput {...props} value={value} onChange={setValue} />
+const Template: Story = {
+    render: function Template({ ...props }) {
+        const [value, setValue] = useState('')
+
+        return <TextInput {...props} value={value} onChange={setValue} />
+    },
 }
 
-const TemplateWithIcons: Story<ComponentProps<typeof TextInput>> = (props) => {
-    const [value, setValue] = useState('')
+const TemplateWithIcons: Story = {
+    render: function TemplateWithIcons({ ...props }) {
+        const [value, setValue] = useState('')
 
-    return (
-        <TextInput
-            {...props}
-            value={value}
-            onChange={setValue}
-            prefix={<IconInput icon="search" />}
-            suffix={<IconInput icon="block" onClick={() => setValue('')} />}
-        />
-    )
+        return (
+            <TextInput
+                {...props}
+                value={value}
+                onChange={setValue}
+                prefix={<IconInput icon="search" />}
+                suffix={<IconInput icon="block" onClick={() => setValue('')} />}
+            />
+        )
+    },
 }
 
 const templateParameters = {
@@ -64,10 +70,14 @@ const templateParameters = {
     },
 }
 
-export const Default = Template.bind({})
-Default.parameters = templateParameters
+export const Default = {
+    ...Template,
+    parameters: templateParameters,
+}
 
-export const WithIcons = TemplateWithIcons.bind({})
-WithIcons.parameters = templateParameters
+export const WithIcons = {
+    ...TemplateWithIcons,
+    parameters: templateParameters,
+}
 
 export default storyConfig

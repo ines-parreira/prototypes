@@ -1,6 +1,6 @@
-import React, { ComponentProps, useState } from 'react'
+import { ComponentProps, useState } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
@@ -15,11 +15,11 @@ const storyConfig: Meta = {
         tabs: {
             description: 'Tabs to render.',
             control: {
-                type: null,
+                type: 'object',
             },
         },
         activeTab: { description: 'Active tab for controlled navigator.' },
-        className: { control: { type: null } },
+        className: { control: { type: 'text' } },
     },
 }
 
@@ -29,23 +29,22 @@ const tabs = [
     { label: 'Tab three', value: 'three' },
 ]
 
-const Template: Story<ComponentProps<typeof TabNavigator>> = ({
-    activeTab: passedActiveTab,
-    ...props
-}) => {
-    const [activeTab, setActiveTab] = useState(passedActiveTab)
+const Template: StoryObj<typeof TabNavigator> = {
+    render: function Template({ activeTab: passedActiveTab, ...props }) {
+        const [activeTab, setActiveTab] = useState(passedActiveTab)
 
-    useUpdateEffect(() => {
-        passedActiveTab && setActiveTab(passedActiveTab)
-    }, [passedActiveTab])
+        useUpdateEffect(() => {
+            passedActiveTab && setActiveTab(passedActiveTab)
+        }, [passedActiveTab])
 
-    return (
-        <TabNavigator
-            {...props}
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
-        />
-    )
+        return (
+            <TabNavigator
+                {...props}
+                activeTab={activeTab}
+                onTabChange={setActiveTab}
+            />
+        )
+    },
 }
 
 const defaultProps: Omit<
@@ -55,7 +54,16 @@ const defaultProps: Omit<
     tabs,
 }
 
-export const ControlledTabNavigator = Template.bind({})
-ControlledTabNavigator.args = { ...defaultProps, activeTab: 'one' }
+const templateParameters = {
+    controls: {
+        include: ['activeTab'],
+    },
+}
+
+export const ControlledTabNavigator = {
+    ...Template,
+    args: { ...defaultProps, activeTab: 'one' },
+    parameters: templateParameters,
+}
 
 export default storyConfig
