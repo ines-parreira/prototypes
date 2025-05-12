@@ -229,6 +229,7 @@ const config = {
     // General options
     key: FROALA_KEY,
     attribution: false,
+    linkAlwaysBlank: true,
     editorClass: css.froalaEditorWrapper,
     height: '100%',
     heightMax: '100%',
