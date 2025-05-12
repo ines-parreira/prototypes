@@ -89,6 +89,7 @@ export type StoreConfiguration = {
     salesDiscountMax: number | null
     salesDiscountStrategyLevel: DiscountStrategy | null
     salesPersuasionLevel: PersuasionLevel | null
+    salesDeactivatedDatetime: string | null
 
     isConversationStartersEnabled: boolean
     customFieldIds: number[]

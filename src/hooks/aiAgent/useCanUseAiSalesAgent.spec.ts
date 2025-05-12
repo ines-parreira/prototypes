@@ -1,11 +1,29 @@
+import { fromJS } from 'immutable'
+
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
+import { StoreConfiguration } from 'models/aiAgent/types'
+import { StoreActivation } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
+import { useStoreConfigurations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import {
+    getAiSalesAgentTrialState,
+    TrialState,
+} from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
-import { isTrialing as getIsTrialing } from 'state/currentAccount/selectors'
+import {
+    getCurrentAccountState,
+    isTrialing as getIsTrialing,
+} from 'state/currentAccount/selectors'
+import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
-import { useCanUseAiSalesAgent } from './useCanUseAiSalesAgent'
+import {
+    canStoreUseAiSalesAgent,
+    useAtLeastOneStoreHasActiveTrial,
+    useAtLeastOneStoreHasActiveTrialOnSpecificStores,
+    useCanUseAiSalesAgent,
+} from './useCanUseAiSalesAgent'
 
 // Mock dependencies
 jest.mock('hooks/useAppSelector', () => jest.fn())
@@ -15,7 +33,11 @@ jest.mock('core/flags', () => ({
 
 const useAppSelectorMock = useAppSelector as jest.Mock
 const useFlagMock = useFlag as jest.Mock
+jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
+const useStoreConfigurationsMock = assumeMock(useStoreConfigurations)
 
+jest.mock('pages/aiAgent/utils/aiSalesAgentTrialUtils')
+const getAiSalesAgentTrialStateMock = assumeMock(getAiSalesAgentTrialState)
 describe('useCanUseAiSalesAgent', () => {
     beforeEach(() => {
         jest.resetAllMocks()
@@ -148,5 +170,129 @@ describe('useCanUseAiSalesAgent', () => {
             FeatureFlagKey.AiSalesAgentBypassPlanCheck,
             false,
         )
+    })
+})
+
+describe('canStoreUseAiSalesAgent', () => {
+    beforeEach(() => {
+        jest.resetAllMocks()
+    })
+    const storeConfiguration = {
+        salesDeactivatedDatetime: null,
+    }
+
+    it('should return true when the store is in trial', () => {
+        getAiSalesAgentTrialStateMock.mockReturnValue(TrialState.Trial)
+        expect(
+            canStoreUseAiSalesAgent(storeConfiguration as StoreConfiguration),
+        ).toBe(true)
+    })
+
+    it('should return false when the store is not in trial', () => {
+        getAiSalesAgentTrialStateMock.mockReturnValue(TrialState.TrialEnded)
+        expect(
+            canStoreUseAiSalesAgent(storeConfiguration as StoreConfiguration),
+        ).toBe(false)
+    })
+})
+
+describe('useAtLeastOneStoreHasActiveTrialOnSpecificStores', () => {
+    beforeEach(() => {
+        jest.resetAllMocks()
+    })
+    it('should return false when no store is in trial', () => {
+        const storeActivations = {
+            store1: {
+                configuration: {
+                    salesDeactivatedDatetime: null,
+                },
+            },
+            store2: {
+                configuration: {
+                    salesDeactivatedDatetime: null,
+                },
+            },
+        }
+        getAiSalesAgentTrialStateMock.mockReturnValueOnce(TrialState.NotTrial)
+        expect(
+            useAtLeastOneStoreHasActiveTrialOnSpecificStores(
+                storeActivations as unknown as Record<string, StoreActivation>,
+            ),
+        ).toBe(false)
+    })
+
+    it('should return true when at least one store is in trial', () => {
+        const storeActivations = {
+            store1: {
+                configuration: {
+                    salesDeactivatedDatetime: null,
+                },
+            },
+            store2: {
+                configuration: {
+                    salesDeactivatedDatetime: new Date(
+                        '3025-01-01',
+                    ).toISOString(),
+                },
+            },
+        }
+        getAiSalesAgentTrialStateMock.mockReturnValueOnce(TrialState.Trial)
+        expect(
+            useAtLeastOneStoreHasActiveTrialOnSpecificStores(
+                storeActivations as unknown as Record<string, StoreActivation>,
+            ),
+        ).toBe(true)
+    })
+})
+
+describe('useAtLeastOneStoreHasActiveTrial', () => {
+    it('should return false when no store is in trial', () => {
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getCurrentAutomatePlan) {
+                return { generation: 5 }
+            }
+            if (selector === getCurrentAccountState) {
+                return fromJS({ domain: 'test' }) as Map<string, string>
+            }
+            return null
+        })
+        useStoreConfigurationsMock.mockReturnValueOnce({
+            storeConfigurations: [
+                {
+                    salesDeactivatedDatetime: null,
+                },
+                {
+                    salesDeactivatedDatetime: null,
+                },
+            ],
+        } as any)
+        getAiSalesAgentTrialStateMock.mockReturnValueOnce(TrialState.NotTrial)
+        expect(useAtLeastOneStoreHasActiveTrial()).toBe(false)
+    })
+
+    it('should return true when at least one store is in trial', () => {
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getCurrentAutomatePlan) {
+                return { generation: 5 }
+            }
+            if (selector === getCurrentAccountState) {
+                return fromJS({ domain: 'test' }) as Map<string, string>
+            }
+            return null
+        })
+        useStoreConfigurationsMock.mockReturnValueOnce({
+            storeConfigurations: [
+                {
+                    salesDeactivatedDatetime: null,
+                },
+                {
+                    salesDeactivatedDatetime: new Date(
+                        '3025-01-01',
+                    ).toISOString(),
+                },
+            ],
+        } as any)
+        getAiSalesAgentTrialStateMock.mockReturnValueOnce(TrialState.Trial)
+        expect(useAtLeastOneStoreHasActiveTrial()).toBe(true)
     })
 })

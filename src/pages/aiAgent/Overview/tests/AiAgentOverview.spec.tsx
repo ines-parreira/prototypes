@@ -3,6 +3,7 @@ import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import { useLocation } from 'react-router-dom'
@@ -10,6 +11,9 @@ import configureMockStore from 'redux-mock-store'
 
 import * as segment from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { billingState } from 'fixtures/billing'
+import { integrationsState } from 'fixtures/integrations'
+import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
 import { initialState as initialStatsFiltersState } from 'state/stats/statsSlice'
 import { RootState, StoreDispatch, StoreState } from 'state/types'
@@ -20,6 +24,19 @@ import { assumeMock } from 'utils/testing'
 import { AiAgentOverview } from '../AiAgentOverview'
 import { AiAgentOverviewRootStateFixture } from './AiAgentOverviewRootState.fixture'
 
+jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
+const useStoreActivationsMock = assumeMock(useStoreActivations)
+
+jest.mock(
+    'pages/aiAgent/Overview/components/PendingTasksSection/PendingTasksSectionConnected',
+    () => ({
+        PendingTasksSectionConnected: () => (
+            <div data-testid="mocked-pending-tasks">
+                Mocked PendingTasksSectionConnected
+            </div>
+        ),
+    }),
+)
 jest.mock('react-router')
 jest.mock('pages/aiAgent/Overview/hooks/useThankYouModal')
 
@@ -63,6 +80,8 @@ const defaultStore = {
         stats: { filters: initialState },
     },
     stats: initialStatsFiltersState,
+    billing: fromJS(billingState),
+    integrations: fromJS(integrationsState),
 } as StoreState
 
 const renderComponent = () => {
@@ -79,13 +98,15 @@ describe('AiAgentOverview', () => {
     beforeEach(() => {
         logEventMock.mockClear()
         mockUseThankYouModal.mockReturnValue(defaultThankYouModalValues)
+        useStoreActivationsMock.mockReturnValue({
+            storeActivations: {},
+        } as any)
     })
     it('should render', () => {
         const { queryByText } = renderComponent()
-
         expect(queryByText(/Welcome,.*/)).toBeTruthy()
         expect(queryByText('AI Agent performance')).toBeTruthy()
-        expect(queryByText('Setup your store')).toBeTruthy()
+        expect(queryByText('Mocked PendingTasksSectionConnected')).toBeTruthy()
     })
 
     it('should not renders the Thank You modal', () => {

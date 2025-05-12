@@ -9,7 +9,7 @@ import cssNavbar from 'assets/css/navbar.less'
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { ShopType } from 'models/selfServiceConfiguration/types'
-import { SETTINGS } from 'pages/aiAgent/constants'
+import { SALES, SETTINGS } from 'pages/aiAgent/constants'
 import {
     NavigationItem,
     useAiAgentNavigation,
@@ -19,6 +19,10 @@ import {
     useAiAgentOnboardingState,
 } from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
+import {
+    getAiSalesAgentTrialState,
+    TrialState,
+} from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import NavbarSectionBlock from 'pages/common/components/navbar/NavbarSectionBlock'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -89,8 +93,27 @@ export const AiAgentNavbarSectionBlock = ({
         }
     }, [onboardingState])
 
+    let trialState: TrialState | undefined
+    if (storeConfiguration) {
+        trialState = getAiSalesAgentTrialState(storeConfiguration)
+    }
+
     const itemName = (item: NavigationItem) => {
         switch (item.title) {
+            case SALES:
+                return (
+                    <div className={css.item}>
+                        {item.title}
+                        {trialState === TrialState.Trial && (
+                            <Badge
+                                className={css.trialBadge}
+                                type="light-success"
+                            >
+                                TRIAL
+                            </Badge>
+                        )}
+                    </div>
+                )
             case SETTINGS:
                 return (
                     <div className={css.item}>

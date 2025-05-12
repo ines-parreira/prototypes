@@ -1,14 +1,23 @@
 import { ComponentProps } from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act } from '@testing-library/react-hooks'
 import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
+import createMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
+import { toImmutable } from 'common/utils'
 import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
+import { AiAgentActivationModal } from 'pages/aiAgent/Activation/components/AiAgentActivationModal/AiAgentActivationModal'
+import { StoreActivation } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
+import { getStoreConfigurationFixture } from 'pages/aiAgent/Activation/hooks/tests/fixtures/store-configurations.fixture'
+import { useTrialEligibility } from 'pages/aiAgent/hooks/useTrialEligibility'
+import { useStartAiSalesAgentTrialForMultipleStores } from 'pages/aiAgent/Overview/hooks/useStartAiSalesAgentTrialForMultipleStores'
+import { getStoresEligibleForTrial } from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
-
-import { getStoreConfigurationFixture } from '../../../hooks/tests/fixtures/store-configurations.fixture'
-import { StoreActivation } from '../../AiAgentActivationStoreCard/AiAgentActivationStoreCard'
-import { AiAgentActivationModal } from '../AiAgentActivationModal'
 
 // Mock the StoreCard component
 jest.mock(
@@ -44,8 +53,30 @@ jest.mock(
     }),
 )
 
+jest.mock(
+    'pages/aiAgent/Overview/hooks/useStartAiSalesAgentTrialForMultipleStores',
+)
+
+jest.mock(
+    'pages/aiAgent/Overview/hooks/useStartAiSalesAgentTrialForMultipleStores',
+    () => ({
+        useStartAiSalesAgentTrialForMultipleStores: jest.fn(),
+    }),
+)
+
+const mockUseStartTrialMock =
+    useStartAiSalesAgentTrialForMultipleStores as jest.Mock
+
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
 const useCanUseAiSalesAgentMock = assumeMock(useCanUseAiSalesAgent)
+jest.mock('pages/aiAgent/hooks/useTrialEligibility')
+const useTrialEligibilityMock = assumeMock(useTrialEligibility)
+
+jest.mock('pages/aiAgent/utils/aiSalesAgentTrialUtils')
+const mockStore = createMockStore([thunk])
+const queryClient = mockQueryClient()
+
+const getStoresEligibleForTrialMock = assumeMock(getStoresEligibleForTrial)
 
 describe('AiAgentActivationModal', () => {
     const mockStoreActivations: Record<string, StoreActivation> = {
@@ -99,6 +130,8 @@ describe('AiAgentActivationModal', () => {
         },
     }
 
+    getStoresEligibleForTrialMock.mockReturnValue([mockStoreActivations.store2])
+
     const defaultProps: ComponentProps<typeof AiAgentActivationModal> = {
         isOpen: true,
         isFetchLoading: false,
@@ -114,12 +147,42 @@ describe('AiAgentActivationModal', () => {
         onLearnMoreClick: jest.fn(),
     }
 
+    const renderWithProvider = (params?: any) =>
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider
+                    store={mockStore({
+                        billing: toImmutable({
+                            products: [],
+                        }),
+                    })}
+                >
+                    <AiAgentActivationModal {...defaultProps} {...params} />
+                </Provider>
+            </QueryClientProvider>,
+        )
+    useTrialEligibilityMock.mockReturnValue({
+        canStartTrial: false,
+        isLoading: false,
+    })
+
     beforeEach(() => {
+        mockUseStartTrialMock.mockReturnValue({
+            mutateAsync: (data: any, { onSuccess }: any) => {
+                onSuccess()
+            },
+            isLoading: false,
+        })
+
         jest.clearAllMocks()
     })
 
+    afterEach(() => {
+        queryClient.clear()
+    })
+
     it('renders modal with correct title and progress', () => {
-        render(<AiAgentActivationModal {...defaultProps} />)
+        renderWithProvider()
 
         expect(
             screen.getByText('Manage AI Agent Activation'),
@@ -128,7 +191,7 @@ describe('AiAgentActivationModal', () => {
     })
 
     it('renders store cards for each store activation', () => {
-        render(<AiAgentActivationModal {...defaultProps} />)
+        renderWithProvider()
 
         const storeCards = screen.getAllByTestId('mock-store-card')
         expect(storeCards).toHaveLength(2)
@@ -139,7 +202,7 @@ describe('AiAgentActivationModal', () => {
     })
 
     it('forwards sales change callback correctly', () => {
-        render(<AiAgentActivationModal {...defaultProps} />)
+        renderWithProvider()
 
         const toggleButtons = screen.getAllByText('Toggle Sales')
         fireEvent.click(toggleButtons[0])
@@ -148,7 +211,7 @@ describe('AiAgentActivationModal', () => {
     })
 
     it('forwards support change callback correctly', () => {
-        render(<AiAgentActivationModal {...defaultProps} />)
+        renderWithProvider()
 
         const toggleButtons = screen.getAllByText('Toggle Support')
         fireEvent.click(toggleButtons[0])
@@ -160,7 +223,7 @@ describe('AiAgentActivationModal', () => {
     })
 
     it('forwards support chat change callback correctly', () => {
-        render(<AiAgentActivationModal {...defaultProps} />)
+        renderWithProvider()
 
         const toggleButtons = screen.getAllByText('Toggle Chat')
         fireEvent.click(toggleButtons[0])
@@ -172,7 +235,7 @@ describe('AiAgentActivationModal', () => {
     })
 
     it('forwards support email change callback correctly', () => {
-        render(<AiAgentActivationModal {...defaultProps} />)
+        renderWithProvider()
 
         const toggleButtons = screen.getAllByText('Toggle Email')
         fireEvent.click(toggleButtons[0])
@@ -184,7 +247,7 @@ describe('AiAgentActivationModal', () => {
     })
 
     it('handles save button click', () => {
-        render(<AiAgentActivationModal {...defaultProps} />)
+        renderWithProvider()
 
         const saveButton = screen.getByText('Save')
         fireEvent.click(saveButton)
@@ -193,7 +256,7 @@ describe('AiAgentActivationModal', () => {
     })
 
     it('handles cancel button click', () => {
-        render(<AiAgentActivationModal {...defaultProps} />)
+        renderWithProvider()
 
         const cancelButton = screen.getByText('Cancel')
         fireEvent.click(cancelButton)
@@ -202,17 +265,13 @@ describe('AiAgentActivationModal', () => {
     })
 
     it('shows loading state in the modal when isFetchLoading is true', () => {
-        render(
-            <AiAgentActivationModal {...defaultProps} isFetchLoading={true} />,
-        )
+        renderWithProvider({ isFetchLoading: true })
 
         expect(screen.getAllByText('Loading...')).toHaveLength(2)
     })
 
     it('shows disabled state on save button when isSaveLoading is true', () => {
-        render(
-            <AiAgentActivationModal {...defaultProps} isSaveLoading={true} />,
-        )
+        renderWithProvider({ isSaveLoading: true })
 
         const saveButton = screen.getByText('Save')
         expect(saveButton.parentElement).toHaveAttribute(
@@ -222,7 +281,7 @@ describe('AiAgentActivationModal', () => {
     })
 
     it('forwards closeModal callback to store cards', () => {
-        render(<AiAgentActivationModal {...defaultProps} />)
+        renderWithProvider()
 
         const closeButtons = screen.getAllByText('Close Modal')
         fireEvent.click(closeButtons[0])
@@ -233,7 +292,7 @@ describe('AiAgentActivationModal', () => {
     it('should show the banner when not on usd-6 plan', () => {
         useCanUseAiSalesAgentMock.mockReturnValue(false)
 
-        render(<AiAgentActivationModal {...defaultProps} />)
+        renderWithProvider()
 
         expect(
             screen.getByText('Upgrade AI Agent with Sales Skills'),
@@ -251,10 +310,42 @@ describe('AiAgentActivationModal', () => {
         expect(defaultProps.onLearnMoreClick).toHaveBeenCalled()
     })
 
+    it('should show the banner with Start Trial button when eligible', async () => {
+        useTrialEligibilityMock.mockReturnValue({
+            canStartTrial: true,
+            isLoading: false,
+        })
+        useCanUseAiSalesAgentMock.mockReturnValue(false)
+
+        renderWithProvider()
+
+        expect(
+            screen.getByText('Upgrade AI Agent with Sales Skills'),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Increase your chat conversation rate and maximize revenue opportunities.',
+            ),
+        ).toBeInTheDocument()
+
+        const startTrialButton = screen.getByRole('button', {
+            name: /Start Trial/,
+        })
+        expect(startTrialButton).toBeInTheDocument()
+        act(() => {
+            userEvent.click(startTrialButton)
+        })
+        await waitFor(() => {
+            expect(
+                screen.getByText(/Complete Shopping Assistant/),
+            ).toBeInTheDocument()
+        })
+    })
+
     it('should not show the banner when on usd-6 plan', () => {
         useCanUseAiSalesAgentMock.mockReturnValue(true)
 
-        render(<AiAgentActivationModal {...defaultProps} />)
+        renderWithProvider()
 
         expect(
             screen.queryByText('Upgrade AI Agent with Sales Skills'),

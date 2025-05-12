@@ -1,13 +1,16 @@
 import React from 'react'
 
 import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { billingState } from 'fixtures/billing'
+import { integrationsState } from 'fixtures/integrations'
 import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { RootState } from 'state/types'
 import { initialState } from 'state/ui/stats/filtersSlice'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
+import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import AiSalesAgentSalesOverview from '../AiSalesAgentSalesOverview'
 
@@ -113,10 +116,12 @@ describe('AiSalesAgentSalesOverview', () => {
                 filters: initialState,
             },
         },
+        billing: fromJS(billingState),
+        integrations: fromJS(integrationsState),
     } as RootState
 
     const renderComponent = () => {
-        return renderWithStoreAndQueryClientProvider(
+        return renderWithStoreAndQueryClientAndRouter(
             <AiSalesAgentSalesOverview />,
             state,
         )

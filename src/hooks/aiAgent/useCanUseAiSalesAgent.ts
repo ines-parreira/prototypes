@@ -1,8 +1,18 @@
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
+import { StoreConfiguration } from 'models/aiAgent/types'
+import { StoreActivation } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
+import { useStoreConfigurations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import {
+    getAiSalesAgentTrialState,
+    TrialState,
+} from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
-import { isTrialing as getIsTrialing } from 'state/currentAccount/selectors'
+import {
+    getCurrentAccountState,
+    isTrialing as getIsTrialing,
+} from 'state/currentAccount/selectors'
 
 /**
  * This hook checks if the current account can use the Ai Sales Agent feature.
@@ -19,4 +29,31 @@ export const useCanUseAiSalesAgent = () => {
         useFlag(FeatureFlagKey.AiSalesAgentBypassPlanCheck, false) || isTrialing
 
     return bypassPlanCheck || hasNewAutomatePlan
+}
+
+export const canStoreUseAiSalesAgent = (
+    storeConfiguration: StoreConfiguration,
+) => {
+    const trialState = getAiSalesAgentTrialState(storeConfiguration)
+
+    return trialState === TrialState.Trial
+}
+
+export const useAtLeastOneStoreHasActiveTrial = () => {
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+
+    const { storeConfigurations } = useStoreConfigurations(accountDomain)
+
+    return storeConfigurations.some((storeConfiguration) =>
+        canStoreUseAiSalesAgent(storeConfiguration),
+    )
+}
+
+export const useAtLeastOneStoreHasActiveTrialOnSpecificStores = (
+    storeActivations: Record<string, StoreActivation>,
+) => {
+    return Object.values(storeActivations).some((storeActivation) =>
+        canStoreUseAiSalesAgent(storeActivation.configuration),
+    )
 }

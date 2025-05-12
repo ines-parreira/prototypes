@@ -13,19 +13,29 @@ import { account } from 'fixtures/account'
 import { IntegrationType } from 'models/integration/constants'
 import { ShopType } from 'models/selfServiceConfiguration/types'
 import { AiAgentNavbarSectionBlock } from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbarSectionBlock'
+import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {
     OnboardingState,
     useAiAgentOnboardingState,
 } from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
+import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
+import {
+    getAiSalesAgentTrialState,
+    TrialState,
+} from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingState')
+jest.mock('pages/aiAgent/utils/aiSalesAgentTrialUtils')
+jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
 
 const mockUseAiAgentNavigation = assumeMock(useAiAgentNavigation)
 const mockUseAiAgentOnboardingState = assumeMock(useAiAgentOnboardingState)
+const mockGetAiAgentTrialState = assumeMock(getAiSalesAgentTrialState)
+const useStoreConfigurationMock = assumeMock(useStoreConfiguration)
 
 jest.mock(
     'pages/stats/report-chart-restrictions/useReportChartRestrictions',
@@ -36,6 +46,7 @@ jest.mock(
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
 const mockStore = configureMockStore([thunk])
+const defaultStoreConfiguration = getStoreConfigurationFixture()
 const MOCK_EMAIL_ADDRESS = 'test@mail.com'
 
 const defaultState = {
@@ -86,6 +97,10 @@ const renderComponent = () => {
 
 describe('AiAgentNavbarSectionBlock', () => {
     beforeEach(() => {
+        useStoreConfigurationMock.mockReturnValue({
+            isLoading: false,
+            storeConfiguration: defaultStoreConfiguration,
+        })
         mockUseAiAgentNavigation.mockReturnValue({
             // @ts-ignore We don't test this part
             routes: { main: '/main' },
@@ -99,6 +114,7 @@ describe('AiAgentNavbarSectionBlock', () => {
         useReportChartRestrictionsMock.mockReturnValue({
             isRouteRestrictedToCurrentUser: () => false,
         } as any)
+        mockGetAiAgentTrialState.mockReturnValue(TrialState.NotTrial)
     })
 
     test('renders the component with onboarded state', () => {
@@ -151,5 +167,39 @@ describe('AiAgentNavbarSectionBlock', () => {
         renderComponent()
 
         expect(screen.queryByText('BETA')).not.toBeInTheDocument()
+    })
+
+    test('does not render TRIAL badge for Sales item when not in trial mode', () => {
+        mockUseAiAgentNavigation.mockReturnValue({
+            // @ts-ignore We don't test this part
+            routes: { main: '/main' },
+            navigationItems: [
+                { route: '/route1', title: 'Route 1' },
+                { route: '/route2', title: 'Route 2' },
+                { route: '/route3', title: 'Shopping Assistant' },
+            ],
+        })
+        renderComponent()
+
+        expect(screen.getByText('Shopping Assistant')).toBeInTheDocument()
+        expect(screen.queryByText('TRIAL')).not.toBeInTheDocument()
+    })
+
+    test('renders TRIAL badge for Sales item when in trial mode', () => {
+        mockUseAiAgentNavigation.mockReturnValue({
+            // @ts-ignore We don't test this part
+            routes: { main: '/main' },
+            navigationItems: [
+                { route: '/route1', title: 'Route 1' },
+                { route: '/route2', title: 'Route 2' },
+                { route: '/route3', title: 'Shopping Assistant' },
+            ],
+        })
+        mockGetAiAgentTrialState.mockReturnValue(TrialState.Trial)
+
+        renderComponent()
+
+        expect(screen.getByText('Shopping Assistant')).toBeInTheDocument()
+        expect(screen.getByText('TRIAL')).toBeInTheDocument()
     })
 })

@@ -127,6 +127,21 @@ export const KpiSection = ({
         return `/app/stats/${STATS_ROUTES.AUTOMATE_AI_AGENTS}`
     }, [isLoading, aiAgentType])
 
+    if (isLoading) {
+        return (
+            <OverviewCard>
+                <div className={css.titleWrapper}>
+                    <div className={css.title}>
+                        <CardTitle>AI Agent performance</CardTitle>
+                    </div>
+                    <div className={css.subtitle}>Data from last 28 days</div>
+                </div>
+
+                <KpiContainer isLoading />
+            </OverviewCard>
+        )
+    }
+
     return (
         <OverviewCard data-candu-id="ai-agent-overview-performance-block">
             <div className={css.titleWrapper}>

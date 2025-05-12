@@ -65,6 +65,7 @@ const dummyStoreActivation: StoreActivation = {
         salesPersuasionLevel: null,
         isConversationStartersEnabled: false,
         customFieldIds: [],
+        salesDeactivatedDatetime: null,
     },
 }
 const dummyStoreActivation2: StoreActivation = {

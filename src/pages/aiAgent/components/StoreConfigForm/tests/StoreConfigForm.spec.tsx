@@ -327,6 +327,7 @@ describe('<StoreConfigForm />', () => {
         salesPersuasionLevel: null,
         isConversationStartersEnabled: false,
         customFieldIds: [],
+        salesDeactivatedDatetime: null,
     }
 
     const initialFormValues: FormValues = {

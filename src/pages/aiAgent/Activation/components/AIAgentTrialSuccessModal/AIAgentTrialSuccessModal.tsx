@@ -11,6 +11,8 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
 import css from './AIAgentTrialSuccessModal.less'
 
+export const MODAL_NAME = 'AiAgentTrialModal'
+
 type Props = {
     isOpen: boolean
     onClick: React.MouseEventHandler

@@ -51,7 +51,7 @@ export const computeActivationPercentage = (state: State): number => {
     return Math.round(safeDivide(currentScore, totalScore) * 100)
 }
 
-const useStoreConfigurations = (
+export const useStoreConfigurations = (
     accountDomain: string,
     singleStoreName?: string,
 ) => {

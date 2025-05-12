@@ -1,10 +1,22 @@
+import { ComponentType } from 'react'
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { createMemoryHistory } from 'history'
+import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
+import configureMockStore from 'redux-mock-store'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { user } from 'fixtures/users'
 import useMetricTrend from 'hooks/reporting/useMetricTrend'
 import { StatsFilters } from 'models/stat/types'
 import { useGmvInfluenced } from 'pages/aiAgent/Overview/hooks/kpis/useGmvInfluenced'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
+import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -15,6 +27,10 @@ jest.mock('pages/aiAgent/Overview/hooks/useCurrency')
 const useCurrencyMock = assumeMock(useCurrency)
 
 jest.useFakeTimers()
+
+const queryClient = new QueryClient()
+
+const history = createMemoryHistory()
 
 const useGmvInfluencedInput = {
     timezone: 'UTC',
@@ -29,6 +45,16 @@ const useGmvInfluencedInput = {
     showEarlyAccessModal: () => {},
     showActivationModal: () => {},
 }
+
+const mockStore = configureMockStore<RootState, StoreDispatch>()
+const defaultState = {
+    currentUser: fromJS(user),
+    currentAccount: fromJS(account),
+    billing: fromJS(billingState),
+    integrations: fromJS({
+        integrations: [],
+    }),
+} as RootState
 
 describe('useGmvInfluenced', () => {
     beforeEach(() => {
@@ -50,8 +76,19 @@ describe('useGmvInfluenced', () => {
             isFetching: false,
         } as any)
 
-        const { result } = renderHook(() =>
-            useGmvInfluenced(useGmvInfluencedInput),
+        const { result } = renderHook(
+            () => useGmvInfluenced(useGmvInfluencedInput),
+            {
+                wrapper: (({ children }) => (
+                    <Router history={history}>
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={mockStore(defaultState)}>
+                                {children}
+                            </Provider>
+                        </QueryClientProvider>
+                    </Router>
+                )) as ComponentType,
+            },
         )
 
         expect(result.current).toEqual({
@@ -66,8 +103,8 @@ describe('useGmvInfluenced', () => {
             isLoading: false,
             currency: 'USD',
             hidden: false,
-            action: undefined,
-            hideTrend: false,
+            action: expect.anything(),
+            hideTrend: true,
         })
     })
 
@@ -84,8 +121,19 @@ describe('useGmvInfluenced', () => {
             isFetching: false,
         } as any)
 
-        const { result } = renderHook(() =>
-            useGmvInfluenced(useGmvInfluencedInput),
+        const { result } = renderHook(
+            () => useGmvInfluenced(useGmvInfluencedInput),
+            {
+                wrapper: (({ children }) => (
+                    <Router history={history}>
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={mockStore(defaultState)}>
+                                {children}
+                            </Provider>
+                        </QueryClientProvider>
+                    </Router>
+                )) as ComponentType,
+            },
         )
 
         expect(result.current).toEqual({
@@ -100,8 +148,8 @@ describe('useGmvInfluenced', () => {
             isLoading: false,
             currency: 'EUR',
             hidden: false,
-            action: undefined,
-            hideTrend: false,
+            action: expect.anything(),
+            hideTrend: true,
         })
     })
 
@@ -114,8 +162,19 @@ describe('useGmvInfluenced', () => {
             isFetching: true,
         } as any)
 
-        const { result } = renderHook(() =>
-            useGmvInfluenced(useGmvInfluencedInput),
+        const { result } = renderHook(
+            () => useGmvInfluenced(useGmvInfluencedInput),
+            {
+                wrapper: (({ children }) => (
+                    <Router history={history}>
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={mockStore(defaultState)}>
+                                {children}
+                            </Provider>
+                        </QueryClientProvider>
+                    </Router>
+                )) as ComponentType,
+            },
         )
 
         expect(result.current).toEqual({
@@ -128,8 +187,8 @@ describe('useGmvInfluenced', () => {
             isLoading: true,
             currency: 'USD',
             hidden: false,
-            action: undefined,
-            hideTrend: false,
+            action: expect.anything(),
+            hideTrend: true,
         })
     })
 
@@ -145,8 +204,19 @@ describe('useGmvInfluenced', () => {
             isFetching: true,
         } as any)
 
-        const { result } = renderHook(() =>
-            useGmvInfluenced(useGmvInfluencedInput),
+        const { result } = renderHook(
+            () => useGmvInfluenced(useGmvInfluencedInput),
+            {
+                wrapper: (({ children }) => (
+                    <Router history={history}>
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={mockStore(defaultState)}>
+                                {children}
+                            </Provider>
+                        </QueryClientProvider>
+                    </Router>
+                )) as ComponentType,
+            },
         )
 
         expect(result.current.hidden).toBe(true)
@@ -164,8 +234,19 @@ describe('useGmvInfluenced', () => {
             isFetching: true,
         } as any)
 
-        const { result } = renderHook(() =>
-            useGmvInfluenced(useGmvInfluencedInput),
+        const { result } = renderHook(
+            () => useGmvInfluenced(useGmvInfluencedInput),
+            {
+                wrapper: (({ children }) => (
+                    <Router history={history}>
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={mockStore(defaultState)}>
+                                {children}
+                            </Provider>
+                        </QueryClientProvider>
+                    </Router>
+                )) as ComponentType,
+            },
         )
 
         expect(result.current.hidden).toBe(false)

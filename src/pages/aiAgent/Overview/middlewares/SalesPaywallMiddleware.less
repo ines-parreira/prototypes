@@ -6,6 +6,11 @@
         position: relative;
     }
 
+    .buttonsWrapper {
+        display: flex;
+        gap: @layout-spacing-xs;
+    }
+
     // The `:global(.container-fluid)` explicitly targets the navbar component from reactstrap
     // This will force this style to overwrite the one from Bootstrap
     :global(.container-fluid)[class*='AiAgentLayout--container--'] {

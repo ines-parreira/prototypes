@@ -1,6 +1,8 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
 :local {
     .section {
-        padding: 4px 20px;
+        padding: @layout-spacing-xxs 20px;
         display: flex;
         align-items: center;
     }
@@ -9,5 +11,9 @@
         display: flex;
         justify-content: space-between;
         width: 100%;
+    }
+
+    .trialBadge {
+        margin-left: @layout-spacing-xxs;
     }
 }

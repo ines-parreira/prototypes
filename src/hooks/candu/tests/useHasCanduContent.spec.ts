@@ -22,6 +22,7 @@ describe('useHasCanduContent', () => {
         window.Candu = {
             elementCanduRootMap: canduNodes,
             init: jest.fn(),
+            getMembership: jest.fn().mockResolvedValue([]),
         }
         const { result } = renderHook(() => useHasCanduContent(id))
 
@@ -38,6 +39,7 @@ describe('useHasCanduContent', () => {
         window.Candu = {
             elementCanduRootMap: canduNodes,
             init: jest.fn(),
+            getMembership: jest.fn().mockResolvedValue([]),
         }
         const { result } = renderHook(() => useHasCanduContent(id))
 

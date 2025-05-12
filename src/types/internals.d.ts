@@ -80,6 +80,7 @@ declare global {
                 clientToken: string
                 userId: string
             }
+            getMembership: () => Promise<string[]>
         }
         hj?: (
             method: 'event' | 'identify' | 'stateChange',

@@ -46,6 +46,7 @@ export const getStoreConfigurationFixture = (
     salesPersuasionLevel: null,
     isConversationStartersEnabled: false,
     customFieldIds: [],
+    salesDeactivatedDatetime: null,
     ...props,
 })
 

@@ -67,7 +67,9 @@ export const Kpi = ({
             }}
             data-candu-id={canduId}
         >
-            <div className={cn({ [css.metricWrapper]: !isLoading })}>
+            <div
+                className={cn(css.wrapper, { [css.metricWrapper]: !isLoading })}
+            >
                 <BigNumberMetric
                     isLoading={isLoading}
                     className={css.metric}

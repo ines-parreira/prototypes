@@ -4,7 +4,10 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import cssNavbar from 'assets/css/navbar.less'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
-import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
+import {
+    useAtLeastOneStoreHasActiveTrial,
+    useCanUseAiSalesAgent,
+} from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import AutomateNavbarPaywallLink from 'pages/automate/common/components/AutomateNavbarPaywallNavbarLink'
 import NavbarLink, {
@@ -85,10 +88,14 @@ const AiSalesAgentStatsLink = ({ commonNavLinkProps }: Props) => {
     )
 
     const canUseAiSalesAgent = useCanUseAiSalesAgent()
+    const atLeastOneStoreHasActiveTrial = useAtLeastOneStoreHasActiveTrial()
 
     if (!isAiSalesAgentAnalyticsEnabled) return null
 
-    const LinkComponent = canUseAiSalesAgent
+    const shouldShowRealLink =
+        canUseAiSalesAgent || atLeastOneStoreHasActiveTrial
+
+    const LinkComponent = shouldShowRealLink
         ? AutomateStatsLink
         : AutomateNavbarPaywallLink
 

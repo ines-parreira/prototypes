@@ -4,6 +4,7 @@ import { mockFlags } from 'jest-launchdarkly-mock'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
+import { useAtLeastOneStoreHasActiveTrial } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { LINK_AI_SALES_AGENT_TEXT } from 'pages/stats/automate/aiSalesAgent/constants'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
@@ -18,6 +19,21 @@ const mockUseAppSelector = assumeMock(useAppSelector)
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
+
+jest.mock('hooks/aiAgent/useCanUseAiSalesAgent', () => {
+    const actualModule = jest.requireActual(
+        'hooks/aiAgent/useCanUseAiSalesAgent',
+    )
+    return {
+        ...actualModule,
+        useAtLeastOneStoreHasActiveTrial: jest.fn(),
+        useAtleastOneStoreHasActiveTrialOnSpecificStores: jest.fn(),
+    }
+})
+
+const mockUseAtleastOneStoreHasActiveTrial = assumeMock(
+    useAtLeastOneStoreHasActiveTrial,
+)
 const mockUseFlag = assumeMock(useFlag)
 
 jest.mock(
@@ -40,6 +56,7 @@ describe('<AutomateStatsNavbar />', () => {
             isReportRestrictedToCurrentUser: () => false,
         } as any)
         mockUseFlag.mockImplementation(() => false)
+        mockUseAtleastOneStoreHasActiveTrial.mockReturnValue(false)
     })
 
     it('should render with upgrade icon when automate is not enabled', () => {
@@ -155,6 +172,40 @@ describe('<AutomateStatsNavbar />', () => {
                 if (selector === isTrialing) return true
                 return undefined
             })
+
+            const { getByText } = renderWithRouter(
+                <AutomateStatsNavbar {...defaultProps} />,
+            )
+
+            const linkElement = getByText(LINK_AI_SALES_AGENT_TEXT)
+            const link = linkElement.closest('a')
+            expect(link).toBeInTheDocument()
+            expect(link).toHaveAttribute(
+                'href',
+                '/app/stats/ai-sales-agent/overview',
+            )
+            // Verify that the upgrade icon is NOT present for normal links
+            expect(
+                link?.querySelector('i.material-icons'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should display the AI Sales Agent link as a normal link when AI SALES AGENT trial is active', () => {
+            mockUseFlag.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.AiShoppingAssistantEnabled)
+                    return true
+                return false
+            })
+
+            mockUseAppSelector.mockImplementation((selector) => {
+                if (selector === getHasAutomate) return true
+                if (selector === getCurrentAutomatePlan)
+                    return { generation: 5 }
+                if (selector === isTrialing) return false
+                return undefined
+            })
+
+            mockUseAtleastOneStoreHasActiveTrial.mockReturnValue(true)
 
             const { getByText } = renderWithRouter(
                 <AutomateStatsNavbar {...defaultProps} />,

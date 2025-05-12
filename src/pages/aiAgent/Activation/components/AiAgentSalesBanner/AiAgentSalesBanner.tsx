@@ -4,11 +4,22 @@ import { AIButton } from 'pages/common/components/AIButton/AIButton'
 
 import css from './AiAgentSalesBanner.less'
 
-type Props = {
+type AiAgentSalesBannerProps = {
     onClick: () => void
     className?: string
+    canStartTrial?: boolean
+    isLoading?: boolean
 }
-export const AiAgentSalesBanner = ({ onClick, className }: Props) => {
+export const AiAgentSalesBanner = ({
+    onClick,
+    className,
+    canStartTrial,
+    isLoading,
+}: AiAgentSalesBannerProps) => {
+    if (isLoading) {
+        return null
+    }
+
     return (
         <div className={classNames(css.container, className)}>
             <i className={classNames('material-icons', css.icon)}>
@@ -23,7 +34,9 @@ export const AiAgentSalesBanner = ({ onClick, className }: Props) => {
                     opportunities.
                 </div>
             </div>
-            <AIButton onClick={onClick}>Learn More</AIButton>
+            <AIButton onClick={onClick}>
+                {canStartTrial ? 'Start Trial' : 'Learn More'}
+            </AIButton>
         </div>
     )
 }
