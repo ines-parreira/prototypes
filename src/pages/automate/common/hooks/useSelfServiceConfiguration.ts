@@ -89,13 +89,13 @@ const useSelfServiceConfiguration = (
     )
 
     useEffect(() => {
-        if (!storeIntegrationId) {
+        if (!storeIntegrationId && shopName && shopType) {
             handleNotify({
                 message: 'Failed to fetch store integration',
                 status: NotificationStatus.Error,
             })
         }
-    }, [storeIntegrationId, handleNotify])
+    }, [storeIntegrationId, handleNotify, shopName, shopType])
 
     return {
         isFetchPending,
