@@ -1,6 +1,6 @@
 import React, { ComponentProps } from 'react'
 
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import _keyBy from 'lodash/keyBy'
 import _noop from 'lodash/noop'
@@ -37,7 +37,7 @@ jest.mock(
                 <ul aria-label="MultiSelectOptionField mock">
                     {selectedOptions?.map((option) => {
                         return (
-                            <li key={option.value}>
+                            <li key={option.value} data-testid={option.value}>
                                 {option.value}
                                 <button
                                     type="button"
@@ -79,10 +79,7 @@ const ticketAssignmentSetting: AccountSettingTicketAssignment = {
         auto_assign_to_teams: true,
         unassign_on_reply: true,
         unassign_on_user_unavailability: [],
-        assignment_channels: [
-            TicketChannel.Chat,
-            TicketChannel.FacebookMessenger,
-        ],
+        assignment_channels: [TicketChannel.Chat, TicketChannel.Email],
         max_user_chat_ticket: 3,
         max_user_non_chat_ticket: 4,
     },
@@ -99,9 +96,9 @@ const defaultState = {
 
 const mockStore = configureMockStore<RootState>([thunk])
 
-describe('<TicketAssignment/>', () => {
+describe('<TicketAssignment />', () => {
     it('should call `submitSetting` and call `fetchChats` on submit when the account has no `ticket-assignment` setting', async () => {
-        const { getByText } = render(
+        render(
             <Provider
                 store={mockStore({
                     ...defaultState,
@@ -112,73 +109,95 @@ describe('<TicketAssignment/>', () => {
             </Provider>,
         )
 
-        fireEvent.click(getByText('Save changes'))
-        await waitFor(() => expect(submitSettingMock).toHaveBeenCalled())
+        fireEvent.click(screen.getByText('Save changes'))
 
-        expect(submitSettingMock.mock.calls).toMatchSnapshot()
-        expect(fetchChatsMock).toHaveBeenCalled()
+        expect(submitSettingMock).toHaveBeenCalledWith({
+            data: {
+                assignment_channels: [
+                    TicketChannel.Chat,
+                    TicketChannel.FacebookMessenger,
+                ],
+                auto_assign_to_teams: false,
+                max_user_chat_ticket: 3,
+                max_user_non_chat_ticket: 4,
+                unassign_on_reply: true,
+                unassign_on_user_unavailability: [],
+            },
+            id: undefined,
+            type: AccountSettingType.TicketAssignment,
+        })
+        await waitFor(() => expect(fetchChatsMock).toHaveBeenCalled())
     })
 
     it('should call `submitSetting` and not call `fetchChats` on submit when nor the `auto_assign_to_teams` setting nor the `assignment_channels` setting has changed', async () => {
-        const { getByText } = render(
+        render(
             <Provider store={mockStore(defaultState)}>
                 <TicketAssignment />
             </Provider>,
         )
 
-        fireEvent.click(getByText('Save changes'))
-        await waitFor(() => expect(submitSettingMock).toHaveBeenCalled())
+        fireEvent.click(screen.getByText('Save changes'))
 
-        expect(submitSettingMock.mock.calls).toMatchSnapshot()
-        expect(fetchChatsMock).not.toHaveBeenCalled()
+        expect(submitSettingMock).toHaveBeenCalledWith(ticketAssignmentSetting)
+        await waitFor(() => expect(fetchChatsMock).not.toHaveBeenCalled())
     })
 
     it('should call `fetchChats` on submit when the `auto_assign_to_teams` setting has changed', async () => {
-        const { getByText } = render(
+        render(
             <Provider store={mockStore(defaultState)}>
                 <TicketAssignment />
             </Provider>,
         )
 
-        fireEvent.click(getByText('Auto-assign tickets'))
-        fireEvent.click(getByText('Save changes'))
-        await waitFor(() => expect(submitSettingMock).toHaveBeenCalled())
+        fireEvent.click(screen.getByText('Auto-assign tickets'))
+        fireEvent.click(screen.getByText('Save changes'))
 
-        expect(submitSettingMock.mock.calls).toMatchSnapshot()
-        expect(fetchChatsMock).toHaveBeenCalled()
+        expect(submitSettingMock).toHaveBeenCalledWith({
+            ...ticketAssignmentSetting,
+            data: {
+                ...ticketAssignmentSetting.data,
+                auto_assign_to_teams: false,
+            },
+        })
+        await waitFor(() => expect(fetchChatsMock).toHaveBeenCalled())
     })
 
     it('should call `fetchChats` on submit when the `assignment_channels` setting has changed and `auto_assign_to_teams` is enabled', async () => {
-        const { getByText } = render(
+        render(
             <Provider store={mockStore(defaultState)}>
                 <TicketAssignment />
             </Provider>,
         )
 
-        fireEvent.click(getByText(`Remove ${TicketChannel.Chat}`))
-        fireEvent.click(getByText('Save changes'))
-        await waitFor(() => expect(submitSettingMock).toHaveBeenCalled())
+        fireEvent.click(screen.getByText(`Remove ${TicketChannel.Chat}`))
+        fireEvent.click(screen.getByText('Save changes'))
 
-        expect(submitSettingMock.mock.calls).toMatchSnapshot()
-        expect(fetchChatsMock).toHaveBeenCalled()
+        expect(submitSettingMock).toHaveBeenCalledWith({
+            ...ticketAssignmentSetting,
+            data: {
+                ...ticketAssignmentSetting.data,
+                assignment_channels: [TicketChannel.Email],
+            },
+        })
+        await waitFor(() => expect(fetchChatsMock).toHaveBeenCalled())
     })
 
     it('should not call `fetchChats` on submit when the `assignment_channels` setting has changed but `auto_assign_to_teams` is disabled', async () => {
-        const { getByText } = render(
+        const setting = {
+            ...ticketAssignmentSetting,
+            data: {
+                ...ticketAssignmentSetting.data,
+                auto_assign_to_teams: false,
+            },
+        }
+
+        render(
             <Provider
                 store={mockStore({
                     ...defaultState,
                     currentAccount: fromJS({
                         ...account,
-                        settings: [
-                            {
-                                ...ticketAssignmentSetting,
-                                data: {
-                                    ...ticketAssignmentSetting.data,
-                                    auto_assign_to_teams: false,
-                                },
-                            },
-                        ],
+                        settings: [setting],
                     }),
                 })}
             >
@@ -186,31 +205,35 @@ describe('<TicketAssignment/>', () => {
             </Provider>,
         )
 
-        fireEvent.click(getByText(`Remove ${TicketChannel.Chat}`))
-        fireEvent.click(getByText('Save changes'))
-        await waitFor(() => expect(submitSettingMock).toHaveBeenCalled())
+        fireEvent.click(screen.getByText(`Remove ${TicketChannel.Chat}`))
+        fireEvent.click(screen.getByText('Save changes'))
 
-        expect(submitSettingMock.mock.calls).toMatchSnapshot()
-        expect(fetchChatsMock).not.toHaveBeenCalled()
+        expect(submitSettingMock).toHaveBeenCalledWith({
+            ...setting,
+            data: {
+                ...setting.data,
+                assignment_channels: [TicketChannel.Email],
+            },
+        })
+        await waitFor(() => expect(fetchChatsMock).not.toHaveBeenCalled())
     })
 
     it('should send updated auto assignment limits on submit', async () => {
-        const { getByText, getByLabelText } = render(
+        const setting = {
+            ...ticketAssignmentSetting,
+            data: {
+                ...ticketAssignmentSetting.data,
+                max_user_chat_ticket: 20,
+                max_user_non_chat_ticket: 50,
+            },
+        }
+        render(
             <Provider
                 store={mockStore({
                     ...defaultState,
                     currentAccount: fromJS({
                         ...account,
-                        settings: [
-                            {
-                                ...ticketAssignmentSetting,
-                                data: {
-                                    ...ticketAssignmentSetting.data,
-                                    max_user_chat_ticket: 20,
-                                    max_user_non_chat_ticket: 50,
-                                },
-                            },
-                        ],
+                        settings: [setting],
                     }),
                 })}
             >
@@ -218,45 +241,49 @@ describe('<TicketAssignment/>', () => {
             </Provider>,
         )
 
-        fireEvent.change(getByLabelText('Chat & Messaging tickets'), {
+        fireEvent.change(screen.getByLabelText('Chat & Messaging tickets'), {
             target: { value: 0 },
         })
-        fireEvent.change(getByLabelText('Other text tickets'), {
+        fireEvent.change(screen.getByLabelText('Other text tickets'), {
             target: { value: 20 },
         })
-        fireEvent.click(getByText('Save changes'))
-        await waitFor(() => expect(submitSettingMock).toHaveBeenCalled())
+        fireEvent.click(screen.getByText('Save changes'))
 
-        expect(submitSettingMock.mock.calls).toMatchSnapshot()
+        expect(submitSettingMock).toHaveBeenCalledWith({
+            ...setting,
+            data: {
+                ...setting.data,
+                max_user_chat_ticket: 0,
+                max_user_non_chat_ticket: 20,
+            },
+        })
     })
 
     it('should send updated unassign on user unavailability settings on submit', async () => {
-        const { getByText } = render(
+        render(
             <Provider store={mockStore(defaultState)}>
                 <TicketAssignment />
             </Provider>,
         )
 
         fireEvent.click(
-            getByText(
+            screen.getByText(
                 'Unassign chat tickets when assigned agent is unavailable',
             ),
         )
-        fireEvent.click(getByText('Save changes'))
+        fireEvent.click(screen.getByText('Save changes'))
 
-        await waitFor(() =>
-            expect(submitSettingMock).toHaveBeenCalledWith({
-                id: 1,
-                type: AccountSettingType.TicketAssignment,
-                data: expect.objectContaining({
-                    unassign_on_user_unavailability: ['chat'],
-                }),
+        expect(submitSettingMock).toHaveBeenCalledWith({
+            id: 1,
+            type: AccountSettingType.TicketAssignment,
+            data: expect.objectContaining({
+                unassign_on_user_unavailability: ['chat'],
             }),
-        )
+        })
     })
 
     it('should render the "unassign" checked, the "auto-assign" unchecked, and the "unassign on user unavailability" checkbox unchecked by default when no account setting for assignment', () => {
-        const { getByText } = render(
+        render(
             <Provider
                 store={mockStore({
                     ...defaultState,
@@ -268,20 +295,24 @@ describe('<TicketAssignment/>', () => {
         )
 
         expect(
-            getByText('Auto-assign tickets').querySelector('input')?.checked,
+            screen.getByText('Auto-assign tickets').querySelector('input')
+                ?.checked,
         ).toBe(false)
         expect(
-            getByText('Unassign on reply').querySelector('input')?.checked,
+            screen.getByText('Unassign on reply').querySelector('input')
+                ?.checked,
         ).toBe(true)
         expect(
-            getByText(
-                'Unassign chat tickets when assigned agent is unavailable',
-            ).querySelector('input')?.checked,
+            screen
+                .getByText(
+                    'Unassign chat tickets when assigned agent is unavailable',
+                )
+                .querySelector('input')?.checked,
         ).toBe(false)
     })
 
     it('should render the store data', () => {
-        const { container, getByText } = render(
+        render(
             <Provider
                 store={mockStore({
                     ...defaultState,
@@ -308,29 +339,43 @@ describe('<TicketAssignment/>', () => {
         )
 
         expect(
-            getByText('Auto-assign tickets').querySelector('input')?.checked,
+            screen.getByText('Auto-assign tickets').querySelector('input')
+                ?.checked,
         ).toBe(true)
         expect(
-            getByText('Unassign on reply').querySelector('input')?.checked,
+            screen.getByText('Unassign on reply').querySelector('input')
+                ?.checked,
         ).toBe(false)
-        expect(container.firstChild).toMatchSnapshot()
+        expect(
+            (screen.getByLabelText(/Chat & Messaging/) as HTMLInputElement)
+                .value,
+        ).toBe('20')
+        expect(screen.getByTestId(TicketChannel.Chat)).toBeInTheDocument()
+        expect(screen.getByTestId(TicketChannel.Email)).toBeInTheDocument()
+        expect(
+            (
+                screen.getByLabelText(
+                    /Unassign chat tickets when assigned agent is unavailable/,
+                ) as HTMLInputElement
+            ).checked,
+        ).toBe(true)
     })
 
     it('should render the "Save changes" button loading and disabled when the setting are being saved', () => {
         submitSettingMock.mockReturnValueOnce(() => new Promise(_noop))
-        const { container, getByText } = render(
+        render(
             <Provider store={mockStore(defaultState)}>
                 <TicketAssignment />
             </Provider>,
         )
 
-        fireEvent.click(getByText('Save changes'))
+        fireEvent.click(screen.getByText('Save changes'))
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('should render the create team cta when no team exists', () => {
-        const { container } = render(
+        render(
             <Provider
                 store={mockStore({
                     ...defaultState,
@@ -341,17 +386,24 @@ describe('<TicketAssignment/>', () => {
             </Provider>,
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(
+            screen.getByText(
+                "You haven't set up any teams yet. Create your first team to configure auto assignment.",
+            ),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: 'Create team' }),
+        ).toBeInTheDocument()
     })
 
     it('should render the unsaved changes prompt when the user tries to navigate away with unsaved changes', () => {
-        const { getByText } = render(
+        render(
             <Provider store={mockStore(defaultState)}>
                 <TicketAssignment />
             </Provider>,
         )
 
-        fireEvent.click(getByText('Auto-assign tickets'))
+        fireEvent.click(screen.getByText('Auto-assign tickets'))
 
         expect(UnsavedChangesPromptMock).toHaveBeenLastCalledWith(
             expect.objectContaining({
@@ -362,13 +414,13 @@ describe('<TicketAssignment/>', () => {
     })
 
     it('should not render the unsaved changes prompt when the props have changed to reflect saved changes', () => {
-        const { getByText, rerender } = render(
+        const { rerender } = render(
             <Provider store={mockStore(defaultState)}>
                 <TicketAssignment />
             </Provider>,
         )
 
-        fireEvent.click(getByText('Auto-assign tickets'))
+        fireEvent.click(screen.getByText('Auto-assign tickets'))
 
         rerender(
             <Provider
