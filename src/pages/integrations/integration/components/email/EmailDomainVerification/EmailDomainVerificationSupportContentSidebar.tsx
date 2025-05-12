@@ -23,7 +23,7 @@ export default function EmailDomainVerificationSupportContentSidebar() {
             <div className={css.container}>
                 <div>
                     <SelectField
-                        label="Domain Verification Guide"
+                        label="Domain verification guide"
                         options={supportContentDropdownOptions}
                         selectedOption={selectedOption}
                         optionMapper={(option) => ({ value: option.label })}

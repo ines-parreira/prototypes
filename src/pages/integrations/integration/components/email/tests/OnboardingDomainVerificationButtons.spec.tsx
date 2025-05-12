@@ -63,13 +63,6 @@ describe('OnboardingDomainVerificationButtons', () => {
         )
     })
 
-    it('Close button should link to the list of integrations', () => {
-        renderComponent()
-
-        const closeButton = screen.getByText('Close')
-        expect(closeButton.closest('a')).toHaveAttribute('to', '/list')
-    })
-
     describe('loading state', () => {
         it.each([
             [{ domain: undefined, isCreatingDomain: true, isFetching: false }],

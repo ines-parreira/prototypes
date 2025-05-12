@@ -1,4 +1,3 @@
-import warningIcon from 'assets/img/icons/warning.svg'
 import Button from 'pages/common/components/button/Button'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -22,12 +21,7 @@ export default function OnboardingDomainVerificationPrompt({ when }: Props) {
                         <ModalHeader
                             title={
                                 <div className={css.title}>
-                                    <img
-                                        src={warningIcon}
-                                        className={css.warningIcon}
-                                        alt="icon"
-                                    />
-                                    <div>Your email setup is incomplete!</div>
+                                    <div>Your email setup is incomplete</div>
                                 </div>
                             }
                         />

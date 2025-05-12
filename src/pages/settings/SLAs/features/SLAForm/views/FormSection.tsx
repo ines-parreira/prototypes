@@ -64,6 +64,7 @@ export default function FormSection({
                     {!!description && (
                         <div
                             className={classNames(
+                                css.description,
                                 css.infoText,
                                 settingsCss.mb24,
                             )}

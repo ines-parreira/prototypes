@@ -1,11 +1,9 @@
-import { Link } from 'react-router-dom'
+import { Button } from '@gorgias/merchant-ui-kit'
 
-import Button from 'pages/common/components/button/Button'
 import LinkButton from 'pages/common/components/button/LinkButton'
 
 import { SUPPORT_EMAIL } from './EmailDomainVerification/constants'
 import useDomainVerification from './EmailDomainVerification/useDomainVerification'
-import { listUrl } from './hooks/useEmailOnboarding'
 
 export default function OnboardingDomainVerificationButtons() {
     const {
@@ -29,18 +27,13 @@ export default function OnboardingDomainVerificationButtons() {
     }
 
     return (
-        <>
-            <Link to={listUrl()}>
-                <Button intent="secondary">Close</Button>
-            </Link>
-            <Button
-                intent="primary"
-                onClick={verifyDomain}
-                isLoading={isVerifying || isPending}
-                isDisabled={isDisabled}
-            >
-                Check status
-            </Button>
-        </>
+        <Button
+            intent="primary"
+            onClick={verifyDomain}
+            isLoading={isVerifying || isPending}
+            isDisabled={isDisabled}
+        >
+            Check status
+        </Button>
     )
 }
