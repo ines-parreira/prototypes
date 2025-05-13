@@ -14,7 +14,7 @@ import {
 } from 'routes/constants'
 import { getHasAutomate } from 'state/billing/selectors'
 
-import { Sections } from './config'
+import { AutomateUpgradeBadge, Sections } from './config'
 import Item from './Item'
 import Section from './Section'
 
@@ -36,6 +36,11 @@ const NewUI = () => {
 
     const shouldRender = useMemo(
         () => hasAutomate && integrations.length > 0,
+        [hasAutomate, integrations],
+    )
+
+    const shouldRenderAutomate = useMemo(
+        () => !hasAutomate || integrations.length === 0,
         [hasAutomate, integrations],
     )
 
@@ -65,6 +70,13 @@ const NewUI = () => {
                         text="Article Recommendations"
                         requiredRole={AGENT_ROLE}
                         shouldRender={shouldRender}
+                    />
+                    <Item
+                        to="automate"
+                        text="Automate"
+                        requiredRole={AGENT_ROLE}
+                        shouldRender={shouldRenderAutomate}
+                        extra={<AutomateUpgradeBadge />}
                     />
                 </Navigation.SectionContent>
             </Section>

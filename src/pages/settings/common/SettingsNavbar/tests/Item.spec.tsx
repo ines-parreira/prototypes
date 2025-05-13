@@ -69,9 +69,11 @@ describe('Item', () => {
     })
 
     it('renders the item', () => {
-        renderComponent()
+        const extra = 'plop'
+        renderComponent(undefined, { extra })
 
-        expect(screen.getByText('Macros')).toBeInTheDocument()
+        expect(screen.getByText(/Macros/)).toBeInTheDocument()
+        expect(screen.getByText(new RegExp(extra, 'i'))).toBeInTheDocument()
     })
 
     it('does not render when user does not have required role', () => {

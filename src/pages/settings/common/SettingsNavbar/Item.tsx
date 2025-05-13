@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react'
+import { ReactNode, useMemo, useRef } from 'react'
 
 import _kebabCase from 'lodash/kebabCase'
 import { NavLink, useLocation } from 'react-router-dom'
@@ -25,11 +25,13 @@ const Item = ({
     text,
     requiredRole,
     shouldRender,
+    extra,
 }: {
     to: string
     text: string
     requiredRole?: typeof ADMIN_ROLE | typeof AGENT_ROLE
     shouldRender?: boolean
+    extra?: ReactNode
 }) => {
     const currentUser = useAppSelector(getCurrentUser)
     const account = useAppSelector(getCurrentAccountState)
@@ -86,6 +88,7 @@ const Item = ({
             to={`${rootPath}${to}`}
         >
             {label}
+            {extra}
         </Navigation.SectionItem>
     )
 }

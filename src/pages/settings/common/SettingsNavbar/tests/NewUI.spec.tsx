@@ -92,6 +92,7 @@ describe('NewUI', () => {
         expect(screen.getByText('Productivity')).toBeInTheDocument()
         expect(screen.getByText('Apps')).toBeInTheDocument()
         expect(screen.getByText('Profile')).toBeInTheDocument()
+        expect(screen.queryByText('Automate')).not.toBeInTheDocument()
     })
 
     it('handles category collapse/expand', async () => {
@@ -166,5 +167,27 @@ describe('NewUI', () => {
 
         // Admin-only items should not be visible
         expect(screen.queryByText('Users')).not.toBeInTheDocument()
+    })
+
+    it('renders Automate upgrade item when account does not have Automate', () => {
+        renderComponent(
+            mockStore({
+                currentAccount: fromJS({
+                    current_subscription: {
+                        products: {
+                            product_111: '111',
+                        },
+                    },
+                    domain: 'test-domain',
+                }),
+                currentUser: mockCurrentUser,
+                billing: fromJS({
+                    products: [],
+                }),
+            }),
+        )
+
+        expect(screen.getByText('Automate')).toBeInTheDocument()
+        expect(screen.getByText('UPGRADE')).toBeInTheDocument()
     })
 })

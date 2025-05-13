@@ -16,7 +16,7 @@ import { getHasAutomate } from 'state/billing/selectors'
 
 import { Category } from './types'
 
-function AutomateUpgradeBadge() {
+export function AutomateUpgradeBadge() {
     const hasAutomate = useAppSelector(getHasAutomate)
     const integrations = useStoreIntegrations()
 
