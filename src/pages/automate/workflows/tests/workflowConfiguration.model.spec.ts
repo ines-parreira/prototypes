@@ -231,6 +231,7 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
             initial_step_id: 'remove_item',
             entrypoint: null,
             available_languages: ['en-US'],
+            advanced_datetime: '2024-09-17T11:18:00.201Z',
             steps: [
                 {
                     id: 'remove_item',
@@ -980,6 +981,7 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
             initial_step_id: 'replace_item',
             entrypoint: null,
             available_languages: ['en-US'],
+            advanced_datetime: '2024-09-17T11:18:00.201Z',
             steps: [
                 {
                     id: 'replace_item',

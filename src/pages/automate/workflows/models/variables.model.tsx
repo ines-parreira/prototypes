@@ -1507,6 +1507,17 @@ export function extractVariablesFromNode(
                 }
             }
             break
+        case 'reusable_llm_prompt_call':
+            variables = [
+                ..._flatten(
+                    Object.values(node.data.custom_inputs ?? {}).map((value) =>
+                        extractVariablesFromText(value).map(
+                            (variable) => variable.value,
+                        ),
+                    ),
+                ),
+            ]
+            break
         case 'cancel_order':
         case 'refund_order':
         case 'refund_shipping_costs':

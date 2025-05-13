@@ -491,6 +491,39 @@ function setStaticInputs(
         .concat(inputs)
 }
 
+function extractReferencedVariablesFromTheNode(
+    referencedVariables: string[],
+    node: VisualBuilderNode,
+    edges?: VisualBuilderEdge[],
+) {
+    extractVariablesFromNode(node, edges).forEach((variable) => {
+        if (referencedVariables.includes(variable)) return
+        referencedVariables.push(variable)
+    })
+}
+
+function setCustomInputs(
+    c: WorkflowConfiguration,
+    referencedVariables: string[],
+) {
+    // for simple step builder we remove unreferenced custom inputs
+    if (
+        c.advanced_datetime ||
+        !c.triggers?.[0] ||
+        c.triggers[0].kind !== 'llm-prompt'
+    )
+        return
+
+    const trigger = c.triggers[0] as Extract<
+        NonNullable<WorkflowConfiguration['triggers']>[number],
+        { kind: 'llm-prompt' }
+    >
+
+    trigger.settings.custom_inputs = trigger.settings.custom_inputs.filter(
+        (input) => referencedVariables.includes(`custom_inputs.${input.id}`),
+    )
+}
+
 export function transformVisualBuilderGraphIntoWfConfiguration(
     g: VisualBuilderGraph,
     isDraft = true,
@@ -518,6 +551,8 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
 
     const stepIdByNodeId: Record<string, string> = {}
 
+    const referencedVariables: string[] = []
+
     walkVisualBuilderGraph(
         g,
         g.nodes[0].id,
@@ -529,6 +564,11 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                 }
                 return
             } else if (node.type === 'llm_prompt_trigger') {
+                extractReferencedVariablesFromTheNode(
+                    referencedVariables,
+                    node,
+                    g.edges,
+                )
                 const trigger: Extract<
                     NonNullable<WorkflowConfiguration['triggers']>[number],
                     { kind: 'llm-prompt' }
@@ -842,6 +882,11 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                             })
                         }
                     })
+                    extractReferencedVariablesFromTheNode(
+                        referencedVariables,
+                        node,
+                        g.edges,
+                    )
                 }
             } else if (node.type === 'http_request') {
                 const headers = node.data.headers.reduce<
@@ -1393,6 +1438,8 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
             }
         },
     )
+
+    setCustomInputs(c, referencedVariables)
     return c
 }
 

@@ -795,6 +795,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 isTemplate: false,
                 name: 'Replace item',
                 available_languages: ['en-US'],
+                advanced_datetime: new Date(),
                 nodes: [
                     {
                         ...buildNodeCommonProperties(),
@@ -1443,7 +1444,14 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                                 },
                             ],
                             conditionsType: null,
-                            conditions: [],
+                            conditions: [
+                                {
+                                    equals: [
+                                        { var: 'custom_inputs.input1' },
+                                        '123',
+                                    ],
+                                },
+                            ],
                         },
                     },
                     {
