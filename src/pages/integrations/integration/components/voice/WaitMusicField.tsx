@@ -12,10 +12,8 @@ import { useNotify } from 'hooks/useNotify'
 import { GorgiasApiResponseDataError } from 'models/api/types'
 import { MAX_WAIT_MUSIC_CUSTOM_RECORDING_FILE_SIZE_MB } from 'models/integration/constants'
 import { LocalWaitMusicPreferences } from 'models/integration/types'
-import { PhoneCountry } from 'models/phoneNumber/types'
 import RadioButton from 'pages/common/components/RadioButton'
 
-import DEPRECATED_WaitMusicLibrarySelect from './DEPRECATED_WaitMusicLibrarySelect'
 import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'
 import VoiceRecordingInput from './VoiceRecordingInput'
 import WaitMusicLibrarySelect from './WaitMusicLibrarySelect'
@@ -26,15 +24,9 @@ type Props = {
     value: LocalWaitMusicPreferences
     shouldUpload?: boolean
     onChange: (value: LocalWaitMusicPreferences) => void
-    integrationCountry?: PhoneCountry
 }
 
-const WaitMusicField = ({
-    value,
-    onChange,
-    integrationCountry,
-    shouldUpload = false,
-}: Props) => {
+const WaitMusicField = ({ value, onChange, shouldUpload = false }: Props) => {
     const { validateVoiceRecordingUpload } = useVoiceMessageValidation()
     const [customRecordingPath, setCustomRecordingPath] = useState<
         string | undefined
@@ -160,20 +152,7 @@ const WaitMusicField = ({
                     isLoading={isLoading}
                 />
             )}
-            {value.type === WaitMusicType.Library && integrationCountry && (
-                <DEPRECATED_WaitMusicLibrarySelect
-                    library={value.library}
-                    onChange={(selectedLibrary) =>
-                        onChange({
-                            ...value,
-                            type: WaitMusicType.Library,
-                            library: selectedLibrary,
-                        })
-                    }
-                    integrationCountry={integrationCountry}
-                />
-            )}
-            {value.type === WaitMusicType.Library && !integrationCountry && (
+            {value.type === WaitMusicType.Library && (
                 <WaitMusicLibrarySelect
                     library={value.library}
                     onChange={(selectedLibrary) =>

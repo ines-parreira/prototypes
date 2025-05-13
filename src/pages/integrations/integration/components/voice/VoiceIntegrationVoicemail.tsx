@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react'
 
-import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 import { Form } from 'reactstrap'
 
-import { PhoneFunction } from 'business/twilio'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { VOICEMAIL_DEFAULT_VOICE_MESSAGE } from 'models/integration/constants'
 import {
     isPhoneIntegration,
     PhoneIntegration,
     PhoneIntegrationVoicemailSettings,
-    VoiceMessage,
 } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
@@ -22,8 +19,6 @@ import VoiceMessageField from 'pages/integrations/integration/components/voice/V
 import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 import { fetchIntegrations } from 'state/integrations/actions'
-
-import VoicemailOutsideBusinessHoursSection from './VoicemailOutsideBusinessHoursSection'
 
 import css from './VoiceIntegrationVoicemail.less'
 
@@ -46,14 +41,7 @@ export default function VoiceIntegrationVoicemail({
     const { canPayloadBeSubmitted, cleanUpPayload, isValidTextToSpeech } =
         useVoiceMessageValidation()
     const [isLoading, setIsLoading] = useState(false)
-    const isIvr = integration?.meta?.function === PhoneFunction.Ivr
-    const defaultVoicemailSettings: PhoneIntegrationVoicemailSettings = {
-        ...VOICEMAIL_DEFAULT_VOICE_MESSAGE,
-        allow_to_leave_voicemail: true,
-    }
-    const useSameSettingsOutsideBusinessHours =
-        payload?.outside_business_hours?.use_during_business_hours_settings ??
-        true
+
     const isSubmittable =
         !_isEqual(cleanUpPayload(payload), cleanUpPayload(initialSettings)) &&
         isValidTextToSpeech(payload)
@@ -92,32 +80,6 @@ export default function VoiceIntegrationVoicemail({
         }
     }
 
-    const handleChangeOutsideBusinessHoursVoiceMessage = (
-        outsideBusinessHoursPayload: VoiceMessage,
-    ) => {
-        // overwrite outside business hours with given voice message choices
-        setPayload((payload) => ({
-            ...(payload ?? defaultVoicemailSettings),
-            outside_business_hours: {
-                ...(payload?.outside_business_hours ?? {}),
-                ...outsideBusinessHoursPayload,
-                use_during_business_hours_settings:
-                    useSameSettingsOutsideBusinessHours ?? true,
-            },
-        }))
-    }
-
-    const handleChangeUseSameSettings = (value: boolean) =>
-        // overwrite just outside_business_hours.use_during_business_hours
-        setPayload((payload) => ({
-            ...(payload ?? defaultVoicemailSettings),
-            outside_business_hours: {
-                ...(payload?.outside_business_hours ??
-                    VOICEMAIL_DEFAULT_VOICE_MESSAGE),
-                use_during_business_hours_settings: value,
-            },
-        }))
-
     if (!isPhoneIntegration(integration)) {
         return null
     }
@@ -125,24 +87,13 @@ export default function VoiceIntegrationVoicemail({
     return (
         <SettingsPageContainer>
             <SettingsContent>
-                {isIvr ? (
-                    <>
-                        <h3 className={css.ivrTitleHeader}>Set Voicemail</h3>
-                        <p className={css.ivrDetails}>
-                            For IVR numbers, voicemail is only available outside
-                            business hours.
-                        </p>
-                    </>
-                ) : (
-                    <h3
-                        className={classnames(
-                            css.sectionHeader,
-                            css.duringBusinessHoursHeader,
-                        )}
-                    >
-                        During business hours
-                    </h3>
-                )}
+                <>
+                    <h3 className={css.ivrTitleHeader}>Set Voicemail</h3>
+                    <p className={css.ivrDetails}>
+                        For IVR numbers, voicemail is only available outside
+                        business hours.
+                    </p>
+                </>
 
                 <Form onSubmit={onSubmit}>
                     <div>
@@ -160,20 +111,6 @@ export default function VoiceIntegrationVoicemail({
                             allowNone
                         />
                     </div>
-
-                    {!isIvr && (
-                        <VoicemailOutsideBusinessHoursSection
-                            outsideBusinessHoursSettings={
-                                payload?.outside_business_hours
-                            }
-                            onChangeUseSameSettings={
-                                handleChangeUseSameSettings
-                            }
-                            onChangeVoiceMessage={
-                                handleChangeOutsideBusinessHoursVoiceMessage
-                            }
-                        />
-                    )}
 
                     <h3 className={css.sectionHeader}>Caller options</h3>
                     <CheckBox

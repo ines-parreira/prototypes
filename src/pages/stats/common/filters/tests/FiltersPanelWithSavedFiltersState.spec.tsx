@@ -2,8 +2,6 @@ import React from 'react'
 
 import { fromJS } from 'immutable'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import {
@@ -12,7 +10,6 @@ import {
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
-import { FilterKey } from 'models/stat/types'
 import { SAVEABLE_FILTERS } from 'pages/stats/common/filters/constants'
 import { FiltersPanelComponent } from 'pages/stats/common/filters/FiltersPanel'
 import { SavedFilterComponentMap } from 'pages/stats/common/filters/FiltersPanelConfig'
@@ -30,9 +27,6 @@ jest.mock('state/billing/selectors', () => ({
 jest.mock('pages/stats/common/filters/FiltersPanel')
 const FiltersPanelComponentMock = assumeMock(FiltersPanelComponent)
 const mockGetHasAutomate = jest.mocked(getHasAutomate)
-
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
-const useFlagMock = assumeMock(useFlag)
 
 describe('SavedFiltersPanel', () => {
     const defaultState = {
@@ -60,37 +54,11 @@ describe('SavedFiltersPanel', () => {
     })
 
     it('should render FiltersPanel with own config', () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.ExposeVoiceQueues) {
-                return true
-            }
-        })
-
         renderWithStore(<FiltersPanelWithSavedFiltersState />, defaultState)
 
         expect(FiltersPanelComponentMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 optionalFilters: SAVEABLE_FILTERS,
-                filterComponentMap: SavedFilterComponentMap,
-            }),
-            {},
-        )
-    })
-
-    it('should render FiltersPanel with own config without queues', () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.ExposeVoiceQueues) {
-                return false
-            }
-        })
-
-        renderWithStore(<FiltersPanelWithSavedFiltersState />, defaultState)
-
-        expect(FiltersPanelComponentMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                optionalFilters: SAVEABLE_FILTERS.filter(
-                    (filter) => filter !== FilterKey.VoiceQueues,
-                ),
                 filterComponentMap: SavedFilterComponentMap,
             }),
             {},

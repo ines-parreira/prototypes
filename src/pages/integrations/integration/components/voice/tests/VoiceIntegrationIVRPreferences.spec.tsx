@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { render, RenderResult, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 
@@ -9,10 +7,10 @@ import { integrationsState } from 'fixtures/integrations'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/constants'
 import { PhoneIntegration } from 'models/integration/types'
-import VoiceIntegrationPreferences from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferences'
+import VoiceIntegrationIVRPreferences from 'pages/integrations/integration/components/voice/VoiceIntegrationIVRPreferences'
 import { assumeMock } from 'utils/testing'
 
-import { getDefaultValues, useFormSubmit } from '../useVoicePreferencesForm'
+import { getDefaultValues, useFormSubmit } from '../useVoiceSettingsForm'
 
 jest.mock('@gorgias/api-client')
 
@@ -26,7 +24,7 @@ const phoneIntegration = integrationsState.integrations.find(
     (integration) => integration.type === IntegrationType.Phone,
 ) as unknown as PhoneIntegration
 
-jest.mock('../useVoicePreferencesForm')
+jest.mock('../useVoiceSettingsForm')
 
 const useFormSubmitMock = assumeMock(useFormSubmit)
 const getDefaultValuesMock = assumeMock(getDefaultValues)
@@ -37,11 +35,11 @@ const FormMock = assumeMock(Form)
 jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)
 
-jest.mock('../VoiceIntegrationPreferencesForm', () => () => (
-    <div>VoiceIntegrationPreferencesForm</div>
+jest.mock('../VoiceIntegrationIVRPreferencesForm', () => () => (
+    <div>VoiceIntegrationIVRPreferencesForm</div>
 ))
 
-describe('<VoiceIntegrationPreferences />', () => {
+describe('<VoiceIntegrationIVRPreferences />', () => {
     const props = {
         integration: {
             ...phoneIntegration,
@@ -56,7 +54,7 @@ describe('<VoiceIntegrationPreferences />', () => {
     const renderComponent = (props: any = {}): RenderResult =>
         render(
             <BrowserRouter>
-                <VoiceIntegrationPreferences {...props} />
+                <VoiceIntegrationIVRPreferences {...props} />
             </BrowserRouter>,
         )
 
@@ -82,7 +80,7 @@ describe('<VoiceIntegrationPreferences />', () => {
         renderComponent(props)
 
         expect(
-            screen.getByText('VoiceIntegrationPreferencesForm'),
+            screen.getByText('VoiceIntegrationIVRPreferencesForm'),
         ).toBeInTheDocument()
     })
 
@@ -97,7 +95,9 @@ describe('<VoiceIntegrationPreferences />', () => {
                 resetOptions: {
                     keepDirty: false,
                     keepDefaultValues: false,
+                    keepDirtyValues: false,
                 },
+                validator: expect.any(Function),
             }),
             {},
         )

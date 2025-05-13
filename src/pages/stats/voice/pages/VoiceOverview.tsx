@@ -1,5 +1,3 @@
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { ProductType } from 'models/billing/types'
 import { FilterKey } from 'models/stat/types'
@@ -23,7 +21,6 @@ import VoicePaywall from 'pages/stats/voice/VoicePaywall'
 import { AccountFeature } from 'state/currentAccount/types'
 
 function VoiceOverview() {
-    const exposeQueues = useFlag(FeatureFlagKey.ExposeVoiceQueues)
     useCleanStatsFilters()
 
     const reportComponents = [
@@ -81,13 +78,7 @@ function VoiceOverview() {
                             VoiceOverviewReportConfig.reportFilters.persistent
                         }
                         optionalFilters={
-                            exposeQueues
-                                ? VoiceOverviewReportConfig.reportFilters
-                                      .optional
-                                : VoiceOverviewReportConfig.reportFilters.optional.filter(
-                                      (filter) =>
-                                          filter !== FilterKey.VoiceQueues,
-                                  )
+                            VoiceOverviewReportConfig.reportFilters.optional
                         }
                         filterSettingsOverrides={{
                             [FilterKey.Period]: {

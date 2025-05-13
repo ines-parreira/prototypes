@@ -7,8 +7,6 @@ import thunk from 'redux-thunk'
 
 import { VoiceCallDirection } from '@gorgias/api-queries'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { VoiceCallDisplayStatus, VoiceCallStatus } from 'models/voiceCall/types'
 import { CALL_LIST_PAGE_SIZE } from 'pages/stats/voice/constants/voiceOverview'
 import { useVoiceCallCount } from 'pages/stats/voice/hooks/useVoiceCallCount'
@@ -65,9 +63,6 @@ jest.mock('pages/stats/voice/hooks/useVoiceQueueContext', () => ({
 jest.mock('pages/stats/voice/components/VoiceQueue/VoiceQueueProvider')
 const VoiceQueueProviderMock = assumeMock(VoiceQueueProvider)
 VoiceQueueProviderMock.mockImplementation(({ children }) => <>{children}</>)
-
-jest.mock('core/flags')
-const useFlagMock = assumeMock(useFlag)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -316,14 +311,6 @@ describe('VoiceCallTableContent', () => {
     })
 
     describe('retrieve queue data', () => {
-        beforeEach(() => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.ExposeVoiceQueues) {
-                    return true
-                }
-            })
-        })
-
         it('should get queue ids from data and pass it to the voice queue provider', () => {
             renderComponent({
                 data: [
@@ -372,43 +359,6 @@ describe('VoiceCallTableContent', () => {
             expect(
                 queryByText(VoiceCallTableColumnName.Queue),
             ).toBeInTheDocument()
-        })
-    })
-
-    describe('old non queue behavior', () => {
-        beforeEach(() => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.ExposeVoiceQueues) {
-                    return false
-                }
-            })
-        })
-
-        it('should discard queue ids data', () => {
-            renderComponent({
-                data: [
-                    { queueId: 1 },
-                    { queueId: 2 },
-                    { queueId: 1 },
-                    { queueId: null },
-                ] as VoiceCallSummary[],
-                isFetching: false,
-                columns: columns,
-            })
-
-            expect(VoiceQueueProviderMock).not.toHaveBeenCalled()
-        })
-
-        it('should not display queue column', () => {
-            const { queryByText } = renderComponent({
-                data: [{}] as VoiceCallSummary[],
-                isFetching: false,
-                columns: [VoiceCallTableColumnName.Queue],
-            })
-
-            expect(
-                queryByText(VoiceCallTableColumnName.Queue),
-            ).not.toBeInTheDocument()
         })
     })
 })

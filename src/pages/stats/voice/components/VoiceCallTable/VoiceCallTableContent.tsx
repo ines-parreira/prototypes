@@ -4,8 +4,6 @@ import classNames from 'classnames'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import useMeasure from 'hooks/useMeasure'
 import { OrderDirection } from 'models/api/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -57,12 +55,6 @@ export default function VoiceCallTableContent({
     orderDirection,
     onColumnClick,
 }: VoiceCallTableContentProps) {
-    const shouldExposeVoiceQueues = useFlag(FeatureFlagKey.ExposeVoiceQueues)
-
-    columns = shouldExposeVoiceQueues
-        ? columns
-        : columns.filter((col) => col !== VoiceCallTableColumnName.Queue)
-
     const [ref, { width: measuredWidth }] = useMeasure<HTMLDivElement>()
     const [isTableScrolled, setIsTableScrolled] = useState(false)
 
@@ -171,9 +163,6 @@ export default function VoiceCallTableContent({
         </div>
     )
 
-    if (!shouldExposeVoiceQueues) {
-        return tableContent
-    }
     return (
         <VoiceQueueProvider queueIds={queueIds}>
             {tableContent}

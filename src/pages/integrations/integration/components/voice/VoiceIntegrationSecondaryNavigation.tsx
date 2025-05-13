@@ -1,8 +1,6 @@
 import { NavLink } from 'react-router-dom'
 
 import { PhoneFunction } from 'business/twilio'
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType, PhoneIntegration } from 'models/integration/types'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
@@ -17,9 +15,8 @@ type Props = {
 
 export default function VoiceIntegrationSecondaryNavigation({
     integration,
-}: Props): JSX.Element {
+}: Props): JSX.Element | null {
     const phoneIntegrations = useAppSelector(getPhoneIntegrations)
-    const exposeQueues = useFlag(FeatureFlagKey.ExposeVoiceQueues)
 
     if (!integration) {
         const routes = getDefaultRoutes(
@@ -35,11 +32,9 @@ export default function VoiceIntegrationSecondaryNavigation({
                 <NavLink to={routes.integrations[0]} exact>
                     Integrations
                 </NavLink>
-                {exposeQueues && (
-                    <NavLink to={`${PHONE_INTEGRATION_BASE_URL}/queues`} exact>
-                        Queues
-                    </NavLink>
-                )}
+                <NavLink to={`${PHONE_INTEGRATION_BASE_URL}/queues`} exact>
+                    Queues
+                </NavLink>
             </SecondaryNavbar>
         )
     }
@@ -49,24 +44,22 @@ export default function VoiceIntegrationSecondaryNavigation({
 
     const isIvr = integration.meta?.function === PhoneFunction.Ivr
 
-    return (
-        <SecondaryNavbar>
-            <NavLink to={`${baseURL}/preferences`} exact>
-                Preferences
-            </NavLink>
-            <NavLink to={`${baseURL}/voicemail`} exact>
-                Voicemail
-            </NavLink>
-            {!isIvr && (
-                <NavLink to={`${baseURL}/greetings-music`} exact>
-                    Greetings & Music
+    if (isIvr) {
+        return (
+            <SecondaryNavbar>
+                <NavLink to={`${baseURL}/preferences`} exact>
+                    Preferences
                 </NavLink>
-            )}
-            {isIvr && (
+                <NavLink to={`${baseURL}/voicemail`} exact>
+                    Voicemail
+                </NavLink>
+
                 <NavLink to={`${baseURL}/ivr`} exact>
                     IVR
                 </NavLink>
-            )}
-        </SecondaryNavbar>
-    )
+            </SecondaryNavbar>
+        )
+    }
+
+    return null
 }

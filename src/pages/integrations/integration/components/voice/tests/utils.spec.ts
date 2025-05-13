@@ -18,6 +18,7 @@ import {
     getVoiceMessagePayload,
     getVoiceQueueEditableFields,
     getVoiceQueueSummaryData,
+    integrationSettingsIVRValidation,
     isValueInRange,
     mergeInitialValuesWithDefaultValues,
     queueSettingsCustomValidation,
@@ -261,5 +262,19 @@ describe('mergeInitialValuesWithDefaultValues', () => {
             ...inputQueue,
             wrap_up_time: DEFAULT_QUEUE_VALUES.wrap_up_time,
         })
+    })
+})
+
+describe('integrationSettingsIVRValidation', () => {
+    it('should return the correct validation errors when the name is missing', () => {
+        const result = integrationSettingsIVRValidation({})
+
+        expect(result).toEqual({ name: 'Name is required' })
+    })
+
+    it('should return an empty object when the name is present', () => {
+        const result = integrationSettingsIVRValidation({ name: 'Test' })
+
+        expect(result).toEqual({})
     })
 })

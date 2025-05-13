@@ -1,17 +1,19 @@
+import { PhoneIntegration } from '@gorgias/api-types'
+
 import { Form } from 'core/forms'
-import { isPhoneIntegration, PhoneIntegration } from 'models/integration/types'
-import css from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferences.less'
+import { isPhoneIntegration } from 'models/integration/types'
 import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 
-import { getDefaultValues, useFormSubmit } from './useVoicePreferencesForm'
-import VoiceIntegrationPreferencesForm from './VoiceIntegrationPreferencesForm'
+import { getDefaultValues, useFormSubmit } from './useVoiceSettingsForm'
+import { integrationSettingsIVRValidation } from './utils'
+import VoiceIntegrationIVRPreferencesForm from './VoiceIntegrationIVRPreferencesForm'
 
 type Props = {
     integration: PhoneIntegration
 }
 
-export default function VoiceIntegrationPreferences({
+export default function VoiceIntegrationIVRPreferences({
     integration,
 }: Props): JSX.Element {
     const { onSubmit } = useFormSubmit(integration)
@@ -25,15 +27,19 @@ export default function VoiceIntegrationPreferences({
             <SettingsContent>
                 <Form
                     onValidSubmit={onSubmit}
-                    className={css.form}
                     defaultValues={getDefaultValues(integration)}
                     mode="onChange"
                     resetOptions={{
                         keepDirty: false,
                         keepDefaultValues: false,
+                        keepDirtyValues: false,
+                    }}
+                    shouldUnregister
+                    validator={(values: Partial<PhoneIntegration>) => {
+                        return integrationSettingsIVRValidation(values)
                     }}
                 >
-                    <VoiceIntegrationPreferencesForm
+                    <VoiceIntegrationIVRPreferencesForm
                         integration={integration}
                     />
                 </Form>

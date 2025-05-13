@@ -7,8 +7,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { agents } from 'fixtures/agents'
 import { billingState } from 'fixtures/billing'
@@ -92,9 +90,6 @@ const VoiceCallCallerExperienceMetricSpy = jest.spyOn(
     VoiceCallCallerExperienceMetric,
     'default',
 )
-
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
-const useFlagMock = assumeMock(useFlag)
 
 jest.mock('hooks/reporting/dashboards/useReportRestrictions')
 const useReportRestrictionsMock = assumeMock(useReportRestrictions)
@@ -240,12 +235,6 @@ describe('VoiceOverview', () => {
     })
 
     it('should render optional filters', () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.ExposeVoiceQueues) {
-                return true
-            }
-        })
-
         const { getByText } = renderVoiceOverview()
 
         expect(getByText(FilterKey.Agents)).toBeInTheDocument()
@@ -254,22 +243,5 @@ describe('VoiceOverview', () => {
         ).toBeInTheDocument()
         expect(getByText(FilterKey.Tags)).toBeInTheDocument()
         expect(getByText(FilterKey.VoiceQueues)).toBeInTheDocument()
-    })
-
-    it('should render old optional filters', () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.ExposeVoiceQueues) {
-                return false
-            }
-        })
-
-        const { queryByText } = renderVoiceOverview()
-
-        expect(queryByText(FilterKey.Agents)).toBeInTheDocument()
-        expect(
-            queryByText(FilterComponentKey.PhoneIntegrations),
-        ).toBeInTheDocument()
-        expect(queryByText(FilterKey.Tags)).toBeInTheDocument()
-        expect(queryByText(FilterKey.VoiceQueues)).not.toBeInTheDocument()
     })
 })

@@ -4,10 +4,10 @@ import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
-import { useFlag } from 'core/flags'
 import { integrationsState } from 'fixtures/integrations'
 import { IntegrationType, PhoneIntegration } from 'models/integration/types'
-import { assumeMock, mockStore, renderWithRouter } from 'utils/testing'
+import { PhoneFunction } from 'models/phoneNumber/types'
+import { mockStore, renderWithRouter } from 'utils/testing'
 
 import VoiceIntegrationSecondaryNavigation from '../VoiceIntegrationSecondaryNavigation'
 
@@ -27,8 +27,6 @@ const defaultState = {
     integrations: fromJS(integrationsState),
 }
 
-const useFlagMock = assumeMock(useFlag)
-
 describe('<VoiceIntegrationSecondaryNavigation />', () => {
     let integration: PhoneIntegration
 
@@ -37,7 +35,6 @@ describe('<VoiceIntegrationSecondaryNavigation />', () => {
             id: 1,
             type: IntegrationType.Phone,
         } as PhoneIntegration
-        useFlagMock.mockReturnValue(true)
     })
 
     const renderComponent = (integration?: PhoneIntegration) =>
@@ -50,10 +47,17 @@ describe('<VoiceIntegrationSecondaryNavigation />', () => {
         )
 
     it('should render the secondary navigation with integration', () => {
-        renderComponent(integration)
+        renderComponent({
+            ...integration,
+            meta: {
+                ...integration.meta,
+                function: PhoneFunction.Ivr,
+            },
+        })
 
         expect(screen.getByText('Preferences')).toBeInTheDocument()
         expect(screen.getByText('Voicemail')).toBeInTheDocument()
+        expect(screen.getByText('IVR')).toBeInTheDocument()
     })
 
     it('should render the secondary navigation without integration', () => {
@@ -61,18 +65,15 @@ describe('<VoiceIntegrationSecondaryNavigation />', () => {
 
         expect(screen.getByText('About')).toBeInTheDocument()
         expect(screen.getByText('Integrations')).toBeInTheDocument()
-    })
-
-    it('should render Queues link when exposeQueues flag is on', () => {
-        renderComponent()
-
         expect(screen.getByText('Queues')).toBeInTheDocument()
     })
 
-    it('should not render Queues link when exposeQueues flag is off', () => {
-        useFlagMock.mockReturnValue(false)
-        renderComponent()
+    it('should not render anything if integration is not IVR', () => {
+        const { container } = renderComponent({
+            ...integration,
+            meta: { ...integration.meta, function: PhoneFunction.Standard },
+        })
 
-        expect(screen.queryByText('Queues')).toBeNull()
+        expect(container).toBeEmptyDOMElement()
     })
 })

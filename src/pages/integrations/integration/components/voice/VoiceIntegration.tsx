@@ -9,10 +9,7 @@ import {
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import useSearch from 'hooks/useSearch'
 import {
     IntegrationType,
     isPhoneIntegration,
@@ -22,13 +19,10 @@ import PageHeader from 'pages/common/components/PageHeader'
 import ConnectLink from 'pages/integrations/components/ConnectLink'
 import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
 import PhoneIntegrationsList from 'pages/integrations/integration/components/phone/PhoneIntegrationsList'
-import DEPRECATED_VoiceIntegrationCreate from 'pages/integrations/integration/components/voice/DEPRECATED_VoiceIntegrationCreate'
-import VoiceIntegrationGreetingMessage from 'pages/integrations/integration/components/voice/VoiceIntegrationGreetingMessage'
 import VoiceIntegrationIvr from 'pages/integrations/integration/components/voice/VoiceIntegrationIvr'
-import VoiceIntegrationPreferences from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferences'
+import VoiceIntegrationIVRPreferences from 'pages/integrations/integration/components/voice/VoiceIntegrationIVRPreferences'
 import VoiceIntegrationSecondaryNavigation from 'pages/integrations/integration/components/voice/VoiceIntegrationSecondaryNavigation'
 import VoiceIntegrationVoicemail from 'pages/integrations/integration/components/voice/VoiceIntegrationVoicemail'
-import { getIntegrationConfig } from 'state/integrations/helpers'
 import {
     getIntegrationById,
     getPhoneIntegrations,
@@ -42,19 +36,14 @@ import VoiceIntegrationQueueRoutes from './VoiceIntegrationQueueRoutes'
 import VoiceIntegrationSettingsPage from './VoiceIntegrationSettingsPage'
 
 export default function VoiceIntegration() {
-    const config = getIntegrationConfig(IntegrationType.Phone)
     const { integrationId } = useParams<{ integrationId: string }>()
-    const { phoneNumberId } = useSearch<{
-        phoneNumberId: string
-    }>()
+
     const { pathname: path } = useLocation<LocationState>()
     const queuePathMatch = matchPath<{ queueId?: string }>(path, {
         path: `${baseURL}/queues/:queueId`,
         exact: false,
         strict: false,
     })
-
-    const exposeQueues = useFlag(FeatureFlagKey.ExposeVoiceQueues)
 
     const currentIntegration = useAppSelector((state) => {
         if (integrationId) {
@@ -68,7 +57,6 @@ export default function VoiceIntegration() {
     })
     const phoneIntegrations = useAppSelector(getPhoneIntegrations)
     const isStandardIntegration = isStandardPhoneIntegration(currentIntegration)
-    const showNewSettingsPage = exposeQueues && isStandardIntegration
     const isQueuePage = !!queuePathMatch?.params.queueId
 
     const routes = getDefaultRoutes(baseURL, phoneIntegrations)
@@ -91,19 +79,17 @@ export default function VoiceIntegration() {
                         <Button>Add Voice Integration</Button>
                     </ConnectLink>
                 </Route>
-                {exposeQueues && (
-                    <Route path={`${baseURL}/queues`} exact>
-                        <ConnectLink
-                            connectUrl={`${baseURL}/queues/new`}
-                            integrationTitle={IntegrationType.Phone}
-                        >
-                            <Button>Create queue</Button>
-                        </ConnectLink>
-                    </Route>
-                )}
+                <Route path={`${baseURL}/queues`} exact>
+                    <ConnectLink
+                        connectUrl={`${baseURL}/queues/new`}
+                        integrationTitle={IntegrationType.Phone}
+                    >
+                        <Button>Create queue</Button>
+                    </ConnectLink>
+                </Route>
             </PageHeader>
 
-            {!showNewSettingsPage && !isQueuePage && (
+            {!isStandardIntegration && !isQueuePage && (
                 <VoiceIntegrationSecondaryNavigation
                     integration={currentIntegration}
                 />
@@ -112,7 +98,7 @@ export default function VoiceIntegration() {
             <Switch>
                 {currentIntegration && (
                     <>
-                        {showNewSettingsPage ? (
+                        {isStandardIntegration ? (
                             <Route
                                 path={`${baseURL}/:integrationId/preferences`}
                                 exact
@@ -125,7 +111,7 @@ export default function VoiceIntegration() {
                                     path={`${baseURL}/:integrationId/preferences`}
                                     exact
                                 >
-                                    <VoiceIntegrationPreferences
+                                    <VoiceIntegrationIVRPreferences
                                         integration={currentIntegration}
                                     />
                                 </Route>
@@ -134,14 +120,6 @@ export default function VoiceIntegration() {
                                     exact
                                 >
                                     <VoiceIntegrationVoicemail
-                                        integration={currentIntegration}
-                                    />
-                                </Route>
-                                <Route
-                                    path={`${baseURL}/:integrationId/greetings-music`}
-                                    exact
-                                >
-                                    <VoiceIntegrationGreetingMessage
                                         integration={currentIntegration}
                                     />
                                 </Route>
@@ -161,23 +139,12 @@ export default function VoiceIntegration() {
                     <PhoneIntegrationsList type={IntegrationType.Phone} />
                 </Route>
                 <Route path={`${baseURL}/new`} exact>
-                    {exposeQueues ? (
-                        <VoiceIntegrationOnboarding />
-                    ) : (
-                        <DEPRECATED_VoiceIntegrationCreate
-                            selectedPhoneNumberId={
-                                phoneNumberId
-                                    ? Number.parseInt(phoneNumberId, 10)
-                                    : undefined
-                            }
-                            pricingLink={config?.pricingLink}
-                        />
-                    )}
+                    <VoiceIntegrationOnboarding />
                 </Route>
                 <Route path={routes.about} exact>
                     <VoiceIntegrationDetails />
                 </Route>
-                {exposeQueues && <VoiceIntegrationQueueRoutes />}
+                <VoiceIntegrationQueueRoutes />
             </Switch>
         </div>
     )

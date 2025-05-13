@@ -14,7 +14,7 @@ import { isAgentAvailable, isAgentBusy, mapBusyAgentStatus } from './utils'
 
 import css from './LiveVoiceAgentsList.less'
 
-export type Props = {
+type Props = {
     agent: LiveCallQueueAgent
 }
 

@@ -2,11 +2,7 @@ import { fireEvent, render } from '@testing-library/react'
 
 import { UpdateWaitMusicLibrary } from '@gorgias/api-queries'
 
-import {
-    DEFAULT_RINGTONE_AUDIO_FILE_PATHS_INDEX,
-    DEPRECATED_RINGTONE_AUDIO_FILE_PATHS,
-    STATIC_WAIT_MUSIC_LIBRARY,
-} from '../waitMusicLibraryConstants'
+import { STATIC_WAIT_MUSIC_LIBRARY } from '../waitMusicLibraryConstants'
 import WaitMusicLibrarySelect from '../WaitMusicLibrarySelect'
 
 jest.mock(
@@ -76,29 +72,6 @@ describe('<WaitMusicLibrarySelect />', () => {
             'https://assets.gorgias.io/phone/ClockworkWaltz.mp3',
         )
     })
-
-    it.each(
-        STATIC_WAIT_MUSIC_LIBRARY.map((libraryItem) => ({
-            libraryName: libraryItem.name,
-            expectedLibrary: libraryItem,
-        })),
-    )(
-        'should select correct library audio for $libraryName',
-        ({ libraryName, expectedLibrary }) => {
-            const { getByText } = renderComponent({
-                key: 'ringtone',
-                name: 'Ringing Tone',
-                audio_file_path:
-                    DEPRECATED_RINGTONE_AUDIO_FILE_PATHS[
-                        DEFAULT_RINGTONE_AUDIO_FILE_PATHS_INDEX
-                    ].audioFilePath,
-            })
-
-            fireEvent.click(getByText('arrow_drop_down'))
-            fireEvent.click(getByText(libraryName))
-            expect(onChangeMock).toHaveBeenCalledWith(expectedLibrary)
-        },
-    )
 
     it.each([
         {

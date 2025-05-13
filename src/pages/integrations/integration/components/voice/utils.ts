@@ -1,5 +1,6 @@
 import {
     CreateVoiceQueue,
+    PhoneIntegration,
     PhoneRingingBehaviour,
     UpdatePhoneIntegrationSettingsRecordingNotification,
     UpdateVoiceQueue,
@@ -142,6 +143,18 @@ export const queueSettingsCustomValidation = (
 
     if (values.is_wrap_up_time_enabled && !isWrapUpTimeValid) {
         errors['wrap_up_time'] = WRAP_UP_TIME_VALIDATION_ERROR
+    }
+
+    return errors
+}
+
+export const integrationSettingsIVRValidation = (
+    values: Partial<PhoneIntegration>,
+) => {
+    const errors: Partial<Record<keyof PhoneIntegration, string>> = {}
+
+    if (!values.name?.length) {
+        errors['name'] = 'Name is required'
     }
 
     return errors

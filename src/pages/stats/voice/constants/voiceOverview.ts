@@ -1,7 +1,5 @@
 export const VOICE_OVERVIEW_PAGE_TITLE = 'Voice Overview'
-export const VOICE_LEARN_MORE_URL = 'https://www.gorgias.com/product/voice'
 
-export const MIN_DATE_FOR_VOICE_STATS = '2023-11-20'
 export const MIN_DATE_FOR_ADVANCED_VOICE_STATS = '2024-01-01'
 export const CALL_LIST_PAGE_SIZE = 10
 
@@ -39,7 +37,6 @@ export const CALL_LIST_TITLE = 'List of calls'
 export const CALL_LIST_HINT =
     'Table includes details of each call, along with a direct link to the ticket.'
 
-export const DOWNLOAD_DATA_BUTTON_LABEL = 'Download data'
 export const DOWNLOAD_BUTTON_TITLE =
     'Download Caller Experience and Call Volume Data'
 
