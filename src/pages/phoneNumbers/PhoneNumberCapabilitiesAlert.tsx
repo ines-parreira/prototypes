@@ -1,11 +1,16 @@
+import { Banner } from '@gorgias/merchant-ui-kit'
+
 import { usePhoneNumberCapabilities } from 'hooks/integrations/phone/usePhoneNumberCapabilities'
 import { PhoneCountry, PhoneType } from 'models/phoneNumber/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import { countryName } from 'pages/phoneNumbers/utils'
+
+import {
+    getCountryCapabilityLimitationsMessage,
+    getLimitationsMessageForType,
+} from './utils'
 
 type Props = {
     country: PhoneCountry
-    type: PhoneType
+    type?: PhoneType
 }
 
 export default function PhoneNumberCapabilitiesAlert({
@@ -14,29 +19,40 @@ export default function PhoneNumberCapabilitiesAlert({
 }: Props): JSX.Element | null {
     const capabilites = usePhoneNumberCapabilities({
         country,
-        type,
     })
 
     if (!capabilites) {
         return null
     }
 
-    const missingCapabilities = Object.entries(capabilites)
-        .filter(([, value]) => !value)
-        .map(([capability]) => capability)
+    if (type) {
+        const limitationsMessageForType = getLimitationsMessageForType(
+            country,
+            type,
+            capabilites,
+        )
 
-    if (!country || !type || !missingCapabilities.length) {
+        return limitationsMessageForType ? (
+            <Banner type={'warning'} className="mt-3 mb-4">
+                {limitationsMessageForType}
+            </Banner>
+        ) : null
+    }
+
+    const missingCapabilities = getCountryCapabilityLimitationsMessage(
+        country,
+        capabilites,
+    )
+
+    if (missingCapabilities.length === 0) {
         return null
     }
 
     return (
-        <Alert type={AlertType.Warning} icon className="mt-3 mb-4">
-            {missingCapabilities
-                .map((capability) => capability.toUpperCase())
-                .join(' and ')}{' '}
-            {missingCapabilities.length > 1 ? 'are' : 'is'} not currently
-            compatible with {type?.toLowerCase()} numbers from{' '}
-            {countryName(country)}.
-        </Alert>
+        <Banner type={'warning'} className="mt-3 mb-4">
+            {missingCapabilities.map((capability) => (
+                <div key={capability}>{capability}</div>
+            ))}
+        </Banner>
     )
 }

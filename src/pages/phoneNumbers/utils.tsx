@@ -7,9 +7,15 @@ import parsePhoneNumber, {
 } from 'libphonenumber-js'
 import { get, has, join, parseInt, startsWith, toString } from 'lodash'
 
+import {
+    CAPABILITY_TYPE_LABELS,
+    PHONE_TYPE_LABELS,
+    phoneCountryConfig,
+} from 'business/twilio'
 import { State, states } from 'config/states'
 import { IntegrationType } from 'models/integration/types'
 import {
+    CountryPhoneCapabilities,
     NewPhoneNumber,
     OldPhoneNumber,
     PhoneCapabilities,
@@ -21,9 +27,9 @@ import {
     TwilioPhoneConnection,
     WhatsAppPhoneConnection,
 } from 'models/phoneNumber/types'
-import rawCountries from 'pages/phoneNumbers/options/countries.json'
+import { SelectableOption } from 'pages/common/forms/SelectField/types'
 
-import { validationAlertMessages } from './constants'
+import { PHONE_NUMBER_TYPEFORM_URL } from './constants'
 
 const CAPABILITY_KEY: Record<
     IntegrationType.Sms | IntegrationType.Phone | IntegrationType.WhatsApp,
@@ -94,7 +100,13 @@ export function shouldValidateAddress(
     country: PhoneCountry,
     type?: PhoneType,
 ): boolean {
-    return country === PhoneCountry.AU && type !== PhoneType.Mobile
+    const phoneTypeConfig = phoneCountryConfig[country].phoneTypeConfig
+
+    if (!phoneTypeConfig || !type) {
+        return false
+    }
+
+    return !!phoneTypeConfig[type]?.addressValidation
 }
 
 export function getAvailableStates(country: string): State[] {
@@ -102,15 +114,6 @@ export function getAvailableStates(country: string): State[] {
     return (states[country] ?? []).filter((state) =>
         availableStates.includes(state.code),
     )
-}
-
-export function countryName(country: PhoneCountry): string {
-    const countryOption = rawCountries.find((c) => c.value === country)
-    if (countryOption) {
-        return countryOption.label
-    }
-
-    return country
 }
 
 export function hasCapability(
@@ -249,18 +252,160 @@ export function normalizeNumber(number: string): string {
     return cleanedNumber
 }
 
+const listPhoneTypesForTypeform = (country: PhoneCountry) => {
+    const unavailableForSelfService = Object.keys(
+        phoneCountryConfig[country].phoneTypeConfig,
+    ).filter(
+        (type) =>
+            !phoneCountryConfig[country].phoneTypeConfig[type as PhoneType]
+                ?.selfService,
+    )
+
+    const listedTypes = unavailableForSelfService.map((type) =>
+        type.toLowerCase(),
+    )
+
+    return formatListAsText(listedTypes)
+}
+
+export const shouldDisplayType = (country?: PhoneCountry): boolean => {
+    if (!country) {
+        return false
+    }
+
+    const hasSelfServiceTypes = Object.values(
+        phoneCountryConfig[country].phoneTypeConfig,
+    ).some((type) => type.selfService)
+
+    return hasSelfServiceTypes
+}
+
 export const getAddressValidationAlertMessage = (
     country?: PhoneCountry,
     type?: PhoneType,
-): React.JSX.Element | null => {
-    const isAustralianLocalType =
-        country === PhoneCountry.AU && type !== PhoneType.Mobile
-
-    const alertMessage = country ? validationAlertMessages[country] : null
-
-    if (!alertMessage || isAustralianLocalType) {
+): React.JSX.Element | string | null => {
+    if (!country) {
         return null
     }
 
-    return alertMessage
+    const isSelfServiceAvailable =
+        type && phoneCountryConfig[country].phoneTypeConfig?.[type]?.selfService
+
+    if (!isSelfServiceAvailable) {
+        const message = (
+            <>
+                {`Submit a request for ${phoneCountryConfig[country].adjective} ${listPhoneTypesForTypeform(country)} phone numbers through the `}
+                <a
+                    href={PHONE_NUMBER_TYPEFORM_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    phone numbers request form
+                </a>
+                .
+            </>
+        )
+        return message
+    }
+
+    return null
+}
+
+export function getPhoneTypeOptions(
+    country?: PhoneCountry,
+): SelectableOption[] {
+    if (!country) {
+        return []
+    }
+
+    const phoneTypeConfig = phoneCountryConfig[country].phoneTypeConfig
+
+    return Object.keys(phoneTypeConfig)
+        .filter((key): key is PhoneType => key in PHONE_TYPE_LABELS)
+        .map((type) => ({
+            value: type,
+            label: PHONE_TYPE_LABELS[type],
+        }))
+}
+
+export function getLimitationsMessageForType(
+    country: PhoneCountry,
+    type: PhoneType,
+    capLimitations: CountryPhoneCapabilities,
+): string | null {
+    const limitations = capLimitations[type]
+
+    const capabilityKeys = ['voice', 'sms', 'mms'] as const
+    const missingCap = capabilityKeys
+        .filter((capability) => !limitations?.[capability])
+        .map((capability) => CAPABILITY_TYPE_LABELS[capability])
+
+    if (missingCap.length === 0) {
+        return null
+    }
+
+    return `${PHONE_TYPE_LABELS[type]} - ${missingCap.join(' and ')} ${missingCap.length === 1 ? 'is' : 'are'} not currently compatible with ${PHONE_TYPE_LABELS[type].toLowerCase()} ${phoneCountryConfig[country].adjective} numbers`
+}
+
+export function getCountryCapabilityLimitationsMessage(
+    country: PhoneCountry,
+    capLimitations: CountryPhoneCapabilities,
+): string[] {
+    const limitations: Record<string, string[]> = {
+        voice: [],
+        sms: [],
+        mms: [],
+    }
+
+    for (const [type, capabilities] of Object.entries(capLimitations)) {
+        if (!capabilities.mms) {
+            limitations.mms.push(type.toLowerCase())
+        }
+        if (!capabilities.sms) {
+            limitations.sms.push(type.toLowerCase())
+        }
+        if (!capabilities.voice) {
+            limitations.voice.push(type.toLowerCase())
+        }
+    }
+    const formattedLimitations = []
+
+    if (limitations.voice.length > 0) {
+        formattedLimitations.push(
+            `Voice is not currently compatible with ${formatListAsText(limitations.voice)} numbers from ${phoneCountryConfig[country].name}`,
+        )
+    }
+
+    if (limitations.sms.length > 0) {
+        formattedLimitations.push(
+            `SMS is not currently compatible with ${formatListAsText(limitations.sms)} numbers from ${phoneCountryConfig[country].name}`,
+        )
+    }
+
+    if (limitations.mms.length > 0) {
+        formattedLimitations.push(
+            `MMS is not currently compatible with ${formatListAsText(limitations.mms)} numbers from ${phoneCountryConfig[country].name}`,
+        )
+    }
+
+    return formattedLimitations
+}
+
+function formatListAsText(items: string[]) {
+    if (items.length === 0) return ''
+    if (items.length === 1) return items[0]
+    if (items.length === 2) return `${items[0]} and ${items[1]}`
+
+    const lastItem = items[items.length - 1]
+    const otherItems = items.slice(0, items.length - 1)
+    return `${otherItems.join(', ')} and ${lastItem}`
+}
+
+export const getFirstAvailableType = (
+    country: PhoneCountry,
+): PhoneType | undefined => {
+    const phoneTypeConfig = phoneCountryConfig[country].phoneTypeConfig
+    return Object.keys(phoneTypeConfig).find(
+        (type) => phoneTypeConfig[type as PhoneType]?.selfService,
+    ) as PhoneType | undefined
 }

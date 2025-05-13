@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import { FormGroup } from 'reactstrap'
 
-import { CallForwardingCountries } from 'business/twilio'
+import { callForwardingCountries } from 'business/twilio'
 import CheckBox from 'pages/common/forms/CheckBox'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import ToggleInput from 'pages/common/forms/ToggleInput'
@@ -53,7 +53,7 @@ function ForwardingCallsPreferences({
                     onChange={(value: string) =>
                         setPreference('forwarding_phone_number', value)
                     }
-                    allowedCountries={Object.values(CallForwardingCountries)}
+                    allowedCountries={callForwardingCountries}
                     autoFocus
                     disabled={!forwardCalls}
                 />

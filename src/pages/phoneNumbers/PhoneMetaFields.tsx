@@ -1,8 +1,9 @@
-import React, { useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { endsWith } from 'lodash'
 import { Col, FormGroup, Label, Row } from 'reactstrap'
 
+import { countryOptions, phoneCountryConfig } from 'business/twilio'
 import {
     PhoneCountry,
     PhoneNumberMeta,
@@ -12,59 +13,12 @@ import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import type { SelectableOption } from 'pages/common/forms/SelectField/types'
 
-import rawAuAreaCodeOptions from './options/area-codes/au.json'
-import rawCaAreaCodeOptions from './options/area-codes/ca.json'
-import rawTollFreeAreaCodeOptions from './options/area-codes/toll-free.json'
-import rawUsAreaCodeOptions from './options/area-codes/us.json'
-import rawCountryOptions from './options/countries.json'
-import { getAvailableStates } from './utils'
-
-const countryOptions: SelectableOption[] = rawCountryOptions
-
-type LocalAreaCodes = {
-    [PhoneCountry.US]: Record<string, SelectableOption[]>
-    [PhoneCountry.CA]: SelectableOption[]
-    [PhoneCountry.AU]: SelectableOption[]
-    [PhoneCountry.GB]: SelectableOption[]
-    [PhoneCountry.FR]: SelectableOption[]
-    [PhoneCountry.DE]: SelectableOption[]
-    [PhoneCountry.NZ]: SelectableOption[]
-}
-
-const LOCAL_AREA_CODES: LocalAreaCodes = {
-    [PhoneCountry.US]: rawUsAreaCodeOptions,
-    [PhoneCountry.CA]: rawCaAreaCodeOptions,
-    [PhoneCountry.AU]: rawAuAreaCodeOptions,
-    [PhoneCountry.GB]: [],
-    [PhoneCountry.FR]: [],
-    [PhoneCountry.DE]: [],
-    [PhoneCountry.NZ]: [],
-}
-
-const TOLL_FREE_AREA_CODE_OPTIONS: SelectableOption[] =
-    rawTollFreeAreaCodeOptions
-
-const COUNTRY_PHONE_TYPES: Record<PhoneCountry, PhoneType[]> = {
-    [PhoneCountry.US]: [PhoneType.Local, PhoneType.TollFree],
-    [PhoneCountry.CA]: [PhoneType.Local, PhoneType.TollFree],
-    [PhoneCountry.GB]: [],
-    [PhoneCountry.AU]: [PhoneType.Local, PhoneType.Mobile],
-    [PhoneCountry.FR]: [],
-    [PhoneCountry.DE]: [],
-    [PhoneCountry.NZ]: [],
-}
-
-const PHONE_TYPE_LABELS = {
-    [PhoneType.Local]: 'Local',
-    [PhoneType.TollFree]: 'Toll-free',
-    [PhoneType.Mobile]: 'Mobile',
-    [PhoneType.National]: 'National',
-}
-
-const GB_AREA_CODES = {
-    [PhoneType.Mobile]: 7,
-    [PhoneType.National]: 330,
-}
+import {
+    getAvailableStates,
+    getFirstAvailableType,
+    getPhoneTypeOptions,
+    shouldDisplayType,
+} from './utils'
 
 type Props = {
     value: Partial<PhoneNumberMeta>
@@ -82,7 +36,7 @@ export default function PhoneDetailsFields({
             onChange({
                 ...value,
                 country,
-                type: PhoneType.Local,
+                type: getFirstAvailableType(country),
                 area_code: undefined,
                 state: '',
             })
@@ -112,23 +66,13 @@ export default function PhoneDetailsFields({
 
     const handleTypeChange = useCallback(
         (type) => {
-            let area_code
-            if (country === PhoneCountry.GB) {
-                if (type === PhoneType.National) {
-                    area_code = GB_AREA_CODES[PhoneType.National]
-                }
-                if (type === PhoneType.Mobile) {
-                    area_code = GB_AREA_CODES[PhoneType.Mobile]
-                }
-            }
-
             onChange({
                 ...value,
                 type,
-                area_code,
+                area_code: undefined,
             })
         },
-        [onChange, value, country],
+        [onChange, value],
     )
 
     const handleStateChange = useCallback(
@@ -143,45 +87,36 @@ export default function PhoneDetailsFields({
     )
 
     const areaCodeOptions: SelectableOption[] = useMemo(() => {
-        switch (type) {
-            case PhoneType.TollFree:
-                return TOLL_FREE_AREA_CODE_OPTIONS
-
-            case PhoneType.Local: {
-                if (!country) {
-                    return []
-                }
-                if (country === PhoneCountry.US) {
-                    return !!state ? LOCAL_AREA_CODES[country][state] : []
-                }
-                return LOCAL_AREA_CODES[country]
-            }
-
-            default:
-                return []
-        }
-    }, [type, country, state])
-
-    const typeOptions: SelectableOption[] = useMemo(() => {
-        if (!country) {
+        if (
+            !country ||
+            !type ||
+            !phoneCountryConfig[country].phoneTypeConfig?.[type]
+        ) {
             return []
         }
 
-        const toTypeOption = (type: PhoneType) => ({
-            value: type,
-            label: PHONE_TYPE_LABELS[type],
-        })
+        const areaCodeOptions =
+            phoneCountryConfig[country].phoneTypeConfig?.[type]?.areaCodeOptions
 
-        return COUNTRY_PHONE_TYPES[country].map(toTypeOption)
+        if (areaCodeOptions) {
+            if (Array.isArray(areaCodeOptions)) {
+                return areaCodeOptions
+            }
+
+            return state ? areaCodeOptions[state] : []
+        }
+
+        return []
+    }, [type, country, state])
+
+    const typeOptions: SelectableOption[] = useMemo(() => {
+        return getPhoneTypeOptions(country)
     }, [country])
 
     const shouldShowState =
         type === PhoneType.Local && country === PhoneCountry.US
-    const shouldShowType = country && COUNTRY_PHONE_TYPES[country].length > 1
-    const shouldShowAreaCodes =
-        (type === PhoneType.Local || type === PhoneType.TollFree) &&
-        !!country &&
-        !!areaCodeOptions.length
+    const shouldShowType = shouldDisplayType(country)
+    const shouldShowAreaCodes = !!areaCodeOptions.length
 
     const selectedAreaCode =
         (area_code &&
@@ -219,6 +154,7 @@ export default function PhoneDetailsFields({
                                 value={type}
                                 onChange={handleTypeChange}
                                 options={typeOptions}
+                                disabled={typeOptions.length === 1}
                                 fullWidth
                                 required
                             />

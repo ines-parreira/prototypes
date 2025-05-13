@@ -14,6 +14,7 @@ import {
     Row,
 } from 'reactstrap'
 
+import { countryOptions } from 'business/twilio'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
 import { GorgiasApiError } from 'models/api/types'
@@ -43,15 +44,13 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { errorToChildren } from 'utils'
 
-import rawCountries from './options/countries.json'
-
 import css from './PhoneNumberDetails.less'
 
 type Props = {
     phoneNumber: NewPhoneNumber
 }
 
-const countries: SelectableOption[] = rawCountries
+const countries: SelectableOption[] = countryOptions
 
 export function PhoneNumberDetails({ phoneNumber }: Props) {
     const dispatch = useAppDispatch()

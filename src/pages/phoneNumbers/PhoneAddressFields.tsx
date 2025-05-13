@@ -1,13 +1,12 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 
 import { Col, FormGroup, Row } from 'reactstrap'
 
-import { PhoneCountry } from 'business/twilio'
+import { PhoneCountry, phoneCountryConfig } from 'business/twilio'
 import { AddressType } from 'models/integration/types'
 import { AddressInformation } from 'models/phoneNumber/types'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import InputField from 'pages/common/forms/input/InputField'
-import { countryName } from 'pages/phoneNumbers/utils'
 
 type Props = {
     value: Partial<AddressInformation>
@@ -135,7 +134,7 @@ export default function PhoneAddressFields({
                             isRequired
                             value={
                                 value.country
-                                    ? countryName(value.country)
+                                    ? phoneCountryConfig[value.country].name
                                     : value.country
                             }
                             isDisabled

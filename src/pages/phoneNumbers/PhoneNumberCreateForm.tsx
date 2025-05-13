@@ -3,6 +3,8 @@ import React, { useCallback, useEffect, useState } from 'react'
 import classnames from 'classnames'
 import { Col, Form, FormGroup, Row } from 'reactstrap'
 
+import { Banner, Button } from '@gorgias/merchant-ui-kit'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {
@@ -16,8 +18,6 @@ import {
     PhoneNumberMeta,
     PhoneType,
 } from 'models/phoneNumber/types'
-import Alert from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'
 import history from 'pages/history'
 import { newPhoneNumberFetched } from 'state/entities/phoneNumbers/actions'
@@ -50,11 +50,14 @@ export default function PhoneNumberCreateForm(): JSX.Element {
     const { showCreatePhoneNumberErrorNotification } =
         useCreatePhoneNumberNotifications()
 
+    const isAddressValidationRequired =
+        country && shouldValidateAddress(country, type)
+
     const [{ loading: isLoading }, handlePhoneNumberCreate] =
         useAsyncFn(async () => {
             try {
                 const address =
-                    country && shouldValidateAddress(country)
+                    country && isAddressValidationRequired
                         ? validationAddress
                         : {
                               country,
@@ -125,20 +128,20 @@ export default function PhoneNumberCreateForm(): JSX.Element {
             </Row>
             <Row>
                 <Col lg={6} xl={7}>
-                    {country && type && (
+                    {country && (
                         <PhoneNumberCapabilitiesAlert
                             country={country}
                             type={type}
                         />
                     )}
                     {validationAlertMessage && (
-                        <Alert icon className="mt-3 mb-4">
+                        <Banner className="mt-3 mb-4">
                             {validationAlertMessage}
-                        </Alert>
+                        </Banner>
                     )}
                     <Form onSubmit={onSubmit}>
                         <FormGroup>
-                            {country && shouldValidateAddress(country) && (
+                            {country && isAddressValidationRequired && (
                                 <h4 className="mb-3">Phone number settings</h4>
                             )}
                             <InputField
@@ -152,7 +155,7 @@ export default function PhoneNumberCreateForm(): JSX.Element {
                         <PhoneMetaFields value={meta} onChange={setMeta} />
                         {validationAddress &&
                             country &&
-                            shouldValidateAddress(country, type) && (
+                            isAddressValidationRequired && (
                                 <div className={css.addressWrapper}>
                                     <h4 className="mb-3">
                                         Address verification

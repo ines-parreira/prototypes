@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Col, Form, FormGroup, Row } from 'reactstrap'
 
+import { Banner, Button } from '@gorgias/merchant-ui-kit'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {
@@ -15,8 +17,6 @@ import {
     PhoneNumberMeta,
     PhoneType,
 } from 'models/phoneNumber/types'
-import Alert from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -68,6 +68,11 @@ export default function PhoneNumberCreateModalForm({
         type: AddressType.Company,
     })
 
+    const isAddressValidationRequired = useMemo(
+        () => country && shouldValidateAddress(country, type),
+        [country, type],
+    )
+
     const [{ loading: isLoading }, handlePhoneNumberCreate] =
         useAsyncFn(async () => {
             try {
@@ -113,7 +118,7 @@ export default function PhoneNumberCreateModalForm({
     }, [country])
 
     const footerExtra = useMemo(() => {
-        if (country && shouldValidateAddress(country)) {
+        if (country && isAddressValidationRequired) {
             if (step === Step.PhoneInformation) {
                 return 'Step 1 of 2 - Phone Information'
             } else if (step === Step.AddressVerfication) {
@@ -122,7 +127,7 @@ export default function PhoneNumberCreateModalForm({
             return null
         }
         return null
-    }, [country, step])
+    }, [country, isAddressValidationRequired, step])
 
     const validationAlertMessage = getAddressValidationAlertMessage(
         country,
@@ -143,9 +148,9 @@ export default function PhoneNumberCreateModalForm({
                                 />
                             )}
                             {validationAlertMessage && (
-                                <Alert icon className="mt-3 mb-4">
+                                <Banner className="mt-3 mb-4">
                                     {validationAlertMessage}
-                                </Alert>
+                                </Banner>
                             )}
                             {step === Step.PhoneInformation && (
                                 <>
@@ -167,7 +172,7 @@ export default function PhoneNumberCreateModalForm({
                             {step === Step.AddressVerfication &&
                                 address &&
                                 country &&
-                                shouldValidateAddress(country) && (
+                                isAddressValidationRequired && (
                                     <PhoneAddressFields
                                         value={address}
                                         onChange={setAddress}
@@ -178,7 +183,7 @@ export default function PhoneNumberCreateModalForm({
                 </ModalBody>
                 <ModalActionsFooter extra={footerExtra}>
                     <>
-                        {country && shouldValidateAddress(country) && (
+                        {country && isAddressValidationRequired && (
                             <>
                                 {step === Step.PhoneInformation && (
                                     <Button
@@ -214,7 +219,7 @@ export default function PhoneNumberCreateModalForm({
                                 )}
                             </>
                         )}
-                        {(!country || !shouldValidateAddress(country)) && (
+                        {(!country || !isAddressValidationRequired) && (
                             <Button
                                 isDisabled={!!validationAlertMessage}
                                 isLoading={isLoading}

@@ -1,3 +1,5 @@
+import { render } from '@testing-library/react'
+
 import { phoneNumbers } from 'fixtures/phoneNumber'
 import { IntegrationType } from 'models/integration/types'
 import {
@@ -8,7 +10,6 @@ import {
     PhoneType,
 } from 'models/phoneNumber/types'
 
-import { validationAlertMessages } from '../constants'
 import {
     buildInternationalNumber,
     countryCode,
@@ -17,12 +18,17 @@ import {
     friendlyName,
     getAddressValidationAlertMessage,
     getAvailableStates,
+    getCountryCapabilityLimitationsMessage,
     getCountryFromPhoneNumber,
+    getFirstAvailableType,
+    getLimitationsMessageForType,
+    getPhoneTypeOptions,
     hasCapability,
     isNewPhoneNumber,
     isTwilioNumber,
     isWhatsAppNumber,
     normalizeNumber,
+    shouldDisplayType,
     shouldValidateAddress,
 } from '../utils'
 
@@ -274,7 +280,18 @@ describe('getCountryFromPhoneNumber()', () => {
 })
 
 describe('shouldValidateAddress()', () => {
-    const countries = [
+    it.each([
+        { country: PhoneCountry.AU, type: PhoneType.Local },
+        { country: PhoneCountry.CZ, type: PhoneType.National },
+        { country: PhoneCountry.FI, type: PhoneType.Mobile },
+        { country: PhoneCountry.IE, type: PhoneType.Local },
+        { country: PhoneCountry.NL, type: PhoneType.Mobile },
+        { country: PhoneCountry.SE, type: PhoneType.Mobile },
+    ])('should validate address for $country $type', ({ country, type }) =>
+        expect(shouldValidateAddress(country, type)).toBe(true),
+    )
+
+    it.each([
         { country: PhoneCountry.US },
         { country: PhoneCountry.CA },
         { country: PhoneCountry.FR },
@@ -282,16 +299,16 @@ describe('shouldValidateAddress()', () => {
         { country: PhoneCountry.DE },
         { country: PhoneCountry.NZ },
         { country: PhoneCountry.AU, type: PhoneType.Mobile },
-    ]
-
-    it.each(countries)('should not validate address', ({ country, type }) =>
+        { country: PhoneCountry.CZ, type: PhoneType.Local },
+        { country: PhoneCountry.FI, type: PhoneType.Local },
+        { country: PhoneCountry.IL, type: PhoneType.Local },
+        { country: PhoneCountry.IL, type: PhoneType.National },
+        { country: PhoneCountry.NL, type: PhoneType.Local },
+        { country: PhoneCountry.NL, type: PhoneType.National },
+        { country: PhoneCountry.SE, type: PhoneType.Local },
+        { country: PhoneCountry.SE, type: PhoneType.National },
+    ])('should not validate address for $country $type', ({ country, type }) =>
         expect(shouldValidateAddress(country, type)).toBe(false),
-    )
-
-    it.each([{ country: PhoneCountry.AU, type: PhoneType.Local }])(
-        'should validate address',
-        ({ country, type }) =>
-            expect(shouldValidateAddress(country, type)).toBe(true),
     )
 })
 
@@ -317,27 +334,171 @@ describe('getAddressValidationAlertMessage', () => {
         expect(getAddressValidationAlertMessage()).toBeNull()
     })
 
-    it('should not return anything when country is AU and type is not mobile', () => {
-        expect(getAddressValidationAlertMessage(PhoneCountry.AU)).toBeNull()
-    })
-
-    it('should return a message when country is AU and type is mobile', () => {
+    it('should return null when self-service is available', () => {
         expect(
-            getAddressValidationAlertMessage(PhoneCountry.AU, PhoneType.Mobile),
-        ).toEqual(validationAlertMessages[PhoneCountry.AU])
+            getAddressValidationAlertMessage(PhoneCountry.US, PhoneType.Local),
+        ).toBeNull()
     })
 
-    it.each([
-        PhoneCountry.GB,
-        PhoneCountry.FR,
-        PhoneCountry.DE,
-        PhoneCountry.NZ,
-    ])(
-        'should return alert message for selected country',
-        (country: PhoneCountry) => {
-            expect(getAddressValidationAlertMessage(country)).toEqual(
-                validationAlertMessages[country],
-            )
-        },
-    )
+    it('should return JSX message for AU Mobile type (not self-service available)', () => {
+        const result = getAddressValidationAlertMessage(
+            PhoneCountry.AU,
+            PhoneType.Mobile,
+        )
+
+        const { getByText } = render(<div>{result}</div>)
+        expect(
+            getByText('Submit a request for Australian mobile phone numbers', {
+                exact: false,
+            }),
+        ).toBeInTheDocument()
+    })
+
+    it('should not return anything when selected type is self-service supported and the others not', () => {
+        expect(
+            getAddressValidationAlertMessage(PhoneCountry.AU, PhoneType.Local),
+        ).toBeNull()
+    })
+
+    it('should return correct message for countries with 2 types supported via typeform', () => {
+        const result = getAddressValidationAlertMessage(
+            PhoneCountry.BE,
+            PhoneType.Local,
+        )
+
+        const { getByText } = render(<div>{result}</div>)
+        expect(
+            getByText(
+                'Submit a request for Belgian local and mobile phone numbers',
+                {
+                    exact: false,
+                },
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('should return correct message for countries with 3 types supported via typeform', () => {
+        const result = getAddressValidationAlertMessage(PhoneCountry.FR)
+
+        const { getByText } = render(<div>{result}</div>)
+        expect(
+            getByText(
+                'Submit a request for French local, national and mobile phone numbers',
+                {
+                    exact: false,
+                },
+            ),
+        ).toBeInTheDocument()
+    })
+})
+
+describe('getPhoneTypeOptions', () => {
+    it('should return empty array when country is not selected', () => {
+        expect(getPhoneTypeOptions()).toEqual([])
+    })
+
+    it('should return correct options for US', () => {
+        expect(getPhoneTypeOptions(PhoneCountry.US)).toEqual([
+            { value: PhoneType.Local, label: 'Local' },
+            { value: PhoneType.TollFree, label: 'Toll-free' },
+        ])
+    })
+})
+
+describe('shouldDisplayType', () => {
+    it('should return false when country is not selected', () => {
+        expect(shouldDisplayType()).toBe(false)
+    })
+
+    it('should return true when country is selected and has self-service types', () => {
+        expect(shouldDisplayType(PhoneCountry.US)).toBe(true)
+    })
+
+    it('should return false when country is selected and has no self-service types', () => {
+        expect(shouldDisplayType(PhoneCountry.NZ)).toBe(false)
+    })
+})
+
+describe('getLimitationsMessageForType', () => {
+    it('should return null if there are no limitations', () => {
+        expect(
+            getLimitationsMessageForType(PhoneCountry.US, PhoneType.Local, {
+                [PhoneType.Local]: {
+                    sms: true,
+                    mms: true,
+                    voice: true,
+                    whatsapp: true,
+                },
+            }),
+        ).toBeNull()
+    })
+
+    it('should return message for a specific type', () => {
+        expect(
+            getLimitationsMessageForType(PhoneCountry.CH, PhoneType.Local, {
+                [PhoneType.Local]: {
+                    sms: false,
+                    mms: true,
+                    voice: false,
+                    whatsapp: true,
+                },
+            }),
+        ).toBe(
+            'Local - Voice and SMS are not currently compatible with local Swiss numbers',
+        )
+    })
+})
+
+describe('getFirstAvailableType', () => {
+    it('should return the first available type', () => {
+        expect(getFirstAvailableType(PhoneCountry.US)).toBe(PhoneType.Local)
+    })
+
+    it('should return undefined if there are no available types', () => {
+        expect(getFirstAvailableType(PhoneCountry.NZ)).toBeUndefined()
+    })
+})
+
+describe('getCountryCapabilityLimitationsMessage', () => {
+    it('should return an empty array if there are no limitations', () => {
+        expect(
+            getCountryCapabilityLimitationsMessage(PhoneCountry.US, {
+                [PhoneType.Local]: {
+                    sms: true,
+                    mms: true,
+                    voice: true,
+                    whatsapp: true,
+                },
+            }),
+        ).toEqual([])
+    })
+
+    it('should return a message for a specific country', () => {
+        expect(
+            getCountryCapabilityLimitationsMessage(PhoneCountry.CA, {
+                [PhoneType.Local]: {
+                    sms: false,
+                    mms: false,
+                    voice: false,
+                    whatsapp: false,
+                },
+                [PhoneType.Mobile]: {
+                    sms: false,
+                    mms: true,
+                    voice: false,
+                    whatsapp: true,
+                },
+                [PhoneType.National]: {
+                    sms: false,
+                    mms: false,
+                    voice: false,
+                    whatsapp: false,
+                },
+            }),
+        ).toEqual([
+            'Voice is not currently compatible with local, mobile and national numbers from Canada',
+            'SMS is not currently compatible with local, mobile and national numbers from Canada',
+            'MMS is not currently compatible with local and national numbers from Canada',
+        ])
+    })
 })

@@ -98,7 +98,9 @@ export enum AddressType {
 
 export type IntegrationPreview = Pick<Integration, 'id' | 'type' | 'name'>
 
-type CountryPhoneCapabilities = { [key in PhoneType]?: PhoneCapabilities }
+export type CountryPhoneCapabilities = {
+    [key in PhoneType]?: PhoneCapabilities
+}
 export type PhoneCapabilitiesLimitationsMap = {
     [key in PhoneCountry]?: CountryPhoneCapabilities
 }
