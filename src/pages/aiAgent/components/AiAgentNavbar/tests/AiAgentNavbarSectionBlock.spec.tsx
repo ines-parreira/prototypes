@@ -100,6 +100,8 @@ describe('AiAgentNavbarSectionBlock', () => {
         useStoreConfigurationMock.mockReturnValue({
             isLoading: false,
             storeConfiguration: defaultStoreConfiguration,
+            isFetched: true,
+            error: null,
         })
         mockUseAiAgentNavigation.mockReturnValue({
             // @ts-ignore We don't test this part
