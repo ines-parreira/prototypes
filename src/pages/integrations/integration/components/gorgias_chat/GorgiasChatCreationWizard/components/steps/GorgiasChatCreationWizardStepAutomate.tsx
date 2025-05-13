@@ -17,7 +17,6 @@ import {
 } from 'models/integration/types'
 import { useGetSelfServiceConfiguration } from 'models/selfServiceConfiguration/queries'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import HelpCenterSelect from 'pages/automate/common/components/HelpCenterSelect'
 import SelfServiceChatIntegrationHomePage from 'pages/automate/common/components/preview/SelfServiceChatIntegrationHomePage'
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 import { useSelfServiceConfigurationUpdate } from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
@@ -33,7 +32,6 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import { StoreNameDropdown } from '../../../GorgiasChatIntegrationAppearance/StoreNameDropdown'
-import useHelpCenterOfShop from '../../../hooks/useHelpCenterOfShop'
 import useThemeAppExtensionInstallation from '../../../hooks/useThemeAppExtensionInstallation'
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
 import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPreview'
@@ -84,11 +82,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
         setCurrentIsOrderManagementEnabled,
     ] = useState<boolean>()
 
-    const [
-        currentIsArticleRecommendationEnabled,
-        setCurrentIsArticleRecommendationEnabled,
-    ] = useState<boolean>()
-
     const appId = gorgiasChatIntegration
         ? gorgiasChatIntegration.meta.app_id
         : undefined
@@ -137,33 +130,17 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
         isLoading: isLoadingSelfServiceConfiguration,
     } = useGetSelfServiceConfiguration(shopName, storeIntegration?.type)
 
-    const { isLoadingHelpCenters, helpCenters } = useHelpCenterOfShop(
-        storeIntegration?.name,
-        storeIntegration?.type,
-    )
-
-    const activeHelpCenters = helpCenters.filter(
-        ({ deactivated_datetime, deleted_datetime }) =>
-            !deactivated_datetime && !deleted_datetime,
-    )
-
-    const hasActiveHelpCenter = !!activeHelpCenters.length
-
-    const [helpCenterId, setHelpCenterId] = useState<number | undefined>()
-
     const isOrderManagementEnabled =
         currentIsOrderManagementEnabled ??
         !!automationSettings?.orderManagement?.enabled
 
     const isArticleRecommendationEnabled =
-        currentIsArticleRecommendationEnabled ??
         !!automationSettings?.articleRecommendation?.enabled
 
     const isFormDisabled =
         !storeIntegration ||
         !automationSettings ||
-        isLoadingSelfServiceConfiguration ||
-        isLoadingHelpCenters
+        isLoadingSelfServiceConfiguration
 
     const isFormSubmitting = isSubmitting || isSubmittingAutomation
 
@@ -172,7 +149,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
 
     const isPristine =
         currentStoreIntegration === undefined &&
-        currentIsArticleRecommendationEnabled === undefined &&
         currentIsOrderManagementEnabled === undefined
 
     const { handleSelfServiceConfigurationUpdate } =
@@ -209,14 +185,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
 
         await handleSelfServiceConfigurationUpdate(
             (draft) => {
-                draft.articleRecommendationHelpCenterId =
-                    isArticleRecommendationEnabled
-                        ? selfServiceConfiguration.articleRecommendationHelpCenterId ||
-                          (activeHelpCenters.length > 1
-                              ? helpCenterId
-                              : activeHelpCenters[0].id)
-                        : selfServiceConfiguration.articleRecommendationHelpCenterId
-
                 draft.trackOrderPolicy = {
                     enabled:
                         storeIntegration?.type === IntegrationType.Shopify
@@ -279,7 +247,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                     : SegmentEvent.ChatWidgetWizardStepCompleted,
                 {
                     isOrderManagementEnabled,
-                    isArticleRecommendationEnabled,
                 },
             )
 
@@ -444,51 +411,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                                 isDisabled={isFormDisabled}
                                 label="Allow customers to track orders from my chat"
                             />
-                        </div>
-                    )}
-                    {(hasActiveHelpCenter ||
-                        isLoadingHelpCenters ||
-                        !storeIntegration) && (
-                        <div className={css.section}>
-                            <div className={css.sectionHeading}>
-                                Article Recommendation
-                            </div>
-                            <ToggleField
-                                onChange={
-                                    setCurrentIsArticleRecommendationEnabled
-                                }
-                                value={isArticleRecommendationEnabled}
-                                isDisabled={isFormDisabled}
-                                label={
-                                    <>
-                                        <span className={css.icon}>
-                                            <i className="material-icons">
-                                                auto_awesome
-                                            </i>
-                                        </span>{' '}
-                                        Recommend articles from your Help Center
-                                        with AI
-                                    </>
-                                }
-                            />
-                            {isArticleRecommendationEnabled &&
-                                !isLoadingSelfServiceConfiguration &&
-                                !isLoadingHelpCenters &&
-                                !selfServiceConfiguration?.articleRecommendationHelpCenterId &&
-                                activeHelpCenters.length > 1 && (
-                                    <div className={css.helpCenterSection}>
-                                        <Label isRequired>
-                                            Connect a Help Center
-                                        </Label>
-                                        <HelpCenterSelect
-                                            setHelpCenterId={setHelpCenterId}
-                                            helpCenter={activeHelpCenters.find(
-                                                ({ id }) => helpCenterId === id,
-                                            )}
-                                            helpCenters={activeHelpCenters}
-                                        />
-                                    </div>
-                                )}
                         </div>
                     )}
                 </>
