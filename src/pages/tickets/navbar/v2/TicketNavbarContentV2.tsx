@@ -169,6 +169,7 @@ export function TicketNavbarContentContainer({
                 element.type === TicketNavbarElementType.View ? (
                     <TicketNavbarViewV2
                         key={`view-${element.data.id}`}
+                        isNested={true}
                         view={element.data}
                         viewCount={viewsCount[element.data.id]}
                     />

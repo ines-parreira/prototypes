@@ -17,11 +17,17 @@ import css from './TicketNavbarViewV2.less'
 
 type Props = {
     className?: string
+    isNested?: boolean
     view: View
     viewCount: number | undefined
 }
 
-export const TicketNavbarViewV2 = ({ className, view, viewCount }: Props) => {
+export const TicketNavbarViewV2 = ({
+    className,
+    isNested,
+    view,
+    viewCount,
+}: Props) => {
     const wrapperRef = useRef<HTMLDivElement>(null)
     const currentUser = useAppSelector((state) => state.currentUser)
     const sections = useAppSelector((state) => state.entities.sections)
@@ -86,6 +92,7 @@ export const TicketNavbarViewV2 = ({ className, view, viewCount }: Props) => {
             <TicketNavbarViewLink
                 ref={wrapperRef}
                 view={view}
+                isNested={isNested}
                 viewCount={viewCount}
                 className={classnames({
                     [navbarCss.isDragged]: isDragging,

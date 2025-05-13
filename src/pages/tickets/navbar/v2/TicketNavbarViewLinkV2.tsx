@@ -31,10 +31,11 @@ type Props = {
     icon?: string
     view: View
     viewCount?: number
+    isNested?: boolean
 }
 
 const TicketNavbarViewLink = (
-    { className, icon, view, viewCount }: Props,
+    { className, icon, view, viewCount, isNested }: Props,
     forwardedRef: ForwardedRef<HTMLDivElement>,
 ) => {
     const shouldRedirectDeprecatedTicketRoutes = useFlag<boolean>(
@@ -75,7 +76,7 @@ const TicketNavbarViewLink = (
             as={Link}
             id={ticketNavbarId}
             ref={ref}
-            displayType={view.section_id != null ? 'indent' : 'default'}
+            displayType={isNested ? 'indent' : 'default'}
             isSelected={isActiveView}
             onClick={() => dispatch(activeViewIdSet(view.id))}
             className={classnames(css.viewLink, className)}

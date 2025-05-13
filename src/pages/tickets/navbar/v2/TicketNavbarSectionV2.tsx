@@ -157,12 +157,15 @@ export function TicketNavbarSectionContainerV2({
                             </Dropdown>
                         )}
                     </div>
-                    <Navigation.SectionContent>
+                    <Navigation.SectionContent
+                        className={css.navBarSectionContentContainer}
+                    >
                         {children.map((view) => (
                             <TicketNavbarViewV2
                                 key={view.id}
                                 view={view}
                                 viewCount={viewsCount[view.id]}
+                                isNested={true}
                             />
                         ))}
                     </Navigation.SectionContent>
