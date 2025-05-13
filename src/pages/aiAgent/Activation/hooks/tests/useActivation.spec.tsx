@@ -288,14 +288,27 @@ describe('useActivation', () => {
         usePublicResourcesListMock.mockReturnValue({ data: undefined } as any)
     })
 
-    describe('activationButton', () => {
+    describe.each([
+        { aiAgentNewActivationXp: true },
+        { aiAgentNewActivationXp: false },
+    ])('activationButton', ({ aiAgentNewActivationXp }) => {
+        beforeEach(() => {
+            mockUseFlag.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.AiAgentActivation) {
+                    return true
+                }
+
+                if (flag === FeatureFlagKey.AiAgentNewActivationXp) {
+                    return aiAgentNewActivationXp
+                }
+                return false
+            })
+        })
+
         it('should render activation button when feature flag is enabled', () => {
             const { result } = renderHookWithRouter()
 
             expect(result.current.activationButton).toBeDefined()
-            expect(
-                result.current.activationButton?.props.progress,
-            ).toBeDefined()
         })
 
         it('should render bordered variant when on overview page', () => {

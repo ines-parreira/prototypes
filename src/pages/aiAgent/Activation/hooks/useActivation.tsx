@@ -4,7 +4,12 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { useNotify } from 'hooks/useNotify'
-import { ActivationManageButton } from 'pages/aiAgent/Activation/components/ActivationManageButton/ActivationManageButton'
+import {
+    ActivationManageButton,
+    type ActivationManageButtonBorderedProps,
+    type ActivationManageButtonFlatProps,
+    type LegacyActivationManageButtonProps,
+} from 'pages/aiAgent/Activation/components/ActivationManageButton/ActivationManageButton'
 import { AiAgentActivationModal } from 'pages/aiAgent/Activation/components/AiAgentActivationModal/AiAgentActivationModal'
 import { EarlyAccessModal } from 'pages/aiAgent/Activation/components/EarlyAccessModal/EarlyAccessModal'
 
@@ -19,6 +24,9 @@ export const useActivation = (
         autoDisplayEarlyAccessDisabled?: boolean
     } = {},
 ) => {
+    const hasAiAgentNewActivationXp = useFlag(
+        FeatureFlagKey.AiAgentNewActivationXp,
+    )
     const { isModalVisible, setIsModalVisible, closeModal } =
         useActivationModalDisclosure()
 
@@ -87,6 +95,35 @@ export const useActivation = (
 
     const showEarlyAccessModal = () => setIsPreviewModalVisible(true)
 
+    let activationButtonProps:
+        | Omit<LegacyActivationManageButtonProps, 'onClick'>
+        | Omit<ActivationManageButtonBorderedProps, 'onClick'>
+        | Omit<ActivationManageButtonFlatProps, 'onClick'>
+    if (hasAiAgentNewActivationXp) {
+        if (pageName === 'overview') {
+            activationButtonProps = {
+                hasAiAgentNewActivationXp: true,
+                variant: 'bordered',
+            } satisfies Omit<ActivationManageButtonBorderedProps, 'onClick'>
+        } else {
+            // Live = we have at least a scope (sales and/or support)
+            const aiAgentIsLive =
+                !!Object.values(storeActivations).at(0)?.configuration?.scopes
+                    .length
+            activationButtonProps = {
+                hasAiAgentNewActivationXp: true,
+                variant: 'flat',
+                status: aiAgentIsLive ? 'live' : 'off',
+            } satisfies Omit<ActivationManageButtonFlatProps, 'onClick'>
+        }
+    } else {
+        activationButtonProps = {
+            hasAiAgentNewActivationXp: false,
+            progress: progressPercentage,
+            variant: pageName === 'overview' ? 'bordered' : 'flat',
+        } satisfies Omit<LegacyActivationManageButtonProps, 'onClick'>
+    }
+
     return {
         isOnNewPlan,
         showEarlyAccessModal,
@@ -140,8 +177,7 @@ export const useActivation = (
                         page: pageName,
                     })
                 }}
-                progress={progressPercentage}
-                variant={pageName === 'overview' ? 'bordered' : 'flat'}
+                {...activationButtonProps}
             />
         ) : null,
         earlyAccessModal: (

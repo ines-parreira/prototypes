@@ -5,7 +5,7 @@
     .button {
         display: flex;
         align-items: center;
-        padding-inline: 16px;
+        padding-inline: @layout-spacing-s;
         background-color: transparent;
         color: var(--neutral-grey-6);
 
@@ -17,10 +17,10 @@
         }
 
         &.bordered {
-            gap: 24px;
+            gap: @layout-spacing-m;
             border: 1px solid var(--neutral-grey-2);
             border-radius: 12px;
-            box-shadow: 0px 3px 20px 0px #0000000a;
+            box-shadow: 0 3px 20px 0 #0000000a;
             height: 64px;
         }
     }
@@ -28,7 +28,7 @@
     .progressStatus {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: @layout-spacing-xs;
     }
 
     .progress {
@@ -58,5 +58,13 @@
             margin-left: 6px;
             font-size: 20px;
         }
+    }
+
+    .tag {
+        display: flex;
+        gap: @layout-spacing-xs;
+        align-items: center;
+        font-weight: 500;
+        color: var(--main-primary);
     }
 }

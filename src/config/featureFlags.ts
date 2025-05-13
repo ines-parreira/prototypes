@@ -12,6 +12,7 @@ export enum FeatureFlagKey {
     AiAgentAssistant = 'ai-agent-assistant',
     AiAgentChat = 'ai-agent-for-chat',
     AiAgentKnowledgeTab = 'ai-agent-knowledge-tab',
+    AiAgentNewActivationXp = 'ai-agent-new-activation-xp',
     AiAgentOnboardingNotification = 'ai-agent-onboarding-notification',
     AiAgentOnboardingWizard = 'ai-agent-onboarding-wizard',
     AiAgentOnboardingMLPreview = 'linear.task_MARCVT-3628.ml-preview',
