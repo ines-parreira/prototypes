@@ -290,7 +290,7 @@ describe('<AiAgentGuidanceContainer />', () => {
 
         renderComponent()
 
-        const browseSuggestions = screen.getByText('Browse Suggestions')
+        const browseSuggestions = screen.getByText('Start from Template')
         userEvent.click(browseSuggestions)
 
         expect(history.push).toHaveBeenCalledWith(
@@ -316,7 +316,7 @@ describe('<AiAgentGuidanceContainer />', () => {
                 screen.queryByRole('button', { name: 'Create From Template' }),
             ).not.toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: 'Browse Suggestions' }),
+                screen.getByRole('button', { name: 'Start from Template' }),
             ).toBeInTheDocument()
             expect(
                 screen.getByRole('button', { name: 'Create Custom Guidance' }),

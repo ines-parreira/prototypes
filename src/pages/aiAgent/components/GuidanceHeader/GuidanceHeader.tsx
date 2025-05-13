@@ -74,7 +74,7 @@ export const GuidanceHeader = ({
 
                             {hasAiGuidanceSuggestions ? (
                                 <Button onClick={onBrowseSuggestions}>
-                                    Browse Suggestions
+                                    Start from Template
                                 </Button>
                             ) : (
                                 <Button

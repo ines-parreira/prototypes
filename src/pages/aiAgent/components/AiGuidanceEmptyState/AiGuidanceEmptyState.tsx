@@ -77,7 +77,7 @@ const AiGuidanceEmptyState = ({ aiGuidances, shopName }: Props) => {
                             Create Custom Guidance
                         </Button>
                         <Button onClick={onBrowseSuggestions}>
-                            Browse Suggestions
+                            Start from Template
                         </Button>
                     </div>
                 </div>
