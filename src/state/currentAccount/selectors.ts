@@ -95,11 +95,6 @@ export const getIsCurrentSubscriptionTrialingOrCanceled = createSelector(
     (trialing, canceled) => trialing || canceled,
 )
 
-export const hasCreditCard = createSelector(
-    getCurrentAccountMeta,
-    (state) => !!state.get('hasCreditCard'),
-)
-
 export const shouldPayWithShopify = createSelector(
     getCurrentAccountMeta,
     (state) => !!state.get('should_pay_with_shopify'),
@@ -122,16 +117,6 @@ export const getShopifyBillingStatus = createSelector(
 
 export const paymentMethod = (state: RootState) =>
     shouldPayWithShopify(state) ? 'shopify' : 'stripe'
-
-export const paymentIsActive = (state: RootState) => {
-    const currentPaymentMethod = paymentMethod(state)
-
-    if (currentPaymentMethod === 'shopify') {
-        return getShopifyBillingStatus(state) === 'active'
-    }
-
-    return hasCreditCard(state)
-}
 
 const createSettingByTypeSelector = (type: string) => {
     return createSelector(getCurrentAccountState, (account) => {
