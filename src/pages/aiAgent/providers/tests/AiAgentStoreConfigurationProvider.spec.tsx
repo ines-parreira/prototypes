@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { account } from 'fixtures/account'
-import { StoreConfiguration } from 'models/aiAgent/types'
+import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock, createContextConsumer } from 'utils/testing'
 
@@ -139,6 +139,7 @@ describe('AiAgentStoreConfigurationProvider', () => {
         ).toBeUndefined()
 
         const createConfigurationPayload = {
+            scopes: [AiAgentScope.Support],
             deactivatedDatetime: null,
             emailChannelDeactivatedDatetime: null,
             chatChannelDeactivatedDatetime: null,

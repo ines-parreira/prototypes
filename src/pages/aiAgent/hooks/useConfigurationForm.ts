@@ -11,6 +11,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -39,6 +40,13 @@ export const useConfigurationForm = ({
     const isOnboardingWizardPage = window.location.pathname.includes(
         routes.onboardingWizard,
     )
+
+    const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
+    const hasNewAutomatePlan = (currentAutomatePlan?.generation ?? 0) >= 6
+    const isAiSalesBetaUser = !!useFlags()[FeatureFlagKey.AiSalesAgentBeta]
+    const aiSalesAgentEmailEnabled =
+        !!useFlags()[FeatureFlagKey.AiSalesAgentActivationEmailSettings]
+
     const isAiAgentChatEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentChat]
 
@@ -161,6 +169,11 @@ export const useConfigurationForm = ({
             shopName,
             validFormValues,
             storeConfiguration,
+            {
+                hasNewAutomatePlan,
+                isAiSalesBetaUser,
+                aiSalesAgentEmailEnabled,
+            },
         )
 
         let res

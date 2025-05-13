@@ -65,7 +65,11 @@ export const ChannelsFormComponent = ({
         useFlags()[FeatureFlagKey.AiAgentChat]
 
     const isAiAgentActivationEnabled =
-        useFlags()[FeatureFlagKey.AiAgentActivation]
+        !!useFlags()[FeatureFlagKey.AiAgentActivation]
+    const hasAiAgentNewActivationXp =
+        !!useFlags()[FeatureFlagKey.AiAgentNewActivationXp]
+
+    const showToggles = !isAiAgentActivationEnabled || hasAiAgentNewActivationXp
 
     const isSettingsRevampEnabled =
         useFlags()[FeatureFlagKey.AiAgentSettingsRevamp]
@@ -89,7 +93,8 @@ export const ChannelsFormComponent = ({
                             deactivatedDatetime={chatChannelDeactivatedDatetime}
                         />
                     )}
-                    {!isAiAgentActivationEnabled && (
+                    {(!isAiAgentActivationEnabled ||
+                        hasAiAgentNewActivationXp) && (
                         <div className={css.sectionBlock}>
                             <ChannelToggleInput
                                 isToggled={isChatChannelEnabled}
@@ -151,7 +156,7 @@ export const ChannelsFormComponent = ({
                         deactivatedDatetime={emailChannelDeactivatedDatetime}
                     />
                 )}
-                {!isAiAgentActivationEnabled && (
+                {showToggles && (
                     <div className={css.sectionBlock}>
                         <ChannelToggleInput
                             isToggled={isEmailChannelEnabled}

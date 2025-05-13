@@ -321,6 +321,7 @@ describe('AiAgentKnowledgeContainer', () => {
             storeName: 'test-store',
             helpCenter: undefined,
             wizard: undefined,
+            scopes: [],
         })
     })
 

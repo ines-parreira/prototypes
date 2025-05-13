@@ -193,6 +193,24 @@ describe('ChannelsFormComponent', () => {
             screen.getByText('signature form')
         },
     )
+
+    it('should render email/chat toggle when AiAgentActivation=true and AiAgentNewActivationXp=true', () => {
+        ;(useFlags as jest.Mock).mockReturnValue({
+            [FeatureFlagKey.AiAgentChat]: true,
+            [FeatureFlagKey.AiAgentActivation]: true,
+            [FeatureFlagKey.AiAgentNewActivationXp]: true,
+        })
+
+        render(
+            <BrowserRouter>
+                <ChannelsFormComponent {...mockProps} />
+            </BrowserRouter>,
+        )
+
+        screen.getByText('channel toggle chat')
+        screen.getByText('channel toggle email')
+    })
+
     it('should hide email and chat toggles when AiAgentActivation feature flag is enabled and ai agent chat is enabled', () => {
         // Disable the chat feature flag
         ;(useFlags as jest.Mock).mockReturnValue({
@@ -223,6 +241,7 @@ describe('ChannelsFormComponent', () => {
         screen.getByText('email form')
         screen.getByText('signature form')
     })
+
     it('does not render ai agent chat section when chat feature flag is disabled', () => {
         // Disable the chat feature flag
         ;(useFlags as jest.Mock).mockReturnValue({

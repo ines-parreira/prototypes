@@ -12,11 +12,13 @@ import thunk from 'redux-thunk'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import * as billingFixtures from 'fixtures/billing'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { IntegrationType } from 'models/integration/types'
 import { applyMockActivationHook } from 'pages/aiAgent/test/mock-activation-hooks.utils'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
+import { initialState } from 'state/billing/reducers'
 import { getHasAutomate } from 'state/billing/selectors'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock, renderWithRouter } from 'utils/testing'
@@ -32,6 +34,7 @@ import { useAiAgentStoreConfigurationContext } from '../providers/AiAgentStoreCo
 
 jest.mock('state/billing/selectors', () => ({
     __esModule: true,
+    ...jest.requireActual('state/billing/selectors'),
     getHasAutomate: jest.fn(),
 }))
 const mockGetHasAutomate = jest.mocked(getHasAutomate)
@@ -135,6 +138,7 @@ const getState = (accountId?: number) => ({
     currentAccount: fromJS(
         accountId !== undefined ? { ...account, id: accountId } : account,
     ),
+    billing: initialState.mergeDeep(billingFixtures.billingState),
     integrations: fromJS({
         integrations: [
             {

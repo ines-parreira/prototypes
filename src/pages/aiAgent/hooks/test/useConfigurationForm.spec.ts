@@ -9,6 +9,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { useConfigurationForm } from 'pages/aiAgent/hooks/useConfigurationForm'
+import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import { notify } from 'state/notifications/actions'
 import { StoreState } from 'state/types'
 import { assumeMock } from 'utils/testing'
@@ -102,11 +103,17 @@ describe('useConfigurationForm', () => {
             defaultStoreConfigurationContextMock,
         )
 
-        mockUseAppSelector.mockImplementation((selector) =>
-            selector({
+        mockUseAppSelector.mockImplementation((selector) => {
+            if (selector === getCurrentAutomatePlan) {
+                return {
+                    generation: 6,
+                }
+            }
+
+            return selector({
                 currentAccount: fromJS(account),
-            } as unknown as StoreState),
-        )
+            } as unknown as StoreState)
+        })
 
         mockUseStoreConfigurationMutation.mockReturnValue({
             isLoading: false,

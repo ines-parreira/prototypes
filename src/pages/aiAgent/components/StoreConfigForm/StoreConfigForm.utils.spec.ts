@@ -74,6 +74,11 @@ describe('getStoreConfigurationFromFormValues', () => {
             getStoreConfigurationFixture({
                 excludedTopics: ['topic1', 'topic2'],
             }),
+            {
+                hasNewAutomatePlan: false,
+                isAiSalesBetaUser: false,
+                aiSalesAgentEmailEnabled: false,
+            },
         )
 
         expect(filterNonNull).toHaveBeenCalled()
@@ -82,6 +87,7 @@ describe('getStoreConfigurationFromFormValues', () => {
             ...formValuesPartial,
             storeName,
             customToneOfVoiceGuidance: null,
+            scopes: [],
         })
     })
 

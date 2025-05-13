@@ -152,6 +152,7 @@ export const INITIAL_FORM_VALUES = {
     helpCenter: null,
     monitoredChatIntegrations: [],
     customFieldIds: [],
+    scopes: [],
 }
 
 export const PLAYGROUND_PROMPT_CONTENT: Record<PlaygroundPromptType, string> = {

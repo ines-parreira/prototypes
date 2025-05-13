@@ -18,6 +18,7 @@ import { useStoreConfigurationMutation } from 'pages/aiAgent/hooks/useStoreConfi
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import history from 'pages/history'
+import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { StoreState } from 'state/types'
@@ -132,11 +133,17 @@ describe('useAiAgentOnboardingWizard', () => {
             storeConfigurationContextMock,
         )
         mockUseNavigateWizardSteps.mockReturnValue(mockNavigateWizardSteps)
-        mockUseAppSelector.mockImplementation((selector) =>
-            selector({
+        mockUseAppSelector.mockImplementation((selector) => {
+            if (selector === getCurrentAutomatePlan) {
+                return {
+                    generation: 6,
+                }
+            }
+
+            return selector({
                 currentAccount: fromJS(account),
-            } as unknown as StoreState),
-        )
+            } as unknown as StoreState)
+        })
         mockUseGetOrCreateSnippetHelpCenter.mockReturnValue({
             helpCenter: null,
             isLoading: false,
