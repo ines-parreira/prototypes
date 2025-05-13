@@ -253,6 +253,7 @@ describe('resources', () => {
                 undefined,
                 {
                     ingested_resource_id: 1,
+                    help_center_id,
                 },
                 {},
             )
@@ -268,6 +269,7 @@ describe('resources', () => {
                 client as unknown as HelpCenterClient,
                 {
                     ingested_resource_id: 1,
+                    help_center_id,
                 },
                 {
                     status: 'enabled',

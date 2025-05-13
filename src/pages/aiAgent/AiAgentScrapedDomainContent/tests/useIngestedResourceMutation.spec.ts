@@ -68,7 +68,10 @@ describe('useIngestedResourceMutation', () => {
 
         expect(mockedUpdateIngestedResourceMutateAsync).toHaveBeenCalledWith([
             undefined,
-            mockedIngestedResourceId,
+            {
+                help_center_id: mockedHelpCenterId,
+                ingested_resource_id: mockedIngestedResourceId,
+            },
             { status: IngestedResourceStatus.Disabled },
         ])
         expect(mockedUseQueryClient.invalidateQueries).toHaveBeenCalledWith({

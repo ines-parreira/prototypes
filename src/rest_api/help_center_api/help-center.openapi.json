@@ -123,6 +123,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
+                        "description": "`help_center_id` parameter must be provided and must be a valid number.",
                         "schema": { "type": "number" }
                     },
                     {
@@ -284,6 +285,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
+                        "description": "`help_center_id` parameter must be provided and must be a valid number.",
                         "schema": { "type": "number" }
                     },
                     {
@@ -437,6 +439,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
+                        "description": "`help_center_id` parameter must be provided and must be a valid number.",
                         "schema": { "type": "number" }
                     }
                 ],
@@ -501,6 +504,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
+                        "description": "`help_center_id` parameter must be provided and must be a valid number.",
                         "schema": { "type": "number" }
                     }
                 ],
@@ -613,6 +617,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
+                        "description": "`help_center_id` parameter must be provided and must be a valid number.",
                         "schema": { "type": "number" }
                     },
                     {
@@ -660,6 +665,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
+                        "description": "`help_center_id` parameter must be provided and must be a valid number.",
                         "schema": { "type": "number" }
                     }
                 ],
@@ -677,6 +683,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
+                        "description": "`help_center_id` parameter must be provided and must be a valid number.",
                         "schema": { "type": "number" }
                     },
                     {
@@ -3986,6 +3993,12 @@
                         "required": true,
                         "in": "path",
                         "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -4086,55 +4099,6 @@
                 "tags": ["ingestion"]
             }
         },
-        "/api/help-center/help-centers/{help_center_id}/ingestion/{ingestion_log_id}": {
-            "put": {
-                "operationId": "updateIngestionLog",
-                "summary": "Update ingestion log",
-                "parameters": [
-                    {
-                        "name": "help_center_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": { "type": "number" }
-                    },
-                    {
-                        "name": "ingestion_log_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": { "type": "number" }
-                    },
-                    {
-                        "name": "account_id",
-                        "required": false,
-                        "in": "query",
-                        "schema": { "type": "string" }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdateIngestionLogDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ArticleIngestionLogDto"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["ingestion"]
-            }
-        },
         "/api/help-center/ingestions/product-page-ingested": {
             "post": {
                 "operationId": "ingestEvent",
@@ -4151,6 +4115,25 @@
                     }
                 },
                 "responses": { "201": { "description": "" } },
+                "tags": ["ingestion"]
+            }
+        },
+        "/api/help-center/ingestions/fail": {
+            "post": {
+                "operationId": "handleIngestionFail",
+                "summary": "Webhook integration with Apify to update status",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ApifyFailedIngestionDto"
+                            }
+                        }
+                    }
+                },
+                "responses": { "204": { "description": "" } },
                 "tags": ["ingestion"]
             }
         },
@@ -4636,11 +4619,11 @@
                     "id": { "type": "number" },
                     "url": { "type": "string", "nullable": true },
                     "domain": { "type": "string", "nullable": true },
-                    "source": { "enum": ["domain", "url"], "type": "string" },
+                    "source": { "type": "string", "enum": ["domain", "url"] },
                     "status": {
+                        "type": "string",
                         "nullable": true,
-                        "enum": ["DISABLED", "FAILED", "PENDING", "SUCCESSFUL"],
-                        "type": "string"
+                        "enum": ["DISABLED", "FAILED", "PENDING", "SUCCESSFUL"]
                     },
                     "meta": {
                         "$ref": "#/components/schemas/MLSnippetsIngestionMeta"
@@ -8861,16 +8844,6 @@
                 "properties": { "scraping_id": { "type": "string" } },
                 "required": ["scraping_id"]
             },
-            "UpdateIngestionLogDto": {
-                "type": "object",
-                "properties": {
-                    "status": {
-                        "type": "string",
-                        "nullable": true,
-                        "enum": ["DISABLED", "FAILED", "PENDING", "SUCCESSFUL"]
-                    }
-                }
-            },
             "ProductPageIngestedDto": {
                 "type": "object",
                 "properties": {
@@ -8889,6 +8862,11 @@
                     "title",
                     "content"
                 ]
+            },
+            "ApifyFailedIngestionDto": {
+                "type": "object",
+                "properties": { "defaultDatasetId": { "type": "string" } },
+                "required": ["defaultDatasetId"]
             },
             "MailtoReplacementConfigGetDto": {
                 "type": "object",

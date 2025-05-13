@@ -5,10 +5,15 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { CONTENT_TYPE } from '../constant'
 import ScrapedDomainContentView from '../ScrapedDomainContentView'
 
+const mockDispatch = jest.fn()
+jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
+jest.mock('state/notifications/actions')
+
 const mockOnSelect = jest.fn()
 const mockOnFetchNextItems = jest.fn()
 const mockOnFetchPrevItems = jest.fn()
 const mockOnSearch = jest.fn()
+const mockOnUpdateStatus = jest.fn().mockResolvedValue(undefined)
 
 const mockContent = [
     {
@@ -30,6 +35,7 @@ const setup = (propsOverride = {}) => {
         fetchPrevItems: mockOnFetchPrevItems,
         searchValue: '',
         onSearch: mockOnSearch,
+        onUpdateStatus: mockOnUpdateStatus,
     }
 
     return render(
@@ -65,6 +71,13 @@ describe('ScrapedDomainContentView', () => {
         const row = screen.getByText(mockContent[0].title)
         fireEvent.click(row)
         expect(mockOnSelect).toHaveBeenCalledWith(mockContent[0])
+    })
+
+    it('calls onUpdateStatus when toggle is changed', () => {
+        setup()
+        const toggle = screen.getByRole('switch')
+        fireEvent.click(toggle)
+        expect(mockOnUpdateStatus).toHaveBeenCalled()
     })
 
     it('renders empty state for Question page when there is no content', () => {

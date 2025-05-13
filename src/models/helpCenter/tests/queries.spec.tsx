@@ -594,6 +594,7 @@ describe('queries', () => {
                 undefined,
                 {
                     ingested_resource_id: 34,
+                    help_center_id: helpCenterId,
                 },
                 { status: 'enabled' },
             ])

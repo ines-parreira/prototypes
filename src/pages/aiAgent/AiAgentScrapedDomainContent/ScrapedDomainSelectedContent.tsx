@@ -45,7 +45,7 @@ type SharedProps = {
     onUpdateStatus?: (
         id: number,
         { status }: { status: IngestedResourceStatus },
-    ) => void
+    ) => Promise<void>
 }
 
 type Props = (QuestionProps | ProductProps) & SharedProps

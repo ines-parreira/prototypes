@@ -83,7 +83,7 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
         domain: mockedStoreDomain,
         url: mockedStoreUrl,
     })
-    const mockedUpdateIngestedResource = jest.fn()
+    const mockedUpdateIngestedResource = jest.fn().mockResolvedValue(undefined)
 
     beforeEach(() => {
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -219,8 +219,7 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
         expect(screen.getByText('No questions generated')).toBeInTheDocument()
     })
 
-    // TO DO: enable this test when this task (https://linear.app/gorgias/issue/AIKNL-287/createremove-a-resource-fromin-ml-recommender-when-ingested-resource) is implemented
-    xit('should open side panel on row click (handleOnSelect)', async () => {
+    it('should open side panel on row click (handleOnSelect)', async () => {
         const mockedListIngestedResources = getIngestedResourcesListResponse({
             page: 1,
             itemCount: 5,
@@ -251,8 +250,7 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
         expect(screen.getByText('View source URLs')).toBeInTheDocument()
     })
 
-    // TO DO: enable this test when this task (https://linear.app/gorgias/issue/AIKNL-287/createremove-a-resource-fromin-ml-recommender-when-ingested-resource) is implemented
-    xit('should call updateIngestedResource when enabled toggle button is clicked', () => {
+    it('should call updateIngestedResource when enabled toggle button is clicked', () => {
         const mockedListIngestedResources = getIngestedResourcesListResponse({
             page: 1,
             itemCount: 5,

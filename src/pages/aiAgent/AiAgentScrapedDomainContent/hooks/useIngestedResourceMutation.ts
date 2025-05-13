@@ -44,7 +44,10 @@ export const useIngestedResourceMutation = ({
             try {
                 await updatedIngestedResourceMutateAsync([
                     undefined,
-                    ingestedResourceId,
+                    {
+                        help_center_id: helpCenterId,
+                        ingested_resource_id: ingestedResourceId,
+                    },
                     updateFields,
                 ])
             } catch (error) {
@@ -58,7 +61,7 @@ export const useIngestedResourceMutation = ({
                 throw error
             }
         },
-        [updatedIngestedResourceMutateAsync],
+        [updatedIngestedResourceMutateAsync, helpCenterId],
     )
 
     return {

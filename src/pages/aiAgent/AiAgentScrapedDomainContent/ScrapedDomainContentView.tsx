@@ -1,6 +1,11 @@
+import { useEffect, useState } from 'react'
+
 import classnames from 'classnames'
 import Skeleton from 'react-loading-skeleton'
 
+import { ToggleField } from '@gorgias/merchant-ui-kit'
+
+import useAppDispatch from 'hooks/useAppDispatch'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -8,6 +13,8 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import {
     CONTENT_TYPE,
@@ -34,7 +41,7 @@ type Props<T> = {
     onUpdateStatus?: (
         id: number,
         { status }: { status: IngestedResourceStatus },
-    ) => void
+    ) => Promise<void>
 }
 
 const EmptyStateView = ({ pageType }: { pageType: string }) => {
@@ -67,29 +74,61 @@ function ScrapedDomainContentView<
     fetchPrevItems,
     searchValue,
     onSearch,
+    onUpdateStatus,
 }: Props<T>) {
+    const dispatch = useAppDispatch()
     const description =
         pageType === CONTENT_TYPE.QUESTION
             ? 'AI Agent automatically generates questions and answers from your website content to use as knowledge.'
             : 'AI Agent uses product details from your Shopify app and store website.'
 
-    // TO DO: uncomment when this task (https://linear.app/gorgias/issue/AIKNL-287/createremove-a-resource-fromin-ml-recommender-when-ingested-resource) is implemented
-    // const handleToggleChange = ({
-    //     id,
-    //     currentStatus,
-    // }: {
-    //     id: number
-    //     currentStatus?: string
-    // }) => {
-    //     if (onUpdateStatus) {
-    //         onUpdateStatus(id, {
-    //             status:
-    //                 currentStatus === IngestedResourceStatus.Disabled
-    //                     ? IngestedResourceStatus.Enabled
-    //                     : IngestedResourceStatus.Disabled,
-    //         })
-    //     }
-    // }
+    const [questionStatusMap, setQuestionStatusMap] = useState<
+        Record<number, string>
+    >({})
+
+    useEffect(() => {
+        const initialStatusMap = contents.reduce(
+            (acc, item) => {
+                acc[item.id] = item.status || IngestedResourceStatus.Disabled
+                return acc
+            },
+            {} as Record<number, string>,
+        )
+        setQuestionStatusMap(initialStatusMap)
+    }, [contents])
+
+    const handleToggleChange = (content: T) => {
+        const newStatus =
+            content.status === IngestedResourceStatus.Disabled
+                ? IngestedResourceStatus.Enabled
+                : IngestedResourceStatus.Disabled
+
+        setQuestionStatusMap((prev) => ({
+            ...prev,
+            [content.id]: newStatus,
+        }))
+
+        if (onUpdateStatus) {
+            onUpdateStatus(content.id, {
+                status: newStatus,
+            })
+                .then(() => {
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Success,
+                            message: 'Successfully updated question',
+                            showDismissButton: true,
+                        }),
+                    )
+                })
+                .catch(() => {
+                    setQuestionStatusMap((prev) => ({
+                        ...prev,
+                        [content.id]: content.status as IngestedResourceStatus,
+                    }))
+                })
+        }
+    }
     const displayEmptyState = !isLoading && contents?.length === 0
 
     const ProductImage = ({ image }: { image: string | undefined }) => {
@@ -104,28 +143,6 @@ function ScrapedDomainContentView<
         }
         return <div className={classnames(css.productImage, css.color)} />
     }
-
-    // TO DO: uncomment when this task (https://linear.app/gorgias/issue/AIKNL-287/createremove-a-resource-fromin-ml-recommender-when-ingested-resource) is implemented
-    // const QuestionToggle = ({ content }: { content: T }) => {
-    //     return (
-    //         <div
-    //             onClick={(e) => {
-    //                 e.stopPropagation()
-    //             }}
-    //         >
-    //             <ToggleField
-    //                 value={content.status === IngestedResourceStatus.Enabled}
-    //                 onChange={() =>
-    //                     handleToggleChange({
-    //                         id: content.id,
-    //                         currentStatus: content.status,
-    //                     })
-    //                 }
-    //                 className={css.toggleInput}
-    //             />
-    //         </div>
-    //     )
-    // }
 
     return (
         <>
@@ -175,8 +192,28 @@ function ScrapedDomainContentView<
                                     onClick={() => onSelect(content)}
                                 >
                                     <BodyCell>
-                                        {pageType ===
-                                        CONTENT_TYPE.QUESTION ? null : (
+                                        {pageType === CONTENT_TYPE.QUESTION ? (
+                                            <div
+                                                onClick={(e) => {
+                                                    e.stopPropagation()
+                                                }}
+                                            >
+                                                <ToggleField
+                                                    value={
+                                                        questionStatusMap[
+                                                            content.id
+                                                        ] ===
+                                                        IngestedResourceStatus.Enabled
+                                                    }
+                                                    onChange={() => {
+                                                        handleToggleChange(
+                                                            content,
+                                                        )
+                                                    }}
+                                                    className={css.toggleInput}
+                                                />
+                                            </div>
+                                        ) : (
                                             <ProductImage
                                                 image={content.image?.src}
                                             />
