@@ -4,6 +4,7 @@ import { ReportsIDs } from 'pages/stats/dashboards/constants'
 import { ChartType, ReportConfig } from 'pages/stats/dashboards/types'
 import { AGENT_PERFORMANCE_SECTION_TITLE } from 'pages/stats/support-performance/agents/AgentsTableChart'
 import { TopAIIntentsOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TopAIIntentsOverTimeChart'
+import { TotalProductSentimentOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TotalProductSentimentOverTimeChart'
 import { TICKET_VOLUME_CHART_LABEL } from 'pages/stats/voice-of-customer/product-insights/constants'
 import { ProductInsightsTableChart } from 'pages/stats/voice-of-customer/product-insights/placeholder/ProductInsightsTableChart'
 import { TicketVolumeChart } from 'pages/stats/voice-of-customer/product-insights/placeholder/TicketVolumeChart'
@@ -12,10 +13,6 @@ import {
     TOP_PRODUCTS_PER_INTENT_TITLE,
     TopProductsPerIntentChart,
 } from 'pages/stats/voice-of-customer/product-insights/placeholder/TopProductsPerIntentChart'
-import {
-    CHART_TITLE,
-    TotalProductSentimentOverTimeChartPlaceholder,
-} from 'pages/stats/voice-of-customer/product-insights/placeholder/TotalProductSentimentOverTimeChartPlaceholder'
 import {
     ProductInsightsChart,
     ProductInsightsChartConfig,
@@ -43,15 +40,18 @@ export const ProductInsightsPlaceholderReportConfig: ReportConfig<ProductInsight
         reportName: AGENT_PERFORMANCE_SECTION_TITLE,
         reportPath: VOICE_OF_CUSTOMER_ROUTES.PRODUCT_INSIGHTS,
         charts: {
-            [ProductInsightsChart.TotalProductSentimentOverTimeChartPlaceholder]:
-                {
-                    chartComponent:
-                        TotalProductSentimentOverTimeChartPlaceholder,
-                    label: CHART_TITLE,
-                    description: 'Total product sentiment over time',
-                    csvProducer: null,
-                    chartType: ChartType.Graph,
-                },
+            [ProductInsightsChart.TotalProductSentimentOverTimeChart]: {
+                chartComponent: TotalProductSentimentOverTimeChart,
+                label: ProductInsightsChartConfig[
+                    ProductInsightsChart.TotalProductSentimentOverTimeChart
+                ].title,
+                description:
+                    ProductInsightsChartConfig[
+                        ProductInsightsChart.TotalProductSentimentOverTimeChart
+                    ].hint,
+                csvProducer: null,
+                chartType: ChartType.Graph,
+            },
             [ProductInsightsChart.TicketVolumeChart]: {
                 chartComponent: TicketVolumeChart,
                 label: 'Change in ticket volume',

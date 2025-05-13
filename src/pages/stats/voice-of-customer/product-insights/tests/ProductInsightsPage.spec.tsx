@@ -11,6 +11,7 @@ import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import { ChartsActionMenu } from 'pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import { TopAIIntentsOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TopAIIntentsOverTimeChart'
+import { TotalProductSentimentOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TotalProductSentimentOverTimeChart'
 import { ProductInsightsEditColumns } from 'pages/stats/voice-of-customer/product-insights/placeholder/ProductInsightsEditColumns'
 import { TopProductsPerIntentChart } from 'pages/stats/voice-of-customer/product-insights/placeholder/TopProductsPerIntentChart'
 import {
@@ -43,6 +44,13 @@ jest.mock(
     'pages/stats/voice-of-customer/product-insights/placeholder/TopProductsPerIntentChart',
 )
 const TopProductsPerIntentChartMock = assumeMock(TopProductsPerIntentChart)
+jest.mock(
+    'pages/stats/voice-of-customer/product-insights/components/TotalProductSentimentOverTimeChart',
+)
+const TotalProductSentimentOverTimeChartMock = assumeMock(
+    TotalProductSentimentOverTimeChart,
+)
+
 describe('ProductInsightsPage', () => {
     const statsFilters = {
         period: {
@@ -55,6 +63,7 @@ describe('ProductInsightsPage', () => {
     }
 
     beforeEach(() => {
+        TotalProductSentimentOverTimeChartMock.mockImplementation(() => <div />)
         TopProductsPerIntentChartMock.mockImplementation(() => <div />)
         ProductInsightsEditColumnsMock.mockImplementation(() => <div />)
         DrillDownModalMock.mockImplementation(() => <div />)

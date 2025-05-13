@@ -39,7 +39,7 @@ export const ProductInsightsPlaceholderReport = () => {
                 <DashboardGridCell size={getGridCellSize(6)}>
                     <DashboardComponent
                         chart={
-                            ProductInsightsChart.TotalProductSentimentOverTimeChartPlaceholder
+                            ProductInsightsChart.TotalProductSentimentOverTimeChart
                         }
                         config={ProductInsightsPlaceholderReportConfig}
                     />
