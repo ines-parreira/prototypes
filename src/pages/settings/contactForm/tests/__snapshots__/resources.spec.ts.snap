@@ -25,9 +25,6 @@ exports[`createContactForm rejects if the server returns an error 2`] = `
       "maxContentLength": -1,
       "method": "post",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -76,9 +73,6 @@ exports[`createContactForm resolves with a created contact form on success 1`] =
       "maxContentLength": -1,
       "method": "post",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -127,9 +121,6 @@ exports[`createPageEmbedment rejects if the server returns an error 2`] = `
       "maxContentLength": -1,
       "method": "post",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -178,9 +169,6 @@ exports[`createPageEmbedment resolves with a created page embedment on success 1
       "maxContentLength": -1,
       "method": "post",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -222,9 +210,6 @@ exports[`getContactForms rejects if the server returns an error 2`] = `
       "maxContentLength": -1,
       "method": "get",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -272,9 +257,6 @@ exports[`getContactForms resolves with a list of contact forms on success 1`] = 
       "maxContentLength": -1,
       "method": "get",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -322,9 +304,6 @@ exports[`getPageEmbedments rejects if the server returns an error 2`] = `
       "maxContentLength": -1,
       "method": "get",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -372,9 +351,6 @@ exports[`getPageEmbedments resolves with a list of page embedments on success 1`
       "maxContentLength": -1,
       "method": "get",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -422,9 +398,6 @@ exports[`getShopifyPages rejects if the server returns an error 2`] = `
       "maxContentLength": -1,
       "method": "get",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -472,9 +445,6 @@ exports[`getShopifyPages resolves with a list of shopify pages on success 1`] = 
       "maxContentLength": -1,
       "method": "get",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
       "timeout": 0,
       "transformRequest": [
         [Function],

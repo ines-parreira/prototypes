@@ -47,7 +47,6 @@ import { useEnableArticleRecommendation } from '../hooks/useEnableArticleRecomme
 import { useAbilityChecker, useHelpCenterApi } from '../hooks/useHelpCenterApi'
 import { useShopifyStoreWithChatConnectionsOptions } from '../hooks/useShopifyStoreWithChatConnectionsOptions'
 import { useSupportedLocales } from '../providers/SupportedLocales'
-import { HelpCenterTheme } from '../types'
 import { getNewHelpCenterTranslation, slugify } from '../utils/helpCenter.utils'
 import { getLocaleSelectOptions } from '../utils/localeSelectOptions'
 import {
@@ -62,12 +61,7 @@ import css from './HelpCenterNewView.less'
 
 type Props = ConnectedProps<typeof connector>
 
-type CreateHelpCenterPayload = CreateHelpCenterDto & {
-    theme: HelpCenterTheme
-    primary_color: string
-}
-
-const initialFormState: CreateHelpCenterPayload = {
+const initialFormState: CreateHelpCenterDto = {
     name: '',
     subdomain: '',
     default_locale: HELP_CENTER_DEFAULT_LOCALE,
@@ -110,15 +104,13 @@ const HelpCenterNewView = ({
     const defaultEmailIntegration =
         emailIntegrations.find(isBaseEmailIntegration) ?? emailIntegrations[0]
 
-    const [newHelpCenter, setNewHelpCenter] = useState<CreateHelpCenterPayload>(
-        {
-            ...initialFormState,
-            email_integration: {
-                email: defaultEmailIntegration?.meta.address,
-                id: defaultEmailIntegration?.id,
-            },
+    const [newHelpCenter, setNewHelpCenter] = useState<CreateHelpCenterDto>({
+        ...initialFormState,
+        email_integration: {
+            email: defaultEmailIntegration?.meta.address,
+            id: defaultEmailIntegration?.id,
         },
-    )
+    })
 
     const subdomainError = useMemo(
         () =>

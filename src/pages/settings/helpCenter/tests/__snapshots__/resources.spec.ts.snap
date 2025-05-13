@@ -25,9 +25,6 @@ exports[`createPageEmbedment rejects if the server returns an error 2`] = `
       "maxContentLength": -1,
       "method": "post",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -76,9 +73,6 @@ exports[`createPageEmbedment resolves with a created page embedment on success 1
       "maxContentLength": -1,
       "method": "post",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -120,9 +114,6 @@ exports[`getAIGeneratedArticlesByHelpCenterAndStore rejects if the server return
       "maxContentLength": -1,
       "method": "get",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -170,9 +161,6 @@ exports[`getAIGeneratedArticlesByHelpCenterAndStore resolves with a list of AI a
       "maxContentLength": -1,
       "method": "get",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -221,9 +209,6 @@ exports[`getArticleTemplate rejects if the server returns an error 2`] = `
       "method": "get",
       "params": {
         "locale": "en-US",
-      },
-      "paramsSerializer": {
-        "serialize": [Function],
       },
       "timeout": 0,
       "transformRequest": [
@@ -274,9 +259,6 @@ exports[`getArticleTemplate resolves with an article template on success 1`] = `
       "params": {
         "locale": "en-US",
       },
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -325,9 +307,6 @@ exports[`getArticleTemplates rejects if the server returns an error 2`] = `
       "method": "get",
       "params": {
         "locale": "en-US",
-      },
-      "paramsSerializer": {
-        "serialize": [Function],
       },
       "timeout": 0,
       "transformRequest": [
@@ -378,9 +357,6 @@ exports[`getArticleTemplates resolves with a list of article templates on succes
       "params": {
         "locale": "en-US",
       },
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -428,9 +404,6 @@ exports[`getPageEmbedments rejects if the server returns an error 2`] = `
       "maxContentLength": -1,
       "method": "get",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -478,9 +451,6 @@ exports[`getPageEmbedments resolves with a list of page embedments on success 1`
       "maxContentLength": -1,
       "method": "get",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -528,9 +498,6 @@ exports[`getShopifyPages rejects if the server returns an error 2`] = `
       "maxContentLength": -1,
       "method": "get",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -578,9 +545,6 @@ exports[`getShopifyPages resolves with a list of shopify pages on success 1`] = 
       "maxContentLength": -1,
       "method": "get",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
       "timeout": 0,
       "transformRequest": [
         [Function],

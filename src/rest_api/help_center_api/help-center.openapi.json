@@ -4071,7 +4071,18 @@
                         }
                     }
                 },
-                "responses": { "201": { "description": "" } },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StartIngestionResponseDto"
+                                }
+                            }
+                        }
+                    }
+                },
                 "tags": ["ingestion"]
             }
         },
@@ -5732,9 +5743,9 @@
                     },
                     "primary_color": { "type": "string", "nullable": true },
                     "theme": {
+                        "type": "string",
                         "nullable": true,
-                        "default": "light",
-                        "type": "object"
+                        "default": "light"
                     },
                     "shop_name": { "type": "string", "nullable": true },
                     "self_service_deactivated": {
@@ -6483,9 +6494,9 @@
                     },
                     "primary_color": { "type": "string", "nullable": true },
                     "theme": {
+                        "type": "string",
                         "nullable": true,
-                        "default": "light",
-                        "type": "object"
+                        "default": "light"
                     },
                     "shop_name": { "type": "string", "nullable": true },
                     "self_service_deactivated": {
@@ -8844,6 +8855,11 @@
                     "type": { "type": "string", "enum": ["url", "domain"] }
                 },
                 "required": ["url", "type"]
+            },
+            "StartIngestionResponseDto": {
+                "type": "object",
+                "properties": { "scraping_id": { "type": "string" } },
+                "required": ["scraping_id"]
             },
             "UpdateIngestionLogDto": {
                 "type": "object",

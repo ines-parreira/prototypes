@@ -51,7 +51,7 @@ describe('queries', () => {
                 client: {
                     getContactFormMailtoReplacementConfig: () =>
                         Promise.resolve({ data: { emails } }),
-                } as HelpCenterClient,
+                } as unknown as HelpCenterClient,
                 isReady: true,
             })
 
@@ -95,7 +95,7 @@ describe('queries', () => {
                             data: { emails },
                             status: statusCode,
                         }),
-                } as HelpCenterClient,
+                } as unknown as HelpCenterClient,
                 isReady: true,
             })
 
