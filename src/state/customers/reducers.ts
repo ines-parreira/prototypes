@@ -1,16 +1,27 @@
 import { fromJS, List, Map } from 'immutable'
+import _sortBy from 'lodash/sortBy'
 
+import { CursorPaginationMeta } from '@gorgias/api-queries'
+
+import { Ticket, TicketMessage } from 'models/ticket/types'
 import { ViewType } from 'models/view/types'
 import * as constants from 'state/customers/constants'
 import { CustomersState } from 'state/customers/types'
+import * as newMessageConstants from 'state/newMessage/constants'
+import * as ticketConstants from 'state/ticket/constants'
 import { GorgiasAction } from 'state/types'
 import * as viewsConstants from 'state/views/constants'
 
 export const initialState: CustomersState = fromJS({
     active: {},
     items: [],
+    customerHistory: {
+        triedLoading: false,
+        tickets: [],
+    },
     _internal: {
         loading: {
+            history: false,
             active: false,
             merge: false,
         },
@@ -83,6 +94,94 @@ export default function reducer(
                         item.get('id') !== action.customerId,
                 ),
             })
+        }
+
+        case constants.FETCH_CUSTOMER_HISTORY_START: {
+            return state
+                .setIn(['customerHistory', 'triedLoading'], true)
+                .setIn(['_internal', 'loading', 'history'], true)
+        }
+
+        case constants.FETCH_CUSTOMER_HISTORY_SUCCESS: {
+            const resp = action.resp as {
+                // @TODO @UnbearableBear: remove legacy meta once endpoint is migrated
+                meta:
+                    | CursorPaginationMeta
+                    | { item_count: number; total_resources: undefined }
+                data: unknown[]
+            }
+            const tickets: unknown[] = resp.data
+            const sortedTickets = _sortBy(tickets, ['created_datetime'])
+
+            return state
+                .setIn(['customerHistory', 'tickets'], fromJS(sortedTickets))
+                .setIn(['_internal', 'loading', 'history'], false)
+        }
+
+        case ticketConstants.CLEAR_TICKET: {
+            let newState = state
+                .setIn(['_internal', 'loading', 'history'], false)
+                .setIn(['customerHistory', 'triedLoading'], false)
+
+            return newState
+        }
+
+        case newMessageConstants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_SUCCESS: {
+            const updated = action.resp as TicketMessage
+            const ticketIndex = (
+                state.getIn(
+                    ['customerHistory', 'tickets'],
+                    fromJS([]),
+                ) as List<any>
+            ).findIndex(
+                (ticket: Map<any, any>) =>
+                    ticket.get('id') === updated.ticket_id,
+            )
+            if (~ticketIndex) {
+                return state.updateIn(
+                    ['customerHistory', 'tickets', ticketIndex],
+                    (ticket: Map<any, any>) =>
+                        ticket
+                            .set(
+                                'messages_count',
+                                (ticket.get('messages_count', 0) as number) + 1,
+                            )
+                            .set('excerpt', updated.body_text),
+                )
+            }
+            return state
+        }
+
+        case ticketConstants.TICKET_PARTIAL_UPDATE_SUCCESS: {
+            const updated = action.resp as Ticket
+            const ticketIndex = (
+                state.getIn(
+                    ['customerHistory', 'tickets'],
+                    fromJS([]),
+                ) as List<any>
+            ).findIndex(
+                (ticket: Map<any, any>) => ticket.get('id') === updated.id,
+            )
+            if (~ticketIndex) {
+                return state.updateIn(
+                    ['customerHistory', 'tickets', ticketIndex],
+                    (ticket: Map<any, any>) =>
+                        ticket
+                            .set('assignee_user', fromJS(updated.assignee_user))
+                            .set('status', updated.status)
+                            .set('subject', updated.subject),
+                )
+            }
+            return state
+        }
+
+        case constants.FETCH_CUSTOMER_HISTORY_ERROR: {
+            let newState = state.setIn(
+                ['_internal', 'loading', 'history'],
+                false,
+            )
+
+            return newState
         }
 
         case constants.BULK_DELETE_SUCCESS: {

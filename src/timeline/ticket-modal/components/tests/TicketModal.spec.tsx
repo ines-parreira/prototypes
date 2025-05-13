@@ -1,53 +1,16 @@
-import { FC } from 'react'
-
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
-import { IconButton } from '@gorgias/merchant-ui-kit'
-
-import { TicketDetail } from 'tickets/ticket-detail'
-import { assumeMock } from 'utils/testing'
 
 import { TicketModal } from '../TicketModal'
 
 jest.mock('tickets/ticket-detail', () => ({
-    TicketDetail: jest.fn(
-        ({ AdditionalHeaderAction }: { AdditionalHeaderAction: FC }) => (
-            <>
-                <div>TicketDetail</div>
-                {<AdditionalHeaderAction />}
-            </>
-        ),
-    ),
+    TicketDetail: () => <div>TicketDetail</div>,
 }))
-jest.mock('@gorgias/merchant-ui-kit', () => ({
-    ...jest.requireActual('@gorgias/merchant-ui-kit'),
-    IconButton: jest.fn(() => <div>IconButton</div>),
-}))
-
-const TicketDetailMock = assumeMock(TicketDetail)
 
 describe('TicketModal', () => {
-    it('should call the TicketDetail component with the right props', () => {
-        const onClose = jest.fn()
-        render(<TicketModal ticketId={1} onClose={onClose} />)
+    it('should render the ticket detail in the modal', () => {
+        render(<TicketModal ticketId={1} onClose={jest.fn()} />)
         expect(screen.getByText('TicketDetail')).toBeInTheDocument()
-
-        expect(TicketDetailMock).toHaveBeenCalledWith(
-            {
-                ticketId: 1,
-                summary: undefined,
-                AdditionalHeaderAction: expect.any(Function),
-            },
-            {},
-        )
-
-        expect(IconButton).toHaveBeenCalledWith(
-            expect.objectContaining({
-                onClick: onClose,
-            }),
-            {},
-        )
     })
 
     it('should render a link to the full ticket', () => {

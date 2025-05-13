@@ -29,6 +29,7 @@ import MergeCustomersContainer from 'pages/common/components/MergeCustomers/Merg
 import Search from 'pages/common/components/Search'
 import history from 'pages/history'
 import { getCurrentUser } from 'state/currentUser/selectors'
+import * as customersActions from 'state/customers/actions'
 import * as infobarActions from 'state/infobar/actions'
 import { setActiveCustomerAsReceiver } from 'state/newMessage/actions'
 import { setCustomer } from 'state/ticket/actions'
@@ -197,6 +198,28 @@ export const Infobar = ({
         }
     }
 
+    const handleCustomerHistoryFetch = () => {
+        if (customer.isEmpty()) {
+            return
+        }
+
+        const askedCustomerId = customer.get('id') as number
+
+        // wait 1.5s before fetching customer history after merge (merge can take some time and is async)
+        setTimeout(() => {
+            void dispatch(
+                customersActions.fetchCustomerHistory(askedCustomerId, {
+                    successCondition: () => {
+                        return (
+                            (customer.get('id') as number).toString() ===
+                            askedCustomerId.toString()
+                        )
+                    },
+                }),
+            )
+        }, 1500)
+    }
+
     const resetSelected = () => {
         setDisplaySelectedCustomer(false)
         setSelectedCustomer(fromJS({}))
@@ -326,6 +349,7 @@ export const Infobar = ({
                                     destinationCustomer={customer}
                                     sourceCustomer={selectedCustomer}
                                     onSuccess={() => {
+                                        handleCustomerHistoryFetch()
                                         returnToCurrentCustomerProfile()
                                     }}
                                     onClose={() => {
@@ -450,6 +474,9 @@ export const Infobar = ({
                                                 destinationCustomer={customer}
                                                 sourceCustomer={
                                                     suggestedCustomer
+                                                }
+                                                onSuccess={
+                                                    handleCustomerHistoryFetch
                                                 }
                                                 onClose={() => {
                                                     setShowMergeCustomerModal(

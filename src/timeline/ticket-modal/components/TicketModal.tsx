@@ -1,5 +1,5 @@
 import { TicketSummary } from '@gorgias/api-queries'
-import { Button, IconButton } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/merchant-ui-kit'
 
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -34,14 +34,7 @@ export function TicketModal({
                 <TicketDetail
                     summary={summary}
                     ticketId={ticketId}
-                    AdditionalHeaderAction={() => (
-                        <IconButton
-                            fillStyle="ghost"
-                            icon="close"
-                            intent="secondary"
-                            onClick={onClose}
-                        />
-                    )}
+                    onClose={onClose}
                 />
             </ModalBody>
             <ModalFooter className={css.footer}>

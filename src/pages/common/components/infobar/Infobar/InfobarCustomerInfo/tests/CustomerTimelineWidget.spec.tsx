@@ -5,11 +5,10 @@ import { TicketSummary } from '@gorgias/api-types'
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import { useTimeline } from 'pages/common/components/timeline/hooks/useTimeline'
+import { useTrackTimelineToggle } from 'pages/common/components/timeline/hooks/useTrackTimelineToggle'
 import { getContext } from 'state/widgets/selectors'
 import { WidgetEnvironment } from 'state/widgets/types'
-import { useTimelineData } from 'timeline/hooks/useTimelineData'
-import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
-import { useTrackTimelineToggle } from 'timeline/hooks/useTrackTimelineToggle'
 import { assumeMock } from 'utils/testing'
 
 import { CustomerTimelineWidget } from '../CustomerTimelineWidget'
@@ -28,18 +27,14 @@ jest.mock('state/widgets/selectors', () => ({
     ...jest.requireActual('state/widgets/selectors'),
     getContext: jest.fn(),
 }))
-jest.mock('timeline/hooks/useTimelineData', () => ({
-    useTimelineData: jest.fn(),
+jest.mock('pages/common/components/timeline/hooks/useTimeline', () => ({
+    useTimeline: jest.fn(),
 }))
-jest.mock('timeline/hooks/useTimelinePanel', () => ({
-    useTimelinePanel: jest.fn(),
-}))
-jest.mock('timeline/hooks/useTrackTimelineToggle')
+jest.mock('pages/common/components/timeline/hooks/useTrackTimelineToggle')
 
 const useAppDispatchMock = assumeMock(useAppDispatch)
 const getContextMock = assumeMock(getContext)
-const useTimelineDataMock = assumeMock(useTimelineData)
-const useTimelinePanelMock = assumeMock(useTimelinePanel)
+const useTimelineMock = assumeMock(useTimeline)
 const useParamsMock = assumeMock(useParams)
 
 describe('CustomerTimelineButton', () => {
@@ -58,37 +53,34 @@ describe('CustomerTimelineButton', () => {
 
     const defaultProps = {
         isEditing: false,
-        shopperId: 1,
+        customerId: 1,
     }
 
     const openTimelineMock = jest.fn()
     const closeTimelineMock = jest.fn()
 
-    const defaultTimelinePanelReturnValue = {
+    const defaultTimelineReturnValue = {
         isOpen: false,
-        shopperId: null,
+        timelineShopperId: null,
+        isLoading: false,
+        hasTriedLoading: true,
+        tickets,
         openTimeline: openTimelineMock,
         closeTimeline: closeTimelineMock,
-    }
-
-    const defaultTimelineDataReturnValue = {
-        isLoading: false,
-        tickets,
     }
 
     beforeEach(() => {
         useAppDispatchMock.mockReturnValue(dispatchMock)
         getContextMock.mockReturnValue(WidgetEnvironment.Ticket)
-        useTimelinePanelMock.mockReturnValue(defaultTimelinePanelReturnValue)
-        useTimelineDataMock.mockReturnValue(defaultTimelineDataReturnValue)
+        useTimelineMock.mockReturnValue(defaultTimelineReturnValue)
         useParamsMock.mockReturnValue({
             ticketId: '1',
         })
     })
 
     it('should display a loading spinner when history is loading', () => {
-        useTimelineDataMock.mockReturnValue({
-            ...defaultTimelineDataReturnValue,
+        useTimelineMock.mockReturnValue({
+            ...defaultTimelineReturnValue,
             isLoading: true,
         })
 
@@ -102,32 +94,18 @@ describe('CustomerTimelineButton', () => {
         expect(useTrackTimelineToggle).toHaveBeenCalled()
     })
 
-    it('should call useTimelineData with shopperId', () => {
-        render(<CustomerTimelineWidget {...defaultProps} />)
-        expect(useTimelineData).toHaveBeenCalledWith(defaultProps.shopperId)
-    })
-
-    it('should close timeline when shopperId changes', () => {
-        useTimelinePanelMock.mockReturnValue({
-            ...defaultTimelinePanelReturnValue,
-            shopperId: defaultProps.shopperId,
-        })
-        render(<CustomerTimelineWidget {...defaultProps} shopperId={2} />)
-        expect(closeTimelineMock).toHaveBeenCalled()
-    })
-
     it('should toggle timeline with correct customerId when clicked', () => {
         const { rerender } = render(
             <CustomerTimelineWidget {...defaultProps} />,
         )
         fireEvent.click(screen.getByRole('button'))
 
-        expect(openTimelineMock).toHaveBeenCalledWith(defaultProps.shopperId)
+        expect(openTimelineMock).toHaveBeenCalledWith(defaultProps.customerId)
 
-        useTimelinePanelMock.mockReturnValue({
-            ...defaultTimelinePanelReturnValue,
+        useTimelineMock.mockReturnValue({
+            ...defaultTimelineReturnValue,
             isOpen: true,
-            shopperId: defaultProps.shopperId,
+            timelineShopperId: String(defaultProps.customerId),
         })
         rerender(<CustomerTimelineWidget {...defaultProps} />)
         fireEvent.click(screen.getByRole('button'))
@@ -136,8 +114,8 @@ describe('CustomerTimelineButton', () => {
     })
 
     it('should display that there is no history', () => {
-        useTimelineDataMock.mockReturnValue({
-            ...defaultTimelineDataReturnValue,
+        useTimelineMock.mockReturnValue({
+            ...defaultTimelineReturnValue,
             tickets: [],
         })
 
@@ -147,8 +125,8 @@ describe('CustomerTimelineButton', () => {
 
         expect(screen.getByText('No other tickets')).toBeInTheDocument()
 
-        useTimelineDataMock.mockReturnValue({
-            ...defaultTimelineDataReturnValue,
+        useTimelineMock.mockReturnValue({
+            ...defaultTimelineReturnValue,
             tickets: [closedTickets[0]],
         })
 
@@ -165,8 +143,8 @@ describe('CustomerTimelineButton', () => {
     })
 
     it('should display a secondary button when there is only one open ticket which is the active ticket', () => {
-        useTimelineDataMock.mockReturnValue({
-            ...defaultTimelineDataReturnValue,
+        useTimelineMock.mockReturnValue({
+            ...defaultTimelineReturnValue,
             tickets: [openTickets[0]],
         })
         useParamsMock.mockReturnValue({
@@ -186,8 +164,8 @@ describe('CustomerTimelineButton', () => {
     describe('Customer context or edit mode', () => {
         it('should display a message when there are no tickets', () => {
             getContextMock.mockReturnValue(WidgetEnvironment.Customer)
-            useTimelineDataMock.mockReturnValue({
-                ...defaultTimelineDataReturnValue,
+            useTimelineMock.mockReturnValue({
+                ...defaultTimelineReturnValue,
                 tickets: [],
             })
 
@@ -200,8 +178,8 @@ describe('CustomerTimelineButton', () => {
 
         it('should display that there is only 1 ticket', () => {
             getContextMock.mockReturnValue(WidgetEnvironment.Customer)
-            useTimelineDataMock.mockReturnValue({
-                ...defaultTimelineDataReturnValue,
+            useTimelineMock.mockReturnValue({
+                ...defaultTimelineReturnValue,
                 tickets: [closedTickets[0]],
             })
 

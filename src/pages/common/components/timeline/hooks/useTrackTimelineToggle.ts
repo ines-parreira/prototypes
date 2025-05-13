@@ -6,21 +6,24 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { getTicketState } from 'state/ticket/selectors'
 
-import { useTimelinePanel } from './useTimelinePanel'
+import { useTimeline } from './useTimeline'
 
 export function useTrackTimelineToggle() {
     const ticket = useAppSelector(getTicketState)
-    const { isOpen, shopperId } = useTimelinePanel()
+    const { tickets, timelineShopperId } = useTimeline()
 
-    const [previousShopperId, setPreviousShopperId] = useState(shopperId)
+    const [previousShopperId, setPreviousShopperId] = useState<string | null>(
+        timelineShopperId,
+    )
 
-    if (previousShopperId !== shopperId) {
+    if (previousShopperId !== timelineShopperId) {
         logEvent(SegmentEvent.UserHistoryToggled, {
-            open: isOpen,
+            open: !!timelineShopperId,
+            nbOfTicketsInTimeline: tickets.length,
             nbOfMessagesInTicket:
                 (ticket.get('messages') as List<any>)?.size ?? 0,
             channel: ticket.get('channel'),
         })
-        setPreviousShopperId(shopperId)
+        setPreviousShopperId(timelineShopperId)
     }
 }

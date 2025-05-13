@@ -4,31 +4,31 @@ import { TicketSummary } from '@gorgias/api-queries'
 import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
+import { useTimeline } from 'pages/common/components/timeline/hooks/useTimeline'
+import { useTrackTimelineToggle } from 'pages/common/components/timeline/hooks/useTrackTimelineToggle'
 import { getContext } from 'state/widgets/selectors'
 import { WidgetEnvironment } from 'state/widgets/types'
-import { useTimelineData } from 'timeline/hooks/useTimelineData'
-import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
-import { useTrackTimelineToggle } from 'timeline/hooks/useTrackTimelineToggle'
 
 import css from './CustomerTimelineWidget.less'
 
 type Props = {
     isEditing: boolean
-    shopperId: number
+    customerId: number
 }
 
 const ForumIcon = () => (
     <span className={`material-icons ${css.mr} ${css.forumIcon}`}>forum</span>
 )
 
-export function CustomerTimelineWidget({ isEditing, shopperId }: Props) {
+export function CustomerTimelineWidget({ isEditing, customerId }: Props) {
     const {
+        tickets,
         isOpen,
+        hasTriedLoading,
+        isLoading,
         openTimeline,
         closeTimeline,
-        shopperId: timelineShopperId,
-    } = useTimelinePanel()
-    const { tickets, isLoading } = useTimelineData(shopperId)
+    } = useTimeline()
 
     useTrackTimelineToggle()
 
@@ -36,17 +36,9 @@ export function CustomerTimelineWidget({ isEditing, shopperId }: Props) {
 
     const widgetContext = useAppSelector(getContext)
 
-    // If this hook is being called with a shopperId which is different
-    // from the timelineShopperId, then it means we are currently looking at
-    // a different customer, so we need to clear the timeline. We don’t want
-    // to update the timeline because it might not contain any relevant data
-    if (timelineShopperId && timelineShopperId !== shopperId) {
-        closeTimeline()
-    }
-
     const ticketCount = tickets.length
-    const hasNoTickets = !isLoading && ticketCount === 0
-    const hasNoHistory = !isLoading && ticketCount < 2
+    const hasNoTickets = hasTriedLoading && ticketCount === 0
+    const hasNoHistory = hasTriedLoading && ticketCount < 2
     const { openTicketCount, snoozedTicketCount } = getTicketsCount(tickets)
 
     const showToggle = !(
@@ -85,7 +77,7 @@ export function CustomerTimelineWidget({ isEditing, shopperId }: Props) {
                             : 'secondary'
                     }
                     onClick={() =>
-                        isOpen ? closeTimeline() : openTimeline(shopperId)
+                        isOpen ? closeTimeline() : openTimeline(customerId)
                     }
                     size="small"
                     leadingIcon={isOpen ? 'close' : 'forum'}

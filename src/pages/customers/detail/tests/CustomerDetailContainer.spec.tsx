@@ -1,5 +1,6 @@
-import { ComponentProps } from 'react'
+import React, { ComponentProps } from 'react'
 
+import { waitFor } from '@testing-library/react'
 import { createBrowserHistory } from 'history'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -8,14 +9,16 @@ import thunk from 'redux-thunk'
 
 import useFlag from 'core/flags/hooks/useFlag'
 import { customer } from 'fixtures/customer'
+import Timeline from 'pages/common/components/timeline/Timeline'
 import { RootState, StoreDispatch } from 'state/types'
-import Timeline from 'timeline/Timeline'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import { CustomerDetailContainer } from '../CustomerDetailContainer'
 
 jest.mock('core/flags/hooks/useFlag')
-jest.mock('timeline/Timeline', () => jest.fn(() => <div>Timeline</div>))
+jest.mock('pages/common/components/timeline/Timeline', () =>
+    jest.fn(() => <div>Timeline</div>),
+)
 jest.mock('pages/customers/common/components/CustomerForm', () => () => (
     <div>CustomerForm</div>
 ))
@@ -128,6 +131,33 @@ describe('<CustomerDetailContainer />', () => {
         )
 
         expect(getByText(/Loading customer/i)).toBeTruthy()
+    })
+
+    it('should fetch history of customer', async () => {
+        const activeCustomer = fromJS({
+            id: 1,
+        }) as Map<any, any>
+        renderWithRouter(
+            <Provider store={store}>
+                <CustomerDetailContainer
+                    {...minProps}
+                    activeCustomer={activeCustomer}
+                />
+            </Provider>,
+            {
+                path: '/foo/:customerId?',
+                route: '/foo/1',
+            },
+        )
+
+        await waitFor(() =>
+            expect(minProps.fetchCustomerHistory).toHaveBeenCalledWith(
+                activeCustomer.get('id'),
+                expect.objectContaining({
+                    successCondition: expect.any(Function),
+                }),
+            ),
+        )
     })
 
     it('should call setRecentItems on mount', () => {

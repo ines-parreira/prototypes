@@ -1,5 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`customers reducers clear ticket 1`] = `
+{
+  "_internal": {
+    "loading": {
+      "active": false,
+      "history": false,
+      "merge": false,
+    },
+  },
+  "active": {},
+  "customerHistory": {
+    "tickets": [],
+    "triedLoading": false,
+  },
+  "items": [],
+}
+`;
+
 exports[`customers reducers delete customer 1`] = `
 Immutable.Map {
   "active": Immutable.Map {},
@@ -8,8 +26,13 @@ Immutable.Map {
       "id": 1,
     },
   ],
+  "customerHistory": Immutable.Map {
+    "triedLoading": false,
+    "tickets": Immutable.List [],
+  },
   "_internal": Immutable.Map {
     "loading": Immutable.Map {
+      "history": false,
       "active": false,
       "merge": false,
     },
@@ -22,10 +45,15 @@ exports[`customers reducers fetch customer 1`] = `
   "_internal": {
     "loading": {
       "active": true,
+      "history": false,
       "merge": false,
     },
   },
   "active": {},
+  "customerHistory": {
+    "tickets": [],
+    "triedLoading": false,
+  },
   "items": [],
 }
 `;
@@ -35,11 +63,16 @@ exports[`customers reducers fetch customer 2`] = `
   "_internal": {
     "loading": {
       "active": false,
+      "history": false,
       "merge": false,
     },
   },
   "active": {
     "id": 1,
+  },
+  "customerHistory": {
+    "tickets": [],
+    "triedLoading": false,
   },
   "items": [],
 }
@@ -50,10 +83,112 @@ exports[`customers reducers fetch customer 3`] = `
   "_internal": {
     "loading": {
       "active": false,
+      "history": false,
       "merge": false,
     },
   },
   "active": {},
+  "customerHistory": {
+    "tickets": [],
+    "triedLoading": false,
+  },
+  "items": [],
+}
+`;
+
+exports[`customers reducers fetch customer history 1`] = `
+{
+  "_internal": {
+    "loading": {
+      "active": false,
+      "history": true,
+      "merge": false,
+    },
+  },
+  "active": {},
+  "customerHistory": {
+    "tickets": [],
+    "triedLoading": true,
+  },
+  "items": [],
+}
+`;
+
+exports[`customers reducers fetch customer history 2`] = `
+{
+  "_internal": {
+    "loading": {
+      "active": false,
+      "history": false,
+      "merge": false,
+    },
+  },
+  "active": {},
+  "customerHistory": {
+    "tickets": [
+      {
+        "created_datetime": "2018-01-01",
+        "id": 1,
+      },
+      {
+        "created_datetime": "2018-01-02",
+        "id": 2,
+      },
+      {
+        "created_datetime": "2018-01-03",
+        "id": 5,
+      },
+      {
+        "created_datetime": "2018-01-04",
+        "id": 4,
+      },
+      {
+        "created_datetime": "2018-01-05",
+        "id": 3,
+      },
+    ],
+    "triedLoading": true,
+  },
+  "items": [],
+}
+`;
+
+exports[`customers reducers fetch customer history 3`] = `
+{
+  "_internal": {
+    "loading": {
+      "active": false,
+      "history": false,
+      "merge": false,
+    },
+  },
+  "active": {},
+  "customerHistory": {
+    "tickets": [
+      {
+        "id": 1,
+      },
+    ],
+    "triedLoading": true,
+  },
+  "items": [],
+}
+`;
+
+exports[`customers reducers fetch customer history 4`] = `
+{
+  "_internal": {
+    "loading": {
+      "active": false,
+      "history": false,
+      "merge": false,
+    },
+  },
+  "active": {},
+  "customerHistory": {
+    "tickets": [],
+    "triedLoading": true,
+  },
   "items": [],
 }
 `;
@@ -63,10 +198,15 @@ exports[`customers reducers merge customers 1`] = `
   "_internal": {
     "loading": {
       "active": false,
+      "history": false,
       "merge": true,
     },
   },
   "active": {},
+  "customerHistory": {
+    "tickets": [],
+    "triedLoading": false,
+  },
   "items": [],
 }
 `;
@@ -76,12 +216,17 @@ exports[`customers reducers merge customers 2`] = `
   "_internal": {
     "loading": {
       "active": false,
+      "history": false,
       "merge": false,
     },
   },
   "active": {
     "id": 1,
     "name": "Alex",
+  },
+  "customerHistory": {
+    "tickets": [],
+    "triedLoading": false,
   },
   "items": [],
 }
@@ -92,12 +237,81 @@ exports[`customers reducers merge customers 3`] = `
   "_internal": {
     "loading": {
       "active": false,
+      "history": false,
       "merge": false,
     },
   },
   "active": {
     "id": 1,
     "name": "Romain",
+  },
+  "customerHistory": {
+    "tickets": [],
+    "triedLoading": false,
+  },
+  "items": [],
+}
+`;
+
+exports[`customers reducers should update history on new message 1`] = `
+{
+  "_internal": {
+    "loading": {
+      "active": false,
+      "history": false,
+      "merge": false,
+    },
+  },
+  "active": {},
+  "customerHistory": {
+    "tickets": [
+      {
+        "excerpt": "OK",
+        "id": 1,
+        "messages_count": 1,
+        "status": "open",
+      },
+      {
+        "excerpt": "Glad to have helped you!",
+        "id": 2,
+        "messages_count": 4,
+        "status": "open",
+      },
+    ],
+    "triedLoading": false,
+  },
+  "items": [],
+}
+`;
+
+exports[`customers reducers should update history ticket on partial update 1`] = `
+{
+  "_internal": {
+    "loading": {
+      "active": false,
+      "history": false,
+      "merge": false,
+    },
+  },
+  "active": {},
+  "customerHistory": {
+    "tickets": [
+      {
+        "assignee_user": {
+          "name": "New Assignee",
+        },
+        "excerpt": "OK",
+        "id": 1,
+        "status": "closed",
+        "subject": "New subject",
+      },
+      {
+        "excerpt": "Alright",
+        "id": 2,
+        "status": "open",
+      },
+    ],
+    "triedLoading": false,
   },
   "items": [],
 }
@@ -108,10 +322,15 @@ exports[`customers reducers submit customer 1`] = `
   "_internal": {
     "loading": {
       "active": false,
+      "history": false,
       "merge": false,
     },
   },
   "active": {},
+  "customerHistory": {
+    "tickets": [],
+    "triedLoading": false,
+  },
   "items": [],
 }
 `;
@@ -121,12 +340,17 @@ exports[`customers reducers submit customer 2`] = `
   "_internal": {
     "loading": {
       "active": false,
+      "history": false,
       "merge": false,
     },
   },
   "active": {
     "id": 1,
     "name": "Romain",
+  },
+  "customerHistory": {
+    "tickets": [],
+    "triedLoading": false,
   },
   "items": [
     {
@@ -142,12 +366,17 @@ exports[`customers reducers submit customer 3`] = `
   "_internal": {
     "loading": {
       "active": false,
+      "history": false,
       "merge": false,
     },
   },
   "active": {
     "id": 1,
     "name": "Romain",
+  },
+  "customerHistory": {
+    "tickets": [],
+    "triedLoading": false,
   },
   "items": [
     {
@@ -163,10 +392,15 @@ exports[`customers reducers submit customer 4`] = `
   "_internal": {
     "loading": {
       "active": false,
+      "history": false,
       "merge": false,
     },
   },
   "active": {},
+  "customerHistory": {
+    "tickets": [],
+    "triedLoading": false,
+  },
   "items": [],
 }
 `;

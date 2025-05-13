@@ -3,9 +3,9 @@ import { ComponentProps } from 'react'
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
+import { useTimeline } from 'pages/common/components/timeline/hooks/useTimeline'
+import Timeline from 'pages/common/components/timeline/Timeline'
 import { getBody, getTicketState } from 'state/ticket/selectors'
-import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
-import Timeline from 'timeline/Timeline'
 import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import TicketView, { TIMELINE_CLOSE_BUTTON_ID } from '../TicketView'
@@ -20,9 +20,11 @@ jest.mock('state/ticket/selectors', () => {
         getTicketState: jest.fn(),
     }
 })
-jest.mock('timeline/Timeline', () => jest.fn(() => <div>Timeline</div>))
-jest.mock('timeline/hooks/useTimelinePanel', () => ({
-    useTimelinePanel: jest.fn(),
+jest.mock('pages/common/components/timeline/Timeline', () =>
+    jest.fn(() => <div>Timeline</div>),
+)
+jest.mock('pages/common/components/timeline/hooks/useTimeline', () => ({
+    useTimeline: jest.fn(),
 }))
 
 jest.mock('../TicketBody', () => () => <div>TicketBody</div>)
@@ -37,7 +39,7 @@ jest.mock('../ReplyForm', () => () => <div>ReplyForm</div>)
 const TimelineMock = assumeMock(Timeline)
 const getTicketStateMock = assumeMock(getTicketState)
 const getBodyMock = assumeMock(getBody)
-const useTimelinePanelMock = assumeMock(useTimelinePanel)
+const useTimelineMock = assumeMock(useTimeline)
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -63,10 +65,10 @@ describe('<TicketView />', () => {
             }) as ReturnType<typeof getTicketState>,
         )
         getBodyMock.mockReturnValue(fromJS({}) as ReturnType<typeof getBody>)
-        useTimelinePanelMock.mockReturnValue({
+        useTimelineMock.mockReturnValue({
             isOpen: false as boolean,
             closeTimeline: closeTimelineMock,
-        } as unknown as ReturnType<typeof useTimelinePanel>)
+        } as unknown as ReturnType<typeof useTimeline>)
     })
 
     it('should not have the hidden classes', () => {
@@ -84,10 +86,10 @@ describe('<TicketView />', () => {
     })
 
     it('should call `closeTimeline` when the timeline close button is clicked', () => {
-        useTimelinePanelMock.mockReturnValue({
+        useTimelineMock.mockReturnValue({
             isOpen: true,
             closeTimeline: closeTimelineMock,
-        } as unknown as ReturnType<typeof useTimelinePanel>)
+        } as unknown as ReturnType<typeof useTimeline>)
 
         render(<TicketView {...minProps} />)
 
@@ -97,10 +99,10 @@ describe('<TicketView />', () => {
     })
 
     it('should call the `Timeline` with correct props and scroll to the top on load', async () => {
-        useTimelinePanelMock.mockReturnValue({
+        useTimelineMock.mockReturnValue({
             isOpen: true,
             closeTimeline: closeTimelineMock,
-        } as unknown as ReturnType<typeof useTimelinePanel>)
+        } as unknown as ReturnType<typeof useTimeline>)
 
         render(<TicketView {...minProps} />)
 

@@ -3,13 +3,14 @@ import type { ReactNode } from 'react'
 import cn from 'classnames'
 
 import { CustomField, TicketSummary } from '@gorgias/api-queries'
+import { TicketStatus } from '@gorgias/api-types'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
-import { SourceBadge } from 'tickets/ticket-detail/components/SourceBadge'
-import { TicketStatus } from 'tickets/ticket-detail/components/TicketStatus'
+import { StatusLabel } from 'pages/common/utils/labels'
 
 import { OwnerLabel } from './OwnerLabel'
+import { SourceBadge } from './SourceBadge'
 import TicketFields from './TicketFields'
 
 import css from './TicketCard.less'
@@ -38,12 +39,18 @@ export default function TicketCard({
                 [css.highlight]: isHighlighted,
             })}
         >
-            <SourceBadge channel={ticket.channel} size="small" />
+            <SourceBadge channel={ticket.channel} />
             <div className={css.content}>
                 <div className={css.heading}>
                     <span className={css.title}>
                         <span className={css.subject}>{ticket.subject}</span>
-                        <TicketStatus ticket={ticket} />
+                        <StatusLabel
+                            status={
+                                ticket.snooze_datetime
+                                    ? 'snoozed'
+                                    : ticket.status || TicketStatus.Open
+                            }
+                        />
                     </span>
                     <span>{displayedDate}</span>
                 </div>

@@ -15,7 +15,7 @@ import DisplayedDate from './DisplayedDate'
 import { useRangeFilter } from './hooks/useRangeFilter'
 import { useSort } from './hooks/useSort'
 import { useStatusFilter } from './hooks/useStatusFilter'
-import { useTimelineData } from './hooks/useTimelineData'
+import { useTimeline } from './hooks/useTimeline'
 import { NoResults } from './NoResults'
 import { RangeFilter } from './RangeFilter'
 import { Sort } from './Sort'
@@ -26,11 +26,10 @@ import css from './Timeline.less'
 
 type Props = {
     ticketId?: number
-    shopperId: number | null
     onLoaded?: () => unknown
 }
 
-export function Timeline({ ticketId = 0, shopperId, onLoaded }: Props) {
+export function Timeline({ ticketId = 0, onLoaded }: Props) {
     const hasNewTimeline = useFlag(FeatureFlagKey.CustomerTimeline)
     const hasTicketModal = useFlag(FeatureFlagKey.TimelineTicketModal)
     const [hasCalledOnLoaded, setHasCalledOnLoaded] = useState(false)
@@ -43,7 +42,7 @@ export function Timeline({ ticketId = 0, shopperId, onLoaded }: Props) {
         object_type: ObjectType.Ticket,
     })
 
-    const { tickets, isLoading } = useTimelineData(shopperId || undefined)
+    const { tickets, isLoading, hasTriedLoading } = useTimeline()
 
     const { rangeFilter, rangeFilteredTickets, setRangeFilter } =
         useRangeFilter(tickets)
@@ -72,12 +71,12 @@ export function Timeline({ ticketId = 0, shopperId, onLoaded }: Props) {
         )
     }
 
-    if (!hasCalledOnLoaded && !isLoading) {
+    if (hasTriedLoading && !hasCalledOnLoaded) {
         setHasCalledOnLoaded(true)
         onLoaded?.()
     }
 
-    if (!isLoading && tickets.length === 0) {
+    if (hasTriedLoading && tickets.length === 0) {
         return (
             <NoResults>This customer doesn’t have any tickets yet.</NoResults>
         )

@@ -6,7 +6,6 @@ import { assumeMock } from 'utils/testing'
 
 import { useTicket } from '../../hooks/useTicket'
 import { TicketDetail } from '../TicketDetail'
-import { TicketHeader } from '../TicketHeader'
 
 jest.mock('@gorgias/merchant-ui-kit', () => ({
     LoadingSpinner: () => <div>LoadingSpinner</div>,
@@ -16,7 +15,7 @@ jest.mock('../../hooks/useTicket', () => ({ useTicket: jest.fn() }))
 const useTicketMock = assumeMock(useTicket)
 
 jest.mock('../TicketHeader', () => ({
-    TicketHeader: jest.fn(() => <div>TicketHeader</div>),
+    TicketHeader: () => <div>TicketHeader</div>,
 }))
 
 describe('TicketDetail', () => {
@@ -30,26 +29,11 @@ describe('TicketDetail', () => {
         expect(screen.getByText('LoadingSpinner')).toBeInTheDocument()
     })
 
-    it('should render the header if a summary is given even if the ticket is loading and pass it the right props', () => {
+    it('should render the header if a summary is given even if the ticket is loading', () => {
         const summary = { id: 1 } as TicketSummary
-        const AdditionalHeaderAction = () => <button>Action</button>
-        render(
-            <TicketDetail
-                summary={summary}
-                ticketId={1}
-                AdditionalHeaderAction={AdditionalHeaderAction}
-            />,
-        )
+        render(<TicketDetail summary={summary} ticketId={1} />)
         expect(screen.getByText('TicketHeader')).toBeInTheDocument()
         expect(screen.getByText('LoadingSpinner')).toBeInTheDocument()
-
-        expect(TicketHeader).toHaveBeenCalledWith(
-            {
-                ticket: summary,
-                AdditionalAction: AdditionalHeaderAction,
-            },
-            {},
-        )
     })
 
     it('should dump the ticket to the page once loaded', () => {

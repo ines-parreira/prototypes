@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import _pick from 'lodash/pick'
 import { connect, ConnectedProps } from 'react-redux'
@@ -8,13 +8,15 @@ import { TicketChannel } from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 import { RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
+import { Customer } from 'models/customer/types'
 import { PickedCustomer, pickedCustomerFields } from 'models/search/types'
 import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import Timeline from 'pages/common/components/timeline/Timeline'
 import CustomerForm from 'pages/customers/common/components/CustomerForm'
-import { fetchCustomer } from 'state/customers/actions'
+import { fetchCustomer, fetchCustomerHistory } from 'state/customers/actions'
 import * as customersHelpers from 'state/customers/helpers'
 import {
     DEPRECATED_getActiveCustomer,
@@ -22,7 +24,6 @@ import {
     makeGetActiveCustomerChannelsByType,
 } from 'state/customers/selectors'
 import { RootState } from 'state/types'
-import Timeline from 'timeline/Timeline'
 
 import css from './CustomerDetailContainer.less'
 
@@ -35,6 +36,7 @@ export const CustomerDetailContainer = ({
     activeCustomer,
     customersLoading,
     fetchCustomer,
+    fetchCustomerHistory,
 }: ConnectedProps<typeof connector>) => {
     const filteredChannels = useAppSelector(getActiveCustomerTicketChannels)
     const [isCustomerFormOpen, setIsCustomerFormOpen] = useState(false)
@@ -53,7 +55,19 @@ export const CustomerDetailContainer = ({
     }, [activeCustomer, setRecentItem])
 
     useEffect(() => {
-        fetchCustomer(customerId)
+        void (async () => {
+            const result = await (fetchCustomer(customerId) as Promise<{
+                resp: Customer
+            }>)
+            void fetchCustomerHistory(parseInt(customerId), {
+                successCondition() {
+                    return (
+                        (result.resp.id || '').toString() ===
+                        customerId.toString()
+                    )
+                },
+            })
+        })()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [customerId])
 
@@ -87,7 +101,7 @@ export const CustomerDetailContainer = ({
                     />
                 </div>
             </div>
-            <Timeline shopperId={Number(params.customerId)} />
+            <Timeline />
             <Modal
                 isOpen={isCustomerFormOpen}
                 onClose={() => setIsCustomerFormOpen(false)}
@@ -113,6 +127,7 @@ const connector = connect(
     }),
     {
         fetchCustomer,
+        fetchCustomerHistory,
     },
 )
 

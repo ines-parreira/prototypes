@@ -1,33 +1,51 @@
-import { FC } from 'react'
-
 import type { Ticket, TicketSummary } from '@gorgias/api-queries'
+import { IconButton } from '@gorgias/merchant-ui-kit'
 
-import { SourceBadge } from './SourceBadge'
-import { TicketStatus } from './TicketStatus'
+import { TicketStatus } from 'business/types/ticket'
+import SourceIcon from 'pages/common/components/SourceIcon'
+import { StatusLabel } from 'pages/common/utils/labels'
 
 import css from './TicketHeader.less'
 
 type Props = {
     ticket: Ticket | TicketSummary
-    AdditionalAction?: FC
+    onClose?: () => void
 }
 
-export function TicketHeader({ ticket, AdditionalAction }: Props) {
+export function TicketHeader({ ticket, onClose }: Props) {
     return (
         <div className={css.container}>
             <header className={css.header}>
-                <SourceBadge channel={ticket.channel} />
+                <div className={css.channel}>
+                    <SourceIcon
+                        className={css.channelIcon}
+                        type={ticket.channel}
+                    />
+                </div>
                 <div className={css.subjectWrapper}>
                     <div className={css.subjectInner}>
                         <h2 className={css.subject}>{ticket.subject}</h2>
-                        <TicketStatus ticket={ticket} />
+                        <StatusLabel
+                            status={
+                                ticket.snooze_datetime
+                                    ? 'snoozed'
+                                    : ticket.status || TicketStatus.Open
+                            }
+                        />
                     </div>
                     <p className={css.ticketId}>ID: {ticket.id}</p>
                 </div>
 
-                {!!AdditionalAction && (
-                    <div className={css.actions}>{<AdditionalAction />}</div>
-                )}
+                <div className={css.actions}>
+                    {!!onClose && (
+                        <IconButton
+                            fillStyle="ghost"
+                            icon="close"
+                            intent="secondary"
+                            onClick={onClose}
+                        />
+                    )}
+                </div>
             </header>
 
             <pre>
