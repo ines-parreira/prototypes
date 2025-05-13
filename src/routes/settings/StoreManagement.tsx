@@ -6,6 +6,7 @@ import {
     StoreManagementPage,
     StoreManagementProvider,
 } from 'pages/settings/storeManagement'
+import StoreDetailsPage from 'pages/settings/storeManagement/storeDetailsPage/StoreDetailsPage'
 
 import { renderAppSettings } from './helpers/settingsRenderer'
 
@@ -17,6 +18,12 @@ export function StoreManagement() {
                 <Route path={`${path}/`} exact>
                     {renderAppSettings(StoreManagementPage, {
                         roleParams: [ADMIN_ROLE, PageSection.StoreManagement],
+                    })}
+                </Route>
+
+                <Route path={`${path}/:id`}>
+                    {renderAppSettings(StoreDetailsPage, {
+                        roleParams: [ADMIN_ROLE, PageSection.StoreDetails],
                     })}
                 </Route>
             </Switch>
