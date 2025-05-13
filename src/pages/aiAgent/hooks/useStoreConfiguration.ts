@@ -1,33 +1,40 @@
-import { useGetStoreConfigurationPure } from 'models/aiAgent/queries'
+import { useGetStoresConfigurationForAccount } from 'models/aiAgent/queries'
 
 export const useStoreConfiguration = ({
     shopName,
     accountDomain,
-    withWizard,
-    withFloatingInput,
     enabled,
+    refetchOnWindowFocus = false,
 }: {
     shopName: string
     accountDomain: string
-    withWizard?: boolean
-    withFloatingInput?: boolean
     enabled?: boolean
+    refetchOnWindowFocus?: boolean
 }) => {
     const {
         isLoading: isStoreConfigurationLoading,
         data: storeConfigurationData,
-    } = useGetStoreConfigurationPure(
+        error,
+        isFetched,
+    } = useGetStoresConfigurationForAccount(
         {
             accountDomain,
-            storeName: shopName,
-            withWizard,
-            withFloatingInput,
         },
-        { retry: 1, refetchOnWindowFocus: false, enabled: enabled ?? true },
+        {
+            retry: 1,
+            refetchOnWindowFocus: refetchOnWindowFocus,
+            enabled: enabled ?? true,
+        },
     )
 
     return {
         isLoading: isStoreConfigurationLoading,
-        storeConfiguration: storeConfigurationData?.data.storeConfiguration,
+        storeConfiguration:
+            storeConfigurationData?.data?.storeConfigurations.find(
+                (storeConfiguration) =>
+                    storeConfiguration.storeName === shopName,
+            ),
+        error,
+        isFetched,
     }
 }

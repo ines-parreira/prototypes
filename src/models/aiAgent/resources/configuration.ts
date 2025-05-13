@@ -16,6 +16,7 @@ import {
     OnboardingData,
     OnboardingNotificationStateResponse,
     StoreConfigurationResponse,
+    StoreConfigurationsResponse,
     UpsertOnboardingNotificationStatePayload,
     UpsertStoreConfigurationPayload,
     WelcomePageAcknowledgedResponse,
@@ -75,6 +76,28 @@ export async function upsertAccountConfiguration(
     return await apiClient.put<AccountConfigurationResponse>(
         `/config/accounts/${accountDomain}/configuration`,
         accountConfiguration,
+    )
+}
+
+/**
+ * Endpoints "/accounts/<gorgiasDomain>/stores/configurations"
+ */
+export const getStoresConfigurations = async (
+    accountDomain: string,
+    params: {
+        withWizard: boolean
+        withFloatingInput: boolean
+    },
+) => {
+    const { withWizard, withFloatingInput } = params
+    const queryParams = new URLSearchParams({
+        ...(withWizard && { with_wizard: 'true' }),
+        ...(withFloatingInput && {
+            with_floating_chat_input_configuration: 'true',
+        }),
+    })
+    return await apiClient.get<StoreConfigurationsResponse>(
+        `/config/accounts/${accountDomain}/stores/configurations?${queryParams.toString()}`,
     )
 }
 

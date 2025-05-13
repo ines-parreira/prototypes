@@ -219,6 +219,8 @@ const setupMocks = ({
             ? getStoreConfigurationFixture()
             : undefined,
         isLoading: isStoreConfigurationLoading,
+        isFetched: true,
+        error: null,
     })
 
     mockUseAiAgentOnboardingNotification.mockReturnValue({

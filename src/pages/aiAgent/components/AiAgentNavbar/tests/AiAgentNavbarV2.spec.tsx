@@ -128,6 +128,8 @@ describe('<AiAgentNavbarV2 />', () => {
         useStoreConfigurationMock.mockReturnValue({
             storeConfiguration: defaultStoreConfiguration,
             isLoading: false,
+            isFetched: true,
+            error: null,
         })
 
         useWelcomePageAcknowledgedMock.mockReturnValue({
@@ -184,6 +186,8 @@ describe('<AiAgentNavbarV2 />', () => {
                     },
                 },
                 isLoading: false,
+                isFetched: true,
+                error: null,
             })
             const { queryByText, queryAllByText } = renderNavbar({
                 store: {

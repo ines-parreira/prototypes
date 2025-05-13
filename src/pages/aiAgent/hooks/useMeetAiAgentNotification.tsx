@@ -48,7 +48,6 @@ const useMeetAiAgentNotifications = () => {
         useStoreConfiguration({
             shopName,
             accountDomain,
-            withWizard: true,
             enabled: hasAutomateSubscription,
         })
 

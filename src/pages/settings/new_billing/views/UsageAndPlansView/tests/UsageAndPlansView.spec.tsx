@@ -146,6 +146,8 @@ describe('UsageAndPlansView', () => {
         mockUseStoreConfiguration.mockReturnValue({
             isLoading: false,
             storeConfiguration: undefined,
+            isFetched: true,
+            error: null,
         })
     })
 

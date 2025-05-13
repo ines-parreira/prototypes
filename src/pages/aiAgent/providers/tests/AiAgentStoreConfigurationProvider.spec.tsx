@@ -58,6 +58,8 @@ describe('AiAgentStoreConfigurationProvider', () => {
         useStoreConfigurationMock.mockReturnValue({
             storeConfiguration: undefined,
             isLoading: false,
+            isFetched: true,
+            error: null,
         })
 
         const { rerender } = render(
@@ -81,6 +83,8 @@ describe('AiAgentStoreConfigurationProvider', () => {
         useStoreConfigurationMock.mockReturnValue({
             storeConfiguration: undefined,
             isLoading: true,
+            isFetched: true,
+            error: null,
         })
 
         rerender(
@@ -106,6 +110,8 @@ describe('AiAgentStoreConfigurationProvider', () => {
         useStoreConfigurationMock.mockReturnValue({
             storeConfiguration: undefined,
             isLoading: false,
+            isFetched: true,
+            error: null,
         })
 
         const mockCreateStoreConfiguration = jest
@@ -206,6 +212,8 @@ describe('AiAgentStoreConfigurationProvider', () => {
         useStoreConfigurationMock.mockReturnValue({
             storeConfiguration: mockStoreConfiguration,
             isLoading: false,
+            isFetched: true,
+            error: null,
         })
 
         const mockUpdateStoreConfiguration = jest

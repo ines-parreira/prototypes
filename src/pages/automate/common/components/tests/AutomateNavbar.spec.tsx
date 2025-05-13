@@ -58,6 +58,8 @@ describe('<AutomateNavbar />', () => {
         useStoreConfigurationMock.mockReturnValue({
             storeConfiguration: defaultStoreConfiguration,
             isLoading: false,
+            isFetched: true,
+            error: null,
         })
     })
 

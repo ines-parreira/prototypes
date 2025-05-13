@@ -105,7 +105,6 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
             storesName: shopifyIntegrations.map(
                 (integration) => integration.name,
             ),
-            withFloatingInput: true,
         })
 
     const filteredShopifyIntegrations = shopifyIntegrations.filter(

@@ -47,8 +47,10 @@ export const useAiAgentOnboardingState = (
         useStoreConfiguration({
             shopName,
             accountDomain,
-            withWizard: !!isAiAgentOnboardingWizardEnabled,
         })
+
+    const isOnUpdateOnboardingWizard =
+        storeConfiguration?.wizard?.completedDatetime === null
 
     const {
         isLoading: isWelcomePageAcknowledgedLoading,
@@ -76,9 +78,6 @@ export const useAiAgentOnboardingState = (
         return isWelcomeDynamic(welcomePageFeatureFlag, accountId)
             ? OnboardingState.WelcomeDynamic
             : OnboardingState.WelcomeStatic
-
-    const isOnUpdateOnboardingWizard =
-        storeConfiguration?.wizard?.completedDatetime === null
 
     if (
         isAiAgentOnboardingWizardEnabled &&

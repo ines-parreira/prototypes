@@ -79,24 +79,20 @@ describe('useAiAgentType', () => {
         it('should return sales when all stores scope are sales', () => {
             useGetStoresConfigurationForAccountMock.mockReturnValue({
                 isLoading: false,
-                data: [
-                    {
-                        status: 200,
-                        data: {
-                            storeConfiguration: {
+                data: {
+                    data: {
+                        storeConfigurations: [
+                            {
+                                storeName: 'My Phone Integration 1',
                                 scopes: [AiAgentScope.Sales],
                             },
-                        },
-                    },
-                    {
-                        status: 200,
-                        data: {
-                            storeConfiguration: {
+                            {
+                                storeName: 'My Phone Integration 2',
                                 scopes: [AiAgentScope.Sales],
                             },
-                        },
+                        ],
                     },
-                ],
+                },
             } as any)
 
             const { result } = renderUseAiAgentTypeForAccount()
@@ -109,24 +105,20 @@ describe('useAiAgentType', () => {
         it('should return support when all stores scope are support', () => {
             useGetStoresConfigurationForAccountMock.mockReturnValue({
                 isLoading: false,
-                data: [
-                    {
-                        status: 200,
-                        data: {
-                            storeConfiguration: {
+                data: {
+                    data: {
+                        storeConfigurations: [
+                            {
+                                storeName: 'My Phone Integration 1',
                                 scopes: [AiAgentScope.Support],
                             },
-                        },
-                    },
-                    {
-                        status: 200,
-                        data: {
-                            storeConfiguration: {
+                            {
+                                storeName: 'My Phone Integration 2',
                                 scopes: [AiAgentScope.Support],
                             },
-                        },
+                        ],
                     },
-                ],
+                },
             } as any)
 
             const { result } = renderUseAiAgentTypeForAccount()
@@ -140,19 +132,19 @@ describe('useAiAgentType', () => {
         it('should return support when some stores scope are support and some are sales', () => {
             useGetStoresConfigurationForAccountMock.mockReturnValue({
                 isLoading: false,
-                data: [
-                    {
-                        status: 200,
-                        data: {
-                            storeConfiguration: {
+                data: {
+                    data: {
+                        storeConfigurations: [
+                            {
+                                storeName: 'My Phone Integration 1',
                                 scopes: [
                                     AiAgentScope.Support,
                                     AiAgentScope.Sales,
                                 ],
                             },
-                        },
+                        ],
                     },
-                ],
+                },
             } as any)
 
             const { result } = renderUseAiAgentTypeForAccount()
@@ -165,27 +157,23 @@ describe('useAiAgentType', () => {
         it('should return support when some stores scope are support and sales', () => {
             useGetStoresConfigurationForAccountMock.mockReturnValue({
                 isLoading: false,
-                data: [
-                    {
-                        status: 200,
-                        data: {
-                            storeConfiguration: {
+                data: {
+                    data: {
+                        storeConfigurations: [
+                            {
+                                storeName: 'My Phone Integration 1',
                                 scopes: [AiAgentScope.Support],
                             },
-                        },
-                    },
-                    {
-                        status: 200,
-                        data: {
-                            storeConfiguration: {
+                            {
+                                storeName: 'My Phone Integration 2',
                                 scopes: [
                                     AiAgentScope.Support,
                                     AiAgentScope.Sales,
                                 ],
                             },
-                        },
+                        ],
                     },
-                ],
+                },
             } as any)
 
             const { result } = renderUseAiAgentTypeForAccount()

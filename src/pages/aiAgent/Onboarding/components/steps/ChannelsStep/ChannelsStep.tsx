@@ -162,7 +162,6 @@ export const ChannelsStep: React.FC<StepProps> = ({
         useStoreConfigurationForAccount({
             accountDomain,
             storesName,
-            withFloatingInput: true,
         })
 
     const isLoading =

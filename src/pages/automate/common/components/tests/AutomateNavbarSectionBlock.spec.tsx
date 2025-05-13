@@ -89,6 +89,8 @@ describe('AutomateNavbarSectionBlock', () => {
         useStoreConfigurationMock.mockReturnValue({
             storeConfiguration: defaultStoreConfiguration,
             isLoading: false,
+            isFetched: true,
+            error: null,
         })
     })
 
@@ -109,6 +111,8 @@ describe('AutomateNavbarSectionBlock', () => {
                     isPreviewModeActive: true,
                 },
                 isLoading: false,
+                isFetched: true,
+                error: null,
             })
 
             renderComponent(
@@ -133,6 +137,8 @@ describe('AutomateNavbarSectionBlock', () => {
                     chatChannelDeactivatedDatetime: '2024-10-01T00:00:00Z',
                 },
                 isLoading: false,
+                isFetched: true,
+                error: null,
             })
 
             renderComponent(
@@ -157,6 +163,8 @@ describe('AutomateNavbarSectionBlock', () => {
                     chatChannelDeactivatedDatetime: null,
                 },
                 isLoading: false,
+                isFetched: true,
+                error: null,
             })
 
             renderComponent(
@@ -181,6 +189,8 @@ describe('AutomateNavbarSectionBlock', () => {
                     emailChannelDeactivatedDatetime: '2024-10-01T00:00:00Z',
                 },
                 isLoading: false,
+                isFetched: true,
+                error: null,
             })
 
             renderComponent(
@@ -247,6 +257,8 @@ describe('AutomateNavbarSectionBlock', () => {
                     isPreviewModeActive: true,
                 },
                 isLoading: false,
+                isFetched: true,
+                error: null,
             })
 
             renderComponent(

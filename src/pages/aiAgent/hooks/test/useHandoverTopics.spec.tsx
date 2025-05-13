@@ -60,6 +60,8 @@ describe('useHandoverTopics', () => {
                 excludedTopics: ['topic1', 'topic2'],
             },
             isLoading: false,
+            isFetched: true,
+            error: null,
         })
     })
 
@@ -76,6 +78,8 @@ describe('useHandoverTopics', () => {
         mockUseStoreConfiguration.mockReturnValueOnce({
             storeConfiguration: undefined,
             isLoading: false,
+            isFetched: true,
+            error: null,
         })
 
         const { result } = renderHook(() => useHandoverTopics(mockProps), {
@@ -135,6 +139,8 @@ describe('useHandoverTopics', () => {
             mockUseStoreConfiguration.mockReturnValue({
                 storeConfiguration: undefined,
                 isLoading: false,
+                isFetched: true,
+                error: null,
             })
 
             mockCreateStoreConfiguration.mockResolvedValueOnce({})
@@ -200,6 +206,8 @@ describe('useHandoverTopics', () => {
                 excludedTopics: initialExcludedTopics,
             },
             isLoading: false,
+            isFetched: true,
+            error: null,
         })
 
         const { result } = renderHook(() => useHandoverTopics(mockProps), {

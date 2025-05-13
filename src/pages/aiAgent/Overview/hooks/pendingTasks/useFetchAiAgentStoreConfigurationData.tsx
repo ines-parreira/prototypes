@@ -1,4 +1,4 @@
-import { useGetStoreConfigurationPure } from 'models/aiAgent/queries'
+import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 
 type Args = {
     accountDomain: string
@@ -12,17 +12,20 @@ export const useFetchAiAgentStoreConfigurationData = ({
     enabled,
     refetchOnWindowFocus = true,
 }: Args) => {
-    const { data, isLoading, error, isFetched } = useGetStoreConfigurationPure(
-        {
-            accountDomain,
-            storeName,
-            withFloatingInput: true,
-        },
-        { enabled, refetchOnWindowFocus },
-    )
+    const {
+        storeConfiguration: data,
+        isLoading,
+        error,
+        isFetched,
+    } = useStoreConfiguration({
+        shopName: storeName,
+        accountDomain,
+        enabled,
+        refetchOnWindowFocus,
+    })
 
     return {
-        data: data?.data.storeConfiguration,
+        data,
         isLoading,
         error,
         isFetched,

@@ -1,5 +1,5 @@
 import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { AxiosError, AxiosResponse } from 'axios'
+import { AxiosError } from 'axios'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -12,6 +12,7 @@ import {
     getAiAgentStoreHandoverConfigurations,
     getOnboardingNotificationState,
     getStoreConfiguration,
+    getStoresConfigurations,
     getWelcomePageAcknowledged,
     upsertAccountConfiguration,
     upsertAiAgentStoreHandoverConfiguration,
@@ -41,7 +42,6 @@ import {
     GetStoreConfigurationForAccountParams,
     GetStoreConfigurationParams,
     GetStoreHandoverConfigurationParams,
-    StoreConfigurationResponse,
 } from './types'
 
 export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
@@ -88,7 +88,10 @@ export const storeConfigurationKeys = {
         [...storeConfigurationKeys.details(), params] as const,
     accounts: () => [...storeConfigurationKeys.all(), 'account'] as const,
     account: (params: GetStoreConfigurationForAccountParams) =>
-        [...storeConfigurationKeys.accounts(), params] as const,
+        [
+            ...storeConfigurationKeys.accounts(),
+            Object.values(params).join(','),
+        ] as const,
 }
 
 export const useGetStoreConfigurationPure = (
@@ -114,39 +117,30 @@ export const useGetStoreConfigurationPure = (
 export const useGetStoresConfigurationForAccount = (
     params: GetStoreConfigurationForAccountParams,
     overrides?: UseQueryOptions<
-        AxiosResponse<StoreConfigurationResponse | undefined>[]
+        Awaited<ReturnType<typeof getStoresConfigurations>>
     >,
 ) => {
-    const queryFn = () => {
-        const getAllStoreConfigurationPromise: Promise<
-            AxiosResponse<StoreConfigurationResponse | undefined>
-        >[] = []
+    const parsedParams = {
+        accountDomain: params.accountDomain,
+    }
 
-        for (const storeName of params.storesName) {
-            getAllStoreConfigurationPromise.push(
-                getStoreConfiguration({ ...params, storeName }).catch(
-                    (e: AxiosError) => {
-                        if (e.status === 404) {
-                            return e.response as AxiosResponse<undefined>
-                        }
-                        throw e
-                    },
-                ),
-            )
-        }
-
-        return Promise.all(getAllStoreConfigurationPromise)
+    const queryFn = async () => {
+        return await getStoresConfigurations(parsedParams.accountDomain, {
+            withWizard: true,
+            withFloatingInput: true,
+        }).catch((e: AxiosError) => {
+            throw e
+        })
     }
 
     return useQuery({
-        queryKey: storeConfigurationKeys.account(params),
+        queryKey: storeConfigurationKeys.account({
+            accountDomain: parsedParams.accountDomain,
+        }),
         queryFn,
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
-        enabled:
-            !!params.accountDomain &&
-            !!params.storesName.length &&
-            (overrides?.enabled ?? true),
+        enabled: !!parsedParams.accountDomain && (overrides?.enabled ?? true),
         ...overrides,
     })
 }

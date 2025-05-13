@@ -102,6 +102,8 @@ describe('useMeetAiAgentNotifications', () => {
         mockUseStoreConfiguration.mockReturnValue({
             isLoading: false,
             storeConfiguration: undefined,
+            isFetched: true,
+            error: null,
         })
     })
 
@@ -275,6 +277,8 @@ describe('useMeetAiAgentNotifications', () => {
         mockUseStoreConfiguration.mockReturnValue({
             isLoading: false,
             storeConfiguration: getStoreConfigurationFixture(),
+            isFetched: true,
+            error: null,
         })
 
         renderHook(() => useMeetAiAgentNotifications(), {
@@ -327,7 +331,6 @@ describe('useMeetAiAgentNotifications', () => {
         expect(mockUseStoreConfiguration).toHaveBeenCalledWith({
             shopName: 'test-shop1',
             accountDomain: 'test-account',
-            withWizard: true,
             enabled: false,
         })
     })

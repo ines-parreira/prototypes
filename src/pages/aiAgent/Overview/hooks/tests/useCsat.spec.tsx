@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
@@ -53,25 +51,21 @@ describe('useCsat', () => {
     it('useCsat return correct metric data when the query resolves', () => {
         useGetStoresConfigurationForAccountMock.mockReturnValue({
             isLoading: false,
-            data: [
-                {
-                    status: 200,
-                    data: {
-                        storeConfiguration: {
+            data: {
+                data: {
+                    storeConfigurations: [
+                        {
                             emailChannelDeactivatedDatetime: null,
+                            storeName: 'My Phone Integration 1',
                         },
-                    },
-                },
-                {
-                    status: 200,
-                    data: {
-                        storeConfiguration: {
+                        {
                             emailChannelDeactivatedDatetime:
                                 '2025-02-25T11:17:10Z',
+                            storeName: 'My Phone Integration 2',
                         },
-                    },
+                    ],
                 },
-            ],
+            },
         } as any)
 
         useMultipleMetricsTrendsMock.mockReturnValue({
@@ -103,26 +97,22 @@ describe('useCsat', () => {
     it('useCsat should be hidden when all store have an emailChannelDeactivatedDatetime', () => {
         useGetStoresConfigurationForAccountMock.mockReturnValue({
             isLoading: false,
-            data: [
-                {
-                    status: 200,
-                    data: {
-                        storeConfiguration: {
+            data: {
+                data: {
+                    storeConfigurations: [
+                        {
                             emailChannelDeactivatedDatetime:
                                 '2025-02-25T11:17:10Z',
+                            storeName: 'My Phone Integration 1',
                         },
-                    },
-                },
-                {
-                    status: 200,
-                    data: {
-                        storeConfiguration: {
+                        {
                             emailChannelDeactivatedDatetime:
                                 '2025-02-25T11:17:10Z',
+                            storeName: 'My Phone Integration 2',
                         },
-                    },
+                    ],
                 },
-            ],
+            },
         } as any)
 
         useMultipleMetricsTrendsMock.mockReturnValue({
@@ -143,25 +133,21 @@ describe('useCsat', () => {
     it('useCsat should not be hidden when some store have a null emailChannelDeactivatedDatetime', () => {
         useGetStoresConfigurationForAccountMock.mockReturnValue({
             isLoading: false,
-            data: [
-                {
-                    status: 200,
-                    data: {
-                        storeConfiguration: {
+            data: {
+                data: {
+                    storeConfigurations: [
+                        {
                             emailChannelDeactivatedDatetime: null,
+                            storeName: 'My Phone Integration 1',
                         },
-                    },
-                },
-                {
-                    status: 200,
-                    data: {
-                        storeConfiguration: {
+                        {
                             emailChannelDeactivatedDatetime:
                                 '2025-02-25T11:17:10Z',
+                            storeName: 'My Phone Integration 2',
                         },
-                    },
+                    ],
                 },
-            ],
+            },
         } as any)
 
         useMultipleMetricsTrendsMock.mockReturnValue({
@@ -188,25 +174,21 @@ describe('useCsat', () => {
         ({ storeIntegrationsLoading, analyticsLoading }) => {
             useGetStoresConfigurationForAccountMock.mockReturnValue({
                 isLoading: storeIntegrationsLoading,
-                data: [
-                    {
-                        status: 200,
-                        data: {
-                            storeConfiguration: {
+                data: {
+                    data: {
+                        storeConfigurations: [
+                            {
                                 emailChannelDeactivatedDatetime: null,
+                                storeName: 'My Phone Integration 1',
                             },
-                        },
-                    },
-                    {
-                        status: 200,
-                        data: {
-                            storeConfiguration: {
+                            {
                                 emailChannelDeactivatedDatetime:
                                     '2025-02-25T11:17:10Z',
+                                storeName: 'My Phone Integration 2',
                             },
-                        },
+                        ],
                     },
-                ],
+                },
             } as any)
 
             useMultipleMetricsTrendsMock.mockReturnValue({

@@ -1,47 +1,31 @@
 import { useMemo } from 'react'
 
 import { useGetStoresConfigurationForAccount } from 'models/aiAgent/queries'
-import { StoreConfiguration } from 'models/aiAgent/types'
 
 export const useStoreConfigurationForAccount = ({
     accountDomain,
     storesName,
-    withWizard,
-    withFloatingInput,
     enabled,
 }: {
     accountDomain: string
-    storesName: string[]
-    withWizard?: boolean
-    withFloatingInput?: boolean
+    storesName?: string[]
     enabled?: boolean
 }) => {
-    const {
-        isLoading: isStoreConfigurationLoading,
-        data: storeConfigurationResponses,
-    } = useGetStoresConfigurationForAccount(
-        {
-            accountDomain,
-            storesName,
-            withWizard,
-            withFloatingInput,
-        },
-        { retry: 1, refetchOnWindowFocus: false, enabled: enabled ?? true },
-    )
+    const { isLoading: isStoreConfigurationLoading, data } =
+        useGetStoresConfigurationForAccount(
+            {
+                accountDomain,
+            },
+            { retry: 1, refetchOnWindowFocus: false, enabled: enabled ?? true },
+        )
 
     const storeConfigurations = useMemo(() => {
-        return storeConfigurationResponses
-            ?.map(
-                (storeConfigurationResponse) =>
-                    storeConfigurationResponse.data?.storeConfiguration,
-            )
-            .filter(
-                (
-                    storeConfiguration,
-                ): storeConfiguration is StoreConfiguration =>
-                    !!storeConfiguration,
-            )
-    }, [storeConfigurationResponses])
+        const storeNameSet = new Set(storesName ?? [])
+
+        return data?.data?.storeConfigurations?.filter((item) =>
+            storeNameSet.size > 0 ? storeNameSet.has(item.storeName) : true,
+        )
+    }, [data?.data?.storeConfigurations, storesName])
 
     return {
         isLoading: isStoreConfigurationLoading,

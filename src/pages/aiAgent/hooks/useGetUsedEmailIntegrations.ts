@@ -28,7 +28,6 @@ export const useGetUsedEmailIntegrations = (shopNameParam?: string) => {
     const { storeConfigurations } = useStoreConfigurationForAccount({
         accountDomain,
         storesName,
-        withFloatingInput: true,
     })
 
     const usedEmailIntegrations = useMemo(() => {
