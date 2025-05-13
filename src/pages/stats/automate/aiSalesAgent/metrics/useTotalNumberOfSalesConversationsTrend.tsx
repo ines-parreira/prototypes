@@ -1,17 +1,17 @@
 import useMetricTrend, {
     fetchMetricTrend,
 } from 'hooks/reporting/useMetricTrend'
-import { totalNumberOfAutomatedConversationQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
+import { totalNumberOfSalesConversationsQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import { StatsFilters } from 'models/stat/types'
 import { getPreviousPeriod } from 'utils/reporting'
 
-const useTotalNumberOfAgentConverationsTrend = (
+const useTotalNumberOfSalesConversationsTrend = (
     filters: StatsFilters,
     timezone: string,
 ) =>
     useMetricTrend(
-        totalNumberOfAutomatedConversationQueryFactory(filters, timezone),
-        totalNumberOfAutomatedConversationQueryFactory(
+        totalNumberOfSalesConversationsQueryFactory(filters, timezone),
+        totalNumberOfSalesConversationsQueryFactory(
             {
                 ...filters,
                 period: getPreviousPeriod(filters.period),
@@ -20,13 +20,13 @@ const useTotalNumberOfAgentConverationsTrend = (
         ),
     )
 
-const fetchTotalNumberOfAgentConverationsTrend = (
+const fetchTotalNumberOfSalesConversationsTrend = (
     filters: StatsFilters,
     timezone: string,
 ) =>
     fetchMetricTrend(
-        totalNumberOfAutomatedConversationQueryFactory(filters, timezone),
-        totalNumberOfAutomatedConversationQueryFactory(
+        totalNumberOfSalesConversationsQueryFactory(filters, timezone),
+        totalNumberOfSalesConversationsQueryFactory(
             {
                 ...filters,
                 period: getPreviousPeriod(filters.period),
@@ -36,6 +36,6 @@ const fetchTotalNumberOfAgentConverationsTrend = (
     )
 
 export {
-    useTotalNumberOfAgentConverationsTrend,
-    fetchTotalNumberOfAgentConverationsTrend,
+    useTotalNumberOfSalesConversationsTrend,
+    fetchTotalNumberOfSalesConversationsTrend,
 }

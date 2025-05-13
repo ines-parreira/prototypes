@@ -4,7 +4,7 @@ import { useMetricPerDimensionWithEnrichmentOnTwoDimensions } from 'hooks/report
 import * as withEnrichment from 'hooks/reporting/withEnrichment'
 import { AiSalesAgentOrdersDimension } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { useEnrichedPostReporting } from 'models/reporting/queries'
-import { totalNumberofSalesOpportunityConvFromAIAgentQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
+import { totalNumberOfSalesConversationsQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import { postEnrichedReporting } from 'models/reporting/resources'
 import { EnrichmentFields } from 'models/reporting/types'
 import { assumeMock } from 'utils/testing'
@@ -26,7 +26,7 @@ describe('useMetricPerDimensionWithEnrichmentOnTwoDimensions', () => {
             end_datetime: '2020-01-02T03:04:56.789-10:00',
         },
     }
-    const query = totalNumberofSalesOpportunityConvFromAIAgentQueryFactory(
+    const query = totalNumberOfSalesConversationsQueryFactory(
         statsFilters,
         timezone,
     )

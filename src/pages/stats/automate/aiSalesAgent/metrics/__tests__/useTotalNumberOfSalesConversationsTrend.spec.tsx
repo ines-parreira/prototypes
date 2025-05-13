@@ -13,9 +13,9 @@ import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
 import {
-    fetchTotalNumberOfAgentConverationsTrend,
-    useTotalNumberOfAgentConverationsTrend,
-} from '../useTotalNumberOfAgentConverationsTrend'
+    fetchTotalNumberOfSalesConversationsTrend,
+    useTotalNumberOfSalesConversationsTrend,
+} from '../useTotalNumberOfSalesConversationsTrend'
 
 const timezone = 'UTC'
 
@@ -38,13 +38,13 @@ jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
 const fetchPostReportingMock = assumeMock(fetchPostReporting)
 
-describe('totalNumberOfAgentConverationsTrend', () => {
+describe('totalNumberOfSalesConversationsTrend', () => {
     const defaultReporting = {
         isFetching: false,
         isError: false,
     } as UseQueryResult
 
-    describe('useTotalNumberOfAgentConverationsTrend', () => {
+    describe('useTotalNumberOfSalesConversationsTrend', () => {
         it('should return correct metric data when the query resolves', async () => {
             usePostReportingMock.mockReturnValueOnce({
                 ...defaultReporting,
@@ -58,7 +58,7 @@ describe('totalNumberOfAgentConverationsTrend', () => {
             act(() => jest.runAllTimers())
             const { result } = renderHook(
                 () =>
-                    useTotalNumberOfAgentConverationsTrend(
+                    useTotalNumberOfSalesConversationsTrend(
                         statsFilters,
                         timezone,
                     ),
@@ -99,7 +99,7 @@ describe('totalNumberOfAgentConverationsTrend', () => {
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
 
-            const result = await fetchTotalNumberOfAgentConverationsTrend(
+            const result = await fetchTotalNumberOfSalesConversationsTrend(
                 statsFilters,
                 timezone,
             )

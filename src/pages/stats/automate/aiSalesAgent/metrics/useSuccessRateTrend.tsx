@@ -3,45 +3,45 @@ import safeDivide from 'pages/stats/automate/aiSalesAgent/util/safeDivide'
 
 import { fetchGenericTrend, useGenericTrend } from './useGenericTrend'
 import {
-    fetchTotalNumberOfAgentConverationsTrend,
-    useTotalNumberOfAgentConverationsTrend,
-} from './useTotalNumberOfAgentConverationsTrend'
-import {
     fetchTotalNumberOfAutomatedSalesTrend,
     useTotalNumberOfAutomatedSalesTrend,
 } from './useTotalNumberOfAutomatedSalesTrend'
+import {
+    fetchTotalNumberOfSalesConversationsTrend,
+    useTotalNumberOfSalesConversationsTrend,
+} from './useTotalNumberOfSalesConversationsTrend'
 
 const useSuccessRateTrend = (filters: StatsFilters, timezone: string) =>
     useGenericTrend(
         {
-            totalNumberOfAgentConverations:
-                useTotalNumberOfAgentConverationsTrend(filters, timezone),
+            totalNumberOfSalesConversations:
+                useTotalNumberOfSalesConversationsTrend(filters, timezone),
             totalNumberOfAutomatedSales: useTotalNumberOfAutomatedSalesTrend(
                 filters,
                 timezone,
             ),
         },
-        ({ totalNumberOfAgentConverations, totalNumberOfAutomatedSales }) =>
+        ({ totalNumberOfSalesConversations, totalNumberOfAutomatedSales }) =>
             safeDivide(
                 totalNumberOfAutomatedSales,
-                totalNumberOfAgentConverations,
+                totalNumberOfSalesConversations,
             ),
     )
 
 const fetchSuccessRateTrend = (filters: StatsFilters, timezone: string) =>
     fetchGenericTrend(
         {
-            totalNumberOfAgentConverations:
-                fetchTotalNumberOfAgentConverationsTrend(filters, timezone),
+            totalNumberOfSalesConversations:
+                fetchTotalNumberOfSalesConversationsTrend(filters, timezone),
             totalNumberOfAutomatedSales: fetchTotalNumberOfAutomatedSalesTrend(
                 filters,
                 timezone,
             ),
         },
-        ({ totalNumberOfAgentConverations, totalNumberOfAutomatedSales }) =>
+        ({ totalNumberOfSalesConversations, totalNumberOfAutomatedSales }) =>
             safeDivide(
                 totalNumberOfAutomatedSales,
-                totalNumberOfAgentConverations,
+                totalNumberOfSalesConversations,
             ),
     )
 

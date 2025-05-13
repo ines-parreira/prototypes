@@ -8,9 +8,9 @@ import {
     useTotalNumberOfAutomatedSalesTrend,
 } from 'pages/stats/automate/aiSalesAgent/metrics/useTotalNumberOfAutomatedSalesTrend'
 import {
-    fetchTotalSalesOpportunityAIConvTrend,
-    useTotalSalesOpportunityAIConvTrend,
-} from 'pages/stats/automate/aiSalesAgent/metrics/useTotalSalesOpportunityAIConvTrend'
+    fetchTotalNumberOfSalesConversationsTrend,
+    useTotalNumberOfSalesConversationsTrend,
+} from 'pages/stats/automate/aiSalesAgent/metrics/useTotalNumberOfSalesConversationsTrend'
 import { infinityNanToZero } from 'pages/stats/automate/aiSalesAgent/metrics/utils'
 
 import { fetchGenericTrend, useGenericTrend } from './useGenericTrend'
@@ -40,7 +40,7 @@ const useRoiRateTrend = (filters: StatsFilters, timezone: string) => {
     return useGenericTrend(
         {
             gmvInfluenced: useGmvInfluencedTrend(filters, timezone),
-            totalConversations: useTotalSalesOpportunityAIConvTrend(
+            totalConversations: useTotalNumberOfSalesConversationsTrend(
                 filters,
                 timezone,
             ),
@@ -57,7 +57,7 @@ const fetchRoiRateTrend = (filters: StatsFilters, timezone: string) => {
     return fetchGenericTrend(
         {
             gmvInfluenced: fetchGmvInfluencedTrend(filters, timezone),
-            totalConversations: fetchTotalSalesOpportunityAIConvTrend(
+            totalConversations: fetchTotalNumberOfSalesConversationsTrend(
                 filters,
                 timezone,
             ),

@@ -15,9 +15,9 @@ import {
     useTotalNumberOfAutomatedSalesTrend,
 } from 'pages/stats/automate/aiSalesAgent/metrics/useTotalNumberOfAutomatedSalesTrend'
 import {
-    fetchTotalSalesOpportunityAIConvTrend,
-    useTotalSalesOpportunityAIConvTrend,
-} from 'pages/stats/automate/aiSalesAgent/metrics/useTotalSalesOpportunityAIConvTrend'
+    fetchTotalNumberOfSalesConversationsTrend,
+    useTotalNumberOfSalesConversationsTrend,
+} from 'pages/stats/automate/aiSalesAgent/metrics/useTotalNumberOfSalesConversationsTrend'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
@@ -42,11 +42,13 @@ const queryClient = mockQueryClient()
 jest.useFakeTimers()
 
 jest.mock(
-    'pages/stats/automate/aiSalesAgent/metrics/useTotalSalesOpportunityAIConvTrend',
+    'pages/stats/automate/aiSalesAgent/metrics/useTotalNumberOfSalesConversationsTrend',
 )
-const useTotalAIConvTrendMock = assumeMock(useTotalSalesOpportunityAIConvTrend)
+const useTotalAIConvTrendMock = assumeMock(
+    useTotalNumberOfSalesConversationsTrend,
+)
 const fetchTotalAIConvTrendMock = assumeMock(
-    fetchTotalSalesOpportunityAIConvTrend,
+    fetchTotalNumberOfSalesConversationsTrend,
 )
 
 jest.mock('pages/stats/automate/aiSalesAgent/metrics/useGmvInfluencedTrend')

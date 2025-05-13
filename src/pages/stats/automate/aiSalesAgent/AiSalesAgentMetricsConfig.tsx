@@ -7,7 +7,7 @@ import {
     discountCodesOfferedDrillDownQueryFactory,
     totalNumberOfAutomatedSalesDrillDownQueryFactory,
     totalNumberOfOrderDrillDownQueryFactory,
-    totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
+    totalNumberOfSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
     totalNumberProductRecommendationsDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import {
@@ -59,13 +59,13 @@ import {
     useTotalNumberOfOrdersTrend,
 } from 'pages/stats/automate/aiSalesAgent/metrics/useTotalNumberOfOrdersTrend'
 import {
+    fetchTotalNumberOfSalesConversationsTrend,
+    useTotalNumberOfSalesConversationsTrend,
+} from 'pages/stats/automate/aiSalesAgent/metrics/useTotalNumberOfSalesConversationsTrend'
+import {
     fetchTotalProductRecommendations,
     useTotalProductRecommendations,
 } from 'pages/stats/automate/aiSalesAgent/metrics/useTotalProductRecommendations'
-import {
-    fetchTotalSalesOpportunityAIConvTrend,
-    useTotalSalesOpportunityAIConvTrend,
-} from 'pages/stats/automate/aiSalesAgent/metrics/useTotalSalesOpportunityAIConvTrend'
 import { DrillDownQueryFactory } from 'pages/stats/common/drill-down/DrillDownTableConfig'
 import { Domain } from 'pages/stats/common/drill-down/types'
 import { MetricTrendFormat } from 'pages/stats/common/utils'
@@ -155,13 +155,13 @@ export const AiSalesAgentMetricsWithDrillDownConfig: Record<
         hint: {
             title: 'The number of conversations handled using Shopping Assistant skills.',
         },
-        useTrend: useTotalSalesOpportunityAIConvTrend,
-        fetchTrend: fetchTotalSalesOpportunityAIConvTrend,
+        useTrend: useTotalNumberOfSalesConversationsTrend,
+        fetchTrend: fetchTotalNumberOfSalesConversationsTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
         drillDownMetric: AiSalesAgentChart.AiSalesAgentTotalSalesConv,
         drillDownQuery:
-            totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
+            totalNumberOfSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
         showMetric: false,
         domain: Domain.AiSalesAgent,
     },

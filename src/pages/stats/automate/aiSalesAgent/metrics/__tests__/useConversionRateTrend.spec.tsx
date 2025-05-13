@@ -11,9 +11,9 @@ import {
     useTotalNumberOfOrdersTrend,
 } from 'pages/stats/automate/aiSalesAgent/metrics/useTotalNumberOfOrdersTrend'
 import {
-    fetchTotalSalesOpportunityAIConvTrend,
-    useTotalSalesOpportunityAIConvTrend,
-} from 'pages/stats/automate/aiSalesAgent/metrics/useTotalSalesOpportunityAIConvTrend'
+    fetchTotalNumberOfSalesConversationsTrend,
+    useTotalNumberOfSalesConversationsTrend,
+} from 'pages/stats/automate/aiSalesAgent/metrics/useTotalNumberOfSalesConversationsTrend'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
@@ -41,18 +41,18 @@ const queryClient = mockQueryClient()
 jest.useFakeTimers()
 
 jest.mock(
-    'pages/stats/automate/aiSalesAgent/metrics/useTotalSalesOpportunityAIConvTrend',
+    'pages/stats/automate/aiSalesAgent/metrics/useTotalNumberOfSalesConversationsTrend',
 )
-const useTotalSalesOpportunityAIConvTrendMock = assumeMock(
-    useTotalSalesOpportunityAIConvTrend,
+const useTotalNumberOfSalesConversationsTrendMock = assumeMock(
+    useTotalNumberOfSalesConversationsTrend,
 )
 const useTotalNumberOfOrdersMock = assumeMock(useTotalNumberOfOrdersTrend)
 
 jest.mock(
     'pages/stats/automate/aiSalesAgent/metrics/useTotalNumberOfOrdersTrend',
 )
-const fetchTotalSalesOpportunityAIConvTrendMock = assumeMock(
-    fetchTotalSalesOpportunityAIConvTrend,
+const fetchTotalNumberOfSalesConversationsTrendMock = assumeMock(
+    fetchTotalNumberOfSalesConversationsTrend,
 )
 const fetchTotalNumberOfOrdersMock = assumeMock(fetchTotalNumberOfOrdersTrend)
 
@@ -61,7 +61,7 @@ describe('conversionRateTrend', () => {
         it('should return correct metric data when the query resolves', async () => {
             act(() => jest.runAllTimers())
 
-            useTotalSalesOpportunityAIConvTrendMock.mockReturnValue({
+            useTotalNumberOfSalesConversationsTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
@@ -104,7 +104,7 @@ describe('conversionRateTrend', () => {
         it('should retrun correct value if cube returns null', async () => {
             act(() => jest.runAllTimers())
 
-            useTotalSalesOpportunityAIConvTrendMock.mockReturnValue({
+            useTotalNumberOfSalesConversationsTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
@@ -149,7 +149,7 @@ describe('conversionRateTrend', () => {
         it('should return correct metric data when the query resolves', async () => {
             act(() => jest.runAllTimers())
 
-            fetchTotalSalesOpportunityAIConvTrendMock.mockReturnValue({
+            fetchTotalNumberOfSalesConversationsTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
@@ -157,7 +157,7 @@ describe('conversionRateTrend', () => {
                     prevValue: 2,
                 },
             } as unknown as ReturnType<
-                typeof fetchTotalSalesOpportunityAIConvTrend
+                typeof fetchTotalNumberOfSalesConversationsTrend
             >)
             fetchTotalNumberOfOrdersMock.mockReturnValue({
                 isFetching: false,
@@ -183,7 +183,7 @@ describe('conversionRateTrend', () => {
         it('should retrun correct value if cube returns null', async () => {
             act(() => jest.runAllTimers())
 
-            fetchTotalSalesOpportunityAIConvTrendMock.mockReturnValue({
+            fetchTotalNumberOfSalesConversationsTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
@@ -191,7 +191,7 @@ describe('conversionRateTrend', () => {
                     prevValue: null,
                 },
             } as unknown as ReturnType<
-                typeof fetchTotalSalesOpportunityAIConvTrend
+                typeof fetchTotalNumberOfSalesConversationsTrend
             >)
             fetchTotalNumberOfOrdersMock.mockReturnValue({
                 isFetching: false,

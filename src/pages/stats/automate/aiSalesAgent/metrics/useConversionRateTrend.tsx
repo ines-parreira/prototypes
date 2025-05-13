@@ -4,9 +4,9 @@ import {
     useTotalNumberOfOrdersTrend,
 } from 'pages/stats/automate/aiSalesAgent/metrics/useTotalNumberOfOrdersTrend'
 import {
-    fetchTotalSalesOpportunityAIConvTrend,
-    useTotalSalesOpportunityAIConvTrend,
-} from 'pages/stats/automate/aiSalesAgent/metrics/useTotalSalesOpportunityAIConvTrend'
+    fetchTotalNumberOfSalesConversationsTrend,
+    useTotalNumberOfSalesConversationsTrend,
+} from 'pages/stats/automate/aiSalesAgent/metrics/useTotalNumberOfSalesConversationsTrend'
 import safeDivide from 'pages/stats/automate/aiSalesAgent/util/safeDivide'
 
 import { fetchGenericTrend, useGenericTrend } from './useGenericTrend'
@@ -15,10 +15,8 @@ const useConversionRateTrend = (filters: StatsFilters, timezone: string) =>
     useGenericTrend(
         {
             totalNumberOfOrders: useTotalNumberOfOrdersTrend(filters, timezone),
-            totalSalesOpportunityAIConv: useTotalSalesOpportunityAIConvTrend(
-                filters,
-                timezone,
-            ),
+            totalSalesOpportunityAIConv:
+                useTotalNumberOfSalesConversationsTrend(filters, timezone),
         },
         ({ totalNumberOfOrders, totalSalesOpportunityAIConv }) =>
             safeDivide(totalNumberOfOrders, totalSalesOpportunityAIConv),
@@ -31,10 +29,8 @@ const fetchConversionRateTrend = (filters: StatsFilters, timezone: string) =>
                 filters,
                 timezone,
             ),
-            totalSalesOpportunityAIConv: fetchTotalSalesOpportunityAIConvTrend(
-                filters,
-                timezone,
-            ),
+            totalSalesOpportunityAIConv:
+                fetchTotalNumberOfSalesConversationsTrend(filters, timezone),
         },
         ({ totalNumberOfOrders, totalSalesOpportunityAIConv }) =>
             safeDivide(totalNumberOfOrders, totalSalesOpportunityAIConv),

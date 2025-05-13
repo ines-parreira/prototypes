@@ -6,7 +6,7 @@ import {
     discountCodesOfferedDrillDownQueryFactory,
     totalNumberOfAutomatedSalesDrillDownQueryFactory,
     totalNumberOfOrderDrillDownQueryFactory,
-    totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
+    totalNumberOfSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
     totalNumberProductRecommendationsDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import { ReportingFilterOperator } from 'models/reporting/types'
@@ -18,7 +18,7 @@ import {
 describe('totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory', () => {
     it('should build a query', () => {
         expect(
-            totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory(
+            totalNumberOfSalesOpportunityConvFromAIAgentDrillDownQueryFactory(
                 {
                     period: {
                         start_datetime: '2021-01-01T00:00:00Z',
@@ -57,7 +57,7 @@ describe('totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory', ()
 
     it('should build a query with sorting', () => {
         expect(
-            totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory(
+            totalNumberOfSalesOpportunityConvFromAIAgentDrillDownQueryFactory(
                 {
                     period: {
                         start_datetime: '2021-01-01T00:00:00Z',

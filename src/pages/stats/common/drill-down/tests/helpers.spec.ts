@@ -5,7 +5,7 @@ import {
     discountCodesOfferedDrillDownQueryFactory,
     totalNumberOfAutomatedSalesDrillDownQueryFactory,
     totalNumberOfOrderDrillDownQueryFactory,
-    totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
+    totalNumberOfSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
     totalNumberProductRecommendationsDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import { customerSatisfactionMetricDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
@@ -127,7 +127,7 @@ const liveDashboardConnectedCallsListQueryFactoryMock = assumeMock(
 )
 
 const aiSalesAgentTotalSalesConvDrillDownQueryFactoryMock = assumeMock(
-    totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
+    totalNumberOfSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
 )
 const totalNumberOfAutomatedSalesDrillDownQueryFactoryMock = assumeMock(
     totalNumberOfAutomatedSalesDrillDownQueryFactory,

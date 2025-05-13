@@ -163,36 +163,13 @@ export const totalNumberOfOrderDrillDownQueryFactory = (
           }),
 })
 
-export const totalNumberofSalesOpportunityConvFromAIAgentQueryFactory = (
-    filters: StatsFilters,
-    timezone: string,
-): ReportingQuery<AiSalesAgentConversationsCube> => ({
-    measures: [AiSalesAgentConversationsMeasure.Count],
-    dimensions: [],
-    filters: [
-        {
-            member: AiSalesAgentConversationsDimension.IsSalesOpportunity,
-            operator: ReportingFilterOperator.Equals,
-            values: ['1'],
-        },
-        ...statsFiltersToReportingFilters(
-            aiSalesAgentConversationsDefaultFiltersMembers,
-            filters,
-        ),
-    ],
-    timezone,
-})
-
-export const totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory =
+export const totalNumberOfSalesOpportunityConvFromAIAgentDrillDownQueryFactory =
     (
         filters: StatsFilters,
         timezone: string,
         sorting?: OrderDirection,
     ): ReportingQuery<AiSalesAgentConversationsCube> => ({
-        ...totalNumberofSalesOpportunityConvFromAIAgentQueryFactory(
-            filters,
-            timezone,
-        ),
+        ...totalNumberOfSalesConversationsQueryFactory(filters, timezone),
         dimensions: [
             AiSalesAgentConversationsDimension.TicketId,
             AiSalesAgentConversationsDimension.Outcome,
@@ -210,27 +187,7 @@ export const totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory =
               }),
     })
 
-export const totalNumberOfAutomatedConversationQueryFactory = (
-    filters: StatsFilters,
-    timezone: string,
-): ReportingQuery<AiSalesAgentConversationsCube> => ({
-    measures: [AiSalesAgentConversationsMeasure.Count],
-    dimensions: [],
-    filters: [
-        {
-            member: AiSalesAgentConversationsFilterMember.Outcome,
-            operator: ReportingFilterOperator.NotEquals,
-            values: ['handover'],
-        },
-        ...statsFiltersToReportingFilters(
-            aiSalesAgentConversationsDefaultFiltersMembers,
-            filters,
-        ),
-    ],
-    timezone,
-})
-
-export const totalNumberOfAgentConversationsQueryFactory = (
+export const totalNumberOfSalesConversationsQueryFactory = (
     filters: StatsFilters,
     timezone: string,
 ): ReportingQuery<AiSalesAgentConversationsCube> => ({

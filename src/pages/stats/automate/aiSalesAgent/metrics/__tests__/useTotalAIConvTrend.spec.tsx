@@ -13,9 +13,9 @@ import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
 import {
-    fetchTotalSalesOpportunityAIConvTrend,
-    useTotalSalesOpportunityAIConvTrend,
-} from '../useTotalSalesOpportunityAIConvTrend'
+    fetchTotalNumberOfSalesConversationsTrend,
+    useTotalNumberOfSalesConversationsTrend,
+} from '../useTotalNumberOfSalesConversationsTrend'
 
 const timezone = 'UTC'
 
@@ -59,7 +59,10 @@ describe('totalAIConvTrend', () => {
 
             const { result } = renderHook(
                 () =>
-                    useTotalSalesOpportunityAIConvTrend(statsFilters, timezone),
+                    useTotalNumberOfSalesConversationsTrend(
+                        statsFilters,
+                        timezone,
+                    ),
                 {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
@@ -97,7 +100,7 @@ describe('totalAIConvTrend', () => {
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
 
-            const result = await fetchTotalSalesOpportunityAIConvTrend(
+            const result = await fetchTotalNumberOfSalesConversationsTrend(
                 statsFilters,
                 timezone,
             )

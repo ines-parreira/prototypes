@@ -10,9 +10,9 @@ import {
 
 import { fetchGenericTrend, useGenericTrend } from './useGenericTrend'
 import {
-    fetchTotalSalesOpportunityAIConvTrend,
-    useTotalSalesOpportunityAIConvTrend,
-} from './useTotalSalesOpportunityAIConvTrend'
+    fetchTotalNumberOfSalesConversationsTrend,
+    useTotalNumberOfSalesConversationsTrend,
+} from './useTotalNumberOfSalesConversationsTrend'
 
 const calculateTimeSavedByAgents = (
     numberOfInteractions: number,
@@ -29,7 +29,7 @@ const useTimeSavedByAgentTrend = (filters: StatsFilters, timezone: string) =>
     useGenericTrend(
         {
             totalNumberOfAgentSalesConverations:
-                useTotalSalesOpportunityAIConvTrend(filters, timezone),
+                useTotalNumberOfSalesConversationsTrend(filters, timezone),
             ticketHandleTime: useTicketHandleTimeTrend(filters, timezone),
             successRate: useSuccessRateTrend(filters, timezone),
         },
@@ -49,7 +49,7 @@ const fetchTimeSavedByAgentTrend = (filters: StatsFilters, timezone: string) =>
     fetchGenericTrend(
         {
             totalNumberOfAgentSalesConverations:
-                fetchTotalSalesOpportunityAIConvTrend(filters, timezone),
+                fetchTotalNumberOfSalesConversationsTrend(filters, timezone),
             ticketHandleTime: fetchTicketHandleTimeTrend(filters, timezone),
             successRate: fetchSuccessRateTrend(filters, timezone),
         },

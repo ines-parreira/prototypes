@@ -7,10 +7,6 @@ import moment from 'moment'
 
 import { StatsFilters } from 'models/stat/types'
 import {
-    fetchTotalNumberOfAgentConverationsTrend,
-    useTotalNumberOfAgentConverationsTrend,
-} from 'pages/stats/automate/aiSalesAgent/metrics//useTotalNumberOfAgentConverationsTrend'
-import {
     fetchTotalNumberOfAutomatedSalesTrend,
     useTotalNumberOfAutomatedSalesTrend,
 } from 'pages/stats/automate/aiSalesAgent/metrics//useTotalNumberOfAutomatedSalesTrend'
@@ -22,6 +18,10 @@ import {
     fetchSuccessRateTrend,
     useSuccessRateTrend,
 } from '../useSuccessRateTrend'
+import {
+    fetchTotalNumberOfSalesConversationsTrend,
+    useTotalNumberOfSalesConversationsTrend,
+} from '../useTotalNumberOfSalesConversationsTrend'
 
 const timezone = 'UTC'
 
@@ -40,14 +40,12 @@ const queryClient = mockQueryClient()
 
 jest.useFakeTimers()
 
-jest.mock(
-    'pages/stats/automate/aiSalesAgent/metrics/useTotalNumberOfAgentConverationsTrend',
-)
-const useTotalNumberOfAgentConverationsTrendMock = assumeMock(
-    useTotalNumberOfAgentConverationsTrend,
+jest.mock('../useTotalNumberOfSalesConversationsTrend')
+const useTotalNumberOfSalesConversationsTrendMock = assumeMock(
+    useTotalNumberOfSalesConversationsTrend,
 )
 const fetchTotalNumberOfAgentConverationsTrendMock = assumeMock(
-    fetchTotalNumberOfAgentConverationsTrend,
+    fetchTotalNumberOfSalesConversationsTrend,
 )
 
 jest.mock(
@@ -65,7 +63,7 @@ describe('successRateTrend', () => {
         it('should return correct metric data when the query resolves', async () => {
             act(() => jest.runAllTimers())
 
-            useTotalNumberOfAgentConverationsTrendMock.mockReturnValue({
+            useTotalNumberOfSalesConversationsTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
@@ -108,7 +106,7 @@ describe('successRateTrend', () => {
         it('should retrun correct value if cube returns null', async () => {
             act(() => jest.runAllTimers())
 
-            useTotalNumberOfAgentConverationsTrendMock.mockReturnValue({
+            useTotalNumberOfSalesConversationsTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
@@ -161,7 +159,7 @@ describe('successRateTrend', () => {
                     prevValue: 2,
                 },
             } as unknown as ReturnType<
-                typeof fetchTotalNumberOfAgentConverationsTrend
+                typeof fetchTotalNumberOfSalesConversationsTrend
             >)
             fetchTotalNumberOfAutomatedSalesTrendMock.mockReturnValue({
                 isFetching: false,
@@ -197,7 +195,7 @@ describe('successRateTrend', () => {
                     prevValue: null,
                 },
             } as unknown as ReturnType<
-                typeof fetchTotalNumberOfAgentConverationsTrend
+                typeof fetchTotalNumberOfSalesConversationsTrend
             >)
             fetchTotalNumberOfAutomatedSalesTrendMock.mockReturnValue({
                 isFetching: false,
