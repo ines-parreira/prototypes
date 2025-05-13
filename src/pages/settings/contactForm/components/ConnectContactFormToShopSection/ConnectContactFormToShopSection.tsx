@@ -1,37 +1,41 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 import classNames from 'classnames'
 
 import { Label } from '@gorgias/merchant-ui-kit'
 
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { useShopifyStoreWithChatConnectionsOptions } from 'pages/settings/helpCenter/hooks/useShopifyStoreWithChatConnectionsOptions'
+import useAppSelector from 'hooks/useAppSelector'
+import { IntegrationType } from 'models/integration/types'
+import SelectStore, {
+    HelpCenterContactFormIntegrationTypes,
+} from 'pages/settings/common/SelectStore/SelectStore'
 import settingsCss from 'pages/settings/settings.less'
+import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
 import contactFormCss from '../../contactForm.less'
 import css from './ConnectContactFormToShopSection.less'
 
 interface Props {
-    onUpdate: (data: { shop_name: string | null }) => void
+    onUpdate: (data: {
+        shop_name: string | null
+        shop_integration_id: number | null
+    }) => void
     shopName: string | null
+    shopIntegrationId: number | null
 }
 
 export const ConnectContactFormToShopSection = ({
     shopName,
+    shopIntegrationId,
     onUpdate,
 }: Props): JSX.Element | null => {
-    const [selectedShop, setSelectedShop] = useState(shopName)
-
-    useEffect(() => {
-        setSelectedShop(shopName)
-    }, [shopName])
-
-    const shopifyShopsOptions = useShopifyStoreWithChatConnectionsOptions({
-        option: css['select-option'],
-        icon: css['shopify-icon'],
-        connectedChatsCount: css['select-connected-chats'],
+    const [selectedShop, setSelectedShop] = useState({
+        shopName,
+        shopIntegrationId,
     })
-
+    const gorgiasChatIntegrations = useAppSelector(
+        getIntegrationsByTypes([IntegrationType.GorgiasChat]),
+    )
     return (
         <section className={settingsCss.mb40}>
             <Label htmlFor="store-select" className={contactFormCss.mbXxs}>
@@ -48,20 +52,23 @@ export const ConnectContactFormToShopSection = ({
                 enable auto-embedding for Shopify stores.
             </p>
 
-            <SelectField
-                disabled={!!shopName}
-                value={selectedShop}
-                fullWidth
-                id="store-select"
-                placeholder="Select a store"
-                icon={selectedShop ? undefined : 'store'}
-                onChange={(value) => {
-                    // this type cast is safe as all values are string
-                    setSelectedShop(value as string)
-                    onUpdate({ shop_name: value as string })
+            <SelectStore
+                isDisabled={!!(shopName || shopIntegrationId)}
+                handleStoreChange={(
+                    integration: HelpCenterContactFormIntegrationTypes,
+                ) => {
+                    setSelectedShop({
+                        shopName: integration.name,
+                        shopIntegrationId: integration.id,
+                    })
+                    onUpdate({
+                        shop_name: integration.name,
+                        shop_integration_id: integration.id,
+                    })
                 }}
-                caption="Once set, the store associated with this contact form cannot be changed."
-                options={shopifyShopsOptions}
+                shopName={selectedShop.shopName}
+                shopIntegrationId={selectedShop.shopIntegrationId}
+                gorgiasChatIntegrations={gorgiasChatIntegrations}
             />
         </section>
     )

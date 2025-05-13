@@ -249,14 +249,17 @@ export const HelpCenterInstallationView: React.FC = () => {
 
     const onConnectedShopChange = ({
         shop_name,
+        shop_integration_id,
         self_service_deactivated,
     }: {
         shop_name: string | null
+        shop_integration_id: number | null
         self_service_deactivated?: boolean
     }) => {
         updatePreferences({
             connectedShop: {
                 shopName: shop_name,
+                shopIntegrationId: shop_integration_id,
                 selfServiceDeactivated: Boolean(self_service_deactivated),
             },
         })
@@ -326,7 +329,8 @@ export const HelpCenterInstallationView: React.FC = () => {
                     <ConnectToShopSection
                         onUpdate={onConnectedShopChange}
                         shopName={preferences.connectedShop.shopName}
-                        shopType={selectedShop?.type}
+                        shopType={selectedShop?.type || null}
+                        shopIntegrationId={selectedShop?.id || null}
                     />
                     <section className="mb-4">
                         <h3 className={css.sectionTitle}>Publish</h3>

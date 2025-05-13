@@ -22,8 +22,8 @@ export type HelpCenterTranslationSeoMeta =
     Components.Schemas.HelpCenterTranslationSeoMeta
 
 export type HelpCenter = Omit<
-    Components.Schemas.HelpCenterDto,
-    'contact_form'
+    Components.Schemas.GetHelpCenterDto,
+    'contact_form' | 'account_id'
 > & {
     customDomain?: CustomDomain
     translations?: HelpCenterTranslation[]

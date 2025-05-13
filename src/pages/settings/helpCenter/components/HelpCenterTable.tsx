@@ -29,9 +29,7 @@ import css from './HelpCenterTable.less'
 type Props = {
     isLoading: boolean
     list: HelpCenter[]
-    locales: {
-        [key: string]: Locale
-    }
+    locales: { [key: string]: Locale }
     onClick: (
         helpCenter: HelpCenter,
         shouldNavigateToWizardCreation?: boolean,
@@ -112,7 +110,12 @@ export const HelpCenterTable: React.FC<Props> = ({
                                 {helpCenter.name}
                             </BodyCell>
                             <BodyCell className={css.storeName}>
-                                <StoreName name={helpCenter.shop_name} />
+                                <StoreName
+                                    name={helpCenter.shop_name}
+                                    shopIntegrationId={
+                                        helpCenter.shop_integration_id
+                                    }
+                                />
                             </BodyCell>
                             <BodyCell size="small">
                                 <LanguageTagList

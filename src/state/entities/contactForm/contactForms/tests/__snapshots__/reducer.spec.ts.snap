@@ -19,6 +19,7 @@ exports[`contactForms reducer contactFormDeleted action should delete a contact 
       "id": 1,
       "integration_id": null,
       "name": "SF Bicycles Contact Form",
+      "shop_integration_id": null,
       "shop_name": null,
       "source": "manual",
       "subject_lines": {
@@ -58,6 +59,7 @@ exports[`contactForms reducer contactFormUpdated action should replace an existi
       "id": 1,
       "integration_id": null,
       "name": "test",
+      "shop_integration_id": null,
       "shop_name": null,
       "source": "manual",
       "subject_lines": {
@@ -93,6 +95,7 @@ exports[`contactForms reducer contactFormsFetched action should add the contact 
       "id": 1,
       "integration_id": null,
       "name": "SF Bicycles Contact Form",
+      "shop_integration_id": null,
       "shop_name": null,
       "source": "manual",
       "subject_lines": {

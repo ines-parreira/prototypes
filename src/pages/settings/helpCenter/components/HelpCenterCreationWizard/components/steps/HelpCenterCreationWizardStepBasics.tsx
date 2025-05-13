@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 import { Label } from '@gorgias/merchant-ui-kit'
 
-import store from 'assets/img/icons/store.svg'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import { useCheckHelpCenterWithSubdomainExists } from 'models/helpCenter/queries'
 import {
@@ -26,8 +25,10 @@ import GroupAddon from 'pages/common/forms/input/GroupAddon'
 import InputField from 'pages/common/forms/input/InputField'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
 import history from 'pages/history'
+import SelectStore, {
+    HelpCenterContactFormIntegrationTypes,
+} from 'pages/settings/common/SelectStore/SelectStore'
 import {
     HELP_CENTER_DOMAIN,
     HELP_CENTER_STEPS_DESCRIPTIONS,
@@ -36,7 +37,6 @@ import {
     NEXT_ACTION,
     PlatformType,
 } from 'pages/settings/helpCenter/constants'
-import { useStoreOptions } from 'pages/settings/helpCenter/hooks/useStoreOptions'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {
     getSubdomainValidationError,
@@ -76,10 +76,6 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
         HelpCenterCreationWizardStep.Basics,
     )
     const helpCenterLocales = useSupportedLocales()
-    const integrationOptions = useStoreOptions({
-        option: css['storeOption'],
-        icon: css['storeIcon'],
-    })
 
     const uiLanguageOptions = useMemo(() => {
         return mapHelpCenterLocalesToLanguagePicker(helpCenterLocales)
@@ -213,10 +209,13 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
         handleFormUpdate({ platformType })
     }
 
-    const handleStoreChange = (storeIntegrationName: string) => {
+    const handleStoreChange = (
+        integration: HelpCenterContactFormIntegrationTypes,
+    ) => {
         setIsPristine(false)
         handleFormUpdate({
-            shopName: storeIntegrationName,
+            shopName: integration.name,
+            shopIntegrationId: integration.id,
         })
     }
 
@@ -402,27 +401,10 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
                                   ? 'Connect a store to enable auto-embedding (Shopify only) to your website.'
                                   : ''}
                         </div>
-                        <SelectField
-                            fullWidth
-                            placeholder="Select a store"
-                            customIcon={
-                                !newHelpCenter.shopName && (
-                                    <img
-                                        src={store}
-                                        className={css['storeIcon']}
-                                        alt="store logo"
-                                    />
-                                )
-                            }
-                            value={newHelpCenter?.shopName}
-                            onChange={(value) => {
-                                handleStoreChange(value as string)
-                            }}
-                            options={integrationOptions}
-                            showSelectedOption={
-                                allStoreIntegrations.length === 1
-                            }
-                            isSearchable={false}
+                        <SelectStore
+                            handleStoreChange={handleStoreChange}
+                            shopName={newHelpCenter.shopName}
+                            shopIntegrationId={newHelpCenter.shopIntegrationId}
                         />
                         {shouldDisplayFormErrors && !newHelpCenter.shopName && (
                             <div className={css.error}>

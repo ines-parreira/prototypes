@@ -63,12 +63,15 @@ const ContactFormPreferences = (): JSX.Element => {
 
     const onConnectedShopChange = ({
         shop_name,
+        shop_integration_id,
     }: {
         shop_name: string | null
+        shop_integration_id: number | null
     }) => {
         setUpdateContactFormDto((prev) => ({
             ...prev,
             shop_name,
+            shop_integration_id,
         }))
     }
 
@@ -277,6 +280,7 @@ const ContactFormPreferences = (): JSX.Element => {
                     <ConnectContactFormToShopSection
                         onUpdate={onConnectedShopChange}
                         shopName={contactForm.shop_name}
+                        shopIntegrationId={contactForm.shop_integration_id}
                     />
                 )}
 

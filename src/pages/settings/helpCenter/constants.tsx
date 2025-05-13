@@ -57,9 +57,7 @@ export const SOCIAL_NAVIGATION_LINKS: Record<
         label: 'Facebook',
         value: '',
         group: 'footer',
-        meta: {
-            network: 'facebook',
-        },
+        meta: { network: 'facebook' },
         created_datetime: '',
         updated_datetime: '',
     },
@@ -68,9 +66,7 @@ export const SOCIAL_NAVIGATION_LINKS: Record<
         label: 'Twitter',
         value: '',
         group: 'footer',
-        meta: {
-            network: 'twitter',
-        },
+        meta: { network: 'twitter' },
         created_datetime: '',
         updated_datetime: '',
     },
@@ -79,9 +75,7 @@ export const SOCIAL_NAVIGATION_LINKS: Record<
         label: 'Instagram',
         value: '',
         group: 'footer',
-        meta: {
-            network: 'instagram',
-        },
+        meta: { network: 'instagram' },
         created_datetime: '',
         updated_datetime: '',
     },
@@ -96,11 +90,7 @@ export enum MODALS {
 }
 
 export const ARTICLE_ROW_ACTIONS = [
-    {
-        name: 'articleSettings',
-        icon: 'settings',
-        tooltip: 'Article settings',
-    },
+    { name: 'articleSettings', icon: 'settings', tooltip: 'Article settings' },
     {
         name: 'duplicateArticle',
         icon: 'content_copy',
@@ -167,14 +157,8 @@ export enum ManuallyEmbedOptions {
     OTHER = 'other',
 }
 export const MANUALLY_EMBED_TABS = [
-    {
-        label: 'Shopify Website',
-        value: ManuallyEmbedOptions.SHOPIFY,
-    },
-    {
-        label: 'Any Other Website',
-        value: ManuallyEmbedOptions.OTHER,
-    },
+    { label: 'Shopify Website', value: ManuallyEmbedOptions.SHOPIFY },
+    { label: 'Any Other Website', value: ManuallyEmbedOptions.OTHER },
 ]
 
 export const MANUALLY_EMBED_STEPS = {
@@ -272,6 +256,7 @@ export type HelpCenterCreationWizard = {
     platformType: PlatformType
     stepName: HelpCenterCreationWizardStep
     shopName: string
+    shopIntegrationId: number | null
     brandLogoUrl: string | null
     primaryColor: string
     primaryFontFamily: string

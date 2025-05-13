@@ -13,49 +13,52 @@ import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import SelectStore, {
+    HelpCenterContactFormIntegrationTypes,
+} from 'pages/settings/common/SelectStore/SelectStore'
 import settingsCss from 'pages/settings/settings.less'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getIconFromType } from 'state/integrations/helpers'
-
-import { useStoreWithChatConnectionsOptions } from '../../hooks/useStoreWithChatConnectionsOptions'
+import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
 import css from './ConnectToShopSection.less'
 
 interface Props {
     onUpdate: (data: {
         shop_name: string | null
+        shop_integration_id: number | null
         self_service_deactivated?: boolean
     }) => void
     shopName: string | null
-    shopType?: IntegrationType
+    shopType: IntegrationType | null
+    shopIntegrationId: number | null
 }
 
 export const ConnectToShopSection = ({
     shopName,
+    shopIntegrationId,
     shopType,
     onUpdate,
 }: Props): JSX.Element | null => {
     const [disconnectModalOpen, setDisconnectModalOpen] = useState(false)
     const [connectModalOpen, setConnectModalOpen] = useState(false)
-    const [selectedShop, setSelectedShop] = useState(shopName)
+    const [selectedShop, setSelectedShop] = useState({
+        shopName,
+        shopIntegrationId,
+    })
     const [showWarning, setShowWarning] = useState(true)
     const theme = useTheme()
 
     useEffect(() => {
-        setSelectedShop(shopName)
-    }, [shopName])
+        setSelectedShop({ shopName, shopIntegrationId })
+    }, [shopName, shopIntegrationId])
 
     const hasAutomate = useAppSelector(getHasAutomate)
 
     const disconnectButtonRef = useRef<HTMLSpanElement>(null)
-
-    const eCommerceShopsOptions = useStoreWithChatConnectionsOptions({
-        option: css['select-option'],
-        icon: css['store-icon'],
-        connectedChatsCount: css['select-connected-chats'],
-    })
-
+    const gorgiasChatIntegrations = useAppSelector(
+        getIntegrationsByTypes([IntegrationType.GorgiasChat]),
+    )
     return (
         <section className={settingsCss.mb40}>
             <h3 className={css.title}>Connect store</h3>
@@ -91,7 +94,10 @@ export const ConnectToShopSection = ({
                             intent="destructive"
                             onConfirm={() => {
                                 setDisconnectModalOpen(false)
-                                onUpdate({ shop_name: null })
+                                onUpdate({
+                                    shop_name: null,
+                                    shop_integration_id: null,
+                                })
                             }}
                             placement="top"
                             showCancelButton
@@ -135,7 +141,10 @@ export const ConnectToShopSection = ({
                                 intent="destructive"
                                 onClick={() => {
                                     setDisconnectModalOpen(false)
-                                    onUpdate({ shop_name: null })
+                                    onUpdate({
+                                        shop_name: null,
+                                        shop_integration_id: null,
+                                    })
                                 }}
                             >
                                 Disconnect
@@ -173,7 +182,9 @@ export const ConnectToShopSection = ({
                             isDisabled={selectedShop === null}
                             onClick={() => {
                                 onUpdate({
-                                    shop_name: selectedShop,
+                                    shop_name: selectedShop.shopName,
+                                    shop_integration_id:
+                                        selectedShop.shopIntegrationId,
                                     self_service_deactivated: !hasAutomate,
                                 })
 
@@ -190,30 +201,32 @@ export const ConnectToShopSection = ({
                         A store connection is required to use AI Agent features
                         and enable auto-embedding for Shopify stores.
                     </div>
-                    {shopName && selectedShop !== shopName && showWarning && (
-                        <Alert
-                            type={AlertType.Warning}
-                            className={css.alert}
-                            icon
-                            onClose={() => setShowWarning(false)}
-                        >
-                            Make sure to re-embed the Help Center back to all
-                            applicable pages.
-                        </Alert>
-                    )}
-                    <SelectField
-                        value={selectedShop}
-                        dropdownMenuClassName={
-                            css.ConnectToShopSectionDropdownMenu
-                        }
-                        fullWidth
-                        placeholder="Select a store"
-                        onChange={(value) => {
-                            // this type cast is safe as all values are string
-                            setSelectedShop(value as string)
+                    {shopName &&
+                        selectedShop.shopName !== shopName &&
+                        showWarning && (
+                            <Alert
+                                type={AlertType.Warning}
+                                className={css.alert}
+                                icon
+                                onClose={() => setShowWarning(false)}
+                            >
+                                Make sure to re-embed the Help Center back to
+                                all applicable pages.
+                            </Alert>
+                        )}
+
+                    <SelectStore
+                        gorgiasChatIntegrations={gorgiasChatIntegrations}
+                        shopName={selectedShop.shopName}
+                        shopIntegrationId={selectedShop.shopIntegrationId}
+                        handleStoreChange={(
+                            integration: HelpCenterContactFormIntegrationTypes,
+                        ) => {
+                            setSelectedShop({
+                                shopName: integration.name,
+                                shopIntegrationId: integration.id,
+                            })
                         }}
-                        options={eCommerceShopsOptions}
-                        icon={selectedShop ? '' : 'store'}
                     />
                 </>
             </DEPRECATED_Modal>

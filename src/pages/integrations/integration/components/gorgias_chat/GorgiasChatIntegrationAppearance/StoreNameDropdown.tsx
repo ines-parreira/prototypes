@@ -83,6 +83,7 @@ export const StoreNameDropdown = ({
                 disabled={isDisabled}
             >
                 <DropdownToggle
+                    id={'store-select'}
                     className={classnames({ [css.hasError]: hasError })}
                     caret
                     disabled={isDisabled}

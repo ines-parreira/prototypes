@@ -2,6 +2,16 @@ import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { chatIntegrationFixtures } from 'fixtures/chat'
+import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
+import { RootState, StoreDispatch } from 'state/types'
 
 import { useShopifyStoreWithChatConnectionsOptions } from '../../../helpCenter/hooks/useShopifyStoreWithChatConnectionsOptions'
 import { ConnectContactFormToShopSection } from './ConnectContactFormToShopSection'
@@ -13,20 +23,30 @@ jest.mock(
 const mockedUseShopifyStoreWithChatConnectionsOptions = jest.mocked(
     useShopifyStoreWithChatConnectionsOptions,
 )
-
+const defaultState = {
+    currentAccount: fromJS(account),
+    billing: fromJS(billingState),
+    integrations: (fromJS(integrationsState) as Map<any, any>).mergeDeep({
+        integrations: [shopifyIntegration, ...chatIntegrationFixtures],
+    }),
+} as RootState
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const renderComponent = (
     props: Partial<
         React.ComponentProps<typeof ConnectContactFormToShopSection>
     >,
 ) => {
     return render(
-        <ConnectContactFormToShopSection
-            shopName={null}
-            onUpdate={() => {
-                return
-            }}
-            {...props}
-        />,
+        <Provider store={mockStore(defaultState)}>
+            <ConnectContactFormToShopSection
+                shopName={null}
+                shopIntegrationId={null}
+                onUpdate={() => {
+                    return
+                }}
+                {...props}
+            />
+        </Provider>,
     )
 }
 
@@ -38,41 +58,38 @@ describe('<ConnectContactFormToShopSection />', () => {
     it('should render component', () => {
         renderComponent({})
 
-        expect(screen.getByLabelText('Connect a store')).toBeInTheDocument()
+        expect(screen.getByText('Connect a store')).toBeInTheDocument()
     })
 
     it('should disable form when shop name exist', () => {
-        mockedUseShopifyStoreWithChatConnectionsOptions.mockReturnValue([
-            {
-                value: 'gorgiastest',
-                label: 'gorgiastest',
-                text: 'gorgiastest',
-            },
-        ])
+        const { container } = renderComponent({
+            shopName: 'gorgiastest.mybigcommerce.com',
+        })
 
-        renderComponent({ shopName: 'gorgiastest' })
-
-        expect(screen.getByText('gorgiastest')).toBeInTheDocument()
-        expect(screen.getByLabelText('Connect a store')).toBeDisabled()
+        const button = container.querySelector('#store-select')
+        expect(button).toBeInTheDocument()
+        expect(button).toHaveTextContent('gorgiastest.mybigcommerce.com')
+        expect(button).toHaveClass('disabled')
     })
 
     it('should update the shop name if selected', () => {
         const fakeOnUpdate = jest.fn()
-        mockedUseShopifyStoreWithChatConnectionsOptions.mockReturnValue([
-            {
-                value: 'gorgiastest',
-                label: 'gorgiastest',
-                text: 'gorgiastest',
-            },
-        ])
 
-        renderComponent({ shopName: null, onUpdate: fakeOnUpdate })
+        const { container } = renderComponent({
+            shopName: null,
+            onUpdate: fakeOnUpdate,
+        })
 
-        userEvent.click(screen.getByLabelText('Connect a store'))
+        userEvent.click(screen.getByText('Connect a store'))
 
-        userEvent.click(screen.getByText('gorgiastest'))
+        userEvent.click(screen.getByText('gorgiastest.mybigcommerce.com'))
 
-        expect(screen.getByText('gorgiastest')).toBeInTheDocument()
-        expect(fakeOnUpdate).toHaveBeenCalledWith({ shop_name: 'gorgiastest' })
+        const button = container.querySelector('#store-select')
+        expect(button).toBeInTheDocument()
+        expect(button).toHaveTextContent('gorgiastest.mybigcommerce.com')
+        expect(fakeOnUpdate).toHaveBeenCalledWith({
+            shop_name: 'gorgiastest.mybigcommerce.com',
+            shop_integration_id: 515,
+        })
     })
 })

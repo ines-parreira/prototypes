@@ -4,7 +4,10 @@ import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
-export const useStoreIntegrationByShopName = (shopName: string) => {
+export const useStoreIntegrationByShopName = (
+    shopName: string,
+    shopIntegrationId?: number | null,
+) => {
     const storeIntegrations = useAppSelector(
         getIntegrationsByTypes([
             IntegrationType.Shopify,
@@ -15,7 +18,9 @@ export const useStoreIntegrationByShopName = (shopName: string) => {
 
     return useMemo(() => {
         return storeIntegrations.find(
-            (storeIntegration) => storeIntegration.name === shopName,
+            (storeIntegration) =>
+                storeIntegration.name === shopName ||
+                storeIntegration.id === shopIntegrationId,
         )
-    }, [storeIntegrations, shopName])
+    }, [storeIntegrations, shopName, shopIntegrationId])
 }

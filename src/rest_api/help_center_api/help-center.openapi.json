@@ -1059,6 +1059,12 @@
                         "schema": { "type": "string" }
                     },
                     {
+                        "name": "shop_integration_id",
+                        "required": false,
+                        "in": "query",
+                        "schema": { "type": "number" }
+                    },
+                    {
                         "name": "account_id",
                         "required": false,
                         "in": "query",
@@ -1108,6 +1114,12 @@
                         "required": false,
                         "in": "query",
                         "description": "The index of the page to retrieve. E.g: 3",
+                        "schema": {}
+                    },
+                    {
+                        "name": "shop_type",
+                        "required": false,
+                        "in": "query",
                         "schema": {}
                     }
                 ],
@@ -5731,6 +5743,10 @@
                         "default": "light"
                     },
                     "shop_name": { "type": "string", "nullable": true },
+                    "shop_integration_id": {
+                        "type": "number",
+                        "nullable": true
+                    },
                     "self_service_deactivated": {
                         "type": "boolean",
                         "description": "Boolean indicating if self service is deactivated for this Help center.",
@@ -5883,6 +5899,10 @@
                     },
                     "theme": { "type": "string", "nullable": false },
                     "shop_name": { "type": "string", "nullable": true },
+                    "shop_integration_id": {
+                        "type": "number",
+                        "nullable": true
+                    },
                     "self_service_deactivated_datetime": {
                         "format": "date-time",
                         "type": "string",
@@ -5959,6 +5979,7 @@
                     "primary_font_family",
                     "theme",
                     "shop_name",
+                    "shop_integration_id",
                     "self_service_deactivated_datetime",
                     "hotswap_session_token",
                     "source",
@@ -5976,9 +5997,13 @@
                 "type": "object",
                 "properties": {
                     "account_id": { "type": "number" },
-                    "shop_name": { "type": "string", "nullable": true }
+                    "shop_name": { "type": "string", "nullable": true },
+                    "shop_integration_id": {
+                        "type": "number",
+                        "nullable": true
+                    }
                 },
-                "required": ["account_id", "shop_name"]
+                "required": ["account_id", "shop_name", "shop_integration_id"]
             },
             "HelpCenterTranslationSeoMeta": {
                 "type": "object",
@@ -6199,6 +6224,18 @@
                     "help_center_id"
                 ]
             },
+            "ShopIntegrationDto": {
+                "type": "object",
+                "properties": {
+                    "shop_name": { "type": "string" },
+                    "shop_type": {
+                        "enum": ["bigcommerce", "magento2", "shopify"],
+                        "type": "string"
+                    },
+                    "integration_id": { "type": "number" }
+                },
+                "required": ["shop_name", "shop_type", "integration_id"]
+            },
             "GetHelpCenterDto": {
                 "type": "object",
                 "properties": {
@@ -6301,6 +6338,10 @@
                     },
                     "theme": { "type": "string", "nullable": false },
                     "shop_name": { "type": "string", "nullable": true },
+                    "shop_integration_id": {
+                        "type": "number",
+                        "nullable": true
+                    },
                     "self_service_deactivated_datetime": {
                         "format": "date-time",
                         "type": "string",
@@ -6368,6 +6409,9 @@
                     "redirects": {
                         "type": "array",
                         "items": { "$ref": "#/components/schemas/RedirectDto" }
+                    },
+                    "shop_integration": {
+                        "$ref": "#/components/schemas/ShopIntegrationDto"
                     }
                 },
                 "required": [
@@ -6389,6 +6433,7 @@
                     "primary_font_family",
                     "theme",
                     "shop_name",
+                    "shop_integration_id",
                     "self_service_deactivated_datetime",
                     "hotswap_session_token",
                     "source",
@@ -6482,6 +6527,10 @@
                         "default": "light"
                     },
                     "shop_name": { "type": "string", "nullable": true },
+                    "shop_integration_id": {
+                        "type": "number",
+                        "nullable": true
+                    },
                     "self_service_deactivated": {
                         "type": "boolean",
                         "description": "Boolean indicating if self service is deactivated for this Help center.",
@@ -7818,6 +7867,10 @@
                         ]
                     },
                     "shop_name": { "type": "string", "nullable": true },
+                    "shop_integration_id": {
+                        "type": "number",
+                        "nullable": true
+                    },
                     "form_display_mode": {
                         "enum": ["show_after_button_click", "show_immediately"],
                         "type": "string"
@@ -7949,6 +8002,10 @@
                         "description": "Url template to use to construct the shareable Contact form link"
                     },
                     "shop_name": { "type": "string", "nullable": true },
+                    "shop_integration_id": {
+                        "type": "number",
+                        "nullable": true
+                    },
                     "deactivated_datetime": {
                         "format": "date-time",
                         "type": "string",
@@ -7966,6 +8023,14 @@
                         "enum": ["show_after_button_click", "show_immediately"],
                         "type": "string",
                         "nullable": false
+                    },
+                    "shop_integration": {
+                        "nullable": true,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ShopIntegrationDto"
+                            }
+                        ]
                     }
                 },
                 "required": [
@@ -7983,6 +8048,7 @@
                     "code_snippet_template",
                     "url_template",
                     "shop_name",
+                    "shop_integration_id",
                     "deactivated_datetime",
                     "automation_settings_id",
                     "integration_id",
@@ -8067,6 +8133,10 @@
                         ]
                     },
                     "shop_name": { "type": "string", "nullable": true },
+                    "shop_integration_id": {
+                        "type": "number",
+                        "nullable": true
+                    },
                     "form_display_mode": {
                         "enum": ["show_after_button_click", "show_immediately"],
                         "type": "string"

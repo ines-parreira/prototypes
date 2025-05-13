@@ -141,6 +141,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       aria-expanded="false"
                       aria-haspopup="true"
                       class="dropdown-toggle btn btn-secondary"
+                      id="store-select"
                       type="button"
                     >
                       <span
@@ -8890,6 +8891,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       aria-expanded="false"
                       aria-haspopup="true"
                       class="dropdown-toggle btn btn-secondary"
+                      id="store-select"
                       type="button"
                     >
                       <span
@@ -13108,6 +13110,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       aria-expanded="false"
                       aria-haspopup="true"
                       class="dropdown-toggle btn btn-secondary"
+                      id="store-select"
                       type="button"
                     >
                       <span

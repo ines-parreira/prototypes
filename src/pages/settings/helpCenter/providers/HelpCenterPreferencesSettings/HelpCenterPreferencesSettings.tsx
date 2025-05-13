@@ -38,14 +38,12 @@ export type HelpCenterPreferencesState = {
     seoMeta: HelpCenterTranslationSeoMeta
     connectedShop: {
         shopName: string | null
+        shopIntegrationId: number | null
         selfServiceDeactivated: boolean
     }
 }
 
-type Props = {
-    children: React.ReactNode
-    helpCenter: HelpCenter
-}
+type Props = { children: React.ReactNode; helpCenter: HelpCenter }
 
 type HelpCenterPreferencesContext = {
     preferences: HelpCenterPreferencesState
@@ -59,12 +57,10 @@ type HelpCenterPreferencesContext = {
 const defaultPreferences: HelpCenterPreferencesState = {
     defaultLanguage: HELP_CENTER_DEFAULT_LOCALE,
     availableLanguages: [],
-    seoMeta: {
-        title: null,
-        description: null,
-    },
+    seoMeta: { title: null, description: null },
     connectedShop: {
         shopName: null,
+        shopIntegrationId: null,
         selfServiceDeactivated: false,
     },
 }
@@ -152,10 +148,7 @@ export const HelpCenterPreferencesSettings = ({
                 const { seoMeta } = preferences
 
                 await client.updateHelpCenterTranslation(
-                    {
-                        help_center_id: helpCenter.id,
-                        locale: viewLanguage,
-                    },
+                    { help_center_id: helpCenter.id, locale: viewLanguage },
                     {
                         seo_meta: {
                             title: seoMeta.title || null,
@@ -171,9 +164,7 @@ export const HelpCenterPreferencesSettings = ({
                 const { data: updatedHelpCenter } =
                     await client.updateHelpCenter(
                         { help_center_id: helpCenter.id },
-                        {
-                            default_locale: preferences.defaultLanguage,
-                        },
+                        { default_locale: preferences.defaultLanguage },
                     )
 
                 dispatch(helpCenterUpdated(updatedHelpCenter))
@@ -191,6 +182,8 @@ export const HelpCenterPreferencesSettings = ({
                         { help_center_id: helpCenter.id },
                         {
                             shop_name: preferences.connectedShop.shopName,
+                            shop_integration_id:
+                                preferences.connectedShop.shopIntegrationId,
                             self_service_deactivated:
                                 preferences.connectedShop
                                     .selfServiceDeactivated,
@@ -242,9 +235,7 @@ export const HelpCenterPreferencesSettings = ({
             preferences.availableLanguages.map(async (locale) => {
                 if (!helpCenter.supported_locales.includes(locale)) {
                     return client.createHelpCenterTranslation(
-                        {
-                            help_center_id: helpCenter.id,
-                        },
+                        { help_center_id: helpCenter.id },
                         getNewHelpCenterTranslation(locale),
                     )
                 }
@@ -266,10 +257,7 @@ export const HelpCenterPreferencesSettings = ({
 
     const handleOnUpdate = useCallback(
         (payload: Partial<HelpCenterPreferencesState>) => {
-            updatePreferences({
-                ...preferences,
-                ...payload,
-            })
+            updatePreferences({ ...preferences, ...payload })
         },
         [updatePreferences, preferences],
     )

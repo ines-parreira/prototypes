@@ -147,9 +147,19 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
             class="cellContent"
           >
             <div
-              class="noStore"
+              class="name"
             >
-              No store connected
+              <img
+                alt="logo"
+                height="16"
+                src="/assets/img/integrations/shopify.png"
+                width="16"
+              />
+              <span
+                class="storeNameLabel"
+              >
+                My Shop
+              </span>
             </div>
           </div>
         </td>
@@ -251,9 +261,19 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
             class="cellContent"
           >
             <div
-              class="noStore"
+              class="name"
             >
-              No store connected
+              <img
+                alt="logo"
+                height="16"
+                src="/assets/img/integrations/shopify.png"
+                width="16"
+              />
+              <span
+                class="storeNameLabel"
+              >
+                My Shop
+              </span>
             </div>
           </div>
         </td>
@@ -364,9 +384,19 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
             class="cellContent"
           >
             <div
-              class="noStore"
+              class="name"
             >
-              No store connected
+              <img
+                alt="logo"
+                height="16"
+                src="/assets/img/integrations/shopify.png"
+                width="16"
+              />
+              <span
+                class="storeNameLabel"
+              >
+                My Shop
+              </span>
             </div>
           </div>
         </td>
@@ -477,9 +507,19 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
             class="cellContent"
           >
             <div
-              class="noStore"
+              class="name"
             >
-              No store connected
+              <img
+                alt="logo"
+                height="16"
+                src="/assets/img/integrations/shopify.png"
+                width="16"
+              />
+              <span
+                class="storeNameLabel"
+              >
+                My Shop
+              </span>
             </div>
           </div>
         </td>

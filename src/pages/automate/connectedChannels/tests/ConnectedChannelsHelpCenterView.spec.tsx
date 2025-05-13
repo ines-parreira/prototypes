@@ -67,6 +67,7 @@ const mockHelpCenterChannels: SelfServiceHelpCenterChannel[] = [
             search_deactivated_datetime: null,
             self_service_deactivated_datetime: null,
             shop_name: 'itay-store-two',
+            shop_integration_id: 1,
             source: 'manual',
             subdomain: 'acme',
             supported_locales: ['en-US'],

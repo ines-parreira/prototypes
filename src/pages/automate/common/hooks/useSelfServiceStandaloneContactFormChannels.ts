@@ -16,17 +16,22 @@ const useSelfServiceStandaloneContactFormChannels = (
     shopName: string,
 ) => {
     const contactForms = useAppSelector(getContactFormsList)
-
     return useMemo<SelfServiceStandaloneContactFormChannel[]>(() => {
-        if (shopType !== IntegrationType.Shopify) {
+        if (
+            ![
+                IntegrationType.Shopify,
+                IntegrationType.BigCommerce,
+                IntegrationType.Magento2,
+            ].includes(shopType as IntegrationType)
+        ) {
             return []
         }
-
         return contactForms
             .filter(
                 (contactForm) =>
                     contactForm.help_center_id === null &&
-                    contactForm.shop_name === shopName,
+                    (contactForm.shop_integration?.shop_name === shopName ||
+                        contactForm.shop_name === shopName),
             )
             .map((contactForm) => ({
                 type: TicketChannel.ContactForm,

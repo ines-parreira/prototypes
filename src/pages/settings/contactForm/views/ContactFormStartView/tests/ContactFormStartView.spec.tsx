@@ -1,12 +1,15 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
+import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { chatIntegrationFixtures } from 'fixtures/chat'
+import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import {
     CONTACT_FORM_ABOUT_PATH,
     CONTACT_FORM_CREATE_PATH,
@@ -41,6 +44,14 @@ const mockedLocales = [
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
     useSupportedLocales: () => mockedLocales,
 }))
+
+const defaultState = {
+    currentAccount: fromJS(account),
+    billing: fromJS(billingState),
+    integrations: (fromJS(integrationsState) as Map<any, any>).mergeDeep({
+        integrations: [shopifyIntegration, ...chatIntegrationFixtures],
+    }),
+} as RootState
 
 describe('<ContactFormStartView />', () => {
     let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
@@ -115,7 +126,7 @@ describe('<ContactFormStartView />', () => {
 
             renderWithRouter(
                 <QueryClientProvider client={testQueryClient}>
-                    <Provider store={mockStore({})}>
+                    <Provider store={mockStore(defaultState)}>
                         <ContactFormStartView />,
                     </Provider>
                 </QueryClientProvider>,
@@ -257,7 +268,7 @@ describe('<ContactFormStartView />', () => {
 
             renderWithRouter(
                 <QueryClientProvider client={testQueryClient}>
-                    <Provider store={mockStore({})}>
+                    <Provider store={mockStore(defaultState)}>
                         <ContactFormStartView />,
                     </Provider>
                 </QueryClientProvider>,

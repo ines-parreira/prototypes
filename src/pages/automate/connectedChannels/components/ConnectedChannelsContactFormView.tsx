@@ -43,8 +43,20 @@ export const ConnectedChannelsContactFormView = ({
         shopName: string
     }>()
 
-    const shopType = contactForm ? 'shopify' : shopTypeParam
-    const shopName = contactForm ? (contactForm.shop_name ?? '') : shopNameParam
+    const [shopType, shopName] = useMemo(() => {
+        if (contactForm?.shop_integration) {
+            return [
+                contactForm.shop_integration.shop_type,
+                contactForm.shop_integration.shop_name,
+            ]
+        }
+
+        return [
+            contactForm ? 'shopify' : shopTypeParam,
+            contactForm ? (contactForm.shop_name ?? '') : shopNameParam,
+        ]
+    }, [contactForm, shopTypeParam, shopNameParam])
+
     const isAutomateSettings = useIsAutomateSettings()
     const location = useLocation()
     const history = useHistory()

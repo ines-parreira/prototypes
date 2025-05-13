@@ -58,6 +58,7 @@ declare namespace Components {
         export interface AccountInfoDto {
             account_id: number
             shop_name: string | null
+            shop_integration_id: number | null
         }
         export interface AnalyseCsvRequestDto {
             /**
@@ -927,6 +928,7 @@ declare namespace Components {
              */
             url_template: string
             shop_name: string | null
+            shop_integration_id: number | null
             /**
              * Deactivation date
              */
@@ -939,6 +941,11 @@ declare namespace Components {
             automation_settings_id: number | null
             integration_id: number | null
             form_display_mode: 'show_after_button_click' | 'show_immediately'
+            shop_integration?: {
+                shop_name: string
+                shop_type: 'bigcommerce' | 'magento2' | 'shopify'
+                integration_id: number
+            } | null
         }
         export interface ContactFormPageDto {
             external_id: string
@@ -1440,6 +1447,7 @@ declare namespace Components {
                 allow_other: boolean
             } | null
             shop_name?: string | null
+            shop_integration_id?: number | null
             form_display_mode?: 'show_after_button_click' | 'show_immediately'
         }
         export interface CreateCustomDomainDto {
@@ -1557,6 +1565,7 @@ declare namespace Components {
             primary_color?: string | null
             theme?: string | null
             shop_name?: string | null
+            shop_integration_id?: number | null
             /**
              * Boolean indicating if self service is deactivated for this Help center.
              * example:
@@ -1899,6 +1908,7 @@ declare namespace Components {
             primary_font_family: string
             theme: string
             shop_name: string | null
+            shop_integration_id: number | null
             self_service_deactivated_datetime: string | null // date-time
             hotswap_session_token: string | null
             source: 'automation' | 'manual'
@@ -1945,6 +1955,7 @@ declare namespace Components {
             account_id: number
             translations?: HelpCenterTranslationDto[]
             redirects?: RedirectDto[]
+            shop_integration?: ShopIntegrationDto
         }
         export interface HelpCenterDto {
             /**
@@ -2014,6 +2025,7 @@ declare namespace Components {
             primary_font_family: string
             theme: string
             shop_name: string | null
+            shop_integration_id: number | null
             self_service_deactivated_datetime: string | null // date-time
             hotswap_session_token: string | null
             source: 'automation' | 'manual'
@@ -2614,6 +2626,11 @@ declare namespace Components {
             status: 'FAILED' | 'PENDING' | 'SUCCESSFUL'
             uploaded_datetime: string // date-time
         }
+        export interface ShopIntegrationDto {
+            shop_name: string
+            shop_type: 'bigcommerce' | 'magento2' | 'shopify'
+            integration_id: number
+        }
         export interface SignedPostPolicyDto {
             url: string
             fields: {}
@@ -2830,6 +2847,7 @@ declare namespace Components {
                 allow_other: boolean
             } | null
             shop_name?: string | null
+            shop_integration_id?: number | null
             form_display_mode?: 'show_after_button_click' | 'show_immediately'
             deactivated_datetime?: string | null // date-time
         }
@@ -2949,6 +2967,7 @@ declare namespace Components {
             primary_color?: string | null
             theme?: string | null
             shop_name?: string | null
+            shop_integration_id?: number | null
             /**
              * Boolean indicating if self service is deactivated for this Help center.
              * example:
@@ -4479,7 +4498,9 @@ declare namespace Paths {
             export type Fields = string[]
             export type Page = any
             export type PerPage = any
+            export type ShopIntegrationId = number
             export type ShopName = string
+            export type ShopType = any
             export type Subdomain = string
             export type Type = 'faq' | 'guidance' | 'snippet'
             export type WithWizard = boolean
@@ -4488,6 +4509,7 @@ declare namespace Paths {
             subdomain?: Parameters.Subdomain
             custom_domain?: Parameters.CustomDomain
             shop_name?: Parameters.ShopName
+            shop_integration_id?: Parameters.ShopIntegrationId
             account_id?: Parameters.AccountId
             with_wizard?: Parameters.WithWizard
             type?: Parameters.Type
@@ -4495,6 +4517,7 @@ declare namespace Paths {
             fields?: Parameters.Fields
             per_page?: Parameters.PerPage
             page?: Parameters.Page
+            shop_type?: Parameters.ShopType
         }
         namespace Responses {
             export type $200 = Components.Schemas.HelpCentersListPageDto

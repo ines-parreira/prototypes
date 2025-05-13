@@ -6,11 +6,15 @@ import css from './StoreName.less'
 
 export type StoreNameType = {
     name: string | null
+    shopIntegrationId?: number | null
 }
-const StoreName = ({ name }: StoreNameType) => {
-    const storeIntegration = useStoreIntegrationByShopName(name ?? '')
+const StoreName = ({ name, shopIntegrationId }: StoreNameType) => {
+    const storeIntegration = useStoreIntegrationByShopName(
+        name ?? '',
+        shopIntegrationId,
+    )
 
-    if (!name || !storeIntegration) {
+    if (!storeIntegration) {
         return <div className={css.noStore}>No store connected</div>
     }
 
@@ -22,7 +26,7 @@ const StoreName = ({ name }: StoreNameType) => {
                 src={getIconFromType(storeIntegration.type)}
                 alt="logo"
             />
-            <span className={css.storeNameLabel}>{name}</span>
+            <span className={css.storeNameLabel}>{storeIntegration.name}</span>
         </div>
     )
 }

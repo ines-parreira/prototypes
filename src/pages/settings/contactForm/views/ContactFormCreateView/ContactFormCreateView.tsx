@@ -106,10 +106,17 @@ const ContactFormCreateView = ({
         }))
     }
 
-    const onChangeShopName = ({ shop_name }: { shop_name: string | null }) => {
+    const onChangeShopName = ({
+        shop_name,
+        shop_integration_id,
+    }: {
+        shop_name: string | null
+        shop_integration_id: number | null
+    }) => {
         setCreateContactFormDto((prev) => ({
             ...prev,
             shop_name,
+            shop_integration_id,
         }))
     }
 
@@ -177,6 +184,7 @@ const ContactFormCreateView = ({
                     <section>
                         <ConnectContactFormToShopSection
                             shopName={null}
+                            shopIntegrationId={null}
                             onUpdate={onChangeShopName}
                         />
                     </section>

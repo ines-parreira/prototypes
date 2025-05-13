@@ -10,7 +10,6 @@ import React, {
 
 import { Label } from '@gorgias/merchant-ui-kit'
 
-import store from 'assets/img/icons/store.svg'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
 import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
@@ -27,14 +26,15 @@ import WizardFooter, {
     FOOTER_BUTTONS,
 } from 'pages/common/components/wizard/WizardFooter'
 import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import SelectStore, {
+    HelpCenterContactFormIntegrationTypes,
+} from 'pages/settings/common/SelectStore/SelectStore'
 import {
     HELP_CENTER_STEPS_DESCRIPTIONS,
     HELP_CENTER_STEPS_LABELS,
     HELP_CENTER_STEPS_TITLES,
     NEXT_ACTION,
 } from 'pages/settings/helpCenter/constants'
-import { useStoreOptions } from 'pages/settings/helpCenter/hooks/useStoreOptions'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
 import { mapEntrypointsToAutomationSettings } from '../../HelpCenterCreationWizardUtils'
@@ -298,11 +298,6 @@ const HelpCenterCreationWizardStepAutomate = ({ helpCenter }: Props) => {
         }
     })
 
-    const integrationOptions = useStoreOptions({
-        option: css['storeOption'],
-        icon: css['storeIcon'],
-    })
-
     const selectedStoreIntegrationName = selectedStoreIntegration
         ? getShopNameFromStoreIntegration(selectedStoreIntegration)
         : ''
@@ -379,17 +374,20 @@ const HelpCenterCreationWizardStepAutomate = ({ helpCenter }: Props) => {
         }
     }
 
-    const handleStoreChange = (shopName: string) => {
-        const storeIntegration = allStoreIntegrations.find(
-            (integration) => integration.name === shopName,
-        )
-        if (storeIntegration) {
-            setSelectedStoreIntegration(storeIntegration)
-            handleFormUpdate({ shopName })
+    const handleStoreChange = (
+        integration: HelpCenterContactFormIntegrationTypes,
+    ) => {
+        if (integration) {
+            setSelectedStoreIntegration(integration)
+            handleFormUpdate({
+                shopName: integration.name,
+                shopIntegrationId: integration.id,
+            })
             handleSave({
                 stepName: HelpCenterCreationWizardStep.Automate,
                 payload: {
-                    shopName,
+                    shopName: integration.name,
+                    shopIntegrationId: integration.id,
                 },
             })
         }
@@ -432,25 +430,10 @@ const HelpCenterCreationWizardStepAutomate = ({ helpCenter }: Props) => {
                         A store connection is required to enable AI Agent
                         features.
                     </div>
-                    <SelectField
-                        fullWidth
-                        placeholder="Select a store"
-                        customIcon={
-                            !selectedStoreIntegration && (
-                                <img
-                                    src={store}
-                                    className={css['storeIcon']}
-                                    alt="store logo"
-                                />
-                            )
-                        }
-                        value={selectedStoreIntegration?.name}
-                        onChange={(value) => {
-                            handleStoreChange(value as string)
-                        }}
-                        options={integrationOptions}
-                        showSelectedOption={allStoreIntegrations.length === 1}
-                        isSearchable={false}
+                    <SelectStore
+                        handleStoreChange={handleStoreChange}
+                        shopName={selectedStoreIntegration?.name}
+                        shopIntegrationId={selectedStoreIntegration?.id}
                     />
                     {shouldDisplayFormErrors && !selectedStoreIntegration && (
                         <div className={css.error}>This field is required.</div>

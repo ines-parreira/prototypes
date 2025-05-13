@@ -112,7 +112,7 @@ describe('<ContactFormPreferences />', () => {
     })
 
     describe('when change store', () => {
-        const shopName = 'gorgiastest'
+        const shopName = 'My Shop'
         it('should render store selection dropdown when AI Agent enabled', () => {
             renderView({ path: CONTACT_FORM_PREFERENCES_PATH })
 
@@ -147,6 +147,7 @@ describe('<ContactFormPreferences />', () => {
             await waitFor(() =>
                 expect(fakeUpdate).toHaveBeenCalledWith(FORM_ID, {
                     shop_name: shopName,
+                    shop_integration_id: 1,
                 }),
             )
         })

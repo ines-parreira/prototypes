@@ -247,64 +247,57 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
             >
               A store connection is required to use AI Agent features and enable auto-embedding for Shopify stores.
             </p>
-            <div>
+            <div
+              class="wrapper"
+            >
               <div
-                class="dropdown"
+                class="dropdown dropdown"
               >
-                <div
+                <button
                   aria-expanded="false"
                   aria-haspopup="true"
-                  class=""
-                  data-toggle="dropdown"
+                  class="dropdown-toggle btn btn-secondary"
+                  id="store-select"
+                  type="button"
                 >
-                  <div
-                    class="select dropdown-toggle selectFullWidth"
+                  <span
+                    class="dropdownPlaceholder"
                   >
                     <i
-                      class="material-icons icon"
+                      class="material-icons"
+                      style="margin-right: 8px; font-size: 20px;"
                     >
                       store
                     </i>
-                    <span
-                      class="label placeholder"
-                      data-testid="selected-store-select"
-                      style="min-width: 10px; opacity: 1;"
-                    >
-                      Select a store
-                    </span>
-                    <input
-                      autocomplete="chrome-off"
-                      class="input iconPadding"
-                      id="store-select"
-                      style="min-width: 10px;"
-                      type="text"
-                      value=""
-                    />
-                    <i
-                      class="material-icons dropdownIcon"
-                    >
-                      arrow_drop_down
-                    </i>
-                  </div>
-                </div>
+                    Select a store
+                  </span>
+                </button>
                 <div
                   aria-hidden="true"
-                  class="options optionsFullWidth dropdown-menu"
+                  class="dropdownMenu dropdown-menu"
                   role="menu"
                   tabindex="-1"
                 >
-                  <h6
-                    class="dropdown-header"
-                    tabindex="-1"
+                  <button
+                    class="storeRow dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                    value="515"
                   >
-                    No result
-                  </h6>
+                    <img
+                      alt="logo"
+                      class="dropdownLogo"
+                      src="/assets/img/integrations/bigcommerce.svg"
+                    />
+                    <span>
+                      gorgiastest.mybigcommerce.com
+                    </span>
+                    <span
+                      class="dropdownInfo"
+                    />
+                  </button>
                 </div>
-              </div>
-              <div
-                class="caption"
-              >
-                Once set, the store associated with this contact form cannot be changed.
               </div>
             </div>
           </section>

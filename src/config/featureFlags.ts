@@ -81,6 +81,7 @@ export enum FeatureFlagKey {
     EnableEmailToStoreMapping = 'enable-email-to-store-mapping',
     EnableNewLanguages = 'enable-new-languages',
     EmailReducedThreadSize = 'linear.email-size-reduction-to-ensure-deliverability.reducing-body-html-payload',
+    EnableNonShopifyStoresInHelpCenter = 'enable-non-shopify-stores-in-help-center',
     FakeActionPlaceholder = 'fake-action-placeholder',
     FeedbackToAIAgentInTicketViews = 'feedback-to-ai-agent-in-ticket-views',
     FeedbackToAIAgentInTicketViewsV3 = 'feedback-to-ai-agent-in-ticket-views-v3',

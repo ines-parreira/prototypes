@@ -2,6 +2,17 @@ import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { chatIntegrationFixtures } from 'fixtures/chat'
+import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
+import { Components } from 'rest_api/help_center_api/client.generated'
+import { RootState, StoreDispatch } from 'state/types'
 
 import { ContactFormFixture } from '../../../../fixtures/contacForm'
 import { ContactFormTableRow } from '../ContactFormTableRow'
@@ -17,21 +28,34 @@ jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
     useSupportedLocales: () => mockedLocales,
 }))
 
+const defaultState = {
+    currentAccount: fromJS(account),
+    billing: fromJS(billingState),
+    integrations: (fromJS(integrationsState) as Map<any, any>).mergeDeep({
+        integrations: [shopifyIntegration, ...chatIntegrationFixtures],
+    }),
+} as RootState
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+const renderComponent = (
+    key: number,
+    form: Components.Schemas.ContactFormDto,
+    onClick = jest.fn(),
+) => {
+    return render(
+        <Provider store={mockStore(defaultState)}>
+            <ContactFormTableRow key={key} form={form} onClick={onClick} />,
+        </Provider>,
+    )
+}
 describe('<ContactFormTableRow />', () => {
     it('should display the name, ecom platform logo and store name, language, and arrow', () => {
         const form = {
             ...ContactFormFixture,
             name: 'Contact Form name',
-            shop_name: 'storename',
+            shop_name: 'shopify-store',
         }
 
-        const { container } = render(
-            <ContactFormTableRow
-                key={form.id}
-                form={form}
-                onClick={jest.fn()}
-            />,
-        )
+        const { container } = renderComponent(form.id, form)
 
         screen.getByText(form.name)
         screen.getByText(form.shop_name)
@@ -46,13 +70,7 @@ describe('<ContactFormTableRow />', () => {
             shop_name: null,
         }
 
-        const { container } = render(
-            <ContactFormTableRow
-                key={form.id}
-                form={form}
-                onClick={jest.fn()}
-            />,
-        )
+        const { container } = renderComponent(form.id, form)
 
         screen.getByText(form.name)
         screen.getByText(/no store connected/i)
@@ -62,12 +80,10 @@ describe('<ContactFormTableRow />', () => {
 
     it('should trigger the onClick function on click', () => {
         const mockedOnClick = jest.fn()
-        render(
-            <ContactFormTableRow
-                key={ContactFormFixture.id}
-                form={ContactFormFixture}
-                onClick={mockedOnClick}
-            />,
+        renderComponent(
+            ContactFormFixture.id,
+            ContactFormFixture,
+            mockedOnClick,
         )
 
         const contactFormName = screen.getByText(ContactFormFixture.name)

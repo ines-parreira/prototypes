@@ -112,7 +112,7 @@ export const bigCommerceIntegration: Integration = {
     locked_datetime: null,
     created_datetime: '2023-06-22T11:31:46.841843+00:00',
     type: IntegrationType.BigCommerce,
-    id: 8,
+    id: 9,
     description: null,
     updated_datetime: '2023-09-07T11:28:13.345251+00:00',
     managed: false,

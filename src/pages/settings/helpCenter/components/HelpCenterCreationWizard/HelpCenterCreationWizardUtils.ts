@@ -86,6 +86,7 @@ export const mapApiHelpCenterToUIHelpCenter = (
             ? stepName
             : HelpCenterCreationWizardStep.Basics,
         shopName: helpCenter?.shop_name || '',
+        shopIntegrationId: helpCenter?.shop_integration_id || null,
         brandLogoUrl: helpCenter?.brand_logo_url || null,
         primaryColor: helpCenter?.primary_color || '',
         primaryFontFamily: helpCenter?.primary_font_family || '',
@@ -108,15 +109,16 @@ export const getHelpCenterWizardInitialData = (
     >[],
     isOnePager?: boolean,
 ): Partial<HelpCenterCreationWizard> => {
-    const shopName =
-        allStoreIntegrations.length === 1 ? allStoreIntegrations[0].name : ''
+    const integration =
+        allStoreIntegrations.length === 1 ? allStoreIntegrations[0] : null
     const layout = isOnePager
         ? HelpCenterLayout.ONEPAGER
         : HelpCenterLayout.DEFAULT
 
     return {
         name: accountCurrentDomain,
-        shopName,
+        shopName: integration?.name || '',
+        shopIntegrationId: integration?.id || null,
         layout,
     }
 }
@@ -139,6 +141,7 @@ export const mapUIHelpCenterToApiHelpCenter = (
             completed: data.wizardCompleted,
         },
         shop_name: data.shopName,
+        shop_integration_id: data.shopIntegrationId,
         brand_logo_url: data.brandLogoUrl,
         primary_color: data.primaryColor,
         primary_font_family: data.primaryFontFamily,

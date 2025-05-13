@@ -52,8 +52,19 @@ export const ConnectedChannelsHelpCenterView = ({
     const history = useHistory()
     const [channelId] = useSearchParam('channel-id')
 
-    const shopType = helpCenter ? 'shopify' : shopTypeParam
-    const shopName = helpCenter ? (helpCenter.shop_name ?? '') : shopNameParam
+    const [shopType, shopName] = useMemo(() => {
+        if (helpCenter?.shop_integration) {
+            return [
+                helpCenter.shop_integration.shop_type,
+                helpCenter.shop_integration.shop_name,
+            ]
+        }
+
+        return [
+            helpCenter ? 'shopify' : shopTypeParam,
+            helpCenter ? (helpCenter.shop_name ?? '') : shopNameParam,
+        ]
+    }, [helpCenter, shopTypeParam, shopNameParam])
 
     const {
         selfServiceConfiguration,

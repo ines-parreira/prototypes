@@ -32,6 +32,7 @@ const HelpCenterApiBaseFixture = {
     hotswap_session_token: null,
     self_service_deactivated_datetime: '2021-05-17T18:21:42.022Z',
     shop_name: 'acme',
+    shop_integration_id: 1,
     email_integration: null,
     automation_settings_id: null,
     account_id: 1,
@@ -42,10 +43,7 @@ const HelpCenterApiBaseFixture = {
 
 export const InvalidHelpCenterApiFixture = {
     ...HelpCenterApiBaseFixture,
-    wizard: {
-        platform_type: 'offline',
-        step_name: 'offline',
-    },
+    wizard: { platform_type: 'offline', step_name: 'offline' },
 }
 
 export const PartialHelpCenterApiFixture = {
@@ -53,9 +51,7 @@ export const PartialHelpCenterApiFixture = {
     subdomain: 'acme',
     default_locale: HELP_CENTER_DEFAULT_LOCALE,
     wizard: {
-        step_data: {
-            platform_type: PlatformType.ECOMMERCE,
-        },
+        step_data: { platform_type: PlatformType.ECOMMERCE },
         step_name: HelpCenterCreationWizardStep.Basics,
     },
     shop_name: 'acme',
@@ -66,30 +62,22 @@ export const PartialHelpCenterApiFixture = {
 
 export const HelpCenterApiBasicsFixture = {
     ...HelpCenterApiBaseFixture,
-    wizard: {
-        step_name: HelpCenterCreationWizardStep.Basics,
-    },
+    wizard: { step_name: HelpCenterCreationWizardStep.Basics },
 }
 
 export const HelpCenterApiBrandingFixture = {
     ...HelpCenterApiBaseFixture,
-    wizard: {
-        step_name: HelpCenterCreationWizardStep.Branding,
-    },
+    wizard: { step_name: HelpCenterCreationWizardStep.Branding },
 }
 
 export const HelpCenterApiArticlesFixture = {
     ...HelpCenterApiBaseFixture,
-    wizard: {
-        step_name: HelpCenterCreationWizardStep.Articles,
-    },
+    wizard: { step_name: HelpCenterCreationWizardStep.Articles },
 }
 
 export const HelpCenterApiAutomateFixture = {
     ...HelpCenterApiBaseFixture,
-    wizard: {
-        step_name: HelpCenterCreationWizardStep.Automate,
-    },
+    wizard: { step_name: HelpCenterCreationWizardStep.Automate },
 }
 
 const HelpCenterUiBaseFixture = {
@@ -104,6 +92,7 @@ const HelpCenterUiBaseFixture = {
     primaryFontFamily: 'Inter',
     deactivated: false,
     layout: HELP_CENTER_DEFAULT_LAYOUT,
+    shopIntegrationId: 1,
 }
 
 export const HelpCenterUiBasicsFixture = {
@@ -134,6 +123,7 @@ export const EmptyHelpCenterUiFixture = {
     platformType: PlatformType.ECOMMERCE,
     stepName: 'basics',
     shopName: '',
+    shopIntegrationId: null,
     brandLogoUrl: null,
     primaryColor: '',
     primaryFontFamily: '',

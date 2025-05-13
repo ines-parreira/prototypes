@@ -76,6 +76,7 @@ const defaultHelpCenter: HelpCenterCreationWizard = {
     platformType: PlatformType.ECOMMERCE,
     stepName: HelpCenterCreationWizardStep.Basics,
     shopName: 'shop-test',
+    shopIntegrationId: 1,
     brandLogoUrl: null,
     primaryColor: '',
     primaryFontFamily: '',
@@ -489,12 +490,16 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             await waitFor(() => expect(mockOnFormUpdate).toBeCalled())
             expect(mockOnFormUpdate).toHaveBeenCalledWith({
                 shopName: 'bigCommerce store',
+                shopIntegrationId: 9,
             })
 
             await waitFor(() => expect(mockOnSave).toBeCalled())
             expect(mockOnSave).toHaveBeenCalledWith({
                 stepName: HelpCenterCreationWizardStep.Automate,
-                payload: { shopName: 'bigCommerce store' },
+                payload: {
+                    shopName: 'bigCommerce store',
+                    shopIntegrationId: 9,
+                },
             })
         })
         it('should call handleSave when clicked finished', async () => {

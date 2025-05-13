@@ -42,6 +42,7 @@ const defaultState: Partial<RootState> = {
                 meta: {
                     sync_customer_notes: true,
                     shop_id: 54899465,
+                    shop_integration_id: 1,
                     uses_multi_currency: true,
                     shop_domain: 'gorgiastest.com',
                     currency: 'USD',
@@ -60,6 +61,7 @@ const defaultState: Partial<RootState> = {
             {
                 meta: {
                     shop_name: 'meow-shop',
+                    shop_integration_id: 1,
                 },
                 name: 'Chitty chatty',
                 user: {
@@ -96,7 +98,12 @@ describe('<ConnectToShopSection />', () => {
         const { container, getAllByText, getByText } = render(
             <ThemeProvider>
                 <ConnectToShopSection
+                    shopType={IntegrationType.Shopify}
                     shopName={getHelpCentersResponseFixture.data[0].shop_name}
+                    shopIntegrationId={
+                        getHelpCentersResponseFixture.data[0]
+                            .shop_integration_id
+                    }
                     onUpdate={onUpdate}
                 />
             </ThemeProvider>,
@@ -130,6 +137,7 @@ describe('<ConnectToShopSection />', () => {
         expect(onUpdate).toBeCalledWith({
             shop_name: 'Meow shop',
             self_service_deactivated: true,
+            shop_integration_id: 1,
         })
     })
 
@@ -141,6 +149,7 @@ describe('<ConnectToShopSection />', () => {
                 <ConnectToShopSection
                     shopName={'Meow shop'}
                     shopType={IntegrationType.Shopify}
+                    shopIntegrationId={1}
                     onUpdate={onUpdate}
                 />
             </ThemeProvider>,
@@ -163,6 +172,8 @@ describe('<ConnectToShopSection />', () => {
             <ThemeProvider>
                 <ConnectToShopSection
                     shopName={'Meow shop'}
+                    shopType={IntegrationType.Shopify}
+                    shopIntegrationId={1}
                     onUpdate={onUpdate}
                 />
             </ThemeProvider>,
@@ -172,6 +183,84 @@ describe('<ConnectToShopSection />', () => {
         expect(getByText('Meow shop')).toBeInTheDocument()
         const imgElement = getByAltText('store logo')
         expect(imgElement).toBeInTheDocument()
-        expect(imgElement).toHaveAttribute('src', 'test-file-stub')
+        expect(imgElement).toHaveAttribute(
+            'src',
+            '/assets/img/integrations/shopify.png',
+        )
+    })
+    it('should call onUpdate with null values when Disconnect is confirmed', async () => {
+        const onUpdate = jest.fn()
+
+        const { getByText, getAllByText } = render(
+            <ThemeProvider>
+                <ConnectToShopSection
+                    shopName={'Meow shop'}
+                    shopType={IntegrationType.Shopify}
+                    shopIntegrationId={1}
+                    onUpdate={onUpdate}
+                />
+            </ThemeProvider>,
+            { wrapper: ReduxProvider },
+        )
+
+        await waitFor(() => getByText('Disconnect'))
+
+        act(() => {
+            fireEvent.click(getByText('Disconnect'))
+        })
+
+        await waitFor(() => getByText('Disconnect store?'))
+
+        act(() => {
+            fireEvent.click(getAllByText('Disconnect')[1])
+        })
+
+        expect(onUpdate).toBeCalledWith({
+            shop_name: null,
+            shop_integration_id: null,
+        })
+    })
+    it('should hide warning alert when close button is clicked', async () => {
+        const onUpdate = jest.fn()
+
+        const { getByText, queryByText, getByAltText } = render(
+            <ThemeProvider>
+                <ConnectToShopSection
+                    shopName={'Another shop'}
+                    shopType={IntegrationType.Shopify}
+                    shopIntegrationId={123}
+                    onUpdate={onUpdate}
+                />
+            </ThemeProvider>,
+            { wrapper: ReduxProvider },
+        )
+
+        act(() => {
+            fireEvent.click(getByText('Change'))
+        })
+
+        await waitFor(() => getByText('Select a store'))
+
+        act(() => {
+            fireEvent.click(getByText('Meow shop'))
+        })
+
+        await waitFor(() =>
+            getByText(
+                'Make sure to re-embed the Help Center back to all applicable pages.',
+            ),
+        )
+
+        const closeImg = getByAltText('close-icon')
+
+        act(() => {
+            fireEvent.click(closeImg)
+        })
+
+        expect(
+            queryByText(
+                'Make sure to re-embed the Help Center back to all applicable pages.',
+            ),
+        ).not.toBeInTheDocument()
     })
 })

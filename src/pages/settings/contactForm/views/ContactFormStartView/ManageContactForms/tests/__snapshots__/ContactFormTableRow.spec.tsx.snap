@@ -21,7 +21,9 @@ exports[`<ContactFormTableRow /> should display the name, ecom platform logo and
     <div
       class="cellContent"
     >
-      <div>
+      <div
+        class="name"
+      >
         <img
           alt="logo"
           height="16"
@@ -31,7 +33,7 @@ exports[`<ContactFormTableRow /> should display the name, ecom platform logo and
         <span
           class="storeNameLabel"
         >
-          storename
+          shopify-store
         </span>
       </div>
     </div>
