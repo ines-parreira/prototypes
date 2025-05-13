@@ -62,7 +62,6 @@ export const ConversationStartersSettings = ({
                     {storeConfiguration?.isConversationStartersEnabled ? (
                         <EngagementSettingsCardLinkButton
                             href={routes.analytics}
-                            icon="insights"
                             text="Track Performance"
                         />
                     ) : (

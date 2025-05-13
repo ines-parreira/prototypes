@@ -166,7 +166,6 @@ export const ConversationLauncherSettings = ({
                             ?.isEnabled ? (
                             <EngagementSettingsCardLinkButton
                                 href={routes.analytics}
-                                icon="insights"
                                 text="Track Performance"
                             />
                         ) : (

@@ -7,7 +7,7 @@ import css from './EngagementSettingsCard.less'
 
 type EngagementSettingsCardLinkButtonProps = {
     href: string
-    icon: string
+    icon?: string
     text: string
 }
 
@@ -19,11 +19,19 @@ export const EngagementSettingsCardLinkButton = ({
     return (
         <Link to={href}>
             <Button
+                className={css.cardLinkButton}
                 fillStyle="ghost"
                 leadingIcon={
-                    <i className={cn('material-icons', css.cardLinkButtonIcon)}>
-                        {icon}
-                    </i>
+                    icon && (
+                        <i
+                            className={cn(
+                                'material-icons',
+                                css.cardLinkButtonIcon,
+                            )}
+                        >
+                            {icon}
+                        </i>
+                    )
                 }
             >
                 {text}
