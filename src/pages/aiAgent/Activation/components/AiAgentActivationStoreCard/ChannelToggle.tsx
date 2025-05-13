@@ -1,0 +1,81 @@
+import React, { useMemo } from 'react'
+
+import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import warningIcon from 'assets/img/icons/warning.svg'
+import useId from 'hooks/useId'
+import css from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard.less'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import { NewToggleButton } from 'pages/common/forms/NewToggleButton'
+
+type ChannelToggleProps = {
+    label: string
+    checked: boolean
+    disabled: boolean
+    onChange: (value: boolean) => void
+    warnings: {
+        visible: boolean
+        hint: string
+        action: React.ReactNode
+    }[]
+    tooltip: {
+        visible: boolean
+        content: React.ReactNode
+    }
+}
+export const ChannelToggle = ({
+    label,
+    checked,
+    disabled,
+    onChange,
+    warnings,
+    tooltip,
+}: ChannelToggleProps) => {
+    const id = useId()
+    const warningId = `channel_${id}_warning_icon`
+    const firstWarning = useMemo(() => {
+        return warnings.find((warning) => warning.visible)
+    }, [warnings])
+
+    return (
+        <div className={css.channel}>
+            <div className={css.channelToggle}>
+                <Label className={css.label}>
+                    <NewToggleButton
+                        isDisabled={disabled}
+                        checked={checked}
+                        onChange={onChange}
+                        stopPropagation
+                    />
+                    {label}
+                </Label>
+                {!firstWarning?.visible && tooltip.visible && (
+                    <IconTooltip
+                        className={css.icon}
+                        tooltipProps={{
+                            placement: 'top-start',
+                        }}
+                    >
+                        {tooltip.content}
+                    </IconTooltip>
+                )}
+                {!!firstWarning?.visible && (
+                    <>
+                        <img
+                            id={warningId}
+                            className={css.warningIcon}
+                            alt="warning"
+                            src={warningIcon}
+                        />
+                        <Tooltip target={warningId}>
+                            {firstWarning.hint}
+                        </Tooltip>
+                    </>
+                )}
+            </div>
+            <div className={css.channelCaption}>
+                {!!firstWarning?.visible && firstWarning?.action}
+            </div>
+        </div>
+    )
+}

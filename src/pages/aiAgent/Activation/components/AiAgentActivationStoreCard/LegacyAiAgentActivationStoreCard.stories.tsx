@@ -7,18 +7,14 @@ import configureMockStore from 'redux-mock-store'
 
 import { user } from 'fixtures/users'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
+import { LegacyAiAgentActivationStoreCard } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/LegacyAiAgentActivationStoreCard'
+import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
+import { KNOWLEDGE_ALERT_KIND } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { AlertType } from 'pages/common/components/Alert/Alert'
 
-import {
-    KNOWLEDGE_ALERT_KIND,
-    Settings,
-    StoreActivation,
-} from '../../hooks/storeActivationReducer'
-import { AiAgentActivationStoreCard } from './AiAgentActivationStoreCard'
-
-const meta: Meta<typeof AiAgentActivationStoreCard> = {
-    title: 'AI Agent/Activation/ActivationStoreCard',
-    component: AiAgentActivationStoreCard,
+const meta: Meta<typeof LegacyAiAgentActivationStoreCard> = {
+    title: 'AI Agent/Activation/LegacyActivationStoreCard',
+    component: LegacyAiAgentActivationStoreCard,
     args: {},
     decorators: [
         (Story) => (
@@ -33,7 +29,7 @@ const meta: Meta<typeof AiAgentActivationStoreCard> = {
 
 export default meta
 
-type Story = StoryObj<typeof AiAgentActivationStoreCard>
+type Story = StoryObj<typeof LegacyAiAgentActivationStoreCard>
 
 const defaultStoreConfiguration: StoreConfiguration = {
     storeName: 'steve-madden',
@@ -41,30 +37,15 @@ const defaultStoreConfiguration: StoreConfiguration = {
     scopes: [AiAgentScope.Sales, AiAgentScope.Support],
 } as StoreConfiguration
 
-const getStoreActivation = ({
-    alerts,
-    settings,
-}: {
-    alerts?: StoreActivation['alerts']
-    settings: Settings
-}): StoreActivation => {
-    return {
-        name: 'steve-madden',
-        title: 'Steve Madden',
-        alerts: alerts ?? [],
-        configuration: defaultStoreConfiguration,
-        ...settings,
-    }
-}
-
 export const AllDisabled: Story = {
-    render: (args) => <AiAgentActivationStoreCard {...args} />,
+    render: (args) => <LegacyAiAgentActivationStoreCard {...args} />,
     args: {
-        store: getStoreActivation({
+        store: storeActivationFixture({
+            storeName: 'steve-madden',
             settings: {
                 sales: {
-                    enabled: false,
                     isDisabled: true,
+                    enabled: false,
                 },
                 support: {
                     enabled: false,
@@ -79,20 +60,24 @@ export const AllDisabled: Story = {
                 },
             },
             alerts: [],
+            configuration: defaultStoreConfiguration,
         }),
-        onChatChange: action('onToggle > Support > Chat'),
-        onEmailChange: action('onToggle > Support > Email'),
+        onSalesChange: action('onToggle > Sales'),
+        onSupportChange: action('onToggle > Support'),
+        onSupportChatChange: action('onToggle > Support > Chat'),
+        onSupportEmailChange: action('onToggle > Support > Email'),
     },
 }
 
 export const AllDisabledMissingIntegration: Story = {
-    render: (args) => <AiAgentActivationStoreCard {...args} />,
+    render: (args) => <LegacyAiAgentActivationStoreCard {...args} />,
     args: {
-        store: getStoreActivation({
+        store: storeActivationFixture({
+            storeName: 'steve-madden',
             settings: {
                 sales: {
-                    enabled: false,
                     isDisabled: true,
+                    enabled: false,
                 },
                 support: {
                     enabled: false,
@@ -106,16 +91,21 @@ export const AllDisabledMissingIntegration: Story = {
                     },
                 },
             },
+            alerts: [],
+            configuration: defaultStoreConfiguration,
         }),
-        onChatChange: action('onToggle > Support > Chat'),
-        onEmailChange: action('onToggle > Support > Email'),
+        onSalesChange: action('onToggle > Sales'),
+        onSupportChange: action('onToggle > Support'),
+        onSupportChatChange: action('onToggle > Support > Chat'),
+        onSupportEmailChange: action('onToggle > Support > Email'),
     },
 }
 
 export const AllDisabledWithAlert: Story = {
-    render: (args) => <AiAgentActivationStoreCard {...args} />,
+    render: (args) => <LegacyAiAgentActivationStoreCard {...args} />,
     args: {
-        store: getStoreActivation({
+        store: storeActivationFixture({
+            storeName: 'steve-madden',
             alerts: [
                 {
                     type: AlertType.Warning,
@@ -127,8 +117,8 @@ export const AllDisabledWithAlert: Story = {
             ],
             settings: {
                 sales: {
-                    enabled: false,
                     isDisabled: true,
+                    enabled: false,
                 },
                 support: {
                     enabled: false,
@@ -142,20 +132,24 @@ export const AllDisabledWithAlert: Story = {
                     },
                 },
             },
+            configuration: defaultStoreConfiguration,
         }),
-        onChatChange: action('onToggle > Support > Chat'),
-        onEmailChange: action('onToggle > Support > Email'),
+        onSalesChange: action('onToggle > Sales'),
+        onSupportChange: action('onToggle > Support'),
+        onSupportChatChange: action('onToggle > Support > Chat'),
+        onSupportEmailChange: action('onToggle > Support > Email'),
     },
 }
 
 export const SupportEmail: Story = {
-    render: (args) => <AiAgentActivationStoreCard {...args} />,
+    render: (args) => <LegacyAiAgentActivationStoreCard {...args} />,
     args: {
-        store: getStoreActivation({
+        store: storeActivationFixture({
+            storeName: 'steve-madden',
             settings: {
                 sales: {
-                    enabled: false,
                     isDisabled: true,
+                    enabled: false,
                 },
                 support: {
                     enabled: true,
@@ -169,20 +163,25 @@ export const SupportEmail: Story = {
                     },
                 },
             },
+            alerts: [],
+            configuration: defaultStoreConfiguration,
         }),
-        onChatChange: action('onToggle > Support > Chat'),
-        onEmailChange: action('onToggle > Support > Email'),
+        onSalesChange: action('onToggle > Sales'),
+        onSupportChange: action('onToggle > Support'),
+        onSupportChatChange: action('onToggle > Support > Chat'),
+        onSupportEmailChange: action('onToggle > Support > Email'),
     },
 }
 
 export const SupportEmailChat: Story = {
-    render: (args) => <AiAgentActivationStoreCard {...args} />,
+    render: (args) => <LegacyAiAgentActivationStoreCard {...args} />,
     args: {
-        store: getStoreActivation({
+        store: storeActivationFixture({
+            storeName: 'steve-madden',
             settings: {
                 sales: {
-                    enabled: false,
                     isDisabled: false,
+                    enabled: false,
                 },
                 support: {
                     enabled: true,
@@ -196,20 +195,25 @@ export const SupportEmailChat: Story = {
                     },
                 },
             },
+            alerts: [],
+            configuration: defaultStoreConfiguration,
         }),
-        onChatChange: action('onToggle > Support > Chat'),
-        onEmailChange: action('onToggle > Support > Email'),
+        onSalesChange: action('onToggle > Sales'),
+        onSupportChange: action('onToggle > Support'),
+        onSupportChatChange: action('onToggle > Support > Chat'),
+        onSupportEmailChange: action('onToggle > Support > Email'),
     },
 }
 
 export const AllActivated: Story = {
-    render: (args) => <AiAgentActivationStoreCard {...args} />,
+    render: (args) => <LegacyAiAgentActivationStoreCard {...args} />,
     args: {
-        store: getStoreActivation({
+        store: storeActivationFixture({
+            storeName: 'steve-madden',
             settings: {
                 sales: {
-                    enabled: true,
                     isDisabled: false,
+                    enabled: true,
                 },
                 support: {
                     enabled: true,
@@ -223,8 +227,12 @@ export const AllActivated: Story = {
                     },
                 },
             },
+            alerts: [],
+            configuration: defaultStoreConfiguration,
         }),
-        onChatChange: action('onToggle > Support > Chat'),
-        onEmailChange: action('onToggle > Support > Email'),
+        onSalesChange: action('onToggle > Sales'),
+        onSupportChange: action('onToggle > Support'),
+        onSupportChatChange: action('onToggle > Support > Chat'),
+        onSupportEmailChange: action('onToggle > Support > Email'),
     },
 }

@@ -102,7 +102,7 @@ export const useActivation = (
     if (hasAiAgentNewActivationXp) {
         if (pageName === 'overview') {
             activationButtonProps = {
-                hasAiAgentNewActivationXp: true,
+                hasAiAgentNewActivationXp,
                 variant: 'bordered',
             } satisfies Omit<ActivationManageButtonBorderedProps, 'onClick'>
         } else {
@@ -111,14 +111,14 @@ export const useActivation = (
                 !!Object.values(storeActivations).at(0)?.configuration?.scopes
                     .length
             activationButtonProps = {
-                hasAiAgentNewActivationXp: true,
+                hasAiAgentNewActivationXp,
                 variant: 'flat',
                 status: aiAgentIsLive ? 'live' : 'off',
             } satisfies Omit<ActivationManageButtonFlatProps, 'onClick'>
         }
     } else {
         activationButtonProps = {
-            hasAiAgentNewActivationXp: false,
+            hasAiAgentNewActivationXp,
             progress: progressPercentage,
             variant: pageName === 'overview' ? 'bordered' : 'flat',
         } satisfies Omit<LegacyActivationManageButtonProps, 'onClick'>
@@ -167,6 +167,7 @@ export const useActivation = (
                     }
                     closeModal()
                 }}
+                hasAiAgentNewActivationXp={hasAiAgentNewActivationXp}
             />
         ),
         activationButton: hasActivationEnabled ? (

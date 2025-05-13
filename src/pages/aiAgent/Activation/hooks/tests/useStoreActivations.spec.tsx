@@ -1,33 +1,23 @@
-import { StoreActivation } from '../../components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
-import { getStoreConfigurationFixture } from '../tests/fixtures/store-configurations.fixture'
-import { computeActivationPercentage } from '../useStoreActivations'
+import {
+    ComputeActivationPercentage,
+    computeActivationPercentage,
+} from '../useStoreActivations'
 
 describe('computeActivationPercentage', () => {
     const createStoreActivation = (
         chatEnabled: boolean,
         emailEnabled: boolean,
         salesEnabled: boolean,
-    ): StoreActivation => ({
-        name: 'Test Store',
-        title: 'Test Store',
-        alerts: [],
-        configuration: getStoreConfigurationFixture({
-            storeName: 'test-store',
-            shopType: 'shopify',
-        }),
+    ): ComputeActivationPercentage => ({
         sales: {
-            isDisabled: false,
             enabled: salesEnabled,
         },
         support: {
-            enabled: chatEnabled || emailEnabled,
             chat: {
                 enabled: chatEnabled,
-                isIntegrationMissing: false,
             },
             email: {
                 enabled: emailEnabled,
-                isIntegrationMissing: false,
             },
         },
     })

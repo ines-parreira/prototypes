@@ -4,7 +4,6 @@ import { useQueryClient } from '@tanstack/react-query'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { storeConfigurationKeys } from 'models/aiAgent/queries'
-import { StoreActivation } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useTrialEligibility } from 'pages/aiAgent/hooks/useTrialEligibility'
 import { useStartAiSalesAgentTrialForMultipleStores } from 'pages/aiAgent/Overview/hooks/useStartAiSalesAgentTrialForMultipleStores'
@@ -12,6 +11,8 @@ import { getShopNameFromStoreActivations } from 'pages/aiAgent/utils/getShopName
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
+
+import { StoreActivation } from './storeActivationReducer'
 
 type AIAgentTrialType = {
     accountDomain: string

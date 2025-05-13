@@ -1,17 +1,18 @@
 import { ComponentProps } from 'react'
 
-import { fireEvent, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { KNOWLEDGE_ALERT_KIND } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
+import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
+import {
+    KNOWLEDGE_ALERT_KIND,
+    StoreActivation,
+} from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
+import { getStoreConfigurationFixture } from 'pages/aiAgent/Activation/hooks/tests/fixtures/store-configurations.fixture'
 import { AlertType } from 'pages/common/components/Alert/Alert'
 import { renderWithRouter } from 'utils/testing'
 
-import {
-    AiAgentActivationStoreCard,
-    StoreActivation,
-} from '../AiAgentActivationStoreCard'
+import { AiAgentActivationStoreCard } from '../AiAgentActivationStoreCard'
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
@@ -52,12 +53,6 @@ jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
                 name: 'Chat Channel 1',
             },
         },
-        {
-            value: {
-                id: 2,
-                name: 'Chat Channel 2',
-            },
-        },
     ],
 }))
 
@@ -65,28 +60,28 @@ const renderComponent = (
     props: ComponentProps<typeof AiAgentActivationStoreCard>,
 ) => renderWithRouter(<AiAgentActivationStoreCard {...props} />)
 
-const storeWithoutAlert = {
-    name: 'steve-madden',
-    title: 'Steve Madden',
-    sales: {
-        isDisabled: false,
-        enabled: true,
-    },
-    support: {
-        enabled: true,
-        chat: {
+const storeWithoutAlert: StoreActivation = storeActivationFixture({
+    storeName: 'steve-madden',
+    settings: {
+        sales: {
+            isDisabled: false,
             enabled: true,
-            isIntegrationMissing: false,
         },
-        email: {
+        support: {
             enabled: true,
-            isIntegrationMissing: false,
+            chat: {
+                enabled: true,
+                isIntegrationMissing: false,
+                isInstallationMissing: false,
+            },
+            email: {
+                enabled: true,
+                isIntegrationMissing: false,
+            },
         },
     },
-    alert: [],
-    configuration: {
+    configuration: getStoreConfigurationFixture({
         shopType: 'shopify',
-        shopName: 'steve-madden',
         monitoredChatIntegrations: [1],
         monitoredEmailIntegrations: [
             {
@@ -94,9 +89,9 @@ const storeWithoutAlert = {
                 email: 'foo@example.com',
             },
         ],
-    },
-} as any as StoreActivation
-const storeWithIntegrationMissing = {
+    }),
+})
+const storeWithIntegrationMissing: StoreActivation = {
     ...storeWithoutAlert,
     support: {
         ...storeWithoutAlert.support,
@@ -109,8 +104,8 @@ const storeWithIntegrationMissing = {
             isIntegrationMissing: true,
         },
     },
-} as any as StoreActivation
-const storeWithAlert = {
+}
+const storeWithAlert: StoreActivation = {
     ...storeWithoutAlert,
     alerts: [
         {
@@ -121,86 +116,97 @@ const storeWithAlert = {
             cta: { label: 'Visit Knowledge', to: '/' },
         },
     ],
-} as any as StoreActivation
+}
+
+const ui = {
+    chatToggle: () => screen.getByText('Chat'),
+    chatTooltip: () => screen.getAllByText('info')[0],
+    emailToggle: () => screen.getByText('Email'),
+    emailTooltip: () => screen.getAllByText('info')[1],
+}
 
 describe('<AiAgentActivationStoreCard />', () => {
-    const onSalesChange = jest.fn()
-    const onSupportChange = jest.fn()
-    const onSupportChatChange = jest.fn()
-    const onSupportEmailChange = jest.fn()
+    const onChatChange = jest.fn()
+    const onEmailChange = jest.fn()
     const closeModal = jest.fn()
 
     beforeEach(() => {
         jest.clearAllMocks()
     })
 
-    it('should render the component', () => {
-        const { getByText } = renderComponent({
+    it('should render the component with alerts', () => {
+        renderComponent({
             store: storeWithAlert,
-            onSalesChange,
-            onSupportChange,
-            onSupportChatChange,
-            onSupportEmailChange,
+            onChatChange,
+            onEmailChange,
             closeModal,
         })
 
-        expect(getByText('Steve Madden')).toBeInTheDocument()
-
+        expect(screen.getByText('steve-madden')).toBeInTheDocument()
         expect(
-            getByText('Activate Support for integrated chats.'),
+            screen.getByText('Enable Channels for AI Agent'),
         ).toBeInTheDocument()
         expect(
-            getByText('Activate Support for integrated emails.'),
-        ).toBeInTheDocument()
-
-        expect(
-            getByText(
+            screen.getByText(
                 'At least one knowledge source required. Update your knowledge tab to be able to activate AI Agent.',
             ),
         ).toBeInTheDocument()
     })
 
-    it('should allow to select a Support channel when there is no alert', () => {
-        const { getByLabelText } = renderComponent({
+    it('should allow to select email / chat channel when there is no alert', () => {
+        renderComponent({
             store: storeWithoutAlert,
-            onSalesChange,
-            onSupportChange,
-            onSupportChatChange,
-            onSupportEmailChange,
+            onChatChange,
+            onEmailChange,
             closeModal,
         })
 
-        const supportChatCheckbox = getByLabelText('Chat')
-        userEvent.click(supportChatCheckbox!)
-        expect(onSupportChatChange).toHaveBeenCalledWith(false)
+        userEvent.click(ui.chatToggle())
+        expect(onChatChange).toHaveBeenCalledWith(false)
+
+        userEvent.click(ui.emailToggle())
+        expect(onEmailChange).toHaveBeenCalledWith(false)
     })
 
-    it('should not allow select a Support channel when there is some alerts', () => {
-        const { getByLabelText } = renderComponent({
+    it('should not allow select email / chat channel when there is some alerts', () => {
+        renderComponent({
             store: storeWithAlert,
-            onSalesChange,
-            onSupportChange,
-            onSupportChatChange,
-            onSupportEmailChange,
+            onChatChange,
+            onEmailChange,
             closeModal,
         })
 
-        const supportChatCheckbox = getByLabelText('Chat')
-        userEvent.click(supportChatCheckbox!)
-        expect(onSupportChatChange).not.toHaveBeenCalled()
+        userEvent.click(ui.chatToggle())
+        expect(onChatChange).not.toHaveBeenCalled()
+
+        userEvent.click(ui.emailToggle())
+        expect(onEmailChange).not.toHaveBeenCalled()
+    })
+
+    it('should not allow select email / chat channel when there are missing integrations', () => {
+        renderComponent({
+            store: storeWithIntegrationMissing,
+            onChatChange,
+            onEmailChange,
+            closeModal,
+        })
+
+        userEvent.click(ui.chatToggle())
+        expect(onChatChange).not.toHaveBeenCalled()
+
+        userEvent.click(ui.emailToggle())
+        expect(onEmailChange).not.toHaveBeenCalled()
     })
 
     it('should close the modal when clicking on an alert link', () => {
-        const { getByText } = renderComponent({
+        renderComponent({
             store: storeWithAlert,
-            onSalesChange,
-            onSupportChange,
-            onSupportChatChange,
-            onSupportEmailChange,
+            onChatChange,
+            onEmailChange,
             closeModal,
         })
 
-        const visitKnowledge = getByText('Visit Knowledge')
+        const visitKnowledge = screen.getByText('Visit Knowledge')
         userEvent.click(visitKnowledge)
         expect(closeModal).toHaveBeenCalled()
     })
@@ -211,111 +217,64 @@ describe('<AiAgentActivationStoreCard />', () => {
     ])(
         'should close the modal when clicking on a missing $integration integration',
         ({ text }) => {
-            const { getByText } = renderComponent({
+            renderComponent({
                 store: storeWithIntegrationMissing,
-                onSalesChange,
-                onSupportChange,
-                onSupportChatChange,
-                onSupportEmailChange,
+                onChatChange,
+                onEmailChange,
                 closeModal,
             })
 
-            const missingIntegrationLink = getByText(text)
+            const missingIntegrationLink = screen.getByText(text)
             userEvent.click(missingIntegrationLink)
             expect(closeModal).toHaveBeenCalled()
         },
     )
 
-    it('should display tooltips for integrated emails when hovering', async () => {
-        const { getAllByText, getByRole } = renderComponent({
+    it('should display tooltip for integrated emails when hovering', async () => {
+        renderComponent({
             store: storeWithoutAlert,
-            onSalesChange,
-            onSupportChange,
-            onSupportChatChange,
-            onSupportEmailChange,
+            onChatChange,
+            onEmailChange,
             closeModal,
         })
 
-        const integratedEmailsSection = getAllByText(
-            /integrated emails/i,
-        )[0].closest('div') as HTMLElement
-
-        expect(integratedEmailsSection).toBeInTheDocument()
-
-        const emailTooltipIcon = integratedEmailsSection.querySelector(
-            '.material-icons-outlined.icon',
-        )
-
-        expect(emailTooltipIcon).toBeInTheDocument()
-
-        fireEvent.mouseOver(emailTooltipIcon as HTMLElement)
-
+        userEvent.hover(ui.emailTooltip())
         await waitFor(() => {
-            expect(getByRole('tooltip')).toHaveTextContent('integrated emails:')
-            expect(getByRole('tooltip')).toHaveTextContent('foo@example.com')
-            expect(getByRole('tooltip')).not.toHaveTextContent(
+            expect(screen.getByRole('tooltip')).toHaveTextContent(
+                'integrated emails:',
+            )
+            expect(screen.getByRole('tooltip')).toHaveTextContent(
+                'foo@example.com',
+            )
+            expect(screen.getByRole('tooltip')).not.toHaveTextContent(
                 'another@example.com',
             )
-            expect(getByRole('tooltip')).not.toHaveTextContent(
+            expect(screen.getByRole('tooltip')).not.toHaveTextContent(
                 'test@example.com',
             )
         })
     })
 
     it('should display tooltips for integrated chats when hovering', async () => {
-        const { getByRole, getAllByText } = renderComponent({
+        renderComponent({
             store: storeWithoutAlert,
-            onSalesChange,
-            onSupportChange,
-            onSupportChatChange,
-            onSupportEmailChange,
+            onChatChange,
+            onEmailChange,
             closeModal,
         })
 
-        const integratedChatsSection = getAllByText(
-            /integrated chats/i,
-        )[0].closest('div') as HTMLElement
-
-        expect(integratedChatsSection).toBeInTheDocument()
-
-        const chatTooltipIcon = integratedChatsSection.querySelector(
-            '.material-icons-outlined.icon',
-        )
-        expect(chatTooltipIcon).toBeInTheDocument()
-
-        fireEvent.mouseOver(chatTooltipIcon as HTMLElement)
+        userEvent.hover(ui.chatTooltip())
 
         await waitFor(() => {
-            expect(getByRole('tooltip')).toHaveTextContent('integrated chats:')
-            expect(getByRole('tooltip')).toHaveTextContent('Chat Channel 1')
-            expect(getByRole('tooltip')).not.toHaveTextContent('Chat Channel 2')
+            expect(screen.getByRole('tooltip')).toHaveTextContent(
+                'integrated chats:',
+            )
+            expect(screen.getByRole('tooltip')).toHaveTextContent(
+                'Chat Channel 1',
+            )
+            expect(screen.getByRole('tooltip')).not.toHaveTextContent(
+                'Chat Channel 2',
+            )
         })
-    })
-
-    it('should display the correct sales block copy when the AiSalesAgentActivationEmailSettings flag is enabled', () => {
-        const useFlagsSpy = jest.spyOn(
-            require('launchdarkly-react-client-sdk'),
-            'useFlags',
-        )
-        useFlagsSpy.mockReturnValue({
-            [FeatureFlagKey.AiSalesAgentActivationEmailSettings]: true,
-        })
-
-        const { getByText } = renderComponent({
-            store: storeWithoutAlert,
-            onSalesChange,
-            onSupportChange,
-            onSupportChatChange,
-            onSupportEmailChange,
-            closeModal,
-        })
-
-        expect(
-            getByText(
-                'Shopping Assistant can only be activated on the channel where Support Agent is activated.',
-            ),
-        ).toBeInTheDocument()
-
-        useFlagsSpy.mockRestore()
     })
 })

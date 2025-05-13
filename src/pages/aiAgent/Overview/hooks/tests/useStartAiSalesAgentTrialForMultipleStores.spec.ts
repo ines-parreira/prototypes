@@ -1,7 +1,7 @@
 import { waitFor } from '@testing-library/react'
 
 import { upsertStoreConfiguration } from 'models/aiAgent/resources/configuration'
-import { StoreActivation } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
+import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 import { assumeMock } from 'utils/testing'
 

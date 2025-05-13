@@ -4,13 +4,14 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useLocation, useParams } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
-import { StoreActivation } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
 import {
-    State,
+    stateToUpdatedStoreConfiguration,
+    StoreActivation,
     useStoreActivationReducer,
 } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { usePublicResourcesList } from 'pages/aiAgent/hooks/usePublicResourcesList'
@@ -20,12 +21,22 @@ import { useFetchChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks
 import { useSelfServiceChatChannelsMultiStore } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 import safeDivide from 'pages/stats/automate/aiSalesAgent/util/safeDivide'
+import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 import { FocusActivationModal } from '../utils'
 
-export const computeActivationPercentage = (state: State): number => {
+export type ComputeActivationPercentage = {
+    support: {
+        chat: Pick<StoreActivation['support']['chat'], 'enabled'>
+        email: Pick<StoreActivation['support']['email'], 'enabled'>
+    }
+    sales: Pick<StoreActivation['sales'], 'enabled'>
+}
+export const computeActivationPercentage = (
+    state: Record<string, ComputeActivationPercentage>,
+): number => {
     const totalStores = Object.values(state).length
     const totalScore = totalStores * 3
 
@@ -113,6 +124,15 @@ export const useStoreActivations = ({
     const flagsRef = useRef(flags)
     flagsRef.current = flags
 
+    const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
+    const hasNewAutomatePlan = (currentAutomatePlan?.generation ?? 0) >= 6
+
+    const isAiSalesBetaUser = !!flags[FeatureFlagKey.AiSalesAgentBeta]
+    const hasAiAgentNewActivationXp =
+        !!flags[FeatureFlagKey.AiAgentNewActivationXp]
+    const aiSalesAgentEmailEnabled =
+        !!flags[FeatureFlagKey.AiSalesAgentActivationEmailSettings]
+
     const location = useLocation()
     const params = useParams<{ shopName?: string }>()
     const singleStoreName =
@@ -171,9 +191,15 @@ export const useStoreActivations = ({
             storeConfigurations,
             selfServiceChatChannels,
             helpCentersFaq: helpCenterListData?.data.data,
-            flags: flagsRef.current,
+            ldFlags: flagsRef.current,
             chatIntegrationStatus,
             publicResources,
+            hasNewAutomatePlan,
+            flags: {
+                hasAiAgentNewActivationXp,
+                isAiSalesBetaUser,
+                aiSalesAgentEmailEnabled,
+            },
         })
     }, [
         selfServiceChatChannels,
@@ -182,6 +208,10 @@ export const useStoreActivations = ({
         helpCenterListData,
         chatIntegrationStatus,
         publicResources,
+        hasAiAgentNewActivationXp,
+        hasNewAutomatePlan,
+        isAiSalesBetaUser,
+        aiSalesAgentEmailEnabled,
     ])
 
     const { isLoading: isSaveLoading, upsertStoresConfiguration } =
@@ -193,24 +223,7 @@ export const useStoreActivations = ({
             reason: 'clicked-on-save-button',
         })
 
-        const updatedConfigurations: StoreConfiguration[] = Object.values(
-            state,
-        ).map((store) => {
-            return {
-                ...store.configuration,
-                scopes: [
-                    store.support.enabled ? AiAgentScope.Support : null,
-                    store.sales.enabled ? AiAgentScope.Sales : null,
-                ].filter(Boolean) as AiAgentScope[],
-                chatChannelDeactivatedDatetime: !store.support.chat.enabled
-                    ? new Date().toISOString()
-                    : null,
-                emailChannelDeactivatedDatetime: !store.support.email.enabled
-                    ? new Date().toISOString()
-                    : null,
-            }
-        })
-
+        const updatedConfigurations = stateToUpdatedStoreConfiguration(state)
         await upsertStoresConfiguration(updatedConfigurations)
     }, [state, upsertStoresConfiguration, pageName])
 
@@ -224,7 +237,16 @@ export const useStoreActivations = ({
             isPublicResourcesListLoading,
         isSaveLoading,
         changeSales: (storeName: string, newValue: boolean) => {
-            dispatch({ type: 'CHANGE_SALES', storeName, newValue })
+            dispatch({
+                type: 'CHANGE_SALES',
+                storeName,
+                newValue,
+                flags: {
+                    hasAiAgentNewActivationXp,
+                    isAiSalesBetaUser,
+                    aiSalesAgentEmailEnabled,
+                },
+            })
             logEvent(
                 newValue
                     ? SegmentEvent.AiAgentActivateModalSkillEnabled
@@ -241,6 +263,11 @@ export const useStoreActivations = ({
                 type: 'CHANGE_SUPPORT',
                 storeName,
                 newValue,
+                flags: {
+                    hasAiAgentNewActivationXp,
+                    isAiSalesBetaUser,
+                    aiSalesAgentEmailEnabled,
+                },
             })
             logEvent(
                 newValue
@@ -258,6 +285,12 @@ export const useStoreActivations = ({
                 type: 'CHANGE_SUPPORT_CHAT',
                 storeName,
                 newValue,
+                hasNewAutomatePlan,
+                flags: {
+                    hasAiAgentNewActivationXp,
+                    isAiSalesBetaUser,
+                    aiSalesAgentEmailEnabled,
+                },
             })
             logEvent(
                 newValue
@@ -276,6 +309,12 @@ export const useStoreActivations = ({
                 type: 'CHANGE_SUPPORT_EMAIL',
                 storeName,
                 newValue,
+                hasNewAutomatePlan,
+                flags: {
+                    hasAiAgentNewActivationXp,
+                    isAiSalesBetaUser,
+                    aiSalesAgentEmailEnabled,
+                },
             })
             logEvent(
                 newValue

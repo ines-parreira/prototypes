@@ -1,5 +1,5 @@
 import { StoreConfiguration } from 'models/aiAgent/types'
-import { StoreActivation } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
+import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 
 import { getAiShoppingAssistantTrialEnabledFlag } from '../Activation/utils'
 

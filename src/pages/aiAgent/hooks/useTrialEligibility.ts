@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { StoreActivation } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
+import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { isAtLeastOneStoreEligibleForTrial } from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
 
 export const useTrialEligibility = (

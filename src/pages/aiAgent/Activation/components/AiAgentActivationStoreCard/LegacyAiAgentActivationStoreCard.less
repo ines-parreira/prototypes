@@ -41,44 +41,57 @@
         color: var(--main-primary);
     }
 
+    .enablement {
+        font-size: 12px;
+        color: var(--neutral-grey-5);
+    }
+
     .title {
         font-size: 16px;
         font-weight: 600;
         color: var(--neutral-grey-6);
     }
 
+    .description {
+        margin-top: 4px;
+        color: var(--neutral-grey-5);
+    }
+
     .channelsList {
         margin-top: @layout-spacing-s;
         display: flex;
-        flex-direction: column;
         gap: @layout-spacing-s;
+
+        & > div {
+            flex: 1;
+        }
     }
 
-    .channel {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .channelToggle {
+    .channelField {
         display: flex;
         align-items: center;
+        gap: 8px;
+        height: 24px;
     }
 
-    .label {
-        display: flex;
-        gap: @layout-spacing-s;
-        .heading-subsection-regular();
+    .channelInput {
+        width: 16px;
+        height: 16px;
+        margin-top: 0;
+    }
+
+    .channelLabel {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 0;
     }
 
     .channelCaption {
+        margin-top: 4px;
         color: var(--neutral-grey-5);
 
         a {
             font-weight: 500;
-            display: flex;
-            justify-content: center;
-            align-content: center;
-            gap: @layout-spacing-xxs;
         }
 
         i {
@@ -97,5 +110,27 @@
         display: flex;
         flex-direction: column;
         gap: @layout-spacing-m;
+    }
+
+    .skillSales {
+        padding: @layout-spacing-s;
+        border-radius: @layout-spacing-xs;
+        background: var(--main-latte);
+
+        &.disabled {
+            background: var(--neutral-grey-1);
+        }
+    }
+
+    .labelContainer {
+        .icon {
+            display: inline;
+            vertical-align: text-bottom;
+            line-height: normal;
+
+            & > i {
+                font-size: 1lh;
+            }
+        }
     }
 }

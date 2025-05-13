@@ -17,6 +17,7 @@ import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
+import { AiAgentActivationModal } from 'pages/aiAgent/Activation/components/AiAgentActivationModal/AiAgentActivationModal'
 import { usePublicResourcesList } from 'pages/aiAgent/hooks/usePublicResourcesList'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
@@ -312,7 +313,9 @@ describe('useActivation', () => {
         })
 
         it('should render bordered variant when on overview page', () => {
-            const { result } = renderHookWithRouter({ pageName: 'overview' })
+            const { result } = renderHookWithRouter({
+                pageName: 'overview',
+            })
 
             expect(result.current.activationButton?.props.variant).toBe(
                 'bordered',
@@ -334,7 +337,52 @@ describe('useActivation', () => {
         })
     })
 
-    describe('activationModal', () => {
+    describe('when AiAgentActivation Off', () => {
+        beforeEach(() => {
+            mockUseFlag.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.AiAgentActivation) {
+                    return false
+                }
+                return false
+            })
+        })
+
+        it('should not render activation button', () => {
+            const { result } = renderHookWithRouter()
+
+            expect(result.current.activationButton).toBeFalsy()
+        })
+    })
+})
+
+describe('activationModal', () => {
+    it('should show early access modal when clicking on learn more', () => {
+        const { result } = renderHookWithRouter()
+
+        act(() => {
+            result.current.activationModal.props.onLearnMoreClick()
+        })
+
+        expect(result.current.earlyAccessModal.props.isOpen).toBe(true)
+    })
+
+    describe('when AiAgentNewActivationXp Off', () => {
+        beforeEach(() => {
+            mockUseFlag.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.AiAgentNewActivationXp) {
+                    return false
+                }
+                return false
+            })
+        })
+
+        it('should render legacy modal', () => {
+            const { result } = renderHookWithRouter()
+            expect(result.current.activationModal.type).toBe(
+                AiAgentActivationModal,
+            )
+        })
+
         it('should handle sales change and show early access modal when not on new plan', () => {
             const { result } = renderHookWithRouter()
 
@@ -346,65 +394,6 @@ describe('useActivation', () => {
             })
 
             expect(result.current.earlyAccessModal.props.isOpen).toBe(true)
-        })
-
-        it('should show multiple stores in the modal when there is no shopName param in the url', async () => {
-            // const { result } = renderHookWithRouter()
-            // await waitFor(() => {
-            //     expect(
-            //         result.current.activationModal.props.storeActivations
-            //             .length,
-            //     ).toEqual(2)
-            // })
-        })
-
-        it('should show only one store in the modal when there is a shopName param in the url', async () => {
-            // const { result } = renderHookWithRouter({
-            //     initialEntry: '/store2',
-            // })
-            // await waitFor(() => {
-            //     expect(
-            //         result.current.activationModal.props.storeActivations
-            //             .length,
-            //     ).toEqual(1)
-            // })
-        })
-
-        it('should handle sales change directly when on new plan', async () => {
-            mockBillingStateApi.mockReturnValue(
-                Promise.resolve({
-                    data: {
-                        ...defaultBillingState,
-                        current_plans: {
-                            ...defaultBillingState.current_plans,
-                            automate: { generation: 6 },
-                        },
-                    },
-                }),
-            )
-
-            const { result } = renderHookWithRouter({
-                autoDisplayEarlyAccessDisabled: true,
-            })
-
-            act(() => {
-                result.current.activationModal.props.onSalesChange(
-                    'store1',
-                    true,
-                )
-            })
-
-            // await waitFor(() => {
-            //     expect(result.current.earlyAccessModal.props.isOpen).toBe(false)
-            //     expect(mockLogEvent).toHaveBeenCalledWith(
-            //         segment.SegmentEvent.AiAgentActivateModalSkillEnabled,
-            //         {
-            //             storeName: 'store1',
-            //             skill: 'sales',
-            //             page: 'dummy-page',
-            //         },
-            //     )
-            // })
         })
 
         it('should handle support changes', () => {
@@ -426,200 +415,181 @@ describe('useActivation', () => {
                 },
             )
         })
+    })
 
-        it('should handle support chat changes', () => {
+    describe('when AiAgentNewActivationXp On', () => {
+        beforeEach(() => {
+            mockUseFlag.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.AiAgentNewActivationXp) {
+                    return true
+                }
+                return false
+            })
+        })
+
+        it('should render new modal', () => {
             const { result } = renderHookWithRouter()
-
-            act(() => {
-                result.current.activationModal.props.onSupportChatChange(
-                    'store1',
-                    true,
-                )
-            })
-
-            expect(mockLogEvent).toHaveBeenCalledWith(
-                segment.SegmentEvent.AiAgentActivateModalSkillEnabled,
-                {
-                    storeName: 'store1',
-                    skill: 'support',
-                    page: 'dummy-page',
-                    channel: 'chat',
-                },
+            expect(result.current.activationModal.type).toBe(
+                AiAgentActivationModal,
             )
-        })
-
-        it('should handle support email changes', () => {
-            const { result } = renderHookWithRouter()
-
-            act(() => {
-                result.current.activationModal.props.onSupportEmailChange(
-                    'store1',
-                    true,
-                )
-            })
-
-            expect(mockLogEvent).toHaveBeenCalledWith(
-                segment.SegmentEvent.AiAgentActivateModalSkillEnabled,
-                {
-                    storeName: 'store1',
-                    skill: 'support',
-                    page: 'dummy-page',
-                    channel: 'email',
-                },
-            )
-        })
-
-        it('should handle save configurations successfully', async () => {
-            const { result } = renderHookWithRouter({
-                autoDisplayEarlyAccessDisabled: true,
-            })
-
-            act(() => {
-                result.current.activationButton?.props.onClick()
-            })
-            act(() => {
-                result.current.activationModal?.props.onSupportChange(
-                    'store1',
-                    true,
-                )
-            })
-
-            await act(async () => {
-                await result.current.activationModal?.props.onSaveClick()
-            })
-
-            // await waitFor(() => {
-            //     expect(mockStoreConfigurationUpdateApi).toHaveBeenCalled()
-            //     expect(mockLogEvent).toHaveBeenCalledWith(
-            //         segment.SegmentEvent.AiAgentActivateCloseActivationModal,
-            //         {
-            //             page: 'dummy-page',
-            //             reason: 'clicked-on-save-button',
-            //         },
-            //     )
-            // })
-        })
-
-        it('should close modal and log event when clicking close', () => {
-            const { result } = renderHookWithRouter()
-
-            act(() => {
-                result.current.activationButton?.props.onClick()
-            })
-
-            act(() => {
-                result.current.activationModal.props.onClose()
-            })
-
-            expect(result.current.activationModal.props.isOpen).toBe(false)
-            expect(mockLogEvent).toHaveBeenCalledWith(
-                segment.SegmentEvent.AiAgentActivateCloseActivationModal,
-                {
-                    page: 'dummy-page',
-                    reason: 'clicked-on-cancel-or-clicked-outside',
-                },
-            )
-        })
-
-        it('should open the activation modal when ?focusActivationModal param is present', () => {
-            const { result } = renderHookWithRouter({
-                pageName: 'dummy-page',
-                initialEntry: '/?focusActivationModal=true',
-            })
-
-            expect(result.current.activationModal.props.isOpen).toBe(true)
         })
     })
 
-    describe('earlyAccessModal', () => {
-        it('should handle modal close', () => {
-            const { result } = renderHookWithRouter()
+    it('should handle support chat changes', () => {
+        const { result } = renderHookWithRouter()
 
-            act(() => {
-                result.current.earlyAccessModal.props.onClose()
-            })
-
-            expect(mockLogEvent).toHaveBeenCalledWith(
-                segment.SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
-                {
-                    page: 'dummy-page',
-                    reason: 'clicked-on-cross-or-outside',
-                },
+        act(() => {
+            result.current.activationModal.props.onSupportChatChange(
+                'store1',
+                true,
             )
         })
 
-        it('should handle successful upgrade', async () => {
-            const { result } = renderHookWithRouter()
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            segment.SegmentEvent.AiAgentActivateModalSkillEnabled,
+            {
+                storeName: 'store1',
+                skill: 'support',
+                page: 'dummy-page',
+                channel: 'chat',
+            },
+        )
+    })
 
-            await act(async () => {
-                await result.current.earlyAccessModal.props.onUpgradeClick()
-            })
+    it('should handle support email changes', () => {
+        const { result } = renderHookWithRouter()
 
-            // expect(mockLogEvent).toHaveBeenCalledWith(
-            //     segment.SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
-            //     {
-            //         page: 'dummy-page',
-            //         reason: 'upgraded',
-            //     },
-            // )
+        act(() => {
+            result.current.activationModal.props.onSupportEmailChange(
+                'store1',
+                true,
+            )
         })
 
-        it('should log event when modal is viewed', () => {
-            const { result } = renderHookWithRouter()
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            segment.SegmentEvent.AiAgentActivateModalSkillEnabled,
+            {
+                storeName: 'store1',
+                skill: 'support',
+                page: 'dummy-page',
+                channel: 'email',
+            },
+        )
+    })
 
-            act(() => {
-                result.current.activationModal.props.onSalesChange(
-                    'store1',
-                    true,
-                )
-            })
+    it('should close modal and log event when clicking close', () => {
+        const { result } = renderHookWithRouter()
 
-            // expect(mockLogEvent).toHaveBeenCalledWith(
-            //     segment.SegmentEvent.AiAgentActivateEarlyAccessModalViewed,
-            //     { page: 'dummy-page' },
-            // )
+        act(() => {
+            result.current.activationButton?.props.onClick()
         })
 
-        it('should auto-display early access modal when redering hook for the first time only', () => {
-            renderHookWithRouter({
-                pageName: 'dummy-page',
-                initialEntry: '/',
-            })
-
-            // expect(result.current.earlyAccessModal.props.isOpen).toBe(true)
-
-            const { result: result2 } = renderHookWithRouter({
-                pageName: 'dummy-page',
-                initialEntry: '/',
-            })
-
-            expect(result2.current.earlyAccessModal.props.isOpen).toBe(false)
+        act(() => {
+            result.current.activationModal.props.onClose()
         })
 
-        it('should open upgrade modal on sales enabled and then save configurations when upgrade is successful', async () => {
-            const { result } = renderHookWithRouter({
-                autoDisplayEarlyAccessDisabled: true,
-            })
+        expect(result.current.activationModal.props.isOpen).toBe(false)
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            segment.SegmentEvent.AiAgentActivateCloseActivationModal,
+            {
+                page: 'dummy-page',
+                reason: 'clicked-on-cancel-or-clicked-outside',
+            },
+        )
+    })
 
-            act(() => {
-                result.current.activationModal.props.onSalesChange(
-                    'store1',
-                    true,
-                )
-            })
-
-            // expect(result.current.earlyAccessModal.props.isOpen).toBe(true)
-
-            await act(async () => {
-                await result.current.earlyAccessModal.props.onUpgradeClick()
-            })
-
-            // await waitFor(() => {
-            //     expect(mockStoreConfigurationUpdateApi).toHaveBeenCalledWith(
-            //         'store1',
-            //         { sales: true, support: false },
-            //     )
-            // })
+    it('should open the activation modal when ?focusActivationModal param is present', () => {
+        const { result } = renderHookWithRouter({
+            pageName: 'dummy-page',
+            initialEntry: '/?focusActivationModal=true',
         })
+
+        expect(result.current.activationModal.props.isOpen).toBe(true)
+    })
+})
+
+describe('earlyAccessModal', () => {
+    it('should handle modal close', () => {
+        const { result } = renderHookWithRouter()
+
+        act(() => {
+            result.current.earlyAccessModal.props.onClose()
+        })
+
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            segment.SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
+            {
+                page: 'dummy-page',
+                reason: 'clicked-on-cross-or-outside',
+            },
+        )
+    })
+
+    it('should handle successful upgrade', async () => {
+        const { result } = renderHookWithRouter()
+
+        await act(async () => {
+            await result.current.earlyAccessModal.props.onUpgradeClick()
+        })
+
+        // expect(mockLogEvent).toHaveBeenCalledWith(
+        //     segment.SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
+        //     {
+        //         page: 'dummy-page',
+        //         reason: 'upgraded',
+        //     },
+        // )
+    })
+
+    it('should log event when modal is viewed', () => {
+        const { result } = renderHookWithRouter()
+
+        act(() => {
+            result.current.activationModal.props.onSalesChange('store1', true)
+        })
+
+        // expect(mockLogEvent).toHaveBeenCalledWith(
+        //     segment.SegmentEvent.AiAgentActivateEarlyAccessModalViewed,
+        //     { page: 'dummy-page' },
+        // )
+    })
+
+    it('should auto-display early access modal when redering hook for the first time only', () => {
+        renderHookWithRouter({
+            pageName: 'dummy-page',
+            initialEntry: '/',
+        })
+
+        // expect(result.current.earlyAccessModal.props.isOpen).toBe(true)
+
+        const { result: result2 } = renderHookWithRouter({
+            pageName: 'dummy-page',
+            initialEntry: '/',
+        })
+
+        expect(result2.current.earlyAccessModal.props.isOpen).toBe(false)
+    })
+
+    it('should open upgrade modal on sales enabled and then save configurations when upgrade is successful', async () => {
+        const { result } = renderHookWithRouter({
+            autoDisplayEarlyAccessDisabled: true,
+        })
+
+        act(() => {
+            result.current.activationModal.props.onSalesChange('store1', true)
+        })
+
+        // expect(result.current.earlyAccessModal.props.isOpen).toBe(true)
+
+        await act(async () => {
+            await result.current.earlyAccessModal.props.onUpgradeClick()
+        })
+
+        // await waitFor(() => {
+        //     expect(mockStoreConfigurationUpdateApi).toHaveBeenCalledWith(
+        //         'store1',
+        //         { sales: true, support: false },
+        //     )
+        // })
     })
 })

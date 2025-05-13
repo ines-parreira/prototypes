@@ -10,12 +10,11 @@ import {
 } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { ActivationProgress } from 'pages/aiAgent/Activation/components/ActivationProgress/ActivationProgress'
-import {
-    StoreActivation,
-    AiAgentActivationStoreCard as StoreCard,
-} from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
+import { AiAgentActivationStoreCard } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
+import { LegacyAiAgentActivationStoreCard } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/LegacyAiAgentActivationStoreCard'
 import { AiAgentSalesBanner } from 'pages/aiAgent/Activation/components/AiAgentSalesBanner/AiAgentSalesBanner'
 import AIAgentTrialSuccessModal from 'pages/aiAgent/Activation/components/AIAgentTrialSuccessModal'
+import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -36,6 +35,7 @@ type Props = {
     onSupportEmailChange: (storeName: string, value: boolean) => void
     onSaveClick: () => void
     onLearnMoreClick: () => void
+    hasAiAgentNewActivationXp: boolean
 }
 
 export const AiAgentActivationModal = ({
@@ -51,6 +51,7 @@ export const AiAgentActivationModal = ({
     onSupportEmailChange,
     onSaveClick,
     onLearnMoreClick,
+    hasAiAgentNewActivationXp,
 }: Props) => {
     const canUseAiSalesAgent = useCanUseAiSalesAgent()
     const currentAccount = useAppSelector(getCurrentAccountState)
@@ -94,14 +95,23 @@ export const AiAgentActivationModal = ({
                 isOpen={isOpen}
                 onClose={onClose}
             >
-                <div className={css.modalHeader}>
-                    <div className={css.modalTitle}>
-                        Manage AI Agent Activation
+                {!hasAiAgentNewActivationXp && (
+                    <div className={css.modalHeader}>
+                        <div className={css.modalTitle}>
+                            Manage AI Agent Activation
+                        </div>
+                        <div className={css.activationStatus}>
+                            <ActivationProgress
+                                percentage={progressPercentage}
+                            />
+                        </div>
                     </div>
-                    <div className={css.activationStatus}>
-                        <ActivationProgress percentage={progressPercentage} />
+                )}
+                {hasAiAgentNewActivationXp && (
+                    <div className={css.modalHeader}>
+                        <div className={css.modalTitle}>Enable AI Agent</div>
                     </div>
-                </div>
+                )}
 
                 <ModalBody className={css.modalBody}>
                     {isFetchLoading ? (
@@ -121,35 +131,59 @@ export const AiAgentActivationModal = ({
                                 )}
                             <div className={css.storeCardsList}>
                                 {storeActivationList.map(
-                                    ([storeName, store]) => (
-                                        <StoreCard
-                                            key={storeName}
-                                            isDisabled={isSaveLoading}
-                                            store={store}
-                                            onSalesChange={(value) =>
-                                                onSalesChange(storeName, value)
-                                            }
-                                            onSupportChange={(value) =>
-                                                onSupportChange(
-                                                    storeName,
-                                                    value,
-                                                )
-                                            }
-                                            onSupportChatChange={(value) =>
-                                                onSupportChatChange(
-                                                    storeName,
-                                                    value,
-                                                )
-                                            }
-                                            onSupportEmailChange={(value) =>
-                                                onSupportEmailChange(
-                                                    storeName,
-                                                    value,
-                                                )
-                                            }
-                                            closeModal={onClose}
-                                        />
-                                    ),
+                                    ([storeName, store]) => {
+                                        return hasAiAgentNewActivationXp ? (
+                                            <AiAgentActivationStoreCard
+                                                key={storeName}
+                                                isDisabled={isSaveLoading}
+                                                store={store}
+                                                onChatChange={(value) =>
+                                                    onSupportChatChange(
+                                                        storeName,
+                                                        value,
+                                                    )
+                                                }
+                                                onEmailChange={(value) =>
+                                                    onSupportEmailChange(
+                                                        storeName,
+                                                        value,
+                                                    )
+                                                }
+                                                closeModal={onClose}
+                                            />
+                                        ) : (
+                                            <LegacyAiAgentActivationStoreCard
+                                                key={storeName}
+                                                isDisabled={isSaveLoading}
+                                                store={store}
+                                                onSalesChange={(value) =>
+                                                    onSalesChange(
+                                                        storeName,
+                                                        value,
+                                                    )
+                                                }
+                                                onSupportChange={(value) =>
+                                                    onSupportChange(
+                                                        storeName,
+                                                        value,
+                                                    )
+                                                }
+                                                onSupportChatChange={(value) =>
+                                                    onSupportChatChange(
+                                                        storeName,
+                                                        value,
+                                                    )
+                                                }
+                                                onSupportEmailChange={(value) =>
+                                                    onSupportEmailChange(
+                                                        storeName,
+                                                        value,
+                                                    )
+                                                }
+                                                closeModal={onClose}
+                                            />
+                                        )
+                                    },
                                 )}
                             </div>
                         </>

@@ -1,47 +1,123 @@
 import { useReducer } from 'react'
 
 import { LDFlagSet } from 'launchdarkly-react-client-sdk'
+import cloneDeep from 'lodash/cloneDeep'
 
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
-import { StoreActivation } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
-import { getAiSalesAgentEmailEnabledFlag } from 'pages/aiAgent/Activation/utils'
 import { SourceItem } from 'pages/aiAgent/components/PublicSourcesSection/types'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
+import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import { ChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
 import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { AlertType } from 'pages/common/components/Alert/Alert'
 import { type Components } from 'rest_api/help_center_api/client.generated'
 
+export const isSalesEnabledWithNewActivationXp = ({
+    storeHasSales,
+    isAiSalesBetaUser,
+    hasNewAutomatePlan,
+    aiSalesAgentEmailEnabled,
+    isChatEnabled,
+    isEmailEnabled,
+}: {
+    storeHasSales: boolean
+    hasNewAutomatePlan: boolean
+    isAiSalesBetaUser: boolean
+    aiSalesAgentEmailEnabled: boolean
+    isChatEnabled: boolean
+    isEmailEnabled: boolean
+}) => {
+    if (isAiSalesBetaUser && (hasNewAutomatePlan || storeHasSales)) {
+        return aiSalesAgentEmailEnabled
+            ? isChatEnabled || isEmailEnabled
+            : isChatEnabled
+    }
+
+    return false
+}
+
 export const KNOWLEDGE_ALERT_KIND = Symbol('Knowledge Alert')
+type AlertKind = typeof KNOWLEDGE_ALERT_KIND
+
+export type Flags = {
+    hasAiAgentNewActivationXp: boolean
+    isAiSalesBetaUser: boolean
+    aiSalesAgentEmailEnabled: boolean
+}
+export type Settings = {
+    sales: {
+        enabled: boolean
+        isDisabled: boolean
+    }
+    support: {
+        enabled: boolean
+        chat: {
+            enabled: boolean
+            isIntegrationMissing?: boolean
+            isInstallationMissing?: boolean
+            availableChats?: number[]
+        }
+        email: {
+            enabled: boolean
+            isIntegrationMissing?: boolean
+        }
+    }
+}
+type StoreActivationAlert = {
+    kind: AlertKind
+    type: AlertType
+    message: string
+    cta: {
+        label: string
+        onClick?: () => void
+        to?: string
+    }
+}
+export type StoreActivation = {
+    name: string
+    title: string
+    alerts: StoreActivationAlert[]
+    configuration: StoreConfiguration
+} & Settings
+
 export type State = Record<string, StoreActivation>
 type ToggleSalesAction = {
     type: 'CHANGE_SALES'
     storeName: string
     newValue: boolean
+    flags: Flags
 }
 type ToggleSupportAction = {
     type: 'CHANGE_SUPPORT'
     storeName: string
     newValue: boolean
+    flags: Flags
 }
 type ToggleSupportChatAction = {
     type: 'CHANGE_SUPPORT_CHAT'
     storeName: string
     newValue: boolean
+    flags: Flags
+    hasNewAutomatePlan: boolean
 }
 type ToggleSupportEmailAction = {
     type: 'CHANGE_SUPPORT_EMAIL'
     storeName: string
     newValue: boolean
+    flags: Flags
+    hasNewAutomatePlan: boolean
 }
 type UpdateStoreConfiguration = {
     type: 'UPDATE_STORE_CONFIGURATION'
     storeConfigurations: StoreConfiguration[]
     selfServiceChatChannels: Record<string, SelfServiceChatChannel[]>
     helpCentersFaq?: Components.Schemas.GetHelpCenterDto[]
-    flags: LDFlagSet
+    ldFlags: LDFlagSet
     chatIntegrationStatus?: ChatIntegrationsStatusData
     publicResources?: Record<string, SourceItem[]>
+    hasNewAutomatePlan: boolean
+    flags: Flags
 }
 export type ACTION_TYPE =
     | ToggleSalesAction
@@ -52,8 +128,17 @@ export type ACTION_TYPE =
 
 const toggleSupport = (
     state: State,
-    { storeName, newValue }: ToggleSupportAction,
+    {
+        storeName,
+        newValue,
+        flags: { hasAiAgentNewActivationXp, aiSalesAgentEmailEnabled },
+    }: ToggleSupportAction,
 ): State => {
+    // Returning the current state as new activation XP has no toggle for Support
+    if (hasAiAgentNewActivationXp) {
+        return state
+    }
+
     if (!state[storeName]) {
         return state
     }
@@ -68,7 +153,6 @@ const toggleSupport = (
         ? currentStore.support.email.enabled
         : newValue
 
-    const aiSalesAgentEmailEnabled = getAiSalesAgentEmailEnabledFlag()
     const salesIsDisabled = aiSalesAgentEmailEnabled
         ? !chatEnabled && !emailEnabled
         : !chatEnabled
@@ -101,7 +185,16 @@ const toggleSupport = (
 
 const toggleSupportEmail = (
     state: State,
-    { storeName, newValue }: ToggleSupportEmailAction,
+    {
+        storeName,
+        newValue,
+        hasNewAutomatePlan,
+        flags: {
+            hasAiAgentNewActivationXp,
+            isAiSalesBetaUser,
+            aiSalesAgentEmailEnabled,
+        },
+    }: ToggleSupportEmailAction,
 ): State => {
     if (!state[storeName]) {
         return state
@@ -110,12 +203,25 @@ const toggleSupportEmail = (
     const currentStore = state[storeName]
 
     const emailEnabled = currentStore.support.email.isIntegrationMissing
-        ? currentStore.support.email.enabled
+        ? false
         : newValue
     const chatEnabled = currentStore.support.chat.enabled
 
-    const aiSalesAgentEmailEnabled = getAiSalesAgentEmailEnabledFlag()
     const salesIsDisabled = !chatEnabled && !emailEnabled
+
+    let salesEnabled: boolean
+    if (hasAiAgentNewActivationXp) {
+        salesEnabled = isSalesEnabledWithNewActivationXp({
+            isAiSalesBetaUser,
+            storeHasSales: currentStore.sales.enabled,
+            hasNewAutomatePlan,
+            aiSalesAgentEmailEnabled,
+            isChatEnabled: chatEnabled,
+            isEmailEnabled: emailEnabled,
+        })
+    } else {
+        salesEnabled = salesIsDisabled ? false : currentStore.sales.enabled
+    }
 
     const newStore: StoreActivation = {
         ...currentStore,
@@ -127,14 +233,11 @@ const toggleSupportEmail = (
                 enabled: emailEnabled,
             },
         },
-    }
-
-    if (aiSalesAgentEmailEnabled) {
-        newStore.sales = {
+        sales: {
             ...currentStore.sales,
             isDisabled: salesIsDisabled,
-            enabled: salesIsDisabled ? false : currentStore.sales.enabled,
-        }
+            enabled: salesEnabled,
+        },
     }
 
     return {
@@ -145,7 +248,16 @@ const toggleSupportEmail = (
 
 const toggleSupportChat = (
     state: State,
-    { storeName, newValue }: ToggleSupportChatAction,
+    {
+        storeName,
+        newValue,
+        hasNewAutomatePlan,
+        flags: {
+            hasAiAgentNewActivationXp,
+            isAiSalesBetaUser,
+            aiSalesAgentEmailEnabled,
+        },
+    }: ToggleSupportChatAction,
 ): State => {
     if (!state[storeName]) {
         return state
@@ -153,15 +265,36 @@ const toggleSupportChat = (
 
     const currentStore = state[storeName]
 
-    const chatEnabled = currentStore.support.chat.isIntegrationMissing
-        ? currentStore.support.chat.enabled
-        : newValue
+    const chatEnabled =
+        currentStore.support.chat.isIntegrationMissing ||
+        currentStore.support.chat.isInstallationMissing
+            ? false
+            : newValue
     const emailEnabled = currentStore.support.email.enabled
 
-    const aiSalesAgentEmailEnabled = getAiSalesAgentEmailEnabledFlag()
     const salesIsDisabled = aiSalesAgentEmailEnabled
         ? !newValue && !emailEnabled
         : !newValue
+
+    let salesEnabled: boolean
+    if (hasAiAgentNewActivationXp) {
+        salesEnabled = isSalesEnabledWithNewActivationXp({
+            isAiSalesBetaUser,
+            storeHasSales: currentStore.sales.enabled,
+            hasNewAutomatePlan,
+            aiSalesAgentEmailEnabled,
+            isChatEnabled: chatEnabled,
+            isEmailEnabled: emailEnabled,
+        })
+    } else {
+        salesEnabled = aiSalesAgentEmailEnabled
+            ? salesIsDisabled
+                ? false
+                : currentStore.sales.enabled
+            : !newValue
+              ? false
+              : currentStore.sales.enabled
+    }
 
     const newStore: StoreActivation = {
         ...currentStore,
@@ -176,13 +309,7 @@ const toggleSupportChat = (
         sales: {
             ...currentStore.sales,
             isDisabled: salesIsDisabled,
-            enabled: aiSalesAgentEmailEnabled
-                ? salesIsDisabled
-                    ? false
-                    : currentStore.sales.enabled
-                : !newValue
-                  ? false
-                  : currentStore.sales.enabled,
+            enabled: salesEnabled,
         },
     }
 
@@ -194,14 +321,22 @@ const toggleSupportChat = (
 
 const toggleSales = (
     state: State,
-    { storeName, newValue }: ToggleSalesAction,
+    {
+        storeName,
+        newValue,
+        flags: { hasAiAgentNewActivationXp, aiSalesAgentEmailEnabled },
+    }: ToggleSalesAction,
 ): State => {
+    // Returning the current state as new activation XP has no toggle for Sales
+    if (hasAiAgentNewActivationXp) {
+        return state
+    }
+
     if (!state[storeName]) {
         return state
     }
     const currentStore = state[storeName]
 
-    const aiSalesAgentEmailEnabled = getAiSalesAgentEmailEnabledFlag()
     const isSalesDisabled = aiSalesAgentEmailEnabled
         ? !currentStore.support.email.enabled &&
           !currentStore.support.chat.enabled
@@ -228,8 +363,14 @@ export const storeConfigurationToState = (
         selfServiceChatChannels,
         helpCentersFaq,
         chatIntegrationStatus,
-        flags,
+        ldFlags,
         publicResources,
+        hasNewAutomatePlan,
+        flags: {
+            hasAiAgentNewActivationXp,
+            isAiSalesBetaUser,
+            aiSalesAgentEmailEnabled,
+        },
     }: UpdateStoreConfiguration,
 ): State => {
     const hasHelpCenterFaq = (helpCentersFaq ?? []).length > 0
@@ -253,15 +394,16 @@ export const storeConfigurationToState = (
 
             const isMissingKnowledge = !hasHelpCenter && !hasPublicUrls
 
-            const alerts: StoreActivation['alerts'] = []
-            const knowledgeAlert = {
+            const alerts: StoreActivationAlert[] = []
+            const knowledgeAlert: StoreActivationAlert = {
                 kind: KNOWLEDGE_ALERT_KIND,
                 type: AlertType.Warning,
                 message:
                     'At least one knowledge source required. Update your knowledge tab to be able to activate AI Agent.',
                 cta: {
                     label: 'Visit Knowledge',
-                    to: getAiAgentNavigationRoutes(storeName, flags).knowledge,
+                    to: getAiAgentNavigationRoutes(storeName, ldFlags)
+                        .knowledge,
                 },
             }
             if (isMissingKnowledge) {
@@ -300,10 +442,27 @@ export const storeConfigurationToState = (
                 !emailChannelDeactivatedDatetime &&
                 !isMissingKnowledge
 
-            const aiSalesAgentEmailEnabled = getAiSalesAgentEmailEnabledFlag()
             const salesIsDisabled = aiSalesAgentEmailEnabled
                 ? !isChatEnabled && !isEmailEnabled
                 : !isChatEnabled
+
+            let salesEnabled: boolean
+            if (hasAiAgentNewActivationXp) {
+                salesEnabled = isSalesEnabledWithNewActivationXp({
+                    isAiSalesBetaUser,
+                    storeHasSales: scopes.includes(AiAgentScope.Sales),
+                    hasNewAutomatePlan,
+                    aiSalesAgentEmailEnabled,
+                    isChatEnabled,
+                    isEmailEnabled,
+                })
+            } else {
+                salesEnabled =
+                    scopes.includes(AiAgentScope.Sales) &&
+                    (aiSalesAgentEmailEnabled
+                        ? isChatEnabled || isEmailEnabled
+                        : isChatEnabled)
+            }
 
             acc[storeName] = {
                 ...state[storeName],
@@ -311,6 +470,7 @@ export const storeConfigurationToState = (
                 title: storeName,
                 alerts,
                 configuration: storeConfiguration,
+
                 support: {
                     enabled: isChatEnabled || isEmailEnabled,
                     chat: {
@@ -328,11 +488,7 @@ export const storeConfigurationToState = (
                     },
                 },
                 sales: {
-                    enabled:
-                        scopes.includes(AiAgentScope.Sales) &&
-                        (aiSalesAgentEmailEnabled
-                            ? isChatEnabled || isEmailEnabled
-                            : isChatEnabled),
+                    enabled: salesEnabled,
                     isDisabled: salesIsDisabled,
                 },
             }
@@ -355,6 +511,67 @@ export const reducer = (state: State, action: ACTION_TYPE): State => {
         case 'UPDATE_STORE_CONFIGURATION':
             return storeConfigurationToState(state, action)
     }
+}
+
+/**
+ * Convert the state to a list of updated store configuration:
+ * - set default values for AI Sales agent when activating Sales.
+ */
+export const stateToUpdatedStoreConfiguration = (
+    state: State,
+): StoreConfiguration[] => {
+    return Object.values(state).map((store) => {
+        const newStoreConfiguration = cloneDeep(store.configuration)
+
+        const scopes: AiAgentScope[] = []
+        if (store.support.enabled) {
+            scopes.push(AiAgentScope.Support)
+        }
+        if (store.sales.enabled) {
+            scopes.push(AiAgentScope.Sales)
+        }
+        newStoreConfiguration.scopes = scopes
+
+        // Default settings for newly activated sales.
+        if (
+            store.sales.enabled &&
+            !store.configuration.scopes.includes(AiAgentScope.Sales)
+        ) {
+            newStoreConfiguration.salesPersuasionLevel =
+                PersuasionLevel.Educational
+            newStoreConfiguration.salesDiscountStrategyLevel =
+                DiscountStrategy.NoDiscount
+            newStoreConfiguration.salesDiscountMax = null
+        }
+
+        // Do not override emailChannelDeactivatedDatetime email not changed
+        if (
+            !store.support.email.enabled &&
+            store.configuration.emailChannelDeactivatedDatetime === null
+        ) {
+            newStoreConfiguration.emailChannelDeactivatedDatetime =
+                new Date().toISOString()
+        }
+
+        // Do not override chatChannelDeactivatedDatetime chat not changed
+        if (
+            !store.support.chat.enabled &&
+            store.configuration.chatChannelDeactivatedDatetime === null
+        ) {
+            newStoreConfiguration.chatChannelDeactivatedDatetime =
+                new Date().toISOString()
+        }
+
+        if (store.support.email.enabled) {
+            newStoreConfiguration.emailChannelDeactivatedDatetime = null
+        }
+
+        if (store.support.chat.enabled) {
+            newStoreConfiguration.chatChannelDeactivatedDatetime = null
+        }
+
+        return newStoreConfiguration
+    })
 }
 
 export const useStoreActivationReducer = () => {

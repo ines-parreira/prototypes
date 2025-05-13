@@ -1,4 +1,4 @@
-import { StoreActivation } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
+import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { isStoreEligibleForTrial } from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
 
 import { getShopNameFromStoreActivations } from '../getShopNameFromStoreActivations'
