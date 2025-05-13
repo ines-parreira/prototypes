@@ -25,7 +25,7 @@ export default function CreateTicketNavbarButton({
                         icon="add"
                         className={navbarCss.buttonIcon}
                     />
-                    Create Ticket
+                    Create ticket
                 </Button>
             }
         />

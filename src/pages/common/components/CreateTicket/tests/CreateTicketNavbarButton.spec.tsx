@@ -14,6 +14,6 @@ describe('<CreateTicketNavbarButton />', () => {
     it('should render custom trigger in CreateTicketButton', () => {
         const { queryByText } = render(<CreateTicketNavbarButton />)
 
-        expect(queryByText('Create Ticket')).toBeInTheDocument()
+        expect(queryByText('Create ticket')).toBeInTheDocument()
     })
 })

@@ -38,7 +38,7 @@ export function CreateTicketNavbarButtonV2() {
                         icon="add"
                         className={navbarCss.buttonIcon}
                     />
-                    Create Ticket
+                    Create ticket
                 </Navigation.SectionItem>
             </div>
         )
@@ -53,7 +53,7 @@ export function CreateTicketNavbarButtonV2() {
                 className={css.createTicketCTA}
             >
                 <ButtonIconLabel icon="add" className={navbarCss.buttonIcon} />
-                Create Ticket
+                Create ticket
             </Navigation.SectionItem>
             <UncontrolledDropdown
                 target={dropdownTargetRef}
