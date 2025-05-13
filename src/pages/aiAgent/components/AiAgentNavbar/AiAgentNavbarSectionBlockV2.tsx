@@ -141,7 +141,7 @@ export const AiAgentNavbarSectionBlockV2 = ({
 
                 <Navigation.SectionIndicator />
             </Navigation.SectionTrigger>
-            <Navigation.SectionContent>
+            <Navigation.SectionContent className={css.sectionContent}>
                 {onboardingStatus === 'complete' &&
                     navigationItems?.map((item) => (
                         <Navigation.SectionItem

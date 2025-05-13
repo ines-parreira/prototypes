@@ -119,7 +119,7 @@ export const DashboardsNavbarBlockV2 = () => {
                 </Dropdown>
             </div>
 
-            <Navigation.SectionContent>
+            <Navigation.SectionContent className={css.sectionContent}>
                 {dashboards.map(({ name, id, emoji }) => (
                     <Navigation.SectionItem
                         key={id}

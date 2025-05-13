@@ -25,7 +25,7 @@ export const ConvertStatsNavbarV2 = () => {
                 Convert
                 <Navigation.SectionIndicator />
             </Navigation.SectionTrigger>
-            <Navigation.SectionContent>
+            <Navigation.SectionContent className={css.sectionContent}>
                 <ProtectedRoute path={ReportsIDs.CampaignsReportConfig}>
                     <Navigation.SectionItem
                         className={css.navigationSectionItem}

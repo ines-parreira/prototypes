@@ -60,7 +60,7 @@ export function StatsNavbarViewV2() {
                     Live
                     <Navigation.SectionIndicator />
                 </Navigation.SectionTrigger>
-                <Navigation.SectionContent>
+                <Navigation.SectionContent className={css.sectionContent}>
                     <StatsNavSectionItem
                         to={`${STATS_ROUTE_PREFIX}live-overview`}
                     >
@@ -88,7 +88,7 @@ export function StatsNavbarViewV2() {
                     Support Performance
                     <Navigation.SectionIndicator />
                 </Navigation.SectionTrigger>
-                <Navigation.SectionContent>
+                <Navigation.SectionContent className={css.sectionContent}>
                     <StatsNavSectionItem
                         to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_OVERVIEW}`}
                     >
@@ -143,7 +143,7 @@ export function StatsNavbarViewV2() {
                     Ticket Insights
                     <Navigation.SectionIndicator />
                 </Navigation.SectionTrigger>
-                <Navigation.SectionContent>
+                <Navigation.SectionContent className={css.sectionContent}>
                     <StatsNavSectionItem
                         to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.TICKET_INSIGHTS_TICKET_FIELDS}`}
                     >
@@ -175,7 +175,7 @@ export function StatsNavbarViewV2() {
                         Quality Management
                         <Navigation.SectionIndicator />
                     </Navigation.SectionTrigger>
-                    <Navigation.SectionContent>
+                    <Navigation.SectionContent className={css.sectionContent}>
                         <AutoQANavBarLink
                             isAvailable={isAutoQANavLinkAvailable}
                         />
@@ -201,7 +201,7 @@ export function StatsNavbarViewV2() {
                     Voice
                     <Navigation.SectionIndicator />
                 </Navigation.SectionTrigger>
-                <Navigation.SectionContent>
+                <Navigation.SectionContent className={css.sectionContent}>
                     <StatsNavSectionItem
                         to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.VOICE_OVERVIEW}`}
                         className={css.statsLink}

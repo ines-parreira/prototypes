@@ -51,7 +51,7 @@ const NewUI = () => {
             onValueChange={onCategoryChange}
         >
             <Section id="productivity" value={Sections.Productivity}>
-                <Navigation.SectionContent>
+                <Navigation.SectionContent className={css.sectionContent}>
                     <Item to="macros" text="Macros" />
                     <Item
                         to="flows"
@@ -86,7 +86,7 @@ const NewUI = () => {
                 value={Sections.Ticket}
                 requiredRole={AGENT_ROLE}
             >
-                <Navigation.SectionContent>
+                <Navigation.SectionContent className={css.sectionContent}>
                     <Item
                         to={CUSTOM_FIELD_ROUTES[OBJECT_TYPES.TICKET]}
                         text="Ticket Fields"
@@ -121,7 +121,7 @@ const NewUI = () => {
                 value={Sections.TicketManagement}
                 requiredRole={AGENT_ROLE}
             >
-                <Navigation.SectionContent>
+                <Navigation.SectionContent className={css.sectionContent}>
                     <Item to="rules" text="Rules" requiredRole={AGENT_ROLE} />
                     <Item
                         to="ticket-assignment"
@@ -147,7 +147,7 @@ const NewUI = () => {
             </Section>
 
             <Section id="channels" value={Sections.Channels}>
-                <Navigation.SectionContent>
+                <Navigation.SectionContent className={css.sectionContent}>
                     <Item to="help-center" text="Help Center" />
                     <Item
                         to="phone-numbers"
@@ -173,7 +173,7 @@ const NewUI = () => {
             </Section>
 
             <Section id="apps" value={Sections.Apps} requiredRole={ADMIN_ROLE}>
-                <Navigation.SectionContent>
+                <Navigation.SectionContent className={css.sectionContent}>
                     <Item
                         to="integrations/mine"
                         text="Installed apps"
@@ -197,7 +197,7 @@ const NewUI = () => {
                 value={Sections.Account}
                 requiredRole={ADMIN_ROLE}
             >
-                <Navigation.SectionContent>
+                <Navigation.SectionContent className={css.sectionContent}>
                     <Item to="users" text="Users" requiredRole={ADMIN_ROLE} />
                     <Item to="teams" text="Teams" requiredRole={ADMIN_ROLE} />
                     <Item
@@ -218,7 +218,7 @@ const NewUI = () => {
                 value={Sections.Advanced}
                 requiredRole={ADMIN_ROLE}
             >
-                <Navigation.SectionContent>
+                <Navigation.SectionContent className={css.sectionContent}>
                     <Item
                         to="audit"
                         text="Audit logs"
@@ -234,7 +234,7 @@ const NewUI = () => {
             </Section>
 
             <Section id="profile" value={Sections.Profile}>
-                <Navigation.SectionContent>
+                <Navigation.SectionContent className={css.sectionContent}>
                     <Item to="profile" text="Your profile" />
                     <Item to="notifications" text="Notifications" />
                     <Item to="password-2fa" text="Password & 2FA" />

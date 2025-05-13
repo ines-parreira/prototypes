@@ -41,7 +41,7 @@ export function AutomateStatsNavbarV2() {
                 AI Agent
                 <Navigation.SectionIndicator />
             </Navigation.SectionTrigger>
-            <Navigation.SectionContent>
+            <Navigation.SectionContent className={css.sectionContent}>
                 {!hasAutomate ? (
                     <Navigation.SectionItem
                         as={NavLink}
