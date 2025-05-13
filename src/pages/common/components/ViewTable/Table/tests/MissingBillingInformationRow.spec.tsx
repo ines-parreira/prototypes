@@ -6,18 +6,12 @@ import {
     type Stripe,
     type StripeAddressElementChangeEvent,
 } from '@stripe/stripe-js'
-import { act, screen, waitFor } from '@testing-library/react'
-import user from '@testing-library/user-event'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS, Map } from 'immutable'
 
 import { UserRole } from 'config/types/user'
 import client from 'models/api/resources'
-import {
-    payingWithCreditCard,
-    payWithShopify,
-    payWithShopifyButNotActivated,
-} from 'pages/settings/new_billing/fixtures'
 import { PaymentMethodType } from 'state/billing/types'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 import { assumeMock } from 'utils/testing'
@@ -75,15 +69,15 @@ describe('<MissingBillingInformationRow />', () => {
         currentUser: fromJS({
             role: { name: UserRole.Admin },
         }) as Map<any, any>,
-        currentAccount: fromJS({}),
+        currentAccount: fromJS({
+            meta: { hasCreditCard: true, should_pay_with_shopify: false },
+        }) as Map<any, any>,
         billing: fromJS({
             paymentMethod: PaymentMethodType.Stripe,
         }) as Map<any, any>,
     }
 
-    it('should render a row when conditions are met : user is admin, payment method is credit card, some billing information is missing ', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
-
+    it('should render a row when conditions are met', async () => {
         renderWithStoreAndQueryClientProvider(
             <MissingBillingInformationRow />,
             initialState,
@@ -98,9 +92,9 @@ describe('<MissingBillingInformationRow />', () => {
         ).toBeVisible()
     })
 
-    it('should not render a row when the user is not an admin', async () => {
-        const { container } = renderWithStoreAndQueryClientProvider(
-            <MissingBillingInformationRow />,
+    it.each([
+        [
+            'the user is not an admin',
             {
                 ...initialState,
                 currentUser: initialState.currentUser.setIn(
@@ -108,29 +102,19 @@ describe('<MissingBillingInformationRow />', () => {
                     UserRole.Agent,
                 ),
             },
-        )
-
-        expect(container.firstChild).toBe(null)
-    })
-
-    it('should not render a row when the account has no credit card', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payWithShopify)
-
-        const { container } = renderWithStoreAndQueryClientProvider(
-            <MissingBillingInformationRow />,
-            initialState,
-        )
-
-        expect(container.firstChild).toBe(null)
-    })
-
-    it('should not render a row when customer should pay via shopify', async () => {
-        mockedServer
-            .onGet('/billing/state')
-            .reply(200, payWithShopifyButNotActivated)
-
-        const { container } = renderWithStoreAndQueryClientProvider(
-            <MissingBillingInformationRow />,
+        ],
+        [
+            'the account has no credit card',
+            {
+                ...initialState,
+                currentAccount: initialState.currentAccount.setIn(
+                    ['meta', 'hasCreditCard'],
+                    false,
+                ),
+            },
+        ],
+        [
+            'the payment method is shopify',
             {
                 ...initialState,
                 currentAccount: initialState.currentAccount.setIn(
@@ -138,16 +122,9 @@ describe('<MissingBillingInformationRow />', () => {
                     true,
                 ),
             },
-        )
-
-        expect(container.firstChild).toBe(null)
-    })
-
-    it('should not render a row when the billing information is valid', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
-
-        const { container } = renderWithStoreAndQueryClientProvider(
-            <MissingBillingInformationRow />,
+        ],
+        [
+            'the billing information is valid',
             {
                 ...initialState,
                 billing: initialState.billing.setIn(
@@ -155,20 +132,23 @@ describe('<MissingBillingInformationRow />', () => {
                     'NY',
                 ),
             },
+        ],
+    ])('should not render a row when %s', (testName, state) => {
+        const { container } = renderWithStoreAndQueryClientProvider(
+            <MissingBillingInformationRow />,
+            state,
         )
 
         expect(container.firstChild).toBe(null)
     })
 
     it('should open the modal when clicking on update button', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
-
         renderWithStoreAndQueryClientProvider(
             <MissingBillingInformationRow />,
             initialState,
         )
 
-        user.click(await screen.findByText('Update Now'))
+        fireEvent.click(await screen.findByText('Update Now'))
 
         expect(
             await screen.findByText('Missing information - Billing'),
@@ -176,14 +156,12 @@ describe('<MissingBillingInformationRow />', () => {
     })
 
     it('should submit the billing information when submiting the modal form', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
-
         renderWithStoreAndQueryClientProvider(
             <MissingBillingInformationRow />,
             initialState,
         )
 
-        user.click(await screen.findByText('Update Now'))
+        fireEvent.click(await screen.findByText('Update Now'))
 
         expect(
             await screen.findByRole('button', {
@@ -206,7 +184,7 @@ describe('<MissingBillingInformationRow />', () => {
             },
         })
 
-        user.click(
+        fireEvent.click(
             screen.getByRole('button', { name: 'Save Billing Information' }),
         )
 
