@@ -358,14 +358,19 @@ export function getCountryCapabilityLimitationsMessage(
     }
 
     for (const [type, capabilities] of Object.entries(capLimitations)) {
-        if (!capabilities.mms) {
-            limitations.mms.push(type.toLowerCase())
-        }
-        if (!capabilities.sms) {
-            limitations.sms.push(type.toLowerCase())
-        }
-        if (!capabilities.voice) {
-            limitations.voice.push(type.toLowerCase())
+        if (
+            phoneCountryConfig[country].phoneTypeConfig[type as PhoneType] !==
+            undefined
+        ) {
+            if (!capabilities.mms) {
+                limitations.mms.push(type.toLowerCase())
+            }
+            if (!capabilities.sms) {
+                limitations.sms.push(type.toLowerCase())
+            }
+            if (!capabilities.voice) {
+                limitations.voice.push(type.toLowerCase())
+            }
         }
     }
     const formattedLimitations = []

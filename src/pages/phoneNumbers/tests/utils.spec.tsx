@@ -475,20 +475,43 @@ describe('getCountryCapabilityLimitationsMessage', () => {
 
     it('should return a message for a specific country', () => {
         expect(
-            getCountryCapabilityLimitationsMessage(PhoneCountry.CA, {
+            getCountryCapabilityLimitationsMessage(PhoneCountry.ZA, {
                 [PhoneType.Local]: {
                     sms: false,
                     mms: false,
                     voice: false,
                     whatsapp: false,
                 },
-                [PhoneType.Mobile]: {
-                    sms: false,
-                    mms: true,
-                    voice: false,
-                    whatsapp: true,
-                },
                 [PhoneType.National]: {
+                    sms: false,
+                    mms: false,
+                    voice: true,
+                    whatsapp: false,
+                },
+                [PhoneType.Mobile]: {
+                    sms: true,
+                    mms: false,
+                    voice: true,
+                    whatsapp: false,
+                },
+            }),
+        ).toEqual([
+            'Voice is not currently compatible with local numbers from South Africa',
+            'SMS is not currently compatible with local and national numbers from South Africa',
+            'MMS is not currently compatible with local, national and mobile numbers from South Africa',
+        ])
+    })
+
+    it('should only specify the supported by default types for a country', () => {
+        expect(
+            getCountryCapabilityLimitationsMessage(PhoneCountry.CH, {
+                [PhoneType.Local]: {
+                    sms: false,
+                    mms: false,
+                    voice: true,
+                    whatsapp: false,
+                },
+                [PhoneType.Mobile]: {
                     sms: false,
                     mms: false,
                     voice: false,
@@ -496,9 +519,8 @@ describe('getCountryCapabilityLimitationsMessage', () => {
                 },
             }),
         ).toEqual([
-            'Voice is not currently compatible with local, mobile and national numbers from Canada',
-            'SMS is not currently compatible with local, mobile and national numbers from Canada',
-            'MMS is not currently compatible with local and national numbers from Canada',
+            'SMS is not currently compatible with local numbers from Switzerland',
+            'MMS is not currently compatible with local numbers from Switzerland',
         ])
     })
 })
