@@ -2,6 +2,8 @@ import React, { useMemo } from 'react'
 
 import { fromJS, List, Map } from 'immutable'
 
+import { Tag } from '@gorgias/api-types'
+
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 
 type Props = {
@@ -28,8 +30,8 @@ const AddTagsAction = ({
         [args],
     )
 
-    const addTag = (tag: string) => {
-        const newTagList = splitIncomingTags.concat(tag).join(',')
+    const addTag = (tag: Tag) => {
+        const newTagList = splitIncomingTags.concat(tag.name).join(',')
         updateActionArgs(index, fromJS({ tags: newTagList }))
     }
 

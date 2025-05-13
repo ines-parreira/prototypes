@@ -1,12 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ticket actions addTags() 1`] = `
+exports[`ticket actions addTag() 1`] = `
 [
   {
     "args": Immutable.Map {
-      "tags": "refund, billing",
+      "tag": Immutable.Map {
+        "name": "refund",
+      },
     },
-    "type": "addTags",
+    "type": "addTag",
   },
 ]
 `;

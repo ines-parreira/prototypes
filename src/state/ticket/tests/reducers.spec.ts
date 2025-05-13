@@ -208,45 +208,52 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('should handle ADD_TICKET_TAGS', () => {
+    it('should handle ADD_TICKET_TAG', () => {
+        const tag = { id: 1, name: 'billing', decoration: {} }
+
         expect(
             reducer(initialState, {
-                type: types.ADD_TICKET_TAGS,
-                args: fromJS({
-                    tags: 'billing, refund',
-                }),
-            }).toJS(),
-        ).toMatchSnapshot()
+                type: types.ADD_TICKET_TAG,
+                args: fromJS({ tag }),
+            }).get('tags'),
+        ).toEqualImmutable(fromJS([tag]))
+
+        expect(
+            reducer(initialState, {
+                type: types.ADD_TICKET_TAG,
+                args: fromJS({ tag: { id: 8 } }),
+            }).get('tags'),
+        ).toEqualImmutable(fromJS([{ id: 8, name: '', decoration: undefined }]))
 
         // already existing
         expect(
             reducer(
                 initialState.mergeDeep({
-                    tags: [{ name: 'billing' }],
+                    tags: [tag],
                 }),
                 {
-                    type: types.ADD_TICKET_TAGS,
+                    type: types.ADD_TICKET_TAG,
                     args: fromJS({
-                        tags: 'billing, refund',
+                        tag,
                     }),
                 },
-            ).toJS(),
-        ).toMatchSnapshot()
+            ).get('tags'),
+        ).toEqualImmutable(fromJS([tag]))
 
         // empty tags
         expect(
             reducer(
                 initialState.mergeDeep({
-                    tags: [{ name: 'billing' }],
+                    tags: [tag],
                 }),
                 {
-                    type: types.ADD_TICKET_TAGS,
+                    type: types.ADD_TICKET_TAG,
                     args: fromJS({
-                        tags: '',
+                        tag: '',
                     }),
                 },
-            ).toJS(),
-        ).toMatchSnapshot()
+            ).get('tags'),
+        ).toEqualImmutable(fromJS([tag]))
     })
 
     it('should handle REMOVE_TICKET_TAG', () => {

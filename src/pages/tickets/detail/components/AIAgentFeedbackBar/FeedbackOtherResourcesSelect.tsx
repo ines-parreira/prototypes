@@ -6,6 +6,7 @@ import React, {
     useState,
 } from 'react'
 
+import { Tag } from '@gorgias/api-types'
 import { Badge, BadgeIcon, Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { SegmentEvent } from 'common/segment'
@@ -17,7 +18,7 @@ import {
 } from 'models/aiAgentFeedback/types'
 import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
 import { useAIAgentGetOtherResources } from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'
-import { addTags, removeTag } from 'state/ticket/actions'
+import { addTag, removeTag } from 'state/ticket/actions'
 
 import InfoIconWithTooltip from '../../../common/components/InfoIconWithTooltip'
 import { RESOURCE_ICONS, RESOURCE_LABELS } from './constants'
@@ -196,7 +197,7 @@ const FeedbackOtherResourcesSelect = ({
     const handleSubmitNoRelevantResources = useCallback(
         async (newValues: string[]) => {
             if (newValues.includes(NO_RELEVANT_RESOURCES_LABEL)) {
-                await dispatch(addTags(AI_NO_RESOURCES_TAG))
+                await dispatch(addTag({ name: AI_NO_RESOURCES_TAG } as Tag))
             }
         },
         [dispatch],

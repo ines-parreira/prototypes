@@ -60,7 +60,7 @@ const store = mockStore({
     },
 } as RootState)
 jest.mock('state/ticket/actions', () => ({
-    addTags: jest.fn(),
+    addTag: jest.fn(),
     removeTag: jest.fn(),
 }))
 store.dispatch = jest.fn()

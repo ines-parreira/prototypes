@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import { List, Map } from 'immutable'
 import _uniqueId from 'lodash/uniqueId'
 
+import { Tag } from '@gorgias/api-types'
 import { Badge, BadgeIcon, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { getWrappedElementCount } from 'common/utils'
@@ -18,7 +19,7 @@ import TagDropdown from './TagDropdown'
 import css from './TicketTags.less'
 
 type Props = {
-    addTag?: (tag: string) => void
+    addTag?: (tag: Tag) => void
     className?: string
     isDisabled?: boolean
     removeTag?: (tag: string) => void
@@ -88,7 +89,7 @@ const TicketTags = ({
                 >
                     {!isDisabled && (
                         <TagDropdown
-                            addTag={({ name }) => addTag?.(name!)}
+                            addTag={(tag) => addTag?.(tag as Tag)}
                             shouldBindKeys={shouldBindKeys}
                             ticketTags={ticketTags}
                             transparent={transparent}

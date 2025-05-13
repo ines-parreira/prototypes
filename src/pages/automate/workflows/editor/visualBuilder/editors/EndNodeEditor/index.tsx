@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 
 import Immutable from 'immutable'
 
+import { Tag } from '@gorgias/api-types'
 import { Label } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -28,7 +29,7 @@ export default function EndNodeEditor({ nodeInEdition }: EndNodeEditorProps) {
     const users = useAppSelector(getHumanAgents)
     const teams = useAppSelector(getTeams)
     const { dispatch, visualBuilderGraph } = useVisualBuilderContext()
-    const handleAddTag = (tag: string) => {
+    const handleAddTag = (tag: Tag) => {
         const {
             action,
             ticketTags,
@@ -42,7 +43,7 @@ export default function EndNodeEditor({ nodeInEdition }: EndNodeEditorProps) {
                 action,
                 ticketAssigneeUserId,
                 ticketAssigneeTeamId,
-                ticketTags: [...(ticketTags ?? []), tag],
+                ticketTags: [...(ticketTags ?? []), tag.name],
             },
         })
     }

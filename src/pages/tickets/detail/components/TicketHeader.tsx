@@ -18,7 +18,7 @@ import { getTimezone } from 'state/currentUser/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import {
-    addTags,
+    addTag,
     clearTicket,
     displayAuditLogEvents,
     goToNextTicket,
@@ -350,7 +350,7 @@ const TicketHeader = ({
                     <TicketTags
                         className={css.tags}
                         ticketTags={ticket.get('tags')}
-                        addTag={(tag) => dispatch(addTags(tag))}
+                        addTag={(tag) => dispatch(addTag(tag))}
                         removeTag={(tag) => dispatch(removeTag(tag))}
                         transparent
                         shouldBindKeys

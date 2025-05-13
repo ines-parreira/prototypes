@@ -3,6 +3,7 @@ import { HttpMethod } from 'models/api/types'
 import type { Team } from 'models/team/types'
 import { ApplyExternalTemplateActionArguments } from 'models/whatsAppMessageTemplates/types'
 
+// partial sync with g/utils/action/constants.py
 export enum MacroActionName {
     AddAttachments = 'addAttachments',
     AddInternalNote = 'addInternalNote',

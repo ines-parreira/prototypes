@@ -116,7 +116,7 @@ const state: Partial<StoreState> = {
 }
 
 jest.mock('state/ticket/actions', () => ({
-    addTags: jest.fn(),
+    addTag: jest.fn(),
     removeTag: jest.fn(),
 }))
 let store = mockStore(state)

@@ -23,7 +23,7 @@ const mockResetCookies = jest.fn()
 const mockedUseCookies = jest.mocked(useCookies)
 const logEventMock = assumeMock(logEventWithSampling)
 jest.mock('state/ticket/actions', () => ({
-    addTags: jest.fn(),
+    addTag: jest.fn(),
     removeTag: jest.fn(),
 }))
 jest.mock('react-cookie')

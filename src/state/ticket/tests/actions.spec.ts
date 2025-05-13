@@ -6,7 +6,7 @@ import { dismissNotification } from 'reapop'
 import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { ListSatisfactionSurveys200 } from '@gorgias/api-types'
+import { ListSatisfactionSurveys200, Tag } from '@gorgias/api-types'
 
 import { agents } from 'fixtures/agents'
 import { teams } from 'fixtures/teams'
@@ -310,10 +310,10 @@ describe('ticket actions', () => {
         })
     })
 
-    it('addTags()', () => {
+    it('addTag()', () => {
         mockServer.onPut(endpointMatchers.anyTicket).reply(202, { data: {} })
         return store
-            .dispatch(actions.addTags('refund, billing'))
+            .dispatch(actions.addTag({ name: 'refund' } as Tag))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 

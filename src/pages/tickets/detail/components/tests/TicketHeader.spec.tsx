@@ -45,7 +45,7 @@ jest.mock('state/notifications/actions', () => ({
 }))
 
 jest.mock('state/ticket/actions', () => ({
-    addTags: jest.fn(),
+    addTag: jest.fn(),
     clearTicket: jest.fn(),
     displayAuditLogEvents: jest.fn(),
     goToNextTicket: jest.fn(async (_ticketId, promise: Promise<any>) => {

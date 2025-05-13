@@ -5,6 +5,8 @@ import { fromJS, List } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import { Tag } from '@gorgias/api-types'
+
 import useElementSize from 'hooks/useElementSize'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 import { RootState, StoreDispatch } from 'state/types'
@@ -80,10 +82,10 @@ describe('<AddTagsAction />', () => {
     })
 
     it('should add tag', () => {
-        const newTag = 'new tag'
+        const newTag = { name: 'new tag' } as Tag
 
         mockedTicketTags.mockImplementation(
-            ({ addTag }: { addTag?: (tag: string) => void }) => (
+            ({ addTag }: { addTag?: (tag: Tag) => void }) => (
                 <div onClick={() => addTag?.(newTag)}>TicketTagsMock</div>
             ),
         )
@@ -98,7 +100,7 @@ describe('<AddTagsAction />', () => {
 
         expect(props.updateActionArgs).toHaveBeenCalledWith(
             props.index,
-            fromJS({ tags: [tag1, tag2, newTag].join(',') }),
+            fromJS({ tags: [tag1, tag2, newTag.name].join(',') }),
         )
     })
 

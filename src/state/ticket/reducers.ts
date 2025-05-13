@@ -182,20 +182,22 @@ export default function reducer(
             return initialState
         }
 
-        case types.ADD_TICKET_TAGS: {
-            let tags: string | string[] = action.args?.get('tags') as string
-            let ticketTags = state.get('tags', fromJS([])) as List<any>
-            const existingTagNames = ticketTags.map(
-                (x: Map<any, any>) => x.get('name') as string,
-            )
+        case types.ADD_TICKET_TAG: {
+            const tag: Map<any, any> = action.args?.get('tag')
+            let ticketTags = state.get('tags', fromJS([])) as List<
+                Map<string, string>
+            >
+            const existingTagNames = ticketTags.map((x) => x?.get('name'))
 
-            tags = tags ? tags.split(',').map((t) => t.trim()) : []
-
-            tags.forEach((newTag) => {
-                if (!existingTagNames.includes(newTag)) {
-                    ticketTags = ticketTags.push(fromJS({ name: newTag }))
-                }
-            })
+            if (tag && !existingTagNames.includes(tag.get('name'))) {
+                ticketTags = ticketTags.push(
+                    fromJS({
+                        id: tag.get('id'),
+                        name: (tag.get('name') as string)?.trim() ?? '',
+                        decoration: tag.get('decoration'),
+                    }),
+                )
+            }
 
             return state.set('tags', ticketTags)
         }

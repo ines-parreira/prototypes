@@ -7,7 +7,7 @@ import { compressToEncodedURIComponent } from 'lz-string'
 import { Moment } from 'moment'
 import { dismissNotification } from 'reapop'
 
-import { Macro as MacroModel } from '@gorgias/api-queries'
+import { Macro as MacroModel, Tag } from '@gorgias/api-types'
 
 import {
     TicketChannel,
@@ -234,15 +234,15 @@ export const ticketPartialUpdate =
             )
     }
 
-export const addTags =
-    (tags: string) =>
+export const addTag =
+    (tag: Tag) =>
     (
         dispatch: StoreDispatch,
         getState: () => RootState,
     ): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
-            type: types.ADD_TICKET_TAGS,
-            args: fromJS({ tags }),
+            type: types.ADD_TICKET_TAG,
+            args: fromJS({ tag }),
         })
 
         return dispatch(
