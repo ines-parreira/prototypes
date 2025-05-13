@@ -75,32 +75,32 @@ src/state/integrations/actions/gorgias-chat.actions.ts @gorgias/conv-ai-actions
 src/state/integrations/tests/gorgias-chat.actions.spec.ts @gorgias/conv-ai-actions
 src/rest_api/gorgias_chat_protected_api @gorgias/conv-ai-actions
 
-# Support AgentXP scope @gorgias/support-agent-xp
+# Support AgentXP scope @gorgias/support-agent-xp-frontend
 
-src/pages/common/editor @gorgias/support-agent-xp
-src/pages/tickets @gorgias/support-agent-xp
-src/pages/settings/notifications @gorgias/support-agent-xp
-src/services/browserNotification.ts @gorgias/support-agent-xp
-src/services/NotificationSounds.ts @gorgias/support-agent-xp
-src/services/localForageManager @gorgias/support-agent-xp
-src/services/shortcutManager @gorgias/support-agent-xp
-src/pages/common/components/Spotlight @gorgias/support-agent-xp
-src/pages/settings/teams @gorgias/support-agent-xp
-src/pages/settings/tags @gorgias/support-agent-xp
-src/state/ticket @gorgias/support-agent-xp
-src/state/ui/editor @gorgias/support-agent-xp
-src/state/ui/ticketNavbar @gorgias/support-agent-xp
-src/state/ui/views @gorgias/support-agent-xp
-src/state/newMessage @gorgias/support-agent-xp
-src/pages/settings/macros @gorgias/support-agent-xp
-src/state/entities/macros @gorgias/support-agent-xp
-src/state/macro @gorgias/support-agent-xp
-src/pages/tickets/detail/components/ReplyArea/MacrosQuickReply @gorgias/support-agent-xp
-src/pages/settings/rules @gorgias/support-agent-xp
-src/state/entities/ruleRecipes @gorgias/support-agent-xp
-src/state/entities/rules @gorgias/support-agent-xp
-src/state/rules @gorgias/support-agent-xp
-src/pages/tickets/detail/components/RuleSuggestion @gorgias/support-agent-xp
+src/pages/common/editor @gorgias/support-agent-xp-frontend
+src/pages/tickets @gorgias/support-agent-xp-frontend
+src/pages/settings/notifications @gorgias/support-agent-xp-frontend
+src/services/browserNotification.ts @gorgias/support-agent-xp-frontend
+src/services/NotificationSounds.ts @gorgias/support-agent-xp-frontend
+src/services/localForageManager @gorgias/support-agent-xp-frontend
+src/services/shortcutManager @gorgias/support-agent-xp-frontend
+src/pages/common/components/Spotlight @gorgias/support-agent-xp-frontend
+src/pages/settings/teams @gorgias/support-agent-xp-frontend
+src/pages/settings/tags @gorgias/support-agent-xp-frontend
+src/state/ticket @gorgias/support-agent-xp-frontend
+src/state/ui/editor @gorgias/support-agent-xp-frontend
+src/state/ui/ticketNavbar @gorgias/support-agent-xp-frontend
+src/state/ui/views @gorgias/support-agent-xp-frontend
+src/state/newMessage @gorgias/support-agent-xp-frontend
+src/pages/settings/macros @gorgias/support-agent-xp-frontend
+src/state/entities/macros @gorgias/support-agent-xp-frontend
+src/state/macro @gorgias/support-agent-xp-frontend
+src/pages/tickets/detail/components/ReplyArea/MacrosQuickReply @gorgias/support-agent-xp-frontend
+src/pages/settings/rules @gorgias/support-agent-xp-frontend
+src/state/entities/ruleRecipes @gorgias/support-agent-xp-frontend
+src/state/entities/rules @gorgias/support-agent-xp-frontend
+src/state/rules @gorgias/support-agent-xp-frontend
+src/pages/tickets/detail/components/RuleSuggestion @gorgias/support-agent-xp-frontend
 
 # Phone scope @gorgias/support-phone
 
