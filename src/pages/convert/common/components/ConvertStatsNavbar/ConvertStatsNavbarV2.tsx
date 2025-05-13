@@ -10,6 +10,8 @@ import { StatsNavbarViewSections } from 'pages/stats/common/components/StatsNavb
 import { ReportsIDs } from 'pages/stats/dashboards/constants'
 import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
 
+import css from './ConvertStatsNavbarV2.less'
+
 export const ConvertStatsNavbarV2 = () => {
     const [isSubscriptionModalOpen, setISubscriptionModalOpen] = useState(false)
 
@@ -26,6 +28,7 @@ export const ConvertStatsNavbarV2 = () => {
             <Navigation.SectionContent>
                 <ProtectedRoute path={ReportsIDs.CampaignsReportConfig}>
                     <Navigation.SectionItem
+                        className={css.navigationSectionItem}
                         as={NavLink}
                         to="/app/stats/convert/campaigns"
                         displayType="indent"
