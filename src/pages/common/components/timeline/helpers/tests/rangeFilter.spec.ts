@@ -1,12 +1,12 @@
-import { TicketSummary } from '@gorgias/api-queries'
+import { TicketCompact } from '@gorgias/api-queries'
 
 import { filterTicketsByRange, getRangeLabel } from '../rangeFilter'
 
 describe('filterTicketsByRange', () => {
-    const tickets: TicketSummary[] = [
-        { created_datetime: '2023-01-01T00:00:00Z' } as TicketSummary,
-        { created_datetime: '2023-06-01T00:00:00Z' } as TicketSummary,
-        { created_datetime: '2023-12-31T23:59:59Z' } as TicketSummary,
+    const tickets: TicketCompact[] = [
+        { created_datetime: '2023-01-01T00:00:00Z' } as TicketCompact,
+        { created_datetime: '2023-06-01T00:00:00Z' } as TicketCompact,
+        { created_datetime: '2023-12-31T23:59:59Z' } as TicketCompact,
     ]
 
     it('should filter tickets within the specified range', () => {

@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import { TicketSummary } from '@gorgias/api-queries'
+import { TicketCompact } from '@gorgias/api-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 
@@ -8,7 +8,7 @@ import { STATUS_FILTERS } from '../constants'
 import { filterTicketsByStatus } from '../helpers/statusFilter'
 import { FilterKey } from '../types'
 
-export function useStatusFilter(tickets: TicketSummary[]) {
+export function useStatusFilter(tickets: TicketCompact[]) {
     const [selectedStatus, setSelectedStatus] = useState(
         STATUS_FILTERS.map((status) => status.value),
     )

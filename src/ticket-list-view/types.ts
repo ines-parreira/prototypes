@@ -10,7 +10,7 @@ export type TicketPartial = {
     updated_datetime: number
 }
 
-export type TicketSummary = Pick<
+export type TicketCompact = Pick<
     Ticket,
     | 'id'
     | 'channel'

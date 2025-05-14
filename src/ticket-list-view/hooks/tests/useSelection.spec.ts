@@ -2,7 +2,7 @@ import { act } from '@testing-library/react-hooks'
 
 import { renderHook } from 'utils/testing/renderHook'
 
-import { TicketSummary } from '../../types'
+import { TicketCompact } from '../../types'
 import useSelection from '../useSelection'
 
 describe('useSelection', () => {
@@ -17,7 +17,7 @@ describe('useSelection', () => {
         { id: 8 },
         { id: 9 },
         { id: 10 },
-    ] as TicketSummary[]
+    ] as TicketCompact[]
 
     it('should return a map of selected tickets and a function to select tickets', () => {
         const { result } = renderHook(() => useSelection(dummyTickets))

@@ -1,4 +1,4 @@
-import { TicketSummary } from '@gorgias/api-queries'
+import { TicketCompact } from '@gorgias/api-queries'
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import Modal from 'pages/common/components/modal/Modal'
@@ -9,7 +9,7 @@ import { TicketDetail } from 'tickets/ticket-detail'
 import css from './TicketModal.less'
 
 type Props = {
-    summary?: TicketSummary
+    summary?: TicketCompact
     ticketId: number
     onClose: () => void
     onNext?: () => void

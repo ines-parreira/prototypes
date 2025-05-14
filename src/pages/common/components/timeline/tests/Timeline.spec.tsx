@@ -1,6 +1,6 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
 
-import { ObjectType, TicketSummary } from '@gorgias/api-queries'
+import { ObjectType, TicketCompact } from '@gorgias/api-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
@@ -61,18 +61,18 @@ describe('<Timeline />', () => {
         created_datetime: '2024-01-02T03:04:05.123456+00:00',
         status: 'open',
         channel: 'email',
-    } as TicketSummary
+    } as TicketCompact
     const ticket2 = {
         id: 2,
         status: 'closed',
         created_datetime: '2023-01-02T03:04:05.123456+00:00',
-    } as TicketSummary
+    } as TicketCompact
     const ticket3 = {
         id: 3,
         created_datetime: '2022-01-02T03:04:05.123456+00:00',
         status: 'closed',
         channel: 'email',
-    } as TicketSummary
+    } as TicketCompact
     const defaultTimelineReturnValue = {
         isLoading: false,
         hasTriedLoading: true,

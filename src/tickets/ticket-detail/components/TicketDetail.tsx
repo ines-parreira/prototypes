@@ -1,4 +1,4 @@
-import { TicketSummary } from '@gorgias/api-queries'
+import { TicketCompact } from '@gorgias/api-queries'
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { useTicket } from '../hooks/useTicket'
@@ -8,7 +8,7 @@ import css from './TicketDetail.less'
 
 type Props = {
     readOnly?: boolean
-    summary?: TicketSummary
+    summary?: TicketCompact
     ticketId: number
     onClose?: () => void
 }

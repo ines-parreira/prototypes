@@ -1,4 +1,4 @@
-import type { Ticket, TicketSummary } from '@gorgias/api-queries'
+import type { Ticket, TicketCompact } from '@gorgias/api-queries'
 import { IconButton } from '@gorgias/merchant-ui-kit'
 
 import { TicketStatus } from 'business/types/ticket'
@@ -8,7 +8,7 @@ import { StatusLabel } from 'pages/common/utils/labels'
 import css from './TicketHeader.less'
 
 type Props = {
-    ticket: Ticket | TicketSummary
+    ticket: Ticket | TicketCompact
     onClose?: () => void
 }
 

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { TicketSummary } from '@gorgias/api-queries'
+import { TicketCompact } from '@gorgias/api-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 
@@ -8,7 +8,7 @@ import { DEFAULT_SORT_OPTION } from '../constants'
 import { sortTickets } from '../helpers/sortTickets'
 import { SortOption } from '../types'
 
-export function useSort(tickets: TicketSummary[]) {
+export function useSort(tickets: TicketCompact[]) {
     const [sortOption, setSortOption] =
         useState<SortOption>(DEFAULT_SORT_OPTION)
 

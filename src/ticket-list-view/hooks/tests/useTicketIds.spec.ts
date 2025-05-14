@@ -1,6 +1,6 @@
 import { renderHook } from 'utils/testing/renderHook'
 
-import { TicketSummary } from '../../types'
+import { TicketCompact } from '../../types'
 import useTicketIds from '../useTicketIds'
 
 describe('useTicketIds', () => {
@@ -9,7 +9,7 @@ describe('useTicketIds', () => {
             useTicketIds([
                 {
                     id: 123,
-                } as TicketSummary,
+                } as TicketCompact,
             ]),
         )
 

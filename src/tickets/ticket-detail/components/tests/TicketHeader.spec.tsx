@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import type { TicketSummary } from '@gorgias/api-queries'
+import type { TicketCompact } from '@gorgias/api-queries'
 
 import { TicketStatus } from 'business/types/ticket'
 
@@ -13,7 +13,7 @@ describe('TicketHeader', () => {
         channel: 'email',
         status: TicketStatus.Closed,
         subject: 'Ticket Subject',
-    } as TicketSummary
+    } as TicketCompact
 
     it('should render the ticket metadata', () => {
         render(<TicketHeader ticket={ticket} />)

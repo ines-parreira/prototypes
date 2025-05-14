@@ -1,4 +1,4 @@
-import { TicketSummary } from '@gorgias/api-queries'
+import { TicketCompact } from '@gorgias/api-queries'
 
 import { STATUS_FILTERS } from '../constants'
 import { FilterKey } from '../types'
@@ -17,9 +17,9 @@ export function getOptionLabels(selectedStatus: FilterKey[]): string[] {
 }
 
 export function filterTicketsByStatus(
-    tickets: TicketSummary[],
+    tickets: TicketCompact[],
     selectedStatus: FilterKey[],
-): TicketSummary[] {
+): TicketCompact[] {
     const isAllSelected = selectedStatus.length === STATUS_FILTERS.length
     if (isAllSelected) return tickets
 

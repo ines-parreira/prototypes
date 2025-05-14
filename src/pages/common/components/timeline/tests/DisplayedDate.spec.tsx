@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import { TicketSummary } from '@gorgias/api-types'
+import { TicketCompact } from '@gorgias/api-types'
 
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
@@ -16,7 +16,7 @@ describe('DisplayedDate', () => {
         id: 1,
         created_datetime: '2021-01-01T00:00:00Z',
         last_message_datetime: '2021-01-02T00:00:00Z',
-    } as TicketSummary
+    } as TicketCompact
 
     it('should render label and date', () => {
         const sortOption: SortOption = {

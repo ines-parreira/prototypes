@@ -34,7 +34,7 @@ import useScrollActiveTicketIntoView from '../hooks/useScrollActiveTicketIntoVie
 import useSelection from '../hooks/useSelection'
 import useSortOrder, { SortOrder } from '../hooks/useSortOrder'
 import useTickets from '../hooks/useTickets'
-import { TicketSummary } from '../types'
+import { TicketCompact } from '../types'
 import BulkActions from './bulk-actions/BulkActions'
 import { Action } from './bulk-actions/types'
 import InvalidFiltersAction from './InvalidFiltersAction'
@@ -126,7 +126,7 @@ export default function TicketListView({
     }, [dispatch, view])
 
     const getItemContent = useCallback(
-        (_index: number, ticket: TicketSummary) => (
+        (_index: number, ticket: TicketCompact) => (
             <Ticket
                 isActive={ticket.id === activeTicketId}
                 ticket={ticket}

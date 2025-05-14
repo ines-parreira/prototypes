@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-import { TicketSummary } from '@gorgias/api-types'
+import { TicketCompact } from '@gorgias/api-types'
 
 import { KeysMatching } from 'types'
 
@@ -23,14 +23,14 @@ export const STATUS_FILTERS: {
     { value: 'snooze', label: 'Snoozed' },
 ]
 
-export const FALLBACK_SORT_KEY: KeysMatching<TicketSummary, string> =
+export const FALLBACK_SORT_KEY: KeysMatching<TicketCompact, string> =
     'created_datetime'
 
 export const SORTABLE_KEYS = [
     'last_message_datetime',
     'last_received_message_datetime',
     'created_datetime',
-] satisfies Array<KeysMatching<TicketSummary, string | null>>
+] satisfies Array<KeysMatching<TicketCompact, string | null>>
 
 export const SORTABLE_KEY_TO_LABEL = {
     last_message_datetime: 'Last message' as const,

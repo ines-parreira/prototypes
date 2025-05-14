@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 import { useFlag } from 'core/flags'
 import { Customer } from 'models/customer/types'
 import useIsTicketViewed from 'ticket-list-view/hooks/useIsTicketViewed'
-import { TicketSummary } from 'ticket-list-view/types'
+import { TicketCompact } from 'ticket-list-view/types'
 import { assumeMock } from 'utils/testing'
 
 import Ticket from '../Ticket'
@@ -29,7 +29,7 @@ describe('Ticket', () => {
         last_message_datetime: '',
         subject: 'Subject',
         updated_datetime: '',
-    } as TicketSummary
+    } as TicketCompact
 
     const defaultProps = {
         isActive: false,

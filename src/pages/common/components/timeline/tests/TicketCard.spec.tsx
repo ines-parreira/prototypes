@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import { CustomField, TicketSummary } from '@gorgias/api-queries'
+import { CustomField, TicketCompact } from '@gorgias/api-queries'
 import { TicketStatus } from '@gorgias/api-types'
 
 import { useFlag } from 'core/flags'
@@ -34,7 +34,7 @@ const ticket = {
     assignee_user: { name: 'Agent Name' },
     assignee_team: { name: 'Team Name' },
     messages_count: 1,
-} as TicketSummary
+} as TicketCompact
 
 const defaultProps = {
     ticket,

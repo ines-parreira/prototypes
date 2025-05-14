@@ -1,13 +1,13 @@
 import { useState } from 'react'
 
-import { TicketSummary } from '@gorgias/api-queries'
+import { TicketCompact } from '@gorgias/api-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 
 import { filterTicketsByRange } from '../helpers/rangeFilter'
 import { Range } from '../types'
 
-export function useRangeFilter(tickets: TicketSummary[]) {
+export function useRangeFilter(tickets: TicketCompact[]) {
     const [rangeFilter, setRangeFilter] = useState<Range>({
         start: null,
         end: null,

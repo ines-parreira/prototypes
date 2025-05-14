@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 
-import { TicketSummary } from '../types'
+import { TicketCompact } from '../types'
 
-export default function useSelection(tickets: TicketSummary[]) {
+export default function useSelection(tickets: TicketCompact[]) {
     const [hasSelectedAll, setHasSelectedAll] = useState(false)
     const [selectedTickets, setSelectedTickets] = useState<
         Record<number, boolean>

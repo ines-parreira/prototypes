@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 import cn from 'classnames'
 
-import { CustomField, TicketSummary } from '@gorgias/api-queries'
+import { CustomField, TicketCompact } from '@gorgias/api-queries'
 import { TicketStatus } from '@gorgias/api-types'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -17,7 +17,7 @@ import css from './TicketCard.less'
 
 type Props = {
     className?: string
-    ticket: TicketSummary
+    ticket: TicketCompact
     displayedDate: ReactNode
     isHighlighted?: boolean
     customFieldDefinitions?: CustomField[]

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import type { Ticket, TicketSummary } from '@gorgias/api-queries'
+import type { Ticket, TicketCompact } from '@gorgias/api-queries'
 
 import { assumeMock } from 'utils/testing'
 
@@ -30,7 +30,7 @@ describe('TicketDetail', () => {
     })
 
     it('should render the header if a summary is given even if the ticket is loading', () => {
-        const summary = { id: 1 } as TicketSummary
+        const summary = { id: 1 } as TicketCompact
         render(<TicketDetail summary={summary} ticketId={1} />)
         expect(screen.getByText('TicketHeader')).toBeInTheDocument()
         expect(screen.getByText('LoadingSpinner')).toBeInTheDocument()

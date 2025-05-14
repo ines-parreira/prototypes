@@ -1,6 +1,6 @@
 import { fromJS, List } from 'immutable'
 
-import { TicketSummary } from '@gorgias/api-types'
+import { TicketCompact } from '@gorgias/api-types'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { getTicketState } from 'state/ticket/selectors'
@@ -20,8 +20,8 @@ const getTicketStateMock = assumeMock(getTicketState)
 const logEventMock = assumeMock(logEvent)
 
 describe('useTrackTimelineToggle', () => {
-    const dummyTicket1 = { id: 1 } as TicketSummary
-    const dummyTicket2 = { id: 2 } as TicketSummary
+    const dummyTicket1 = { id: 1 } as TicketCompact
+    const dummyTicket2 = { id: 2 } as TicketCompact
     const mockTicket = fromJS({
         messages: List([1, 2, 3]),
         channel: 'email',

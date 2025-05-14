@@ -2,14 +2,14 @@ import { MutableRefObject } from 'react'
 
 import { VirtuosoHandle } from 'react-virtuoso'
 
-import { TicketSummary } from 'ticket-list-view/types'
+import { TicketCompact } from 'ticket-list-view/types'
 import { renderHook } from 'utils/testing/renderHook'
 
 import useScrollActiveTicketIntoView from '../useScrollActiveTicketIntoView'
 
 type HookParams = {
     ticketId: number | undefined
-    tickets: TicketSummary[]
+    tickets: TicketCompact[]
     ticketIds: MutableRefObject<number[]>
     virtuosoRef: MutableRefObject<VirtuosoHandle | null>
 }
@@ -19,7 +19,7 @@ describe('useScrollActiveTicketIntoView', () => {
         {
             id: mockTicketId,
         },
-    ] as TicketSummary[]
+    ] as TicketCompact[]
     const mockTicketIds = { current: [mockTicketId] }
     const mockScrollIntoView = jest.fn()
     const mockVirtuosoRef = {

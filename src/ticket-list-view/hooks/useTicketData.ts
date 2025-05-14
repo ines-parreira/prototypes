@@ -4,7 +4,7 @@ import { QueryKey, useQueryClient } from '@tanstack/react-query'
 
 import { fetchTicketsByTicketIds } from 'models/ticket/resources'
 
-import { TicketSummary } from '../types'
+import { TicketCompact } from '../types'
 
 export default function useTicketData(
     visibleStaleTicketIds: number[],
@@ -12,7 +12,7 @@ export default function useTicketData(
     ticketId?: number,
 ) {
     const queryClient = useQueryClient()
-    const [data, setData] = useState<Record<number, TicketSummary>>({})
+    const [data, setData] = useState<Record<number, TicketCompact>>({})
 
     const queryKey = useMemo(
         (): QueryKey | undefined =>

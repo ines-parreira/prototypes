@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react'
 
-import { TicketSummary } from '../types'
+import { TicketCompact } from '../types'
 
-export default function useTicketIds(tickets: TicketSummary[]) {
+export default function useTicketIds(tickets: TicketCompact[]) {
     const ticketIds = useRef<number[]>([])
 
     useEffect(() => {

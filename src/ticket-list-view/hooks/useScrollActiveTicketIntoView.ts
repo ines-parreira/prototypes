@@ -5,11 +5,11 @@ import { VirtuosoHandle } from 'react-virtuoso'
 import usePrevious from 'hooks/usePrevious'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 
-import { TicketSummary } from '../types'
+import { TicketCompact } from '../types'
 
 export default function useScrollActiveTicketIntoView(
     activeTicketId: number | undefined,
-    tickets: TicketSummary[],
+    tickets: TicketCompact[],
     ticketIds: MutableRefObject<number[]>,
     virtuosoRef: MutableRefObject<VirtuosoHandle | null>,
 ) {

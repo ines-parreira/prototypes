@@ -4,8 +4,8 @@ import cn from 'classnames'
 
 import {
     CustomField,
-    TicketSummary,
-    TicketSummaryCustomFieldsAnyOf,
+    TicketCompact,
+    TicketCompactCustomFieldsAnyOf,
 } from '@gorgias/api-queries'
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
@@ -20,7 +20,7 @@ import css from './TicketFields.less'
 
 type TicketFieldsProps = {
     definitions?: CustomField[]
-    fieldValues: TicketSummary['custom_fields']
+    fieldValues: TicketCompact['custom_fields']
     className?: string
     isLoading?: boolean
 }
@@ -105,7 +105,7 @@ type ShowMoreProps = {
     count: number
     remainingFieldIds: string[]
     definitions: CustomField[]
-    fieldValues: TicketSummaryCustomFieldsAnyOf
+    fieldValues: TicketCompactCustomFieldsAnyOf
 }
 
 function ShowMore({

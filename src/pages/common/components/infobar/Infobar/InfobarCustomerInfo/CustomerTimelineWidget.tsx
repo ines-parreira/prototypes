@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 
-import { TicketSummary } from '@gorgias/api-queries'
+import { TicketCompact } from '@gorgias/api-queries'
 import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -93,7 +93,7 @@ export function CustomerTimelineWidget({ isEditing, customerId }: Props) {
     )
 }
 
-function getTicketsCount(tickets: TicketSummary[]) {
+function getTicketsCount(tickets: TicketCompact[]) {
     return {
         openTicketCount: tickets.filter((ticket) => ticket.status !== 'closed')
             .length,
@@ -107,7 +107,7 @@ function getTicketsCount(tickets: TicketSummary[]) {
 }
 
 function showButtonAsPrimary(
-    tickets: TicketSummary[],
+    tickets: TicketCompact[],
     activeTicketId: string | undefined,
 ) {
     return tickets.some(

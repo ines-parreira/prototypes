@@ -1,30 +1,30 @@
-import { TicketSummary } from '@gorgias/api-types'
+import { TicketCompact } from '@gorgias/api-types'
 
 import { SortOption } from '../../types'
 import { sortTickets } from '../sortTickets'
 
 describe('sortTickets', () => {
-    const tickets: TicketSummary[] = [
+    const tickets: TicketCompact[] = [
         {
             id: 1,
             created_datetime: '2023-01-03T10:00:00Z',
             last_message_datetime: '2023-01-06T10:00:00Z',
-        } as TicketSummary,
+        } as TicketCompact,
         {
             id: 2,
             created_datetime: '2023-01-02T10:00:00Z',
             last_message_datetime: '2023-01-05T10:00:00Z',
-        } as TicketSummary,
+        } as TicketCompact,
         {
             id: 3,
             created_datetime: '2023-01-04T10:00:00Z',
             last_message_datetime: '2024-01-05T10:00:00Z',
-        } as TicketSummary,
+        } as TicketCompact,
         {
             id: 4,
             created_datetime: '2023-01-03T10:00:00Z',
             last_message_datetime: '2023-01-04T10:00:00Z',
-        } as TicketSummary,
+        } as TicketCompact,
     ]
 
     it('should sort tickets in ascending order', () => {

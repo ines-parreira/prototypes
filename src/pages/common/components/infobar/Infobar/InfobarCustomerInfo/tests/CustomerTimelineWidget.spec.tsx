@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
 
-import { TicketSummary } from '@gorgias/api-types'
+import { TicketCompact } from '@gorgias/api-types'
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -43,11 +43,11 @@ describe('CustomerTimelineButton', () => {
         { id: 1, status: 'closed' },
         { id: 2, status: 'closed' },
         { id: 3, status: 'closed', snooze_datetime: '3070-01-01T00:00:00Z' },
-    ] as TicketSummary[]
+    ] as TicketCompact[]
     const openTickets = [
         { id: 3, status: 'open' },
         { id: 4, status: 'open' },
-    ] as TicketSummary[]
+    ] as TicketCompact[]
 
     const tickets = [...closedTickets, ...openTickets]
 

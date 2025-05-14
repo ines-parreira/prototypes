@@ -1,4 +1,4 @@
-import { TicketSummary } from '@gorgias/api-queries'
+import { TicketCompact } from '@gorgias/api-queries'
 
 import { FilterKey } from '../../types'
 import { filterTicketsByStatus, getOptionLabels } from '../statusFilter'
@@ -40,24 +40,24 @@ describe('filterTicketsByStatus', () => {
         id: 1,
         status: 'open',
         snooze_datetime: null,
-    } as TicketSummary
+    } as TicketCompact
     const closedTicket = {
         id: 2,
         status: 'closed',
         snooze_datetime: null,
-    } as TicketSummary
+    } as TicketCompact
     const snoozedTicket = {
         id: 3,
         status: 'closed',
         snooze_datetime: '2023-01-01T00:00:00Z',
-    } as TicketSummary
+    } as TicketCompact
     const snoozedTicketWithNoStatus = {
         id: 4,
         status: undefined,
         snooze_datetime: '2023-01-01T00:00:00Z',
-    } as TicketSummary
+    } as TicketCompact
 
-    const tickets: TicketSummary[] = [
+    const tickets: TicketCompact[] = [
         openTicket,
         closedTicket,
         snoozedTicket,

@@ -21,7 +21,7 @@ import ViewingIndicator from 'pages/common/components/ViewingIndicator/ViewingIn
 import CheckBox from 'pages/common/forms/CheckBox'
 
 import useIsTicketViewed from '../hooks/useIsTicketViewed'
-import { TicketPartial, TicketSummary } from '../types'
+import { TicketCompact, TicketPartial } from '../types'
 import TicketSkeleton from './TicketSkeleton'
 
 import css from './Ticket.less'
@@ -31,7 +31,7 @@ type InjectedProps = ComponentProps<typeof CSSTransition> &
 
 type Props = {
     isActive: boolean
-    ticket: TicketPartial | TicketSummary
+    ticket: TicketPartial | TicketCompact
     viewId: number
     isNewTicket?: boolean
     isSelected?: boolean

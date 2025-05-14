@@ -1,4 +1,4 @@
-import { TicketSummary } from '@gorgias/api-types'
+import { TicketCompact } from '@gorgias/api-types'
 
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
@@ -7,7 +7,7 @@ import { SortOption } from './types'
 
 export default function DisplayedDate(
     sortOption: SortOption,
-    ticket: TicketSummary,
+    ticket: TicketCompact,
 ) {
     return (
         <>

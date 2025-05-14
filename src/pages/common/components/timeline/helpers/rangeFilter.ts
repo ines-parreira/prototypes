@@ -1,11 +1,11 @@
-import { TicketSummary } from '@gorgias/api-queries'
+import { TicketCompact } from '@gorgias/api-queries'
 
 import { DateTimeResultFormatType } from 'constants/datetime'
 import { formatDatetime } from 'utils'
 
 import { Range } from '../types'
 
-export function filterTicketsByRange(tickets: TicketSummary[], range: Range) {
+export function filterTicketsByRange(tickets: TicketCompact[], range: Range) {
     return tickets.filter((ticket) => {
         const ticketDate = new Date(ticket.created_datetime).getTime()
         return (
