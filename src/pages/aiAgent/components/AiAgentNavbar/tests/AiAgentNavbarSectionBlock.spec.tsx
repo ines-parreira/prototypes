@@ -131,7 +131,7 @@ describe('AiAgentNavbarSectionBlock', () => {
 
     test('renders the component with non-onboarded state', () => {
         mockUseAiAgentOnboardingState.mockReturnValueOnce(
-            OnboardingState.WelcomeStatic,
+            OnboardingState.OnboardingWizard,
         )
 
         renderComponent()

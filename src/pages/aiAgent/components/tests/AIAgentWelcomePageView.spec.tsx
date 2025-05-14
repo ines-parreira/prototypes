@@ -16,7 +16,6 @@ import { shopifyIntegration } from 'fixtures/integrations'
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import { WIZARD_UPDATE_QUERY_KEY } from 'pages/aiAgent/constants'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
-import { useWelcomePageAcknowledgedMutation } from 'pages/aiAgent/hooks/useWelcomePageAcknowledgedMutation'
 import { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
@@ -40,13 +39,6 @@ const MOCK_WIZARD_VALUES = {
 
 const SHOP_NAME = 'my-store'
 const SHOP_TYPE = 'shopify'
-
-jest.mock('../../hooks/useWelcomePageAcknowledgedMutation', () => ({
-    useWelcomePageAcknowledgedMutation: jest.fn(() => ({
-        isLoading: false,
-        useWelcomePageAcknowledgedMutation: jest.fn(),
-    })),
-}))
 
 jest.mock('../../hooks/useAiAgentOnboardingNotification', () => ({
     useAiAgentOnboardingNotification: jest.fn(() => ({
@@ -110,9 +102,6 @@ describe('<AIAgentWelcomePageView />', () => {
             [FeatureFlagKey.ConvAiStandaloneMenu]: true,
             [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
         })
-        ;(useWelcomePageAcknowledgedMutation as jest.Mock).mockReturnValue({
-            isLoading: false,
-        })
     })
 
     const assertButtonAndLearnMore = () => {
@@ -159,22 +148,6 @@ describe('<AIAgentWelcomePageView />', () => {
             SegmentEvent.AiAgentWelcomePageViewed,
             { version: 'Basic', store: 'my-store' },
         )
-    })
-
-    it('should disable button when loading', async () => {
-        ;(useWelcomePageAcknowledgedMutation as jest.Mock).mockReturnValue({
-            isLoading: true,
-        })
-
-        renderWithProvider()
-
-        const button = screen.getByRole<HTMLButtonElement>('button', {
-            name: /Set Up AI Agent/i,
-        })
-
-        await userEvent.click(button)
-
-        expect(button).toBeAriaDisabled()
     })
 
     it('should redirect to AiAgentOnboardingWizard page when Set up AI Agent button is clicked', async () => {

@@ -16,7 +16,6 @@ import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
 import { WIZARD_UPDATE_QUERY_KEY } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
-import { useWelcomePageAcknowledgedMutation } from 'pages/aiAgent/hooks/useWelcomePageAcknowledgedMutation'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 
@@ -33,9 +32,6 @@ export type AiAgentWelcomePageProps = {
 }
 
 export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
-    const { isLoading } = useWelcomePageAcknowledgedMutation({
-        shopName: props.shopName,
-    })
     const {
         isAdmin,
         isLoading: isLoadingOnboardingNotificationState,
@@ -220,7 +216,6 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
                 intent="primary"
                 size="medium"
                 onClick={onOnboardingWizardClick}
-                isDisabled={isLoading}
                 trailingIcon="auto_awesome"
             >
                 {isOnUpdateOnboardingWizard

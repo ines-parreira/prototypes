@@ -82,8 +82,6 @@ export const AiAgentNavbarSectionBlockV2 = ({
                 return 'loading'
             case OnboardingState.Onboarded:
                 return 'complete'
-            case OnboardingState.WelcomeStatic:
-            case OnboardingState.WelcomeDynamic:
             case OnboardingState.OnboardingWizard:
             default:
                 return 'pending'

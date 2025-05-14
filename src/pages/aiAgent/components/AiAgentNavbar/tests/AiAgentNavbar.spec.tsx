@@ -18,18 +18,15 @@ import { user } from 'fixtures/users'
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
-import { useWelcomePageAcknowledged } from 'pages/aiAgent/hooks/useWelcomePageAcknowledged'
 import { RootState } from 'state/types'
 import { assumeMock } from 'utils/testing'
 
 import { AiAgentNavbar } from '../AiAgentNavbar'
 
 jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
-jest.mock('pages/aiAgent/hooks/useWelcomePageAcknowledged')
 
 const mockStore = configureMockStore()
 const useStoreConfigurationMock = assumeMock(useStoreConfiguration)
-const useWelcomePageAcknowledgedMock = assumeMock(useWelcomePageAcknowledged)
 const defaultStoreConfiguration = getStoreConfigurationFixture()
 
 jest.mock('launchdarkly-react-client-sdk')
@@ -130,13 +127,6 @@ describe('<AiAgentNavbar />', () => {
             isLoading: false,
             isFetched: true,
             error: null,
-        })
-
-        useWelcomePageAcknowledgedMock.mockReturnValue({
-            isLoading: false,
-            data: {
-                acknowledged: true,
-            },
         })
     })
 

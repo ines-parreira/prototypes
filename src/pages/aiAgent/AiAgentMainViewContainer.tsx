@@ -11,7 +11,6 @@ import { AiAgentOnboardingState } from 'models/aiAgent/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { AIAgentWelcomePageDynamic } from './AIAgentWelcomePageDynamic'
-import { AIAgentWelcomePageView } from './components/AIAgentWelcomePageView/AIAgentWelcomePageView'
 import { useAiAgentNavigation } from './hooks/useAiAgentNavigation'
 import { useAiAgentOnboardingNotification } from './hooks/useAiAgentOnboardingNotification'
 import {
@@ -115,22 +114,6 @@ const AiAgentMainViewContainer = () => {
                 <div className={css.spinner} aria-label="loading">
                     <LoadingSpinner size="big" />
                 </div>
-            )
-        case OnboardingState.WelcomeDynamic:
-            return (
-                <AIAgentWelcomePageDynamic
-                    accountDomain={accountDomain}
-                    shopType={shopType}
-                    shopName={shopName}
-                />
-            )
-        case OnboardingState.WelcomeStatic:
-            return (
-                <AIAgentWelcomePageView
-                    accountDomain={accountDomain}
-                    shopType={shopType}
-                    shopName={shopName}
-                />
             )
         case OnboardingState.OnboardingWizard:
             return (

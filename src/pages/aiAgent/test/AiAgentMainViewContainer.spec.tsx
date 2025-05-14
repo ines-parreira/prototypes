@@ -13,11 +13,11 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import useAppDispatch from 'hooks/useAppDispatch'
+import { Wizard } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { IntegrationType } from 'models/integration/types'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
-import { useWelcomePageAcknowledged } from 'pages/aiAgent/hooks/useWelcomePageAcknowledged'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { getHasAutomate } from 'state/billing/selectors'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -32,8 +32,6 @@ jest.mock(
     'pages/settings/billing/automate/AutomateSubscriptionModal',
     () => () => <div>Automate Subscription Modal</div>,
 )
-jest.mock('../hooks/useWelcomePageAcknowledged')
-const mockUseWelcomePageAcknowledged = jest.mocked(useWelcomePageAcknowledged)
 
 jest.mock('state/billing/selectors', () => ({
     __esModule: true,
@@ -193,8 +191,6 @@ const setupMocks = ({
     optimizeTabFlag = false,
     isStoreConfigurationLoading = false,
     isHelpCentersLoading = false,
-    isWelcomePageAcknowledgedLoading = false,
-    welcomePageAcknowledged = false,
     hasStoreConfiguration = true,
 } = {}) => {
     mockFlags({
@@ -208,15 +204,15 @@ const setupMocks = ({
     })
 
     mockUseAppDispatch.mockReturnValue(jest.fn())
-    mockUseWelcomePageAcknowledged.mockReturnValue({
-        isLoading: isWelcomePageAcknowledgedLoading,
-        data: { acknowledged: welcomePageAcknowledged },
-    })
 
     mockUseStoreConfiguration.mockReturnValue({
         ...mockedAiAgentStoreConfigurationContext,
         storeConfiguration: hasStoreConfiguration
-            ? getStoreConfigurationFixture()
+            ? getStoreConfigurationFixture({
+                  wizard: {
+                      completedDatetime: '2021-01-01',
+                  } as Wizard,
+              })
             : undefined,
         isLoading: isStoreConfigurationLoading,
         isFetched: true,
@@ -257,20 +253,14 @@ describe('AiAgentMainViewContainer', () => {
         expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
-    it('renders loader if loading welcome page acknowledged', () => {
-        setupMocks({ isWelcomePageAcknowledgedLoading: true })
-        renderComponent()
-        expect(screen.getByText('Loading...')).toBeInTheDocument()
-    })
-
-    it('redirects to guidance page if onboarding wizard is done', () => {
+    it('redirects to settings page if onboarding wizard is done', () => {
         const history = createMemoryHistory()
         const historyPushSpy = jest
             .spyOn(history, 'replace')
             .mockImplementationOnce(jest.fn)
 
         setupMocks({
-            hasStoreConfiguration: false,
+            hasStoreConfiguration: true,
         })
 
         renderWithRouter(
@@ -287,7 +277,7 @@ describe('AiAgentMainViewContainer', () => {
         )
     })
 
-    it('redirects to guidance page if onboarding wizard is done', () => {
+    it('redirects to optimize page if optimize tab flag is enabled', () => {
         const history = createMemoryHistory()
         const historyPushSpy = jest
             .spyOn(history, 'replace')
@@ -295,7 +285,7 @@ describe('AiAgentMainViewContainer', () => {
 
         setupMocks({
             optimizeTabFlag: true,
-            hasStoreConfiguration: false,
+            hasStoreConfiguration: true,
         })
 
         renderWithRouter(
