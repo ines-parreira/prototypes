@@ -26,6 +26,7 @@ import { RootState } from '../types'
 import {
     BillingImmutableState,
     CurrentProductsUsages,
+    Invoice,
     ReduxBillingState,
 } from './types'
 
@@ -383,13 +384,9 @@ export const getHasAutomate = createSelector(
     (plan) => !!plan,
 )
 
-export const invoices = createSelector(
+export const getInvoices = createSelector(
     DEPRECATED_getBillingState,
-    (billing) =>
-        (billing.get('invoices', fromJS([])) as List<any>).filter(
-            (invoice: Map<any, any>) =>
-                !!invoice.get('attempted') && invoice.get('amount_due') > 0,
-        ) as List<any>,
+    (billing) => billing.get('invoices', fromJS([])) as List<Invoice>,
 )
 
 export const creditCard = createSelector(

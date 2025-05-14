@@ -42,13 +42,6 @@ export const billingState = {
             date: '2016-11-14T18:30:19+00:00',
             amount_due: 1234,
         },
-        {
-            metadata: {},
-            paid: false,
-            attempted: true,
-            date: '2016-11-15T18:30:19+00:00',
-            amount_due: 0,
-        },
     ],
     creditCard: {
         name: 'Alex',

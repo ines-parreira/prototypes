@@ -16,7 +16,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 import GorgiasApi from 'services/gorgiasApi'
 import { fetchInvoices, updateInvoiceInList } from 'state/billing/actions'
-import { invoices as getInvoices } from 'state/billing/selectors'
+import { getInvoices } from 'state/billing/selectors'
 import { Invoice, PaymentIntentStatus } from 'state/billing/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -140,6 +140,13 @@ const PaymentsHistoryView = () => {
                             const isPaid = invoice.paid
                             const paymentIntent = invoice.payment_intent
 
+                            const showRetryPaymentButton =
+                                !isPaid &&
+                                [
+                                    PaymentIntentStatus.RequiresSource,
+                                    PaymentIntentStatus.RequiresPaymentMethod,
+                                ].includes(paymentIntent?.status)
+
                             return (
                                 <tr key={invoice.id}>
                                     <td
@@ -209,12 +216,7 @@ const PaymentsHistoryView = () => {
                                                     Confirm
                                                 </Button>
                                             )}
-                                            {[
-                                                PaymentIntentStatus.RequiresSource,
-                                                PaymentIntentStatus.RequiresPaymentMethod,
-                                            ].includes(
-                                                paymentIntent?.status,
-                                            ) && (
+                                            {showRetryPaymentButton && (
                                                 <Button
                                                     intent="primary"
                                                     isLoading={
