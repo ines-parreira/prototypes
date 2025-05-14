@@ -13,7 +13,9 @@
 
     // The `:global(.container-fluid)` explicitly targets the navbar component from reactstrap
     // This will force this style to overwrite the one from Bootstrap
-    :global(.container-fluid)[class*='AiAgentLayout--container--'] {
+    [class*='AiAgentLayout--container--']:has(
+            [class*='SalesPaywallMiddleware--wrapper--']
+        ) {
         max-height: calc(
             100vh - 52px - 44px - 56px
         ); // - header height - header paddings - sidebar height
