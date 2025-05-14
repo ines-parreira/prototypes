@@ -104,8 +104,8 @@ export default function ReusableLLMPromptCallEditor({
                 <>
                     <div>
                         This step requires an active {app.name} account. Enter
-                        the {inputProps.inputLabel} from your {app.name}
-                        account.
+                        the {inputProps.inputLabel} from your {app.name}{' '}
+                        account.{' '}
                         {actionsApp.auth_settings?.url && (
                             <a
                                 href={actionsApp.auth_settings.url}
