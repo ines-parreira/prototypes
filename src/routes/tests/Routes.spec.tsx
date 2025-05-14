@@ -115,8 +115,8 @@ jest.mock('pages/aiAgent/components/AiAgentRedirect/AiAgentRedirect', () => ({
     AiAgentRedirect: () => <div>AiAgentRedirect</div>,
 }))
 
-jest.mock('pages/aiAgent/AiAgentVolume', () => ({
-    AiAgentVolume: () => <div>AiAgentVolume</div>,
+jest.mock('pages/aiAgent/AiAgentCustomerEngagement', () => ({
+    AiAgentCustomerEngagement: () => <div>AiAgentCustomerEngagement</div>,
 }))
 
 jest.mock('pages/aiAgent/AiAgentAnalytics', () => ({
@@ -562,7 +562,7 @@ describe('<Routes/>', () => {
             expect(screen.getByText('AiAgentSales')).toBeInTheDocument()
         })
 
-        it('should render volume page under sales', () => {
+        it('should render customer engagement page under sales', () => {
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
             })
@@ -579,7 +579,9 @@ describe('<Routes/>', () => {
                 </Provider>,
             )
 
-            expect(screen.getByText('AiAgentVolume')).toBeInTheDocument()
+            expect(
+                screen.getByText('AiAgentCustomerEngagement'),
+            ).toBeInTheDocument()
         })
 
         it('should render analytics page under sales', () => {

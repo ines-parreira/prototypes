@@ -13,7 +13,7 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { getLDClient } from 'utils/launchDarkly'
 import { mockStore, renderWithRouter } from 'utils/testing'
 
-import { AiAgentVolume } from '../AiAgentVolume'
+import { AiAgentCustomerEngagement } from '../AiAgentCustomerEngagement'
 import { SALES } from '../constants'
 
 const queryClient = mockQueryClient()
@@ -33,12 +33,12 @@ const renderComponent = () =>
     renderWithRouter(
         <Provider store={mockStore({})}>
             <QueryClientProvider client={queryClient}>
-                <AiAgentVolume />
+                <AiAgentCustomerEngagement />
             </QueryClientProvider>
         </Provider>,
     )
 
-describe('<AiAgentVolume />', () => {
+describe('<AiAgentCustomerEngagement />', () => {
     beforeEach(() => {
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: {
@@ -63,7 +63,7 @@ describe('<AiAgentVolume />', () => {
         client = ldClientMock
     })
 
-    it('should render the volume settings', () => {
+    it('should render the customer engagement settings', () => {
         renderComponent()
         expect(
             screen.getByRole('heading', { level: 1, name: SALES }),

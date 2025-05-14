@@ -21,7 +21,7 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { getLDClient } from 'utils/launchDarkly'
 import { renderWithRouter } from 'utils/testing'
 
-import { VolumeSettings } from '../VolumeSettings'
+import { CustomerEngagementSettings } from '../CustomerEngagementSettings'
 
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore([thunk])()
@@ -34,7 +34,7 @@ const renderComponent = () =>
     renderWithRouter(
         <Provider store={mockStore}>
             <QueryClientProvider client={queryClient}>
-                <VolumeSettings />
+                <CustomerEngagementSettings />
             </QueryClientProvider>
         </Provider>,
         {
@@ -55,7 +55,7 @@ const newStoreConfig = {
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
 jest.mock('pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor')
 jest.mock(
-    'pages/aiAgent/components/VolumeSettings/hooks/usePotentialImpact',
+    'pages/aiAgent/components/CustomerEngagementSettings/hooks/usePotentialImpact',
     () => {
         return {
             usePotentialImpact: jest.fn(() => ({
@@ -121,7 +121,7 @@ const getClickEvent = () =>
 
 const click = (element: HTMLElement) => fireEvent(element, getClickEvent())
 
-describe('VolumeSettings', () => {
+describe('CustomerEngagementSettings', () => {
     beforeEach(() => {
         mockStore.clearActions()
         jest.clearAllMocks()
@@ -278,7 +278,7 @@ describe('VolumeSettings', () => {
                         payload: {
                             status: NotificationStatus.Error,
                             message:
-                                'Failed to save volume configuration state',
+                                'Failed to save customer engagement configuration state',
                         },
                     },
                 ])

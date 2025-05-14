@@ -30,6 +30,7 @@ import CreateActionView from 'pages/aiAgent/actions/CreateActionView'
 import EditActionViewContainer from 'pages/aiAgent/actions/EditActionViewContainer'
 import { AiAgentAnalytics } from 'pages/aiAgent/AiAgentAnalytics'
 import AiAgentConfigurationContainer from 'pages/aiAgent/AiAgentConfigurationContainer'
+import { AiAgentCustomerEngagement } from 'pages/aiAgent/AiAgentCustomerEngagement'
 import { AiAgentGuidanceAiSuggestionNewContainer } from 'pages/aiAgent/AiAgentGuidanceAiSuggestionNewContainer'
 import { AiAgentGuidanceContainer } from 'pages/aiAgent/AiAgentGuidanceContainer'
 import { AiAgentGuidanceDetailContainer } from 'pages/aiAgent/AiAgentGuidanceDetailContainer'
@@ -45,7 +46,6 @@ import { AiAgentSales } from 'pages/aiAgent/AiAgentSales'
 import { AiAgentSalesStrategy } from 'pages/aiAgent/AiAgentSalesStrategy'
 import AiAgentScrapedDomainProductsContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainProductsContainer'
 import AiAgentScrapedDomainQuestionsContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainQuestionsContainer'
-import { AiAgentVolume } from 'pages/aiAgent/AiAgentVolume'
 import { AiAgentNavbarWrapper } from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbarWrapper'
 import { AiAgentRedirect } from 'pages/aiAgent/components/AiAgentRedirect/AiAgentRedirect'
 import { aiAgentRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
@@ -733,7 +733,9 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                         <Route
                             path={`${path}/sales/customer-engagement`}
                             exact
-                            component={SalesPaywallMiddleware(AiAgentVolume)}
+                            component={SalesPaywallMiddleware(
+                                AiAgentCustomerEngagement,
+                            )}
                         />
                     </AiAgentErrorBoundary>
                     <AiAgentErrorBoundary

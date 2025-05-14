@@ -21,17 +21,17 @@ import { ConversationLauncherSettings } from './ConversationLauncherSettings'
 import { ConversationStartersSettings } from './ConversationStartersSettings'
 import { usePotentialImpact } from './hooks/usePotentialImpact'
 
-import css from './VolumeSettings.less'
+import css from './CustomerEngagementSettings.less'
 
-const volumeSchema = z.object({
+const customerEngagementSchema = z.object({
     isConversationStartersEnabled: z.boolean(),
     isFloatingInputEnabled: z.boolean(),
     isFloatingInputDesktopOnly: z.boolean(),
 })
 
-type SalesVolumeData = z.infer<typeof volumeSchema>
+type CustomerEngagementData = z.infer<typeof customerEngagementSchema>
 
-export const VolumeSettings = () => {
+export const CustomerEngagementSettings = () => {
     const dispatch = useAppDispatch()
     const { storeConfiguration, updateStoreConfiguration } =
         useAiAgentStoreConfigurationContext()
@@ -43,7 +43,7 @@ export const VolumeSettings = () => {
     const isConvertFloatingChatInputFeatureEnabled =
         flags[FeatureFlagKey.ConvertFloatingChatInput]
 
-    const methods = useForm<SalesVolumeData>({
+    const methods = useForm<CustomerEngagementData>({
         values: {
             isConversationStartersEnabled:
                 storeConfiguration?.isConversationStartersEnabled ?? false,
@@ -55,7 +55,7 @@ export const VolumeSettings = () => {
                     ?.isDesktopOnly ?? false,
         },
         mode: 'onChange',
-        resolver: zodResolver(volumeSchema),
+        resolver: zodResolver(customerEngagementSchema),
     })
 
     const {
@@ -65,7 +65,7 @@ export const VolumeSettings = () => {
     } = methods
 
     const onSave = useCallback(
-        async (data: SalesVolumeData) => {
+        async (data: CustomerEngagementData) => {
             if (storeConfiguration) {
                 try {
                     await updateStoreConfiguration({
@@ -90,7 +90,7 @@ export const VolumeSettings = () => {
                         notify({
                             status: NotificationStatus.Error,
                             message:
-                                'Failed to save volume configuration state',
+                                'Failed to save customer engagement configuration state',
                         }),
                     )
                 }

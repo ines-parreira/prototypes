@@ -1,12 +1,12 @@
 import { useParams } from 'react-router-dom'
 
 import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
-import { VolumeSettings } from './components/VolumeSettings/VolumeSettings'
+import { CustomerEngagementSettings } from './components/CustomerEngagementSettings/CustomerEngagementSettings'
 import { SALES } from './constants'
 
-import css from './AiAgentVolume.less'
+import css from './AiAgentCustomerEngagement.less'
 
-export const AiAgentVolume = () => {
+export const AiAgentCustomerEngagement = () => {
     const { shopName } = useParams<{
         shopName: string
     }>()
@@ -17,7 +17,7 @@ export const AiAgentVolume = () => {
             shopName={shopName}
             title={SALES}
         >
-            <VolumeSettings />
+            <CustomerEngagementSettings />
         </AiAgentLayout>
     )
 }
