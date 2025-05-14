@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { TicketMessageSourceType } from 'business/types/ticket'
+import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { channels } from 'fixtures/channels'
 import {
@@ -148,7 +148,7 @@ describe('ChannelsFilter', () => {
         )
     })
 
-    it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting all channels and deselecting all channels', () => {
+    it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting channels except internal note and deselecting all channels', () => {
         const { rerender } = renderWithStore(
             <ChannelsFilter
                 value={withDefaultLogicalOperator([])}
@@ -162,18 +162,20 @@ describe('ChannelsFilter', () => {
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
-        const allAvailableChannelsSlugs = mockedChannels.map(
-            (channel) => channel.slug,
-        )
+        const availableChannelsSlugsWithoutInternalNote = mockedChannels
+            .filter((channel) => channel?.slug !== TicketChannel.InternalNote)
+            .map((channel) => channel.slug)
 
         expect(dispatchUpdate).toHaveBeenCalledWith({
-            values: allAvailableChannelsSlugs,
+            values: availableChannelsSlugsWithoutInternalNote,
             operator: LogicalOperatorEnum.ONE_OF,
         })
 
         rerender(
             <ChannelsFilter
-                value={withDefaultLogicalOperator(allAvailableChannelsSlugs)}
+                value={withDefaultLogicalOperator(
+                    availableChannelsSlugsWithoutInternalNote,
+                )}
                 dispatchUpdate={dispatchUpdate}
                 dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}

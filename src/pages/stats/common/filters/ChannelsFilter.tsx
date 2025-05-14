@@ -4,6 +4,7 @@ import isString from 'lodash/isString'
 import noop from 'lodash/noop'
 import { connect } from 'react-redux'
 
+import { TicketChannel } from 'business/types/ticket'
 import { FilterKey, StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
 import {
@@ -69,7 +70,9 @@ export function ChannelsFilter({
     warningType,
     isDisabled,
 }: Props) {
-    const channels = filterChannels(getChannels(), channelsFilter)
+    const channels = filterChannels(getChannels(), channelsFilter).filter(
+        (channel) => channel?.slug !== TicketChannel.InternalNote,
+    )
     const allChannelsSlugs = channels.map((channel) => channel.slug)
 
     const getSelectedChannels = () => {
