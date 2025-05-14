@@ -1,7 +1,37 @@
+import React from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { createMemoryHistory } from 'history'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
+import { Route, Router } from 'react-router-dom'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { StoreConfiguration } from 'models/aiAgent/types'
+import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
+import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock, mockStore } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
+
 import {
     ComputeActivationPercentage,
     computeActivationPercentage,
+    useStoreActivations,
 } from '../useStoreActivations'
+
+jest.mock('pages/aiAgent/hooks/useStoreConfigurationForAccount')
+const useStoreConfigurationForAccountMock = assumeMock(
+    useStoreConfigurationForAccount,
+)
+
+jest.mock('pages/aiAgent/hooks/useStoresConfigurationMutation')
+const useStoresConfigurationMutationMock = assumeMock(
+    useStoresConfigurationMutation,
+)
 
 describe('computeActivationPercentage', () => {
     const createStoreActivation = (
@@ -106,5 +136,166 @@ describe('computeActivationPercentage', () => {
             store3: createStoreActivation(true, true, false),
         }
         expect(computeActivationPercentage(state)).toBe(78)
+    })
+})
+
+describe('useStoreActivations', () => {
+    const renderHookWithRouter = ({
+        pageName = 'dummy-page',
+        initialEntry = '/',
+    }: {
+        pageName?: string
+        initialEntry?: string
+    } = {}) => {
+        const queryClient = mockQueryClient()
+        const defaultState = {
+            billing: fromJS({
+                products: [
+                    {
+                        type: 'helpdesk',
+                        prices: [{ amount: 100, cadence: 'month' }],
+                    },
+                ],
+            }),
+            currentAccount: fromJS(account),
+            currentUser: fromJS({
+                role: {
+                    name: 'admin',
+                },
+            }),
+            integrations: fromJS({
+                integrations: [
+                    {
+                        id: 1,
+                        deleted_datetime: null,
+                        mappings: [],
+                        meta: {
+                            shop_id: 54899465,
+                            shop_domain: 'store1.com',
+                            currency: 'USD',
+                            shop_display_name: 'Store 1',
+                            shop_name: 'store1',
+                        },
+                        deactivated_datetime: null,
+                        name: 'store1',
+                        uri: '/api/integrations/1/',
+                        type: 'shopify',
+                        created_datetime: '2020-01-28T22:19:15.604153+00:00',
+                        updated_datetime: '2020-01-28T22:19:15.604157+00:00',
+                    },
+                    {
+                        id: 2,
+                        deleted_datetime: null,
+                        mappings: [],
+                        meta: {
+                            shop_id: 54899466,
+                            shop_domain: 'store2.com',
+                            currency: 'USD',
+                            shop_display_name: 'Store 2',
+                            shop_name: 'store2',
+                        },
+                        deactivated_datetime: null,
+                        name: 'store2',
+                        uri: '/api/integrations/2/',
+                        type: 'shopify',
+                        created_datetime: '2020-01-28T22:19:15.604153+00:00',
+                        updated_datetime: '2020-01-28T22:19:15.604157+00:00',
+                    },
+                ],
+            }),
+            automate: fromJS({
+                storeIntegrations: {
+                    store1: {
+                        id: 1,
+                        name: 'store1',
+                        type: 'shopify',
+                    },
+                    store2: {
+                        id: 2,
+                        name: 'store2',
+                        type: 'shopify',
+                    },
+                },
+            }),
+        }
+
+        const history = createMemoryHistory({ initialEntries: [initialEntry] })
+        const wrapper = ({ children }: { children: React.ReactNode }) => (
+            <Router history={history}>
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        <Route path="/:shopName?">{children}</Route>
+                    </Provider>
+                </QueryClientProvider>
+            </Router>
+        )
+
+        return {
+            ...renderHook(() => useStoreActivations({ pageName }), { wrapper }),
+            history,
+        }
+    }
+
+    const upsertStoresConfiguration = jest.fn()
+    beforeEach(() => {
+        jest.clearAllMocks()
+        useStoresConfigurationMutationMock.mockReturnValue({
+            upsertStoresConfiguration: upsertStoresConfiguration,
+            error: null,
+            isLoading: false,
+        })
+        useStoreConfigurationForAccountMock.mockReturnValue({
+            storeConfigurations: [
+                getStoreConfigurationFixture({ storeName: 'store1' }),
+                getStoreConfigurationFixture({ storeName: 'store2' }),
+            ],
+            isLoading: false,
+        })
+    })
+
+    describe('storeActivations', () => {
+        it('should return all storeActivations when not on a single store page', () => {
+            const { result } = renderHookWithRouter({ initialEntry: '/' })
+
+            expect(result.current.storeActivations['store1']).toBeTruthy()
+            expect(result.current.storeActivations['store2']).toBeTruthy()
+        })
+
+        it('should return only storeActivations for the current store when on a single store page', () => {
+            const { result } = renderHookWithRouter({ initialEntry: '/store1' })
+
+            expect(result.current.storeActivations['store1']).toBeTruthy()
+            expect(result.current.storeActivations['store2']).toBeFalsy()
+        })
+    })
+
+    describe('migrateToNewPricing', () => {
+        it('should update all store configuration even on a single store page', async () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentNewActivationXp]: true,
+            })
+            const { result, waitFor } = renderHookWithRouter({
+                initialEntry: '/store1',
+            })
+            await result.current.migrateToNewPricing()
+
+            await waitFor(() => {
+                expect(upsertStoresConfiguration).toHaveBeenCalledTimes(1)
+
+                const input: StoreConfiguration[] =
+                    upsertStoresConfiguration.mock.calls[0][0]
+                expect(input).toHaveLength(2)
+                expect(input).toEqual(
+                    expect.arrayContaining([
+                        expect.objectContaining({
+                            storeName: 'store1',
+                        }),
+                        expect.objectContaining({
+                            storeName: 'store2',
+                        }),
+                    ]),
+                )
+            })
+        })
     })
 })

@@ -119,12 +119,18 @@ type UpdateStoreConfiguration = {
     hasNewAutomatePlan: boolean
     flags: Flags
 }
+type UpdatePricing = {
+    type: 'UPDATE_PRICING'
+    flags: Flags
+}
+
 export type ACTION_TYPE =
     | ToggleSalesAction
     | ToggleSupportAction
     | ToggleSupportChatAction
     | ToggleSupportEmailAction
     | UpdateStoreConfiguration
+    | UpdatePricing
 
 const toggleSupport = (
     state: State,
@@ -498,6 +504,54 @@ export const storeConfigurationToState = (
     )
 }
 
+export const updatePricing = (
+    state: State,
+    {
+        flags: {
+            aiSalesAgentEmailEnabled,
+            isAiSalesBetaUser,
+            hasAiAgentNewActivationXp,
+        },
+    }: UpdatePricing,
+): State => {
+    if (!hasAiAgentNewActivationXp) {
+        return state
+    }
+
+    return Object.entries(state).reduce<State>(
+        (newState, [storeName, storeActivation]) => {
+            const {
+                configuration: { scopes },
+            } = storeActivation
+
+            const isChatEnabled = storeActivation.support.chat.enabled
+            const isEmailEnabled = storeActivation.support.email.enabled
+
+            const salesEnabled = isSalesEnabledWithNewActivationXp({
+                isAiSalesBetaUser,
+                storeHasSales: scopes.includes(AiAgentScope.Sales),
+                hasNewAutomatePlan: true,
+                aiSalesAgentEmailEnabled,
+                isChatEnabled,
+                isEmailEnabled,
+            })
+
+            newState[storeName] = {
+                ...storeActivation,
+                sales: {
+                    ...storeActivation.sales,
+                    enabled: salesEnabled,
+                    isDisabled: salesEnabled
+                        ? false
+                        : storeActivation.sales.isDisabled,
+                },
+            }
+            return newState
+        },
+        {},
+    )
+}
+
 export const reducer = (state: State, action: ACTION_TYPE): State => {
     switch (action.type) {
         case 'CHANGE_SUPPORT':
@@ -510,6 +564,8 @@ export const reducer = (state: State, action: ACTION_TYPE): State => {
             return toggleSales(state, action)
         case 'UPDATE_STORE_CONFIGURATION':
             return storeConfigurationToState(state, action)
+        case 'UPDATE_PRICING':
+            return updatePricing(state, action)
     }
 }
 

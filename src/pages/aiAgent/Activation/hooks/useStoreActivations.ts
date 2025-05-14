@@ -10,8 +10,10 @@ import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import {
+    State,
     stateToUpdatedStoreConfiguration,
     StoreActivation,
+    updatePricing,
     useStoreActivationReducer,
 } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { usePublicResourcesList } from 'pages/aiAgent/hooks/usePublicResourcesList'
@@ -118,6 +120,7 @@ export const useStoreActivations = ({
     changeSupportChat: (storeName: string, newValue: boolean) => void
     changeSupportEmail: (storeName: string, newValue: boolean) => void
     saveStoreConfigurations: () => Promise<void>
+    migrateToNewPricing: () => Promise<void>
 } => {
     const flags = useFlags()
     const flagsRef = useRef(flags)
@@ -139,6 +142,25 @@ export const useStoreActivations = ({
 
     const { state, dispatch } = useStoreActivationReducer()
 
+    // Expose only the store, which we are on but internally keep track of all stores.
+    // Allows applying operations on all stores regarding if we are on the overview page or not.
+    const filteredState = useMemo(() => {
+        if (singleStoreName) {
+            return Object.entries(state).reduce<State>(
+                (acc, [storeName, store]) => {
+                    if (storeName === singleStoreName) {
+                        acc[storeName] = store
+                    }
+
+                    return acc
+                },
+                {},
+            )
+        }
+
+        return state
+    }, [state, singleStoreName])
+
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
 
@@ -146,7 +168,7 @@ export const useStoreActivations = ({
         storeConfigurations,
         storeNames,
         isLoading: isStoreConfigurationLoading,
-    } = useStoreConfigurations(accountDomain, singleStoreName)
+    } = useStoreConfigurations(accountDomain)
 
     const chatIds = useMemo(() => {
         return storeConfigurations.flatMap(
@@ -222,13 +244,47 @@ export const useStoreActivations = ({
             reason: 'clicked-on-save-button',
         })
 
-        const updatedConfigurations = stateToUpdatedStoreConfiguration(state)
+        const updatedConfigurations =
+            stateToUpdatedStoreConfiguration(filteredState)
         await upsertStoresConfiguration(updatedConfigurations)
-    }, [state, upsertStoresConfiguration, pageName])
+    }, [filteredState, upsertStoresConfiguration, pageName])
+
+    const migrateToNewPricing = useCallback(async () => {
+        // Using state instead of filteredState because we want to update all stores, not only the one we are on.
+        // Do not rely on dispatch here because the update is not immediate but for the next render.
+        const updatedState = updatePricing(state, {
+            type: 'UPDATE_PRICING',
+            flags: {
+                hasAiAgentNewActivationXp,
+                isAiSalesBetaUser,
+                aiSalesAgentEmailEnabled,
+            },
+        })
+        const storeConfigurationsToUpdate =
+            stateToUpdatedStoreConfiguration(updatedState)
+        await upsertStoresConfiguration(storeConfigurationsToUpdate)
+
+        // Update the local state
+        dispatch({
+            type: 'UPDATE_PRICING',
+            flags: {
+                hasAiAgentNewActivationXp,
+                isAiSalesBetaUser,
+                aiSalesAgentEmailEnabled,
+            },
+        })
+    }, [
+        state,
+        upsertStoresConfiguration,
+        dispatch,
+        hasAiAgentNewActivationXp,
+        isAiSalesBetaUser,
+        aiSalesAgentEmailEnabled,
+    ])
 
     return {
-        storeActivations: state,
-        progressPercentage: computeActivationPercentage(state),
+        storeActivations: filteredState,
+        progressPercentage: computeActivationPercentage(filteredState),
         isFetchLoading:
             isStoreConfigurationLoading ||
             isHelpCenterListLoading ||
@@ -328,5 +384,6 @@ export const useStoreActivations = ({
             )
         },
         saveStoreConfigurations,
+        migrateToNewPricing,
     }
 }

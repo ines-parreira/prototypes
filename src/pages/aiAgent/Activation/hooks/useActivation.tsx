@@ -40,6 +40,7 @@ export const useActivation = (
         saveStoreConfigurations,
         isSaveLoading,
         isFetchLoading,
+        migrateToNewPricing,
     } = useStoreActivations({ pageName })
 
     const hasActivationEnabled = useFlag(FeatureFlagKey.AiAgentActivation)
@@ -192,6 +193,9 @@ export const useActivation = (
                 onUpgradeClick={async () => {
                     try {
                         await handleSubscriptionUpdate()
+                        if (hasAiAgentNewActivationXp) {
+                            await migrateToNewPricing()
+                        }
                         closeEarlyAccessModal('upgraded')
 
                         if (storeNameToSaveOnSubscriptionUpdate) {
