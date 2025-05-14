@@ -5,7 +5,10 @@ import { useQueryClient } from '@tanstack/react-query'
 import useAppSelector from 'hooks/useAppSelector'
 import { storeConfigurationKeys } from 'models/aiAgent/queries'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { useTrialEligibility } from 'pages/aiAgent/hooks/useTrialEligibility'
+import {
+    useTrialEligibility,
+    useTrialEligibilityForManualActivationFromFeatureFlag,
+} from 'pages/aiAgent/hooks/useTrialEligibility'
 import { useStartAiSalesAgentTrialForMultipleStores } from 'pages/aiAgent/Overview/hooks/useStartAiSalesAgentTrialForMultipleStores'
 import { getShopNameFromStoreActivations } from 'pages/aiAgent/utils/getShopNameFromStoreActivations'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
@@ -45,6 +48,13 @@ export const useActivateAiAgentTrial = ({
         isCurrentUserTeamLead,
     )
 
+    const { canStartTrial: canStartTrialFromFeatureFlag } =
+        useTrialEligibilityForManualActivationFromFeatureFlag(
+            storeActivations,
+            isOnUsd5Plan,
+            isCurrentUserTeamLead,
+        )
+
     const startTrial = () => {
         triggerTrialMutation(
             {
@@ -69,5 +79,6 @@ export const useActivateAiAgentTrial = ({
         isLoading: isLoading || isTrialLoading,
         routes,
         canStartTrial,
+        canStartTrialFromFeatureFlag,
     }
 }

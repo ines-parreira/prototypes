@@ -14,7 +14,10 @@ import { AiAgentActivationModal } from 'pages/aiAgent/Activation/components/AiAg
 import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
 import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/Activation/hooks/tests/fixtures/store-configurations.fixture'
-import { useTrialEligibility } from 'pages/aiAgent/hooks/useTrialEligibility'
+import {
+    useTrialEligibility,
+    useTrialEligibilityForManualActivationFromFeatureFlag,
+} from 'pages/aiAgent/hooks/useTrialEligibility'
 import { useStartAiSalesAgentTrialForMultipleStores } from 'pages/aiAgent/Overview/hooks/useStartAiSalesAgentTrialForMultipleStores'
 import { getStoresEligibleForTrial } from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -91,6 +94,9 @@ jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
 const useCanUseAiSalesAgentMock = assumeMock(useCanUseAiSalesAgent)
 jest.mock('pages/aiAgent/hooks/useTrialEligibility')
 const useTrialEligibilityMock = assumeMock(useTrialEligibility)
+const useTrialEligibilityForManualActivationFromFeatureFlagMock = assumeMock(
+    useTrialEligibilityForManualActivationFromFeatureFlag,
+)
 
 jest.mock('pages/aiAgent/utils/aiSalesAgentTrialUtils')
 const mockStore = createMockStore([thunk])
@@ -202,6 +208,11 @@ describe('AiAgentActivationModal', () => {
     })
 
     beforeEach(() => {
+        useTrialEligibilityForManualActivationFromFeatureFlagMock.mockReturnValue(
+            {
+                canStartTrial: false,
+            },
+        )
         mockUseStartTrialMock.mockReturnValue({
             mutateAsync: (data: any, { onSuccess }: any) => {
                 onSuccess()

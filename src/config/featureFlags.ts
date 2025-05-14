@@ -31,6 +31,7 @@ export enum FeatureFlagKey {
     AiSalesAgentBypassPlanCheck = 'ai-sales-agent-bypass-plan-check',
     AiSalesAgentBeta = 'ai-sales-agent-beta',
     AiShoppingAssistantTrialEnabled = 'ai-shopping-assistant-trial-enabled',
+    AiShoppingAssistantTrialMerchants = 'ai-shopping-assistant-trial-merchants',
     AiAgentUseNewAgenticArchitecture = 'ai-agent-use-new-agentic-architecture',
     AiShoppingAssistantEnabled = 'ai-shopping-assistant-enabled',
     AnalyticsDeferredLoadingExperiment = 'analytics-deferred-loading-experiment',

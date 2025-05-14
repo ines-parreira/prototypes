@@ -1,12 +1,19 @@
 import { waitFor } from '@testing-library/react'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import * as aiSalesAgentTrialUtils from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
+import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
-import { useTrialEligibility } from '../useTrialEligibility'
+import {
+    useTrialEligibility,
+    useTrialEligibilityForManualActivationFromFeatureFlag,
+} from '../useTrialEligibility'
 
 jest.mock('launchdarkly-react-client-sdk')
+const useFlagsMock = assumeMock(useFlags)
 
 const isAtLeastOneStoreEligibleForTrialSpy = jest.spyOn(
     aiSalesAgentTrialUtils,
@@ -118,6 +125,49 @@ describe('useTrialEligibility', () => {
                 canStartTrial: false,
                 isLoading: false,
             })
+        })
+    })
+})
+
+describe('useTrialEligibilityForManualActivationFromFeatureFlag', () => {
+    it('should return eligibility state correctly', async () => {
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: true,
+        })
+
+        const isOnUsd5Plan = true
+        const isCurrentUserTeamLead = true
+
+        const { result } = renderHook(() =>
+            useTrialEligibilityForManualActivationFromFeatureFlag(
+                storeActivations,
+                isOnUsd5Plan,
+                isCurrentUserTeamLead,
+            ),
+        )
+
+        expect(result.current).toEqual({
+            canStartTrial: true,
+        })
+    })
+
+    it('should return false if feature flag is disabled', async () => {
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: false,
+        })
+
+        const isOnUsd5Plan = true
+        const isCurrentUserTeamLead = true
+
+        const { result } = renderHook(() =>
+            useTrialEligibilityForManualActivationFromFeatureFlag(
+                storeActivations,
+                isOnUsd5Plan,
+                isCurrentUserTeamLead,
+            ),
+        )
+        expect(result.current).toEqual({
+            canStartTrial: false,
         })
     })
 })

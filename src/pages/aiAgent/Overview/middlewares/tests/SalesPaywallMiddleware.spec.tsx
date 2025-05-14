@@ -10,6 +10,10 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { user } from 'fixtures/users'
 import useAppSelector from 'hooks/useAppSelector'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import {
+    useTrialEligibility,
+    useTrialEligibilityForManualActivationFromFeatureFlag,
+} from 'pages/aiAgent/hooks/useTrialEligibility'
 import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
@@ -48,11 +52,11 @@ jest.mock('pages/aiAgent/components/AiAgentLayout/AiAgentLayout', () => ({
     )),
 }))
 
-jest.mock('pages/aiAgent/hooks/useTrialEligibility', () => ({
-    useTrialEligibility: jest.fn(() => ({
-        canStartTrial: true,
-    })),
-}))
+jest.mock('pages/aiAgent/hooks/useTrialEligibility')
+const useTrialEligibilityMock = assumeMock(useTrialEligibility)
+const useTrialEligibilityForManualActivationFromFeatureFlagMock = assumeMock(
+    useTrialEligibilityForManualActivationFromFeatureFlag,
+)
 
 const mockShopName = 'test-shop'
 const queryClient = mockQueryClient()
@@ -80,6 +84,15 @@ describe('SalesPaywallMiddleware', () => {
         useStoreActivationsMock.mockReturnValue({
             storeActivations: {},
         } as any)
+        useTrialEligibilityMock.mockReturnValue({
+            canStartTrial: false,
+            isLoading: false,
+        })
+        useTrialEligibilityForManualActivationFromFeatureFlagMock.mockReturnValue(
+            {
+                canStartTrial: false,
+            },
+        )
     })
     it('should render automate paywall when it doesnt has automate', () => {
         useAppSelectorMock.mockImplementation((selector) => {
@@ -341,6 +354,10 @@ describe('SalesPaywallMiddleware', () => {
     })
 
     it('should render start trial paywall when it has automate + beta user on usd-5 plan', () => {
+        useTrialEligibilityMock.mockReturnValue({
+            canStartTrial: true,
+            isLoading: false,
+        })
         useAppSelectorMock.mockImplementation((selector) => {
             if (selector === getHasAutomate) {
                 return true
@@ -366,6 +383,63 @@ describe('SalesPaywallMiddleware', () => {
             [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
             [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
             [FeatureFlagKey.AiSalesAgentBeta]: true,
+        })
+
+        renderMiddleware()
+
+        expect(
+            screen.queryByTestId('mock-child-component'),
+        ).not.toBeInTheDocument()
+
+        const paywallView = screen.getByText(/Paywall View Mock/)
+        expect(paywallView).toBeInTheDocument()
+        expect(paywallView).toHaveTextContent(
+            `Paywall View Mock - Feature: ${AIAgentPaywallFeatures.Upgrade}`,
+        )
+        const buttons = paywallView.querySelectorAll('button')
+        expect(buttons).toHaveLength(2)
+        expect(buttons[0]).toHaveTextContent('Upgrade Now')
+        expect(buttons[1]).toHaveTextContent(
+            'Start 14-Day Trial At No Additional Cost',
+        )
+    })
+
+    it('should render start trial paywall when it has automate + beta user on usd-5 plan + manual activation from feature flag', () => {
+        useTrialEligibilityMock.mockReturnValue({
+            canStartTrial: false,
+            isLoading: false,
+        })
+        useTrialEligibilityForManualActivationFromFeatureFlagMock.mockReturnValue(
+            {
+                canStartTrial: true,
+            },
+        )
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getHasAutomate) {
+                return true
+            }
+
+            if (selector === getCurrentUser) {
+                return fromJS(user)
+            }
+
+            if (selector === getCurrentAccountState) {
+                return fromJS({ domain: 'test' }) as Map<string, string>
+            }
+
+            if (selector === getCurrentAutomatePlan) {
+                return {
+                    generation: 5,
+                }
+            }
+
+            return undefined
+        })
+        mockFlags({
+            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+            [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
+            [FeatureFlagKey.AiSalesAgentBeta]: true,
+            [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: true,
         })
 
         renderMiddleware()

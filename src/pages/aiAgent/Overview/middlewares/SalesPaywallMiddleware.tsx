@@ -64,7 +64,12 @@ export const SalesPaywallMiddleware =
             trialModal.openModal(AI_TRIAL_MODAL_NAME, false)
         }
 
-        const { canStartTrial, routes, startTrial } = useActivateAiAgentTrial({
+        const {
+            canStartTrial,
+            routes,
+            startTrial,
+            canStartTrialFromFeatureFlag,
+        } = useActivateAiAgentTrial({
             accountDomain,
             storeActivations,
             onSuccess,
@@ -103,7 +108,9 @@ export const SalesPaywallMiddleware =
                 <PaywallWrapperComponent
                     showUpgradePaywall={showUpgradePaywall}
                     showEarlyAccessModal={showEarlyAccessModal}
-                    canStartTrial={canStartTrial}
+                    canStartTrial={
+                        canStartTrial || canStartTrialFromFeatureFlag
+                    }
                     startTrial={startTrial}
                     earlyAccessModal={earlyAccessModal}
                     showSalesSettings={showSalesSettings}

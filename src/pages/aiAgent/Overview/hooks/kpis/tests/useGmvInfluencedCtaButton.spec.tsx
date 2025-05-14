@@ -10,7 +10,10 @@ import thunk from 'redux-thunk'
 import { toImmutable } from 'common/utils'
 import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
-import { useTrialEligibility } from 'pages/aiAgent/hooks/useTrialEligibility'
+import {
+    useTrialEligibility,
+    useTrialEligibilityForManualActivationFromFeatureFlag,
+} from 'pages/aiAgent/hooks/useTrialEligibility'
 import {
     CtaButton,
     useGmvInfluencedCtaButton,
@@ -41,6 +44,9 @@ const getStoresEligibleForTrialMock = assumeMock(getStoresEligibleForTrial)
 
 jest.mock('pages/aiAgent/hooks/useTrialEligibility')
 const useTrialEligibilityMock = assumeMock(useTrialEligibility)
+const useTrialEligibilityForManualActivationFromFeatureFlagMock = assumeMock(
+    useTrialEligibilityForManualActivationFromFeatureFlag,
+)
 jest.mock(
     'react-router-dom',
     () =>
@@ -66,6 +72,11 @@ describe('useGmvInfluencedCtaButton', () => {
             canStartTrial: true,
             isLoading: false,
         })
+        useTrialEligibilityForManualActivationFromFeatureFlagMock.mockReturnValue(
+            {
+                canStartTrial: false,
+            },
+        )
     })
     // Example 1: Using Provider wrapper with mockStore
     const wrapper = ({ children }: { children: React.ReactNode }) => (
