@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'

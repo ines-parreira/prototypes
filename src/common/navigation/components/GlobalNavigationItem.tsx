@@ -1,32 +1,31 @@
 import type { ReactNode } from 'react'
 
 import cn from 'classnames'
-import { Link } from 'react-router-dom'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import navbarCss from 'assets/css/navbar.less'
 import css from 'common/navigation/components/GlobalNavigationItem.less'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { TooltipDelay, type TooltipDelayValue } from 'core/ui/tooltip.utils'
 import useId from 'hooks/useId'
+import { PolymorphicProps } from 'types'
 
 export type GlobalNavigationItemTooltipTrigger = 'hover'[]
 
-type GlobalNavigationItemProps = {
-    'data-candu-id'?: string
-    onClick?: () => void
-    url?: string
-    children?: ReactNode
-    icon: string
-    label: string
-    isActive?: boolean
-    tooltip?: ReactNode
-    tooltipDelay?: TooltipDelayValue
-}
+type GlobalNavigationItemProps<E extends React.ElementType> =
+    PolymorphicProps<E> & {
+        'data-candu-id'?: string
+        icon: string
+        label: string
+        isActive?: boolean
+        tooltip?: ReactNode
+        tooltipDelay?: TooltipDelayValue
+    }
 
-export default function GlobalNavigationItem({
-    onClick,
-    url,
+export default function GlobalNavigationItem<E extends React.ElementType>({
+    as,
     label,
     children,
     icon,
@@ -34,52 +33,26 @@ export default function GlobalNavigationItem({
     tooltip,
     tooltipDelay = TooltipDelay.Short,
     ...props
-}: GlobalNavigationItemProps) {
+}: GlobalNavigationItemProps<E>) {
+    const showRevampUi = useFlag(FeatureFlagKey.RevampNavBarUi)
+    const Component = as || 'button'
     const id = useId()
     const scopedId = `global-navigation-item-${id}`
 
-    if (typeof url === 'string') {
-        return (
-            <>
-                <Link
-                    {...(tooltip && {
-                        id: scopedId,
-                    })}
-                    className={cn(css.icon, { [css.active]: !!isActive })}
-                    data-candu-id={props['data-candu-id']}
-                    to={url}
-                    onClick={onClick}
-                    aria-label={label}
-                >
-                    <i className="material-icons-round">{icon}</i>
-                    {children}
-                </Link>
-                {tooltip && (
-                    <GlobalNavigationItemTooltip
-                        targetId={scopedId}
-                        delay={tooltipDelay}
-                    >
-                        {tooltip}
-                    </GlobalNavigationItemTooltip>
-                )}
-            </>
-        )
-    }
-
     return (
-        <>
-            <button
-                {...(tooltip && {
-                    id: scopedId,
-                })}
-                className={cn(css.icon, { [css.active]: !!isActive })}
-                data-candu-id={props['data-candu-id']}
-                onClick={onClick}
-                aria-label={label}
-            >
-                <i className="material-icons-round">{icon}</i>
-                {children}
-            </button>
+        <Component
+            {...props}
+            {...(tooltip && {
+                id: scopedId,
+            })}
+            className={cn(showRevampUi ? css.iconV2 : css.icon, {
+                [showRevampUi ? css.activeV2 : css.active]: !!isActive,
+            })}
+            data-candu-id={props['data-candu-id']}
+            aria-label={label}
+        >
+            <i className="material-icons-round">{icon}</i>
+            {children}
             {tooltip && (
                 <GlobalNavigationItemTooltip
                     targetId={scopedId}
@@ -88,7 +61,7 @@ export default function GlobalNavigationItem({
                     {tooltip}
                 </GlobalNavigationItemTooltip>
             )}
-        </>
+        </Component>
     )
 }
 

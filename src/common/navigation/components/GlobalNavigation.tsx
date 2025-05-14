@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 import css from 'common/navigation/components/GlobalNavigation.less'
 import GlobalNavigationItem from 'common/navigation/components/GlobalNavigationItem'
 import { GlobalNavigationSpotlight } from 'common/navigation/components/GlobalNavigationSpotlight'
@@ -55,11 +57,12 @@ export default function GlobalNavigation() {
                         data-candu-id="global-navigation-menu-toggle"
                     />
                     <GlobalNavigationItem
+                        as={Link}
                         icon="home"
                         label="Home"
                         isActive={activeItem === 'home'}
                         tooltip={<span>Home</span>}
-                        url="/app/home"
+                        to="/app/home"
                         data-candu-id="global-navigation-menu-home-page"
                     />
                     <GlobalNavigationSpotlight />
@@ -68,71 +71,78 @@ export default function GlobalNavigation() {
                 <hr className={css.separator} />
                 <div className={css.items}>
                     <GlobalNavigationItem
+                        as={Link}
                         icon="question_answer"
                         label="Tickets"
                         isActive={activeItem === 'tickets'}
                         tooltip={<span>Tickets</span>}
-                        url="/app/tickets"
+                        to="/app/tickets"
                         data-candu-id="global-navigation-menu-tickets-page"
                     />
                     {!isAutomateRevampEnabled &&
                         hasRole(currentUser, UserRole.Agent) && (
                             <GlobalNavigationItem
+                                as={Link}
                                 icon="bolt"
                                 label="AI Agent"
                                 isActive={activeItem === 'automate'}
                                 tooltip={<span>AI Agent</span>}
-                                url="/app/automation"
+                                to="/app/automation"
                                 data-candu-id="global-navigation-menu-automation-page"
                             />
                         )}
                     {hasAiAgentMenu && hasRole(currentUser, UserRole.Agent) && (
                         <GlobalNavigationItem
+                            as={Link}
                             icon="auto_awesome"
                             label="AI Agent"
                             isActive={activeItem === 'ai-agent'}
                             tooltip={<span>AI Agent</span>}
-                            url="/app/ai-agent"
+                            to="/app/ai-agent"
                             data-candu-id="global-navigation-menu-ai-agent-page"
                         />
                     )}
                     {hasRole(currentUser, UserRole.Admin) && (
                         <GlobalNavigationItem
+                            as={Link}
                             icon="monetization_on"
                             label="Convert"
                             isActive={activeItem === 'convert'}
                             tooltip={<span>Convert</span>}
-                            url="/app/convert"
+                            to="/app/convert"
                             data-candu-id="global-navigation-menu-convert-page"
                         />
                     )}
                     <GlobalNavigationItem
+                        as={Link}
                         icon="people"
                         label="Customers"
                         isActive={activeItem === 'customers'}
                         tooltip={<span>Customers</span>}
-                        url="/app/customers"
+                        to="/app/customers"
                         data-candu-id="global-navigation-menu-customers-page"
                     />
                     {!isAccessRestrictedToStatistics && (
                         <GlobalNavigationItem
+                            as={Link}
                             icon="bar_chart"
                             label="Statistics"
                             isActive={activeItem === MenuItemName.Statistics}
                             tooltip={<span>Statistics</span>}
-                            url={BASE_STATS_PATH}
+                            to={BASE_STATS_PATH}
                             data-candu-id="global-navigation-menu-statistics-page"
                         />
                     )}
                     {!isVoiceOfCustomerRestricted && (
                         <GlobalNavigationItem
+                            as={Link}
                             icon="psychology"
                             label="Statistics"
                             isActive={
                                 activeItem === MenuItemName.VoiceOfCustomer
                             }
                             tooltip={<span>Voice of Customer</span>}
-                            url={BASE_VOICE_OF_CUSTOMER_PATH}
+                            to={BASE_VOICE_OF_CUSTOMER_PATH}
                             data-candu-id="global-navigation-menu-voice-of-customer-page"
                         />
                     )}
@@ -141,11 +151,12 @@ export default function GlobalNavigation() {
             <section className={css.section}>
                 <div className={css.items}>
                     <GlobalNavigationItem
+                        as={Link}
                         icon="settings"
                         label="Settings"
                         isActive={activeItem === 'settings'}
                         tooltip={<span>Settings</span>}
-                        url="/app/settings"
+                        to="/app/settings"
                         data-candu-id="global-navigation-menu-settings-page"
                     />
                     <UserItem />

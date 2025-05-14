@@ -2,18 +2,14 @@ import { forwardRef } from 'react'
 
 import classNames from 'classnames'
 
+import type { PolymorphicProps } from 'types'
+
 import css from './NavigationSectionItem.less'
 
 export const DisplayType = {
     Default: 'default',
     Indent: 'indent',
 } as const
-
-type PolymorphicProps<E extends React.ElementType> = React.PropsWithChildren<
-    React.ComponentPropsWithoutRef<E> & {
-        as?: E
-    }
->
 
 type NavigationSectionItemProps<E extends React.ElementType> =
     PolymorphicProps<E> & {

@@ -1,11 +1,19 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
+import { Link } from 'react-router-dom'
 
 import GlobalNavigationItem from 'common/navigation/components/GlobalNavigationItem'
 import css from 'common/navigation/components/GlobalNavigationItem.less'
+import { useFlag } from 'core/flags'
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
 
 describe('GlobalNavigationItem', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
     it('should render an inactive item', () => {
         render(
             <GlobalNavigationItem icon="home" url="/app/home" label="Home" />,
@@ -18,7 +26,7 @@ describe('GlobalNavigationItem', () => {
             <GlobalNavigationItem
                 icon="home"
                 isActive
-                url="/app/home"
+                to="/app/home"
                 label="Home"
             />,
         )
@@ -28,9 +36,10 @@ describe('GlobalNavigationItem', () => {
     it('should render an link item', () => {
         render(
             <GlobalNavigationItem
+                as={Link}
                 icon="home"
                 isActive
-                url="/app/home"
+                to="/app/home"
                 label="Home"
             />,
         )
@@ -47,5 +56,18 @@ describe('GlobalNavigationItem', () => {
             />,
         )
         expect(screen.getByRole('button')).toBeInTheDocument()
+    })
+
+    it('should apply correct className based on UI version and active state', () => {
+        ;(useFlag as jest.Mock).mockReturnValue(true)
+        const { rerender } = render(
+            <GlobalNavigationItem icon="home" isActive label="Home" />,
+        )
+        expect(screen.getByText('home').parentNode).toHaveClass(css.iconV2)
+        expect(screen.getByText('home').parentNode).toHaveClass(css.activeV2)
+        ;(useFlag as jest.Mock).mockReturnValue(false)
+        rerender(<GlobalNavigationItem icon="home" isActive label="Home" />)
+        expect(screen.getByText('home').parentNode).toHaveClass(css.icon)
+        expect(screen.getByText('home').parentNode).toHaveClass(css.active)
     })
 })
