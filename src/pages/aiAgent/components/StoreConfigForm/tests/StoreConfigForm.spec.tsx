@@ -1747,6 +1747,8 @@ describe('<StoreConfigForm />', () => {
         it('should update form values when saving drawer content with new ticket fields', async () => {
             mockFlags({
                 [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+                [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]:
+                    true,
             })
             renderComponent()
 
@@ -1820,6 +1822,8 @@ describe('<StoreConfigForm />', () => {
         it('should switch drawer content when clicking on different features', async () => {
             mockFlags({
                 [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+                [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]:
+                    true,
             })
 
             renderComponent()
@@ -1972,6 +1976,8 @@ describe('<StoreConfigForm />', () => {
         it('should update activeDrawerValues when customFieldIds in formValues change', async () => {
             mockFlags({
                 [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+                [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]:
+                    true,
             })
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
@@ -2515,7 +2521,40 @@ describe('<StoreConfigForm />', () => {
     })
 
     describe('custom fields', () => {
+        beforeEach(() => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+                [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]:
+                    true,
+            })
+        })
+
         it('should not display the custom fields settings card when FF settings revamp is disabled', () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: false,
+            })
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    customFieldIds: [
+                        ticketInputFieldDefinition.id,
+                        ticketDropdownFieldDefinition.id,
+                    ],
+                },
+            })
+            renderComponent()
+
+            expect(
+                screen.queryByText('2 ticket fields'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not display the custom fields settings card when FF custom-fields is disabled', () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]:
+                    false,
+            })
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
                 formValues: {
@@ -2534,9 +2573,6 @@ describe('<StoreConfigForm />', () => {
         })
 
         it('should display the correct number of available custom fields in the settings card when FF settings revamp is enabled', () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-            })
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
                 formValues: {
@@ -2553,9 +2589,6 @@ describe('<StoreConfigForm />', () => {
         })
 
         it('should display "No ticket fields" when no custom fields are available and FF settings revamp is enabled', () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-            })
             mockUseCustomFieldDefinitions.mockReturnValue({
                 data: { data: [] },
             } as any)
@@ -2575,9 +2608,6 @@ describe('<StoreConfigForm />', () => {
         })
 
         it('should display "No ticket fields" when availableCustomFields is undefined and FF settings revamp is enabled', () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-            })
             mockUseCustomFieldDefinitions.mockReturnValue({
                 data: { data: undefined },
             } as any)
@@ -2597,9 +2627,6 @@ describe('<StoreConfigForm />', () => {
         })
 
         it('should display "No ticket fields" when formValues.customFields is null and FF settings revamp is enabled', () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-            })
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
                 formValues: {
@@ -2613,9 +2640,6 @@ describe('<StoreConfigForm />', () => {
         })
 
         it('should display "No ticket fields" when availableCustomFields is empty after filtering and FF settings revamp is enabled', () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-            })
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
                 formValues: {
@@ -2630,9 +2654,6 @@ describe('<StoreConfigForm />', () => {
         })
 
         it('should handle undefined availableCustomFields and use 0 as fallback when FF settings revamp is enabled', () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-            })
             mockUseCustomFieldDefinitions.mockReturnValue({
                 data: { data: undefined },
             } as any)

@@ -998,9 +998,9 @@ export const StoreConfigForm = ({
                                                 <SettingsFeatureRow
                                                     title="Tags"
                                                     description="Provide quick instructions in
-                                                    everyday speech, and let AI Agent
-                                                    handle the rest, saving you time and
-                                                    ensuring consistent categorization."
+                                                        everyday speech, and let AI Agent
+                                                        handle the rest, saving you time and
+                                                        ensuring consistent categorization."
                                                     nbFeatures={
                                                         formValues.tags
                                                             ?.length ?? 0
@@ -1018,28 +1018,32 @@ export const StoreConfigForm = ({
                                                         )
                                                     }}
                                                 />
-                                                <SettingsFeatureRow
-                                                    title="Ticket Fields"
-                                                    description="Ticket Fields selected will be
+                                                {isAiAutofillSectionEnabled && (
+                                                    <SettingsFeatureRow
+                                                        title="Ticket Fields"
+                                                        description="Ticket Fields selected will be
                                                         filled out automatically by AI Agent,
                                                         helping categorize and prioritize
                                                         tickets with less manual work."
-                                                    nbFeatures={
-                                                        availableCustomFields?.length ??
-                                                        0
-                                                    }
-                                                    badgeText={
-                                                        !availableCustomFields?.length
-                                                            ? 'No ticket fields'
-                                                            : `${availableCustomFields?.length} ticket fields`
-                                                    }
-                                                    onClick={() => {
-                                                        setIsDrawerOpen(true)
-                                                        setActiveDrawerContent(
-                                                            'customFieldIds',
-                                                        )
-                                                    }}
-                                                />
+                                                        nbFeatures={
+                                                            availableCustomFields?.length ??
+                                                            0
+                                                        }
+                                                        badgeText={
+                                                            !availableCustomFields?.length
+                                                                ? 'No ticket fields'
+                                                                : `${availableCustomFields?.length} ticket fields`
+                                                        }
+                                                        onClick={() => {
+                                                            setIsDrawerOpen(
+                                                                true,
+                                                            )
+                                                            setActiveDrawerContent(
+                                                                'customFieldIds',
+                                                            )
+                                                        }}
+                                                    />
+                                                )}
                                             </SettingsCardContent>
                                         </SettingsCard>
                                     </section>
