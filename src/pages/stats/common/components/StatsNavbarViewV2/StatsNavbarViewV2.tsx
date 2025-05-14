@@ -85,7 +85,9 @@ export function StatsNavbarViewV2() {
                 value={StatsNavbarViewSections.SupportPerformance}
             >
                 <Navigation.SectionTrigger data-candu-id="navbar-block-support-performance">
-                    Support Performance
+                    <span className={css.sectionTriggerTitle}>
+                        Support Performance
+                    </span>
                     <Navigation.SectionIndicator />
                 </Navigation.SectionTrigger>
                 <Navigation.SectionContent className={css.sectionContent}>
@@ -140,7 +142,9 @@ export function StatsNavbarViewV2() {
             </Navigation.Section>
             <Navigation.Section value={StatsNavbarViewSections.TicketInsights}>
                 <Navigation.SectionTrigger data-candu-id="navbar-block-ticket-insights">
-                    Ticket Insights
+                    <span className={css.sectionTriggerTitle}>
+                        Ticket Insights
+                    </span>
                     <Navigation.SectionIndicator />
                 </Navigation.SectionTrigger>
                 <Navigation.SectionContent className={css.sectionContent}>
@@ -172,7 +176,9 @@ export function StatsNavbarViewV2() {
                     value={StatsNavbarViewSections.QualityManagement}
                 >
                     <Navigation.SectionTrigger data-candu-id="navbar-block-quality-management">
-                        Quality Management
+                        <span className={css.sectionTriggerTitle}>
+                            Quality Management
+                        </span>
                         <Navigation.SectionIndicator />
                     </Navigation.SectionTrigger>
                     <Navigation.SectionContent className={css.sectionContent}>
@@ -198,7 +204,7 @@ export function StatsNavbarViewV2() {
 
             <Navigation.Section value={StatsNavbarViewSections.Voice}>
                 <Navigation.SectionTrigger data-candu-id="navbar-block-voice">
-                    Voice
+                    <span className={css.sectionTriggerTitle}>Voice</span>
                     <Navigation.SectionIndicator />
                 </Navigation.SectionTrigger>
                 <Navigation.SectionContent className={css.sectionContent}>

@@ -78,7 +78,9 @@ export const DashboardsNavbarBlockV2 = () => {
         <Navigation.Section value={StatsNavbarViewSections.Dashboards}>
             <div className={css.actionsContainer}>
                 <Navigation.SectionTrigger data-candu-id="navbar-block-dashboards">
-                    {DASHBOARDS_NAV_TITLE}
+                    <span className={css.sectionTriggerTitle}>
+                        {DASHBOARDS_NAV_TITLE}
+                    </span>
                     <Navigation.SectionIndicator />
                 </Navigation.SectionTrigger>
                 <Dropdown

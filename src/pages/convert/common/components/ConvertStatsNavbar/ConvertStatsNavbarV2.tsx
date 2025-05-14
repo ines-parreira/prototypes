@@ -22,7 +22,7 @@ export const ConvertStatsNavbarV2 = () => {
     return (
         <Navigation.Section value={StatsNavbarViewSections.Convert}>
             <Navigation.SectionTrigger data-candu-id="navbar-block-convert">
-                Convert
+                <span className={css.sectionTriggerTitle}>Convert</span>
                 <Navigation.SectionIndicator />
             </Navigation.SectionTrigger>
             <Navigation.SectionContent className={css.sectionContent}>

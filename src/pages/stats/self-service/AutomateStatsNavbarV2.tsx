@@ -38,7 +38,7 @@ export function AutomateStatsNavbarV2() {
     return (
         <Navigation.Section value={StatsNavbarViewSections.Automate}>
             <Navigation.SectionTrigger data-candu-id="navbar-block-ai-agent">
-                AI Agent
+                <span className={css.sectionTriggerTitle}>AI Agent</span>
                 <Navigation.SectionIndicator />
             </Navigation.SectionTrigger>
             <Navigation.SectionContent className={css.sectionContent}>
