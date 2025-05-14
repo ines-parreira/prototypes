@@ -25,7 +25,7 @@ import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 import safeDivide from 'pages/stats/automate/aiSalesAgent/util/safeDivide'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
+import { compare } from 'utils'
 
 import { FocusActivationModal } from '../utils'
 
@@ -64,39 +64,19 @@ export const computeActivationPercentage = (
     return Math.round(safeDivide(currentScore, totalScore) * 100)
 }
 
-export const useStoreConfigurations = (
-    accountDomain: string,
-    singleStoreName?: string,
-) => {
-    const stores = useAppSelector(getShopifyIntegrationsSortedByName)
-
-    const filteredStoresName = useMemo(() => {
-        const storeNames = stores.map((store) => store.name)
-        if (singleStoreName) {
-            return storeNames.filter((store) => store === singleStoreName)
-        }
-
-        return storeNames
-    }, [stores, singleStoreName])
-
+export const useStoreConfigurations = (accountDomain: string) => {
     const { storeConfigurations: allStoreConfigurations, isLoading } =
         useStoreConfigurationForAccount({
             accountDomain,
-            storesName: filteredStoresName,
         })
 
     const storeConfigurations: StoreConfiguration[] = useMemo(() => {
-        if (singleStoreName) {
-            return (
-                allStoreConfigurations?.filter(
-                    (storeConfiguration) =>
-                        storeConfiguration.storeName === singleStoreName,
-                ) ?? []
-            )
-        }
-
-        return allStoreConfigurations ?? []
-    }, [allStoreConfigurations, singleStoreName])
+        return (
+            allStoreConfigurations?.sort((a, b) =>
+                compare(a.storeName, b.storeName),
+            ) ?? []
+        )
+    }, [allStoreConfigurations])
 
     const storeNames = useMemo(() => {
         return storeConfigurations.map((it) => it.storeName)

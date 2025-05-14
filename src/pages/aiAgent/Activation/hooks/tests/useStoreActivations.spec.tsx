@@ -21,6 +21,7 @@ import {
     ComputeActivationPercentage,
     computeActivationPercentage,
     useStoreActivations,
+    useStoreConfigurations,
 } from '../useStoreActivations'
 
 jest.mock('pages/aiAgent/hooks/useStoreConfigurationForAccount')
@@ -136,6 +137,54 @@ describe('computeActivationPercentage', () => {
             store3: createStoreActivation(true, true, false),
         }
         expect(computeActivationPercentage(state)).toBe(78)
+    })
+})
+
+describe('useStoreConfigurations', () => {
+    it('should return storeConfigurations sorted alphabetically', () => {
+        useStoreConfigurationForAccountMock.mockReturnValue({
+            storeConfigurations: [
+                getStoreConfigurationFixture({ storeName: 'store2' }),
+                getStoreConfigurationFixture({ storeName: 'store1' }),
+                getStoreConfigurationFixture({ storeName: 'store3' }),
+            ],
+            isLoading: false,
+        })
+
+        const { result } = renderHook(() =>
+            useStoreConfigurations('my-account'),
+        )
+        expect(result.current.storeConfigurations).toHaveLength(3)
+        expect(result.current.storeConfigurations[0].storeName).toEqual(
+            'store1',
+        )
+        expect(result.current.storeConfigurations[1].storeName).toEqual(
+            'store2',
+        )
+        expect(result.current.storeConfigurations[2].storeName).toEqual(
+            'store3',
+        )
+    })
+
+    it('should return storeNames sorted alphabetically', () => {
+        useStoreConfigurationForAccountMock.mockReturnValue({
+            storeConfigurations: [
+                getStoreConfigurationFixture({ storeName: 'store2' }),
+                getStoreConfigurationFixture({ storeName: 'store1' }),
+                getStoreConfigurationFixture({ storeName: 'store3' }),
+            ],
+            isLoading: false,
+        })
+
+        const { result } = renderHook(() =>
+            useStoreConfigurations('my-account'),
+        )
+        expect(result.current.storeNames).toHaveLength(3)
+        expect(result.current.storeNames).toEqual([
+            'store1',
+            'store2',
+            'store3',
+        ])
     })
 })
 
