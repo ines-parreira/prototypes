@@ -12,3 +12,8 @@ export type Store = {
     type: string
     channels: Channel[]
 }
+
+export interface ChannelChange {
+    channelId: number
+    action: 'add' | 'remove'
+}
