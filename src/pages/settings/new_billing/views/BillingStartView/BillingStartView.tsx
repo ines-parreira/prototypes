@@ -77,7 +77,6 @@ const BillingStartView = () => {
     const currentConvertPlan = useAppSelector(getCurrentConvertPlan)
     const isCurrentHelpdeskLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
     const payment = useAppSelector(paymentMethod)
-    const isPaymentShopify = payment === 'shopify'
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const isCurrentSubscriptionCanceled = currentSubscription.isEmpty()
 
@@ -416,12 +415,9 @@ const BillingStartView = () => {
                             Payment Information
                         </NavLink>
                     )}
-                    {/* Hide the 'Payment History' tab when customer pays via Shopify*/}
-                    {!isPaymentShopify && (
-                        <NavLink to={BILLING_PAYMENTS_HISTORY_PATH}>
-                            Payment History
-                        </NavLink>
-                    )}
+                    <NavLink to={BILLING_PAYMENTS_HISTORY_PATH}>
+                        Payment History
+                    </NavLink>
                 </SecondaryNavbar>
             }
             <div className={css.mainContainer}>
@@ -455,11 +451,9 @@ const BillingStartView = () => {
                                 }
                             />
                         </Route>
-                        {!isPaymentShopify && (
-                            <Route exact path={BILLING_PAYMENTS_HISTORY_PATH}>
-                                <PaymentsHistoryView />
-                            </Route>
-                        )}
+                        <Route exact path={BILLING_PAYMENTS_HISTORY_PATH}>
+                            <PaymentsHistoryView />
+                        </Route>
                         <Route
                             path={`${BILLING_PROCESS_PATH}/:selectedProduct`}
                         >
