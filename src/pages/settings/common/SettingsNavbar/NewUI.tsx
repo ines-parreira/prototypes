@@ -160,6 +160,16 @@ const NewUI = () => {
                         requiredRole={ADMIN_ROLE}
                     />
                     <Item
+                        to={`channels/${IntegrationType.Phone}`}
+                        text="Voice"
+                        requiredRole={ADMIN_ROLE}
+                    />
+                    <Item
+                        to={`channels/${IntegrationType.Sms}`}
+                        text="SMS"
+                        requiredRole={ADMIN_ROLE}
+                    />
+                    <Item
                         to={`channels/${IntegrationType.GorgiasChat}`}
                         text="Chat"
                         requiredRole={ADMIN_ROLE}
