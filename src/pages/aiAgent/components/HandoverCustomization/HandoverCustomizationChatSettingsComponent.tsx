@@ -222,7 +222,7 @@ export const HandoverCustomizationChatSettingsComponent = ({
                                 find any relevant knowledge to answer the
                                 shopper&apos;s question. Further customize your{' '}
                                 <a
-                                    href="https://docs.gorgias.com/en-US/customize-how-ai-agent-hands-over-chats-to-live-agents-(beta)-1316578?utm_source=scaled_success&utm_medium=product&utm_campaign=learn-more-ai-handovers-channel-settings"
+                                    href="https://link.gorgias.com/edcd10"
                                     target="_blank"
                                 >
                                     Chat&apos;s handover behavior
