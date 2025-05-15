@@ -1,13 +1,6 @@
 import { TicketStatus } from '@gorgias/api-queries'
-import { TicketCompact } from '@gorgias/api-types'
 
 import { SORTABLE_KEY_TO_LABEL, SORTABLE_KEYS } from './constants'
-
-export type ReduxCustomerHistory = {
-    triedLoading: boolean
-    // It’s not exactly that type yet but it’s a start
-    tickets: TicketCompact[]
-}
 
 export type Range = {
     start: number | null

@@ -135,25 +135,6 @@ describe('customers actions', () => {
             })
     })
 
-    it('fetch customer history', () => {
-        mockServer.onGet('/api/tickets/').reply(200, { data: [{ id: 1 }] })
-
-        return store
-            .dispatch(actions.fetchCustomerHistory(2))
-            .then(() => expect(store.getActions()).toMatchSnapshot())
-            .then(() => {
-                store.clearActions()
-
-                return store
-                    .dispatch(
-                        actions.fetchCustomerHistory(2, {
-                            successCondition: () => false,
-                        }),
-                    )
-                    .then(() => expect(store.getActions()).toMatchSnapshot())
-            })
-    })
-
     it('merge customers', () => {
         mockServer
             .onPut('/api/customers/merge?target_id=2&source_id=3')

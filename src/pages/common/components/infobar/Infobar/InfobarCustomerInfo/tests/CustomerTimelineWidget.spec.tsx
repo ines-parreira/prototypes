@@ -5,17 +5,25 @@ import { TicketCompact } from '@gorgias/api-types'
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { useTimeline } from 'pages/common/components/timeline/hooks/useTimeline'
-import { useTrackTimelineToggle } from 'pages/common/components/timeline/hooks/useTrackTimelineToggle'
+import history from 'pages/history'
 import { getContext } from 'state/widgets/selectors'
 import { WidgetEnvironment } from 'state/widgets/types'
+import { TIMELINE_SEARCH_PARAM } from 'timeline/constants'
+import { useTimelineData } from 'timeline/hooks/useTimelineData'
+import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
+import { useTrackTimelineToggle } from 'timeline/hooks/useTrackTimelineToggle'
 import { assumeMock } from 'utils/testing'
 
 import { CustomerTimelineWidget } from '../CustomerTimelineWidget'
 
+jest.mock('pages/history', () => ({
+    replace: jest.fn(),
+}))
 jest.mock('@gorgias/merchant-ui-kit', () => ({
     ...jest.requireActual('@gorgias/merchant-ui-kit'),
-    Button: jest.fn(({ onClick }) => <button onClick={onClick}>Button</button>),
+    Button: jest.fn(({ onClick, children }) => (
+        <button onClick={onClick}>{children}</button>
+    )),
 }))
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -27,14 +35,18 @@ jest.mock('state/widgets/selectors', () => ({
     ...jest.requireActual('state/widgets/selectors'),
     getContext: jest.fn(),
 }))
-jest.mock('pages/common/components/timeline/hooks/useTimeline', () => ({
-    useTimeline: jest.fn(),
+jest.mock('timeline/hooks/useTimelineData', () => ({
+    useTimelineData: jest.fn(),
 }))
-jest.mock('pages/common/components/timeline/hooks/useTrackTimelineToggle')
+jest.mock('timeline/hooks/useTimelinePanel', () => ({
+    useTimelinePanel: jest.fn(),
+}))
+jest.mock('timeline/hooks/useTrackTimelineToggle')
 
 const useAppDispatchMock = assumeMock(useAppDispatch)
 const getContextMock = assumeMock(getContext)
-const useTimelineMock = assumeMock(useTimeline)
+const useTimelineDataMock = assumeMock(useTimelineData)
+const useTimelinePanelMock = assumeMock(useTimelinePanel)
 const useParamsMock = assumeMock(useParams)
 
 describe('CustomerTimelineButton', () => {
@@ -53,34 +65,37 @@ describe('CustomerTimelineButton', () => {
 
     const defaultProps = {
         isEditing: false,
-        customerId: 1,
+        shopperId: 1,
     }
 
     const openTimelineMock = jest.fn()
     const closeTimelineMock = jest.fn()
 
-    const defaultTimelineReturnValue = {
+    const defaultTimelinePanelReturnValue = {
         isOpen: false,
-        timelineShopperId: null,
-        isLoading: false,
-        hasTriedLoading: true,
-        tickets,
+        shopperId: null,
         openTimeline: openTimelineMock,
         closeTimeline: closeTimelineMock,
+    }
+
+    const defaultTimelineDataReturnValue = {
+        isLoading: false,
+        tickets,
     }
 
     beforeEach(() => {
         useAppDispatchMock.mockReturnValue(dispatchMock)
         getContextMock.mockReturnValue(WidgetEnvironment.Ticket)
-        useTimelineMock.mockReturnValue(defaultTimelineReturnValue)
+        useTimelinePanelMock.mockReturnValue(defaultTimelinePanelReturnValue)
+        useTimelineDataMock.mockReturnValue(defaultTimelineDataReturnValue)
         useParamsMock.mockReturnValue({
             ticketId: '1',
         })
     })
 
     it('should display a loading spinner when history is loading', () => {
-        useTimelineMock.mockReturnValue({
-            ...defaultTimelineReturnValue,
+        useTimelineDataMock.mockReturnValue({
+            ...defaultTimelineDataReturnValue,
             isLoading: true,
         })
 
@@ -94,18 +109,23 @@ describe('CustomerTimelineButton', () => {
         expect(useTrackTimelineToggle).toHaveBeenCalled()
     })
 
+    it('should call useTimelineData with shopperId', () => {
+        render(<CustomerTimelineWidget {...defaultProps} />)
+        expect(useTimelineData).toHaveBeenCalledWith(defaultProps.shopperId)
+    })
+
     it('should toggle timeline with correct customerId when clicked', () => {
         const { rerender } = render(
             <CustomerTimelineWidget {...defaultProps} />,
         )
         fireEvent.click(screen.getByRole('button'))
 
-        expect(openTimelineMock).toHaveBeenCalledWith(defaultProps.customerId)
+        expect(openTimelineMock).toHaveBeenCalledWith(defaultProps.shopperId)
 
-        useTimelineMock.mockReturnValue({
-            ...defaultTimelineReturnValue,
+        useTimelinePanelMock.mockReturnValue({
+            ...defaultTimelinePanelReturnValue,
             isOpen: true,
-            timelineShopperId: String(defaultProps.customerId),
+            shopperId: defaultProps.shopperId,
         })
         rerender(<CustomerTimelineWidget {...defaultProps} />)
         fireEvent.click(screen.getByRole('button'))
@@ -114,8 +134,8 @@ describe('CustomerTimelineButton', () => {
     })
 
     it('should display that there is no history', () => {
-        useTimelineMock.mockReturnValue({
-            ...defaultTimelineReturnValue,
+        useTimelineDataMock.mockReturnValue({
+            ...defaultTimelineDataReturnValue,
             tickets: [],
         })
 
@@ -125,8 +145,8 @@ describe('CustomerTimelineButton', () => {
 
         expect(screen.getByText('No other tickets')).toBeInTheDocument()
 
-        useTimelineMock.mockReturnValue({
-            ...defaultTimelineReturnValue,
+        useTimelineDataMock.mockReturnValue({
+            ...defaultTimelineDataReturnValue,
             tickets: [closedTickets[0]],
         })
 
@@ -143,8 +163,8 @@ describe('CustomerTimelineButton', () => {
     })
 
     it('should display a secondary button when there is only one open ticket which is the active ticket', () => {
-        useTimelineMock.mockReturnValue({
-            ...defaultTimelineReturnValue,
+        useTimelineDataMock.mockReturnValue({
+            ...defaultTimelineDataReturnValue,
             tickets: [openTickets[0]],
         })
         useParamsMock.mockReturnValue({
@@ -161,11 +181,62 @@ describe('CustomerTimelineButton', () => {
         )
     })
 
+    it('should call history.replace when the widget is unmounted with same customerId as opened timeline', () => {
+        window.location.search = `?${TIMELINE_SEARCH_PARAM}=${defaultProps.shopperId}`
+        const { unmount } = render(<CustomerTimelineWidget {...defaultProps} />)
+
+        unmount()
+
+        expect(history.replace).toHaveBeenCalledWith({
+            search: ``,
+        })
+    })
+
+    describe('when another timeline is open', () => {
+        it('should display a forum icon', () => {
+            useTimelinePanelMock.mockReturnValue({
+                ...defaultTimelinePanelReturnValue,
+                isOpen: true,
+                shopperId: defaultProps.shopperId + 1,
+            })
+            render(<CustomerTimelineWidget {...defaultProps} />)
+            expect(Button).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    leadingIcon: 'forum',
+                }),
+                {},
+            )
+        })
+
+        it('should display the correct text', () => {
+            useTimelinePanelMock.mockReturnValue({
+                ...defaultTimelinePanelReturnValue,
+                isOpen: true,
+                shopperId: defaultProps.shopperId + 1,
+            })
+            render(<CustomerTimelineWidget {...defaultProps} />)
+            expect(screen.getByText(/open this/i)).toBeInTheDocument()
+        })
+
+        it('should open timeline with correct customerId on button click', () => {
+            useTimelinePanelMock.mockReturnValue({
+                ...defaultTimelinePanelReturnValue,
+                isOpen: true,
+                shopperId: defaultProps.shopperId + 1,
+            })
+            render(<CustomerTimelineWidget {...defaultProps} />)
+            fireEvent.click(screen.getByRole('button'))
+            expect(openTimelineMock).toHaveBeenCalledWith(
+                defaultProps.shopperId,
+            )
+        })
+    })
+
     describe('Customer context or edit mode', () => {
         it('should display a message when there are no tickets', () => {
             getContextMock.mockReturnValue(WidgetEnvironment.Customer)
-            useTimelineMock.mockReturnValue({
-                ...defaultTimelineReturnValue,
+            useTimelineDataMock.mockReturnValue({
+                ...defaultTimelineDataReturnValue,
                 tickets: [],
             })
 
@@ -178,8 +249,8 @@ describe('CustomerTimelineButton', () => {
 
         it('should display that there is only 1 ticket', () => {
             getContextMock.mockReturnValue(WidgetEnvironment.Customer)
-            useTimelineMock.mockReturnValue({
-                ...defaultTimelineReturnValue,
+            useTimelineDataMock.mockReturnValue({
+                ...defaultTimelineDataReturnValue,
                 tickets: [closedTickets[0]],
             })
 

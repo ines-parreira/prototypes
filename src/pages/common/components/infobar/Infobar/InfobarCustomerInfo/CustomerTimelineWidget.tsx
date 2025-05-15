@@ -1,44 +1,64 @@
+import { useEffect } from 'react'
+
 import { useParams } from 'react-router-dom'
 
 import { TicketCompact } from '@gorgias/api-queries'
 import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { useTimeline } from 'pages/common/components/timeline/hooks/useTimeline'
-import { useTrackTimelineToggle } from 'pages/common/components/timeline/hooks/useTrackTimelineToggle'
+import history from 'pages/history'
 import { getContext } from 'state/widgets/selectors'
 import { WidgetEnvironment } from 'state/widgets/types'
+import { TIMELINE_SEARCH_PARAM } from 'timeline/constants'
+import { useTimelineData } from 'timeline/hooks/useTimelineData'
+import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
+import { useTrackTimelineToggle } from 'timeline/hooks/useTrackTimelineToggle'
 
 import css from './CustomerTimelineWidget.less'
 
 type Props = {
     isEditing: boolean
-    customerId: number
+    shopperId: number
 }
 
 const ForumIcon = () => (
     <span className={`material-icons ${css.mr} ${css.forumIcon}`}>forum</span>
 )
 
-export function CustomerTimelineWidget({ isEditing, customerId }: Props) {
+export function CustomerTimelineWidget({ isEditing, shopperId }: Props) {
     const {
-        tickets,
         isOpen,
-        hasTriedLoading,
-        isLoading,
         openTimeline,
         closeTimeline,
-    } = useTimeline()
+        shopperId: timelineShopperId,
+    } = useTimelinePanel()
+    const { tickets, isLoading } = useTimelineData(shopperId)
+
+    let isAnotherTimelineOpen = isOpen && timelineShopperId !== shopperId
 
     useTrackTimelineToggle()
+
+    // We want to remove the timeline if the customer related to it
+    // is not displayed anymore.
+    useEffect(() => {
+        return () => {
+            const searchParams = new URLSearchParams(window.location.search)
+            if (
+                searchParams.get(TIMELINE_SEARCH_PARAM) === shopperId.toString()
+            ) {
+                searchParams.delete(TIMELINE_SEARCH_PARAM)
+                history.replace({ search: searchParams.toString() })
+            }
+        }
+    }, [shopperId])
 
     const { ticketId: activeTicketId } = useParams<{ ticketId?: string }>()
 
     const widgetContext = useAppSelector(getContext)
 
     const ticketCount = tickets.length
-    const hasNoTickets = hasTriedLoading && ticketCount === 0
-    const hasNoHistory = hasTriedLoading && ticketCount < 2
+    const hasNoTickets = !isLoading && ticketCount === 0
+    const hasNoHistory = !isLoading && ticketCount < 2
     const { openTicketCount, snoozedTicketCount } = getTicketsCount(tickets)
 
     const showToggle = !(
@@ -64,6 +84,12 @@ export function CustomerTimelineWidget({ isEditing, customerId }: Props) {
         textContent = 'This customer doesn’t have any tickets yet.'
     if (showToggle && hasNoHistory) textContent = 'No other tickets'
 
+    const handleToggleTimeline = () => {
+        if (isAnotherTimelineOpen) return openTimeline(shopperId)
+        if (isOpen) return closeTimeline()
+        openTimeline(shopperId)
+    }
+
     return (
         <div
             className={`${css.timelineWidget} ${hasNoHistory ? css.noTimeline : ''}`}
@@ -76,14 +102,23 @@ export function CustomerTimelineWidget({ isEditing, customerId }: Props) {
                             ? 'primary'
                             : 'secondary'
                     }
-                    onClick={() =>
-                        isOpen ? closeTimeline() : openTimeline(customerId)
-                    }
+                    onClick={handleToggleTimeline}
                     size="small"
-                    leadingIcon={isOpen ? 'close' : 'forum'}
+                    leadingIcon={
+                        isAnotherTimelineOpen
+                            ? 'forum'
+                            : isOpen
+                              ? 'close'
+                              : 'forum'
+                    }
                     isDisabled={hasNoHistory}
                 >
-                    {isOpen ? 'Close' : 'Open'} Timeline
+                    {isAnotherTimelineOpen
+                        ? 'Open this'
+                        : isOpen
+                          ? 'Close'
+                          : 'Open'}{' '}
+                    Timeline
                 </Button>
             ) : (
                 <ForumIcon />

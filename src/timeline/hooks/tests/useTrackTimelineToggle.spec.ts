@@ -1,47 +1,43 @@
 import { fromJS, List } from 'immutable'
 
-import { TicketCompact } from '@gorgias/api-types'
-
 import { logEvent, SegmentEvent } from 'common/segment'
 import { getTicketState } from 'state/ticket/selectors'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
-import { useTimeline } from '../useTimeline'
+import { useTimelinePanel } from '../useTimelinePanel'
 import { useTrackTimelineToggle } from '../useTrackTimelineToggle'
 
 jest.mock('common/segment')
 jest.mock('hooks/useAppSelector', () => jest.fn((selector) => selector()))
-jest.mock('../useTimeline')
+jest.mock('../useTimelinePanel')
 jest.mock('state/ticket/selectors')
 
-const useTimelineMock = assumeMock(useTimeline)
+const useTimelinePanelMock = assumeMock(useTimelinePanel)
 const getTicketStateMock = assumeMock(getTicketState)
 const logEventMock = assumeMock(logEvent)
 
 describe('useTrackTimelineToggle', () => {
-    const dummyTicket1 = { id: 1 } as TicketCompact
-    const dummyTicket2 = { id: 2 } as TicketCompact
     const mockTicket = fromJS({
         messages: List([1, 2, 3]),
         channel: 'email',
     })
 
     beforeEach(() => {
-        useTimelineMock.mockReturnValue({
-            tickets: [{ dummyTicket1 }, dummyTicket2],
-            timelineShopperId: null,
-        } as ReturnType<typeof useTimeline>)
+        useTimelinePanelMock.mockReturnValue({
+            isOpen: false,
+            shopperId: null,
+        } as ReturnType<typeof useTimelinePanel>)
         getTicketStateMock.mockReturnValue(mockTicket)
     })
 
     it('should track when timeline is opened', () => {
         const { rerender } = renderHook(() => useTrackTimelineToggle())
 
-        useTimelineMock.mockReturnValue({
-            tickets: [dummyTicket1, dummyTicket2],
-            timelineShopperId: '123',
-        } as ReturnType<typeof useTimeline>)
+        useTimelinePanelMock.mockReturnValue({
+            isOpen: true,
+            shopperId: 123,
+        } as ReturnType<typeof useTimelinePanel>)
 
         rerender()
 
@@ -49,7 +45,6 @@ describe('useTrackTimelineToggle', () => {
             SegmentEvent.UserHistoryToggled,
             {
                 open: true,
-                nbOfTicketsInTimeline: 2,
                 nbOfMessagesInTicket: 3,
                 channel: 'email',
             },
@@ -57,17 +52,17 @@ describe('useTrackTimelineToggle', () => {
     })
 
     it('should track when timeline is closed', () => {
-        useTimelineMock.mockReturnValue({
-            tickets: [dummyTicket1, dummyTicket2],
-            timelineShopperId: '123',
-        } as ReturnType<typeof useTimeline>)
+        useTimelinePanelMock.mockReturnValue({
+            isOpen: true,
+            shopperId: 123,
+        } as ReturnType<typeof useTimelinePanel>)
 
         const { rerender } = renderHook(() => useTrackTimelineToggle())
 
-        useTimelineMock.mockReturnValue({
-            tickets: [dummyTicket1, dummyTicket2],
-            timelineShopperId: null,
-        } as ReturnType<typeof useTimeline>)
+        useTimelinePanelMock.mockReturnValue({
+            isOpen: false,
+            shopperId: null,
+        } as ReturnType<typeof useTimelinePanel>)
 
         rerender()
 
@@ -75,7 +70,6 @@ describe('useTrackTimelineToggle', () => {
             SegmentEvent.UserHistoryToggled,
             {
                 open: false,
-                nbOfTicketsInTimeline: 2,
                 nbOfMessagesInTicket: 3,
                 channel: 'email',
             },
@@ -99,10 +93,10 @@ describe('useTrackTimelineToggle', () => {
 
         const { rerender } = renderHook(() => useTrackTimelineToggle())
 
-        useTimelineMock.mockReturnValue({
-            tickets: [dummyTicket1, dummyTicket2],
-            timelineShopperId: '123',
-        } as ReturnType<typeof useTimeline>)
+        useTimelinePanelMock.mockReturnValue({
+            isOpen: true,
+            shopperId: 123,
+        } as ReturnType<typeof useTimelinePanel>)
 
         rerender()
 
@@ -110,7 +104,6 @@ describe('useTrackTimelineToggle', () => {
             SegmentEvent.UserHistoryToggled,
             {
                 open: true,
-                nbOfTicketsInTimeline: 2,
                 nbOfMessagesInTicket: 0,
                 channel: 'email',
             },

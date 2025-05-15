@@ -7,7 +7,7 @@ import { useFlag } from 'core/flags'
 import { ticketInputFieldDefinition } from 'fixtures/customField'
 import { assumeMock } from 'utils/testing'
 
-import { SourceBadge } from '../SourceBadge'
+import { SourceBadge } from '../../tickets/ticket-detail/components/SourceBadge'
 import TicketCard from '../TicketCard'
 import TicketFields from '../TicketFields'
 
@@ -15,7 +15,7 @@ jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 jest.mock('pages/common/utils/DatetimeLabel', () => jest.fn(() => <div />))
-jest.mock('../SourceBadge', () => ({
+jest.mock('tickets/ticket-detail/components/SourceBadge', () => ({
     SourceBadge: jest.fn(() => <div />),
 }))
 jest.mock('../TicketFields', () => jest.fn(() => <div />))
@@ -59,6 +59,7 @@ describe('TicketCard', () => {
         expect(SourceBadge).toHaveBeenCalledWith(
             {
                 channel: ticket.channel,
+                size: 'small',
             },
             {},
         )

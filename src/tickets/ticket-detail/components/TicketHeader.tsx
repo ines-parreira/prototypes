@@ -1,51 +1,33 @@
-import type { Ticket, TicketCompact } from '@gorgias/api-queries'
-import { IconButton } from '@gorgias/merchant-ui-kit'
+import { FC } from 'react'
 
-import { TicketStatus } from 'business/types/ticket'
-import SourceIcon from 'pages/common/components/SourceIcon'
-import { StatusLabel } from 'pages/common/utils/labels'
+import type { Ticket, TicketCompact } from '@gorgias/api-queries'
+
+import { SourceBadge } from './SourceBadge'
+import { TicketStatus } from './TicketStatus'
 
 import css from './TicketHeader.less'
 
 type Props = {
     ticket: Ticket | TicketCompact
-    onClose?: () => void
+    AdditionalAction?: FC
 }
 
-export function TicketHeader({ ticket, onClose }: Props) {
+export function TicketHeader({ ticket, AdditionalAction }: Props) {
     return (
         <div className={css.container}>
             <header className={css.header}>
-                <div className={css.channel}>
-                    <SourceIcon
-                        className={css.channelIcon}
-                        type={ticket.channel}
-                    />
-                </div>
+                <SourceBadge channel={ticket.channel} />
                 <div className={css.subjectWrapper}>
                     <div className={css.subjectInner}>
                         <h2 className={css.subject}>{ticket.subject}</h2>
-                        <StatusLabel
-                            status={
-                                ticket.snooze_datetime
-                                    ? 'snoozed'
-                                    : ticket.status || TicketStatus.Open
-                            }
-                        />
+                        <TicketStatus ticket={ticket} />
                     </div>
                     <p className={css.ticketId}>ID: {ticket.id}</p>
                 </div>
 
-                <div className={css.actions}>
-                    {!!onClose && (
-                        <IconButton
-                            fillStyle="ghost"
-                            icon="close"
-                            intent="secondary"
-                            onClick={onClose}
-                        />
-                    )}
-                </div>
+                {!!AdditionalAction && (
+                    <div className={css.actions}>{<AdditionalAction />}</div>
+                )}
             </header>
 
             <pre>
