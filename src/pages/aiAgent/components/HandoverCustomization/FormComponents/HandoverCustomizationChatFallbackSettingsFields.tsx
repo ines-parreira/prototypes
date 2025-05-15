@@ -1,11 +1,9 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
 import cn from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { Banner, LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     getGorgiasChatLanguageByCode,
     getLanguagesFromChatConfig,
@@ -18,8 +16,6 @@ import { GorgiasChatIntegration } from 'models/integration/types'
 import { formFieldsConfiguration } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatFallbackSettingsForm.utils'
 import { FlagLanguageItem } from 'pages/common/components/LanguageBulletList'
 import Caption from 'pages/common/forms/Caption/Caption'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import { Value } from 'pages/common/forms/SelectField/types'
 import TextArea from 'pages/common/forms/TextArea'
@@ -60,8 +56,6 @@ export const HandoverCustomizationChatFallbackSettingsFields = ({
     integrationMeta,
     onFallbackMessageChange,
 }: Props) => {
-    const isSettingRevampEnabled =
-        useFlags()[FeatureFlagKey.AiAgentSettingsRevamp]
     const [selectedLanguageCode, setSelectedLanguageCode] = useState(
         getPrimaryLanguageFromChatConfig(integrationMeta),
     )
@@ -98,13 +92,6 @@ export const HandoverCustomizationChatFallbackSettingsFields = ({
 
     return (
         <>
-            {!isSettingRevampEnabled && (
-                <Banner variant="inline" className={css.fallbackBanner}>
-                    Enter a message, not Guidance. It will be sent as-is to
-                    customers during error.
-                </Banner>
-            )}
-
             <div
                 className={cn(
                     commonCss.sectionContainer,
@@ -125,13 +112,6 @@ export const HandoverCustomizationChatFallbackSettingsFields = ({
                         >
                             Error Message
                         </Label>
-
-                        {!isSettingRevampEnabled && (
-                            <IconTooltip className={css.icon} icon="info">
-                                During an error, a predefined message will be
-                                sent to the customer.
-                            </IconTooltip>
-                        )}
                     </div>
 
                     {availableLanguageItems.length > 1 && (
@@ -145,67 +125,29 @@ export const HandoverCustomizationChatFallbackSettingsFields = ({
                     )}
                 </div>
 
-                {!isSettingRevampEnabled ? (
-                    <InputField
-                        id="handover-customization-fallback-message"
-                        maxLength={
-                            formFieldsConfiguration.fallbackMessage.maxLength
-                        }
-                        name="handover-customization-fallback-message"
-                        aria-label="Error message"
-                        role="textbox"
-                        placeholder={
-                            isSettingRevampEnabled
-                                ? "We're experiencing a temporary issue. Please leave your email for assistance."
-                                : 'Please leave your email address and we’ll get back to you.'
-                        }
-                        onChange={(value: string) =>
-                            onFallbackMessageChange(value, selectedLanguageCode)
-                        }
-                        value={values[selectedLanguageCode]?.fallbackMessage}
-                    />
-                ) : (
-                    <TextArea
-                        id="handover-customization-fallback-message"
-                        maxLength={
-                            formFieldsConfiguration.fallbackMessage.maxLength
-                        }
-                        name="handover-customization-fallback-message"
-                        aria-label="Error message"
-                        role="textbox"
-                        placeholder={
-                            isSettingRevampEnabled
-                                ? "We're experiencing a temporary issue. Please leave your email for assistance."
-                                : 'Please leave your email address and we’ll get back to you.'
-                        }
-                        onChange={(value: string) =>
-                            onFallbackMessageChange(value, selectedLanguageCode)
-                        }
-                        value={values[selectedLanguageCode]?.fallbackMessage}
-                        rows={4}
-                    />
-                )}
+                <TextArea
+                    id="handover-customization-fallback-message"
+                    maxLength={
+                        formFieldsConfiguration.fallbackMessage.maxLength
+                    }
+                    name="handover-customization-fallback-message"
+                    aria-label="Error message"
+                    role="textbox"
+                    placeholder={
+                        "We're experiencing a temporary issue. Please leave your email for assistance."
+                    }
+                    onChange={(value: string) =>
+                        onFallbackMessageChange(value, selectedLanguageCode)
+                    }
+                    value={values[selectedLanguageCode]?.fallbackMessage}
+                    rows={4}
+                />
 
                 <Caption className="caption-regular mt-1">
-                    {!isSettingRevampEnabled ? (
-                        <>
-                            If an error occurs, AI Agent will send this exact
-                            message to the customer. If left blank, the default
-                            message will be used:{' '}
-                            <i>
-                                “Please leave your email address and we’ll get
-                                back to you.”
-                            </i>
-                        </>
-                    ) : (
-                        <>
-                            AI Agent will send the exact text if it encounters
-                            an unexpected error handing over. By default, it
-                            sends the following message: “We&apos;re
-                            experiencing a temporary issue. Please leave your
-                            email for assistance.”
-                        </>
-                    )}
+                    AI Agent will send the exact text if it encounters an
+                    unexpected error handing over. By default, it sends the
+                    following message: “We&apos;re experiencing a temporary
+                    issue. Please leave your email for assistance.”
                 </Caption>
             </div>
         </>

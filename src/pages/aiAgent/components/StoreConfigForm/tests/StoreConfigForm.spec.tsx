@@ -3,12 +3,10 @@ import { ComponentProps } from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { AxiosError } from 'axios'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { keyBy } from 'lodash'
 import moment from 'moment'
-import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
@@ -237,7 +235,7 @@ const useLocalStorageSpy = jest.spyOn(
 
 const findToggle = (type: 'email' | 'chat') =>
     screen
-        .queryAllByLabelText('Enable AI Agent')
+        .queryAllByRole('checkbox')
         .find(
             (toggle) =>
                 toggle.getAttribute('name') === `toggle-ai-agent-${type}`,
@@ -470,7 +468,7 @@ describe('<StoreConfigForm />', () => {
     it('should render the component', () => {
         renderComponent()
 
-        expect(screen.getByText('General')).toBeInTheDocument()
+        expect(screen.getByText('Tone of voice')).toBeInTheDocument()
     })
 
     it('should render new email integration caption', () => {
@@ -771,7 +769,7 @@ describe('<StoreConfigForm />', () => {
 
         renderComponent()
 
-        const saveButton = screen.getByText(/Save Changes/i)
+        const saveButton = screen.getAllByText(/Save Changes/i)[0]
         fireEvent.click(saveButton)
 
         await waitFor(() => {
@@ -959,7 +957,6 @@ describe('<StoreConfigForm />', () => {
         mockFlags({
             [FeatureFlagKey.AiAgentChat]: true,
         })
-
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
             formValues: {
@@ -971,8 +968,8 @@ describe('<StoreConfigForm />', () => {
         })
 
         renderComponent()
-        const chatChannelCheckbox = findToggle('chat')!
-        fireEvent.click(chatChannelCheckbox)
+        const chatChannelToggle = findToggle('chat')!
+        fireEvent.click(chatChannelToggle)
 
         expect(updateValueMocked).toHaveBeenCalledTimes(1)
         expect(updateValueMocked).toHaveBeenLastCalledWith(
@@ -1043,7 +1040,7 @@ describe('<StoreConfigForm />', () => {
         })
 
         renderComponent()
-        const saveChangesButton = screen.getByText('Save Changes')
+        const saveChangesButton = screen.getAllByText('Save Changes')[0]
         fireEvent.click(saveChangesButton)
 
         renderComponent()
@@ -1078,7 +1075,7 @@ describe('<StoreConfigForm />', () => {
         })
 
         renderComponent()
-        const saveChangesButton = screen.getByText('Save Changes')
+        const saveChangesButton = screen.getAllByText('Save Changes')[0]
         fireEvent.click(saveChangesButton)
 
         renderComponent()
@@ -1086,6 +1083,446 @@ describe('<StoreConfigForm />', () => {
         expect(
             defaultUseAiAgentOnboardingNotification.handleOnCancelActivateAiAgentNotification,
         ).toHaveBeenCalled()
+    })
+
+    it('should display drawer', async () => {
+        renderComponent()
+
+        // Click on the Tags row to open the drawer
+        userEvent.click(screen.getAllByText('Tags')[0])
+
+        expect(getDrawer()).toBeVisible()
+        expect(getDrawer()).toBeInTheDocument()
+        expect(
+            within(getDrawer()).getByText('Save Changes'),
+        ).toBeInTheDocument()
+        expect(within(getDrawer()).getByText('Cancel')).toBeInTheDocument()
+    })
+
+    it('should update form values when saving drawer content', async () => {
+        const mockOnSubmit = jest.fn()
+        mockedUseConfigurationForm.mockReturnValue({
+            ...defaultUseConfigurationFormValues,
+            handleOnSave: mockOnSubmit,
+        })
+
+        renderComponent()
+
+        // Open the drawer by clicking on Tags
+        userEvent.click(screen.getAllByText('Tags')[0])
+
+        // Save changes
+        const saveButton = within(getDrawer()).getByRole('button', {
+            name: /save changes/i,
+        })
+        userEvent.click(saveButton)
+
+        expect(mockOnSubmit).toHaveBeenCalled()
+    })
+
+    it('should update form values when saving drawer content with new tags', async () => {
+        renderComponent()
+
+        // Open the drawer by clicking on Tags
+        userEvent.click(screen.getAllByText('Tags')[0])
+
+        userEvent.click(screen.getByRole('button', { name: /add tag/i }))
+        userEvent.click(screen.getByText(/choose tag/i))
+        await userEvent.type(screen.getByRole('textbox'), 'Test')
+
+        // Save changes
+        const saveButton = within(getDrawer()).getByRole('button', {
+            name: /save changes/i,
+        })
+        userEvent.click(saveButton)
+
+        expect(updateValueMocked).toHaveBeenCalledWith('tags', [
+            {
+                name: '',
+                description: 'Test',
+            },
+        ])
+    })
+
+    it('should update form values when saving drawer content with new ticket fields', async () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]: true,
+        })
+        renderComponent()
+
+        // Open the drawer by clicking on Ticket Fields
+        userEvent.click(screen.getAllByText('Ticket Fields')[0])
+        userEvent.click(
+            screen.getByRole('button', { name: /add ticket field/i }),
+        )
+        userEvent.click(screen.getByText(ticketInputFieldDefinition.label))
+
+        // Save changes
+        const saveButton = within(getDrawer()).getByRole('button', {
+            name: /save changes/i,
+        })
+        userEvent.click(saveButton)
+
+        expect(updateValueMocked).toHaveBeenCalledWith('customFieldIds', [123])
+    })
+
+    it('should update form values when saving drawer content with new handover topics', async () => {
+        renderComponent()
+
+        // Open the drawer by clicking on the handover topics link
+        userEvent.click(screen.getByText('handover topics'))
+        userEvent.click(screen.getByRole('button', { name: /add topic/i }))
+        await userEvent.type(screen.getByRole('textbox'), 'Test')
+
+        // Save changes
+        const saveButton = within(getDrawer()).getByRole('button', {
+            name: /save changes/i,
+        })
+        userEvent.click(saveButton)
+
+        expect(updateValueMocked).toHaveBeenCalledWith('excludedTopics', [
+            'Test',
+        ])
+    })
+
+    it('should not update form values when closing drawer', async () => {
+        const mockOnSubmit = jest.fn()
+        mockedUseConfigurationForm.mockReturnValue({
+            ...defaultUseConfigurationFormValues,
+            handleOnSave: mockOnSubmit,
+        })
+
+        renderComponent()
+
+        // Open the drawer by clicking on Tags
+        userEvent.click(screen.getAllByText('Tags')[0])
+
+        // Add tags
+        userEvent.click(screen.getByRole('button', { name: 'Add Tag' }))
+
+        // Cancel changes
+        const cancelButton = screen.getByRole('button', { name: /cancel/i })
+        userEvent.click(cancelButton)
+
+        expect(mockOnSubmit).not.toHaveBeenCalled()
+    })
+
+    it('should switch drawer content when clicking on different features', async () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]: true,
+        })
+        renderComponent()
+
+        // Open Tags drawer
+        userEvent.click(screen.getAllByText('Tags')[0])
+        expect(within(getDrawer()).getByText('Tags')).toBeVisible()
+
+        // Close drawer
+        const cancelButton = within(getDrawer()).getByRole('button', {
+            name: /cancel/i,
+        })
+        userEvent.click(cancelButton)
+
+        // Open Ticket Fields drawer
+        userEvent.click(screen.getAllByText('Ticket Fields')[0])
+        expect(
+            within(getDrawer()).getAllByText('Ticket Fields')[0],
+        ).toBeVisible()
+    })
+
+    it('should not render the drawer when isOpen is false', () => {
+        renderComponent()
+
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
+
+    it('should update activeDrawerValues when tags in formValues change', async () => {
+        mockedUseConfigurationForm.mockReturnValue({
+            ...defaultUseConfigurationFormValues,
+            formValues: {
+                ...initialFormValues,
+                tags: [{ name: 'tag1', description: 'tag1' }],
+            },
+        })
+
+        const { rerender } = renderComponent()
+
+        await userEvent.click(screen.getAllByText('Tags')[0])
+
+        expect(screen.getByText('tag1')).toBeInTheDocument()
+        expect(screen.queryByText('tag2')).not.toBeInTheDocument()
+
+        mockedUseConfigurationForm.mockReturnValue({
+            ...defaultUseConfigurationFormValues,
+            formValues: {
+                ...initialFormValues,
+                tags: [
+                    { name: 'tag1', description: 'tag1' },
+                    { name: 'tag2', description: 'tag2' },
+                ],
+            },
+        })
+
+        rerender(
+            <Provider store={mockedStore}>
+                <QueryClientProvider client={queryClient}>
+                    <AiAgentFormChangesProvider>
+                        <StoreConfigForm
+                            shopName="test-shop"
+                            accountDomain="test-domain"
+                            shopType="shopify"
+                            faqHelpCenters={
+                                [
+                                    {
+                                        id: 1,
+                                        name: 'help center 1',
+                                        type: 'faq',
+                                    },
+                                    {
+                                        id: 2,
+                                        name: 'help center 2',
+                                        type: 'faq',
+                                    },
+                                ] as unknown as HelpCenter[]
+                            }
+                        />
+                    </AiAgentFormChangesProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(screen.getByText('tag2')).toBeInTheDocument()
+    })
+
+    it('should update activeDrawerValues when tags in formValues change with an undefined value', async () => {
+        mockedUseConfigurationForm.mockReturnValue({
+            ...defaultUseConfigurationFormValues,
+            formValues: {
+                ...initialFormValues,
+                tags: [{ name: 'tag1', description: 'tag1' }],
+            },
+        })
+
+        const { rerender } = renderComponent()
+
+        await userEvent.click(screen.getAllByText('Tags')[0])
+
+        expect(screen.getByText('tag1')).toBeInTheDocument()
+
+        mockedUseConfigurationForm.mockReturnValue({
+            ...defaultUseConfigurationFormValues,
+            formValues: {
+                ...initialFormValues,
+                tags: undefined as any,
+            },
+        })
+
+        rerender(
+            <Provider store={mockedStore}>
+                <QueryClientProvider client={queryClient}>
+                    <AiAgentFormChangesProvider>
+                        <StoreConfigForm
+                            shopName="test-shop"
+                            accountDomain="test-domain"
+                            shopType="shopify"
+                            faqHelpCenters={
+                                [
+                                    {
+                                        id: 1,
+                                        name: 'help center 1',
+                                        type: 'faq',
+                                    },
+                                    {
+                                        id: 2,
+                                        name: 'help center 2',
+                                        type: 'faq',
+                                    },
+                                ] as unknown as HelpCenter[]
+                            }
+                        />
+                    </AiAgentFormChangesProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(screen.queryByText('tag1')).not.toBeInTheDocument()
+    })
+
+    it('should update activeDrawerValues when customFieldIds in formValues change', async () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]: true,
+        })
+        mockedUseConfigurationForm.mockReturnValue({
+            ...defaultUseConfigurationFormValues,
+            formValues: {
+                ...initialFormValues,
+                customFieldIds: [ticketInputFieldDefinition.id],
+            },
+        })
+
+        const { rerender } = renderComponent()
+
+        await userEvent.click(screen.getByText('Ticket Fields'))
+
+        screen.debug(document.body, Infinity)
+        expect(
+            screen.getByDisplayValue(ticketInputFieldDefinition.label),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByDisplayValue(ticketDropdownFieldDefinition.label),
+        ).not.toBeInTheDocument()
+
+        mockedUseConfigurationForm.mockReturnValue({
+            ...defaultUseConfigurationFormValues,
+            formValues: {
+                ...initialFormValues,
+                customFieldIds: [
+                    ticketInputFieldDefinition.id,
+                    ticketDropdownFieldDefinition.id,
+                ],
+            },
+        })
+
+        rerender(
+            <Provider store={mockedStore}>
+                <QueryClientProvider client={queryClient}>
+                    <AiAgentFormChangesProvider>
+                        <StoreConfigForm
+                            shopName="test-shop"
+                            accountDomain="test-domain"
+                            shopType="shopify"
+                            faqHelpCenters={
+                                [
+                                    {
+                                        id: 1,
+                                        name: 'help center 1',
+                                        type: 'faq',
+                                    },
+                                    {
+                                        id: 2,
+                                        name: 'help center 2',
+                                        type: 'faq',
+                                    },
+                                ] as unknown as HelpCenter[]
+                            }
+                        />
+                    </AiAgentFormChangesProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(
+            screen.getByDisplayValue(ticketDropdownFieldDefinition.label),
+        ).toBeInTheDocument()
+    })
+
+    it('should update activeDrawerValues when excludedTopics in formValues change', async () => {
+        mockedUseConfigurationForm.mockReturnValue({
+            ...defaultUseConfigurationFormValues,
+            formValues: {
+                ...initialFormValues,
+                excludedTopics: ['topic1'],
+            },
+        })
+
+        const { rerender } = renderComponent()
+
+        await userEvent.click(screen.getByText('handover topics'))
+
+        expect(screen.getByDisplayValue('topic1')).toBeInTheDocument()
+        expect(screen.queryByDisplayValue('topic2')).not.toBeInTheDocument()
+
+        mockedUseConfigurationForm.mockReturnValue({
+            ...defaultUseConfigurationFormValues,
+            formValues: {
+                ...initialFormValues,
+                excludedTopics: ['topic1', 'topic2'],
+            },
+        })
+
+        rerender(
+            <Provider store={mockedStore}>
+                <QueryClientProvider client={queryClient}>
+                    <AiAgentFormChangesProvider>
+                        <StoreConfigForm
+                            shopName="test-shop"
+                            accountDomain="test-domain"
+                            shopType="shopify"
+                            faqHelpCenters={
+                                [
+                                    {
+                                        id: 1,
+                                        name: 'help center 1',
+                                        type: 'faq',
+                                    },
+                                    {
+                                        id: 2,
+                                        name: 'help center 2',
+                                        type: 'faq',
+                                    },
+                                ] as unknown as HelpCenter[]
+                            }
+                        />
+                    </AiAgentFormChangesProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(screen.getByDisplayValue('topic2')).toBeInTheDocument()
+    })
+
+    it('should update activeDrawerValues when excludedTopics is undefined in formValues change', async () => {
+        mockedUseConfigurationForm.mockReturnValue({
+            ...defaultUseConfigurationFormValues,
+            formValues: {
+                ...initialFormValues,
+                excludedTopics: ['topic1'],
+            },
+        })
+
+        const { rerender } = renderComponent()
+
+        await userEvent.click(screen.getByText('handover topics'))
+
+        expect(screen.getByDisplayValue('topic1')).toBeInTheDocument()
+
+        mockedUseConfigurationForm.mockReturnValue({
+            ...defaultUseConfigurationFormValues,
+            formValues: {
+                ...initialFormValues,
+                excludedTopics: undefined as any,
+            },
+        })
+
+        rerender(
+            <Provider store={mockedStore}>
+                <QueryClientProvider client={queryClient}>
+                    <AiAgentFormChangesProvider>
+                        <StoreConfigForm
+                            shopName="test-shop"
+                            accountDomain="test-domain"
+                            shopType="shopify"
+                            faqHelpCenters={
+                                [
+                                    {
+                                        id: 1,
+                                        name: 'help center 1',
+                                        type: 'faq',
+                                    },
+                                    {
+                                        id: 2,
+                                        name: 'help center 2',
+                                        type: 'faq',
+                                    },
+                                ] as unknown as HelpCenter[]
+                            }
+                        />
+                    </AiAgentFormChangesProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(screen.queryByDisplayValue('topic1')).not.toBeInTheDocument()
     })
 
     describe('AI Agent ticket view modal', () => {
@@ -1122,7 +1559,7 @@ describe('<StoreConfigForm />', () => {
 
             renderComponent({})
 
-            const saveButton = screen.getByText(/Save Changes/i)
+            const saveButton = screen.getAllByText(/Save Changes/i)[0]
             fireEvent.click(saveButton)
 
             await waitFor(() => {
@@ -1167,7 +1604,7 @@ describe('<StoreConfigForm />', () => {
 
             renderComponent({})
 
-            const saveButton = screen.getByText(/Save Changes/i)
+            const saveButton = screen.getAllByText(/Save Changes/i)[0]
             fireEvent.click(saveButton)
 
             await waitFor(() => {
@@ -1213,7 +1650,7 @@ describe('<StoreConfigForm />', () => {
 
             renderComponent({})
 
-            const saveButton = screen.getByText(/Save Changes/i)
+            const saveButton = screen.getAllByText(/Save Changes/i)[0]
             fireEvent.click(saveButton)
 
             await waitFor(() => {
@@ -1258,7 +1695,7 @@ describe('<StoreConfigForm />', () => {
 
             renderComponent({})
 
-            const saveButton = screen.getByText(/Save Changes/i)
+            const saveButton = screen.getAllByText(/Save Changes/i)[0]
             fireEvent.click(saveButton)
 
             await waitFor(() => {
@@ -1302,7 +1739,7 @@ describe('<StoreConfigForm />', () => {
             ).toBeInvalid()
         })
 
-        it('should not show model when trial mode is enabled', async () => {
+        it('should not show modal when trial mode is enabled', async () => {
             mockFlags({
                 [FeatureFlagKey.AiAgentTrialMode]: false,
             })
@@ -1338,7 +1775,7 @@ describe('<StoreConfigForm />', () => {
 
             renderComponent({})
 
-            const saveButton = screen.getByText(/Save Changes/i)
+            const saveButton = screen.getAllByText(/Save Changes/i)[0]
             fireEvent.click(saveButton)
 
             await waitFor(() => {
@@ -1351,7 +1788,7 @@ describe('<StoreConfigForm />', () => {
             })
         })
 
-        it('should show model when switching form trial mode to live mode', async () => {
+        it('should show modal when switching form trial mode to live mode', async () => {
             mockFlags({
                 [FeatureFlagKey.AiAgentTrialMode]: false,
             })
@@ -1387,7 +1824,7 @@ describe('<StoreConfigForm />', () => {
 
             renderComponent({})
 
-            const saveButton = screen.getByText(/Save Changes/i)
+            const saveButton = screen.getAllByText(/Save Changes/i)[0]
             fireEvent.click(saveButton)
 
             await waitFor(() => {
@@ -1521,103 +1958,26 @@ describe('<StoreConfigForm />', () => {
             const reviewDraftsButton = screen.queryByText('Review Drafts')
             expect(reviewDraftsButton).not.toBeInTheDocument()
         })
+    })
 
-        it('should update form values when changing tags', async () => {
-            const mockOnSubmit = jest.fn()
-            mockedUseConfigurationForm.mockReturnValue({
-                ...defaultUseConfigurationFormValues,
-                handleOnSave: mockOnSubmit,
-            })
+    describe('AI Autofill section', () => {
+        it('should hide the Ticket Fields section if the FF is not activated', () => {
+            const { container } = renderComponent()
+            const section = within(container).queryByText('Ticket Fields')
 
-            renderComponent()
-
-            // Add tags
-            userEvent.click(screen.getByRole('button', { name: 'Add Tag' }))
-
-            // Save changes
-            const saveButton = screen.getByRole('button', {
-                name: /save changes/i,
-            })
-            userEvent.click(saveButton)
-
-            expect(mockOnSubmit).toHaveBeenCalled()
+            expect(section).not.toBeInTheDocument()
         })
 
-        it('should update form values when changing tags', async () => {
+        it('should show the Ticket Fields section if the FF is activated', () => {
             mockFlags({
                 [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]:
                     true,
             })
 
-            const mockOnSubmit = jest.fn()
-            mockedUseConfigurationForm.mockReturnValue({
-                ...defaultUseConfigurationFormValues,
-                handleOnSave: mockOnSubmit,
-            })
+            const { container } = renderComponent()
+            const section = within(container).getByText('Ticket Fields')
 
-            renderComponent()
-
-            // Add tags
-            userEvent.click(screen.getByRole('button', { name: 'Add Tag' }))
-
-            // Save changes
-            const saveButton = screen.getByRole('button', {
-                name: /save changes/i,
-            })
-            userEvent.click(saveButton)
-
-            expect(mockOnSubmit).toHaveBeenCalled()
-        })
-
-        describe('AI Autofill section', () => {
-            it('should display the legacy section for tags and hide the new section if the FF is deactivated', () => {
-                mockFlags({
-                    [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]:
-                        false,
-                })
-
-                const { container } = renderComponent()
-                const legacyH2 = within(container).queryByRole('heading', {
-                    level: 2,
-                    name: /AI ticket tagging/i, // case-insensitive
-                })
-                const newH2 = within(container).queryByRole('heading', {
-                    level: 2,
-                    name: /AI Autofill: Tags & Ticket Fields/i, // case-insensitive
-                })
-                const customFieldsFormComponent = within(
-                    container,
-                ).queryByTestId(
-                    'ai-agent-store-configuration-custom-fields-form-component',
-                )
-                expect(customFieldsFormComponent).not.toBeInTheDocument()
-                expect(legacyH2).toBeInTheDocument()
-                expect(newH2).not.toBeInTheDocument()
-            })
-            it('should display the new section for AI Autofill and hide the legacy section if the FF is activated', () => {
-                mockFlags({
-                    [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]:
-                        true,
-                })
-
-                const { container } = renderComponent()
-                const legacyH2 = within(container).queryByRole('heading', {
-                    level: 2,
-                    name: /AI ticket tagging/i, // case-insensitive
-                })
-                const newH2 = within(container).queryByRole('heading', {
-                    level: 2,
-                    name: /AI Autofill: Tags & Ticket Fields/i, // case-insensitive
-                })
-                const customFieldsFormComponent = within(
-                    container,
-                ).queryByTestId(
-                    'ai-agent-store-configuration-custom-fields-form-component',
-                )
-                expect(customFieldsFormComponent).not.toBeInTheDocument()
-                expect(legacyH2).not.toBeInTheDocument()
-                expect(newH2).toBeInTheDocument()
-            })
+            expect(section).toBeInTheDocument()
         })
     })
 
@@ -1677,567 +2037,6 @@ describe('<StoreConfigForm />', () => {
 
             const reviewDraftsButton = screen.queryByText('Review Drafts')
             expect(reviewDraftsButton).not.toBeInTheDocument()
-        })
-    })
-
-    describe('Ai Agent Settings Revamp', () => {
-        it('should display drawer when AiAgentSettingsRevamp is enabled', async () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-            })
-
-            renderComponent()
-
-            // Click on the Tags row to open the drawer
-            userEvent.click(screen.getAllByText('Tags')[0])
-
-            expect(getDrawer()).toBeVisible()
-            expect(getDrawer()).toBeInTheDocument()
-            expect(
-                within(getDrawer()).getByText('Save Changes'),
-            ).toBeInTheDocument()
-            expect(within(getDrawer()).getByText('Cancel')).toBeInTheDocument()
-        })
-
-        it('should not display drawer when AiAgentSettingsRevamp is disabled', async () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: false,
-            })
-
-            renderComponent()
-
-            expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-        })
-
-        it('should update form values when saving drawer content', async () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-            })
-
-            const mockOnSubmit = jest.fn()
-            mockedUseConfigurationForm.mockReturnValue({
-                ...defaultUseConfigurationFormValues,
-                handleOnSave: mockOnSubmit,
-            })
-
-            renderComponent()
-
-            // Open the drawer by clicking on Tags
-            userEvent.click(screen.getAllByText('Tags')[0])
-
-            // Save changes
-            const saveButton = within(getDrawer()).getByRole('button', {
-                name: /save changes/i,
-            })
-            userEvent.click(saveButton)
-
-            expect(mockOnSubmit).toHaveBeenCalled()
-        })
-
-        it('should update form values when saving drawer content with new tags', async () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-            })
-
-            renderComponent()
-
-            // Open the drawer by clicking on Tags
-            userEvent.click(screen.getAllByText('Tags')[0])
-
-            userEvent.click(screen.getByRole('button', { name: /add tag/i }))
-            userEvent.click(screen.getByText(/choose tag/i))
-            const textbox = screen.getAllByRole('textbox')[0]
-            await userEvent.type(textbox, 'Test')
-
-            // Save changes
-            const saveButton = within(getDrawer()).getByRole('button', {
-                name: /save changes/i,
-            })
-            userEvent.click(saveButton)
-
-            expect(updateValueMocked).toHaveBeenCalledWith('tags', [
-                {
-                    name: '',
-                    description: 'Test',
-                },
-            ])
-        })
-
-        it('should update form values when saving drawer content with new ticket fields', async () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-                [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]:
-                    true,
-            })
-            renderComponent()
-
-            // Open the drawer by clicking on Ticket Fields
-            userEvent.click(screen.getAllByText('Ticket Fields')[0])
-            userEvent.click(
-                screen.getByRole('button', { name: /add ticket field/i }),
-            )
-            userEvent.click(screen.getByText(ticketInputFieldDefinition.label))
-
-            // Save changes
-            const saveButton = within(getDrawer()).getByRole('button', {
-                name: /save changes/i,
-            })
-            userEvent.click(saveButton)
-
-            expect(updateValueMocked).toHaveBeenCalledWith('customFieldIds', [
-                123,
-            ])
-        })
-
-        it('should update form values when saving drawer content with new handover topics', async () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-            })
-
-            renderComponent()
-
-            // Open the drawer by clicking on the handover topics link
-            userEvent.click(screen.getByText('handover topics'))
-            userEvent.click(screen.getByRole('button', { name: /add topic/i }))
-            const textbox = screen.getAllByRole('textbox')[0]
-            await userEvent.type(textbox, 'Test')
-
-            // Save changes
-            const saveButton = within(getDrawer()).getByRole('button', {
-                name: /save changes/i,
-            })
-            userEvent.click(saveButton)
-
-            expect(updateValueMocked).toHaveBeenCalledWith('excludedTopics', [
-                'Test',
-            ])
-        })
-
-        it('should not update form values when closing drawer', async () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-            })
-
-            const mockOnSubmit = jest.fn()
-            mockedUseConfigurationForm.mockReturnValue({
-                ...defaultUseConfigurationFormValues,
-                handleOnSave: mockOnSubmit,
-            })
-
-            renderComponent()
-
-            // Open the drawer by clicking on Tags
-            userEvent.click(screen.getAllByText('Tags')[0])
-
-            // Add tags
-            userEvent.click(screen.getByRole('button', { name: 'Add Tag' }))
-
-            // Cancel changes
-            const cancelButton = screen.getByRole('button', { name: /cancel/i })
-            userEvent.click(cancelButton)
-
-            expect(mockOnSubmit).not.toHaveBeenCalled()
-        })
-
-        it('should switch drawer content when clicking on different features', async () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-                [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]:
-                    true,
-            })
-
-            renderComponent()
-
-            // Open Tags drawer
-            userEvent.click(screen.getAllByText('Tags')[0])
-            expect(within(getDrawer()).getByText('Tags')).toBeVisible()
-
-            // Close drawer
-            const cancelButton = within(getDrawer()).getByRole('button', {
-                name: /cancel/i,
-            })
-            userEvent.click(cancelButton)
-
-            // Open Ticket Fields drawer
-            userEvent.click(screen.getAllByText('Ticket Fields')[0])
-            expect(
-                within(getDrawer()).getAllByText('Ticket Fields')[0],
-            ).toBeVisible()
-        })
-
-        it('should not render the drawer when isOpen is false', () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-            })
-
-            renderComponent()
-
-            expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-        })
-
-        it('should update activeDrawerValues when tags in formValues change', async () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-            })
-            mockedUseConfigurationForm.mockReturnValue({
-                ...defaultUseConfigurationFormValues,
-                formValues: {
-                    ...initialFormValues,
-                    tags: [{ name: 'tag1', description: 'tag1' }],
-                },
-            })
-
-            const { rerender } = renderComponent()
-
-            await userEvent.click(screen.getAllByText('Tags')[0])
-
-            expect(screen.getByText('tag1')).toBeInTheDocument()
-            expect(screen.queryByText('tag2')).not.toBeInTheDocument()
-
-            mockedUseConfigurationForm.mockReturnValue({
-                ...defaultUseConfigurationFormValues,
-                formValues: {
-                    ...initialFormValues,
-                    tags: [
-                        { name: 'tag1', description: 'tag1' },
-                        { name: 'tag2', description: 'tag2' },
-                    ],
-                },
-            })
-
-            rerender(
-                <Provider store={mockedStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <AiAgentFormChangesProvider>
-                            <StoreConfigForm
-                                shopName="test-shop"
-                                accountDomain="test-domain"
-                                shopType="shopify"
-                                faqHelpCenters={
-                                    [
-                                        {
-                                            id: 1,
-                                            name: 'help center 1',
-                                            type: 'faq',
-                                        },
-                                        {
-                                            id: 2,
-                                            name: 'help center 2',
-                                            type: 'faq',
-                                        },
-                                    ] as unknown as HelpCenter[]
-                                }
-                            />
-                        </AiAgentFormChangesProvider>
-                    </QueryClientProvider>
-                </Provider>,
-            )
-
-            expect(screen.getByText('tag2')).toBeInTheDocument()
-        })
-
-        it('should update activeDrawerValues when tags in formValues change with an undefined value', async () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-            })
-            mockedUseConfigurationForm.mockReturnValue({
-                ...defaultUseConfigurationFormValues,
-                formValues: {
-                    ...initialFormValues,
-                    tags: [{ name: 'tag1', description: 'tag1' }],
-                },
-            })
-
-            const { rerender } = renderComponent()
-
-            await userEvent.click(screen.getAllByText('Tags')[0])
-
-            expect(screen.getByText('tag1')).toBeInTheDocument()
-
-            mockedUseConfigurationForm.mockReturnValue({
-                ...defaultUseConfigurationFormValues,
-                formValues: {
-                    ...initialFormValues,
-                    tags: undefined as any,
-                },
-            })
-
-            rerender(
-                <Provider store={mockedStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <AiAgentFormChangesProvider>
-                            <StoreConfigForm
-                                shopName="test-shop"
-                                accountDomain="test-domain"
-                                shopType="shopify"
-                                faqHelpCenters={
-                                    [
-                                        {
-                                            id: 1,
-                                            name: 'help center 1',
-                                            type: 'faq',
-                                        },
-                                        {
-                                            id: 2,
-                                            name: 'help center 2',
-                                            type: 'faq',
-                                        },
-                                    ] as unknown as HelpCenter[]
-                                }
-                            />
-                        </AiAgentFormChangesProvider>
-                    </QueryClientProvider>
-                </Provider>,
-            )
-
-            expect(screen.queryByText('tag1')).not.toBeInTheDocument()
-        })
-
-        it('should update activeDrawerValues when customFieldIds in formValues change', async () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-                [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]:
-                    true,
-            })
-            mockedUseConfigurationForm.mockReturnValue({
-                ...defaultUseConfigurationFormValues,
-                formValues: {
-                    ...initialFormValues,
-                    customFieldIds: [ticketInputFieldDefinition.id],
-                },
-            })
-
-            const { rerender } = renderComponent()
-
-            await userEvent.click(screen.getByText('Ticket Fields'))
-
-            screen.debug(document.body, Infinity)
-            expect(
-                screen.getByDisplayValue(ticketInputFieldDefinition.label),
-            ).toBeInTheDocument()
-            expect(
-                screen.queryByDisplayValue(ticketDropdownFieldDefinition.label),
-            ).not.toBeInTheDocument()
-
-            mockedUseConfigurationForm.mockReturnValue({
-                ...defaultUseConfigurationFormValues,
-                formValues: {
-                    ...initialFormValues,
-                    customFieldIds: [
-                        ticketInputFieldDefinition.id,
-                        ticketDropdownFieldDefinition.id,
-                    ],
-                },
-            })
-
-            rerender(
-                <Provider store={mockedStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <AiAgentFormChangesProvider>
-                            <StoreConfigForm
-                                shopName="test-shop"
-                                accountDomain="test-domain"
-                                shopType="shopify"
-                                faqHelpCenters={
-                                    [
-                                        {
-                                            id: 1,
-                                            name: 'help center 1',
-                                            type: 'faq',
-                                        },
-                                        {
-                                            id: 2,
-                                            name: 'help center 2',
-                                            type: 'faq',
-                                        },
-                                    ] as unknown as HelpCenter[]
-                                }
-                            />
-                        </AiAgentFormChangesProvider>
-                    </QueryClientProvider>
-                </Provider>,
-            )
-
-            expect(
-                screen.getByDisplayValue(ticketDropdownFieldDefinition.label),
-            ).toBeInTheDocument()
-        })
-
-        it('should update activeDrawerValues when excludedTopics in formValues change', async () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-            })
-            mockedUseConfigurationForm.mockReturnValue({
-                ...defaultUseConfigurationFormValues,
-                formValues: {
-                    ...initialFormValues,
-                    excludedTopics: ['topic1'],
-                },
-            })
-
-            const { rerender } = renderComponent()
-
-            await userEvent.click(screen.getByText('handover topics'))
-
-            expect(screen.getByDisplayValue('topic1')).toBeInTheDocument()
-            expect(screen.queryByDisplayValue('topic2')).not.toBeInTheDocument()
-
-            mockedUseConfigurationForm.mockReturnValue({
-                ...defaultUseConfigurationFormValues,
-                formValues: {
-                    ...initialFormValues,
-                    excludedTopics: ['topic1', 'topic2'],
-                },
-            })
-
-            rerender(
-                <Provider store={mockedStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <AiAgentFormChangesProvider>
-                            <StoreConfigForm
-                                shopName="test-shop"
-                                accountDomain="test-domain"
-                                shopType="shopify"
-                                faqHelpCenters={
-                                    [
-                                        {
-                                            id: 1,
-                                            name: 'help center 1',
-                                            type: 'faq',
-                                        },
-                                        {
-                                            id: 2,
-                                            name: 'help center 2',
-                                            type: 'faq',
-                                        },
-                                    ] as unknown as HelpCenter[]
-                                }
-                            />
-                        </AiAgentFormChangesProvider>
-                    </QueryClientProvider>
-                </Provider>,
-            )
-
-            expect(screen.getByDisplayValue('topic2')).toBeInTheDocument()
-        })
-
-        it('should update activeDrawerValues when excludedTopics is undefined in formValues change', async () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-            })
-            mockedUseConfigurationForm.mockReturnValue({
-                ...defaultUseConfigurationFormValues,
-                formValues: {
-                    ...initialFormValues,
-                    excludedTopics: ['topic1'],
-                },
-            })
-
-            const { rerender } = renderComponent()
-
-            await userEvent.click(screen.getByText('handover topics'))
-
-            expect(screen.getByDisplayValue('topic1')).toBeInTheDocument()
-
-            mockedUseConfigurationForm.mockReturnValue({
-                ...defaultUseConfigurationFormValues,
-                formValues: {
-                    ...initialFormValues,
-                    excludedTopics: undefined as any,
-                },
-            })
-
-            rerender(
-                <Provider store={mockedStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <AiAgentFormChangesProvider>
-                            <StoreConfigForm
-                                shopName="test-shop"
-                                accountDomain="test-domain"
-                                shopType="shopify"
-                                faqHelpCenters={
-                                    [
-                                        {
-                                            id: 1,
-                                            name: 'help center 1',
-                                            type: 'faq',
-                                        },
-                                        {
-                                            id: 2,
-                                            name: 'help center 2',
-                                            type: 'faq',
-                                        },
-                                    ] as unknown as HelpCenter[]
-                                }
-                            />
-                        </AiAgentFormChangesProvider>
-                    </QueryClientProvider>
-                </Provider>,
-            )
-
-            expect(screen.queryByDisplayValue('topic1')).not.toBeInTheDocument()
-        })
-
-        it('should open the confirmation modal when clicking on the backdrop of the drawer with changes', async () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-            })
-
-            renderComponent()
-
-            // Open the drawer by clicking on Tags
-            await userEvent.click(screen.getAllByText('Tags')[0])
-
-            // Add tags
-            await userEvent.click(
-                screen.getByRole('button', { name: /add tag/i }),
-            )
-            await userEvent.click(screen.getAllByText(/choose tag/i)[0])
-            await userEvent.type(screen.getAllByRole('textbox')[1], 'Test')
-
-            // Click on the backdrop
-            await userEvent.click(screen.getByRole('presentation'))
-
-            expect(
-                screen.getByText(
-                    /Your changes to this page will be lost if you don’t save them./i,
-                ),
-            ).toBeInTheDocument()
-        })
-
-        it('should close the confirmation modal when clicking on the close button', async () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-            })
-
-            renderComponent()
-
-            act(async () => {
-                // Open the drawer by clicking on Tags
-                await userEvent.click(screen.getAllByText('Tags')[0])
-
-                // Add tags
-                await userEvent.click(
-                    screen.getByRole('button', { name: /add tag/i }),
-                )
-
-                await userEvent.click(screen.getAllByText(/choose tag/i)[0])
-                await userEvent.type(screen.getAllByRole('textbox')[1], 'Test')
-
-                // Click on the backdrop
-                await userEvent.click(screen.getByRole('presentation'))
-
-                const closeButton = screen.getAllByRole('button', {
-                    name: /close/i,
-                })[0]
-                await userEvent.click(closeButton)
-            })
-
-            expect(
-                screen.queryByText(
-                    /Your changes to this page will be lost if you don’t save them./i,
-                ),
-            ).not.toBeInTheDocument()
         })
     })
 
@@ -2345,86 +2144,6 @@ describe('<StoreConfigForm />', () => {
         })
     })
 
-    describe('Handover Modal', () => {
-        beforeEach(() => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentChat]: true,
-            })
-        })
-
-        it('should open handover modal when clicking on handover topics link', async () => {
-            renderComponent()
-
-            const handoverLink = screen.getByText('Define')
-            userEvent.click(handoverLink)
-
-            expect(screen.getByRole('dialog')).toBeInTheDocument()
-            expect(screen.getByText('Handover Topics')).toBeInTheDocument()
-        })
-
-        it('should close handover modal when clicking on close button', async () => {
-            renderComponent()
-
-            const handoverLink = screen.getByText('Define')
-            userEvent.click(handoverLink)
-
-            const closeButton = screen.getByRole('button', { name: '' })
-            userEvent.click(closeButton)
-
-            await waitFor(() => {
-                expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-            })
-        })
-
-        it('should cancel changes when clicking on cancel button', async () => {
-            renderComponent()
-
-            const handoverLink = screen.getByText('Define')
-            userEvent.click(handoverLink)
-
-            const cancelButton = screen.getByRole('button', { name: 'Cancel' })
-            userEvent.click(cancelButton)
-
-            await waitFor(() => {
-                expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
-                expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-            })
-        })
-
-        it('should show error notification when saving fails', async () => {
-            const mockError = new AxiosError('Network Error')
-            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
-                storeConfiguration,
-                isLoading: false,
-                updateStoreConfiguration: jest
-                    .fn()
-                    .mockRejectedValue(mockError),
-                createStoreConfiguration: mockCreateStoreConfiguration,
-                isPendingCreateOrUpdate: false,
-            })
-
-            renderComponent()
-
-            const handoverLink = screen.getByText('Define')
-            userEvent.click(handoverLink)
-
-            const saveButton = screen.getByRole('button', {
-                name: 'Confirm Topics',
-            })
-            userEvent.click(saveButton)
-
-            await waitFor(() => {
-                expect(reportError).toHaveBeenCalledWith(mockError, {
-                    tags: { team: SentryTeam.AI_AGENT },
-                    extra: {
-                        accountDomain: 'test-domain',
-                        shopName: 'test-shop',
-                    },
-                })
-            })
-        })
-    })
-
     describe('External Knowledge Sources', () => {
         beforeEach(() => {
             mockFlags({
@@ -2502,23 +2221,7 @@ describe('<StoreConfigForm />', () => {
     })
 
     describe('ticket preview visibility', () => {
-        it.each(['general', 'channels'])(
-            'should show ticket preview when FF settings revamp is disabled and tab is %s',
-            (tab) => {
-                mockFlags({
-                    [FeatureFlagKey.AiAgentSettingsRevamp]: false,
-                })
-                mockUseParams.mockReturnValue({ tab })
-                renderComponent()
-
-                expect(screen.getByText(/Ticket preview/i)).toBeInTheDocument()
-            },
-        )
-
-        it('should not show ticket preview when tab channels and FF settings revamp is enabled', () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-            })
+        it('should not show ticket preview when tab channels', () => {
             mockUseParams.mockReturnValue({ tab: 'channels' })
             renderComponent()
 
@@ -2527,10 +2230,8 @@ describe('<StoreConfigForm />', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should show ticket preview when tab is general and FF settings revamp is enabled', () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-            })
+        it('should show ticket preview when tab is general', () => {
+            mockUseParams.mockReturnValue({ tab: 'general' })
             renderComponent()
 
             expect(
@@ -2542,31 +2243,9 @@ describe('<StoreConfigForm />', () => {
     describe('custom fields', () => {
         beforeEach(() => {
             mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
                 [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]:
                     true,
             })
-        })
-
-        it('should not display the custom fields settings card when FF settings revamp is disabled', () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentSettingsRevamp]: false,
-            })
-            mockedUseConfigurationForm.mockReturnValue({
-                ...defaultUseConfigurationFormValues,
-                formValues: {
-                    ...initialFormValues,
-                    customFieldIds: [
-                        ticketInputFieldDefinition.id,
-                        ticketDropdownFieldDefinition.id,
-                    ],
-                },
-            })
-            renderComponent()
-
-            expect(
-                screen.queryByText('2 ticket fields'),
-            ).not.toBeInTheDocument()
         })
 
         it('should not display the custom fields settings card when FF custom-fields is disabled', () => {
@@ -2584,14 +2263,9 @@ describe('<StoreConfigForm />', () => {
                     ],
                 },
             })
-            renderComponent()
-
-            expect(
-                screen.queryByText('2 ticket fields'),
-            ).not.toBeInTheDocument()
         })
 
-        it('should display the correct number of available custom fields in the settings card when FF settings revamp is enabled', () => {
+        it('should display the correct number of available custom fields in the settings card', () => {
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
                 formValues: {
@@ -2607,7 +2281,7 @@ describe('<StoreConfigForm />', () => {
             expect(screen.getByText('2 ticket fields')).toBeInTheDocument()
         })
 
-        it('should display "No ticket fields" when no custom fields are available and FF settings revamp is enabled', () => {
+        it('should display "No ticket fields" when no custom fields are available', () => {
             mockUseCustomFieldDefinitions.mockReturnValue({
                 data: { data: [] },
             } as any)
@@ -2626,7 +2300,7 @@ describe('<StoreConfigForm />', () => {
             expect(screen.getByText('No ticket fields')).toBeInTheDocument()
         })
 
-        it('should display "No ticket fields" when availableCustomFields is undefined and FF settings revamp is enabled', () => {
+        it('should display "No ticket fields" when availableCustomFields is undefined', () => {
             mockUseCustomFieldDefinitions.mockReturnValue({
                 data: { data: undefined },
             } as any)
@@ -2645,7 +2319,7 @@ describe('<StoreConfigForm />', () => {
             expect(screen.getByText('No ticket fields')).toBeInTheDocument()
         })
 
-        it('should display "No ticket fields" when formValues.customFields is null and FF settings revamp is enabled', () => {
+        it('should display "No ticket fields" when formValues.customFields is null', () => {
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
                 formValues: {
@@ -2658,7 +2332,7 @@ describe('<StoreConfigForm />', () => {
             expect(screen.getByText('No ticket fields')).toBeInTheDocument()
         })
 
-        it('should display "No ticket fields" when availableCustomFields is empty after filtering and FF settings revamp is enabled', () => {
+        it('should display "No ticket fields" when availableCustomFields is empty after filtering', () => {
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
                 formValues: {
@@ -2672,7 +2346,7 @@ describe('<StoreConfigForm />', () => {
             expect(screen.getByText('No ticket fields')).toBeInTheDocument()
         })
 
-        it('should handle undefined availableCustomFields and use 0 as fallback when FF settings revamp is enabled', () => {
+        it('should handle undefined availableCustomFields and use 0 as fallback', () => {
             mockUseCustomFieldDefinitions.mockReturnValue({
                 data: { data: undefined },
             } as any)

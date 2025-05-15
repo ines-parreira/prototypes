@@ -1,11 +1,7 @@
 import React, { useCallback, useEffect, useMemo } from 'react'
 
 import classnames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { Label } from '@gorgias/merchant-ui-kit'
-
-import { FeatureFlagKey } from 'config/featureFlags'
 import { ChatIntegrationListSelection } from 'pages/aiAgent/components/ChatIntegrationListSelection/ChatIntegrationListSelection'
 import {
     INITIAL_FORM_VALUES,
@@ -45,8 +41,6 @@ export const ChatSettingsFormComponent = ({
     setIsPristine,
     isDisabled,
 }: EmailFormComponentProps) => {
-    const isSettingsRevampEnabled =
-        useFlags()[FeatureFlagKey.AiAgentSettingsRevamp]
     const useInitialValue = React.useRef(true)
 
     const { onLeaveContext, dirtySections } = useAiAgentFormChangesContext()
@@ -110,105 +104,47 @@ export const ChatSettingsFormComponent = ({
 
     return (
         <div className={css.chatSettingsFormComponent}>
-            {!isSettingsRevampEnabled && (
-                <>
-                    <section>
-                        <Label
-                            className={css.label}
+            <section>
+                <SettingsCard>
+                    <SettingsCardHeader>
+                        <SettingsCardTitle
                             id="monitored-chat-channels"
                             isRequired={isRequired}
                         >
-                            Select one or more Chats
-                        </Label>
-                        <ChatIntegrationListSelection
-                            labelId="monitored-chat-channels"
-                            selectedIds={
-                                monitoredChatIntegrations !== null
-                                    ? monitoredChatIntegrations.map(
-                                          (integration) => integration,
-                                      )
-                                    : INITIAL_FORM_VALUES.monitoredChatIntegrations
-                            }
-                            onSelectionChange={handleSelectChatIntegration}
-                            chatItems={chatChannels}
-                            hasError={!isChatIntegrationsValid}
-                            isDisabled={isDisabled}
-                        />
-                        <div
-                            className={classnames(css.formInputFooterInfo, {
-                                [css.error]: !isChatIntegrationsValid,
-                            })}
-                        >
-                            {!isChatIntegrationsValid
-                                ? 'One or more Chats required.'
-                                : null}
-                        </div>
-                    </section>
-                    <section>
+                            Select one or more Chats for AI Agent
+                        </SettingsCardTitle>
+                        You can connect AI Agent to your Chat so it can start
+                        answering customer questions.
+                    </SettingsCardHeader>
+                    <SettingsCardContent>
                         <div>
-                            See how{' '}
-                            <a
-                                href="https://link.gorgias.com/57d391"
-                                target="_blank"
-                                rel="noreferrer"
+                            <ChatIntegrationListSelection
+                                labelId="monitored-chat-channels"
+                                selectedIds={
+                                    monitoredChatIntegrations !== null
+                                        ? monitoredChatIntegrations.map(
+                                              (integration) => integration,
+                                          )
+                                        : INITIAL_FORM_VALUES.monitoredChatIntegrations
+                                }
+                                onSelectionChange={handleSelectChatIntegration}
+                                chatItems={chatChannels}
+                                hasError={!isChatIntegrationsValid}
+                                isDisabled={isDisabled}
+                            />
+                            <div
+                                className={classnames(css.formInputFooterInfo, {
+                                    [css.error]: !isChatIntegrationsValid,
+                                })}
                             >
-                                AI Agent hands over
-                            </a>{' '}
-                            tickets when your team is online or offline.
-                        </div>
-                    </section>
-                </>
-            )}
-
-            {isSettingsRevampEnabled && (
-                <section>
-                    <SettingsCard>
-                        <SettingsCardHeader>
-                            <SettingsCardTitle
-                                id="monitored-chat-channels"
-                                isRequired={isRequired}
-                            >
-                                Select one or more Chats for AI Agent
-                            </SettingsCardTitle>
-                            You can connect AI Agent to your Chat so it can
-                            start answering customer questions.
-                        </SettingsCardHeader>
-                        <SettingsCardContent>
-                            <div>
-                                <ChatIntegrationListSelection
-                                    labelId="monitored-chat-channels"
-                                    selectedIds={
-                                        monitoredChatIntegrations !== null
-                                            ? monitoredChatIntegrations.map(
-                                                  (integration) => integration,
-                                              )
-                                            : INITIAL_FORM_VALUES.monitoredChatIntegrations
-                                    }
-                                    onSelectionChange={
-                                        handleSelectChatIntegration
-                                    }
-                                    chatItems={chatChannels}
-                                    hasError={!isChatIntegrationsValid}
-                                    isDisabled={isDisabled}
-                                />
-                                <div
-                                    className={classnames(
-                                        css.formInputFooterInfo,
-                                        {
-                                            [css.error]:
-                                                !isChatIntegrationsValid,
-                                        },
-                                    )}
-                                >
-                                    {!isChatIntegrationsValid
-                                        ? 'One or more Chats required.'
-                                        : null}
-                                </div>
+                                {!isChatIntegrationsValid
+                                    ? 'One or more Chats required.'
+                                    : null}
                             </div>
-                        </SettingsCardContent>
-                    </SettingsCard>
-                </section>
-            )}
+                        </div>
+                    </SettingsCardContent>
+                </SettingsCard>
+            </section>
         </div>
     )
 }

@@ -1,11 +1,10 @@
-import React from 'react'
-
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import {
     CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE,
     ToneOfVoice,
 } from 'pages/aiAgent/constants'
+import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 
 import { ToneOfVoiceFormComponent } from '../FormComponents/ToneOfVoiceFormComponent'
 
@@ -16,15 +15,38 @@ const defaultProps = {
     updateValue: mockUpdateValue,
     toneOfVoice: ToneOfVoice.Friendly,
     customToneOfVoiceGuidance: '',
+    aiAgentMode: 'Chat',
+    aiAgentPreviewTicketViewId: 123,
+    storeConfiguration: getStoreConfigurationFixture(),
 }
 
 describe('ToneOfVoiceFormComponent', () => {
-    it('renders select field and label', () => {
-        render(<ToneOfVoiceFormComponent {...defaultProps} />)
+    it.each([
+        {
+            toneOfVoice: ToneOfVoice.Friendly,
+            label: /Friendly/i,
+        },
+        {
+            toneOfVoice: ToneOfVoice.Professional,
+            label: /Professional/i,
+        },
+        {
+            toneOfVoice: ToneOfVoice.Sophisticated,
+            label: /Sophisticated/i,
+        },
+        {
+            toneOfVoice: ToneOfVoice.Custom,
+            label: /Custom/i,
+        },
+    ])(
+        'renders tone of voice fields and label for $label',
+        ({ toneOfVoice, label }) => {
+            render(<ToneOfVoiceFormComponent {...defaultProps} />)
 
-        expect(screen.getByText('Tone of voice')).toBeInTheDocument()
-        expect(screen.getByLabelText('Tone of voice')).toBeInTheDocument()
-    })
+            expect(screen.getByText(toneOfVoice)).toBeInTheDocument()
+            expect(screen.getByLabelText(label)).toBeInTheDocument()
+        },
+    )
 
     it('displays custom tone of voice guidance when "Custom" is selected', () => {
         const customProps = {
@@ -48,8 +70,8 @@ describe('ToneOfVoiceFormComponent', () => {
 
         render(<ToneOfVoiceFormComponent {...customProps} />)
 
-        expect(screen.getByLabelText('Tone of voice')).toBeInTheDocument()
-        expect(screen.getAllByText('Friendly')[0]).toBeInTheDocument()
+        expect(screen.getByText('Tone of voice')).toBeInTheDocument()
+        expect(screen.getByLabelText(/Friendly/i)).toBeInTheDocument()
     })
 
     it('displays default custom tone of voice guidance when "Custom" is selected, but no guidance', () => {
@@ -167,30 +189,5 @@ describe('ToneOfVoiceFormComponent', () => {
             'toneOfVoice',
             'Professional',
         )
-    })
-
-    it('display proper label when chat is available', () => {
-        const customProps = {
-            ...defaultProps,
-            hasChat: true,
-        }
-
-        render(<ToneOfVoiceFormComponent {...customProps} />)
-
-        expect(
-            screen.getByText(
-                'Select a tone of voice for AI Agent to use with customers. For Chat, the language used will be more succinct.',
-            ),
-        ).toBeInTheDocument()
-    })
-
-    it('display proper label when chat is not available', () => {
-        render(<ToneOfVoiceFormComponent {...defaultProps} />)
-
-        expect(
-            screen.getByText(
-                'Select a tone of voice for AI Agent to use with customers.',
-            ),
-        ).toBeInTheDocument()
     })
 })

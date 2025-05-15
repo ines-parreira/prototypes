@@ -11,10 +11,19 @@ type Props = {
     className?: string
     isDisabled?: boolean
     stopPropagation?: boolean
+    name?: string
 }
 // TODO: To rename to a proper name
 const InnerNewToggleButton = (
-    { className, checked, onChange, isDisabled, stopPropagation, color }: Props,
+    {
+        className,
+        checked,
+        onChange,
+        isDisabled,
+        stopPropagation,
+        color,
+        name,
+    }: Props,
     ref: ForwardedRef<HTMLDivElement>,
 ) => {
     const handleClick = useCallback(
@@ -61,6 +70,7 @@ const InnerNewToggleButton = (
                 checked={checked}
                 disabled={isDisabled}
                 readOnly
+                name={name}
             />
             <div className={css.knob}>
                 <i className="material-icons">check</i>

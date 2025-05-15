@@ -3,8 +3,6 @@ import React, { useEffect, useMemo } from 'react'
 import classnames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { Label } from '@gorgias/merchant-ui-kit'
-
 import { FeatureFlagKey } from 'config/featureFlags'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
@@ -43,8 +41,6 @@ export const EmailFormComponent = ({
     const useInitialValue = React.useRef(true)
     const isAiAgentChatEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentChat]
-    const isSettingsRevampEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentSettingsRevamp]
 
     const isValueRequired = isRequired || !isAiAgentChatEnabled
     const isEmailIntegrationsValid = useMemo(() => {
@@ -100,85 +96,46 @@ export const EmailFormComponent = ({
 
     return (
         <div className={css.formGroup}>
-            {!isSettingsRevampEnabled && (
-                <>
-                    <Label
-                        isRequired={isValueRequired}
-                        className={css.label}
+            <SettingsCard>
+                <SettingsCardHeader>
+                    <SettingsCardTitle
                         id="monitored-email-channels"
+                        isRequired={isValueRequired}
                     >
-                        Select one or more emails
-                    </Label>
-                    <EmailIntegrationListSelection
-                        labelId="monitored-email-channels"
-                        selectedIds={
-                            !!monitoredEmailIntegrations
-                                ? monitoredEmailIntegrations.map(
-                                      (integration) => integration.id,
-                                  )
-                                : INITIAL_FORM_VALUES.monitoredEmailIntegrations
-                        }
-                        onSelectionChange={handleSelectEmailIntegration}
-                        sortingCallback={emailSortingCallback}
-                        emailItems={emailItems}
-                        hasError={!isEmailIntegrationsValid}
-                        isDisabled={isDisabled}
-                        withDefaultTag
-                    />
-                    <div
-                        className={classnames(css.formInputFooterInfo, {
-                            [css.error]: !isEmailIntegrationsValid,
-                        })}
-                    >
-                        {!isEmailIntegrationsValid
-                            ? 'One or more addresses required.'
-                            : 'AI Agent will also respond to any contact forms linked to these email addresses.'}
-                    </div>
-                </>
-            )}
-
-            {isSettingsRevampEnabled && (
-                <SettingsCard>
-                    <SettingsCardHeader>
-                        <SettingsCardTitle
-                            id="monitored-email-channels"
-                            isRequired={isValueRequired}
+                        Select one or more emails for AI Agent
+                    </SettingsCardTitle>
+                    AI Agent will also respond to any contact forms linked to
+                    these email addresses.
+                </SettingsCardHeader>
+                <SettingsCardContent>
+                    <div>
+                        <EmailIntegrationListSelection
+                            labelId="monitored-email-channels"
+                            selectedIds={
+                                !!monitoredEmailIntegrations
+                                    ? monitoredEmailIntegrations.map(
+                                          (integration) => integration.id,
+                                      )
+                                    : INITIAL_FORM_VALUES.monitoredEmailIntegrations
+                            }
+                            onSelectionChange={handleSelectEmailIntegration}
+                            sortingCallback={emailSortingCallback}
+                            emailItems={emailItems}
+                            hasError={!isEmailIntegrationsValid}
+                            isDisabled={isDisabled}
+                            withDefaultTag
+                        />
+                        <div
+                            className={classnames(css.formInputFooterInfo, {
+                                [css.error]: !isEmailIntegrationsValid,
+                            })}
                         >
-                            Select one or more emails for AI Agent
-                        </SettingsCardTitle>
-                        AI Agent will also respond to any contact forms linked
-                        to these email addresses.
-                    </SettingsCardHeader>
-                    <SettingsCardContent>
-                        <div>
-                            <EmailIntegrationListSelection
-                                labelId="monitored-email-channels"
-                                selectedIds={
-                                    !!monitoredEmailIntegrations
-                                        ? monitoredEmailIntegrations.map(
-                                              (integration) => integration.id,
-                                          )
-                                        : INITIAL_FORM_VALUES.monitoredEmailIntegrations
-                                }
-                                onSelectionChange={handleSelectEmailIntegration}
-                                sortingCallback={emailSortingCallback}
-                                emailItems={emailItems}
-                                hasError={!isEmailIntegrationsValid}
-                                isDisabled={isDisabled}
-                                withDefaultTag
-                            />
-                            <div
-                                className={classnames(css.formInputFooterInfo, {
-                                    [css.error]: !isEmailIntegrationsValid,
-                                })}
-                            >
-                                {!isEmailIntegrationsValid &&
-                                    'One or more addresses required.'}
-                            </div>
+                            {!isEmailIntegrationsValid &&
+                                'One or more addresses required.'}
                         </div>
-                    </SettingsCardContent>
-                </SettingsCard>
-            )}
+                    </div>
+                </SettingsCardContent>
+            </SettingsCard>
         </div>
     )
 }

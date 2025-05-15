@@ -1,9 +1,7 @@
 import cn from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { LoadingSpinner, ToggleField } from '@gorgias/merchant-ui-kit'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { Label } from 'gorgias-design-system/Input/Label'
 import { HandoverCustomizationChatOfflineSettingsFormValues } from 'pages/aiAgent/types'
 import { formFieldsConfiguration } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatOfflineSettingsForm.utils'
@@ -27,9 +25,6 @@ export const HandoverCustomizationChatOfflineSettingsFields = ({
     ) => void
     isLoading: boolean
 }) => {
-    const isSettingsRevampEnabled =
-        useFlags()[FeatureFlagKey.AiAgentSettingsRevamp]
-
     if (isLoading) {
         return (
             <div
@@ -52,40 +47,29 @@ export const HandoverCustomizationChatOfflineSettingsFields = ({
             >
                 <Label
                     htmlFor="handover-customization-offline-instructions"
-                    label={
-                        isSettingsRevampEnabled ? 'Instructions' : 'Guidance'
-                    }
+                    label="Instructions"
                     className={`${css.offlineInstructionsTitle} mb-2`}
                 >
-                    {isSettingsRevampEnabled ? 'Instructions' : 'Guidance'}
+                    Instructions
                 </Label>
                 <TextArea
                     id="handover-customization-offline-instructions"
                     rows={5}
                     name="handover-customization-offline-instructions"
-                    aria-label={
-                        isSettingsRevampEnabled
-                            ? 'Offline instructions'
-                            : 'Guidance'
-                    }
+                    aria-label="Offline instructions"
                     role="textbox"
                     maxLength={
                         formFieldsConfiguration.offlineInstructions.maxLength
                     }
-                    placeholder={
-                        isSettingsRevampEnabled
-                            ? `Apologize and acknowledge the issue.`
-                            : "Apologize and acknowledge the issue. Request the customers' email address for our team to reach back."
-                    }
+                    placeholder="Apologize and acknowledge the issue."
                     onChange={onOfflineInstructionsChange}
                     value={values.offlineInstructions}
                     error={undefined}
                 />
                 <Caption className="caption-regular mt-1">
-                    {isSettingsRevampEnabled
-                        ? `Write optional instructions for AI Agent to follow during handover.
-           By default, AI Agent generates a message using your tone of voice.`
-                        : `AI Agent will use these instructions to craft the handover message it sends to customers. If left blank, it will generate a generic message using your tone of voice.`}
+                    Write optional instructions for AI Agent to follow during
+                    handover. By default, AI Agent generates a message using
+                    your tone of voice.
                 </Caption>
             </div>
 

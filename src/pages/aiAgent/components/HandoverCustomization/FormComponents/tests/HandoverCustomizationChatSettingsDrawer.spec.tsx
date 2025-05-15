@@ -294,7 +294,7 @@ describe('HandoverCustomizationChatSettingsDrawer', () => {
 
             await act(async () => {
                 const instructionsInput = screen.getByRole('textbox', {
-                    name: /guidance/i,
+                    name: /instructions/i,
                 })
                 await userEvent.type(
                     instructionsInput,
@@ -329,7 +329,7 @@ describe('HandoverCustomizationChatSettingsDrawer', () => {
 
             await act(async () => {
                 const instructionsInput = screen.getByRole('textbox', {
-                    name: /guidance/i,
+                    name: /instructions/i,
                 })
                 await userEvent.type(
                     instructionsInput,

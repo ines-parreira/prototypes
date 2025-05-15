@@ -2,10 +2,8 @@ import { ComponentProps } from 'react'
 
 import { fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     BannerText,
     SettingsBannerType,
@@ -73,7 +71,9 @@ describe('ChannelToggleInput', () => {
             >['channel'],
         })
 
-        screen.getByText('Enable AI Agent')
+        expect(
+            screen.getAllByText('Enable AI Agent on Chat')[0],
+        ).toBeInTheDocument()
     })
 
     it.each<['chat' | 'email', SegmentEvent]>([
@@ -96,12 +96,6 @@ describe('ChannelToggleInput', () => {
     describe.each([SettingsBannerType.Chat, SettingsBannerType.Email])(
         'for %s',
         (channel) => {
-            beforeEach(() => {
-                ;(useFlags as jest.Mock).mockReturnValue({
-                    [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-                })
-            })
-
             it('should not show the banner if deactivatedDatetime is not provided and localStorage has no acknowledgment', () => {
                 renderComponent({ channel, type: channel })
                 expect(

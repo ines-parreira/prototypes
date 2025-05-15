@@ -1,10 +1,8 @@
 import classnames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { Avatar, Button, Skeleton, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import aiAgentAvatarSrc from 'assets/img/ai-agent/ai-agent-avatar.png'
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     CUSTOMER_LAST_NAME,
     CUSTOMER_NAME,
@@ -42,33 +40,12 @@ const CustomerMessage = ({
     customerName,
     customerLastName,
 }: CustomerMessageProps) => {
-    const isSettingsRevampedEnabled =
-        useFlags()[FeatureFlagKey.AiAgentSettingsRevamp]
-
-    return isSettingsRevampedEnabled ? (
+    return (
         <div>
             <div className={css.message}>
                 <div>What is your return policy?</div>
             </div>
             {customerName} {customerLastName}
-        </div>
-    ) : (
-        <div className={css.message}>
-            <Avatar
-                name={`${customerName} ${customerLastName}`}
-                shape="square"
-                size={36}
-                className={classnames(css.avatar, css.banner)}
-            />
-            <div>
-                <div className={css.header}>
-                    {`${customerName} ${customerLastName}`}
-                    <i className={classnames('material-icons', css.mailIcon)}>
-                        mail
-                    </i>
-                </div>
-                <div>What is your return policy?</div>
-            </div>
         </div>
     )
 }
@@ -80,10 +57,7 @@ const AIAgentMessage = ({
     isLoading,
     isError,
 }: AiAgentMessageProps) => {
-    const isSettingsRevampedEnabled =
-        useFlags()[FeatureFlagKey.AiAgentSettingsRevamp]
-
-    return isSettingsRevampedEnabled ? (
+    return (
         <div className={css.aiMessageContainer}>
             <div className={css.aiMessage}>
                 <div className={css.content}>
@@ -108,34 +82,6 @@ const AIAgentMessage = ({
                     className={classnames(css.banner, css.avatar)}
                 />
                 AI Agent
-            </div>
-        </div>
-    ) : (
-        <div className={css.message}>
-            <Avatar
-                size={36}
-                url={aiAgentAvatarSrc}
-                className={css.banner}
-                name="AI Agent"
-            />
-            <div className={css.content}>
-                <div className={classnames(css.header, css.aiHeader)}>
-                    AI Agent
-                    <i className={classnames('material-icons', css.mailIcon)}>
-                        mail
-                    </i>
-                </div>
-                {isLoading ? (
-                    <AIAgentMessageSkeleton />
-                ) : isError ? (
-                    <AIAgentErrorMessage />
-                ) : (
-                    <AIAgentGreetingMessage
-                        greetings={greetings}
-                        message={message}
-                        signature={signature}
-                    />
-                )}
             </div>
         </div>
     )
@@ -194,8 +140,6 @@ export const TicketPreview = ({
     isLoadingCustomToneOfVoicePreview,
     isError,
 }: TicketPreviewProps) => {
-    const isSettingsRevampedEnabled =
-        useFlags()[FeatureFlagKey.AiAgentSettingsRevamp]
     if (!toneOfVoice) return null
 
     const message = TICKET_PREVIEW[toneOfVoice]?.message
@@ -208,19 +152,11 @@ export const TicketPreview = ({
 
     return (
         <div>
-            {isSettingsRevampedEnabled && (
-                <div className={css.caption}>
-                    Example of AI Agent&apos;s Tone of Voice
-                </div>
-            )}
+            <div className={css.caption}>
+                Example of AI Agent&apos;s Tone of Voice
+            </div>
 
-            <div
-                className={
-                    isSettingsRevampedEnabled
-                        ? css.tovPreview
-                        : css.ticketPreview
-                }
-            >
+            <div className={css.tovPreview}>
                 <CustomerMessage
                     customerName={CUSTOMER_NAME}
                     customerLastName={CUSTOMER_LAST_NAME}
@@ -281,12 +217,6 @@ export const TicketPreview = ({
                     </>
                 )}
             </div>
-
-            {!isSettingsRevampedEnabled && (
-                <div className={classnames(css.footer, css.caption)}>
-                    Ticket preview
-                </div>
-            )}
         </div>
     )
 }

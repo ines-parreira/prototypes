@@ -15,6 +15,7 @@ type SettingsFeatureRowProps = {
     nbFeatures?: number
     type?: 'badge' | 'link' | 'toggle'
     link?: string
+    toggleName?: string
     isChecked?: boolean
     isDisabled?: boolean
     onChange?: (value: boolean) => void
@@ -32,6 +33,7 @@ export const SettingsFeatureRow = ({
     onClick = () => {},
     onChange = () => {},
     link = '',
+    toggleName = '',
 }: SettingsFeatureRowProps) => {
     return (
         <div
@@ -39,9 +41,10 @@ export const SettingsFeatureRow = ({
                 [css.disabled]: isDisabled,
             })}
             onClick={onClick}
+            data-testid={`settings-feature-row-${title.toLowerCase().replace(/\s+/g, '-')}`}
         >
             <div className={css.featureRowContent}>
-                <div>{title}</div>
+                <label htmlFor={toggleName}>{title}</label>
                 {!!description && (
                     <IconTooltip tooltipProps={{ placement: 'top-start' }}>
                         {description}
@@ -84,6 +87,7 @@ export const SettingsFeatureRow = ({
                         isDisabled={isDisabled}
                         checked={isChecked}
                         onChange={onChange}
+                        name={toggleName}
                     />
                 </div>
             )}

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -338,12 +336,13 @@ describe('AiAgentConfigurationContainer', () => {
             [FeatureFlagKey.AiAgentChat]: true,
         })
         renderComponent()
-        expect(screen.queryByText('General')).toBeInTheDocument()
-        expect(screen.queryByText('Chat settings')).not.toBeInTheDocument()
-        expect(screen.queryByText('Email settings')).not.toBeInTheDocument()
-        expect(screen.queryByText('Handover and exclusion')).toBeInTheDocument()
-        expect(screen.queryByText('AI ticket tagging')).toBeInTheDocument()
-        expect(screen.queryByText('Save Changes')).toBeInTheDocument()
+
+        expect(screen.getByText('Tone of voice')).toBeInTheDocument()
+        expect(screen.queryByText('Chat')).not.toBeInTheDocument()
+        expect(screen.queryByText('Email')).not.toBeInTheDocument()
+        expect(screen.getByText('Handover and exclusion')).toBeInTheDocument()
+        expect(screen.getByText('AI ticket tagging')).toBeInTheDocument()
+        expect(screen.getByText('Save Changes')).toBeInTheDocument()
     })
 
     it('renders only channels section on channels settings page if :tab param set to "channels"', () => {
@@ -354,13 +353,13 @@ describe('AiAgentConfigurationContainer', () => {
 
         renderComponent({ tab: 'channels' })
         expect(screen.queryByText('General')).not.toBeInTheDocument()
-        expect(screen.queryByText('Chat settings')).toBeInTheDocument()
-        expect(screen.queryByText('Email settings')).toBeInTheDocument()
+        expect(screen.getByText('Chat')).toBeInTheDocument()
+        expect(screen.getByText('Email')).toBeInTheDocument()
         expect(
             screen.queryByText('Handover and exclusion'),
         ).not.toBeInTheDocument()
         expect(screen.queryByText('AI ticket tagging')).not.toBeInTheDocument()
-        expect(screen.queryByText('Save Changes')).toBeInTheDocument()
+        expect(screen.getByText('Save Changes')).toBeInTheDocument()
     })
 
     describe('when toggling', () => {
@@ -404,9 +403,13 @@ describe('AiAgentConfigurationContainer', () => {
                         [FeatureFlagKey.AiAgentChat]: true,
                     })
 
-                    const { getByText } = renderComponent()
+                    const { getAllByRole } = renderComponent()
                     fireEvent.click(
-                        getByText('Tell customers when handing over'),
+                        getAllByRole('checkbox').find(
+                            (toggle) =>
+                                toggle.getAttribute('name') ===
+                                'toggle-ai-agent-handover',
+                        ) as HTMLInputElement,
                     )
                     expect(
                         mockUseStoreConfigurationFormHookUpdateValue,

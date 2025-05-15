@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -20,6 +21,7 @@ type Props = {
     storeConfiguration?: StoreConfiguration
     aiAgentPreviewTicketViewId: number | null
     isFollowUpAiAgentPreviewModeEnabled: boolean
+    className?: string
 }
 
 export const AiAgentPreviewModeSection = ({
@@ -28,6 +30,7 @@ export const AiAgentPreviewModeSection = ({
     storeConfiguration,
     aiAgentPreviewTicketViewId,
     isFollowUpAiAgentPreviewModeEnabled,
+    className,
 }: Props) => {
     const hasAutomate = useAppSelector(getHasAutomate)
     const isTrialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
@@ -62,7 +65,7 @@ export const AiAgentPreviewModeSection = ({
 
     if (!isFollowUpAiAgentPreviewModeEnabled) {
         return (
-            <div className={css.formGroup}>
+            <div className={classNames(css.formGroup, className)}>
                 <RadioFieldSet
                     name="ai-agent-trial-mode"
                     dataCanduId="ai-agent-trial-mode-toggle"
@@ -107,9 +110,10 @@ export const AiAgentPreviewModeSection = ({
         previewModeValidUntilDatetime:
             storeConfiguration?.previewModeValidUntilDatetime,
     })
+
     if (hasAiAgentTrialEnabled) {
         return (
-            <AIBanner className={css.banner}>
+            <AIBanner className={classNames(css.banner, className)}>
                 <div className={css.bannerWrapper}>
                     <div>
                         <strong>

@@ -1,9 +1,6 @@
-import { fireEvent, screen } from '@testing-library/react'
+import { fireEvent, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { mockFlags } from 'jest-launchdarkly-mock'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
 import { useHandoverCustomizationChatFallbackSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatFallbackSettingsForm'
 import { useHandoverCustomizationChatOfflineSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOfflineSettingsForm'
@@ -43,6 +40,12 @@ jest.mock('../FormComponents/HandoverCustomizationChatFallbackSettings', () =>
         <div data-testid="mock-fallback-settings">mocked fallback settings</div>
     )),
 )
+
+const getRow = (title: string) => {
+    return screen.getByTestId(
+        `settings-feature-row-${title.toLowerCase().replace(/\s+/g, '-')}`,
+    )
+}
 
 describe('HandoverCustomizationChatSettingsComponent', () => {
     const mockProps = {
@@ -121,19 +124,17 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
             mockProps,
         )
 
-        screen.getByText('Handover instructions')
-        screen.getByText('When Chat is offline')
-        screen.getByText('mocked offline settings')
-        screen.getByText('When Chat is online')
-        screen.getByText('mocked online settings')
-        screen.getByText('When an error occurs')
-        screen.getByText('mocked fallback settings')
+        expect(screen.getByText('Handover instructions')).toBeInTheDocument()
+        expect(screen.getAllByText('When Chat is offline').length).toBe(2)
+        expect(screen.getByText('When Chat is online')).toBeInTheDocument()
+        expect(screen.getByText('When an error occurs')).toBeInTheDocument()
     })
 
-    it('should not render any section content when there is no integration selected to configure', () => {
+    it('should not render any section content when there is no integration selected to configure', async () => {
         ;(useHandoverCustomizationChatSettings as jest.Mock).mockReturnValue({
             ...mockedUseHandoverCustomizationChatSettingsProps,
             selectedChat: undefined,
+            isHandoverSectionDisabled: true,
         })
 
         const props = {
@@ -150,17 +151,19 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
 
         expect(useHandoverCustomizationChatSettings).toHaveBeenCalledWith(props)
 
-        screen.queryByText(/Handover instructions/i)
+        const offlineRow = getRow('When Chat is offline')
+        const onlineRow = getRow('When Chat is online')
+        const errorRow = getRow('When an error occurs')
 
         // titles should be present
-        screen.getByText('When Chat is offline')
-        screen.getByText('When Chat is online')
-        screen.getByText('When an error occurs')
+        expect(offlineRow).toBeInTheDocument()
+        expect(onlineRow).toBeInTheDocument()
+        expect(errorRow).toBeInTheDocument()
 
-        // sections should not be rendered
-        expect(screen.queryByText(/mocked offline settings/i)).toBeNull()
-        expect(screen.queryByText(/mocked online settings/i)).toBeNull()
-        expect(screen.queryByText(/mocked fallback settings/i)).toBeNull()
+        // buttons should be disabled
+        expect(within(offlineRow).getByRole('button')).toBeAriaDisabled()
+        expect(within(onlineRow).getByRole('button')).toBeAriaDisabled()
+        expect(within(errorRow).getByRole('button')).toBeAriaDisabled()
     })
 
     describe('Chat selection', () => {
@@ -208,327 +211,267 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
     })
 
     describe('Handover customization settings', () => {
-        describe('without settings revamp', () => {
-            it('should render the handover customization settings when there is one chat channel', () => {
-                ;(
-                    useHandoverCustomizationChatSettings as jest.Mock
-                ).mockReturnValue({
-                    ...mockedUseHandoverCustomizationChatSettingsProps,
-                    availableChats: [mockChatChannels[0]],
-                    selectedChat: mockChatChannels[0],
-                })
+        const getChatOfflineRow = () => {
+            return screen.getAllByText(/When Chat is offline/i)[0]
+        }
+        const getChatOfflineDrawerTitle = () => {
+            return screen.getAllByText(/When Chat is offline/i)[1]
+        }
+        const getChatOnlineRow = () => {
+            return screen.getAllByText(/When Chat is online/i)[0]
+        }
+        const getChatOnlineDrawerTitle = () => {
+            return screen.getAllByText(/When Chat is online/i)[1]
+        }
+        const getChatErrorRow = () => {
+            return screen.getAllByText(/When an error occurs/i)[0]
+        }
+        const getChatErrorDrawerTitle = () => {
+            return screen.getAllByText(/When an error occurs/i)[1]
+        }
 
-                const props = {
-                    ...mockProps,
-                    monitoredChatIntegrationIds: [14],
-                }
-
-                renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent
-                        {...props}
-                        setIsFormDirty={() => jest.fn()}
-                    />,
-                )
-
-                // sections should not be rendered
-                screen.getByText(/mocked offline settings/i)
-                screen.getByText(/mocked online settings/i)
-                screen.getByText(/mocked fallback settings/i)
+        it('should render the handover customization settings when there is one chat channel', () => {
+            ;(
+                useHandoverCustomizationChatSettings as jest.Mock
+            ).mockReturnValue({
+                ...mockedUseHandoverCustomizationChatSettingsProps,
+                availableChats: [mockChatChannels[0]],
+                selectedChat: mockChatChannels[0],
             })
 
-            it('should render the handover customization settings when there are more than one chat channel', () => {
-                const props = {
-                    ...mockProps,
-                    monitoredChatIntegrationIds: [14, 15],
-                }
+            const props = {
+                ...mockProps,
+                monitoredChatIntegrationIds: [14],
+            }
 
-                renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent
-                        {...props}
-                        setIsFormDirty={() => jest.fn()}
-                    />,
-                )
+            renderWithStoreAndQueryClientProvider(
+                <HandoverCustomizationChatSettingsComponent
+                    {...props}
+                    setIsFormDirty={() => jest.fn()}
+                />,
+            )
 
-                // sections should be rendered
-                screen.getByText(/mocked offline settings/i)
-                screen.getByText(/mocked online settings/i)
-                screen.getByText(/mocked fallback settings/i)
-            })
+            expect(getChatOfflineRow()).toBeInTheDocument()
+            expect(getChatOnlineRow()).toBeInTheDocument()
+            expect(getChatErrorRow()).toBeInTheDocument()
         })
 
-        describe('with settings revamp', () => {
-            const getChatOfflineRow = () => {
-                return screen.getAllByText(/When Chat is offline/i)[0]
-            }
-            const getChatOfflineDrawerTitle = () => {
-                return screen.getAllByText(/When Chat is offline/i)[1]
-            }
-            const getChatOnlineRow = () => {
-                return screen.getAllByText(/When Chat is online/i)[0]
-            }
-            const getChatOnlineDrawerTitle = () => {
-                return screen.getAllByText(/When Chat is online/i)[1]
-            }
-            const getChatErrorRow = () => {
-                return screen.getAllByText(/When an error occurs/i)[0]
-            }
-            const getChatErrorDrawerTitle = () => {
-                return screen.getAllByText(/When an error occurs/i)[1]
+        it('should render the handover customization settings when there are more than one chat channel', () => {
+            const props = {
+                ...mockProps,
+                monitoredChatIntegrationIds: [14, 15],
             }
 
-            beforeEach(() => {
-                ;(useFlags as jest.Mock).mockReturnValue({
-                    [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-                })
+            renderWithStoreAndQueryClientProvider(
+                <HandoverCustomizationChatSettingsComponent
+                    {...props}
+                    setIsFormDirty={() => jest.fn()}
+                />,
+            )
+
+            expect(getChatOfflineRow()).toBeInTheDocument()
+            expect(getChatOnlineRow()).toBeInTheDocument()
+            expect(getChatErrorRow()).toBeInTheDocument()
+        })
+
+        it('should render the chat options in the handover instructions when there are more than one chat channel', () => {
+            const props = {
+                ...mockProps,
+                monitoredChatIntegrationIds: [14, 15],
+            }
+
+            renderWithStoreAndQueryClientProvider(
+                <HandoverCustomizationChatSettingsComponent
+                    {...props}
+                    setIsFormDirty={() => jest.fn()}
+                />,
+            )
+
+            expect(screen.getByText('26 Shopify Chat')).toBeInTheDocument()
+            expect(screen.getByRole('textbox')).toBeInTheDocument()
+        })
+
+        it('should open drawer when clicking on offline chat row', () => {
+            const props = {
+                ...mockProps,
+                monitoredChatIntegrationIds: [14],
+            }
+
+            renderWithStoreAndQueryClientProvider(
+                <HandoverCustomizationChatSettingsComponent
+                    {...props}
+                    setIsFormDirty={() => jest.fn()}
+                />,
+            )
+
+            fireEvent.click(getChatOfflineRow())
+
+            const drawerTitle = getChatOfflineDrawerTitle()
+
+            expect(drawerTitle).toBeInTheDocument()
+            expect(drawerTitle.closest('.drawer-container')).toHaveStyle(
+                'z-index: 20',
+            )
+        })
+
+        it('should open drawer when clicking on online chat row', () => {
+            const props = {
+                ...mockProps,
+                monitoredChatIntegrationIds: [14],
+            }
+
+            renderWithStoreAndQueryClientProvider(
+                <HandoverCustomizationChatSettingsComponent
+                    {...props}
+                    setIsFormDirty={() => jest.fn()}
+                />,
+            )
+
+            fireEvent.click(getChatOnlineRow())
+
+            const drawerTitle = getChatOnlineDrawerTitle()
+
+            expect(drawerTitle).toBeInTheDocument()
+            expect(drawerTitle.closest('.drawer-container')).toHaveStyle(
+                'z-index: 20',
+            )
+        })
+
+        it('should open drawer when clicking on error occurs row', () => {
+            const props = {
+                ...mockProps,
+                monitoredChatIntegrationIds: [14],
+            }
+
+            renderWithStoreAndQueryClientProvider(
+                <HandoverCustomizationChatSettingsComponent
+                    {...props}
+                    setIsFormDirty={() => jest.fn()}
+                />,
+            )
+
+            fireEvent.click(getChatErrorRow())
+
+            const drawerTitle = getChatErrorDrawerTitle()
+
+            expect(drawerTitle).toBeInTheDocument()
+            expect(drawerTitle.closest('.drawer-container')).toHaveStyle(
+                'z-index: 20',
+            )
+        })
+
+        it('should not open drawer when clicking on offline chat row disabled', () => {
+            ;(
+                useHandoverCustomizationChatSettings as jest.Mock
+            ).mockReturnValue({
+                ...mockedUseHandoverCustomizationChatSettingsProps,
+                selectedChat: [],
+                isHandoverSectionDisabled: true,
             })
 
-            it('should render the handover customization settings when there is one chat channel', () => {
-                ;(
-                    useHandoverCustomizationChatSettings as jest.Mock
-                ).mockReturnValue({
-                    ...mockedUseHandoverCustomizationChatSettingsProps,
-                    availableChats: [mockChatChannels[0]],
-                    selectedChat: mockChatChannels[0],
-                })
+            renderWithStoreAndQueryClientProvider(
+                <HandoverCustomizationChatSettingsComponent
+                    {...mockProps}
+                    setIsFormDirty={() => jest.fn()}
+                />,
+            )
+            fireEvent.click(getChatOfflineRow())
 
-                const props = {
-                    ...mockProps,
-                    monitoredChatIntegrationIds: [14],
-                }
+            expect(getChatOfflineDrawerTitle()).toBeUndefined()
+        })
 
-                renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent
-                        {...props}
-                        setIsFormDirty={() => jest.fn()}
-                    />,
-                )
-
-                expect(getChatOfflineRow()).toBeInTheDocument()
-                expect(getChatOnlineRow()).toBeInTheDocument()
-                expect(getChatErrorRow()).toBeInTheDocument()
+        it('should not open drawer when clicking on online chat row disabled', () => {
+            ;(
+                useHandoverCustomizationChatSettings as jest.Mock
+            ).mockReturnValue({
+                ...mockedUseHandoverCustomizationChatSettingsProps,
+                selectedChat: [],
+                isHandoverSectionDisabled: true,
             })
 
-            it('should render the handover customization settings when there are more than one chat channel', () => {
-                const props = {
-                    ...mockProps,
-                    monitoredChatIntegrationIds: [14, 15],
-                }
+            renderWithStoreAndQueryClientProvider(
+                <HandoverCustomizationChatSettingsComponent
+                    {...mockProps}
+                    setIsFormDirty={() => jest.fn()}
+                />,
+            )
+            fireEvent.click(getChatOnlineRow())
 
-                renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent
-                        {...props}
-                        setIsFormDirty={() => jest.fn()}
-                    />,
-                )
+            expect(getChatOnlineDrawerTitle()).toBeUndefined()
+        })
 
-                expect(getChatOfflineRow()).toBeInTheDocument()
-                expect(getChatOnlineRow()).toBeInTheDocument()
-                expect(getChatErrorRow()).toBeInTheDocument()
+        it('should not open drawer when clicking on error occurs row disabled', () => {
+            ;(
+                useHandoverCustomizationChatSettings as jest.Mock
+            ).mockReturnValue({
+                ...mockedUseHandoverCustomizationChatSettingsProps,
+                selectedChat: [],
+                isHandoverSectionDisabled: true,
             })
 
-            it('should render the chat options in the handover instructions when there are more than one chat channel', () => {
-                const props = {
-                    ...mockProps,
-                    monitoredChatIntegrationIds: [14, 15],
-                }
+            renderWithStoreAndQueryClientProvider(
+                <HandoverCustomizationChatSettingsComponent
+                    {...mockProps}
+                    setIsFormDirty={() => jest.fn()}
+                />,
+            )
+            fireEvent.click(getChatErrorRow())
 
-                renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent
-                        {...props}
-                        setIsFormDirty={() => jest.fn()}
-                    />,
-                )
+            expect(getChatErrorDrawerTitle()).toBeUndefined()
+        })
 
-                expect(screen.getByText('26 Shopify Chat')).toBeInTheDocument()
-                expect(screen.getByRole('textbox')).toBeInTheDocument()
+        it('should close drawer when clicking on cancel button', () => {
+            ;(
+                useHandoverCustomizationChatSettings as jest.Mock
+            ).mockReturnValue({
+                ...mockedUseHandoverCustomizationChatSettingsProps,
+                availableChats: [mockChatChannels[0]],
+                selectedChat: mockChatChannels[0],
             })
 
-            it('should open drawer when clicking on offline chat row', () => {
-                const props = {
-                    ...mockProps,
-                    monitoredChatIntegrationIds: [14],
-                }
+            const props = {
+                ...mockProps,
+                monitoredChatIntegrationIds: [14],
+            }
 
-                renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent
-                        {...props}
-                        setIsFormDirty={() => jest.fn()}
-                    />,
-                )
+            renderWithStoreAndQueryClientProvider(
+                <HandoverCustomizationChatSettingsComponent
+                    {...props}
+                    setIsFormDirty={() => jest.fn()}
+                />,
+            )
 
-                fireEvent.click(getChatOfflineRow())
+            fireEvent.click(getChatOfflineRow())
 
-                const drawerTitle = getChatOfflineDrawerTitle()
+            const drawerTitle = getChatOfflineDrawerTitle()
+            expect(drawerTitle).toBeVisible()
 
-                expect(drawerTitle).toBeInTheDocument()
-                expect(drawerTitle.closest('.drawer-container')).toHaveStyle(
-                    'z-index: 20',
-                )
-            })
+            fireEvent.click(screen.getByRole('button', { name: /cancel/i }))
+            expect(drawerTitle).not.toBeVisible()
+        })
 
-            it('should open drawer when clicking on online chat row', () => {
-                const props = {
-                    ...mockProps,
-                    monitoredChatIntegrationIds: [14],
-                }
+        it('should close drawer when clicking on cancel button if there are changes', async () => {
+            renderWithStoreAndQueryClientProvider(
+                <HandoverCustomizationChatSettingsComponent
+                    {...mockProps}
+                    setIsFormDirty={() => jest.fn()}
+                />,
+            )
 
-                renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent
-                        {...props}
-                        setIsFormDirty={() => jest.fn()}
-                    />,
-                )
+            fireEvent.click(getChatOfflineRow())
+            await userEvent.type(screen.getAllByRole('textbox')[0], 'test')
 
-                fireEvent.click(getChatOnlineRow())
+            const drawerTitle = getChatOfflineDrawerTitle()
 
-                const drawerTitle = getChatOnlineDrawerTitle()
+            expect(drawerTitle).toBeVisible()
 
-                expect(drawerTitle).toBeInTheDocument()
-                expect(drawerTitle.closest('.drawer-container')).toHaveStyle(
-                    'z-index: 20',
-                )
-            })
+            fireEvent.click(screen.getByRole('button', { name: /cancel/i }))
 
-            it('should open drawer when clicking on error occurs row', () => {
-                const props = {
-                    ...mockProps,
-                    monitoredChatIntegrationIds: [14],
-                }
-
-                renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent
-                        {...props}
-                        setIsFormDirty={() => jest.fn()}
-                    />,
-                )
-
-                fireEvent.click(getChatErrorRow())
-
-                const drawerTitle = getChatErrorDrawerTitle()
-
-                expect(drawerTitle).toBeInTheDocument()
-                expect(drawerTitle.closest('.drawer-container')).toHaveStyle(
-                    'z-index: 20',
-                )
-            })
-
-            it('should not open drawer when clicking on offline chat row disabled', () => {
-                ;(
-                    useHandoverCustomizationChatSettings as jest.Mock
-                ).mockReturnValue({
-                    ...mockedUseHandoverCustomizationChatSettingsProps,
-                    selectedChat: [],
-                    isHandoverSectionDisabled: true,
-                })
-
-                renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent
-                        {...mockProps}
-                        setIsFormDirty={() => jest.fn()}
-                    />,
-                )
-                fireEvent.click(getChatOfflineRow())
-
-                expect(getChatOfflineDrawerTitle()).toBeUndefined()
-            })
-
-            it('should not open drawer when clicking on online chat row disabled', () => {
-                ;(
-                    useHandoverCustomizationChatSettings as jest.Mock
-                ).mockReturnValue({
-                    ...mockedUseHandoverCustomizationChatSettingsProps,
-                    selectedChat: [],
-                    isHandoverSectionDisabled: true,
-                })
-
-                renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent
-                        {...mockProps}
-                        setIsFormDirty={() => jest.fn()}
-                    />,
-                )
-                fireEvent.click(getChatOnlineRow())
-
-                expect(getChatOnlineDrawerTitle()).toBeUndefined()
-            })
-
-            it('should not open drawer when clicking on error occurs row disabled', () => {
-                ;(
-                    useHandoverCustomizationChatSettings as jest.Mock
-                ).mockReturnValue({
-                    ...mockedUseHandoverCustomizationChatSettingsProps,
-                    selectedChat: [],
-                    isHandoverSectionDisabled: true,
-                })
-
-                renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent
-                        {...mockProps}
-                        setIsFormDirty={() => jest.fn()}
-                    />,
-                )
-                fireEvent.click(getChatErrorRow())
-
-                expect(getChatErrorDrawerTitle()).toBeUndefined()
-            })
-
-            it('should close drawer when clicking on cancel button', () => {
-                ;(
-                    useHandoverCustomizationChatSettings as jest.Mock
-                ).mockReturnValue({
-                    ...mockedUseHandoverCustomizationChatSettingsProps,
-                    availableChats: [mockChatChannels[0]],
-                    selectedChat: mockChatChannels[0],
-                })
-
-                const props = {
-                    ...mockProps,
-                    monitoredChatIntegrationIds: [14],
-                }
-
-                renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent
-                        {...props}
-                        setIsFormDirty={() => jest.fn()}
-                    />,
-                )
-
-                fireEvent.click(getChatOfflineRow())
-
-                const drawerTitle = getChatOfflineDrawerTitle()
-                expect(drawerTitle).toBeVisible()
-
-                fireEvent.click(screen.getByRole('button', { name: /cancel/i }))
-                expect(drawerTitle).not.toBeVisible()
-            })
-
-            it('should close drawer when clicking on cancel button if there are changes', async () => {
-                renderWithStoreAndQueryClientProvider(
-                    <HandoverCustomizationChatSettingsComponent
-                        {...mockProps}
-                        setIsFormDirty={() => jest.fn()}
-                    />,
-                )
-
-                fireEvent.click(getChatOfflineRow())
-                await userEvent.type(screen.getAllByRole('textbox')[0], 'test')
-
-                const drawerTitle = getChatOfflineDrawerTitle()
-
-                expect(drawerTitle).toBeVisible()
-
-                fireEvent.click(screen.getByRole('button', { name: /cancel/i }))
-
-                expect(drawerTitle).not.toBeVisible()
-            })
+            expect(drawerTitle).not.toBeVisible()
         })
     })
 
     it('renders chat handover behavior link with correct URL', () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentSettingsRevamp]: true,
-        })
-
         renderWithRouter(
             <HandoverCustomizationChatSettingsComponent
                 {...mockProps}

@@ -1,11 +1,9 @@
 import { useMemo } from 'react'
 
 import cn from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { Label } from 'gorgias-design-system/Input/Label'
 import { GorgiasChatEmailCaptureType } from 'models/integration/types'
 import { HandoverCustomizationChatOnlineSettingsFormValues } from 'pages/aiAgent/types'
@@ -43,8 +41,6 @@ export const HandoverCustomizationChatOnlineSettingsFields = ({
     onAutoResponderEnabledChange,
     onAutoResponderReplyChange,
 }: Props) => {
-    const isSettingsRevampEnabled =
-        useFlags()[FeatureFlagKey.AiAgentSettingsRevamp]
     const chatPreferencesLink = useMemo(
         () =>
             `/app/settings/channels/gorgias_chat/${integrationId}/preferences`,
@@ -73,12 +69,10 @@ export const HandoverCustomizationChatOnlineSettingsFields = ({
             >
                 <Label
                     htmlFor="handover-customization-online-instructions"
-                    label={
-                        isSettingsRevampEnabled ? 'Instructions' : 'Guidance'
-                    }
+                    label="Instructions"
                     className={`${css.onlineInstructionsTitle} mb-2`}
                 >
-                    {isSettingsRevampEnabled ? 'Guidance' : 'Instructions'}
+                    Guidance
                 </Label>
                 <TextArea
                     id="handover-customization-online-instructions"
@@ -86,9 +80,7 @@ export const HandoverCustomizationChatOnlineSettingsFields = ({
                     name="handover-customization-online-instructions"
                     placeholder={`Apologize and acknowledge the issue. Tell the customer that you’re connecting them with someone.`}
                     role="textbox"
-                    aria-label={
-                        isSettingsRevampEnabled ? 'Instructions' : 'Guidance'
-                    }
+                    aria-label="Instructions"
                     value={values.onlineInstructions}
                     maxLength={
                         formFieldsConfiguration.onlineInstructions.maxLength
@@ -97,10 +89,9 @@ export const HandoverCustomizationChatOnlineSettingsFields = ({
                     error={undefined}
                 />
                 <Caption className="caption-regular mt-1">
-                    {isSettingsRevampEnabled
-                        ? `Write optional instructions for AI Agent to follow during handover.
-           By default, AI Agent generates a message using your tone of voice.`
-                        : `AI Agent will use these instructions to craft the handover message it sends to customers. If left blank, it will generate a generic message using your tone of voice.`}
+                    Write optional instructions for AI Agent to follow during
+                    handover. By default, AI Agent generates a message using
+                    your tone of voice.
                 </Caption>
             </div>
 

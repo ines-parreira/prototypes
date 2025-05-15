@@ -1,11 +1,7 @@
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import _upperFirst from 'lodash/upperFirst'
 import { Link } from 'react-router-dom'
 
-import { ToggleField } from '@gorgias/merchant-ui-kit'
-
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import useLocalStorage from 'hooks/useLocalStorage'
 import {
     BannerText,
@@ -41,8 +37,6 @@ export const ChannelToggleInput = ({
     orderManagementRoute,
     flowsRoute,
 }: Props) => {
-    const isSettingsRevampEnabled =
-        useFlags()[FeatureFlagKey.AiAgentSettingsRevamp]
     const [bannerAcknowledged, setBannerAcknowledged] =
         useLocalStorage<boolean>(
             `ai-settings-${type}-banner-acknowledged`,
@@ -85,7 +79,7 @@ export const ChannelToggleInput = ({
         ),
     }
 
-    return isSettingsRevampEnabled ? (
+    return (
         <SettingsCard>
             <SettingsCardHeader>
                 <SettingsCardTitle>
@@ -112,22 +106,9 @@ export const ChannelToggleInput = ({
                     isChecked={isToggled}
                     isDisabled={isDisabled}
                     onChange={handleClick}
+                    toggleName={`toggle-ai-agent-${type}`}
                 />
             </SettingsCardContent>
         </SettingsCard>
-    ) : (
-        <ToggleField
-            value={isToggled}
-            onChange={handleClick}
-            name={`toggle-ai-agent-${channel}`}
-            // Add new candu selectors after we define them
-            dataCanduId={
-                channel === 'email'
-                    ? 'ai-agent-configuration-toggle'
-                    : 'ai-agent-configuration-chat-toggle'
-            }
-            isDisabled={isDisabled}
-            label="Enable AI Agent"
-        />
     )
 }

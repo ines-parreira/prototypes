@@ -55,6 +55,7 @@ const Template: StoryFn<ComponentProps<typeof SettingsCard>> = (props: any) => (
                     description="Test Description 2"
                     type="toggle"
                     isChecked={false}
+                    toggleName="toggle-test-feature-2"
                 />
                 <SettingsFeatureRow
                     title="Test Feature 3"

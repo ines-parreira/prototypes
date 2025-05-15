@@ -1,7 +1,4 @@
-import { Fragment } from 'react'
-
 import { useFlags } from 'launchdarkly-react-client-sdk'
-import { Link } from 'react-router-dom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
@@ -11,7 +8,6 @@ import { SettingsBannerType } from 'pages/aiAgent/components/StoreConfigForm/con
 import { ChannelToggleInput } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/ChannelToggleInput'
 import { ChatSettingsFormComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/ChatSettingsFormComponent'
 import { EmailFormComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/EmailFormComponent'
-import { SettingsBanner } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/SettingsBanner'
 import { SignatureFormComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/SignatureFormComponent'
 import { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
@@ -71,9 +67,6 @@ export const ChannelsFormComponent = ({
 
     const showToggles = !isAiAgentActivationEnabled || hasAiAgentNewActivationXp
 
-    const isSettingsRevampEnabled =
-        useFlags()[FeatureFlagKey.AiAgentSettingsRevamp]
-
     const hasAutomate = useAppSelector(getHasAutomate)
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
 
@@ -83,16 +76,10 @@ export const ChannelsFormComponent = ({
         <>
             {isAiAgentChatEnabled && (
                 <ConfigurationSection
-                    title={isSettingsRevampEnabled ? 'Chat' : 'Chat settings'}
+                    title="Chat"
                     data-candu-id="ai-agent-configuration-chat-settings"
                     isBeta={true}
                 >
-                    {!isSettingsRevampEnabled && (
-                        <SettingsBanner
-                            type={SettingsBannerType.Chat}
-                            deactivatedDatetime={chatChannelDeactivatedDatetime}
-                        />
-                    )}
                     {(!isAiAgentActivationEnabled ||
                         hasAiAgentNewActivationXp) && (
                         <div className={css.sectionBlock}>
@@ -134,28 +121,9 @@ export const ChannelsFormComponent = ({
                 </ConfigurationSection>
             )}
             <ConfigurationSection
-                title={isSettingsRevampEnabled ? 'Email' : 'Email settings'}
-                subtitle={
-                    !isSettingsRevampEnabled && (
-                        <Fragment>
-                            When enabled, AI Agent will also handle tickets
-                            created via{' '}
-                            <Link to={routes.automationOrderManagement}>
-                                {'Order Management'}
-                            </Link>{' '}
-                            and{' '}
-                            <Link to={routes.automationFlows}>{'Flows'}</Link>
-                        </Fragment>
-                    )
-                }
+                title="Email"
                 data-candu-id="ai-agent-configuration-email-settings"
             >
-                {!isSettingsRevampEnabled && (
-                    <SettingsBanner
-                        type={SettingsBannerType.Email}
-                        deactivatedDatetime={emailChannelDeactivatedDatetime}
-                    />
-                )}
                 {showToggles && (
                     <div className={css.sectionBlock}>
                         <ChannelToggleInput

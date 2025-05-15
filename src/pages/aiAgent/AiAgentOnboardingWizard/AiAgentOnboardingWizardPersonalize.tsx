@@ -188,7 +188,6 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
                         customToneOfVoiceGuidance={
                             formValues.customToneOfVoiceGuidance
                         }
-                        hasChat={isChatAvailable}
                         setIsPristine={setIsPristine}
                     />
 

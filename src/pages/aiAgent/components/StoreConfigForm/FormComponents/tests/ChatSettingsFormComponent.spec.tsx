@@ -1,13 +1,8 @@
 import { render, screen } from '@testing-library/react'
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
-import { FeatureFlagKey } from 'config/featureFlags'
-import { assumeMock } from 'utils/testing'
 
 import { ChatSettingsFormComponent } from '../ChatSettingsFormComponent'
 
 jest.mock('launchdarkly-react-client-sdk')
-const useFlagsMock = assumeMock(useFlags)
 
 describe('ChatSettingsFormComponent', () => {
     const mockProps = {
@@ -27,161 +22,143 @@ describe('ChatSettingsFormComponent', () => {
         setIsPristine: jest.fn(),
     }
 
-    describe.each([
-        { aiAgentSettingsRevamp: false },
-        { aiAgentSettingsRevamp: true },
-    ])(
-        'when flag AiAgentSettingsRevamp=$aiAgentSettingsRevamp',
-        ({ aiAgentSettingsRevamp }) => {
-            beforeEach(() => {
-                useFlagsMock.mockReturnValue({
-                    [FeatureFlagKey.AiAgentSettingsRevamp]:
-                        aiAgentSettingsRevamp,
-                })
-            })
+    it('should display error message when isRequired is true and no chat is selected', () => {
+        render(
+            <ChatSettingsFormComponent
+                {...mockProps}
+                monitoredChatIntegrations={[]}
+            />,
+        )
 
-            it('should display error message when isRequired is true and no chat is selected', () => {
-                render(
-                    <ChatSettingsFormComponent
-                        {...mockProps}
-                        monitoredChatIntegrations={[]}
-                    />,
-                )
+        expect(
+            screen.getByText('One or more Chats required.'),
+        ).toBeInTheDocument()
+    })
 
-                expect(
-                    screen.getByText('One or more Chats required.'),
-                ).toBeInTheDocument()
-            })
+    it('should render chat settings form when isSettingsRevamp is %s', () => {
+        render(<ChatSettingsFormComponent {...mockProps} />)
 
-            it('should render chat settings form when isSettingsRevamp is %s', () => {
-                render(<ChatSettingsFormComponent {...mockProps} />)
+        expect(
+            screen.getByText(/select one or more chats/i),
+        ).toBeInTheDocument()
+    })
 
-                expect(
-                    screen.getByText(/select one or more chats/i),
-                ).toBeInTheDocument()
-            })
+    it('should use initial values when monitoredChatIntegrations is null', () => {
+        render(
+            <ChatSettingsFormComponent
+                {...mockProps}
+                monitoredChatIntegrations={null}
+            />,
+        )
 
-            it('should use initial values when monitoredChatIntegrations is null', () => {
-                render(
-                    <ChatSettingsFormComponent
-                        {...mockProps}
-                        monitoredChatIntegrations={null}
-                    />,
-                )
+        expect(screen.getByRole('combobox')).toHaveTextContent(
+            'Select one or more chat integrations',
+        )
+    })
 
-                expect(screen.getByRole('combobox')).toHaveTextContent(
-                    'Select one or more chat integrations',
-                )
-            })
+    it('should use initial values when monitoredChatIntegrations is null', () => {
+        render(
+            <ChatSettingsFormComponent
+                {...mockProps}
+                isRequired={true}
+                monitoredChatIntegrations={null}
+            />,
+        )
 
-            it('should use initial values when monitoredChatIntegrations is null', () => {
-                render(
-                    <ChatSettingsFormComponent
-                        {...mockProps}
-                        isRequired={true}
-                        monitoredChatIntegrations={null}
-                    />,
-                )
+        expect(screen.getByRole('combobox')).toHaveTextContent(
+            'Select one or more chat integrations',
+        )
+    })
 
-                expect(screen.getByRole('combobox')).toHaveTextContent(
-                    'Select one or more chat integrations',
-                )
-            })
+    it('should use monitoredChatIntegrations when provided', () => {
+        render(
+            <ChatSettingsFormComponent
+                {...mockProps}
+                monitoredChatIntegrations={[1, 2]}
+            />,
+        )
 
-            it('should use monitoredChatIntegrations when provided', () => {
-                render(
-                    <ChatSettingsFormComponent
-                        {...mockProps}
-                        monitoredChatIntegrations={[1, 2]}
-                    />,
-                )
+        expect(screen.getByRole('combobox')).toHaveTextContent('Chat 1, Chat 2')
+    })
 
-                expect(screen.getByRole('combobox')).toHaveTextContent(
-                    'Chat 1, Chat 2',
-                )
-            })
+    it('should display error message when the chat integration is required and invalid', () => {
+        render(
+            <ChatSettingsFormComponent
+                {...mockProps}
+                monitoredChatIntegrations={[]}
+                isRequired={true}
+            />,
+        )
 
-            it('should display error message when the chat integration is required and invalid', () => {
-                render(
-                    <ChatSettingsFormComponent
-                        {...mockProps}
-                        monitoredChatIntegrations={[]}
-                        isRequired={true}
-                    />,
-                )
+        expect(
+            screen.getByText('One or more Chats required.'),
+        ).toBeInTheDocument()
+    })
 
-                expect(
-                    screen.getByText('One or more Chats required.'),
-                ).toBeInTheDocument()
-            })
+    it('should not display error message when the chat is not required', () => {
+        render(
+            <ChatSettingsFormComponent
+                {...mockProps}
+                monitoredChatIntegrations={[]}
+                isRequired={false}
+            />,
+        )
 
-            it('should not display error message when the chat is not required', () => {
-                render(
-                    <ChatSettingsFormComponent
-                        {...mockProps}
-                        monitoredChatIntegrations={[]}
-                        isRequired={false}
-                    />,
-                )
+        expect(
+            screen.queryByText('One or more Chats required.'),
+        ).not.toBeInTheDocument()
+    })
 
-                expect(
-                    screen.queryByText('One or more Chats required.'),
-                ).not.toBeInTheDocument()
-            })
+    it('should prefill monitoredChatIntegrations with initialValue when conditions are met', () => {
+        const initialValue = 3
+        const updateValue = jest.fn()
 
-            it('should prefill monitoredChatIntegrations with initialValue when conditions are met', () => {
-                const initialValue = 3
-                const updateValue = jest.fn()
+        render(
+            <ChatSettingsFormComponent
+                {...mockProps}
+                updateValue={updateValue}
+                monitoredChatIntegrations={[]}
+                initialValue={initialValue}
+                shouldPrefillValue={true}
+            />,
+        )
 
-                render(
-                    <ChatSettingsFormComponent
-                        {...mockProps}
-                        updateValue={updateValue}
-                        monitoredChatIntegrations={[]}
-                        initialValue={initialValue}
-                        shouldPrefillValue={true}
-                    />,
-                )
+        expect(updateValue).toHaveBeenCalledWith('monitoredChatIntegrations', [
+            initialValue,
+        ])
+    })
 
-                expect(updateValue).toHaveBeenCalledWith(
-                    'monitoredChatIntegrations',
-                    [initialValue],
-                )
-            })
+    it('should not prefill monitoredChatIntegrations when monitoredChatIntegrations is not empty', () => {
+        const initialValue = 3
+        const updateValue = jest.fn()
 
-            it('should not prefill monitoredChatIntegrations when monitoredChatIntegrations is not empty', () => {
-                const initialValue = 3
-                const updateValue = jest.fn()
+        render(
+            <ChatSettingsFormComponent
+                {...mockProps}
+                updateValue={updateValue}
+                monitoredChatIntegrations={[1]}
+                initialValue={initialValue}
+                shouldPrefillValue={true}
+            />,
+        )
 
-                render(
-                    <ChatSettingsFormComponent
-                        {...mockProps}
-                        updateValue={updateValue}
-                        monitoredChatIntegrations={[1]}
-                        initialValue={initialValue}
-                        shouldPrefillValue={true}
-                    />,
-                )
+        expect(updateValue).not.toHaveBeenCalled()
+    })
 
-                expect(updateValue).not.toHaveBeenCalled()
-            })
+    it('should not prefill monitoredChatIntegrations when monitoredChatIntegrations is null', () => {
+        const initialValue = 3
+        const updateValue = jest.fn()
 
-            it('should not prefill monitoredChatIntegrations when monitoredChatIntegrations is null', () => {
-                const initialValue = 3
-                const updateValue = jest.fn()
+        render(
+            <ChatSettingsFormComponent
+                {...mockProps}
+                updateValue={updateValue}
+                monitoredChatIntegrations={null}
+                initialValue={initialValue}
+                shouldPrefillValue={true}
+            />,
+        )
 
-                render(
-                    <ChatSettingsFormComponent
-                        {...mockProps}
-                        updateValue={updateValue}
-                        monitoredChatIntegrations={null}
-                        initialValue={initialValue}
-                        shouldPrefillValue={true}
-                    />,
-                )
-
-                expect(updateValue).not.toHaveBeenCalled()
-            })
-        },
-    )
+        expect(updateValue).not.toHaveBeenCalled()
+    })
 })
