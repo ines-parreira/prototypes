@@ -17,10 +17,12 @@ export const getStoreConfigurationFromFormValues = (
         hasNewAutomatePlan,
         isAiSalesBetaUser,
         aiSalesAgentEmailEnabled,
+        hasAiAgentNewActivationXp,
     }: {
         hasNewAutomatePlan: boolean
         isAiSalesBetaUser: boolean
         aiSalesAgentEmailEnabled: boolean
+        hasAiAgentNewActivationXp: boolean
     },
 ): CreateStoreConfigurationPayload => {
     const {
@@ -55,21 +57,25 @@ export const getStoreConfigurationFromFormValues = (
     const isEmailEnabled = !formValues.emailChannelDeactivatedDatetime
     const isChatEnabled = !formValues.chatChannelDeactivatedDatetime
     let scopes: AiAgentScope[] = []
-    if (isEmailEnabled || isChatEnabled) {
-        scopes.push(AiAgentScope.Support)
-    }
-    const hasSalesScope = isSalesEnabledWithNewActivationXp({
-        isAiSalesBetaUser,
-        hasNewAutomatePlan,
-        aiSalesAgentEmailEnabled,
-        storeHasSales: !!storeConfiguration?.scopes.includes(
-            AiAgentScope.Sales,
-        ),
-        isEmailEnabled,
-        isChatEnabled,
-    })
-    if (hasSalesScope) {
-        scopes.push(AiAgentScope.Sales)
+    if (hasAiAgentNewActivationXp) {
+        if (isEmailEnabled || isChatEnabled) {
+            scopes.push(AiAgentScope.Support)
+        }
+        const hasSalesScope = isSalesEnabledWithNewActivationXp({
+            isAiSalesBetaUser,
+            hasNewAutomatePlan,
+            aiSalesAgentEmailEnabled,
+            storeHasSales: !!storeConfiguration?.scopes.includes(
+                AiAgentScope.Sales,
+            ),
+            isEmailEnabled,
+            isChatEnabled,
+        })
+        if (hasSalesScope) {
+            scopes.push(AiAgentScope.Sales)
+        }
+    } else {
+        scopes = storeConfiguration?.scopes ?? []
     }
 
     return {

@@ -46,6 +46,8 @@ export const useConfigurationForm = ({
     const isAiSalesBetaUser = !!useFlags()[FeatureFlagKey.AiSalesAgentBeta]
     const aiSalesAgentEmailEnabled =
         !!useFlags()[FeatureFlagKey.AiSalesAgentActivationEmailSettings]
+    const hasAiAgentNewActivationXp =
+        !!useFlags()[FeatureFlagKey.AiAgentNewActivationXp]
 
     const isAiAgentChatEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentChat]
@@ -173,6 +175,7 @@ export const useConfigurationForm = ({
                 hasNewAutomatePlan,
                 isAiSalesBetaUser,
                 aiSalesAgentEmailEnabled,
+                hasAiAgentNewActivationXp,
             },
         )
 

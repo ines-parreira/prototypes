@@ -1,4 +1,7 @@
+import { AiAgentScope } from 'models/aiAgent/types'
+import { isSalesEnabledWithNewActivationXp } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import { assumeMock } from 'utils/testing'
 
 import { ToneOfVoice } from '../../constants'
 import { ValidFormValues } from '../../types'
@@ -11,6 +14,11 @@ import {
 jest.mock('../../util', () => ({
     filterNonNull: jest.fn(),
 }))
+
+jest.mock('pages/aiAgent/Activation/hooks/storeActivationReducer')
+const isSalesEnabledWithNewActivationXpMock = assumeMock(
+    isSalesEnabledWithNewActivationXp,
+)
 
 describe('getStoreConfigurationFromFormValues', () => {
     const storeName = 'MyStore'
@@ -64,7 +72,7 @@ describe('getStoreConfigurationFromFormValues', () => {
     afterEach(() => {
         ;(filterNonNull as jest.Mock).mockReset()
     })
-    it('should return correct values', () => {
+    it('should return correct values and keep existing scope when AiAgentNewActivationXp=false', () => {
         const result = getStoreConfigurationFromFormValues(
             storeName,
             {
@@ -73,11 +81,119 @@ describe('getStoreConfigurationFromFormValues', () => {
             },
             getStoreConfigurationFixture({
                 excludedTopics: ['topic1', 'topic2'],
+                scopes: [AiAgentScope.Sales, AiAgentScope.Support],
             }),
             {
                 hasNewAutomatePlan: false,
                 isAiSalesBetaUser: false,
                 aiSalesAgentEmailEnabled: false,
+                hasAiAgentNewActivationXp: false,
+            },
+        )
+
+        expect(filterNonNull).toHaveBeenCalled()
+
+        expect(result).toEqual({
+            ...formValuesPartial,
+            storeName,
+            customToneOfVoiceGuidance: null,
+            scopes: [AiAgentScope.Sales, AiAgentScope.Support],
+        })
+    })
+
+    it.each([
+        { emailEnabled: true, chatEnabled: true },
+        { emailEnabled: false, chatEnabled: true },
+        { emailEnabled: true, chatEnabled: false },
+    ])(
+        'should set support scope when emailEnabled=$emailEnabled + chatEnabled=$chatEnabled settings when AiAgentNewActivationXp=true',
+        ({ chatEnabled, emailEnabled }) => {
+            const emailChannelDeactivatedDatetime = emailEnabled
+                ? null
+                : new Date().toISOString()
+            const chatChannelDeactivatedDatetime = chatEnabled
+                ? null
+                : new Date().toISOString()
+            const result = getStoreConfigurationFromFormValues(
+                storeName,
+                {
+                    ...formValues,
+                    toneOfVoice: ToneOfVoice.Professional,
+                    emailChannelDeactivatedDatetime,
+                    chatChannelDeactivatedDatetime,
+                },
+                getStoreConfigurationFixture({
+                    excludedTopics: ['topic1', 'topic2'],
+                    scopes: [AiAgentScope.Sales, AiAgentScope.Support],
+                }),
+                {
+                    hasNewAutomatePlan: false,
+                    isAiSalesBetaUser: false,
+                    aiSalesAgentEmailEnabled: false,
+                    hasAiAgentNewActivationXp: true,
+                },
+            )
+
+            expect(filterNonNull).toHaveBeenCalled()
+
+            expect(result).toEqual({
+                ...formValuesPartial,
+                storeName,
+                customToneOfVoiceGuidance: null,
+                emailChannelDeactivatedDatetime,
+                chatChannelDeactivatedDatetime,
+                scopes: [AiAgentScope.Support],
+            })
+        },
+    )
+
+    it('should set sales scope when isSalesEnabledWithNewActivationXpMock returns true and AiAgentNewActivationXp=true', () => {
+        isSalesEnabledWithNewActivationXpMock.mockReturnValue(true)
+        const result = getStoreConfigurationFromFormValues(
+            storeName,
+            {
+                ...formValues,
+                toneOfVoice: ToneOfVoice.Professional,
+            },
+            getStoreConfigurationFixture({
+                excludedTopics: ['topic1', 'topic2'],
+                scopes: [AiAgentScope.Sales, AiAgentScope.Support],
+            }),
+            {
+                hasNewAutomatePlan: false,
+                isAiSalesBetaUser: false,
+                aiSalesAgentEmailEnabled: false,
+                hasAiAgentNewActivationXp: true,
+            },
+        )
+
+        expect(filterNonNull).toHaveBeenCalled()
+
+        expect(result).toEqual({
+            ...formValuesPartial,
+            storeName,
+            customToneOfVoiceGuidance: null,
+            scopes: [AiAgentScope.Sales],
+        })
+    })
+
+    it('should not set sales scope when isSalesEnabledWithNewActivationXpMock returns true and AiAgentNewActivationXp=true', () => {
+        isSalesEnabledWithNewActivationXpMock.mockReturnValue(false)
+        const result = getStoreConfigurationFromFormValues(
+            storeName,
+            {
+                ...formValues,
+                toneOfVoice: ToneOfVoice.Professional,
+            },
+            getStoreConfigurationFixture({
+                excludedTopics: ['topic1', 'topic2'],
+                scopes: [AiAgentScope.Sales, AiAgentScope.Support],
+            }),
+            {
+                hasNewAutomatePlan: false,
+                isAiSalesBetaUser: false,
+                aiSalesAgentEmailEnabled: false,
+                hasAiAgentNewActivationXp: true,
             },
         )
 
