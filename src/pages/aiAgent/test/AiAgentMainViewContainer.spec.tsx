@@ -273,7 +273,7 @@ describe('AiAgentMainViewContainer', () => {
         )
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            expect.stringContaining('ai-agent/settings'),
+            '/app/ai-agent/shopify/test-shop/settings',
         )
     })
 
@@ -298,7 +298,7 @@ describe('AiAgentMainViewContainer', () => {
         )
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/automation/${SHOP_TYPE}/${SHOP_NAME}/ai-agent/optimize`,
+            `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/optimize`,
         )
     })
 })

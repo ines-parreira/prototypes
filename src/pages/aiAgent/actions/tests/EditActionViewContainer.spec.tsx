@@ -57,8 +57,7 @@ describe('<EditActionViewContainer />', () => {
         )
         expect(historyReplaceSpy).toHaveBeenCalledWith(
             expect.objectContaining({
-                pathname:
-                    '/app/automation/shopify/shopify-store/ai-agent/actions',
+                pathname: '/app/ai-agent/shopify/shopify-store/actions',
             }),
         )
     })

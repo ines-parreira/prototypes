@@ -56,16 +56,6 @@ describe('useAiAgentHeaderNavbarItems', () => {
         })
     })
 
-    it('should return navigationItems when standalone menu is disabled', () => {
-        mockUseFlag.mockReturnValue(false)
-
-        const { result } = renderHook(() =>
-            useAiAgentHeaderNavbarItems('shopName'),
-        )
-
-        expect(result.current).toEqual(navigationItems)
-    })
-
     it("should return current navigation item's items when standalone menu is enabled", () => {
         mockUseFlag.mockReturnValue(true)
 

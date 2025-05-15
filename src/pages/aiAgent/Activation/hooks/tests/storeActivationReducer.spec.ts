@@ -493,7 +493,7 @@ describe('storeActivationReducer', () => {
                     kind: KNOWLEDGE_ALERT_KIND,
                     cta: {
                         label: 'Visit Knowledge',
-                        to: '/app/automation/shopify/Test Store/ai-agent/knowledge',
+                        to: '/app/ai-agent/shopify/Test Store/knowledge',
                     },
                     message:
                         'At least one knowledge source required. Update your knowledge tab to be able to activate AI Agent.',

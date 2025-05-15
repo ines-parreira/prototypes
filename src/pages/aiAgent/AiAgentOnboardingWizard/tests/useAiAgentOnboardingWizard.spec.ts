@@ -219,7 +219,7 @@ describe('useAiAgentOnboardingWizard', () => {
         })
 
         expect(history.replace).toHaveBeenCalledWith(
-            '/app/automation/shopify/test-shop/ai-agent',
+            '/app/ai-agent/shopify/test-shop',
         )
     })
 
@@ -289,7 +289,7 @@ describe('useAiAgentOnboardingWizard', () => {
 
         await waitFor(() => {
             expect(history.replace).toHaveBeenCalledWith({
-                pathname: '/app/automation/shopify/test-shop/ai-agent/test',
+                pathname: '/app/ai-agent/shopify/test-shop/test',
                 search: 'with_wizard_completed=test',
             })
         })
@@ -310,7 +310,7 @@ describe('useAiAgentOnboardingWizard', () => {
 
         await waitFor(() => {
             expect(history.replace).toHaveBeenCalledWith({
-                pathname: '/app/automation/shopify/test-shop/ai-agent/guidance',
+                pathname: '/app/ai-agent/shopify/test-shop/knowledge/guidance',
                 search: 'with_wizard_completed=guidance',
             })
         })

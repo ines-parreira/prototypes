@@ -1,12 +1,10 @@
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment, { Moment } from 'moment'
 import { useParams } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import useEffectOnce from 'hooks/useEffectOnce'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import { AI_AGENT, OPTIMIZE } from 'pages/aiAgent/constants'
+import { OPTIMIZE } from 'pages/aiAgent/constants'
 import { IntentTableWidget } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableWidget'
 import { AdjustedPeriodFilter } from 'pages/aiAgent/insights/widgets/AdjustedPeriodFilter/AdjustedPeriodFilter'
 import { Level1IntentsPerformance } from 'pages/aiAgent/insights/widgets/Level1IntentsPerformance/Level1IntentsPerformance'
@@ -34,9 +32,6 @@ export const OptimizeContainer = () => {
         shopName: string
     }>()
 
-    const isStandaloneMenuEnabled =
-        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
-
     useEffectOnce(() => {
         logEvent(SegmentEvent.AiAgentOptimizePageViewed, {
             type: 'Optimize overview',
@@ -47,7 +42,7 @@ export const OptimizeContainer = () => {
         <AiAgentLayout
             shopName={shopName}
             className={css.container}
-            title={isStandaloneMenuEnabled ? OPTIMIZE : AI_AGENT}
+            title={OPTIMIZE}
         >
             <div className={css.section}>
                 <AdjustedPeriodFilter />

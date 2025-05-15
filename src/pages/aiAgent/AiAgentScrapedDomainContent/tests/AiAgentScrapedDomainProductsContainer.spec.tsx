@@ -1,8 +1,6 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen } from '@testing-library/react'
 import { mockFlags } from 'jest-launchdarkly-mock'
@@ -135,7 +133,6 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
         } as any)
         mockFlags({
             [FeatureFlagKey.AiAgentScrapeStoreDomain]: true,
-            [FeatureFlagKey.ConvAiStandaloneMenu]: true,
         })
     })
 
@@ -154,15 +151,6 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
             ),
         ).toBeInTheDocument()
         expect(screen.getByText('Product')).toBeInTheDocument()
-    })
-
-    it('should render correct header title for the page based on feature flag', () => {
-        mockFlags({
-            [FeatureFlagKey.ConvAiStandaloneMenu]: false,
-        })
-
-        renderComponent()
-        expect(screen.getByText('AI Agent')).toBeInTheDocument()
     })
 
     it('should render the component with loading banner when sync is pending', () => {

@@ -104,24 +104,13 @@ export const StoreConfigForm = ({
         flags[FeatureFlagKey.AiAgentOnboardingWizard]
     const isFollowUpAiAgentPreviewModeEnabled =
         flags[FeatureFlagKey.FollowUpAiAgentPreviewMode]
-    const isStandaloneMenuEnabled = flags[FeatureFlagKey.ConvAiStandaloneMenu]
     const isAiAutofillSectionEnabled =
         flags[FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]
     const isSettingsRevampEnabled = flags[FeatureFlagKey.AiAgentSettingsRevamp]
 
-    // Because this component is heavy and difficult to rework
-    // Standalone team decided to add the capability to show/hide some sections based on the current route (tab param)
     const { tab = 'general' } = useParams<{ tab?: 'channels' }>()
-    // Standalone menu feature flag is used to detect if we need to use the old settings page (all in one settings) or
-    // the new one (separated tabs for general and channels settings)
-    // On "old" settings page, we display all sections
-    // On "new" general settings page, we hide channels section and display the rest
-    // On "new" channels settings page, we hide general sections and display channels section
-    const shouldDisplayOldSettingsPage = !isStandaloneMenuEnabled
-    const shouldDisplayChannelsSection =
-        shouldDisplayOldSettingsPage || tab === 'channels'
-    const shouldDisplayGeneralSections =
-        shouldDisplayOldSettingsPage || tab === 'general'
+    const shouldDisplayChannelsSection = tab === 'channels'
+    const shouldDisplayGeneralSections = tab === 'general'
     const shouldDisplayTOVPreview =
         tab === 'general' || !isSettingsRevampEnabled
 

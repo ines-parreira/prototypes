@@ -44,9 +44,7 @@ describe('getKnowledgeUrl', () => {
             url: 'https://storage.googleapis.com/test.pdf',
         } as Knowledge
         const result = getKnowledgeUrl(knowledge, shopType, shopName)
-        expect(result).toBe(
-            `/app/automation/${shopType}/${shopName}/ai-agent/knowledge`,
-        )
+        expect(result).toBe(`/app/ai-agent/${shopType}/${shopName}/knowledge`)
     })
 
     it('should return the internal URL for type macro', () => {

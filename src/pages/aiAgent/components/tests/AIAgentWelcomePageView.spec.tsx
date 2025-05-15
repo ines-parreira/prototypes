@@ -99,7 +99,6 @@ describe('<AIAgentWelcomePageView />', () => {
         jest.resetModules()
         mockFlags({
             [FeatureFlagKey.AiAgentOnboardingWizard]: false,
-            [FeatureFlagKey.ConvAiStandaloneMenu]: true,
             [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
         })
     })
@@ -215,7 +214,6 @@ describe('<AIAgentWelcomePageView />', () => {
         const historyPushSpy = jest.spyOn(history, 'push')
 
         mockFlags({
-            [FeatureFlagKey.ConvAiStandaloneMenu]: true,
             [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
         })
 
@@ -238,7 +236,6 @@ describe('<AIAgentWelcomePageView />', () => {
         const historyPushSpy = jest.spyOn(history, 'push')
 
         mockFlags({
-            [FeatureFlagKey.ConvAiStandaloneMenu]: true,
             [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
         })
 

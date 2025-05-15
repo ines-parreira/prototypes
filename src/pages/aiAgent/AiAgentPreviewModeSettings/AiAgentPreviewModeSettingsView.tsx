@@ -1,16 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
 import classnames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { ToggleField } from '@gorgias/merchant-ui-kit'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import {
-    AI_AGENT,
     DEFAULT_PREVIEW_MODE_DURATION_IN_DAYS,
     PREVIEW,
 } from 'pages/aiAgent/constants'
@@ -48,9 +45,6 @@ const AiAgentPreviewModeSettingsView: React.FC<
     hasNoKnowledgeBase,
     isPreviewModeEnabled,
 }) => {
-    const isStandaloneMenuEnabled =
-        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
-
     const getStoredDuration = useCallback(() => {
         if (
             storeConfiguration?.previewModeActivatedDatetime &&
@@ -216,10 +210,7 @@ const AiAgentPreviewModeSettingsView: React.FC<
                 onDiscard={onCancel}
                 shouldRedirectAfterSave={true}
             />
-            <AiAgentLayout
-                shopName={shopName}
-                title={isStandaloneMenuEnabled ? PREVIEW : AI_AGENT}
-            >
+            <AiAgentLayout shopName={shopName} title={PREVIEW}>
                 <form className={css.form}>
                     <section>
                         <div className={css.title}>Preview</div>

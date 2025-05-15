@@ -11,7 +11,7 @@ import {
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import { AI_AGENT, SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
+import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import AutomateViewEmptyStateBanner from 'pages/automate/common/components/AutomateViewEmptyStateBanner'
 
@@ -33,9 +33,6 @@ const MAX_TEMPLATES = 7
 
 const ActionsView = () => {
     const dispatch = useAppDispatch()
-
-    const isStandaloneMenuEnabled =
-        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
     const showFakeActions = useFlags()[FeatureFlagKey.FakeActionPlaceholder]
 
@@ -78,7 +75,7 @@ const ActionsView = () => {
                 isTemplateConfigurationsInitialLoading
             }
             className={css.container}
-            title={isStandaloneMenuEnabled ? SUPPORT_ACTIONS : AI_AGENT}
+            title={SUPPORT_ACTIONS}
         >
             {showFakeActions || storeWfConfigurations.length > 0 ? (
                 <StoreTrackstarProvider

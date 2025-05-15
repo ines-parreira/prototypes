@@ -71,7 +71,12 @@ export const HandoverTopicsModal = ({
                 >
                     Cancel
                 </Button>
-                <Button onClick={handleSave} isLoading={isLoading}>
+                <Button
+                    onClick={() => {
+                        handleSave()
+                    }}
+                    isLoading={isLoading}
+                >
                     Confirm Topics
                 </Button>
             </ModalFooter>

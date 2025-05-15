@@ -1,10 +1,8 @@
 import { useEffect, useMemo } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link, useParams } from 'react-router-dom'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
@@ -15,7 +13,7 @@ import { reportError } from 'utils/errors'
 import { AiAgentGuidanceView } from './AiAgentGuidanceView'
 import PostCompletionWizardModal from './AiAgentOnboardingWizard/PostCompletionWizardModal'
 import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
-import { AI_AGENT, KNOWLEDGE } from './constants'
+import { KNOWLEDGE } from './constants'
 import { useAiAgentNavigation } from './hooks/useAiAgentNavigation'
 
 import css from './AiAgentGuidanceContainer.less'
@@ -24,9 +22,6 @@ export const AiAgentGuidanceContainer = () => {
     const { shopName } = useParams<{
         shopName: string
     }>()
-
-    const isStandaloneMenuEnabled =
-        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
     const { storeConfiguration, isLoading: isStoreConfigLoading } =
         useAiAgentStoreConfigurationContext()
@@ -82,7 +77,7 @@ export const AiAgentGuidanceContainer = () => {
             <AiAgentLayout
                 shopName={shopName}
                 className={css.container}
-                title={isStandaloneMenuEnabled ? KNOWLEDGE : AI_AGENT}
+                title={KNOWLEDGE}
                 isLoading={isStoreConfigLoading || isLoadingHelpCenters}
             >
                 <AutomateViewContent>
@@ -102,7 +97,7 @@ export const AiAgentGuidanceContainer = () => {
         <AiAgentLayout
             shopName={shopName}
             className={css.container}
-            title={isStandaloneMenuEnabled ? KNOWLEDGE : AI_AGENT}
+            title={KNOWLEDGE}
             isLoading={isStoreConfigLoading || isLoadingHelpCenters}
         >
             <AiAgentGuidanceView

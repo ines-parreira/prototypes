@@ -267,9 +267,7 @@ describe('<ActionsRow />', () => {
 
     it('should redirect to edit Action page on click', () => {
         const history = createMemoryHistory({
-            initialEntries: [
-                `/app/automation/shopify/shopify-store/ai-agent/actions`,
-            ],
+            initialEntries: [`/app/ai-agent/shopify/shopify-store/actions`],
         })
         const historyPushSpy = jest.spyOn(history, 'push')
 
@@ -279,8 +277,8 @@ describe('<ActionsRow />', () => {
             </QueryClientProvider>,
             {
                 history,
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions',
-                route: `/app/automation/shopify/shopify-store/ai-agent/actions`,
+                path: '/app/ai-agent/:shopType/:shopName/actions',
+                route: `/app/ai-agent/shopify/shopify-store/actions`,
             },
         )
 
@@ -289,7 +287,7 @@ describe('<ActionsRow />', () => {
         })
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`,
+            `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
         )
     })
 

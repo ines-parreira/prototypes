@@ -5,7 +5,6 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import {
-    ACTIONS,
     ANALYTICS,
     CHANNELS,
     CUSTOMER_ENGAGEMENT,
@@ -22,40 +21,24 @@ import {
     TEST,
 } from 'pages/aiAgent/constants'
 
-export const getAiAgentBasePath = (shopName: string, flags: LDFlagSet) => {
-    const isStandaloneMenuEnabled = flags[FeatureFlagKey.ConvAiStandaloneMenu]
-    return isStandaloneMenuEnabled
-        ? `/app/ai-agent/shopify/${shopName}`
-        : `/app/automation/shopify/${shopName}/ai-agent`
-}
+export const getAiAgentBasePath = (shopName: string) =>
+    `/app/ai-agent/shopify/${shopName}`
 
 export const aiAgentRoutes = {
     overview: '/app/ai-agent/overview',
     actionsPlatform: '/app/ai-agent/actions-platform',
 }
 
-/** Retrieve AI Agent routes depending on the conv-ai-standalone-menu feature flag */
 export const getAiAgentNavigationRoutes = (
     shopName: string,
     flags: LDFlagSet,
 ) => {
-    const basePath = getAiAgentBasePath(shopName, flags)
+    const basePath = getAiAgentBasePath(shopName)
     const automationBasePath = '/app/automation'
-    const isStandaloneMenuEnabled = flags[FeatureFlagKey.ConvAiStandaloneMenu]
     const isStandaloneOnboardingEnabled =
         flags[FeatureFlagKey.AiShoppingAssistantEnabled]
 
-    const guidancePath = isStandaloneMenuEnabled
-        ? 'knowledge/guidance'
-        : 'guidance'
-
-    const previewPath = isStandaloneMenuEnabled
-        ? 'settings/preview'
-        : 'preview-mode'
-
-    const settingsChannelsPath = isStandaloneMenuEnabled
-        ? 'settings/channels'
-        : 'settings'
+    const guidancePath = 'knowledge/guidance'
 
     return {
         // Automation routes
@@ -91,7 +74,7 @@ export const getAiAgentNavigationRoutes = (
             `${basePath}/${guidancePath}/library/${aiGuidanceId}`,
         configuration: (section?: 'knowledge' | 'email') =>
             `${basePath}/settings${section ? `?section=${section}` : ''}`,
-        settingsChannels: `${basePath}/${settingsChannelsPath}`,
+        settingsChannels: `${basePath}/settings/channels`,
         actions: `${basePath}/actions`,
         newAction: (templateId?: string) =>
             `${basePath}/actions/new${templateId ? `?template_id=${templateId}` : ''}`,
@@ -100,12 +83,11 @@ export const getAiAgentNavigationRoutes = (
         actionsTemplates: `${basePath}/actions/templates`,
         actionEvents: (configurationId: string) =>
             `${basePath}/actions/events/${configurationId}`,
-        onboardingWizard:
-            isStandaloneMenuEnabled && isStandaloneOnboardingEnabled
-                ? `${basePath}/onboarding`
-                : `${basePath}/new`,
+        onboardingWizard: isStandaloneOnboardingEnabled
+            ? `${basePath}/onboarding`
+            : `${basePath}/new`,
         onboardingWizardStep: (step?: string) => {
-            if (isStandaloneMenuEnabled && isStandaloneOnboardingEnabled) {
+            if (isStandaloneOnboardingEnabled) {
                 return step
                     ? `${basePath}/onboarding/${step}`
                     : `${basePath}/onboarding`
@@ -113,7 +95,7 @@ export const getAiAgentNavigationRoutes = (
 
             return `${basePath}/new`
         },
-        previewMode: `${basePath}/${previewPath}`,
+        previewMode: `${basePath}/settings/preview`,
         optimize: `${basePath}/optimize`,
         optimizeIntent: (intentId: string) =>
             `${basePath}/optimize/${intentId}`,
@@ -144,8 +126,6 @@ const useNavigationItems = (
     const isAiAgentScrapeStoreDomainEnabled =
         flags[FeatureFlagKey.AiAgentScrapeStoreDomain]
 
-    const isStandaloneMenuEnabled = flags[FeatureFlagKey.ConvAiStandaloneMenu]
-
     const isConversationStartersEnabled =
         !!flags[FeatureFlagKey.ConversationStarters]
 
@@ -155,9 +135,9 @@ const useNavigationItems = (
     const isConvertFloatingChatInputEnabled =
         !!flags[FeatureFlagKey.ConvertFloatingChatInput]
 
-    return useMemo<NavigationItem[]>(() => {
-        if (isStandaloneMenuEnabled) {
-            return [
+    return useMemo<NavigationItem[]>(
+        () =>
+            [
                 isAiAgentOptimizeTabEnabled && {
                     route: routes.optimize,
                     title: OPTIMIZE,
@@ -245,65 +225,18 @@ const useNavigationItems = (
                     dataCanduId: 'ai-agent-navbar-test',
                     title: TEST,
                 },
-            ].filter((x) => !!x) as NavigationItem[]
-        }
-
-        return [
-            isAiAgentOptimizeTabEnabled && {
-                route: routes.optimize,
-                title: OPTIMIZE,
-                exact: false,
-                dataCanduId: 'ai-agent-navbar-optimize',
-            },
-            {
-                route: routes.configuration(),
-                title: SETTINGS,
-                dataCanduId: 'ai-agent-navbar-configuration',
-            },
-            isAiAgentKnowledgeTabEnabled && {
-                route: routes.knowledge,
-                title: KNOWLEDGE,
-                dataCanduId: 'ai-agent-navbar-knowledge',
-            },
-            {
-                route: routes.guidance,
-                title: GUIDANCE,
-                dataCanduId: 'ai-agent-navbar-guidance',
-                exact: false,
-            },
-            {
-                route: routes.actions,
-                title: ACTIONS,
-                exact: false,
-                dataCanduId: 'ai-agent-navbar-actions',
-            },
-            {
-                route: routes.sales,
-                title: SALES,
-                dataCanduId: 'ai-agent-navbar-sales',
-            },
-            {
-                route: routes.test,
-                title: TEST,
-                dataCanduId: 'ai-agent-navbar-test',
-            },
-            isGorgiasUser && {
-                route: routes.previewMode,
-                title: PREVIEW,
-                dataCanduId: 'ai-agent-navbar-preview',
-            },
-        ].filter((x) => !!x) as NavigationItem[]
-    }, [
-        isAiAgentKnowledgeTabEnabled,
-        isAiAgentOptimizeTabEnabled,
-        isConversationStartersEnabled,
-        isAiAgentScrapeStoreDomainEnabled,
-        isSalesMetricsEnabled,
-        isGorgiasUser,
-        isStandaloneMenuEnabled,
-        isConvertFloatingChatInputEnabled,
-        routes,
-    ])
+            ].filter((x) => !!x) as NavigationItem[],
+        [
+            isAiAgentKnowledgeTabEnabled,
+            isAiAgentOptimizeTabEnabled,
+            isConversationStartersEnabled,
+            isAiAgentScrapeStoreDomainEnabled,
+            isSalesMetricsEnabled,
+            isGorgiasUser,
+            isConvertFloatingChatInputEnabled,
+            routes,
+        ],
+    )
 }
 
 export const useAiAgentNavigation = ({ shopName }: { shopName: string }) => {

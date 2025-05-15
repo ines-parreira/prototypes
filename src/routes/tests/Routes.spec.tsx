@@ -502,44 +502,37 @@ describe('<Routes/>', () => {
             ).toBeInTheDocument()
         })
 
-        describe('when conv-ai-standalone-menu flag is enabled', () => {
-            it.each([
-                {
-                    from: '/app/automation/shopify/test-shop/ai-agent',
-                    to: '/app/ai-agent/shopify/test-shop',
-                },
-                {
-                    from: '/app/automation/shopify/test-shop/ai-agent/guidance',
-                    to: '/app/ai-agent/shopify/test-shop/knowledge/guidance',
-                },
-                {
-                    from: '/app/automation/shopify/test-shop/ai-agent/actions',
-                    to: '/app/ai-agent/shopify/test-shop/actions',
-                },
-                {
-                    from: '/app/automation/shopify/test-shop/ai-agent/preview-mode',
-                    to: '/app/ai-agent/shopify/test-shop/settings/preview',
-                },
-            ])(
-                'should redirect to $to when accessing $from',
-                ({ from, to }) => {
-                    mockFlags({ [FeatureFlagKey.ConvAiStandaloneMenu]: true })
-
-                    render(
-                        <QueryClientProvider client={mockQueryClient()}>
-                            <Provider store={mockStore(defaultState)}>
-                                <Router history={mockHistory}>
-                                    <Routes />
-                                </Router>
-                            </Provider>
-                        </QueryClientProvider>,
-                    )
-
-                    act(() => mockHistory.push(from))
-
-                    expect(mockHistory.location.pathname).toBe(to)
-                },
+        it.each([
+            {
+                from: '/app/automation/shopify/test-shop/ai-agent',
+                to: '/app/ai-agent/shopify/test-shop',
+            },
+            {
+                from: '/app/automation/shopify/test-shop/ai-agent/guidance',
+                to: '/app/ai-agent/shopify/test-shop/knowledge/guidance',
+            },
+            {
+                from: '/app/automation/shopify/test-shop/ai-agent/actions',
+                to: '/app/ai-agent/shopify/test-shop/actions',
+            },
+            {
+                from: '/app/automation/shopify/test-shop/ai-agent/preview-mode',
+                to: '/app/ai-agent/shopify/test-shop/settings/preview',
+            },
+        ])('should redirect to $to when accessing $from', ({ from, to }) => {
+            render(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <Router history={mockHistory}>
+                            <Routes />
+                        </Router>
+                    </Provider>
+                </QueryClientProvider>,
             )
+
+            act(() => mockHistory.push(from))
+
+            expect(mockHistory.location.pathname).toBe(to)
         })
 
         it('should render sales page when flag ai-shopping-assistant-enabled is enabled', () => {

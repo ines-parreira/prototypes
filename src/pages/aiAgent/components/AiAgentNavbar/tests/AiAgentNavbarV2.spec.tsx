@@ -118,7 +118,6 @@ describe('<AiAgentNavbarV2 />', () => {
     beforeEach(() => {
         mockUseFlags.mockReturnValue({
             [FeatureFlagKey.AiAgentOptimizeTab]: true,
-            [FeatureFlagKey.ConvAiStandaloneMenu]: true,
             [FeatureFlagKey.AiAgentOnboardingWizard]: true,
         })
 

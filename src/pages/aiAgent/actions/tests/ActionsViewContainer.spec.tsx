@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -8,7 +6,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { billingState } from 'fixtures/billing'
 import { IntegrationType } from 'models/integration/constants'
 import {
@@ -16,6 +13,7 @@ import {
     useGetWorkflowConfigurationTemplates,
     useListTrackstarConnections,
 } from 'models/workflows/queries'
+import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
@@ -72,7 +70,7 @@ const defaultState = {
 
 const queryClient = mockQueryClient()
 
-const renderComponent = () => {
+const renderComponent = () =>
     renderWithRouter(
         <Provider store={mockStore(defaultState)}>
             <QueryClientProvider client={queryClient}>
@@ -80,7 +78,6 @@ const renderComponent = () => {
             </QueryClientProvider>
         </Provider>,
     )
-}
 
 describe('ActionsViewContainer', () => {
     beforeEach(() => {
@@ -99,25 +96,13 @@ describe('ActionsViewContainer', () => {
         } as unknown as ReturnType<typeof useListTrackstarConnections>)
     })
 
-    it('renders without error', () => {
+    it('should render guidance page with title "Support Actions"', () => {
+        mockFlags({})
+
         renderComponent()
+
+        expect(
+            screen.queryByText(SUPPORT_ACTIONS, { selector: 'h1' }),
+        ).toBeInTheDocument()
     })
-
-    it.each([
-        { standaloneMenuFlag: false, title: 'AI Agent' },
-        { standaloneMenuFlag: true, title: 'Support Actions' },
-    ])(
-        'should render guidance page with title "$title" when standalone menu flag is $standaloneMenuFlag',
-        ({ standaloneMenuFlag, title }) => {
-            mockFlags({
-                [FeatureFlagKey.ConvAiStandaloneMenu]: standaloneMenuFlag,
-            })
-
-            renderComponent()
-
-            expect(
-                screen.queryByText(title, { selector: 'h1' }),
-            ).toBeInTheDocument()
-        },
-    )
 })

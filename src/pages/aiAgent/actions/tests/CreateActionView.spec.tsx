@@ -155,9 +155,7 @@ describe('<CreateActionView />', () => {
 
     it('should redirect on "Back to actions" click', () => {
         const history = createMemoryHistory({
-            initialEntries: [
-                `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
-            ],
+            initialEntries: [`/app/ai-agent/shopify/shopify-store/actions/new`],
         })
         const historyPushSpy = jest.spyOn(history, 'push')
 
@@ -176,8 +174,8 @@ describe('<CreateActionView />', () => {
             </Provider>,
             {
                 history,
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
-                route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+                path: '/app/ai-agent/:shopType/:shopName/actions/new',
+                route: `/app/ai-agent/shopify/shopify-store/actions/new`,
             },
         )
 
@@ -186,15 +184,13 @@ describe('<CreateActionView />', () => {
         })
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            '/app/automation/shopify/shopify-store/ai-agent/actions',
+            '/app/ai-agent/shopify/shopify-store/actions',
         )
     })
 
     it('should redirect on "Cancel" click', () => {
         const history = createMemoryHistory({
-            initialEntries: [
-                `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
-            ],
+            initialEntries: [`/app/ai-agent/shopify/shopify-store/actions/new`],
         })
         const historyPushSpy = jest.spyOn(history, 'push')
 
@@ -213,8 +209,8 @@ describe('<CreateActionView />', () => {
             </Provider>,
             {
                 history,
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
-                route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+                path: '/app/ai-agent/:shopType/:shopName/actions/new',
+                route: `/app/ai-agent/shopify/shopify-store/actions/new`,
             },
         )
 
@@ -223,7 +219,7 @@ describe('<CreateActionView />', () => {
         })
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/automation/shopify/shopify-store/ai-agent/actions`,
+            `/app/ai-agent/shopify/shopify-store/actions`,
         )
     })
 
@@ -235,9 +231,7 @@ describe('<CreateActionView />', () => {
         } as unknown as ReturnType<typeof useUpsertAction>)
 
         const history = createMemoryHistory({
-            initialEntries: [
-                `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
-            ],
+            initialEntries: [`/app/ai-agent/shopify/shopify-store/actions/new`],
         })
         const historyPushSpy = jest.spyOn(history, 'push')
 
@@ -256,21 +250,19 @@ describe('<CreateActionView />', () => {
             </Provider>,
             {
                 history,
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
-                route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+                path: '/app/ai-agent/:shopType/:shopName/actions/new',
+                route: `/app/ai-agent/shopify/shopify-store/actions/new`,
             },
         )
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/automation/shopify/shopify-store/ai-agent/actions`,
+            `/app/ai-agent/shopify/shopify-store/actions`,
         )
     })
 
     it('should redirect to AI Agent test on create success', () => {
         const history = createMemoryHistory({
-            initialEntries: [
-                `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
-            ],
+            initialEntries: [`/app/ai-agent/shopify/shopify-store/actions/new`],
         })
         const historyPushSpy = jest.spyOn(history, 'push')
 
@@ -289,8 +281,8 @@ describe('<CreateActionView />', () => {
             </Provider>,
             {
                 history,
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
-                route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+                path: '/app/ai-agent/:shopType/:shopName/actions/new',
+                route: `/app/ai-agent/shopify/shopify-store/actions/new`,
             },
         )
 
@@ -320,7 +312,7 @@ describe('<CreateActionView />', () => {
         )
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/automation/shopify/shopify-store/ai-agent/test`,
+            `/app/ai-agent/shopify/shopify-store/test`,
         )
     })
 
@@ -487,12 +479,10 @@ describe('<CreateActionView />', () => {
         })
         const configuration = b.build()
         const history = createMemoryHistory({
-            initialEntries: [
-                `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
-            ],
+            initialEntries: [`/app/ai-agent/shopify/shopify-store/actions/new`],
         })
         history.push(
-            '/app/automation/:shopType/:shopName/ai-agent/actions/new',
+            '/app/ai-agent/:shopType/:shopName/actions/new',
             configuration,
         )
         renderWithRouter(
@@ -510,8 +500,8 @@ describe('<CreateActionView />', () => {
             </Provider>,
             {
                 history,
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
-                route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+                path: '/app/ai-agent/:shopType/:shopName/actions/new',
+                route: `/app/ai-agent/shopify/shopify-store/actions/new`,
             },
         )
         expect(
@@ -560,12 +550,10 @@ describe('<CreateActionView />', () => {
         })
         const configuration = b.build()
         const history = createMemoryHistory({
-            initialEntries: [
-                `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
-            ],
+            initialEntries: [`/app/ai-agent/shopify/shopify-store/actions/new`],
         })
         history.push(
-            '/app/automation/:shopType/:shopName/ai-agent/actions/new',
+            '/app/ai-agent/:shopType/:shopName/actions/new',
             configuration,
         )
 
@@ -584,8 +572,8 @@ describe('<CreateActionView />', () => {
             </Provider>,
             {
                 history,
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
-                route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+                path: '/app/ai-agent/:shopType/:shopName/actions/new',
+                route: `/app/ai-agent/shopify/shopify-store/actions/new`,
             },
         )
 
@@ -825,9 +813,7 @@ describe('<CreateActionView />', () => {
 
     it('should set up correct navigation history when clicking Create and Test', () => {
         const history = createMemoryHistory({
-            initialEntries: [
-                `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
-            ],
+            initialEntries: [`/app/ai-agent/shopify/shopify-store/actions/new`],
         })
         const historyPushSpy = jest.spyOn(history, 'push')
         const historyReplaceSpy = jest.spyOn(history, 'replace')
@@ -847,8 +833,8 @@ describe('<CreateActionView />', () => {
             </Provider>,
             {
                 history,
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
-                route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+                path: '/app/ai-agent/:shopType/:shopName/actions/new',
+                route: `/app/ai-agent/shopify/shopify-store/actions/new`,
             },
         )
 
@@ -882,13 +868,13 @@ describe('<CreateActionView />', () => {
         // Verify that replace was called first with the edit route
         expect(historyReplaceSpy).toHaveBeenCalledWith(
             expect.stringMatching(
-                /\/app\/automation\/shopify\/shopify-store\/ai-agent\/actions\/edit\/.*/,
+                /\/app\/ai-agent\/shopify\/shopify-store\/actions\/edit\/.*/,
             ),
         )
 
         // Verify that push was called second with the test route
         expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/automation/shopify/shopify-store/ai-agent/test`,
+            `/app/ai-agent/shopify/shopify-store/test`,
         )
 
         // Verify the order of operations

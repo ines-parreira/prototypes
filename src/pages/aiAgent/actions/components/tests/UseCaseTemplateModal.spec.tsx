@@ -424,7 +424,7 @@ describe('<UseCaseTemplateModal />', () => {
         )
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            '/app/automation/shopify/acme/ai-agent/actions',
+            '/app/ai-agent/shopify/acme/actions',
         )
     })
 
@@ -458,7 +458,7 @@ describe('<UseCaseTemplateModal />', () => {
         })
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            '/app/automation/shopify/acme/ai-agent/actions/new',
+            '/app/ai-agent/shopify/acme/actions/new',
             expect.objectContaining({
                 apps: [{ type: 'shopify' }],
                 entrypoints: template.entrypoints,
@@ -559,7 +559,7 @@ describe('<UseCaseTemplateModal />', () => {
         })
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            '/app/automation/shopify/acme/ai-agent/actions/new',
+            '/app/ai-agent/shopify/acme/actions/new',
             expect.objectContaining({
                 apps: [{ type: 'app', app_id: 'someapp' }],
                 entrypoints: template.entrypoints,

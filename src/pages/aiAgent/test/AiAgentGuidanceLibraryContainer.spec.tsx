@@ -1,8 +1,6 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
-import React from 'react'
-
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -130,7 +128,7 @@ describe('<AiAgentGuidanceLibraryContainer />', () => {
         userEvent.click(createCustomGuidanceButton)
 
         expect(history.push).toHaveBeenCalledWith(
-            '/app/automation/shopify/test-shop/ai-agent/guidance/new',
+            '/app/ai-agent/shopify/test-shop/knowledge/guidance/new',
         )
     })
 
@@ -156,7 +154,7 @@ describe('<AiAgentGuidanceLibraryContainer />', () => {
         userEvent.click(templateGuidanceElement)
 
         expect(history.push).toHaveBeenCalledWith(
-            '/app/automation/shopify/test-shop/ai-agent/guidance/templates/order-status',
+            '/app/ai-agent/shopify/test-shop/knowledge/guidance/templates/order-status',
         )
     })
 

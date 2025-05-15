@@ -443,7 +443,7 @@ describe('AIAgentTicketFeedback', () => {
         expect(links?.[0]).toHaveTextContent('AI Agent Configuration')
         expect(links?.[0]).toHaveAttribute(
             'href',
-            '/app/automation/shopify/fast-cars/ai-agent',
+            '/app/ai-agent/shopify/fast-cars',
         )
     })
 })

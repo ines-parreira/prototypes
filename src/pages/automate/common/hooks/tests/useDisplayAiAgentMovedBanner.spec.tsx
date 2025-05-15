@@ -1,11 +1,9 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 import { act } from '@testing-library/react'
 import { createBrowserHistory } from 'history'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Router } from 'react-router-dom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
@@ -32,7 +30,6 @@ describe('useDisplayAiAgentMovedBanner', () => {
     )
 
     beforeEach(() => {
-        mockFlags({ [FeatureFlagKey.ConvAiStandaloneMenu]: true })
         mockUseAppSelector.mockReturnValue(true)
     })
 
@@ -50,17 +47,6 @@ describe('useDisplayAiAgentMovedBanner', () => {
 
     it('should return false when hasAutomate is false', () => {
         mockUseAppSelector.mockReturnValue(false)
-
-        const { result } = renderHook(() => useDisplayAiAgentMovedBanner(), {
-            wrapper,
-        })
-
-        act(() => mockHistory.push('/app/automation'))
-        expect(result.current).toBe(false)
-    })
-
-    it('should return false when feature flag is disabled', () => {
-        mockFlags({ [FeatureFlagKey.ConvAiStandaloneMenu]: false })
 
         const { result } = renderHook(() => useDisplayAiAgentMovedBanner(), {
             wrapper,

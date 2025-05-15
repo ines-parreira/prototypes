@@ -1,7 +1,6 @@
 import { ReactNode, useMemo } from 'react'
 
 import classnames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useLocation } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -43,8 +42,7 @@ export const AiAgentLayout = ({
     })
 
     // For tracking purpose in activation feature, we need to pass the page path
-    const flags = useFlags()
-    const basePath = getAiAgentBasePath(shopName, flags)
+    const basePath = getAiAgentBasePath(shopName)
     const currentPagePath = useLocation().pathname.replace(`${basePath}/`, '')
 
     const { activationModal, earlyAccessModal, activationButton } =

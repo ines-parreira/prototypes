@@ -89,7 +89,7 @@ describe('<GuidanceAiSuggestionsList />', () => {
         userEvent.click(aiGuidanceSuggestion)
 
         expect(history.push).toHaveBeenCalledWith(
-            '/app/automation/shopify/test/ai-agent/guidance/library/ai_guidance_id1',
+            '/app/ai-agent/shopify/test/knowledge/guidance/library/ai_guidance_id1',
         )
     })
 
@@ -106,7 +106,7 @@ describe('<GuidanceAiSuggestionsList />', () => {
         userEvent.click(seeAllSuggestionsCard)
 
         expect(history.push).toHaveBeenCalledWith(
-            '/app/automation/shopify/test/ai-agent/guidance/library',
+            '/app/ai-agent/shopify/test/knowledge/guidance/library',
         )
     })
 })

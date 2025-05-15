@@ -1,16 +1,12 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
-import React from 'react'
-
 import { fireEvent, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
@@ -23,6 +19,7 @@ import { AiAgentGuidanceContainer } from '../AiAgentGuidanceContainer'
 import {
     GUIDANCE_ARTICLE_LIMIT,
     GUIDANCE_ARTICLE_LIMIT_WARNING,
+    KNOWLEDGE,
 } from '../constants'
 import { getGuidanceArticleFixture } from '../fixtures/guidanceArticle.fixture'
 import { getStoreConfigurationFixture } from '../fixtures/storeConfiguration.fixtures'
@@ -166,10 +163,6 @@ describe('<AiAgentGuidanceContainer />', () => {
         mockUseEnableAiAgent.mockReturnValue({
             updateSettingsAfterAiAgentEnabled: jest.fn(),
         })
-
-        mockFlags({
-            [FeatureFlagKey.ConvAiStandaloneMenu]: false,
-        })
     })
 
     it('should render loader', () => {
@@ -260,27 +253,17 @@ describe('<AiAgentGuidanceContainer />', () => {
         userEvent.click(createCustomGuidanceButton)
 
         expect(history.push).toHaveBeenCalledWith(
-            '/app/automation/shopify/test-shop/ai-agent/guidance/new',
+            '/app/ai-agent/shopify/test-shop/knowledge/guidance/new',
         )
     })
 
-    it.each([
-        { standaloneMenuFlag: false, title: 'AI Agent' },
-        { standaloneMenuFlag: true, title: 'Knowledge' },
-    ])(
-        'should render guidance page with title "$title" when standalone menu flag is $standaloneMenuFlag',
-        ({ standaloneMenuFlag, title }) => {
-            mockFlags({
-                [FeatureFlagKey.ConvAiStandaloneMenu]: standaloneMenuFlag,
-            })
+    it('should render guidance page with title "Knowledge"', () => {
+        renderComponent()
 
-            renderComponent()
-
-            expect(
-                screen.queryByText(title, { selector: 'h1' }),
-            ).toBeInTheDocument()
-        },
-    )
+        expect(
+            screen.queryByText(KNOWLEDGE, { selector: 'h1' }),
+        ).toBeInTheDocument()
+    })
 
     it('should redirect to guidance library page on click', () => {
         mockedUseGuidanceAiSuggestions.mockReturnValue({
@@ -294,7 +277,7 @@ describe('<AiAgentGuidanceContainer />', () => {
         userEvent.click(browseSuggestions)
 
         expect(history.push).toHaveBeenCalledWith(
-            '/app/automation/shopify/test-shop/ai-agent/guidance/library',
+            '/app/ai-agent/shopify/test-shop/knowledge/guidance/library',
         )
     })
 

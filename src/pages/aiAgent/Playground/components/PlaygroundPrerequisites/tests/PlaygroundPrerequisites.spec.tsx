@@ -52,7 +52,7 @@ describe('CheckPlaygroundPrerequisites', () => {
 
         expect(screen.getByText('Add Knowledge')).toHaveAttribute(
             'to',
-            '/app/automation/shopify/it-shop/ai-agent/settings?section=knowledge',
+            '/app/ai-agent/shopify/it-shop/settings?section=knowledge',
         )
     })
 

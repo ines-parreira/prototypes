@@ -24,20 +24,6 @@ describe('MainNavigation', () => {
         expect(result.current.map((item) => item.url)).toContain('/app/tickets')
     })
 
-    it('should not render the automate menu item for basic agents', () => {
-        const { result } = renderHook(() => useMainNavigationItems(basicUser))
-        expect(result.current.map((item) => item.url)).not.toContain(
-            '/app/automation',
-        )
-    })
-
-    it('should render the automate menu item for lead agents', () => {
-        const { result } = renderHook(() => useMainNavigationItems(agentUser))
-        expect(result.current.map((item) => item.url)).toContain(
-            '/app/automation',
-        )
-    })
-
     it('should not render the convert menu item for non-admins', () => {
         const { result } = renderHook(() => useMainNavigationItems(basicUser))
         expect(result.current.map((item) => item.url)).not.toContain(

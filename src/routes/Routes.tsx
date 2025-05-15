@@ -423,9 +423,6 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
     const isAiAgentKnowledgeTabEnabled =
         useFlags()[FeatureFlagKey.AiAgentKnowledgeTab]
 
-    const isAiAgentStandaloneMenuEnabled =
-        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
-
     const isAiAgentScrapeStoreDomainEnabled =
         useFlags()[FeatureFlagKey.AiAgentScrapeStoreDomain]
 
@@ -435,10 +432,7 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
 
     // TMP: Remove it when AI Agent will be fully migrated to its new route
     // Redirect from old /app/automation/../../ai-agent/.. to new `/app/ai-agent/../../..` route
-    if (
-        isAiAgentStandaloneMenuEnabled &&
-        location.pathname.startsWith('/app/automation')
-    ) {
+    if (location.pathname.startsWith('/app/automation')) {
         const newLocation = {
             ...location,
             pathname: location.pathname

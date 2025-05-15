@@ -199,7 +199,7 @@ describe('<EditActionView />', () => {
     it('should redirect on "Back to actions" click', () => {
         const history = createMemoryHistory({
             initialEntries: [
-                `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`,
+                `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
             ],
         })
         const historyPushSpy = jest.spyOn(history, 'push')
@@ -212,8 +212,8 @@ describe('<EditActionView />', () => {
             </Provider>,
             {
                 history,
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions/edit/:id',
-                route: `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`,
+                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
+                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
             },
         )
 
@@ -222,14 +222,14 @@ describe('<EditActionView />', () => {
         })
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            '/app/automation/shopify/shopify-store/ai-agent/actions',
+            '/app/ai-agent/shopify/shopify-store/actions',
         )
     })
 
     it('should redirect on "View Events" click', () => {
         const history = createMemoryHistory({
             initialEntries: [
-                `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`,
+                `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
             ],
         })
         const historyPushSpy = jest.spyOn(history, 'push')
@@ -242,8 +242,8 @@ describe('<EditActionView />', () => {
             </Provider>,
             {
                 history,
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions/edit/:id',
-                route: `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`,
+                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
+                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
             },
         )
 
@@ -252,14 +252,14 @@ describe('<EditActionView />', () => {
         })
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/automation/shopify/shopify-store/ai-agent/actions/events/${configuration.id}`,
+            `/app/ai-agent/shopify/shopify-store/actions/events/${configuration.id}`,
         )
     })
 
     it('should redirect on "Cancel" click', () => {
         const history = createMemoryHistory({
             initialEntries: [
-                `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`,
+                `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
             ],
         })
         const historyPushSpy = jest.spyOn(history, 'push')
@@ -272,8 +272,8 @@ describe('<EditActionView />', () => {
             </Provider>,
             {
                 history,
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions/edit/:id',
-                route: `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`,
+                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
+                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
             },
         )
 
@@ -282,7 +282,7 @@ describe('<EditActionView />', () => {
         })
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/automation/shopify/shopify-store/ai-agent/actions`,
+            `/app/ai-agent/shopify/shopify-store/actions`,
         )
     })
 
@@ -295,7 +295,7 @@ describe('<EditActionView />', () => {
 
         const history = createMemoryHistory({
             initialEntries: [
-                `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`,
+                `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
             ],
         })
         const historyPushSpy = jest.spyOn(history, 'push')
@@ -308,20 +308,20 @@ describe('<EditActionView />', () => {
             </Provider>,
             {
                 history,
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions/edit/:id',
-                route: `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`,
+                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
+                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
             },
         )
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/automation/shopify/shopify-store/ai-agent/actions`,
+            `/app/ai-agent/shopify/shopify-store/actions`,
         )
     })
 
     it('should redirect to AI Agent test on edit success', () => {
         const history = createMemoryHistory({
             initialEntries: [
-                `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`,
+                `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
             ],
         })
         const historyPushSpy = jest.spyOn(history, 'push')
@@ -334,8 +334,8 @@ describe('<EditActionView />', () => {
             </Provider>,
             {
                 history,
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions/edit/:id',
-                route: `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`,
+                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
+                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
             },
         )
 
@@ -358,7 +358,7 @@ describe('<EditActionView />', () => {
         )
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/automation/shopify/shopify-store/ai-agent/test`,
+            `/app/ai-agent/shopify/shopify-store/test`,
         )
     })
 
@@ -371,7 +371,7 @@ describe('<EditActionView />', () => {
 
         const history = createMemoryHistory({
             initialEntries: [
-                `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`,
+                `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
             ],
         })
         const historyPushSpy = jest.spyOn(history, 'push')
@@ -384,13 +384,13 @@ describe('<EditActionView />', () => {
             </Provider>,
             {
                 history,
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions/edit/:id',
-                route: `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`,
+                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
+                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
             },
         )
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/automation/shopify/shopify-store/ai-agent/actions`,
+            `/app/ai-agent/shopify/shopify-store/actions`,
         )
     })
 
@@ -491,8 +491,8 @@ describe('<EditActionView />', () => {
                 </QueryClientProvider>
             </Provider>,
             {
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions/edit/:id',
-                route: `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`,
+                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
+                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
             },
         )
 

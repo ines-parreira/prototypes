@@ -1,12 +1,10 @@
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useParams } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import useEffectOnce from 'hooks/useEffectOnce'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import { ACTIONS, AI_AGENT } from 'pages/aiAgent/constants'
+import { ACTIONS } from 'pages/aiAgent/constants'
 
 import ActionsUseCaseTemplatesCards from './components/ActionsUseCaseTemplatesCards'
 import BackToActionButton from './components/BackToActionButton'
@@ -20,8 +18,6 @@ const ActionTemplatesView = () => {
         useGetWorkflowConfigurationTemplates({
             triggers: ['llm-prompt'],
         })
-    const isStandaloneMenuEnabled =
-        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
     useEffectOnce(() => {
         logEvent(SegmentEvent.AutomateActionsTemplatesVisited)
@@ -32,7 +28,7 @@ const ActionTemplatesView = () => {
             shopName={shopName}
             isLoading={isInitialLoading}
             className={css.container}
-            title={isStandaloneMenuEnabled ? ACTIONS : AI_AGENT}
+            title={ACTIONS}
         >
             <div className={css.backButtonContainer}>
                 <BackToActionButton />

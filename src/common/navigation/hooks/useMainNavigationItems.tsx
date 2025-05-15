@@ -47,14 +47,6 @@ export const useMainNavigationItems = (
                 segmentProp: { link: 'tickets' },
             },
             {
-                url: '/app/automation',
-                label: 'AI Agent',
-                icon: 'bolt',
-                name: MenuItemName.Automate,
-                segmentProp: { link: 'automation' },
-                requiredRole: UserRole.Agent,
-            },
-            {
                 url: '/app/ai-agent',
                 label: 'AI Agent',
                 icon: 'auto_awesome',

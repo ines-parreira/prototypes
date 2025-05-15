@@ -1,14 +1,12 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Redirect } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
-import { AI_AGENT, SETTINGS } from 'pages/aiAgent/constants'
+import { SETTINGS } from 'pages/aiAgent/constants'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { hasShopifyRequiredPermissions } from 'pages/aiAgent/utils/shopify-integration.utils'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
@@ -34,8 +32,6 @@ export const AiAgentConfigurationView = ({
     accountDomain,
 }: AiAgentConfigurationViewProps) => {
     const dispatch = useAppDispatch()
-    const isStandaloneMenuEnabled =
-        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
     const { isLoading: isStoreConfigLoading } =
         useAiAgentStoreConfigurationContext()
@@ -85,7 +81,7 @@ export const AiAgentConfigurationView = ({
         <AiAgentLayout
             shopName={shopName}
             className={css.container}
-            title={isStandaloneMenuEnabled ? SETTINGS : AI_AGENT}
+            title={SETTINGS}
         >
             <div>
                 {integrationNeedMorePermissions && (

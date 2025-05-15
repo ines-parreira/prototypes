@@ -1,17 +1,9 @@
-import React, {
-    useCallback,
-    useEffect,
-    useMemo,
-    useReducer,
-    useState,
-} from 'react'
+import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 
 import classnames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import useKey from 'hooks/useKey'
 import {
     useGetConfigurationExecution,
@@ -21,7 +13,7 @@ import {
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import { ACTIONS, AI_AGENT } from 'pages/aiAgent/constants'
+import { ACTIONS } from 'pages/aiAgent/constants'
 
 import ActionEventsHeader from './components/ActionEventsHeader'
 import ActionEventSidePanel from './components/ActionEventSidePanel'
@@ -39,8 +31,6 @@ export type Filter = Omit<
 export default function ActionExecutionsView() {
     const location = useLocation()
     const history = useHistory()
-    const isStandaloneMenuEnabled =
-        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
     const queryParams = useMemo(
         () => new URLSearchParams(location.search),
@@ -171,7 +161,7 @@ export default function ActionExecutionsView() {
             isLoading={isFetching}
             shopName={shopName}
             className={classnames(css.container, css.actionLogsView)}
-            title={isStandaloneMenuEnabled ? ACTIONS : AI_AGENT}
+            title={ACTIONS}
         >
             <ActionEventsHeader
                 initialEndDate={filterState.to}

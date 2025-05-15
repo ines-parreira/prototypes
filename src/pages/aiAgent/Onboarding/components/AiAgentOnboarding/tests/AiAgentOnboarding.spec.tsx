@@ -154,7 +154,7 @@ describe('AiAgentOnboarding', () => {
         jest.runAllTimers()
 
         expect(history.location.pathname).toEqual(
-            '/app/automation/shopify/undefined/ai-agent',
+            '/app/ai-agent/shopify/undefined',
         )
     })
 

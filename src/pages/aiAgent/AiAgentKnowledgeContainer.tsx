@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useParams } from 'react-router-dom'
@@ -31,15 +31,13 @@ import SyncIngestionDomainBanner from './AiAgentScrapedDomainContent/SyncIngesti
 import { ConfigurationSection } from './components/ConfigurationSection/ConfigurationSection'
 import { ScrapeStoreDomainSection } from './components/Knowledge/ScrapeStoreDomainSection'
 import { CreatePublicSourcesSection } from './components/StoreConfigForm/StoreConfigForm'
-import { AI_AGENT, INITIAL_FORM_VALUES, KNOWLEDGE } from './constants'
+import { INITIAL_FORM_VALUES, KNOWLEDGE } from './constants'
 import { useGetOrCreateSnippetHelpCenter } from './hooks/useGetOrCreateSnippetHelpCenter'
 import { getFormValuesFromStoreConfiguration } from './hooks/utils/configurationForm.utils'
 
 import css from './AiAgentKnowledgeContainer.less'
 
 export const AiAgentKnowledgeContainer = () => {
-    const isStandaloneMenuEnabled =
-        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
     const isAiAgentScrapeStoreDomainEnabled =
         useFlags()[FeatureFlagKey.AiAgentScrapeStoreDomain]
 
@@ -198,10 +196,7 @@ export const AiAgentKnowledgeContainer = () => {
     }
 
     return (
-        <AiAgentLayout
-            shopName={shopName}
-            title={isStandaloneMenuEnabled ? KNOWLEDGE : AI_AGENT}
-        >
+        <AiAgentLayout shopName={shopName} title={KNOWLEDGE}>
             <UnsavedChangesPrompt
                 onSave={onSubmit}
                 when={isFormDirty}

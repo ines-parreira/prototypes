@@ -124,7 +124,7 @@ jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
-    useParams: jest.fn().mockReturnValue({ tab: 'general' }),
+    useParams: jest.fn(),
 }))
 
 const mockUseParams = jest.mocked(useParams)
@@ -380,6 +380,7 @@ describe('<StoreConfigForm />', () => {
         mockLogEvent.mockClear()
         mockedUseAiAgentStoreConfigurationContext.mockReset()
         mockedUseAiAgentFormChangesContext.mockReset()
+        mockUseParams.mockReturnValue({ tab: 'general' })
         mockedUseSelfServiceChatChannels.mockReturnValue(mockChatChannels)
         mockGetHasAutomate.mockReturnValue(true)
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -473,6 +474,7 @@ describe('<StoreConfigForm />', () => {
     })
 
     it('should render new email integration caption', () => {
+        mockUseParams.mockReturnValue({ tab: 'channels' })
         renderComponent()
         expect(
             screen.getByText(
@@ -521,6 +523,7 @@ describe('<StoreConfigForm />', () => {
             mockFlags({
                 [FeatureFlagKey.AiAgentChat]: true,
             })
+            mockUseParams.mockReturnValue({ tab: 'channels' })
         })
 
         it('should display chat dropdown', () => {
@@ -589,158 +592,168 @@ describe('<StoreConfigForm />', () => {
 
             expect(chatToggle).toBeDisabled()
         })
-    })
 
-    it('email toggle should be disabled if user does not have automate', () => {
-        mockGetHasAutomate.mockReturnValue(false)
-        renderComponent()
+        it('should trigger monitoredChatIntegrations with correct values on dropdown item click', async () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentChat]: true,
+            })
 
-        const emailToggle = findToggle('email')
-        expect(emailToggle).toBeDisabled()
-    })
+            renderComponent()
 
-    it('should render error email integration caption when there is none selected', () => {
-        mockedUseConfigurationForm.mockReturnValue({
-            ...defaultUseConfigurationFormValues,
-            formValues: {
-                ...initialFormValues,
-                monitoredEmailIntegrations: null,
-            },
-        })
+            const channelToSelect = mockChatChannels[0]
 
-        renderComponent()
-        expect(
-            screen.getByText('One or more addresses required.'),
-        ).toBeInTheDocument()
-    })
-
-    it('should render default email signature when signature in form values is null', () => {
-        mockedUseConfigurationForm.mockReturnValue({
-            ...defaultUseConfigurationFormValues,
-            formValues: {
-                ...initialFormValues,
-                monitoredEmailIntegrations: [],
-            },
-        })
-
-        renderComponent()
-        expect(
-            screen.getAllByText('This response was created by AI').length,
-        ).toBeGreaterThan(0)
-    })
-
-    it('should not render error when email channel is disabled', () => {
-        mockedUseConfigurationForm.mockReturnValue({
-            ...defaultUseConfigurationFormValues,
-            formValues: {
-                ...initialFormValues,
-                emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
-                signature: '',
-            },
-        })
-
-        renderComponent()
-
-        expect(
-            screen.queryByText('Email signature is required.'),
-        ).not.toBeInTheDocument()
-    })
-
-    it('should render error email signature caption when signature is empty', () => {
-        mockedUseConfigurationForm.mockReturnValue({
-            ...defaultUseConfigurationFormValues,
-            formValues: {
-                ...initialFormValues,
-                monitoredEmailIntegrations: [],
-                signature: '',
-            },
-        })
-
-        renderComponent()
-
-        const textArea = screen.getByPlaceholderText('AI Agent email signature')
-        fireEvent.blur(textArea)
-
-        expect(
-            screen.getByText('Email signature is required.'),
-        ).toBeInTheDocument()
-    })
-
-    it('should trigger monitoredChatIntegrations with correct values on dropdown item click', async () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentChat]: true,
-        })
-
-        renderComponent()
-
-        const channelToSelect = mockChatChannels[0]
-
-        const dropdown = screen.getByText(
-            'Select one or more chat integrations',
-        )
-        fireEvent.focus(dropdown)
-
-        const channelCheckbox = screen.getByText(/25 Shopify Chat/)
-        fireEvent.click(channelCheckbox)
-
-        await waitFor(() => {
-            expect(updateValueMocked).toHaveBeenCalledWith(
-                'monitoredChatIntegrations',
-                [channelToSelect.value?.id],
+            const dropdown = screen.getByText(
+                'Select one or more chat integrations',
             )
+            fireEvent.focus(dropdown)
+
+            const channelCheckbox = screen.getByText(/25 Shopify Chat/)
+            fireEvent.click(channelCheckbox)
+
+            await waitFor(() => {
+                expect(updateValueMocked).toHaveBeenCalledWith(
+                    'monitoredChatIntegrations',
+                    [channelToSelect.value?.id],
+                )
+            })
         })
     })
 
-    it('should trigger monitoredEmailIntegration with correct values on dropdown item click', async () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentChat]: true,
+    describe('AI Agent email configuration', () => {
+        beforeEach(() => {
+            mockUseParams.mockReturnValue({ tab: 'channels' })
         })
 
-        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
-            storeConfiguration: {
-                ...storeConfiguration,
-                monitoredEmailIntegrations: [],
-                emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
-                helpCenterId: 1,
-            },
-            isLoading: false,
-            updateStoreConfiguration: mockUpdateStoreConfiguration,
-            createStoreConfiguration: mockCreateStoreConfiguration,
-            isPendingCreateOrUpdate: false,
-        })
-        mockedUseGetOrCreateSnippetHelpCenter.mockReturnValue({
-            helpCenter: null,
-            isLoading: false,
-        })
-        mockedUseConfigurationForm.mockReturnValue({
-            ...defaultUseConfigurationFormValues,
-            formValues: {
-                ...initialFormValues,
-                monitoredEmailIntegrations: [],
-                emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
-                helpCenterId: 1,
-            },
+        it('email toggle should be disabled if user does not have automate', () => {
+            mockGetHasAutomate.mockReturnValue(false)
+            renderComponent()
+
+            const emailToggle = findToggle('email')
+            expect(emailToggle).toBeDisabled()
         })
 
-        renderComponent()
+        it('should render error email integration caption when there is none selected', () => {
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    monitoredEmailIntegrations: null,
+                },
+            })
 
-        const dropdown = screen.getByText('Select one or more email addresses')
-        fireEvent.focus(dropdown)
-        const emailCheckbox = screen.getByText(
-            MOCK_EMAIL_INTEGRATION.meta.address,
-        )
-        fireEvent.click(emailCheckbox)
+            renderComponent()
+            expect(
+                screen.getByText('One or more addresses required.'),
+            ).toBeInTheDocument()
+        })
 
-        await waitFor(() => {
-            expect(updateValueMocked).toHaveBeenCalledWith(
-                'monitoredEmailIntegrations',
-                [
-                    {
-                        id: MOCK_EMAIL_INTEGRATION.id,
-                        email: MOCK_EMAIL_INTEGRATION.meta.address,
-                    },
-                ],
+        it('should render default email signature when signature in form values is null', () => {
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    monitoredEmailIntegrations: [],
+                },
+            })
+
+            renderComponent()
+            expect(
+                screen.getAllByText('This response was created by AI').length,
+            ).toBeGreaterThan(0)
+        })
+
+        it('should not render error when email channel is disabled', () => {
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    signature: '',
+                },
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByText('Email signature is required.'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render error email signature caption when signature is empty', () => {
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    monitoredEmailIntegrations: [],
+                    signature: '',
+                },
+            })
+
+            renderComponent()
+
+            const textArea = screen.getByPlaceholderText(
+                'AI Agent email signature',
             )
+            fireEvent.blur(textArea)
+
+            expect(
+                screen.getByText('Email signature is required.'),
+            ).toBeInTheDocument()
+        })
+
+        it('should trigger monitoredEmailIntegration with correct values on dropdown item click', async () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentChat]: true,
+            })
+
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    monitoredEmailIntegrations: [],
+                    emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    helpCenterId: 1,
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: mockCreateStoreConfiguration,
+                isPendingCreateOrUpdate: false,
+            })
+            mockedUseGetOrCreateSnippetHelpCenter.mockReturnValue({
+                helpCenter: null,
+                isLoading: false,
+            })
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    monitoredEmailIntegrations: [],
+                    emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    helpCenterId: 1,
+                },
+            })
+
+            renderComponent()
+
+            const dropdown = screen.getByText(
+                'Select one or more email addresses',
+            )
+            fireEvent.focus(dropdown)
+            const emailCheckbox = screen.getByText(
+                MOCK_EMAIL_INTEGRATION.meta.address,
+            )
+            fireEvent.click(emailCheckbox)
+
+            await waitFor(() => {
+                expect(updateValueMocked).toHaveBeenCalledWith(
+                    'monitoredEmailIntegrations',
+                    [
+                        {
+                            id: MOCK_EMAIL_INTEGRATION.id,
+                            email: MOCK_EMAIL_INTEGRATION.meta.address,
+                        },
+                    ],
+                )
+            })
         })
     })
 
@@ -900,6 +913,7 @@ describe('<StoreConfigForm />', () => {
     })
 
     it('should deactivate email channel', () => {
+        mockUseParams.mockReturnValue({ tab: 'channels' })
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
             formValues: {
@@ -919,6 +933,7 @@ describe('<StoreConfigForm />', () => {
     })
 
     it('should deactivate chat channel', () => {
+        mockUseParams.mockReturnValue({ tab: 'channels' })
         mockFlags({
             [FeatureFlagKey.AiAgentChat]: true,
         })
@@ -940,6 +955,7 @@ describe('<StoreConfigForm />', () => {
     })
 
     it('should activate chat channel', () => {
+        mockUseParams.mockReturnValue({ tab: 'channels' })
         mockFlags({
             [FeatureFlagKey.AiAgentChat]: true,
         })
@@ -1073,7 +1089,7 @@ describe('<StoreConfigForm />', () => {
     })
 
     describe('AI Agent ticket view modal', () => {
-        it('should not modal if AI Agent is enabled', async () => {
+        it('should not display modal if AI Agent is enabled', async () => {
             mockedUseAccountStoreConfiguration.mockReturnValue({
                 accountConfiguration: undefined,
                 aiAgentTicketViewId: 1,
@@ -1259,6 +1275,7 @@ describe('<StoreConfigForm />', () => {
         })
 
         it('should show error when chat or email enabled but no integrations selected', () => {
+            mockUseParams.mockReturnValue({ tab: 'channels' })
             mockFlags({
                 [FeatureFlagKey.AiAgentChat]: true,
             })
@@ -1729,7 +1746,8 @@ describe('<StoreConfigForm />', () => {
 
             userEvent.click(screen.getByRole('button', { name: /add tag/i }))
             userEvent.click(screen.getByText(/choose tag/i))
-            await userEvent.type(screen.getAllByRole('textbox')[1], 'Test')
+            const textbox = screen.getAllByRole('textbox')[0]
+            await userEvent.type(textbox, 'Test')
 
             // Save changes
             const saveButton = within(getDrawer()).getByRole('button', {
@@ -1781,7 +1799,8 @@ describe('<StoreConfigForm />', () => {
             // Open the drawer by clicking on the handover topics link
             userEvent.click(screen.getByText('handover topics'))
             userEvent.click(screen.getByRole('button', { name: /add topic/i }))
-            await userEvent.type(screen.getAllByRole('textbox')[1], 'Test')
+            const textbox = screen.getAllByRole('textbox')[0]
+            await userEvent.type(textbox, 'Test')
 
             // Save changes
             const saveButton = within(getDrawer()).getByRole('button', {
@@ -2512,7 +2531,6 @@ describe('<StoreConfigForm />', () => {
             mockFlags({
                 [FeatureFlagKey.AiAgentSettingsRevamp]: true,
             })
-            mockUseParams.mockReturnValue({ tab: 'general' })
             renderComponent()
 
             expect(

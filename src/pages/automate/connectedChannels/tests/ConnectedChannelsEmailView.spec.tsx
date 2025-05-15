@@ -115,7 +115,7 @@ describe('ConnectedChannelsEmailView', () => {
             screen.getByRole('link', {
                 name: /configuration required/i,
             }),
-        ).toHaveAttribute('href', `/app/automation/shopify/shopName/ai-agent`)
+        ).toHaveAttribute('href', `/app/ai-agent/shopify/shopName`)
     })
 
     it('should call upsertStoreConfiguration with correct parameters when enabling AI agent', () => {

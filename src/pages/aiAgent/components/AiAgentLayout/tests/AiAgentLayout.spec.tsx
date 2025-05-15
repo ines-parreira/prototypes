@@ -39,6 +39,10 @@ const renderComponent = (
         <AiAgentLayout shopName="test-shop" title={AI_AGENT} {...props}>
             Test Content
         </AiAgentLayout>,
+        {
+            route: '/app/ai-agent/shopify/test-shop/settings',
+            path: '/app/ai-agent/:shopType/:shopName/settings',
+        },
     )
 }
 describe('<AiAgentLayout />', () => {
@@ -78,8 +82,8 @@ describe('<AiAgentLayout />', () => {
     it('should render the title and the navigation when fullscreen = false', () => {
         renderComponent({ fullscreen: false })
 
-        const title = screen.queryByText(AI_AGENT)
-        const navigation = screen.queryByRole('navigation')
+        const title = screen.getByText(AI_AGENT)
+        const navigation = screen.getByRole('navigation')
         expect(title).toBeInTheDocument()
         expect(navigation).toBeInTheDocument()
     })

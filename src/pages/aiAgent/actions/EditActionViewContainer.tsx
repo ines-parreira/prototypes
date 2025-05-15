@@ -1,14 +1,12 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Redirect, useParams } from 'react-router-dom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     storeWorkflowsConfigurationDefinitionKeys,
     useGetWorkflowConfiguration,
 } from 'models/workflows/queries'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import { ACTIONS, AI_AGENT } from 'pages/aiAgent/constants'
+import { ACTIONS } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
@@ -24,9 +22,6 @@ const EditActionViewContainer = () => {
         id: string
     }>()
     const { routes } = useAiAgentNavigation({ shopName })
-
-    const isStandaloneMenuEnabled =
-        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
     const storeConfigurationQueryKey =
         storeWorkflowsConfigurationDefinitionKeys.list({
@@ -47,13 +42,7 @@ const EditActionViewContainer = () => {
         })
 
     if (isInitialLoading) {
-        return (
-            <AiAgentLayout
-                isLoading
-                shopName={shopName}
-                title={isStandaloneMenuEnabled ? ACTIONS : AI_AGENT}
-            />
-        )
+        return <AiAgentLayout isLoading shopName={shopName} title={ACTIONS} />
     }
 
     if (!configuration) {

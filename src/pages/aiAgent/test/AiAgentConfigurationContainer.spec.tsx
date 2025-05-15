@@ -316,26 +316,9 @@ describe('AiAgentConfigurationContainer', () => {
         screen.getByText('Save Changes')
     })
 
-    it('renders all section on settings page if standalone menu feature flag is disabled', () => {
+    it('renders only general sections on general settings page if :tab param not set', () => {
         setupMocks()
         mockFlags({
-            [FeatureFlagKey.ConvAiStandaloneMenu]: false,
-            [FeatureFlagKey.AiAgentChat]: true,
-        })
-        renderComponent()
-
-        expect(screen.queryByText('General')).toBeInTheDocument()
-        expect(screen.queryByText('Chat settings')).toBeInTheDocument()
-        expect(screen.queryByText('Email settings')).toBeInTheDocument()
-        expect(screen.queryByText('Handover and exclusion')).toBeInTheDocument()
-        expect(screen.queryByText('AI ticket tagging')).toBeInTheDocument()
-        expect(screen.queryByText('Save Changes')).toBeInTheDocument()
-    })
-
-    it('renders only general sections on general settings page if standalone menu feature flag is enabled and :tab param not set', () => {
-        setupMocks()
-        mockFlags({
-            [FeatureFlagKey.ConvAiStandaloneMenu]: true,
             [FeatureFlagKey.AiAgentChat]: true,
         })
         renderComponent()
@@ -347,10 +330,9 @@ describe('AiAgentConfigurationContainer', () => {
         expect(screen.queryByText('Save Changes')).toBeInTheDocument()
     })
 
-    it('renders only channels section on channels settings page if standalone menu feature flag is enabled and :tab param set to "channels"', () => {
+    it('renders only channels section on channels settings page if :tab param set to "channels"', () => {
         setupMocks()
         mockFlags({
-            [FeatureFlagKey.ConvAiStandaloneMenu]: true,
             [FeatureFlagKey.AiAgentChat]: true,
         })
 
@@ -403,7 +385,6 @@ describe('AiAgentConfigurationContainer', () => {
                     })
 
                     mockFlags({
-                        [FeatureFlagKey.ConvAiStandaloneMenu]: false,
                         [FeatureFlagKey.AiAgentChat]: true,
                     })
 

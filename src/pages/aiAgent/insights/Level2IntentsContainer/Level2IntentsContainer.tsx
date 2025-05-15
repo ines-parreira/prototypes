@@ -1,9 +1,7 @@
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useParams } from 'react-router-dom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import { AI_AGENT, OPTIMIZE } from 'pages/aiAgent/constants'
+import { OPTIMIZE } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { IntentTableWidget } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableWidget'
 import { INTENT_LEVEL } from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
@@ -21,13 +19,10 @@ export const Level2IntentsContainer = () => {
     }>()
     const { routes } = useAiAgentNavigation({ shopName })
 
-    const isStandaloneMenuEnabled =
-        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
-
     return (
         <AiAgentLayout
             shopName={shopName}
-            title={isStandaloneMenuEnabled ? OPTIMIZE : AI_AGENT}
+            title={OPTIMIZE}
             className={css.container}
         >
             <div className={css.section}>

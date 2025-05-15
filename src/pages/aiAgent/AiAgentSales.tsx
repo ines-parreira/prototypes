@@ -5,7 +5,7 @@ import { FeatureFlagKey } from 'config/featureFlags'
 
 import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
 import { SalesSettings } from './components/SalesSettings/SalesSettings'
-import { AI_AGENT, SALES } from './constants'
+import { SALES } from './constants'
 import { getAiAgentNavigationRoutes } from './hooks/useAiAgentNavigation'
 
 import css from './AiAgentSales.less'
@@ -15,12 +15,11 @@ export const AiAgentSales = () => {
         shopName: string
     }>()
     const flags = useFlags()
-    const isStandaloneMenuEnabled = flags[FeatureFlagKey.ConvAiStandaloneMenu]
     const isSalesPageEnabled = flags[FeatureFlagKey.AiShoppingAssistantEnabled]
     const history = useHistory()
     const analyticsRoute = getAiAgentNavigationRoutes(shopName, flags).analytics
 
-    if (isSalesPageEnabled && isStandaloneMenuEnabled) {
+    if (isSalesPageEnabled) {
         // Redirects to analytics as it's the first tab on the sales page
         history.push(analyticsRoute)
     }
@@ -29,8 +28,8 @@ export const AiAgentSales = () => {
         <AiAgentLayout
             shopName={shopName}
             className={css.container}
-            title={isStandaloneMenuEnabled ? SALES : AI_AGENT}
-            hideViewAiAgentTicketsButton={isStandaloneMenuEnabled}
+            title={SALES}
+            hideViewAiAgentTicketsButton
         >
             <div className={css.sales}>
                 <SalesSettings />

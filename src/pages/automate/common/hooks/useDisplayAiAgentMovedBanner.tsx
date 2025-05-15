@@ -1,8 +1,6 @@
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useLocation } from 'react-router-dom'
 
 import { AlertBannerTypes, BannerCategories, ContextBanner } from 'AlertBanners'
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { getHasAutomate } from 'state/billing/selectors'
 
@@ -22,12 +20,9 @@ export const banner: ContextBanner = {
 const AUTOMATE_APP_PREFIX_PATH = '/app/automation'
 
 export const useDisplayAiAgentMovedBanner = () => {
-    const isAiAgentStandaloneMenuEnabled =
-        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
     const location = useLocation()
     const hasAutomate = useAppSelector(getHasAutomate)
 
-    if (!isAiAgentStandaloneMenuEnabled) return false
     if (!hasAutomate) return false
 
     if (location.pathname.startsWith(AUTOMATE_APP_PREFIX_PATH)) {

@@ -39,7 +39,7 @@ describe('getNotificationParams', () => {
             title: 'Set up AI Agent',
             subtitle:
                 'We noticed you checking out AI Agent. It only takes a few steps to start automating 60% of your tickets!',
-            redirectTo: '/app/automation/shopify/store_1/ai-agent',
+            redirectTo: '/app/ai-agent/shopify/store_1',
         })
     })
 
@@ -56,7 +56,7 @@ describe('getNotificationParams', () => {
             title: 'Finish AI Agent setup',
             subtitle:
                 'You’re only a few steps away from getting AI Agent ready to start automating 60% of your tickets!',
-            redirectTo: '/app/automation/shopify/store_1/ai-agent/new',
+            redirectTo: '/app/ai-agent/shopify/store_1/new',
         })
     })
 
@@ -72,7 +72,7 @@ describe('getNotificationParams', () => {
             title: 'Activate AI Agent',
             subtitle:
                 'You’re just one click away from automating 60% of your tickets!',
-            redirectTo: '/app/automation/shopify/store_1/ai-agent/settings',
+            redirectTo: '/app/ai-agent/shopify/store_1/settings',
         })
     })
 
@@ -88,7 +88,7 @@ describe('getNotificationParams', () => {
             title: 'Meet your new team member: AI Agent',
             subtitle:
                 'Delight customers with instant and personalized answers, automating up to 60% of your tickets!',
-            redirectTo: '/app/automation/shopify/store_1/ai-agent',
+            redirectTo: '/app/ai-agent/shopify/store_1',
         })
     })
 

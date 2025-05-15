@@ -22,6 +22,7 @@ import {
     useGetWorkflowConfiguration,
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
+import { ACTIONS } from 'pages/aiAgent/constants'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import { Paths } from 'rest_api/workflows_api/client.generated'
 import { fromLegacyStatsFilters } from 'state/stats/utils'
@@ -186,12 +187,12 @@ describe('ActionEventsViewContainer', () => {
                 </QueryClientProvider>
             </Provider>,
             {
-                path: '/:shopType/:shopName/ai-agent/actions/events/:id',
-                route: '/shopify/my-shop/ai-agent/actions/events/configuration_id',
+                path: '/app/ai-agent/:shopType/:shopName/actions/events/:id',
+                route: '/app/ai-agent/shopify/my-shop/actions/events/configuration_id',
             },
         )
 
-        expect(screen.getByText('AI Agent')).toBeInTheDocument()
+        expect(screen.getByText(ACTIONS)).toBeInTheDocument()
         expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
@@ -229,7 +230,7 @@ describe('ActionEventsViewContainer', () => {
             },
         )
 
-        expect(screen.getByText('AI Agent')).toBeInTheDocument()
+        expect(screen.getByText(ACTIONS)).toBeInTheDocument()
         expect(screen.getByText('LAST UPDATED')).toBeInTheDocument()
         expect(screen.getByText('TICKET ID')).toBeInTheDocument()
         expect(screen.getByText('STATUS')).toBeInTheDocument()

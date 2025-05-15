@@ -1,13 +1,11 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
-import { screen, within } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -20,7 +18,7 @@ import { notify } from 'state/notifications/actions'
 import { RootState } from 'state/types'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
-import { AI_AGENT, TEST } from '../../constants'
+import { TEST } from '../../constants'
 import { getAccountConfigurationWithHttpIntegrationFixture } from '../../fixtures/accountConfiguration.fixture'
 import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'
 import { useGetOrCreateSnippetHelpCenter } from '../../hooks/useGetOrCreateSnippetHelpCenter'
@@ -282,25 +280,8 @@ describe('AiAgentPlayground', () => {
         })
         renderComponent()
         expect(screen.getByText('PlaygroundChat')).toBeInTheDocument
+        expect(
+            screen.getByText(TEST, { selector: '.page-header *' }),
+        ).toBeInTheDocument()
     })
-
-    describe.each([
-        { flag: true, title: TEST },
-        { flag: false, title: AI_AGENT },
-    ])(
-        'with feature flag conv-ai-standalone-menu = $flag',
-        ({ flag, title }) => {
-            it('renders component with title = "$title"', () => {
-                mockFlags({ [FeatureFlagKey.ConvAiStandaloneMenu]: flag })
-
-                renderComponent()
-
-                expect(
-                    within(document.querySelector('.page-header')!).getByText(
-                        title,
-                    ),
-                ).toBeInTheDocument()
-            })
-        },
-    )
 })

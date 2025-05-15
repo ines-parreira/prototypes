@@ -1,12 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import _noop from 'lodash/noop'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetStoreWorkflowsConfigurations,
@@ -14,7 +12,7 @@ import {
     useListActionsApps,
 } from 'models/workflows/queries'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import { ACTIONS, AI_AGENT } from 'pages/aiAgent/constants'
+import { ACTIONS } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import ActionsPlatformTemplateVisualBuilderView from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateVisualBuilderView'
 import useValidateOnVisualBuilderGraphChange from 'pages/automate/actionsPlatform/hooks/useValidateOnVisualBuilderGraphChange'
@@ -65,9 +63,6 @@ const EditActionView = ({ configuration }: Props) => {
         mutateAsync: editAction,
         isSuccess: isEditActionSuccess,
     } = useUpsertAction('update', shopName, shopType)
-
-    const isStandaloneMenuEnabled =
-        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
     const {
         mutateAsync: deleteAction,
@@ -237,7 +232,7 @@ const EditActionView = ({ configuration }: Props) => {
         <AiAgentLayout
             shopName={shopName}
             className={css.container}
-            title={isStandaloneMenuEnabled ? ACTIONS : AI_AGENT}
+            title={ACTIONS}
         >
             <div>
                 <div className={css.links}>
