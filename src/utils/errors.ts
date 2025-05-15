@@ -18,7 +18,7 @@ export const IGNORED_ERRORS = [
     'TypeError: Failed to fetch', // https://linear.app/gorgias/issue/COR-1014/typeerror-failed-to-fetch
     'TypeError: NetworkError when attempting to fetch resource.', // https://linear.app/gorgias/issue/COR-1014/typeerror-failed-to-fetch
     'Error: Network Error', // https://linear.app/gorgias/issue/COR-1223/ignore-all-axios-network-errors
-    /^AxiosError: Request failed with status code 400|401|403|419|429/, // https://linear.app/gorgias/issue/SUPXP-2517/axioserror-request-failed-with-status-code-4xx
+    /^AxiosError: Request failed with status code (400|401|403|419|429)/, // https://linear.app/gorgias/issue/SUPXP-2517/axioserror-request-failed-with-status-code-4xx
     /^Error: timeout of \d+ms exceeded$/, // https://linear.app/gorgias/issue/COR-1223/ignore-all-axios-network-errors
     'ResizeObserver loop limit exceeded', // https://linear.app/gorgias/issue/PLTCO-2300/mute-or-ignore-resizeobserver-warning
     'UnknownError (31000): An unknown error has occurred. See error details for more information.', // https://linear.app/gorgias/issue/PHO-546/unknownerror-unknownerror-31000-an-unknown-error-has-occurred-see
