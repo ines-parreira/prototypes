@@ -891,6 +891,14 @@ describe('receivedEvents', () => {
             handler.onReceive({ ticket: { id: 1, is_unread: true } } as any)
             expect(chatActions.markChatAsUnread).toHaveBeenNthCalledWith(1, 1)
         })
+
+        it('should refetch query when ticket is updated', () => {
+            const refetchSpy = jest.spyOn(appQueryClient, 'refetchQueries')
+
+            handler.onReceive({ ticket: { id: 1 } } as any)
+
+            expect(refetchSpy).toHaveBeenCalled()
+        })
     })
 
     describe('agent-availability-updated', () => {

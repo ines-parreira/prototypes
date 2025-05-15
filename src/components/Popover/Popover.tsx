@@ -32,6 +32,7 @@ type Props = {
     placement?: Placement
     setIsOpen: (value: boolean) => void
     target: RefObject<HTMLElement | null>
+    className?: string
 }
 
 export default function Popover({
@@ -50,6 +51,7 @@ export default function Popover({
     placement = 'bottom',
     setIsOpen,
     target,
+    className,
 }: PropsWithChildren<Props>) {
     const theme = useTheme()
 
@@ -81,7 +83,7 @@ export default function Popover({
     return isOpen ? (
         <FloatingFocusManager context={context} modal={false}>
             <div
-                className={cn(css.popover, css[theme.resolvedName])}
+                className={cn(css.popover, css[theme.resolvedName], className)}
                 ref={refs.setFloating}
                 style={floatingStyles}
                 {...getFloatingProps()}

@@ -1,0 +1,166 @@
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import useTicketSummary from 'pages/tickets/detail/hooks/useTicketSummary'
+
+import TicketSummarySection, {
+    AISummaryIcon,
+    SummaryBody,
+    SummaryBodySkeleton,
+    SummaryInfo,
+    SummarySkeleton,
+    TicketSummaryButton,
+} from '../TicketSummary'
+
+jest.mock('utils', () => ({
+    formatDatetime: (date: string) => `Formatted(${date})`,
+}))
+
+jest.mock('pages/tickets/detail/hooks/useTicketSummary', () => ({
+    __esModule: true,
+    default: jest.fn(),
+}))
+
+const useTicketSummaryMock = useTicketSummary as jest.Mock
+
+const baseSummary = {
+    content: 'AI-generated summary text',
+    updated_datetime: '2024-01-01T10:00:00Z',
+    created_datetime: '2024-01-01T09:00:00Z',
+}
+
+describe('TicketSummarySection', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
+    it('renders summarize button if not requested', () => {
+        useTicketSummaryMock.mockReturnValue({
+            summary: baseSummary,
+            isLoading: false,
+            errorMessage: null,
+            requestSummary: jest.fn(),
+            hasRequested: false,
+        })
+
+        render(<TicketSummarySection summary={null} ticketId={123} />)
+
+        expect(screen.getByText('Summarize')).toBeInTheDocument()
+    })
+
+    it('shows loading skeletons when loading', () => {
+        useTicketSummaryMock.mockReturnValue({
+            summary: null,
+            isLoading: true,
+            errorMessage: null,
+            requestSummary: jest.fn(),
+            hasRequested: true,
+        })
+
+        render(<TicketSummarySection summary={null} ticketId={123} />)
+
+        expect(
+            screen.getAllByTestId('summary-skeleton').length,
+        ).toBeGreaterThan(0)
+    })
+
+    it('shows summary content and update time', () => {
+        useTicketSummaryMock.mockReturnValue({
+            summary: baseSummary,
+            isLoading: false,
+            errorMessage: null,
+            requestSummary: jest.fn(),
+            hasRequested: true,
+        })
+
+        render(<TicketSummarySection summary={null} ticketId={123} />)
+
+        expect(
+            screen.getByText('AI-generated summary text'),
+        ).toBeInTheDocument()
+        expect(screen.getByText(/Updated Formatted/)).toBeInTheDocument()
+    })
+
+    it('shows error message and retry button when no content and error', () => {
+        useTicketSummaryMock.mockReturnValue({
+            summary: { ...baseSummary, content: '' },
+            isLoading: false,
+            errorMessage: 'Something went wrong',
+            requestSummary: jest.fn(),
+            hasRequested: true,
+        })
+
+        render(<TicketSummarySection summary={null} ticketId={123} />)
+
+        expect(screen.getByText('Something went wrong')).toBeInTheDocument()
+        expect(screen.getByText('Try Again')).toBeInTheDocument()
+    })
+
+    it('calls requestSummary when retry button clicked', () => {
+        const requestSummary = jest.fn()
+
+        useTicketSummaryMock.mockReturnValue({
+            summary: { ...baseSummary, content: '' },
+            isLoading: false,
+            errorMessage: 'Something went wrong',
+            requestSummary,
+            hasRequested: true,
+        })
+
+        render(<TicketSummarySection summary={null} ticketId={123} />)
+
+        fireEvent.click(screen.getByText('Try Again'))
+
+        expect(requestSummary).toHaveBeenCalledTimes(1)
+    })
+})
+
+describe('TicketSummaryButton', () => {
+    it('renders with icon and children and handles click', () => {
+        const handleClick = jest.fn()
+        render(
+            <TicketSummaryButton onClick={handleClick}>
+                Click Me
+            </TicketSummaryButton>,
+        )
+
+        expect(screen.getByText('Click Me')).toBeInTheDocument()
+        fireEvent.click(screen.getByText('Click Me'))
+        expect(handleClick).toHaveBeenCalledTimes(1)
+    })
+})
+
+describe('AISummaryIcon', () => {
+    it('renders SVG icon correctly', () => {
+        const { container } = render(<AISummaryIcon />)
+        expect(container.querySelector('svg')).toBeInTheDocument()
+    })
+})
+
+describe('SummarySkeleton', () => {
+    it('renders with given width', () => {
+        render(<SummarySkeleton width={80} />)
+        expect(screen.getByTestId('summary-skeleton')).toHaveStyle('width: 80%')
+    })
+})
+
+describe('SummaryBodySkeleton', () => {
+    it('renders rows with different widths', () => {
+        render(<SummaryBodySkeleton rows={[60, 80, 90]} />)
+
+        expect(screen.getAllByTestId('summary-skeleton')).toHaveLength(3)
+    })
+})
+
+describe('SummaryBody', () => {
+    it('renders children inside summary body', () => {
+        render(<SummaryBody>Body content</SummaryBody>)
+        expect(screen.getByText('Body content')).toBeInTheDocument()
+    })
+})
+
+describe('SummaryInfo', () => {
+    it('renders children inside summary info', () => {
+        render(<SummaryInfo>Info content</SummaryInfo>)
+        expect(screen.getByText('Info content')).toBeInTheDocument()
+    })
+})

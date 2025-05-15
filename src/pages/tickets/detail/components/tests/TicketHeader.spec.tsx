@@ -2,6 +2,7 @@ import React, { ComponentProps } from 'react'
 
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import _omit from 'lodash/omit'
 import moment from 'moment'
 import { Provider } from 'react-redux'
@@ -10,6 +11,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
@@ -116,6 +118,7 @@ const mockUseIsTicketNavigationAvailable =
     useIsTicketNavigationAvailable as jest.Mock
 
 const useParamsMock = useParams as jest.Mock
+const useFlagsMock = useFlags as jest.Mock
 
 describe('<TicketHeader />', () => {
     const defaultStore: Partial<RootState> = {
@@ -345,5 +348,31 @@ describe('<TicketHeader />', () => {
         await waitFor(() =>
             expect(ticketActions.clearTicket).toHaveBeenCalled(),
         )
+    })
+
+    it('should render AI ticket summary popover when enableAITicketSummary feature flag is enabled', () => {
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.AITicketSummary]: true,
+        })
+        const { getByText } = render(
+            <Provider store={mockStore(defaultStore)}>
+                <TicketHeader {...minProps} />
+            </Provider>,
+        )
+
+        expect(getByText('Summarize')).toBeInTheDocument()
+    })
+
+    it('should not render AI ticket summary popover when enableAITicketSummary feature flag is disabled', () => {
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.AITicketSummary]: false,
+        })
+        const { queryByText } = render(
+            <Provider store={mockStore(defaultStore)}>
+                <TicketHeader {...minProps} />
+            </Provider>,
+        )
+
+        expect(queryByText('Summarize')).not.toBeInTheDocument()
     })
 })

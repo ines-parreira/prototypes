@@ -2,11 +2,13 @@ import React, { useState } from 'react'
 
 import classnames from 'classnames'
 import { Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment, { Moment } from 'moment-timezone'
 
 import { useAppNode } from 'appNode'
 import { TicketStatus as TicketStatusEnum } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -46,6 +48,7 @@ import TicketTags from './TicketDetails/TicketTags'
 import TicketTrash from './TicketDetails/TicketTrash'
 import { TicketHeaderToggle } from './TicketHeaderToggle'
 import TicketNavigationArrowPagination from './TicketNavigation/TicketNavigationArrowPagination'
+import TicketSummaryPopover from './TicketSummaryPopover'
 
 import css from './TicketHeader.less'
 
@@ -74,6 +77,7 @@ const TicketHeader = ({
     const shouldDisplayAuditLogEvents = useAppSelector(
         getShouldDisplayAuditLogEvents,
     )
+    const enableAITicketSummary = useFlags()[FeatureFlagKey.AITicketSummary]
 
     const dispatch = useAppDispatch()
 
@@ -280,6 +284,7 @@ const TicketHeader = ({
                 />
 
                 <div className={css.actions}>
+                    {enableAITicketSummary && <TicketSummaryPopover />}
                     <TicketSnooze datetime={snoozedUntil} timezone={timezone} />
 
                     <TicketNavigationArrowPagination

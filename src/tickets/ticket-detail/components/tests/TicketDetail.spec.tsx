@@ -1,7 +1,9 @@
 import { render, screen } from '@testing-library/react'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import type { Ticket, TicketCompact } from '@gorgias/api-queries'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { assumeMock } from 'utils/testing'
 
 import { useTicket } from '../../hooks/useTicket'
@@ -19,6 +21,12 @@ jest.mock('../TicketHeader', () => ({
     TicketHeader: jest.fn(() => <div>TicketHeader</div>),
 }))
 
+jest.mock('pages/tickets/detail/components/TicketSummary', () => ({
+    __esModule: true,
+    default: () => <div>TicketSummarySection</div>,
+}))
+
+const useFlagsMock = useFlags as jest.Mock
 describe('TicketDetail', () => {
     beforeEach(() => {
         useTicketMock.mockReturnValue({ isLoading: true, ticket: undefined })
@@ -59,5 +67,33 @@ describe('TicketDetail', () => {
         })
         render(<TicketDetail ticketId={1} />)
         expect(screen.getByTestId('dump')).toBeInTheDocument()
+    })
+
+    it('should render AI ticket summary when ticket is loaded and enableAITicketSummary enabled', () => {
+        useTicketMock.mockReturnValue({
+            isLoading: false,
+            ticket: { id: 1 } as Ticket,
+        })
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.AITicketSummary]: true,
+        })
+
+        render(<TicketDetail ticketId={1} />)
+        expect(screen.getByText('TicketSummarySection')).toBeInTheDocument()
+    })
+
+    it('should not render AI ticket summary when ticket is loaded and enableAITicketSummary disabled', () => {
+        useTicketMock.mockReturnValue({
+            isLoading: true,
+            ticket: { id: 1 } as Ticket,
+        })
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.AITicketSummary]: true,
+        })
+
+        render(<TicketDetail ticketId={1} />)
+        expect(
+            screen.queryByText('TicketSummarySection'),
+        ).not.toBeInTheDocument()
     })
 })

@@ -3,6 +3,8 @@ import { fromJS, List, Map } from 'immutable'
 import { cloneDeep } from 'lodash'
 import _find from 'lodash/find'
 
+import { queryKeys } from '@gorgias/api-queries'
+
 import { appQueryClient } from 'api/queryClient'
 import { shouldTicketBeDisplayedInRecentChats } from 'business/recentChats'
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -139,6 +141,11 @@ const receivedEvents: ReceivedEvent[] = [
         name: 'ticket-updated',
         onReceive: function (json) {
             const { ticket } = json as TicketUpdatedEvent
+
+            appQueryClient.invalidateQueries({
+                queryKey: queryKeys.tickets.getTicket(ticket.id),
+            })
+
             if (ticket.is_unread) {
                 reduxStore.dispatch(chatsActions.markChatAsUnread(ticket.id))
             }

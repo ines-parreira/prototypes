@@ -34,6 +34,7 @@ export enum FeatureFlagKey {
     AiShoppingAssistantTrialEnabled = 'ai-shopping-assistant-trial-enabled',
     AiShoppingAssistantTrialMerchants = 'ai-shopping-assistant-trial-merchants',
     AiAgentUseNewAgenticArchitecture = 'ai-agent-use-new-agentic-architecture',
+    AITicketSummary = 'linear.project-ai-summaries.ai-ticket-summary-component-frontend',
     AiShoppingAssistantEnabled = 'ai-shopping-assistant-enabled',
     AnalyticsDeferredLoadingExperiment = 'analytics-deferred-loading-experiment',
     AutomateNonFilteredDenominatorInAutomationRate = 'use-non-filtered-automated-interactions-in-automation-rate-denominator',
