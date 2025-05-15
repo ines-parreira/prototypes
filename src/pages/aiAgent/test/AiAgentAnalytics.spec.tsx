@@ -5,6 +5,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
+import { toImmutable } from 'common/utils'
 import { initialState as statsInitialState } from 'state/stats/statsSlice'
 import { initialState as filtersInitialState } from 'state/ui/stats/filtersSlice'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -39,6 +40,12 @@ const renderComponent = () =>
                         filters: filtersInitialState,
                     },
                 },
+                integrations: toImmutable({
+                    integrations: [],
+                }),
+                billing: toImmutable({
+                    products: [],
+                }),
             })}
         >
             <QueryClientProvider client={queryClient}>

@@ -1,13 +1,17 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
+import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 
+import { toImmutable } from 'common/utils'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import history from 'pages/history'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import { renderWithRouter } from 'utils/testing'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { mockStore, renderWithRouter } from 'utils/testing'
 
 import { AiAgentGuidanceLibraryContainer } from '../AiAgentGuidanceLibraryContainer'
 import { getAIGuidanceFixture } from '../fixtures/aiGuidance.fixture'
@@ -44,11 +48,29 @@ const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 
 const helpCenter = getHelpCentersResponseFixture.data[0]
 
+const defaultState = {
+    integrations: toImmutable({
+        integrations: [],
+    }),
+    billing: toImmutable({
+        products: [],
+    }),
+}
+
+const queryClient = mockQueryClient()
+
 const renderComponent = () => {
-    renderWithRouter(<AiAgentGuidanceLibraryContainer />, {
-        path: `/:shopType/:shopName/ai-agent/guidance/library`,
-        route: '/shopify/test-shop/ai-agent/guidance/library',
-    })
+    renderWithRouter(
+        <Provider store={mockStore(defaultState)}>
+            <QueryClientProvider client={queryClient}>
+                <AiAgentGuidanceLibraryContainer />
+            </QueryClientProvider>
+        </Provider>,
+        {
+            path: `/:shopType/:shopName/ai-agent/guidance/library`,
+            route: '/shopify/test-shop/ai-agent/guidance/library',
+        },
+    )
 }
 describe('<AiAgentGuidanceLibraryContainer />', () => {
     beforeEach(() => {

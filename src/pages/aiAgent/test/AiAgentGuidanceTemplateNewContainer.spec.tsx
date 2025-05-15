@@ -3,12 +3,16 @@ import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import React from 'react'
 
+import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 
+import { toImmutable } from 'common/utils'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import { renderWithRouter } from 'utils/testing'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { mockStore, renderWithRouter } from 'utils/testing'
 
 import { AiAgentGuidanceTemplateNewContainer } from '../AiAgentGuidanceTemplateNewContainer'
 import { getAIGuidanceFixture } from '../fixtures/aiGuidance.fixture'
@@ -51,6 +55,7 @@ jest.mock('pages/aiAgent/hooks/useAccountStoreConfiguration', () => ({
     }),
 }))
 
+const queryClient = mockQueryClient()
 const mockedUseAiAgentHelpCenter = jest.mocked(useAiAgentHelpCenter)
 const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
 const mockedUseGuidanceTemplate = jest.mocked(useGuidanceTemplate)
@@ -105,10 +110,35 @@ const defaultUseGuidanceAiSuggestions = {
 }
 
 const renderComponent = () => {
-    renderWithRouter(<AiAgentGuidanceTemplateNewContainer />, {
-        path: `/:shopType/:shopName/ai-agent/guidance/templates/:templateId`,
-        route: `/shopify/test-shop/ai-agent/guidance/templates/${guidanceTemplate.id}`,
-    })
+    renderWithRouter(
+        <QueryClientProvider client={queryClient}>
+            <Provider
+                store={mockStore({
+                    entities: {
+                        helpCenter: {
+                            helpCenters: {
+                                helpCentersById: {
+                                    [helpCenter.id]: helpCenter,
+                                },
+                            },
+                        },
+                    },
+                    billing: toImmutable({
+                        products: [],
+                    }),
+                    integrations: toImmutable({
+                        integrations: [],
+                    }),
+                })}
+            >
+                <AiAgentGuidanceTemplateNewContainer />
+            </Provider>
+        </QueryClientProvider>,
+        {
+            path: `/:shopType/:shopName/ai-agent/guidance/templates/:templateId`,
+            route: `/shopify/test-shop/ai-agent/guidance/templates/${guidanceTemplate.id}`,
+        },
+    )
 }
 describe('<AiAgentGuidanceTemplateNewContainer />', () => {
     beforeEach(() => {

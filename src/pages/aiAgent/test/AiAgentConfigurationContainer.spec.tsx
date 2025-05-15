@@ -16,6 +16,10 @@ import * as billingFixtures from 'fixtures/billing'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { IntegrationType } from 'models/integration/types'
+import {
+    useStoreActivations,
+    useStoreConfigurations,
+} from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { applyMockActivationHook } from 'pages/aiAgent/test/mock-activation-hooks.utils'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { initialState } from 'state/billing/reducers'
@@ -105,6 +109,12 @@ jest.mock(
 jest.mock('models/rule/resources', () => ({
     listRules: () => Promise.resolve({ data: [] }),
 }))
+
+jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
+jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
+
+const useStoreActivationsMock = assumeMock(useStoreActivations)
+const useStoreConfigurationsMock = assumeMock(useStoreConfigurations)
 
 const mockedUseHandoverCustomizationChatOfflineSettingsFormProps = {
     isLoading: false,
@@ -260,6 +270,12 @@ const setupMocks = ({
     } as unknown as ReturnType<typeof useGetHelpCenterList>)
 
     applyMockActivationHook()
+    useStoreConfigurationsMock.mockReturnValue({
+        storeConfigurations: [],
+    } as any)
+    useStoreActivationsMock.mockReturnValue({
+        storeActivations: {},
+    } as any)
 }
 
 describe('AiAgentConfigurationContainer', () => {

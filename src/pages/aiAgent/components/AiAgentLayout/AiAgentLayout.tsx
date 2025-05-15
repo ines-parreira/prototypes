@@ -4,11 +4,16 @@ import classnames from 'classnames'
 import { useLocation } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useAtLeastOneStoreHasActiveTrial } from 'hooks/aiAgent/useCanUseAiSalesAgent'
+import useAppSelector from 'hooks/useAppSelector'
+import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial'
 import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
+import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useAccountStoreConfiguration } from 'pages/aiAgent/hooks/useAccountStoreConfiguration'
 import { getAiAgentBasePath } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { AiAgentView } from '../AiAgentView/AiAgentView'
 import { useAiAgentHeaderNavbarItems } from './useAiAgentHeaderNavbarItems'
@@ -40,13 +45,32 @@ export const AiAgentLayout = ({
     const { aiAgentTicketViewId } = useAccountStoreConfiguration({
         storeNames: [shopName],
     })
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
 
     // For tracking purpose in activation feature, we need to pass the page path
     const basePath = getAiAgentBasePath(shopName)
     const currentPagePath = useLocation().pathname.replace(`${basePath}/`, '')
+    const atLeastOneStoreHasActiveTrial = useAtLeastOneStoreHasActiveTrial()
+
+    const { storeActivations } = useStoreActivations({
+        pageName: window.location.pathname,
+    })
+
+    const { canStartTrial, canStartTrialFromFeatureFlag } =
+        useActivateAiAgentTrial({
+            accountDomain,
+            storeActivations,
+            onSuccess: () => {},
+        })
 
     const { activationModal, earlyAccessModal, activationButton } =
-        useActivation(currentPagePath)
+        useActivation(currentPagePath, {
+            autoDisplayEarlyAccessDisabled:
+                atLeastOneStoreHasActiveTrial ||
+                canStartTrial ||
+                canStartTrialFromFeatureFlag,
+        })
 
     const AiAgentTitle = useMemo(() => {
         return (

@@ -6,6 +6,7 @@ import { screen } from '@testing-library/react'
 import { ldClientMock } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 
+import { toImmutable } from 'common/utils'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import * as chatColorHook from 'pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor'
 import * as contextHook from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
@@ -33,9 +34,18 @@ const mockUseAiAgentStoreConfigurationContext = jest.mocked(
     contextHook.useAiAgentStoreConfigurationContext,
 )
 
+const defaultState = {
+    integrations: toImmutable({
+        integrations: [],
+    }),
+    billing: toImmutable({
+        products: [],
+    }),
+}
+
 const renderComponent = () =>
     renderWithRouter(
-        <Provider store={mockStore({})}>
+        <Provider store={mockStore(defaultState)}>
             <QueryClientProvider client={queryClient}>
                 <AiAgentCustomerEngagement />
             </QueryClientProvider>

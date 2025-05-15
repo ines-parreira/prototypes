@@ -1,11 +1,13 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
+import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import { toImmutable } from 'common/utils'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -13,9 +15,14 @@ import {
     useGetAccountConfiguration,
     useGetStoreConfigurationPure,
 } from 'models/aiAgent/queries'
+import {
+    useStoreActivations,
+    useStoreConfigurations,
+} from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import { notify } from 'state/notifications/actions'
 import { RootState } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import { TEST } from '../../constants'
@@ -31,6 +38,12 @@ const mockStore = configureMockStore()
 const defaultState: Partial<RootState> = {
     currentUser: fromJS(user),
     currentAccount: fromJS(account),
+    integrations: toImmutable({
+        integrations: [],
+    }),
+    billing: toImmutable({
+        products: [],
+    }),
 }
 
 jest.mock('utils/errors', () => ({
@@ -74,18 +87,30 @@ jest.mock('pages/aiAgent/hooks/useAccountStoreConfiguration', () => ({
         aiAgentTicketViewId: 1,
     }),
 }))
+jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations.ts')
+const queryClient = mockQueryClient()
 
 const storeConfiguration = getStoreConfigurationFixture({})
 
 const accountConfiguration = getAccountConfigurationWithHttpIntegrationFixture(
     {},
 )
+const useStoreActivationsMock = assumeMock(useStoreActivations)
+const useStoreConfigurationsMock = assumeMock(useStoreConfigurations)
+useStoreConfigurationsMock.mockReturnValue({
+    storeConfigurations: [],
+} as any)
+useStoreActivationsMock.mockReturnValue({
+    storeActivations: {},
+} as any)
 
 const renderComponent = () => {
     renderWithRouter(
-        <Provider store={mockStore(defaultState)}>
-            <AiAgentPlaygroundContainer />
-        </Provider>,
+        <QueryClientProvider client={queryClient}>
+            <Provider store={mockStore(defaultState)}>
+                <AiAgentPlaygroundContainer />
+            </Provider>
+        </QueryClientProvider>,
         {
             path: `/app/automation/:shopType/:shopName/ai-agent/test`,
             route: '/app/automation/shopify/gorgias-product-demo/ai-agent/test',

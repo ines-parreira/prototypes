@@ -34,10 +34,6 @@ const AiSalesAgentSalesOverview = () => {
     const shouldDisplayPaywall =
         !useCanUseAiSalesAgent() && !atLeastOneStoreHasActiveTrial
 
-    const { earlyAccessModal, showEarlyAccessModal } = useActivation(
-        window.location.pathname,
-    )
-
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
 
@@ -52,11 +48,28 @@ const AiSalesAgentSalesOverview = () => {
         setIsModalOpen(true)
     }
 
-    const { routes, startTrial, canStartTrial } = useActivateAiAgentTrial({
+    const {
+        routes,
+        startTrial,
+        canStartTrial,
+        canStartTrialFromFeatureFlag,
+        isLoading,
+    } = useActivateAiAgentTrial({
         accountDomain,
         storeActivations,
         onSuccess,
     })
+
+    const { earlyAccessModal, showEarlyAccessModal } = useActivation(
+        window.location.pathname,
+        {
+            autoDisplayEarlyAccessDisabled:
+                atLeastOneStoreHasActiveTrial ||
+                isLoading ||
+                canStartTrial ||
+                canStartTrialFromFeatureFlag,
+        },
+    )
 
     const component: React.ReactNode = (
         <AIAgentTrialSuccessModal

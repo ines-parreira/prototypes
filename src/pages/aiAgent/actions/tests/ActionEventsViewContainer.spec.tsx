@@ -22,6 +22,10 @@ import {
     useGetWorkflowConfiguration,
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
+import {
+    useStoreActivations,
+    useStoreConfigurations,
+} from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { ACTIONS } from 'pages/aiAgent/constants'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import { Paths } from 'rest_api/workflows_api/client.generated'
@@ -37,6 +41,7 @@ jest.mock('models/workflows/queries')
 jest.mock('../hooks/useGetAppImageUrl')
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
 jest.mock('pages/aiAgent/Activation/hooks/useActivation')
+jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations.ts')
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const mockUseGetAppImageUrl = jest.mocked(useGetAppImageUrl)
@@ -58,6 +63,14 @@ const useGetWorkflowConfigurationTemplatesMocked = assumeMock(
 )
 const mockUseEnableAiAgent = assumeMock(useAiAgentEnabled)
 mockUseGetAppImageUrl.mockReturnValue('https://example.com/app.png')
+const useStoreActivationsMock = assumeMock(useStoreActivations)
+const useStoreConfigurationsMock = assumeMock(useStoreConfigurations)
+useStoreConfigurationsMock.mockReturnValue({
+    storeConfigurations: [],
+} as any)
+useStoreActivationsMock.mockReturnValue({
+    storeActivations: {},
+} as any)
 
 const defaultStore = mockStore({
     currentAccount: fromJS({

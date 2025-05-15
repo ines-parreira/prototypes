@@ -8,6 +8,7 @@ import { fromJS } from 'immutable'
 import moment, { Moment } from 'moment/moment'
 import { Provider } from 'react-redux'
 
+import { toImmutable } from 'common/utils'
 import { account } from 'fixtures/account'
 import { PeriodFilter } from 'pages/stats/common/filters/PeriodFilter'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -60,6 +61,12 @@ const defaultStore = {
             },
         },
     },
+    billing: toImmutable({
+        products: [],
+    }),
+    integrations: toImmutable({
+        integrations: [],
+    }),
 }
 const SHOP_NAME = 'shopify-store'
 const SHOP_TYPE = 'shopify'

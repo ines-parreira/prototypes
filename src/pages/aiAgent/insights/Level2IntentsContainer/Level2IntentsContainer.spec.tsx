@@ -6,6 +6,7 @@ import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
+import { toImmutable } from 'common/utils'
 import { account } from 'fixtures/account'
 import { OPTIMIZE } from 'pages/aiAgent/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -48,7 +49,6 @@ jest.mock('react-router-dom', () => ({
         push: mockHistoryPush,
     }),
 }))
-jest.mock('hooks/useAppSelector')
 
 const SHOP_NAME = 'shopify-store'
 const SHOP_TYPE = 'shopify'
@@ -56,6 +56,12 @@ const SHOP_TYPE = 'shopify'
 const defaultStore = mockStore({
     currentAccount: fromJS({
         ...account,
+    }),
+    billing: toImmutable({
+        products: [],
+    }),
+    integrations: toImmutable({
+        integrations: [],
     }),
 })
 

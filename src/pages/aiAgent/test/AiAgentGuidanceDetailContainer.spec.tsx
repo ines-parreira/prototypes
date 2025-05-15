@@ -3,12 +3,16 @@ import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import React from 'react'
 
+import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 
+import { toImmutable } from 'common/utils'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import { renderWithRouter } from 'utils/testing'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { mockStore, renderWithRouter } from 'utils/testing'
 
 import { AiAgentGuidanceDetailContainer } from '../AiAgentGuidanceDetailContainer'
 import { getAIGuidanceFixture } from '../fixtures/aiGuidance.fixture'
@@ -84,11 +88,28 @@ const defaultUseAiAgentOnboardingNotification = {
     isAiAgentOnboardingNotificationEnabled: true,
 }
 
+const queryClient = mockQueryClient()
+const defaultState = {
+    integrations: toImmutable({
+        integrations: [],
+    }),
+    billing: toImmutable({
+        products: [],
+    }),
+}
+
 const renderComponent = (articleId = 1) => {
-    renderWithRouter(<AiAgentGuidanceDetailContainer />, {
-        path: `/:shopType/:shopName/ai-agent/guidance/:articleId`,
-        route: `/shopify/test-shop/ai-agent/guidance/${articleId}`,
-    })
+    renderWithRouter(
+        <Provider store={mockStore(defaultState)}>
+            <QueryClientProvider client={queryClient}>
+                <AiAgentGuidanceDetailContainer />
+            </QueryClientProvider>
+        </Provider>,
+        {
+            path: `/:shopType/:shopName/ai-agent/guidance/:articleId`,
+            route: `/shopify/test-shop/ai-agent/guidance/${articleId}`,
+        },
+    )
 }
 describe('<AiAgentGuidanceDetail />', () => {
     beforeEach(() => {

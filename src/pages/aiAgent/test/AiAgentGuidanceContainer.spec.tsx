@@ -1,20 +1,29 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
+import React from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toImmutable } from 'common/utils'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import history from 'pages/history'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { reportError } from 'utils/errors'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
+import {
+    useStoreActivations,
+    useStoreConfigurations,
+} from '../Activation/hooks/useStoreActivations'
 import { AiAgentGuidanceContainer } from '../AiAgentGuidanceContainer'
 import {
     GUIDANCE_ARTICLE_LIMIT,
@@ -60,6 +69,12 @@ jest.mock('pages/aiAgent/hooks/useAccountStoreConfiguration', () => ({
         aiAgentTicketViewId: 1,
     }),
 }))
+
+jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations.ts')
+const useStoreActivationsMock = assumeMock(useStoreActivations)
+const useStoreConfigurationsMock = assumeMock(useStoreConfigurations)
+
+const queryClient = mockQueryClient()
 
 const mockedUseGuidanceArticles = jest.mocked(useGuidanceArticles)
 const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
@@ -108,21 +123,29 @@ const mockStore = configureMockStore([thunk])
 
 const renderComponent = () => {
     renderWithRouter(
-        <Provider
-            store={mockStore({
-                entities: {
-                    helpCenter: {
-                        helpCenters: {
-                            helpCentersById: {
-                                [helpCenter.id]: helpCenter,
+        <QueryClientProvider client={queryClient}>
+            <Provider
+                store={mockStore({
+                    entities: {
+                        helpCenter: {
+                            helpCenters: {
+                                helpCentersById: {
+                                    [helpCenter.id]: helpCenter,
+                                },
                             },
                         },
                     },
-                },
-            })}
-        >
-            <AiAgentGuidanceContainer />
-        </Provider>,
+                    billing: toImmutable({
+                        products: [],
+                    }),
+                    integrations: toImmutable({
+                        integrations: [],
+                    }),
+                })}
+            >
+                <AiAgentGuidanceContainer />
+            </Provider>
+        </QueryClientProvider>,
         {
             path: `/:shopType/:shopName/ai-agent/guidance`,
             route: '/shopify/test-shop/ai-agent/guidance',
@@ -163,6 +186,13 @@ describe('<AiAgentGuidanceContainer />', () => {
         mockUseEnableAiAgent.mockReturnValue({
             updateSettingsAfterAiAgentEnabled: jest.fn(),
         })
+
+        useStoreConfigurationsMock.mockReturnValue({
+            storeConfigurations: [],
+        } as any)
+        useStoreActivationsMock.mockReturnValue({
+            storeActivations: {},
+        } as any)
     })
 
     it('should render loader', () => {

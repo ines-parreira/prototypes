@@ -35,6 +35,10 @@ import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
+import {
+    useStoreActivations,
+    useStoreConfigurations,
+} from '../Activation/hooks/useStoreActivations'
 import { IngestionLogStatus } from '../AiAgentScrapedDomainContent/constant'
 import { INITIAL_FORM_VALUES } from '../constants'
 import { applicationsAutomationSettingsAiAgentEnabledFixture } from '../fixtures/applicationAutomationSettings.fixture'
@@ -75,6 +79,10 @@ const mockUsePollStoreDomainIngestionLog = assumeMock(
 )
 
 jest.mock('models/helpCenter/queries')
+
+jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations.ts')
+const useStoreActivationsMock = assumeMock(useStoreActivations)
+const useStoreConfigurationsMock = assumeMock(useStoreConfigurations)
 const mockUseGetHelpCenterList = assumeMock(useGetHelpCenterList)
 const mockUseGetArticleIngestionLogs = assumeMock(useGetArticleIngestionLogs)
 
@@ -137,6 +145,12 @@ const mockUpdateStoreConfiguration = jest
     .mockImplementation((c: StoreConfiguration) => c)
 
 const storeConfiguration = getStoreConfigurationFixture()
+useStoreConfigurationsMock.mockReturnValue({
+    storeConfigurations: [],
+} as any)
+useStoreActivationsMock.mockReturnValue({
+    storeActivations: {},
+} as any)
 
 const renderComponent = ({
     isStoreConfigLoading = false,

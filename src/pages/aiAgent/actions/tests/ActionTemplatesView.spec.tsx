@@ -10,6 +10,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toImmutable } from 'common/utils'
 import { account, automationSubscriptionProductPrices } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { shopifyIntegration } from 'fixtures/integrations'
@@ -45,7 +46,9 @@ const defaultStore = mockStore({
         },
     }),
     billing: fromJS(billingState),
-    integrations: fromJS([shopifyIntegration]),
+    integrations: toImmutable({
+        integrations: [shopifyIntegration],
+    }),
     stats: { filters: fromLegacyStatsFilters(statsFilters) },
 })
 

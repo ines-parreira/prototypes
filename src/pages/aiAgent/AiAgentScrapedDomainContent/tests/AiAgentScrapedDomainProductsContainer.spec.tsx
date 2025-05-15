@@ -8,6 +8,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toImmutable } from 'common/utils'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { Product } from 'constants/integrations/types/shopify'
 import { useGetEcommerceItemByExternalId } from 'models/ecommerce/queries'
@@ -59,7 +60,14 @@ const mockUseGetEcommerceItemByExternalId = assumeMock(
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore([thunk])
 
-const defaultState = {}
+const defaultState = {
+    billing: toImmutable({
+        products: [],
+    }),
+    integrations: toImmutable({
+        integrations: [],
+    }),
+}
 
 const renderComponent = () => {
     renderWithRouter(

@@ -8,6 +8,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toImmutable } from 'common/utils'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { getIngestedResourcesListResponse } from 'pages/aiAgent/fixtures/ingestedResource.fixture'
 import { getIngestionLogFixture } from 'pages/aiAgent/fixtures/ingestionLog.fixture'
@@ -57,7 +58,14 @@ const mockUseIngestedResourceMutation = assumeMock(useIngestedResourceMutation)
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore([thunk])
 
-const defaultState = {}
+const defaultState = {
+    integrations: toImmutable({
+        integrations: [],
+    }),
+    billing: toImmutable({
+        products: [],
+    }),
+}
 
 const renderComponent = () => {
     renderWithRouter(

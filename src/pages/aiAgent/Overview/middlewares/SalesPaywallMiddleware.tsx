@@ -44,19 +44,17 @@ export const SalesPaywallMiddleware =
     (ChildComponent: React.ComponentType<any>) => (): React.ReactElement => {
         const flags = useFlags()
         const hasAutomate = useAppSelector(getHasAutomate)
-        const { earlyAccessModal, showEarlyAccessModal } = useActivation(
-            window.location.pathname,
-        )
-
-        const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
-        const currentAccount = useAppSelector(getCurrentAccountState)
         const { storeActivations } = useStoreActivations({
             pageName: window.location.pathname,
             withPublicResources: false,
         })
-        const history = useHistory()
+
         const currentStoreHasActiveTrial =
             useAtLeastOneStoreHasActiveTrialOnSpecificStores(storeActivations)
+
+        const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
+        const currentAccount = useAppSelector(getCurrentAccountState)
+        const history = useHistory()
         const hasNewAutomatePlan = (currentAutomatePlan?.generation ?? 0) >= 6
 
         const accountDomain = currentAccount.get('domain')
@@ -69,12 +67,24 @@ export const SalesPaywallMiddleware =
             canStartTrial,
             routes,
             startTrial,
+            isLoading,
             canStartTrialFromFeatureFlag,
         } = useActivateAiAgentTrial({
             accountDomain,
             storeActivations,
             onSuccess,
         })
+
+        const { earlyAccessModal, showEarlyAccessModal } = useActivation(
+            window.location.pathname,
+            {
+                autoDisplayEarlyAccessDisabled:
+                    currentStoreHasActiveTrial ||
+                    isLoading ||
+                    canStartTrial ||
+                    canStartTrialFromFeatureFlag,
+            },
+        )
 
         const isAiSalesBetaUser = !!flags[FeatureFlagKey.AiSalesAgentBeta]
         const isAiSalesAlphaDemoUser =
