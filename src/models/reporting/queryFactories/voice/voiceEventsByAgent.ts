@@ -1,9 +1,12 @@
+import { OrderDirection } from 'models/api/types'
 import {
+    VoiceEventsByAgentCube,
     VoiceEventsByAgentDimension,
     VoiceEventsByAgentFiltersMembers,
     VoiceEventsByAgentMeasure,
     VoiceEventsByAgentSegment,
 } from 'models/reporting/cubes/VoiceEventsByAgent'
+import { ReportingQuery } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import { statsFiltersToReportingFilters } from 'utils/reporting'
 
@@ -31,7 +34,8 @@ const withVoiceEventsByAgentDefaultSegment = (
 export const declinedVoiceCallsCountPerAgentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-) => ({
+    sorting?: OrderDirection,
+): ReportingQuery<VoiceEventsByAgentCube> => ({
     measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
     dimensions: [VoiceEventsByAgentDimension.AgentId],
     timezone,
@@ -39,6 +43,11 @@ export const declinedVoiceCallsCountPerAgentQueryFactory = (
         VoiceEventsByAgentSegment.declinedCalls,
     ),
     filters: voiceEventsByAgentDefaultFilters(filters),
+    ...(sorting
+        ? {
+              order: [[VoiceEventsByAgentMeasure.VoiceEventsCount, sorting]],
+          }
+        : {}),
 })
 
 export const declinedVoiceCallsCountQueryFactory = (

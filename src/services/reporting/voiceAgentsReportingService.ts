@@ -44,7 +44,7 @@ import {
 } from 'pages/stats/voice/hooks/metricsPerDimension'
 import { useVoiceAgentsMetrics } from 'pages/stats/voice/hooks/useVoiceAgentsMetrics'
 import { useVoiceAgentsSummaryMetrics } from 'pages/stats/voice/hooks/useVoiceAgentsSummaryMetrics'
-import { getSortedAgents } from 'state/ui/stats/agentPerformanceSlice'
+import { getSortedAgents } from 'state/ui/stats/voiceAgentsPerformanceSlice'
 import { createCsv } from 'utils/file'
 
 export interface VoiceAgentsPerformanceReportData<T = MetricWithDecile> {

@@ -32,15 +32,16 @@ import {
     TableLabels,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {
+    agentPerformance,
     getHeatmapMode,
     getPaginatedAgents,
     isSortingMetricLoading,
     pageSet,
 } from 'state/ui/stats/agentPerformanceSlice'
-import { AgentsTableColumn } from 'state/ui/stats/types'
+import { AgentsTableColumn, VoiceAgentsTableColumn } from 'state/ui/stats/types'
 
 export const getTableCell = (
-    column: AgentsTableColumn,
+    column: AgentsTableColumn | VoiceAgentsTableColumn,
 ): FunctionComponent<AgentsCellContentProps> => {
     if (column === AgentsTableColumn.AgentName) {
         return AgentNameCellContent
@@ -57,7 +58,13 @@ const getSortingQuery = (
 ) => {
     const query = getQuery(column)
 
-    return () => useAgentsSortingQuery(column, query, statsFilters)
+    return () =>
+        useAgentsSortingQuery<AgentsTableColumn>(
+            column,
+            query,
+            statsFilters,
+            agentPerformance,
+        )
 }
 
 type AgentsTableProps = {

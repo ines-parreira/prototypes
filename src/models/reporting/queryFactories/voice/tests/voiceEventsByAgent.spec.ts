@@ -1,5 +1,6 @@
 import moment from 'moment'
 
+import { OrderDirection } from 'models/api/types'
 import { TicketMember } from 'models/reporting/cubes/TicketCube'
 import {
     VoiceEventsByAgentDimension,
@@ -51,6 +52,42 @@ describe('voice events by agent factories', () => {
             segments: [
                 VoiceEventsByAgentSegment.declinedCalls,
                 VoiceEventsByAgentSegment.callsInFinalStatus,
+            ],
+        })
+    })
+
+    it('declinedVoiceCallsCountPerAgentQueryFactory should create a query with sorting', () => {
+        const query = declinedVoiceCallsCountPerAgentQueryFactory(
+            statsFilters,
+            'UTC',
+            OrderDirection.Asc,
+        )
+
+        expect(query).toEqual({
+            measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
+            dimensions: [VoiceEventsByAgentDimension.AgentId],
+            filters: [
+                {
+                    member: VoiceEventsByAgentMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [periodStart],
+                },
+                {
+                    member: VoiceEventsByAgentMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [periodEnd],
+                },
+            ],
+            timezone: 'UTC',
+            segments: [
+                VoiceEventsByAgentSegment.declinedCalls,
+                VoiceEventsByAgentSegment.callsInFinalStatus,
+            ],
+            order: [
+                [
+                    VoiceEventsByAgentMeasure.VoiceEventsCount,
+                    OrderDirection.Asc,
+                ],
             ],
         })
     })

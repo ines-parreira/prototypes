@@ -7,7 +7,9 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { agents } from 'fixtures/agents'
+import { STATS_ROUTE_PREFIX } from 'pages/stats/common/components/constants'
 import { AgentNameCellContent } from 'pages/stats/support-performance/agents/AgentNameCellContent'
+import { STATS_ROUTES } from 'routes/constants'
 import { mergeStatsFilters } from 'state/stats/statsSlice'
 import { RootState, StoreDispatch } from 'state/types'
 
@@ -48,6 +50,35 @@ describe('<AgentNameCellContent>', () => {
                     mergeStatsFilters({ agents: [agents[0].id] }),
                 ),
             ]),
+        )
+    })
+
+    it('should redirect to support performance overview by default', () => {
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <AgentNameCellContent agent={agent} />
+            </Provider>,
+        )
+
+        expect(screen.getByText(agents[0].name).closest('a')).toHaveAttribute(
+            'to',
+            `${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_OVERVIEW}`,
+        )
+    })
+
+    it('should redirect to custom route if provided', () => {
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <AgentNameCellContent
+                    agent={agent}
+                    redirectTo={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.VOICE_OVERVIEW}`}
+                />
+            </Provider>,
+        )
+
+        expect(screen.getByText(agents[0].name).closest('a')).toHaveAttribute(
+            'to',
+            `${STATS_ROUTE_PREFIX}${STATS_ROUTES.VOICE_OVERVIEW}`,
         )
     })
 })

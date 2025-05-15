@@ -38,7 +38,7 @@ import {
     useVoiceAgentsReportData,
 } from 'services/reporting/voiceAgentsReportingService'
 import { RootState } from 'state/types'
-import { getSortedAgents } from 'state/ui/stats/agentPerformanceSlice'
+import { getSortedAgents } from 'state/ui/stats/voiceAgentsPerformanceSlice'
 import { createCsv } from 'utils/file'
 import { formatReportingQueryDate } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
@@ -47,7 +47,7 @@ import { renderHook } from 'utils/testing/renderHook'
 const mockStore = configureMockStore()
 jest.mock('hooks/reporting/common/useTableReportData')
 const fetchTableReportDataMock = assumeMock(fetchTableReportData)
-jest.mock('state/ui/stats/agentPerformanceSlice')
+jest.mock('state/ui/stats/voiceAgentsPerformanceSlice')
 const getSortedAgentsMock = assumeMock(getSortedAgents)
 jest.mock('hooks/reporting/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)

@@ -2,6 +2,7 @@ import {
     fetchMetricPerDimension,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
+import { OrderDirection } from 'models/api/types'
 import { Cubes } from 'models/reporting/cubes'
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
 import {
@@ -28,10 +29,16 @@ const createFetchMetricPerDimension =
 export const useTotalCallsMetricPerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
+    sorting?: OrderDirection,
     agentAssigneeId?: string,
 ) =>
     useMetricPerDimension(
-        voiceCallCountPerFilteringAgentQueryFactory(statsFilters, timezone),
+        voiceCallCountPerFilteringAgentQueryFactory(
+            statsFilters,
+            timezone,
+            undefined,
+            sorting,
+        ),
         agentAssigneeId,
     )
 
@@ -42,6 +49,7 @@ export const fetchTotalCallsMetricPerAgent = createFetchMetricPerDimension(
 export const useAnsweredCallsMetricPerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
+    sorting?: OrderDirection,
     agentAssigneeId?: string,
 ) =>
     useMetricPerDimension(
@@ -49,6 +57,7 @@ export const useAnsweredCallsMetricPerAgent = (
             statsFilters,
             timezone,
             VoiceCallSegment.inboundAnsweredCallsByAgent,
+            sorting,
         ),
         agentAssigneeId,
     )
@@ -65,6 +74,7 @@ export const fetchAnsweredCallsMetricPerAgent = createFetchMetricPerDimension(
 export const useMissedCallsMetricPerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
+    sorting?: OrderDirection,
     agentAssigneeId?: string,
 ) =>
     useMetricPerDimension(
@@ -72,6 +82,7 @@ export const useMissedCallsMetricPerAgent = (
             statsFilters,
             timezone,
             VoiceCallSegment.inboundUnansweredCallsByAgent,
+            sorting,
         ),
         agentAssigneeId,
     )
@@ -88,6 +99,7 @@ export const fetchMissedCallsMetricPerAgent = createFetchMetricPerDimension(
 export const useOutboundCallsMetricPerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
+    sorting?: OrderDirection,
     agentAssigneeId?: string,
 ) =>
     useMetricPerDimension(
@@ -95,6 +107,7 @@ export const useOutboundCallsMetricPerAgent = (
             statsFilters,
             timezone,
             VoiceCallSegment.outboundCalls,
+            sorting,
         ),
         agentAssigneeId,
     )
@@ -111,10 +124,16 @@ export const fetchOutboundCallsMetricPerAgent = createFetchMetricPerDimension(
 export const useAverageTalkTimeMetricPerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
+    sorting?: OrderDirection,
     agentAssigneeId?: string,
 ) =>
     useMetricPerDimension(
-        voiceCallAverageTalkTimePerAgentQueryFactory(statsFilters, timezone),
+        voiceCallAverageTalkTimePerAgentQueryFactory(
+            statsFilters,
+            timezone,
+            undefined,
+            sorting,
+        ),
         agentAssigneeId,
     )
 
@@ -125,10 +144,15 @@ export const fetchAverageTalkTimeMetricPerAgent = createFetchMetricPerDimension(
 export const useDeclinedCallsMetricPerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
+    sorting?: OrderDirection,
     agentAssigneeId?: string,
 ) =>
     useMetricPerDimension(
-        declinedVoiceCallsCountPerAgentQueryFactory(statsFilters, timezone),
+        declinedVoiceCallsCountPerAgentQueryFactory(
+            statsFilters,
+            timezone,
+            sorting,
+        ),
         agentAssigneeId,
     )
 

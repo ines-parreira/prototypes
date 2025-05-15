@@ -6,7 +6,9 @@ import {
     AGENT_PERFORMANCE_SLICE_NAME,
     AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME,
     INTENT_SLICE_NAME,
+    VOICE_AGENTS_PERFORMANCE_SLICE_NAME,
 } from 'state/ui/stats/constants'
+import { createTableSlice } from 'state/ui/stats/createTableSlice'
 import { IntentState } from 'state/ui/stats/insightsSlice'
 
 export enum AgentsTableColumn {
@@ -106,6 +108,16 @@ export enum VoiceAgentsMetric {
     AgentAverageTalkTime = 'agent_average_talk_time',
 }
 
+export enum VoiceAgentsTableColumn {
+    AgentName = 'agent_name',
+    TotalCalls = 'total_calls',
+    InboundMissedCalls = 'inbound_missed_calls',
+    InboundAnsweredCalls = 'inbound_answered_calls',
+    InboundDeclinedCalls = 'inbound_declined_calls',
+    OutboundCalls = 'agent_outbound_calls',
+    AverageTalkTime = 'agent_average_talk_time',
+}
+
 export enum AgentsTableViewIdentifier {
     AgentPerformanceMetrics = 'agent_performance_metrics',
 }
@@ -174,7 +186,12 @@ export type StatsTablesState = {
     [AGENT_PERFORMANCE_SLICE_NAME]: AgentPerformanceState<AgentsTableColumn>
     [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: AgentPerformanceState<AutoQAAgentsTableColumn>
     [INTENT_SLICE_NAME]: IntentState<IntentTableColumn>
+    [VOICE_AGENTS_PERFORMANCE_SLICE_NAME]: AgentPerformanceState<VoiceAgentsTableColumn>
 }
+
+export type TableSlice<
+    Columns extends AgentsTableColumn | VoiceAgentsTableColumn,
+> = ReturnType<typeof createTableSlice<Columns>>
 
 export enum ValueMode {
     TotalCount = 'totalCount',

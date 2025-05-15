@@ -16,11 +16,13 @@ import { mergeStatsFilters } from 'state/stats/statsSlice'
 export type AgentNameCellContentProps = {
     agent: User
     bodyCellProps?: PropsWithRef<BodyCellProps>
+    redirectTo?: string
 }
 
 export const AgentNameCellContent = ({
     agent,
     bodyCellProps,
+    redirectTo,
 }: AgentNameCellContentProps) => {
     const dispatch = useAppDispatch()
 
@@ -31,7 +33,10 @@ export const AgentNameCellContent = ({
     return (
         <BodyCell {...bodyCellProps}>
             <Link
-                to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_OVERVIEW}`}
+                to={
+                    redirectTo ??
+                    `${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_OVERVIEW}`
+                }
                 onClick={handleClick}
                 className={css.container}
             >

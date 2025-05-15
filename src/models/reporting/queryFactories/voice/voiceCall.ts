@@ -239,12 +239,18 @@ export const voiceCallCountPerFilteringAgentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     segment?: VoiceCallSegment,
-) => ({
+    sorting?: OrderDirection,
+): ReportingQuery<VoiceCallCube> => ({
     measures: [VoiceCallMeasure.VoiceCallCount],
     dimensions: [VoiceCallDimension.FilteringAgentId],
     timezone,
     segments: withStatisticsDefaultSegment(segment),
     filters: voiceCallDefaultFilters(filters, true),
+    ...(sorting
+        ? {
+              order: [[VoiceCallMeasure.VoiceCallCount, sorting]],
+          }
+        : {}),
 })
 
 export const voiceCallCountPerAgentQueryFactory = (
@@ -322,12 +328,18 @@ export const voiceCallAverageTalkTimePerAgentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     segment?: VoiceCallSegment,
-) => ({
+    sorting?: OrderDirection,
+): ReportingQuery<VoiceCallCube> => ({
     measures: [VoiceCallMeasure.VoiceCallAverageTalkTime],
     dimensions: [VoiceCallDimension.AgentId],
     timezone,
     segments: withStatisticsDefaultSegment(segment),
     filters: voiceCallDefaultFilters(filters, true),
+    ...(sorting
+        ? {
+              order: [[VoiceCallMeasure.VoiceCallAverageTalkTime, sorting]],
+          }
+        : {}),
 })
 
 export const voiceCallAverageWaitTimeQueryFactory = (

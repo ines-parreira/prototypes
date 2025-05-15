@@ -1,21 +1,22 @@
 import React, { UIEventHandler, useState } from 'react'
 
 import classNames from 'classnames'
-// eslint-disable-next-line no-restricted-imports
-import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
 
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
+import { useAgentsSortingQuery } from 'hooks/reporting/useAgentsSortingQuery'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
-import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { StatsFilters } from 'models/stat/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import { AgentAvatar } from 'pages/stats/common/AgentAvatar'
+import { STATS_ROUTE_PREFIX } from 'pages/stats/common/components/constants'
+import { AgentsHeaderCellContent } from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
+import { getTableCell } from 'pages/stats/support-performance/agents/AgentsTable'
 import {
     useAnsweredCallsMetric,
     useDeclinedCallsMetric,
@@ -23,26 +24,38 @@ import {
     useOutboundCallsMetric,
     useTotalCallsMetric,
 } from 'pages/stats/voice/hooks/agentMetrics'
-import {
-    useAnsweredCallsMetricPerAgent,
-    useDeclinedCallsMetricPerAgent,
-    useMissedCallsMetricPerAgent,
-    useOutboundCallsMetricPerAgent,
-    useTotalCallsMetricPerAgent,
-} from 'pages/stats/voice/hooks/metricsPerDimension'
-import { mergeStatsFiltersWithLogicalOperator } from 'state/stats/statsSlice'
+import { STATS_ROUTES } from 'routes/constants'
+import { VoiceAgentsTableColumn } from 'state/ui/stats/types'
 import {
     getPaginatedAgents,
+    isSortingMetricLoading,
     pageSet,
-} from 'state/ui/stats/agentPerformanceSlice'
-import { VoiceAgentsMetric } from 'state/ui/stats/types'
+    voiceAgentsPerformance,
+} from 'state/ui/stats/voiceAgentsPerformanceSlice'
 
-import AverageTalkTimeCell from './AverageTalkTimeCell'
-import CallsCountCell from './CallsCountCell'
 import TeamAverageCallsCountCell from './TeamAverageCallsCountCell'
 import TeamAverageTalkTimeCell from './TeamAverageTalkTimeCell'
+import { columns, getQuery } from './VoiceAgentsTableConfig'
 
 import css from './VoiceAgentsTable.less'
+
+const getSortingQuery = (
+    column: VoiceAgentsTableColumn,
+    statsFilters: {
+        cleanStatsFilters: StatsFilters
+        userTimezone: string
+    },
+) => {
+    const query = getQuery(column)
+
+    return () =>
+        useAgentsSortingQuery<VoiceAgentsTableColumn>(
+            column,
+            query,
+            statsFilters,
+            voiceAgentsPerformance,
+        )
+}
 
 export const VoiceAgentsTable = () => {
     const {
@@ -53,7 +66,9 @@ export const VoiceAgentsTable = () => {
     } = useAppSelector(getPaginatedAgents)
     const [ref, { width }] = useMeasure<HTMLDivElement>()
     const [isTableScrolled, setIsTableScrolled] = useState(false)
-    const dispatch = useDispatch()
+    const statsFilters = useStatsFilters()
+    const isSortingLoading = useAppSelector(isSortingMetricLoading)
+    const dispatch = useAppDispatch()
 
     const handlePageChange = (page: number) => {
         dispatch(pageSet(page))
@@ -65,14 +80,6 @@ export const VoiceAgentsTable = () => {
         } else {
             setIsTableScrolled(false)
         }
-    }
-
-    const handleAgentClick = (agentId: number) => {
-        dispatch(
-            mergeStatsFiltersWithLogicalOperator({
-                agents: withDefaultLogicalOperator([agentId]),
-            }),
-        )
     }
 
     const totalPages = Math.ceil(agents.length / perPage)
@@ -88,54 +95,29 @@ export const VoiceAgentsTable = () => {
                     <TableHead
                         className={classNames(css.tableHead, css.tableRow)}
                     >
-                        <HeaderCellProperty
-                            title={'Agent'}
-                            className={classNames(css.agentsCell, {
-                                [css.withShadow]: isTableScrolled,
-                            })}
-                        />
-                        <HeaderCellProperty
-                            title={'Total calls'}
-                            justifyContent={'right'}
-                            wrapContent={true}
-                            className={css.metricCell}
-                            tooltip={
-                                'Total number of calls that rung an agent, including calls that the agent missed or declined.'
-                            }
-                        />
-                        <HeaderCellProperty
-                            title={'Inbound Answered'}
-                            justifyContent={'right'}
-                            wrapContent={true}
-                            className={css.metricCell}
-                        />
-                        <HeaderCellProperty
-                            title={'Inbound Missed'}
-                            justifyContent={'right'}
-                            wrapContent={true}
-                            className={css.metricCell}
-                        />
-                        <HeaderCellProperty
-                            title={'Inbound Declined'}
-                            justifyContent={'right'}
-                            wrapContent={true}
-                            className={css.metricCell}
-                        />
-                        <HeaderCellProperty
-                            title={'Outbound'}
-                            justifyContent={'right'}
-                            wrapContent={true}
-                            className={css.metricCell}
-                        />
-                        <HeaderCellProperty
-                            title={'Avg. Talk Time'}
-                            justifyContent={'right'}
-                            wrapContent={true}
-                            className={css.metricCell}
-                            tooltip={
-                                'Average time agent spent talking to customers'
-                            }
-                        />
+                        {columns.map((column, index) => (
+                            <AgentsHeaderCellContent
+                                key={`header-cell-${column.title}`}
+                                title={column.title}
+                                hint={
+                                    column.tooltip
+                                        ? { title: column.tooltip }
+                                        : null
+                                }
+                                justifyContent={index === 0 ? 'left' : 'right'}
+                                className={classNames(css.metricCell, {
+                                    [css.agentsCell]:
+                                        column.id ===
+                                        VoiceAgentsTableColumn.AgentName,
+                                    [css.withShadow]:
+                                        index === 0 && isTableScrolled,
+                                })}
+                                useSortingQuery={getSortingQuery(
+                                    column.id,
+                                    statsFilters,
+                                )}
+                            />
+                        ))}
                     </TableHead>
                     <TableBody>
                         <TableBodyRow
@@ -175,83 +157,42 @@ export const VoiceAgentsTable = () => {
                                 key={agent.id}
                                 className={css.tableRow}
                             >
-                                <BodyCell
-                                    className={classNames(css.agentsCell, {
-                                        [css.withShadow]: isTableScrolled,
-                                    })}
-                                >
-                                    <Link
-                                        to="/app/stats/voice-overview"
-                                        onClick={() =>
-                                            handleAgentClick(agent.id)
-                                        }
-                                        className={classNames(
-                                            css.container,
-                                            css.agentsContainer,
+                                {columns.map((column, index) => (
+                                    <React.Fragment key={column.id}>
+                                        {React.createElement(
+                                            getTableCell(column.id),
+                                            {
+                                                agent,
+                                                useMetricPerAgentQueryHook:
+                                                    getQuery(column.id),
+                                                statsFilters,
+                                                metricFormat:
+                                                    column.metricFormat ??
+                                                    'decimal',
+                                                drillDownMetricData:
+                                                    column.metricName
+                                                        ? {
+                                                              title: `${column.title} | ${agent.name}`,
+                                                              metricName:
+                                                                  column.metricName,
+                                                              perAgentId:
+                                                                  agent.id,
+                                                          }
+                                                        : null,
+                                                isSortingMetricLoading:
+                                                    isSortingLoading,
+                                                bodyCellProps: {
+                                                    justifyContent:
+                                                        index === 0
+                                                            ? 'left'
+                                                            : 'right',
+                                                },
+                                                isHeatmapMode: false,
+                                                redirectTo: `${STATS_ROUTE_PREFIX}${STATS_ROUTES.VOICE_OVERVIEW}`,
+                                            },
                                         )}
-                                    >
-                                        <AgentAvatar agent={agent} />
-                                    </Link>
-                                </BodyCell>
-                                <CallsCountCell
-                                    agent={agent}
-                                    useMetricPerAgent={
-                                        useTotalCallsMetricPerAgent
-                                    }
-                                    metricData={{
-                                        metricName:
-                                            VoiceAgentsMetric.AgentTotalCalls,
-                                        title: 'Total calls',
-                                    }}
-                                />
-                                <CallsCountCell
-                                    agent={agent}
-                                    useMetricPerAgent={
-                                        useAnsweredCallsMetricPerAgent
-                                    }
-                                    metricData={{
-                                        metricName:
-                                            VoiceAgentsMetric.AgentInboundAnsweredCalls,
-                                        title: 'Inbound answered',
-                                    }}
-                                />
-                                <CallsCountCell
-                                    agent={agent}
-                                    useMetricPerAgent={
-                                        useMissedCallsMetricPerAgent
-                                    }
-                                    metricData={{
-                                        metricName:
-                                            VoiceAgentsMetric.AgentInboundMissedCalls,
-                                        title: 'Inbound missed',
-                                    }}
-                                />
-                                <CallsCountCell
-                                    agent={agent}
-                                    useMetricPerAgent={
-                                        useDeclinedCallsMetricPerAgent
-                                    }
-                                    isDrillDownEnabled={false}
-                                />
-                                <CallsCountCell
-                                    agent={agent}
-                                    useMetricPerAgent={
-                                        useOutboundCallsMetricPerAgent
-                                    }
-                                    metricData={{
-                                        metricName:
-                                            VoiceAgentsMetric.AgentOutboundCalls,
-                                        title: 'Outbound',
-                                    }}
-                                />
-                                <AverageTalkTimeCell
-                                    agent={agent}
-                                    metricData={{
-                                        metricName:
-                                            VoiceAgentsMetric.AgentAverageTalkTime,
-                                        title: 'Average talk time',
-                                    }}
-                                />
+                                    </React.Fragment>
+                                ))}
                             </TableBodyRow>
                         ))}
                     </TableBody>

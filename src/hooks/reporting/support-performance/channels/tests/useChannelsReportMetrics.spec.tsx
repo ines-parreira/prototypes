@@ -21,7 +21,6 @@ import { TagFilterInstanceId } from 'models/stat/types'
 import { columnsOrder } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import { saveReport } from 'services/reporting/channelsReportingService'
 import { RootState } from 'state/types'
-import { agentPerformanceSlice } from 'state/ui/stats/agentPerformanceSlice'
 import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
 import { assumeMock, mockStore } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
@@ -59,10 +58,6 @@ describe('useChannelsReportMetrics', () => {
         ui: {
             stats: {
                 filters: uiStatsInitialState,
-                statsTables: {
-                    [agentPerformanceSlice.name]:
-                        agentPerformanceSlice.getInitialState(),
-                },
             },
         },
     } as RootState

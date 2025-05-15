@@ -4,6 +4,7 @@ import {
     fetchMetricPerDimension,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
+import { OrderDirection } from 'models/api/types'
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
 import {
     voiceCallAverageTalkTimePerAgentQueryFactory,
@@ -43,6 +44,7 @@ describe('metricsPerDimension', () => {
     }
     const userTimezone = 'UTC'
     const agentId = '1'
+    const sorting = OrderDirection.Asc
 
     describe('hooks', () => {
         it('useTotalCallsMetricPerAgent', () => {
@@ -50,6 +52,7 @@ describe('metricsPerDimension', () => {
                 useTotalCallsMetricPerAgent(
                     statsFilters,
                     userTimezone,
+                    sorting,
                     agentId,
                 ),
             )
@@ -58,6 +61,8 @@ describe('metricsPerDimension', () => {
                 voiceCallCountPerFilteringAgentQueryFactory(
                     statsFilters,
                     userTimezone,
+                    undefined,
+                    sorting,
                 ),
                 agentId,
             ])
@@ -68,6 +73,7 @@ describe('metricsPerDimension', () => {
                 useAnsweredCallsMetricPerAgent(
                     statsFilters,
                     userTimezone,
+                    sorting,
                     agentId,
                 ),
             )
@@ -77,6 +83,7 @@ describe('metricsPerDimension', () => {
                     statsFilters,
                     userTimezone,
                     VoiceCallSegment.inboundAnsweredCallsByAgent,
+                    sorting,
                 ),
                 agentId,
             ])
@@ -87,6 +94,7 @@ describe('metricsPerDimension', () => {
                 useMissedCallsMetricPerAgent(
                     statsFilters,
                     userTimezone,
+                    sorting,
                     agentId,
                 ),
             )
@@ -96,6 +104,7 @@ describe('metricsPerDimension', () => {
                     statsFilters,
                     userTimezone,
                     VoiceCallSegment.inboundUnansweredCallsByAgent,
+                    sorting,
                 ),
                 agentId,
             ])
@@ -106,6 +115,7 @@ describe('metricsPerDimension', () => {
                 useOutboundCallsMetricPerAgent(
                     statsFilters,
                     userTimezone,
+                    sorting,
                     agentId,
                 ),
             )
@@ -115,6 +125,7 @@ describe('metricsPerDimension', () => {
                     statsFilters,
                     userTimezone,
                     VoiceCallSegment.outboundCalls,
+                    sorting,
                 ),
                 agentId,
             ])
@@ -125,6 +136,7 @@ describe('metricsPerDimension', () => {
                 useAverageTalkTimeMetricPerAgent(
                     statsFilters,
                     userTimezone,
+                    sorting,
                     agentId,
                 ),
             )
@@ -133,6 +145,8 @@ describe('metricsPerDimension', () => {
                 voiceCallAverageTalkTimePerAgentQueryFactory(
                     statsFilters,
                     userTimezone,
+                    undefined,
+                    sorting,
                 ),
                 agentId,
             ])
@@ -143,6 +157,7 @@ describe('metricsPerDimension', () => {
                 useDeclinedCallsMetricPerAgent(
                     statsFilters,
                     userTimezone,
+                    sorting,
                     agentId,
                 ),
             )
@@ -151,6 +166,7 @@ describe('metricsPerDimension', () => {
                 declinedVoiceCallsCountPerAgentQueryFactory(
                     statsFilters,
                     userTimezone,
+                    sorting,
                 ),
                 agentId,
             ])

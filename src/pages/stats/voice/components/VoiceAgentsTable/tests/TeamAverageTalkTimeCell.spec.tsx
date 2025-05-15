@@ -12,8 +12,8 @@ import { StatsFilters } from 'models/stat/types'
 import TeamAverageTalkTimeCell from 'pages/stats/voice/components/VoiceAgentsTable/TeamAverageTalkTimeCell'
 import { useAverageTalkTimeMetric } from 'pages/stats/voice/hooks/agentMetrics'
 import { RootState, StoreDispatch } from 'state/types'
-import { initialState as agentPerformanceInitialState } from 'state/ui/stats/agentPerformanceSlice'
-import { AGENT_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
+import { VOICE_AGENTS_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
+import { initialState as agentPerformanceInitialState } from 'state/ui/stats/voiceAgentsPerformanceSlice'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
@@ -43,7 +43,7 @@ const renderComponent = () => {
                 },
                 fetchingMap: {},
                 statsTables: {
-                    [AGENT_PERFORMANCE_SLICE_NAME]:
+                    [VOICE_AGENTS_PERFORMANCE_SLICE_NAME]:
                         agentPerformanceInitialState,
                 },
             },

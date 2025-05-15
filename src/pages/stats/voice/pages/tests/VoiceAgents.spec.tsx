@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
@@ -27,8 +25,8 @@ import {
 import VoiceAgents from 'pages/stats/voice/pages/VoiceAgents'
 import { AccountFeature } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { initialState as agentPerformanceInitialState } from 'state/ui/stats/agentPerformanceSlice'
-import { AGENT_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
+import { VOICE_AGENTS_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
+import { initialState as agentPerformanceInitialState } from 'state/ui/stats/voiceAgentsPerformanceSlice'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 jest.mock('pages/stats/common/drill-down/DrillDownModal.tsx', () => ({
@@ -93,7 +91,7 @@ const getState = (featureEnabled: boolean) =>
                 },
                 fetchingMap: {},
                 statsTables: {
-                    [AGENT_PERFORMANCE_SLICE_NAME]:
+                    [VOICE_AGENTS_PERFORMANCE_SLICE_NAME]:
                         agentPerformanceInitialState,
                 },
             },

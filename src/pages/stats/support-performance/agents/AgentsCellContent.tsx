@@ -34,6 +34,7 @@ export type AgentsCellContentProps = {
     drillDownMetricData: DrillDownMetric | null
     isHeatmapMode: boolean
     isSortingMetricLoading: boolean
+    redirectTo?: string
 }
 
 export const AgentsCellContent = ({

@@ -15,6 +15,7 @@ import { getQuery } from 'pages/stats/support-performance/agents/AgentsTableConf
 import { initialState as filtersInitialState } from 'state/stats/statsSlice'
 import { RootState, StoreDispatch } from 'state/types'
 import {
+    agentPerformance,
     DEFAULT_SORTING_DIRECTION,
     initialState,
     sortingLoaded,
@@ -61,7 +62,13 @@ describe('useAgentsSortingQuery', () => {
             const column = AgentsTableColumn.MedianFirstResponseTime
 
             const { result } = renderHook(
-                () => useAgentsSortingQuery(column, queryHook, statsFilters),
+                () =>
+                    useAgentsSortingQuery(
+                        column,
+                        queryHook,
+                        statsFilters,
+                        agentPerformance,
+                    ),
                 {
                     wrapper: ({ children }) => (
                         <Provider store={store}>{children}</Provider>
@@ -84,7 +91,13 @@ describe('useAgentsSortingQuery', () => {
             const column = initialState.sorting.field
 
             const { result } = renderHook(
-                () => useAgentsSortingQuery(column, queryHook, statsFilters),
+                () =>
+                    useAgentsSortingQuery(
+                        column,
+                        queryHook,
+                        statsFilters,
+                        agentPerformance,
+                    ),
                 {
                     wrapper: ({ children }) => (
                         <Provider store={store}>{children}</Provider>
@@ -140,7 +153,13 @@ describe('useAgentsSortingQuery', () => {
         })
 
         renderHook(
-            () => useAgentsSortingQuery(column, queryHook, statsFilters),
+            () =>
+                useAgentsSortingQuery(
+                    column,
+                    queryHook,
+                    statsFilters,
+                    agentPerformance,
+                ),
             {
                 wrapper: ({ children }) => (
                     <Provider store={store}>{children}</Provider>
@@ -185,7 +204,13 @@ describe('useAgentsSortingQuery', () => {
         })
 
         renderHook(
-            () => useAgentsSortingQuery(column, queryHook, statsFilters),
+            () =>
+                useAgentsSortingQuery(
+                    column,
+                    queryHook,
+                    statsFilters,
+                    agentPerformance,
+                ),
             {
                 wrapper: ({ children }) => (
                     <Provider store={store}>{children}</Provider>
@@ -225,6 +250,7 @@ describe('useAgentsSortingQuery', () => {
                     AgentsTableColumn.AgentName,
                     getQuery(column),
                     statsFilters,
+                    agentPerformance,
                 ),
             {
                 wrapper: ({ children }) => (
@@ -262,7 +288,13 @@ describe('useAgentsSortingQuery', () => {
         })
 
         renderHook(
-            () => useAgentsSortingQuery(column, queryHook, statsFilters),
+            () =>
+                useAgentsSortingQuery(
+                    column,
+                    queryHook,
+                    statsFilters,
+                    agentPerformance,
+                ),
             {
                 wrapper: ({ children }) => (
                     <Provider store={store}>{children}</Provider>
