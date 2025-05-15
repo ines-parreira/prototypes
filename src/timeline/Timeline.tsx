@@ -31,7 +31,6 @@ type Props = {
 }
 
 export function Timeline({ ticketId = 0, shopperId, onLoaded }: Props) {
-    const hasNewTimeline = useFlag(FeatureFlagKey.CustomerTimeline)
     const hasTicketModal = useFlag(FeatureFlagKey.TimelineTicketModal)
     const [hasCalledOnLoaded, setHasCalledOnLoaded] = useState(false)
 
@@ -90,21 +89,19 @@ export function Timeline({ ticketId = 0, shopperId, onLoaded }: Props) {
     return (
         <>
             <div>
-                {hasNewTimeline && (
-                    <div className={css.toolbar}>
-                        <div className={css.filters}>
-                            <RangeFilter
-                                range={rangeFilter}
-                                setRangeFilter={setRangeFilter}
-                            />
-                            <StatusFilter
-                                selectedStatus={selectedStatus}
-                                toggleSelectedStatus={toggleSelectedStatus}
-                            />
-                        </div>
-                        <Sort value={sortOption} onChange={setSortOption} />
+                <div className={css.toolbar}>
+                    <div className={css.filters}>
+                        <RangeFilter
+                            range={rangeFilter}
+                            setRangeFilter={setRangeFilter}
+                        />
+                        <StatusFilter
+                            selectedStatus={selectedStatus}
+                            toggleSelectedStatus={toggleSelectedStatus}
+                        />
                     </div>
-                )}
+                    <Sort value={sortOption} onChange={setSortOption} />
+                </div>
                 {tickets.length && sortedTickets.length === 0 ? (
                     <NoResults>
                         <b>No matching tickets</b>

@@ -4,8 +4,6 @@ import cn from 'classnames'
 
 import { CustomField, TicketCompact } from '@gorgias/api-queries'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { SourceBadge } from 'tickets/ticket-detail/components/SourceBadge'
 import { TicketStatus } from 'tickets/ticket-detail/components/TicketStatus'
 
@@ -31,7 +29,6 @@ export default function TicketCard({
     displayedDate,
     className,
 }: Props) {
-    const hasNewTimeline = useFlag(FeatureFlagKey.CustomerTimeline)
     return (
         <div
             className={cn(css.card, className, {
@@ -47,16 +44,12 @@ export default function TicketCard({
                     </span>
                     <span>{displayedDate}</span>
                 </div>
-                {hasNewTimeline ? (
-                    <TicketFields
-                        definitions={customFieldDefinitions}
-                        fieldValues={ticket.custom_fields}
-                        isLoading={isLoadingCFDefinitions}
-                        className={css.ticketFields}
-                    />
-                ) : (
-                    <div className={css.excerpt}>{ticket.excerpt}</div>
-                )}
+                <TicketFields
+                    definitions={customFieldDefinitions}
+                    fieldValues={ticket.custom_fields}
+                    isLoading={isLoadingCFDefinitions}
+                    className={css.ticketFields}
+                />
                 <div className={css.meta}>
                     <OwnerLabel
                         type="agent"

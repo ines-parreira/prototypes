@@ -76,7 +76,6 @@ export enum FeatureFlagKey {
     ConvertChatInstallSnippet = 'convert-chat-install-snippet',
     ConvertContactForm = 'convert-contact-form',
     ConvertPerformanceView = 'convert-performance-view',
-    CustomerTimeline = 'customer-timeline',
     DefaultEmailAddress = 'default-email-address',
     DontTriggerLoginsOnInactiveTabs = 'dont-trigger-logins-on-inactive-tabs',
     EnableEmailToStoreMapping = 'enable-email-to-store-mapping',

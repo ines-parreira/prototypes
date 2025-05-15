@@ -3,9 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { CustomField, TicketCompact } from '@gorgias/api-queries'
 import { TicketStatus } from '@gorgias/api-types'
 
-import { useFlag } from 'core/flags'
 import { ticketInputFieldDefinition } from 'fixtures/customField'
-import { assumeMock } from 'utils/testing'
 
 import { SourceBadge } from '../../tickets/ticket-detail/components/SourceBadge'
 import TicketCard from '../TicketCard'
@@ -20,8 +18,6 @@ jest.mock('tickets/ticket-detail/components/SourceBadge', () => ({
 }))
 jest.mock('../TicketFields', () => jest.fn(() => <div />))
 
-const useFlagMock = assumeMock(useFlag)
-
 const ticket = {
     id: 1,
     channel: 'email',
@@ -30,7 +26,6 @@ const ticket = {
     snooze_datetime: null,
     last_message_datetime: '2023-01-01T00:00:00Z',
     created_datetime: '2023-01-01T00:00:00Z',
-    excerpt: 'Test Excerpt',
     assignee_user: { name: 'Agent Name' },
     assignee_team: { name: 'Team Name' },
     messages_count: 1,
@@ -42,15 +37,10 @@ const defaultProps = {
 }
 
 describe('TicketCard', () => {
-    beforeEach(() => {
-        useFlagMock.mockReturnValue(false)
-    })
-
     it('should render the ticket info', () => {
         render(<TicketCard {...defaultProps} />)
 
         expect(screen.getByText('Test Subject')).toBeInTheDocument()
-        expect(screen.getByText('Test Excerpt')).toBeInTheDocument()
         expect(screen.getByText('Agent Name')).toBeInTheDocument()
         expect(screen.getByText('Team Name')).toBeInTheDocument()
         expect(screen.getByText('open')).toBeInTheDocument()
@@ -111,9 +101,7 @@ describe('TicketCard', () => {
         expect(screen.getByText('snoozed')).toBeInTheDocument()
     })
 
-    it('should call TicketFields when CustomerTimeline feature flag is enabled', () => {
-        useFlagMock.mockReturnValue(true)
-
+    it('should call TicketFields component with correct props', () => {
         const definitions = [ticketInputFieldDefinition as CustomField]
 
         render(

@@ -3,7 +3,6 @@ import { act, fireEvent, render, screen } from '@testing-library/react'
 import { ObjectType, TicketCompact } from '@gorgias/api-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
 import { ticketInputFieldDefinition } from 'fixtures/customField'
@@ -14,9 +13,6 @@ import { RangeFilter } from '../RangeFilter'
 import TicketCard from '../TicketCard'
 import Timeline from '../Timeline'
 
-jest.mock('core/flags', () => ({
-    useFlag: jest.fn(),
-}))
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
@@ -37,7 +33,6 @@ jest.mock('../RangeFilter', () => ({
 
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 const TicketCardMock = assumeMock(TicketCard)
-const useFlagMock = assumeMock(useFlag)
 const rangeFilterMock = assumeMock(RangeFilter)
 const useTimelineDataMock = assumeMock(useTimelineData)
 const defaultFieldDefinitions = {
@@ -69,7 +64,6 @@ describe('<Timeline />', () => {
     }
     beforeEach(() => {
         useCustomFieldDefinitionsMock.mockReturnValue(defaultFieldDefinitions)
-        useFlagMock.mockReturnValue(false)
         useTimelineDataMock.mockReturnValue(defaultTimelineReturnValue)
     })
 
@@ -189,8 +183,6 @@ describe('<Timeline />', () => {
         })
 
         it('should say that there are no matching tickets', () => {
-            useFlagMock.mockReturnValue(true)
-
             render(<Timeline shopperId={null} />)
 
             fireEvent.click(screen.getByText('All'))
@@ -201,15 +193,8 @@ describe('<Timeline />', () => {
         })
     })
 
-    describe('Range filtering', () => {
-        it('should not render range filter when feature flag is off', () => {
-            render(<Timeline shopperId={null} />)
-
-            expect(screen.queryByText('RangeFilter')).toBeNull()
-        })
-
+    describe('Sorting and filtering', () => {
         it('should should correctly filter tickets by range', () => {
-            useFlagMock.mockReturnValue(true)
             render(<Timeline shopperId={null} />)
 
             TicketCardMock.mockClear()
@@ -223,17 +208,8 @@ describe('<Timeline />', () => {
 
             expect(TicketCardMock).toHaveBeenCalledTimes(0)
         })
-    })
-
-    describe('Status filtering', () => {
-        it('should not render status filter when feature flag is off', () => {
-            render(<Timeline shopperId={null} />)
-
-            expect(screen.queryByText('status')).toBeNull()
-        })
 
         it('should should correctly filter tickets by status', () => {
-            useFlagMock.mockReturnValue(true)
             render(<Timeline shopperId={null} />)
 
             TicketCardMock.mockClear()
@@ -251,17 +227,8 @@ describe('<Timeline />', () => {
             expect(TicketCardMock.mock.calls[0][0].ticket).toEqual(ticket1)
             expect(TicketCardMock.mock.calls[1][0].ticket).toEqual(ticket3)
         })
-    })
-
-    describe('Sorting', () => {
-        it('should not render the sort trigger when feature flag is off', () => {
-            render(<Timeline shopperId={null} />)
-
-            expect(screen.queryByRole('combobox')).toBeNull()
-        })
 
         it('should call sort tickets when a SelectField option is clicked', () => {
-            useFlagMock.mockReturnValue(true)
             render(<Timeline shopperId={null} />)
 
             TicketCardMock.mockClear()
