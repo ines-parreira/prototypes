@@ -2,7 +2,6 @@ import { render, RenderResult, screen } from '@testing-library/react'
 
 import { VoiceQueueTargetScope } from '@gorgias/api-queries'
 
-import { useFlag } from 'core/flags'
 import { FormField, useFormContext } from 'core/forms'
 import * as forms from 'core/forms'
 import { assumeMock } from 'utils/testing'
@@ -30,9 +29,6 @@ const mockUseFormContextReturnValue = {
 jest.mock('react-hook-form')
 const useFormContextMock = assumeMock(useFormContext)
 
-jest.mock('core/flags')
-const useFlagMock = assumeMock(useFlag)
-
 describe('<VoiceQueueSettingsFormCallFlowSection />', () => {
     const renderComponent = (props: any = {}): RenderResult => {
         return render(<VoiceQueueSettingsFormCallFlowSection {...props} />)
@@ -42,7 +38,6 @@ describe('<VoiceQueueSettingsFormCallFlowSection />', () => {
         FormFieldMock.mockImplementation(({ label }: any) => <div>{label}</div>)
         watchMock.mockReturnValue([[], 5, 5, false] as any)
         useFormContextMock.mockReturnValue(mockUseFormContextReturnValue)
-        useFlagMock.mockReturnValue(true)
     })
 
     it('should display all fields', () => {
@@ -174,26 +169,6 @@ describe('<VoiceQueueSettingsFormCallFlowSection />', () => {
     })
 
     describe('Wrap up time feature', () => {
-        beforeEach(() => {
-            useFlagMock.mockReturnValue(true)
-        })
-
-        it('should not display wrap-up time toggle when feature flag is disabled', () => {
-            useFlagMock.mockReturnValue(false)
-            renderComponent()
-
-            expect(FormFieldMock).not.toHaveBeenCalledWith(
-                expect.objectContaining({
-                    name: 'is_wrap_up_time_enabled',
-                }),
-            )
-            expect(FormFieldMock).not.toHaveBeenCalledWith(
-                expect.objectContaining({
-                    name: 'wrap_up_time',
-                }),
-            )
-        })
-
         it('should not display wrap-up time field when is_wrap_up_time_enabled is false', () => {
             watchMock.mockReturnValue([[], 5, 5, false] as any)
             renderComponent()

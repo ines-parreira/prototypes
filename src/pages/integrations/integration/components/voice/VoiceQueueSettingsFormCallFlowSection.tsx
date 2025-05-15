@@ -12,8 +12,6 @@ import {
     ToggleField,
 } from '@gorgias/merchant-ui-kit'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { FormField, useFormContext } from 'core/forms'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import RadioButtonField from 'pages/common/forms/RadioButtonField'
@@ -35,7 +33,6 @@ import css from './VoiceQueueSettingsFormCallFlowSection.less'
 
 export default function VoiceQueueSettingsFormCallFlowSection() {
     const { watch, setValue } = useFormContext()
-    const showWrapUpTime = useFlag(FeatureFlagKey.UseWrapUpTime)
 
     const [linkedTargets, ring_time, wait_time, is_wrap_up_time_enabled] =
         watch([
@@ -124,31 +121,29 @@ export default function VoiceQueueSettingsFormCallFlowSection() {
                                 }
                             />
                         </div>
-                        {showWrapUpTime && (
-                            <div className={css.wrapUpFields}>
+                        <div className={css.wrapUpFields}>
+                            <FormField
+                                field={ToggleField}
+                                name="is_wrap_up_time_enabled"
+                                label="Enable wrap-up time"
+                                caption="Wrap-up time gives agents a short period to finish their tasks before receiving their next incoming call. Applies only to calls longer than 20 seconds."
+                            />
+                            {is_wrap_up_time_enabled && (
                                 <FormField
-                                    field={ToggleField}
-                                    name="is_wrap_up_time_enabled"
-                                    label="Enable wrap-up time"
-                                    caption="Wrap-up time gives agents a short period to finish their tasks before receiving their next incoming call. Applies only to calls longer than 20 seconds."
+                                    field={TextField}
+                                    name="wrap_up_time"
+                                    label="Wrap-up time"
+                                    type="number"
+                                    isDisabled={!is_wrap_up_time_enabled}
+                                    caption="Set a time between 10 and 600 seconds (10 minutes)."
+                                    min={WRAP_UP_TIME_MIN_VALUE}
+                                    max={WRAP_UP_TIME_MAX_VALUE}
+                                    outputTransform={(value) =>
+                                        value === '' ? null : Number(value)
+                                    }
                                 />
-                                {is_wrap_up_time_enabled && (
-                                    <FormField
-                                        field={TextField}
-                                        name="wrap_up_time"
-                                        label="Wrap-up time"
-                                        type="number"
-                                        isDisabled={!is_wrap_up_time_enabled}
-                                        caption="Set a time between 10 and 600 seconds (10 minutes)."
-                                        min={WRAP_UP_TIME_MIN_VALUE}
-                                        max={WRAP_UP_TIME_MAX_VALUE}
-                                        outputTransform={(value) =>
-                                            value === '' ? null : Number(value)
-                                        }
-                                    />
-                                )}
-                            </div>
-                        )}
+                            )}
+                        </div>
                         {!!ring_time &&
                             !!wait_time &&
                             ring_time > 0 &&

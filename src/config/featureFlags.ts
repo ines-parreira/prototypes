@@ -139,7 +139,6 @@ export enum FeatureFlagKey {
     TagNewDesign = 'tag-new-design',
     TicketDemoSuggestion = 'ticket-demo-suggestion',
     TimelineTicketModal = 'timeline-ticket-modal',
-    UseWrapUpTime = 'use-wrap-up-time',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
     ConversationStarters = 'conversation-starters',
     ConvertFloatingChatInput = 'convert-floating-chat-input',
