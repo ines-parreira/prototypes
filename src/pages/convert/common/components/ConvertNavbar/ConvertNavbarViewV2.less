@@ -1,11 +1,45 @@
-@import '~@gorgias/design-tokens/dist/css/layout';
-
 :local {
     .skeleton {
-        padding: @layout-spacing-s @layout-spacing-s 0 @layout-spacing-m;
+        padding: 12px 16px 0 8px;
+
+        .skeletonTitle {
+            height: 26px;
+            width: 100%;
+            background-color: var(--navigation-selected);
+            border-radius: 4px;
+            :global {
+                animation: animate-pulse 2s infinite;
+            }
+        }
     }
 
     .subSkeleton {
-        padding-left: @layout-spacing-m;
+        margin-top: 8px;
+        padding-left: 12px;
+
+        .skeletonItem {
+            margin-bottom: 8px;
+            height: 22px;
+            width: 100%;
+            background-color: var(--navigation-selected);
+            border-radius: 4px;
+            :global {
+                animation: animate-pulse 2s infinite;
+            }
+        }
+    }
+}
+
+:global {
+    @keyframes animate-pulse {
+        0% {
+            opacity: 0.5;
+        }
+        50% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0.5;
+        }
     }
 }

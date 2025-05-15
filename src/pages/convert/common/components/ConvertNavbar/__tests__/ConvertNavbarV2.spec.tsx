@@ -26,8 +26,6 @@ import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import { ConvertNavbarV2 } from '../ConvertNavbarV2'
 
-const MOCK_SKELETON_TEST_ID = 'skeleton'
-
 jest.mock('pages/common/hooks/useIsConvertSubscriber')
 
 jest.mock('pages/convert/channelConnections/hooks/useGetOnboardingStatusMap')
@@ -36,15 +34,6 @@ jest.mock('common/notifications/components/Button', () => ({
     __esModule: true,
     default: () => <div>NotificationsButton</div>,
 }))
-
-jest.mock(
-    '@gorgias/merchant-ui-kit',
-    () =>
-        ({
-            ...jest.requireActual('@gorgias/merchant-ui-kit'),
-            Skeleton: () => <div data-testid={MOCK_SKELETON_TEST_ID} />,
-        }) as typeof import('@gorgias/merchant-ui-kit'),
-)
 
 jest.mock('pages/convert/common/hooks/useContactFormFlag')
 
@@ -260,7 +249,7 @@ describe('<ConvertNavbarV2 />', () => {
                 isError: false,
             })
 
-            const { queryAllByTestId } = render(
+            const { getByRole } = render(
                 <Provider store={mockStore(defaultState)}>
                     <QueryClientProvider client={queryClient}>
                         <DndProvider backend={HTML5Backend}>
@@ -273,7 +262,7 @@ describe('<ConvertNavbarV2 />', () => {
                 { wrapper },
             )
 
-            expect(queryAllByTestId(MOCK_SKELETON_TEST_ID).length).toBe(2)
+            expect(getByRole('status')).toBeInTheDocument()
         })
     })
 })
