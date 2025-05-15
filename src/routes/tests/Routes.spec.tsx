@@ -100,6 +100,9 @@ jest.mock(
             </>
         ),
 )
+jest.mock('pages/aiAgent/AiAgentMainViewContainer', () => () => (
+    <div>AiAgentMainViewContainer</div>
+))
 jest.mock('pages/aiAgent/AiAgentKnowledgeContainer', () => ({
     AiAgentKnowledgeContainer: () => <div>AiAgentKnowledgeContainer</div>,
 }))
@@ -110,6 +113,10 @@ jest.mock('pages/aiAgent/AiAgentSales', () => ({
 
 jest.mock('routes/StatsRoutes')
 const StatsRoutesMock = assumeMock(StatsRoutes)
+
+jest.mock('pages/common/components/Loader/Loader', () => () => (
+    <div>Loader</div>
+))
 
 jest.mock('pages/aiAgent/components/AiAgentRedirect/AiAgentRedirect', () => ({
     AiAgentRedirect: () => <div>AiAgentRedirect</div>,
@@ -448,6 +455,77 @@ describe('<Routes/>', () => {
         })
     })
 
+    describe('RedirectToAiAgentRoutes', () => {
+        beforeEach(() => {
+            mockFlags({
+                [FeatureFlagKey.ConvAiStandaloneMenu]: true,
+            })
+        })
+
+        const pathsNotToRedirect = [
+            '/app/automation/shopify/test-shop/order-management',
+            '/app/automation/shopify/test-shop/flows',
+            '/app/automation/shopify/test-shop/article-recommendation',
+        ]
+        it.each(pathsNotToRedirect)('should render Loader for %s', (path) => {
+            const { history } = renderWithRouter(
+                <Provider store={mockStore({ currentUser: fromJS(user) })}>
+                    <Routes />
+                </Provider>,
+                { route: path },
+            )
+
+            expect(history.location.pathname).toBe(path)
+            expect(screen.getByText('Loader')).toBeInTheDocument()
+        })
+
+        const pathsToRedirect = [
+            {
+                from: '/app/automation/shopify/test-shop',
+                to: '/app/ai-agent/shopify/test-shop',
+            },
+            {
+                from: '/app/automation/shopify/test-shop/knowledge',
+                to: '/app/ai-agent/shopify/test-shop/knowledge',
+            },
+            {
+                from: '/app/automation/shopify/test-shop/guidance',
+                to: '/app/ai-agent/shopify/test-shop/knowledge/guidance',
+            },
+            {
+                from: '/app/automation/shopify/test-shop/preview-mode',
+                to: '/app/ai-agent/shopify/test-shop/settings/preview',
+            },
+        ]
+        it.each(pathsToRedirect)(
+            'should redirect $from to $to',
+            ({ from, to }) => {
+                const { history } = renderWithRouter(
+                    <Provider store={mockStore({ currentUser: fromJS(user) })}>
+                        <Routes />
+                    </Provider>,
+                    { route: from },
+                )
+
+                expect(history.location.pathname).toBe(to)
+            },
+        )
+
+        it.each(['/app/automation', '/app/automation/some/other/path'])(
+            'should redirect $path to AiAgentRedirect',
+            (path) => {
+                renderWithRouter(
+                    <Provider store={mockStore({ currentUser: fromJS(user) })}>
+                        <Routes />
+                    </Provider>,
+                    { route: path },
+                )
+
+                expect(screen.getByText('AiAgentRedirect')).toBeInTheDocument()
+            },
+        )
+    })
+
     describe('AiAgentRoutes', () => {
         const defaultState: Partial<RootState> = {
             currentUser: fromJS(user),
@@ -457,28 +535,6 @@ describe('<Routes/>', () => {
                 integrations: [],
             }),
         } as unknown as RootState
-
-        it('should render knowledge page', () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentKnowledgeTab]: true,
-            })
-
-            render(
-                <Provider store={mockStore(defaultState)}>
-                    <MemoryRouter
-                        initialEntries={[
-                            '/app/automation/shopify/test-shop/ai-agent/knowledge',
-                        ]}
-                    >
-                        <Routes />
-                    </MemoryRouter>
-                </Provider>,
-            )
-
-            expect(
-                screen.getByText('AiAgentKnowledgeContainer'),
-            ).toBeInTheDocument()
-        })
 
         it('should render knowledge page on new namespace', () => {
             mockFlags({

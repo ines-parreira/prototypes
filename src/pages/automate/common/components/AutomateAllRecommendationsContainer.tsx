@@ -7,6 +7,7 @@ import { getHasAutomate } from 'state/billing/selectors'
 
 import AutomateAllRecommendationsPage from './AutomateAllRecommendationsPage'
 
+// TODO: This page is not used anymore, it should be removed soon
 const AutomateAllRecommendationsContainer = () => {
     const hasAutomateFeature = useAppSelector(getHasAutomate)
 

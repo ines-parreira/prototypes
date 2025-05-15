@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 import { History } from 'history'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -69,24 +69,7 @@ import ActionsPlatformEditStepViewContainer from 'pages/automate/actionsPlatform
 import ActionsPlatformEditUseCaseTemplateViewContainer from 'pages/automate/actionsPlatform/ActionsPlatformEditUseCaseTemplateViewContainer'
 import ActionsPlatformStepsView from 'pages/automate/actionsPlatform/ActionsPlatformStepsView'
 import ActionsPlatformUseCaseTemplatesView from 'pages/automate/actionsPlatform/ActionsPlatformUseCaseTemplatesView'
-import ArticleRecommendationViewContainer from 'pages/automate/articleRecommendation/ArticleRecommendationViewContainer'
-import AutomateAllRecommendationsContainer from 'pages/automate/common/components/AutomateAllRecommendationsContainer'
-import AutomateLandingPageContainer from 'pages/automate/common/components/AutomateLandingPageContainer'
-import AutomateNavbar from 'pages/automate/common/components/AutomateNavbar'
-import SelfServiceContactFormsProvider from 'pages/automate/common/providers/SelfServiceContactFormsProvider'
-import SelfServiceHelpCentersProvider from 'pages/automate/common/providers/SelfServiceHelpCentersProvider'
-import ConnectedChannelsViewContainer from 'pages/automate/connectedChannels/ConnectedChannelsViewContainer'
-import CancelOrderFlowViewContainer from 'pages/automate/orderManagement/cancelOrder/CancelOrderFlowViewContainer'
-import OrderManagementPreviewProvider from 'pages/automate/orderManagement/OrderManagementPreviewProvider'
-import OrderManagementViewContainer from 'pages/automate/orderManagement/OrderManagementViewContainer'
-import CreateReportOrderIssueFlowScenarioViewContainer from 'pages/automate/orderManagement/reportOrderIssue/CreateReportOrderIssueFlowScenarioViewContainer'
-import EditReportOrderIssueFlowScenarioViewContainer from 'pages/automate/orderManagement/reportOrderIssue/EditReportOrderIssueFlowScenarioViewContainer'
-import ReportOrderIssueFlowViewContainer from 'pages/automate/orderManagement/reportOrderIssue/ReportOrderIssueFlowViewContainer'
-import ReturnOrderFlowViewContainer from 'pages/automate/orderManagement/returnOrder/ReturnOrderFlowViewContainer'
-import TrackOrderFlowViewContainer from 'pages/automate/orderManagement/trackOrder/TrackOrderFlowViewContainer'
-import WorkflowAnalyticsContainer from 'pages/automate/workflows/analytics/WorkflowAnalyticsContainer'
-import WorkflowEditorViewContainer from 'pages/automate/workflows/editor/WorkflowEditorViewContainer'
-import WorkflowsViewContainer from 'pages/automate/workflows/WorkflowsViewContainer'
+import Loader from 'pages/common/components/Loader/Loader'
 import NoMatch from 'pages/common/components/NoMatch'
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 import UpdateABTestView from 'pages/convert/abTests/components/UpdateABTestView'
@@ -177,7 +160,10 @@ export function AppRoutes() {
                     <VoiceOfCustomerRoutes />
                 </Route>
             )}
-            <Route path={`${path}/automation`} render={AutomationRoutes} />
+            <Route
+                path={`${path}/automation`}
+                component={RedirectToAiAgentRoutes}
+            />
             <Route path={`${path}/ai-agent`} render={AiAgentBaseRoutes} />
             <Route path={`${path}/convert`}>
                 <ConvertRoutes />
@@ -427,7 +413,7 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
         useFlags()[FeatureFlagKey.AiAgentScrapeStoreDomain]
 
     if (shopType !== 'shopify') {
-        return <Redirect to="/app/automation" />
+        return <Redirect to="/app/ai-agent" />
     }
 
     // TMP: Remove it when AI Agent will be fully migrated to its new route
@@ -760,260 +746,31 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
     )
 }
 
-export function AutomationRoutes() {
-    return (
-        <HelpCenterApiClientProvider>
-            <Switch>
-                <Route
-                    render={() => (
-                        <App
-                            content={AutomationContent}
-                            navbar={AutomateNavbar}
-                        />
-                    )}
-                />
-            </Switch>
-        </HelpCenterApiClientProvider>
-    )
-}
-
-function AutomationContent() {
+/**
+ * `/app/automation` routes have been removed, now we redirect all the routes to `/app/ai-agent`
+ * This is a temporary route to avoid breaking changes, it will be removed in the future
+ */
+export function RedirectToAiAgentRoutes() {
     const { path } = useRouteMatch()
-
     return (
         <Switch>
-            <Route path={`${path}/ai-recommendations`} exact>
-                <SelfServiceHelpCentersProvider>
-                    <Route
-                        path={`${path}/ai-recommendations`}
-                        exact
-                        component={withUserRoleRequired(
-                            AutomateAllRecommendationsContainer,
-                            AGENT_ROLE,
-                        )}
-                    />
-                </SelfServiceHelpCentersProvider>
-            </Route>
+            {/* These routes will be redirected by the `useAutomateRedirects` hook */}
+            <Route
+                path={[
+                    `${path}/:shopType/:shopName/order-management`,
+                    `${path}/:shopType/:shopName/flows`,
+                    `${path}/:shopType/:shopName/article-recommendation`,
+                ]}
+                component={withUserRoleRequired(Loader, AGENT_ROLE)}
+            />
 
             <Route
-                path={`${path}/:shopType/:shopName/ai-agent`}
+                path={`${path}/:shopType/:shopName`}
                 component={withUserRoleRequired(AiAgentRoutes, AGENT_ROLE)}
             />
 
-            <Route
-                path={`${path}/:shopType/:shopName/flows/new`}
-                exact
-                component={withUserRoleRequired(
-                    WorkflowEditorViewContainer,
-                    AGENT_ROLE,
-                )}
-            />
-
-            <Route
-                path={`${path}/:shopType/:shopName/flows/edit/:editWorkflowId`}
-                exact
-                render={(props) => (
-                    <SelfServiceHelpCentersProvider>
-                        <SelfServiceContactFormsProvider>
-                            {React.createElement(
-                                withUserRoleRequired(
-                                    WorkflowEditorViewContainer,
-                                    AGENT_ROLE,
-                                ),
-                                {
-                                    ...props,
-                                    editWorkflowId:
-                                        props.match.params.editWorkflowId,
-                                    shopType: props.match.params.shopType,
-                                    shopName: props.match.params.shopName,
-                                },
-                            )}
-                        </SelfServiceContactFormsProvider>
-                    </SelfServiceHelpCentersProvider>
-                )}
-            />
-
-            <Route
-                path={`${path}/:shopType/:shopName/flows/analytics/:editWorkflowId`}
-                exact
-                render={(props) => (
-                    <SelfServiceHelpCentersProvider>
-                        <SelfServiceContactFormsProvider>
-                            {React.createElement<{
-                                shopType: string
-                                shopName: string
-                                editWorkflowId: string
-                            }>(
-                                withUserRoleRequired(
-                                    WorkflowAnalyticsContainer,
-                                    AGENT_ROLE,
-                                ),
-                                {
-                                    ...props,
-                                    editWorkflowId:
-                                        props.match.params.editWorkflowId,
-                                    shopType: props.match.params.shopType,
-                                    shopName: props.match.params.shopName,
-                                },
-                            )}
-                        </SelfServiceContactFormsProvider>
-                    </SelfServiceHelpCentersProvider>
-                )}
-            />
-
-            <Route
-                path={[`${path}/:shopType/:shopName/flows`]}
-                render={(props) => {
-                    return React.createElement(
-                        withUserRoleRequired(
-                            WorkflowsViewContainer,
-                            AGENT_ROLE,
-                        ),
-                        {
-                            ...props,
-                            shopType: props.match.params.shopType,
-                            shopName: props.match.params.shopName,
-                        },
-                    )
-                }}
-            />
-
-            <Route
-                path={[
-                    `${path}/shopify/:shopName/order-management`,
-                    `${path}/shopify/:shopName/order-management/return`,
-                    `${path}/shopify/:shopName/order-management/cancel`,
-                    `${path}/shopify/:shopName/order-management/cancel`,
-                    `${path}/shopify/:shopName/order-management/track`,
-                    `${path}/shopify/:shopName/order-management/report-issue`,
-                    `${path}/shopify/:shopName/order-management/report-issue/new`,
-                    `${path}/shopify/:shopName/order-management/report-issue/:scenarioIndex`,
-                ]}
-                exact
-            >
-                <SelfServiceHelpCentersProvider>
-                    <SelfServiceContactFormsProvider>
-                        <OrderManagementPreviewProvider>
-                            <Switch>
-                                <Route
-                                    path={`${path}/shopify/:shopName/order-management`}
-                                    exact
-                                    component={withUserRoleRequired(
-                                        OrderManagementViewContainer,
-                                        AGENT_ROLE,
-                                    )}
-                                />
-                                <Route
-                                    path={`${path}/shopify/:shopName/order-management/return`}
-                                    exact
-                                    component={withUserRoleRequired(
-                                        ReturnOrderFlowViewContainer,
-                                        AGENT_ROLE,
-                                    )}
-                                />
-                                <Route
-                                    path={`${path}/shopify/:shopName/order-management/cancel`}
-                                    exact
-                                    component={withUserRoleRequired(
-                                        CancelOrderFlowViewContainer,
-                                        AGENT_ROLE,
-                                    )}
-                                />
-                                <Route
-                                    path={`${path}/shopify/:shopName/order-management/report-issue`}
-                                    exact
-                                    component={withUserRoleRequired(
-                                        ReportOrderIssueFlowViewContainer,
-                                        AGENT_ROLE,
-                                    )}
-                                />
-                                <Route
-                                    path={`${path}/shopify/:shopName/order-management/report-issue/new`}
-                                    exact
-                                    component={withUserRoleRequired(
-                                        CreateReportOrderIssueFlowScenarioViewContainer,
-                                        AGENT_ROLE,
-                                    )}
-                                />
-                                <Route
-                                    path={`${path}/shopify/:shopName/order-management/report-issue/:scenarioIndex`}
-                                    exact
-                                    component={withUserRoleRequired(
-                                        EditReportOrderIssueFlowScenarioViewContainer,
-                                        AGENT_ROLE,
-                                    )}
-                                />
-                                <Route
-                                    path={`${path}/shopify/:shopName/order-management/track`}
-                                    exact
-                                    component={withUserRoleRequired(
-                                        TrackOrderFlowViewContainer,
-                                        AGENT_ROLE,
-                                    )}
-                                />
-                            </Switch>
-                        </OrderManagementPreviewProvider>
-                    </SelfServiceContactFormsProvider>
-                </SelfServiceHelpCentersProvider>
-            </Route>
-
-            <Route
-                path={[
-                    `${path}/:shopType/:shopName/article-recommendation`,
-                    `${path}/:shopType/:shopName/train-my-ai`,
-                ]}
-                render={(props) => {
-                    if (
-                        props.match.path ===
-                        `${path}/:shopType/:shopName/train-my-ai`
-                    ) {
-                        return (
-                            <Redirect
-                                to={`${path}/${props.match.params.shopType}/${props.match.params.shopName}/article-recommendation`}
-                            />
-                        )
-                    }
-                    return React.createElement(
-                        withUserRoleRequired(
-                            ArticleRecommendationViewContainer,
-                            AGENT_ROLE,
-                        ),
-                        {
-                            ...props,
-                            shopType: props.match.params.shopType,
-                            shopName: props.match.params.shopName,
-                        },
-                    )
-                }}
-            />
-
-            <Route path={`${path}/:shopType/:shopName/connected-channels`}>
-                <SelfServiceHelpCentersProvider>
-                    <SelfServiceContactFormsProvider>
-                        <Route
-                            path={`${path}/:shopType/:shopName/connected-channels`}
-                            component={withUserRoleRequired(
-                                ConnectedChannelsViewContainer,
-                                AGENT_ROLE,
-                            )}
-                        />
-                    </SelfServiceContactFormsProvider>
-                </SelfServiceHelpCentersProvider>
-            </Route>
-            <Route path={`${path}/rules/library`} exact>
-                <Redirect to={'/app/settings/rules/library'} />
-            </Route>
-            <Route path={`${path}`} exact>
-                <AutomateLandingPageContainer />
-            </Route>
-
-            <Route
-                path={`${path}/ai-agent-overview`}
-                component={withUserRoleRequired(AiAgentOverview, AGENT_ROLE)}
-            />
-
             <Route>
-                <Redirect to={`${path}`} />
+                <AiAgentRedirect />
             </Route>
         </Switch>
     )

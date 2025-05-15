@@ -59,7 +59,7 @@ const renderWithProvider = () => {
     return { container, getByText, history }
 }
 
-describe('RedirectToAiAgentStore', () => {
+describe('AiAgentRedirect', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         mockUseAiAgentNavigation.mockImplementation(({ shopName }) => ({
