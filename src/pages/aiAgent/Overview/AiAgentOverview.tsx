@@ -30,7 +30,9 @@ export const AiAgentOverview = () => {
         isOnNewPlan,
         showEarlyAccessModal,
         showActivationModal,
-    } = useActivation('overview', { autoDisplayEarlyAccessDisabled: true })
+    } = useActivation('overview', {
+        autoDisplayEarlyAccessDisabled: true,
+    })
 
     useEffectOnce(() => {
         logEvent(SegmentEvent.AiAgentOverviewPageView)

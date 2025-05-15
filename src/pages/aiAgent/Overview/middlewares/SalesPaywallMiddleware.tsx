@@ -52,6 +52,7 @@ export const SalesPaywallMiddleware =
         const currentAccount = useAppSelector(getCurrentAccountState)
         const { storeActivations } = useStoreActivations({
             pageName: window.location.pathname,
+            withPublicResources: false,
         })
         const history = useHistory()
         const currentStoreHasActiveTrial =

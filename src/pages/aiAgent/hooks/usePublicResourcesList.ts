@@ -13,8 +13,10 @@ import { mapArticleIngestionLogsToSourceItem } from '../components/PublicSources
 
 export const usePublicResourcesList = ({
     shopNames,
+    enabled = true,
 }: {
     shopNames: string[]
+    enabled?: boolean
 }) => {
     const { data: snippetHelpCenters, isLoading: isGetHelpCenterListLoading } =
         useGetHelpCenterListMulti(
@@ -23,6 +25,9 @@ export const usePublicResourcesList = ({
                 type: 'snippet',
                 per_page: 1,
             })),
+            {
+                enabled: enabled,
+            },
         )
 
     const getArticleIngestionLogsListParams = useMemo(() => {
@@ -42,7 +47,7 @@ export const usePublicResourcesList = ({
         isLoading: isSourceItemsListLoading,
     } = useGetArticleIngestionLogsList(getArticleIngestionLogsListParams, {
         refetchOnWindowFocus: false,
-        enabled: !!getArticleIngestionLogsListParams.length,
+        enabled: !!getArticleIngestionLogsListParams.length && enabled,
     })
 
     const sourceItems: Record<string, SourceItem[]> | undefined =

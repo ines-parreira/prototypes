@@ -43,6 +43,7 @@ const AiSalesAgentSalesOverview = () => {
 
     const { storeActivations } = useStoreActivations({
         pageName: window.location.pathname,
+        withPublicResources: false,
     })
 
     const [isModalOpen, setIsModalOpen] = useState(false)

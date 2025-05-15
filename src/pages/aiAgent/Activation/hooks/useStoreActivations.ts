@@ -88,8 +88,10 @@ export const useStoreConfigurations = (accountDomain: string) => {
 export const useStoreActivations = ({
     // TODO: Remove pageName to use window.location.pathname instead
     pageName,
+    withPublicResources = true,
 }: {
     pageName: string
+    withPublicResources?: boolean
 }): {
     storeActivations: Record<string, StoreActivation>
     progressPercentage: number
@@ -175,6 +177,7 @@ export const useStoreActivations = ({
         sourceItems: publicResources,
     } = usePublicResourcesList({
         shopNames: storeConfigurations.map((it) => it.storeName),
+        enabled: withPublicResources,
     })
 
     const { data: helpCenterListData, isLoading: isHelpCenterListLoading } =

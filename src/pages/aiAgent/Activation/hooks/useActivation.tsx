@@ -41,7 +41,10 @@ export const useActivation = (
         isSaveLoading,
         isFetchLoading,
         migrateToNewPricing,
-    } = useStoreActivations({ pageName })
+    } = useStoreActivations({
+        pageName,
+        withPublicResources: isModalVisible,
+    })
 
     const hasActivationEnabled = useFlag(FeatureFlagKey.AiAgentActivation)
     const {

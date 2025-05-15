@@ -32,6 +32,7 @@ export const useGmvInfluencedCtaButton = ({
 
     const { storeActivations } = useStoreActivations({
         pageName: window.location.pathname,
+        withPublicResources: false,
     })
 
     const atLeastOneStoreHasActiveTrial =
