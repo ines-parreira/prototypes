@@ -12,10 +12,5 @@
         ["@babel/preset-react", { "runtime": "automatic" }],
         ["@babel/typescript", { "allExtensions": true, "isTSX": true }]
     ],
-    "plugins": [
-        ["@babel/plugin-proposal-decorators", { "legacy": true }],
-        "@babel/plugin-proposal-optional-chaining",
-        "@babel/plugin-proposal-class-properties",
-        "@babel/plugin-proposal-export-default-from"
-    ]
+    "plugins": ["@babel/plugin-transform-class-properties"]
 }
