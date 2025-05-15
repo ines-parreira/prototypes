@@ -17,6 +17,7 @@ import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/u
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
+import AiShoppingAssistantExpireBanner from '../AiShoppingAssistantExpireBanner'
 import { ConversationLauncherSettings } from './ConversationLauncherSettings'
 import { ConversationStartersSettings } from './ConversationStartersSettings'
 import { useGmvUsdOver30Days } from './hooks/useGmvUsdOver30Days'
@@ -130,6 +131,14 @@ export const CustomerEngagementSettings = () => {
                     flexDirection="column"
                     flexGrow={1}
                 >
+                    <div className={css.bannerContainer}>
+                        <AiShoppingAssistantExpireBanner
+                            deactiveDatetime={
+                                storeConfiguration?.salesDeactivatedDatetime ??
+                                undefined
+                            }
+                        />
+                    </div>
                     {isTriggerOnSearchEnabled && (
                         <TriggerOnSearchSettings
                             gmv={gmv}
@@ -147,7 +156,6 @@ export const CustomerEngagementSettings = () => {
                             isGmvLoading={isGmvLoading}
                         />
                     )}
-
                     <Box className={css.saveButtonWrapper}>
                         <Button
                             isDisabled={!isDirty || isSubmitting}

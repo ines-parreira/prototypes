@@ -1,0 +1,33 @@
+@import (reference) '~css/typography';
+@import (reference) '~css/util';
+@import (reference) '~@gorgias/design-tokens/dist/css/typographyTokens';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .container {
+        display: flex;
+        padding: @layout-spacing-s;
+        border: 1px solid var(--accessory-magenta-2);
+        border-radius: 12px;
+        background-color: var(--accessory-magenta-1);
+    }
+
+    .contentContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .title {
+        .heading-subsection-semibold;
+    }
+
+    .content {
+        .body-regular;
+        padding-right: @layout-spacing-l;
+    }
+
+    .buttonContainer {
+        margin-left: auto;
+    }
+}

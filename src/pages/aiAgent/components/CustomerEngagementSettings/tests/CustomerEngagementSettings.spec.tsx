@@ -74,6 +74,10 @@ jest.mock(
     },
 )
 jest.mock('pages/settings/helpCenter/hooks/useStoreIntegrationByShopName')
+jest.mock(
+    'pages/aiAgent/components/AiShoppingAssistantExpireBanner/AiShoppingAssistantExpireBanner',
+    () => () => <div>AI-Shopping-Assistant-Expire-Banner</div>,
+)
 
 const mockUseGetChatIntegrationColor = jest.mocked(
     chatColorHook.useGetChatIntegrationColor,

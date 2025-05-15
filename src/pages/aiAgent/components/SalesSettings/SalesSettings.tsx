@@ -28,6 +28,8 @@ import InputField from 'pages/common/forms/input/InputField'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
+import AiShoppingAssistantExpireBanner from '../AiShoppingAssistantExpireBanner'
+
 import css from './SalesSettings.less'
 
 const salesSchema = z
@@ -214,6 +216,14 @@ export const SalesSettings = () => {
             <FormProvider {...methods}>
                 <div className={css.salesSettingsContent}>
                     <div className={css.settings}>
+                        <div className={css.bannerContainer}>
+                            <AiShoppingAssistantExpireBanner
+                                deactiveDatetime={
+                                    storeConfiguration?.salesDeactivatedDatetime ??
+                                    undefined
+                                }
+                            />
+                        </div>
                         <section className={css.card}>
                             <div className={css.titleContainer}>
                                 <label

@@ -41,6 +41,11 @@ const newStoreConfig = {
     salesPersuasionLevel: PersuasionLevel.Moderate,
 }
 
+jest.mock(
+    'pages/aiAgent/components/AiShoppingAssistantExpireBanner/AiShoppingAssistantExpireBanner',
+    () => () => <div>AI-Shopping-Assistant-Expire-Banner</div>,
+)
+
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),
 }))
