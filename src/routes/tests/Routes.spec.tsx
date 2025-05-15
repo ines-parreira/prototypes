@@ -456,12 +456,6 @@ describe('<Routes/>', () => {
     })
 
     describe('RedirectToAiAgentRoutes', () => {
-        beforeEach(() => {
-            mockFlags({
-                [FeatureFlagKey.ConvAiStandaloneMenu]: true,
-            })
-        })
-
         const pathsNotToRedirect = [
             '/app/automation/shopify/test-shop/order-management',
             '/app/automation/shopify/test-shop/flows',
