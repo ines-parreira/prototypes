@@ -53,7 +53,7 @@ describe('useAutomationRate', () => {
             hint: {
                 title: 'Automated interactions from AI Agent as a percent of all customer interactions.',
             },
-            metricFormat: 'decimal-to-percent',
+            metricFormat: 'decimal-to-percent-precision-1',
             isLoading: false,
             prevValue: 3.5,
             value: 1.55,
@@ -75,7 +75,7 @@ describe('useAutomationRate', () => {
             hint: {
                 title: 'Automated interactions from AI Agent as a percent of all customer interactions.',
             },
-            metricFormat: 'decimal-to-percent',
+            metricFormat: 'decimal-to-percent-precision-1',
             isLoading: true,
             value: 0,
             prevValue: 0,

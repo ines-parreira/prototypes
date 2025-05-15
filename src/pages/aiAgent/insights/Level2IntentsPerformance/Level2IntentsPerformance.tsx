@@ -54,7 +54,7 @@ export const Level2IntentsPerformance = () => {
                     },
                     trend: aiAgentMetrics.successRateUpliftOpportunityPerIntent,
                     interpretAs: 'more-is-better',
-                    metricFormat: 'decimal-to-percent',
+                    metricFormat: 'decimal-to-percent-precision-1',
                 },
                 {
                     title: 'Tickets',
@@ -73,13 +73,13 @@ export const Level2IntentsPerformance = () => {
                     title: 'Success rate',
                     trend: aiAgentMetrics.successRatePerIntent,
                     interpretAs: 'more-is-better',
-                    metricFormat: 'decimal-to-percent',
+                    metricFormat: 'decimal-to-percent-precision-1',
                 },
                 {
                     title: 'Customer satisfaction',
                     trend: aiAgentMetrics.customerSatisfactionPerIntent,
                     interpretAs: 'more-is-better',
-                    metricFormat: 'decimal',
+                    metricFormat: 'decimal-precision-1',
                     drillDownMetric:
                         AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
                     drillDownMetricAdditionalData: {

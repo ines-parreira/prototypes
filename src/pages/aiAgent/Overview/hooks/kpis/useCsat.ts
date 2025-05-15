@@ -67,7 +67,7 @@ export const useCsat = (filters: StatsFilters, timezone: string): KpiMetric => {
         hint: {
             title: 'The average satisfaction rating for AI Agent interactions, based on surveys sent after ticket resolution',
         },
-        metricFormat: 'decimal',
+        metricFormat: 'decimal-precision-1',
         isLoading: result.isFetching || storeConfigurationsLoading,
         'data-candu-id': 'ai-agent-overview-kpi-csat',
         ...result.data?.[TicketSatisfactionSurveyMeasure.AvgSurveyScore],

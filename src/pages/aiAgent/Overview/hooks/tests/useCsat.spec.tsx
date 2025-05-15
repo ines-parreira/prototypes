@@ -86,7 +86,7 @@ describe('useCsat', () => {
             hint: {
                 title: 'The average satisfaction rating for AI Agent interactions, based on surveys sent after ticket resolution',
             },
-            metricFormat: 'decimal',
+            metricFormat: 'decimal-precision-1',
             value: 3.1,
             prevValue: 3.5,
             isLoading: false,
@@ -203,7 +203,7 @@ describe('useCsat', () => {
                 hint: {
                     title: 'The average satisfaction rating for AI Agent interactions, based on surveys sent after ticket resolution',
                 },
-                metricFormat: 'decimal',
+                metricFormat: 'decimal-precision-1',
                 isLoading: true,
                 hidden: false,
             })

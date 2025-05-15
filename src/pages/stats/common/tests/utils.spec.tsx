@@ -236,6 +236,12 @@ describe('stats components utils', () => {
             expect(formatMetricValue(123456.789, 'decimal')).toBe('123,456.79')
         })
 
+        it('should format value up to one decimal place when format is "decimal-precision-1"', () => {
+            expect(formatMetricValue(123456.789, 'decimal-precision-1')).toBe(
+                '123,456.8',
+            )
+        })
+
         it('should format rounded value when format is "integer"', () => {
             const value = 123456.789
 
@@ -244,6 +250,12 @@ describe('stats components utils', () => {
 
         it('should format value up to two decimal places and render as percentage when format is "percent"', () => {
             expect(formatMetricValue(123456.789, 'percent')).toBe('123,456.79%')
+        })
+
+        it('should format value up to one decimal place and representing percentage when format is "decimal-to-percent-precision-1"', () => {
+            expect(
+                formatMetricValue(123456.789, 'decimal-to-percent-precision-1'),
+            ).toBe('12,345,678.9%')
         })
 
         it('should format value as duration with precision two when format is "duration"', () => {
@@ -292,6 +304,17 @@ describe('stats components utils', () => {
             expect(
                 formatMetricValue(123456.789, 'currency', undefined, 'JPY'),
             ).toBe('¥123,456.79')
+        })
+
+        it('should show $ sign and display up to 1 decimal place when format is "currency-precision-1" and currency is specified', () => {
+            expect(
+                formatMetricValue(
+                    123456.789,
+                    'currency-precision-1',
+                    undefined,
+                    'JPY',
+                ),
+            ).toBe('¥123,456.8')
         })
 
         it('should render `x` sign if format is ratio', () => {

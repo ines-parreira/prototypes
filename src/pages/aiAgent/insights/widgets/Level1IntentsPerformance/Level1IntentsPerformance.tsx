@@ -74,7 +74,7 @@ export const Level1IntentsPerformance = () => {
                         },
                         trend: aiAgentMetrics.coverageTrend,
                         interpretAs: 'more-is-better',
-                        metricFormat: 'decimal-to-percent',
+                        metricFormat: 'decimal-to-percent-precision-1',
                         tip: (
                             <PerformanceTip showBenchmark={false}>
                                 Set up all{' '}
@@ -132,7 +132,7 @@ export const Level1IntentsPerformance = () => {
                         },
                         trend: aiAgentMetrics.aiAgentSuccessRate,
                         interpretAs: 'more-is-better',
-                        metricFormat: 'decimal-to-percent',
+                        metricFormat: 'decimal-to-percent-precision-1',
                         tip: (
                             <PerformanceTip showBenchmark={false}>
                                 Review your existing{' '}
@@ -155,7 +155,7 @@ export const Level1IntentsPerformance = () => {
                         },
                         trend: aiAgentMetrics.aiAgentCSAT,
                         interpretAs: 'more-is-better',
-                        metricFormat: 'decimal',
+                        metricFormat: 'decimal-precision-1',
                         tip: (
                             <PerformanceTip
                                 topTen="4.7"

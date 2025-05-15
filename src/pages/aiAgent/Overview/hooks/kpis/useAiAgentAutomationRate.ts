@@ -31,7 +31,7 @@ export const useAiAgentAutomationRate = (
         hint: {
             title: 'Automated interactions from AI Agent as a percent of all customer interactions.',
         },
-        metricFormat: 'decimal-to-percent',
+        metricFormat: 'decimal-to-percent-precision-1',
         isLoading: result.isFetching,
         'data-candu-id': 'ai-agent-overview-kpi-automation-rate',
         ...result.data,

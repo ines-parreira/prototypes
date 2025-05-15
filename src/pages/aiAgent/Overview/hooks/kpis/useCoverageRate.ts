@@ -100,7 +100,7 @@ export const useCoverageRate = (
     ])
 
     return {
-        metricFormat: 'decimal-to-percent',
+        metricFormat: 'decimal-to-percent-precision-1',
         'data-candu-id': 'ai-agent-overview-kpi-coverage-rate',
         ...coverageRate,
     }

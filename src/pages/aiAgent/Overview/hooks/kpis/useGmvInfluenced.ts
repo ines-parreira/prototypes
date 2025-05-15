@@ -55,7 +55,7 @@ export const useGmvInfluenced = ({
         hint: {
             title: 'The total revenue generated from orders placed during or after a conversation with the AI Agent, without human intervention.',
         },
-        metricFormat: 'currency',
+        metricFormat: 'currency-precision-1',
         isLoading: isFetching,
         currency,
         'data-candu-id': 'ai-agent-overview-kpi-gmv-influenced',

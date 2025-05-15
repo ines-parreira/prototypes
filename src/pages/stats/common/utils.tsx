@@ -67,7 +67,11 @@ export const formatPercent = (value: unknown) => {
 }
 
 // format a value and display it as a currency
-export const formatCurrency = (value: number, currency: string) => {
+export const formatCurrency = (
+    value: number,
+    currency: string,
+    formatOptions?: Intl.NumberFormatOptions,
+) => {
     if (!currency) {
         return value
     }
@@ -77,6 +81,7 @@ export const formatCurrency = (value: number, currency: string) => {
         currency: currency,
         maximumFractionDigits: 2,
         minimumFractionDigits: 0,
+        ...formatOptions,
     })
 }
 
@@ -201,13 +206,16 @@ export const useStatsViewFilters = (periodFilterLeft: string): ViewFilter[] => {
 
 export type MetricValueFormat =
     | 'decimal'
+    | 'decimal-precision-1'
     | 'integer'
     | 'duration'
     | 'percent'
     | 'percent-refined'
     | 'decimal-to-percent'
+    | 'decimal-to-percent-precision-1'
     | 'decimal-percent-to-integer-percent'
     | 'currency'
+    | 'currency-precision-1'
     | 'ratio'
 
 const metricToDecimal = (
@@ -243,6 +251,12 @@ export const formatMetricValue = (
         return `${metricToDecimal(value * 100)}%`
     }
 
+    if (format === 'decimal-to-percent-precision-1') {
+        return `${metricToDecimal(value * 100, {
+            maximumFractionDigits: 1,
+        })}%`
+    }
+
     if (format === 'percent') {
         return `${metricToDecimal(value)}%`
     }
@@ -265,8 +279,20 @@ export const formatMetricValue = (
         return `${formatCurrency(value, currency)}`
     }
 
+    if (format === 'currency-precision-1') {
+        return `${formatCurrency(value, currency, {
+            maximumFractionDigits: 1,
+        })}`
+    }
+
     if (format === 'ratio') {
         return `${metricToDecimal(value)}x`
+    }
+
+    if (format === 'decimal-precision-1') {
+        return metricToDecimal(value, {
+            maximumFractionDigits: 1,
+        })
     }
 
     return metricToDecimal(value)
@@ -274,10 +300,13 @@ export const formatMetricValue = (
 
 export type MetricTrendFormat =
     | 'decimal'
+    | 'decimal-precision-1'
     | 'duration'
     | 'percent'
     | 'decimal-to-percent'
+    | 'decimal-to-percent-precision-1'
     | 'currency'
+    | 'currency-precision-1'
     | 'ratio'
 
 const formatTrendAsPercent = (prevValue: number, absDiff: number) => {

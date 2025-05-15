@@ -99,7 +99,7 @@ describe('useCoverageRate', () => {
 
             expect(result.current).toEqual({
                 'data-candu-id': 'ai-agent-overview-kpi-coverage-rate',
-                metricFormat: 'decimal-to-percent',
+                metricFormat: 'decimal-to-percent-precision-1',
                 value: null,
                 prevValue: null,
                 isLoading: true,
@@ -149,7 +149,7 @@ describe('useCoverageRate', () => {
                 hint: {
                     title: 'Percentage of tickets that AI Agent attempted to respond to.',
                 },
-                metricFormat: 'decimal-to-percent',
+                metricFormat: 'decimal-to-percent-precision-1',
                 value: 1.55,
                 prevValue: 3.5,
                 isLoading: false,
@@ -188,7 +188,7 @@ describe('useCoverageRate', () => {
                         linkText: 'How is it calculated?',
                         title: 'Automated interactions as a percent of all customer interactions.',
                     },
-                    metricFormat: 'decimal-to-percent',
+                    metricFormat: 'decimal-to-percent-precision-1',
                     value: 0.1234,
                     prevValue: 0,
                     isLoading: false,
@@ -223,7 +223,7 @@ describe('useCoverageRate', () => {
                     linkText: 'How is it calculated?',
                     title: 'Automated interactions as a percent of all customer interactions.',
                 },
-                metricFormat: 'decimal-to-percent',
+                metricFormat: 'decimal-to-percent-precision-1',
                 value: 0,
                 prevValue: 0,
                 isLoading: false,
