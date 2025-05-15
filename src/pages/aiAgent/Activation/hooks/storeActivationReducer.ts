@@ -28,7 +28,7 @@ export const isSalesEnabledWithNewActivationXp = ({
     isChatEnabled: boolean
     isEmailEnabled: boolean
 }) => {
-    if (isAiSalesBetaUser && (hasNewAutomatePlan || storeHasSales)) {
+    if ((isAiSalesBetaUser && hasNewAutomatePlan) || storeHasSales) {
         return aiSalesAgentEmailEnabled
             ? isChatEnabled || isEmailEnabled
             : isChatEnabled

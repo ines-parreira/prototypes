@@ -693,6 +693,19 @@ describe('storeActivationReducer', () => {
                             }),
                         ).toBe(false)
                     })
+
+                    it('should be true when not on beta account on new automate plan and store already has sales', () => {
+                        expect(
+                            isSalesEnabledWithNewActivationXp({
+                                isAiSalesBetaUser: false,
+                                hasNewAutomatePlan: true,
+                                storeHasSales: true,
+                                aiSalesAgentEmailEnabled,
+                                isChatEnabled,
+                                isEmailEnabled,
+                            }),
+                        ).toBe(true)
+                    })
                 },
             )
 
