@@ -55,6 +55,7 @@ export const AiAgentLayout = ({
 
     const { storeActivations } = useStoreActivations({
         pageName: window.location.pathname,
+        withPublicResources: false,
     })
 
     const { canStartTrial, canStartTrialFromFeatureFlag } =
