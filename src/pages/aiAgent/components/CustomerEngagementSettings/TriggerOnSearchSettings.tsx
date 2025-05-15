@@ -20,19 +20,16 @@ import { EngagementSettingsCardLinkButton } from './card/EngagementSettingsCardL
 import { EngagementSettingsCardToggle } from './card/EngagementSettingsCardToggle'
 import { usePotentialImpact } from './hooks/usePotentialImpact'
 
-const ESTIMATED_INFLUENCED_GMV = 0.03
+const ESTIMATED_INFLUENCED_GMV = 0.6
 
-export const ConversationStartersSettings = ({
-    isEnabled,
-    gmv,
-    isGmvLoading,
-}: {
-    isEnabled: boolean
+type Props = {
     gmv: TimeSeriesDataItem[][] | undefined
     isGmvLoading: boolean
-}) => {
+}
+
+export const TriggerOnSearchSettings = ({ gmv, isGmvLoading }: Props) => {
     const { watch, setValue } = useFormContext()
-    const isConversationStartersEnabled = watch('isConversationStartersEnabled')
+    const isSalesHelpOnSearchEnabled = watch('isSalesHelpOnSearchEnabled')
 
     const { shopName } = useParams<{ shopName: string }>()
 
@@ -47,27 +44,27 @@ export const ConversationStartersSettings = ({
         <EngagementSettingsCard>
             <EngagementSettingsCardContentWrapper>
                 <EngagementSettingsCardImage
-                    alt="image showing an example of the conversation starters"
+                    alt="image showing an example of the trigger on search"
                     src={assetsUrl(
-                        '/img/ai-agent/ai_agent_conversation_starters.png',
+                        '/img/ai-agent/ai_agent_trigger_on_search.png',
                     )}
                 />
 
                 <EngagementSettingsCardContent>
                     <EngagementSettingsCardTitle>
-                        Suggested product questions
+                        Trigger on search
                     </EngagementSettingsCardTitle>
 
                     <EngagementSettingsCardDescription>
-                        Show up to 3 dynamic, AI-generated questions on product
-                        pages, based on what shoppers are most likely to
-                        ask—automatically generated from your product content—to
-                        resolve doubts quickly and drive more conversions.
+                        Send a personalized message right after a shopper
+                        searches to guide them to the right product and drive
+                        more conversions.
                     </EngagementSettingsCardDescription>
 
-                    {storeConfiguration?.isConversationStartersEnabled ? (
+                    {storeConfiguration?.isSalesHelpOnSearchEnabled ? (
                         <EngagementSettingsCardLinkButton
                             href={routes.analytics}
+                            icon="insights"
                             text="Track Performance"
                         />
                     ) : (
@@ -80,12 +77,11 @@ export const ConversationStartersSettings = ({
                 </EngagementSettingsCardContent>
 
                 <EngagementSettingsCardToggle
-                    isDisabled={!isEnabled}
-                    isChecked={isConversationStartersEnabled}
+                    isChecked={isSalesHelpOnSearchEnabled}
                     onChange={() =>
                         setValue(
-                            'isConversationStartersEnabled',
-                            !isConversationStartersEnabled,
+                            'isSalesHelpOnSearchEnabled',
+                            !isSalesHelpOnSearchEnabled,
                             {
                                 shouldDirty: true,
                             },

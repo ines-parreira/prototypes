@@ -328,6 +328,7 @@ describe('<StoreConfigForm />', () => {
         isConversationStartersEnabled: false,
         customFieldIds: [],
         salesDeactivatedDatetime: null,
+        isSalesHelpOnSearchEnabled: false,
     }
 
     const initialFormValues: FormValues = {

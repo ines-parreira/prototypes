@@ -6,6 +6,7 @@ import { useParams } from 'react-router'
 
 import { Box, Button, Label } from '@gorgias/merchant-ui-kit'
 
+import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { SettingsFeatureRow } from 'pages/common/components/SettingsCard/SettingsFeatureRow'
@@ -25,6 +26,7 @@ import {
 import { EngagementSettingsCardImpact } from './card/EngagementSettingsCardImpact'
 import { EngagementSettingsCardLinkButton } from './card/EngagementSettingsCardLinkButton'
 import { EngagementSettingsCardToggle } from './card/EngagementSettingsCardToggle'
+import { usePotentialImpact } from './hooks/usePotentialImpact'
 
 import css from './ConversationLauncherSettings.less'
 
@@ -117,12 +119,14 @@ export const ConversationLauncherAdvancedSettings = ({
     )
 }
 
+const ESTIMATED_INFLUENCED_GMV = 0.03
+
 export const ConversationLauncherSettings = ({
-    isPotentialImpactLoading,
-    potentialImpact,
+    gmv,
+    isGmvLoading,
 }: {
-    isPotentialImpactLoading: boolean
-    potentialImpact: string | null
+    gmv: TimeSeriesDataItem[][] | undefined
+    isGmvLoading: boolean
 }) => {
     const [isSidebarOpen, setSidebarOpen] = useState(false)
 
@@ -135,6 +139,8 @@ export const ConversationLauncherSettings = ({
 
     const flags = getLDClient().allFlags()
     const routes = getAiAgentNavigationRoutes(shopName, flags)
+
+    const potentialImpact = usePotentialImpact(ESTIMATED_INFLUENCED_GMV, gmv)
 
     return (
         <>
@@ -172,7 +178,7 @@ export const ConversationLauncherSettings = ({
                             <EngagementSettingsCardImpact
                                 icon="lock"
                                 impact={potentialImpact}
-                                isLoading={isPotentialImpactLoading}
+                                isLoading={isGmvLoading}
                             />
                         )}
                     </EngagementSettingsCardContent>

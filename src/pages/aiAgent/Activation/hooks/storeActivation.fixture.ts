@@ -77,6 +77,7 @@ export const storeActivationFixture = (
             isConversationStartersEnabled: false,
             customFieldIds: [],
             salesDeactivatedDatetime: null,
+            isSalesHelpOnSearchEnabled: false,
             ...overrides?.configuration,
             storeName: name,
         },

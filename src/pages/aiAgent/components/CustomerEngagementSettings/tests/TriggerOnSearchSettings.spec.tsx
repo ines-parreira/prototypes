@@ -7,7 +7,7 @@ import { MemoryRouter } from 'react-router'
 
 import { getLDClient } from 'utils/launchDarkly'
 
-import { ConversationStartersSettings } from '../ConversationStartersSettings'
+import { TriggerOnSearchSettings } from '../TriggerOnSearchSettings'
 
 jest.mock(
     'pages/aiAgent/components/CustomerEngagementSettings/hooks/usePotentialImpact',
@@ -21,12 +21,12 @@ jest.mock(
 )
 
 type FormValues = {
-    isConversationStartersEnabled: boolean
+    isSalesHelpOnSearchEnabled: boolean
 }
 
 const Wrapper = ({
     children,
-    defaultValues = { isConversationStartersEnabled: false },
+    defaultValues = { isSalesHelpOnSearchEnabled: false },
 }: {
     children: ReactNode
     defaultValues?: FormValues
@@ -39,7 +39,7 @@ const Wrapper = ({
     )
 }
 
-describe('ConversationStartersSettings', () => {
+describe('TriggerOnSearchSettings', () => {
     beforeEach(() => {
         ldClientMock.allFlags.mockReturnValue({})
         let client = getLDClient()
@@ -50,20 +50,14 @@ describe('ConversationStartersSettings', () => {
     it('renders the toggle with correct label and unchecked by default', () => {
         render(
             <Wrapper>
-                <ConversationStartersSettings
-                    isEnabled={true}
-                    isGmvLoading={false}
-                    gmv={[]}
-                />
+                <TriggerOnSearchSettings isGmvLoading={false} gmv={[]} />
             </Wrapper>,
         )
 
-        expect(
-            screen.getByText('Suggested product questions'),
-        ).toBeInTheDocument()
+        expect(screen.getByText('Trigger on search')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Show up to 3 dynamic, AI-generated questions on product pages, based on what shoppers are most likely to ask—automatically generated from your product content—to resolve doubts quickly and drive more conversions.',
+                'Send a personalized message right after a shopper searches to guide them to the right product and drive more conversions.',
             ),
         ).toBeInTheDocument()
         expect(
@@ -71,7 +65,7 @@ describe('ConversationStartersSettings', () => {
         ).toBeInTheDocument()
         expect(
             screen.getByAltText(
-                'image showing an example of the conversation starters',
+                'image showing an example of the trigger on search',
             ),
         ).toBeInTheDocument()
 
@@ -81,41 +75,18 @@ describe('ConversationStartersSettings', () => {
 
     it('shows the toggle as checked if value is true', () => {
         render(
-            <Wrapper defaultValues={{ isConversationStartersEnabled: true }}>
-                <ConversationStartersSettings
-                    isEnabled={true}
-                    isGmvLoading={false}
-                    gmv={[]}
-                />
+            <Wrapper defaultValues={{ isSalesHelpOnSearchEnabled: true }}>
+                <TriggerOnSearchSettings isGmvLoading={false} gmv={[]} />
             </Wrapper>,
         )
 
         expect(screen.getByRole('switch')).toBeChecked()
     })
 
-    it('disables the toggle when isEnabled is false', () => {
-        render(
-            <Wrapper>
-                <ConversationStartersSettings
-                    isEnabled={false}
-                    isGmvLoading={false}
-                    gmv={[]}
-                />
-            </Wrapper>,
-        )
-
-        const toggle = screen.getByRole('switch')
-        expect(toggle.className).toContain('disabled')
-    })
-
     it('updates the value when toggled', () => {
         render(
             <Wrapper>
-                <ConversationStartersSettings
-                    isEnabled={true}
-                    isGmvLoading={false}
-                    gmv={[]}
-                />
+                <TriggerOnSearchSettings isGmvLoading={false} gmv={[]} />
             </Wrapper>,
         )
 

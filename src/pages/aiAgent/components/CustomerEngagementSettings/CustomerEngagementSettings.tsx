@@ -19,7 +19,8 @@ import { NotificationStatus } from 'state/notifications/types'
 
 import { ConversationLauncherSettings } from './ConversationLauncherSettings'
 import { ConversationStartersSettings } from './ConversationStartersSettings'
-import { usePotentialImpact } from './hooks/usePotentialImpact'
+import { useGmvUsdOver30Days } from './hooks/useGmvUsdOver30Days'
+import { TriggerOnSearchSettings } from './TriggerOnSearchSettings'
 
 import css from './CustomerEngagementSettings.less'
 
@@ -27,6 +28,7 @@ const customerEngagementSchema = z.object({
     isConversationStartersEnabled: z.boolean(),
     isFloatingInputEnabled: z.boolean(),
     isFloatingInputDesktopOnly: z.boolean(),
+    isSalesHelpOnSearchEnabled: z.boolean(),
 })
 
 type CustomerEngagementData = z.infer<typeof customerEngagementSchema>
@@ -42,6 +44,8 @@ export const CustomerEngagementSettings = () => {
 
     const isConvertFloatingChatInputFeatureEnabled =
         flags[FeatureFlagKey.ConvertFloatingChatInput]
+    const isTriggerOnSearchEnabled =
+        !!flags[FeatureFlagKey.AiSalesAgentHelpOnSearchTemplateQuery]
 
     const methods = useForm<CustomerEngagementData>({
         values: {
@@ -53,6 +57,8 @@ export const CustomerEngagementSettings = () => {
             isFloatingInputDesktopOnly:
                 storeConfiguration?.floatingChatInputConfiguration
                     ?.isDesktopOnly ?? false,
+            isSalesHelpOnSearchEnabled:
+                storeConfiguration?.isSalesHelpOnSearchEnabled ?? false,
         },
         mode: 'onChange',
         resolver: zodResolver(customerEngagementSchema),
@@ -77,6 +83,8 @@ export const CustomerEngagementSettings = () => {
                             isEnabled: data.isFloatingInputEnabled,
                             isDesktopOnly: data.isFloatingInputDesktopOnly,
                         },
+                        isSalesHelpOnSearchEnabled:
+                            data.isSalesHelpOnSearchEnabled,
                     })
 
                     void dispatch(
@@ -103,8 +111,7 @@ export const CustomerEngagementSettings = () => {
         shopName: string
     }>()
     const storeIntegration = useStoreIntegrationByShopName(shopName)
-
-    const { isPotentialImpactLoading, potentialImpact } = usePotentialImpact(
+    const { data: gmv, isLoading: isGmvLoading } = useGmvUsdOver30Days(
         storeIntegration?.id,
     )
 
@@ -123,15 +130,21 @@ export const CustomerEngagementSettings = () => {
                     flexDirection="column"
                     flexGrow={1}
                 >
+                    {isTriggerOnSearchEnabled && (
+                        <TriggerOnSearchSettings
+                            gmv={gmv}
+                            isGmvLoading={isGmvLoading}
+                        />
+                    )}
                     <ConversationStartersSettings
                         isEnabled={isConversationStartersFeatureEnabled}
-                        potentialImpact={potentialImpact}
-                        isPotentialImpactLoading={isPotentialImpactLoading}
+                        gmv={gmv}
+                        isGmvLoading={isGmvLoading}
                     />
                     {isConvertFloatingChatInputFeatureEnabled && (
                         <ConversationLauncherSettings
-                            potentialImpact={potentialImpact}
-                            isPotentialImpactLoading={isPotentialImpactLoading}
+                            gmv={gmv}
+                            isGmvLoading={isGmvLoading}
                         />
                     )}
 

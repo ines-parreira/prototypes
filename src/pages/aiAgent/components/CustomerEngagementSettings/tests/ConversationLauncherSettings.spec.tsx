@@ -12,6 +12,17 @@ import {
     ConversationLauncherSettings,
 } from '../ConversationLauncherSettings'
 
+jest.mock(
+    'pages/aiAgent/components/CustomerEngagementSettings/hooks/usePotentialImpact',
+    () => {
+        return {
+            usePotentialImpact: jest.fn(
+                () => 'Unlock up to ~5% additional GMV',
+            ),
+        }
+    },
+)
+
 type FormValues = {
     isFloatingInputEnabled?: boolean
     isFloatingInputDesktopOnly?: boolean
@@ -51,10 +62,7 @@ describe('ConversationLauncherSettings', () => {
     it('renders the main Ask anything input title', () => {
         render(
             <Wrapper>
-                <ConversationLauncherSettings
-                    isPotentialImpactLoading={false}
-                    potentialImpact="Unlock up to ~5% additional GMV"
-                />
+                <ConversationLauncherSettings isGmvLoading={false} gmv={[]} />
             </Wrapper>,
         )
 
@@ -78,10 +86,7 @@ describe('ConversationLauncherSettings', () => {
     it('does not allow opening Advanced settings when toggle is off', () => {
         const { container } = render(
             <Wrapper>
-                <ConversationLauncherSettings
-                    isPotentialImpactLoading={false}
-                    potentialImpact="Unlock up to ~5% additional GMV"
-                />
+                <ConversationLauncherSettings isGmvLoading={false} gmv={[]} />
             </Wrapper>,
         )
 
@@ -94,10 +99,7 @@ describe('ConversationLauncherSettings', () => {
     it('opens Advanced settings when toggle is on', () => {
         render(
             <Wrapper defaultValues={{ isFloatingInputEnabled: true }}>
-                <ConversationLauncherSettings
-                    isPotentialImpactLoading={false}
-                    potentialImpact="Unlock up to ~5% additional GMV"
-                />
+                <ConversationLauncherSettings isGmvLoading={false} gmv={[]} />
             </Wrapper>,
         )
 

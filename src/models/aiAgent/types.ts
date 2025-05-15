@@ -93,6 +93,7 @@ export type StoreConfiguration = {
     salesDeactivatedDatetime: string | null
 
     isConversationStartersEnabled: boolean
+    isSalesHelpOnSearchEnabled: boolean | null
     customFieldIds: number[]
 }
 

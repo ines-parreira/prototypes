@@ -3,19 +3,16 @@ import { useMemo } from 'react'
 import moment from 'moment'
 
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
-import useAppSelector from 'hooks/useAppSelector'
-import { ReportingGranularity } from 'models/reporting/types'
-import { useGmvUsdOverTimeSeries } from 'pages/stats/automate/aiSalesAgent/metrics/useGmvUsdOverTimeSeries'
-import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { formatCurrency } from 'pages/stats/common/utils'
-import { getTimezone } from 'state/currentUser/selectors'
 
-const estimatedInfluencedGMV = 0.03
 const lowerImpactMultiplier = 0.8
 const upperImpactMultiplier = 1.2
 const roundTo = 10
 
-export const computeRoundedPotentialImpact = (data: TimeSeriesDataItem[][]) => {
+export const computeRoundedPotentialImpact = (
+    estimatedInfluencedGMV: number,
+    data: TimeSeriesDataItem[][],
+) => {
     const firstDayWithData = data[0]
         .filter((item) => item.value > 0)
         .at(0)?.dateTime
@@ -45,42 +42,19 @@ export const computeRoundedPotentialImpact = (data: TimeSeriesDataItem[][]) => {
     }
 }
 
-export const usePotentialImpact = (storeIntegration?: number) => {
-    const timezone = useAppSelector(getTimezone) ?? 'UTC'
-
-    const { from, to } = useMemo(() => {
-        const now = moment()
-
-        return {
-            from: now.clone().subtract(30, 'd').toISOString(),
-            to: now.toISOString(),
-        }
-    }, [])
-
-    const { data, error, isLoading } = useGmvUsdOverTimeSeries(
-        {
-            period: {
-                end_datetime: to,
-                start_datetime: from,
-            },
-            storeIntegrations:
-                storeIntegration !== undefined
-                    ? {
-                          operator: LogicalOperatorEnum.ONE_OF,
-                          values: [storeIntegration],
-                      }
-                    : undefined,
-        },
-        timezone,
-        ReportingGranularity.Day,
-    )
-
+export const usePotentialImpact = (
+    estimatedInfluencedGMV: number,
+    gmv: TimeSeriesDataItem[][] | undefined,
+) => {
     const formattedImpact = useMemo(() => {
-        if (error || !data?.length) {
+        if (!gmv?.length) {
             return null
         }
 
-        const potentialImpact = computeRoundedPotentialImpact(data)
+        const potentialImpact = computeRoundedPotentialImpact(
+            estimatedInfluencedGMV,
+            gmv,
+        )
 
         if (!potentialImpact?.lowerImpact || !potentialImpact?.upperImpact) {
             return null
@@ -89,10 +63,7 @@ export const usePotentialImpact = (storeIntegration?: number) => {
         const { lowerImpact, upperImpact } = potentialImpact
 
         return `Unlock between ${formatCurrency(lowerImpact, 'USD')} and ${formatCurrency(upperImpact, 'USD')} of additional GMV.`
-    }, [data, error])
+    }, [estimatedInfluencedGMV, gmv])
 
-    return {
-        potentialImpact: formattedImpact,
-        isPotentialImpactLoading: isLoading,
-    }
+    return formattedImpact
 }
