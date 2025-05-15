@@ -48,7 +48,15 @@ export const HandoverTopicsModal = ({
             <ModalHeader title="Handover Topics" />
             <ModalBody>
                 <div>
-                    Define topics for AI Agent to always hand over to agents.
+                    Define topics for AI Agent to always hand over to agents. We
+                    recommend limiting it to 5 or less.{' '}
+                    <a
+                        href="https://docs.gorgias.com/en-US/customize-how-ai-agent-behaves-567324"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Learn more about handovers.
+                    </a>
                     <ListField
                         className={css.container}
                         items={List(excludedTopics)}

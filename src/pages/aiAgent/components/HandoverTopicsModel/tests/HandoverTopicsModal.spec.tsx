@@ -48,9 +48,15 @@ describe('HandoverTopicsModal', () => {
         expect(screen.getByText('Handover Topics')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Define topics for AI Agent to always hand over to agents.',
+                'Define topics for AI Agent to always hand over to agents. We recommend limiting it to 5 or less.',
             ),
         ).toBeInTheDocument()
+        expect(
+            screen.getByRole('link', { name: /Learn more about handovers./ }),
+        ).toHaveAttribute(
+            'href',
+            'https://docs.gorgias.com/en-US/customize-how-ai-agent-behaves-567324',
+        )
     })
 
     it('should not render the component when closed', () => {
