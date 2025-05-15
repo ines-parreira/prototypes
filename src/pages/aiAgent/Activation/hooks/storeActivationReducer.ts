@@ -429,8 +429,8 @@ export const storeConfigurationToState = (
             } else {
                 isChatInstallationMissing = !chatIntegrationStatus
                     ?.filter((status) =>
-                        availableChatsForStore.some(
-                            (chat) => chat.value.id === status.chatId,
+                        availableMonitoredChat.some(
+                            (id) => id === status.chatId,
                         ),
                     )
                     .some((it) => it.installed)
@@ -483,9 +483,7 @@ export const storeConfigurationToState = (
                         enabled: isChatEnabled,
                         isIntegrationMissing: isChatIntegrationMissing,
                         isInstallationMissing: isChatInstallationMissing,
-                        availableChats: availableChatsForStore.map(
-                            (it) => it.value.id,
-                        ),
+                        availableChats: availableMonitoredChat,
                     },
                     email: {
                         enabled: isEmailEnabled,

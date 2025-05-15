@@ -132,13 +132,11 @@ describe('usePendingTasksRuleEngine', () => {
             .build(),
     })
 
-    useFetchChatIntegrationsStatusDataMock.mockReturnValue({
-        isLoading: false,
-        isFetched: true,
-        data: ChatIntegrationsStatusDataFixture.start()
+    useFetchChatIntegrationsStatusDataMock.mockReturnValue(
+        ChatIntegrationsStatusDataFixture.start()
             .withoutChatIntegrationStatus()
             .build(),
-    })
+    )
 
     useTicketViewDataMock.mockReturnValue({
         isLoading: false,

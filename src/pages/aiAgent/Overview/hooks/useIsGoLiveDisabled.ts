@@ -30,13 +30,7 @@ export const useIsGoLiveDisabled = (
     const chatIds = data?.chatIntegrationIds ?? []
     const emailIds = data?.emailIntegrationIds ?? []
 
-    const {
-        data: chatIntegrationsStatusData,
-        isLoading: isFetchingChatIntegrationsStatusData,
-    } = useFetchChatIntegrationsStatusData({
-        enabled: Boolean(chatIds.length),
-        chatIds,
-    })
+    const chatIntegrationsStatusData = useFetchChatIntegrationsStatusData()
 
     const billingState = useBillingState({ enabled: true })
 
@@ -45,11 +39,7 @@ export const useIsGoLiveDisabled = (
 
     const { data: emailIntegrationsData } = useFetchEmailIntegrationsData()
 
-    if (
-        isLoading ||
-        isFetchingChatIntegrationsStatusData ||
-        faqHelpCentersDataIsLoading
-    ) {
+    if (isLoading || faqHelpCentersDataIsLoading) {
         return { isLoading: true, isDisabled: true }
     }
 

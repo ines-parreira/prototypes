@@ -53,10 +53,7 @@ describe('useIsGoLiveDisabled', () => {
             data: { chatIntegrationIds: [1], emailIntegrationIds: [1] },
             isLoading: false,
         })
-        ;(useFetchChatIntegrationsStatusData as jest.Mock).mockReturnValue({
-            data: [],
-            isLoading: false,
-        })
+        ;(useFetchChatIntegrationsStatusData as jest.Mock).mockReturnValue([])
         ;(useFetchEmailIntegrationsData as jest.Mock).mockReturnValue({
             data: [{ id: 1, isVerified: true }],
         })
@@ -78,10 +75,12 @@ describe('useIsGoLiveDisabled', () => {
             data: { chatIntegrationIds: [1], emailIntegrationIds: [2] },
             isLoading: false,
         })
-        ;(useFetchChatIntegrationsStatusData as jest.Mock).mockReturnValue({
-            data: [1],
-            isLoading: false,
-        })
+        ;(useFetchChatIntegrationsStatusData as jest.Mock).mockReturnValue([
+            {
+                installed: true,
+                chatId: 1,
+            },
+        ])
         ;(useFetchEmailIntegrationsData as jest.Mock).mockReturnValue({
             data: [{ id: 2, isVerified: true }],
         })

@@ -557,11 +557,19 @@ describe('storeActivationReducer', () => {
     it('should disable chat when no chat installed', () => {
         const state = reducer(EMPTY_STATE, {
             type: 'UPDATE_STORE_CONFIGURATION',
-            storeConfigurations: [mockStoreConfig],
+            storeConfigurations: [
+                { ...mockStoreConfig, monitoredChatIntegrations: [1] },
+            ],
             selfServiceChatChannels: {
-                'Test Store': [{ value: { id: 1 } } as any],
+                'Test Store': [
+                    { value: { id: 1 } } as any,
+                    { value: { id: 2 } } as any,
+                ],
             },
-            chatIntegrationStatus: [{ chatId: 1, installed: false } as any],
+            chatIntegrationStatus: [
+                { chatId: 1, installed: false } as any,
+                { chatId: 2, installed: true } as any,
+            ],
             helpCentersFaq,
             ldFlags: LD_FLAGS,
             // No impact on chat enabled/disabled

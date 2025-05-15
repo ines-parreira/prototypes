@@ -152,19 +152,7 @@ export const useStoreActivations = ({
         isLoading: isStoreConfigurationLoading,
     } = useStoreConfigurations(accountDomain)
 
-    const chatIds = useMemo(() => {
-        return storeConfigurations.flatMap(
-            (storeConfiguration) =>
-                storeConfiguration.monitoredChatIntegrations,
-        )
-    }, [storeConfigurations])
-    const {
-        data: chatIntegrationStatus,
-        isLoading: isChatIntegrationsStatusLoading,
-    } = useFetchChatIntegrationsStatusData({
-        enabled: !!chatIds.length,
-        chatIds,
-    })
+    const chatIntegrationStatus = useFetchChatIntegrationsStatusData()
 
     const selfServiceChatChannels = useSelfServiceChatChannelsMultiStore(
         SHOPIFY_INTEGRATION_TYPE,
@@ -271,7 +259,6 @@ export const useStoreActivations = ({
         isFetchLoading:
             isStoreConfigurationLoading ||
             isHelpCenterListLoading ||
-            isChatIntegrationsStatusLoading ||
             isPublicResourcesListLoading,
         isSaveLoading,
         changeSales: (storeName: string, newValue: boolean) => {
