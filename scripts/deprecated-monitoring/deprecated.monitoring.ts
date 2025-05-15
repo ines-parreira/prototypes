@@ -11,6 +11,7 @@ const SNAPSHOT_PATH = path.resolve(__dirname, 'deprecated.snapshot.json')
 const results = main({
     sourceDir: config.sourceDir,
     adapter: config.adapter,
+    rules: config.rules,
 })
 
 if (!results) {
