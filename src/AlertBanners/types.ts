@@ -2,7 +2,7 @@ import { ComponentProps, HTMLProps } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { AlertBannerProps } from './components/AlertBanner'
+import type { AlertBannerProps } from './components/AlertBanner'
 
 export enum AlertBannerTypes {
     Critical = 'critical',

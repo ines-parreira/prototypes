@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, ReactNode } from 'react'
+import type { HTMLAttributes, ReactNode } from 'react'
 
 import {
     Banner,
@@ -6,10 +6,11 @@ import {
     BannerVariant,
 } from '@gorgias/merchant-ui-kit'
 
+import { typeFallbackBanner } from 'AlertBanners/AlertBanner.utils'
 import { sanitizeHtmlDefault } from 'utils/html'
 
-import { AlertBannerCTATypes, AlertBannerTypes } from '../types'
-import { typeFallbackBanner } from './AlertBanners'
+import { AlertBannerTypes } from '../types'
+import type { AlertBannerCTATypes } from '../types'
 import { CTA } from './CTA'
 
 export type AlertBannerProps = {

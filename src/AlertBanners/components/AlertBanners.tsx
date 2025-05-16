@@ -2,7 +2,7 @@ import { memo } from 'react'
 
 import { noop } from 'lodash'
 
-import { AlertBannerTypes } from 'AlertBanners'
+import { typeFallbackBanner } from 'AlertBanners/AlertBanner.utils'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 import { MergedBanner } from 'AlertBanners/Context/types'
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -10,23 +10,11 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 
 import { useBannerCarousel } from '../hooks/useBannerCarousel'
-import { ContextBanner } from '../types'
+import type { ContextBanner } from '../types'
 import { CarouselNavigation } from './CarouselNavigation'
 
 const isContextBanner = (banner: MergedBanner): banner is ContextBanner =>
     'instanceId' in banner
-
-export const typeFallbackBanner = (type: AlertBannerTypes | undefined) => {
-    if (!type) {
-        return AlertBannerTypes.Info
-    }
-
-    if (type === AlertBannerTypes.Critical) {
-        return AlertBannerTypes.Error
-    }
-
-    return type
-}
 
 export const AlertBanners = () => {
     const carouselBannerFlag: boolean = useFlag(
