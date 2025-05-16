@@ -1,0 +1,66 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .drawerHeader {
+        .heading-section-semibold();
+        border-bottom: 1px solid var(--neutral-grey-3);
+    }
+
+    .drawerContent {
+        background-color: var(--neutral-grey-0);
+    }
+
+    .drawerFooter {
+        gap: @layout-spacing-xs;
+    }
+
+    .formGroup {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-m;
+    }
+
+    .label {
+        margin-bottom: @layout-spacing-xs;
+    }
+    .ticketFieldRowContainer {
+        display: flex;
+        align-items: center;
+        border-top: 1px solid var(--neutral-grey-3);
+        padding: @layout-spacing-s @layout-spacing-s;
+    }
+
+    .labels {
+        display: flex;
+        gap: @layout-spacing-xxs;
+        flex: 1;
+    }
+
+    .primaryLabel {
+        color: var(--neutral-grey-6);
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        letter-spacing: -0.14px;
+    }
+    .secondaryLabel {
+    }
+    .assignedChannelsListContainer {
+        border: 1px solid var(--neutral-grey-3);
+        border-radius: 0.75rem;
+    }
+    .listTitleLabel {
+        display: block;
+        text-transform: uppercase;
+        font-weight: 600;
+        padding: @layout-spacing-s @layout-spacing-s;
+        color: var(--neutral-grey-6);
+        font-family: 'Inter', sans-serif;
+        font-size: 11px;
+        font-style: normal;
+        line-height: 14px;
+        letter-spacing: 0.55px;
+    }
+}

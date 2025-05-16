@@ -1,8 +1,8 @@
 export const store = {
     id: 1,
     name: 'Store Name',
-    assignedChannels: {
-        emails: [
+    emails: {
+        assigned: [
             {
                 id: 1234,
                 name: 'Email',
@@ -11,21 +11,56 @@ export const store = {
                     address: 'mail@email.com',
                 },
             },
+            {
+                id: 5,
+                name: 'Gmail',
+                type: 'email',
+                meta: {
+                    address: 'mail@gmail.com',
+                },
+            },
+            {
+                id: 6,
+                name: 'Outlook',
+                type: 'email',
+                meta: {
+                    address: 'mail@outlook.com',
+                },
+            },
         ],
-        chats: [],
-        helpCenters: [],
-        contactForms: [],
-        whatsApps: [],
-        facebooks: [],
-        tiktokShops: [],
+        unassigned: [
+            {
+                id: 7,
+                name: 'Example Email',
+                type: 'email',
+                meta: {
+                    address: 'mail@email.com',
+                },
+            },
+        ],
     },
-    unassignedChannels: {
-        emails: [],
-        chats: [],
-        helpCenters: [],
-        contactForms: [],
-        whatsApps: [],
-        facebooks: [],
-        tiktokShops: [],
+    chats: {
+        assigned: [],
+        unassigned: [],
+    },
+    helpCenters: {
+        assigned: [],
+        unassigned: [],
+    },
+    contactForms: {
+        assigned: [],
+        unassigned: [],
+    },
+    whatsApps: {
+        assigned: [],
+        unassigned: [],
+    },
+    facebooks: {
+        assigned: [],
+        unassigned: [],
+    },
+    tiktokShops: {
+        assigned: [],
+        unassigned: [],
     },
 }

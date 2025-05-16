@@ -7,7 +7,7 @@ import { useFlag } from 'core/flags'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
-import ChannelsTab from './ChannelsTab'
+import ChannelsTab from './Channels/ChannelsTab'
 
 export default function StoreDetailsPage() {
     const isMultiStoreEnabled = useFlag(FeatureFlagKey.MultiStore, false)

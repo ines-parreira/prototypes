@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { store } from '../../fixtureNew'
+import { store } from '../../fixture'
 
 export type ChannelTypes =
     | 'email'

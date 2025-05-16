@@ -3,8 +3,8 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 
 import { useFlag } from 'core/flags'
+import { assumeMock } from 'utils/testing'
 
-import { assumeMock } from '../../../../utils/testing'
 import StoreManagementPage from '../storeManagementPage/StoreManagementPage'
 import { StoreManagementProvider } from '../StoreManagementProvider'
 
