@@ -57,7 +57,7 @@ export const useHandoverCustomizationChatFallbackSettingsForm = ({
     }, [formValues, initialFormValues])
 
     const updateValue = useCallback(
-        (key, language, value) => {
+        (key: string, language: string, value: string) => {
             const langForm = formValues[language]
 
             if (!langForm) {

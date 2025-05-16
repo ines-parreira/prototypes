@@ -137,8 +137,8 @@ const ChannelToggle = ({
                                 isWorkflowEnabled={isWorkflowEnabled}
                                 onlySupportedChannels={onlySupportedChannels}
                                 missMatchMessage={
-                                    languagesMismatchWarning &&
-                                    languagesMismatchWarning.message
+                                    languagesMismatchWarning?.message ??
+                                    undefined
                                 }
                             />
                         }

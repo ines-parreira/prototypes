@@ -32,7 +32,8 @@ const ChannelItem = ({
     const workflows = applicationAutomationSettings?.workflows || []
 
     const handleHCUpdate = useCallback(
-        (workflows) => {
+        // TODO(react-18): workflows is typed as any[], but we need a typed array
+        (workflows: any[]) => {
             void handleHelpCenterAutomationSettingsUpdate(channel.value.id, {
                 ...applicationAutomationSettings,
                 workflows,

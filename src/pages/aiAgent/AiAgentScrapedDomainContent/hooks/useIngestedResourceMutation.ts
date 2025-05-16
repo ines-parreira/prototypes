@@ -36,7 +36,8 @@ export const useIngestedResourceMutation = ({
 
     const updateIngestedResource = useCallback(
         async (
-            ingestedResourceId,
+            // TODO(React18): Find a solution to casting to any once we upgrade to React 18 types
+            ingestedResourceId: any,
             updateFields: {
                 status: IngestedResourceStatus
             },

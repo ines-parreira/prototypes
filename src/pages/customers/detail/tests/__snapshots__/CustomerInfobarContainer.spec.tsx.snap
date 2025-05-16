@@ -20,7 +20,6 @@ exports[`<CustomerInfobarContainer /> should render infobar for active customer 
   </div>
   <div>
     customer: 
-    name
     Don Draper
   </div>
   <div>

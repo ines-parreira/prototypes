@@ -1,4 +1,4 @@
-import React, { ComponentType } from 'react'
+import { ComponentType } from 'react'
 
 import ArrayExpression from 'pages/common/components/ast/expression/ArrayExpression'
 import BinaryExpression from 'pages/common/components/ast/expression/BinaryExpression'
@@ -23,8 +23,9 @@ const types = {
 } as const
 
 export default function Expression(props: ExpressionProps) {
+    // TODO(React18): Find a solution to casting to unknown once we upgrade to React 18 types
     const Component = (types[props.type as keyof typeof types] ||
-        UnknownSyntax) as ComponentType<ExpressionProps>
+        UnknownSyntax) as unknown as ComponentType<ExpressionProps>
 
     return <Component {...props} />
 }

@@ -66,8 +66,8 @@ const WizardStepSkeleton: React.FC<Props> = ({
                             ) : (
                                 <>
                                     <div className="heading-page-semibold">
-                                        {metaStep && isRecord(stepTitle)
-                                            ? stepTitle[metaStep]
+                                        {stepTitle && isRecord(stepTitle)
+                                            ? (stepTitle[metaStep ?? ''] ?? '')
                                             : stepTitle}
                                     </div>
                                     {descriptions[step] && (

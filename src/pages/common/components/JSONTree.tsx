@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from 'react'
+import { FC, ReactElement } from 'react'
 
 import { List, Map } from 'immutable'
 
@@ -53,7 +53,7 @@ const switchComponent = (
         return <span className="null-value">null</span>
     }
 
-    return <span>{data}</span>
+    return <span>{data.toArray()}</span>
 }
 
 const ObjectComponent = ({

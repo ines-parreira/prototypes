@@ -1,14 +1,16 @@
-import { useFormContext, useFormState } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 
 import Caption from 'pages/common/forms/Caption/Caption'
 
 export const FormSubmitButtonError: React.FC = () => {
-    const { errors } = useFormState({
-        control: useFormContext().control,
-    })
+    const {
+        formState: { errors },
+    } = useFormContext()
 
-    if (errors.address?.message) {
-        return <Caption error={errors.address?.message} />
+    const addressError = errors?.address
+
+    if (typeof addressError?.message === 'string') {
+        return <Caption error={addressError.message} />
     }
 
     return null

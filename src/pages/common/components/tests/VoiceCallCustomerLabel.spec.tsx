@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import React, { ComponentProps, ReactNode } from 'react'
 
 import { cleanup, render, screen } from '@testing-library/react'
 
@@ -9,7 +9,8 @@ import VoiceCallCustomerLabel from '../VoiceCallCustomerLabel/VoiceCallCustomerL
 
 jest.mock('pages/common/utils/labels', () => ({
     CustomerLabel: (props: ComponentProps<typeof CustomerLabel>) => (
-        <p>CustomerLabel {props.customer}</p>
+        // TODO(React18): Find a solution to casting once we upgrade to React 18 types
+        <p>CustomerLabel {props.customer as ReactNode}</p>
     ),
 }))
 

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { ReactNode, useEffect, useMemo, useState } from 'react'
 
 import _pick from 'lodash/pick'
 import { connect, ConnectedProps } from 'react-redux'
@@ -78,7 +78,12 @@ export const CustomerDetailContainer = ({
         <div className={css.customerDetailContainer}>
             <div className={css.header}>
                 <h1 className={css.title}>
-                    {customersHelpers.getDisplayName(activeCustomer)}
+                    {/* TODO(React18): Find a solution to casting to ReactNode once we upgrade to React 18 types */}
+                    {
+                        customersHelpers.getDisplayName(
+                            activeCustomer,
+                        ) as ReactNode
+                    }
                 </h1>
                 <div className={css.buttons}>
                     <CreateTicketButton

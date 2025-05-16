@@ -79,7 +79,7 @@ export default function Dimension({
     }, [dimension.name, ticketId])
 
     const handleClickPrediction = useCallback(
-        (value) => {
+        (value: number) => {
             onChange(value, dimension.explanation)
         },
         [dimension.explanation, onChange],

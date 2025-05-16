@@ -161,7 +161,10 @@ export const TagsSelectContainer = ({
             style={style}
             selectedOptions={values as Option[]}
             className={className}
-            dropdownMenu={TagDropdownMenu}
+            dropdownMenu={
+                // TODO(React18): Type mismatch on RuleTriggerDropdownMenu props. Safe cast for now.
+                TagDropdownMenu as unknown as React.ComponentType<unknown>
+            }
             onInputChange={setSearchTerm}
             caseInsensitive={caseInsensitive}
             loading={isLoading}

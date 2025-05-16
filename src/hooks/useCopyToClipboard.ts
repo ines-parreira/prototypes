@@ -20,7 +20,7 @@ export default function useCopyToClipboard(): [
     })
 
     const copyToClipboard = useCallback(
-        (value) => {
+        (value: string) => {
             if (!isMounted()) {
                 return
             }

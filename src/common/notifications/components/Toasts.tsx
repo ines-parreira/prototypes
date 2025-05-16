@@ -31,7 +31,7 @@ export default function Toasts() {
     )
 
     const handleClick = useCallback(
-        (itemId) => {
+        (itemId: string) => {
             logEvent(SegmentEvent.NotificationToastClicked)
             const knockItem = feedClient
                 .getState()

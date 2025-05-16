@@ -47,7 +47,7 @@ export const ExpressionField = function ExpressionField({
             </div>
             <AddButton onClick={() => handleAdd(DEFAULT_EXPRESSION_RULE)} />
             {errors?.expression?.root?.message && (
-                <Caption error={errors.expression.root.message} />
+                <Caption error={errors.expression.root.message as string} />
             )}
         </div>
     )

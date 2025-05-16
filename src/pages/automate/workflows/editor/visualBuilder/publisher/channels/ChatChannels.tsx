@@ -42,7 +42,8 @@ const ChannelItem = ({
     }, [applicationAutomationSettings])
 
     const handleChatUpdate = useCallback(
-        async (workflows) => {
+        // TODO(React18): Find a solution to casting to any once we upgrade to React 18 types
+        async (workflows: any) => {
             await handleChatApplicationAutomationSettingsUpdate({
                 ...applicationAutomationSettings,
                 workflows: {

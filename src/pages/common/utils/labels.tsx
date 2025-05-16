@@ -1,4 +1,4 @@
-import { isValidElement } from 'react'
+import { isValidElement, ReactNode } from 'react'
 
 import classnames from 'classnames'
 import { Emoji } from 'emoji-mart'
@@ -168,7 +168,8 @@ export const CustomerLabel = ({
     typeof customer === 'string' ? (
         <span>{customer}</span>
     ) : (
-        <span>{getDisplayName(customer)}</span>
+        // TODO(React18): Find a solution to casting to ReactNode once we upgrade to React 18 types
+        <span>{getDisplayName(customer) as ReactNode}</span>
     )
 
 export const TimedeltaLabel = ({

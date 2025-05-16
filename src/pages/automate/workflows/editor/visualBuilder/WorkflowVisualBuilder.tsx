@@ -1,6 +1,6 @@
 import 'reactflow/dist/style.css'
 
-import React, { Dispatch, PropsWithChildren, useCallback, useMemo } from 'react'
+import React, { Dispatch, useCallback, useMemo } from 'react'
 
 import classNames from 'classnames'
 import {
@@ -229,8 +229,8 @@ export function WorkflowVisualBuilderWrapped({ isNew }: Props) {
     )
 }
 
-function withProviders<T>(Component: React.FC<T>): React.FC<T> {
-    return (props: PropsWithChildren<T>) => (
+function withProviders<T extends object>(Component: React.FC<T>): React.FC<T> {
+    return (props: T) => (
         <ReactFlowProvider>
             <Component {...props} />
         </ReactFlowProvider>

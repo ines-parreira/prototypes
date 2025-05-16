@@ -86,7 +86,7 @@ jest.mock(
                 <div>sources: {JSON.stringify(sources)}</div>
                 <div>isRouteEditingWidgets: {isRouteEditingWidgets}</div>
                 <div>identifier: {identifier}</div>
-                <div>customer: {customer}</div>
+                <div>customer: {customer.toArray()}</div>
                 <div>widgets: {JSON.stringify(widgets)}</div>
                 <div>context: {context}</div>
             </div>

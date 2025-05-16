@@ -56,7 +56,8 @@ const IvrMenuActionSelect = ({
     })
 
     const handleActionTypeChange = useCallback(
-        (action) => {
+        // TODO(React18): Find a solution to casting to any once we upgrade to React 18 types
+        (action: any) => {
             switch (action) {
                 case IvrMenuActionType.PlayMessage: {
                     onChange({

@@ -634,7 +634,9 @@ export class AuditLogEventContainer extends Component<Props, State> {
             },
         )
 
-        return <div className={css.failedActions}>{failures}</div>
+        return (
+            <div className={css.failedActions}>{List(failures).toArray()}</div>
+        )
     }
 
     _getTicketSatisfactionSurveySkippedReasons(): List<string> {

@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useState } from 'react'
+import React, { ReactNode, SyntheticEvent, useState } from 'react'
 
 import cs from 'classnames'
 import { Popover, PopoverBody } from 'reactstrap'
@@ -87,7 +87,8 @@ export default function Field<T extends LeafType>({
         <FieldContainer id={uniqueId} className={className}>
             <FieldLabel className={css.fieldLabel}>{title}:</FieldLabel>
             <FieldValue canOverflow={valueCanOverflow}>
-                {value}
+                {/* TODO(React18): Find a solution to casting to ReactNode once we upgrade to React 18 types */}
+                {value as ReactNode}
                 {!isEditionMode && copyButton && (
                     <span className={css.copyButton}>{copyButton}</span>
                 )}

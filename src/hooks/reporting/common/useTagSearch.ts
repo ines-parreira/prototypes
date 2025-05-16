@@ -81,7 +81,7 @@ export const useTagSearch = () => {
     )
 
     const handleTagsSearch = useCallback(
-        (search) => {
+        (search: string) => {
             if (tagSearch !== search) {
                 setDebouncedTagSearch(search)
             }

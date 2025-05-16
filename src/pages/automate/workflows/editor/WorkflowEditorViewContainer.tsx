@@ -61,7 +61,7 @@ export default function WorkflowEditorViewContainer() {
     )
 
     const handleNewWorkflowCreated = useCallback(
-        (isDraft) => {
+        (isDraft: boolean) => {
             if (isDraft) {
                 logActionOnFlowBuilder('draft')
             }

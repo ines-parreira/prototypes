@@ -63,7 +63,8 @@ export default function VoiceQueueList({
                 }}
                 components={{
                     EmptyPlaceholder: TableBodySkeleton,
-                    TableHead: ({ children }) => (
+                    // TODO(React18) Get rid of the casting to any when going to react-18 types
+                    TableHead: ({ children }: any) => (
                         <TableHead className={css.header}>{children}</TableHead>
                     ),
                     TableRow: (props) => {

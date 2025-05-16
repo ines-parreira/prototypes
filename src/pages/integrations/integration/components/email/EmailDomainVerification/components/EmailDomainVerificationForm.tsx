@@ -41,7 +41,8 @@ export default function EmailDomainVerificationForm({ integration }: Props) {
     const isSendgrid = provider === EmailProvider.Sendgrid
 
     const onError = useCallback(
-        (error) => {
+        // TODO(React18): Type mismatch on RuleTriggerDropdownMenu props. Safe cast for now.
+        (error: unknown) => {
             const message =
                 (isGorgiasApiError(error) && error.response?.data.error.msg) ||
                 'Failed to create domain'

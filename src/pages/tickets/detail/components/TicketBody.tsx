@@ -99,7 +99,7 @@ export default function TicketBody({
     )
 
     const getItemContent = useCallback(
-        (index, element) =>
+        (index: number, element: TicketElement | TicketMessage[] | 'header') =>
             element === 'header' ? (
                 <TicketHeaderWrapper
                     hideTicket={hideTicket}

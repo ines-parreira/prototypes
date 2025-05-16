@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { ReactNode, useEffect, useMemo, useState } from 'react'
 
 import Clipboard from 'clipboard'
 import { fromJS, List, Map } from 'immutable'
@@ -262,7 +262,8 @@ const InfobarCustomerInfo = ({
                             to={`/app/customer/${customer.get('id') as string}`}
                             className={css.displayName}
                         >
-                            {getDisplayName(customer)}
+                            {/* TODO(React18): Find a solution to casting to ReactNode once we upgrade to React 18 types */}
+                            {getDisplayName(customer) as ReactNode}
                         </Link>
                     </div>
                     <div className={css.customerOptions}>

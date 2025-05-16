@@ -250,7 +250,8 @@ class Preview extends Component<Props> {
             <div className={css.macroData}>
                 <strong className="text-muted mr-2">Set subject:</strong>
                 <b className={css.integrationAction}>
-                    {setSubjectAction.arguments.subject}
+                    {/* TODO(React18): Find a solution to casting to ReactNode once we upgrade to React 18 types */}
+                    {setSubjectAction.arguments.subject as ReactNode}
                 </b>
             </div>
         )

@@ -195,7 +195,8 @@ export class RichFieldEditor extends Component<Props, State> {
         })
 
         const imageDecorator = composeDecorators(
-            this.resizeablePlugin.decorator,
+            // TODO(React18): Find a solution to casting to ReactNode once we upgrade to React 18 types
+            this.resizeablePlugin.decorator as ReactNode,
         )
 
         this.toolbarPlugin = props.createToolbarPlugin(imageDecorator)

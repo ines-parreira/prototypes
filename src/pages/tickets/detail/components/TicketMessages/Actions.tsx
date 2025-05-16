@@ -82,15 +82,17 @@ export default class Actions extends Component<Props, State> {
             <ModalBody>
                 {Object.keys(action.arguments!).map((arg, idx) => {
                     if (!hiddenOptions.includes(arg)) {
-                        let value =
+                        let rawValue =
                             action.arguments![
                                 arg as keyof typeof action.arguments
                             ]
 
-                        if (typeof value === 'object') {
-                            value = JSON.stringify(value)
+                        let value: string
+
+                        if (typeof rawValue === 'object') {
+                            value = JSON.stringify(rawValue)
                         } else {
-                            value = String(value)
+                            value = String(rawValue)
                         }
 
                         return (

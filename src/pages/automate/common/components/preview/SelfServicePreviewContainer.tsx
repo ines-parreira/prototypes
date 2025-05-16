@@ -19,7 +19,7 @@ type Props<T extends SelfServiceChannel> = {
         message: ReactNode
         action?: { message: string; href: string }
     }
-    children: (channel: T) => void
+    children: (channel: T) => ReactNode
     previewUrl?: string
     contentContainerClassName?: string
 }

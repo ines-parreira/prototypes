@@ -7,7 +7,7 @@ export default function useDimensions(): [
     const [dimensions, setDimensions] = useState<DOMRect | null>(null)
     const [element, setElement] = useState<HTMLElement | null>(null)
 
-    const ref = useCallback((element) => {
+    const ref = useCallback((element: HTMLElement | null) => {
         setElement(element)
     }, [])
     useLayoutEffect(() => {

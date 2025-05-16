@@ -71,7 +71,8 @@ const VoiceMessageField = ({
     }, [value, voiceRecordingPath, setVoiceRecordingPath])
 
     const handleVoiceMessageTypeChange = useCallback(
-        (type) => {
+        // TODO(React18): Remove any type
+        (type: any) => {
             onChange({
                 ...value,
                 voice_message_type: type,

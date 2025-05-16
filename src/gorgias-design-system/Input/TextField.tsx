@@ -205,9 +205,10 @@ const TextField: React.FC<TextFieldProps> = ({ ...args }) => {
     }, [value])
 
     const triggerInnerValueChange = useCallback(
-        (value) => {
+        (value: ValueType) => {
             setInnerValue(value)
-            onChange && onChange(value)
+            // TODO(React18): Find a solution to casting once we upgrade to React 18 types
+            onChange?.(value as unknown as ChangeEvent<HTMLInputElement>)
         },
         [setInnerValue, onChange],
     )

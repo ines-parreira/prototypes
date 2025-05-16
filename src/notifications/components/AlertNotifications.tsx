@@ -16,7 +16,7 @@ export default function Notifications() {
     const appNode = useAppNode()
 
     const dismiss = useCallback(
-        (id) => {
+        (id: string) => {
             dispatch(dismissNotification(id))
         },
         [dispatch],

@@ -14,7 +14,7 @@ const useCancellableRequest = <T extends FnReturningPromise>(
         }
     }, [])
     const request = useCallback(
-        async (...args) => {
+        async (...args: Parameters<T>): Promise<ReturnType<T> | undefined> => {
             const cancelTokenSource = axios.CancelToken.source()
 
             cancel()

@@ -183,7 +183,8 @@ function useViewSharing(view: Map<any, any>, currentUser: Map<any, any>) {
     )
 
     const save = useCallback(
-        (onSuccess) => {
+        // TODO(React18): Find a solution to casting to any once we upgrade to React 18 types
+        (onSuccess: any) => {
             setSaving(true)
             setError(null)
 

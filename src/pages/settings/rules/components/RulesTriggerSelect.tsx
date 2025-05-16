@@ -58,7 +58,10 @@ export function RulesTriggerSelect({ rule, setEventTypes }: Props) {
                 plural="events"
                 onChange={handleEventTypes}
                 className={css.whenEvents}
-                dropdownMenu={RuleTriggerDropdownMenu}
+                dropdownMenu={
+                    // TODO(React18): Type mismatch on RuleTriggerDropdownMenu props. Safe cast for now.
+                    RuleTriggerDropdownMenu as unknown as React.ComponentType<unknown>
+                }
             />
             {eventTypes.length === 0 && (
                 <Errors inline>You need to select at least one trigger</Errors>

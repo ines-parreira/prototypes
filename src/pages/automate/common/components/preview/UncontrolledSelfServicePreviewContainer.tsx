@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react'
+import { ReactNode, useState } from 'react'
 
 import { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 
@@ -10,7 +10,7 @@ type Props<T extends SelfServiceChannel> = {
         message: ReactNode
         action?: { message: string; href: string }
     }
-    children: (channel: T) => void
+    children: (channel: T) => ReactNode
 }
 
 const UncontrolledSelfServicePreviewContainer = <T extends SelfServiceChannel>({

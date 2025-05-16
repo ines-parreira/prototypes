@@ -51,41 +51,34 @@ export default function toolbarPlugin(config: Config): Plugin {
             block: ContentBlock,
             { getEditorState }: PluginMethods,
         ) => {
-            const contetState = getEditorState().getCurrentContent()
+            const contentState = getEditorState().getCurrentContent()
             // render img (atomic block)
             const entityKey = block.getEntityAt(0)
             if (block.getType() === 'atomic' && entityKey) {
-                const entity = contetState.getEntity(entityKey)
+                const entity = contentState.getEntity(entityKey)
                 const type = entity.getType()
-                if (type === draftjsGorgiasCustomBlockRenderers.Img) {
-                    let component: ReactNode = Image
-                    const theme = config.theme ? config.theme : {}
-                    if (config.imageDecorator) {
-                        component = config.imageDecorator(component)
-                    }
-                    component = decorateComponentWithProps(
-                        component as ComponentType<any>,
+                const theme = config.theme ?? {}
+
+                const decorate = (
+                    Base: ComponentType<any>,
+                ): ComponentType<any> => {
+                    const Decorated =
+                        config.imageDecorator?.(Base as unknown as ReactNode) ??
+                        Base
+                    return decorateComponentWithProps(
+                        Decorated as unknown as ComponentType<any>,
                         { theme },
                     )
-                    return {
-                        component,
-                        editable: false,
-                    }
                 }
+
+                if (type === draftjsGorgiasCustomBlockRenderers.Img) {
+                    const component = decorate(Image)
+                    return { component, editable: false }
+                }
+
                 if (type === draftjsGorgiasCustomBlockRenderers.Video) {
-                    let component: ReactNode = Video
-                    const theme = config.theme ? config.theme : {}
-                    if (config.imageDecorator) {
-                        component = config.imageDecorator(component)
-                    }
-                    component = decorateComponentWithProps(
-                        component as ComponentType<any>,
-                        { theme },
-                    )
-                    return {
-                        component,
-                        editable: false,
-                    }
+                    const component = decorate(Video)
+                    return { component, editable: false }
                 }
             }
 

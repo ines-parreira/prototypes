@@ -1,3 +1,5 @@
+import { ReactNode } from 'react'
+
 import classnames from 'classnames'
 
 import css from './Loader.less'
@@ -35,7 +37,10 @@ export default function Loader({
                     className="icon-custom icon-circle-o-notch md-spin"
                     style={{ fontSize: size }}
                 />
-                {!inline && message && <div className="mt-3">{message}</div>}
+                {/* TODO(React18): Find a solution to casting to ReactNode once we upgrade to React 18 types */}
+                {!inline && message && (
+                    <div className="mt-3">{message as ReactNode}</div>
+                )}
             </div>
         </div>
     )
