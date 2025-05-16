@@ -12,6 +12,7 @@ import { useApplyTheme } from 'core/theme'
 import useHasPhone from 'hooks/useHasPhone'
 import { isAiAgentOnboarding } from 'main/app/utils/isAiAgentOnboarding'
 import { AlertNotifications } from 'notifications'
+import ShoppingAssistantTrialSystemBanner from 'pages/aiAgent/Activation/components/ShoppingAssistantTrialSystemBanner/ShoppingAssistantTrialSystemBanner'
 import EmailDisconnectedBanner from 'pages/common/components/EmailDisconnectedBanner'
 import EmailDomainVerificationBanner from 'pages/common/components/EmailDomainVerificationBanner/EmailDomainVerificationBanner'
 import EmailMigrationBanner from 'pages/common/components/EmailMigrationBanner/EmailMigrationBanner'
@@ -76,6 +77,7 @@ export default function App({ children }: Props) {
                     <>
                         <AlertBanners />
                         <ImpersonationBanner />
+                        <ShoppingAssistantTrialSystemBanner />
                         {!bannerList?.scriptTagMigrationBanner && (
                             <ScriptTagMigrationBanner />
                         )}

@@ -32,6 +32,7 @@ export enum FeatureFlagKey {
     AiSalesAgentBeta = 'ai-sales-agent-beta',
     AiShoppingAssistantTrialEnabled = 'ai-shopping-assistant-trial-enabled',
     AiShoppingAssistantTrialMerchants = 'ai-shopping-assistant-trial-merchants',
+    AiShoppingAssistantTrialSystemBanner = 'ai-shopping-assistant-trial-system-banner',
     AiAgentUseNewAgenticArchitecture = 'ai-agent-use-new-agentic-architecture',
     AITicketSummary = 'linear.project-ai-summaries.ai-ticket-summary-component-frontend',
     AiShoppingAssistantEnabled = 'ai-shopping-assistant-enabled',

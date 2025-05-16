@@ -61,6 +61,11 @@ jest.mock('tickets/core/hooks', () => ({
     useRedirectDeprecatedTicketRoutes: jest.fn(),
 }))
 
+jest.mock(
+    'pages/aiAgent/Activation/components/ShoppingAssistantTrialSystemBanner/ShoppingAssistantTrialSystemBanner',
+    () => jest.fn(() => <div>ShoppingAssistantTrialSystemBanner</div>),
+)
+
 jest.mock('AlertBanners', () => jest.fn(() => <div>AlertBanners</div>))
 jest.mock('../../../../AlertBanners/components/ImpersonationBanner', () =>
     jest.fn(() => <div>ImpersonatedBanner</div>),
