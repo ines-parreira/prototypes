@@ -97,4 +97,14 @@ describe('usePotentialImpact', () => {
             'Unlock between $250 and $370 of additional GMV.',
         )
     })
+
+    it('should return correctly formatted potentialImpact when GMV is high', () => {
+        const { result } = renderHook(() =>
+            usePotentialImpact(100, [monthlyData]),
+        )
+
+        expect(result.current).toEqual(
+            'Unlock between $819K and $1.2M of additional GMV.',
+        )
+    })
 })

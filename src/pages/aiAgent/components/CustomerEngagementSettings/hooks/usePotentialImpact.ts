@@ -3,11 +3,17 @@ import { useMemo } from 'react'
 import moment from 'moment'
 
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
-import { formatCurrency } from 'pages/stats/common/utils'
 
 const lowerImpactMultiplier = 0.8
 const upperImpactMultiplier = 1.2
 const roundTo = 10
+
+const getCurrencyFormatter = () =>
+    Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        notation: 'compact',
+    })
 
 export const computeRoundedPotentialImpact = (
     estimatedInfluencedGMV: number,
@@ -62,7 +68,9 @@ export const usePotentialImpact = (
 
         const { lowerImpact, upperImpact } = potentialImpact
 
-        return `Unlock between ${formatCurrency(lowerImpact, 'USD')} and ${formatCurrency(upperImpact, 'USD')} of additional GMV.`
+        const formatter = getCurrencyFormatter()
+
+        return `Unlock between ${formatter.format(lowerImpact)} and ${formatter.format(upperImpact)} of additional GMV.`
     }, [estimatedInfluencedGMV, gmv])
 
     return formattedImpact
