@@ -10,7 +10,7 @@ import {
     Notification as ReapopNotification,
 } from 'reapop'
 
-import { AlertBannerTypes } from 'AlertBanners'
+import { AlertBannerTypes } from 'AlertBanners/types'
 
 import { RootState, StoreDispatch } from '../types'
 import {
