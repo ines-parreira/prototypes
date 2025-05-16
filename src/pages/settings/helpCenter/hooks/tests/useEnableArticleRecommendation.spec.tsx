@@ -61,7 +61,7 @@ const getDependencyWrapper = (state = defaultState) => {
     const dependencyWrapper: React.ComponentType<any> = ({
         children,
     }: {
-        children: Element
+        children: React.ReactNode
     }) => (
         <QueryClientProvider client={queryClient}>
             <Provider store={mockStore(state)}>{children}</Provider>

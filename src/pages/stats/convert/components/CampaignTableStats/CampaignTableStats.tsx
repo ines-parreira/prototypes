@@ -151,7 +151,7 @@ export const CampaignTableStats = ({
     )
 
     const renderRows = useCallback(
-        (cell: CampaignTableContentCell, index) => {
+        (cell: CampaignTableContentCell, index: number) => {
             return (
                 <>
                     <TableBodyRow key={index}>

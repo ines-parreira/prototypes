@@ -53,11 +53,16 @@ export default function ViewSharingModalWarning({
                             placement="top"
                             target="missing-teams-tooltip"
                         >
-                            {missingTeams.map((team: Map<any, any>) => (
-                                <span key={team.get('id')} className="d-block">
-                                    {team.get('name')}
-                                </span>
-                            ))}
+                            {missingTeams
+                                .toArray()
+                                .map((team: Map<any, any>) => (
+                                    <span
+                                        key={team.get('id')}
+                                        className="d-block"
+                                    >
+                                        {team.get('name')}
+                                    </span>
+                                ))}
                         </UncontrolledTooltip>
                     </>
                 )}
@@ -75,11 +80,16 @@ export default function ViewSharingModalWarning({
                             placement="top"
                             target="missing-users-tooltip"
                         >
-                            {missingUsers.map((user: Map<any, any>) => (
-                                <span key={user.get('id')} className="d-block">
-                                    {user.get('name')}
-                                </span>
-                            ))}
+                            {missingUsers
+                                .toArray()
+                                .map((user: Map<any, any>) => (
+                                    <span
+                                        key={user.get('id')}
+                                        className="d-block"
+                                    >
+                                        {user.get('name')}
+                                    </span>
+                                ))}
                         </UncontrolledTooltip>
                     </>
                 )}{' '}

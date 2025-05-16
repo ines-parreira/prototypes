@@ -2,6 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 
 import { fromJS, List, Map } from 'immutable'
 
+import { CustomFieldValue } from 'custom-fields/types'
 import CustomFieldIdInput from 'pages/common/components/ast/widget/CustomFieldIdInput'
 import CustomFieldSelect from 'pages/common/components/ast/widget/CustomFieldSelect'
 
@@ -37,7 +38,7 @@ const SetCustomFieldValueAction = ({
     }, [actions])
 
     const handleFieldIdChange = useCallback(
-        (newValue) =>
+        (newValue: number) =>
             updateActionArgs(
                 index,
                 fromJS({ ...args, custom_field_id: newValue }),
@@ -46,7 +47,7 @@ const SetCustomFieldValueAction = ({
     )
 
     const handleFieldValueChange = useCallback(
-        (newValue) =>
+        (newValue: Maybe<CustomFieldValue>) =>
             updateActionArgs(index, fromJS({ ...args, value: newValue })),
         [updateActionArgs, index, args],
     )

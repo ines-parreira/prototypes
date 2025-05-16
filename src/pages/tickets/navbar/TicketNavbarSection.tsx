@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import classnames from 'classnames'
-import { useDrag } from 'react-dnd'
+import { DropTargetMonitor, useDrag } from 'react-dnd'
 import { connect, ConnectedProps } from 'react-redux'
 import {
     Dropdown,
@@ -19,7 +19,10 @@ import { hasRole } from 'utils'
 import { addCanduLinkForValidViewOrSection } from 'utils/views'
 
 import { TicketNavbarSectionElement } from './TicketNavbarContent'
-import TicketNavbarDropTarget from './TicketNavbarDropTarget'
+import TicketNavbarDropTarget, {
+    TicketNavbarDragObject,
+    TicketNavbarDropDirection,
+} from './TicketNavbarDropTarget'
 import TicketNavbarView from './TicketNavbarView'
 
 import css from './TicketNavbarSection.less'
@@ -62,7 +65,11 @@ export function TicketNavbarSectionContainer({
         }),
     })
     const handleDrop = useCallback(
-        (item, monitor, direction) => ({
+        (
+            item: TicketNavbarDragObject,
+            monitor: DropTargetMonitor,
+            direction: TicketNavbarDropDirection | null,
+        ) => ({
             viewId: null,
             sectionId: section.id,
             direction,

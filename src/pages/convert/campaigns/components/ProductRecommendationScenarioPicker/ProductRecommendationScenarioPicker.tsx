@@ -54,7 +54,8 @@ const ProductRecommendationScenarioPicker = ({ onClick }: Props) => {
         )
 
     const isTriggerAlreadyAdded = useCallback(
-        (trigger) =>
+        (trigger: CampaignTrigger | undefined) =>
+            trigger &&
             Object.values(triggers).some((t) => areTriggersEqual(t, trigger)),
         [triggers],
     )

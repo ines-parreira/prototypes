@@ -62,7 +62,7 @@ const HelpCenterCreationWizardComponent = ({
             : HelpCenterCreationWizardStep.Basics
 
     const onStepChanged = useCallback(
-        (stepName) => {
+        (stepName: HelpCenterCreationWizardStep) => {
             logEvent(SegmentEvent.WizardPageViewed, {
                 steps: steps.join(', '),
                 automate:
@@ -99,7 +99,9 @@ const HelpCenterCreationWizardComponent = ({
                     <Wizard
                         steps={steps}
                         startAt={wizardStep}
-                        onStepChanged={onStepChanged}
+                        onStepChanged={(step: string) =>
+                            onStepChanged(step as HelpCenterCreationWizardStep)
+                        }
                     >
                         <WizardStep name={HelpCenterCreationWizardStep.Basics}>
                             <HelpCenterCreationWizardStepBasics

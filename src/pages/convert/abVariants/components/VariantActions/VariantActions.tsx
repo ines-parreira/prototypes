@@ -24,7 +24,13 @@ const VariantActions: React.FC<Props> = (props) => {
     } = props
 
     const renderConfirmation = useCallback(
-        ({ uid, onDisplayConfirmation }) => {
+        ({
+            uid,
+            onDisplayConfirmation,
+        }: {
+            uid: string
+            onDisplayConfirmation: () => void
+        }) => {
             return (
                 <IconButton
                     className="mr-1"

@@ -96,9 +96,12 @@ const DonutChart = ({
     )
     const { customTooltip, tooltipData, tooltipStyle } = useCustomTooltip()
 
-    const handleDonutHover = useCallback((_, elements: ActiveElement[]) => {
-        setHoveredIndex(elements.length ? elements[0].index : null)
-    }, [])
+    const handleDonutHover = useCallback(
+        (_event: unknown, elements: ActiveElement[]) => {
+            setHoveredIndex(elements.length ? elements[0].index : null)
+        },
+        [],
+    )
 
     const debouncedOnMouseLeave = useMemo(
         () => _debounce(() => setHoveredIndex(null), 100),
@@ -149,7 +152,7 @@ const DonutChart = ({
         }, [data, chartColors, greyColor])
 
     const handleChartSegmentClick = useCallback(
-        (_, elements: ActiveElement[]) => {
+        (_event: unknown, elements: ActiveElement[]) => {
             if (elements.length > 0) {
                 const chartElement = elements[0]
                 const dataIndex = chartElement.index

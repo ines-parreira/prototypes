@@ -42,7 +42,7 @@ const defaultState: Partial<RootState> = {
 const dependencyWrapper: React.ComponentType<any> = ({
     children,
 }: {
-    children: Element
+    children: React.ReactNode
 }) => <Provider store={mockStore(defaultState)}>{children}</Provider>
 
 describe('useHelpCenterCategories', () => {

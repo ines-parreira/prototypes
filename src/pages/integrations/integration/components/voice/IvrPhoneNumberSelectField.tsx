@@ -50,7 +50,7 @@ const IvrPhoneNumberSelectField = ({ value, onChange }: Props): JSX.Element => {
     )
 
     const handleChange = useCallback(
-        (integrationId) => {
+        (integrationId: number) => {
             const integration = availableIntegrations.find(
                 (integration) => integration.id === integrationId,
             )

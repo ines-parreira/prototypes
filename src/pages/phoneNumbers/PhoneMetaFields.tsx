@@ -32,7 +32,7 @@ export default function PhoneDetailsFields({
     const { country, type, state, area_code } = value
 
     const handleCountryChange = useCallback(
-        (country) => {
+        (country: PhoneCountry) => {
             onChange({
                 ...value,
                 country,
@@ -65,7 +65,7 @@ export default function PhoneDetailsFields({
     )
 
     const handleTypeChange = useCallback(
-        (type) => {
+        (type: PhoneType) => {
             onChange({
                 ...value,
                 type,
@@ -76,7 +76,7 @@ export default function PhoneDetailsFields({
     )
 
     const handleStateChange = useCallback(
-        (state) => {
+        (state: string) => {
             onChange({
                 ...value,
                 state,
@@ -138,7 +138,9 @@ export default function PhoneDetailsFields({
                         <SelectField
                             id="country"
                             value={country}
-                            onChange={handleCountryChange}
+                            onChange={(value) =>
+                                handleCountryChange(value as PhoneCountry)
+                            }
                             options={countryOptions}
                             fullWidth
                             required
@@ -152,7 +154,9 @@ export default function PhoneDetailsFields({
                             <SelectField
                                 id="type"
                                 value={type}
-                                onChange={handleTypeChange}
+                                onChange={(value) =>
+                                    handleTypeChange(value as PhoneType)
+                                }
                                 options={typeOptions}
                                 disabled={typeOptions.length === 1}
                                 fullWidth
@@ -168,7 +172,9 @@ export default function PhoneDetailsFields({
                             <SelectField
                                 id="state"
                                 value={state}
-                                onChange={handleStateChange}
+                                onChange={(value) =>
+                                    handleStateChange(value as string)
+                                }
                                 options={
                                     !!country
                                         ? getAvailableStates(country).map(

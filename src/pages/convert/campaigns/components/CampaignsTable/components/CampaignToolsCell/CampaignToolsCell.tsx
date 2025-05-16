@@ -48,29 +48,38 @@ export const CampaignToolsCell = ({
     const isShopifyStore = chatIsShopifyStore(integration)
 
     const onDelete = useCallback(
-        (campaign) => {
+        (campaign: Campaign) => {
             onClickDelete(campaign)
             setIsLightModalOpen(false)
         },
         [onClickDelete],
     )
 
-    const renderConfirmation = useCallback(({ uid, onDisplayConfirmation }) => {
-        return (
-            <IconButton
-                className="mr-1"
-                onClick={onDisplayConfirmation}
-                fillStyle="ghost"
-                intent="destructive"
-                title="Delete campaign"
-                aria-label="Delete campaign"
-                id={uid}
-                data-testid="delete-icon-button" // used in e2e tests
-            >
-                delete
-            </IconButton>
-        )
-    }, [])
+    const renderConfirmation = useCallback(
+        ({
+            uid,
+            onDisplayConfirmation,
+        }: {
+            uid: string
+            onDisplayConfirmation: () => void
+        }) => {
+            return (
+                <IconButton
+                    className="mr-1"
+                    onClick={onDisplayConfirmation}
+                    fillStyle="ghost"
+                    intent="destructive"
+                    title="Delete campaign"
+                    aria-label="Delete campaign"
+                    id={uid}
+                    data-testid="delete-icon-button" // used in e2e tests
+                >
+                    delete
+                </IconButton>
+            )
+        },
+        [],
+    )
 
     const duplicateButton = useMemo(() => {
         return (

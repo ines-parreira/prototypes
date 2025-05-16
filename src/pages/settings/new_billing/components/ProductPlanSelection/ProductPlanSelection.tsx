@@ -6,7 +6,7 @@ import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import { Cadence, Plan, ProductType } from 'models/billing/types'
+import { Cadence, HelpdeskPlan, Plan, ProductType } from 'models/billing/types'
 import { getProductLabel, isStarterTier } from 'models/billing/utils'
 import Button from 'pages/common/components/button/Button'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -31,6 +31,10 @@ import CancelProductModal from '../CancelProductModal/CancelProductModal'
 import CounterText from '../CounterText'
 
 import css from './ProductPlanSelection.less'
+
+function isHelpdeskPlan(plan: Plan): plan is HelpdeskPlan {
+    return 'features' in plan && 'integrations' in plan
+}
 
 export type ProductPlanSelectionProps = {
     type: ProductType
@@ -74,8 +78,12 @@ const ProductPlanSelection = ({
     const [isCancellationFlowOpen, setIsCancellationFlowOpen] = useState(false)
 
     const isStarterHelpdeskPlanDisabled = useCallback(
-        (plan) => {
-            if (isStarterTier(plan) && cadence === Cadence.Year) {
+        (plan: Plan) => {
+            if (
+                isHelpdeskPlan(plan) &&
+                isStarterTier(plan) &&
+                cadence === Cadence.Year
+            ) {
                 return {
                     isDisabled: true,
                     tooltipText:

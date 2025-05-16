@@ -51,7 +51,7 @@ type Props = {
     loaderHeight?: string
     children: (stat: Map<any, any>) => ReactNode
     refineDownload?: (csvData: string) => string
-} & HTMLAttributes<HTMLDivElement>
+} & Omit<HTMLAttributes<HTMLDivElement>, 'children'>
 
 export default function StatWrapper({
     stat,

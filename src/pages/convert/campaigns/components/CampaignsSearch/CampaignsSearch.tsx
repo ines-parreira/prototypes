@@ -21,7 +21,7 @@ export const CampaignsSearch = ({ value, onChange, onClear }: Props) => {
     }, [value])
 
     const handleChange = useCallback(
-        (value) => {
+        (value: string) => {
             setInputValue(value)
             onChange && onChange(value)
         },

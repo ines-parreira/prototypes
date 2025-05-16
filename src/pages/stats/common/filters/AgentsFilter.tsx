@@ -70,7 +70,7 @@ export default function AgentsFilter({
     const teamValuePrefix = 'team_'
 
     const handleFilterValuesChange = useCallback(
-        (values) => {
+        (values: number[]) => {
             dispatchUpdate({
                 values,
                 operator: value.operator,

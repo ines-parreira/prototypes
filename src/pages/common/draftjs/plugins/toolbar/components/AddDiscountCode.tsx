@@ -176,45 +176,49 @@ const AddDiscountCode = ({ getEditorState, setEditorState }: Props) => {
             {!pickedIntegration ? (
                 <div className={css.discountLineContainer}>
                     <ListGroup flush>
-                        {shopifyIntegrations.map(
-                            (integration: Map<any, any>, index) => (
-                                <ListGroupItem
-                                    key={index}
-                                    tag="button"
-                                    className={css.customListGroup}
-                                    action
-                                    onClick={(event) => {
-                                        event.preventDefault()
-                                        handlePickIntegration(integration)
-                                    }}
-                                >
-                                    <div
-                                        className={css.integrationRowContainer}
+                        {shopifyIntegrations
+                            .toArray()
+                            .map(
+                                (integration: Map<any, any>, index: number) => (
+                                    <ListGroupItem
+                                        key={index}
+                                        tag="button"
+                                        className={css.customListGroup}
+                                        action
+                                        onClick={(event) => {
+                                            event.preventDefault()
+                                            handlePickIntegration(integration)
+                                        }}
                                     >
-                                        <div className={css.integrationRow}>
-                                            <img
-                                                className={css.shopifyLogo}
-                                                alt="Logo"
-                                                src={getIconFromType(
-                                                    integration.get('type'),
-                                                )}
-                                            />
-                                            <span>
-                                                {integration.get('name')}
-                                            </span>
-                                        </div>
-                                        <i
-                                            className={classnames(
-                                                'material-icons',
-                                                css.arrowIcon,
-                                            )}
+                                        <div
+                                            className={
+                                                css.integrationRowContainer
+                                            }
                                         >
-                                            keyboard_arrow_right
-                                        </i>
-                                    </div>
-                                </ListGroupItem>
-                            ),
-                        )}
+                                            <div className={css.integrationRow}>
+                                                <img
+                                                    className={css.shopifyLogo}
+                                                    alt="Logo"
+                                                    src={getIconFromType(
+                                                        integration.get('type'),
+                                                    )}
+                                                />
+                                                <span>
+                                                    {integration.get('name')}
+                                                </span>
+                                            </div>
+                                            <i
+                                                className={classnames(
+                                                    'material-icons',
+                                                    css.arrowIcon,
+                                                )}
+                                            >
+                                                keyboard_arrow_right
+                                            </i>
+                                        </div>
+                                    </ListGroupItem>
+                                ),
+                            )}
                     </ListGroup>
                 </div>
             ) : (

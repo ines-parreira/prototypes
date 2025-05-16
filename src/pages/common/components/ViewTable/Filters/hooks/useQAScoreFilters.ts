@@ -14,7 +14,7 @@ export default function useQAScoreFilters({ index, objectPath }: Props) {
 
     const qaScoreDimension = getQaScoreDimensionFromObjectPath(objectPath)
     const updateDimensionState = useCallback(
-        (newDimensionState) => {
+        (newDimensionState: string) => {
             dispatch(updateQAScoreFilterDimension(index, newDimensionState))
         },
         [index, dispatch],

@@ -18,7 +18,13 @@ export default function useAutoMergeSettings() {
     )
 
     const saveAutoMergeSettings = useCallback(
-        async ({ enabled, merging_window_days }) => {
+        async ({
+            enabled,
+            merging_window_days,
+        }: {
+            enabled: boolean
+            merging_window_days: number
+        }) => {
             const payload = {
                 id: autoMergeSettings?.id,
                 type: AccountSettingType.AutoMerge,

@@ -88,7 +88,7 @@ const ConvertBundleDetail = ({
     )
 
     const handle1ClickInstall = useCallback(
-        async (isInstalled) => {
+        async (isInstalled: boolean) => {
             await queryClient.invalidateQueries({
                 queryKey: bundleKeys.lists(),
             })

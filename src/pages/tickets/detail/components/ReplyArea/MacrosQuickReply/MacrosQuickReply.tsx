@@ -39,7 +39,7 @@ export const MacrosQuickReply = ({ macros, applyMacro }: Props) => {
     )
 
     const buttonHandleHover = useCallback(
-        (macroId, macroRank) => {
+        (macroId: number | undefined, macroRank: number) => {
             logEvent(SegmentEvent.MacrosQuickReplyGetDetails, {
                 ...baseSegmentPayload,
                 macroId,

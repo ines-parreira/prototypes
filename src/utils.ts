@@ -152,7 +152,7 @@ export function formatDatetime(
     datetime: Datetime,
     format: DateTimeResultFormatType,
     timezone?: string | null,
-): Datetime {
+): string {
     try {
         let momentDate = isMoment(datetime) ? datetime : moment.utc(datetime)
 
@@ -174,7 +174,7 @@ export function formatDatetime(
         return momentDate.format(format)
     } catch (e) {
         console.error('Failed to format datetime', e, datetime, timezone)
-        return datetime
+        return String(datetime)
     }
 }
 

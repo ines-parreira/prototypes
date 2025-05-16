@@ -6,7 +6,8 @@ import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
-import { FilterKey } from 'models/stat/types'
+import { FilterKey, WithLogicalOperator } from 'models/stat/types'
+import { Value } from 'pages/common/forms/SelectField/types'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import { ConvertRouteParams } from 'pages/convert/common/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
@@ -148,11 +149,12 @@ export const CampaignStatsFilters = ({
     }, [statsFilters])
 
     const handleChangeIntegration = useCallback(
-        (integrationIds) => {
+        (integrationIds: (string | number)[]) => {
+            const numericIds = integrationIds.map((id) => Number(id))
             dispatch(
                 mergeStatsFiltersWithLogicalOperator({
                     [FilterKey.StoreIntegrations]:
-                        withDefaultLogicalOperator(integrationIds),
+                        withDefaultLogicalOperator(numericIds),
                     [FilterKey.Campaigns]: withDefaultLogicalOperator([]),
                     [FilterKey.CampaignStatuses]: withDefaultLogicalOperator(
                         [],
@@ -189,11 +191,16 @@ export const CampaignStatsFilters = ({
     ])
 
     const handleChangeCampaigns = useCallback(
-        (campaignIds) => {
+        (campaignIds: WithLogicalOperator<string> | Value[]) => {
+            const values = Array.isArray(campaignIds)
+                ? campaignIds
+                : campaignIds.values
+
             dispatch(
                 mergeStatsFiltersWithLogicalOperator({
-                    [FilterKey.Campaigns]:
-                        withDefaultLogicalOperator(campaignIds),
+                    [FilterKey.Campaigns]: withDefaultLogicalOperator(
+                        values.map(String),
+                    ),
                 }),
             )
         },
@@ -201,11 +208,14 @@ export const CampaignStatsFilters = ({
     )
 
     const handleChangeCampaignsByStatus = useCallback(
-        (statuses) => {
+        (statuses: WithLogicalOperator<string> | Value[]) => {
+            const values = Array.isArray(statuses) ? statuses : statuses.values
+
             dispatch(
                 mergeStatsFiltersWithLogicalOperator({
-                    [FilterKey.CampaignStatuses]:
-                        withDefaultLogicalOperator(statuses),
+                    [FilterKey.CampaignStatuses]: withDefaultLogicalOperator(
+                        values.map(String),
+                    ),
                 }),
             )
         },

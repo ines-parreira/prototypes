@@ -9,6 +9,7 @@ import { AttachmentEnum } from 'common/types'
 import { IntegrationType } from 'models/integration/constants'
 import { ProductCardDetails } from 'models/integration/types'
 import ShopifyProductLine from 'pages/common/components/ShopifyProductLine/ShopifyProductLine'
+import { ProductRecommendationAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
 import { getIconFromType } from 'state/integrations/helpers'
 import { insertLink, insertText } from 'utils'
 
@@ -153,7 +154,7 @@ const AddProductLink = ({ getEditorState, setEditorState }: Props) => {
     )
 
     const handleProductAutomationClicked = useCallback(
-        (attachment) => {
+        (attachment: ProductRecommendationAttachment) => {
             onAddProductAutomationAttachment(attachment)
             setOpen(false)
         },
@@ -172,45 +173,49 @@ const AddProductLink = ({ getEditorState, setEditorState }: Props) => {
             {!pickedShopifyIntegration ? (
                 <div className={css.productLineContainer}>
                     <ListGroup flush>
-                        {shopifyIntegrations.map(
-                            (integration: Map<any, any>, index) => (
-                                <ListGroupItem
-                                    key={index}
-                                    tag="button"
-                                    className={css.customListGroup}
-                                    action
-                                    onClick={(event) => {
-                                        event.preventDefault()
-                                        handlePickIntegration(integration)
-                                    }}
-                                >
-                                    <div
-                                        className={css.integrationRowContainer}
+                        {shopifyIntegrations
+                            .toArray()
+                            .map(
+                                (integration: Map<any, any>, index: number) => (
+                                    <ListGroupItem
+                                        key={index}
+                                        tag="button"
+                                        className={css.customListGroup}
+                                        action
+                                        onClick={(event) => {
+                                            event.preventDefault()
+                                            handlePickIntegration(integration)
+                                        }}
                                     >
-                                        <div className={css.integrationRow}>
-                                            <img
-                                                className={css.shopifyLogo}
-                                                alt="Shopify logo"
-                                                src={getIconFromType(
-                                                    IntegrationType.Shopify,
-                                                )}
-                                            />
-                                            <span>
-                                                {integration.get('name')}
-                                            </span>
-                                        </div>
-                                        <i
-                                            className={classnames(
-                                                'material-icons',
-                                                css.arrowIcon,
-                                            )}
+                                        <div
+                                            className={
+                                                css.integrationRowContainer
+                                            }
                                         >
-                                            keyboard_arrow_right
-                                        </i>
-                                    </div>
-                                </ListGroupItem>
-                            ),
-                        )}
+                                            <div className={css.integrationRow}>
+                                                <img
+                                                    className={css.shopifyLogo}
+                                                    alt="Shopify logo"
+                                                    src={getIconFromType(
+                                                        IntegrationType.Shopify,
+                                                    )}
+                                                />
+                                                <span>
+                                                    {integration.get('name')}
+                                                </span>
+                                            </div>
+                                            <i
+                                                className={classnames(
+                                                    'material-icons',
+                                                    css.arrowIcon,
+                                                )}
+                                            >
+                                                keyboard_arrow_right
+                                            </i>
+                                        </div>
+                                    </ListGroupItem>
+                                ),
+                            )}
                     </ListGroup>
                 </div>
             ) : (

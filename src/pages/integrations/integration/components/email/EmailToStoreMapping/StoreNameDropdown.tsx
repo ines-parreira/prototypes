@@ -63,7 +63,7 @@ export const StoreNameDropdown = ({
                     )}
                 </DropdownToggle>
                 <DropdownMenu className={css.dropdownMenu}>
-                    {storeIntegrations.map((option) => (
+                    {storeIntegrations.toArray().map((option) => (
                         <DropdownItem
                             onClick={() => onChange(option?.get('id'))}
                             className={css.storeRow}

@@ -50,7 +50,7 @@ export default function Search() {
     }, [searchParam])
 
     const handleChange = useCallback(
-        (newValue) => {
+        (newValue: string) => {
             setInputValue(newValue)
             debouncedSetSearch(newValue)
             debouncedTrackSearch(newValue, domain)

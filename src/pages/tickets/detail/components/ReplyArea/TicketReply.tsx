@@ -64,12 +64,12 @@ export function TicketReply({
     })
 
     const handleDeletion = useCallback(
-        (number) => dispatch(deleteAttachment(number)),
+        (number: number) => dispatch(deleteAttachment(number)),
         [dispatch],
     )
 
     const handleActionDeletion = useCallback(
-        (actionIndex, ticketId) =>
+        (actionIndex: number, ticketId: number) =>
             dispatch(deleteActionOnApplied(actionIndex, ticketId)),
         [dispatch],
     )

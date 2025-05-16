@@ -124,7 +124,7 @@ export class Shipments extends Component<{
             'admin_url_suffix',
         ]) as string
 
-        return shipments.map((shipment: Map<any, any>) => {
+        return shipments.toArray().map((shipment: Map<any, any>) => {
             const lastTrack = (
                 shipment.get('tracks', fromJS([])) as List<any>
             ).maxBy(
@@ -202,7 +202,7 @@ export class CreditMemos extends Component<{
             'admin_url_suffix',
         ])
 
-        return creditMemos.map((creditMemo: Map<any, any>) => {
+        return creditMemos.toArray().map((creditMemo: Map<any, any>) => {
             const creditMemoId = (
                 (creditMemo.get('entity_id') as number) || ''
             ).toString()

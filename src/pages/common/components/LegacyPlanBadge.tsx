@@ -8,7 +8,7 @@ export default function LegacyPlanBadge() {
     const [tagLegacyRef, setTagLegacyRef] = useState<HTMLDivElement | null>(
         null,
     )
-    const handleRef = useCallback((ref) => {
+    const handleRef = useCallback((ref: HTMLDivElement | null) => {
         if (ref) {
             setTagLegacyRef(ref)
         }

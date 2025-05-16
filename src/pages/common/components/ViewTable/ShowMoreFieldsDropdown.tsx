@@ -102,7 +102,7 @@ const ShowMoreFieldsDropdown = ({
                 <DropdownItem className="pb-2" header>
                     COLUMNS
                 </DropdownItem>
-                {fields.map((field: Map<any, any>) => {
+                {fields.toArray().map((field: Map<any, any>) => {
                     const isMandatory =
                         config.get('mainField') === field.get('name')
                     const isChecked =

@@ -185,7 +185,7 @@ const FeedbackOtherResourcesSelect = ({
     }, [accountId])
 
     const handleChange = useCallback(
-        (value) => {
+        (value: string) => {
             const newValues = values.includes(value)
                 ? values.filter((v) => v !== value)
                 : [...values, value]

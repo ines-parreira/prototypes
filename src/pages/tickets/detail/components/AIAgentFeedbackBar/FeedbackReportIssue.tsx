@@ -72,7 +72,7 @@ const ReportIssueSelect: React.FC<Props> = ({
     }
 
     const onToggle = useCallback(
-        (toggleValue) => {
+        (toggleValue: boolean) => {
             if (isOpen && !toggleValue) {
                 onClose?.()
             }

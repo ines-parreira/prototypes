@@ -141,7 +141,7 @@ export const TopProductRecommendationTableStats = ({
     )
 
     const renderRows = useCallback(
-        (cell: ProductTableContentCell, index) => {
+        (cell: ProductTableContentCell, index: number) => {
             return (
                 <TableBodyRow key={index}>
                     {columnsOrder.map((column) =>

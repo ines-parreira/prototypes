@@ -83,7 +83,7 @@ export default function CampaignStatusesFilter({
     )
 
     const handleFilterValuesChange = useCallback(
-        (values) => {
+        (values: string[]) => {
             dispatchUpdate({
                 values,
                 operator: value?.operator || LogicalOperatorEnum.ONE_OF,

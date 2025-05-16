@@ -50,7 +50,7 @@ export default function SharedBody({
                         No team selected
                     </ListGroupItem>
                 ) : (
-                    selectedTeams.map((team: Map<any, any>) => (
+                    selectedTeams.toArray().map((team: Map<any, any>) => (
                         <ListGroupItem
                             key={team.get('id')}
                             className={css.listGroupItem}
@@ -87,7 +87,7 @@ export default function SharedBody({
                         No user selected
                     </ListGroupItem>
                 ) : (
-                    selectedUsers.map((user: Map<any, any>) => (
+                    selectedUsers.toArray().map((user: Map<any, any>) => (
                         <ListGroupItem
                             key={user.get('id')}
                             className={classnames(

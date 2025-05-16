@@ -1,11 +1,11 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 import classnames from 'classnames'
 
 import css from './PageHeader.less'
 
 type Props = {
-    title: unknown
+    title: ReactNode
     className?: string
     children?: ReactNode
 }

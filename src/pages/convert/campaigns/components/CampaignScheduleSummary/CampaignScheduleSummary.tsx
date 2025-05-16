@@ -5,7 +5,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { ScheduleSchema } from 'pages/convert/campaigns/types/CampaignSchedule'
 import { CampaignScheduleRuleValueEnum } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
-import { Datetime, formatDatetime } from 'utils'
+import { formatDatetime } from 'utils'
 
 import { SCHEDULE_RULE_LABELS } from './constants'
 
@@ -16,8 +16,8 @@ type Props = {
 }
 
 type TemplateMessageProps = {
-    startDate: Datetime
-    endDate: Datetime | null
+    startDate: string
+    endDate: string | null
     label?: string
     timezone?: string
 }

@@ -45,7 +45,7 @@ export default function EmojiTextInput({
     }, [onEmojiChange])
 
     const onInputChange = useCallback(
-        (value) => {
+        (value: string) => {
             onChange(value)
         },
         [onChange],

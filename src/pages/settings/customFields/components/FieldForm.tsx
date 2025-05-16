@@ -155,7 +155,7 @@ export default function FieldForm(props: FieldFormProps) {
     )
 
     const handleChoiceChange = useCallback(
-        (val) => setValue('definition.input_settings.choices', val),
+        (val: string[]) => setValue('definition.input_settings.choices', val),
         [setValue],
     )
 

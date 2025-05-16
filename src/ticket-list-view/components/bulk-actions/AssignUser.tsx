@@ -23,7 +23,7 @@ export default function AssignUser({
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
     const onItemSelect = useCallback(
-        (user) => {
+        (user: Item | null) => {
             onClick(user)
             setIsDropdownOpen(false)
         },
