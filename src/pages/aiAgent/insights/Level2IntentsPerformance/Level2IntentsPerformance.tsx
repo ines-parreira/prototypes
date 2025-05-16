@@ -1,11 +1,14 @@
 import { useParams } from 'react-router-dom'
 
+import { logEvent } from 'common/segment/segment'
+import { SegmentEvent } from 'common/segment/types'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import { useInsightPerformanceMetrics } from 'hooks/reporting/automate/useAIAgentInsightsL2Dataset'
 import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import { transformIntentName } from 'hooks/reporting/automate/utils'
 import useAppSelector from 'hooks/useAppSelector'
+import useEffectOnce from 'hooks/useEffectOnce'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { IntentsPerformance } from 'pages/aiAgent/insights/widgets/IntentsPerformance/IntentsPerformance'
 import { getPageStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
@@ -37,6 +40,12 @@ export const Level2IntentsPerformance = () => {
     const aiAgentUserId = useAIAgentUserId()
     const { intentCustomFieldId, outcomeCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
+
+    useEffectOnce(() => {
+        logEvent(SegmentEvent.AiAgentOptimizePageViewed, {
+            type: 'Level 2 intents performance',
+        })
+    })
 
     return (
         <IntentsPerformance

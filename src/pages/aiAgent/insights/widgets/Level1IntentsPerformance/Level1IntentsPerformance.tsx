@@ -1,10 +1,13 @@
 import { useParams } from 'react-router-dom'
 
+import { logEvent } from 'common/segment/segment'
+import { SegmentEvent } from 'common/segment/types'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import { useAIAgentMetrics } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
 import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import useAppSelector from 'hooks/useAppSelector'
+import useEffectOnce from 'hooks/useEffectOnce'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { IntentsPerformance } from 'pages/aiAgent/insights/widgets/IntentsPerformance/IntentsPerformance'
@@ -53,6 +56,12 @@ export const Level1IntentsPerformance = () => {
         aiAgentMetrics.coverageTrend.isFetching ||
         (aiAgentMetrics.coverageTrend?.data?.value &&
             aiAgentMetrics.coverageTrend.data.value > 0)
+
+    useEffectOnce(() => {
+        logEvent(SegmentEvent.AiAgentOptimizePageViewed, {
+            type: 'Level 1 intents performance',
+        })
+    })
 
     return (
         <>

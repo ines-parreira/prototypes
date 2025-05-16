@@ -1,9 +1,7 @@
 import moment, { Moment } from 'moment'
 import { useParams } from 'react-router-dom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { INTENT_LEVEL } from 'hooks/reporting/automate/utils'
-import useEffectOnce from 'hooks/useEffectOnce'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import { OPTIMIZE } from 'pages/aiAgent/constants'
 import { IntentTableWidget } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableWidget'
@@ -31,12 +29,6 @@ export const OptimizeContainer = () => {
     const { shopName } = useParams<{
         shopName: string
     }>()
-
-    useEffectOnce(() => {
-        logEvent(SegmentEvent.AiAgentOptimizePageViewed, {
-            type: 'Optimize overview',
-        })
-    })
 
     return (
         <AiAgentLayout
