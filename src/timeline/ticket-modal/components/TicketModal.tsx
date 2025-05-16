@@ -4,7 +4,7 @@ import { Button, IconButton } from '@gorgias/merchant-ui-kit'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import { TicketDetail } from 'tickets/ticket-detail'
+import { TicketDetail } from 'tickets/ticket-detail/components/TicketDetail'
 
 import css from './TicketModal.less'
 

@@ -10,7 +10,7 @@ import { assumeMock } from 'utils/testing'
 
 import { TicketModal } from '../TicketModal'
 
-jest.mock('tickets/ticket-detail', () => ({
+jest.mock('tickets/ticket-detail/components/TicketDetail', () => ({
     TicketDetail: jest.fn(
         ({ AdditionalHeaderAction }: { AdditionalHeaderAction: FC }) => (
             <>

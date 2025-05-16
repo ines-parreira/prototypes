@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { fromJS, List, Map } from 'immutable'
 import _pick from 'lodash/pick'
