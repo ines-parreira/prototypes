@@ -1,6 +1,6 @@
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
 import { useFlag } from 'core/flags'
-import StatsNavbarView from 'pages/stats/common/components/StatsNavbarView'
+import StatsNavbarView from 'pages/stats/common/components/StatsNav/StatsNavbarView'
 import { StatsNavbarViewV2 } from 'pages/stats/common/components/StatsNavbarViewV2/StatsNavbarViewV2'
 import StatsNavbarContainer from 'pages/stats/common/StatsNavbarContainer'
 import { assumeMock, renderWithStore } from 'utils/testing'
@@ -8,7 +8,7 @@ import { assumeMock, renderWithStore } from 'utils/testing'
 jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)
 
-jest.mock('pages/stats/common/components/StatsNavbarView')
+jest.mock('pages/stats/common/components/StatsNav/StatsNavbarView')
 const StatsNavbarViewMock = assumeMock(StatsNavbarView)
 
 jest.mock('pages/stats/common/components/StatsNavbarViewV2/StatsNavbarViewV2')

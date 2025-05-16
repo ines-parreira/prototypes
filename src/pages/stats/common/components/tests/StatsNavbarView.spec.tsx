@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
@@ -19,15 +17,15 @@ import {
 import { useDashboardActions } from 'hooks/reporting/dashboards/useDashboardActions'
 import { IntegrationType } from 'models/integration/constants'
 import { STATS_ROUTE_PREFIX } from 'pages/stats/common/components/constants'
-import StatsNavbarView, {
-    BUSIEST_TIMES_OF_DAYS_NAV_LABEL,
-} from 'pages/stats/common/components/StatsNavbarView'
+import StatsNavbarView from 'pages/stats/common/components/StatsNav/StatsNavbarView'
 import { getDashboardPath } from 'pages/stats/dashboards/utils'
 import { SERVICE_LEVEL_AGREEMENT_PAGE_TITLE } from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
 import { AUTO_QA_PAGE_TITLE } from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
 import { STATS_ROUTES } from 'routes/constants'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { assumeMock, renderWithRouterAndDnD } from 'utils/testing'
+
+import { BUSIEST_TIMES_OF_DAYS_NAV_LABEL } from '../StatsNav/StatsNav.utils'
 
 const queryClient = new QueryClient()
 

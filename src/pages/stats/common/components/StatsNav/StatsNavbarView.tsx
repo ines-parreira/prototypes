@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
@@ -8,10 +8,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
 import ConvertStatsNavbar from 'pages/convert/common/components/ConvertStatsNavbar'
 import { STATS_ROUTE_PREFIX } from 'pages/stats/common/components/constants'
-import {
-    COMMON_NAV_LINK_PROPS,
-    StatsNavLink,
-} from 'pages/stats/common/components/StatsNavLink'
+import { StatsNavLink } from 'pages/stats/common/components/StatsNav/StatsNavLink'
 import { DashboardsNavbarBlock } from 'pages/stats/dashboards/DashboardsNavbarBlock/DashboardsNavbarBlock'
 import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
 import AutomateStatsNavbar from 'pages/stats/self-service/AutomateStatsNavbar'
@@ -21,13 +18,15 @@ import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
 
+import {
+    BUSIEST_TIMES_OF_DAYS_NAV_LABEL,
+    COMMON_NAV_LINK_PROPS,
+} from './StatsNav.utils'
+
 type FeatureFlag = boolean | undefined
 type AutoQANavBarLinkProps = {
     isAvailable: boolean
 }
-
-export const BUSIEST_TIMES_OF_DAYS_NAV_LABEL = 'Busiest times'
-export const NEW_NAV_LABEL = 'NEW'
 
 export default function StatsNavbarView() {
     const user = useAppSelector(getCurrentUser)

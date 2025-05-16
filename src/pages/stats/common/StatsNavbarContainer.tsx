@@ -2,7 +2,7 @@ import { ActiveContent, Navbar } from 'common/navigation'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 
-import StatsNavbarView from './components/StatsNavbarView'
+import StatsNavbarView from './components/StatsNav/StatsNavbarView'
 import { StatsNavbarViewV2 } from './components/StatsNavbarViewV2/StatsNavbarViewV2'
 
 export default function StatsNavbarContainer() {

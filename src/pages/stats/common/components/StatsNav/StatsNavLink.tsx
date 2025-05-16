@@ -3,15 +3,10 @@ import classNames from 'classnames'
 import { Badge } from '@gorgias/merchant-ui-kit'
 
 import cssNavbar from 'assets/css/navbar.less'
-import NavbarLink, {
-    NavbarLinkProps,
-} from 'pages/common/components/navbar/NavbarLink'
-import { NEW_NAV_LABEL } from 'pages/stats/common/components/StatsNavbarView'
+import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
 
-export const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
-    exact: true,
-}
+import { COMMON_NAV_LINK_PROPS, NEW_NAV_LABEL } from './StatsNav.utils'
 
 export const StatsNavLink = ({
     canduId,
