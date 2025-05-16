@@ -2,6 +2,8 @@ import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
+import { logEvent, SegmentEvent } from 'common/segment'
+
 import '@testing-library/jest-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -10,6 +12,9 @@ import TicketSummaryPopover from '../TicketSummaryPopover'
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = useAppSelector as jest.Mock
+
+jest.mock('common/segment')
+const logEventMock = logEvent as jest.Mock
 
 jest.mock('pages/tickets/detail/components/TicketSummary', () => {
     const React = require('react')
@@ -69,5 +74,23 @@ describe('TicketSummaryPopover', () => {
         expect(
             screen.queryByTestId('ticket-summary-section'),
         ).not.toBeInTheDocument()
+    })
+
+    it('should log event when opens', () => {
+        render(<TicketSummaryPopover />)
+
+        const button = screen.getByRole('button', { name: /summarize/i })
+        fireEvent.click(button)
+
+        expect(screen.getByTestId('ticket-summary-section')).toBeInTheDocument()
+
+        fireEvent.click(button)
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.AiTicketSummaryPopoverOpened,
+            {
+                ticketId: 'TICKET-123',
+                page: 'ticket',
+            },
+        )
     })
 })

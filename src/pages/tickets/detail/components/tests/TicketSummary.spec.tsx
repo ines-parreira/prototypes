@@ -26,6 +26,7 @@ const baseSummary = {
     content: 'AI-generated summary text',
     updated_datetime: '2024-01-01T10:00:00Z',
     created_datetime: '2024-01-01T09:00:00Z',
+    triggered_by: 1,
 }
 
 describe('TicketSummarySection', () => {
@@ -111,6 +112,22 @@ describe('TicketSummarySection', () => {
         fireEvent.click(screen.getByText('Try Again'))
 
         expect(requestSummary).toHaveBeenCalledTimes(1)
+    })
+
+    it('shows error message when has summary content', () => {
+        const requestSummary = jest.fn()
+
+        useTicketSummaryMock.mockReturnValue({
+            summary: baseSummary,
+            isLoading: false,
+            errorMessage: 'Something went wrong',
+            requestSummary,
+            hasRequested: true,
+        })
+
+        render(<TicketSummarySection summary={baseSummary} ticketId={123} />)
+
+        expect(screen.getByText('Something went wrong')).toBeInTheDocument()
     })
 })
 

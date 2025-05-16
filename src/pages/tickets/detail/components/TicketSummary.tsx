@@ -49,7 +49,7 @@ const TicketSummarySection = ({
             return 'Summarizing...'
         }
         if (errorMessage && hasContent) {
-            return 'Unable to update, try again later'
+            return errorMessage
         }
         if (hasContent && latestUpdateDatetime) {
             const formattedDate = formatDatetime(
@@ -136,18 +136,19 @@ type TicketSummaryButtonProps = {
     onClick: () => void
     className?: string
     children?: React.ReactNode
+    leadingIcon?: React.ReactNode
 }
 
 export const TicketSummaryButton = forwardRef<
     HTMLButtonElement,
     TicketSummaryButtonProps
->(({ onClick, className, children }, ref) => {
+>(({ onClick, className, children, leadingIcon = <AISummaryIcon /> }, ref) => {
     return (
         <Button
             size="small"
             intent="secondary"
             fillStyle="fill"
-            leadingIcon={<AISummaryIcon />}
+            leadingIcon={leadingIcon}
             onClick={onClick}
             ref={ref}
             className={className}

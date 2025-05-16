@@ -1,5 +1,6 @@
-import { useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { Popover } from 'components/Popover'
 import useAppSelector from 'hooks/useAppSelector'
 import TicketSummarySection, {
@@ -14,11 +15,25 @@ const TicketSummaryPopover = () => {
     const ticketId = ticket.get('id')
     const summary = ticket.get('summary')?.toJS()
 
+    const handleClick = useCallback(() => {
+        setIsOpen((state) => {
+            const nextState = !state
+            if (nextState) {
+                logEvent(SegmentEvent.AiTicketSummaryPopoverOpened, {
+                    ticketId,
+                    page: 'ticket',
+                })
+            }
+            return nextState
+        })
+    }, [ticketId])
+
     return (
         <>
             <TicketSummaryButton
-                onClick={() => setIsOpen((prevState) => !prevState)}
+                onClick={handleClick}
                 ref={buttonRef}
+                {...(isOpen && { leadingIcon: 'close' })}
             >
                 Summarize
             </TicketSummaryButton>
