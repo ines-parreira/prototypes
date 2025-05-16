@@ -88,10 +88,12 @@ export const useStoreConfigurations = (accountDomain: string) => {
 export const useStoreActivations = ({
     // TODO: Remove pageName to use window.location.pathname instead
     pageName,
-    withPublicResources = true,
+    withPublicResources = false,
+    withChatIntegrationsStatus = false,
 }: {
     pageName: string
     withPublicResources?: boolean
+    withChatIntegrationsStatus?: boolean
 }): {
     storeActivations: Record<string, StoreActivation>
     progressPercentage: number
@@ -152,7 +154,19 @@ export const useStoreActivations = ({
         isLoading: isStoreConfigurationLoading,
     } = useStoreConfigurations(accountDomain)
 
-    const chatIntegrationStatus = useFetchChatIntegrationsStatusData()
+    const chatIds = useMemo(() => {
+        return storeConfigurations.flatMap(
+            (storeConfiguration) =>
+                storeConfiguration.monitoredChatIntegrations,
+        )
+    }, [storeConfigurations])
+    const {
+        data: chatIntegrationStatus,
+        isLoading: isChatIntegrationsStatusLoading,
+    } = useFetchChatIntegrationsStatusData({
+        enabled: !!chatIds.length && withChatIntegrationsStatus,
+        chatIds,
+    })
 
     const selfServiceChatChannels = useSelfServiceChatChannelsMultiStore(
         SHOPIFY_INTEGRATION_TYPE,
@@ -259,6 +273,7 @@ export const useStoreActivations = ({
         isFetchLoading:
             isStoreConfigurationLoading ||
             isHelpCenterListLoading ||
+            isChatIntegrationsStatusLoading ||
             isPublicResourcesListLoading,
         isSaveLoading,
         changeSales: (storeName: string, newValue: boolean) => {

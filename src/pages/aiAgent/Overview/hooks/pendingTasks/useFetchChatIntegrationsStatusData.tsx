@@ -1,14 +1,25 @@
 import { useMemo } from 'react'
 
+import { useQuery } from '@tanstack/react-query'
+
 import useAppSelector from 'hooks/useAppSelector'
 import {
     GorgiasChatIntegration,
     IntegrationType,
 } from 'models/integration/types'
-import { getChatInstallationStatus } from 'pages/convert/common/hooks/useGetChatInstallationStatus'
+import { getInstallationStatus } from 'state/integrations/actions'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 
-export const useFetchChatIntegrationsStatusData = () => {
+type Args = {
+    chatIds: number[]
+    enabled: boolean
+    refetchOnWindowFocus?: boolean
+}
+export const useFetchChatIntegrationsStatusData = ({
+    enabled,
+    chatIds,
+    refetchOnWindowFocus = true,
+}: Args) => {
     const getChatIntegrations = useMemo(
         () =>
             getIntegrationsByType<GorgiasChatIntegration>(
@@ -18,20 +29,65 @@ export const useFetchChatIntegrationsStatusData = () => {
     )
     const chatIntegrations = useAppSelector(getChatIntegrations)
 
-    const result = useMemo(
-        () =>
-            chatIntegrations.map((integration) => {
-                const status = getChatInstallationStatus(integration)
-                return {
-                    installed: !!(status.installed && status.method),
-                    chatId: integration.id,
-                }
-            }),
-        [chatIntegrations],
+    const { isLoading, isFetched, data } = useQuery(
+        ['aiAgentChatInstallationStatus'],
+        {
+            queryFn: () => {
+                const mappedChats = chatIds
+                    .map((chatId) => {
+                        const chat = chatIntegrations.find(
+                            (i) => i.id === chatId,
+                        )
+                        return {
+                            chatId,
+                            updatedAt: chat?.updated_datetime,
+                            appId: chat?.meta.app_id,
+                        }
+                    })
+                    .sort((a, b) => {
+                        if (!a.updatedAt) {
+                            return 1
+                        }
+                        if (!b.updatedAt) {
+                            return -1
+                        }
+
+                        return new Date(b.updatedAt).getTime() >
+                            new Date(a.updatedAt).getTime()
+                            ? -1
+                            : 1
+                    })
+                    .filter(
+                        (
+                            chat,
+                        ): chat is {
+                            chatId: number
+                            appId: string
+                            updatedAt: string
+                        } => !!chat.appId,
+                    )
+
+                const promises = mappedChats.map(({ chatId, appId }) =>
+                    getInstallationStatus(appId).then((status) => ({
+                        ...status,
+                        chatId,
+                    })),
+                )
+                return Promise.all(promises)
+            },
+            enabled,
+            refetchOnWindowFocus,
+        },
     )
-    return result
+
+    return {
+        data,
+        isLoading,
+        isFetched,
+    }
 }
 
-export type ChatIntegrationsStatusData = ReturnType<
-    typeof useFetchChatIntegrationsStatusData
+export type ChatIntegrationsStatusData = Exclude<
+    Awaited<ReturnType<typeof useFetchChatIntegrationsStatusData>>['data'],
+    null | undefined
 >

@@ -108,7 +108,15 @@ export const usePendingTasksRuleEngine = ({
         storeName,
     })
 
-    const chatIntegrationsStatusData = useFetchChatIntegrationsStatusData()
+    const {
+        isLoading: chatIntegrationsStatusDataIsLoading,
+        isFetched: chatIntegrationsStatusDataIsFetched,
+        data: chatIntegrationsStatusData,
+    } = useFetchChatIntegrationsStatusData({
+        chatIds: aiAgentStoreConfigurationData?.monitoredChatIntegrations ?? [],
+        enabled: !shouldFakeTasks && !!aiAgentStoreConfigurationData,
+        refetchOnWindowFocus,
+    })
 
     const {
         isLoading: pageInteractionsDataIsLoading,
@@ -127,6 +135,7 @@ export const usePendingTasksRuleEngine = ({
         guidancesDataIsLoading ||
         actionsDataIsLoading ||
         aiAgentPlaygroundExecutionsDataIsLoading ||
+        chatIntegrationsStatusDataIsLoading ||
         ticketViewDataIsLoading ||
         pageInteractionsDataIsLoading
 
@@ -137,6 +146,7 @@ export const usePendingTasksRuleEngine = ({
         guidancesDataIsFetched &&
         actionDataIsFetched &&
         aiAgentPlaygroundExecutionsDataIsFetched &&
+        chatIntegrationsStatusDataIsFetched &&
         pageInteractionsDataIsFetched
 
     const isReady = !!aiAgentStoreConfigurationData
