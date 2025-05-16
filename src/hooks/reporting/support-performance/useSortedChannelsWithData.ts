@@ -1,41 +1,9 @@
 import { useMemo } from 'react'
 
-import {
-    ChannelsReportData,
-    useChannelsReportMetrics,
-} from 'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
-import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
+import { useChannelsReportMetrics } from 'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
 import { Channel } from 'services/channels'
-import { notEmpty } from 'utils'
 
-export const nonEmptyChannels = (
-    channels: Channel[],
-    reportData: ChannelsReportData,
-) => {
-    const channelVisibility: Record<string, boolean> = Object.values(
-        reportData,
-    ).reduce<Record<string, boolean>>((acc, metricDataOrChannels) => {
-        if (
-            metricDataOrChannels.data === null ||
-            metricDataOrChannels.data === undefined
-        ) {
-            return acc
-        }
-
-        metricDataOrChannels.data.allData
-            .map((data) => data[CHANNEL_DIMENSION])
-            .filter(notEmpty)
-            .forEach((channel) => {
-                acc[channel] = true
-            })
-
-        return acc
-    }, {})
-
-    return channels.filter(
-        (channel: Channel) => channelVisibility[channel.slug] ?? false,
-    )
-}
+import { nonEmptyChannels } from './nonEmptyChannel'
 
 export const useSortedChannelsWithData = (): {
     channels: Channel[]

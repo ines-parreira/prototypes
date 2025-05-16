@@ -1,5 +1,5 @@
 import { ChannelsReportData } from 'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
-import { nonEmptyChannels } from 'hooks/reporting/support-performance/useSortedChannelsWithData'
+import { nonEmptyChannels } from 'hooks/reporting/support-performance/nonEmptyChannel'
 import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
 import { Channel } from 'models/channel/types'
 import { AgentTimeTrackingCube } from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
