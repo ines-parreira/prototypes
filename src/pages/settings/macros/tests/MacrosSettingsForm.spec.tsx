@@ -57,9 +57,11 @@ jest.mock(
         ({ actions, setActions }: ComponentProps<typeof MacroEdit>) => (
             <div onClick={() => setActions(mockActions)}>
                 <span>MacroEditMock</span>
-                {actions?.map((action: Map<any, any>, i) => (
-                    <span key={i}>{action.get('name') as string}</span>
-                ))}
+                {actions
+                    ?.toArray()
+                    .map((action: Map<any, any>, i) => (
+                        <span key={i}>{action.get('name') as string}</span>
+                    ))}
             </div>
         ),
 )

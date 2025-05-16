@@ -96,29 +96,31 @@ export class AddMemberContainer extends Component<Props, State> {
                     <DropdownItem divider />
                     <div className={css.content}>
                         {availableUsers.size ? (
-                            availableUsers.map((user: Map<any, any>) => {
-                                const userId = user.get('id')
-                                return (
-                                    <DropdownItem
-                                        key={userId}
-                                        onClick={() =>
-                                            this._addTeamMember(userId)
-                                        }
-                                    >
-                                        <AgentLabel
-                                            name={
-                                                user.get('name') ||
-                                                user.get('email')
+                            availableUsers
+                                .toArray()
+                                .map((user: Map<any, any>) => {
+                                    const userId = user.get('id')
+                                    return (
+                                        <DropdownItem
+                                            key={userId}
+                                            onClick={() =>
+                                                this._addTeamMember(userId)
                                             }
-                                            profilePictureUrl={user.getIn([
-                                                'meta',
-                                                'profile_picture_url',
-                                            ])}
-                                            shouldDisplayAvatar
-                                        />
-                                    </DropdownItem>
-                                )
-                            })
+                                        >
+                                            <AgentLabel
+                                                name={
+                                                    user.get('name') ||
+                                                    user.get('email')
+                                                }
+                                                profilePictureUrl={user.getIn([
+                                                    'meta',
+                                                    'profile_picture_url',
+                                                ])}
+                                                shouldDisplayAvatar
+                                            />
+                                        </DropdownItem>
+                                    )
+                                })
                         ) : (
                             <DropdownItem key="noUser" header>
                                 Could not find any user to add

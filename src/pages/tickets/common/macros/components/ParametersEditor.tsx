@@ -50,7 +50,7 @@ export default class ParametersEditor extends Component<Props> {
 
         return (
             <div>
-                {list.map((dict: Map<any, any>, index) => {
+                {list.toArray().map((dict: Map<any, any>, index) => {
                     const requiredTitle = dict.get('required')
                         ? 'Click to make this field not required'
                         : 'Click to make this field required'

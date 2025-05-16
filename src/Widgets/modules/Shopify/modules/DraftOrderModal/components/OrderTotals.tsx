@@ -65,7 +65,12 @@ export class OrderTotalsComponent extends Component<Props> {
             actionName,
             container,
         } = this.props
-        const taxLines = calculatedDraftOrder.get('taxLines', []) as List<any>
+        const rawTaxLines = calculatedDraftOrder.get('taxLines', []) as
+            | any[]
+            | List<any>
+        const taxLines = (
+            List.isList(rawTaxLines) ? rawTaxLines : List(rawTaxLines)
+        ) as List<any>
 
         return (
             <dl className="row text-right mb-0">
@@ -156,7 +161,7 @@ export class OrderTotalsComponent extends Component<Props> {
                             Taxes
                         </TaxesPopover>
                     </span>
-                    {taxLines.map((taxLine: Map<any, any>) => (
+                    {taxLines?.toArray().map((taxLine: Map<any, any>) => (
                         <span
                             key={hash(taxLine.toJS())}
                             className={classnames('d-block', css.grey)}
@@ -168,7 +173,7 @@ export class OrderTotalsComponent extends Component<Props> {
                 </dt>
                 <dd className="col-3 mb-2">
                     {payload.get('tax_exempt') || !taxLines.size ? '—' : <br />}
-                    {taxLines.map((taxLine: Map<any, any>) => (
+                    {taxLines?.toArray().map((taxLine: Map<any, any>) => (
                         <span
                             key={hash(taxLine.toJS())}
                             className={classnames('d-block', {

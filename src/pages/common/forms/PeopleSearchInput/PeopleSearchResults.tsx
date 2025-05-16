@@ -52,7 +52,7 @@ function TeamResults({ teams, onClick }: TeamResultsProps) {
                 <DropdownItem header>Could not find any team</DropdownItem>
             ) : (
                 <div className={css.items}>
-                    {teams.map((team) => (
+                    {teams.toArray().map((team) => (
                         <DropdownItem
                             key={team!.get('id')}
                             type="button"
@@ -87,7 +87,7 @@ function UserResults({ users, onClick }: UserResultsProps) {
                 <DropdownItem header>Could not find any user</DropdownItem>
             ) : (
                 <div className={css.items}>
-                    {users.map((user) => (
+                    {users.toArray().map((user) => (
                         <DropdownItem
                             key={user!.get('id')}
                             type="button"

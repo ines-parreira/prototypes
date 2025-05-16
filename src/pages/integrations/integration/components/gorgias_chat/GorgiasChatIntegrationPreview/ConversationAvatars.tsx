@@ -29,19 +29,25 @@ const ConversationAvatars: React.FC<Props> = ({ avatar, chatTitle }) => {
 
     return (
         <AvatarGroup>
-            {agents.slice(0, 3).map((agent, index) => (
-                <Avatar
-                    key={index}
-                    src={
-                        (avatar?.imageType ===
-                            GorgiasChatAvatarImageType.AGENT_PICTURE &&
-                            agent?.getIn(['meta', 'profile_picture_url'])) ||
-                        undefined
-                    }
-                    name={agent?.get('name')}
-                    hasStatusIndicator
-                />
-            ))}
+            {agents
+                .slice(0, 3)
+                .toArray()
+                .map((agent, index) => (
+                    <Avatar
+                        key={index}
+                        src={
+                            (avatar?.imageType ===
+                                GorgiasChatAvatarImageType.AGENT_PICTURE &&
+                                agent?.getIn([
+                                    'meta',
+                                    'profile_picture_url',
+                                ])) ||
+                            undefined
+                        }
+                        name={agent?.get('name')}
+                        hasStatusIndicator
+                    />
+                ))}
         </AvatarGroup>
     )
 }

@@ -259,6 +259,10 @@ export default class ShippingPopover extends Component<Props, State> {
         } = this.props
         const { isOpen, handle, title, price } = this.state
 
+        const normalizedShippingRates = List.isList(availableShippingRates)
+            ? availableShippingRates
+            : List(availableShippingRates)
+
         return (
             <div>
                 <Button
@@ -289,51 +293,58 @@ export default class ShippingPopover extends Component<Props, State> {
                 >
                     <Form onKeyDown={this._onKeyDown} onSubmit={this._onSubmit}>
                         <PopoverBody className="py-3">
-                            {availableShippingRates.map(
-                                (
-                                    availableShippingRate: Map<any, any>,
-                                    index,
-                                ) => (
-                                    <RadioButton
-                                        key={availableShippingRate.get(
-                                            'handle',
-                                        )}
-                                        className={css.radioButton}
-                                        label={
-                                            <span className="d-inline-block ml-1">
-                                                <span className="d-block">
-                                                    {availableShippingRate.get(
-                                                        'title',
-                                                    )}
-                                                    <br />
-                                                    <MoneyAmount
-                                                        currencyCode={
-                                                            currencyCode
-                                                        }
-                                                        amount={availableShippingRate.getIn(
-                                                            ['price', 'amount'],
+                            {normalizedShippingRates
+                                .map(
+                                    (
+                                        availableShippingRate: Map<any, any>,
+                                        index,
+                                    ) => (
+                                        <RadioButton
+                                            key={availableShippingRate.get(
+                                                'handle',
+                                            )}
+                                            className={css.radioButton}
+                                            label={
+                                                <span className="d-inline-block ml-1">
+                                                    <span className="d-block">
+                                                        {availableShippingRate.get(
+                                                            'title',
                                                         )}
-                                                    />
+                                                        <br />
+                                                        <MoneyAmount
+                                                            currencyCode={
+                                                                currencyCode
+                                                            }
+                                                            amount={availableShippingRate.getIn(
+                                                                [
+                                                                    'price',
+                                                                    'amount',
+                                                                ],
+                                                            )}
+                                                        />
+                                                    </span>
                                                 </span>
-                                            </span>
-                                        }
-                                        name="handle"
-                                        value={availableShippingRate.get(
-                                            'handle',
-                                        )}
-                                        isSelected={
-                                            handle ===
-                                            availableShippingRate.get('handle')
-                                        }
-                                        ref={
-                                            index === 0
-                                                ? this._saveFirstInputRef
-                                                : null
-                                        }
-                                        onChange={this._onHandleChange}
-                                    />
-                                ),
-                            )}
+                                            }
+                                            name="handle"
+                                            value={availableShippingRate.get(
+                                                'handle',
+                                            )}
+                                            isSelected={
+                                                handle ===
+                                                availableShippingRate.get(
+                                                    'handle',
+                                                )
+                                            }
+                                            ref={
+                                                index === 0
+                                                    ? this._saveFirstInputRef
+                                                    : null
+                                            }
+                                            onChange={this._onHandleChange}
+                                        />
+                                    ),
+                                )
+                                .toArray()}
                             <RadioFieldSet
                                 className="mb-3"
                                 name="handle"

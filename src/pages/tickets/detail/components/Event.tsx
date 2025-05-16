@@ -67,7 +67,7 @@ export function renderDetails(isError: boolean, eventData: Map<any, any>) {
                                 </div>
                             )
                         })
-                        .toList()}
+                        .toArray()}
                 </div>
             </div>,
         )

@@ -24,45 +24,51 @@ function List({ integrations, loading }: Props) {
         <>
             {!integrations.isEmpty() && (
                 <ul className={css.list}>
-                    {integrations.valueSeq().map((integration) => {
-                        const editLink = `/app/settings/integrations/bigcommerce/${
-                            integration!.get('id') as number
-                        }`
-                        const reactivateUrl = getConnectUrl()
-                        const isDisabled = integration!.get(
-                            'deactivated_datetime',
-                        )
-                        const isSubmitting = loading.get('updateIntegration')
-                        return (
-                            <li
-                                className={css.listItem}
-                                key={integration!.get('id')}
-                            >
-                                <Link to={editLink} className={css.link}>
-                                    <span>{integration?.get('name')}</span>
-                                </Link>
-                                {isDisabled && (
-                                    <ConnectLink
-                                        connectUrl={
-                                            isSubmitting ? '#' : reactivateUrl
-                                        }
-                                        integrationTitle={
-                                            IntegrationType.BigCommerce
-                                        }
-                                        isExternal={true}
-                                    >
-                                        <Button
-                                            type="button"
-                                            isDisabled={isSubmitting}
-                                            className={css.actionLink}
+                    {integrations
+                        .valueSeq()
+                        .toArray()
+                        .map((integration) => {
+                            const editLink = `/app/settings/integrations/bigcommerce/${
+                                integration!.get('id') as number
+                            }`
+                            const reactivateUrl = getConnectUrl()
+                            const isDisabled = integration!.get(
+                                'deactivated_datetime',
+                            )
+                            const isSubmitting =
+                                loading.get('updateIntegration')
+                            return (
+                                <li
+                                    className={css.listItem}
+                                    key={integration!.get('id')}
+                                >
+                                    <Link to={editLink} className={css.link}>
+                                        <span>{integration?.get('name')}</span>
+                                    </Link>
+                                    {isDisabled && (
+                                        <ConnectLink
+                                            connectUrl={
+                                                isSubmitting
+                                                    ? '#'
+                                                    : reactivateUrl
+                                            }
+                                            integrationTitle={
+                                                IntegrationType.BigCommerce
+                                            }
+                                            isExternal={true}
                                         >
-                                            Reconnect
-                                        </Button>
-                                    </ConnectLink>
-                                )}
-                            </li>
-                        )
-                    })}
+                                            <Button
+                                                type="button"
+                                                isDisabled={isSubmitting}
+                                                className={css.actionLink}
+                                            >
+                                                Reconnect
+                                            </Button>
+                                        </ConnectLink>
+                                    )}
+                                </li>
+                            )
+                        })}
                 </ul>
             )}
             {integrations.isEmpty() && (

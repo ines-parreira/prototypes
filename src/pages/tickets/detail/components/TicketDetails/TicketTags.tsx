@@ -63,6 +63,7 @@ const TicketTags = ({
         ? tags
               .slice(tags.size - wrappedElementCount)
               .map((tag) => tag?.get('name') as string)
+              .toArray()
         : []
 
     const displayExpandButton = Boolean(
@@ -95,7 +96,7 @@ const TicketTags = ({
                             transparent={transparent}
                         />
                     )}
-                    {tags.map((tag?: Map<any, any>, i?) => (
+                    {tags.toArray().map((tag?: Map<any, any>, i?: number) => (
                         <TicketTag
                             key={i}
                             decoration={tag!.get('decoration')}

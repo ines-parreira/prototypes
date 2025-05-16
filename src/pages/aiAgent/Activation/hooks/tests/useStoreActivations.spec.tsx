@@ -269,7 +269,7 @@ describe('useStoreActivations', () => {
         }
 
         const history = createMemoryHistory({ initialEntries: [initialEntry] })
-        const wrapper = ({ children }: { children: React.ReactNode }) => (
+        const wrapper = ({ children }: { children?: React.ReactNode }) => (
             <Router history={history}>
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockStore(defaultState)}>

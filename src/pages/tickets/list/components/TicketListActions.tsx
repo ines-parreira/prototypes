@@ -424,7 +424,7 @@ export const TicketListActions = ({
                         </DropdownItem>
                     ) : (
                         <div className={css['dropdown-list']}>
-                            {filteredAgents.map((agent) => (
+                            {filteredAgents.toArray().map((agent) => (
                                 <DropdownItem
                                     key={agent!.get('id')}
                                     type="button"
@@ -505,7 +505,7 @@ export const TicketListActions = ({
                         </DropdownItem>
                     ) : (
                         <div className={css['dropdown-list']}>
-                            {filteredTeams.map((team) => (
+                            {filteredTeams.toArray().map((team) => (
                                 <DropdownItem
                                     key={team!.get('id')}
                                     type="button"

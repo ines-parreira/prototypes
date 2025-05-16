@@ -6,7 +6,7 @@ import { useExhaustEndpoint } from '../useExhaustEndpoint'
 
 function createWrapper() {
     const queryClient = new QueryClient()
-    return ({ children }: { children: React.ReactNode }) => (
+    return ({ children }: { children?: React.ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>

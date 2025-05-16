@@ -89,7 +89,7 @@ function OrderTable({
                 </tr>
             </thead>
             <tbody>
-                {lineItems.map((lineItem, index) => {
+                {lineItems.toArray().map((lineItem, index) => {
                     if (!lineItem) return
                     const productId = lineItem.get('product_id') as string
                     const variantId = lineItem.get('variant_id') as string

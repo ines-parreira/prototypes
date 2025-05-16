@@ -263,518 +263,309 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                     {isLoading ? (
                         <Loader></Loader>
                     ) : (
-                        integrations.map((integration: Map<any, any>) => {
-                            const id: number = integration.get('id')
+                        integrations
+                            .toArray()
+                            .map((integration: Map<any, any>) => {
+                                const id: number = integration.get('id')
 
-                            let userRoles: string | undefined | FacebookRole[] =
-                                integration.getIn(['meta', 'roles']) as
+                                let userRoles:
                                     | string
                                     | undefined
-                            userRoles = userRoles
-                                ? (userRoles.split(',') as FacebookRole[])
-                                : []
+                                    | FacebookRole[] = integration.getIn([
+                                    'meta',
+                                    'roles',
+                                ]) as string | undefined
+                                userRoles = userRoles
+                                    ? (userRoles.split(',') as FacebookRole[])
+                                    : []
 
-                            let userPermissions: string | undefined | string[] =
-                                integration.getIn([
+                                let userPermissions:
+                                    | string
+                                    | undefined
+                                    | string[] = integration.getIn([
                                     'meta',
                                     'oauth',
                                     'scope',
                                 ]) as string | undefined
-                            userPermissions = userPermissions
-                                ? userPermissions.split(',')
-                                : []
+                                userPermissions = userPermissions
+                                    ? userPermissions.split(',')
+                                    : []
 
-                            const instagramIsDisabled = !integration.getIn([
-                                'meta',
-                                'instagram',
-                                'id',
-                            ])
-                            const pageEnabled = !!selectedIntegrations.get(id)
-                            const canModerate = hasFacebookRole(
-                                userRoles,
-                                FacebookRole.Moderate,
-                            )
+                                const instagramIsDisabled = !integration.getIn([
+                                    'meta',
+                                    'instagram',
+                                    'id',
+                                ])
+                                const pageEnabled =
+                                    !!selectedIntegrations.get(id)
+                                const canModerate = hasFacebookRole(
+                                    userRoles,
+                                    FacebookRole.Moderate,
+                                )
 
-                            const canEnableMessenger = canEnableMetaSetting(
-                                userPermissions,
-                                'messenger_enabled',
-                            )
-
-                            const canEnablePosts = canEnableMetaSetting(
-                                userPermissions,
-                                'posts_enabled',
-                            )
-
-                            const canEnableMentions = canEnableMetaSetting(
-                                userPermissions,
-                                'mentions_enabled',
-                            )
-
-                            const canEnableRecommendations =
-                                canEnableMetaSetting(
+                                const canEnableMessenger = canEnableMetaSetting(
                                     userPermissions,
-                                    'recommendations_enabled',
+                                    'messenger_enabled',
                                 )
 
-                            const canEnableInstagramComments =
-                                canEnableMetaSetting(
+                                const canEnablePosts = canEnableMetaSetting(
                                     userPermissions,
-                                    'instagram_comments_enabled',
+                                    'posts_enabled',
                                 )
 
-                            const canEnableInstagramMentions =
-                                canEnableMetaSetting(
+                                const canEnableMentions = canEnableMetaSetting(
                                     userPermissions,
-                                    'instagram_mentions_enabled',
+                                    'mentions_enabled',
                                 )
 
-                            const canEnableInstagramAds = canEnableMetaSetting(
-                                userPermissions,
-                                'instagram_ads_enabled',
-                            )
+                                const canEnableRecommendations =
+                                    canEnableMetaSetting(
+                                        userPermissions,
+                                        'recommendations_enabled',
+                                    )
 
-                            const canEnableInstagramDirectMessage =
-                                canEnableMetaSetting(
-                                    userPermissions,
-                                    'instagram_direct_message_enabled',
-                                )
+                                const canEnableInstagramComments =
+                                    canEnableMetaSetting(
+                                        userPermissions,
+                                        'instagram_comments_enabled',
+                                    )
 
-                            // Todo(@Mehdi): change this when the feature will be available to all accounts
-                            const instagramDMSettingStatus =
-                                getInstagramDMSettingStatus(
-                                    canEnableInstagramDirectMessage,
-                                    integration,
-                                )
-                            const currentHelpdeskHasInstagramDMFeature =
-                                !!currentHelpdeskProduct?.features[
-                                    AccountFeature.InstagramDirectMessage
-                                ].enabled
+                                const canEnableInstagramMentions =
+                                    canEnableMetaSetting(
+                                        userPermissions,
+                                        'instagram_mentions_enabled',
+                                    )
 
-                            const isAllowedToInstagramDM =
-                                instagramDMSettingStatus ===
-                                    InstagramDMSettingStatus.ALLOWED &&
-                                currentHelpdeskHasInstagramDMFeature
+                                const canEnableInstagramAds =
+                                    canEnableMetaSetting(
+                                        userPermissions,
+                                        'instagram_ads_enabled',
+                                    )
 
-                            const instagramDMSettingsInlineComponent =
-                                getInstagramDMSettingsInlineComponent(
-                                    instagramDMSettingStatus,
-                                    currentAccount,
-                                    currentHelpdeskProduct,
-                                    id,
-                                )
+                                const canEnableInstagramDirectMessage =
+                                    canEnableMetaSetting(
+                                        userPermissions,
+                                        'instagram_direct_message_enabled',
+                                    )
 
-                            const displayPermissionAlert =
-                                !canEnableMessenger ||
-                                !canEnablePosts ||
-                                !canEnableMentions ||
-                                !canEnableRecommendations ||
-                                !canEnableInstagramComments ||
-                                !canEnableInstagramMentions ||
-                                !canEnableInstagramAds ||
-                                !canEnableInstagramDirectMessage
+                                // Todo(@Mehdi): change this when the feature will be available to all accounts
+                                const instagramDMSettingStatus =
+                                    getInstagramDMSettingStatus(
+                                        canEnableInstagramDirectMessage,
+                                        integration,
+                                    )
+                                const currentHelpdeskHasInstagramDMFeature =
+                                    !!currentHelpdeskProduct?.features[
+                                        AccountFeature.InstagramDirectMessage
+                                    ].enabled
 
-                            const nothingToEnable =
-                                !canEnableMessenger &&
-                                !canEnablePosts &&
-                                !canEnableMentions &&
-                                !canEnableRecommendations &&
-                                !canEnableInstagramComments &&
-                                !canEnableInstagramMentions &&
-                                !canEnableInstagramAds &&
-                                !canEnableInstagramDirectMessage
-
-                            const shouldDisplayDisabledWithTooltip =
-                                currentHelpdeskHasInstagramDMFeature &&
-                                !instagramIsDisabled &&
-                                (instagramDMSettingStatus ===
-                                    InstagramDMSettingStatus.SHOULD_RECONNECT ||
+                                const isAllowedToInstagramDM =
                                     instagramDMSettingStatus ===
-                                        InstagramDMSettingStatus.NOT_ALLOWED)
+                                        InstagramDMSettingStatus.ALLOWED &&
+                                    currentHelpdeskHasInstagramDMFeature
 
-                            return (
-                                <div
-                                    key={id}
-                                    className={classnames(css.page, {
-                                        [css.enabled]: !!pageEnabled,
-                                    })}
-                                >
-                                    <div className="d-flex flex-wrap flex-md-nowrap">
-                                        <div className="mr-auto">
-                                            <div>
-                                                <img
-                                                    alt="facebook logo"
-                                                    className={classnames(
-                                                        'image rounded mr-3 mb-2 mb-md-0',
-                                                        css.icon,
-                                                    )}
-                                                    src={integration.getIn(
-                                                        [
-                                                            'meta',
-                                                            'picture',
-                                                            'data',
-                                                            'url',
-                                                        ],
-                                                        pageIconDefault,
-                                                    )}
-                                                />
-                                                <div
-                                                    className={classnames(
-                                                        css.details,
-                                                        'mr-3 text-faded',
-                                                    )}
-                                                >
-                                                    <h3
+                                const instagramDMSettingsInlineComponent =
+                                    getInstagramDMSettingsInlineComponent(
+                                        instagramDMSettingStatus,
+                                        currentAccount,
+                                        currentHelpdeskProduct,
+                                        id,
+                                    )
+
+                                const displayPermissionAlert =
+                                    !canEnableMessenger ||
+                                    !canEnablePosts ||
+                                    !canEnableMentions ||
+                                    !canEnableRecommendations ||
+                                    !canEnableInstagramComments ||
+                                    !canEnableInstagramMentions ||
+                                    !canEnableInstagramAds ||
+                                    !canEnableInstagramDirectMessage
+
+                                const nothingToEnable =
+                                    !canEnableMessenger &&
+                                    !canEnablePosts &&
+                                    !canEnableMentions &&
+                                    !canEnableRecommendations &&
+                                    !canEnableInstagramComments &&
+                                    !canEnableInstagramMentions &&
+                                    !canEnableInstagramAds &&
+                                    !canEnableInstagramDirectMessage
+
+                                const shouldDisplayDisabledWithTooltip =
+                                    currentHelpdeskHasInstagramDMFeature &&
+                                    !instagramIsDisabled &&
+                                    (instagramDMSettingStatus ===
+                                        InstagramDMSettingStatus.SHOULD_RECONNECT ||
+                                        instagramDMSettingStatus ===
+                                            InstagramDMSettingStatus.NOT_ALLOWED)
+
+                                return (
+                                    <div
+                                        key={id}
+                                        className={classnames(css.page, {
+                                            [css.enabled]: !!pageEnabled,
+                                        })}
+                                    >
+                                        <div className="d-flex flex-wrap flex-md-nowrap">
+                                            <div className="mr-auto">
+                                                <div>
+                                                    <img
+                                                        alt="facebook logo"
                                                         className={classnames(
-                                                            css.name,
-                                                            'mr-3',
+                                                            'image rounded mr-3 mb-2 mb-md-0',
+                                                            css.icon,
+                                                        )}
+                                                        src={integration.getIn(
+                                                            [
+                                                                'meta',
+                                                                'picture',
+                                                                'data',
+                                                                'url',
+                                                            ],
+                                                            pageIconDefault,
+                                                        )}
+                                                    />
+                                                    <div
+                                                        className={classnames(
+                                                            css.details,
+                                                            'mr-3 text-faded',
                                                         )}
                                                     >
-                                                        {integration.getIn([
-                                                            'meta',
-                                                            'name',
-                                                        ])}
-                                                    </h3>
-                                                    <span className="mr-3">
-                                                        [
-                                                        {getFacebookUserTypeByRoles(
-                                                            userRoles,
-                                                        )}
-                                                        ]
-                                                    </span>
-                                                    <span>
-                                                        {_truncate(
-                                                            integration.getIn([
+                                                        <h3
+                                                            className={classnames(
+                                                                css.name,
+                                                                'mr-3',
+                                                            )}
+                                                        >
+                                                            {integration.getIn([
                                                                 'meta',
-                                                                'about',
-                                                            ]),
-                                                            { length: 100 },
-                                                        )}
-                                                    </span>
+                                                                'name',
+                                                            ])}
+                                                        </h3>
+                                                        <span className="mr-3">
+                                                            [
+                                                            {getFacebookUserTypeByRoles(
+                                                                userRoles,
+                                                            )}
+                                                            ]
+                                                        </span>
+                                                        <span>
+                                                            {_truncate(
+                                                                integration.getIn(
+                                                                    [
+                                                                        'meta',
+                                                                        'about',
+                                                                    ],
+                                                                ),
+                                                                { length: 100 },
+                                                            )}
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            {!nothingToEnable &&
+                                                canModerate && (
+                                                    <ToggleField
+                                                        value={pageEnabled}
+                                                        onChange={(value) =>
+                                                            this._toggleIntegration(
+                                                                integration,
+                                                                value,
+                                                            )
+                                                        }
+                                                    />
+                                                )}
                                         </div>
-                                        {!nothingToEnable && canModerate && (
-                                            <ToggleField
-                                                value={pageEnabled}
-                                                onChange={(value) =>
-                                                    this._toggleIntegration(
-                                                        integration,
-                                                        value,
-                                                    )
-                                                }
-                                            />
-                                        )}
-                                    </div>
-                                    {!canModerate && (
-                                        <Alert
-                                            type={AlertType.Warning}
-                                            className={settingsCss.mt16}
-                                            icon
-                                        >
-                                            In order to be able to integrate
-                                            this page you need to have one of
-                                            the following roles: Admin, Editor,
-                                            Moderator.
-                                        </Alert>
-                                    )}
-
-                                    {pageEnabled &&
-                                        !displayPermissionAlert &&
-                                        canModerate &&
-                                        instagramIsDisabled && (
+                                        {!canModerate && (
                                             <Alert
                                                 type={AlertType.Warning}
                                                 className={settingsCss.mt16}
                                                 icon
                                             >
-                                                Create an Instagram account for
-                                                this page and you will be able
-                                                to enable Instagram features.
+                                                In order to be able to integrate
+                                                this page you need to have one
+                                                of the following roles: Admin,
+                                                Editor, Moderator.
                                             </Alert>
                                         )}
 
-                                    {displayPermissionAlert && (
-                                        <Alert
-                                            type={AlertType.Warning}
-                                            className={settingsCss.mt16}
-                                            icon
-                                        >
-                                            {`Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to`}{' '}
-                                            <a href="https://www.facebook.com/settings?tab=business_tools&ref=settings">
-                                                this URL
-                                            </a>
-                                            , delete the Gorgias app then try
-                                            again.
-                                        </Alert>
-                                    )}
-                                    {!nothingToEnable && canModerate && (
-                                        <div className={css.settings}>
-                                            <p className="font-weight-medium">
-                                                Choose the Facebook channels you
-                                                want to use to communicate with
-                                                your customers:
-                                            </p>
+                                        {pageEnabled &&
+                                            !displayPermissionAlert &&
+                                            canModerate &&
+                                            instagramIsDisabled && (
+                                                <Alert
+                                                    type={AlertType.Warning}
+                                                    className={settingsCss.mt16}
+                                                    icon
+                                                >
+                                                    Create an Instagram account
+                                                    for this page and you will
+                                                    be able to enable Instagram
+                                                    features.
+                                                </Alert>
+                                            )}
 
-                                            <div className="d-md-flex">
-                                                <FormGroup className="mr-5">
-                                                    <CheckBox
-                                                        className="mb-2"
-                                                        name={`${id}.messenger_enabled`}
-                                                        isChecked={this._getSettingValue(
-                                                            id,
-                                                            'messenger_enabled',
-                                                        )}
-                                                        onChange={(
-                                                            value: boolean,
-                                                        ) =>
-                                                            this._setSettingValue(
-                                                                id,
-                                                                'messenger_enabled',
-                                                                value,
-                                                            )
-                                                        }
-                                                        isDisabled={
-                                                            !canEnableMessenger
-                                                        }
-                                                    >
-                                                        Enable Messenger
-                                                    </CheckBox>
-                                                    <CheckBox
-                                                        className="mb-2"
-                                                        name={`${id}.posts_enabled`}
-                                                        isChecked={this._getSettingValue(
-                                                            id,
-                                                            'posts_enabled',
-                                                        )}
-                                                        onChange={(
-                                                            value: boolean,
-                                                        ) =>
-                                                            this._setSettingValue(
-                                                                id,
-                                                                'posts_enabled',
-                                                                value,
-                                                            )
-                                                        }
-                                                        isDisabled={
-                                                            !canEnablePosts
-                                                        }
-                                                    >
-                                                        Enable Facebook posts,
-                                                        comments and ads
-                                                        comments
-                                                    </CheckBox>
-                                                    <CheckBox
-                                                        className="mb-2"
-                                                        name={`${id}.recommendations_enabled`}
-                                                        isChecked={this._getSettingValue(
-                                                            id,
-                                                            'recommendations_enabled',
-                                                        )}
-                                                        onChange={(
-                                                            value: boolean,
-                                                        ) =>
-                                                            this._setSettingValue(
-                                                                id,
-                                                                'recommendations_enabled',
-                                                                value,
-                                                            )
-                                                        }
-                                                        isDisabled={
-                                                            !canEnableRecommendations
-                                                        }
-                                                    >
-                                                        Enable Facebook
-                                                        recommendations
-                                                    </CheckBox>
-                                                    <CheckBox
-                                                        className="mb-2"
-                                                        name={`${id}.mentions_enabled`}
-                                                        isChecked={this._getSettingValue(
-                                                            id,
-                                                            'mentions_enabled',
-                                                        )}
-                                                        onChange={(
-                                                            value: boolean,
-                                                        ) =>
-                                                            this._setSettingValue(
-                                                                id,
-                                                                'mentions_enabled',
-                                                                value,
-                                                            )
-                                                        }
-                                                        isDisabled={
-                                                            !canEnableMentions
-                                                        }
-                                                    >
-                                                        Enable Facebook mentions
-                                                    </CheckBox>
-                                                    <CheckBox
-                                                        className="mb-2"
-                                                        name={`${id}.instagram_comments_enabled`}
-                                                        isChecked={this._getSettingValue(
-                                                            id,
-                                                            'instagram_comments_enabled',
-                                                        )}
-                                                        onChange={(
-                                                            value: boolean,
-                                                        ) =>
-                                                            this._setSettingValue(
-                                                                id,
-                                                                'instagram_comments_enabled',
-                                                                value,
-                                                            )
-                                                        }
-                                                        isDisabled={
-                                                            !canEnableInstagramComments ||
-                                                            instagramIsDisabled
-                                                        }
-                                                    >
-                                                        Enable Instagram
-                                                        comments
-                                                    </CheckBox>
-                                                    <CheckBox
-                                                        className="mb-2"
-                                                        name={`${id}.instagram_mentions_enabled`}
-                                                        isChecked={this._getSettingValue(
-                                                            id,
-                                                            'instagram_mentions_enabled',
-                                                        )}
-                                                        onChange={(
-                                                            value: boolean,
-                                                        ) =>
-                                                            this._setSettingValue(
-                                                                id,
-                                                                'instagram_mentions_enabled',
-                                                                value,
-                                                            )
-                                                        }
-                                                        isDisabled={
-                                                            !canEnableInstagramMentions ||
-                                                            instagramIsDisabled
-                                                        }
-                                                    >
-                                                        Enable Instagram
-                                                        mentions
-                                                    </CheckBox>
-                                                    <table>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td className="pl-0">
-                                                                    <CheckBox
-                                                                        className="mb-2"
-                                                                        name={`${id}.instagram_direct_message_enabled`}
-                                                                        isChecked={this._getSettingValue(
-                                                                            id,
-                                                                            'instagram_direct_message_enabled',
-                                                                        )}
-                                                                        onChange={(
-                                                                            value: boolean,
-                                                                        ) =>
-                                                                            this._setSettingValue(
-                                                                                id,
-                                                                                'instagram_direct_message_enabled',
-                                                                                value,
-                                                                            )
-                                                                        }
-                                                                        isDisabled={
-                                                                            !canEnableInstagramDirectMessage ||
-                                                                            instagramIsDisabled ||
-                                                                            !isAllowedToInstagramDM
-                                                                        }
-                                                                    >
-                                                                        <div
-                                                                            id={`instagram_direct_message-${id}`}
-                                                                            style={
-                                                                                shouldDisplayDisabledWithTooltip
-                                                                                    ? {
-                                                                                          cursor: 'pointer',
-                                                                                      }
-                                                                                    : undefined
-                                                                            }
-                                                                        >
-                                                                            <span
-                                                                                style={
-                                                                                    shouldDisplayDisabledWithTooltip
-                                                                                        ? {
-                                                                                              borderBottom:
-                                                                                                  '1px dashed #D2D7DE',
-                                                                                          }
-                                                                                        : undefined
-                                                                                }
-                                                                            >
-                                                                                Enable
-                                                                                Instagram
-                                                                                direct
-                                                                                messages
-                                                                            </span>
-                                                                            {!!shouldDisplayDisabledWithTooltip && (
-                                                                                <img
-                                                                                    src={
-                                                                                        warningIcon
-                                                                                    }
-                                                                                    className="ml-3"
-                                                                                    style={{
-                                                                                        verticalAlign:
-                                                                                            'text-bottom',
-                                                                                    }}
-                                                                                    alt="icon"
-                                                                                />
-                                                                            )}
-                                                                        </div>
-                                                                    </CheckBox>
-                                                                </td>
-                                                                <td className="pl-0">
-                                                                    {!instagramIsDisabled &&
-                                                                        instagramDMSettingsInlineComponent}
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                    <CheckBox
-                                                        className="mb-2"
-                                                        name={`${id}.instagram_ads_enabled`}
-                                                        isChecked={this._getSettingValue(
-                                                            id,
-                                                            'instagram_ads_enabled',
-                                                        )}
-                                                        onChange={(
-                                                            value: boolean,
-                                                        ) =>
-                                                            this._setSettingValue(
-                                                                id,
-                                                                'instagram_ads_enabled',
-                                                                value,
-                                                            )
-                                                        }
-                                                        isDisabled={
-                                                            !canEnableInstagramAds ||
-                                                            instagramIsDisabled
-                                                        }
-                                                    >
-                                                        Enable Instagram ads
-                                                    </CheckBox>
-                                                </FormGroup>
-                                            </div>
-
-                                            <div>
+                                        {displayPermissionAlert && (
+                                            <Alert
+                                                type={AlertType.Warning}
+                                                className={settingsCss.mt16}
+                                                icon
+                                            >
+                                                {`Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to`}{' '}
+                                                <a href="https://www.facebook.com/settings?tab=business_tools&ref=settings">
+                                                    this URL
+                                                </a>
+                                                , delete the Gorgias app then
+                                                try again.
+                                            </Alert>
+                                        )}
+                                        {!nothingToEnable && canModerate && (
+                                            <div className={css.settings}>
                                                 <p className="font-weight-medium">
-                                                    Import your Facebook data:
+                                                    Choose the Facebook channels
+                                                    you want to use to
+                                                    communicate with your
+                                                    customers:
                                                 </p>
+
                                                 <div className="d-md-flex">
                                                     <FormGroup className="mr-5">
                                                         <CheckBox
                                                             className="mb-2"
-                                                            name={`${id}.import_history_enabled`}
+                                                            name={`${id}.messenger_enabled`}
                                                             isChecked={this._getSettingValue(
                                                                 id,
-                                                                'import_history_enabled',
+                                                                'messenger_enabled',
                                                             )}
                                                             onChange={(
                                                                 value: boolean,
                                                             ) =>
                                                                 this._setSettingValue(
                                                                     id,
-                                                                    'import_history_enabled',
+                                                                    'messenger_enabled',
+                                                                    value,
+                                                                )
+                                                            }
+                                                            isDisabled={
+                                                                !canEnableMessenger
+                                                            }
+                                                        >
+                                                            Enable Messenger
+                                                        </CheckBox>
+                                                        <CheckBox
+                                                            className="mb-2"
+                                                            name={`${id}.posts_enabled`}
+                                                            isChecked={this._getSettingValue(
+                                                                id,
+                                                                'posts_enabled',
+                                                            )}
+                                                            onChange={(
+                                                                value: boolean,
+                                                            ) =>
+                                                                this._setSettingValue(
+                                                                    id,
+                                                                    'posts_enabled',
                                                                     value,
                                                                 )
                                                             }
@@ -782,19 +573,245 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                                                 !canEnablePosts
                                                             }
                                                         >
-                                                            Import 30 days of
-                                                            history (posts and
-                                                            comments) as closed
-                                                            tickets
+                                                            Enable Facebook
+                                                            posts, comments and
+                                                            ads comments
+                                                        </CheckBox>
+                                                        <CheckBox
+                                                            className="mb-2"
+                                                            name={`${id}.recommendations_enabled`}
+                                                            isChecked={this._getSettingValue(
+                                                                id,
+                                                                'recommendations_enabled',
+                                                            )}
+                                                            onChange={(
+                                                                value: boolean,
+                                                            ) =>
+                                                                this._setSettingValue(
+                                                                    id,
+                                                                    'recommendations_enabled',
+                                                                    value,
+                                                                )
+                                                            }
+                                                            isDisabled={
+                                                                !canEnableRecommendations
+                                                            }
+                                                        >
+                                                            Enable Facebook
+                                                            recommendations
+                                                        </CheckBox>
+                                                        <CheckBox
+                                                            className="mb-2"
+                                                            name={`${id}.mentions_enabled`}
+                                                            isChecked={this._getSettingValue(
+                                                                id,
+                                                                'mentions_enabled',
+                                                            )}
+                                                            onChange={(
+                                                                value: boolean,
+                                                            ) =>
+                                                                this._setSettingValue(
+                                                                    id,
+                                                                    'mentions_enabled',
+                                                                    value,
+                                                                )
+                                                            }
+                                                            isDisabled={
+                                                                !canEnableMentions
+                                                            }
+                                                        >
+                                                            Enable Facebook
+                                                            mentions
+                                                        </CheckBox>
+                                                        <CheckBox
+                                                            className="mb-2"
+                                                            name={`${id}.instagram_comments_enabled`}
+                                                            isChecked={this._getSettingValue(
+                                                                id,
+                                                                'instagram_comments_enabled',
+                                                            )}
+                                                            onChange={(
+                                                                value: boolean,
+                                                            ) =>
+                                                                this._setSettingValue(
+                                                                    id,
+                                                                    'instagram_comments_enabled',
+                                                                    value,
+                                                                )
+                                                            }
+                                                            isDisabled={
+                                                                !canEnableInstagramComments ||
+                                                                instagramIsDisabled
+                                                            }
+                                                        >
+                                                            Enable Instagram
+                                                            comments
+                                                        </CheckBox>
+                                                        <CheckBox
+                                                            className="mb-2"
+                                                            name={`${id}.instagram_mentions_enabled`}
+                                                            isChecked={this._getSettingValue(
+                                                                id,
+                                                                'instagram_mentions_enabled',
+                                                            )}
+                                                            onChange={(
+                                                                value: boolean,
+                                                            ) =>
+                                                                this._setSettingValue(
+                                                                    id,
+                                                                    'instagram_mentions_enabled',
+                                                                    value,
+                                                                )
+                                                            }
+                                                            isDisabled={
+                                                                !canEnableInstagramMentions ||
+                                                                instagramIsDisabled
+                                                            }
+                                                        >
+                                                            Enable Instagram
+                                                            mentions
+                                                        </CheckBox>
+                                                        <table>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td className="pl-0">
+                                                                        <CheckBox
+                                                                            className="mb-2"
+                                                                            name={`${id}.instagram_direct_message_enabled`}
+                                                                            isChecked={this._getSettingValue(
+                                                                                id,
+                                                                                'instagram_direct_message_enabled',
+                                                                            )}
+                                                                            onChange={(
+                                                                                value: boolean,
+                                                                            ) =>
+                                                                                this._setSettingValue(
+                                                                                    id,
+                                                                                    'instagram_direct_message_enabled',
+                                                                                    value,
+                                                                                )
+                                                                            }
+                                                                            isDisabled={
+                                                                                !canEnableInstagramDirectMessage ||
+                                                                                instagramIsDisabled ||
+                                                                                !isAllowedToInstagramDM
+                                                                            }
+                                                                        >
+                                                                            <div
+                                                                                id={`instagram_direct_message-${id}`}
+                                                                                style={
+                                                                                    shouldDisplayDisabledWithTooltip
+                                                                                        ? {
+                                                                                              cursor: 'pointer',
+                                                                                          }
+                                                                                        : undefined
+                                                                                }
+                                                                            >
+                                                                                <span
+                                                                                    style={
+                                                                                        shouldDisplayDisabledWithTooltip
+                                                                                            ? {
+                                                                                                  borderBottom:
+                                                                                                      '1px dashed #D2D7DE',
+                                                                                              }
+                                                                                            : undefined
+                                                                                    }
+                                                                                >
+                                                                                    Enable
+                                                                                    Instagram
+                                                                                    direct
+                                                                                    messages
+                                                                                </span>
+                                                                                {!!shouldDisplayDisabledWithTooltip && (
+                                                                                    <img
+                                                                                        src={
+                                                                                            warningIcon
+                                                                                        }
+                                                                                        className="ml-3"
+                                                                                        style={{
+                                                                                            verticalAlign:
+                                                                                                'text-bottom',
+                                                                                        }}
+                                                                                        alt="icon"
+                                                                                    />
+                                                                                )}
+                                                                            </div>
+                                                                        </CheckBox>
+                                                                    </td>
+                                                                    <td className="pl-0">
+                                                                        {!instagramIsDisabled &&
+                                                                            instagramDMSettingsInlineComponent}
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <CheckBox
+                                                            className="mb-2"
+                                                            name={`${id}.instagram_ads_enabled`}
+                                                            isChecked={this._getSettingValue(
+                                                                id,
+                                                                'instagram_ads_enabled',
+                                                            )}
+                                                            onChange={(
+                                                                value: boolean,
+                                                            ) =>
+                                                                this._setSettingValue(
+                                                                    id,
+                                                                    'instagram_ads_enabled',
+                                                                    value,
+                                                                )
+                                                            }
+                                                            isDisabled={
+                                                                !canEnableInstagramAds ||
+                                                                instagramIsDisabled
+                                                            }
+                                                        >
+                                                            Enable Instagram ads
                                                         </CheckBox>
                                                     </FormGroup>
                                                 </div>
+
+                                                <div>
+                                                    <p className="font-weight-medium">
+                                                        Import your Facebook
+                                                        data:
+                                                    </p>
+                                                    <div className="d-md-flex">
+                                                        <FormGroup className="mr-5">
+                                                            <CheckBox
+                                                                className="mb-2"
+                                                                name={`${id}.import_history_enabled`}
+                                                                isChecked={this._getSettingValue(
+                                                                    id,
+                                                                    'import_history_enabled',
+                                                                )}
+                                                                onChange={(
+                                                                    value: boolean,
+                                                                ) =>
+                                                                    this._setSettingValue(
+                                                                        id,
+                                                                        'import_history_enabled',
+                                                                        value,
+                                                                    )
+                                                                }
+                                                                isDisabled={
+                                                                    !canEnablePosts
+                                                                }
+                                                            >
+                                                                Import 30 days
+                                                                of history
+                                                                (posts and
+                                                                comments) as
+                                                                closed tickets
+                                                            </CheckBox>
+                                                        </FormGroup>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    )}
-                                </div>
-                            )
-                        })
+                                        )}
+                                    </div>
+                                )
+                            })
                     )}
                 </div>
                 <Pagination

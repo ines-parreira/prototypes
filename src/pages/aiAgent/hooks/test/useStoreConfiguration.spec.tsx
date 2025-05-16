@@ -31,7 +31,7 @@ describe('useStoreConfiguration', () => {
         queryClient = mockQueryClient()
     })
 
-    const createWrapper = ({ children }: { children: React.ReactNode }) => (
+    const createWrapper = ({ children }: { children?: React.ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>

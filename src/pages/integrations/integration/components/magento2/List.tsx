@@ -35,58 +35,66 @@ function List({ integrations, loading, redirectUri }: Props) {
         <>
             {!integrations.isEmpty() && (
                 <ul className={css.list}>
-                    {integrations.valueSeq().map((integration) => {
-                        const editLink = `/app/settings/integrations/magento2/${
-                            integration!.get('id') as number
-                        }`
-                        const isSubmitting = loading.get('updateIntegration')
-                        const isDisabled = integration?.get(
-                            'deactivated_datetime',
-                        )
-                        const isManual = integration?.getIn([
-                            'meta',
-                            'is_manual',
-                        ])
-                        return (
-                            <li
-                                className={css.listItem}
-                                key={integration?.get('id')}
-                            >
-                                <Link to={editLink} className={css.link}>
-                                    <span>{integration?.get('name')}</span>
-                                    <i className="material-icons md-3">
-                                        keyboard_arrow_right
-                                    </i>
-                                </Link>
-                                {isDisabled &&
-                                    (isManual ? (
-                                        <Link
-                                            to={isSubmitting ? '#' : editLink}
-                                            className={css.actionLink}
-                                        >
-                                            <Button
-                                                type="button"
-                                                isDisabled={isSubmitting}
+                    {integrations
+                        .valueSeq()
+                        .toArray()
+                        .map((integration) => {
+                            const editLink = `/app/settings/integrations/magento2/${
+                                integration!.get('id') as number
+                            }`
+                            const isSubmitting =
+                                loading.get('updateIntegration')
+                            const isDisabled = integration?.get(
+                                'deactivated_datetime',
+                            )
+                            const isManual = integration?.getIn([
+                                'meta',
+                                'is_manual',
+                            ])
+                            return (
+                                <li
+                                    className={css.listItem}
+                                    key={integration?.get('id')}
+                                >
+                                    <Link to={editLink} className={css.link}>
+                                        <span>{integration?.get('name')}</span>
+                                        <i className="material-icons md-3">
+                                            keyboard_arrow_right
+                                        </i>
+                                    </Link>
+                                    {isDisabled &&
+                                        (isManual ? (
+                                            <Link
+                                                to={
+                                                    isSubmitting
+                                                        ? '#'
+                                                        : editLink
+                                                }
+                                                className={css.actionLink}
+                                            >
+                                                <Button
+                                                    type="button"
+                                                    isDisabled={isSubmitting}
+                                                >
+                                                    Reconnect
+                                                </Button>
+                                            </Link>
+                                        ) : (
+                                            <ConfirmButton
+                                                id="reconnect-integration"
+                                                isLoading={isSubmitting}
+                                                className={css.actionLink}
+                                                onConfirm={() => {
+                                                    handleConfirm(integration)
+                                                }}
+                                                confirmationContent="You first need to delete the integration on your Magento2 store so that you can re-add it using this button"
                                             >
                                                 Reconnect
-                                            </Button>
-                                        </Link>
-                                    ) : (
-                                        <ConfirmButton
-                                            id="reconnect-integration"
-                                            isLoading={isSubmitting}
-                                            className={css.actionLink}
-                                            onConfirm={() => {
-                                                handleConfirm(integration)
-                                            }}
-                                            confirmationContent="You first need to delete the integration on your Magento2 store so that you can re-add it using this button"
-                                        >
-                                            Reconnect
-                                        </ConfirmButton>
-                                    ))}
-                            </li>
-                        )
-                    })}
+                                            </ConfirmButton>
+                                        ))}
+                                </li>
+                            )
+                        })}
                 </ul>
             )}
             {integrations.isEmpty() && (

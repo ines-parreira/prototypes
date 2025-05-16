@@ -16,8 +16,9 @@ type Props = {
 const KeyMetricStat = ({ data, config, meta, loading }: Props) => {
     return (
         <div className={css.metrics}>
-            {(config.get('metrics') as List<any>).map(
-                (metricConfig: Map<any, any>, index) => {
+            {(config.get('metrics') as List<any>)
+                .toArray()
+                .map((metricConfig: Map<any, any>, index) => {
                     const metricName = (metricConfig.get('api_resource_name') ||
                         metricConfig.get('name')) as string
 
@@ -35,8 +36,7 @@ const KeyMetricStat = ({ data, config, meta, loading }: Props) => {
                     if (Component) return <Component key={id} {...props} />
 
                     return <KeyMetricCell key={id} {...props} />
-                },
-            )}
+                })}
         </div>
     )
 }

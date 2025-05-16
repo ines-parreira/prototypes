@@ -91,7 +91,7 @@ export default function Row({
                     />
                 </td>
             ) : null}
-            {fields.map((field: Map<any, any>, index) => (
+            {fields.toArray().map((field: Map<any, any>, index) => (
                 <Cell
                     key={`${item.get('id') as number}-${field.get('name') as string}`}
                     item={item}

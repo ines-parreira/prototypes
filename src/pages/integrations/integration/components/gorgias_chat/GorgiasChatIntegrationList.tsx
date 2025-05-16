@@ -132,20 +132,22 @@ function GorgiasChatIntegrationList({ integrations, loading }: Props) {
                         <HeaderCell />
                     </TableHead>
                     <TableBody>
-                        {chats.map(
-                            (chat) =>
-                                chat && (
-                                    <GorgiasChatIntegrationListRow
-                                        chat={chat}
-                                        integrations={shopifyIntegrations}
-                                        isLoadingIntegrations={loading.get(
-                                            'integrations',
-                                            true,
-                                        )}
-                                        key={chat.get('id')}
-                                    />
-                                ),
-                        )}
+                        {chats
+                            .toArray()
+                            .map(
+                                (chat) =>
+                                    chat && (
+                                        <GorgiasChatIntegrationListRow
+                                            chat={chat}
+                                            integrations={shopifyIntegrations}
+                                            isLoadingIntegrations={loading.get(
+                                                'integrations',
+                                                true,
+                                            )}
+                                            key={chat.get('id')}
+                                        />
+                                    ),
+                            )}
                     </TableBody>
                 </TableWrapper>
             )}

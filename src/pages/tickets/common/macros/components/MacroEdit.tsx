@@ -509,7 +509,8 @@ export class MacroEdit extends Component<Props> {
                         )
                         .map((action?: Map<any, any>) => {
                             return this.renderAction(action, action?.get('idx'))
-                        })}
+                        })
+                        .toArray()}
                     <div className="mt-3">
                         <UncontrolledButtonDropdown className="mr-2">
                             <DropdownToggle
@@ -561,8 +562,9 @@ export class MacroEdit extends Component<Props> {
                                                 Add {humanizeString(key)} action
                                             </DropdownToggle>
                                             <DropdownMenu>
-                                                {filteredActions.map(
-                                                    (actionName) => {
+                                                {filteredActions
+                                                    .toArray()
+                                                    .map((actionName) => {
                                                         return (
                                                             <DropdownItem
                                                                 key={actionName}
@@ -581,14 +583,13 @@ export class MacroEdit extends Component<Props> {
                                                                     )}
                                                             </DropdownItem>
                                                         )
-                                                    },
-                                                )}
+                                                    })}
                                             </DropdownMenu>
                                         </UncontrolledButtonDropdown>
                                     )
                                 },
                             )
-                            .toList()}
+                            .toArray()}
                     </div>
                 </div>
             </form>

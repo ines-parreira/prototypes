@@ -608,7 +608,11 @@ export class AuditLogEventContainer extends Component<Props, State> {
             return null
         }
 
-        const failures = failedActions.map(
+        const normalizedFailedActions = List.isList(failedActions)
+            ? failedActions
+            : List(failedActions)
+
+        const failures = normalizedFailedActions.map(
             (action: Map<any, any>, index = 0) => {
                 const failure_reason =
                     rulesActionsFailures[action.get('failure_reason') as string]
@@ -682,7 +686,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
                     <b>Missing requirements:</b>
                 </span>
                 <ul>
-                    {reasons.map((reason, index) => (
+                    {reasons.toArray().map((reason, index) => (
                         <li key={index}>{reason}</li>
                     ))}
                 </ul>

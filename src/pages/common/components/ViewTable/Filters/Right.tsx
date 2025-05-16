@@ -459,6 +459,11 @@ export class RightContainer extends Component<Props, State> {
             }
         }
 
+        const safeDisplayValue =
+            displayedValue instanceof RegExp
+                ? displayedValue.toString()
+                : displayedValue
+
         return (
             <div>
                 <div onClick={this._toggleDropdown}>
@@ -468,7 +473,7 @@ export class RightContainer extends Component<Props, State> {
                         </div>
                     ) : (
                         <div className="btn btn-light btn-sm dropdown-toggle clickable">
-                            {displayedValue}
+                            {safeDisplayValue}
                         </div>
                     )}
                 </div>

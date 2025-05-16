@@ -142,7 +142,7 @@ export class TableStat extends Component<
                                     </div>
                                 )
                             })
-                            .toList()}
+                            .toArray()}
                     </div>
                 )
             }
@@ -542,7 +542,7 @@ export class TableStat extends Component<
         const lines = filteredLines
             .map((line, lineIdx) => (
                 <tr key={lineIdx}>
-                    {line!.map((metric, metricIdx) => {
+                    {line!.toArray().map((metric, metricIdx) => {
                         const type = data.getIn([
                             'axes',
                             'x',
@@ -587,58 +587,64 @@ export class TableStat extends Component<
                 <Table hover className={css.table}>
                     <thead>
                         <tr>
-                            {(
-                                data.getIn(['axes', 'x']) as List<Map<any, any>>
-                            ).map((axe, index) => {
-                                const tableName = this.props.name
-                                const axisId = `${this._getTooltipId(axe!)}${
-                                    tableName ? `-${tableName}` : ''
-                                }`
-                                return (
-                                    <th
-                                        key={index}
-                                        className={
-                                            css[`${axe!.get('type') as string}`]
-                                        }
-                                    >
-                                        <span className={css['cell-wrapper']}>
-                                            {(
-                                                axe!.get('name') as string
-                                            ).toUpperCase()}
+                            {(data.getIn(['axes', 'x']) as List<Map<any, any>>)
+                                .toArray()
+                                .map((axe, index) => {
+                                    const tableName = this.props.name
+                                    const axisId = `${this._getTooltipId(axe!)}${
+                                        tableName ? `-${tableName}` : ''
+                                    }`
+                                    return (
+                                        <th
+                                            key={index}
+                                            className={
+                                                css[
+                                                    `${axe!.get('type') as string}`
+                                                ]
+                                            }
+                                        >
+                                            <span
+                                                className={css['cell-wrapper']}
+                                            >
+                                                {(
+                                                    axe!.get('name') as string
+                                                ).toUpperCase()}
 
-                                            {config.getIn([
-                                                'axisHelpers',
-                                                axe!.get('name'),
-                                            ]) && (
-                                                <span
-                                                    className={
-                                                        css.axisHelperIcon
-                                                    }
-                                                >
-                                                    <StatsHelpIcon
-                                                        id={axisId}
-                                                    />
-                                                    <Tooltip
-                                                        placement="top"
-                                                        target={axisId}
+                                                {config.getIn([
+                                                    'axisHelpers',
+                                                    axe!.get('name'),
+                                                ]) && (
+                                                    <span
+                                                        className={
+                                                            css.axisHelperIcon
+                                                        }
                                                     >
-                                                        {config.getIn([
-                                                            'axisHelpers',
-                                                            axe!.get('name'),
-                                                        ])}
-                                                    </Tooltip>
-                                                </span>
-                                            )}
-                                        </span>
-                                    </th>
-                                )
-                            })}
+                                                        <StatsHelpIcon
+                                                            id={axisId}
+                                                        />
+                                                        <Tooltip
+                                                            placement="top"
+                                                            target={axisId}
+                                                        >
+                                                            {config.getIn([
+                                                                'axisHelpers',
+                                                                axe!.get(
+                                                                    'name',
+                                                                ),
+                                                            ])}
+                                                        </Tooltip>
+                                                    </span>
+                                                )}
+                                            </span>
+                                        </th>
+                                    )
+                                })}
                         </tr>
                     </thead>
                     <tbody>
                         {showLines && !expanded
-                            ? lines.slice(0, showLines)
-                            : lines}
+                            ? lines.slice(0, showLines).toArray()
+                            : lines.toArray()}
                     </tbody>
                 </Table>
                 {displayExpandButton && (

@@ -24,9 +24,10 @@ const Template: StoryObj<TemplateProps> = {
                 <WizardStep name="baz" />
 
                 <WizardProgress {...props}>
-                    {(activeStepIndex: number, totalSteps: number) =>
-                        //TODO(React18): Fix this once we upgrade to React 18 types
-                        `${activeStepIndex} out of ${totalSteps}` as unknown as React.ReactNode
+                    {
+                        ((activeStepIndex: number, totalSteps: number) =>
+                            // TODO(React18): Fix this once we upgrade to React 18 types
+                            `${activeStepIndex} out of ${totalSteps}`) as unknown as React.ReactNode
                     }
                 </WizardProgress>
             </Wizard>

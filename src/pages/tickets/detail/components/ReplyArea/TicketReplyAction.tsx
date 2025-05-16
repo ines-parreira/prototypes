@@ -133,7 +133,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                             key={key}
                         />
                     ))
-                    .toList()}
+                    .toArray()}
             </div>
         )
     }

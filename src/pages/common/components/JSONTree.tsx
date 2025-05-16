@@ -116,15 +116,17 @@ const ArrayComponent = ({
     const leftBracket = '['
     const rightBracket = ']'
 
+    const normalizedData = List.isList(data) ? data : List(data)
+
     return (
         <div className="object">
             <span>{root && leftBracket}</span>
             <div className="content">
-                {data.map((v, idx) => {
+                {normalizedData.toArray().map((v, idx) => {
                     const childNode = switchComponent(
                         v,
                         true,
-                        (idx as number) >= data.size - 1,
+                        (idx as number) >= normalizedData.size - 1,
                     )
                     const isObject =
                         (childNode.type as FC)?.name === 'ObjectComponent'

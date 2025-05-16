@@ -22,48 +22,56 @@ function List({ integrations, loading, redirectUri }: Props) {
         <>
             {!integrations.isEmpty() && (
                 <ul className={css.list}>
-                    {integrations.valueSeq().map((integration) => {
-                        const editLink = `/app/settings/integrations/recharge/${
-                            integration?.get('id') as number
-                        }`
-                        const shopifyShopName = integration?.getIn([
-                            'meta',
-                            'store_name',
-                        ])
-                        const reconnectUrl = redirectUri
-                            .concat('?store_name=')
-                            .concat(shopifyShopName)
-                        const isDisabled = integration?.get(
-                            'deactivated_datetime',
-                        )
-                        const isSubmitting = loading.get('updateIntegration')
-                        return (
-                            <li
-                                className={css.listItem}
-                                key={integration?.get('id')}
-                            >
-                                <Link to={editLink} className={css.link}>
-                                    <span>{integration?.get('name')}</span>
-                                    <i className="material-icons md-3">
-                                        keyboard_arrow_right
-                                    </i>
-                                </Link>
-                                {isDisabled && (
-                                    <Link
-                                        to={isSubmitting ? '#' : reconnectUrl}
-                                        className={css.actionLink}
-                                    >
-                                        <Button
-                                            type="button"
-                                            isDisabled={isSubmitting}
-                                        >
-                                            Reconnect
-                                        </Button>
+                    {integrations
+                        .valueSeq()
+                        .toArray()
+                        .map((integration) => {
+                            const editLink = `/app/settings/integrations/recharge/${
+                                integration?.get('id') as number
+                            }`
+                            const shopifyShopName = integration?.getIn([
+                                'meta',
+                                'store_name',
+                            ])
+                            const reconnectUrl = redirectUri
+                                .concat('?store_name=')
+                                .concat(shopifyShopName)
+                            const isDisabled = integration?.get(
+                                'deactivated_datetime',
+                            )
+                            const isSubmitting =
+                                loading.get('updateIntegration')
+                            return (
+                                <li
+                                    className={css.listItem}
+                                    key={integration?.get('id')}
+                                >
+                                    <Link to={editLink} className={css.link}>
+                                        <span>{integration?.get('name')}</span>
+                                        <i className="material-icons md-3">
+                                            keyboard_arrow_right
+                                        </i>
                                     </Link>
-                                )}
-                            </li>
-                        )
-                    })}
+                                    {isDisabled && (
+                                        <Link
+                                            to={
+                                                isSubmitting
+                                                    ? '#'
+                                                    : reconnectUrl
+                                            }
+                                            className={css.actionLink}
+                                        >
+                                            <Button
+                                                type="button"
+                                                isDisabled={isSubmitting}
+                                            >
+                                                Reconnect
+                                            </Button>
+                                        </Link>
+                                    )}
+                                </li>
+                            )
+                        })}
                 </ul>
             )}
             {integrations.isEmpty() && (

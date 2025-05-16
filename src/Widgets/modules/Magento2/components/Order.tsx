@@ -174,13 +174,14 @@ export class Shipments extends Component<{
                         <DatetimeLabel dateTime={shipment.get('updated_at')} />
                     </StaticField>
                     {trackComponent}
-                    {(shipment.get('items') as List<any>).map(
-                        (item: Map<any, any>) => (
+                    {shipment
+                        .get('items')
+                        .toArray()
+                        .map((item: Map<any, any>) => (
                             <StaticField key={item.get('order_item_id')}>
                                 {item.get('qty')} x {item.get('name')}
                             </StaticField>
-                        ),
-                    )}
+                        ))}
                 </div>
             )
         })
@@ -237,13 +238,14 @@ export class CreditMemos extends Component<{
                         />
                     </StaticField>
 
-                    {(creditMemo.get('items') as List<any>).map(
-                        (item: Map<any, any>) => (
+                    {creditMemo
+                        .get('items')
+                        .toArray()
+                        .map((item: Map<any, any>) => (
                             <StaticField key={item.get('order_item_id')}>
                                 {item.get('qty')} x {item.get('name')}
                             </StaticField>
-                        ),
-                    )}
+                        ))}
                 </div>
             )
         })

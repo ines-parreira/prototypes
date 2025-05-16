@@ -72,7 +72,7 @@ export default class ListField extends Component<Props> {
                         <span className="ml-2">{addLabel}</span>
                     ) : null}
                 </Button>
-                {items.map((item, index) => (
+                {items.toArray().map((item, index) => (
                     <Row key={index} className={css.row}>
                         <Col className="flex-grow pr-0">
                             <TextInput

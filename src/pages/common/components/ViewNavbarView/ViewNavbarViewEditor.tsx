@@ -166,7 +166,7 @@ class ViewNavbarViewEditor extends Component<Props, State> {
                 ) as List<any>
         }
 
-        return newView.map((view: Map<any, any>) => {
+        return newView.toArray().map((view: Map<any, any>) => {
             const viewId = view.get('id')
 
             return (

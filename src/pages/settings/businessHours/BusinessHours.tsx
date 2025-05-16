@@ -131,7 +131,7 @@ export class BusinessHoursContainer extends Component<Props, State> {
                                         >
                                             Business hours
                                         </Label>
-                                        {items.map((item, idx) => (
+                                        {items.toArray().map((item, idx) => (
                                             <div
                                                 key={idx}
                                                 className={classnames(

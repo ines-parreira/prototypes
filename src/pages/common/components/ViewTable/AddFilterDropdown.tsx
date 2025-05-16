@@ -51,8 +51,9 @@ export function AddFilterDropdown({
 
                         return (
                             <DropdownBody>
-                                {filterableFields.map(
-                                    (field: Map<any, any>) => (
+                                {filterableFields
+                                    .toArray()
+                                    .map((field: Map<any, any>) => (
                                         <DropdownItem
                                             key={field.get('name')}
                                             shouldCloseOnSelect
@@ -66,8 +67,7 @@ export function AddFilterDropdown({
                                         >
                                             {field.get('title')}
                                         </DropdownItem>
-                                    ),
-                                )}
+                                    ))}
                             </DropdownBody>
                         )
                     }}

@@ -320,26 +320,28 @@ export default function TeamCreationModal({
                                                                 values={values}
                                                             />
                                                             <DropdownBody>
-                                                                {agents.map(
-                                                                    (
-                                                                        agent: Map<
-                                                                            any,
-                                                                            any
-                                                                        >,
-                                                                    ) => (
-                                                                        <UserDropdownItem
-                                                                            agent={
-                                                                                agent
-                                                                            }
-                                                                            key={agent.get(
-                                                                                'id',
-                                                                            )}
-                                                                            onMemberChange={
-                                                                                handleMemberChange
-                                                                            }
-                                                                        />
-                                                                    ),
-                                                                )}
+                                                                {agents
+                                                                    .toArray()
+                                                                    .map(
+                                                                        (
+                                                                            agent: Map<
+                                                                                any,
+                                                                                any
+                                                                            >,
+                                                                        ) => (
+                                                                            <UserDropdownItem
+                                                                                agent={
+                                                                                    agent
+                                                                                }
+                                                                                key={agent.get(
+                                                                                    'id',
+                                                                                )}
+                                                                                onMemberChange={
+                                                                                    handleMemberChange
+                                                                                }
+                                                                            />
+                                                                        ),
+                                                                    )}
                                                             </DropdownBody>
                                                         </Dropdown>
                                                     )}

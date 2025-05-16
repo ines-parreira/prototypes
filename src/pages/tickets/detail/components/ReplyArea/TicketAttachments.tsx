@@ -367,8 +367,9 @@ export default class TicketAttachments extends Component<Props, State> {
                         {`There is ${failedAttachments.size} attachment(s) to this message which we couldn't download.`}
                     </div>
                 )}
-                {(publicAttachments as List<any>).map(
-                    (attachment: Attachment, idx) => {
+                {publicAttachments
+                    .toArray()
+                    .map((attachment: Attachment, idx) => {
                         return (
                             <div key={idx} className={css.attachmentContainer}>
                                 {this.renderAttachment(
@@ -378,8 +379,7 @@ export default class TicketAttachments extends Component<Props, State> {
                                 )}
                             </div>
                         )
-                    },
-                )}
+                    })}
 
                 <Lightbox
                     images={images

@@ -349,7 +349,7 @@ const TableContainer = ({
                                 />
                             </td>
                         ) : null}
-                        {fields.map((field: Map<any, any>) => (
+                        {fields.toArray().map((field: Map<any, any>) => (
                             <HeaderCell
                                 key={field.get('name')}
                                 ActionsComponent={ActionsComponent}
@@ -389,7 +389,7 @@ const TableContainer = ({
                 </thead>
                 <tbody>
                     {headerRow}
-                    {items.map((item: Map<any, any>, index) => {
+                    {items.toArray().map((item: Map<any, any>, index) => {
                         const id = item.get('id')
 
                         return (

@@ -20,7 +20,7 @@ const useExhaustEndpointMock = useExhaustEndpoint as jest.Mock
 
 function createWrapper() {
     const queryClient = new QueryClient()
-    return ({ children }: { children: React.ReactNode }) => (
+    return ({ children }: { children?: React.ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>

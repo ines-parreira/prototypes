@@ -92,13 +92,16 @@ export const RecentChatsV2 = () => {
                 <span>Chat & messaging</span>
             </h4>
             <div className={css.recentChatsList}>
-                {tickets.slice(0, MAX_RECENT_CHATS).map((e, index) => (
-                    <RecentChatsItem
-                        key={e!.get('id')}
-                        recentTicket={e!}
-                        position={index! + 1}
-                    />
-                ))}
+                {tickets
+                    .slice(0, MAX_RECENT_CHATS)
+                    .toArray()
+                    .map((e, index) => (
+                        <RecentChatsItem
+                            key={e!.get('id')}
+                            recentTicket={e!}
+                            position={index! + 1}
+                        />
+                    ))}
             </div>
         </div>
     )

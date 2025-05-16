@@ -29,7 +29,7 @@ export default class AddAttachmentsAction extends Component<Props> {
             ['arguments', 'attachments'],
             fromJS([]),
         )
-        return attachments.map((file: Map<any, any>, index) => {
+        return attachments.toArray().map((file: Map<any, any>, index) => {
             return (
                 <Badge key={index} color="secondary" className="tag mr-2 mb-1">
                     <i className="material-icons mr-2">

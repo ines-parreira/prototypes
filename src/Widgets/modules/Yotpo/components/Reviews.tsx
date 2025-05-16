@@ -87,17 +87,19 @@ class BeforeContent extends Component<BeforeContentReviewsProps> {
                 </div>
                 {imagesData.size > 0 && (
                     <StaticField>
-                        {imagesData.map(
-                            (img) =>
-                                img && (
-                                    <img
-                                        key={img.get('id')}
-                                        alt={`review ${img.get('id')}`}
-                                        src={img.get('thumb_url')}
-                                        className={css.reviewImage}
-                                    />
-                                ),
-                        )}
+                        {imagesData
+                            .toArray()
+                            .map(
+                                (img) =>
+                                    img && (
+                                        <img
+                                            key={img.get('id')}
+                                            alt={`review ${img.get('id')}`}
+                                            src={img.get('thumb_url')}
+                                            className={css.reviewImage}
+                                        />
+                                    ),
+                            )}
                     </StaticField>
                 )}
                 <div>

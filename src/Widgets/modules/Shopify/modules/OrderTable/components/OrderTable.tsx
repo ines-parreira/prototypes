@@ -51,33 +51,41 @@ function OrderTable({
                         </td>
                     </tr>
                 )}
-                {lineItems.map((lineItem: ImmutableMap<any, any>, index) => {
-                    const productId = lineItem.get('product_id', '') as string
-                    const variantId = lineItem.get('variant_id', '') as string
-                    const localId = lineItem.get('localId', '') as string
-                    const uid =
-                        localId ||
-                        `${productId}${variantId ? `_${variantId}` : ''}`
-                    return (
-                        <OrderLineItemRow
-                            key={uid}
-                            id={uid}
-                            index={index as number}
-                            actionName={actionName}
-                            isShownInEditOrder={isShownInEditOrder}
-                            lineItem={lineItem}
-                            product={products.get(
-                                lineItem.get('product_id') as number,
-                            )}
-                            shopName={shopName}
-                            currencyCode={currencyCode}
-                            removable={lineItems.size > 1}
-                            onChange={onLineItemUpdate}
-                            onDelete={onLineItemDelete}
-                            container={container}
-                        />
-                    )
-                })}
+                {lineItems
+                    .toArray()
+                    .map((lineItem: ImmutableMap<any, any>, index) => {
+                        const productId = lineItem.get(
+                            'product_id',
+                            '',
+                        ) as string
+                        const variantId = lineItem.get(
+                            'variant_id',
+                            '',
+                        ) as string
+                        const localId = lineItem.get('localId', '') as string
+                        const uid =
+                            localId ||
+                            `${productId}${variantId ? `_${variantId}` : ''}`
+                        return (
+                            <OrderLineItemRow
+                                key={uid}
+                                id={uid}
+                                index={index as number}
+                                actionName={actionName}
+                                isShownInEditOrder={isShownInEditOrder}
+                                lineItem={lineItem}
+                                product={products.get(
+                                    lineItem.get('product_id') as number,
+                                )}
+                                shopName={shopName}
+                                currencyCode={currencyCode}
+                                removable={lineItems.size > 1}
+                                onChange={onLineItemUpdate}
+                                onDelete={onLineItemDelete}
+                                container={container}
+                            />
+                        )
+                    })}
             </tbody>
         </Table>
     )

@@ -17,8 +17,10 @@ describe('<WizardProgress />', () => {
                 <WizardStep name="baz" />
 
                 <WizardProgress>
-                    {(activeStep, totalSteps) =>
-                        `${activeStep} out of ${totalSteps}`
+                    {
+                        ((activeStep: number, totalSteps: number) =>
+                            // TODO(React18): Fix this once we upgrade to React 18 types
+                            `${activeStep} out of ${totalSteps}`) as unknown as React.ReactNode
                     }
                 </WizardProgress>
             </Wizard>,
@@ -31,8 +33,10 @@ describe('<WizardProgress />', () => {
         expect(() =>
             render(
                 <WizardProgress>
-                    {(activeStep, totalSteps) =>
-                        `${activeStep} out of ${totalSteps}`
+                    {
+                        ((activeStep: number, totalSteps: number) =>
+                            // TODO(React18): Fix this once we upgrade to React 18 types
+                            `${activeStep} out of ${totalSteps}`) as unknown as React.ReactNode
                     }
                 </WizardProgress>,
             ),

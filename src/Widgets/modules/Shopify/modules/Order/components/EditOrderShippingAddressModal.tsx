@@ -287,56 +287,65 @@ export function EditOrderShippingAddressModal({
                                     Select another address
                                 </DropdownToggle>
                                 <DropdownMenu className={css.addressDropDown}>
-                                    {shippingAddresses.map((address, index) => {
-                                        if (!address) return
-                                        return (
-                                            <div key={address.get('id')}>
-                                                <DropdownItem
-                                                    id={address.get('id')}
-                                                    onClick={onDropDownClick}
-                                                >
-                                                    {address.get('name')}
-                                                    <br />
-                                                    {address.get('address1')}
-                                                    <br />
-                                                    {address.get(
-                                                        'address2',
-                                                    ) && (
-                                                        <>
-                                                            {address.get(
-                                                                'address2',
-                                                            )}
-                                                            <br />
-                                                        </>
-                                                    )}
-                                                    {address.get('phone') && (
-                                                        <>
-                                                            {address.get(
-                                                                'phone',
-                                                            )}
-                                                            <br />
-                                                        </>
-                                                    )}
-                                                    {getZipLine(address)}
+                                    {shippingAddresses
+                                        .toArray()
+                                        .map((address, index) => {
+                                            if (!address) return
+                                            return (
+                                                <div key={address.get('id')}>
+                                                    <DropdownItem
+                                                        id={address.get('id')}
+                                                        onClick={
+                                                            onDropDownClick
+                                                        }
+                                                    >
+                                                        {address.get('name')}
+                                                        <br />
+                                                        {address.get(
+                                                            'address1',
+                                                        )}
+                                                        <br />
+                                                        {address.get(
+                                                            'address2',
+                                                        ) && (
+                                                            <>
+                                                                {address.get(
+                                                                    'address2',
+                                                                )}
+                                                                <br />
+                                                            </>
+                                                        )}
+                                                        {address.get(
+                                                            'phone',
+                                                        ) && (
+                                                            <>
+                                                                {address.get(
+                                                                    'phone',
+                                                                )}
+                                                                <br />
+                                                            </>
+                                                        )}
+                                                        {getZipLine(address)}
 
-                                                    <br />
-                                                    {address.get('country')}
-                                                </DropdownItem>
-                                                {shippingAddresses.size > 1 &&
-                                                    index! <
-                                                        shippingAddresses.size -
-                                                            1 && (
-                                                        <DropdownItem
-                                                            key={
-                                                                'divider' +
-                                                                index!.toString()
-                                                            }
-                                                            divider
-                                                        />
-                                                    )}
-                                            </div>
-                                        )
-                                    })}
+                                                        <br />
+                                                        {address.get('country')}
+                                                    </DropdownItem>
+                                                    {shippingAddresses.size >
+                                                        1 &&
+                                                        index! <
+                                                            shippingAddresses.size -
+                                                                1 && (
+                                                            <DropdownItem
+                                                                key={
+                                                                    'divider' +
+                                                                    index!.toString()
+                                                                }
+                                                                divider
+                                                            />
+                                                        )}
+                                                </div>
+                                            )
+                                        })}
                                 </DropdownMenu>
                             </ButtonDropdown>
                         </div>
