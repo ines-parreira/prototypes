@@ -1,4 +1,4 @@
-import React, { ComponentType } from 'react'
+import React from 'react'
 
 import { act } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
@@ -113,7 +113,7 @@ function renderTestHook({
     state?: Partial<RootState>
 }) {
     return renderHook(() => useHelpCenterTranslation(), {
-        wrapper: ({ children }: { children: ComponentType }) => (
+        wrapper: ({ children }: { children?: React.ReactNode }) => (
             <Provider
                 store={mockedStore({
                     ...defaultState,

@@ -40,7 +40,7 @@ jest.mock('common/notifications/components/Button', () => ({
 jest.mock('core/flags')
 const mockUseFlag = jest.mocked(useFlag)
 
-const wrapper = ({ children }: { children: ReactNode }) => (
+const wrapper = ({ children }: { children?: ReactNode }) => (
     <StaticRouter location="/app/ai-agent/shopify/teststore1/optimize">
         <NavBarProvider>{children}</NavBarProvider>
     </StaticRouter>

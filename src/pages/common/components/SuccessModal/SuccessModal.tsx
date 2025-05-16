@@ -18,6 +18,7 @@ type Props = {
     buttonLabel: string
     isOpen: boolean
     onClose: () => void
+    children: React.ReactNode
 }
 
 const SuccessModal: React.FC<Props> = ({

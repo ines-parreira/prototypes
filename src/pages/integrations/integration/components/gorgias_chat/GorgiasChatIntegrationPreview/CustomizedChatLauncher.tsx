@@ -36,6 +36,7 @@ type Props = {
     editedPositionAxis?: PositionAxis | null
     hideButton?: boolean
     isClosed?: boolean
+    children: React.ReactNode
 }
 
 const CustomizedChatLauncher: React.FC<Props> = ({

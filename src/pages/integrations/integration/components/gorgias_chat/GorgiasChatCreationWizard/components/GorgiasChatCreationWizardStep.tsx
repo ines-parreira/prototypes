@@ -12,6 +12,7 @@ import css from './GorgiasChatCreationWizardStep.less'
 
 type Props = {
     step: GorgiasChatCreationWizardSteps
+    children: React.ReactNode
     preview: React.ReactNode
     showPreviewPlaceholder?: boolean
     footer: React.ReactNode

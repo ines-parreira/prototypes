@@ -67,7 +67,7 @@ jest.mock('state/currentUser/selectors', () => ({
     getCurrentUser: jest.fn(),
 }))
 
-const wrapper = ({ children }: { children: ReactNode }) => (
+const wrapper = ({ children }: { children?: ReactNode }) => (
     <StaticRouter location="/app">{children}</StaticRouter>
 )
 

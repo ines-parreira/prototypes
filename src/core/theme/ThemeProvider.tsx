@@ -6,7 +6,7 @@ import ThemeContext from './ThemeContext'
 import useThemeContext from './useThemeContext'
 
 type Props = {
-    children: ReactNode
+    children?: ReactNode
 }
 
 export default function ThemeProvider({ children }: Props) {

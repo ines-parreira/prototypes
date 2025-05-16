@@ -237,10 +237,10 @@ const connectorTitleWrapper = connect((state: RootState) => {
 
 export const TitleWrapper = connectorTitleWrapper(TitleWrapperContainer)
 
-export const Wrapper: FunctionComponent<{ source: Map<string, any> }> = ({
-    source: order = fromJS({}) as Map<string, any>,
-    children,
-}) => {
+export const Wrapper: FunctionComponent<{
+    source: Map<string, any>
+    children: ReactNode
+}> = ({ source: order = fromJS({}) as Map<string, any>, children }) => {
     const { integrationId, integration } = useContext(IntegrationContext)
     const isCancelled =
         !!order.get('cancelled_at') || order.get('status') === 'CANCELLED'

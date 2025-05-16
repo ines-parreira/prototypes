@@ -25,7 +25,7 @@ const mockedUseHelpCenterApi = useHelpCenterApi as jest.MockedFunction<
 
 const queryClient = mockQueryClient()
 
-const wrapper: React.FC = ({ children }) => (
+const wrapper: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 

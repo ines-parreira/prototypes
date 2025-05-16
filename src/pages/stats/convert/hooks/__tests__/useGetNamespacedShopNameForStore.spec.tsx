@@ -41,7 +41,7 @@ describe('useGetShopNameForStore', () => {
     describe('customer has several integrations', () => {
         const store = createStore((state) => state as RootState, defaultState)
         const hookOptions = {
-            wrapper: (({ children }) => (
+            wrapper: (({ children }: { children: React.ReactNode }) => (
                 <Provider store={store}>{children}</Provider>
             )) as ComponentType,
         }
@@ -74,7 +74,7 @@ describe('useGetShopNameForStore', () => {
                 }),
             })
             const hookOptions = {
-                wrapper: (({ children }) => (
+                wrapper: (({ children }: { children: React.ReactNode }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }

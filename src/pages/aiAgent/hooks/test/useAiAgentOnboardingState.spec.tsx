@@ -34,7 +34,7 @@ describe('useAiAgentOnboardingState', () => {
         })
     })
 
-    const wrapper = ({ children }: { children: ReactNode }) => (
+    const wrapper = ({ children }: { children?: ReactNode }) => (
         <Provider store={mockStore({ currentAccount: fromJS(account) })}>
             {children}
         </Provider>

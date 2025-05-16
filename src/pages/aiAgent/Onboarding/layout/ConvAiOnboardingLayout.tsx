@@ -38,7 +38,9 @@ const CloseButton: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     )
 }
 
-export const OnboardingBody: React.FC = ({ children }) => {
+export const OnboardingBody: React.FC<{ children: ReactNode }> = ({
+    children,
+}) => {
     return <div className={css.onboardingBody}>{children}</div>
 }
 
@@ -64,6 +66,7 @@ export const OnboardingPreviewContainer: React.FC<{
     isLoading: boolean
     icon: string | JSX.Element
     caption?: string
+    children?: ReactNode
 }> = ({ children, isLoading, icon, caption }) => {
     const { step, shopName } = useParams<{ step: string; shopName: string }>()
 

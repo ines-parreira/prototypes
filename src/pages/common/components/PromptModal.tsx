@@ -26,6 +26,7 @@ export const PromptModalContext = createContext<PromptModalContextType>({
 
 type Props = {
     when: boolean | undefined
+    children: React.ReactNode
 }
 
 const PromptModal: React.FC<Props> = ({ when, children }) => {

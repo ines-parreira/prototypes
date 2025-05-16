@@ -10,7 +10,7 @@ import { getSingleHelpCenterResponseFixture } from '../../fixtures/getHelpCenter
 import { useFileUpload } from '../useFileUpload'
 
 const renderOptions = {
-    wrapper: ({ children }: { children: React.ReactNode }) => (
+    wrapper: ({ children }: { children?: React.ReactNode }) => (
         <CurrentHelpCenterContext.Provider
             value={getSingleHelpCenterResponseFixture}
         >

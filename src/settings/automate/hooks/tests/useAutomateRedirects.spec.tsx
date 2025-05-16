@@ -16,7 +16,7 @@ const useFlagMock = assumeMock(useFlag)
 
 const createWrapper =
     (history: History) =>
-    ({ children }: { children: ReactNode }) => (
+    ({ children }: { children?: ReactNode }) => (
         <Router history={history}>{children}</Router>
     )
 

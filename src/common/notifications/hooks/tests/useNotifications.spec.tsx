@@ -19,7 +19,7 @@ describe('useNotifications', () => {
         const unsubscribe = jest.fn()
         const subscribe = jest.fn(() => unsubscribe)
         const client = { subscribe } as unknown as Client
-        const wrapper = ({ children }: { children: ReactNode }) => (
+        const wrapper = ({ children }: { children?: ReactNode }) => (
             <Context.Provider value={client}>{children}</Context.Provider>
         )
 

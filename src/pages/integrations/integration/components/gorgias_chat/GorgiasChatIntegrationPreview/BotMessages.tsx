@@ -18,6 +18,7 @@ type Props = {
     chatTitle: Maybe<string>
     messages?: string[]
     language?: string
+    children?: React.ReactNode
 }
 
 const BotMessages: React.FC<Props> = ({

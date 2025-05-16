@@ -24,7 +24,7 @@ describe('useAppSelector', () => {
         const { result } = renderHook(
             () => useAppSelector((state) => state.entities.tags['1']),
             {
-                wrapper: (({ children }) => (
+                wrapper: (({ children }: { children: React.ReactNode }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
@@ -41,7 +41,7 @@ describe('useAppSelector', () => {
         const selector = (state: RootState) => state.entities.tags['1']
 
         renderHook(() => useAppSelector(selector, equalityFn), {
-            wrapper: (({ children }) => (
+            wrapper: (({ children }: { children: React.ReactNode }) => (
                 <Provider store={store}>{children}</Provider>
             )) as ComponentType,
         })

@@ -20,6 +20,7 @@ type Props = {
     titles: Record<string, string | Record<string, string>>
     descriptions: Record<string, string | Record<string, string>>
     isLoading?: boolean
+    children?: React.ReactNode
 }
 
 const isRecord = (

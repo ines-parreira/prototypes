@@ -4,6 +4,7 @@ import css from './SelectFieldDropdownAction.less'
 
 const SelectFieldDropdownAction: React.FC<{
     icon?: ReactNode
+    children?: ReactNode
 }> = ({ icon, children }) => (
     <div className={css.dropdownAction}>
         <div className={css.dropdownActionIcon}>{icon}</div>

@@ -1,4 +1,4 @@
-import React, { ComponentType } from 'react'
+import React, { ComponentType, ReactNode } from 'react'
 
 import { fromJS } from 'immutable'
 import LD from 'launchdarkly-react-client-sdk'
@@ -20,7 +20,7 @@ const defaultState = {
 } as RootState
 const store = createStore((state) => state as RootState, defaultState)
 const hookOptions = {
-    wrapper: (({ children }) => (
+    wrapper: (({ children }: { children: ReactNode }) => (
         <Provider store={store}>{children}</Provider>
     )) as ComponentType,
 }

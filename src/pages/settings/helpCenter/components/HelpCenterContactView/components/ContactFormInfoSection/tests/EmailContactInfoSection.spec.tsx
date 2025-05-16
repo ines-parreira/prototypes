@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React from 'react'
 
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -107,7 +107,9 @@ jest.mock('pages/settings/contactForm/hooks/useContactFormApi', () => {
     }
 })
 
-const DefaultProviders: FC = ({ children }) => (
+const DefaultProviders: React.FC<{ children?: React.ReactNode }> = ({
+    children,
+}) => (
     <Provider store={mockedStore(defaultState)}>
         <HelpCenterTranslationProvider helpCenter={helpCenter}>
             {children}

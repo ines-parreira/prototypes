@@ -42,7 +42,7 @@ jest.mock('pages/aiAgent/hooks/useHasAiAgentMenu', () => ({
 }))
 const useHasAiAgentMenuMock = assumeMock(useHasAiAgentMenu)
 
-const wrapper = ({ children }: { children: ReactNode }) => (
+const wrapper = ({ children }: { children?: ReactNode }) => (
     <StaticRouter location="/app">{children}</StaticRouter>
 )
 

@@ -100,7 +100,7 @@ export const CategoriesTable = ({
         [defaultSiblingsPositions, dispatch],
     )
 
-    const handleOnDragStart = useCallback((children) => {
+    const handleOnDragStart = useCallback((children: number[]) => {
         setDefaultSiblingsPositions(children)
     }, [])
 

@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React from 'react'
 
 import { fireEvent, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -119,7 +119,9 @@ const route = {
     route: '/app/settings/help-center/1/appearance',
 }
 
-const DefaultProviders: FC = ({ children }) => (
+const DefaultProviders: React.FC<{ children?: React.ReactNode }> = ({
+    children,
+}) => (
     <Provider store={mockedStore(defaultState)}>
         <HelpCenterTranslationProvider
             helpCenter={getSingleHelpCenterResponseFixture}

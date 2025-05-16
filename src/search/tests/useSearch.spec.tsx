@@ -26,7 +26,7 @@ const handleErrorMock = assumeMock(handleError)
 const mockedServer = new MockAdapter(client)
 const queryClient = mockQueryClient()
 
-const wrapper = ({ children }: { children: ReactNode }) => (
+const wrapper = ({ children }: { children?: ReactNode }) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 

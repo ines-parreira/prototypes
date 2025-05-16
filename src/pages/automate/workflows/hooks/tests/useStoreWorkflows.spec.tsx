@@ -1,7 +1,7 @@
 // sort-imports-ignore
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import React, { ComponentType, ReactChildren } from 'react'
+import React, { ComponentType } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { renderHook } from 'utils/testing/renderHook'
@@ -33,7 +33,7 @@ const defaultState = {
 } as RootState
 
 const renderHookOptions = {
-    wrapper: (({ children }: { children: ReactChildren }) => (
+    wrapper: (({ children }: { children: React.ReactNode }) => (
         <QueryClientProvider
             client={mockQueryClient({
                 cachedData: [

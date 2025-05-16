@@ -25,7 +25,7 @@ const renderComponent = (props: Partial<CategoryImageEditTestProps>) => {
             {...props}
         />,
         {
-            wrapper: ({ children }: { children: React.ReactNode }) => (
+            wrapper: ({ children }) => (
                 <CurrentHelpCenterContext.Provider
                     value={getSingleHelpCenterResponseFixture}
                 >

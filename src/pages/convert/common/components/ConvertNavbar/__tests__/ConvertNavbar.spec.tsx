@@ -58,7 +58,7 @@ const mockStore = configureMockStore()
 
 const queryClient = mockQueryClient()
 
-const wrapper = ({ children }: { children: ReactNode }) => (
+const wrapper = ({ children }: { children?: ReactNode }) => (
     <StaticRouter location="/app">
         <NavBarProvider>{children}</NavBarProvider>
     </StaticRouter>

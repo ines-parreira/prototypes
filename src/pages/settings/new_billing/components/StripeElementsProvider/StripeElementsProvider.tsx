@@ -11,6 +11,7 @@ import { reportCRMGrowthError } from 'pages/settings/new_billing/utils/reportCRM
 
 type StripeElementsProviderProps = {
     clientSecret?: string
+    children: React.ReactNode
 }
 
 export const StripeElementsProvider: React.FC<StripeElementsProviderProps> = ({

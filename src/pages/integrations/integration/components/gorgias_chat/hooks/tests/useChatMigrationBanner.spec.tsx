@@ -122,7 +122,7 @@ describe('useChatMigrationBanner', () => {
                 defaultState,
             )
             const hookOptions = {
-                wrapper: (({ children }) => (
+                wrapper: (({ children }: { children: React.ReactNode }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }

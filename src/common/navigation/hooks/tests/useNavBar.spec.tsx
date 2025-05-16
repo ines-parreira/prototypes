@@ -21,7 +21,7 @@ const mockNavBarContextValues: NavBarContextType = {
     onNavBarShortCutToggle: jest.fn(),
 }
 
-const wrapper = ({ children }: { children: ReactNode }) => (
+const wrapper = ({ children }: { children?: ReactNode }) => (
     <NavBarContext.Provider value={mockNavBarContextValues}>
         {children}
     </NavBarContext.Provider>

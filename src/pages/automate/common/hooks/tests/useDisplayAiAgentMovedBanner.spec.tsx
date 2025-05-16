@@ -25,7 +25,7 @@ const mockUseAppSelector = assumeMock(useAppSelector)
 const mockHistory = createBrowserHistory()
 
 describe('useDisplayAiAgentMovedBanner', () => {
-    const wrapper = ({ children }: { children: ReactNode }) => (
+    const wrapper = ({ children }: { children?: ReactNode }) => (
         <Router history={mockHistory}>{children}</Router>
     )
 

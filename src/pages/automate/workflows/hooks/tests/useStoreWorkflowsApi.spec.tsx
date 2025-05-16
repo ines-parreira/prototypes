@@ -1,4 +1,4 @@
-import React, { ComponentType, ReactChildren } from 'react'
+import React, { ComponentType } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
@@ -52,7 +52,7 @@ const queryClient = mockQueryClient()
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const renderHookOptions = {
-    wrapper: (({ children }: { children: ReactChildren }) => (
+    wrapper: (({ children }: { children: React.ReactNode }) => (
         <Provider store={mockStore(defaultState)}>
             <QueryClientProvider client={queryClient}>
                 {children}

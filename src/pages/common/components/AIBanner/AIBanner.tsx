@@ -8,6 +8,7 @@ export type Props = {
     className?: string
     hasError?: boolean
     fillStyle?: 'fill' | 'ghost' | 'success'
+    children?: React.ReactNode
 }
 
 const AIBanner: FC<Props> = ({

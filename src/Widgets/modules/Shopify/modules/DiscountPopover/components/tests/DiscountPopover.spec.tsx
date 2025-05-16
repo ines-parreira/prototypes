@@ -31,7 +31,19 @@ describe('<DiscountPopover/>', () => {
         onChange = jest.fn()
         popoverSpy = jest
             .spyOn(reactstrap, 'Popover')
-            .mockImplementation(({ children }): any => <div>{children}</div>)
+            .mockImplementation(({ children }): any => {
+                const mockRenderProps = {
+                    scheduleUpdate: jest.fn(),
+                }
+
+                return (
+                    <div>
+                        {typeof children === 'function'
+                            ? children(mockRenderProps)
+                            : children}
+                    </div>
+                )
+            })
     })
 
     describe('render()', () => {

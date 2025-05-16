@@ -55,7 +55,7 @@ describe('useSearchRankScenario', () => {
                     defaultScenarioTimeout,
                 ),
             {
-                wrapper: (({ children }) => (
+                wrapper: (({ children }: { children: React.ReactNode }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
@@ -112,7 +112,7 @@ describe('useSearchRankScenario', () => {
                     defaultScenarioTimeout,
                 ),
             {
-                wrapper: (({ children }) => (
+                wrapper: (({ children }: { children: React.ReactNode }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
@@ -142,7 +142,7 @@ describe('useSearchRankScenario', () => {
                     defaultScenarioTimeout,
                 ),
             {
-                wrapper: (({ children }) => (
+                wrapper: (({ children }: { children: React.ReactNode }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
@@ -176,7 +176,7 @@ describe('useSearchRankScenario', () => {
                     defaultScenarioTimeout,
                 ),
             {
-                wrapper: (({ children }) => (
+                wrapper: (({ children }: { children: React.ReactNode }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
@@ -208,7 +208,7 @@ describe('useSearchRankScenario', () => {
                     defaultScenarioTimeout,
                 ),
             {
-                wrapper: (({ children }) => (
+                wrapper: (({ children }: { children: React.ReactNode }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
@@ -252,7 +252,7 @@ describe('useSearchRankScenario', () => {
                     defaultScenarioTimeout,
                 ),
             {
-                wrapper: (({ children }) => (
+                wrapper: (({ children }: { children: React.ReactNode }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
@@ -292,7 +292,7 @@ describe('useSearchRankScenario', () => {
                     defaultScenarioTimeout,
                 ),
             {
-                wrapper: (({ children }) => (
+                wrapper: (({ children }: { children: React.ReactNode }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
@@ -335,7 +335,7 @@ describe('useSearchRankScenario', () => {
                     defaultScenarioTimeout,
                 ),
             {
-                wrapper: (({ children }) => (
+                wrapper: (({ children }: { children: React.ReactNode }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
@@ -379,7 +379,7 @@ describe('useSearchRankScenario', () => {
                     defaultScenarioTimeout,
                 ),
             {
-                wrapper: (({ children }) => (
+                wrapper: (({ children }: { children: React.ReactNode }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>

@@ -398,7 +398,7 @@ describe('Wrapper', () => {
     })
 })
 
-const wrapper = ({ children }: { children: ReactNode }) => (
+const wrapper = ({ children }: { children?: ReactNode }) => (
     <Provider store={store}>
         <WidgetContext.Provider value={shopifyWidget}>
             {children}

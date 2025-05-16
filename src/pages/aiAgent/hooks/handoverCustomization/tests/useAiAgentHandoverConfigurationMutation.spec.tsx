@@ -26,7 +26,7 @@ const useUpsertStoreHandoverConfigurationMock = assumeMock(
 describe('useAiAgentHandoverConfigurationMutation', () => {
     const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
 
-    const wrapper = ({ children }: { children: ReactNode }) => (
+    const wrapper = ({ children }: { children?: ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>

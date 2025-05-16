@@ -1,6 +1,5 @@
 import React, {
     Children,
-    Component,
     ComponentProps,
     ComponentType,
     createContext,
@@ -224,22 +223,30 @@ const SelectFilter = ({
 
     const hasSelection = useMemo(() => !!value.length, [value])
 
-    const getItems = useCallback((children: ReactNode) => {
+    const getItems = useCallback((children: ReactNode): ItemElement[] => {
         const items: ItemElement[] = []
+
         React.Children.toArray(children).forEach((child) => {
-            if (
-                (child as Component).props.children &&
-                typeof (child as Component).props.children === 'object'
-            ) {
-                items.push(...getItems((child as Component).props.children))
-            }
-            if (
-                (child as ItemElement).type.displayName ===
-                SelectFilter.Item.displayName
-            ) {
-                items.push(child as ItemElement)
+            if (React.isValidElement(child)) {
+                // If this child has nested children, recurse
+                if (
+                    child.props.children &&
+                    typeof child.props.children === 'object'
+                ) {
+                    items.push(...getItems(child.props.children))
+                }
+
+                // If it's an <Item />, collect it
+                if (
+                    child.type === Item ||
+                    (child.type as any).displayName ===
+                        SelectFilter.Item.displayName
+                ) {
+                    items.push(child as ItemElement)
+                }
             }
         })
+
         return items
     }, [])
 

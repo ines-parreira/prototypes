@@ -1,4 +1,4 @@
-import React, { ComponentType } from 'react'
+import React from 'react'
 
 import _keyBy from 'lodash/keyBy'
 import moment from 'moment/moment'
@@ -133,7 +133,9 @@ describe('stats components utils', () => {
                 },
             ],
         ])('should return view filters for %s', (testName, statsFilters) => {
-            const wrapper: ComponentType = ({ children }) => (
+            const wrapper: React.FC<{ children?: React.ReactNode }> = ({
+                children,
+            }) => (
                 <Provider store={mockStore(defaultState)}>
                     <StatsFiltersContext.Provider value={statsFilters}>
                         {children}
@@ -152,7 +154,9 @@ describe('stats components utils', () => {
         })
 
         it('should not include a view filter if the corresponding stat filter is an empty array', () => {
-            const wrapper: ComponentType = ({ children }) => (
+            const wrapper: React.FC<{ children?: React.ReactNode }> = ({
+                children,
+            }) => (
                 <Provider store={mockStore(defaultState)}>
                     <StatsFiltersContext.Provider
                         value={{
@@ -180,7 +184,9 @@ describe('stats components utils', () => {
         })
 
         it("should not include tags that don't exist in the store", () => {
-            const wrapper: ComponentType = ({ children }) => (
+            const wrapper: React.FC<{ children?: React.ReactNode }> = ({
+                children,
+            }) => (
                 <Provider store={mockStore(defaultState)}>
                     <StatsFiltersContext.Provider
                         value={{

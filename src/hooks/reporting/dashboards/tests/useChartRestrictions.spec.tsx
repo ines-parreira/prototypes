@@ -53,7 +53,11 @@ describe('useReportRestrictions', () => {
                 const { result } = renderHook(
                     () => useIsChartRestricted(chartId),
                     {
-                        wrapper: ({ children }) => (
+                        wrapper: ({
+                            children,
+                        }: {
+                            children?: React.ReactNode
+                        }) => (
                             <Provider store={mockStore(defaultState)}>
                                 {children}
                             </Provider>
@@ -74,7 +78,11 @@ describe('useReportRestrictions', () => {
                 const { result } = renderHook(
                     () => useIsChartRestricted(chartId),
                     {
-                        wrapper: ({ children }) => (
+                        wrapper: ({
+                            children,
+                        }: {
+                            children?: React.ReactNode
+                        }) => (
                             <Provider store={mockStore(defaultState)}>
                                 {children}
                             </Provider>
@@ -94,7 +102,11 @@ describe('useReportRestrictions', () => {
                 const { result } = renderHook(
                     () => useIsChartRestricted(chartId),
                     {
-                        wrapper: ({ children }) => (
+                        wrapper: ({
+                            children,
+                        }: {
+                            children?: React.ReactNode
+                        }) => (
                             <Provider store={mockStore(defaultState)}>
                                 {children}
                             </Provider>
@@ -115,7 +127,11 @@ describe('useReportRestrictions', () => {
                 const { result } = renderHook(
                     () => useIsChartRestricted(chartId),
                     {
-                        wrapper: ({ children }) => (
+                        wrapper: ({
+                            children,
+                        }: {
+                            children?: React.ReactNode
+                        }) => (
                             <Provider store={mockStore(defaultState)}>
                                 {children}
                             </Provider>
@@ -146,7 +162,11 @@ describe('useReportRestrictions', () => {
                 const { result } = renderHook(
                     () => useIsChartRestricted(chartId),
                     {
-                        wrapper: ({ children }) => (
+                        wrapper: ({
+                            children,
+                        }: {
+                            children?: React.ReactNode
+                        }) => (
                             <Provider store={mockStore(state)}>
                                 {children}
                             </Provider>
@@ -170,7 +190,11 @@ describe('useReportRestrictions', () => {
                 const { result } = renderHook(
                     () => useIsChartRestricted(chartId),
                     {
-                        wrapper: ({ children }) => (
+                        wrapper: ({
+                            children,
+                        }: {
+                            children?: React.ReactNode
+                        }) => (
                             <Provider store={mockStore(state)}>
                                 {children}
                             </Provider>

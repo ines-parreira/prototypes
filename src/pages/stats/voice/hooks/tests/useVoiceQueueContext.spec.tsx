@@ -21,7 +21,7 @@ describe('useVoiceQueueContext', () => {
             getQueueFromId: jest.fn(),
         }
 
-        const wrapper = ({ children }: { children: ReactNode }) => {
+        const wrapper = ({ children }: { children?: ReactNode }) => {
             return (
                 <VoiceQueueContext.Provider value={mockContextValue}>
                     {children}

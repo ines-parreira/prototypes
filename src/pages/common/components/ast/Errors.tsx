@@ -14,7 +14,9 @@ import classnames from 'classnames'
 
 import useId from 'hooks/useId'
 
-export const ErrorsCollector: React.FC = ({ children }) => {
+export const ErrorsCollector: React.FC<{ children: React.ReactNode }> = ({
+    children,
+}) => {
     const currentErrors = useRef<Set<string>>(new Set())
     const [errors, setErrors] = useState<Set<string>>(currentErrors.current)
 

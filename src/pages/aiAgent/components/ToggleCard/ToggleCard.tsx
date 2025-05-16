@@ -13,6 +13,7 @@ type ToggleCardProps = {
     onChange: (value: boolean) => void
     subtitle?: string
     style?: CSSProperties
+    children?: React.ReactNode
 }
 
 export const ToggleCard: React.FC<ToggleCardProps> = ({

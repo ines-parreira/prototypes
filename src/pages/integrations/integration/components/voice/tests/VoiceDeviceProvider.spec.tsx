@@ -38,7 +38,7 @@ const renderComponent = () => {
     )
 }
 
-const wrapper = ({ children }: { children: React.ReactNode }) => (
+const wrapper = ({ children }: { children?: React.ReactNode }) => (
     <Provider store={mockStore({} as any)}>
         <VoiceDeviceProvider>{children}</VoiceDeviceProvider>
     </Provider>

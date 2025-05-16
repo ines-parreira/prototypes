@@ -116,11 +116,11 @@ const MacroMessageActionsHeaderDropdown: typeof MacroMessageActionsHeader = ({
     </UncontrolledButtonDropdown>
 )
 
-export type MacroMessageActionsHeaderProps = {
+export type MacroMessageActionsHeaderProps = React.PropsWithChildren<{
     actions: List<any>
     type: MacroResponseActionName
     onSelect: (type: MacroResponseActionName) => void
-}
+}>
 
 const MacroMessageActionsHeader: React.FC<MacroMessageActionsHeaderProps> = ({
     actions,

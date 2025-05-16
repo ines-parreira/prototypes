@@ -47,7 +47,7 @@ const recentTicket = {
     customer: { id: 1, email: 'john.doe@example.com', name: 'John Doe' },
 }
 
-const wrapper = ({ children }: { children: ReactNode }) => (
+const wrapper = ({ children }: { children?: ReactNode }) => (
     <StaticRouter location="/app">{children}</StaticRouter>
 )
 

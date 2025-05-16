@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react'
+import React, { createContext, ReactNode, useContext } from 'react'
 
 import classnames from 'classnames'
 
@@ -15,6 +15,7 @@ type ToggleButtonContextType = {
     onChange?: (value: any) => void
     className?: string
     size?: 'medium' | 'small' | 'extraSmall'
+    children?: ReactNode
 }
 
 const ToggleButtonContext = createContext<ToggleButtonContextType>({})
@@ -40,6 +41,7 @@ export const Wrapper: React.FC<ToggleButtonContextType> = ({
 type OptionProps = {
     value?: any
     className?: string
+    children?: ReactNode
 }
 
 export const Option: React.FC<OptionProps> = ({

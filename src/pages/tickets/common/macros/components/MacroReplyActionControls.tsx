@@ -19,6 +19,7 @@ export type onFieldChange = (field: Fields, receivers: string) => void
 
 type MacroReplyActionFieldProps = {
     field: Fields
+    children: React.ReactNode
 }
 
 const MacroReplyActionField: React.FC<MacroReplyActionFieldProps> = ({

@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from 'react'
+import { FC, PropsWithChildren, ReactElement } from 'react'
 
 import {
     QueryCache,
@@ -43,8 +43,14 @@ export function mockQueryClient({
 
 export function mockQueryClientProvider() {
     const queryClient = mockQueryClient()
-    const TestQueryClientProvider: FC = (props) => (
-        <QueryClientProvider client={queryClient} {...props} />
+    // TODO(React18): Delete <unknown> once we upgrade to React 18 types
+    const TestQueryClientProvider: FC<PropsWithChildren<unknown>> = ({
+        children,
+        ...props
+    }) => (
+        <QueryClientProvider client={queryClient} {...props}>
+            {children}
+        </QueryClientProvider>
     )
     return { QueryClientProvider: TestQueryClientProvider, queryClient }
 }

@@ -58,7 +58,7 @@ jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),
 }))
 
-const wrapper = ({ children }: { children: React.ReactNode }) => {
+const wrapper = ({ children }: { children?: React.ReactNode }) => {
     ;(useParams as jest.Mock).mockReturnValue({ shopName: 'Test' })
     return (
         <QueryClientProvider client={mockQueryClient()}>

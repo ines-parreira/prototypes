@@ -154,8 +154,9 @@ const Template: StoryObj<TemplateProps> = {
                 </WizardStep>
 
                 <WizardProgress style={{ marginTop: 8 }}>
-                    {(activeStepIndex, totalSteps) =>
-                        `${activeStepIndex} out of ${totalSteps}`
+                    {(activeStepIndex: number, totalSteps: number) =>
+                        //TODO(React18): Fix this once we upgrade to React 18 types
+                        `${activeStepIndex} out of ${totalSteps}` as unknown as React.ReactNode
                     }
                 </WizardProgress>
             </Wizard>

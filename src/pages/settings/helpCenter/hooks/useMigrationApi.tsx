@@ -1,4 +1,4 @@
-import React, {
+import {
     createContext,
     ReactNode,
     useContext,
@@ -17,7 +17,7 @@ const MigrationApiClientContext = createContext<UseMigrationApiContextValue>({
 })
 
 interface MigrationApiClientProviderProps {
-    children: ReactNode
+    children?: ReactNode
 }
 
 export const MigrationApiClientProvider = ({

@@ -22,6 +22,7 @@ type Props = {
     chatTitle?: string
     avatar?: GorgiasChatAvatarSettings
     language?: string
+    children?: ReactNode
 }
 
 const MessageContent: FC<Props> = ({

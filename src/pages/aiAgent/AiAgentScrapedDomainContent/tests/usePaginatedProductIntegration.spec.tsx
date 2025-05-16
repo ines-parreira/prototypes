@@ -24,7 +24,7 @@ const wrapper = ({
     children,
     cachedData,
 }: {
-    children: React.ReactNode
+    children?: React.ReactNode
     cachedData?: [QueryKey, unknown][]
 }) => {
     const client = mockQueryClient({ cachedData })

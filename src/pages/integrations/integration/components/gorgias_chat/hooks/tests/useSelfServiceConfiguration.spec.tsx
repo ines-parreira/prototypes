@@ -29,7 +29,7 @@ const integration = fromJS({
 
 const mockClient = mockQueryClient()
 
-const withQueryClient = ({ children }: { children: React.ReactNode }) => (
+const withQueryClient = ({ children }: { children?: React.ReactNode }) => (
     <QueryClientProvider client={mockClient}>{children}</QueryClientProvider>
 )
 

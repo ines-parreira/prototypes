@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React from 'react'
 
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -68,7 +68,9 @@ const defaultState: Partial<RootState> = {
     ui: { helpCenter: { ...uiState, currentId: 1 } } as any,
 }
 
-const DefaultProviders: FC = ({ children }) => (
+const DefaultProviders: React.FC<{ children?: React.ReactNode }> = ({
+    children,
+}) => (
     <Provider store={mockedStore(defaultState)}>
         <HelpCenterTranslationProvider
             helpCenter={getSingleHelpCenterResponseFixture}

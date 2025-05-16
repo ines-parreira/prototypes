@@ -31,7 +31,7 @@ const renderHookWithRouter = ({
     when?: boolean
 } = {}) => {
     const history = createMemoryHistory({ initialEntries: ['/'] })
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
+    const wrapper = ({ children }: { children?: React.ReactNode }) => (
         <Router history={history}>
             <Route path="/:shopName?">{children}</Route>
         </Router>

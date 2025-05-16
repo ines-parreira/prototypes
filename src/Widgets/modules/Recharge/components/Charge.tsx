@@ -303,10 +303,10 @@ const connectorTitleWrapper = connect((state: RootState) => {
 
 export const TitleWrapper = connectorTitleWrapper(TitleWrapperContainer)
 
-const Wrapper: FunctionComponent<{ source: Map<string, any> }> = ({
-    source: charge = fromJS({}) as Map<string, any>,
-    children,
-}) => {
+const Wrapper: FunctionComponent<{
+    source: Map<string, any>
+    children: ReactNode
+}> = ({ source: charge = fromJS({}) as Map<string, any>, children }) => {
     const { integrationId } = useContext(IntegrationContext)
     return (
         <ChargeContext.Provider

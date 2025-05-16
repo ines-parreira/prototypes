@@ -26,7 +26,7 @@ import useVoiceMessageValidation from '../useVoiceMessageValidation'
 const mockStore = configureMockStore<RootState>([thunk])({} as RootState)
 const getAudioFileDurationSpy = jest.spyOn(utils, 'getAudioFileDuration')
 
-const wrapper = ({ children }: { children: React.ReactNode }) => (
+const wrapper = ({ children }: { children?: React.ReactNode }) => (
     <Provider store={mockStore}>{children}</Provider>
 )
 

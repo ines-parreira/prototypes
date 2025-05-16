@@ -49,7 +49,8 @@ export const DropdownItem = <T extends boolean | number | string | null>(
         option,
         onKeyDown,
         ...rest
-    }: Props<T> & Omit<HTMLAttributes<HTMLOrSVGElement>, 'onClick'>,
+    }: Props<T> &
+        Omit<HTMLAttributes<HTMLOrSVGElement>, 'onClick' | 'children'>,
     ref: ForwardedRef<HTMLElement>,
 ) => {
     const itemRef = useRef<HTMLElement>(null)

@@ -25,7 +25,7 @@ describe('queries.spec.tsx', () => {
                 fetchChatsApplicationAutomationSettings as jest.Mock
             ).mockResolvedValue(mockSettings)
 
-            const wrapper = ({ children }: { children: React.ReactNode }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
                 </QueryClientProvider>
@@ -45,7 +45,7 @@ describe('queries.spec.tsx', () => {
         })
 
         it('should return an empty array if no application IDs are provided', async () => {
-            const wrapper = ({ children }: { children: React.ReactNode }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
                 </QueryClientProvider>

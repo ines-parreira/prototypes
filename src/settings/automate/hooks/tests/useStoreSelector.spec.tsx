@@ -19,7 +19,7 @@ const useStoreIntegrationsMock = assumeMock(useStoreIntegrations)
 
 const createWrapper =
     (history: History) =>
-    ({ children }: { children: ReactNode }) => (
+    ({ children }: { children?: ReactNode }) => (
         <Router history={history}>
             <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
                 {children}

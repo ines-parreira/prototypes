@@ -1,4 +1,9 @@
-import React, { createContext, FunctionComponent, useContext } from 'react'
+import React, {
+    createContext,
+    FunctionComponent,
+    ReactNode,
+    useContext,
+} from 'react'
 
 import { fromJS, List, Map } from 'immutable'
 
@@ -35,10 +40,10 @@ interface ItemCustomization {
     Wrapper: React.FC<{ source: any; children: React.ReactNode }>
 }
 
-const Wrapper: FunctionComponent<{ source: Map<string, unknown> }> = ({
-    source: item,
-    children,
-}) => {
+const Wrapper: FunctionComponent<{
+    source: Map<string, unknown>
+    children: ReactNode
+}> = ({ source: item, children }) => {
     const { order } = useContext(OrderContext)
     const itemId = item.get('id') as number
     const refunds = order.get('refunds', fromJS([])) as List<any>

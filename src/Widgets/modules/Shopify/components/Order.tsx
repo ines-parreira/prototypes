@@ -306,10 +306,10 @@ function TitleWrapper({ children, source }: TitleWrapperProps) {
     )
 }
 
-export const Wrapper: FunctionComponent<{ source: Map<string, any> }> = ({
-    source: order = fromJS({}) as Map<string, any>,
-    children,
-}) => {
+export const Wrapper: FunctionComponent<{
+    source: Map<string, any>
+    children: ReactNode
+}> = ({ source: order = fromJS({}) as Map<string, any>, children }) => {
     const { integration, integrationId } = useContext(IntegrationContext)
 
     const isCancelled = !!order.get('cancelled_at')

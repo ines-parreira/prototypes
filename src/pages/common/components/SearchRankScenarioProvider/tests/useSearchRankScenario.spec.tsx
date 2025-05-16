@@ -18,7 +18,7 @@ describe('useSearchRankScenario', () => {
         const contextValue = {} as SearchRank
 
         const { result } = renderHook(() => useSearchRankScenarioContext(), {
-            wrapper: (({ children }) => (
+            wrapper: (({ children }: { children: React.ReactNode }) => (
                 <SearchRankScenarioContext.Provider value={contextValue}>
                     {children}
                 </SearchRankScenarioContext.Provider>

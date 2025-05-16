@@ -312,10 +312,10 @@ const connectorTitleWrapper = connect(makeGetIntegrationData)
 
 const ConnectedTitleWrapper = connectorTitleWrapper(TitleWrapper)
 
-export const Wrapper: FunctionComponent<{ source: Map<string, any> }> = ({
-    source: order = fromJS({}) as Map<string, any>,
-    children,
-}) => {
+export const Wrapper: FunctionComponent<{
+    source: Map<string, any>
+    children: ReactNode
+}> = ({ source: order = fromJS({}) as Map<string, any>, children }) => {
     const { integrationId, integration } = useContext(IntegrationContext)
 
     const isOrderRefunded = order.get('status') === 'refunded'

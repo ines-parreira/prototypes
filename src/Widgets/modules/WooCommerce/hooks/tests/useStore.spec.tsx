@@ -124,7 +124,7 @@ function createWrapper(
         | MockGetState<Partial<CombinedState<StoreState>>>
         | undefined,
 ) {
-    return ({ children }: { children: ReactNode }) => (
+    return ({ children }: { children?: ReactNode }) => (
         <Provider store={mockStore(state)}>
             <IntegrationContext.Provider value={integrationContext}>
                 {children}

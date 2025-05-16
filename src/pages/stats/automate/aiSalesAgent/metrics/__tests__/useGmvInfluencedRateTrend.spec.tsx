@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { act } from '@testing-library/react-hooks/dom'

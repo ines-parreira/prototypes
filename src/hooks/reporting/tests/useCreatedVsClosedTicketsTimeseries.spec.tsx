@@ -95,7 +95,7 @@ describe('useCreatedVsClosedTicketsTimeSeries', () => {
         const { result } = renderHook(
             () => useCreatedVsClosedTicketsTimeSeries(),
             {
-                wrapper: (({ children }) => (
+                wrapper: (({ children }: { children: React.ReactNode }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>

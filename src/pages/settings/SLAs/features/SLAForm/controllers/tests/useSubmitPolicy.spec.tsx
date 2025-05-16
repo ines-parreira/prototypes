@@ -42,7 +42,7 @@ assumeMock(useUpdateSlaPolicy).mockReturnValue({
 
 const queryClient = mockQueryClient()
 
-const wrapper = ({ children }: { children: React.ReactNode }) => (
+const wrapper = ({ children }: { children?: React.ReactNode }) => (
     <QueryClientProvider client={queryClient}>
         <Provider store={mockStore({} as any)}>{children}</Provider>
     </QueryClientProvider>

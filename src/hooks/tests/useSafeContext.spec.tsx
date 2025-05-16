@@ -12,7 +12,7 @@ describe('useSafeContext', () => {
         )
         TestContext.displayName = 'TestContext'
 
-        const wrapper = ({ children }: { children: React.ReactNode }) => (
+        const wrapper = ({ children }: { children?: React.ReactNode }) => (
             <TestContext.Provider value={testValue}>
                 {children}
             </TestContext.Provider>

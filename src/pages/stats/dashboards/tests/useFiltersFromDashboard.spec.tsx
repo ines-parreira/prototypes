@@ -83,7 +83,7 @@ const createInitialState = (hasAutomate: boolean) =>
 describe('useFiltersFromDashboard(dashboard)', () => {
     const createWrapper =
         (store: any) =>
-        ({ children }: { children: React.ReactNode }) => (
+        ({ children }: { children?: React.ReactNode }) => (
             <Provider store={store}>{children}</Provider>
         )
 

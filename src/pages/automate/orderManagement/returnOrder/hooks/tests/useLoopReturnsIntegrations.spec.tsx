@@ -1,4 +1,4 @@
-import React, { ReactChild } from 'react'
+import React from 'react'
 
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -13,7 +13,7 @@ jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
-const wrapper = ({ children }: { children: ReactChild }) => (
+const wrapper = ({ children }: { children?: React.ReactNode }) => (
     <Provider
         store={mockStore({
             integrations: fromJS({

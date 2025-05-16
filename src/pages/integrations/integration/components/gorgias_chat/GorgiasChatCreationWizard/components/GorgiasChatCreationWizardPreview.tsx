@@ -52,6 +52,7 @@ type Props = {
     showGoBackButton?: boolean
     renderPoweredBy?: boolean
     renderFooter?: boolean
+    children?: React.ReactNode
 }
 
 const GorgiasChatCreationWizardPreview: React.FC<Props> = ({

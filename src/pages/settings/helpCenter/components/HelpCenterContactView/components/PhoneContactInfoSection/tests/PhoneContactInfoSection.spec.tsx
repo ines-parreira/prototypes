@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React from 'react'
 
 import { render } from '@testing-library/react'
 import _keyBy from 'lodash/keyBy'
@@ -97,7 +97,9 @@ jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
-const DefaultProviders: FC = ({ children }) => (
+const DefaultProviders: React.FC<{ children?: React.ReactNode }> = ({
+    children,
+}) => (
     <Provider store={mockedStore(defaultState)}>
         <HelpCenterTranslationProvider
             helpCenter={getSingleHelpCenterResponseFixture}

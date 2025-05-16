@@ -1,4 +1,4 @@
-import React, { ContextType, useRef } from 'react'
+import React, { ContextType, ReactNode, useRef } from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 
@@ -88,7 +88,9 @@ describe('<DropdownItem />', () => {
                 }}
             >
                 <DropdownItem {...minProps}>
-                    {(highlightedLabel: string) => `custom ${highlightedLabel}`}
+                    {(highlightedLabel: ReactNode) =>
+                        `custom ${highlightedLabel}`
+                    }
                 </DropdownItem>
             </DropdownContext.Provider>,
         )

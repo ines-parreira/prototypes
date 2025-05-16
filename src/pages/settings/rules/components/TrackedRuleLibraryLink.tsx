@@ -12,6 +12,7 @@ export enum Source {
 
 type Props = {
     from: Source
+    children: React.ReactNode
 }
 
 const TrackedRuleLibraryLink: React.FC<Props> = ({ from, children }) => {
