@@ -1,9 +1,11 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
+import { storeConfigurationKeys } from 'models/aiAgent/queries'
 import { ShopifyIntegration } from 'models/integration/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { Card, CardContent } from 'pages/aiAgent/Onboarding/components/Card'
@@ -59,6 +61,7 @@ export const KnowledgeStep: React.FC<StepProps> = ({
         mutate: doUpdateOnboardingMutation,
         isLoading: isUpdatingOnboarding,
     } = useUpdateOnboarding()
+    const queryClient = useQueryClient()
 
     /// This part is a temporary block to be removed once the actual data is available
     const shopifyIntegration: ShopifyIntegration = useAppSelector(
@@ -90,17 +93,20 @@ export const KnowledgeStep: React.FC<StepProps> = ({
         if (data && 'id' in data) {
             doUpdateOnboardingMutation(
                 {
-                    id: data.id as string,
+                    id: data.id,
                     data: {
                         ...data,
-                        id: data.id as string,
+                        id: data.id,
                         completedDatetime: new Date().toISOString(),
                         faqHelpCenterId: helpCenters[0]?.id ?? null,
                     },
                 },
-
                 {
                     onSuccess: () => {
+                        void queryClient.invalidateQueries({
+                            queryKey: storeConfigurationKeys.all(),
+                        })
+
                         logEvent(
                             SegmentEvent.AiAgentNewOnboardingWizardFinished,
                             {
@@ -115,7 +121,6 @@ export const KnowledgeStep: React.FC<StepProps> = ({
                 },
             )
         }
-        return
     }
 
     const onBackClick = () => {

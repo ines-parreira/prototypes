@@ -113,7 +113,6 @@ export const useGetStoreConfigurationPure = (
     })
 }
 
-// TODO: expose a new API that returns the configuration for each stores in the account. In the meantime we need to pass a list of stores.
 export const useGetStoresConfigurationForAccount = (
     params: GetStoreConfigurationForAccountParams,
     overrides?: UseQueryOptions<
