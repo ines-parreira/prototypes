@@ -6,7 +6,7 @@ import { TicketMessagesMember } from 'models/reporting/cubes/TicketMessagesCube'
 import {
     AI_INTENT_TO_EXCLUDE,
     AI_OUTCOME_TO_EXCLUDE,
-} from 'models/reporting/queryFactories/ai-agent-insights/metrics'
+} from 'models/reporting/queryFactories/ai-agent-insights/utils'
 import {
     addFieldIdToCustomFieldValues,
     addOptionalFilter,

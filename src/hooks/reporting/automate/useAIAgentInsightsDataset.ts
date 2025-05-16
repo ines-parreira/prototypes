@@ -25,10 +25,10 @@ import {
     TicketSatisfactionSurveyMeasure,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {
-    AI_AGENT_TICKETS_CHANNELS,
     aiAgentTouchedTicketTotalCountQueryFactory,
     allTicketsForAiAgentTotalCountQueryFactory,
 } from 'models/reporting/queryFactories/ai-agent-insights/metrics'
+import { AI_AGENT_TICKETS_CHANNELS } from 'models/reporting/queryFactories/ai-agent-insights/utils'
 import { customerSatisfactionForAIAgentTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import { FilterKey, StatsFilters } from 'models/stat/types'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'

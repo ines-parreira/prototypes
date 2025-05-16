@@ -20,7 +20,6 @@ import {
     TicketSatisfactionSurveySegment,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {
-    AI_AGENT_TICKETS_CHANNELS,
     AiAgentAutomatedInteractionsTicketsQueryFactory,
     aiAgentAutomatedTicketCountQueryFactory,
     aiAgentTicketsWithIntentQueryFactory,
@@ -36,6 +35,8 @@ import {
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
+
+import { AI_AGENT_TICKETS_CHANNELS } from '../utils'
 
 describe('AI Agent metrics', () => {
     const timezone = 'UTC'
