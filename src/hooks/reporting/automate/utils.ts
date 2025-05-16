@@ -61,7 +61,6 @@ import {
 import { ReportingGranularity } from 'models/reporting/types'
 import { Period, StatsFilters } from 'models/stat/types'
 import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
-import { INTENT_LEVEL } from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
 import { WorkflowStep } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import { SHORT_FORMAT } from 'pages/stats/common/utils'
 import {
@@ -619,7 +618,7 @@ export const enrichWithSuccessRate = (
     })
     return sortAllData(enrichedData, 'successRate', sorting)
 }
-
+export const INTENT_LEVEL = 2
 /**
  * Transform intent name from aaa::bbb to aaa/bbb format. If the intent level is the L3, return the last level only.
  * @example transformIntentName('aaa::bbb::ccc', 1) // 'aaa/bbb/ccc'

@@ -1,10 +1,10 @@
 import { useParams } from 'react-router-dom'
 
+import { INTENT_LEVEL } from 'hooks/reporting/automate/utils'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import { OPTIMIZE } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { IntentTableWidget } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableWidget'
-import { INTENT_LEVEL } from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
 import BackLink from 'pages/common/components/BackLink'
 import { DrillDownModal } from 'pages/stats/common/drill-down/DrillDownModal'
 

@@ -2,6 +2,7 @@ import moment, { Moment } from 'moment'
 import { useParams } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { INTENT_LEVEL } from 'hooks/reporting/automate/utils'
 import useEffectOnce from 'hooks/useEffectOnce'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import { OPTIMIZE } from 'pages/aiAgent/constants'
@@ -14,7 +15,6 @@ import css from './OptimizeContainer.less'
 
 const HOURS_TO_REMOVE = 72
 
-export const INTENT_LEVEL = 2
 export const subtractsPeriodWithoutData = (momentDate: Moment) => {
     return momentDate.subtract(HOURS_TO_REMOVE, 'hours')
 }

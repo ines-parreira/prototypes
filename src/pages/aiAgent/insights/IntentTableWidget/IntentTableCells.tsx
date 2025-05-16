@@ -7,6 +7,7 @@ import { Skeleton, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { INTENT_LEVEL } from 'hooks/reporting/automate/utils'
 import useId from 'hooks/useId'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { BadgeWithTiers } from 'pages/aiAgent/insights/IntentTableWidget/BadgeWithTiers/BadgeWithTiers'
@@ -24,8 +25,6 @@ import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownMo
 import { HintTooltip } from 'pages/stats/common/HintTooltip'
 import { DEFAULT_LOCALE, formatMetricValue } from 'pages/stats/common/utils'
 import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
-
-import { INTENT_LEVEL } from '../OptimizeContainer/OptimizeContainer'
 
 import intentTableCss from './IntentTable.less'
 
