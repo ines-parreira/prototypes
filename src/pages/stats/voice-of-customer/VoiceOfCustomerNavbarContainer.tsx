@@ -1,7 +1,7 @@
 import { ActiveContent, Navbar } from 'common/navigation'
 import { VoiceOfCustomerNavbarView } from 'pages/stats/voice-of-customer/VoiceOfCustomerNavbarView'
 
-export const VOICE_OF_CUSTOMER_SECTION_NAME = 'Voice of Customer'
+import { VOICE_OF_CUSTOMER_SECTION_NAME } from './utils'
 
 export function VoiceOfCustomerNavbarContainer() {
     return (
