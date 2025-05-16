@@ -29,7 +29,11 @@ jest.mock('pages/tickets/detail/components/TicketSummary', () => ({
 const useFlagsMock = useFlags as jest.Mock
 describe('TicketDetail', () => {
     beforeEach(() => {
-        useTicketMock.mockReturnValue({ isLoading: true, ticket: undefined })
+        useTicketMock.mockReturnValue({
+            body: [],
+            isLoading: true,
+            ticket: undefined,
+        })
     })
 
     it('should render a spinner while the page is loading', () => {
@@ -62,6 +66,7 @@ describe('TicketDetail', () => {
 
     it('should dump the ticket to the page once loaded', () => {
         useTicketMock.mockReturnValue({
+            body: [],
             isLoading: false,
             ticket: { id: 1 } as Ticket,
         })
@@ -71,6 +76,7 @@ describe('TicketDetail', () => {
 
     it('should render AI ticket summary when ticket is loaded and enableAITicketSummary enabled', () => {
         useTicketMock.mockReturnValue({
+            body: [],
             isLoading: false,
             ticket: { id: 1 } as Ticket,
         })
@@ -84,6 +90,7 @@ describe('TicketDetail', () => {
 
     it('should not render AI ticket summary when ticket is loaded and enableAITicketSummary disabled', () => {
         useTicketMock.mockReturnValue({
+            body: [],
             isLoading: true,
             ticket: { id: 1 } as Ticket,
         })

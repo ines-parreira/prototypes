@@ -26,7 +26,7 @@ export function TicketDetail({
     AdditionalHeaderAction,
 }: Props) {
     const enableAITicketSummary = useFlags()[FeatureFlagKey.AITicketSummary]
-    const { isLoading, ticket } = useTicket(ticketId)
+    const { body, isLoading, ticket } = useTicket(ticketId)
     const headerData = ticket || summary
 
     return (
@@ -52,7 +52,7 @@ export function TicketDetail({
                             />
                         )}
                         <pre data-testid="dump">
-                            {JSON.stringify(ticket.messages, null, '  ')}
+                            {JSON.stringify(body, null, '  ')}
                         </pre>
                     </div>
                 )}
