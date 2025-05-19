@@ -1,7 +1,4 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
-import { fromJS } from 'immutable'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
@@ -52,7 +49,7 @@ describe('<TicketTag />', () => {
         const color = '#123456' // hsl(210, 65%, 20%)
 
         const { container } = render(
-            <TicketTag text={text} decoration={fromJS({ color })} />,
+            <TicketTag text={text} decoration={{ color }} />,
         )
         const tag = screen.getByText(text)
 
@@ -81,7 +78,7 @@ describe('<TicketTag />', () => {
         const color = '#123456'
 
         const { container } = render(
-            <TicketTag text={label} decoration={fromJS({ color })} />,
+            <TicketTag text={label} decoration={{ color }} />,
         )
 
         expect(screen.getByText(label)).toBeInTheDocument()
@@ -98,7 +95,7 @@ describe('<TicketTag />', () => {
         const color = '#'
 
         const { container } = render(
-            <TicketTag text={label} decoration={fromJS({ color })} />,
+            <TicketTag text={label} decoration={{ color }} />,
         )
 
         expect(container.firstChild).not.toHaveAttribute('style')
@@ -111,7 +108,7 @@ describe('<TicketTag />', () => {
         const color = '#123456'
 
         const { container } = render(
-            <TicketTag text={text} decoration={fromJS({ color })} />,
+            <TicketTag text={text} decoration={{ color }} />,
         )
 
         expect(container.firstChild).not.toHaveAttribute('style')

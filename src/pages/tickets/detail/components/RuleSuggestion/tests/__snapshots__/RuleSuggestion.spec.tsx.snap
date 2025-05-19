@@ -175,18 +175,6 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
                             </span>
                           </div>
                         </div>
-                        <div
-                          style="display: none;"
-                        >
-                          <div
-                            class="ui-badge-badge-7025 displayMore"
-                            id="expand-tags-badge-1"
-                            style="border-radius: 4px;"
-                          >
-                            + 
-                            0
-                          </div>
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -398,18 +386,6 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
                             >
                               auto-close
                             </span>
-                          </div>
-                        </div>
-                        <div
-                          style="display: none;"
-                        >
-                          <div
-                            class="ui-badge-badge-7025 displayMore"
-                            id="expand-tags-badge-4"
-                            style="border-radius: 4px;"
-                          >
-                            + 
-                            0
                           </div>
                         </div>
                       </div>

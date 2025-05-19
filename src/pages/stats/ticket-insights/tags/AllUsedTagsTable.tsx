@@ -1,7 +1,6 @@
 import { UIEventHandler, useEffect, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
-import { fromJS } from 'immutable'
 
 import { Tag } from '@gorgias/api-queries'
 
@@ -222,10 +221,7 @@ const TableRow = ({
                 innerClassName={css.small}
             >
                 {tag ? (
-                    <TicketTag
-                        text={tag?.name}
-                        decoration={fromJS(tag?.decoration)}
-                    />
+                    <TicketTag text={tag.name} decoration={tag.decoration} />
                 ) : (
                     getTagName({ id: tagId })
                 )}

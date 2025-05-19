@@ -1,7 +1,5 @@
 import { type FC, Fragment } from 'react'
 
-import { fromJS } from 'immutable'
-
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'
 import { TicketMessage } from 'models/ticket/types'
@@ -82,7 +80,7 @@ const FeedbackEvents: FC<Props> = ({ messages, shopName }) => {
                                     <TicketTag
                                         key={tag.id}
                                         text={tag.name}
-                                        decoration={fromJS(tag.decoration)}
+                                        decoration={tag.decoration}
                                     />
                                 ))}
                             </TicketEvent>

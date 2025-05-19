@@ -1,10 +1,15 @@
 import { render, screen } from '@testing-library/react'
 
-import type { TicketCompact } from '@gorgias/api-queries'
+import type { TicketCompact, TicketTag } from '@gorgias/api-queries'
 
 import { TicketStatus } from 'business/types/ticket'
+import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 
 import { TicketHeader } from '../TicketHeader'
+
+jest.mock('pages/tickets/detail/components/TicketDetails/TicketTags', () =>
+    jest.fn(() => <div>A tag</div>),
+)
 
 describe('TicketHeader', () => {
     const ticket = {
@@ -12,6 +17,7 @@ describe('TicketHeader', () => {
         channel: 'email',
         status: TicketStatus.Closed,
         subject: 'Ticket Subject',
+        tags: [] as TicketTag[],
     } as TicketCompact
 
     it('should render the ticket metadata', () => {
@@ -52,5 +58,36 @@ describe('TicketHeader', () => {
         render(<TicketHeader ticket={ticket} AdditionalAction={ActionButton} />)
 
         expect(screen.getByText('Action')).toBeInTheDocument()
+    })
+
+    it('should render the tags', () => {
+        const { rerender } = render(<TicketHeader ticket={ticket} />)
+
+        expect(screen.getByText(/no tags/)).toBeInTheDocument()
+
+        const tag = {
+            name: 'Tag 1',
+            decoration: {
+                color: 'red',
+            },
+            id: 1,
+        } as TicketTag
+
+        rerender(
+            <TicketHeader
+                ticket={{
+                    ...ticket,
+                    tags: [tag],
+                }}
+            />,
+        )
+
+        expect(TicketTags).toHaveBeenCalledWith(
+            expect.objectContaining({
+                ticketTags: [tag],
+                isDisabled: true,
+            }),
+            {},
+        )
     })
 })

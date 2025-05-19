@@ -1,7 +1,8 @@
 import React, { ComponentProps, useMemo } from 'react'
 
 import { parseToHsla } from 'color2k'
-import { fromJS, Map } from 'immutable'
+
+import { TicketTagDecorationProperty } from '@gorgias/api-types'
 
 import { Tag } from 'components/Tag/Tag'
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -11,18 +12,22 @@ import { getEnoughContrastedColor, isValidColor } from 'utils/colors'
 
 type Props = {
     className?: string
-    decoration?: Map<any, any>
+    decoration?: TicketTagDecorationProperty
     text: string
     title?: string
 } & ComponentProps<typeof Tag>
 
-const TicketTag = ({ text, className, decoration, title, ...props }: Props) => {
+const TicketTag = ({
+    text,
+    className,
+    decoration = {},
+    title,
+    ...props
+}: Props) => {
     const theme = useTheme()
     const hasNewTag = useFlag(FeatureFlagKey.TagNewDesign)
 
-    const tagColor = ((decoration || fromJS({})) as Map<any, any>).get(
-        'color',
-    ) as string | null
+    const tagColor = decoration?.color
 
     const color = tagColor && isValidColor(tagColor) ? tagColor.trim() : null
 

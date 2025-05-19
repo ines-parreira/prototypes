@@ -1,7 +1,7 @@
 import React, { FormEvent, useEffect, useState } from 'react'
 
 import classNames from 'classnames'
-import { fromJS, Map } from 'immutable'
+import { Map } from 'immutable'
 import { Form } from 'reactstrap'
 
 import { Tag, TagDecoration } from '@gorgias/api-queries'
@@ -137,10 +137,7 @@ export default function Row({ meta, refresh, row }: Props) {
 
             <td>
                 <div className="cell-wrapper">
-                    <TicketTag
-                        text={row.name}
-                        decoration={fromJS(row.decoration)}
-                    />
+                    <TicketTag text={row.name} decoration={row.decoration} />
                 </div>
             </td>
 

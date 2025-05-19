@@ -1,11 +1,11 @@
 import React from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
-import { fromJS, List } from 'immutable'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { Tag } from '@gorgias/api-types'
+import { Tag, TicketTag } from '@gorgias/api-types'
 
 import useElementSize from 'hooks/useElementSize'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
@@ -63,8 +63,8 @@ describe('<AddTagsAction />', () => {
 
     it('should pass down ticket tags', () => {
         mockedTicketTags.mockImplementation(
-            ({ ticketTags }: { ticketTags: List<any> }) => (
-                <div>{JSON.stringify(ticketTags.toJS())}</div>
+            ({ ticketTags }: { ticketTags: TicketTag[] }) => (
+                <div>{JSON.stringify(ticketTags)}</div>
             ),
         )
 
@@ -76,7 +76,12 @@ describe('<AddTagsAction />', () => {
 
         expect(
             getByText(
-                JSON.stringify([tag1, tag2].map((tag) => ({ name: tag }))),
+                JSON.stringify(
+                    [tag1, tag2].map((tag) => ({
+                        name: tag,
+                        decoration: null,
+                    })),
+                ),
             ),
         ).toBeInTheDocument()
     })

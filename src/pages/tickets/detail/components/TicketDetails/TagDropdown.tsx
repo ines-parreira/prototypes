@@ -1,9 +1,8 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 
 import cn from 'classnames'
-import { List, Map } from 'immutable'
 
-import { Tag } from '@gorgias/api-queries'
+import { Tag, TicketTag } from '@gorgias/api-queries'
 
 import { Item } from 'components/Dropdown'
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
@@ -16,7 +15,7 @@ import css from './TagDropdown.less'
 type Props = {
     addTag: (tag: Item) => void
     shouldBindKeys: boolean
-    ticketTags: List<Map<any, any>>
+    ticketTags: TicketTag[]
     transparent?: boolean
 }
 
@@ -34,12 +33,12 @@ const TagDropdown = ({
     }
 
     const existingTagNames = useMemo(
-        () => ticketTags.map((x?: Map<any, any>) => x!.get('name') as string),
+        () => ticketTags.map((x) => x.name),
         [ticketTags],
     )
 
     const filterBy = useCallback(
-        (tag: Tag) => !existingTagNames.contains(tag.name),
+        (tag: Tag) => !existingTagNames.includes(tag.name),
         [existingTagNames],
     )
 

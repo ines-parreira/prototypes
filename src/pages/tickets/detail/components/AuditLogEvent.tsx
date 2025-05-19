@@ -485,7 +485,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
                     <TicketTag
                         key={tag.get('id')}
                         text={tag.get('name')}
-                        decoration={tag.get('decoration')}
+                        decoration={tag.get('decoration')?.toJS()}
                         className={css.equalFiller}
                     />,
                 )

@@ -354,7 +354,7 @@ const TicketHeader = ({
 
                     <TicketTags
                         className={css.tags}
-                        ticketTags={ticket.get('tags')}
+                        ticketTags={ticket.get('tags')?.toJS() || []}
                         addTag={(tag) => dispatch(addTag(tag))}
                         removeTag={(tag) => dispatch(removeTag(tag))}
                         transparent

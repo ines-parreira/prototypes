@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
@@ -47,12 +47,12 @@ describe('<TicketTags />', () => {
     const minProps: Omit<ComponentProps<typeof TicketTags>, 'transparent'> = {
         addTag: jest.fn(),
         removeTag: jest.fn(),
-        ticketTags: fromJS([
-            { name: 'refund' },
-            { name: 'angry' },
-            { name: 'return' },
-            { name: 'customer' },
-        ]),
+        ticketTags: [
+            { name: 'refund', decoration: null, id: 0 },
+            { name: 'angry', decoration: null, id: 1 },
+            { name: 'return', decoration: null, id: 2 },
+            { name: 'customer', decoration: null, id: 3 },
+        ],
     }
 
     it('should display current tags', () => {

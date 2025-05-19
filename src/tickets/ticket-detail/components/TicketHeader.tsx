@@ -2,6 +2,8 @@ import { FC } from 'react'
 
 import type { Ticket, TicketCompact } from '@gorgias/api-queries'
 
+import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
+
 import { SourceBadge } from './SourceBadge'
 import { TicketStatus } from './TicketStatus'
 
@@ -29,10 +31,15 @@ export function TicketHeader({ ticket, AdditionalAction }: Props) {
                     <div className={css.actions}>{<AdditionalAction />}</div>
                 )}
             </header>
-
+            <div className={css.tagsAndAssignee}>
+                {ticket.tags.length > 0 ? (
+                    <TicketTags ticketTags={ticket.tags} isDisabled />
+                ) : (
+                    <span>This ticket has no tags</span>
+                )}
+            </div>
             <pre>
                 {JSON.stringify({
-                    tags: ticket.tags,
                     assignee_team: ticket.assignee_team,
                     assignee_user: ticket.assignee_user,
                     custom_fields: ticket.custom_fields,

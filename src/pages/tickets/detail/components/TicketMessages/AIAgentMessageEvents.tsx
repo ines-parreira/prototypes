@@ -1,5 +1,4 @@
 import classNames from 'classnames'
-import { fromJS } from 'immutable'
 
 import { TicketMessage } from 'models/ticket/types'
 import TicketTag from 'pages/common/components/TicketTag'
@@ -46,7 +45,7 @@ const AIAgentMessageEvents = ({ message }: Props) => {
                                 <TicketTag
                                     key={tag.id}
                                     text={tag.name}
-                                    decoration={fromJS(tag.decoration)}
+                                    decoration={tag.decoration}
                                     className={cssEvent.equalFiller}
                                 />
                             ))}

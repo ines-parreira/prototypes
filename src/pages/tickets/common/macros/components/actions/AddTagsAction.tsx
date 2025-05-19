@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
 
-import { fromJS, List, Map } from 'immutable'
+import { fromJS, Map } from 'immutable'
 
-import { Tag } from '@gorgias/api-types'
+import { Tag, TicketTag } from '@gorgias/api-types'
 
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 
@@ -44,9 +44,13 @@ const AddTagsAction = ({
 
     const ticketTags = useMemo(
         () =>
-            fromJS(
-                splitIncomingTags.map((tag) => ({ name: tag })),
-            ) as List<any>,
+            splitIncomingTags.map(
+                (tag) =>
+                    ({
+                        name: tag,
+                        decoration: null,
+                    }) as unknown as TicketTag,
+            ),
         [splitIncomingTags],
     )
 

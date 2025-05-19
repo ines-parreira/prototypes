@@ -1,8 +1,6 @@
 import React, { useMemo } from 'react'
 
-import Immutable from 'immutable'
-
-import { Tag } from '@gorgias/api-types'
+import { Tag, TicketTag } from '@gorgias/api-types'
 import { Label } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -144,12 +142,14 @@ export default function EndNodeEditor({ nodeInEdition }: EndNodeEditorProps) {
                                     ticket is created
                                 </Label>
                                 <TicketTags
-                                    ticketTags={Immutable.fromJS(
-                                        (
-                                            nodeInEdition.data.ticketTags ?? []
-                                        ).map((tag) => ({
-                                            name: tag,
-                                        })),
+                                    ticketTags={(
+                                        nodeInEdition.data.ticketTags ?? []
+                                    ).map(
+                                        (tag) =>
+                                            ({
+                                                name: tag,
+                                                decoration: null,
+                                            }) as TicketTag,
                                     )}
                                     addTag={handleAddTag}
                                     removeTag={handleDeleteTag}

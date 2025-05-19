@@ -1,6 +1,8 @@
 import { fromJS, List, Map } from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 
+import { TicketTag } from '@gorgias/api-types'
+
 import { fromAST } from 'common/utils'
 import ticketLanguages from 'config/ticketLanguages'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
@@ -451,15 +453,15 @@ export const defaultTicketView = {
                     <TicketTags
                         isDisabled
                         textClassName="skip-bold"
-                        ticketTags={
-                            (item.get('tags', fromJS([])) as List<any>).sort(
-                                ((a: Map<any, any>, b: Map<any, any>) =>
-                                    (a.get('name') as string).toLowerCase() >
-                                    (
-                                        b.get('name') as string
-                                    ).toLowerCase()) as any,
-                            ) as List<any>
-                        }
+                        ticketTags={(
+                            (
+                                item.get('tags', fromJS([])) as List<any>
+                            ).toJS() as unknown as TicketTag[]
+                        ).sort((a, b) =>
+                            a.name.toLowerCase() > b.name.toLowerCase()
+                                ? 1
+                                : -1,
+                        )}
                     />
                 )
             }

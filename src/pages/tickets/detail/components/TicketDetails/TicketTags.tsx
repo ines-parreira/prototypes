@@ -1,10 +1,9 @@
-import React, { ComponentProps, useMemo, useState } from 'react'
+import { ComponentProps, Fragment, useEffect, useMemo, useState } from 'react'
 
 import classnames from 'classnames'
-import { List, Map } from 'immutable'
 import _uniqueId from 'lodash/uniqueId'
 
-import { Tag } from '@gorgias/api-types'
+import { Tag, TicketTag as TicketTagType } from '@gorgias/api-types'
 import { Badge, BadgeIcon, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { getWrappedElementCount } from 'common/utils'
@@ -25,7 +24,7 @@ type Props = {
     removeTag?: (tag: string) => void
     right?: boolean
     shouldBindKeys?: boolean
-    ticketTags: List<Map<any, any>>
+    ticketTags: TicketTagType[]
     transparent?: boolean
 } & Pick<ComponentProps<typeof TicketTag>, 'textClassName'>
 
@@ -40,11 +39,12 @@ const TicketTags = ({
     textClassName,
     transparent = false,
 }: Props) => {
+    const [wrappedElementCount, setWrapperElementCount] = useState(0)
     const tags = useMemo(
         () =>
-            ticketTags.sort((a: Map<any, any>, b: Map<any, any>) => {
-                const first = (a.get('name') as string).toLowerCase()
-                const second = (b.get('name') as string).toLowerCase()
+            ticketTags.sort((a, b) => {
+                const first = a.name.toLowerCase()
+                const second = b.name.toLowerCase()
 
                 return first > second ? 1 : second > first ? -1 : 0
             }),
@@ -56,14 +56,17 @@ const TicketTags = ({
     const [isExpanded, setExpanded] = useState(false)
 
     const [element, setElement] = useCallbackRef()
-    const [__width, height] = useElementSize(element)
-    const wrappedElementCount = getWrappedElementCount(element, ['button'])
+    const [width, height] = useElementSize(element)
+
+    // make sure we do the wrapping count after the first render
+    useEffect(() => {
+        if (!isExpanded) {
+            setWrapperElementCount(getWrappedElementCount(element, ['button']))
+        }
+    }, [element, width, height, isExpanded])
 
     const hiddenTags = wrappedElementCount
-        ? tags
-              .slice(tags.size - wrappedElementCount)
-              .map((tag) => tag?.get('name') as string)
-              .toArray()
+        ? tags.slice(tags.length - wrappedElementCount).map((tag) => tag?.name)
         : []
 
     const displayExpandButton = Boolean(
@@ -96,20 +99,66 @@ const TicketTags = ({
                             transparent={transparent}
                         />
                     )}
-                    {tags.toArray().map((tag?: Map<any, any>, i?: number) => (
-                        <TicketTag
-                            key={i}
-                            decoration={tag!.get('decoration')}
-                            text={tag!.get('name')}
-                            textClassName={textClassName}
-                            {...(!isDisabled && {
-                                trailIcon: (
-                                    <i className="material-icons">close</i>
-                                ),
-                                onTrailIconClick: () =>
-                                    removeTag?.(tag!.get('name') as string),
-                            })}
-                        />
+                    {tags.map((tag, i) => (
+                        <Fragment key={tag.name}>
+                            {wrappedElementCount > 0 &&
+                                tags.length - i === wrappedElementCount && (
+                                    <div
+                                        style={{
+                                            display: displayExpandButton
+                                                ? 'block'
+                                                : 'none',
+                                        }}
+                                    >
+                                        <Badge
+                                            id={`expand-tags-badge-${uniqueId}`}
+                                            className={css.displayMore}
+                                            type={'light-dark'}
+                                            corner="square"
+                                            upperCase={false}
+                                            onClick={() => setExpanded(true)}
+                                        >
+                                            + {wrappedElementCount || 0}
+                                            {!isDisabled && (
+                                                <BadgeIcon
+                                                    className={classnames(
+                                                        'material-icons-round',
+                                                        css.displayMoreIcon,
+                                                    )}
+                                                    icon="arrow_drop_down"
+                                                />
+                                            )}
+                                        </Badge>
+                                        <Tooltip
+                                            target={`expand-tags-badge-${uniqueId}`}
+                                            offset="0, 9"
+                                            placement="bottom-start"
+                                            innerProps={{
+                                                fade: false,
+                                            }}
+                                        >
+                                            <ul className={css.tooltipContent}>
+                                                {hiddenTags?.map((tag) => (
+                                                    <li key={tag}>{tag}</li>
+                                                ))}
+                                            </ul>
+                                        </Tooltip>
+                                    </div>
+                                )}
+                            <TicketTag
+                                key={i}
+                                decoration={tag.decoration}
+                                text={tag.name}
+                                textClassName={textClassName}
+                                {...(!isDisabled && {
+                                    trailIcon: (
+                                        <i className="material-icons">close</i>
+                                    ),
+                                    onTrailIconClick: () =>
+                                        removeTag?.(tag.name),
+                                })}
+                            />
+                        </Fragment>
                     ))}
                     {isExpanded && (
                         <Button
@@ -126,43 +175,6 @@ const TicketTags = ({
                             </ButtonIconLabel>
                         </Button>
                     )}
-                </div>
-                <div
-                    style={{
-                        display: displayExpandButton ? 'block' : 'none',
-                    }}
-                >
-                    <Badge
-                        id={`expand-tags-badge-${uniqueId}`}
-                        className={css.displayMore}
-                        type={'light-dark'}
-                        corner="square"
-                        upperCase={false}
-                        onClick={() => setExpanded(true)}
-                    >
-                        + {wrappedElementCount || 0}
-                        {!isDisabled && (
-                            <BadgeIcon
-                                className={classnames(
-                                    'material-icons-round',
-                                    css.displayMoreIcon,
-                                )}
-                                icon="arrow_drop_down"
-                            />
-                        )}
-                    </Badge>
-                    <Tooltip
-                        target={`expand-tags-badge-${uniqueId}`}
-                        offset="0, 9"
-                        placement="bottom-start"
-                        innerProps={{
-                            fade: false,
-                        }}
-                    >
-                        <ul className={css.tooltipContent}>
-                            {hiddenTags?.map((tag) => <li key={tag}>{tag}</li>)}
-                        </ul>
-                    </Tooltip>
                 </div>
             </div>
         </div>

@@ -1,10 +1,9 @@
 import React, { ComponentProps } from 'react'
 
 import { render } from '@testing-library/react'
-import { fromJS, List, Map } from 'immutable'
 import { act } from 'react-dom/test-utils'
 
-import { Tag } from '@gorgias/api-queries'
+import { Tag, TicketTag } from '@gorgias/api-queries'
 
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import { TagDropdownMenu } from 'tags'
@@ -33,12 +32,12 @@ describe('<TagDropdown />', () => {
     const props = {
         addTag: jest.fn(),
         shouldBindKeys: false,
-        ticketTags: fromJS([
+        ticketTags: [
             { name: 'refund' },
             { name: 'angry' },
             { name: 'return' },
             { name: 'customer' },
-        ]) as List<Map<any, any>>,
+        ] as TicketTag[],
     }
 
     it('should open tag dropdown by using keyboard shortcut', () => {

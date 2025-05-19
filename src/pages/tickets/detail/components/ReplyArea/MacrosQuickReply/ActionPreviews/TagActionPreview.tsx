@@ -28,7 +28,7 @@ export const TagActionPreview = ({ action }: Props) => {
             <TicketTag
                 key={tag}
                 text={tag}
-                decoration={tagObject?.get('decoration')}
+                decoration={tagObject?.get('decoration')?.toJS()}
             />
         )
     })
