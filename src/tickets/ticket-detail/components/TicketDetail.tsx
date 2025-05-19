@@ -1,15 +1,12 @@
 import { FC } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
 import { TicketCompact } from '@gorgias/api-queries'
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import TicketSummarySection from 'pages/tickets/detail/components/TicketSummary'
-
 import { useTicket } from '../hooks/useTicket'
+import { TicketBody } from './TicketBody'
 import { TicketHeader } from './TicketHeader'
+import { TicketSummary } from './TicketSummary'
 
 import css from './TicketDetail.less'
 
@@ -25,7 +22,6 @@ export function TicketDetail({
     ticketId,
     AdditionalHeaderAction,
 }: Props) {
-    const enableAITicketSummary = useFlags()[FeatureFlagKey.AITicketSummary]
     const { body, isLoading, ticket } = useTicket(ticketId)
     const headerData = ticket || summary
 
@@ -45,15 +41,8 @@ export function TicketDetail({
                     </div>
                 ) : (
                     <div className={css.body}>
-                        {enableAITicketSummary && ticket && (
-                            <TicketSummarySection
-                                summary={ticket.summary}
-                                ticketId={ticket.id}
-                            />
-                        )}
-                        <pre data-testid="dump">
-                            {JSON.stringify(body, null, '  ')}
-                        </pre>
+                        <TicketSummary ticket={ticket} />
+                        <TicketBody elements={body} />
                     </div>
                 )}
             </div>
