@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { useFetchChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 import { ChannelsFormComponent } from '../ChannelsFormComponent'
@@ -26,9 +26,12 @@ jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
     default: jest.fn(),
 }))
 
-jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations', () => ({
-    useStoreActivations: jest.fn(),
-}))
+jest.mock(
+    'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData',
+    () => ({
+        useFetchChatIntegrationsStatusData: jest.fn(),
+    }),
+)
 
 // Mock all imported components
 jest.mock(
@@ -175,17 +178,13 @@ describe('ChannelsFormComponent', () => {
             { value: { id: 3, name: 'Test Channel 3' } },
         ])
 
-        // Mock store activations
-        ;(useStoreActivations as jest.Mock).mockReturnValue({
-            storeActivations: {
-                'Test Shop': {
-                    support: {
-                        chat: {
-                            availableChats: [1, 2], // Only channels 1 and 2 are available
-                        },
-                    },
-                },
-            },
+        // Mock chat integration status data
+        ;(useFetchChatIntegrationsStatusData as jest.Mock).mockReturnValue({
+            data: [
+                { chatId: 1, installed: true },
+                { chatId: 2, installed: true },
+                { chatId: 3, installed: false },
+            ],
         })
     })
     it('should render ai agent chat section when chat feature flag is enabled', () => {
@@ -356,21 +355,21 @@ describe('ChannelsFormComponent', () => {
         )
     })
 
-    it('should disable chat channels that are not in the available chats list', () => {
+    it('should disable chat channels that are not installed', () => {
         // Setup mocks
         const mockChatChannels = [
-            { value: { id: 1, name: 'Available Channel', isDisabled: false } },
+            { value: { id: 1, name: 'Installed Channel', isDisabled: false } },
             {
                 value: {
                     id: 2,
-                    name: 'Another Available Channel',
+                    name: 'Another Installed Channel',
                     isDisabled: false,
                 },
             },
             {
                 value: {
                     id: 3,
-                    name: 'Unavailable Channel',
+                    name: 'Not Installed Channel',
                     isDisabled: false,
                 },
             },
@@ -379,17 +378,13 @@ describe('ChannelsFormComponent', () => {
             mockChatChannels,
         )
 
-        // Mock store activations with only channels 1 and 2 available
-        ;(useStoreActivations as jest.Mock).mockReturnValue({
-            storeActivations: {
-                'Test Shop': {
-                    support: {
-                        chat: {
-                            availableChats: [1, 2], // Only channels 1 and 2 are available
-                        },
-                    },
-                },
-            },
+        // Mock chat integration status with only channels 1 and 2 installed
+        ;(useFetchChatIntegrationsStatusData as jest.Mock).mockReturnValue({
+            data: [
+                { chatId: 1, installed: true },
+                { chatId: 2, installed: true },
+                { chatId: 3, installed: false },
+            ],
         })
 
         render(
@@ -406,7 +401,7 @@ describe('ChannelsFormComponent', () => {
         expect(mockChatChannels[2].value.isDisabled).toBe(true)
     })
 
-    it('should handle empty available chats list', () => {
+    it('should handle empty chat integration status data', () => {
         // Setup mocks
         const mockChatChannels = [
             { value: { id: 1, name: 'Channel 1', isDisabled: false } },
@@ -416,17 +411,9 @@ describe('ChannelsFormComponent', () => {
             mockChatChannels,
         )
 
-        // Mock store activations with no available chats
-        ;(useStoreActivations as jest.Mock).mockReturnValue({
-            storeActivations: {
-                'Test Shop': {
-                    support: {
-                        chat: {
-                            availableChats: [], // No channels available
-                        },
-                    },
-                },
-            },
+        // Mock with no chat integration status data
+        ;(useFetchChatIntegrationsStatusData as jest.Mock).mockReturnValue({
+            data: undefined,
         })
 
         render(
@@ -435,12 +422,12 @@ describe('ChannelsFormComponent', () => {
             </BrowserRouter>,
         )
 
-        // After rendering, all channels should be disabled
+        // After rendering, all channels should be disabled when no status data exists
         expect(mockChatChannels[0].value.isDisabled).toBe(true)
         expect(mockChatChannels[1].value.isDisabled).toBe(true)
     })
 
-    it('should handle missing storeActivations data', () => {
+    it('should enable all chat channels that are installed', () => {
         // Setup mocks
         const mockChatChannels = [
             { value: { id: 1, name: 'Channel 1', isDisabled: false } },
@@ -449,9 +436,9 @@ describe('ChannelsFormComponent', () => {
             mockChatChannels,
         )
 
-        // Mock store activations with missing data
-        ;(useStoreActivations as jest.Mock).mockReturnValue({
-            storeActivations: {},
+        // Mock chat integration status with channel installed
+        ;(useFetchChatIntegrationsStatusData as jest.Mock).mockReturnValue({
+            data: [{ chatId: 1, installed: true }],
         })
 
         render(
@@ -460,7 +447,7 @@ describe('ChannelsFormComponent', () => {
             </BrowserRouter>,
         )
 
-        // The channel should be disabled since there's no activation data
-        expect(mockChatChannels[0].value.isDisabled).toBe(true)
+        // The channel should be enabled since it's installed
+        expect(mockChatChannels[0].value.isDisabled).toBe(false)
     })
 })

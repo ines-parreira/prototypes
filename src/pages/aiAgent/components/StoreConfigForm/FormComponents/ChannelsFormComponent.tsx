@@ -4,7 +4,6 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { ConfigurationSection } from 'pages/aiAgent/components/ConfigurationSection/ConfigurationSection'
 import { HandoverCustomizationChatSettingsComponent } from 'pages/aiAgent/components/HandoverCustomization/HandoverCustomizationChatSettingsComponent'
 import { SettingsBannerType } from 'pages/aiAgent/components/StoreConfigForm/constants'
@@ -14,6 +13,7 @@ import { EmailFormComponent } from 'pages/aiAgent/components/StoreConfigForm/For
 import { SignatureFormComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/SignatureFormComponent'
 import { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useFetchChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
 import { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { getHasAutomate } from 'state/billing/selectors'
@@ -74,15 +74,30 @@ export const ChannelsFormComponent = ({
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
 
     const { routes } = useAiAgentNavigation({ shopName })
-    const { storeActivations } = useStoreActivations({
-        pageName: 'ai-agent-configuration',
-        withChatIntegrationsStatus: true,
+
+    const chatIds = useMemo(() => {
+        return chatChannels.map((chat) => chat.value.id)
+    }, [chatChannels])
+
+    const { data: chatIntegrationStatus } = useFetchChatIntegrationsStatusData({
+        enabled: !!chatIds.length,
+        chatIds,
     })
 
     const chatChannelsWithAvailableFlag = useMemo(() => {
         // Block selecting the chat channels that are not installed
+        const chatIntegrationStatusMap = Object.fromEntries(
+            chatIntegrationStatus?.map((status) => [status.chatId, status]) ??
+                [],
+        )
+
         const availableChatsSet = new Set(
-            storeActivations[shopName]?.support.chat.availableChats ?? [],
+            chatChannels
+                .filter(
+                    (chat) =>
+                        !!chatIntegrationStatusMap?.[chat.value.id]?.installed,
+                )
+                .map((chat) => chat.value.id),
         )
         chatChannels.forEach((chatChannel) => {
             const isAvailable = availableChatsSet.has(chatChannel.value.id)
@@ -90,7 +105,7 @@ export const ChannelsFormComponent = ({
         })
 
         return [...chatChannels]
-    }, [chatChannels, storeActivations, shopName])
+    }, [chatChannels, chatIntegrationStatus])
 
     return (
         <>

@@ -85,6 +85,8 @@ jest.mock('../../PublicSourcesSection/PublicSourcesSection', () => ({
     PublicSourcesSection: jest.fn(() => <p>Public Source Section</p>),
 }))
 
+// Replace the useStoreActivations mock with useFetchChatIntegrationsStatusData mock
+// Remove this:
 // Mock useStoreActivations hook
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations', () => ({
     useStoreActivations: jest.fn().mockReturnValue({
@@ -103,6 +105,19 @@ jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations', () => ({
         },
     }),
 }))
+
+// Add this instead:
+jest.mock(
+    'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData',
+    () => ({
+        useFetchChatIntegrationsStatusData: jest.fn().mockReturnValue({
+            data: [
+                { chatId: 15, installed: true },
+                { chatId: 25, installed: true },
+            ],
+        }),
+    }),
+)
 
 // This mocked component is a child of one of the components rendered in the StoreConfigForm (ChatConfigurationFormComponent).
 // By implementing this mock, we're isolating the StoreConfigForm for more focused testing, avoiding not relevant rendering and mocking of components and dependencies that are tested elsewhere.
