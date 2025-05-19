@@ -3,10 +3,7 @@ import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import useAppSelector from 'hooks/useAppSelector'
-import { useIsGoLiveDisabled } from 'pages/aiAgent/Overview/hooks/useIsGoLiveDisabled'
-import { useUpdateAIAgentStoreConfigurationData } from 'pages/aiAgent/Overview/hooks/useUpdateAiAgentStoreConfigurationData'
-import { getCurrentDomain } from 'state/currentAccount/selectors'
+import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 
 export const useThankYouModal = () => {
     const [isOpen, setIsOpen] = useState(false)
@@ -25,14 +22,13 @@ export const useThankYouModal = () => {
         }
     }, [isThankYouModalOpen])
 
-    const { isLoading, isDisabled } = useIsGoLiveDisabled(shopName)
-    const accountDomain = useAppSelector(getCurrentDomain)
-
-    const { updateStoreConfig } = useUpdateAIAgentStoreConfigurationData(
-        accountDomain,
-        shopName ?? '',
-        !!shopName,
-    )
+    const { activation } = useStoreActivations({
+        pageName: window.location.pathname,
+        withPublicResources: true,
+        withChatIntegrationsStatus: true,
+    })
+    const activateShop = activation({ shopName })
+    const canActivate = activateShop.canActivate()
 
     const clearFromQueryParam = () => {
         const newQueryParams = new URLSearchParams(location.search)
@@ -48,23 +44,25 @@ export const useThankYouModal = () => {
         setIsOpen(false)
     }
 
-    const handleGoLiveClick = () => {
-        updateStoreConfig(clearFromQueryParam)
+    const handleGoLiveClick = async () => {
+        await activateShop.activate(clearFromQueryParam)
     }
 
-    const handleModalAction = (action: 'confirm' | 'close') => {
-        const cta = isDisabled ? 'continue' : 'go live with ai agent'
+    const handleModalAction = async (action: 'confirm' | 'close') => {
+        const cta = canActivate.isDisabled
+            ? 'continue'
+            : 'go live with ai agent'
 
         logEvent(SegmentEvent.AiAgentOverviewPageView, { cta })
 
-        if (isDisabled || action === 'close') {
+        if (canActivate.isDisabled || action === 'close') {
             clearFromQueryParam()
         } else {
-            handleGoLiveClick()
+            await handleGoLiveClick()
         }
     }
 
-    const modalContent = isDisabled
+    const modalContent = canActivate.isDisabled
         ? {
               title: "You're almost ready",
               description:
@@ -76,13 +74,14 @@ export const useThankYouModal = () => {
               title: 'Your account is ready!',
               description: '',
               actionLabel: 'Go live with AI agent',
+              actionLoading: activateShop.isActivating,
               closeLabel: 'Close',
           }
 
     return {
         isOpen,
-        isDisabled,
-        isLoading,
+        isDisabled: canActivate.isDisabled,
+        isLoading: canActivate.isLoading,
         handleModalAction,
         modalContent,
     }

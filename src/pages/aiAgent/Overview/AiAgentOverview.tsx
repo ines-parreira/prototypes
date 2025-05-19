@@ -72,6 +72,7 @@ export const AiAgentOverview = () => {
                 onClick={onConfirmModal}
                 onClose={onCloseModal}
                 isLoading={isLoading}
+                isActionLoading={modalContent.actionLoading}
             />
             {activationModal}
             {earlyAccessModal}

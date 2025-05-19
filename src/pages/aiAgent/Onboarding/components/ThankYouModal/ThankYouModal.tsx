@@ -20,6 +20,7 @@ type Props = {
     closeLabel?: string
     onClose?: () => void
     isLoading?: boolean
+    isActionLoading?: boolean
 }
 
 const ThankYouModal: React.FC<Props> = ({
@@ -32,6 +33,7 @@ const ThankYouModal: React.FC<Props> = ({
     onClick = () => {},
     onClose = () => {},
     isLoading,
+    isActionLoading,
 }: Props) => {
     return (
         <Modal classNameDialog={css.modal} isOpen={isOpen} onClose={onClose}>
@@ -66,6 +68,7 @@ const ThankYouModal: React.FC<Props> = ({
                                     intent="primary"
                                     fillStyle="fill"
                                     onClick={onClick}
+                                    isLoading={isActionLoading}
                                 >
                                     {actionLabel}
                                 </Button>
@@ -75,6 +78,7 @@ const ThankYouModal: React.FC<Props> = ({
                                     intent="secondary"
                                     fillStyle="fill"
                                     onClick={onClose}
+                                    isDisabled={isActionLoading}
                                 >
                                     {closeLabel}
                                 </Button>

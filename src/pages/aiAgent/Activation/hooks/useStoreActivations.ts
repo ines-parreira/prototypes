@@ -16,6 +16,7 @@ import {
     updatePricing,
     useStoreActivationReducer,
 } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
+import { useActivateStore } from 'pages/aiAgent/Activation/hooks/useActivateStore'
 import { usePublicResourcesList } from 'pages/aiAgent/hooks/usePublicResourcesList'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
@@ -106,6 +107,14 @@ export const useStoreActivations = ({
     changeSupportEmail: (storeName: string, newValue: boolean) => void
     saveStoreConfigurations: () => Promise<void>
     migrateToNewPricing: () => Promise<void>
+    activation: (args: { shopName: string | null }) => {
+        canActivate: () => {
+            isLoading: boolean
+            isDisabled: boolean
+        }
+        activate: (onSuccess?: () => void) => Promise<void>
+        isActivating: boolean
+    }
 } => {
     const flags = useFlags()
     const flagsRef = useRef(flags)
@@ -272,14 +281,22 @@ export const useStoreActivations = ({
         aiSalesAgentEmailEnabled,
     ])
 
+    const isFetchLoading =
+        isStoreConfigurationLoading ||
+        isHelpCenterListLoading ||
+        isChatIntegrationsStatusLoading ||
+        isPublicResourcesListLoading
+
+    const activateStore = useActivateStore({
+        isLoading: isFetchLoading,
+        state: state,
+    })
+
     return {
+        activation: activateStore,
         storeActivations: filteredState,
         progressPercentage: computeActivationPercentage(filteredState),
-        isFetchLoading:
-            isStoreConfigurationLoading ||
-            isHelpCenterListLoading ||
-            isChatIntegrationsStatusLoading ||
-            isPublicResourcesListLoading,
+        isFetchLoading,
         isSaveLoading,
         changeSales: (storeName: string, newValue: boolean) => {
             dispatch({
