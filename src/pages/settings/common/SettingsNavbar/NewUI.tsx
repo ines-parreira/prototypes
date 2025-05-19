@@ -199,16 +199,19 @@ const NewUI = () => {
                 <Navigation.SectionContent className={css.sectionContent}>
                     <Item
                         to="integrations/mine"
+                        exact
                         text="Installed apps"
                         requiredRole={ADMIN_ROLE}
                     />
                     <Item
                         to="integrations"
+                        exact
                         text="App store"
                         requiredRole={ADMIN_ROLE}
                     />
                     <Item
                         to={`integrations/${IntegrationType.Http}`}
+                        exact
                         text="HTTP integration"
                         requiredRole={ADMIN_ROLE}
                     />

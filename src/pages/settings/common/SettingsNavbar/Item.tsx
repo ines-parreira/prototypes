@@ -26,11 +26,13 @@ const Item = ({
     requiredRole,
     shouldRender,
     extra,
+    exact,
 }: {
     to: string
     text: string
     requiredRole?: typeof ADMIN_ROLE | typeof AGENT_ROLE
     shouldRender?: boolean
+    exact?: boolean
     extra?: ReactNode
 }) => {
     const currentUser = useAppSelector(getCurrentUser)
@@ -86,6 +88,7 @@ const Item = ({
             }}
             as={NavLink}
             to={`${rootPath}${to}`}
+            exact={exact}
         >
             {label}
             {extra}
