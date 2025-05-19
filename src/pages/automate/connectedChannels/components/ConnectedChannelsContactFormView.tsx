@@ -38,9 +38,14 @@ export const ConnectedChannelsContactFormView = ({
     contactForm,
     hideDropdown,
 }: Props) => {
-    const { shopType: shopTypeParam, shopName: shopNameParam } = useParams<{
+    const {
+        contactFormId: contactFormIdParam,
+        shopType: shopTypeParam,
+        shopName: shopNameParam,
+    } = useParams<{
         shopType: string
         shopName: string
+        contactFormId: string
     }>()
 
     const [shopType, shopName] = useMemo(() => {
@@ -78,16 +83,18 @@ export const ConnectedChannelsContactFormView = ({
         )
     }, [channels])
 
-    const [selectedChannel, setSelectedChannel] = React.useState<number | null>(
+    const [selectedChannelId, setSelectedChannel] = React.useState<
+        number | null
+    >(
         () =>
-            channelId
-                ? Number(channelId)
-                : (contactFormChannels[0]?.value.id ?? null),
+            Number(channelId) ||
+            Number(contactFormIdParam) ||
+            (contactFormChannels[0]?.value.id ?? null),
     )
 
     const currentChannel =
         contactFormChannels.find(
-            (channel) => channel.value.id === selectedChannel,
+            (channel) => channel.value.id === selectedChannelId,
         ) ?? contactFormChannels?.[0]
 
     const currentChannelId = currentChannel?.value.id ?? ''
@@ -223,7 +230,7 @@ export const ConnectedChannelsContactFormView = ({
                         channelType="contact-form"
                         channels={currentlyViewingDropdownOptions}
                         appId={currentChannel.value.id}
-                        value={selectedChannel ?? ''}
+                        value={selectedChannelId ?? ''}
                         label={currentChannel?.value?.name}
                         onSelectedChannelChange={onSelectedChannelChange}
                         renderOption={currentlyViewingDropdownRenderOption}
