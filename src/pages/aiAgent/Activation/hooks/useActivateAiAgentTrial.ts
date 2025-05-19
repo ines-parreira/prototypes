@@ -80,5 +80,6 @@ export const useActivateAiAgentTrial = ({
         routes,
         canStartTrial,
         canStartTrialFromFeatureFlag,
+        shopName,
     }
 }

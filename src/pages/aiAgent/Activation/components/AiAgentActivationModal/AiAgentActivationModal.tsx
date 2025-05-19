@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom'
 
 import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import {
     useAtLeastOneStoreHasActiveTrialOnSpecificStores,
     useCanUseAiSalesAgent,
@@ -19,6 +20,7 @@ import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActiv
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getCurrentUser, getRoleName } from 'state/currentUser/selectors'
 
 import css from './AiAgentActivationModal.less'
 
@@ -57,7 +59,8 @@ export const AiAgentActivationModal = ({
     const currentAccount = useAppSelector(getCurrentAccountState)
     const history = useHistory()
     const accountDomain = currentAccount.get('domain')
-
+    const currentUser = useAppSelector(getCurrentUser)
+    const userRole = useAppSelector(getRoleName)
     const atLeastOneStoreHasActiveTrial =
         useAtLeastOneStoreHasActiveTrialOnSpecificStores(storeActivations)
 
@@ -75,14 +78,39 @@ export const AiAgentActivationModal = ({
             onSuccess,
         })
 
+    const eventData = {
+        accountId: currentAccount.get('id'),
+        userId: currentUser.get('id'),
+        userRole: userRole || '',
+        type: 'activation-modal',
+        shopName:
+            Object.values(storeActivations).length === 1
+                ? Object.values(storeActivations)[0].name
+                : '',
+    }
+
     const handleBannerClick = () => {
         if (canStartTrial) {
             startTrial()
+            logEvent(SegmentEvent.AiAgentShoppingAssistantStartTrialClicked, {
+                ...eventData,
+            })
         } else {
             onLearnMoreClick()
         }
     }
 
+    if (
+        !isFetchLoading &&
+        !canUseAiSalesAgent &&
+        !atLeastOneStoreHasActiveTrial &&
+        !isLoading &&
+        canStartTrial
+    ) {
+        logEvent(SegmentEvent.AiAgentShoppingAssistantTrialCtaDisplayed, {
+            ...eventData,
+        })
+    }
     const storeActivationList = Object.entries(storeActivations)
 
     return (

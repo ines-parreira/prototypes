@@ -94,6 +94,7 @@ describe('ShoppingAssistantTrialSystemBanner', () => {
             startTrial: () => {},
             isLoading: false,
             routes: {} as any,
+            shopName: 'store1',
         })
 
         useLocationMock.mockReturnValue({
@@ -130,6 +131,7 @@ describe('ShoppingAssistantTrialSystemBanner', () => {
             startTrial: () => {},
             isLoading: false,
             routes: {} as any,
+            shopName: 'store1',
         })
         renderComponent()
 

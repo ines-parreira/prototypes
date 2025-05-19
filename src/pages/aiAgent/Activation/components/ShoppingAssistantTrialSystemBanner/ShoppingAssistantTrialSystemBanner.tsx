@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom'
 
 import { Banner } from '@gorgias/merchant-ui-kit'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { useAtLeastOneStoreHasActiveTrial } from 'hooks/aiAgent/useCanUseAiSalesAgent'
@@ -12,13 +13,15 @@ import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActiv
 import { getAiAgentBasePath } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { getStoresEligibleForTrial } from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getCurrentUser, getRoleName } from 'state/currentUser/selectors'
 
 import { useStoreActivations } from '../../hooks/useStoreActivations'
 
 const ShoppingAssistantTrialSystemBanner: React.FC = () => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
-
+    const currentUser = useAppSelector(getCurrentUser)
+    const userRole = useAppSelector(getRoleName)
     const pathname = useLocation().pathname
 
     const { storeActivations } = useStoreActivations({
@@ -65,6 +68,19 @@ const ShoppingAssistantTrialSystemBanner: React.FC = () => {
         ],
     )
 
+    const eventData = {
+        accountId: currentAccount.get('id'),
+        userId: currentUser.get('id'),
+        userRole: userRole || '',
+        type: 'system-banner',
+    }
+
+    if (displayBanner) {
+        logEvent(SegmentEvent.AiAgentShoppingAssistantTrialCtaDisplayed, {
+            ...eventData,
+        })
+    }
+
     const basePath = getAiAgentBasePath(storeEligibleForTrial[0]?.name)
 
     const redirectionPath = `${basePath}/sales`
@@ -83,7 +99,17 @@ const ShoppingAssistantTrialSystemBanner: React.FC = () => {
                 >
                     AI Agent just got even smarter with brand new Shopping
                     Assistant skills,{' '}
-                    <Link to={redirectionPath}>
+                    <Link
+                        to={redirectionPath}
+                        onClick={() => {
+                            logEvent(
+                                SegmentEvent.AiAgentShoppingAssistantTrialSystemBannerClicked,
+                                {
+                                    ...eventData,
+                                },
+                            )
+                        }}
+                    >
                         start your exclusive access to a 14-day trial
                     </Link>
                 </Banner>

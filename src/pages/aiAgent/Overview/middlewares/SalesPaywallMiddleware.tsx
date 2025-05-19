@@ -5,6 +5,7 @@ import { useHistory, useParams } from 'react-router-dom'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useAtLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
@@ -22,6 +23,7 @@ import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import { AIButton } from 'pages/common/components/AIButton/AIButton'
 import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getCurrentUser, getRoleName } from 'state/currentUser/selectors'
 
 import css from './SalesPaywallMiddleware.less'
 
@@ -54,6 +56,8 @@ export const SalesPaywallMiddleware =
 
         const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
         const currentAccount = useAppSelector(getCurrentAccountState)
+        const currentUser = useAppSelector(getCurrentUser)
+        const userRole = useAppSelector(getRoleName)
         const history = useHistory()
         const hasNewAutomatePlan = (currentAutomatePlan?.generation ?? 0) >= 6
 
@@ -69,6 +73,7 @@ export const SalesPaywallMiddleware =
             startTrial,
             isLoading,
             canStartTrialFromFeatureFlag,
+            shopName,
         } = useActivateAiAgentTrial({
             accountDomain,
             storeActivations,
@@ -85,6 +90,14 @@ export const SalesPaywallMiddleware =
                     canStartTrialFromFeatureFlag,
             },
         )
+
+        const eventData = {
+            accountId: currentAccount.get('id'),
+            userId: currentUser.get('id'),
+            userRole: userRole || '',
+            type: 'sales-paywall',
+            storeName: shopName || '',
+        }
 
         const isAiSalesBetaUser = !!flags[FeatureFlagKey.AiSalesAgentBeta]
         const isAiSalesAlphaDemoUser =
@@ -122,10 +135,19 @@ export const SalesPaywallMiddleware =
                     canStartTrial={
                         canStartTrial || canStartTrialFromFeatureFlag
                     }
-                    startTrial={startTrial}
+                    startTrial={() => {
+                        logEvent(
+                            SegmentEvent.AiAgentShoppingAssistantStartTrialClicked,
+                            {
+                                ...eventData,
+                            },
+                        )
+                        startTrial()
+                    }}
                     earlyAccessModal={earlyAccessModal}
                     showSalesSettings={showSalesSettings}
                     ChildComponent={ChildComponent}
+                    eventData={eventData}
                 />
                 <AIAgentTrialSuccessModal
                     isOpen={trialModal.isOpen(AI_TRIAL_MODAL_NAME)}
@@ -149,6 +171,7 @@ const PaywallWrapperComponent = ({
     earlyAccessModal,
     showSalesSettings,
     ChildComponent,
+    eventData,
 }: {
     showUpgradePaywall: boolean
     showEarlyAccessModal: () => void
@@ -157,37 +180,41 @@ const PaywallWrapperComponent = ({
     earlyAccessModal: React.ReactNode
     showSalesSettings: boolean
     ChildComponent: React.ComponentType<any>
+    eventData: Record<string, string>
 }) => {
     const flags = useFlags()
     const isAiShoppingAssistantEnabled =
         !!flags[FeatureFlagKey.AiShoppingAssistantEnabled]
 
-    if (isAiShoppingAssistantEnabled) {
-        if (showUpgradePaywall) {
-            return (
-                <PaywallWrapper>
-                    <AiAgentPaywallView
-                        aiAgentPaywallFeature={AIAgentPaywallFeatures.Upgrade}
-                    >
-                        <div className={css.buttonsWrapper}>
-                            <AIButton
-                                intent="primary"
-                                size="medium"
-                                onClick={showEarlyAccessModal}
-                            >
-                                Upgrade Now
-                            </AIButton>
-                            {canStartTrial && (
-                                <Button fillStyle="ghost" onClick={startTrial}>
-                                    Start 14-Day Trial At No Additional Cost
-                                </Button>
-                            )}
-                        </div>
-                    </AiAgentPaywallView>
-                    {earlyAccessModal}
-                </PaywallWrapper>
-            )
+    if (isAiShoppingAssistantEnabled && showUpgradePaywall) {
+        if (canStartTrial) {
+            logEvent(SegmentEvent.AiAgentShoppingAssistantTrialCtaDisplayed, {
+                ...eventData,
+            })
         }
+        return (
+            <PaywallWrapper>
+                <AiAgentPaywallView
+                    aiAgentPaywallFeature={AIAgentPaywallFeatures.Upgrade}
+                >
+                    <div className={css.buttonsWrapper}>
+                        <AIButton
+                            intent="primary"
+                            size="medium"
+                            onClick={showEarlyAccessModal}
+                        >
+                            Upgrade Now
+                        </AIButton>
+                        {canStartTrial && (
+                            <Button fillStyle="ghost" onClick={startTrial}>
+                                Start 14-Day Trial At No Additional Cost
+                            </Button>
+                        )}
+                    </div>
+                </AiAgentPaywallView>
+                {earlyAccessModal}
+            </PaywallWrapper>
+        )
     }
 
     if (showSalesSettings) {
