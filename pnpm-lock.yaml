@@ -23,17 +23,17 @@ catalogs:
       version: 17.0.2
   rest-api-sdk:
     '@gorgias/api-client':
-      specifier: 0.6.36
-      version: 0.6.36
+      specifier: 0.7.3
+      version: 0.7.3
     '@gorgias/api-queries':
-      specifier: 0.6.36
-      version: 0.6.36
+      specifier: 0.7.3
+      version: 0.7.3
     '@gorgias/api-types':
-      specifier: 0.6.36
-      version: 0.6.36
+      specifier: 0.7.3
+      version: 0.7.3
     '@gorgias/api-validators':
-      specifier: 0.6.36
-      version: 0.6.36
+      specifier: 0.7.3
+      version: 0.7.3
 
 overrides:
   '@tanstack/react-query': 4.36.1
@@ -98,16 +98,16 @@ importers:
         version: 0.1.14(@gorgias/design-tokens@0.5.0)(classnames@2.2.6)(core-js@3.36.1)(react@17.0.2)
       '@gorgias/api-client':
         specifier: catalog:rest-api-sdk
-        version: 0.6.36
+        version: 0.7.3
       '@gorgias/api-queries':
         specifier: catalog:rest-api-sdk
-        version: 0.6.36
+        version: 0.7.3
       '@gorgias/api-types':
         specifier: catalog:rest-api-sdk
-        version: 0.6.36
+        version: 0.7.3
       '@gorgias/api-validators':
         specifier: catalog:rest-api-sdk
-        version: 0.6.36
+        version: 0.7.3
       '@gorgias/branding-assets':
         specifier: ^0.2.1
         version: 0.2.1
@@ -2605,17 +2605,26 @@ packages:
   '@gorgias/api-client@0.6.36':
     resolution: {integrity: sha512-Cj1hB3fKIhlYj4NDs8DKxkd7rBYY2ERWeAoPmCJMif8nVsPJdY4che72nyFqKk1Gzr6RWBYp/K42VBRxkuqNag==, tarball: https://npm.pkg.github.com/download/@gorgias/api-client/0.6.36/4e9e526d07e0cb6364d0af3c2fb801e8d2d37088}
 
+  '@gorgias/api-client@0.7.3':
+    resolution: {integrity: sha512-ZycgKbYwBgY/0xH1JLxM6Occr6m3htF4dmGVDnJendOlGOoqOyGeP9bqod5TsyZ+t7WMxTV+FsbsRpPa8V2zkw==, tarball: https://npm.pkg.github.com/download/@gorgias/api-client/0.7.3/e60debaf3551385e4c414c357055490933db5fc1}
+
   '@gorgias/api-queries@0.6.36':
     resolution: {integrity: sha512-z3WJkk4aa4xOVahJO1WUcEVFqAU5W+POJggkIm2EjVh628Qhv8lbsnHKyK4LeOR6zG0hJ/tIoKtGQiZuDIkVYg==, tarball: https://npm.pkg.github.com/download/@gorgias/api-queries/0.6.36/e37750ba9840c675e54225b02786b0f2f0c3db32}
 
-  '@gorgias/api-spec@0.6.36':
-    resolution: {integrity: sha512-FU7EC8K4rrj202/7ImmUFlzgytn0YbUr0k2yLQozJdws5nP1EFOwHaJwZlhCinjvZ18fWMrhkBJei01/371FPw==, tarball: https://npm.pkg.github.com/download/@gorgias/api-spec/0.6.36/2a82c000d67fbd60bea3e842ba472f05fb585d87}
+  '@gorgias/api-queries@0.7.3':
+    resolution: {integrity: sha512-w/mSFE9z86z8YqRPzRrVfn72xYf5AKkYg93my93EdM6zySyxPXbyS+lC5+Y3fDmkXDOQ75MCumS3GyltKTtSyw==, tarball: https://npm.pkg.github.com/download/@gorgias/api-queries/0.7.3/14803d19959ec6f82eca419afc052a0858bcc35d}
+
+  '@gorgias/api-spec@0.7.3':
+    resolution: {integrity: sha512-SQjR84aFUhMeLy0MqX6mgGEICq+qUS1ZFQSjqb1+VHs8qixfaIPYfTpi1K7cZBk9GHjojtVYBj1ywzmnKRIhmg==, tarball: https://npm.pkg.github.com/download/@gorgias/api-spec/0.7.3/19aeabb53da0e474bd21c2230a6ba08064336af5}
 
   '@gorgias/api-types@0.6.36':
     resolution: {integrity: sha512-vuFUDswV1FXY9HcgSsvTqhK8wxqU7YJr6T12XvEUGNFOna0+FNWjjeh8W1v4U+f38rS0zvKd6ZZVbYQ4W9Zdvg==, tarball: https://npm.pkg.github.com/download/@gorgias/api-types/0.6.36/1e20d35f18b68a0c64e9a34537175199ccb1e6d4}
 
-  '@gorgias/api-validators@0.6.36':
-    resolution: {integrity: sha512-DPM1LtNAtjMXGnL4KUeZYptS0nDi8IPLBYMGEWm9squho7YRk8et36YY6Idjmj10YnXqa1WXbD5HNvLyA1MSkg==, tarball: https://npm.pkg.github.com/download/@gorgias/api-validators/0.6.36/556e2e8f4506f7cafcf32a37413db2fb011a8bfc}
+  '@gorgias/api-types@0.7.3':
+    resolution: {integrity: sha512-DOb8fN9EU0hDteLvZx6QPKSI23Yu53QFnIHJ9IfKjuMbFKmQySWt74HAsLlUwBFT3eyToXaAuiVVH4wF8e7t3g==, tarball: https://npm.pkg.github.com/download/@gorgias/api-types/0.7.3/e20d00958cd97e6686554ad91b6aaf22789d6d78}
+
+  '@gorgias/api-validators@0.7.3':
+    resolution: {integrity: sha512-vPwDxTtrrczqJn0i+q0FyxOuoGBFA5RaCy4MWEQ7g5od4VdWm+YsBJK+LQyq1WVb5GYwsgotgagT13VVmSP+HQ==, tarball: https://npm.pkg.github.com/download/@gorgias/api-validators/0.7.3/4bd68cae345b0cd3ed153202779d180202640b78}
 
   '@gorgias/branding-assets@0.2.1':
     resolution: {integrity: sha512-NxxSjkJ5xguwXqYpQwEuxoz1eEnJLMlfzRbTTk+cbQxucGyazUsterz0mdTXru2d/yd6iUnPAvZ1Q45s/mjJWg==, tarball: https://npm.pkg.github.com/download/@gorgias/branding-assets/0.2.1/78d49790593f16706d120f57cb71e8362e9080a3}
@@ -12833,6 +12842,13 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
+  '@gorgias/api-client@0.7.3':
+    dependencies:
+      '@gorgias/api-types': 0.7.3
+      axios: 1.8.4
+    transitivePeerDependencies:
+      - debug
+
   '@gorgias/api-queries@0.6.36':
     dependencies:
       '@gorgias/api-client': 0.6.36
@@ -12840,15 +12856,24 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@gorgias/api-spec@0.6.36': {}
+  '@gorgias/api-queries@0.7.3':
+    dependencies:
+      '@gorgias/api-client': 0.7.3
+      '@gorgias/api-types': 0.7.3
+    transitivePeerDependencies:
+      - debug
+
+  '@gorgias/api-spec@0.7.3': {}
 
   '@gorgias/api-types@0.6.36': {}
 
-  '@gorgias/api-validators@0.6.36':
+  '@gorgias/api-types@0.7.3': {}
+
+  '@gorgias/api-validators@0.7.3':
     dependencies:
       '@apideck/better-ajv-errors': 0.3.6(ajv@8.17.1)
-      '@gorgias/api-spec': 0.6.36
-      '@gorgias/api-types': 0.6.36
+      '@gorgias/api-spec': 0.7.3
+      '@gorgias/api-types': 0.7.3
       ajv: 8.17.1
       ajv-formats: 3.0.1(ajv@8.17.1)
       immer: 10.1.1
