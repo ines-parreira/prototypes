@@ -22,24 +22,12 @@ export const isSalesEnabledWithNewActivationXp = ({
     storeHasSales,
     isAiSalesBetaUser,
     hasNewAutomatePlan,
-    aiSalesAgentEmailEnabled,
-    isChatEnabled,
-    isEmailEnabled,
 }: {
     storeHasSales: boolean
     hasNewAutomatePlan: boolean
     isAiSalesBetaUser: boolean
-    aiSalesAgentEmailEnabled: boolean
-    isChatEnabled: boolean
-    isEmailEnabled: boolean
 }) => {
-    if ((isAiSalesBetaUser && hasNewAutomatePlan) || storeHasSales) {
-        return aiSalesAgentEmailEnabled
-            ? isChatEnabled || isEmailEnabled
-            : isChatEnabled
-    }
-
-    return false
+    return (isAiSalesBetaUser && hasNewAutomatePlan) || storeHasSales
 }
 
 export const KNOWLEDGE_ALERT_KIND = Symbol('Knowledge Alert')
@@ -204,12 +192,7 @@ const toggleSupportEmail = (
     {
         storeName,
         newValue,
-        hasNewAutomatePlan,
-        flags: {
-            hasAiAgentNewActivationXp,
-            isAiSalesBetaUser,
-            aiSalesAgentEmailEnabled,
-        },
+        flags: { hasAiAgentNewActivationXp },
     }: ToggleSupportEmailAction,
 ): State => {
     if (!state[storeName]) {
@@ -223,19 +206,13 @@ const toggleSupportEmail = (
         : newValue
     const chatEnabled = currentStore.support.chat.enabled
 
-    const salesIsDisabled = !chatEnabled && !emailEnabled
-
     let salesEnabled: boolean
+    let salesIsDisabled: boolean
     if (hasAiAgentNewActivationXp) {
-        salesEnabled = isSalesEnabledWithNewActivationXp({
-            isAiSalesBetaUser,
-            storeHasSales: currentStore.sales.enabled,
-            hasNewAutomatePlan,
-            aiSalesAgentEmailEnabled,
-            isChatEnabled: chatEnabled,
-            isEmailEnabled: emailEnabled,
-        })
+        salesEnabled = currentStore.sales.enabled
+        salesIsDisabled = currentStore.sales.isDisabled
     } else {
+        salesIsDisabled = !chatEnabled && !emailEnabled
         salesEnabled = salesIsDisabled ? false : currentStore.sales.enabled
     }
 
@@ -267,12 +244,7 @@ const toggleSupportChat = (
     {
         storeName,
         newValue,
-        hasNewAutomatePlan,
-        flags: {
-            hasAiAgentNewActivationXp,
-            isAiSalesBetaUser,
-            aiSalesAgentEmailEnabled,
-        },
+        flags: { hasAiAgentNewActivationXp, aiSalesAgentEmailEnabled },
     }: ToggleSupportChatAction,
 ): State => {
     if (!state[storeName]) {
@@ -288,21 +260,15 @@ const toggleSupportChat = (
             : newValue
     const emailEnabled = currentStore.support.email.enabled
 
-    const salesIsDisabled = aiSalesAgentEmailEnabled
-        ? !newValue && !emailEnabled
-        : !newValue
-
+    let salesIsDisabled: boolean
     let salesEnabled: boolean
     if (hasAiAgentNewActivationXp) {
-        salesEnabled = isSalesEnabledWithNewActivationXp({
-            isAiSalesBetaUser,
-            storeHasSales: currentStore.sales.enabled,
-            hasNewAutomatePlan,
-            aiSalesAgentEmailEnabled,
-            isChatEnabled: chatEnabled,
-            isEmailEnabled: emailEnabled,
-        })
+        salesEnabled = currentStore.sales.enabled
+        salesIsDisabled = currentStore.sales.isDisabled
     } else {
+        salesIsDisabled = aiSalesAgentEmailEnabled
+            ? !newValue && !emailEnabled
+            : !newValue
         salesEnabled = aiSalesAgentEmailEnabled
             ? salesIsDisabled
                 ? false
@@ -464,21 +430,19 @@ export const storeConfigurationToState = (
                 !isMissingKnowledge &&
                 !isEmailIntegrationMissing
 
-            const salesIsDisabled = aiSalesAgentEmailEnabled
-                ? !isChatEnabled && !isEmailEnabled
-                : !isChatEnabled
-
             let salesEnabled: boolean
+            let salesIsDisabled: boolean
             if (hasAiAgentNewActivationXp) {
                 salesEnabled = isSalesEnabledWithNewActivationXp({
                     isAiSalesBetaUser,
                     storeHasSales: scopes.includes(AiAgentScope.Sales),
                     hasNewAutomatePlan,
-                    aiSalesAgentEmailEnabled,
-                    isChatEnabled,
-                    isEmailEnabled,
                 })
+                salesIsDisabled = !salesEnabled
             } else {
+                salesIsDisabled = aiSalesAgentEmailEnabled
+                    ? !isChatEnabled && !isEmailEnabled
+                    : !isChatEnabled
                 salesEnabled =
                     scopes.includes(AiAgentScope.Sales) &&
                     (aiSalesAgentEmailEnabled
@@ -519,13 +483,7 @@ export const storeConfigurationToState = (
 
 export const updatePricing = (
     state: State,
-    {
-        flags: {
-            aiSalesAgentEmailEnabled,
-            isAiSalesBetaUser,
-            hasAiAgentNewActivationXp,
-        },
-    }: UpdatePricing,
+    { flags: { isAiSalesBetaUser, hasAiAgentNewActivationXp } }: UpdatePricing,
 ): State => {
     if (!hasAiAgentNewActivationXp) {
         return state
@@ -537,16 +495,10 @@ export const updatePricing = (
                 configuration: { scopes },
             } = storeActivation
 
-            const isChatEnabled = storeActivation.support.chat.enabled
-            const isEmailEnabled = storeActivation.support.email.enabled
-
             const salesEnabled = isSalesEnabledWithNewActivationXp({
                 isAiSalesBetaUser,
                 storeHasSales: scopes.includes(AiAgentScope.Sales),
                 hasNewAutomatePlan: true,
-                aiSalesAgentEmailEnabled,
-                isChatEnabled,
-                isEmailEnabled,
             })
 
             newState[storeName] = {
@@ -554,9 +506,7 @@ export const updatePricing = (
                 sales: {
                     ...storeActivation.sales,
                     enabled: salesEnabled,
-                    isDisabled: salesEnabled
-                        ? false
-                        : storeActivation.sales.isDisabled,
+                    isDisabled: !salesEnabled,
                 },
             }
             return newState
@@ -592,10 +542,7 @@ export const stateToUpdatedStoreConfiguration = (
     return Object.values(state).map((store) => {
         const newStoreConfiguration = cloneDeep(store.configuration)
 
-        const scopes: AiAgentScope[] = []
-        if (store.support.enabled) {
-            scopes.push(AiAgentScope.Support)
-        }
+        const scopes: AiAgentScope[] = [AiAgentScope.Support]
         if (store.sales.enabled) {
             scopes.push(AiAgentScope.Sales)
         }

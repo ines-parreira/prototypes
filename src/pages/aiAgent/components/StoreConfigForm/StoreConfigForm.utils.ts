@@ -1,9 +1,7 @@
 import {
-    AiAgentScope,
     CreateStoreConfigurationPayload,
     StoreConfiguration,
 } from 'models/aiAgent/types'
-import { isSalesEnabledWithNewActivationXp } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 
 import { ToneOfVoice } from '../../constants'
 import { ValidFormValues } from '../../types'
@@ -12,18 +10,7 @@ import { filterNonNull } from '../../util'
 export const getStoreConfigurationFromFormValues = (
     storeName: string,
     formValues: ValidFormValues,
-    storeConfiguration: StoreConfiguration | undefined,
-    {
-        hasNewAutomatePlan,
-        isAiSalesBetaUser,
-        aiSalesAgentEmailEnabled,
-        hasAiAgentNewActivationXp,
-    }: {
-        hasNewAutomatePlan: boolean
-        isAiSalesBetaUser: boolean
-        aiSalesAgentEmailEnabled: boolean
-        hasAiAgentNewActivationXp: boolean
-    },
+    storeConfiguration?: StoreConfiguration,
 ): CreateStoreConfigurationPayload => {
     const {
         helpCenterId,
@@ -54,30 +41,6 @@ export const getStoreConfigurationFromFormValues = (
         completedDatetime: formValues.wizard?.completedDatetime,
     }
 
-    const isEmailEnabled = !formValues.emailChannelDeactivatedDatetime
-    const isChatEnabled = !formValues.chatChannelDeactivatedDatetime
-    let scopes: AiAgentScope[] = []
-    if (hasAiAgentNewActivationXp) {
-        if (isEmailEnabled || isChatEnabled) {
-            scopes.push(AiAgentScope.Support)
-        }
-        const hasSalesScope = isSalesEnabledWithNewActivationXp({
-            isAiSalesBetaUser,
-            hasNewAutomatePlan,
-            aiSalesAgentEmailEnabled,
-            storeHasSales: !!storeConfiguration?.scopes.includes(
-                AiAgentScope.Sales,
-            ),
-            isEmailEnabled,
-            isChatEnabled,
-        })
-        if (hasSalesScope) {
-            scopes.push(AiAgentScope.Sales)
-        }
-    } else {
-        scopes = storeConfiguration?.scopes ?? []
-    }
-
     return {
         storeName,
         ...monitoredEmailIntegrationDetails,
@@ -103,7 +66,6 @@ export const getStoreConfigurationFromFormValues = (
         monitoredChatIntegrations: formValues.monitoredChatIntegrations,
         wizard: formValues.wizard ? wizard : undefined,
         customFieldIds: formValues.customFieldIds ?? [],
-        scopes,
     }
 }
 

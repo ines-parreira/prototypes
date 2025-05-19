@@ -149,6 +149,11 @@ describe('storeActivationReducer', () => {
             })
 
             it('should not support sales when none is enabled', () => {
+                if (flags.hasAiAgentNewActivationXp) {
+                    // This test is irrelevant for the new activation flow because sales setting is based on beta+plan
+                    return
+                }
+
                 const state = storeConfigurationToState(EMPTY_STATE, {
                     type: 'UPDATE_STORE_CONFIGURATION',
                     storeConfigurations: [mockStoreConfig],
@@ -325,6 +330,11 @@ describe('storeActivationReducer', () => {
             })
 
             it('should enable sales when only email is enabled', () => {
+                if (flags.hasAiAgentNewActivationXp) {
+                    // This test is irrelevant for the new activation flow because sales setting is based on beta+plan
+                    return
+                }
+
                 const state = storeConfigurationToState(EMPTY_STATE, {
                     type: 'UPDATE_STORE_CONFIGURATION',
                     storeConfigurations: [mockStoreConfig],
@@ -368,6 +378,11 @@ describe('storeActivationReducer', () => {
             })
 
             it('should not support sales when none is enabled', () => {
+                if (flags.hasAiAgentNewActivationXp) {
+                    // This test is irrelevant for the new activation flow because sales setting is based on beta+plan
+                    return
+                }
+
                 const state = storeConfigurationToState(EMPTY_STATE, {
                     type: 'UPDATE_STORE_CONFIGURATION',
                     storeConfigurations: [mockStoreConfig],
@@ -726,496 +741,274 @@ describe('storeActivationReducer', () => {
     })
 
     describe('isSalesEnabledWithNewActivationXp', () => {
-        describe('when aiSalesAgentEmailEnabled is true', () => {
-            const aiSalesAgentEmailEnabled = true
-
-            describe.each([
-                { isChatEnabled: true, isEmailEnabled: true },
-                { isChatEnabled: true, isEmailEnabled: false },
-                { isChatEnabled: false, isEmailEnabled: true },
-            ])(
-                'when chat is $isChatEnabled and email is $isEmailEnabled',
-                ({ isChatEnabled, isEmailEnabled }) => {
-                    it('should be true when beta account on new automate plan and store does not have sales', () => {
-                        expect(
-                            isSalesEnabledWithNewActivationXp({
-                                isAiSalesBetaUser: true,
-                                hasNewAutomatePlan: true,
-                                storeHasSales: false,
-                                aiSalesAgentEmailEnabled,
-                                isChatEnabled,
-                                isEmailEnabled,
-                            }),
-                        ).toBe(true)
-                    })
-
-                    it('should be true when beta account on new automate plan and store already has sales', () => {
-                        expect(
-                            isSalesEnabledWithNewActivationXp({
-                                isAiSalesBetaUser: true,
-                                hasNewAutomatePlan: true,
-                                storeHasSales: true,
-                                aiSalesAgentEmailEnabled,
-                                isChatEnabled,
-                                isEmailEnabled,
-                            }),
-                        ).toBe(true)
-                    })
-
-                    it('should be false when beta account on old automate plan and store does not have sales', () => {
-                        expect(
-                            isSalesEnabledWithNewActivationXp({
-                                isAiSalesBetaUser: true,
-                                hasNewAutomatePlan: false,
-                                storeHasSales: false,
-                                aiSalesAgentEmailEnabled,
-                                isChatEnabled,
-                                isEmailEnabled,
-                            }),
-                        ).toBe(false)
-                    })
-
-                    it('should be true when beta account on old automate plan and store already has sales (Alpha/Demo/Trial)', () => {
-                        expect(
-                            isSalesEnabledWithNewActivationXp({
-                                isAiSalesBetaUser: true,
-                                hasNewAutomatePlan: false,
-                                storeHasSales: true,
-                                aiSalesAgentEmailEnabled,
-                                isChatEnabled,
-                                isEmailEnabled,
-                            }),
-                        ).toBe(true)
-                    })
-
-                    it('should be false when not on beta account on new automate plan and store does not have sales', () => {
-                        expect(
-                            isSalesEnabledWithNewActivationXp({
-                                isAiSalesBetaUser: false,
-                                hasNewAutomatePlan: true,
-                                storeHasSales: false,
-                                aiSalesAgentEmailEnabled,
-                                isChatEnabled,
-                                isEmailEnabled,
-                            }),
-                        ).toBe(false)
-                    })
-
-                    it('should be true when not on beta account on new automate plan and store already has sales', () => {
-                        expect(
-                            isSalesEnabledWithNewActivationXp({
-                                isAiSalesBetaUser: false,
-                                hasNewAutomatePlan: true,
-                                storeHasSales: true,
-                                aiSalesAgentEmailEnabled,
-                                isChatEnabled,
-                                isEmailEnabled,
-                            }),
-                        ).toBe(true)
-                    })
-                },
-            )
-
-            describe('when chat is disabled and email is disabled', () => {
-                const isChatEnabled = false
-                const isEmailEnabled = false
-
-                it('should be false when beta account on new automate plan and store does not have sales', () => {
-                    expect(
-                        isSalesEnabledWithNewActivationXp({
-                            isAiSalesBetaUser: true,
-                            hasNewAutomatePlan: true,
-                            storeHasSales: false,
-                            aiSalesAgentEmailEnabled,
-                            isChatEnabled,
-                            isEmailEnabled,
-                        }),
-                    ).toBe(false)
-                })
-
-                it('should be false when beta account on new automate plan and store already has sales', () => {
-                    expect(
-                        isSalesEnabledWithNewActivationXp({
-                            isAiSalesBetaUser: true,
-                            hasNewAutomatePlan: true,
-                            storeHasSales: true,
-                            aiSalesAgentEmailEnabled,
-                            isChatEnabled,
-                            isEmailEnabled,
-                        }),
-                    ).toBe(false)
-                })
-
-                it('should be false when beta account on old automate plan and store does not have sales', () => {
-                    expect(
-                        isSalesEnabledWithNewActivationXp({
-                            isAiSalesBetaUser: true,
-                            hasNewAutomatePlan: false,
-                            storeHasSales: false,
-                            aiSalesAgentEmailEnabled,
-                            isChatEnabled,
-                            isEmailEnabled,
-                        }),
-                    ).toBe(false)
-                })
-
-                it('should be false when beta account on old automate plan and store already has sales (Alpha/Demo/Trial)', () => {
-                    expect(
-                        isSalesEnabledWithNewActivationXp({
-                            isAiSalesBetaUser: true,
-                            hasNewAutomatePlan: false,
-                            storeHasSales: true,
-                            aiSalesAgentEmailEnabled,
-                            isChatEnabled,
-                            isEmailEnabled,
-                        }),
-                    ).toBe(false)
-                })
-
-                it('should be false when not on beta account on new automate plan and store does not have sales', () => {
-                    expect(
-                        isSalesEnabledWithNewActivationXp({
-                            isAiSalesBetaUser: false,
-                            hasNewAutomatePlan: true,
-                            storeHasSales: false,
-                            aiSalesAgentEmailEnabled,
-                            isChatEnabled,
-                            isEmailEnabled,
-                        }),
-                    ).toBe(false)
-                })
-            })
+        it('should return true if beta account on new pricing and does not have sales', () => {
+            expect(
+                isSalesEnabledWithNewActivationXp({
+                    isAiSalesBetaUser: true,
+                    hasNewAutomatePlan: true,
+                    storeHasSales: false,
+                }),
+            ).toBe(true)
         })
 
-        describe('when aiSalesAgentEmailEnabled is false', () => {
-            const aiSalesAgentEmailEnabled = false
+        it('should return false if not beta account on new pricing and does not have sales', () => {
+            expect(
+                isSalesEnabledWithNewActivationXp({
+                    isAiSalesBetaUser: false,
+                    hasNewAutomatePlan: true,
+                    storeHasSales: false,
+                }),
+            ).toBe(false)
+        })
 
-            describe('when chat is enabled and email is enabled', () => {
-                const isChatEnabled = true
-                const isEmailEnabled = true
+        it('should return false if beta account not on new pricing and does not have sales', () => {
+            expect(
+                isSalesEnabledWithNewActivationXp({
+                    isAiSalesBetaUser: false,
+                    hasNewAutomatePlan: false,
+                    storeHasSales: false,
+                }),
+            ).toBe(false)
+        })
 
-                it('should be true when beta account on new automate plan and store does not have sales', () => {
-                    expect(
-                        isSalesEnabledWithNewActivationXp({
-                            isAiSalesBetaUser: true,
-                            hasNewAutomatePlan: true,
-                            storeHasSales: false,
-                            aiSalesAgentEmailEnabled,
-                            isChatEnabled,
-                            isEmailEnabled,
-                        }),
-                    ).toBe(true)
-                })
-
-                it('should be true when beta account on new automate plan and store already has sales', () => {
-                    expect(
-                        isSalesEnabledWithNewActivationXp({
-                            isAiSalesBetaUser: true,
-                            hasNewAutomatePlan: true,
-                            storeHasSales: true,
-                            aiSalesAgentEmailEnabled,
-                            isChatEnabled,
-                            isEmailEnabled,
-                        }),
-                    ).toBe(true)
-                })
-
-                it('should be false when beta account on old automate plan and store does not have sales', () => {
-                    expect(
-                        isSalesEnabledWithNewActivationXp({
-                            isAiSalesBetaUser: true,
-                            hasNewAutomatePlan: false,
-                            storeHasSales: false,
-                            aiSalesAgentEmailEnabled,
-                            isChatEnabled,
-                            isEmailEnabled,
-                        }),
-                    ).toBe(false)
-                })
-
-                it('should be true when beta account on old automate plan and store already has sales (Alpha/Demo/Trial)', () => {
-                    expect(
-                        isSalesEnabledWithNewActivationXp({
-                            isAiSalesBetaUser: true,
-                            hasNewAutomatePlan: false,
-                            storeHasSales: true,
-                            aiSalesAgentEmailEnabled,
-                            isChatEnabled,
-                            isEmailEnabled,
-                        }),
-                    ).toBe(true)
-                })
-
-                it('should be false when not on beta account on new automate plan and store does not have sales', () => {
-                    expect(
-                        isSalesEnabledWithNewActivationXp({
-                            isAiSalesBetaUser: false,
-                            hasNewAutomatePlan: true,
-                            storeHasSales: false,
-                            aiSalesAgentEmailEnabled,
-                            isChatEnabled,
-                            isEmailEnabled,
-                        }),
-                    ).toBe(false)
-                })
-            })
-
-            describe('when chat is disabled and email is enabled', () => {
-                const isChatEnabled = false
-                const isEmailEnabled = true
-
-                it('should be false when beta account on new automate plan and store does not have sales', () => {
-                    expect(
-                        isSalesEnabledWithNewActivationXp({
-                            isAiSalesBetaUser: true,
-                            hasNewAutomatePlan: true,
-                            storeHasSales: false,
-                            aiSalesAgentEmailEnabled,
-                            isChatEnabled,
-                            isEmailEnabled,
-                        }),
-                    ).toBe(false)
-                })
-
-                it('should be false when beta account on new automate plan and store already has sales', () => {
-                    expect(
-                        isSalesEnabledWithNewActivationXp({
-                            isAiSalesBetaUser: true,
-                            hasNewAutomatePlan: true,
-                            storeHasSales: true,
-                            aiSalesAgentEmailEnabled,
-                            isChatEnabled,
-                            isEmailEnabled,
-                        }),
-                    ).toBe(false)
-                })
-
-                it('should be false when beta account on old automate plan and store does not have sales', () => {
-                    expect(
-                        isSalesEnabledWithNewActivationXp({
-                            isAiSalesBetaUser: true,
-                            hasNewAutomatePlan: false,
-                            storeHasSales: false,
-                            aiSalesAgentEmailEnabled,
-                            isChatEnabled,
-                            isEmailEnabled,
-                        }),
-                    ).toBe(false)
-                })
-
-                it('should be false when beta account on old automate plan and store already has sales (Alpha/Demo/Trial)', () => {
-                    expect(
-                        isSalesEnabledWithNewActivationXp({
-                            isAiSalesBetaUser: true,
-                            hasNewAutomatePlan: false,
-                            storeHasSales: true,
-                            aiSalesAgentEmailEnabled,
-                            isChatEnabled,
-                            isEmailEnabled,
-                        }),
-                    ).toBe(false)
-                })
-
-                it('should be false when not on beta account on new automate plan and store does not have sales', () => {
-                    expect(
-                        isSalesEnabledWithNewActivationXp({
-                            isAiSalesBetaUser: false,
-                            hasNewAutomatePlan: true,
-                            storeHasSales: false,
-                            aiSalesAgentEmailEnabled,
-                            isChatEnabled,
-                            isEmailEnabled,
-                        }),
-                    ).toBe(false)
-                })
-            })
+        it('should return true if it has already sales', () => {
+            expect(
+                isSalesEnabledWithNewActivationXp({
+                    isAiSalesBetaUser: false,
+                    hasNewAutomatePlan: false,
+                    storeHasSales: true,
+                }),
+            ).toBe(true)
         })
     })
 
     describe('stateToUpdatedStoreConfiguration', () => {
-        const flags = {
-            isAiSalesBetaUser: true,
-            hasAiAgentNewActivationXp: true,
-            aiSalesAgentEmailEnabled: true,
-        }
+        describe('when account has sales', () => {
+            // Has sales
+            const flags = {
+                isAiSalesBetaUser: true,
+                hasAiAgentNewActivationXp: true,
+                aiSalesAgentEmailEnabled: true,
+            }
 
-        it('should add sales scope and default sales settings when activating sales', () => {
-            const state = storeConfigurationToState(EMPTY_STATE, {
-                type: 'UPDATE_STORE_CONFIGURATION',
-                storeConfigurations: [
-                    { ...mockStoreConfig, scopes: [AiAgentScope.Support] },
-                ],
-                selfServiceChatChannels: {
-                    'Test Store': [{ value: { id: 1 } } as any],
-                },
-                emailIntegrations: [
-                    {
-                        id: 2,
-                    } as any,
-                ],
-                chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
-                helpCentersFaq,
-                ldFlags: LD_FLAGS,
-                flags,
-                hasNewAutomatePlan: true,
+            it('should add support+sales scope and default sales settings when activating sales', () => {
+                const state = storeConfigurationToState(EMPTY_STATE, {
+                    type: 'UPDATE_STORE_CONFIGURATION',
+                    storeConfigurations: [{ ...mockStoreConfig, scopes: [] }],
+                    selfServiceChatChannels: {
+                        'Test Store': [{ value: { id: 1 } } as any],
+                    },
+                    chatIntegrationStatus: [
+                        { chatId: 1, installed: true } as any,
+                    ],
+                    helpCentersFaq,
+                    ldFlags: LD_FLAGS,
+                    flags,
+                    hasNewAutomatePlan: true,
+                    emailIntegrations: [
+                        {
+                            id: 2,
+                        } as any,
+                    ],
+                } as any)
+
+                const result = stateToUpdatedStoreConfiguration(state)
+
+                expect(result).toHaveLength(1)
+                expect(result[0]).toEqual(
+                    expect.objectContaining({
+                        scopes: [AiAgentScope.Support, AiAgentScope.Sales],
+                        salesPersuasionLevel: PersuasionLevel.Educational,
+                        salesDiscountStrategyLevel: DiscountStrategy.NoDiscount,
+                        salesDiscountMax: null,
+                    }),
+                )
             })
 
-            const result = stateToUpdatedStoreConfiguration(state)
+            it('should not change sales settings when sales is already activated', () => {
+                const state = reducer(EMPTY_STATE, {
+                    type: 'UPDATE_STORE_CONFIGURATION',
+                    storeConfigurations: [
+                        {
+                            ...mockStoreConfig,
+                            scopes: [AiAgentScope.Support, AiAgentScope.Sales],
+                            salesPersuasionLevel: PersuasionLevel.Assertive,
+                            salesDiscountStrategyLevel:
+                                DiscountStrategy.Maximized,
+                            salesDiscountMax: 10,
+                        },
+                    ],
+                    selfServiceChatChannels: {
+                        'Test Store': [{ value: { id: 1 } } as any],
+                    },
+                    chatIntegrationStatus: [
+                        { chatId: 1, installed: true } as any,
+                    ],
+                    helpCentersFaq,
+                    ldFlags: LD_FLAGS,
+                    flags,
+                    hasNewAutomatePlan: true,
+                    emailIntegrations: [
+                        {
+                            id: 2,
+                        } as any,
+                    ],
+                })
 
-            expect(result).toHaveLength(1)
-            expect(result[0]).toEqual(
-                expect.objectContaining({
-                    scopes: expect.arrayContaining([
-                        AiAgentScope.Sales,
-                        AiAgentScope.Support,
-                    ]),
-                    salesPersuasionLevel: PersuasionLevel.Educational,
-                    salesDiscountStrategyLevel: DiscountStrategy.NoDiscount,
-                    salesDiscountMax: null,
-                    chatChannelDeactivatedDatetime: null,
-                    emailChannelDeactivatedDatetime: null,
-                }),
-            )
-        })
+                const result = stateToUpdatedStoreConfiguration(state)
 
-        it('should not change sales settings when sales is already activated', () => {
-            const state = reducer(EMPTY_STATE, {
-                type: 'UPDATE_STORE_CONFIGURATION',
-                storeConfigurations: [
-                    {
-                        ...mockStoreConfig,
-                        scopes: [AiAgentScope.Support, AiAgentScope.Sales],
+                expect(result).toHaveLength(1)
+                expect(result[0]).toEqual(
+                    expect.objectContaining({
+                        scopes: expect.arrayContaining([
+                            AiAgentScope.Sales,
+                            AiAgentScope.Support,
+                        ]),
                         salesPersuasionLevel: PersuasionLevel.Assertive,
                         salesDiscountStrategyLevel: DiscountStrategy.Maximized,
                         salesDiscountMax: 10,
-                    },
-                ],
-                emailIntegrations: [
-                    {
-                        id: 2,
-                    } as any,
-                ],
-                selfServiceChatChannels: {
-                    'Test Store': [{ value: { id: 1 } } as any],
-                },
-                chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
-                helpCentersFaq,
-                ldFlags: LD_FLAGS,
-                flags,
-                hasNewAutomatePlan: true,
-            })
-
-            const result = stateToUpdatedStoreConfiguration(state)
-
-            expect(result).toHaveLength(1)
-            expect(result[0]).toEqual(
-                expect.objectContaining({
-                    scopes: expect.arrayContaining([
-                        AiAgentScope.Sales,
-                        AiAgentScope.Support,
-                    ]),
-                    salesPersuasionLevel: PersuasionLevel.Assertive,
-                    salesDiscountStrategyLevel: DiscountStrategy.Maximized,
-                    salesDiscountMax: 10,
-                    chatChannelDeactivatedDatetime: null,
-                    emailChannelDeactivatedDatetime: null,
-                }),
-            )
-        })
-
-        it('should not override chatChannelDeactivatedDatetime or emailChannelDeactivatedDatetime when chat not changed', () => {
-            const chatChannelDeactivatedDatetime = '2025-04-24T00:00:00.000Z'
-            const emailChannelDeactivatedDatetime = '2025-04-25T00:00:00.000Z'
-
-            const state = reducer(EMPTY_STATE, {
-                type: 'UPDATE_STORE_CONFIGURATION',
-                storeConfigurations: [
-                    {
-                        ...mockStoreConfig,
-                        scopes: [],
-                        chatChannelDeactivatedDatetime,
-                        emailChannelDeactivatedDatetime,
-                    },
-                ],
-                selfServiceChatChannels: {
-                    'Test Store': [{ value: { id: 1 } } as any],
-                },
-                chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
-                emailIntegrations: [
-                    {
-                        id: 2,
-                    } as any,
-                ],
-                helpCentersFaq,
-                ldFlags: LD_FLAGS,
-                flags,
-                hasNewAutomatePlan: true,
-            })
-
-            const result = stateToUpdatedStoreConfiguration(state)
-
-            expect(result).toHaveLength(1)
-            expect(result[0]).toEqual(
-                expect.objectContaining({
-                    scopes: [],
-                    chatChannelDeactivatedDatetime,
-                    emailChannelDeactivatedDatetime,
-                }),
-            )
-        })
-
-        it('should set chatChannelDeactivatedDatetime or emailChannelDeactivatedDatetime when changing from on to off', () => {
-            const state = reducer(EMPTY_STATE, {
-                type: 'UPDATE_STORE_CONFIGURATION',
-                storeConfigurations: [
-                    {
-                        ...mockStoreConfig,
-                        scopes: [AiAgentScope.Support],
                         chatChannelDeactivatedDatetime: null,
                         emailChannelDeactivatedDatetime: null,
+                    }),
+                )
+            })
+
+            it('should not override chatChannelDeactivatedDatetime or emailChannelDeactivatedDatetime when chat not changed', () => {
+                const chatChannelDeactivatedDatetime =
+                    '2025-04-24T00:00:00.000Z'
+                const emailChannelDeactivatedDatetime =
+                    '2025-04-25T00:00:00.000Z'
+
+                const state = reducer(EMPTY_STATE, {
+                    type: 'UPDATE_STORE_CONFIGURATION',
+                    storeConfigurations: [
+                        {
+                            ...mockStoreConfig,
+                            chatChannelDeactivatedDatetime,
+                            emailChannelDeactivatedDatetime,
+                        },
+                    ],
+                    selfServiceChatChannels: {
+                        'Test Store': [{ value: { id: 1 } } as any],
                     },
-                ],
-                selfServiceChatChannels: {
-                    'Test Store': [{ value: { id: 1 } } as any],
-                },
-                chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
-                emailIntegrations: [
-                    {
-                        id: 2,
-                    } as any,
-                ],
-                helpCentersFaq,
-                ldFlags: LD_FLAGS,
-                flags,
-                hasNewAutomatePlan: true,
+                    chatIntegrationStatus: [
+                        { chatId: 1, installed: true } as any,
+                    ],
+                    helpCentersFaq,
+                    ldFlags: LD_FLAGS,
+                    flags,
+                    hasNewAutomatePlan: true,
+                    emailIntegrations: [
+                        {
+                            id: 2,
+                        } as any,
+                    ],
+                })
+
+                const result = stateToUpdatedStoreConfiguration(state)
+
+                expect(result).toHaveLength(1)
+                expect(result[0]).toEqual(
+                    expect.objectContaining({
+                        chatChannelDeactivatedDatetime,
+                        emailChannelDeactivatedDatetime,
+                    }),
+                )
             })
 
-            const state2 = reducer(state, {
-                type: 'CHANGE_SUPPORT_CHAT',
-                storeName: 'Test Store',
-                newValue: false,
-                flags,
-                hasNewAutomatePlan: true,
+            it('should set chatChannelDeactivatedDatetime or emailChannelDeactivatedDatetime when changing from on to off', () => {
+                const state = reducer(EMPTY_STATE, {
+                    type: 'UPDATE_STORE_CONFIGURATION',
+                    storeConfigurations: [
+                        {
+                            ...mockStoreConfig,
+                            chatChannelDeactivatedDatetime: null,
+                            emailChannelDeactivatedDatetime: null,
+                        },
+                    ],
+                    selfServiceChatChannels: {
+                        'Test Store': [{ value: { id: 1 } } as any],
+                    },
+                    chatIntegrationStatus: [
+                        { chatId: 1, installed: true } as any,
+                    ],
+                    helpCentersFaq,
+                    ldFlags: LD_FLAGS,
+                    flags,
+                    hasNewAutomatePlan: true,
+                    emailIntegrations: [
+                        {
+                            id: 2,
+                        } as any,
+                    ],
+                })
+
+                const state2 = reducer(state, {
+                    type: 'CHANGE_SUPPORT_CHAT',
+                    storeName: 'Test Store',
+                    newValue: false,
+                    flags,
+                    hasNewAutomatePlan: true,
+                })
+
+                const state3 = reducer(state2, {
+                    type: 'CHANGE_SUPPORT_EMAIL',
+                    storeName: 'Test Store',
+                    newValue: false,
+                    flags,
+                    hasNewAutomatePlan: true,
+                })
+
+                const result = stateToUpdatedStoreConfiguration(state3)
+
+                expect(result).toHaveLength(1)
+                expect(result[0]).toEqual(
+                    expect.objectContaining({
+                        chatChannelDeactivatedDatetime: expect.any(String),
+                        emailChannelDeactivatedDatetime: expect.any(String),
+                    }),
+                )
             })
+        })
 
-            const state3 = reducer(state2, {
-                type: 'CHANGE_SUPPORT_EMAIL',
-                storeName: 'Test Store',
-                newValue: false,
-                flags,
-                hasNewAutomatePlan: true,
+        describe('when account does not have sales', () => {
+            // Does not have sales
+            const flags = {
+                isAiSalesBetaUser: false,
+                hasAiAgentNewActivationXp: false,
+                aiSalesAgentEmailEnabled: false,
+            }
+
+            it('should add support scope', () => {
+                const state = storeConfigurationToState(EMPTY_STATE, {
+                    type: 'UPDATE_STORE_CONFIGURATION',
+                    storeConfigurations: [{ ...mockStoreConfig, scopes: [] }],
+                    selfServiceChatChannels: {
+                        'Test Store': [{ value: { id: 1 } } as any],
+                    },
+                    chatIntegrationStatus: [
+                        { chatId: 1, installed: true } as any,
+                    ],
+                    helpCentersFaq,
+                    ldFlags: LD_FLAGS,
+                    flags,
+                    hasNewAutomatePlan: true,
+                    emailIntegrations: [
+                        {
+                            id: 2,
+                        } as any,
+                    ],
+                })
+
+                const result = stateToUpdatedStoreConfiguration(state)
+
+                expect(result).toHaveLength(1)
+                expect(result[0]).toEqual(
+                    expect.objectContaining({
+                        scopes: [AiAgentScope.Support],
+                    }),
+                )
             })
-
-            const result = stateToUpdatedStoreConfiguration(state3)
-
-            expect(result).toHaveLength(1)
-            expect(result[0]).toEqual(
-                expect.objectContaining({
-                    scopes: [],
-                    chatChannelDeactivatedDatetime: expect.any(String),
-                    emailChannelDeactivatedDatetime: expect.any(String),
-                }),
-            )
         })
     })
 })

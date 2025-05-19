@@ -393,6 +393,8 @@ export const ChannelsStep: React.FC<StepProps> = ({
     }
 
     const onNextClick = (savedIntegrationId?: number) => {
+        const deactivatedDatetime = new Date().toISOString()
+
         const updatedData = {
             ...data,
             shopName,
@@ -406,6 +408,10 @@ export const ChannelsStep: React.FC<StepProps> = ({
                     ? [...chatIntegrationIds, savedIntegrationId]
                     : chatIntegrationIds
                 : [],
+
+            // Email and chat are deactivated by default
+            emailChannelDeactivatedDatetime: deactivatedDatetime,
+            chatChannelDeactivatedDatetime: deactivatedDatetime,
         }
 
         if (data && 'id' in data) {

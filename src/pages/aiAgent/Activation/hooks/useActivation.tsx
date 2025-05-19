@@ -111,10 +111,16 @@ export const useActivation = (
                 variant: 'bordered',
             } satisfies Omit<ActivationManageButtonBorderedProps, 'onClick'>
         } else {
-            // Live = we have at least a scope (sales and/or support)
+            // We check only the 1st store because when not on overview we have only 1 store.
+            const firstStoreActivation = Object.values(storeActivations).at(0)
+
+            // Live = email or chat not deactivated
             const aiAgentIsLive =
-                !!Object.values(storeActivations).at(0)?.configuration?.scopes
-                    .length
+                !firstStoreActivation?.configuration
+                    .emailChannelDeactivatedDatetime ||
+                !firstStoreActivation?.configuration
+                    .chatChannelDeactivatedDatetime
+
             activationButtonProps = {
                 hasAiAgentNewActivationXp,
                 variant: 'flat',

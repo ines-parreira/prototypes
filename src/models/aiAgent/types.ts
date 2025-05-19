@@ -112,7 +112,6 @@ export type CreateStoreConfigurationPayload = Pick<
     | 'emailChannelDeactivatedDatetime'
     | 'excludedTopics'
     | 'customFieldIds'
-    | 'scopes'
 > &
     WizardProps
 
