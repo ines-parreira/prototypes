@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 import cn from 'classnames'
 
-import { CustomField, TicketCompact } from '@gorgias/api-queries'
+import { TicketCompact } from '@gorgias/api-queries'
 
 import { SourceBadge } from 'tickets/ticket-detail/components/SourceBadge'
 import { TicketStatus } from 'tickets/ticket-detail/components/TicketStatus'
@@ -17,15 +17,11 @@ type Props = {
     ticket: TicketCompact
     displayedDate: ReactNode
     isHighlighted?: boolean
-    customFieldDefinitions?: CustomField[]
-    isLoadingCFDefinitions?: boolean
 }
 
 export default function TicketCard({
     ticket,
     isHighlighted = false,
-    customFieldDefinitions,
-    isLoadingCFDefinitions = false,
     displayedDate,
     className,
 }: Props) {
@@ -45,9 +41,7 @@ export default function TicketCard({
                     <span>{displayedDate}</span>
                 </div>
                 <TicketFields
-                    definitions={customFieldDefinitions}
                     fieldValues={ticket.custom_fields}
-                    isLoading={isLoadingCFDefinitions}
                     className={css.ticketFields}
                 />
                 <div className={css.meta}>

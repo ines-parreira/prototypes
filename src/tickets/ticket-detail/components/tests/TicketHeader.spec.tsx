@@ -4,12 +4,15 @@ import type { TicketCompact, TicketTag } from '@gorgias/api-queries'
 
 import { TicketStatus } from 'business/types/ticket'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
+import TicketFields from 'timeline/TicketFields'
 
 import { TicketHeader } from '../TicketHeader'
 
 jest.mock('pages/tickets/detail/components/TicketDetails/TicketTags', () =>
     jest.fn(() => <div>A tag</div>),
 )
+
+jest.mock('timeline/TicketFields', () => jest.fn(() => null))
 
 describe('TicketHeader', () => {
     const ticket = {
@@ -87,6 +90,19 @@ describe('TicketHeader', () => {
                 ticketTags: [tag],
                 isDisabled: true,
             }),
+            {},
+        )
+    })
+
+    it('should render the ticket fields', () => {
+        render(<TicketHeader ticket={ticket} />)
+
+        expect(TicketFields).toHaveBeenCalledWith(
+            {
+                fieldValues: ticket.custom_fields,
+                isMultiline: true,
+                isBold: true,
+            },
             {},
         )
     })

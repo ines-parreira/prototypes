@@ -1,11 +1,8 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
 
-import { ObjectType, TicketCompact } from '@gorgias/api-queries'
+import { TicketCompact } from '@gorgias/api-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
-import { ticketInputFieldDefinition } from 'fixtures/customField'
 import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import { useTimelineData } from '../hooks/useTimelineData'
@@ -19,9 +16,7 @@ jest.mock('common/segment', () => ({
         CustomerTimelineTicketClicked: 'CustomerTimelineTicketClicked',
     },
 }))
-jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
-    useCustomFieldDefinitions: jest.fn(),
-}))
+
 jest.mock('../hooks/useTimelineData', () => ({
     useTimelineData: jest.fn(),
 }))
@@ -31,14 +26,9 @@ jest.mock('../RangeFilter', () => ({
     RangeFilter: jest.fn(() => <div>RangeFilter</div>),
 }))
 
-const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 const TicketCardMock = assumeMock(TicketCard)
 const rangeFilterMock = assumeMock(RangeFilter)
 const useTimelineDataMock = assumeMock(useTimelineData)
-const defaultFieldDefinitions = {
-    data: apiListCursorPaginationResponse([ticketInputFieldDefinition]),
-    isLoading: false,
-} as ReturnType<typeof useCustomFieldDefinitions>
 
 describe('<Timeline />', () => {
     const ticket1 = {
@@ -63,7 +53,6 @@ describe('<Timeline />', () => {
         tickets: [ticket1, ticket2, ticket3],
     }
     beforeEach(() => {
-        useCustomFieldDefinitionsMock.mockReturnValue(defaultFieldDefinitions)
         useTimelineDataMock.mockReturnValue(defaultTimelineReturnValue)
     })
 
@@ -93,28 +82,6 @@ describe('<Timeline />', () => {
 
     it('should call useCustomFieldDefinitions with correct params', () => {
         render(<Timeline shopperId={null} />)
-
-        expect(useCustomFieldDefinitionsMock).toHaveBeenCalledWith({
-            archived: false,
-            object_type: ObjectType.Ticket,
-        })
-    })
-
-    it('should handle custom field definitions loading correctly', () => {
-        useCustomFieldDefinitionsMock.mockReturnValue({
-            data: undefined,
-            isLoading: true,
-        } as ReturnType<typeof useCustomFieldDefinitions>)
-
-        render(<Timeline shopperId={null} />)
-
-        expect(TicketCard).toHaveBeenCalledWith(
-            expect.objectContaining({
-                isLoadingCFDefinitions: true,
-                customFieldDefinitions: [],
-            }),
-            {},
-        )
     })
 
     it('should call useTimelineData with correct params', () => {
@@ -136,8 +103,6 @@ describe('<Timeline />', () => {
             {
                 className: expect.any(String),
                 isHighlighted: false,
-                customFieldDefinitions: [ticketInputFieldDefinition],
-                isLoadingCFDefinitions: false,
                 ticket: ticket1,
                 displayedDate: 'Mocked DatetimeLabel',
             },
@@ -148,8 +113,6 @@ describe('<Timeline />', () => {
             {
                 className: expect.any(String),
                 isHighlighted: true,
-                customFieldDefinitions: [ticketInputFieldDefinition],
-                isLoadingCFDefinitions: false,
                 ticket: ticket3,
                 displayedDate: 'Mocked DatetimeLabel',
             },

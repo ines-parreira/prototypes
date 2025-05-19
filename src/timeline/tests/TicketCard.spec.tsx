@@ -1,9 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
-import { CustomField, TicketCompact } from '@gorgias/api-queries'
+import { TicketCompact } from '@gorgias/api-queries'
 import { TicketStatus } from '@gorgias/api-types'
-
-import { ticketInputFieldDefinition } from 'fixtures/customField'
 
 import { SourceBadge } from '../../tickets/ticket-detail/components/SourceBadge'
 import TicketCard from '../TicketCard'
@@ -102,21 +100,11 @@ describe('TicketCard', () => {
     })
 
     it('should call TicketFields component with correct props', () => {
-        const definitions = [ticketInputFieldDefinition as CustomField]
-
-        render(
-            <TicketCard
-                {...defaultProps}
-                customFieldDefinitions={definitions}
-                isLoadingCFDefinitions={true}
-            />,
-        )
+        render(<TicketCard {...defaultProps} />)
 
         expect(TicketFields).toHaveBeenCalledWith(
             {
-                definitions,
                 fieldValues: ticket.custom_fields,
-                isLoading: true,
                 className: expect.any(String),
             },
             {},

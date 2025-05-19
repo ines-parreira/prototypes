@@ -1,8 +1,12 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { CustomField, TicketCustomFieldValue } from '@gorgias/api-queries'
+import {
+    TicketCustomFieldValue,
+    useListCustomFields,
+} from '@gorgias/api-queries'
 
 import getWrappedElementCount from 'common/utils/getWrappedElementCount'
+import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
 import {
     ticketInputFieldDefinition,
     ticketNumberFieldDefinition,
@@ -14,13 +18,16 @@ import { assumeMock } from 'utils/testing'
 
 import TicketFields from '../TicketFields'
 
+jest.mock('@gorgias/api-queries', () => ({
+    ...jest.requireActual('@gorgias/api-queries'),
+    useListCustomFields: jest.fn(),
+}))
 jest.mock('common/utils/getWrappedElementCount')
 jest.mock('hooks/useCallbackRef')
 jest.mock('hooks/useElementSize')
 jest.mock('hooks/useId')
 
 const defaultProps = {
-    definitions: [ticketInputFieldDefinition as CustomField],
     fieldValues: {
         [ticketNumberFieldDefinition.id.toString()]: {
             value: 123,
@@ -31,19 +38,32 @@ const defaultProps = {
     },
 }
 
+const defaultFieldDefinitions = {
+    data: {
+        data: apiListCursorPaginationResponse([ticketInputFieldDefinition]),
+    },
+    isLoading: false,
+} as ReturnType<typeof useListCustomFields>
+
+const dualFieldDefinitions = {
+    data: {
+        data: apiListCursorPaginationResponse([
+            ticketInputFieldDefinition,
+            ticketNumberFieldDefinition,
+        ]),
+    },
+    isLoading: false,
+} as ReturnType<typeof useListCustomFields>
+
+const useListCustomFieldsMock = assumeMock(useListCustomFields)
 const getWrappedElementCountMock = assumeMock(getWrappedElementCount)
 const useCallbackRefMock = assumeMock(useCallbackRef)
 const useElementSizeMock = assumeMock(useElementSize)
 const useIdMock = assumeMock(useId)
 
 describe('TicketFields', () => {
-    it('should display a loading message when isLoading is true', () => {
-        render(<TicketFields {...defaultProps} isLoading={true} />)
-
-        expect(screen.getByText('Loading ticket fields...')).toBeInTheDocument()
-    })
-
     beforeEach(() => {
+        useListCustomFieldsMock.mockReturnValue(defaultFieldDefinitions)
         getWrappedElementCountMock.mockReturnValue(0)
         useCallbackRefMock.mockReturnValue([null, jest.fn()])
         useElementSizeMock.mockReturnValue([100, 100])
@@ -51,7 +71,12 @@ describe('TicketFields', () => {
     })
 
     it('should display a loading message when isLoading is true', () => {
-        render(<TicketFields {...defaultProps} isLoading={true} />)
+        useListCustomFieldsMock.mockReturnValue({
+            data: undefined,
+            isLoading: true,
+        } as ReturnType<typeof useListCustomFields>)
+        render(<TicketFields {...defaultProps} />)
+
         expect(screen.getByText('Loading ticket fields...')).toBeInTheDocument()
     })
 
@@ -66,8 +91,8 @@ describe('TicketFields', () => {
     })
 
     it('should display a default label when there is no matching definition', () => {
-        render(<TicketFields {...defaultProps} definitions={undefined} />)
-        expect(screen.getByText('Custom Field 123')).toBeInTheDocument()
+        render(<TicketFields {...defaultProps} />)
+        expect(screen.getByText('Custom Field 1234')).toBeInTheDocument()
     })
 
     it('should display ticket fields when they are available', () => {
@@ -80,15 +105,8 @@ describe('TicketFields', () => {
 
     it('should display the correct number of hidden ticket fields', () => {
         getWrappedElementCountMock.mockReturnValue(1)
-        render(
-            <TicketFields
-                {...defaultProps}
-                definitions={[
-                    ticketInputFieldDefinition as CustomField,
-                    ticketNumberFieldDefinition as CustomField,
-                ]}
-            />,
-        )
+        useListCustomFieldsMock.mockReturnValue(dualFieldDefinitions)
+        render(<TicketFields {...defaultProps} />)
         expect(screen.getByText('+1 more')).toBeInTheDocument()
     })
 
@@ -99,15 +117,8 @@ describe('TicketFields', () => {
 
     it('should display hidden ticket fields in the tooltip', () => {
         getWrappedElementCountMock.mockReturnValue(1)
-        render(
-            <TicketFields
-                {...defaultProps}
-                definitions={[
-                    ticketInputFieldDefinition as CustomField,
-                    ticketNumberFieldDefinition as CustomField,
-                ]}
-            />,
-        )
+        useListCustomFieldsMock.mockReturnValue(dualFieldDefinitions)
+        render(<TicketFields {...defaultProps} />)
 
         expect(
             screen.getAllByText(new RegExp(ticketNumberFieldDefinition.label)),
@@ -125,5 +136,17 @@ describe('TicketFields', () => {
         expect(
             screen.getAllByText(ticketInputFieldDefinition.id.toString()),
         ).toHaveLength(2)
+    })
+
+    it('should not hide any ticket fields when multiline is true', () => {
+        render(<TicketFields {...defaultProps} isMultiline />)
+
+        expect(screen.queryByText('+1 more')).not.toBeInTheDocument()
+    })
+
+    it('should apply the correct classNames when isBold is true', () => {
+        render(<TicketFields {...defaultProps} isBold />)
+
+        expect(screen.getByText('Test Value')).toHaveClass('bold')
     })
 })

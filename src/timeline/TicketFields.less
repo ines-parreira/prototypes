@@ -6,11 +6,16 @@
         display: flex;
         height: 21px;
         overflow: hidden;
+        color: var(--neutral-grey-5);
+        &.autoHeight {
+            height: auto;
+        }
     }
 
     .fieldList {
         display: flex;
-        gap: @layout-spacing-s;
+        column-gap: @layout-spacing-s;
+        row-gap: @layout-spacing-xxs;
         flex-wrap: wrap;
         list-style-type: none;
         padding: 0;
@@ -21,6 +26,10 @@
 
     .fieldValue {
         color: var(--neutral-grey-6);
+        &.bold {
+            margin-left: @layout-spacing-xs;
+            .body-semibold();
+        }
     }
 
     .more {

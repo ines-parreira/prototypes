@@ -2,13 +2,11 @@ import { memo, useMemo, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { CustomField, ObjectType } from '@gorgias/api-queries'
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
-import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { TicketModal, useTicketModal } from 'timeline/ticket-modal'
 
 import DisplayedDate from './DisplayedDate'
@@ -33,14 +31,6 @@ type Props = {
 export function Timeline({ ticketId = 0, shopperId, onLoaded }: Props) {
     const hasTicketModal = useFlag(FeatureFlagKey.TimelineTicketModal)
     const [hasCalledOnLoaded, setHasCalledOnLoaded] = useState(false)
-
-    const {
-        data: { data: customFieldDefinitions } = {},
-        isLoading: isLoadingCFDefinitions,
-    } = useCustomFieldDefinitions({
-        archived: false,
-        object_type: ObjectType.Ticket,
-    })
 
     const { tickets, isLoading } = useTimelineData(shopperId || undefined)
 
@@ -119,13 +109,6 @@ export function Timeline({ ticketId = 0, shopperId, onLoaded }: Props) {
                                         className={css.card}
                                         ticket={ticket}
                                         isHighlighted={isCurrentTicket}
-                                        isLoadingCFDefinitions={
-                                            isLoadingCFDefinitions
-                                        }
-                                        customFieldDefinitions={
-                                            (customFieldDefinitions ||
-                                                []) as CustomField[]
-                                        }
                                         displayedDate={DisplayedDate(
                                             sortOption,
                                             ticket,

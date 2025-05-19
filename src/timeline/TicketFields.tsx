@@ -4,8 +4,10 @@ import cn from 'classnames'
 
 import {
     CustomField,
+    ObjectType,
     TicketCompact,
     TicketCompactCustomFieldsAnyOf,
+    useListCustomFields,
 } from '@gorgias/api-queries'
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
@@ -19,33 +21,46 @@ import useId from 'hooks/useId'
 import css from './TicketFields.less'
 
 type TicketFieldsProps = {
-    definitions?: CustomField[]
     fieldValues: TicketCompact['custom_fields']
     className?: string
-    isLoading?: boolean
+    isMultiline?: boolean
+    isBold?: boolean
 }
 
 const ID_PREFIX = 'expand-tags-badge-'
 
 export default function TicketFields({
-    definitions = [],
     fieldValues: maybeFieldValues,
     className,
-    isLoading = false,
+    isMultiline = false,
+    isBold = false,
 }: TicketFieldsProps) {
+    const { data, isLoading } = useListCustomFields({
+        object_type: ObjectType.Ticket,
+        archived: false,
+        limit: 100,
+    })
+    const definitions = data?.data?.data || []
+
     const fieldValues = maybeFieldValues === null ? {} : maybeFieldValues || {}
+
+    const ticketFieldIds = Object.keys(fieldValues)
+    const hasTicketFields = ticketFieldIds.length > 0
+
     const [fieldsContainer, setFieldsContainer] = useCallbackRef()
     // Triggers re-render when the size of the fieldsContainer changes
     useElementSize(fieldsContainer)
     const wrappedTicketFieldCount = getWrappedElementCount(fieldsContainer)
-    const ticketFieldIds = Object.keys(fieldValues)
-    const hasTicketFields = ticketFieldIds.length > 0
     const hiddenTicketFieldIds = ticketFieldIds.slice(
         ticketFieldIds.length - wrappedTicketFieldCount,
     )
 
     return (
-        <div className={cn(css.ticketFields, className)}>
+        <div
+            className={cn(css.ticketFields, className, {
+                [css.autoHeight]: isMultiline,
+            })}
+        >
             {isLoading ? (
                 <div className={css.loading}>Loading ticket fields...</div>
             ) : !hasTicketFields ? (
@@ -56,6 +71,7 @@ export default function TicketFields({
                         return (
                             <React.Fragment key={id}>
                                 {wrappedTicketFieldCount > 0 &&
+                                    !isMultiline &&
                                     wrappedTicketFieldCount ===
                                         ticketFieldIds.length - i && (
                                         <ShowMore
@@ -75,7 +91,11 @@ export default function TicketFields({
                                         )}
                                     </span>
                                     :&nbsp;
-                                    <span className={css.fieldValue}>
+                                    <span
+                                        className={cn(css.fieldValue, {
+                                            [css.bold]: isBold,
+                                        })}
+                                    >
                                         {getShortValueLabel(
                                             fieldValues[id]
                                                 ?.value as CustomFieldValue,

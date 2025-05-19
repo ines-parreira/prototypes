@@ -3,6 +3,7 @@ import { FC } from 'react'
 import type { Ticket, TicketCompact } from '@gorgias/api-queries'
 
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
+import TicketFields from 'timeline/TicketFields'
 
 import { SourceBadge } from './SourceBadge'
 import { TicketStatus } from './TicketStatus'
@@ -38,11 +39,15 @@ export function TicketHeader({ ticket, AdditionalAction }: Props) {
                     <span>This ticket has no tags</span>
                 )}
             </div>
+            <TicketFields
+                fieldValues={ticket.custom_fields}
+                isMultiline
+                isBold
+            />
             <pre>
                 {JSON.stringify({
                     assignee_team: ticket.assignee_team,
                     assignee_user: ticket.assignee_user,
-                    custom_fields: ticket.custom_fields,
                 })}
             </pre>
         </div>
