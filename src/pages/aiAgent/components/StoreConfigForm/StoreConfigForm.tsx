@@ -59,6 +59,7 @@ import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFor
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { FormValues } from 'pages/aiAgent/types'
 import { isHandoffEnabled } from 'pages/aiAgent/util'
+import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import {
     SettingsCard,
     SettingsCardContent,
@@ -73,6 +74,8 @@ import { getIntegrationsByTypes } from 'state/integrations/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { reportError } from 'utils/errors'
+
+import { useVerifyChannelsActivation } from './hooks/useVerifyChannelsActivation'
 
 import css from './StoreConfigForm.less'
 
@@ -171,6 +174,8 @@ export const StoreConfigForm = ({
             id: integration.id,
         }))
     }, [emailIntegrations])
+
+    const chatChannels = useSelfServiceChatChannels(shopType, shopName)
 
     const defaultFormValues: Partial<FormValues> = useMemo(() => {
         const initialHelpCenter = faqHelpCenters[0]
@@ -308,6 +313,14 @@ export const StoreConfigForm = ({
             dispatch,
         ],
     )
+
+    useVerifyChannelsActivation({
+        chatChannels,
+        emailItems,
+        storeConfiguration,
+        updateStoreConfiguration,
+        updateValue,
+    })
 
     const isHandoffToggled = isHandoffEnabled(
         formValues.silentHandover !== null

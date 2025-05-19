@@ -57,6 +57,7 @@ import { StoreConfigForm } from '../StoreConfigForm'
 const queryClient = mockQueryClient()
 
 jest.mock('utils/errors')
+jest.mock('../hooks/useVerifyChannelsActivation')
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
 jest.mock('common/segment', () => ({
     ...jest.requireActual('common/segment'),
