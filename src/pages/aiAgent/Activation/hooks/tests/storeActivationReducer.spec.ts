@@ -80,6 +80,11 @@ describe('storeActivationReducer', () => {
                     chatIntegrationStatus: [
                         { chatId: 1, installed: true } as any,
                     ],
+                    emailIntegrations: [
+                        {
+                            id: 2,
+                        } as any,
+                    ],
                     helpCentersFaq,
                     ldFlags: LD_FLAGS,
                     flags,
@@ -109,6 +114,11 @@ describe('storeActivationReducer', () => {
                     },
                     chatIntegrationStatus: [
                         { chatId: 1, installed: true } as any,
+                    ],
+                    emailIntegrations: [
+                        {
+                            id: 2,
+                        } as any,
                     ],
                     helpCentersFaq,
                     ldFlags: LD_FLAGS,
@@ -147,6 +157,11 @@ describe('storeActivationReducer', () => {
                     },
                     chatIntegrationStatus: [
                         { chatId: 1, installed: true } as any,
+                    ],
+                    emailIntegrations: [
+                        {
+                            id: 2,
+                        } as any,
                     ],
                     helpCentersFaq,
                     ldFlags: LD_FLAGS,
@@ -189,6 +204,11 @@ describe('storeActivationReducer', () => {
                     chatIntegrationStatus: [
                         { chatId: 1, installed: true } as any,
                     ],
+                    emailIntegrations: [
+                        {
+                            id: 2,
+                        } as any,
+                    ],
                     helpCentersFaq,
                     ldFlags: LD_FLAGS,
                     flags,
@@ -215,6 +235,11 @@ describe('storeActivationReducer', () => {
                     },
                     chatIntegrationStatus: [
                         { chatId: 1, installed: true } as any,
+                    ],
+                    emailIntegrations: [
+                        {
+                            id: 2,
+                        } as any,
                     ],
                     helpCentersFaq,
                     ldFlags: LD_FLAGS,
@@ -266,6 +291,11 @@ describe('storeActivationReducer', () => {
                     chatIntegrationStatus: [
                         { chatId: 1, installed: true } as any,
                     ],
+                    emailIntegrations: [
+                        {
+                            id: 2,
+                        } as any,
+                    ],
                     helpCentersFaq,
                     ldFlags: LD_FLAGS,
                     flags,
@@ -304,6 +334,11 @@ describe('storeActivationReducer', () => {
                     chatIntegrationStatus: [
                         { chatId: 1, installed: true } as any,
                     ],
+                    emailIntegrations: [
+                        {
+                            id: 2,
+                        } as any,
+                    ],
                     helpCentersFaq,
                     ldFlags: LD_FLAGS,
                     flags,
@@ -341,6 +376,11 @@ describe('storeActivationReducer', () => {
                     },
                     chatIntegrationStatus: [
                         { chatId: 1, installed: true } as any,
+                    ],
+                    emailIntegrations: [
+                        {
+                            id: 2,
+                        } as any,
                     ],
                     helpCentersFaq,
                     ldFlags: LD_FLAGS,
@@ -383,6 +423,11 @@ describe('storeActivationReducer', () => {
                     chatIntegrationStatus: [
                         { chatId: 1, installed: true } as any,
                     ],
+                    emailIntegrations: [
+                        {
+                            id: 2,
+                        } as any,
+                    ],
                     helpCentersFaq,
                     ldFlags: LD_FLAGS,
                     flags,
@@ -409,6 +454,11 @@ describe('storeActivationReducer', () => {
                     },
                     chatIntegrationStatus: [
                         { chatId: 1, installed: true } as any,
+                    ],
+                    emailIntegrations: [
+                        {
+                            id: 2,
+                        } as any,
                     ],
                     helpCentersFaq,
                     ldFlags: LD_FLAGS,
@@ -473,6 +523,11 @@ describe('storeActivationReducer', () => {
                 selfServiceChatChannels: {
                     'Test Store': [{ value: { id: 1 } } as any],
                 },
+                emailIntegrations: [
+                    {
+                        id: 2,
+                    } as any,
+                ],
                 chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
                 helpCentersFaq,
                 ldFlags: LD_FLAGS,
@@ -535,6 +590,11 @@ describe('storeActivationReducer', () => {
                 selfServiceChatChannels: {
                     'Test Store': [{ value: { id: 1 } } as any],
                 },
+                emailIntegrations: [
+                    {
+                        id: 2,
+                    } as any,
+                ],
                 chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
                 helpCentersFaq,
                 ldFlags: LD_FLAGS,
@@ -566,6 +626,11 @@ describe('storeActivationReducer', () => {
                     { value: { id: 2 } } as any,
                 ],
             },
+            emailIntegrations: [
+                {
+                    id: 2,
+                } as any,
+            ],
             chatIntegrationStatus: [
                 { chatId: 1, installed: false } as any,
                 { chatId: 2, installed: true } as any,
@@ -598,6 +663,11 @@ describe('storeActivationReducer', () => {
             selfServiceChatChannels: {
                 'Test Store': [],
             },
+            emailIntegrations: [
+                {
+                    id: 2,
+                } as any,
+            ],
             chatIntegrationStatus: [{ chatId: 1, installed: false } as any],
             helpCentersFaq,
             ldFlags: LD_FLAGS,
@@ -616,6 +686,43 @@ describe('storeActivationReducer', () => {
             false,
         )
         expect(state['Test Store'].support.chat.availableChats).toEqual([])
+    })
+
+    it('should disable email when integration is not available', () => {
+        const state = reducer(EMPTY_STATE, {
+            type: 'UPDATE_STORE_CONFIGURATION',
+            storeConfigurations: [
+                {
+                    ...mockStoreConfig,
+                    monitoredEmailIntegrations: [
+                        { id: 2, email: 'test@test.com' },
+                    ],
+                },
+            ],
+            selfServiceChatChannels: {
+                'Test Store': [{ value: { id: 1 } } as any],
+            },
+            emailIntegrations: [
+                {
+                    id: 3,
+                } as any,
+            ],
+            chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
+            helpCentersFaq,
+            ldFlags: LD_FLAGS,
+            // No impact on email enabled/disabled
+            flags: {
+                isAiSalesBetaUser: false,
+                hasAiAgentNewActivationXp: false,
+                aiSalesAgentEmailEnabled: false,
+            },
+            hasNewAutomatePlan: false,
+        })
+
+        expect(state['Test Store'].support.email.enabled).toBe(false)
+        expect(state['Test Store'].support.email.isIntegrationMissing).toBe(
+            true,
+        )
     })
 
     describe('isSalesEnabledWithNewActivationXp', () => {
@@ -941,6 +1048,11 @@ describe('storeActivationReducer', () => {
                 selfServiceChatChannels: {
                     'Test Store': [{ value: { id: 1 } } as any],
                 },
+                emailIntegrations: [
+                    {
+                        id: 2,
+                    } as any,
+                ],
                 chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
                 helpCentersFaq,
                 ldFlags: LD_FLAGS,
@@ -977,6 +1089,11 @@ describe('storeActivationReducer', () => {
                         salesDiscountStrategyLevel: DiscountStrategy.Maximized,
                         salesDiscountMax: 10,
                     },
+                ],
+                emailIntegrations: [
+                    {
+                        id: 2,
+                    } as any,
                 ],
                 selfServiceChatChannels: {
                     'Test Store': [{ value: { id: 1 } } as any],
@@ -1024,6 +1141,11 @@ describe('storeActivationReducer', () => {
                     'Test Store': [{ value: { id: 1 } } as any],
                 },
                 chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
+                emailIntegrations: [
+                    {
+                        id: 2,
+                    } as any,
+                ],
                 helpCentersFaq,
                 ldFlags: LD_FLAGS,
                 flags,
@@ -1057,6 +1179,11 @@ describe('storeActivationReducer', () => {
                     'Test Store': [{ value: { id: 1 } } as any],
                 },
                 chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
+                emailIntegrations: [
+                    {
+                        id: 2,
+                    } as any,
+                ],
                 helpCentersFaq,
                 ldFlags: LD_FLAGS,
                 flags,

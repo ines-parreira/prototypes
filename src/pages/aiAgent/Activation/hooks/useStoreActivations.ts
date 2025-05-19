@@ -21,6 +21,7 @@ import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreCon
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
 import { useFetchChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
 import { useSelfServiceChatChannelsMultiStore } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 import safeDivide from 'pages/stats/automate/aiSalesAgent/util/safeDivide'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
@@ -191,11 +192,14 @@ export const useStoreActivations = ({
             },
         )
 
+    const { emailIntegrations } = useEmailIntegrations()
+
     useEffect(() => {
         dispatch({
             type: 'UPDATE_STORE_CONFIGURATION',
             storeConfigurations,
             selfServiceChatChannels,
+            emailIntegrations,
             helpCentersFaq: helpCenterListData?.data.data,
             ldFlags: flagsRef.current,
             chatIntegrationStatus,
@@ -209,6 +213,7 @@ export const useStoreActivations = ({
         })
     }, [
         selfServiceChatChannels,
+        emailIntegrations,
         storeConfigurations,
         dispatch,
         helpCenterListData,

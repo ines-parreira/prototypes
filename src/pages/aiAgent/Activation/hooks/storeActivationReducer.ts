@@ -4,6 +4,11 @@ import { LDFlagSet } from 'launchdarkly-react-client-sdk'
 import cloneDeep from 'lodash/cloneDeep'
 
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
+import {
+    EmailIntegration,
+    GmailIntegration,
+    OutlookIntegration,
+} from 'models/integration/types'
 import { SourceItem } from 'pages/aiAgent/components/PublicSourcesSection/types'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
@@ -112,6 +117,11 @@ type UpdateStoreConfiguration = {
     type: 'UPDATE_STORE_CONFIGURATION'
     storeConfigurations: StoreConfiguration[]
     selfServiceChatChannels: Record<string, SelfServiceChatChannel[]>
+    emailIntegrations: (
+        | EmailIntegration
+        | GmailIntegration
+        | OutlookIntegration
+    )[]
     helpCentersFaq?: Components.Schemas.GetHelpCenterDto[]
     ldFlags: LDFlagSet
     chatIntegrationStatus?: ChatIntegrationsStatusData
@@ -367,6 +377,7 @@ export const storeConfigurationToState = (
     {
         storeConfigurations,
         selfServiceChatChannels,
+        emailIntegrations,
         helpCentersFaq,
         chatIntegrationStatus,
         ldFlags,
@@ -443,10 +454,15 @@ export const storeConfigurationToState = (
                 !isMissingKnowledge &&
                 !isChatInstallationMissing
 
+            const isEmailIntegrationMissing = !monitoredEmailIntegrations.some(
+                ({ id }) => emailIntegrations.some((email) => email.id === id),
+            )
+
             const isEmailEnabled =
                 scopes.includes(AiAgentScope.Support) &&
                 !emailChannelDeactivatedDatetime &&
-                !isMissingKnowledge
+                !isMissingKnowledge &&
+                !isEmailIntegrationMissing
 
             const salesIsDisabled = aiSalesAgentEmailEnabled
                 ? !isChatEnabled && !isEmailEnabled
@@ -487,8 +503,7 @@ export const storeConfigurationToState = (
                     },
                     email: {
                         enabled: isEmailEnabled,
-                        isIntegrationMissing:
-                            !monitoredEmailIntegrations.length,
+                        isIntegrationMissing: isEmailIntegrationMissing,
                     },
                 },
                 sales: {
