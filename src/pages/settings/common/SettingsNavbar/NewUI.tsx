@@ -125,7 +125,7 @@ const NewUI = () => {
                     <Item to="rules" text="Rules" requiredRole={AGENT_ROLE} />
                     <Item
                         to="ticket-assignment"
-                        text="Routing"
+                        text="Ticket Assignment"
                         requiredRole={ADMIN_ROLE}
                     />
                     <Item
