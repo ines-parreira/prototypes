@@ -109,4 +109,53 @@ describe('ChatIntegrationListSelection', () => {
             ),
         ).not.toBeInTheDocument()
     })
+
+    it('should display custom disabledText when provided', () => {
+        const customDisabledText = 'Custom disabled message'
+        render(
+            <ChatIntegrationListSelection
+                onSelectionChange={jest.fn()}
+                selectedIds={[]}
+                chatItems={[mockDisabledChat]}
+                hasError={false}
+                withDisabledText={true}
+                disabledText={customDisabledText}
+            />,
+        )
+
+        const dropdown = screen.getByRole('combobox')
+        fireEvent.focus(dropdown)
+
+        expect(
+            screen.getByText(mockDisabledChat.value.name),
+        ).toBeInTheDocument()
+        expect(screen.getByText(customDisabledText)).toBeInTheDocument()
+        expect(
+            screen.queryByText(
+                'Chat already used by AI Agent in another store',
+            ),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should display default disabledText when not provided', () => {
+        render(
+            <ChatIntegrationListSelection
+                onSelectionChange={jest.fn()}
+                selectedIds={[]}
+                chatItems={[mockDisabledChat]}
+                hasError={false}
+                withDisabledText={true}
+            />,
+        )
+
+        const dropdown = screen.getByRole('combobox')
+        fireEvent.focus(dropdown)
+
+        expect(
+            screen.getByText(mockDisabledChat.value.name),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText('Chat already used by AI Agent in another store'),
+        ).toBeInTheDocument()
+    })
 })

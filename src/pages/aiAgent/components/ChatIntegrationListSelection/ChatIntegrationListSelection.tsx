@@ -39,6 +39,7 @@ type ChatIntegrationListSelectionProps = {
         a: SelfServiceChatChannel,
         b: SelfServiceChatChannel,
     ) => number
+    disabledText?: string
 }
 
 export const ChatIntegrationListSelection = ({
@@ -51,6 +52,7 @@ export const ChatIntegrationListSelection = ({
     labelId,
     withDisabledText = false,
     sortingCallback = undefined,
+    disabledText,
 }: ChatIntegrationListSelectionProps) => {
     // refs to work with the selector component
     const floatingRef = useRef<HTMLDivElement>(null)
@@ -141,8 +143,8 @@ export const ChatIntegrationListSelection = ({
                                                 <span
                                                     className={css['used-chat']}
                                                 >
-                                                    Chat already used by AI
-                                                    Agent in another store
+                                                    {disabledText ??
+                                                        'Chat already used by AI Agent in another store'}
                                                 </span>
                                             </div>
                                         ) : (

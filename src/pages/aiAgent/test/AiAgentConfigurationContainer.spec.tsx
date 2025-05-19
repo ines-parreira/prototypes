@@ -19,6 +19,7 @@ import {
     useStoreConfigurations,
 } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { applyMockActivationHook } from 'pages/aiAgent/test/mock-activation-hooks.utils'
+import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { initialState } from 'state/billing/reducers'
 import { getHasAutomate } from 'state/billing/selectors'
@@ -110,7 +111,9 @@ jest.mock('models/rule/resources', () => ({
 
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
+jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
 
+const useSelfServiceChatChannelsMock = assumeMock(useSelfServiceChatChannels)
 const useStoreActivationsMock = assumeMock(useStoreActivations)
 const useStoreConfigurationsMock = assumeMock(useStoreConfigurations)
 
@@ -272,8 +275,43 @@ const setupMocks = ({
         storeConfigurations: [],
     } as any)
     useStoreActivationsMock.mockReturnValue({
-        storeActivations: {},
+        storeActivations: {
+            testShop: {
+                name: 'testShop',
+                title: 'testShop',
+                alerts: [],
+                configuration: {
+                    shopType: 'shopify',
+                    storeName: 'testShop',
+                },
+                support: {
+                    enabled: true,
+                    chat: {
+                        enabled: true,
+                        availableChats: [1],
+                        isIntegrationMissing: false,
+                    },
+                    email: {
+                        enabled: true,
+                        isIntegrationMissing: false,
+                    },
+                },
+            },
+        },
     } as any)
+    useSelfServiceChatChannelsMock.mockReturnValue([
+        {
+            value: {
+                id: 1,
+                name: 'test-chat',
+                type: IntegrationType.GorgiasChat,
+                isDisabled: false,
+                meta: {
+                    app_id: '123',
+                },
+            },
+        } as any,
+    ])
 }
 
 describe('AiAgentConfigurationContainer', () => {
@@ -359,7 +397,7 @@ describe('AiAgentConfigurationContainer', () => {
             screen.queryByText('Handover and exclusion'),
         ).not.toBeInTheDocument()
         expect(screen.queryByText('AI ticket tagging')).not.toBeInTheDocument()
-        expect(screen.getByText('Save Changes')).toBeInTheDocument()
+        expect(screen.getAllByText('Save Changes')[0]).toBeInTheDocument()
     })
 
     describe('when toggling', () => {

@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
+import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 import { ChannelsFormComponent } from '../ChannelsFormComponent'
@@ -23,6 +24,10 @@ jest.mock('hooks/useAppSelector', () => ({
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
     __esModule: true,
     default: jest.fn(),
+}))
+
+jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations', () => ({
+    useStoreActivations: jest.fn(),
 }))
 
 // Mock all imported components
@@ -165,8 +170,23 @@ describe('ChannelsFormComponent', () => {
 
         // Mock the chat channels
         ;(useSelfServiceChatChannels as jest.Mock).mockReturnValue([
-            { id: 1, name: 'Test Channel' },
+            { value: { id: 1, name: 'Test Channel 1' } },
+            { value: { id: 2, name: 'Test Channel 2' } },
+            { value: { id: 3, name: 'Test Channel 3' } },
         ])
+
+        // Mock store activations
+        ;(useStoreActivations as jest.Mock).mockReturnValue({
+            storeActivations: {
+                'Test Shop': {
+                    support: {
+                        chat: {
+                            availableChats: [1, 2], // Only channels 1 and 2 are available
+                        },
+                    },
+                },
+            },
+        })
     })
     it('should render ai agent chat section when chat feature flag is enabled', () => {
         // Disable the chat feature flag
@@ -334,5 +354,113 @@ describe('ChannelsFormComponent', () => {
             'data-required',
             'true',
         )
+    })
+
+    it('should disable chat channels that are not in the available chats list', () => {
+        // Setup mocks
+        const mockChatChannels = [
+            { value: { id: 1, name: 'Available Channel', isDisabled: false } },
+            {
+                value: {
+                    id: 2,
+                    name: 'Another Available Channel',
+                    isDisabled: false,
+                },
+            },
+            {
+                value: {
+                    id: 3,
+                    name: 'Unavailable Channel',
+                    isDisabled: false,
+                },
+            },
+        ]
+        ;(useSelfServiceChatChannels as jest.Mock).mockReturnValue(
+            mockChatChannels,
+        )
+
+        // Mock store activations with only channels 1 and 2 available
+        ;(useStoreActivations as jest.Mock).mockReturnValue({
+            storeActivations: {
+                'Test Shop': {
+                    support: {
+                        chat: {
+                            availableChats: [1, 2], // Only channels 1 and 2 are available
+                        },
+                    },
+                },
+            },
+        })
+
+        render(
+            <BrowserRouter>
+                <ChannelsFormComponent {...mockProps} />
+            </BrowserRouter>,
+        )
+
+        // After rendering, the useEffect should have modified the mockChatChannels array
+        // Channel 1 and 2 should be enabled
+        expect(mockChatChannels[0].value.isDisabled).toBe(false)
+        expect(mockChatChannels[1].value.isDisabled).toBe(false)
+        // Channel 3 should be disabled
+        expect(mockChatChannels[2].value.isDisabled).toBe(true)
+    })
+
+    it('should handle empty available chats list', () => {
+        // Setup mocks
+        const mockChatChannels = [
+            { value: { id: 1, name: 'Channel 1', isDisabled: false } },
+            { value: { id: 2, name: 'Channel 2', isDisabled: false } },
+        ]
+        ;(useSelfServiceChatChannels as jest.Mock).mockReturnValue(
+            mockChatChannels,
+        )
+
+        // Mock store activations with no available chats
+        ;(useStoreActivations as jest.Mock).mockReturnValue({
+            storeActivations: {
+                'Test Shop': {
+                    support: {
+                        chat: {
+                            availableChats: [], // No channels available
+                        },
+                    },
+                },
+            },
+        })
+
+        render(
+            <BrowserRouter>
+                <ChannelsFormComponent {...mockProps} />
+            </BrowserRouter>,
+        )
+
+        // After rendering, all channels should be disabled
+        expect(mockChatChannels[0].value.isDisabled).toBe(true)
+        expect(mockChatChannels[1].value.isDisabled).toBe(true)
+    })
+
+    it('should handle missing storeActivations data', () => {
+        // Setup mocks
+        const mockChatChannels = [
+            { value: { id: 1, name: 'Channel 1', isDisabled: false } },
+        ]
+        ;(useSelfServiceChatChannels as jest.Mock).mockReturnValue(
+            mockChatChannels,
+        )
+
+        // Mock store activations with missing data
+        ;(useStoreActivations as jest.Mock).mockReturnValue({
+            storeActivations: {},
+        })
+
+        render(
+            <BrowserRouter>
+                <ChannelsFormComponent {...mockProps} />
+            </BrowserRouter>,
+        )
+
+        // The channel should be disabled since there's no activation data
+        expect(mockChatChannels[0].value.isDisabled).toBe(true)
     })
 })

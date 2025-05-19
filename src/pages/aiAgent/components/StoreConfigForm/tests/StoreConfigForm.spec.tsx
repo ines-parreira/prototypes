@@ -84,6 +84,25 @@ jest.mock('../../PublicSourcesSection/PublicSourcesSection', () => ({
     PublicSourcesSection: jest.fn(() => <p>Public Source Section</p>),
 }))
 
+// Mock useStoreActivations hook
+jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations', () => ({
+    useStoreActivations: jest.fn().mockReturnValue({
+        storeActivations: {
+            'test-shop': {
+                support: {
+                    chat: {
+                        isInstallationMissing: false,
+                        availableChats: [15],
+                    },
+                    email: {
+                        isConfigured: true,
+                    },
+                },
+            },
+        },
+    }),
+}))
+
 // This mocked component is a child of one of the components rendered in the StoreConfigForm (ChatConfigurationFormComponent).
 // By implementing this mock, we're isolating the StoreConfigForm for more focused testing, avoiding not relevant rendering and mocking of components and dependencies that are tested elsewhere.
 jest.mock(
@@ -605,13 +624,14 @@ describe('<StoreConfigForm />', () => {
             )
             fireEvent.focus(dropdown)
 
-            const channelCheckbox = screen.getByText(/25 Shopify Chat/)
-            fireEvent.click(channelCheckbox)
+            // Find the channel by its text directly
+            const channelText = screen.getByText(/25 Shopify Chat/)
+            fireEvent.click(channelText)
 
             await waitFor(() => {
                 expect(updateValueMocked).toHaveBeenCalledWith(
                     'monitoredChatIntegrations',
-                    [channelToSelect.value?.id],
+                    [channelToSelect.value.id],
                 )
             })
         })

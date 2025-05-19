@@ -1,7 +1,10 @@
+import { useMemo } from 'react'
+
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
+import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { ConfigurationSection } from 'pages/aiAgent/components/ConfigurationSection/ConfigurationSection'
 import { HandoverCustomizationChatSettingsComponent } from 'pages/aiAgent/components/HandoverCustomization/HandoverCustomizationChatSettingsComponent'
 import { SettingsBannerType } from 'pages/aiAgent/components/StoreConfigForm/constants'
@@ -71,6 +74,23 @@ export const ChannelsFormComponent = ({
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
 
     const { routes } = useAiAgentNavigation({ shopName })
+    const { storeActivations } = useStoreActivations({
+        pageName: 'ai-agent-configuration',
+        withChatIntegrationsStatus: true,
+    })
+
+    const chatChannelsWithAvailableFlag = useMemo(() => {
+        // Block selecting the chat channels that are not installed
+        const availableChatsSet = new Set(
+            storeActivations[shopName]?.support.chat.availableChats ?? [],
+        )
+        chatChannels.forEach((chatChannel) => {
+            const isAvailable = availableChatsSet.has(chatChannel.value.id)
+            chatChannel.value.isDisabled = !isAvailable
+        })
+
+        return [...chatChannels]
+    }, [chatChannels, storeActivations, shopName])
 
     return (
         <>
@@ -98,6 +118,7 @@ export const ChannelsFormComponent = ({
                                     chatChannelDeactivatedDatetime
                                 }
                                 type={SettingsBannerType.Chat}
+                                chatIntegrations={chatChannelsWithAvailableFlag}
                             />
                         </div>
                     )}
@@ -108,7 +129,9 @@ export const ChannelsFormComponent = ({
                             }
                             isRequired={chatChannelDeactivatedDatetime === null}
                             updateValue={updateValue}
-                            chatChannels={chatChannels}
+                            chatChannels={chatChannelsWithAvailableFlag}
+                            dropDownWithDisabledText
+                            dropDownDisabledText="Chat not installed"
                         />
                     </div>
 
@@ -143,6 +166,7 @@ export const ChannelsFormComponent = ({
                                 routes.automationOrderManagement
                             }
                             flowsRoute={routes.automationFlows}
+                            chatIntegrations={chatChannelsWithAvailableFlag}
                         />
                     </div>
                 )}

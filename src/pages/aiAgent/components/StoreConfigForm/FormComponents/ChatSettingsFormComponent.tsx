@@ -29,6 +29,8 @@ type EmailFormComponentProps = {
     isDisabled?: boolean
     shouldPrefillValue?: boolean
     setIsPristine?: (isPristine: boolean) => void
+    dropDownWithDisabledText?: boolean
+    dropDownDisabledText?: string
 }
 
 export const ChatSettingsFormComponent = ({
@@ -40,6 +42,8 @@ export const ChatSettingsFormComponent = ({
     shouldPrefillValue,
     setIsPristine,
     isDisabled,
+    dropDownWithDisabledText = false,
+    dropDownDisabledText,
 }: EmailFormComponentProps) => {
     const useInitialValue = React.useRef(true)
 
@@ -131,6 +135,8 @@ export const ChatSettingsFormComponent = ({
                                 chatItems={chatChannels}
                                 hasError={!isChatIntegrationsValid}
                                 isDisabled={isDisabled}
+                                withDisabledText={dropDownWithDisabledText}
+                                disabledText={dropDownDisabledText}
                             />
                             <div
                                 className={classnames(css.formInputFooterInfo, {
