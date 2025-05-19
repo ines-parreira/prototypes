@@ -3,11 +3,13 @@ import React, { SyntheticEvent, useMemo, useState } from 'react'
 import classNames from 'classnames'
 import { List } from 'immutable'
 import _isEqual from 'lodash/isEqual'
-import { Col, Form, FormGroup, Row } from 'reactstrap'
+import { Col, Row } from 'reactstrap'
 
 import { Button, CheckBoxField, Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { TicketChannel } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Alert from 'pages/common/components/Alert/Alert'
@@ -23,7 +25,10 @@ import TeamCreationModal from 'pages/settings/teams/TeamCreationModal'
 import { fetchChats } from 'state/chats/actions'
 import { submitSetting } from 'state/currentAccount/actions'
 import { getTicketAssignmentSettings } from 'state/currentAccount/selectors'
-import { AccountSettingType } from 'state/currentAccount/types'
+import {
+    AccountSettingTicketAssignment,
+    AccountSettingType,
+} from 'state/currentAccount/types'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getTeams } from 'state/teams/selectors'
 import { isAdmin } from 'utils'
@@ -40,6 +45,10 @@ const isNumber = (value?: number): value is number => typeof value === 'number'
 
 const TicketAssignment = () => {
     const dispatch = useAppDispatch()
+    const isExceedingMaxAgentCapacityAvailable = useFlag(
+        FeatureFlagKey.CanExceedMaxAgentCapacity,
+        false,
+    )
 
     const teams = useAppSelector(getTeams)
     const ticketAssignmentSettings = useAppSelector(getTicketAssignmentSettings)
@@ -64,6 +73,12 @@ const TicketAssignment = () => {
         ticketAssignmentSettings.getIn(
             ['data', 'auto_assign_to_teams'],
             false,
+        ) as boolean,
+    )
+    const [canExceedMaxAgentCapacity, setCanExceedMaxAgentCapacity] = useState(
+        ticketAssignmentSettings.getIn(
+            ['data', 'can_exceed_max_agent_capacity'],
+            true,
         ) as boolean,
     )
     const [assignmentChannels, setAssignmentChannels] = useState(() => {
@@ -172,7 +187,13 @@ const TicketAssignment = () => {
                     assignment_channels: assignmentChannels,
                     max_user_chat_ticket: chatTicketsLimit,
                     max_user_non_chat_ticket: nonChatTicketsLimit,
-                },
+                    ...(isExceedingMaxAgentCapacityAvailable
+                        ? {
+                              can_exceed_max_agent_capacity:
+                                  canExceedMaxAgentCapacity,
+                          }
+                        : {}),
+                } as AccountSettingTicketAssignment['data'],
             }),
         )
 
@@ -213,13 +234,13 @@ const TicketAssignment = () => {
             />
 
             <div className={settingsCss.pageContainer}>
-                <Form onSubmit={onSubmit}>
+                <form onSubmit={onSubmit}>
                     <Row className={settingsCss.contentWrapper}>
                         <Col>
                             <h3
                                 className={classNames(
                                     'heading-section-semibold',
-                                    settingsCss.mb8,
+                                    settingsCss.mb16,
                                 )}
                             >
                                 Team auto-assignment settings
@@ -244,7 +265,7 @@ const TicketAssignment = () => {
                                 </Alert>
                             ) : (
                                 <>
-                                    <FormGroup className={settingsCss.mb16}>
+                                    <div className={settingsCss.mb16}>
                                         <CheckBoxField
                                             label=" Auto-assign tickets"
                                             name="auto_assign_to_teams"
@@ -269,8 +290,32 @@ const TicketAssignment = () => {
                                                 </span>
                                             }
                                         />
-                                    </FormGroup>
-                                    <FormGroup className={settingsCss.mb32}>
+                                    </div>
+                                    {isExceedingMaxAgentCapacityAvailable && (
+                                        <div className={settingsCss.mb16}>
+                                            <CheckBoxField
+                                                label=" Allow tickets to exceed max capacity when re-opened"
+                                                name="can_exceed_max_agent_capacity"
+                                                value={
+                                                    canExceedMaxAgentCapacity
+                                                }
+                                                onChange={(value: boolean) =>
+                                                    setCanExceedMaxAgentCapacity(
+                                                        value,
+                                                    )
+                                                }
+                                                caption={
+                                                    <span>
+                                                        When enabled, re-opened
+                                                        tickets can enter the
+                                                        queue even if it’s at
+                                                        full capacity.
+                                                    </span>
+                                                }
+                                            />
+                                        </div>
+                                    )}
+                                    <div className={settingsCss.mb32}>
                                         <Label
                                             className={classNames(
                                                 'body-semibold',
@@ -365,12 +410,17 @@ const TicketAssignment = () => {
                                                 </Tooltip>
                                             </div>
                                         </div>
-                                    </FormGroup>
+                                    </div>
                                 </>
                             )}
 
-                            <FormGroup className={settingsCss.mb40}>
-                                <h3 className="heading-section-semibold">
+                            <div className={settingsCss.mb40}>
+                                <h3
+                                    className={classNames(
+                                        'heading-section-semibold',
+                                        settingsCss.mb16,
+                                    )}
+                                >
                                     Unassignment settings
                                 </h3>
                                 <CheckBoxField
@@ -412,13 +462,13 @@ const TicketAssignment = () => {
                                         setUnassignOnUserUnavailability(value)
                                     }
                                 />
-                            </FormGroup>
+                            </div>
 
-                            <FormGroup className={settingsCss.mb40}>
+                            <div className={settingsCss.mb40}>
                                 <h3
                                     className={classNames(
                                         'heading-section-semibold',
-                                        settingsCss.mb8,
+                                        settingsCss.mb16,
                                     )}
                                 >
                                     Channels
@@ -449,7 +499,7 @@ const TicketAssignment = () => {
                                     matchInput
                                     caseInsensitive
                                 />
-                            </FormGroup>
+                            </div>
                         </Col>
                     </Row>
 
@@ -460,7 +510,7 @@ const TicketAssignment = () => {
                     >
                         Save changes
                     </Button>
-                </Form>
+                </form>
 
                 <TeamCreationModal
                     isOpen={isTeamCreationModalOpen}

@@ -9,6 +9,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
+import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { teams } from 'fixtures/teams'
 import { user } from 'fixtures/users'
@@ -21,6 +22,7 @@ import {
     AccountSettingType,
 } from 'state/currentAccount/types'
 import { RootState } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
 import TicketAssignment from '../TicketAssignment'
 
@@ -72,6 +74,12 @@ jest.mock('pages/common/components/UnsavedChangesPrompt', () =>
 )
 const UnsavedChangesPromptMock = UnsavedChangesPrompt as jest.Mock
 
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+
+const useFlagMock = assumeMock(useFlag)
+
 const ticketAssignmentSetting: AccountSettingTicketAssignment = {
     id: 1,
     type: AccountSettingType.TicketAssignment,
@@ -97,6 +105,10 @@ const defaultState = {
 const mockStore = configureMockStore<RootState>([thunk])
 
 describe('<TicketAssignment />', () => {
+    beforeEach(() => {
+        useFlagMock.mockReturnValue(false)
+    })
+
     it('should call `submitSetting` and call `fetchChats` on submit when the account has no `ticket-assignment` setting', async () => {
         render(
             <Provider
@@ -113,15 +125,12 @@ describe('<TicketAssignment />', () => {
 
         expect(submitSettingMock).toHaveBeenCalledWith({
             data: {
+                ...ticketAssignmentSetting.data,
                 assignment_channels: [
                     TicketChannel.Chat,
                     TicketChannel.FacebookMessenger,
                 ],
                 auto_assign_to_teams: false,
-                max_user_chat_ticket: 3,
-                max_user_non_chat_ticket: 4,
-                unassign_on_reply: true,
-                unassign_on_user_unavailability: [],
             },
             id: undefined,
             type: AccountSettingType.TicketAssignment,
@@ -278,6 +287,30 @@ describe('<TicketAssignment />', () => {
             type: AccountSettingType.TicketAssignment,
             data: expect.objectContaining({
                 unassign_on_user_unavailability: ['chat'],
+            }),
+        })
+    })
+
+    it('should send updated can_exceed_max_agent_capacity setting on submit', async () => {
+        useFlagMock.mockReturnValue(true)
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketAssignment />
+            </Provider>,
+        )
+
+        fireEvent.click(
+            screen.getByText(
+                /When enabled, re-opened tickets can enter the queue/,
+            ),
+        )
+        fireEvent.click(screen.getByText('Save changes'))
+
+        expect(submitSettingMock).toHaveBeenCalledWith({
+            id: 1,
+            type: AccountSettingType.TicketAssignment,
+            data: expect.objectContaining({
+                can_exceed_max_agent_capacity: true,
             }),
         })
     })
