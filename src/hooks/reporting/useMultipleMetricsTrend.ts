@@ -27,6 +27,7 @@ const multipleMetricsSelect = <TCube extends Cubes>(
 export const useMultipleMetricsTrends = <TCube extends Cubes>(
     currentPeriodQuery: ReportingQuery<TCube>,
     previousPeriodQuery: ReportingQuery<TCube>,
+    enabled?: boolean,
 ): MultipleMetricsTrend<TCube> => {
     const currentMetrics = usePostReporting<
         Record<TCube['measures'], string>[],
@@ -34,13 +35,14 @@ export const useMultipleMetricsTrends = <TCube extends Cubes>(
         TCube
     >([currentPeriodQuery], {
         select: multipleMetricsSelect,
+        enabled,
     })
 
     const previousMetrics = usePostReporting<
         Record<TCube['measures'], string>[],
         Record<TCube['measures'], string>,
         TCube
-    >([previousPeriodQuery], { select: multipleMetricsSelect })
+    >([previousPeriodQuery], { select: multipleMetricsSelect, enabled })
 
     const data = currentPeriodQuery.measures.reduce((acc, measure) => {
         acc[measure] = {

@@ -37,6 +37,7 @@ import {
 } from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
 import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import { StatsFilters } from 'models/stat/types'
+import useIsSingleStore from 'pages/aiAgent/hooks/useIsSingleStore'
 import {
     IntentMetrics,
     IntentTableColumn,
@@ -57,6 +58,8 @@ jest.mock('hooks/reporting/automate/useAIAgentUserId')
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 jest.mock('hooks/integrations/useGetTicketChannelsStoreIntegrations')
 
+jest.mock('pages/aiAgent/hooks/useIsSingleStore')
+
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 const useAIAgentUserIdMock = assumeMock(useAIAgentUserId)
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
@@ -65,6 +68,7 @@ const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
 const getTicketChannelsStoreIntegrationsMock = assumeMock(
     useGetTicketChannelsStoreIntegrations,
 )
+const useIsSingleStoreMock = assumeMock(useIsSingleStore)
 
 const statsFilters: StatsFilters = {
     period: {
@@ -91,7 +95,8 @@ describe('useAiAgentInsightsDataset', () => {
     })
 
     describe('useAiAgentMetrics', () => {
-        it('should calculate ai agent insights correctly', () => {
+        it('should calculate ai agent insights correctly for multi store', () => {
+            useIsSingleStoreMock.mockReturnValue(false)
             useMetricPerDimensionMock.mockReturnValue({
                 // aiAgentTickets
                 data: {
@@ -107,14 +112,25 @@ describe('useAiAgentInsightsDataset', () => {
             } as any)
             useMultipleMetricsTrendsMock
                 .mockReturnValueOnce({
-                    // aiAgentAutomatedInteractionsData
+                    // aiAgentAutomatedInteractionsDataMultiStore
                     data: {
                         'AutomatedTickets.count': {
                             value: 1000,
                             prevValue: 0,
                         },
                     },
-                    isFetched: true,
+                    isFetching: true,
+                } as any)
+                .mockReturnValueOnce({
+                    // aiAgentAutomatedInteractionsDataSingleStore
+                    data: {
+                        'AutomationDataset.automatedInteractions': {
+                            value: 0,
+                            prevValue: 0,
+                        },
+                    },
+                    isFetching: false,
+                    isError: false,
                 } as any)
                 .mockReturnValueOnce({
                     // aiAgentTicketsData
@@ -124,7 +140,7 @@ describe('useAiAgentInsightsDataset', () => {
                             prevValue: 2,
                         },
                     },
-                    isFetched: true,
+                    isFetching: true,
                 } as any)
                 .mockReturnValueOnce({
                     // allCreatedTickets
@@ -134,7 +150,7 @@ describe('useAiAgentInsightsDataset', () => {
                             prevValue: 100,
                         },
                     },
-                    isFetched: true,
+                    isFetching: true,
                 } as any)
                 .mockReturnValueOnce({
                     // customerSatisfactionAiAgentData
@@ -144,7 +160,104 @@ describe('useAiAgentInsightsDataset', () => {
                             prevValue: 4,
                         },
                     },
-                    isFetched: true,
+                    isFetching: true,
+                } as any)
+
+            jest.spyOn(queryClient, 'invalidateQueries')
+            const { result } = renderHook(
+                () => useAIAgentMetrics(statsFilters, timezone, shopName),
+                {
+                    wrapper: ({ children }) => (
+                        <QueryClientProvider client={queryClient}>
+                            {children}
+                        </QueryClientProvider>
+                    ),
+                },
+            )
+
+            expect(result.current.coverageTrend.data?.value).toBeCloseTo(0.5)
+            expect(
+                result.current.aiAgentAutomatedInteractionTrend.data,
+            ).toEqual({
+                prevValue: 0,
+                value: 1000,
+            })
+            expect(result.current.aiAgentSuccessRate.data?.value).toBeCloseTo(
+                0.91,
+            )
+            expect(result.current.aiAgentCSAT.data).toEqual({
+                prevValue: 4,
+                value: 5,
+            })
+        })
+
+        it('should calculate ai agent insights correctly for single store', () => {
+            useIsSingleStoreMock.mockReturnValue(true)
+            useMetricPerDimensionMock.mockReturnValue({
+                // aiAgentTickets
+                data: {
+                    value: 5,
+                    allData: [
+                        { [TicketDimension.TicketId]: '1' },
+                        { [TicketDimension.TicketId]: '2' },
+                        { [TicketDimension.TicketId]: '3' },
+                    ],
+                },
+                isFetching: false,
+                isError: false,
+            } as any)
+            useMultipleMetricsTrendsMock
+                .mockReturnValueOnce({
+                    // aiAgentAutomatedInteractionsDataMultiStore
+                    data: {
+                        'AutomatedTickets.count': {
+                            value: 0,
+                            prevValue: 0,
+                        },
+                    },
+                    isFetching: false,
+                    isError: false,
+                } as any)
+                .mockReturnValueOnce({
+                    // aiAgentAutomatedInteractionsDataSingleStore
+                    data: {
+                        'AutomationDataset.automatedInteractions': {
+                            value: 1000,
+                            prevValue: 0,
+                        },
+                    },
+                    isFetching: false,
+                    isError: false,
+                } as any)
+                .mockReturnValueOnce({
+                    // aiAgentTicketsData
+                    data: {
+                        'TicketEnriched.ticketCount': {
+                            value: 1100,
+                            prevValue: 2,
+                        },
+                    },
+                    isFetching: true,
+                } as any)
+                .mockReturnValueOnce({
+                    // allCreatedTickets
+                    data: {
+                        'TicketEnriched.ticketCount': {
+                            value: 2200,
+                            prevValue: 100,
+                        },
+                    },
+                    isFetching: true,
+                } as any)
+                .mockReturnValueOnce({
+                    // customerSatisfactionAiAgentData
+                    data: {
+                        'TicketSatisfactionSurveyEnriched.avgSurveyScore': {
+                            value: 5,
+                            prevValue: 4,
+                        },
+                    },
+                    isFetching: true,
                 } as any)
 
             jest.spyOn(queryClient, 'invalidateQueries')

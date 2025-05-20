@@ -12,6 +12,7 @@ import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
 import { OrderDirection } from 'models/api/types'
 import { AutomatedTicketsMeasure } from 'models/reporting/cubes/automate_v2/AutomatedTicketsCube'
+import { AutomationDatasetMeasure } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import {
     TicketDimension,
     TicketMeasure,
@@ -31,6 +32,7 @@ import {
 import { AI_AGENT_TICKETS_CHANNELS } from 'models/reporting/queryFactories/ai-agent-insights/utils'
 import { customerSatisfactionForAIAgentTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import { FilterKey, StatsFilters } from 'models/stat/types'
+import useIsSingleStore from 'pages/aiAgent/hooks/useIsSingleStore'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import {
     IntentMetrics,
@@ -40,6 +42,7 @@ import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/consta
 import { getPreviousPeriod } from 'utils/reporting'
 
 import {
+    useAiAgentAutomatedInteractionsCountTrends,
     useAiAgentAutomatedTicketsCountTrends,
     useAIAgentResourcePerTicket,
     useAiAgentTicketCountFromTicketCustomFieldsPerIntent,
@@ -83,15 +86,24 @@ export const useAIAgentMetrics = (
         [aiAgentUserId, filters],
     )
 
-    const aiAgentAutomatedInteractionsData =
+    const isSingleStore = useIsSingleStore()
+
+    const aiAgentAutomatedInteractionsDataForMultiStore =
         useAiAgentAutomatedTicketsCountTrends({
             filters,
             timezone,
             outcomeFieldId: outcomeCustomFieldId,
             intentFieldId: intentCustomFieldId,
             integrationIds,
+            enabled: !isSingleStore,
         })
 
+    const aiAgentAutomatedInteractionsDataForSingleStore =
+        useAiAgentAutomatedInteractionsCountTrends({
+            filters: statsFiltersWithAiAgent,
+            timezone,
+            enabled: isSingleStore,
+        })
     const aiAgentTicketsData = useMultipleMetricsTrends(
         aiAgentTouchedTicketTotalCountQueryFactory({
             filters,
@@ -150,10 +162,13 @@ export const useAIAgentMetrics = (
 
     const aiAgentTickets = aiAgentTicketsData.data?.[TicketMeasure.TicketCount]
 
-    const aiAgentAutomatedInteractions =
-        aiAgentAutomatedInteractionsData.data?.[
-            AutomatedTicketsMeasure.NumAutomatedTickets
-        ]
+    const aiAgentAutomatedInteractions = isSingleStore
+        ? aiAgentAutomatedInteractionsDataForSingleStore.data?.[
+              AutomationDatasetMeasure.AutomatedInteractions
+          ]
+        : aiAgentAutomatedInteractionsDataForMultiStore.data?.[
+              AutomatedTicketsMeasure.NumAutomatedTickets
+          ]
 
     const aiAgentCustomerSatisfaction =
         customerSatisfactionAiAgentData.data?.[
@@ -162,39 +177,40 @@ export const useAIAgentMetrics = (
 
     const allTickets = allCreatedTickets.data?.[TicketMeasure.TicketCount]
 
-    const isFetching =
-        aiAgentAutomatedInteractionsData.isFetching ||
-        aiAgentTicketsData.isFetching ||
-        customerSatisfactionAiAgentData.isFetching ||
-        allCreatedTickets.isFetching
+    const isAiAgentAutomatedInteractionsFetching =
+        aiAgentAutomatedInteractionsDataForSingleStore.isFetching ||
+        aiAgentAutomatedInteractionsDataForMultiStore.isFetching
 
-    const isError =
-        aiAgentAutomatedInteractionsData.isError ||
-        aiAgentTicketsData.isError ||
-        customerSatisfactionAiAgentData.isError ||
-        allCreatedTickets.isError
+    const isAiAgentAutomatedInteractionsError =
+        aiAgentAutomatedInteractionsDataForSingleStore.isError ||
+        aiAgentAutomatedInteractionsDataForMultiStore.isError
 
     return {
         coverageTrend: getAiAgentCoverageRate({
-            isFetching,
-            isError,
+            isFetching:
+                aiAgentTicketsData.isFetching || allCreatedTickets.isFetching,
+            isError: aiAgentTicketsData.isError || allCreatedTickets.isError,
             aiAgentTickets,
             allTickets,
         }),
         aiAgentAutomatedInteractionTrend: {
-            isFetching,
-            isError,
+            isFetching: isAiAgentAutomatedInteractionsFetching,
+            isError: isAiAgentAutomatedInteractionsError,
             data: aiAgentAutomatedInteractions,
         },
         aiAgentSuccessRate: getAiAgentSuccessRate({
-            isFetching,
-            isError,
+            isFetching:
+                isAiAgentAutomatedInteractionsFetching ||
+                aiAgentTicketsData.isFetching,
+            isError:
+                isAiAgentAutomatedInteractionsError ||
+                aiAgentTicketsData.isError,
             aiAgentAutomatedInteractions,
             aiAgentTickets,
         }),
         aiAgentCSAT: {
-            isFetching,
-            isError,
+            isFetching: customerSatisfactionAiAgentData.isFetching,
+            isError: customerSatisfactionAiAgentData.isError,
             data: aiAgentCustomerSatisfaction,
         },
     }

@@ -13,6 +13,7 @@ import {
     customerSatisfactionPerIntentLevelQueryFactory,
     recommendedResourceQueryFactory,
 } from 'models/reporting/queryFactories/ai-agent-insights/metrics'
+import { aiAgentAutomatedInteractionsQueryFactory } from 'models/reporting/queryFactories/automate_v2/metrics'
 import {
     aiAgentTicketsFromTicketCustomFieldsPerIntentCountQueryFactory,
     aiAgentTicketsPerIntentCountQueryFactory,
@@ -95,6 +96,7 @@ export const useAiAgentAutomatedInteractionsTickets = ({
     intentFieldId,
     sorting,
     integrationIds,
+    enabled,
 }: {
     filters: StatsFilters
     timezone: string
@@ -102,6 +104,7 @@ export const useAiAgentAutomatedInteractionsTickets = ({
     intentFieldId?: number
     sorting?: OrderDirection
     integrationIds?: string[]
+    enabled?: boolean
 }) =>
     useMetricPerDimension(
         AiAgentAutomatedInteractionsTicketsQueryFactory({
@@ -112,6 +115,8 @@ export const useAiAgentAutomatedInteractionsTickets = ({
             sorting,
             integrationIds,
         }),
+        undefined,
+        enabled,
     )
 
 export const useAiAgentTicketCountPerIntent = ({
@@ -287,6 +292,7 @@ export const useAiAgentAutomatedTicketsCountTrends = ({
     intentFieldId,
     integrationIds,
     sorting,
+    enabled,
 }: {
     filters: StatsFilters
     timezone: string
@@ -294,6 +300,7 @@ export const useAiAgentAutomatedTicketsCountTrends = ({
     intentFieldId?: number
     integrationIds?: string[]
     sorting?: OrderDirection
+    enabled?: boolean
 }) => {
     const aiAgentTicketsData = useAiAgentAutomatedInteractionsTickets({
         filters,
@@ -301,6 +308,7 @@ export const useAiAgentAutomatedTicketsCountTrends = ({
         outcomeFieldId: outcomeFieldId,
         intentFieldId: intentFieldId,
         integrationIds,
+        enabled,
     })
     const prevAiAgentTicketsData = useAiAgentAutomatedInteractionsTickets({
         filters: {
@@ -311,6 +319,7 @@ export const useAiAgentAutomatedTicketsCountTrends = ({
         outcomeFieldId: outcomeFieldId,
         intentFieldId: intentFieldId,
         integrationIds,
+        enabled,
     })
 
     const ticketIds = aiAgentTicketsData.data?.allData
@@ -332,7 +341,7 @@ export const useAiAgentAutomatedTicketsCountTrends = ({
         prevPeriod,
     )
 
-    return useMultipleMetricsTrends(
+    const aiAgentAutomatedTickets = useMultipleMetricsTrends(
         aiAgentAutomatedTicketCountQueryFactory({
             filters: { period: adjustedPeriodFilters },
             timezone,
@@ -347,5 +356,40 @@ export const useAiAgentAutomatedTicketsCountTrends = ({
             ticketIds: prevTicketIds,
             sorting,
         }),
+        enabled,
+    )
+
+    return {
+        ...aiAgentAutomatedTickets,
+        isFetching:
+            aiAgentTicketsData.isFetching ||
+            prevAiAgentTicketsData.isFetching ||
+            aiAgentAutomatedTickets.isFetching,
+        isError:
+            aiAgentTicketsData.isError ||
+            prevAiAgentTicketsData.isError ||
+            aiAgentAutomatedTickets.isError,
+    }
+}
+
+export const useAiAgentAutomatedInteractionsCountTrends = ({
+    filters,
+    timezone,
+    enabled,
+}: {
+    filters: StatsFilters
+    timezone: string
+    enabled?: boolean
+}) => {
+    return useMultipleMetricsTrends(
+        aiAgentAutomatedInteractionsQueryFactory(filters, timezone),
+        aiAgentAutomatedInteractionsQueryFactory(
+            {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        ),
+        enabled,
     )
 }
