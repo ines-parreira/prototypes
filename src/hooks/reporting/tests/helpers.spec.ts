@@ -1,5 +1,5 @@
 import { calculateTotalCapacity } from 'hooks/reporting/helpers'
-import { calculateMetricPerHour } from 'hooks/reporting/useMessagesSentPerHour'
+import { calculateMetricPerHour } from 'hooks/reporting/metricCalculations'
 import {
     AgentTimeTrackingDimension,
     AgentTimeTrackingMeasure,

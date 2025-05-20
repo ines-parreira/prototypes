@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
 import { calculateTotalCapacity } from 'hooks/reporting/helpers'
+import { calculateMetricPerHour } from 'hooks/reporting/metricCalculations'
 import {
     fetchClosedTicketsMetric,
     fetchOnlineTimeMetric,
@@ -14,10 +15,7 @@ import {
     useClosedTicketsMetricPerAgent,
     useOnlineTimePerAgent,
 } from 'hooks/reporting/metricsPerAgent'
-import {
-    calculateMetricPerHour,
-    periodAndAgentOnlyFilters,
-} from 'hooks/reporting/useMessagesSentPerHour'
+import { periodAndAgentOnlyFilters } from 'hooks/reporting/useMessagesSentPerHour'
 import {
     TicketDimension,
     TicketMeasure,

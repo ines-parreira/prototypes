@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
 import { calculateTotalCapacity } from 'hooks/reporting/helpers'
+import { calculateMetricPerHour } from 'hooks/reporting/metricCalculations'
 import {
     fetchMessagesSentMetric,
     fetchOnlineTimeMetric,
@@ -36,11 +37,6 @@ export const periodAndAgentOnlyFilters = (statsFilters: {
           }
         : {}),
 })
-
-const secondsToHours = (s: number) => s / 60 / 60
-
-export const calculateMetricPerHour = (metric: number, seconds: number) =>
-    seconds === 0 ? 0 : metric / secondsToHours(seconds)
 
 const formatResult = (messagesSent: Metric, onlineTime: Metric) => {
     let metricValue: number | null = null

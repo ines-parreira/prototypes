@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { calculateMetricPerHour } from 'hooks/reporting/metricCalculations'
 import {
     fetchClosedTicketsMetricPerAgent,
     fetchOnlineTimePerAgent,
@@ -7,10 +8,7 @@ import {
     useOnlineTimePerAgent,
 } from 'hooks/reporting/metricsPerAgent'
 import { calculateDecile } from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
-import {
-    calculateMetricPerHour,
-    periodAndAgentOnlyFilters,
-} from 'hooks/reporting/useMessagesSentPerHour'
+import { periodAndAgentOnlyFilters } from 'hooks/reporting/useMessagesSentPerHour'
 import {
     MetricWithDecile,
     MetricWithDecileFetch,

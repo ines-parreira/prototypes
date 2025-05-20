@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
 import { calculateTotalCapacity } from 'hooks/reporting/helpers'
+import { calculateMetricPerHour } from 'hooks/reporting/metricCalculations'
 import {
     fetchOnlineTimeMetric,
     fetchTicketsRepliedMetric,
@@ -14,10 +15,7 @@ import {
     useOnlineTimePerAgent,
     useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
-import {
-    calculateMetricPerHour,
-    periodAndAgentOnlyFilters,
-} from 'hooks/reporting/useMessagesSentPerHour'
+import { periodAndAgentOnlyFilters } from 'hooks/reporting/useMessagesSentPerHour'
 import { HelpdeskMessageMeasure } from 'models/reporting/cubes/HelpdeskMessageCube'
 import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import { StatsFilters } from 'models/stat/types'

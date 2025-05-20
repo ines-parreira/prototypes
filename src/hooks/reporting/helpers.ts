@@ -1,6 +1,6 @@
 import { flatMap } from 'lodash'
 
-import { calculateMetricPerHour } from 'hooks/reporting/useMessagesSentPerHour'
+import { calculateMetricPerHour } from 'hooks/reporting/metricCalculations'
 import {
     QueryReturnType,
     ReportingMetricItem,
