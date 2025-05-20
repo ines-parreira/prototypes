@@ -6,7 +6,7 @@ import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import {
-    useAtLeastOneStoreHasActiveTrialOnSpecificStores,
+    atLeastOneStoreHasActiveTrialOnSpecificStores,
     useCanUseAiSalesAgent,
 } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
@@ -31,7 +31,11 @@ type Props = {
     onClose: () => void
     progressPercentage: number
     storeActivations: Record<string, StoreActivation>
-    onSalesChange: (storeName: string, value: boolean) => void
+    onSalesChange: (
+        storeName: string,
+        value: boolean,
+        onTrial?: boolean,
+    ) => void
     onSupportChange: (storeName: string, value: boolean) => void
     onSupportChatChange: (storeName: string, value: boolean) => void
     onSupportEmailChange: (storeName: string, value: boolean) => void
@@ -62,7 +66,7 @@ export const AiAgentActivationModal = ({
     const currentUser = useAppSelector(getCurrentUser)
     const userRole = useAppSelector(getRoleName)
     const atLeastOneStoreHasActiveTrial =
-        useAtLeastOneStoreHasActiveTrialOnSpecificStores(storeActivations)
+        atLeastOneStoreHasActiveTrialOnSpecificStores(storeActivations)
 
     const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -188,6 +192,12 @@ export const AiAgentActivationModal = ({
                                                     onSalesChange(
                                                         storeName,
                                                         value,
+                                                        atLeastOneStoreHasActiveTrialOnSpecificStores(
+                                                            {
+                                                                [storeName]:
+                                                                    store,
+                                                            },
+                                                        ),
                                                     )
                                                 }
                                                 onSupportChange={(value) =>

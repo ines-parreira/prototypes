@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { useAtLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
+import { atLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import AIAgentTrialSuccessModal from 'pages/aiAgent/Activation/components/AIAgentTrialSuccessModal'
 import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial'
@@ -42,7 +42,7 @@ export const useGmvInfluencedCtaButton = ({
     })
 
     const atLeastOneStoreHasActiveTrial =
-        useAtLeastOneStoreHasActiveTrialOnSpecificStores(storeActivations)
+        atLeastOneStoreHasActiveTrialOnSpecificStores(storeActivations)
 
     const hasSales = aiAgentType === 'mixed' || aiAgentType === 'sales'
 

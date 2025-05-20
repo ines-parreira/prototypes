@@ -7,7 +7,7 @@ import { Button } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
-import { useAtLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
+import { atLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
 import AIAgentTrialSuccessModal, {
@@ -52,7 +52,7 @@ export const SalesPaywallMiddleware =
         })
 
         const currentStoreHasActiveTrial =
-            useAtLeastOneStoreHasActiveTrialOnSpecificStores(storeActivations)
+            atLeastOneStoreHasActiveTrialOnSpecificStores(storeActivations)
 
         const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
         const currentAccount = useAppSelector(getCurrentAccountState)

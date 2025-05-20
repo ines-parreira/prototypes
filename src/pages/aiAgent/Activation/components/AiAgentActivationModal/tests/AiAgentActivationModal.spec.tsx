@@ -9,7 +9,10 @@ import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { toImmutable } from 'common/utils'
-import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
+import {
+    atLeastOneStoreHasActiveTrialOnSpecificStores,
+    useCanUseAiSalesAgent,
+} from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { AiAgentActivationModal } from 'pages/aiAgent/Activation/components/AiAgentActivationModal/AiAgentActivationModal'
 import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
 import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
@@ -92,6 +95,9 @@ const mockUseStartTrialMock =
 
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
 const useCanUseAiSalesAgentMock = assumeMock(useCanUseAiSalesAgent)
+const useAtLeastOneStoreHasActiveTrialOnSpecificStoresMock = assumeMock(
+    atLeastOneStoreHasActiveTrialOnSpecificStores,
+)
 jest.mock('pages/aiAgent/hooks/useTrialEligibility')
 const useTrialEligibilityMock = assumeMock(useTrialEligibility)
 const useTrialEligibilityForManualActivationFromFeatureFlagMock = assumeMock(
@@ -208,6 +214,9 @@ describe('AiAgentActivationModal', () => {
     })
 
     beforeEach(() => {
+        useAtLeastOneStoreHasActiveTrialOnSpecificStoresMock.mockReturnValue(
+            false,
+        )
         useTrialEligibilityForManualActivationFromFeatureFlagMock.mockReturnValue(
             {
                 canStartTrial: false,
@@ -410,7 +419,11 @@ describe('AiAgentActivationModal', () => {
         const toggleButtons = screen.getAllByText('Toggle Sales')
         fireEvent.click(toggleButtons[0])
 
-        expect(defaultProps.onSalesChange).toHaveBeenCalledWith('store1', true)
+        expect(defaultProps.onSalesChange).toHaveBeenCalledWith(
+            'store1',
+            true,
+            false,
+        )
     })
 
     it('forwards support change callback correctly hasAiAgentNewActivationXp=false', () => {

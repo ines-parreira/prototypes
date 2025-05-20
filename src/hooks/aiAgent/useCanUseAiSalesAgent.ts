@@ -50,7 +50,7 @@ export const useAtLeastOneStoreHasActiveTrial = () => {
     )
 }
 
-export const useAtLeastOneStoreHasActiveTrialOnSpecificStores = (
+export const atLeastOneStoreHasActiveTrialOnSpecificStores = (
     storeActivations: Record<string, StoreActivation>,
 ) => {
     return Object.values(storeActivations).some((storeActivation) =>

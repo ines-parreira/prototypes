@@ -155,8 +155,12 @@ export const useActivation = (
                 }}
                 progressPercentage={progressPercentage}
                 storeActivations={storeActivations}
-                onSalesChange={(storeName: string, newValue: boolean) => {
-                    if (newValue && !isOnNewPlan) {
+                onSalesChange={(
+                    storeName: string,
+                    newValue: boolean,
+                    onTrial?: boolean,
+                ) => {
+                    if (newValue && !isOnNewPlan && !onTrial) {
                         setStoreNameToSaveOnSubscriptionUpdate(storeName)
                         setIsPreviewModalVisible(true)
                     } else {

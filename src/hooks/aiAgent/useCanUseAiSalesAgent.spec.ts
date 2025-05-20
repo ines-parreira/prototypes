@@ -19,9 +19,9 @@ import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
 import {
+    atLeastOneStoreHasActiveTrialOnSpecificStores,
     canStoreUseAiSalesAgent,
     useAtLeastOneStoreHasActiveTrial,
-    useAtLeastOneStoreHasActiveTrialOnSpecificStores,
     useCanUseAiSalesAgent,
 } from './useCanUseAiSalesAgent'
 
@@ -196,7 +196,7 @@ describe('canStoreUseAiSalesAgent', () => {
     })
 })
 
-describe('useAtLeastOneStoreHasActiveTrialOnSpecificStores', () => {
+describe('atLeastOneStoreHasActiveTrialOnSpecificStores', () => {
     beforeEach(() => {
         jest.resetAllMocks()
     })
@@ -215,7 +215,7 @@ describe('useAtLeastOneStoreHasActiveTrialOnSpecificStores', () => {
         }
         getAiSalesAgentTrialStateMock.mockReturnValueOnce(TrialState.NotTrial)
         expect(
-            useAtLeastOneStoreHasActiveTrialOnSpecificStores(
+            atLeastOneStoreHasActiveTrialOnSpecificStores(
                 storeActivations as unknown as Record<string, StoreActivation>,
             ),
         ).toBe(false)
@@ -238,7 +238,7 @@ describe('useAtLeastOneStoreHasActiveTrialOnSpecificStores', () => {
         }
         getAiSalesAgentTrialStateMock.mockReturnValueOnce(TrialState.Trial)
         expect(
-            useAtLeastOneStoreHasActiveTrialOnSpecificStores(
+            atLeastOneStoreHasActiveTrialOnSpecificStores(
                 storeActivations as unknown as Record<string, StoreActivation>,
             ),
         ).toBe(true)
