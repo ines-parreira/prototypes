@@ -6,6 +6,7 @@ import {
     useZendeskImportFailedBanner,
 } from './banners'
 import { useAccountNotVerifiedBanner } from './useAccountNotVerifiedBanner'
+import { useAiShoppingAssistantTrialBanner } from './useAiShoppingAssistantTrialBanner'
 import { useStatusPageManager } from './useStatusPageManager'
 import { useUsageBanner } from './useUsageBanner'
 
@@ -18,4 +19,5 @@ export function useSetBanners() {
     useEmailDisconnectedBanner()
     useEmailMigrationBanner()
     useZendeskImportFailedBanner()
+    useAiShoppingAssistantTrialBanner()
 }

@@ -1,33 +1,35 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 
-import { Link, useLocation } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
-import { Banner } from '@gorgias/merchant-ui-kit'
-
+import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { useAtLeastOneStoreHasActiveTrial } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial'
+import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { getAiAgentBasePath } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { getStoresEligibleForTrial } from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser, getRoleName } from 'state/currentUser/selectors'
 
-import { useStoreActivations } from '../../hooks/useStoreActivations'
+export function useAiShoppingAssistantTrialBanner() {
+    const { addBanner, removeBanner } = useBanners()
 
-const ShoppingAssistantTrialSystemBanner: React.FC = () => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
-    const currentUser = useAppSelector(getCurrentUser)
-    const userRole = useAppSelector(getRoleName)
+
     const pathname = useLocation().pathname
 
     const { storeActivations } = useStoreActivations({
         pageName: pathname,
     })
+    const history = useHistory()
 
+    const currentUser = useAppSelector(getCurrentUser)
+    const userRole = useAppSelector(getRoleName)
     const isShoppingAssistantTrialSystemBannerEnabled = useFlag(
         FeatureFlagKey.AiShoppingAssistantTrialSystemBanner,
         false,
@@ -47,26 +49,32 @@ const ShoppingAssistantTrialSystemBanner: React.FC = () => {
     const isTicketsPage =
         pathname.includes('tickets') || pathname.includes('views')
 
-    const [hideBanner, setHideBanner] = useState(false)
-
     const displayBanner = useMemo(
         () =>
             isShoppingAssistantTrialSystemBannerEnabled &&
             !isAtLeastOneStoreHasActiveTrial &&
             !isTicketsPage &&
-            !hideBanner &&
             storeEligibleForTrial.length &&
             (canStartTrial || canStartTrialFromFeatureFlag),
         [
             isShoppingAssistantTrialSystemBannerEnabled,
             isAtLeastOneStoreHasActiveTrial,
             isTicketsPage,
-            hideBanner,
             storeEligibleForTrial,
             canStartTrial,
             canStartTrialFromFeatureFlag,
         ],
     )
+
+    const onClick = () => {
+        history.push(redirectionPath)
+        logEvent(
+            SegmentEvent.AiAgentShoppingAssistantTrialSystemBannerClicked,
+            {
+                ...eventData,
+            },
+        )
+    }
 
     const eventData = {
         accountId: currentAccount.get('id'),
@@ -75,47 +83,31 @@ const ShoppingAssistantTrialSystemBanner: React.FC = () => {
         type: 'system-banner',
     }
 
-    if (displayBanner) {
-        logEvent(SegmentEvent.AiAgentShoppingAssistantTrialCtaDisplayed, {
-            ...eventData,
-        })
-    }
-
     const basePath = getAiAgentBasePath(storeEligibleForTrial[0]?.name)
 
     const redirectionPath = `${basePath}/sales`
 
-    return (
-        <>
-            {displayBanner && (
-                <Banner
-                    variant="inline"
-                    icon
-                    type="info"
-                    fillStyle="fill"
-                    onClose={() => {
-                        setHideBanner(true)
-                    }}
-                >
-                    AI Agent just got even smarter with brand new Shopping
-                    Assistant skills,{' '}
-                    <Link
-                        to={redirectionPath}
-                        onClick={() => {
-                            logEvent(
-                                SegmentEvent.AiAgentShoppingAssistantTrialSystemBannerClicked,
-                                {
-                                    ...eventData,
-                                },
-                            )
-                        }}
-                    >
-                        start your exclusive access to a 14-day trial
-                    </Link>
-                </Banner>
-            )}
-        </>
-    )
+    if (displayBanner) {
+        logEvent(SegmentEvent.AiAgentShoppingAssistantTrialCtaDisplayed, {
+            ...eventData,
+        })
+        addBanner({
+            preventDismiss: false,
+            category: BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL,
+            instanceId: BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL,
+            type: AlertBannerTypes.Info,
+            message:
+                'AI Agent just got even smarter with brand new Shopping Assistant skills, start your exclusive access to a 14-day trial',
+            CTA: {
+                type: 'action',
+                text: 'Get Started',
+                onClick,
+            },
+        })
+    } else {
+        removeBanner(
+            BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL,
+            BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL,
+        )
+    }
 }
-
-export default ShoppingAssistantTrialSystemBanner

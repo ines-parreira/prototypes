@@ -8,6 +8,7 @@ import {
     useZendeskImportFailedBanner,
 } from '../banners'
 import { useAccountNotVerifiedBanner } from '../useAccountNotVerifiedBanner'
+import { useAiShoppingAssistantTrialBanner } from '../useAiShoppingAssistantTrialBanner'
 import { useSetBanners } from '../useSetBanners'
 import { useStatusPageManager } from '../useStatusPageManager'
 import { useUsageBanner } from '../useUsageBanner'
@@ -23,6 +24,9 @@ jest.mock('../useStatusPageManager', () => ({
 }))
 jest.mock('../useUsageBanner', () => ({
     useUsageBanner: jest.fn(),
+}))
+jest.mock('../useAiShoppingAssistantTrialBanner', () => ({
+    useAiShoppingAssistantTrialBanner: jest.fn(),
 }))
 
 jest.mock('../banners', () => ({
@@ -45,5 +49,6 @@ describe('useSetBanners', () => {
         expect(useEmailMigrationBanner).toHaveBeenCalledTimes(1)
         expect(useEmailDisconnectedBanner).toHaveBeenCalledTimes(1)
         expect(useZendeskImportFailedBanner).toHaveBeenCalledTimes(1)
+        expect(useAiShoppingAssistantTrialBanner).toHaveBeenCalledTimes(1)
     })
 })
