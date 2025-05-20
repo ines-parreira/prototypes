@@ -183,6 +183,34 @@ describe('ChannelToggleInput', () => {
             expect(toggle).toHaveAttribute('aria-checked', 'false')
         })
 
+        it('should show warning banner and disable toggle when chatIntegrations is an empty array', () => {
+            const chatIntegrations: SelfServiceChatChannel[] = []
+
+            renderComponent({
+                type: SettingsBannerType.Chat,
+                chatIntegrations,
+            })
+
+            // Check that warning banner is shown with correct text
+            expect(
+                screen.getByText(
+                    'A chat integration must be installed for this store.',
+                ),
+            ).toBeInTheDocument()
+
+            // Check that the "Install Chat" link points to the correct URL
+            const installLink = screen.getByText('Install Chat')
+            expect(installLink.closest('a')).toHaveAttribute(
+                'to',
+                '/app/settings/channels/gorgias_chat/new/create-wizard',
+            )
+
+            // Check that the toggle is disabled
+            const toggle = screen.getByRole('switch')
+            expect(toggle.className).toContain('disabled')
+            expect(toggle).toHaveAttribute('aria-checked', 'false')
+        })
+
         it('should not show warning banner for email type', () => {
             const chatIntegrations: SelfServiceChatChannel[] = [
                 {

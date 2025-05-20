@@ -55,13 +55,15 @@ export const ChannelToggleInput = ({
                 ) || chatIntegrations.length === 0
 
             if (noChatAvailable) {
-                const firstUnavailableChatId = chatIntegrations[0].value.id
+                const firstUnavailableChatId = chatIntegrations[0]?.value.id
 
                 return {
                     showBanner: true,
                     warning:
                         'A chat integration must be installed for this store.',
-                    actionLink: `/app/settings/channels/gorgias_chat/${firstUnavailableChatId}/installation`,
+                    actionLink: firstUnavailableChatId
+                        ? `/app/settings/channels/gorgias_chat/${firstUnavailableChatId}/installation`
+                        : '/app/settings/channels/gorgias_chat/new/create-wizard',
                     cta: 'Install Chat',
                 }
             }
