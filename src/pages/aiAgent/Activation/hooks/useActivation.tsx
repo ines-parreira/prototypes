@@ -41,6 +41,7 @@ export const useActivation = (
         isSaveLoading,
         isFetchLoading,
         migrateToNewPricing,
+        endTrial,
     } = useStoreActivations({
         pageName,
         withPublicResources: isModalVisible,
@@ -205,7 +206,11 @@ export const useActivation = (
                         await handleSubscriptionUpdate()
                         if (hasAiAgentNewActivationXp) {
                             await migrateToNewPricing()
+                        } else {
+                            // if feature flag is not enabled, we need to use dedicated function
+                            await endTrial()
                         }
+
                         closeEarlyAccessModal('upgraded')
 
                         if (storeNameToSaveOnSubscriptionUpdate) {

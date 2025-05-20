@@ -107,6 +107,7 @@ export const useStoreActivations = ({
     changeSupportEmail: (storeName: string, newValue: boolean) => void
     saveStoreConfigurations: () => Promise<void>
     migrateToNewPricing: () => Promise<void>
+    endTrial: () => Promise<void>
     activation: (args: { shopName: string | null }) => {
         canActivate: () => {
             isLoading: boolean
@@ -259,8 +260,10 @@ export const useStoreActivations = ({
                 aiSalesAgentEmailEnabled,
             },
         })
-        const storeConfigurationsToUpdate =
-            stateToUpdatedStoreConfiguration(updatedState)
+        const storeConfigurationsToUpdate = stateToUpdatedStoreConfiguration(
+            updatedState,
+            { salesDeactivatedDatetime: null },
+        )
         await upsertStoresConfiguration(storeConfigurationsToUpdate)
 
         // Update the local state
@@ -280,6 +283,14 @@ export const useStoreActivations = ({
         isAiSalesBetaUser,
         aiSalesAgentEmailEnabled,
     ])
+
+    const endTrial = useCallback(async () => {
+        const storeConfigurationsToUpdate = stateToUpdatedStoreConfiguration(
+            state,
+            { salesDeactivatedDatetime: null },
+        )
+        await upsertStoresConfiguration(storeConfigurationsToUpdate)
+    }, [state, upsertStoresConfiguration])
 
     const isFetchLoading =
         isStoreConfigurationLoading ||
@@ -392,5 +403,6 @@ export const useStoreActivations = ({
         },
         saveStoreConfigurations,
         migrateToNewPricing,
+        endTrial,
     }
 }

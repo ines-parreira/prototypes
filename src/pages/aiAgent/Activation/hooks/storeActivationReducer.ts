@@ -533,14 +533,32 @@ export const reducer = (state: State, action: ACTION_TYPE): State => {
 }
 
 /**
+ * Clears the `salesDeactivatedDatetime` field when the plan is changed
+ */
+export const clearSalesDeactivatedDatetime = (
+    state: State,
+): StoreConfiguration[] => {
+    return Object.values(state).map((store) => {
+        return {
+            ...cloneDeep(store.configuration),
+            ...{ salesDeactivatedDatetime: null },
+        }
+    })
+}
+
+/**
  * Convert the state to a list of updated store configuration:
  * - set default values for AI Sales agent when activating Sales.
  */
 export const stateToUpdatedStoreConfiguration = (
     state: State,
+    updateState?: Partial<StoreConfiguration>,
 ): StoreConfiguration[] => {
     return Object.values(state).map((store) => {
-        const newStoreConfiguration = cloneDeep(store.configuration)
+        const newStoreConfiguration = {
+            ...cloneDeep(store.configuration),
+            ...(updateState || {}),
+        }
 
         const scopes: AiAgentScope[] = [AiAgentScope.Support]
         if (store.sales.enabled) {
