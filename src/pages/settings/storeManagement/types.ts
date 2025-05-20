@@ -1,3 +1,5 @@
+import { Integration, StoreIntegration } from 'models/integration/types'
+
 export type Channel = {
     name: string
     type: string
@@ -16,4 +18,9 @@ export type Store = {
 export interface ChannelChange {
     channelId: number
     action: 'add' | 'remove'
+}
+
+export type StoreWithAssignedChannels = {
+    store: StoreIntegration
+    assignedChannels: Integration[]
 }
