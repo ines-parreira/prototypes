@@ -9,6 +9,7 @@ import {
     AutoQAMetric,
     ChannelsTableColumns,
     ConvertMetric,
+    ProductInsightsTableColumns,
     SatisfactionMetric,
     TagsMetric,
     TicketFieldsMetric,
@@ -67,6 +68,9 @@ export const hiddenMetrics: DrillDownMetric['metricName'][] = [
     AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders,
     AiSalesAgentChart.AiSalesAgentTotalSalesConv,
     AiSalesAgentChart.AiSalesAgentTotalProductRecommendations,
+    ProductInsightsTableColumns.NegativeSentiment,
+    ProductInsightsTableColumns.PositiveSentiment,
+    ProductInsightsTableColumns.TicketsVolume,
 ]
 
 describe('MetricsConfig', () => {

@@ -34,6 +34,7 @@ type Props = {
     }
     metricFormat?: MetricTrendFormat
     currency?: string
+    size?: 'sm' | 'md'
 }
 
 export default function TrendBadge({
@@ -45,6 +46,7 @@ export default function TrendBadge({
     tooltipData,
     metricFormat,
     currency,
+    size = 'sm',
 }: Props) {
     const id = useId()
     const badgeId = `badge-${id}`
@@ -63,7 +65,12 @@ export default function TrendBadge({
     return (
         <>
             <div
-                className={classnames(css.trend, css[trendColor], className)}
+                className={classnames(
+                    css.trend,
+                    css[trendColor],
+                    css[size],
+                    className,
+                )}
                 id={badgeId}
             >
                 <TrendIcon sign={sign} />

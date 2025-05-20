@@ -45,6 +45,10 @@ import {
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { TagsMetricConfig } from 'pages/stats/ticket-insights/tags/TagsMetricConfig'
 import { TicketFieldsMetricConfig } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
+import {
+    ProductInsightsColumnConfig,
+    ProductInsightsColumnWithDrillDownConfig,
+} from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableConfig'
 import { VoiceAgentsMetricsConfig } from 'pages/stats/voice/VoiceConfigs/VoiceAgentMetricsConfig'
 import { VoiceMetricsConfig } from 'pages/stats/voice/VoiceConfigs/VoiceMetricsConfig'
 import {
@@ -57,6 +61,7 @@ import {
     AutoQAMetric,
     ChannelsTableColumns,
     ConvertMetric,
+    ProductInsightsTableColumns,
     SatisfactionAverageSurveyScoreMetric,
     SatisfactionMetric,
     SlaMetric,
@@ -70,6 +75,12 @@ export const getDrillDownQuery = (
     metricName: DrillDownMetric,
 ): DrillDownQueryFactory => {
     switch (metricName.metricName) {
+        case ProductInsightsTableColumns.NegativeSentiment:
+        case ProductInsightsTableColumns.PositiveSentiment:
+        case ProductInsightsTableColumns.TicketsVolume:
+            return ProductInsightsColumnConfig[metricName.metricName]
+                .drillDownQuery
+
         case OverviewMetric.CustomerSatisfaction:
         case OverviewMetric.MedianResponseTime:
         case OverviewMetric.MedianFirstResponseTime:
@@ -381,6 +392,17 @@ export const getDrillDownMetricColumn = (
         metricData.metricName === VoiceAgentsMetric.AgentAverageTalkTime
     ) {
         metricTitle = VoiceAgentsMetricsConfig[metricData.metricName].title
+    } else if (
+        metricData.metricName ===
+            ProductInsightsTableColumns.NegativeSentiment ||
+        metricData.metricName ===
+            ProductInsightsTableColumns.PositiveSentiment ||
+        metricData.metricName === ProductInsightsTableColumns.TicketsVolume
+    ) {
+        const config =
+            ProductInsightsColumnWithDrillDownConfig[metricData.metricName]
+        metricTitle = config.hint.title
+        metricValueFormat = config.format
     } else if (
         metricData.metricName === VoiceMetric.QueueAverageTalkTime ||
         metricData.metricName === VoiceMetric.QueueAverageWaitTime ||

@@ -1,0 +1,37 @@
+@import (reference) '~css/typography.less';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .feedback {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        color: var(--neutral-grey-5);
+    }
+
+    .product {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-s;
+    }
+
+    .productName {
+        flex: 1;
+    }
+
+    .productImage {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--neutral-grey-2);
+        border-radius: @layout-spacing-xs;
+        overflow: hidden;
+    }
+
+    .productImage img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+}

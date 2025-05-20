@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react'
+import { PropsWithChildren } from 'react'
 
 import classNames from 'classnames'
 
@@ -45,24 +45,20 @@ export const DrillDownModalTrigger = ({
     const targetId = `${TRIGGER_ID}-${useId()}`
     const tooltipText = getTooltipText(metricData)
 
+    if (!enabled) return <>{children}</>
+
     return (
-        <>
-            {enabled ? (
-                <span
-                    id={targetId}
-                    className={classNames(css.text, {
-                        [css.highlighted]: highlighted,
-                    })}
-                    onClick={handleClick}
-                >
-                    <Tooltip delay={hintTooltipDelay} target={targetId}>
-                        {tooltipText}
-                    </Tooltip>
-                    {children}
-                </span>
-            ) : (
-                children
-            )}
-        </>
+        <span
+            id={targetId}
+            className={classNames(css.text, {
+                [css.highlighted]: highlighted,
+            })}
+            onClick={handleClick}
+        >
+            <Tooltip delay={hintTooltipDelay} target={targetId}>
+                {tooltipText}
+            </Tooltip>
+            {children}
+        </span>
     )
 }

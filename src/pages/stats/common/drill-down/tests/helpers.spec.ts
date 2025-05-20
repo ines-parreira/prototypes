@@ -50,6 +50,7 @@ import {
     ChannelsTableLabels,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import { ProductInsightsColumnWithDrillDownConfig } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableConfig'
 import { MEDIAN_RESOLUTION_TIME_LABEL } from 'services/reporting/constants'
 import {
     AgentsMetrics,
@@ -69,6 +70,7 @@ import {
     AutoQAMetric,
     ChannelsTableColumns,
     ConvertMetric,
+    ProductInsightsTableColumns,
     SatisfactionAverageSurveyScoreMetric,
     SatisfactionMetric,
     SlaMetric,
@@ -265,6 +267,20 @@ describe('getDrillDownQuery', () => {
             perChannel: 'email',
         },
     ]
+    const productInsightsMetrics: DrillDownMetric[] = [
+        {
+            metricName: ProductInsightsTableColumns.NegativeSentiment,
+            productId: '123',
+        },
+        {
+            metricName: ProductInsightsTableColumns.PositiveSentiment,
+            productId: '123',
+        },
+        {
+            metricName: ProductInsightsTableColumns.TicketsVolume,
+            productId: '123',
+        },
+    ]
     const supportedMetrics: DrillDownMetric[] = [
         {
             metricName: TicketFieldsMetric.TicketCustomFieldsTicketCount,
@@ -414,6 +430,7 @@ describe('getDrillDownQuery', () => {
         ...voiceMetrics,
         ...tagsMetrics,
         ...aiInsightsMetrics,
+        ...productInsightsMetrics,
     ])(
         'should return a query for every DrillDown metric: $metricName',
         (metricName: DrillDownMetric) => {
@@ -966,6 +983,57 @@ describe('getDrillDownMetric', () => {
             metricValueFormat: MetricValueFormat | typeof SLA_FORMAT
         }
     }[] = [
+        {
+            metricData: {
+                metricName: ProductInsightsTableColumns.NegativeSentiment,
+                productId: '123',
+            },
+            expectedValues: {
+                metricTitle:
+                    ProductInsightsColumnWithDrillDownConfig[
+                        ProductInsightsTableColumns.NegativeSentiment
+                    ].hint.title,
+                showMetric: false,
+                metricValueFormat:
+                    ProductInsightsColumnWithDrillDownConfig[
+                        ProductInsightsTableColumns.NegativeSentiment
+                    ].format,
+            },
+        },
+        {
+            metricData: {
+                metricName: ProductInsightsTableColumns.PositiveSentiment,
+                productId: '123',
+            },
+            expectedValues: {
+                metricTitle:
+                    ProductInsightsColumnWithDrillDownConfig[
+                        ProductInsightsTableColumns.PositiveSentiment
+                    ].hint.title,
+                showMetric: false,
+                metricValueFormat:
+                    ProductInsightsColumnWithDrillDownConfig[
+                        ProductInsightsTableColumns.PositiveSentiment
+                    ].format,
+            },
+        },
+        {
+            metricData: {
+                metricName: ProductInsightsTableColumns.TicketsVolume,
+                productId: '123',
+            },
+            expectedValues: {
+                metricTitle:
+                    ProductInsightsColumnWithDrillDownConfig[
+                        ProductInsightsTableColumns.TicketsVolume
+                    ].hint.title,
+                showMetric: false,
+                metricValueFormat:
+                    ProductInsightsColumnWithDrillDownConfig[
+                        ProductInsightsTableColumns.TicketsVolume
+                    ].format,
+            },
+        },
         {
             metricData: {
                 metricName: AgentsTableColumn.OneTouchTickets,

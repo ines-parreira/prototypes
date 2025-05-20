@@ -4,7 +4,6 @@ import classNames from 'classnames'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
-import { METRIC_COLUMN_WIDTH } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableConfig'
 import css from 'pages/common/components/table/cells/BodyCell.less'
 import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
 
@@ -48,18 +47,26 @@ const BodyCell = forwardRef<HTMLTableCellElement, Props>(
                 onClick={onClick}
                 width={width}
             >
-                {isLoading ? (
-                    <Skeleton inline width={METRIC_COLUMN_WIDTH} />
-                ) : (
-                    <BodyCellContent
-                        className={innerClassName}
-                        width={width}
-                        justifyContent={justifyContent}
-                        style={innerStyle}
-                    >
-                        {children}
-                    </BodyCellContent>
-                )}
+                <BodyCellContent
+                    className={innerClassName}
+                    width={width}
+                    justifyContent={justifyContent}
+                    style={innerStyle}
+                >
+                    {isLoading ? (
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                width: '100%',
+                            }}
+                        >
+                            <Skeleton style={{ flex: 1 }} />
+                        </div>
+                    ) : (
+                        children
+                    )}
+                </BodyCellContent>
             </td>
         )
     },

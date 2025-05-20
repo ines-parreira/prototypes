@@ -1,0 +1,34 @@
+@import (reference) '~css/typography.less';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .row {
+        height: unset;
+    }
+
+    .fallback {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: @layout-spacing-m;
+        gap: @layout-spacing-xxs;
+        height: 400px;
+    }
+
+    .fallbackHeading {
+        .body-semibold();
+
+        color: var(--neutral-grey-5);
+    }
+
+    .fallbackSubheading {
+        .body-regular();
+
+        color: var(--neutral-grey-5);
+    }
+
+    .pagination {
+        margin: @layout-spacing-xs;
+    }
+}

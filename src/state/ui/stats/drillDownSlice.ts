@@ -26,6 +26,7 @@ import {
     AutoQAMetric,
     ChannelsTableColumns,
     ConvertMetric,
+    ProductInsightsTableColumns,
     SatisfactionAverageSurveyScoreMetric,
     SatisfactionMetric,
     SlaMetric,
@@ -76,6 +77,16 @@ export type AgentMetricColumn =
 export type AgentsMetrics = {
     metricName: AgentMetricColumn
     perAgentId: number
+} & CommonMetrics
+
+export type ProductMetricColumn =
+    | ProductInsightsTableColumns.NegativeSentiment
+    | ProductInsightsTableColumns.PositiveSentiment
+    | ProductInsightsTableColumns.TicketsVolume
+
+export type ProductMetrics = {
+    metricName: ProductMetricColumn
+    productId: string
 } & CommonMetrics
 
 export type AiSalesAgentMetrics = {
@@ -202,6 +213,7 @@ export type DrillDownMetric =
     | VoiceAgentsMetrics
     | TagsFieldsMetrics
     | AiSalesAgentMetrics
+    | ProductMetrics
 
 export type DrillDownState = {
     isOpen: boolean
