@@ -78,6 +78,7 @@ import {
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
+import { STEPS_INDEX } from '../../AiAgentOnboarding/AiAgentOnboarding'
 import { useSelectedEmailsBeforeRedirect } from './hooks/useSelectedEmailsBeforeRedirect'
 
 export const emailSortingCallback = (a: EmailItem, b: EmailItem) => {
@@ -143,6 +144,17 @@ export const ChannelsStep: React.FC<StepProps> = ({
         mutate: doUpdateOnboardingMutation,
         isLoading: isUpdatingOnboarding,
     } = useUpdateOnboarding()
+
+    const isBacktracking = useMemo(() => {
+        const savedCurrentStep = data?.currentStepName as Exclude<
+            WizardStepEnum,
+            WizardStepEnum.EMAIL_INTEGRATION | WizardStepEnum.HANDOVER
+        >
+        const currentStep = savedCurrentStep ?? WizardStepEnum.CHANNELS
+        const currentStepIndex = STEPS_INDEX[currentStep]
+        const channelsStepIndex = STEPS_INDEX[WizardStepEnum.CHANNELS]
+        return currentStepIndex > channelsStepIndex
+    }, [data?.currentStepName])
 
     const stores = useAppSelector(getShopifyIntegrationsSortedByName)
     const accountDomain = useAppSelector(getCurrentDomain)
@@ -256,15 +268,13 @@ export const ChannelsStep: React.FC<StepProps> = ({
         // Before the next step is visited we always
         // pre-select both the integrations
         values: {
-            emailChannelEnabled:
-                data?.currentStepName === WizardStepEnum.CHANNELS
-                    ? true
-                    : !!filteredPreselectedEmails?.length,
+            emailChannelEnabled: !isBacktracking
+                ? true
+                : !!filteredPreselectedEmails?.length,
             emailIntegrationIds: filteredPreselectedEmails,
-            chatChannelEnabled:
-                data?.currentStepName === WizardStepEnum.CHANNELS
-                    ? true
-                    : !!data?.chatIntegrationIds?.length,
+            chatChannelEnabled: !isBacktracking
+                ? true
+                : !!data?.chatIntegrationIds?.length,
             chatIntegrationIds: preselectedChats.filter(
                 (entry) => !usedChatChannels.includes(entry),
             ),

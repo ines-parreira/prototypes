@@ -160,6 +160,24 @@ const renderWithProvider = (state?: RootState, props = defaultProps) => {
     )
 }
 
+const mockChatAndEmailDisabled = () => {
+    usePreselectedEmailsMock.mockReturnValue([])
+    usePreselectedChatMock.mockReturnValue([])
+    useGetOnboardingDataMock.mockReturnValue({
+        data: {
+            salesPersuasionLevel: PersuasionLevel.Moderate,
+            salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+            salesDiscountMax: 0.8,
+            scopes: [AiAgentScopes.SUPPORT, AiAgentScopes.SALES],
+            shopName: shopifyIntegration.meta.shop_name,
+            emailIntegrationIds: [],
+            chatIntegrationIds: [],
+            currentStepName: WizardStepEnum.PERSONALITY_PREVIEW,
+        },
+        isLoading: false,
+    } as any)
+}
+
 describe('ChannelsStep', () => {
     describe('ChannelsStep - empty state', () => {
         beforeEach(() => {
@@ -303,6 +321,7 @@ describe('ChannelsStep', () => {
         })
 
         it('selects an additional email and proceeds to next step', async () => {
+            mockChatAndEmailDisabled()
             renderWithProvider()
 
             // Ensure email card is visible and click it to enable
@@ -359,6 +378,7 @@ describe('ChannelsStep', () => {
         })
 
         it('renders the dropdowns and allow next step (click on card)', async () => {
+            mockChatAndEmailDisabled()
             renderWithProvider()
 
             await waitFor(() => {
@@ -409,6 +429,7 @@ describe('ChannelsStep', () => {
         })
 
         it('renders the dropdowns and allow next step (click on checkbox)', async () => {
+            mockChatAndEmailDisabled()
             renderWithProvider()
 
             userEvent.click(screen.getByText('Chat'))
@@ -434,6 +455,7 @@ describe('ChannelsStep', () => {
         })
 
         it('should disable email integration from another onboarding', async () => {
+            mockChatAndEmailDisabled()
             useGetOnboardingsMock.mockReturnValue({
                 data: [
                     {
@@ -473,6 +495,7 @@ describe('ChannelsStep', () => {
         })
 
         it('handles error on no channel', async () => {
+            mockChatAndEmailDisabled()
             renderWithProvider()
 
             expect(screen.getAllByRole('checkbox')[0]).not.toBeChecked()
@@ -493,6 +516,7 @@ describe('ChannelsStep', () => {
         })
 
         it('handles error on no selecting email', async () => {
+            mockChatAndEmailDisabled()
             renderWithProvider()
 
             // Components are rendered
@@ -539,6 +563,7 @@ describe('ChannelsStep', () => {
         })
 
         it('handles error on no selecting chat', async () => {
+            mockChatAndEmailDisabled()
             renderWithProvider()
 
             // Components are rendered
@@ -647,6 +672,7 @@ describe('ChannelsStep', () => {
         })
 
         it('renders the chat creation error', async () => {
+            mockChatAndEmailDisabled()
             mockedDispatch.mockImplementationOnce(() =>
                 Promise.reject(new Error('Error message')),
             )
@@ -697,6 +723,7 @@ describe('ChannelsStep', () => {
         })
 
         it('handles no store', async () => {
+            mockChatAndEmailDisabled()
             mockedDispatch.mockImplementationOnce(() => Promise.resolve())
 
             renderWithProvider()
@@ -1050,6 +1077,171 @@ describe('ChannelsStep', () => {
             renderWithProvider()
 
             expect(screen.getByText('Loading...')).toBeInTheDocument()
+        })
+    })
+
+    describe('ChannelsStep - isBacktracking behavior', () => {
+        beforeEach(() => {
+            mockUseShopifyIntegrationAndScope.mockReturnValue({
+                integration: true,
+            })
+
+            usePreselectedEmailsMock.mockReturnValue([5])
+            usePreselectedChatMock.mockReturnValue([3])
+            useSelectedEmailsBeforeRedirectMock.mockReturnValue({
+                selectedEmailsBeforeRedirect: [],
+                setSelectedEmailsBeforeRedirect: jest.fn(),
+                clearSelectedEmailsBeforeRedirect: jest.fn(),
+            })
+
+            useGetOnboardingsMock.mockReturnValue({
+                data: [defaultOnboardingData],
+                isLoading: false,
+            } as any)
+
+            useAiAgentScopesForAutomationPlanMock.mockReturnValue([
+                AiAgentScopes.SUPPORT,
+                AiAgentScopes.SALES,
+            ])
+
+            useUpdateOnboardingMock.mockReturnValue({
+                mutate: mutateUpdateOnboardingMock,
+                isLoading: false,
+            } as any)
+
+            useCreateOnboardingMock.mockReturnValue({
+                mutate: mutateCreateOnboardingMock,
+                isLoading: false,
+            } as any)
+
+            useStoreConfigurationForAccountMock.mockReturnValue({
+                storeConfigurations: [
+                    {
+                        helpCenterId: 123,
+                        chatChannelDeactivatedDatetime: '2024-01-01',
+                        emailChannelDeactivatedDatetime: '2024-01-01',
+                        trialModeActivatedDatetime: '2024-02-01',
+                        previewModeActivatedDatetime: '2024-02-01',
+                        previewModeValidUntilDatetime: '2024-02-08',
+                        monitoredEmailIntegrations: [
+                            { id: 1, email: 'email1@example.com' },
+                            { id: 2, email: 'email2@example.com' },
+                        ],
+                        monitoredChatIntegrations: [1, 2],
+                        customToneOfVoiceGuidance: 'Be friendly',
+                        signature: 'Best regards, Store',
+                        silentHandover: true,
+                        tags: [],
+                        excludedTopics: ['topic1', 'topic2'],
+                        ticketSampleRate: 0.5,
+                        wizard: undefined,
+                    } as unknown as StoreConfiguration,
+                ],
+                isLoading: false,
+            })
+
+            useTransformToneOfVoiceConversationsMock.mockReturnValue({
+                previewConversation: conversationExamples.default,
+                isLoading: false,
+                isPreviewLoading: false,
+                preview: undefined,
+            })
+        })
+
+        it('should check both checkboxes by default when not backtracking', async () => {
+            // Set currentStepName to CHANNELS to simulate not backtracking
+            useGetOnboardingDataMock.mockReturnValue({
+                data: {
+                    ...defaultOnboardingData,
+                    currentStepName: WizardStepEnum.CHANNELS,
+                },
+                isLoading: false,
+            } as any)
+
+            renderWithProvider()
+
+            await waitFor(() => {
+                // Both checkboxes should be checked by default
+                expect(screen.getAllByRole('checkbox')[0]).toBeChecked()
+                expect(screen.getAllByRole('checkbox')[1]).toBeChecked()
+            })
+        })
+
+        it('should base checkbox state on preselected values when backtracking', async () => {
+            // Set currentStepName to SALES_PERSONALITY to simulate backtracking
+            useGetOnboardingDataMock.mockReturnValue({
+                data: {
+                    ...defaultOnboardingData,
+                    currentStepName: WizardStepEnum.SALES_PERSONALITY,
+                    emailIntegrationIds: [5],
+                    chatIntegrationIds: [],
+                },
+                isLoading: false,
+            } as any)
+
+            // Mock preselected emails
+            usePreselectedEmailsMock.mockReturnValue([5])
+            // Mock empty preselected chats
+            usePreselectedChatMock.mockReturnValue([])
+
+            renderWithProvider()
+
+            await waitFor(() => {
+                // Email checkbox should be checked because there are preselected emails
+                expect(screen.getAllByRole('checkbox')[0]).toBeChecked()
+                // Chat checkbox should be unchecked because there are no preselected chats
+                expect(screen.getAllByRole('checkbox')[1]).not.toBeChecked()
+            })
+        })
+
+        it('should uncheck both checkboxes when backtracking with no preselected values', async () => {
+            // Set currentStepName to SALES_PERSONALITY to simulate backtracking
+            useGetOnboardingDataMock.mockReturnValue({
+                data: {
+                    ...defaultOnboardingData,
+                    currentStepName: WizardStepEnum.SALES_PERSONALITY,
+                    emailIntegrationIds: [],
+                    chatIntegrationIds: [],
+                },
+                isLoading: false,
+            } as any)
+
+            // Mock empty preselected values
+            usePreselectedEmailsMock.mockReturnValue([])
+            usePreselectedChatMock.mockReturnValue([])
+
+            renderWithProvider()
+
+            await waitFor(() => {
+                // Both checkboxes should be unchecked because there are no preselected values
+                expect(screen.getAllByRole('checkbox')[0]).not.toBeChecked()
+                expect(screen.getAllByRole('checkbox')[1]).not.toBeChecked()
+            })
+        })
+
+        it('should check both checkboxes when backtracking with both types preselected', async () => {
+            // Set currentStepName to SALES_PERSONALITY to simulate backtracking
+            useGetOnboardingDataMock.mockReturnValue({
+                data: {
+                    ...defaultOnboardingData,
+                    currentStepName: WizardStepEnum.SALES_PERSONALITY,
+                    emailIntegrationIds: [5],
+                    chatIntegrationIds: [3],
+                },
+                isLoading: false,
+            } as any)
+
+            // Mock preselected values for both email and chat
+            usePreselectedEmailsMock.mockReturnValue([5])
+            usePreselectedChatMock.mockReturnValue([3])
+
+            renderWithProvider()
+
+            await waitFor(() => {
+                // Both checkboxes should be checked because there are preselected values for both
+                expect(screen.getAllByRole('checkbox')[0]).toBeChecked()
+                expect(screen.getAllByRole('checkbox')[1]).toBeChecked()
+            })
         })
     })
 })
