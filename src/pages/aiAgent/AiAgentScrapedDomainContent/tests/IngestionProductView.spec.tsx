@@ -19,7 +19,16 @@ const mockProduct: IngestedProduct = {
     shipping_policy: '<p>Test Shipping Policy</p>',
     return_policy: '<p>Test Return Policy</p>',
     sizing: '<p>Test Sizing Info</p>',
-    metadata: [],
+    metadata: [
+        {
+            question: 'Detail 1',
+            response: 'Information 1',
+        },
+        {
+            question: 'Detail 2',
+            response: 'Information 2',
+        },
+    ],
     web_pages: [
         {
             url: 'https://example.com/product1',
@@ -49,6 +58,7 @@ describe('IngestionProductView', () => {
     it('renders optional product information when available', () => {
         render(<IngestionProductView product={mockProduct} />)
 
+        expect(screen.getByText('Details')).toBeInTheDocument()
         expect(screen.getByText('Shipping info')).toBeInTheDocument()
         expect(screen.getByText('Test Shipping Policy')).toBeInTheDocument()
         expect(screen.getByText('Return policy')).toBeInTheDocument()
@@ -60,12 +70,14 @@ describe('IngestionProductView', () => {
     it('handles product without optional information', () => {
         const productWithoutOptionalInfo = {
             ...mockProduct,
+            metadata: [],
             shipping_policy: '',
             return_policy: '',
             sizing: '',
         }
         render(<IngestionProductView product={productWithoutOptionalInfo} />)
 
+        expect(screen.queryByText('Details')).not.toBeInTheDocument()
         expect(screen.queryByText('Shipping info')).not.toBeInTheDocument()
         expect(screen.queryByText('Return policy')).not.toBeInTheDocument()
         expect(screen.queryByText('Sizing info')).not.toBeInTheDocument()

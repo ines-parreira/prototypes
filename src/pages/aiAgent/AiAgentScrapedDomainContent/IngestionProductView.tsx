@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 
+import _capitalize from 'lodash/capitalize'
+
 import ControlledCollapsibleDetails from 'pages/tickets/detail/components/TicketVoiceCall/ControlledCollapsibleDetails'
 
 import { IngestedProduct } from './types'
@@ -36,6 +38,18 @@ const IngestionProductView = ({ product }: Props) => {
                     }}
                 />
             </div>
+            {product.metadata && product.metadata.length > 0 && (
+                <div className={css.productField}>
+                    <span className="body-semibold">Details</span>
+                    <div className={css.description}>
+                        {product.metadata.map((item, index) => (
+                            <div key={index}>
+                                {_capitalize(item.question)}: {item.response}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
             {product.shipping_policy && (
                 <div className={css.productField}>
                     <span className="body-semibold">Shipping info</span>
