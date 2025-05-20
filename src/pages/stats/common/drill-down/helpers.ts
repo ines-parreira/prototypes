@@ -45,10 +45,8 @@ import {
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { TagsMetricConfig } from 'pages/stats/ticket-insights/tags/TagsMetricConfig'
 import { TicketFieldsMetricConfig } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
-import {
-    VoiceAgentsMetricsConfig,
-    VoiceMetricsConfig,
-} from 'pages/stats/voice/VoiceDrillDownConfig'
+import { VoiceAgentsMetricsConfig } from 'pages/stats/voice/VoiceConfigs/VoiceAgentMetricsConfig'
+import { VoiceMetricsConfig } from 'pages/stats/voice/VoiceConfigs/VoiceMetricsConfig'
 import {
     AiSalesAgentMetrics,
     DrillDownMetric,

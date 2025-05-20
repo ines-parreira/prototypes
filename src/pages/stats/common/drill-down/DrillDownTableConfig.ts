@@ -38,7 +38,7 @@ import {
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { TagsMetricConfig } from 'pages/stats/ticket-insights/tags/TagsMetricConfig'
 import { TicketFieldsMetricConfig } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
-import { VoiceDrillDownConfig } from 'pages/stats/voice/VoiceDrillDownConfig'
+import { VoiceDrillDownConfig } from 'pages/stats/voice/VoiceConfigs/VoiceDrillDownConfig'
 import {
     AgentMetricColumn,
     DrillDownMetric,
