@@ -211,7 +211,8 @@ const IconButton: FC<HTMLAttributes<HTMLButtonElement> & IconButtonProps> = ({
             size={size}
             variant={variant}
             fill={fill}
-            theme={theme}
+            // TODO(React18): Remove this once we upgrade to React 18
+            theme={theme as unknown as ChatTheme}
             {...props}
         >
             <StyledIconContainer

@@ -106,7 +106,10 @@ export const ArticleAttachment = ({
     return (
         <StyledArticleAttachment {...props} onClick={onClick}>
             {leadIcon && (
-                <StyledLeadIcon theme={theme}>{leadIcon}</StyledLeadIcon>
+                // TODO(React18): Remove this once we upgrade to React 18
+                <StyledLeadIcon theme={theme as unknown as ChatTheme}>
+                    {leadIcon}
+                </StyledLeadIcon>
             )}
             <StyledArticleAttachmentInfo>
                 <StyledTitle>{title}</StyledTitle>

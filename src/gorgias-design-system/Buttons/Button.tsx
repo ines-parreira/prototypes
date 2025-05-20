@@ -225,7 +225,8 @@ const Button: FC<HTMLAttributes<HTMLButtonElement> & ButtonProps> = ({
                 size={size}
                 variant={variant}
                 isStretched={isStretched}
-                theme={theme}
+                // TODO(React18): Remove this once we upgrade to React 18
+                theme={theme as unknown as ChatTheme}
                 {...props}
             >
                 {isLoading ? (

@@ -161,7 +161,8 @@ const ListItem: React.FC<ListItemProps & HTMLAttributes<HTMLDivElement>> = ({
         <StyledListItemContainer
             role="listitem"
             variant={variant}
-            theme={theme}
+            // TODO(React18): Remove this once we upgrade to React 18
+            theme={theme as unknown as ChatTheme}
             {...props}
         >
             {leadIcon && <StyledLeadIcon>{leadIcon}</StyledLeadIcon>}
@@ -184,7 +185,10 @@ const ListItem: React.FC<ListItemProps & HTMLAttributes<HTMLDivElement>> = ({
                     descriptionPosition === 'right' &&
                     listItemDescription}
                 {trailIcon && (
-                    <StyledTrailIcon theme={theme}>{trailIcon}</StyledTrailIcon>
+                    // TODO(React18): Remove this once we upgrade to React 18
+                    <StyledTrailIcon theme={theme as unknown as ChatTheme}>
+                        {trailIcon}
+                    </StyledTrailIcon>
                 )}
             </StyledTrailContent>
         </StyledListItemContainer>

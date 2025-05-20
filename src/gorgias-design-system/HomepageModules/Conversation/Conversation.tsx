@@ -173,7 +173,8 @@ const Conversation: React.FC<
                     variant={variant}
                     showBorder={!!children || !!footer}
                     onClick={onClick}
-                    theme={theme}
+                    // TODO(React18): Remove this once we upgrade to React 18
+                    theme={theme as unknown as ChatTheme}
                 >
                     {avatar ? avatar : undefined}
                     <StyledSubject>

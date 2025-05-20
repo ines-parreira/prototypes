@@ -106,9 +106,17 @@ const Card: FC<CardProps & HTMLAttributes<HTMLDivElement>> = ({
 }) => {
     const theme = useTheme()
     return (
-        <StyledCardContainer role="link" theme={theme} {...props}>
+        <StyledCardContainer
+            role="link"
+            // TODO(React18): Remove this once we upgrade to React 18
+            theme={theme as unknown as ChatTheme}
+            {...props}
+        >
             {leadIcon && (
-                <StyledLeadIcon theme={theme}>{leadIcon}</StyledLeadIcon>
+                // TODO(React18): Remove this once we upgrade to React 18
+                <StyledLeadIcon theme={theme as unknown as ChatTheme}>
+                    {leadIcon}
+                </StyledLeadIcon>
             )}
             <StyledCardContent>
                 <StyledCardTitle>{title}</StyledCardTitle>
