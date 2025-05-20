@@ -5,7 +5,9 @@ import { Badge } from '@gorgias/merchant-ui-kit'
 import cssNavbar from 'assets/css/navbar.less'
 import type { AccordionValues } from 'components/Accordion/utils/types'
 import { Navigation } from 'components/Navigation/Navigation'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { ADMIN_ROLE, AGENT_ROLE } from 'config/user'
+import { useFlag } from 'core/flags'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
@@ -24,6 +26,8 @@ import Section from './Section'
 import css from './NewUI.less'
 
 const NewUI = () => {
+    const isMultiStoreEnabled = useFlag(FeatureFlagKey.MultiStore, false)
+
     const [expandedCategories, setExpandedCategories] =
         useLocalStorage<AccordionValues>(
             'navbar-settings-expanded-categories',
@@ -224,6 +228,12 @@ const NewUI = () => {
                 requiredRole={ADMIN_ROLE}
             >
                 <Navigation.SectionContent className={css.sectionContent}>
+                    <Item
+                        to="store-management"
+                        text="Store Management"
+                        shouldRender={isMultiStoreEnabled}
+                        requiredRole={ADMIN_ROLE}
+                    />
                     <Item to="users" text="Users" requiredRole={ADMIN_ROLE} />
                     <Item to="teams" text="Teams" requiredRole={ADMIN_ROLE} />
                     <Item

@@ -5,8 +5,9 @@ import { useLocation } from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 
 import { logEvent } from 'common/segment'
+import { useFlag } from 'core/flags'
 import { ProductType } from 'models/billing/types'
-import { renderWithRouter } from 'utils/testing'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import NewUI from '../NewUI'
 
@@ -31,6 +32,9 @@ jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
     ]),
 }))
 
+jest.mock('core/flags')
+
+const mockUseFlag = assumeMock(useFlag)
 const mockStore = configureStore([])
 const scrollToMock = jest.fn()
 
@@ -189,5 +193,19 @@ describe('NewUI', () => {
 
         expect(screen.getByText('Automate')).toBeInTheDocument()
         expect(screen.getByText('UPGRADE')).toBeInTheDocument()
+    })
+
+    it('renders store management item when MultiStore flag is enabled', () => {
+        mockUseFlag.mockReturnValue(true)
+        renderComponent()
+
+        expect(screen.getByText('Store Management')).toBeInTheDocument()
+    })
+
+    it('does not render store management item when MultiStore flag is disabled', () => {
+        mockUseFlag.mockReturnValue(false)
+        renderComponent()
+
+        expect(screen.queryByText('Store Management')).not.toBeInTheDocument()
     })
 })
