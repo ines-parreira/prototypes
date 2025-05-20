@@ -48,7 +48,7 @@ export const ProductInsightsPlaceholderReportConfig: ReportConfig<ProductInsight
                 description:
                     ProductInsightsChartConfig[
                         ProductInsightsChart.TotalProductSentimentOverTimeChart
-                    ].hint,
+                    ].hint.title,
                 csvProducer: null,
                 chartType: ChartType.Graph,
             },
@@ -67,7 +67,7 @@ export const ProductInsightsPlaceholderReportConfig: ReportConfig<ProductInsight
                 description:
                     ProductInsightsChartConfig[
                         ProductInsightsChart.TopAIIntentsOverTimeChart
-                    ].hint,
+                    ].hint.title,
                 csvProducer: null,
                 chartType: ChartType.Graph,
             },

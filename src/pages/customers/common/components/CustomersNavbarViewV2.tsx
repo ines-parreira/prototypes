@@ -37,6 +37,7 @@ export const CustomersNavbarViewV2 = connector(function CustomersNavbarViewV2({
     viewType,
 }: CustomersNavbarViewV2Props) {
     const [activeViews, setActiveViews] = useState<AccordionValues>(['views'])
+    const arrayViews = views.toArray()
 
     return (
         <Navigation.Root
@@ -50,7 +51,7 @@ export const CustomersNavbarViewV2 = connector(function CustomersNavbarViewV2({
                     <Navigation.SectionIndicator />
                 </Navigation.SectionTrigger>
                 <Navigation.SectionContent>
-                    {views.map((view) => (
+                    {arrayViews.map((view) => (
                         <Navigation.SectionItem
                             as={Link}
                             to={`/app/${getPluralObjectName(viewType)}/${view.get('id')}/${view.get('slug')}`}

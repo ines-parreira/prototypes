@@ -201,10 +201,14 @@ export const SummaryBodySkeleton = ({ rows }: SummaryBodySkeletonProps) => {
     )
 }
 
-export const SummaryInfo: React.FC = ({ children }) => {
+export const SummaryInfo: React.FC<{ children: React.ReactNode }> = ({
+    children,
+}) => {
     return <div className={css.info}>{children}</div>
 }
 
-export const SummaryBody: React.FC = ({ children }) => {
+export const SummaryBody: React.FC<{ children: React.ReactNode }> = ({
+    children,
+}) => {
     return <div className={css.body}>{children}</div>
 }

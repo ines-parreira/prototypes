@@ -1,4 +1,4 @@
-import { ComponentType } from 'react'
+import { ReactNode } from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createMemoryHistory } from 'history'
@@ -31,6 +31,14 @@ jest.useFakeTimers()
 const queryClient = new QueryClient()
 
 const history = createMemoryHistory()
+
+const wrapper = ({ children }: { children?: ReactNode }) => (
+    <Router history={history}>
+        <QueryClientProvider client={queryClient}>
+            <Provider store={mockStore(defaultState)}>{children}</Provider>
+        </QueryClientProvider>
+    </Router>
+)
 
 const useGmvInfluencedInput = {
     timezone: 'UTC',
@@ -79,15 +87,7 @@ describe('useGmvInfluenced', () => {
         const { result } = renderHook(
             () => useGmvInfluenced(useGmvInfluencedInput),
             {
-                wrapper: (({ children }) => (
-                    <Router history={history}>
-                        <QueryClientProvider client={queryClient}>
-                            <Provider store={mockStore(defaultState)}>
-                                {children}
-                            </Provider>
-                        </QueryClientProvider>
-                    </Router>
-                )) as ComponentType,
+                wrapper,
             },
         )
 
@@ -124,15 +124,7 @@ describe('useGmvInfluenced', () => {
         const { result } = renderHook(
             () => useGmvInfluenced(useGmvInfluencedInput),
             {
-                wrapper: (({ children }) => (
-                    <Router history={history}>
-                        <QueryClientProvider client={queryClient}>
-                            <Provider store={mockStore(defaultState)}>
-                                {children}
-                            </Provider>
-                        </QueryClientProvider>
-                    </Router>
-                )) as ComponentType,
+                wrapper,
             },
         )
 
@@ -165,15 +157,7 @@ describe('useGmvInfluenced', () => {
         const { result } = renderHook(
             () => useGmvInfluenced(useGmvInfluencedInput),
             {
-                wrapper: (({ children }) => (
-                    <Router history={history}>
-                        <QueryClientProvider client={queryClient}>
-                            <Provider store={mockStore(defaultState)}>
-                                {children}
-                            </Provider>
-                        </QueryClientProvider>
-                    </Router>
-                )) as ComponentType,
+                wrapper,
             },
         )
 
@@ -207,15 +191,7 @@ describe('useGmvInfluenced', () => {
         const { result } = renderHook(
             () => useGmvInfluenced(useGmvInfluencedInput),
             {
-                wrapper: (({ children }) => (
-                    <Router history={history}>
-                        <QueryClientProvider client={queryClient}>
-                            <Provider store={mockStore(defaultState)}>
-                                {children}
-                            </Provider>
-                        </QueryClientProvider>
-                    </Router>
-                )) as ComponentType,
+                wrapper,
             },
         )
 
@@ -237,15 +213,7 @@ describe('useGmvInfluenced', () => {
         const { result } = renderHook(
             () => useGmvInfluenced(useGmvInfluencedInput),
             {
-                wrapper: (({ children }) => (
-                    <Router history={history}>
-                        <QueryClientProvider client={queryClient}>
-                            <Provider store={mockStore(defaultState)}>
-                                {children}
-                            </Provider>
-                        </QueryClientProvider>
-                    </Router>
-                )) as ComponentType,
+                wrapper,
             },
         )
 
