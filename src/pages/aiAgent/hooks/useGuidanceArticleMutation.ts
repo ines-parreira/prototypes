@@ -5,6 +5,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import {
     helpCenterKeys,
+    useCopyArticle,
     useCreateArticle,
     useDeleteArticle,
     useUpdateArticleTranslation,
@@ -56,6 +57,15 @@ export const useGuidanceArticleMutation = ({
             })
         },
     })
+
+    const { mutateAsync: copyArticleAsync, isLoading: isCopyArticleLoading } =
+        useCopyArticle({
+            onSuccess: async () => {
+                await queryClient.invalidateQueries({
+                    queryKey: helpCenterKeys.articles(guidanceHelpCenterId),
+                })
+            },
+        })
 
     const createGuidanceArticle = useCallback(
         async (createGuidanceArticle: CreateGuidanceArticle) => {
@@ -135,12 +145,35 @@ export const useGuidanceArticleMutation = ({
         [deleteArticleMutateAsync, guidanceHelpCenterId],
     )
 
+    const duplicateGuidanceArticle = useCallback(
+        async (articleId: number, shopName: string) => {
+            try {
+                await copyArticleAsync([
+                    undefined,
+                    { id: articleId, help_center_id: guidanceHelpCenterId },
+                    shopName,
+                ])
+            } catch (error) {
+                reportError(error, {
+                    tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
+                    extra: {
+                        context: 'Error during guidance article duplication',
+                    },
+                })
+            }
+        },
+        [copyArticleAsync, guidanceHelpCenterId],
+    )
+
     return {
         deleteGuidanceArticle,
         isGuidanceArticleDeleting,
         createGuidanceArticle,
         updateGuidanceArticle,
         isGuidanceArticleUpdating:
-            isArticleCreationLoading || isUpdateArticleTranslationLoading,
+            isArticleCreationLoading ||
+            isUpdateArticleTranslationLoading ||
+            isCopyArticleLoading,
+        duplicateGuidanceArticle,
     }
 }

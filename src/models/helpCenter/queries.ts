@@ -6,6 +6,7 @@ import { useHelpCenterApi } from '../../pages/settings/helpCenter/hooks/useHelpC
 import { Paths } from '../../rest_api/help_center_api/client.generated'
 import {
     checkHelpCenterWithSubdomainExists,
+    copyArticle,
     createArticle,
     createArticleTranslation,
     createFileIngestion,
@@ -325,6 +326,18 @@ export const useCreateArticleTranslation = (
     return useMutation({
         mutationFn: ([client = helpCenterClient, pathParams, data]) =>
             createArticleTranslation(client, pathParams, data),
+        ...overrides,
+    })
+}
+
+export const useCopyArticle = (
+    overrides?: MutationOverrides<typeof copyArticle>,
+) => {
+    const { client: helpCenterClient } = useHelpCenterApi()
+
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, pathParams, data]) =>
+            copyArticle(client, pathParams, data),
         ...overrides,
     })
 }

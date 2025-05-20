@@ -145,6 +145,18 @@ export const updateArticleTranslation = async (
     return response
 }
 
+export const copyArticle = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.CopyArticle.PathParameters,
+    shopName: string,
+) => {
+    if (!client) return null
+    const response = await client.copyArticle(pathParams, {
+        shop_name: shopName,
+    })
+    return response
+}
+
 export const createArticleTranslation = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.CreateArticleTranslation.PathParameters,

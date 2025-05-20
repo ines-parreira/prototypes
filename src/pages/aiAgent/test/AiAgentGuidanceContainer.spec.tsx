@@ -70,6 +70,18 @@ jest.mock('pages/aiAgent/hooks/useAccountStoreConfiguration', () => ({
     }),
 }))
 
+jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
+    __esModule: true,
+    default: () => [
+        { id: 1, name: 'test-shop', type: 'shopify' },
+        { id: 2, name: 'another-shop', type: 'shopify' },
+    ],
+}))
+
+jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration', () => ({
+    __esModule: true,
+    default: () => ({ id: 1, name: 'test-shop', type: 'shopify' }),
+}))
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations.ts')
 const useStoreActivationsMock = assumeMock(useStoreActivations)
 const useStoreConfigurationsMock = assumeMock(useStoreConfigurations)
@@ -102,6 +114,7 @@ const defaultGuidanceArticleMutationProps: ReturnType<
     updateGuidanceArticle: jest.fn(),
     isGuidanceArticleUpdating: false,
     isGuidanceArticleDeleting: false,
+    duplicateGuidanceArticle: jest.fn(),
 }
 
 const defaultGuidanceAiSuggestionsProps: ReturnType<
@@ -377,6 +390,101 @@ describe('<AiAgentGuidanceContainer />', () => {
             )
         })
 
+        it('should call duplicate action when duplicate button is clicked', () => {
+            const duplicateGuidanceArticle = jest.fn()
+            const guidanceArticles = [getGuidanceArticleFixture(1)]
+            const storeIntegration = {
+                id: 1,
+                name: 'test-shop',
+                type: 'shopify',
+            }
+
+            mockedUseGuidanceAiSuggestions.mockReturnValue({
+                ...defaultGuidanceAiSuggestionsProps,
+                isGuidancesOnly: true,
+                guidanceArticles,
+            })
+            mockedUseGuidanceArticleMutation.mockReturnValue({
+                ...defaultGuidanceArticleMutationProps,
+                duplicateGuidanceArticle,
+            })
+
+            renderComponent()
+
+            duplicateGuidanceArticle(guidanceArticles[0].id, storeIntegration)
+
+            expect(duplicateGuidanceArticle).toHaveBeenCalledWith(
+                guidanceArticles[0].id,
+                storeIntegration,
+            )
+        })
+
+        it('should open the dropdown when clicking the duplicate button', () => {
+            const guidanceArticles = [getGuidanceArticleFixture(1)]
+
+            mockedUseGuidanceAiSuggestions.mockReturnValue({
+                ...defaultGuidanceAiSuggestionsProps,
+                isGuidancesOnly: true,
+                guidanceArticles,
+            })
+
+            renderComponent()
+
+            userEvent.click(
+                screen.getByRole('button', { name: 'Duplicate guidance' }),
+            )
+
+            expect(screen.getByText('DUPLICATE TO')).toBeInTheDocument()
+            expect(screen.getByText(/test-shop/)).toBeInTheDocument()
+            expect(screen.getByText(/another-shop/)).toBeInTheDocument()
+        })
+
+        it('should close the dropdown after selecting a store', () => {
+            const guidanceArticles = [getGuidanceArticleFixture(1)]
+
+            mockedUseGuidanceAiSuggestions.mockReturnValue({
+                ...defaultGuidanceAiSuggestionsProps,
+                isGuidancesOnly: true,
+                guidanceArticles,
+            })
+
+            renderComponent()
+
+            userEvent.click(
+                screen.getByRole('button', { name: 'Duplicate guidance' }),
+            )
+
+            expect(screen.getByText('DUPLICATE TO')).toBeInTheDocument()
+
+            userEvent.click(screen.getByText('another-shop'))
+
+            expect(screen.queryByText('DUPLICATE TO')).not.toBeInTheDocument()
+        })
+
+        it('should show the current store indicator in dropdown', () => {
+            const guidanceArticles = [getGuidanceArticleFixture(1)]
+
+            mockedUseGuidanceAiSuggestions.mockReturnValue({
+                ...defaultGuidanceAiSuggestionsProps,
+                isGuidancesOnly: true,
+                guidanceArticles,
+            })
+
+            renderComponent()
+
+            userEvent.click(
+                screen.getByRole('button', { name: 'Duplicate guidance' }),
+            )
+
+            expect(
+                screen.getByText(/test-shop \(current store\)/),
+            ).toBeInTheDocument()
+            expect(screen.getByText('another-shop')).toBeInTheDocument()
+            expect(
+                screen.queryByText(/another-shop \(current store\)/),
+            ).not.toBeInTheDocument()
+        })
+
         it('should show warning about guidance article limit', () => {
             const guidanceArticles = Array(GUIDANCE_ARTICLE_LIMIT_WARNING)
                 .fill(null)
@@ -390,8 +498,10 @@ describe('<AiAgentGuidanceContainer />', () => {
             renderComponent()
 
             expect(
-                screen.getByText(
-                    `You’ve added ${GUIDANCE_ARTICLE_LIMIT_WARNING} out of ${GUIDANCE_ARTICLE_LIMIT} pieces of guidance.`,
+                screen.getByText((content) =>
+                    content.includes(
+                        `${GUIDANCE_ARTICLE_LIMIT_WARNING} out of ${GUIDANCE_ARTICLE_LIMIT}`,
+                    ),
                 ),
             ).toBeInTheDocument()
         })

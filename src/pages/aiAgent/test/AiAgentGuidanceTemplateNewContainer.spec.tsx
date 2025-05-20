@@ -75,6 +75,7 @@ const defaultGuidanceArticleMutationProps: ReturnType<
     updateGuidanceArticle: jest.fn(),
     isGuidanceArticleUpdating: false,
     isGuidanceArticleDeleting: false,
+    duplicateGuidanceArticle: jest.fn(),
 }
 
 const defaultUseAiAgentOnboardingNotification = {

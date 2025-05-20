@@ -19,8 +19,9 @@ import { useAiAgentNavigation } from './hooks/useAiAgentNavigation'
 import css from './AiAgentGuidanceContainer.less'
 
 export const AiAgentGuidanceContainer = () => {
-    const { shopName } = useParams<{
+    const { shopName, shopType } = useParams<{
         shopName: string
+        shopType: string
     }>()
 
     const { storeConfiguration, isLoading: isStoreConfigLoading } =
@@ -103,6 +104,7 @@ export const AiAgentGuidanceContainer = () => {
             <AiAgentGuidanceView
                 helpCenterId={guidanceHelpCenter.id}
                 shopName={shopName}
+                shopType={shopType}
                 locale={guidanceHelpCenter.default_locale}
             />
             <PostCompletionWizardModal />

@@ -5,6 +5,9 @@ import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { LocaleCode } from 'models/helpCenter/types'
+import { StoreIntegration } from 'models/integration/types'
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
+import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import history from 'pages/history'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -24,17 +27,22 @@ type Props = {
     helpCenterId: number
     locale: LocaleCode
     shopName: string
+    shopType: string
 }
 
 export const AiAgentGuidanceView = ({
     helpCenterId,
     shopName,
     locale,
+    shopType,
 }: Props) => {
-    const { deleteGuidanceArticle, updateGuidanceArticle } =
-        useGuidanceArticleMutation({
-            guidanceHelpCenterId: helpCenterId,
-        })
+    const {
+        deleteGuidanceArticle,
+        updateGuidanceArticle,
+        duplicateGuidanceArticle,
+    } = useGuidanceArticleMutation({
+        guidanceHelpCenterId: helpCenterId,
+    })
 
     const {
         guidanceArticles,
@@ -49,6 +57,8 @@ export const AiAgentGuidanceView = ({
         helpCenterId,
         shopName,
     })
+
+    const storeIntegration = useSelfServiceStoreIntegration(shopType, shopName)
 
     useEffect(() => {
         if (isLoadingAiGuidances) return
@@ -80,6 +90,36 @@ export const AiAgentGuidanceView = ({
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Error during guidance article deletion.',
+                }),
+            )
+        }
+    }
+
+    const onDuplicate = async (
+        articleId: number,
+        storeIntegration: StoreIntegration,
+    ) => {
+        try {
+            const message = `Successfully duplicated to <br />
+<a href='/app/ai-agent/${
+                storeIntegration.type
+            }/${getShopNameFromStoreIntegration(storeIntegration)}/knowledge/guidance'>${
+                storeIntegration.name
+            }</a>`
+            await duplicateGuidanceArticle(articleId, storeIntegration.name)
+            await invalidateAiGuidances()
+            void dispatch(
+                notify({
+                    allowHTML: true,
+                    status: NotificationStatus.Success,
+                    message,
+                }),
+            )
+        } catch {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: 'Error during guidance article duplication.',
                 }),
             )
         }
@@ -164,7 +204,9 @@ export const AiAgentGuidanceView = ({
             />
             <GuidanceList
                 guidanceArticles={guidanceArticles}
+                currentStoreIntegrationId={storeIntegration?.id}
                 onDelete={onDelete}
+                onDuplicate={onDuplicate}
                 onRowClick={onGuidanceArticleClick}
                 onChangeVisibility={onChangeVisibility}
             />
