@@ -279,16 +279,17 @@ describe('useWrapUpTime', () => {
             },
         } as any)
 
-        const { result, waitForValueToChange } =
-            renderHookWithQueryClientProvider(() => useWrapUpTime())
+        const { result } = renderHookWithQueryClientProvider(() =>
+            useWrapUpTime(),
+        )
 
-        await waitForValueToChange(() => result.current.isWrappingUp)
-
-        expect(result.current.isWrappingUp).toBe(true)
-        expect(result.current.voiceCall).toEqual({
-            id: 123,
-            integration_id: 1,
-            external_id: 'test-call-sid',
+        await waitFor(() => {
+            expect(result.current.isWrappingUp).toBe(true)
+            expect(result.current.voiceCall).toEqual({
+                id: 123,
+                integration_id: 1,
+                external_id: 'test-call-sid',
+            })
         })
     })
 })

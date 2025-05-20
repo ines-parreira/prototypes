@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { mockFlags } from 'jest-launchdarkly-mock'
@@ -344,7 +342,7 @@ describe('useEmailOnboarding()', () => {
             })
 
             it('should set errors if the API call fails', async () => {
-                const { result, waitForValueToChange } = render()
+                const { result } = render()
 
                 const payload = {
                     name: 'Support Email',
@@ -369,15 +367,15 @@ describe('useEmailOnboarding()', () => {
 
                 result.current.connectIntegration(payload)
 
-                await waitForValueToChange(() => result.current.errors)
+                await waitFor(() => {
+                    expect(createIntegrationMock).toHaveBeenCalledWith(
+                        { ...payload, type: 'email' },
+                        undefined,
+                    )
 
-                expect(createIntegrationMock).toHaveBeenCalledWith(
-                    { ...payload, type: 'email' },
-                    undefined,
-                )
-
-                expect(result.current.errors).toEqual({
-                    address: 'Is already used.',
+                    expect(result.current.errors).toEqual({
+                        address: 'Is already used.',
+                    })
                 })
             })
         })
@@ -511,7 +509,7 @@ describe('useEmailOnboarding()', () => {
             })
 
             it('should change requested and pending flags after sending a verification request', async () => {
-                const { result, waitForValueToChange } = render({ integration })
+                const { result } = render({ integration })
 
                 sendVerificationEmailMock.mockResolvedValue({
                     data: undefined,
@@ -522,72 +520,85 @@ describe('useEmailOnboarding()', () => {
 
                 result.current.sendVerification()
 
-                await waitForValueToChange(() => result.current.isRequested)
-
-                expect(result.current.isRequested).toEqual(true)
-                expect(result.current.isPending).toEqual(true)
+                await waitFor(() => {
+                    expect(result.current.isRequested).toEqual(true)
+                    expect(result.current.isPending).toEqual(true)
+                })
             })
 
-            it('should should change pending back to false after the timeout expires', async () => {
+            it('should change pending back to false after the timeout expires', async () => {
                 jest.useFakeTimers()
+                const now = new Date('2025-05-20T09:27:00.000Z')
+                jest.setSystemTime(now)
 
-                const { result, waitForValueToChange } = render({ integration })
+                const integration = {
+                    id: 1,
+                    type: 'email',
+                } as EmailIntegration
 
                 sendVerificationEmailMock.mockResolvedValue({
                     data: undefined,
                 } as HttpResponse<undefined>)
 
-                expect(result.current.isRequested).toEqual(false)
-                expect(result.current.isPending).toEqual(false)
+                const { result } = render({ integration })
 
                 result.current.sendVerification()
 
-                await waitForValueToChange(() => result.current.isRequested)
+                await waitFor(() => {
+                    expect(result.current.isPending).toBe(true)
+                    expect(result.current.isRequested).toBe(true)
+                })
 
-                expect(result.current.isPending).toEqual(true)
-                expect(result.current.isRequested).toEqual(true)
+                // advance time to expire the pending window
+                jest.setSystemTime(new Date(now.getTime() + 2 * 60_000 + 500))
+                jest.advanceTimersByTime(2 * 60_000 + 500)
 
-                jest.advanceTimersByTime(2 * 60 * 1000 + 500)
-
-                expect(result.current.isPending).toEqual(false)
-                expect(result.current.isRequested).toEqual(true)
+                await waitFor(() => {
+                    expect(result.current.isPending).toBe(false)
+                    expect(result.current.isRequested).toBe(true)
+                })
 
                 jest.useRealTimers()
             })
 
             it('should subscribe to integration events while pending', async () => {
                 jest.useFakeTimers()
+                const now = new Date('2025-05-20T09:27:00.000Z')
+                jest.setSystemTime(now)
 
-                const { result, waitForValueToChange } = render({ integration })
+                const integration = {
+                    id: 1,
+                    type: 'email',
+                } as EmailIntegration
 
                 sendVerificationEmailMock.mockResolvedValue({
                     data: undefined,
                 } as HttpResponse<undefined>)
 
-                expect(result.current.isRequested).toEqual(false)
-                expect(result.current.isPending).toEqual(false)
+                const { result } = render({ integration })
 
                 result.current.sendVerification()
 
-                await waitForValueToChange(() => result.current.isPending)
+                await waitFor(() => {
+                    expect(result.current.isPending).toBe(true)
+                    expect(socketManager.join).toHaveBeenCalledWith(
+                        'integration',
+                        integration.id,
+                    )
+                })
 
-                expect(result.current.isPending).toEqual(true)
-                expect(result.current.isRequested).toEqual(true)
+                jest.setSystemTime(new Date(now.getTime() + 2 * 60_000 + 500))
+                jest.advanceTimersByTime(2 * 60_000 + 500)
 
-                expect(socketManager.join).toHaveBeenCalledWith(
-                    'integration',
-                    integration.id,
-                )
+                await waitFor(() => {
+                    expect(result.current.isPending).toBe(false)
+                    expect(socketManager.leave).toHaveBeenCalledWith(
+                        'integration',
+                        integration.id,
+                    )
+                })
 
-                jest.advanceTimersByTime(2 * 60 * 1000 + 500)
-
-                expect(result.current.isPending).toEqual(false)
-                expect(result.current.isRequested).toEqual(true)
-
-                expect(socketManager.leave).toHaveBeenCalledWith(
-                    'integration',
-                    integration.id,
-                )
+                jest.useRealTimers()
             })
         })
 

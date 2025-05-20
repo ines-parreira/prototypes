@@ -1,7 +1,5 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
-import { waitFor } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -92,16 +90,17 @@ describe('DomainVerificationProvider', () => {
     it('should have an initial state', async () => {
         getDomainMock.mockReturnValue(Promise.reject())
 
-        const { result, waitForValueToChange } = render()
+        const { result } = render()
         expect(result.current.isFetching).toEqual(true)
-        await waitForValueToChange(() => result.current.isFetching)
 
-        expect(result.current.domain).toEqual(undefined)
-        expect(result.current.verifyDomain).toBeInstanceOf(Function)
-        expect(result.current.isRequested).toEqual(false)
-        expect(result.current.isVerifying).toEqual(false)
-        expect(result.current.isFetching).toEqual(false)
-        expect(result.current.isPending).toEqual(false)
+        await waitFor(() => {
+            expect(result.current.domain).toEqual(undefined)
+            expect(result.current.verifyDomain).toBeInstanceOf(Function)
+            expect(result.current.isRequested).toEqual(false)
+            expect(result.current.isVerifying).toEqual(false)
+            expect(result.current.isFetching).toEqual(false)
+            expect(result.current.isPending).toEqual(false)
+        })
     })
 
     describe('domain state', () => {
@@ -111,10 +110,11 @@ describe('DomainVerificationProvider', () => {
                 Promise.resolve({ data: domain } as HttpResponse<EmailDomain>),
             )
 
-            const { result, waitForValueToChange } = render()
+            const { result } = render()
 
-            await waitForValueToChange(() => result.current.domain)
-            expect(result.current.domain).toEqual(domain)
+            await waitFor(() => {
+                expect(result.current.domain).toEqual(domain)
+            })
         })
 
         it('should return undefined if it does not exist', () => {
@@ -128,12 +128,14 @@ describe('DomainVerificationProvider', () => {
         it('should return isFetching when it is being fetched', async () => {
             getDomainMock.mockReturnValue(Promise.reject())
 
-            const { result, waitForValueToChange } = render()
+            const { result } = render()
 
             expect(result.current.isFetching).toEqual(true)
-            await waitForValueToChange(() => result.current.isFetching)
-            expect(result.current.isFetching).toEqual(false)
-            expect(result.current.domain).toEqual(undefined)
+
+            await waitFor(() => {
+                expect(result.current.isFetching).toEqual(false)
+                expect(result.current.domain).toEqual(undefined)
+            })
         })
 
         it('should populate current values with results from querying DNS', async () => {
@@ -148,15 +150,17 @@ describe('DomainVerificationProvider', () => {
                 })),
             )
 
-            const { result, waitForValueToChange } = render()
+            const { result } = render()
 
-            await waitForValueToChange(() => result.current.domain)
-            expect(populateCurrentValuesForDNSRecords).toHaveBeenCalledWith(
-                domain.data.sending_dns_records,
-            )
-            expect(parseRecordsCurrentValues).toHaveBeenCalledWith(
-                domain.data.sending_dns_records,
-            )
+            await waitFor(() => {
+                expect(populateCurrentValuesForDNSRecords).toHaveBeenCalledWith(
+                    domain.data.sending_dns_records,
+                )
+                expect(parseRecordsCurrentValues).toHaveBeenCalledWith(
+                    domain.data.sending_dns_records,
+                )
+            })
+
             const parsedRecords =
                 parseRecordsCurrentValuesMock.mock.results.slice(-1)[0].value
 
@@ -181,10 +185,13 @@ describe('DomainVerificationProvider', () => {
                 } as HttpResponse<EmailDomain>),
             )
 
-            const { result, waitForValueToChange } = render()
+            render()
 
-            await waitForValueToChange(() => result.current.domain)
-            expect(populateCurrentValuesForDNSRecords).toHaveBeenCalledWith([])
+            await waitFor(() => {
+                expect(populateCurrentValuesForDNSRecords).toHaveBeenCalledWith(
+                    [],
+                )
+            })
         })
     })
 
@@ -196,38 +203,47 @@ describe('DomainVerificationProvider', () => {
         })
 
         it('should change requested and pending flags after triggering verify', async () => {
-            const { result, waitForValueToChange } = render()
+            const { result } = render()
 
             expect(result.current.isRequested).toEqual(false)
             expect(result.current.isPending).toEqual(false)
 
             result.current.verifyDomain()
 
-            await waitForValueToChange(() => result.current.isRequested)
-
-            expect(result.current.isRequested).toEqual(true)
-            expect(result.current.isPending).toEqual(true)
+            await waitFor(() => {
+                expect(result.current.isRequested).toEqual(true)
+                expect(result.current.isPending).toEqual(true)
+            })
         })
 
-        it('should should change pending back to false after the timeout expires', async () => {
+        it('should change pending back to false after the timeout expires', async () => {
             jest.useFakeTimers()
+            const now = new Date('2025-05-20T09:27:00.000Z') // baseline time
+            jest.setSystemTime(now)
 
-            const { result, waitForValueToChange } = render()
+            const { result } = render()
 
-            expect(result.current.isRequested).toEqual(false)
-            expect(result.current.isPending).toEqual(false)
+            expect(result.current.isPending).toBe(false)
+            expect(result.current.isRequested).toBe(false)
 
-            result.current.verifyDomain()
+            act(() => {
+                result.current.verifyDomain()
+            })
 
-            await waitForValueToChange(() => result.current.isRequested)
+            await waitFor(() => {
+                expect(result.current.isPending).toBe(true)
+                expect(result.current.isRequested).toBe(true)
+            })
 
-            expect(result.current.isPending).toEqual(true)
-            expect(result.current.isRequested).toEqual(true)
+            jest.setSystemTime(new Date(now.getTime() + 60_000))
+            act(() => {
+                jest.advanceTimersByTime(60_000)
+            })
 
-            jest.advanceTimersByTime(60 * 1000)
-
-            expect(result.current.isPending).toEqual(false)
-            expect(result.current.isRequested).toEqual(true)
+            await waitFor(() => {
+                expect(result.current.isPending).toBe(false)
+                expect(result.current.isRequested).toBe(true)
+            })
 
             jest.useRealTimers()
         })
@@ -238,17 +254,17 @@ describe('DomainVerificationProvider', () => {
                 Promise.resolve({ data: domain } as HttpResponse<EmailDomain>),
             )
 
-            const { result, waitForValueToChange } = render()
+            const { result } = render()
 
             expect(result.current.isRequested).toEqual(false)
             expect(result.current.isPending).toEqual(false)
 
             result.current.verifyDomain()
 
-            await waitForValueToChange(() => result.current.isRequested)
-
-            expect(result.current.isRequested).toEqual(true)
-            expect(result.current.isPending).toEqual(false)
+            await waitFor(() => {
+                expect(result.current.isRequested).toEqual(true)
+                expect(result.current.isPending).toEqual(false)
+            })
         })
     })
 
@@ -272,10 +288,10 @@ describe('DomainVerificationProvider', () => {
                         'gorgias.com',
                         undefined,
                     )
+                    expect(result.current.isVerifying).toEqual(false)
+                    expect(result.current.isRequested).toEqual(true)
+                    expect(result.current.isPending).toEqual(true)
                 })
-                expect(result.current.isVerifying).toEqual(false)
-                expect(result.current.isRequested).toEqual(true)
-                expect(result.current.isPending).toEqual(true)
             })
 
             it('should show notification on success', async () => {
@@ -326,9 +342,7 @@ describe('DomainVerificationProvider', () => {
                 }),
             )
 
-            const { result, waitForValueToChange } = render()
-
-            await waitForValueToChange(() => result.current.isFetching)
+            render()
 
             await waitFor(() => {
                 expect(updateEmailIntegrationDomainMock).toHaveBeenCalled()
@@ -345,9 +359,11 @@ describe('DomainVerificationProvider', () => {
                 }),
             )
 
-            const { result, rerender, waitForValueToChange } = render()
+            const { result, rerender } = render()
 
-            await waitForValueToChange(() => result.current.isFetching)
+            await waitFor(() => {
+                expect(result.current.isFetching).toEqual(false)
+            })
 
             updateEmailIntegrationDomainMock.mockRejectedValue({
                 status: 400,
@@ -355,7 +371,11 @@ describe('DomainVerificationProvider', () => {
 
             rerender()
 
-            expect(updateEmailIntegrationDomainMock).toHaveBeenCalledTimes(1)
+            await waitFor(() => {
+                expect(updateEmailIntegrationDomainMock).toHaveBeenCalledTimes(
+                    1,
+                )
+            })
         })
     })
 })
