@@ -1,7 +1,13 @@
 import { render, screen } from '@testing-library/react'
 
+import { TicketEventEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+
 import type { TicketElement as TicketElementType } from '../../types'
 import { TicketElement } from '../TicketElement'
+
+jest.mock('../TicketAIEvent', () => ({
+    TicketAIEvent: () => <div>TicketAIEvent</div>,
+}))
 
 jest.mock('../TicketEvent', () => ({
     TicketEvent: () => <div>TicketEvent</div>,
@@ -32,6 +38,15 @@ describe('TicketElement', () => {
         } as TicketElementType
         render(<TicketElement element={element} />)
         expect(screen.getByText('TicketEvent')).toBeInTheDocument()
+    })
+
+    it('should render a TicketAIEvent for an ai-event element', () => {
+        const element = {
+            type: 'ai-event',
+            data: { eventType: TicketEventEnum.CLOSE },
+        } as TicketElementType
+        render(<TicketElement element={element} />)
+        expect(screen.getByText('TicketAIEvent')).toBeInTheDocument()
     })
 
     it('should render a TicketVoiceCall for a voice-call element', () => {

@@ -1,4 +1,5 @@
 import { TicketChannel } from 'business/types/ticket'
+import { MessageMetadataType } from 'models/ticket/types'
 
 import type { TicketElement } from '../../types'
 import { bareMessageTransformer } from '../bareMessageTransformer'
@@ -11,7 +12,19 @@ describe('bareMessageTransformer', () => {
         expect(result).toEqual(elements)
     })
 
-    it('should not transform messages form non-grouping channels', () => {
+    it('should not transform signal messages', () => {
+        const elements = [
+            {
+                type: 'message',
+                data: { meta: { type: MessageMetadataType.Signal } },
+            },
+        ] as TicketElement[]
+
+        const result = bareMessageTransformer(elements)
+        expect(result).toEqual(elements)
+    })
+
+    it('should not transform messages from non-grouping channels', () => {
         const elements = [
             { type: 'message', data: { channel: TicketChannel.Email } },
         ] as TicketElement[]

@@ -1,4 +1,5 @@
 import type { TicketElement as TicketElementType } from '../types'
+import { TicketAIEvent } from './TicketAIEvent'
 import { TicketEvent } from './TicketEvent'
 import { TicketMessage } from './TicketMessage'
 import { TicketVoiceCall } from './TicketVoiceCall'
@@ -14,6 +15,9 @@ export function TicketElement({ element }: Props) {
 
         case 'event':
             return <TicketEvent data={element.data} />
+
+        case 'ai-event':
+            return <TicketAIEvent data={element.data} />
 
         case 'voice-call':
             return <TicketVoiceCall data={element.data} />

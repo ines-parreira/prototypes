@@ -1,5 +1,6 @@
 import { TicketChannel } from 'business/types/ticket'
 
+import { isSignalMessage } from '../helpers/isSignalMessage'
 import type { TicketElement } from '../types'
 
 type TicketMessageElement = Extract<TicketElement, { type: 'message' }>
@@ -17,6 +18,7 @@ export function bareMessageTransformer(elements: TicketElement[]) {
     return elements.map<TicketElement>((element) => {
         if (
             element.type !== 'message' ||
+            isSignalMessage(element.data) ||
             !groupingChannels[element.data.channel as TicketChannel]
         ) {
             firstOfGroup = null
