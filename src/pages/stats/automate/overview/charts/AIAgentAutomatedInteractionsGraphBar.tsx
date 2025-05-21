@@ -27,11 +27,11 @@ export const AutomateCustomColors = [
 export const AI_AGENT_CHART_FIELDS = [
     {
         field: AIAgentSkills.AIAgentSupport,
-        label: 'AI Agent Support',
+        label: 'Support Agent Skill',
     },
     {
         field: AIAgentSkills.AIAgentSales,
-        label: 'Shopping Assistant',
+        label: 'Shopping Assistant Skill',
     },
 ]
 

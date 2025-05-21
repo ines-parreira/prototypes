@@ -163,16 +163,6 @@ export default function AutomateOverviewContent() {
                     </DashboardGridCell>
                 </DashboardSection>
                 <DashboardSection title="Impact">
-                    {isAutomateAIAgentInteractionsEnabled && (
-                        <DashboardGridCell size={12}>
-                            <DashboardComponent
-                                chart={
-                                    AutomateOverviewChart.AIAgentAutomatedInteractionsGraphBar
-                                }
-                                config={AutomateOverviewReportConfig}
-                            />
-                        </DashboardGridCell>
-                    )}
                     <DashboardGridCell size={6}>
                         <DashboardComponent
                             chart={
@@ -233,6 +223,16 @@ export default function AutomateOverviewContent() {
                             config={AutomateOverviewReportConfig}
                         />
                     </DashboardGridCell>
+                    {isAutomateAIAgentInteractionsEnabled && (
+                        <DashboardGridCell size={12}>
+                            <DashboardComponent
+                                chart={
+                                    AutomateOverviewChart.AIAgentAutomatedInteractionsGraphBar
+                                }
+                                config={AutomateOverviewReportConfig}
+                            />
+                        </DashboardGridCell>
+                    )}
                 </DashboardSection>
                 <AnalyticsFooter />
             </StatsPage>
