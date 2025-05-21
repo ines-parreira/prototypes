@@ -102,7 +102,7 @@ describe('<PhoneNumberCreateModalForm/>', () => {
             )
             expect(queryByText('Step 2 of 2 - Address Verification')).toBe(null)
 
-            expect(queryByText('Title')).not.toBe(null)
+            expect(queryByText('Phone number name')).not.toBe(null)
             expect(queryByText('Country')).not.toBe(null)
             expect(queryByText('Area code')).not.toBe(null)
 
@@ -127,7 +127,7 @@ describe('<PhoneNumberCreateModalForm/>', () => {
             )
             expect(queryByText('Step 2 of 2 - Address Verification')).toBe(null)
 
-            expect(queryByText('Title')).not.toBe(null)
+            expect(queryByText('Phone number name')).not.toBe(null)
             expect(queryByText('Country')).not.toBe(null)
             expect(queryByText('Area code')).not.toBe(null)
         })

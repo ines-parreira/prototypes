@@ -156,7 +156,7 @@ export default function PhoneNumberCreateModalForm({
                                 <>
                                     <FormGroup>
                                         <InputField
-                                            label="Title"
+                                            label="Phone number name"
                                             placeholder="Ex: Company Support Line"
                                             value={name}
                                             onChange={setName}

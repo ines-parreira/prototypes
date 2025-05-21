@@ -145,7 +145,7 @@ export default function PhoneNumberCreateForm(): JSX.Element {
                                 <h4 className="mb-3">Phone number settings</h4>
                             )}
                             <InputField
-                                label="Title"
+                                label="Phone number name"
                                 placeholder="Ex: Company Support Line"
                                 value={name}
                                 onChange={setName}

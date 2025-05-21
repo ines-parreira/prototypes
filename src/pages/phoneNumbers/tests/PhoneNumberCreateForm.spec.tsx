@@ -121,7 +121,7 @@ describe('<PhoneNumberCreateForm/>', () => {
             await act(async () => {
                 fireEvent.change(
                     getByRole('textbox', {
-                        name: /title required/i,
+                        name: /phone number name required/i,
                     }),
                     { target: { value: 'test title' } },
                 )
@@ -188,7 +188,7 @@ describe('<PhoneNumberCreateForm/>', () => {
             await act(async () => {
                 fireEvent.change(
                     getByRole('textbox', {
-                        name: /title required/i,
+                        name: /phone number name required/i,
                     }),
                     { target: { value: 'test title' } },
                 )
@@ -240,7 +240,7 @@ describe('<PhoneNumberCreateForm/>', () => {
             await act(async () => {
                 fireEvent.change(
                     getByRole('textbox', {
-                        name: /title required/i,
+                        name: /phone number name required/i,
                     }),
                     { target: { value: 'test title' } },
                 )
