@@ -3,10 +3,10 @@ import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import { ReportsIDs } from 'pages/stats/dashboards/constants'
 import { ChartType, ReportConfig } from 'pages/stats/dashboards/types'
 import { AGENT_PERFORMANCE_SECTION_TITLE } from 'pages/stats/support-performance/agents/AgentsTableChart'
+import { ProductInsightsTableChart } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableChart'
 import { TopAIIntentsOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TopAIIntentsOverTimeChart'
 import { TotalProductSentimentOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TotalProductSentimentOverTimeChart'
 import { TICKET_VOLUME_CHART_LABEL } from 'pages/stats/voice-of-customer/product-insights/constants'
-import { ProductInsightsTableChart } from 'pages/stats/voice-of-customer/product-insights/placeholder/ProductInsightsTableChart'
 import { TicketVolumeChart } from 'pages/stats/voice-of-customer/product-insights/placeholder/TicketVolumeChart'
 import {
     TOP_PRODUCTS_PER_INTENT_HINT,

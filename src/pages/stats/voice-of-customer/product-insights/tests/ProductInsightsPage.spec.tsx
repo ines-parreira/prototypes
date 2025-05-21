@@ -10,9 +10,9 @@ import { DrillDownModal } from 'pages/stats/common/drill-down/DrillDownModal'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import { ChartsActionMenu } from 'pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import { ProductInsightsEditColumns } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsEditColumns'
 import { TopAIIntentsOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TopAIIntentsOverTimeChart'
 import { TotalProductSentimentOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TotalProductSentimentOverTimeChart'
-import { ProductInsightsEditColumns } from 'pages/stats/voice-of-customer/product-insights/placeholder/ProductInsightsEditColumns'
 import { TopProductsPerIntentChart } from 'pages/stats/voice-of-customer/product-insights/placeholder/TopProductsPerIntentChart'
 import {
     PRODUCT_INSIGHTS_PAGE_TITLE,
@@ -35,7 +35,7 @@ jest.mock(
 const TopAIIntentsOverTimeChartMock = assumeMock(TopAIIntentsOverTimeChart)
 
 jest.mock(
-    'pages/stats/voice-of-customer/product-insights/placeholder/ProductInsightsEditColumns',
+    'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsEditColumns',
 )
 const ProductInsightsEditColumnsMock = assumeMock(ProductInsightsEditColumns)
 jest.mock('pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu')

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import classNames from 'classnames'
 
@@ -10,7 +10,7 @@ import css from 'pages/stats/common/components/Table/BreakdownTable.less'
 import { TableWithNestedRows } from 'pages/stats/common/components/Table/TableWithNestedRows'
 import { TableWithNestedRowsCell } from 'pages/stats/common/components/Table/TableWithNestedRowsCell'
 import { TruncateCellContent } from 'pages/stats/common/components/TruncateCellContent'
-import { dummyProducts } from 'pages/stats/voice-of-customer/product-insights/placeholder/ProductInsightsTable'
+import { dummyProducts } from 'pages/stats/voice-of-customer/product-insights/placeholder/data'
 import topProductsCss from 'pages/stats/voice-of-customer/product-insights/placeholder/TopProductsPerIntent.less'
 import {
     columnOrder,
