@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import { ChatSettingsFormComponent } from '../ChatSettingsFormComponent'
 
@@ -160,5 +161,119 @@ describe('ChatSettingsFormComponent', () => {
         )
 
         expect(updateValue).not.toHaveBeenCalled()
+    })
+
+    it('should display uninstalled chat error message when a selected chat is uninstalled', () => {
+        const uninstalledChatChannels = [
+            {
+                type: 'chat',
+                value: {
+                    id: 1,
+                    name: 'Chat 1',
+                    meta: { app_id: 123 },
+                    isUninstalled: true,
+                },
+            },
+            {
+                type: 'chat',
+                value: { id: 2, name: 'Chat 2', meta: { app_id: 456 } },
+            },
+        ] as any
+
+        render(
+            <MemoryRouter>
+                <ChatSettingsFormComponent
+                    {...mockProps}
+                    monitoredChatIntegrations={[1]}
+                    chatChannels={uninstalledChatChannels}
+                />
+            </MemoryRouter>,
+        )
+
+        expect(
+            screen.getByText('One or more Chats are not installed.'),
+        ).toBeInTheDocument()
+        expect(screen.getByText('Install Chat')).toBeInTheDocument()
+        expect(screen.getByText('open_in_new')).toBeInTheDocument()
+    })
+
+    it('should render the install chat link with correct URL', () => {
+        const chatId = 123
+        const uninstalledChatChannels = [
+            {
+                type: 'chat',
+                value: {
+                    id: chatId,
+                    name: 'Chat 1',
+                    meta: { app_id: 456 },
+                    isUninstalled: true,
+                },
+            },
+        ] as any
+
+        render(
+            <MemoryRouter>
+                <ChatSettingsFormComponent
+                    {...mockProps}
+                    monitoredChatIntegrations={[chatId]}
+                    chatChannels={uninstalledChatChannels}
+                />
+            </MemoryRouter>,
+        )
+
+        const installLink = screen.getByText('Install Chat').closest('a')
+        expect(installLink).toHaveAttribute(
+            'to',
+            `/app/settings/channels/gorgias_chat/${chatId}/installation`,
+        )
+    })
+
+    it('should use first uninstalled chat for the installation link when multiple chats are uninstalled', () => {
+        const firstUninstalledChatId = 123
+        const secondUninstalledChatId = 456
+        const multipleUninstalledChats = [
+            {
+                type: 'chat',
+                value: { id: 789, name: 'Chat 1', meta: { app_id: 654 } },
+            },
+            {
+                type: 'chat',
+                value: {
+                    id: firstUninstalledChatId,
+                    name: 'Chat 2',
+                    meta: { app_id: 789 },
+                    isUninstalled: true,
+                },
+            },
+            {
+                type: 'chat',
+                value: {
+                    id: secondUninstalledChatId,
+                    name: 'Chat 3',
+                    meta: { app_id: 987 },
+                    isUninstalled: true,
+                },
+            },
+        ] as any
+
+        render(
+            <MemoryRouter>
+                <ChatSettingsFormComponent
+                    {...mockProps}
+                    monitoredChatIntegrations={[
+                        789,
+                        firstUninstalledChatId,
+                        secondUninstalledChatId,
+                    ]}
+                    chatChannels={multipleUninstalledChats}
+                />
+            </MemoryRouter>,
+        )
+
+        const installLink = screen.getByText('Install Chat').closest('a')
+        expect(installLink).toHaveAttribute(
+            'to',
+            `/app/settings/channels/gorgias_chat/${firstUninstalledChatId}/installation`,
+        )
     })
 })

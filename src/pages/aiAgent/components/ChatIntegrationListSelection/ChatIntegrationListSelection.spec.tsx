@@ -19,6 +19,14 @@ const mockDisabledChat = {
     },
 }
 
+const mockUninstalledChat = {
+    ...mockChatChannels[0],
+    value: {
+        ...mockChatChannels[0].value,
+        isUninstalled: true,
+    },
+}
+
 describe('ChatIntegrationListSelection', () => {
     it('should add a new ID to selectedIds when toggled on', () => {
         const mockOnSelectionChange = jest.fn()
@@ -157,5 +165,28 @@ describe('ChatIntegrationListSelection', () => {
         expect(
             screen.getByText('Chat already used by AI Agent in another store'),
         ).toBeInTheDocument()
+    })
+
+    it('should display the disabled text when the chat is uninstalled', () => {
+        const disabledText = 'Chat is not installed'
+
+        render(
+            <ChatIntegrationListSelection
+                onSelectionChange={jest.fn()}
+                selectedIds={[]}
+                chatItems={[mockUninstalledChat]}
+                hasError={false}
+                withDisabledText={true}
+                disabledText={disabledText}
+            />,
+        )
+
+        const dropdown = screen.getByRole('combobox')
+        fireEvent.focus(dropdown)
+
+        expect(
+            screen.getByText(mockUninstalledChat.value.name),
+        ).toBeInTheDocument()
+        expect(screen.getByText(disabledText)).toBeInTheDocument()
     })
 })
