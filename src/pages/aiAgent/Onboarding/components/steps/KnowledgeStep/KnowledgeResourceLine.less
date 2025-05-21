@@ -4,8 +4,7 @@
 :local {
     .line {
         display: flex;
-        flex-direction: row;
-        flex: 1;
+        align-items: center;
 
         .icon {
             max-width: 40px;
@@ -13,13 +12,23 @@
         }
 
         .resource {
-            .heading-subsection-semibold();
+            flex-grow: 1;
             margin-left: @layout-spacing-xs;
+            font-weight: 600;
+            font-size: 16px;
             color: var(--neutral-grey-6);
         }
 
         .status {
-            margin-left: auto;
+            display: flex;
+            align-items: center;
+            margin-left: @layout-spacing-xs;
+        }
+
+        .badge {
+            text-transform: none;
+            font-size: 12px;
+            height: 24px;
         }
     }
 }

@@ -8,9 +8,15 @@
         cursor: default;
     }
 
-    .separator {
-        margin-top: @layout-spacing-s;
-        margin-bottom: @layout-spacing-m;
+    .knowledgeResources {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-m;
+
+        & > *:not(:last-child) {
+            padding-bottom: @layout-spacing-s;
+            border-bottom: 1px solid var(--neutral-grey-2);
+        }
     }
 
     [class*='ConvAiOnboardingLayout--onboardingBody'] {

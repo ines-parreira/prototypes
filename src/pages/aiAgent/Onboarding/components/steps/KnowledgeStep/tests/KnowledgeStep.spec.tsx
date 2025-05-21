@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -10,12 +8,13 @@ import configureMockStore from 'redux-mock-store'
 
 import { shopifyIntegration } from 'fixtures/integrations'
 import * as hooks from 'hooks/useAppSelector'
+import { OnboardingNotificationState } from 'models/aiAgent/types'
+import { useOnboardingNotificationState } from 'pages/aiAgent/hooks/useOnboardingNotificationState'
 import { KnowledgeStep } from 'pages/aiAgent/Onboarding/components/steps/KnowledgeStep/KnowledgeStep'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import { useGetHelpCentersByShopName } from 'pages/aiAgent/Onboarding/hooks/useGetHelpCentersByShopName'
-import { useGetKnowledgeStatusByShopName } from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgeStatusByShopName'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { useTopLocations } from 'pages/aiAgent/Onboarding/hooks/useTopLocations'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
@@ -24,12 +23,13 @@ import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailI
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
-jest.mock(
-    'pages/aiAgent/Onboarding/hooks/useGetKnowledgeStatusByShopName',
-    () => ({
-        useGetKnowledgeStatusByShopName: jest.fn().mockReturnValue('DONE'),
-    }),
+jest.mock('pages/aiAgent/hooks/useOnboardingNotificationState', () => ({
+    useOnboardingNotificationState: jest.fn(),
+}))
+const mockUseOnboardingNotificationState = jest.mocked(
+    useOnboardingNotificationState,
 )
+
 jest.mock('pages/aiAgent/Onboarding/hooks/useGetHelpCentersByShopName', () => ({
     useGetHelpCentersByShopName: jest
         .fn()
@@ -50,21 +50,12 @@ jest.mock('pages/settings/contactForm/hooks/useEmailIntegrations')
 const useGetHelpCentersByShopNameMock = assumeMock(useGetHelpCentersByShopName)
 const mockUseEmailIntegrations = useEmailIntegrations as jest.Mock
 
-jest.mock(
-    'pages/aiAgent/Onboarding/hooks/useGetKnowledgeStatusByShopName',
-    () => ({
-        useGetKnowledgeStatusByShopName: jest.fn(),
-    }),
-)
 jest.mock('pages/aiAgent/Onboarding/hooks/useTopLocations')
 
 const mockUseTopLocations = assumeMock(useTopLocations)
 
 const mockUseGetOnboardingData = useGetOnboardingData as jest.Mock
 const mockUseUpdateOnboarding = useUpdateOnboarding as jest.Mock
-
-const mockUseGetKnowledgeStatusByShopName =
-    useGetKnowledgeStatusByShopName as jest.Mock
 
 const queryClient = new QueryClient()
 
@@ -108,14 +99,19 @@ describe('KnowledgeStep', () => {
             },
         })
 
+        mockUseOnboardingNotificationState.mockReturnValue({
+            isLoading: false,
+            onboardingNotificationState: {
+                scrapingProcessingFinishedDatetime: '2025-05-21T12:00:00.000Z',
+            } as OnboardingNotificationState,
+        })
+
         mockUseUpdateOnboarding.mockReturnValue({
             mutate: (data: any, { onSuccess }: any) => {
                 onSuccess()
             },
             isLoading: false,
         })
-
-        mockUseGetKnowledgeStatusByShopName.mockReturnValue('done')
 
         mockUseEmailIntegrations.mockReturnValue({
             emailIntegrations: true,
@@ -157,7 +153,7 @@ describe('KnowledgeStep', () => {
         ).toBeInTheDocument()
     })
 
-    it('renders Shopify knowledge source when shop name is provided', () => {
+    it('renders all knowledge sources when everything is available', () => {
         useGetHelpCentersByShopNameMock.mockReturnValue({
             isHelpCenterLoading: false,
             helpCenters: getHelpCentersResponseFixture.data,
@@ -169,9 +165,9 @@ describe('KnowledgeStep', () => {
 
         expect(screen.getByText('ACME Help Center')).toBeInTheDocument()
 
-        expect(
-            screen.getByText(shopifyIntegration.meta.shop_name),
-        ).toBeInTheDocument()
+        expect(screen.getByText('Shopify Store')).toBeInTheDocument()
+
+        expect(screen.getByText('shopify.myshopify.com')).toBeInTheDocument()
     })
 
     it('does not render Help center knowledge source when there is none', () => {

@@ -8,6 +8,7 @@ export type StepProps = {
 }
 
 export enum KnowledgeSourceType {
+    DOMAIN = 'domain',
     SHOPIFY = 'shopify',
     HELP_CENTER = 'help_center',
     OTHER = 'other',
@@ -16,11 +17,4 @@ export enum KnowledgeSourceType {
 export enum KnowledgeStatus {
     IN_PROGRESS = 'in_progress',
     DONE = 'done',
-}
-
-// TODO: remove this once the real API and types exist
-export type TemporaryKnowledgeData = {
-    url: string
-    domain: string
-    status: KnowledgeStatus
 }

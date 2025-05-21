@@ -4,9 +4,7 @@ import { useHistory, useParams } from 'react-router-dom'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import useAppSelector from 'hooks/useAppSelector'
 import { storeConfigurationKeys } from 'models/aiAgent/queries'
-import { ShopifyIntegration } from 'models/integration/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { Card, CardContent } from 'pages/aiAgent/Onboarding/components/Card'
 import KnowledgePreview from 'pages/aiAgent/Onboarding/components/KnowledgePreview/KnowledgePreview'
@@ -18,25 +16,20 @@ import {
     KnowledgeSourceType,
     KnowledgeStatus,
     StepProps,
-    TemporaryKnowledgeData,
 } from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding/hooks/useCheckStoreAlreadyConfigured'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
-import { useGetHelpCentersByShopName } from 'pages/aiAgent/Onboarding/hooks/useGetHelpCentersByShopName'
-import { useGetKnowledgeStatusByShopName } from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgeStatusByShopName'
+import { useGetKnowledgeSourceStatuses } from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgeSourceStatuses'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import {
-    LoadingPulserIcon,
     OnboardingBody,
     OnboardingContentContainer,
     OnboardingPreviewContainer,
 } from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
-import { Separator } from 'pages/common/components/Separator/Separator'
-import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 
 export const KnowledgeStep: React.FC<StepProps> = ({
     currentStep,
@@ -50,44 +43,19 @@ export const KnowledgeStep: React.FC<StepProps> = ({
 
     const { validSteps } = useSteps({ shopName, isStoreSelected })
 
-    const { data, isLoading: isLoadingOnboardingData } =
-        useGetOnboardingData(shopName)
+    const { data } = useGetOnboardingData(shopName)
 
     useCheckStoreIntegration()
     useCheckOnboardingCompleted()
     useCheckStoreAlreadyConfigured()
 
-    const {
-        mutate: doUpdateOnboardingMutation,
-        isLoading: isUpdatingOnboarding,
-    } = useUpdateOnboarding()
+    const { mutate: doUpdateOnboardingMutation } = useUpdateOnboarding()
     const queryClient = useQueryClient()
 
-    /// This part is a temporary block to be removed once the actual data is available
-    const shopifyIntegration: ShopifyIntegration = useAppSelector(
-        getShopifyIntegrationByShopName(shopName || ''),
-    ).toJS()
-
-    const dummyKnowledgeData: TemporaryKnowledgeData[] = [
-        {
-            url: shopifyIntegration?.meta?.shop_domain || '',
-            domain: shopifyIntegration?.meta?.shop_domain || '',
-            status: KnowledgeStatus.DONE,
-        },
-    ]
-    /// This is the end of the temporary block
-
-    const shopKnowledgeStatus = useGetKnowledgeStatusByShopName(
-        shopName || '',
-        dummyKnowledgeData,
-    )
-    const shopKnowledgeIsReady = shopKnowledgeStatus === KnowledgeStatus.DONE
-
-    const { isHelpCenterLoading, helpCenters } = useGetHelpCentersByShopName(
-        shopName || '',
-    )
-    const hasHelpCenter = !!helpCenters.length
     const { routes } = useAiAgentNavigation({ shopName })
+
+    const { knowledgeSources, helpCenters } =
+        useGetKnowledgeSourceStatuses(shopName)
 
     const onNextClick = () => {
         if (data && 'id' in data) {
@@ -129,37 +97,25 @@ export const KnowledgeStep: React.FC<StepProps> = ({
         goToStep(previousStep)
     }
 
-    const renderContent = () => {
-        if (isLoadingOnboardingData || isUpdatingOnboarding) {
-            return <LoadingPulserIcon icon="" />
-        }
+    const renderContent = () => (
+        <div className={css.knowledgeResources}>
+            {Object.entries(knowledgeSources).map(([type, knowledgeSource]) => {
+                if (!knowledgeSource) return undefined
 
-        return (
-            <>
-                {shopName && (
-                    <KnowledgeResourceLine
-                        name={shopName}
-                        type={KnowledgeSourceType.SHOPIFY}
-                        isReady={shopKnowledgeIsReady}
-                    />
-                )}
-                {shopName && hasHelpCenter && (
-                    <Separator className={css.separator} />
-                )}
-                {isHelpCenterLoading ? (
-                    <Skeleton height={40} />
+                const { isLoading, label, status } = knowledgeSource
+                return isLoading ? (
+                    <Skeleton key={type} height={24} />
                 ) : (
-                    hasHelpCenter && (
-                        <KnowledgeResourceLine
-                            name={helpCenters[0].name}
-                            type={KnowledgeSourceType.HELP_CENTER}
-                            isReady={hasHelpCenter}
-                        />
-                    )
-                )}
-            </>
-        )
-    }
+                    <KnowledgeResourceLine
+                        key={type}
+                        name={label}
+                        type={type as KnowledgeSourceType}
+                        isReady={status === KnowledgeStatus.DONE}
+                    />
+                )
+            })}
+        </div>
+    )
 
     return (
         <OnboardingBody>

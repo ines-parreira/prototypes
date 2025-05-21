@@ -17,6 +17,8 @@ type Props = {
 
 const getIcon = (type: KnowledgeSourceType) => {
     switch (type) {
+        case KnowledgeSourceType.DOMAIN:
+            return <LinkIcon />
         case KnowledgeSourceType.SHOPIFY:
             return <StoreIcon />
         case KnowledgeSourceType.HELP_CENTER:
@@ -37,14 +39,14 @@ export const KnowledgeResourceLine: React.FC<Props> = ({
             <div className={css.resource}>{name}</div>
             <div className={css.status}>
                 {isReady ? (
-                    <Badge type={'light-success'}>
+                    <Badge className={css.badge} type={'light-success'}>
                         <Fragment key=".0">
                             <i className="material-icons">check_circle</i>
                             <div>Ready</div>
                         </Fragment>
                     </Badge>
                 ) : (
-                    <Badge type={'light-grey'}>
+                    <Badge className={css.badge} type={'light-grey'}>
                         <Fragment key=".0">
                             <LoadingSpinner
                                 className={css.spinner}
