@@ -115,7 +115,7 @@ describe('withTypingActivity', () => {
 
         await waitFor(() => {
             expect(reportError).toHaveBeenCalledWith(
-                new Error('Realtime typing status error, statusCode: 500'),
+                new Error('Realtime typing status error with statusCode: 500'),
                 {
                     extra: { status: { reason: 'it failed', statusCode: 500 } },
                 },
@@ -140,7 +140,7 @@ describe('withTypingActivity', () => {
 
         await waitFor(() => {
             expect(reportError).toHaveBeenCalledWith(
-                new Error('Realtime typing status error, statusCode: 500'),
+                new Error('Realtime typing status error with statusCode: 500'),
                 {
                     extra: { status: { reason: 'it failed', statusCode: 500 } },
                 },
@@ -178,7 +178,9 @@ describe('withTypingActivity', () => {
 
         await waitFor(() => {
             expect(reportError).toHaveBeenCalledWith(
-                new Error('Realtime typing status error, statusCode: unknown'),
+                new Error(
+                    'Realtime typing status error with statusCode: unknown',
+                ),
                 {
                     extra: { status: { reason: 'it failed' } },
                 },

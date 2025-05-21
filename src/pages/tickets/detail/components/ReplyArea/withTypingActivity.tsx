@@ -22,7 +22,7 @@ const handlePubNubError = (error: unknown) => {
         const status = toPlainObject(error?.status) as RealtimeError['status']
         reportError(
             new Error(
-                `Realtime typing status error, statusCode: ${status.statusCode || 'unknown'}`,
+                `Realtime typing status error with statusCode: ${status.statusCode ?? 'unknown'}`,
             ),
             {
                 extra: { status },
