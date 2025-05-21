@@ -8,7 +8,6 @@ import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import { useChatIntegration } from 'pages/convert/campaigns/hooks/useChatIntegration'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
 import {
     CampaignFrequencySetting,
     defaultValidationValues,
@@ -61,8 +60,6 @@ export const GeneralSettingsView = () => {
         campaignFrequency: campaignFrequencyServerData,
         isLoading,
     } = useConvertGeneralSettings(integration.toJS())
-
-    const isCampaignProritizationEnabled = useIsCampaignProritizationEnabled()
 
     useEffect(() => {
         if (!emailDisclaimerServerData) return
@@ -158,13 +155,11 @@ export const GeneralSettingsView = () => {
                 <Loader />
             ) : (
                 <>
-                    {isCampaignProritizationEnabled && (
-                        <CampaignFrequencySetting
-                            campaignFrequencySettings={campaignFrequencySetting}
-                            onSettingsChange={setCampaignFrequencySettings}
-                            onValidationChange={onValidationChange}
-                        />
-                    )}
+                    <CampaignFrequencySetting
+                        campaignFrequencySettings={campaignFrequencySetting}
+                        onSettingsChange={setCampaignFrequencySettings}
+                        onValidationChange={onValidationChange}
+                    />
                     <TermsAndConditionsSetting
                         disclaimerSettings={disclaimerSettings}
                         onDisclaimerSettingsChange={setDisclaimerSettings}

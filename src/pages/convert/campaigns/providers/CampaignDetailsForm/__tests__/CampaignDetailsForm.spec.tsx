@@ -30,7 +30,6 @@ import { useGetPreviewProducts } from 'pages/convert/campaigns/hooks/useGetPrevi
 import { useUtm } from 'pages/convert/campaigns/hooks/useUtm'
 import { CampaignScheduleModeEnum } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
 import { useConvertGeneralSettings } from 'pages/stats/convert/hooks/useConvertGeneralSettings'
 import { getNewMessageAttachments } from 'state/newMessage/selectors'
 import { RootState, StoreDispatch } from 'state/types'
@@ -58,14 +57,11 @@ jest.mock('pages/convert/campaigns/hooks/useGetPreviewProducts')
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 jest.mock('pages/convert/campaigns/hooks/useUtm.ts')
 jest.mock('pages/stats/convert/hooks/useConvertGeneralSettings')
-jest.mock('pages/convert/common/hooks/useIsCampaignProritizationEnabled')
 jest.mock('models/convert/campaign/queries')
 const useGetOrCreateChannelConnectionMock = assumeMock(
     useGetOrCreateChannelConnection,
 )
-const useIsCampaignProritizationEnabledMock = assumeMock(
-    useIsCampaignProritizationEnabled,
-)
+
 const useUtmMock = assumeMock(useUtm)
 const useGetPreviewProductsMock = assumeMock(useGetPreviewProducts)
 const mockStore = configureMockStore<RootState, StoreDispatch>()
@@ -137,8 +133,6 @@ describe('<CampaignDetailsForm />', () => {
             },
             isLoading: false,
         })
-
-        useIsCampaignProritizationEnabledMock.mockImplementation(() => false)
         ;(useSuggestCampaignCopy as jest.Mock).mockReturnValue({
             mutateAsync: mockGenerateSuggestions,
         })
@@ -543,7 +537,6 @@ describe('<CampaignDetailsForm />', () => {
 
     describe('Campaign prioritization feature flag is enabled', () => {
         beforeEach(() => {
-            useIsCampaignProritizationEnabledMock.mockImplementation(() => true)
             isConvertSubscriberSpy.mockImplementation(() => true)
         })
 

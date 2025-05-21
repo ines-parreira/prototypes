@@ -75,7 +75,6 @@ export enum FeatureFlagKey {
     ContactFormAutoEmbed = 'contact-form-auto-embed',
     ContactFormNewEntrypointView = 'contact-form-new-entrypoint-view',
     ConversationStarters = 'conversation-starters',
-    ConvertCampaignProritization = 'convert-campaign-prioritization',
     ConvertChatInstallSnippet = 'convert-chat-install-snippet',
     ConvertContactForm = 'convert-contact-form',
     ConvertFloatingChatInput = 'convert-floating-chat-input',
