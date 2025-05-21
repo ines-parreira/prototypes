@@ -12,7 +12,7 @@ import { ReportingGranularity } from 'models/reporting/types'
 import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import { AgentsCellContent } from 'pages/stats/support-performance/agents/AgentsCellContent'
 import { AgentsHeaderCellContent } from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
-import { AgentsTableSummaryCell } from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
+import { AgentsTableAverageCell } from 'pages/stats/support-performance/agents/AgentsTableAverageCell'
 import { AutoQAAgentsTable } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'
 import {
     AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER,
@@ -72,8 +72,8 @@ const AgentsCellContentMock = assumeMock(AgentsCellContent)
 jest.mock('pages/stats/support-performance/agents/AgentsHeaderCellContent.tsx')
 const AgentsHeaderCellContentMock = assumeMock(AgentsHeaderCellContent)
 
-jest.mock('pages/stats/support-performance/agents/AgentsTableSummaryCell.tsx')
-const AgentsTableSummaryCellMock = assumeMock(AgentsTableSummaryCell)
+jest.mock('pages/stats/support-performance/agents/AgentsTableAverageCell.tsx')
+const AgentsTableSummaryCellMock = assumeMock(AgentsTableAverageCell)
 
 const cellMock = () => <div />
 

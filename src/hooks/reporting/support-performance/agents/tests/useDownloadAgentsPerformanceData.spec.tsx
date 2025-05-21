@@ -91,50 +91,43 @@ describe('useDownloadAgentsPerformanceData', () => {
         period,
     }
 
-    const agentsSummaryMetricsReturnValue = {
-        summaryData: {
-            customerSatisfactionMetric: summaryMetricReturnValue,
-            closedTicketsMetric: summaryMetricReturnValue,
-            medianFirstResponseTimeMetric: summaryMetricReturnValue,
-            messagesSentMetric: summaryMetricReturnValue,
-            percentageOfClosedTicketsMetric: summaryMetricReturnValue,
-            medianResolutionTimeMetric: summaryMetricReturnValue,
-            ticketsRepliedMetric: summaryMetricReturnValue,
-            oneTouchTicketsMetric: {
-                ...summaryMetricReturnValue,
-                data: { ...summaryMetricReturnValue.data, prevValue: 0 },
-            },
-            zeroTouchTicketsMetric: summaryMetricReturnValue,
-            repliedTicketsPerHourMetric: summaryMetricReturnValue,
-            onlineTimeMetric: summaryMetricReturnValue,
-            messagesSentPerHourMetric: summaryMetricReturnValue,
-            closedTicketsPerHourMetric: summaryMetricReturnValue,
-            ticketHandleTimeMetric: summaryMetricReturnValue,
+    const agentsAverageData = {
+        customerSatisfactionMetric: summaryMetricReturnValue,
+        closedTicketsMetric: summaryMetricReturnValue,
+        medianFirstResponseTimeMetric: summaryMetricReturnValue,
+        messagesSentMetric: summaryMetricReturnValue,
+        percentageOfClosedTicketsMetric: summaryMetricReturnValue,
+        medianResolutionTimeMetric: summaryMetricReturnValue,
+        ticketsRepliedMetric: summaryMetricReturnValue,
+        oneTouchTicketsMetric: {
+            ...summaryMetricReturnValue,
+            data: { ...summaryMetricReturnValue.data, prevValue: 0 },
         },
-        totalData: {
-            customerSatisfactionMetric: summaryMetricReturnValue,
-            closedTicketsMetric: summaryMetricReturnValue,
-            medianFirstResponseTimeMetric: summaryMetricReturnValue,
-            messagesSentMetric: summaryMetricReturnValue,
-            percentageOfClosedTicketsMetric: summaryMetricReturnValue,
-            medianResolutionTimeMetric: summaryMetricReturnValue,
-            ticketsRepliedMetric: summaryMetricReturnValue,
-            oneTouchTicketsMetric: {
-                ...summaryMetricReturnValue,
-                data: { ...summaryMetricReturnValue.data, prevValue: 0 },
-            },
-            zeroTouchTicketsMetric: summaryMetricReturnValue,
-            repliedTicketsPerHourMetric: summaryMetricReturnValue,
-            onlineTimeMetric: summaryMetricReturnValue,
-            messagesSentPerHourMetric: summaryMetricReturnValue,
-            closedTicketsPerHourMetric: summaryMetricReturnValue,
-            ticketHandleTimeMetric: summaryMetricReturnValue,
+        zeroTouchTicketsMetric: summaryMetricReturnValue,
+        repliedTicketsPerHourMetric: summaryMetricReturnValue,
+        onlineTimeMetric: summaryMetricReturnValue,
+        messagesSentPerHourMetric: summaryMetricReturnValue,
+        closedTicketsPerHourMetric: summaryMetricReturnValue,
+        ticketHandleTimeMetric: summaryMetricReturnValue,
+    }
+    const agentsTotalData = {
+        customerSatisfactionMetric: summaryMetricReturnValue,
+        closedTicketsMetric: summaryMetricReturnValue,
+        medianFirstResponseTimeMetric: summaryMetricReturnValue,
+        messagesSentMetric: summaryMetricReturnValue,
+        percentageOfClosedTicketsMetric: summaryMetricReturnValue,
+        medianResolutionTimeMetric: summaryMetricReturnValue,
+        ticketsRepliedMetric: summaryMetricReturnValue,
+        oneTouchTicketsMetric: {
+            ...summaryMetricReturnValue,
+            data: { ...summaryMetricReturnValue.data, prevValue: 0 },
         },
-        isLoading: false,
-        period: {
-            start_datetime: '2021-02-03T00:00:00.000Z',
-            end_datetime: '2021-02-03T23:59:59.999Z',
-        },
+        zeroTouchTicketsMetric: summaryMetricReturnValue,
+        repliedTicketsPerHourMetric: summaryMetricReturnValue,
+        onlineTimeMetric: summaryMetricReturnValue,
+        messagesSentPerHourMetric: summaryMetricReturnValue,
+        closedTicketsPerHourMetric: summaryMetricReturnValue,
+        ticketHandleTimeMetric: summaryMetricReturnValue,
     }
 
     beforeEach(() => {
@@ -143,11 +136,11 @@ describe('useDownloadAgentsPerformanceData', () => {
             isFetching: false,
         })
         useTableReportDataMock.mockReturnValueOnce({
-            data: agentsSummaryMetricsReturnValue.summaryData,
+            data: agentsAverageData,
             isFetching: false,
         })
         useTableReportDataMock.mockReturnValueOnce({
-            data: agentsSummaryMetricsReturnValue.totalData,
+            data: agentsTotalData,
             isFetching: false,
         })
         useAgentsTableConfigSettingMock.mockReturnValue({
@@ -169,11 +162,11 @@ describe('useDownloadAgentsPerformanceData', () => {
             isFetching: true,
         })
         useTableReportDataMock.mockReturnValueOnce({
-            data: agentsSummaryMetricsReturnValue.summaryData,
+            data: agentsAverageData,
             isFetching: true,
         })
         useTableReportDataMock.mockReturnValueOnce({
-            data: agentsSummaryMetricsReturnValue.totalData,
+            data: agentsTotalData,
             isFetching: true,
         })
         saveReportMock.mockReturnValue(report)
@@ -190,8 +183,8 @@ describe('useDownloadAgentsPerformanceData', () => {
         expect(saveReportMock).toHaveBeenCalledWith(
             getSortedAgents(state),
             agentsMetricsReturnValue.reportData,
-            agentsSummaryMetricsReturnValue.summaryData,
-            agentsSummaryMetricsReturnValue.totalData,
+            agentsAverageData,
+            agentsTotalData,
             columnsOrder,
             rowsOrder,
             fileName,
@@ -227,8 +220,8 @@ describe('useDownloadAgentsPerformanceData', () => {
         expect(saveReportMock).toHaveBeenCalledWith(
             getSortedAgents(state),
             agentsMetricsReturnValue.reportData,
-            agentsSummaryMetricsReturnValue.summaryData,
-            agentsSummaryMetricsReturnValue.totalData,
+            agentsAverageData,
+            agentsTotalData,
             columnsOrder,
             rowsOrder,
             fileName,

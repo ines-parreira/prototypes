@@ -8,8 +8,8 @@ import { AutomateStatsMeasureLabelMap } from 'hooks/reporting/automate/automateS
 import { useAutomateMetricsTimeSeries } from 'hooks/reporting/automate/useAutomationDataset'
 import { calculateGreyArea } from 'hooks/reporting/automate/utils'
 import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
+import { useAgentsAverageMetrics } from 'hooks/reporting/support-performance/agents/useAgentsAverageMetrics'
 import { useAgentsMetrics } from 'hooks/reporting/support-performance/agents/useAgentsMetrics'
-import { useAgentsSummaryMetrics } from 'hooks/reporting/support-performance/agents/useAgentsSummaryMetrics'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useCustomFieldsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
 import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
@@ -41,16 +41,16 @@ export const AI_AGENT_AUTOMATED_TICKETS_FILENAME = 'ai-agent-automated-tickets'
 export const useAgentPerformanceMetrics = () => {
     const agents = useAppSelector<User[]>(getSortedAgents)
     const { reportData, isLoading: reportIsLoading } = useAgentsMetrics()
-    const { summaryData, isLoading: summaryIsLoading } =
-        useAgentsSummaryMetrics()
+    const { averageData, isLoading: summaryIsLoading } =
+        useAgentsAverageMetrics()
     const { columnsOrder } = useAgentsTableConfigSetting()
 
     const loading = reportIsLoading || summaryIsLoading
 
     const performance = {
         data: reportData,
-        summary: summaryData,
-        total: summaryData,
+        average: averageData,
+        total: averageData,
         columnsOrder,
     }
 
@@ -158,7 +158,7 @@ export const useAIAgentReportMetrics = () => {
     const performanceData = getPerformanceData(
         agents,
         performance.data,
-        performance.summary,
+        performance.average,
         performance.total,
         performance.columnsOrder,
         [],

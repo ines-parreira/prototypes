@@ -12,8 +12,8 @@ import {
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
+import { useAgentsAverageMetrics } from 'hooks/reporting/support-performance/agents/useAgentsAverageMetrics'
 import { useAgentsMetrics } from 'hooks/reporting/support-performance/agents/useAgentsMetrics'
-import { useAgentsSummaryMetrics } from 'hooks/reporting/support-performance/agents/useAgentsSummaryMetrics'
 import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
 import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { AnalyticsFooter } from 'pages/stats/common/AnalyticsFooter'
@@ -76,8 +76,8 @@ jest.mock('pages/stats/common/AnalyticsFooter.tsx')
 const AnalyticsFooterMock = assumeMock(AnalyticsFooter)
 jest.mock('hooks/reporting/support-performance/agents/useAgentsMetrics')
 const useAgentsMetricsMock = assumeMock(useAgentsMetrics)
-jest.mock('hooks/reporting/support-performance/agents/useAgentsSummaryMetrics')
-const useAgentsSummaryMetricsMock = assumeMock(useAgentsSummaryMetrics)
+jest.mock('hooks/reporting/support-performance/agents/useAgentsAverageMetrics')
+const useAgentsSummaryMetricsMock = assumeMock(useAgentsAverageMetrics)
 jest.mock('hooks/reporting/useAgentsTableConfigSetting')
 const useAgentsTableConfigSettingMock = assumeMock(useAgentsTableConfigSetting)
 jest.mock('pages/stats/common/drill-down/DrillDownModal.tsx', () => ({

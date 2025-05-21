@@ -27,13 +27,13 @@ import {
     fetchMedianResponseTimeMetricPerAgent,
     fetchMessagesReceivedMetricPerAgent,
     fetchMessagesSentMetricPerAgent,
-    fetchOneTouchTicketsMetricPerAgent,
     fetchOnlineTimePerAgent,
     fetchTicketAverageHandleTimePerAgent,
     fetchTicketsRepliedMetricPerAgent,
     fetchZeroTouchTicketsMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
 import { fetchPercentageOfClosedTicketsMetricPerAgent } from 'hooks/reporting/support-performance/agents/usePercentageOfClosedTicketsMetricPerAgent'
+import { fetchOneTouchTicketsPercentageMetricPerAgent } from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricPerAgent'
 import { fetchOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricTrend'
 import { fetchZeroTouchTicketsMetricTrend } from 'hooks/reporting/support-performance/overview/useZeroTouchTicketsMetricTrend'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
@@ -93,7 +93,7 @@ export type AgentsReportData = Record<
     MetricWithDecile
 >
 
-export type AgentsReportSummaryData = Record<
+export type AgentsReportAverageData = Record<
     AgentsReportMetricDataPoints,
     Metric
 >
@@ -136,7 +136,7 @@ export const agentsMetricsDataSources: TableDataSources<AgentsReportData> = [
         title: 'medianResolutionTimeMetric',
     },
     {
-        fetchData: fetchOneTouchTicketsMetricPerAgent,
+        fetchData: fetchOneTouchTicketsPercentageMetricPerAgent,
         title: 'oneTouchTicketsMetric',
     },
     {
@@ -164,7 +164,7 @@ export const agentsMetricsDataSources: TableDataSources<AgentsReportData> = [
         title: 'ticketHandleTimeMetric',
     },
 ]
-export const agentsSummaryDataSources: TableSummaryDataSources<AgentsReportData> =
+export const agentsAverageDataSources: TableSummaryDataSources<AgentsReportData> =
     [
         {
             fetchData: fetchMedianFirstResponseTimeMetric,
@@ -179,7 +179,7 @@ export const agentsSummaryDataSources: TableSummaryDataSources<AgentsReportData>
             title: 'ticketsRepliedMetric',
         },
         {
-            fetchData: fetchCustomerSatisfactionMetric,
+            fetchData: fetchClosedTicketsMetric,
             title: 'closedTicketsMetric',
         },
         {
@@ -234,7 +234,7 @@ export const agentsSummaryDataSources: TableSummaryDataSources<AgentsReportData>
 
 export const agentsTotalDataSources: TableSummaryDataSources<AgentsReportData> =
     [
-        ...agentsSummaryDataSources,
+        ...agentsAverageDataSources,
         {
             fetchData: fetchTicketsRepliedPerHourPerAgentTotalCapacity,
             title: 'repliedTicketsPerHourMetric',
@@ -259,22 +259,22 @@ export const useDownloadAgentsPerformanceData = () => {
         MetricWithDecile
     >(cleanStatsFilters, userTimezone, agentsMetricsDataSources)
 
-    const { data: summaryData, isFetching: summaryIsLoading } =
-        useTableReportData<keyof AgentsReportSummaryData, Metric>(
+    const { data: averageData, isFetching: averageIsLoading } =
+        useTableReportData<keyof AgentsReportAverageData, Metric>(
             cleanStatsFilters,
             userTimezone,
-            agentsSummaryDataSources,
+            agentsAverageDataSources,
         )
 
     const { data: totalData, isFetching: totalIsLoading } = useTableReportData<
-        keyof AgentsReportSummaryData,
+        keyof AgentsReportAverageData,
         Metric
     >(cleanStatsFilters, userTimezone, agentsTotalDataSources)
 
     const { files } = createAgentsReport(
         agents,
         reportData,
-        summaryData,
+        averageData,
         totalData,
         columnsOrder,
         rowsOrder,
@@ -291,7 +291,7 @@ export const useDownloadAgentsPerformanceData = () => {
     return {
         files,
         fileName,
-        isLoading: isFetching || summaryIsLoading || totalIsLoading,
+        isLoading: isFetching || averageIsLoading || totalIsLoading,
     }
 }
 export const fetchAgentsTableReportData = async (
@@ -310,7 +310,7 @@ export const fetchAgentsTableReportData = async (
     },
 ) => {
     const metricConfig = agentsMetricsDataSources
-    const summaryConfig = agentsSummaryDataSources
+    const averageConfig = agentsAverageDataSources
     const totalConfig = agentsTotalDataSources
 
     const fileName = getCsvFileNameWithDates(
@@ -319,16 +319,16 @@ export const fetchAgentsTableReportData = async (
     )
     return Promise.all([
         fetchTableReportData(cleanStatsFilters, userTimezone, metricConfig),
-        fetchTableReportData(cleanStatsFilters, userTimezone, summaryConfig),
+        fetchTableReportData(cleanStatsFilters, userTimezone, averageConfig),
         fetchTableReportData(cleanStatsFilters, userTimezone, totalConfig),
     ])
-        .then(([metrics, summary, total]) => {
+        .then(([metrics, average, total]) => {
             return {
                 isLoading: false,
                 ...createAgentsReport(
                     context.agents,
                     metrics.data,
-                    summary.data,
+                    average.data,
                     total.data,
                     context.columnsOrder,
                     context.rowsOrder,

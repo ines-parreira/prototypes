@@ -2,10 +2,15 @@ import moment from 'moment/moment'
 
 import { TicketChannel } from 'business/types/ticket'
 import {
+    fetchClosedTicketsMetricPerAgent,
+    fetchOneTouchTicketsMetricPerAgent,
     useClosedTicketsMetricPerAgent,
     useOneTouchTicketsMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
-import { useOneTouchTicketsPercentageMetricPerAgent } from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricPerAgent'
+import {
+    fetchOneTouchTicketsPercentageMetricPerAgent,
+    useOneTouchTicketsPercentageMetricPerAgent,
+} from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricPerAgent'
 import { OrderDirection } from 'models/api/types'
 import {
     TicketDimension,
@@ -20,11 +25,17 @@ jest.mock('hooks/reporting/metricsPerAgent')
 const useOneTouchTicketsMetricPerAgentMock = assumeMock(
     useOneTouchTicketsMetricPerAgent,
 )
+const fetchOneTouchTicketsMetricPerAgentMock = assumeMock(
+    fetchOneTouchTicketsMetricPerAgent,
+)
 const useClosedTicketsMetricPerAgentMock = assumeMock(
     useClosedTicketsMetricPerAgent,
 )
+const fetchClosedTicketsMetricPerAgentMock = assumeMock(
+    fetchClosedTicketsMetricPerAgent,
+)
 
-describe('useOneTouchTicketsPercentageMetricPerAgent', () => {
+describe('OneTouchTicketsPercentageMetricPerAgent', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
     const statsFilters: StatsFilters = {
@@ -55,177 +66,373 @@ describe('useOneTouchTicketsPercentageMetricPerAgent', () => {
     const ticketCount = 15
     const anotherAgentsTicketCount = 10
 
-    it('should return percentage of one touch tickets', () => {
-        useClosedTicketsMetricPerAgentMock.mockReturnValue({
-            data: {
-                allData: [
-                    {
-                        [TicketMeasure.TicketCount]: `${closedTickets}`,
-                        [TicketDimension.AssigneeUserId]: agentId,
-                    },
-                    {
-                        [TicketMeasure.TicketCount]: `${anotherAgentsClosedTickets}`,
-                        [TicketDimension.AssigneeUserId]: anotherAgentId,
-                    },
-                    {
-                        [TicketMeasure.TicketCount]: `${incompleteDataAgentClosedTickets}`,
-                        [TicketDimension.AssigneeUserId]: incompleteDataAgentId,
-                    },
-                ],
-                value: closedTickets,
-                decile: null,
-            },
-            isError: false,
-            isFetching: false,
+    describe('useOneTouchTicketsPercentageMetricPerAgent', () => {
+        it('should return percentage of one touch tickets', () => {
+            useClosedTicketsMetricPerAgentMock.mockReturnValue({
+                data: {
+                    allData: [
+                        {
+                            [TicketMeasure.TicketCount]: `${closedTickets}`,
+                            [TicketDimension.AssigneeUserId]: agentId,
+                        },
+                        {
+                            [TicketMeasure.TicketCount]: `${anotherAgentsClosedTickets}`,
+                            [TicketDimension.AssigneeUserId]: anotherAgentId,
+                        },
+                        {
+                            [TicketMeasure.TicketCount]: `${incompleteDataAgentClosedTickets}`,
+                            [TicketDimension.AssigneeUserId]:
+                                incompleteDataAgentId,
+                        },
+                    ],
+                    value: closedTickets,
+                    decile: null,
+                },
+                isError: false,
+                isFetching: false,
+            })
+
+            useOneTouchTicketsMetricPerAgentMock.mockReturnValue({
+                data: {
+                    allData: [
+                        {
+                            [TicketMeasure.TicketCount]: `${ticketCount}`,
+                            [TicketDimension.AssigneeUserId]: agentId,
+                        },
+                        {
+                            [TicketMeasure.TicketCount]: `${anotherAgentsTicketCount}`,
+                            [TicketDimension.AssigneeUserId]: anotherAgentId,
+                        },
+                    ],
+                    value: ticketCount,
+                    decile: null,
+                },
+                isError: false,
+                isFetching: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useOneTouchTicketsPercentageMetricPerAgent(
+                        statsFilters,
+                        timezone,
+                        sorting,
+                        agentId,
+                    ),
+                {},
+            )
+
+            expect(result.current).toEqual({
+                data: {
+                    allData: [
+                        {
+                            [TicketDimension.AssigneeUserId]: agentId,
+                            [TicketMeasure.TicketCount]: `${
+                                (ticketCount / closedTickets) * 100
+                            }`,
+                        },
+                        {
+                            [TicketDimension.AssigneeUserId]: anotherAgentId,
+                            [TicketMeasure.TicketCount]: `${
+                                (anotherAgentsTicketCount /
+                                    anotherAgentsClosedTickets) *
+                                100
+                            }`,
+                        },
+                    ],
+                    value: (ticketCount / closedTickets) * 100,
+                    decile: 2,
+                },
+                isFetching: false,
+                isError: false,
+            })
         })
 
-        useOneTouchTicketsMetricPerAgentMock.mockReturnValue({
-            data: {
-                allData: [
-                    {
-                        [TicketMeasure.TicketCount]: `${ticketCount}`,
-                        [TicketDimension.AssigneeUserId]: agentId,
-                    },
-                    {
-                        [TicketMeasure.TicketCount]: `${anotherAgentsTicketCount}`,
-                        [TicketDimension.AssigneeUserId]: anotherAgentId,
-                    },
-                ],
-                value: ticketCount,
-                decile: null,
-            },
-            isError: false,
-            isFetching: false,
+        it('should return null when no data is available', () => {
+            const missingAgentId = '567'
+            useClosedTicketsMetricPerAgentMock.mockReturnValue({
+                data: null,
+                isError: false,
+                isFetching: false,
+            })
+
+            useOneTouchTicketsMetricPerAgentMock.mockReturnValue({
+                data: null,
+                isError: false,
+                isFetching: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useOneTouchTicketsPercentageMetricPerAgent(
+                        statsFilters,
+                        timezone,
+                        sorting,
+                        missingAgentId,
+                    ),
+                {},
+            )
+
+            expect(result.current).toEqual({
+                data: {
+                    allData: [],
+                    value: null,
+                    decile: -0,
+                },
+                isFetching: false,
+                isError: false,
+            })
         })
 
-        const { result } = renderHook(
-            () =>
-                useOneTouchTicketsPercentageMetricPerAgent(
-                    statsFilters,
-                    timezone,
-                    sorting,
-                    agentId,
-                ),
-            {},
-        )
+        it('should return null when partial data is available', () => {
+            const missingAgentId = '567'
+            useClosedTicketsMetricPerAgentMock.mockReturnValue({
+                data: null,
+                isError: false,
+                isFetching: false,
+            })
 
-        expect(result.current).toEqual({
-            data: {
-                allData: [
-                    {
-                        [TicketDimension.AssigneeUserId]: agentId,
-                        [TicketMeasure.TicketCount]: `${
-                            (ticketCount / closedTickets) * 100
-                        }`,
-                    },
-                    {
-                        [TicketDimension.AssigneeUserId]: anotherAgentId,
-                        [TicketMeasure.TicketCount]: `${
-                            (anotherAgentsTicketCount /
-                                anotherAgentsClosedTickets) *
-                            100
-                        }`,
-                    },
-                ],
-                value: (ticketCount / closedTickets) * 100,
-                decile: 2,
-            },
-            isFetching: false,
-            isError: false,
+            useOneTouchTicketsMetricPerAgentMock.mockReturnValue({
+                data: {
+                    allData: [
+                        {
+                            [TicketMeasure.TicketCount]: `${ticketCount}`,
+                            [TicketDimension.AssigneeUserId]: agentId,
+                        },
+                        {
+                            [TicketMeasure.TicketCount]: `${anotherAgentsTicketCount}`,
+                            [TicketDimension.AssigneeUserId]: anotherAgentId,
+                        },
+                    ],
+                    value: ticketCount,
+                    decile: null,
+                },
+                isError: false,
+                isFetching: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useOneTouchTicketsPercentageMetricPerAgent(
+                        statsFilters,
+                        timezone,
+                        sorting,
+                        missingAgentId,
+                    ),
+                {},
+            )
+
+            expect(result.current).toEqual({
+                data: {
+                    allData: [
+                        {
+                            [TicketDimension.AssigneeUserId]: agentId,
+                            [TicketMeasure.TicketCount]: null,
+                        },
+                        {
+                            [TicketDimension.AssigneeUserId]: anotherAgentId,
+                            [TicketMeasure.TicketCount]: null,
+                        },
+                    ],
+                    value: null,
+                    decile: 0,
+                },
+                isFetching: false,
+                isError: false,
+            })
         })
     })
 
-    it('should return null when no data is available', () => {
-        const missingAgentId = '567'
-        useClosedTicketsMetricPerAgentMock.mockReturnValue({
-            data: null,
-            isError: false,
-            isFetching: false,
+    describe('fetchOneTouchTicketsPercentageMetricPerAgent', () => {
+        it('should return percentage of one touch tickets', async () => {
+            fetchClosedTicketsMetricPerAgentMock.mockResolvedValue({
+                data: {
+                    allData: [
+                        {
+                            [TicketMeasure.TicketCount]: `${closedTickets}`,
+                            [TicketDimension.AssigneeUserId]: agentId,
+                        },
+                        {
+                            [TicketMeasure.TicketCount]: `${anotherAgentsClosedTickets}`,
+                            [TicketDimension.AssigneeUserId]: anotherAgentId,
+                        },
+                        {
+                            [TicketMeasure.TicketCount]: `${incompleteDataAgentClosedTickets}`,
+                            [TicketDimension.AssigneeUserId]:
+                                incompleteDataAgentId,
+                        },
+                    ],
+                    value: closedTickets,
+                    decile: null,
+                },
+                isError: false,
+                isFetching: false,
+            })
+
+            fetchOneTouchTicketsMetricPerAgentMock.mockResolvedValue({
+                data: {
+                    allData: [
+                        {
+                            [TicketMeasure.TicketCount]: `${ticketCount}`,
+                            [TicketDimension.AssigneeUserId]: agentId,
+                        },
+                        {
+                            [TicketMeasure.TicketCount]: `${anotherAgentsTicketCount}`,
+                            [TicketDimension.AssigneeUserId]: anotherAgentId,
+                        },
+                    ],
+                    value: ticketCount,
+                    decile: null,
+                },
+                isError: false,
+                isFetching: false,
+            })
+
+            const result = await fetchOneTouchTicketsPercentageMetricPerAgent(
+                statsFilters,
+                timezone,
+                sorting,
+                agentId,
+            )
+
+            expect(result).toEqual({
+                data: {
+                    allData: [
+                        {
+                            [TicketDimension.AssigneeUserId]: agentId,
+                            [TicketMeasure.TicketCount]: `${
+                                (ticketCount / closedTickets) * 100
+                            }`,
+                        },
+                        {
+                            [TicketDimension.AssigneeUserId]: anotherAgentId,
+                            [TicketMeasure.TicketCount]: `${
+                                (anotherAgentsTicketCount /
+                                    anotherAgentsClosedTickets) *
+                                100
+                            }`,
+                        },
+                    ],
+                    value: (ticketCount / closedTickets) * 100,
+                    decile: 2,
+                },
+                isFetching: false,
+                isError: false,
+            })
         })
 
-        useOneTouchTicketsMetricPerAgentMock.mockReturnValue({
-            data: null,
-            isError: false,
-            isFetching: false,
+        it('should return null when no data is available', async () => {
+            const missingAgentId = '567'
+            fetchClosedTicketsMetricPerAgentMock.mockResolvedValue({
+                data: null,
+                isError: false,
+                isFetching: false,
+            })
+
+            fetchOneTouchTicketsMetricPerAgentMock.mockResolvedValue({
+                data: null,
+                isError: false,
+                isFetching: false,
+            })
+
+            const result = await fetchOneTouchTicketsPercentageMetricPerAgent(
+                statsFilters,
+                timezone,
+                sorting,
+                missingAgentId,
+            )
+
+            expect(result).toEqual({
+                data: {
+                    allData: [],
+                    value: null,
+                    decile: -0,
+                },
+                isFetching: false,
+                isError: false,
+            })
         })
 
-        const { result } = renderHook(
-            () =>
-                useOneTouchTicketsPercentageMetricPerAgent(
-                    statsFilters,
-                    timezone,
-                    sorting,
-                    missingAgentId,
-                ),
-            {},
-        )
+        it('should return null when no data on error', async () => {
+            const missingAgentId = '567'
+            fetchClosedTicketsMetricPerAgentMock.mockRejectedValue({
+                data: null,
+                isError: false,
+                isFetching: false,
+            })
 
-        expect(result.current).toEqual({
-            data: {
-                allData: [],
-                value: null,
-                decile: -0,
-            },
-            isFetching: false,
-            isError: false,
-        })
-    })
+            fetchOneTouchTicketsMetricPerAgentMock.mockRejectedValue({
+                data: null,
+                isError: false,
+                isFetching: false,
+            })
 
-    it('should return null when partial data is available', () => {
-        const missingAgentId = '567'
-        useClosedTicketsMetricPerAgentMock.mockReturnValue({
-            data: null,
-            isError: false,
-            isFetching: false,
+            const result = await fetchOneTouchTicketsPercentageMetricPerAgent(
+                statsFilters,
+                timezone,
+                sorting,
+                missingAgentId,
+            )
+
+            expect(result).toEqual({
+                data: null,
+                isFetching: false,
+                isError: true,
+            })
         })
 
-        useOneTouchTicketsMetricPerAgentMock.mockReturnValue({
-            data: {
-                allData: [
-                    {
-                        [TicketMeasure.TicketCount]: `${ticketCount}`,
-                        [TicketDimension.AssigneeUserId]: agentId,
-                    },
-                    {
-                        [TicketMeasure.TicketCount]: `${anotherAgentsTicketCount}`,
-                        [TicketDimension.AssigneeUserId]: anotherAgentId,
-                    },
-                ],
-                value: ticketCount,
-                decile: null,
-            },
-            isError: false,
-            isFetching: false,
-        })
+        it('should return null when partial data is available', async () => {
+            const missingAgentId = '567'
+            fetchClosedTicketsMetricPerAgentMock.mockResolvedValue({
+                data: null,
+                isError: false,
+                isFetching: false,
+            })
 
-        const { result } = renderHook(
-            () =>
-                useOneTouchTicketsPercentageMetricPerAgent(
-                    statsFilters,
-                    timezone,
-                    sorting,
-                    missingAgentId,
-                ),
-            {},
-        )
+            fetchOneTouchTicketsMetricPerAgentMock.mockResolvedValue({
+                data: {
+                    allData: [
+                        {
+                            [TicketMeasure.TicketCount]: `${ticketCount}`,
+                            [TicketDimension.AssigneeUserId]: agentId,
+                        },
+                        {
+                            [TicketMeasure.TicketCount]: `${anotherAgentsTicketCount}`,
+                            [TicketDimension.AssigneeUserId]: anotherAgentId,
+                        },
+                    ],
+                    value: ticketCount,
+                    decile: null,
+                },
+                isError: false,
+                isFetching: false,
+            })
 
-        expect(result.current).toEqual({
-            data: {
-                allData: [
-                    {
-                        [TicketDimension.AssigneeUserId]: agentId,
-                        [TicketMeasure.TicketCount]: null,
-                    },
-                    {
-                        [TicketDimension.AssigneeUserId]: anotherAgentId,
-                        [TicketMeasure.TicketCount]: null,
-                    },
-                ],
-                value: null,
-                decile: 0,
-            },
-            isFetching: false,
-            isError: false,
+            const result = await fetchOneTouchTicketsPercentageMetricPerAgent(
+                statsFilters,
+                timezone,
+                sorting,
+                missingAgentId,
+            )
+
+            expect(result).toEqual({
+                data: {
+                    allData: [
+                        {
+                            [TicketDimension.AssigneeUserId]: agentId,
+                            [TicketMeasure.TicketCount]: null,
+                        },
+                        {
+                            [TicketDimension.AssigneeUserId]: anotherAgentId,
+                            [TicketMeasure.TicketCount]: null,
+                        },
+                    ],
+                    value: null,
+                    decile: 0,
+                },
+                isFetching: false,
+                isError: false,
+            })
         })
     })
 })

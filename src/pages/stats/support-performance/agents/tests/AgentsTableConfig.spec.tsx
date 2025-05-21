@@ -26,7 +26,7 @@ import {
 } from 'hooks/reporting/useTicketsRepliedPerHour'
 import { StatsFilters } from 'models/stat/types'
 import {
-    getSummaryQuery,
+    getAverageQuery,
     getTotalsQuery,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import { AgentsTableColumn } from 'state/ui/stats/types'
@@ -152,7 +152,7 @@ describe('getSummaryQuery', () => {
     it.each(metricHookMap)(
         'should return useClosedTicketsMetric for ClosedTickets column',
         (metric, hook) => {
-            const result = getSummaryQuery(metric)
+            const result = getAverageQuery(metric)
             expect(result).toBe(hook)
         },
     )

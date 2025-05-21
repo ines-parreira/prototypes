@@ -20,7 +20,7 @@ import { useTicketsRepliedPerHour } from 'hooks/reporting/useTicketsRepliedPerHo
 
 import { useZeroTouchTicketsMetricTrend } from '../overview/useZeroTouchTicketsMetricTrend'
 
-export function useAgentsSummaryMetrics() {
+export function useAgentsAverageMetrics() {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
     const customerSatisfactionMetric = useCustomerSatisfactionMetric(
         cleanStatsFilters,
@@ -126,7 +126,7 @@ export function useAgentsSummaryMetrics() {
     ])
 
     return {
-        summaryData: {
+        averageData: {
             medianResponseTimeMetric,
             closedTicketsMetric,
             closedTicketsPerHourMetric,

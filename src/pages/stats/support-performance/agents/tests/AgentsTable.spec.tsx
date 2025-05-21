@@ -17,12 +17,12 @@ import {
     AgentsTable,
     AgentsTableWithDefaultState,
 } from 'pages/stats/support-performance/agents/AgentsTable'
+import { AgentsTableAverageCell } from 'pages/stats/support-performance/agents/AgentsTableAverageCell'
 import {
     getColumnWidth,
     TableColumnsOrder,
     TableLabels,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import { AgentsTableSummaryCell } from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
 import { RootState, StoreDispatch } from 'state/types'
 import {
     getHeatmapMode,
@@ -74,8 +74,8 @@ const AgentsCellContentMock = assumeMock(AgentsCellContent)
 jest.mock('pages/stats/support-performance/agents/AgentsHeaderCellContent.tsx')
 const AgentsHeaderCellContentMock = assumeMock(AgentsHeaderCellContent)
 
-jest.mock('pages/stats/support-performance/agents/AgentsTableSummaryCell.tsx')
-const AgentsTableSummaryCellMock = assumeMock(AgentsTableSummaryCell)
+jest.mock('pages/stats/support-performance/agents/AgentsTableAverageCell.tsx')
+const AgentsTableSummaryCellMock = assumeMock(AgentsTableAverageCell)
 
 jest.mock('pages/stats/support-performance/agents/AgentsSummaryRow')
 const AgentsAverageSummaryRowMock = assumeMock(AgentsSummaryRow)

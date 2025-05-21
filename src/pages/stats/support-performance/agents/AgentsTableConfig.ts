@@ -464,7 +464,7 @@ export const getQuery = (
     }
 }
 
-export const getSummaryQuery = (column: AgentsTableColumn): MetricQueryHook => {
+export const getAverageQuery = (column: AgentsTableColumn): MetricQueryHook => {
     switch (column) {
         case AgentsTableColumn.AgentName:
             return () => ({

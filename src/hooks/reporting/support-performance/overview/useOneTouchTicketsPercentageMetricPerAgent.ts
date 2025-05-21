@@ -1,6 +1,8 @@
 import { useMemo } from 'react'
 
 import {
+    fetchClosedTicketsMetricPerAgent,
+    fetchOneTouchTicketsMetricPerAgent,
     useClosedTicketsMetricPerAgent,
     useOneTouchTicketsMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
@@ -18,15 +20,50 @@ import {
     sortAllData,
 } from 'utils/reporting'
 
+const assigneeIdField = TicketDimension.AssigneeUserId
+const ticketCountField = TicketMeasure.TicketCount
+
+const formatData = (
+    oneTouchTickets: MetricWithDecile,
+    closedTicketsPerAgent: MetricWithDecile,
+    sorting?: OrderDirection,
+) => {
+    let metricValue: number | null = null
+
+    if (closedTicketsPerAgent.data?.value && oneTouchTickets.data?.value) {
+        metricValue = calculatePercentage(
+            oneTouchTickets.data.value,
+            closedTicketsPerAgent.data.value,
+        )
+    }
+    const allData = matchAndCalculateAllEntries(
+        oneTouchTickets,
+        closedTicketsPerAgent,
+        calculatePercentage,
+        assigneeIdField,
+        assigneeIdField,
+        ticketCountField,
+        ticketCountField,
+    )
+    const sortedData = sortAllData(allData, ticketCountField, sorting)
+
+    const maxValue = Math.max(
+        ...sortedData.map((item) => Number(item[ticketCountField])),
+    )
+
+    return {
+        allData: sortedData,
+        value: metricValue,
+        decile: calculateDecile(metricValue || 0, maxValue),
+    }
+}
+
 export const useOneTouchTicketsPercentageMetricPerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
     agentAssigneeId?: string,
 ): MetricWithDecile => {
-    const assigneeIdField = TicketDimension.AssigneeUserId
-    const ticketCountField = TicketMeasure.TicketCount
-
     const oneTouchTickets = useOneTouchTicketsMetricPerAgent(
         statsFilters,
         timezone,
@@ -41,46 +78,50 @@ export const useOneTouchTicketsPercentageMetricPerAgent = (
         agentAssigneeId,
     )
 
-    let metricValue: number | null = null
-
-    if (closedTicketsPerAgent.data?.value && oneTouchTickets.data?.value) {
-        metricValue = calculatePercentage(
-            oneTouchTickets.data.value,
-            closedTicketsPerAgent.data.value,
-        )
-    }
-
-    const sortedData = useMemo(() => {
-        const allData = matchAndCalculateAllEntries(
-            oneTouchTickets,
-            closedTicketsPerAgent,
-            calculatePercentage,
-            assigneeIdField,
-            assigneeIdField,
-            ticketCountField,
-            ticketCountField,
-        )
-        return sortAllData(allData, ticketCountField, sorting)
-    }, [
-        assigneeIdField,
-        closedTicketsPerAgent,
-        oneTouchTickets,
-        sorting,
-        ticketCountField,
-    ])
-
-    const maxValue = Math.max(
-        ...sortedData.map((item) => Number(item[ticketCountField])),
+    const data = useMemo(
+        () => formatData(oneTouchTickets, closedTicketsPerAgent, sorting),
+        [oneTouchTickets, closedTicketsPerAgent, sorting],
     )
 
     return {
         isFetching:
             oneTouchTickets.isFetching || closedTicketsPerAgent.isFetching,
         isError: oneTouchTickets.isError || closedTicketsPerAgent.isError,
-        data: {
-            allData: sortedData,
-            value: metricValue,
-            decile: calculateDecile(metricValue || 0, maxValue),
-        },
+        data: data,
     }
 }
+
+export const fetchOneTouchTicketsPercentageMetricPerAgent = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+    agentAssigneeId?: string,
+): Promise<MetricWithDecile> =>
+    Promise.all([
+        fetchOneTouchTicketsMetricPerAgent(
+            statsFilters,
+            timezone,
+            sorting,
+            agentAssigneeId,
+        ),
+        fetchClosedTicketsMetricPerAgent(
+            statsFilters,
+            timezone,
+            sorting,
+            agentAssigneeId,
+        ),
+    ])
+        .then(([oneTouchTickets, closedTickets]) => {
+            return {
+                isFetching: false,
+                isError: false,
+                data: formatData(oneTouchTickets, closedTickets, sorting),
+            }
+        })
+        .catch(() => {
+            return {
+                isFetching: false,
+                isError: true,
+                data: null,
+            }
+        })

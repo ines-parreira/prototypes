@@ -7,14 +7,14 @@ import { agents } from 'fixtures/agents'
 import css from 'pages/stats/common/components/Table/AnalyticsTable.less'
 import { AgentsSummaryRow } from 'pages/stats/support-performance/agents/AgentsSummaryRow'
 import {
-    getSummaryQuery,
+    getAverageQuery,
     getTotalsQuery,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import { AgentsTableColumn, AgentsTableRow } from 'state/ui/stats/types'
 import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/stats/support-performance/agents/AgentsTableConfig')
-const getSummaryQueryMock = assumeMock(getSummaryQuery)
+const getSummaryQueryMock = assumeMock(getAverageQuery)
 const getTotalsQueryMock = assumeMock(getTotalsQuery)
 
 describe('<AgentsSummaryRow', () => {

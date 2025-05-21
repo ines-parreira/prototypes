@@ -10,7 +10,7 @@ import {
     useTicketAverageHandleTimeMetric,
     useTicketsRepliedMetric,
 } from 'hooks/reporting/metrics'
-import { useAgentsSummaryMetrics } from 'hooks/reporting/support-performance/agents/useAgentsSummaryMetrics'
+import { useAgentsAverageMetrics } from 'hooks/reporting/support-performance/agents/useAgentsAverageMetrics'
 import { useOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricTrend'
 import { useZeroTouchTicketsMetricTrend } from 'hooks/reporting/support-performance/overview/useZeroTouchTicketsMetricTrend'
 import { useMessagesSentPerHour } from 'hooks/reporting/useMessagesSentPerHour'
@@ -63,7 +63,7 @@ const useTicketAverageHandleTimeMetricMock = assumeMock(
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = assumeMock(useAppSelector)
 
-describe('useAgentsSummaryMetrics', () => {
+describe('useAgentsAverageMetrics', () => {
     const granularity = ReportingGranularity.Month
 
     const timeZone = 'UTC'
@@ -77,8 +77,8 @@ describe('useAgentsSummaryMetrics', () => {
             value: 2,
         },
     }
-    const agentsMetrics: ReturnType<typeof useAgentsSummaryMetrics> = {
-        summaryData: {
+    const agentsMetrics: ReturnType<typeof useAgentsAverageMetrics> = {
+        averageData: {
             closedTicketsMetric: metricData,
             customerSatisfactionMetric: metricData,
             medianFirstResponseTimeMetric: metricData,
@@ -133,8 +133,8 @@ describe('useAgentsSummaryMetrics', () => {
         granularity: granularity,
     })
 
-    it('should return agents performance summary metrics', () => {
-        const { result } = renderHook(() => useAgentsSummaryMetrics())
+    it('should return agents performance average metrics', () => {
+        const { result } = renderHook(() => useAgentsAverageMetrics())
 
         expect(result.current).toEqual(agentsMetrics)
     })

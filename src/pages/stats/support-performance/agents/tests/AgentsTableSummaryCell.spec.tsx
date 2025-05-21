@@ -8,11 +8,11 @@ import thunk from 'redux-thunk'
 
 import { agents } from 'fixtures/agents'
 import { formatMetricValue } from 'pages/stats/common/utils'
-import { AgentsColumnConfig } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {
     AGENT_SUMMARY_CELL_LABEL,
-    AgentsTableSummaryCell,
-} from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
+    AgentsTableAverageCell,
+} from 'pages/stats/support-performance/agents/AgentsTableAverageCell'
+import { AgentsColumnConfig } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import { RootState, StoreDispatch } from 'state/types'
 import { initialState as agentPerformanceInitialState } from 'state/ui/stats/agentPerformanceSlice'
 import { AGENT_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
@@ -44,7 +44,7 @@ describe('<AgentsTableSummaryCell', () => {
     it('should render the table summary cel', () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <AgentsTableSummaryCell
+                <AgentsTableAverageCell
                     data={data}
                     column={AgentsTableColumn.AgentName}
                     agentsLength={agents.length}
@@ -60,7 +60,7 @@ describe('<AgentsTableSummaryCell', () => {
 
         render(
             <Provider store={mockStore(defaultState)}>
-                <AgentsTableSummaryCell
+                <AgentsTableAverageCell
                     data={data}
                     column={simpleMetric}
                     agentsLength={agents.length}
@@ -84,7 +84,7 @@ describe('<AgentsTableSummaryCell', () => {
 
         render(
             <Provider store={mockStore(defaultState)}>
-                <AgentsTableSummaryCell
+                <AgentsTableAverageCell
                     data={data}
                     column={simpleMetric}
                     agentsLength={agents.length}

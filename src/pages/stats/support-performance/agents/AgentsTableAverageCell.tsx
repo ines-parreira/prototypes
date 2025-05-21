@@ -21,7 +21,7 @@ type AgentsTableSummaryCellProps = {
     agentsLength: number
 }
 
-export const AgentsTableSummaryCell = ({
+export const AgentsTableAverageCell = ({
     column,
     agentsLength,
     data,

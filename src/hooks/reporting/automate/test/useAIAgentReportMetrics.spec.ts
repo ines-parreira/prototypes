@@ -19,8 +19,8 @@ import {
 import { useAutomateMetricsTimeSeries } from 'hooks/reporting/automate/useAutomationDataset'
 import { calculateGreyArea } from 'hooks/reporting/automate/utils'
 import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
+import { useAgentsAverageMetrics } from 'hooks/reporting/support-performance/agents/useAgentsAverageMetrics'
 import { useAgentsMetrics } from 'hooks/reporting/support-performance/agents/useAgentsMetrics'
-import { useAgentsSummaryMetrics } from 'hooks/reporting/support-performance/agents/useAgentsSummaryMetrics'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useCustomFieldsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
 import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
@@ -92,8 +92,8 @@ const useAppSelectorMock = assumeMock(useAppSelector)
 jest.mock('hooks/reporting/support-performance/agents/useAgentsMetrics')
 const useAgentsMetricsMock = assumeMock(useAgentsMetrics)
 
-jest.mock('hooks/reporting/support-performance/agents/useAgentsSummaryMetrics')
-const useAgentsSummaryMetricsMock = assumeMock(useAgentsSummaryMetrics)
+jest.mock('hooks/reporting/support-performance/agents/useAgentsAverageMetrics')
+const useAgentsSummaryMetricsMock = assumeMock(useAgentsAverageMetrics)
 
 jest.mock('hooks/reporting/useAgentsTableConfigSetting')
 const useAgentsTableConfigSettingMock = assumeMock(useAgentsTableConfigSetting)
@@ -144,8 +144,8 @@ describe('useAgentPerformanceMetrics', () => {
 
         useAgentsSummaryMetricsMock.mockReturnValue({
             isLoading: false,
-            summaryData: { 'agents-summary-metrics': [] },
-        } as unknown as ReturnType<typeof useAgentsSummaryMetrics>)
+            averageData: { 'agents-summary-metrics': [] },
+        } as unknown as ReturnType<typeof useAgentsAverageMetrics>)
 
         useAgentsTableConfigSettingMock.mockReturnValue({
             columnsOrder: [AgentsTableColumn.AgentName],
@@ -159,7 +159,7 @@ describe('useAgentPerformanceMetrics', () => {
             agents,
             performance: {
                 data: { 'agents-metrics': [] },
-                summary: { 'agents-summary-metrics': [] },
+                average: { 'agents-summary-metrics': [] },
                 total: { 'agents-summary-metrics': [] },
                 columnsOrder: [AgentsTableColumn.AgentName],
             },
@@ -323,7 +323,7 @@ describe('useAIAgentReportMetrics', () => {
         useAgentsSummaryMetricsMock.mockReturnValue({
             isLoading: false,
             summaryData: { 'agents-summary-metrics': [] },
-        } as unknown as ReturnType<typeof useAgentsSummaryMetrics>)
+        } as unknown as ReturnType<typeof useAgentsAverageMetrics>)
 
         useAgentsTableConfigSettingMock.mockReturnValue({
             columnsOrder: [AgentsTableColumn.AgentName],

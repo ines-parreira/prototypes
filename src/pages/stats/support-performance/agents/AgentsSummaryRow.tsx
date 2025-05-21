@@ -5,20 +5,20 @@ import { StatsFilters } from 'models/stat/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import css from 'pages/stats/common/components/Table/AnalyticsTable.less'
+import { AgentsTableAverageCell } from 'pages/stats/support-performance/agents/AgentsTableAverageCell'
 import {
+    getAverageQuery,
     getColumnAlignment,
     getColumnWidth,
-    getSummaryQuery,
     getTotalsQuery,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import { AgentsTableSummaryCell } from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
 import { AgentsTableTotalsCell } from 'pages/stats/support-performance/agents/AgentsTableTotalsCell'
 import { AgentsTableColumn, AgentsTableRow } from 'state/ui/stats/types'
 
 export const aggregateRowConfig = {
     [AgentsTableRow.Average]: {
-        CellComponent: AgentsTableSummaryCell,
-        getQuery: getSummaryQuery,
+        CellComponent: AgentsTableAverageCell,
+        getQuery: getAverageQuery,
     },
     [AgentsTableRow.Total]: {
         CellComponent: AgentsTableTotalsCell,
