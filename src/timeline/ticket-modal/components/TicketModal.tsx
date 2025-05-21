@@ -34,14 +34,14 @@ export function TicketModal({
                 <TicketDetail
                     summary={summary}
                     ticketId={ticketId}
-                    AdditionalHeaderAction={() => (
+                    additionalHeaderActions={
                         <IconButton
                             fillStyle="ghost"
                             icon="close"
                             intent="secondary"
                             onClick={onClose}
                         />
-                    )}
+                    }
                 />
             </ModalBody>
             <ModalFooter className={css.footer}>

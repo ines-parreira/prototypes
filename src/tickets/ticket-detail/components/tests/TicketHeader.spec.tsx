@@ -6,13 +6,16 @@ import { TicketStatus } from 'business/types/ticket'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 import TicketFields from 'timeline/TicketFields'
 
+import { TicketAssignee } from '../TicketAssignee'
 import { TicketHeader } from '../TicketHeader'
 
 jest.mock('pages/tickets/detail/components/TicketDetails/TicketTags', () =>
     jest.fn(() => <div>A tag</div>),
 )
-
 jest.mock('timeline/TicketFields', () => jest.fn(() => null))
+jest.mock('../TicketAssignee', () => ({
+    TicketAssignee: jest.fn(() => <div>An assignee</div>),
+}))
 
 describe('TicketHeader', () => {
     const ticket = {
@@ -58,7 +61,12 @@ describe('TicketHeader', () => {
 
     it('should render the provided additional action', () => {
         const ActionButton = () => <button>Action</button>
-        render(<TicketHeader ticket={ticket} AdditionalAction={ActionButton} />)
+        render(
+            <TicketHeader
+                ticket={ticket}
+                additionalActions={<ActionButton />}
+            />,
+        )
 
         expect(screen.getByText('Action')).toBeInTheDocument()
     })
@@ -66,7 +74,7 @@ describe('TicketHeader', () => {
     it('should render the tags', () => {
         const { rerender } = render(<TicketHeader ticket={ticket} />)
 
-        expect(screen.getByText(/no tags/)).toBeInTheDocument()
+        expect(screen.getByText(/no tags/i)).toBeInTheDocument()
 
         const tag = {
             name: 'Tag 1',
@@ -89,6 +97,18 @@ describe('TicketHeader', () => {
             expect.objectContaining({
                 ticketTags: [tag],
                 isDisabled: true,
+            }),
+            {},
+        )
+    })
+
+    it('should render the assignee', () => {
+        render(<TicketHeader ticket={ticket} />)
+
+        expect(TicketAssignee).toHaveBeenCalledWith(
+            expect.objectContaining({
+                assignedAgent: ticket.assignee_user,
+                assignedTeam: ticket.assignee_team,
             }),
             {},
         )

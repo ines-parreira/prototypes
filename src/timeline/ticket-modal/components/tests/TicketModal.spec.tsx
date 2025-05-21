@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { ReactNode } from 'react'
 
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -12,10 +12,14 @@ import { TicketModal } from '../TicketModal'
 
 jest.mock('tickets/ticket-detail/components/TicketDetail', () => ({
     TicketDetail: jest.fn(
-        ({ AdditionalHeaderAction }: { AdditionalHeaderAction: FC }) => (
+        ({
+            additionalHeaderActions,
+        }: {
+            additionalHeaderActions: ReactNode
+        }) => (
             <>
                 <div>TicketDetail</div>
-                {<AdditionalHeaderAction />}
+                {additionalHeaderActions}
             </>
         ),
     ),
@@ -34,11 +38,10 @@ describe('TicketModal', () => {
         expect(screen.getByText('TicketDetail')).toBeInTheDocument()
 
         expect(TicketDetailMock).toHaveBeenCalledWith(
-            {
+            expect.objectContaining({
                 ticketId: 1,
                 summary: undefined,
-                AdditionalHeaderAction: expect.any(Function),
-            },
+            }),
             {},
         )
 

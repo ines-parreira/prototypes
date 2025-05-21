@@ -13,7 +13,23 @@
     }
 
     .tagsAndAssignee {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--layout-spacing-s);
         margin-bottom: var(--layout-spacing-xs);
+    }
+
+    .noTags {
+        flex-grow: 1;
+        color: var(--neutral-grey-5);
+    }
+
+    .assignee {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        padding: 0 var(--layout-spacing-xs);
+        max-width: 50%;
     }
 
     .channelIcon.channelIcon {

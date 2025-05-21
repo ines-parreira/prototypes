@@ -1,0 +1,25 @@
+@import '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        align-items: center;
+        gap: var(--layout-spacing-xs);
+        // needed for ellipsis to work
+        min-width: 0;
+    }
+
+    .avatar {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        height: 24px;
+    }
+
+    .name {
+        .body-semibold();
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+}

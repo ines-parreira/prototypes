@@ -49,7 +49,7 @@ describe('TicketDetail', () => {
             <TicketDetail
                 summary={summary}
                 ticketId={1}
-                AdditionalHeaderAction={AdditionalHeaderAction}
+                additionalHeaderActions={<AdditionalHeaderAction />}
             />,
         )
         expect(screen.getByText('TicketHeader')).toBeInTheDocument()
@@ -58,7 +58,7 @@ describe('TicketDetail', () => {
         expect(TicketHeader).toHaveBeenCalledWith(
             {
                 ticket: summary,
-                AdditionalAction: AdditionalHeaderAction,
+                additionalActions: <AdditionalHeaderAction />,
             },
             {},
         )
