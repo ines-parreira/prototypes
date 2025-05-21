@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import { useHistory, useLocation } from 'react-router-dom'
 
@@ -65,8 +65,19 @@ export function useAiShoppingAssistantTrialBanner() {
             canStartTrialFromFeatureFlag,
         ],
     )
+    const basePath = getAiAgentBasePath(storeEligibleForTrial[0]?.name)
+    const redirectionPath = `${basePath}/sales`
 
-    const onClick = () => {
+    const eventData = useMemo(
+        () => ({
+            accountId: currentAccount.get('id'),
+            userId: currentUser.get('id'),
+            userRole: userRole || '',
+            type: 'system-banner',
+        }),
+        [currentAccount, currentUser, userRole],
+    )
+    const onClick = useCallback(() => {
         history.push(redirectionPath)
         logEvent(
             SegmentEvent.AiAgentShoppingAssistantTrialSystemBannerClicked,
@@ -74,40 +85,31 @@ export function useAiShoppingAssistantTrialBanner() {
                 ...eventData,
             },
         )
-    }
+    }, [history, redirectionPath, eventData])
 
-    const eventData = {
-        accountId: currentAccount.get('id'),
-        userId: currentUser.get('id'),
-        userRole: userRole || '',
-        type: 'system-banner',
-    }
-
-    const basePath = getAiAgentBasePath(storeEligibleForTrial[0]?.name)
-
-    const redirectionPath = `${basePath}/sales`
-
-    if (displayBanner) {
-        logEvent(SegmentEvent.AiAgentShoppingAssistantTrialCtaDisplayed, {
-            ...eventData,
-        })
-        addBanner({
-            preventDismiss: false,
-            category: BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL,
-            instanceId: BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL,
-            type: AlertBannerTypes.Info,
-            message:
-                'AI Agent just got even smarter with brand new Shopping Assistant skills, start your exclusive access to a 14-day trial',
-            CTA: {
-                type: 'action',
-                text: 'Get Started',
-                onClick,
-            },
-        })
-    } else {
-        removeBanner(
-            BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL,
-            BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL,
-        )
-    }
+    useEffect(() => {
+        if (displayBanner) {
+            logEvent(SegmentEvent.AiAgentShoppingAssistantTrialCtaDisplayed, {
+                ...eventData,
+            })
+            addBanner({
+                preventDismiss: false,
+                category: BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL,
+                instanceId: BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL,
+                type: AlertBannerTypes.Info,
+                message:
+                    'AI Agent just got even smarter with brand new Shopping Assistant skills, start your exclusive access to a 14-day trial',
+                CTA: {
+                    type: 'action',
+                    text: 'Get Started',
+                    onClick,
+                },
+            })
+        } else {
+            removeBanner(
+                BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL,
+                BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL,
+            )
+        }
+    }, [displayBanner, addBanner, removeBanner, eventData, onClick])
 }

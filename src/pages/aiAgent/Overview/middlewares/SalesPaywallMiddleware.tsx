@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useHistory, useParams } from 'react-router-dom'
@@ -186,12 +186,24 @@ const PaywallWrapperComponent = ({
     const isAiShoppingAssistantEnabled =
         !!flags[FeatureFlagKey.AiShoppingAssistantEnabled]
 
-    if (isAiShoppingAssistantEnabled && showUpgradePaywall) {
-        if (canStartTrial) {
+    useEffect(() => {
+        if (
+            isAiShoppingAssistantEnabled &&
+            showUpgradePaywall &&
+            canStartTrial
+        ) {
             logEvent(SegmentEvent.AiAgentShoppingAssistantTrialCtaDisplayed, {
                 ...eventData,
             })
         }
+    }, [
+        canStartTrial,
+        isAiShoppingAssistantEnabled,
+        showUpgradePaywall,
+        eventData,
+    ])
+
+    if (isAiShoppingAssistantEnabled && showUpgradePaywall) {
         return (
             <PaywallWrapper>
                 <AiAgentPaywallView

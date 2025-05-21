@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
@@ -61,12 +61,15 @@ export const useGmvInfluencedCtaButton = ({
 
     let button: React.ReactNode | undefined = undefined
 
-    const eventData = {
-        accountId,
-        userId: currentUser.get('id'),
-        userRole: userRole || '',
-        type: 'gmv-influenced',
-    }
+    const eventData = useMemo(
+        () => ({
+            accountId,
+            userId: currentUser.get('id'),
+            userRole: userRole || '',
+            type: 'gmv-influenced',
+        }),
+        [accountId, currentUser, userRole],
+    )
 
     if (
         gmvInfluencedLoading ||
@@ -93,11 +96,17 @@ export const useGmvInfluencedCtaButton = ({
                     )
                     startTrial()
                 }}
-                eventData={eventData}
             />
         )
     }
 
+    useEffect(() => {
+        if (canStartTrial) {
+            logEvent(SegmentEvent.AiAgentShoppingAssistantTrialCtaDisplayed, {
+                ...eventData,
+            })
+        }
+    }, [canStartTrial, eventData])
     return (
         <>
             {button}
@@ -121,22 +130,17 @@ export const CtaButton = ({
     showActivationModal,
     showEarlyAccessModal,
     startTrial,
-    eventData,
 }: {
     isOnNewPlan: boolean
     canStartTrial: boolean
     showActivationModal: () => void
     showEarlyAccessModal: () => void
     startTrial: () => void
-    eventData?: Record<string, string>
 }) => {
     if (isOnNewPlan) {
         return <AIButton onClick={showActivationModal}>Activate</AIButton>
     }
     if (canStartTrial) {
-        logEvent(SegmentEvent.AiAgentShoppingAssistantTrialCtaDisplayed, {
-            ...eventData,
-        })
         return <AIButton onClick={startTrial}>Try Shopping Assistant</AIButton>
     }
     return <AIButton onClick={showEarlyAccessModal}>Upgrade</AIButton>

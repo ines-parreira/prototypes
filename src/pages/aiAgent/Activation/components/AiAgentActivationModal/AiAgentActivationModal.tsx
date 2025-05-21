@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
@@ -82,16 +82,19 @@ export const AiAgentActivationModal = ({
             onSuccess,
         })
 
-    const eventData = {
-        accountId: currentAccount.get('id'),
-        userId: currentUser.get('id'),
-        userRole: userRole || '',
-        type: 'activation-modal',
-        shopName:
-            Object.values(storeActivations).length === 1
-                ? Object.values(storeActivations)[0].name
-                : '',
-    }
+    const eventData = useMemo(
+        () => ({
+            accountId: currentAccount.get('id'),
+            userId: currentUser.get('id'),
+            userRole: userRole || '',
+            type: 'activation-modal',
+            shopName:
+                Object.values(storeActivations).length === 1
+                    ? Object.values(storeActivations)[0].name
+                    : '',
+        }),
+        [currentAccount, currentUser, userRole, storeActivations],
+    )
 
     const handleBannerClick = () => {
         if (canStartTrial) {
@@ -104,17 +107,27 @@ export const AiAgentActivationModal = ({
         }
     }
 
-    if (
-        !isFetchLoading &&
-        !canUseAiSalesAgent &&
-        !atLeastOneStoreHasActiveTrial &&
-        !isLoading &&
-        canStartTrial
-    ) {
-        logEvent(SegmentEvent.AiAgentShoppingAssistantTrialCtaDisplayed, {
-            ...eventData,
-        })
-    }
+    useEffect(() => {
+        if (
+            !isFetchLoading &&
+            !canUseAiSalesAgent &&
+            !atLeastOneStoreHasActiveTrial &&
+            !isLoading &&
+            canStartTrial
+        ) {
+            logEvent(SegmentEvent.AiAgentShoppingAssistantTrialCtaDisplayed, {
+                ...eventData,
+            })
+        }
+    }, [
+        eventData,
+        isFetchLoading,
+        canUseAiSalesAgent,
+        atLeastOneStoreHasActiveTrial,
+        isLoading,
+        canStartTrial,
+    ])
+
     const storeActivationList = Object.entries(storeActivations)
 
     return (
