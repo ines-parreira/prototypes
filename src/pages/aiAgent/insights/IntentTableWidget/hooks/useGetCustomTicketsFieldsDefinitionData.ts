@@ -1,4 +1,4 @@
-import { AI_MANAGED_TYPES, MANAGED_TYPES } from 'custom-fields/constants'
+import { AI_MANAGED_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { activeParams } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 
@@ -21,7 +21,7 @@ export const useGetCustomTicketsFieldsDefinitionData = (): {
     )
 
     const sentimentCustomField = activeFields.find(
-        (field) => field.managed_type === MANAGED_TYPES.SENTIMENT,
+        (field) => field.managed_type === AI_MANAGED_TYPES.MANAGED_SENTIMENT,
     )
 
     return {

@@ -97,6 +97,7 @@ export const AI_MANAGED_TYPES = {
     AI_OUTCOME: 'ai_outcome',
     AI_SALES: 'ai_sales',
     AI_DISCOUNT: 'ai_discount',
+    MANAGED_SENTIMENT: 'managed_sentiment',
 }
 
 export const MANAGED_TYPES = {
@@ -104,7 +105,6 @@ export const MANAGED_TYPES = {
     PRODUCT: 'product',
     RESOLUTION: 'resolution',
     CUSTOMER_TYPE: 'customer_type',
-    SENTIMENT: 'sentiment',
     ...AI_MANAGED_TYPES,
 }
 
