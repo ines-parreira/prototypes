@@ -102,7 +102,7 @@ describe('withTypingActivity', () => {
     })
 
     it('should handle startTyping rejections and forward status to sentry', async () => {
-        const error = new PubNubError({ reason: 'it failed' })
+        const error = new PubNubError({ reason: 'it failed', statusCode: 500 })
 
         mockStartTyping.mockRejectedValueOnce(error)
 
@@ -115,9 +115,9 @@ describe('withTypingActivity', () => {
 
         await waitFor(() => {
             expect(reportError).toHaveBeenCalledWith(
-                new Error('Realtime typing status error'),
+                new Error('Realtime typing status error, statusCode: 500'),
                 {
-                    extra: { status: { reason: 'it failed' } },
+                    extra: { status: { reason: 'it failed', statusCode: 500 } },
                 },
             )
         })
@@ -125,7 +125,7 @@ describe('withTypingActivity', () => {
 
     it('should handle stopTyping rejections and forward status to sentry', async () => {
         jest.useFakeTimers()
-        const error = new PubNubError({ reason: 'it failed' })
+        const error = new PubNubError({ reason: 'it failed', statusCode: 500 })
         mockStopTyping.mockRejectedValueOnce(error)
 
         const Component = withTypingActivity(WrappedComponent)
@@ -140,9 +140,9 @@ describe('withTypingActivity', () => {
 
         await waitFor(() => {
             expect(reportError).toHaveBeenCalledWith(
-                new Error('Realtime typing status error'),
+                new Error('Realtime typing status error, statusCode: 500'),
                 {
-                    extra: { status: { reason: 'it failed' } },
+                    extra: { status: { reason: 'it failed', statusCode: 500 } },
                 },
             )
         })
@@ -161,6 +161,28 @@ describe('withTypingActivity', () => {
 
         await waitFor(() => {
             expect(reportError).not.toHaveBeenCalled()
+        })
+    })
+
+    it('should handle errors without statusCode', async () => {
+        const error = new PubNubError({ reason: 'it failed' })
+
+        mockStartTyping.mockRejectedValueOnce(error)
+
+        const Component = withTypingActivity(WrappedComponent)
+        const { getByText } = render(<Component />)
+
+        act(() => {
+            userEvent.click(getByText('wrapped'))
+        })
+
+        await waitFor(() => {
+            expect(reportError).toHaveBeenCalledWith(
+                new Error('Realtime typing status error, statusCode: unknown'),
+                {
+                    extra: { status: { reason: 'it failed' } },
+                },
+            )
         })
     })
 })

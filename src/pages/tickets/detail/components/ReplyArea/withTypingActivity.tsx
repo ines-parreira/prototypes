@@ -2,7 +2,11 @@ import React, { useCallback, useEffect, useState } from 'react'
 
 import { debounce, toPlainObject } from 'lodash'
 
-import { isRealtimeError, useAgentActivity } from '@gorgias/realtime'
+import {
+    isRealtimeError,
+    RealtimeError,
+    useAgentActivity,
+} from '@gorgias/realtime'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
@@ -15,10 +19,15 @@ export type TypingActivityProps = {
 
 const handlePubNubError = (error: unknown) => {
     if (isRealtimeError(error)) {
-        const status = toPlainObject(error?.status)
-        reportError(new Error('Realtime typing status error'), {
-            extra: { status },
-        })
+        const status = toPlainObject(error?.status) as RealtimeError['status']
+        reportError(
+            new Error(
+                `Realtime typing status error, statusCode: ${status.statusCode || 'unknown'}`,
+            ),
+            {
+                extra: { status },
+            },
+        )
     }
 }
 
