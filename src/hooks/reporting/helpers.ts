@@ -2,9 +2,14 @@ import { flatMap } from 'lodash'
 
 import { calculateMetricPerHour } from 'hooks/reporting/metricCalculations'
 import {
+    fetchMetricPerDimension,
+    MetricWithDecileFetch,
     QueryReturnType,
     ReportingMetricItem,
+    useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
+import { OrderDirection } from 'models/api/types'
+import { Cubes } from 'models/reporting/cubes'
 import {
     AgentTimeTrackingCube,
     AgentTimeTrackingDimension,
@@ -15,6 +20,7 @@ import {
     TicketTagsEnrichedCube,
     TicketTagsEnrichedDimension,
 } from 'models/reporting/cubes/TicketTagsEnrichedCube'
+import { ReportingQuery } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 
@@ -85,3 +91,34 @@ export const getTagValuesByOperator = (statsFilters: StatsFilters) =>
                 : [],
         ),
     )
+type QueryFactory<TCube extends Cubes> = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+) => ReportingQuery<TCube>
+
+export const createFetchPerDimension =
+    <TCube extends Cubes>(query: QueryFactory<TCube>): MetricWithDecileFetch =>
+    (
+        statsFilters: StatsFilters,
+        timezone: string,
+        sorting?: OrderDirection,
+        dimensionId?: string,
+    ) =>
+        fetchMetricPerDimension(
+            query(statsFilters, timezone, sorting),
+            dimensionId,
+        )
+
+export const createMetricPerDimensionHook =
+    <TCube extends Cubes>(query: QueryFactory<TCube>) =>
+    (
+        statsFilters: StatsFilters,
+        timezone: string,
+        sorting?: OrderDirection,
+        dimensionId?: string,
+    ) =>
+        useMetricPerDimension(
+            query(statsFilters, timezone, sorting),
+            dimensionId,
+        )

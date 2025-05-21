@@ -1,10 +1,7 @@
 import {
-    fetchMetricPerDimension,
-    MetricWithDecileFetch,
-    useMetricPerDimension,
-} from 'hooks/reporting/useMetricPerDimension'
-import { OrderDirection } from 'models/api/types'
-import { Cubes } from 'models/reporting/cubes'
+    createFetchPerDimension,
+    createMetricPerDimensionHook,
+} from 'hooks/reporting/helpers'
 import { onlineTimePerAgentQueryFactory } from 'models/reporting/queryFactories/agentxp/onlineTime'
 import { ticketAverageHandleTimePerAgentQueryFactory } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
@@ -17,40 +14,6 @@ import { messagesSentMetricPerAgentQueryFactory } from 'models/reporting/queryFa
 import { oneTouchTicketsPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import { ticketsRepliedMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
-import { ReportingQuery } from 'models/reporting/types'
-import { StatsFilters } from 'models/stat/types'
-
-type QueryFactory<TCube extends Cubes> = (
-    filters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection,
-) => ReportingQuery<TCube>
-
-export const createFetchPerDimension =
-    <TCube extends Cubes>(query: QueryFactory<TCube>): MetricWithDecileFetch =>
-    (
-        statsFilters: StatsFilters,
-        timezone: string,
-        sorting?: OrderDirection,
-        dimensionId?: string,
-    ) =>
-        fetchMetricPerDimension(
-            query(statsFilters, timezone, sorting),
-            dimensionId,
-        )
-
-export const createMetricPerDimensionHook =
-    <TCube extends Cubes>(query: QueryFactory<TCube>) =>
-    (
-        statsFilters: StatsFilters,
-        timezone: string,
-        sorting?: OrderDirection,
-        dimensionId?: string,
-    ) =>
-        useMetricPerDimension(
-            query(statsFilters, timezone, sorting),
-            dimensionId,
-        )
 
 export const useMedianFirstResponseTimeMetricPerAgent =
     createMetricPerDimensionHook(

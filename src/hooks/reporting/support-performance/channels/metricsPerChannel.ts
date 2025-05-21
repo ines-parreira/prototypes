@@ -1,7 +1,7 @@
 import {
     createFetchPerDimension,
     createMetricPerDimensionHook,
-} from 'hooks/reporting/metricsPerAgent'
+} from 'hooks/reporting/helpers'
 import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
 import { OrderDirection } from 'models/api/types'
 import { ticketAverageHandleTimePerAgentPerChannelQueryFactory } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
