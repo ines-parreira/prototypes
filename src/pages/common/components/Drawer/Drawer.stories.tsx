@@ -2,7 +2,7 @@ import React, { ComponentProps } from 'react'
 
 import { Meta, StoryFn } from '@storybook/react'
 
-import { Button, IconButton } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/merchant-ui-kit'
 
 import { Drawer } from 'pages/common/components/Drawer/Drawer'
 
@@ -30,15 +30,10 @@ const Template: StoryFn<ComponentProps<typeof Drawer>> = () => {
             >
                 <Drawer.Header>
                     Some Title
-                    <Drawer.HeaderActions>
-                        <IconButton
-                            onClick={() => setIsOpen(!isOpen)}
-                            fillStyle="ghost"
-                            intent="secondary"
-                            size="medium"
-                            icon={'keyboard_tab'}
-                        />
-                    </Drawer.HeaderActions>
+                    <Drawer.HeaderActions
+                        onClose={() => setIsOpen(!isOpen)}
+                        closeButtonId="close-button"
+                    />
                 </Drawer.Header>
                 <Drawer.Content>Some content</Drawer.Content>
                 <Drawer.Footer>Some Footer</Drawer.Footer>

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { IconButton, TabNavigation } from '@gorgias/merchant-ui-kit'
+import { TabNavigation } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -72,15 +72,10 @@ export const VoCSidePanel = () => {
                     className={css.tabNavigator}
                     tabs={Object.values(VoCSidePanelTabs)}
                 />
-                <Drawer.HeaderActions>
-                    <IconButton
-                        onClick={closePanel}
-                        fillStyle="ghost"
-                        intent="secondary"
-                        size="medium"
-                        icon="keyboard_tab"
-                    />
-                </Drawer.HeaderActions>
+                <Drawer.HeaderActions
+                    onClose={closePanel}
+                    closeButtonId="close-button"
+                />
             </Drawer.Header>
             <Drawer.Content className={css.content}>
                 {VoCSidePanelTabs[activeTab].content()}

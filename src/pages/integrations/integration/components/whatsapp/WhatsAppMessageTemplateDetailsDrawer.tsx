@@ -7,7 +7,6 @@ import { Label } from '@gorgias/merchant-ui-kit'
 
 import { WhatsAppMessageTemplate } from 'models/whatsAppMessageTemplates/types'
 import Alert from 'pages/common/components/Alert/Alert'
-import IconButton from 'pages/common/components/button/IconButton'
 import { Drawer } from 'pages/common/components/Drawer'
 import { getLanguageDisplayName } from 'utils'
 
@@ -42,18 +41,14 @@ export default function WhatsAppMessageTemplateDetailsDrawer({
             isLoading={false}
             portalRootId="app-root"
             onBackdropClick={() => setIsOpen(false)}
+            withFooter={false}
         >
             <Drawer.Header>
                 <h3 className={css.headerTitle}>{template.name}</h3>
-                <Drawer.HeaderActions>
-                    <IconButton
-                        fillStyle="ghost"
-                        intent="secondary"
-                        onClick={() => setIsOpen(false)}
-                    >
-                        keyboard_tab
-                    </IconButton>
-                </Drawer.HeaderActions>
+                <Drawer.HeaderActions
+                    onClose={() => setIsOpen(false)}
+                    closeButtonId="close-button"
+                />
             </Drawer.Header>
             <Drawer.Content>
                 {alertContent && isAlertVisible && (

@@ -24,12 +24,14 @@ export const StoreConfigDrawer = (props: StoreConfigDrawerProps) => {
             portalRootId="app-root"
             onBackdropClick={props.onBackdropClick}
         >
-            <Drawer.Header className={css.drawerHeader}>
+            <Drawer.Header>
                 {props.title}
+                <Drawer.HeaderActions
+                    onClose={props.onBackdropClick}
+                    closeButtonId="close-button"
+                />
             </Drawer.Header>
-            <Drawer.Content className={css.drawerContent}>
-                {props.children}
-            </Drawer.Content>
+            <Drawer.Content>{props.children}</Drawer.Content>
             <Drawer.Footer className={css.drawerFooter}>
                 <Button isLoading={props.isLoading} onClick={props.onSave}>
                     Save Changes

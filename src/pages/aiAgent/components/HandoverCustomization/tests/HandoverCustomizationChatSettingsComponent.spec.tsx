@@ -230,6 +230,14 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
             return screen.getAllByText(/When an error occurs/i)[1]
         }
 
+        beforeEach(() => {
+            jest.useFakeTimers()
+        })
+
+        afterEach(() => {
+            jest.useRealTimers()
+        })
+
         it('should render the handover customization settings when there is one chat channel', () => {
             ;(
                 useHandoverCustomizationChatSettings as jest.Mock
@@ -447,6 +455,8 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
             expect(drawerTitle).toBeVisible()
 
             fireEvent.click(screen.getByRole('button', { name: /cancel/i }))
+            jest.advanceTimersByTime(300)
+
             expect(drawerTitle).not.toBeVisible()
         })
 
@@ -466,6 +476,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
             expect(drawerTitle).toBeVisible()
 
             fireEvent.click(screen.getByRole('button', { name: /cancel/i }))
+            jest.advanceTimersByTime(300)
 
             expect(drawerTitle).not.toBeVisible()
         })

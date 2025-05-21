@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import classNames from 'classnames'
 import { Col, Row } from 'reactstrap'
 
+import { Button, IconButton } from '@gorgias/merchant-ui-kit'
+
 import useAppSelector from 'hooks/useAppSelector'
 import { DEFAULT_VOICE_MESSAGE } from 'models/integration/constants'
 import {
@@ -10,8 +12,6 @@ import {
     IvrMenuActionType,
     VoiceMessage,
 } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
-import IconButton from 'pages/common/components/button/IconButton'
 import { Drawer } from 'pages/common/components/Drawer'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import { getSmsIntegrations } from 'state/integrations/selectors'
@@ -89,15 +89,10 @@ const IvrMenuActionField = ({
                         >
                             <Drawer.Header className={css.drawerHeader}>
                                 <h3 className={css.title}>Message</h3>
-                                <Drawer.HeaderActions>
-                                    <IconButton
-                                        fillStyle="ghost"
-                                        intent="secondary"
-                                        onClick={() => setDrawerOpen(false)}
-                                    >
-                                        keyboard_tab
-                                    </IconButton>
-                                </Drawer.HeaderActions>
+                                <Drawer.HeaderActions
+                                    onClose={() => setDrawerOpen(false)}
+                                    closeButtonId="close-button"
+                                />
                             </Drawer.Header>
                             <Drawer.Content className={css.drawerContent}>
                                 <VoiceMessageField
@@ -175,12 +170,11 @@ const IvrMenuActionField = ({
             </Col>
             <Col className={classNames(css.smallColumn, 'pl-0')}>
                 <IconButton
+                    icon="close"
                     fillStyle="ghost"
                     intent="destructive"
                     onClick={onRemove}
-                >
-                    close
-                </IconButton>
+                />
             </Col>
         </Row>
     )

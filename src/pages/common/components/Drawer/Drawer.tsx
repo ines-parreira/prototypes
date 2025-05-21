@@ -4,13 +4,22 @@ import classNames from 'classnames'
 import ReactDOM from 'react-dom'
 import { Container } from 'reactstrap'
 
+import { IconButton, ShortcutKey, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import useKey from 'hooks/useKey'
+
 import Loader from '../Loader/Loader'
 
 import css from './Drawer.less'
 
 type CommonProps = {
-    children: React.ReactNode
+    children?: React.ReactNode
     className?: string
+}
+
+type HeaderActionsProps = CommonProps & {
+    onClose: () => void
+    closeButtonId: string
 }
 
 const Header = ({ children, className, ...props }: CommonProps) => (
@@ -19,9 +28,29 @@ const Header = ({ children, className, ...props }: CommonProps) => (
     </header>
 )
 
-const HeaderActions = ({ children, className, ...props }: CommonProps) => (
+const HeaderActions = ({
+    children,
+    className,
+    onClose,
+    closeButtonId,
+    ...props
+}: HeaderActionsProps) => (
     <div className={classNames(css['header-actions'], className)} {...props}>
         {children}
+        <IconButton
+            id={closeButtonId}
+            icon="keyboard_tab"
+            onClick={onClose}
+            fillStyle="ghost"
+            intent="secondary"
+            aria-label="close edit drawer"
+        />
+        <Tooltip placement="bottom-end" target={closeButtonId}>
+            <div>
+                <span>Close side panel</span>
+                <ShortcutKey color="dark">esc</ShortcutKey>
+            </div>
+        </Tooltip>
     </div>
 )
 
@@ -72,6 +101,7 @@ const Drawer = ({
         open ? zIndexOpen : zIndexClosed,
     )
     const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null)
+    const [isVisible, setIsVisible] = useState(open)
 
     useEffect(() => {
         portalRootId && setPortalRoot(document.getElementById(portalRootId))
@@ -79,8 +109,25 @@ const Drawer = ({
 
     useEffect(() => {
         setContainerZIndex(open ? zIndexOpen : zIndexClosed)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [open])
+        if (open) {
+            setIsVisible(true)
+        } else {
+            const timer = setTimeout(() => {
+                setIsVisible(false)
+            }, transitionDurationMs)
+            return () => clearTimeout(timer)
+        }
+    }, [open, zIndexOpen, zIndexClosed, transitionDurationMs])
+
+    useKey(
+        'Escape',
+        (event) => {
+            event.stopPropagation()
+            onBackdropClick?.()
+        },
+        undefined,
+        [onBackdropClick],
+    )
 
     const drawer = (
         <div
@@ -91,29 +138,33 @@ const Drawer = ({
                 zIndex: containerZIndex,
                 transitionDelay: open ? '0ms' : `${transitionDurationMs}ms`,
             }}
+            onKeyDown={(event) => {
+                if (event.key === 'Escape') {
+                    onBackdropClick?.()
+                }
+            }}
         >
-            {onBackdropClick && (
-                <div
-                    className={classNames({
-                        backdrop: true,
-                        opened: open,
-                    })}
-                    style={{
-                        transitionDelay: open
-                            ? `${transitionDurationMs / 2}ms`
-                            : '0ms',
-                        transitionDuration: `${transitionDurationMs / 2}ms`,
-                    }}
-                    role="presentation"
-                    onClick={onBackdropClick}
-                />
-            )}
+            <div
+                className={classNames({
+                    backdrop: true,
+                    opened: open,
+                })}
+                style={
+                    {
+                        '--animation-duration': `${transitionDurationMs}ms`,
+                    } as React.CSSProperties
+                }
+                role="presentation"
+                onClick={() => onBackdropClick?.() ?? undefined}
+            />
             <div
                 aria-label={ariaLabel}
                 data-testid={dataTestId}
-                style={{
-                    transitionDuration: `${transitionDurationMs}ms`,
-                }}
+                style={
+                    {
+                        '--animation-duration': `${transitionDurationMs}ms`,
+                    } as React.CSSProperties
+                }
                 className={classNames(
                     {
                         [css.drawer]: true,
@@ -127,7 +178,7 @@ const Drawer = ({
                 {...(!open ? { inert: '' } : {})}
                 role="dialog"
                 aria-modal="true"
-                hidden={!open}
+                hidden={!isVisible}
             >
                 {isLoading ? (
                     <Container fluid className="page-container">

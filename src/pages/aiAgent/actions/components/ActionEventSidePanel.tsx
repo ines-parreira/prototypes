@@ -1,14 +1,9 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import classnames from 'classnames'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
-
-import useKey from 'hooks/useKey'
 import Accordion from 'pages/common/components/accordion/Accordion'
-import IconButton from 'pages/common/components/button/IconButton'
 import { Drawer } from 'pages/common/components/Drawer'
-import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import { Components } from 'rest_api/workflows_api/client.generated'
 
 import {
@@ -75,16 +70,6 @@ export default function ActionEventSidePanel({
         return arr.filter((step) => step.kind !== 'end')
     }, [execution])
 
-    useKey(
-        'Escape',
-        (event) => {
-            event.stopPropagation()
-            onClose()
-        },
-        undefined,
-        [onClose],
-    )
-
     const closeButtonId = 'close-button'
 
     const sortedSteps = useMemo(
@@ -97,31 +82,19 @@ export default function ActionEventSidePanel({
 
     return (
         <Drawer
-            className={css.drawer}
             fullscreen={false}
             isLoading={isLoading}
             aria-label="Event details"
             open={isOpen}
             portalRootId="app-root"
+            onBackdropClick={onClose}
         >
             <Drawer.Header className={css.drawerHeader}>
                 <p className={css.title}>Event details</p>
-                <Drawer.HeaderActions>
-                    <IconButton
-                        id={closeButtonId}
-                        fillStyle="ghost"
-                        intent="secondary"
-                        onClick={onClose}
-                    >
-                        keyboard_tab
-                    </IconButton>
-                    <Tooltip placement="bottom-end" target={closeButtonId}>
-                        <div className={css.closeButtonTooltip}>
-                            <span>Close side panel</span>
-                            <ShortcutIcon type="dark">esc</ShortcutIcon>
-                        </div>
-                    </Tooltip>
-                </Drawer.HeaderActions>
+                <Drawer.HeaderActions
+                    onClose={onClose}
+                    closeButtonId={closeButtonId}
+                />
             </Drawer.Header>
             <Drawer.Content className={css.drawerContent}>
                 <ActionEventTitle

@@ -1,13 +1,9 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 import classNames from 'classnames'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
-
 import useId from 'hooks/useId'
-import IconButton from 'pages/common/components/button/IconButton'
 import { Drawer } from 'pages/common/components/Drawer'
-import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 
 import css from './NodeEditorDrawer.less'
 
@@ -27,7 +23,6 @@ const EditorDrawerHeader = ({
     label,
     isPreview,
     headerSaperator,
-    testId,
     className,
 }: Props) => {
     const closeButtonId = `${
@@ -42,25 +37,11 @@ const EditorDrawerHeader = ({
         >
             <div className={css.headerTop}>
                 {label && <h3 title={label}>{label}</h3>}
-                <Drawer.HeaderActions>
+                <Drawer.HeaderActions
+                    onClose={onClose}
+                    closeButtonId={closeButtonId}
+                >
                     {children}
-                    <IconButton
-                        id={closeButtonId}
-                        onClick={() => onClose()}
-                        fillStyle="ghost"
-                        intent="secondary"
-                        size="medium"
-                        aria-label="close edit modal"
-                        data-testid={`${testId}-close-drawer`} // used in e2e tests
-                    >
-                        keyboard_tab
-                    </IconButton>
-                    <Tooltip placement="bottom-end" target={closeButtonId}>
-                        <div className={css.closeButtonTooltip}>
-                            <span>Close side panel</span>
-                            <ShortcutIcon type="dark">esc</ShortcutIcon>
-                        </div>
-                    </Tooltip>
                 </Drawer.HeaderActions>
             </div>
         </Drawer.Header>

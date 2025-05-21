@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+
+import { Button } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useId from 'hooks/useId'
@@ -12,8 +14,6 @@ import {
     SmsIntegration,
     VoiceMessage,
 } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
-import IconButton from 'pages/common/components/button/IconButton'
 import { Drawer } from 'pages/common/components/Drawer'
 import TextArea from 'pages/common/forms/TextArea'
 import SmsIntegrationSelect from 'pages/integrations/integration/components/sms/SmsIntegrationSelect'
@@ -152,15 +152,10 @@ const IvrMenuActionSendToSMSField = ({
             >
                 <Drawer.Header className={css.drawerHeader}>
                     <h3 className={css.title}>Message</h3>
-                    <Drawer.HeaderActions>
-                        <IconButton
-                            fillStyle="ghost"
-                            intent="secondary"
-                            onClick={handleExitWithoutSaving}
-                        >
-                            keyboard_tab
-                        </IconButton>
-                    </Drawer.HeaderActions>
+                    <Drawer.HeaderActions
+                        onClose={handleExitWithoutSaving}
+                        closeButtonId="close-button"
+                    />
                 </Drawer.Header>
 
                 <Drawer.Content className={css.drawerContent}>

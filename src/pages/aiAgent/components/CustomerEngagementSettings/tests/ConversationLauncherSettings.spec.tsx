@@ -92,8 +92,9 @@ describe('ConversationLauncherSettings', () => {
 
         fireEvent.click(screen.getByText('Advanced settings'))
 
-        const sidebar = container.querySelector('[class*="sidebar"]')
-        expect(sidebar).toHaveClass('slideOut')
+        const drawer = container.querySelector('[class="drawer"]')
+        expect(drawer).not.toHaveClass('opened')
+        expect(drawer).not.toBeVisible()
     })
 
     it('opens Advanced settings when toggle is on', () => {
@@ -122,8 +123,9 @@ describe('ConversationLauncherAdvancedSettings', () => {
             </Wrapper>,
         )
 
-        const sidebar = container.querySelector('[class*="sidebar"]')
-        expect(sidebar).toHaveClass('slideOut')
+        const drawer = container.querySelector('[class="drawer"]')
+        expect(drawer).not.toHaveClass('opened')
+        expect(drawer).not.toBeVisible()
     })
 
     it('renders toggle and buttons when open', () => {

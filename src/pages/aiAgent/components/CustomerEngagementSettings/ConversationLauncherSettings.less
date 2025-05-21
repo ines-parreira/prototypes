@@ -2,74 +2,6 @@
 @import (reference) '~css/typography';
 
 :local {
-    .card {
-        max-width: 680px;
-    }
-
-    .drawerOverlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: hsla(
-            var(--black-h),
-            var(--black-s),
-            var(--black-l),
-            0.5
-        );
-        z-index: 1000;
-        display: none;
-
-        &.slideIn {
-            display: block;
-        }
-
-        &.slideOut {
-            display: none;
-        }
-    }
-
-    .sidebar {
-        position: fixed;
-        top: 0;
-        right: 0;
-        height: 100vh;
-        width: 612px;
-
-        background-color: var(--neutral-grey-0);
-        box-shadow: -4px 0px 20px rgba(0, 0, 0, 0.1);
-
-        z-index: 2000;
-        display: flex;
-        flex-direction: column;
-
-        overflow-y: auto;
-        cursor: pointer;
-
-        transform: translateX(100%);
-        display: none;
-        height: 100%;
-
-        &.slideIn {
-            display: block;
-            :global {
-                animation: slide-in 0.3s ease-in-out forwards;
-            }
-        }
-
-        &.slideOut {
-            :global {
-                animation: slide-out 0.3s ease-in-out forwards;
-            }
-        }
-    }
-
-    .exitIcon {
-        cursor: pointer;
-        font-size: 20px;
-    }
-
     .desktopSwitch {
         color: var(--neutral-grey-6);
         font-size: 14px;
@@ -80,28 +12,7 @@
         font-size: 14px;
     }
 
-    .sidebarHeader {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid var(--neutral-grey-2);
-        padding: @layout-spacing-s;
-    }
-
-    .sidebarTitle {
-        font-size: 20px;
-        font-weight: 600;
-        line-height: 1.4;
-        margin: 0;
-    }
-
-    .sidebarBody {
-        font-size: 14px;
-        color: var(--neutral-grey-6);
-        padding: @layout-spacing-m @layout-spacing-s;
-    }
-
-    .sidebarToggleRow {
+    .drawerToggleRow {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
@@ -110,48 +21,7 @@
         margin-bottom: 32px;
     }
 
-    .sidebarFooter {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        width: 100%;
-        padding: 16px 24px;
-        border-top: 1px solid var(--neutral-grey-2);
-        background: var(--neutral-grey-2);
-        display: flex;
+    .drawerFooter {
         gap: @layout-spacing-xs;
-    }
-}
-
-:global {
-    @keyframes slide-in {
-        0% {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-
-        100% {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-
-    @keyframes slide-out {
-        0% {
-            display: block;
-            transform: translateX(0);
-            opacity: 1;
-        }
-
-        99% {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-
-        100% {
-            display: none;
-            transform: translateX(100%);
-            opacity: 0;
-        }
     }
 }

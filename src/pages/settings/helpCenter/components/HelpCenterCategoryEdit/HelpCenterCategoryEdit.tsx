@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
 
 import classNames from 'classnames'
 import copy from 'copy-to-clipboard'
@@ -10,6 +10,8 @@ import {
     InputGroupAddon,
     Label,
 } from 'reactstrap'
+
+import { Button, IconButton } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -24,8 +26,6 @@ import {
     UpdateCategoryTranslationDto,
     VisibilityStatus,
 } from 'models/helpCenter/types'
-import Button from 'pages/common/components/button/Button'
-import IconButton from 'pages/common/components/button/IconButton'
 import { Drawer } from 'pages/common/components/Drawer'
 import AutoPopulateInput from 'pages/common/forms/AutoPopulateInput/AutoPopulateInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -551,39 +551,30 @@ export const HelpCenterCategoryEdit = ({
             <Drawer.Header className={css.header}>
                 <div className={css.headerTop}>
                     <h3 className={css.headerTitle}>Category Settings</h3>
-                    <Drawer.HeaderActions>
+                    <Drawer.HeaderActions
+                        onClose={handleCloseModalAttempt}
+                        closeButtonId="close-button"
+                    >
                         {showPreviewAndShareButton && (
                             <>
                                 <IconButton
+                                    icon="open_in_new"
                                     onClick={onPreviewCategory}
                                     fillStyle="ghost"
                                     intent="secondary"
                                     size="medium"
                                     aria-label="preview category"
-                                >
-                                    open_in_new
-                                </IconButton>
+                                />
                                 <IconButton
+                                    icon="share"
                                     onClick={copyURL}
                                     fillStyle="ghost"
                                     intent="secondary"
                                     size="medium"
                                     aria-label="copy url"
-                                >
-                                    share
-                                </IconButton>
+                                />
                             </>
                         )}
-                        <IconButton
-                            onClick={handleCloseModalAttempt}
-                            fillStyle="ghost"
-                            intent="secondary"
-                            size="medium"
-                            aria-label="close edit modal"
-                            data-testid="close-drawer"
-                        >
-                            keyboard_tab
-                        </IconButton>
                     </Drawer.HeaderActions>
                 </div>
                 <div className={css.headerActions}>
@@ -823,14 +814,13 @@ export const HelpCenterCategoryEdit = ({
                     <div className={css.confirmSaveUnlistedHeader}>
                         <span>Unlist category and its content</span>
                         <IconButton
+                            icon="close"
                             onClick={() => setPendingSaveCategory(false)}
                             fillStyle="ghost"
                             intent="secondary"
                             size="medium"
                             aria-label="cancel save category"
-                        >
-                            close
-                        </IconButton>
+                        />
                     </div>
                     <div className={css.confirmSaveUnlistedContent}>
                         Unlisting this category will make all its public

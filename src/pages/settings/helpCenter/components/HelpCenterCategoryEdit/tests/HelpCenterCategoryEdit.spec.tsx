@@ -255,7 +255,7 @@ describe('<HelpCenterCategoryEdit />', () => {
     })
 
     it('resets the fields when isOpen changes to false', () => {
-        const { getByTestId } = render(<Example isOpen />)
+        const { getByTestId, getByRole } = render(<Example isOpen />)
         const titleInput = getByTestId('title-input') as HTMLInputElement
 
         act(() => {
@@ -268,7 +268,7 @@ describe('<HelpCenterCategoryEdit />', () => {
             })
 
             // Toggle the drawer to reset the state
-            fireEvent.click(getByTestId('close-drawer'))
+            fireEvent.click(getByRole('button', { name: 'close edit drawer' }))
             fireEvent.click(getByTestId('toggle-btn'))
 
             expect(titleInput.value).toEqual('')

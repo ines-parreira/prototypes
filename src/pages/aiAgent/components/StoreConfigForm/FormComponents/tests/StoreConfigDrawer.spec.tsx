@@ -66,4 +66,15 @@ describe('StoreConfigDrawer', () => {
 
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     })
+
+    it('should call onBackdropClick when clicking close button', async () => {
+        render(<StoreConfigDrawer {...defaultProps} />)
+
+        const closeButton = screen.getByRole('button', {
+            name: 'close edit drawer',
+        })
+        await userEvent.click(closeButton)
+
+        expect(defaultProps.onBackdropClick).toHaveBeenCalled()
+    })
 })
