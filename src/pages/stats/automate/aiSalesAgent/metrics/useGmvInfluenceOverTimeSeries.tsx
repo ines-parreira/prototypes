@@ -1,7 +1,5 @@
 import { useMemo } from 'react'
 
-import { UseQueryResult } from '@tanstack/react-query'
-
 import {
     fetchTimeSeries,
     TimeSeriesDataItem,
@@ -14,12 +12,11 @@ import {
 } from 'models/reporting/queryFactories/ai-sales-agent/timeseries'
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
+import { GMV_OVERTIME_LABEL } from 'pages/stats/automate/aiSalesAgent/constants'
 import {
     calculateRate,
     getStatsByMeasure,
 } from 'pages/stats/automate/aiSalesAgent/metrics/utils'
-
-import { GMV_OVERTIME_LABEL } from '../constants'
 
 const calculateRates = (
     influencedGmvData: TimeSeriesDataItem[],
@@ -28,8 +25,8 @@ const calculateRates = (
     const rates: TimeSeriesDataItem[] = []
 
     influencedGmvData.forEach((timeSeries, index) => {
-        const influencedGmv = influencedGmvData?.[index].value
-        const gmv = gmvData?.[index].value
+        const influencedGmv = influencedGmvData[index]?.value
+        const gmv = gmvData[index]?.value
         const rate = calculateRate(influencedGmv, gmv)
 
         rates.push({
@@ -46,7 +43,11 @@ const useGmvInfluenceOverTimeSeries = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-): UseQueryResult<TimeSeriesDataItem[][]> => {
+): {
+    data: TimeSeriesDataItem[][]
+    isError: boolean
+    isFetching: boolean
+} => {
     const influencedGmvTimeSeries = useTimeSeries(
         influencedGmvTimeSeriesQueryFactory(filters, timezone, granularity),
     )
@@ -93,12 +94,11 @@ const useGmvInfluenceOverTimeSeries = (
         influencedGmvTimeSeries.isError || gmvTimeSeries.isError
 
     return useMemo(
-        () =>
-            ({
-                data: [influencedGmvRates],
-                isFetching,
-                isError,
-            }) as UseQueryResult<TimeSeriesDataItem[][]>,
+        () => ({
+            data: [influencedGmvRates],
+            isFetching,
+            isError,
+        }),
         [influencedGmvRates, isError, isFetching],
     )
 }
@@ -132,4 +132,8 @@ const fetchGmvInflueceOverTimeSeries = (
     })
 }
 
-export { useGmvInfluenceOverTimeSeries, fetchGmvInflueceOverTimeSeries }
+export {
+    calculateRates,
+    useGmvInfluenceOverTimeSeries,
+    fetchGmvInflueceOverTimeSeries,
+}

@@ -23,7 +23,7 @@ export const useAggregatedBusiestTimesOfDayData = (
     return {
         btodData,
         max,
-        isLoading: data.isLoading,
+        isLoading: data.isFetching,
         period: cleanStatsFilters.period,
         userTimezone,
     }

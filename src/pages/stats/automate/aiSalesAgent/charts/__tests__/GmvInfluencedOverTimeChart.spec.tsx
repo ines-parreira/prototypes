@@ -1,12 +1,10 @@
 import React from 'react'
 
-import { UseQueryResult } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { TooltipItem } from 'chart.js'
 import moment from 'moment/moment'
 
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
-import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import GmvInfluencedOverTimeChart, {
@@ -114,7 +112,9 @@ describe('<GmvInfluencedOverTimeChart />', () => {
 
         useGmvInfluenceOverTimeSeriesMock.mockReturnValue({
             data: [],
-        } as unknown as UseQueryResult<TimeSeriesDataItem[][]>)
+            isFetching: false,
+            isError: false,
+        })
     })
 
     it('renders', () => {

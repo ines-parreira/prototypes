@@ -115,7 +115,7 @@ describe('busiestTimesOfDaysReportingService', () => {
         it('should fetch and format report data', () => {
             const hook = jest.fn().mockReturnValue({
                 data: [[]],
-                isLoading: false,
+                isFetching: false,
             })
             const { result } = renderHook(() =>
                 useAggregatedBusiestTimesOfDayReportData(hook),

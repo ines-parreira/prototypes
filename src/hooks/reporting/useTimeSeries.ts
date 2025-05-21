@@ -15,7 +15,10 @@ export type TimeSeriesHook = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-) => UseQueryResult<TimeSeriesDataItem[][]>
+) => Pick<
+    UseQueryResult<TimeSeriesDataItem[][]>,
+    'data' | 'isError' | 'isFetching'
+>
 
 export type TimeSeriesPerDimensionHook = (
     filters: StatsFilters,

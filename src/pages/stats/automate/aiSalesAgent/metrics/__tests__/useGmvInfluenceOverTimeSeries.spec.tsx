@@ -5,15 +5,21 @@ import { waitFor } from '@testing-library/react'
 import { act } from '@testing-library/react-hooks/dom'
 import moment from 'moment'
 
-import { fetchTimeSeries, useTimeSeries } from 'hooks/reporting/useTimeSeries'
+import {
+    fetchTimeSeries,
+    TimeSeriesDataItem,
+    useTimeSeries,
+} from 'hooks/reporting/useTimeSeries'
 import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
+import { GMV_OVERTIME_LABEL } from 'pages/stats/automate/aiSalesAgent/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
 import {
+    calculateRates,
     fetchGmvInflueceOverTimeSeries,
     useGmvInfluenceOverTimeSeries,
 } from '../useGmvInfluenceOverTimeSeries'
@@ -51,7 +57,6 @@ describe('gmvInfluenceOverTimeSeries', () => {
                     value: 10,
                     label: AiSalesAgentOrdersMeasure.Gmv,
                 },
-
                 {
                     dateTime: '2025-09-28T00:00:00.000',
                     value: 5,
@@ -70,7 +75,6 @@ describe('gmvInfluenceOverTimeSeries', () => {
                     value: 50,
                     label: AiSalesAgentOrdersMeasure.Gmv,
                 },
-
                 {
                     dateTime: '2025-09-28T00:00:00.000',
                     value: 10,
@@ -111,12 +115,12 @@ describe('gmvInfluenceOverTimeSeries', () => {
                         [
                             {
                                 dateTime: '2025-02-26T00:00:00.000',
-                                label: 'Gmv Influenced Over Time',
+                                label: GMV_OVERTIME_LABEL,
                                 value: 0.2,
                             },
                             {
                                 dateTime: '2025-09-28T00:00:00.000',
-                                label: 'Gmv Influenced Over Time',
+                                label: GMV_OVERTIME_LABEL,
                                 value: 0.5,
                             },
                         ],
@@ -154,16 +158,39 @@ describe('gmvInfluenceOverTimeSeries', () => {
                 [
                     {
                         dateTime: '2025-02-26T00:00:00.000',
-                        label: 'Gmv Influenced Over Time',
+                        label: GMV_OVERTIME_LABEL,
                         value: 0.2,
                     },
                     {
                         dateTime: '2025-09-28T00:00:00.000',
-                        label: 'Gmv Influenced Over Time',
+                        label: GMV_OVERTIME_LABEL,
                         value: 0.5,
                     },
                 ],
             ])
         })
+    })
+})
+
+describe('calculateRates', () => {
+    it('should return 0 when no matching values in source data', () => {
+        const influencedGmvData: TimeSeriesDataItem[] = [
+            {
+                dateTime: '2025-02-26T00:00:00.000',
+                value: 10,
+                label: AiSalesAgentOrdersMeasure.Gmv,
+            },
+        ]
+        const gmvData: TimeSeriesDataItem[] = []
+
+        const data = calculateRates(influencedGmvData, gmvData)
+
+        expect(data).toEqual([
+            {
+                dateTime: '2025-02-26T00:00:00.000',
+                value: 0,
+                label: GMV_OVERTIME_LABEL,
+            },
+        ])
     })
 })
