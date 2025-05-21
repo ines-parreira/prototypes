@@ -1,6 +1,7 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/layout';
 @import (reference) '~css/typography';
 
+@white: #fff;
 @grey-light: #fcfbff;
 @grey-lighter: #f9fdff;
 @grey-lightest: #fafefd;
@@ -53,7 +54,8 @@
     #1e5244 93.56%
 );
 
-@icon-purple: #6d62b4;
+@icon-purple-light: #6d62b4;
+@icon-purple-dark: #a9a9f7;
 
 @skeleton-light: linear-gradient(
     107deg,
@@ -90,13 +92,16 @@
 :global {
     .dark {
         :local {
-            .container.hasBackground {
+            .container {
                 background:
                     @gradient-dark padding-box,
                     @gradient-light border-box;
             }
 
             .title {
+                svg {
+                    color: @icon-purple-dark;
+                }
                 .text {
                     background: linear-gradient(
                         90deg,
@@ -113,6 +118,11 @@
                     color: @badge-color-dark;
                     background: @badge-bg-dark;
                 }
+            }
+
+            .body {
+                color: @white;
+                margin-top: @layout-spacing-xxs;
             }
 
             .skeletonLine {
@@ -134,7 +144,8 @@
     div {
         &.popover {
             padding: 0;
-            border-radius: 12px;
+            border: none !important;
+            background: transparent;
 
             & > svg {
                 display: none;
@@ -146,11 +157,12 @@
         width: 100%;
         min-width: 380px;
         padding: 16px;
+        padding-bottom: 12px;
         border-radius: 12px;
         border: 1px solid transparent;
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: @layout-spacing-xxs;
         background:
             linear-gradient(var(--neutral-grey-0), var(--neutral-grey-0))
                 padding-box,
@@ -170,10 +182,12 @@
     .title {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: @layout-spacing-xs;
 
         svg {
-            color: @icon-purple;
+            color: @icon-purple-light;
+            width: 20px;
+            height: 20px;
         }
 
         .text {
@@ -196,6 +210,9 @@
             .caption-semibold();
         }
     }
+    .popoverButton {
+        margin-right: @layout-spacing-xxs;
+    }
 
     .initButton {
         margin-left: auto;
@@ -207,7 +224,7 @@
 
     .body {
         .body-regular();
-
+        margin-top: @layout-spacing-xxs;
         .bodyError {
             color: var(--neutral-grey-5);
         }
@@ -215,6 +232,15 @@
 
     .info {
         .caption-regular();
+        display: flex;
+        align-items: center;
+        color: var(--neutral-grey-5);
+        min-height: 24px;
+    }
+
+    .summaryBodySkeleton {
+        margin-top: @layout-spacing-xs;
+        margin-bottom: @layout-spacing-xxs;
     }
 
     .skeletonLineContainer {
@@ -270,8 +296,14 @@
 
     .footer {
         display: flex;
-        gap: 4px;
+        gap: @layout-spacing-xxs;
         align-items: center;
+
+        .updateButton {
+            i {
+                font-size: 16px;
+            }
+        }
 
         .retryButton {
             padding-left: 0 !important;

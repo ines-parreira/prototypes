@@ -284,8 +284,8 @@ const TicketHeader = ({
                 />
 
                 <div className={css.actions}>
-                    {enableAITicketSummary && <TicketSummaryPopover />}
                     <TicketSnooze datetime={snoozedUntil} timezone={timezone} />
+                    {enableAITicketSummary && <TicketSummaryPopover />}
 
                     <TicketNavigationArrowPagination
                         ticketId={ticket.get('id')}

@@ -31,6 +31,7 @@ const TicketSummaryPopover = () => {
     return (
         <>
             <TicketSummaryButton
+                className={css.popoverButton}
                 onClick={handleClick}
                 ref={buttonRef}
                 {...(isOpen && { leadingIcon: 'close' })}

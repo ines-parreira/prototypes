@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import useTicketSummary from 'pages/tickets/detail/hooks/useTicketSummary'
 
 import TicketSummarySection, {
@@ -21,6 +22,9 @@ jest.mock('pages/tickets/detail/hooks/useTicketSummary', () => ({
 }))
 
 const useTicketSummaryMock = useTicketSummary as jest.Mock
+
+jest.mock('common/segment')
+const logEventMock = logEvent as jest.Mock
 
 const baseSummary = {
     content: 'AI-generated summary text',
@@ -128,6 +132,35 @@ describe('TicketSummarySection', () => {
         render(<TicketSummarySection summary={baseSummary} ticketId={123} />)
 
         expect(screen.getByText('Something went wrong')).toBeInTheDocument()
+    })
+
+    it('should log an event when summary is manually triggered in non-popover mode', () => {
+        useTicketSummaryMock.mockReturnValue({
+            summary: baseSummary,
+            isLoading: false,
+            requestSummary: jest.fn(),
+            hasRequested: false,
+        })
+        render(
+            <TicketSummarySection
+                summary={null}
+                ticketId={123}
+                isPopup={false}
+            />,
+        )
+
+        const button = screen.getByText('Summarize')
+        expect(button).toBeInTheDocument()
+
+        fireEvent.click(button)
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.AiTicketSummaryInitManuallyRequested,
+            {
+                ticketId: 123,
+                page: 'customer-timeline',
+            },
+        )
     })
 })
 

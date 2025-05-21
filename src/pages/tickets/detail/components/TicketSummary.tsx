@@ -1,10 +1,11 @@
-import React, { forwardRef, useMemo } from 'react'
+import React, { forwardRef, useCallback, useMemo } from 'react'
 
 import cn from 'classnames'
 
 import { TicketSummaryProperty } from '@gorgias/api-types'
 import { Badge, Button, IconButton } from '@gorgias/merchant-ui-kit'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
 import css from 'pages/tickets/detail/components/TicketSummary.less'
 import useTicketSummary from 'pages/tickets/detail/hooks/useTicketSummary'
@@ -44,6 +45,7 @@ const TicketSummarySection = ({
         () => !!localSummary?.content,
         [localSummary?.content],
     )
+
     const summaryInfo = useMemo(() => {
         if (isLoading) {
             return 'Summarizing...'
@@ -61,6 +63,14 @@ const TicketSummarySection = ({
         return null
     }, [isLoading, errorMessage, hasContent, latestUpdateDatetime])
 
+    const manuallyRequestInitialSummary = useCallback(() => {
+        logEvent(SegmentEvent.AiTicketSummaryInitManuallyRequested, {
+            ticketId,
+            page: 'customer-timeline',
+        })
+        requestSummary()
+    }, [requestSummary, ticketId])
+
     return (
         <div
             className={cn(
@@ -76,7 +86,7 @@ const TicketSummarySection = ({
                 </Badge>
                 {!isPopup && !hasRequested && (
                     <TicketSummaryButton
-                        onClick={requestSummary}
+                        onClick={manuallyRequestInitialSummary}
                         className={css.initButton}
                     >
                         Summarize
@@ -103,6 +113,7 @@ const TicketSummarySection = ({
 
                         {!isLoading && hasContent && !errorMessage && (
                             <IconButton
+                                className={css.updateButton}
                                 size="small"
                                 icon="loop"
                                 intent="secondary"
@@ -193,7 +204,7 @@ type SummaryBodySkeletonProps = {
 
 export const SummaryBodySkeleton = ({ rows }: SummaryBodySkeletonProps) => {
     return (
-        <div>
+        <div className={css.summaryBodySkeleton}>
             {rows.map((width, index) => (
                 <SummarySkeleton key={index} width={width} />
             ))}
