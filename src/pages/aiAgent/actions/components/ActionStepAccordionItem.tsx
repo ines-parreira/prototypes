@@ -155,8 +155,7 @@ const ActionStepAccordionItem = ({
                     appImageUrl={appImageUrl}
                     appImageAlt={templateConfiguration?.apps?.[0]?.type}
                     title={actionName}
-                    badgeText={step?.success ? 'success' : 'error'}
-                    badgeSuccess={!!step?.success}
+                    status={step?.success ? 'success' : 'error'}
                 />
             </AccordionHeader>
             <AccordionBody>

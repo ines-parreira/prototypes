@@ -35,10 +35,7 @@ export default function ActionsRow({ execution, onClick, isSelected }: Props) {
                 {moment(execution.updated_datetime).calendar()}
             </BodyCell>
             <BodyCell className={css.statusCell}>
-                <ActionStatus
-                    status={execution.status}
-                    successFlag={execution.success}
-                />
+                <ActionStatus status={execution.status} />
             </BodyCell>
             <BodyCell>
                 {execution.state?.user_journey_id && (

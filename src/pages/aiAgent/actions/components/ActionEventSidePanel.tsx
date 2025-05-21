@@ -127,8 +127,6 @@ export default function ActionEventSidePanel({
                 <ActionEventTitle
                     isCustomAction={isCustomAction}
                     title={actionConfiguration?.name}
-                    badgeText={execution?.success ? 'success' : 'error'}
-                    badgeSuccess={!!execution?.success}
                     hideFiller
                     status={execution?.status}
                 />

@@ -10,8 +10,6 @@ export type ActionEventTitleProps = {
     appImageUrl?: string
     appImageAlt?: string
     title?: string
-    badgeText?: string
-    badgeSuccess?: boolean
     hideFiller?: boolean
     status?: LlmTriggeredExecution['status']
 }
@@ -21,8 +19,6 @@ const ActionEventTitle = ({
     appImageUrl,
     appImageAlt,
     title,
-    badgeText,
-    badgeSuccess,
     hideFiller,
     status,
 }: ActionEventTitleProps) => {
@@ -48,10 +44,10 @@ const ActionEventTitle = ({
                 )}
                 <p>{title}</p>
             </div>
-            {!!badgeText && (
+            {!!status && (
                 <div className={css.status}>
                     <p>Status</p>
-                    <ActionStatus status={status} successFlag={badgeSuccess} />
+                    <ActionStatus status={status} />
                 </div>
             )}
         </div>

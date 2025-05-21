@@ -8,30 +8,17 @@ const partial_success = <Badge type={'light-warning'}>PARTIAL SUCCESS</Badge>
 
 export default function ActionStatus({
     status,
-    successFlag,
 }: {
     status: LlmTriggeredExecution['status']
-    successFlag?: boolean | null
 }) {
-    if (!status) {
-        switch (successFlag) {
-            case true:
-                return success
-            case false:
-                return error
-            default:
-                return <></>
-        }
-    } else {
-        switch (status) {
-            case 'success':
-                return success
-            case 'partial_success':
-                return partial_success
-            case 'error':
-                return error
-            default:
-                return <></>
-        }
+    switch (status) {
+        case 'success':
+            return success
+        case 'partial_success':
+            return partial_success
+        case 'error':
+            return error
+        default:
+            return <></>
     }
 }

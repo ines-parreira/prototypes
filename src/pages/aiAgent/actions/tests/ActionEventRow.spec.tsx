@@ -44,7 +44,7 @@ describe('ActionEventRow', () => {
             },
             trigger: 'llm-prompt',
             triggerable: false,
-            success: true,
+            status: 'success',
         } as LlmTriggeredExecution
         const { rerender } = renderWithRouter(
             <Provider store={defaultStore}>
@@ -72,7 +72,7 @@ describe('ActionEventRow', () => {
                     <ActionEventRow
                         isSelected={false}
                         onClick={jest.fn()}
-                        execution={{ ...execution, success: false }}
+                        execution={{ ...execution, status: 'error' }}
                     />
                 </QueryClientProvider>
             </Provider>,
