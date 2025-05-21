@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
 
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -30,7 +31,7 @@ describe('useExhaustEndpoint', () => {
                 },
             })
 
-        const { result, waitFor } = renderHook(
+        const { result } = renderHook(
             () => useExhaustEndpoint(['test'], (cursor) => mockFetch(cursor)),
             { wrapper: createWrapper() },
         )
@@ -51,7 +52,7 @@ describe('useExhaustEndpoint', () => {
             },
         })
 
-        const { result, waitFor } = renderHook(
+        const { result } = renderHook(
             () =>
                 useExhaustEndpoint(['test-empty'], (cursor) => {
                     return mockFetch(cursor)

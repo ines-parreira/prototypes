@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 import _omit from 'lodash/omit'
 
 import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'

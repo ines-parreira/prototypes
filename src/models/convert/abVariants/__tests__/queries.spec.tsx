@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 
 import { abGroup, campaignId } from 'fixtures/abGroup'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
@@ -74,7 +74,7 @@ describe('A/B Group queries', () => {
                 mockedResources[mockedResource].mockResolvedValueOnce(
                     axiosSuccessResponse(returnedData) as any,
                 )
-                const { result, waitFor } = renderHook(() => queries[hook](), {
+                const { result } = renderHook(() => queries[hook](), {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             {children}

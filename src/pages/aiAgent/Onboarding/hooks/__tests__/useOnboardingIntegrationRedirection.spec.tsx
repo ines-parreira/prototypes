@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 
 import useLocalStorageWithExpiry from 'hooks/useLocalStorageWithExpiry'
 import { IntegrationType } from 'models/integration/types'

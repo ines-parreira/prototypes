@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

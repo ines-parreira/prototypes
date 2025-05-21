@@ -1,6 +1,5 @@
 import { useElements, useStripe } from '@stripe/react-stripe-js'
-import { waitFor } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 
 import client from 'models/api/resources'

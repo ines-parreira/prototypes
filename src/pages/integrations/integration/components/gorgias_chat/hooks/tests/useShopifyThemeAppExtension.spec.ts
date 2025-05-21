@@ -1,5 +1,4 @@
-import { waitFor } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 
 import { ShopifyIntegration } from 'models/integration/types'
 import { renderHook } from 'utils/testing/renderHook'

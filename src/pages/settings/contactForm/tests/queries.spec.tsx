@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
 import _get from 'lodash/get'
 
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
@@ -46,7 +47,7 @@ describe('useGetContactFormList', () => {
             getContactForms: 'success',
         })
 
-        const { result, waitFor } = renderHook(() => useGetContactFormList(), {
+        const { result } = renderHook(() => useGetContactFormList(), {
             wrapper,
         })
 
@@ -62,7 +63,7 @@ describe('useGetContactFormList', () => {
             getContactForms: 'error',
         })
 
-        const { result, waitFor } = renderHook(() => useGetContactFormList(), {
+        const { result } = renderHook(() => useGetContactFormList(), {
             wrapper,
         })
 
@@ -93,12 +94,9 @@ describe('useGetShopifyPages', () => {
             getShopifyPages: 'success',
         })
 
-        const { result, waitFor } = renderHook(
-            () => useGetShopifyPages(contactFormId),
-            {
-                wrapper,
-            },
-        )
+        const { result } = renderHook(() => useGetShopifyPages(contactFormId), {
+            wrapper,
+        })
 
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
 
@@ -112,12 +110,9 @@ describe('useGetShopifyPages', () => {
             getShopifyPages: 'error',
         })
 
-        const { result, waitFor } = renderHook(
-            () => useGetShopifyPages(contactFormId),
-            {
-                wrapper,
-            },
-        )
+        const { result } = renderHook(() => useGetShopifyPages(contactFormId), {
+            wrapper,
+        })
 
         await waitFor(() => {
             expect(result.current.isError).toBeTruthy()
@@ -146,7 +141,7 @@ describe('useGetPageEmbedments', () => {
             getPageEmbedments: 'success',
         })
 
-        const { result, waitFor } = renderHook(
+        const { result } = renderHook(
             () => useGetPageEmbedments(contactFormId),
             {
                 wrapper,
@@ -165,7 +160,7 @@ describe('useGetPageEmbedments', () => {
             getPageEmbedments: 'error',
         })
 
-        const { result, waitFor } = renderHook(
+        const { result } = renderHook(
             () => useGetPageEmbedments(contactFormId),
             {
                 wrapper,
@@ -206,7 +201,7 @@ describe('useCreateContactForm', () => {
             createContactForm: 'success',
         })
 
-        const { result, waitFor } = renderHook(() => useCreateContactForm(), {
+        const { result } = renderHook(() => useCreateContactForm(), {
             wrapper,
         })
 
@@ -224,7 +219,7 @@ describe('useCreateContactForm', () => {
             createContactForm: 'error',
         })
 
-        const { result, waitFor } = renderHook(() => useCreateContactForm(), {
+        const { result } = renderHook(() => useCreateContactForm(), {
             wrapper,
         })
 
@@ -265,7 +260,7 @@ describe('useCreatePageEmbedment', () => {
             createPageEmbedment: 'success',
         })
 
-        const { result, waitFor } = renderHook(() => useCreatePageEmbedment(), {
+        const { result } = renderHook(() => useCreatePageEmbedment(), {
             wrapper,
         })
 
@@ -283,7 +278,7 @@ describe('useCreatePageEmbedment', () => {
             createPageEmbedment: 'error',
         })
 
-        const { result, waitFor } = renderHook(() => useCreatePageEmbedment(), {
+        const { result } = renderHook(() => useCreatePageEmbedment(), {
             wrapper,
         })
 
@@ -325,7 +320,7 @@ describe('useUpdatePageEmbedment', () => {
             updatePageEmbedment: 'success',
         })
 
-        const { result, waitFor } = renderHook(() => useUpdatePageEmbedment(), {
+        const { result } = renderHook(() => useUpdatePageEmbedment(), {
             wrapper,
         })
 
@@ -343,7 +338,7 @@ describe('useUpdatePageEmbedment', () => {
             updatePageEmbedment: 'error',
         })
 
-        const { result, waitFor } = renderHook(() => useUpdatePageEmbedment(), {
+        const { result } = renderHook(() => useUpdatePageEmbedment(), {
             wrapper,
         })
 

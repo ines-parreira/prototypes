@@ -1,12 +1,11 @@
-import { act } from '@testing-library/react-hooks'
-
 import {
     TicketQAScoreDimensionName,
     useListTicketQaScoreDimensions,
     useUpsertTicketQaScoreDimension,
 } from '@gorgias/api-queries'
 
-import { renderHook } from 'utils/testing/renderHook'
+// TODO(React18): Remove act import this once we upgrade to React 18
+import { act, renderHook } from 'utils/testing/renderHook'
 
 import useAutoQA from '../useAutoQA'
 

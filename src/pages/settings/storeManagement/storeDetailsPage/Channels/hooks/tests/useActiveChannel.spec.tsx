@@ -1,4 +1,6 @@
-import { act, renderHook } from 'utils/testing/renderHook'
+import { act } from '@testing-library/react'
+
+import { renderHook } from 'utils/testing/renderHook'
 
 import { ChannelChange } from '../../../../types'
 import UseActiveChannel from '../useActiveChannel'

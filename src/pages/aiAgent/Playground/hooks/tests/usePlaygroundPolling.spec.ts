@@ -1,7 +1,9 @@
+import { act } from '@testing-library/react'
+
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useGetTestSessionLogs } from 'models/aiAgent/queries'
 import { reportError } from 'utils/errors'
-import { act, renderHook } from 'utils/testing/renderHook'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { usePlaygroundPolling } from '../usePlaygroundPolling'
 

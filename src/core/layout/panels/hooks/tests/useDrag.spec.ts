@@ -1,7 +1,6 @@
 import type { MouseEvent } from 'react'
 
-import { fireEvent } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -20,6 +19,7 @@ describe('useDrag', () => {
         const preventDefault = jest.fn()
         const { result } = renderHook(() => useDrag({ panel1: 100 }))
         const resizer = result.current.createResizer(1)
+
         act(() => {
             resizer({
                 clientX: 10,
@@ -27,6 +27,7 @@ describe('useDrag', () => {
                 preventDefault,
             } as unknown as MouseEvent)
         })
+
         expect(preventDefault).toHaveBeenCalled()
         expect(result.current.drag).toEqual({
             handle: 1,
@@ -35,10 +36,12 @@ describe('useDrag', () => {
         })
     })
 
-    it('should unset the drag when the resizer is released', () => {
+    it('should unset the drag when the resizer is released', async () => {
         const preventDefault = jest.fn()
         const { result } = renderHook(() => useDrag({ panel1: 100 }))
         const resizer = result.current.createResizer(1)
+
+        // Set drag state
         act(() => {
             resizer({
                 clientX: 10,
@@ -46,9 +49,25 @@ describe('useDrag', () => {
                 preventDefault,
             } as unknown as MouseEvent)
         })
-        act(() => {
-            fireEvent.mouseUp(window)
+
+        // Confirm drag is set (triggers useEffect to attach mouseup listener)
+        await waitFor(() => {
+            expect(result.current.drag).not.toBe(null)
         })
-        expect(result.current.drag).toBe(null)
+
+        // Ensure the event loop progresses to register the handler
+        await act(async () => {
+            await Promise.resolve()
+        })
+
+        // Dispatch native event manually — critical in JSDOM
+        act(() => {
+            window.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }))
+        })
+
+        // Wait for the state to be reset
+        await waitFor(() => {
+            expect(result.current.drag).toBe(null)
+        })
     })
 })

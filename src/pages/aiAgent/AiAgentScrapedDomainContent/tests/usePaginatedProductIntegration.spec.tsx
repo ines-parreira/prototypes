@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { QueryClientProvider, QueryKey } from '@tanstack/react-query'
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 
 import { Product } from 'constants/integrations/types/shopify'
 import {
@@ -53,7 +53,7 @@ describe('usePaginatedProductIntegration', () => {
     it('should fetch products with initial params', async () => {
         fetchIntegrationProducts.mockResolvedValueOnce(mockResponse)
 
-        const { result, waitFor } = renderHook(
+        const { result } = renderHook(
             () =>
                 usePaginatedProductIntegration({
                     integrationId: mockIntegrationId,
@@ -72,7 +72,7 @@ describe('usePaginatedProductIntegration', () => {
     it('should handle search functionality', async () => {
         fetchIntegrationProducts.mockResolvedValueOnce(mockResponse)
 
-        const { result, waitFor, unmount } = renderHook(
+        const { result, unmount } = renderHook(
             () =>
                 usePaginatedProductIntegration({
                     integrationId: mockIntegrationId,
@@ -86,10 +86,12 @@ describe('usePaginatedProductIntegration', () => {
             result.current.setSearchTerm('test search')
         })
 
-        expect(fetchIntegrationProducts).toHaveBeenCalledWith(
-            mockIntegrationId,
-            { filter: 'test search', cursor: undefined },
-        )
+        await waitFor(() => {
+            expect(fetchIntegrationProducts).toHaveBeenCalledWith(
+                mockIntegrationId,
+                { filter: 'test search', cursor: undefined },
+            )
+        })
         unmount()
     })
 
@@ -113,7 +115,7 @@ describe('usePaginatedProductIntegration', () => {
             .mockResolvedValueOnce(mockNextResponse)
             .mockResolvedValueOnce(mockPrevResponse)
 
-        const { result, waitFor } = renderHook(
+        const { result } = renderHook(
             () =>
                 usePaginatedProductIntegration({
                     integrationId: mockIntegrationId,
@@ -152,7 +154,7 @@ describe('usePaginatedProductIntegration', () => {
         const error = new Error('Test error')
         fetchIntegrationProducts.mockRejectedValueOnce(error)
 
-        const { result, waitFor } = renderHook(
+        const { result } = renderHook(
             () =>
                 usePaginatedProductIntegration({
                     integrationId: mockIntegrationId,

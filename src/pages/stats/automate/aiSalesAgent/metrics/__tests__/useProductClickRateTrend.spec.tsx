@@ -1,8 +1,5 @@
-import React from 'react'
-
 import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
-import { waitFor } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks/dom'
+import { act, waitFor } from '@testing-library/react'
 import moment from 'moment'
 
 import { ConvertTrackingEventsMeasure } from 'models/reporting/cubes/convert/ConvertTrackingEventsCube'

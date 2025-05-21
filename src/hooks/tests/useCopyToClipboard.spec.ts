@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 import writeText from 'copy-to-clipboard'
 import noop from 'lodash/noop'
 

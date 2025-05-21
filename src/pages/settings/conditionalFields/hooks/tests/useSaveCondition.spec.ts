@@ -1,5 +1,5 @@
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 
 import { useCreateCustomFieldCondition } from '@gorgias/api-queries'
 

@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 
 import useOrderBy from 'hooks/useOrderBy'
 import { OrderDirection } from 'models/api/types'

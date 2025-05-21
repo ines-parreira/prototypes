@@ -1,6 +1,5 @@
 import { useKnockClient } from '@knocklabs/react'
-import { waitFor } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

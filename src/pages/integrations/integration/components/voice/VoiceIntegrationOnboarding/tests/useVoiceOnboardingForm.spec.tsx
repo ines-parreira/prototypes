@@ -1,5 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 

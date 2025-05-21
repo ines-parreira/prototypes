@@ -1,6 +1,6 @@
 import React, { ComponentType } from 'react'
 
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 import _keyBy from 'lodash/keyBy'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'

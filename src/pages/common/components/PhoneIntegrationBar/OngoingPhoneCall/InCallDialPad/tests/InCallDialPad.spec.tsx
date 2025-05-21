@@ -1,7 +1,4 @@
-import React from 'react'
-
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Call } from '@twilio/voice-sdk'
 
 import { mockIncomingCall } from 'tests/twilioMocks'
@@ -108,25 +105,26 @@ describe('<InCallDialPad />', () => {
             expect(screen.getByTestId('digit-1')).toBeInTheDocument(),
         )
 
-        act(() => {
-            const dialedDigits = [
-                '1',
-                '2',
-                '3',
-                '4',
-                '5',
-                '6',
-                '7',
-                '8',
-                '9',
-                '0',
-                '1',
-                '2',
-            ]
-            dialedDigits.forEach((digit) => {
+        const dialedDigits = [
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
+            '6',
+            '7',
+            '8',
+            '9',
+            '0',
+            '1',
+            '2',
+        ]
+
+        for (const digit of dialedDigits) {
+            await act(async () => {
                 fireEvent.click(screen.getByTestId(`digit-${digit}`))
             })
-        })
+        }
 
         await waitFor(() =>
             expect(screen.getByText('...3456789012')).toBeInTheDocument(),

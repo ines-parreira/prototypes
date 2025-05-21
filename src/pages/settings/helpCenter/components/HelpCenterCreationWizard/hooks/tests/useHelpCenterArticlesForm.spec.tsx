@@ -1,7 +1,6 @@
 import 'tests/__mocks__/editionManagerContextMock'
 
-import { waitFor } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks/dom'
+import { act, waitFor } from '@testing-library/react'
 
 import {
     ArticleTemplateType,

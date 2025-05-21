@@ -1,7 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { render, screen, waitFor } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 
@@ -246,10 +245,12 @@ describe('useShippingMethods', () => {
         act(() => {
             result.current.onSelectShippingMethod('available-shipping-option-1')
         })
-        expect(onUpdateConsignmentShippingMethodMock).toHaveBeenNthCalledWith(
-            1,
-            'available-shipping-option-1',
-        )
+
+        await waitFor(() => {
+            expect(
+                onUpdateConsignmentShippingMethodMock,
+            ).toHaveBeenNthCalledWith(1, 'available-shipping-option-1')
+        })
         expect(result.current.selectedShippingMethod).toEqual(
             bigCommerceConsignmentFixture.available_shipping_options[0],
         )

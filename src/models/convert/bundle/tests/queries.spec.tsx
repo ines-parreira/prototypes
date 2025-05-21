@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { convertBundle } from 'fixtures/convertBundle'
@@ -47,7 +48,7 @@ describe('Channel Connection queries', () => {
             mockedResources.mockListBundles.mockResolvedValueOnce(
                 axiosSuccessResponse([convertBundle]) as any,
             )
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () => queries.useListBundles(testOverrides),
                 {
                     wrapper,
@@ -61,7 +62,7 @@ describe('Channel Connection queries', () => {
             mockedResources.mockListBundles.mockRejectedValueOnce(
                 Error('test error'),
             )
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () => queries.useListBundles(testOverrides),
                 {
                     wrapper,

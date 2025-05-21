@@ -44,7 +44,10 @@ export function renderHook<Props, Result = unknown>(
     }) as unknown as RenderHookResult<Props, Result>
 }
 
-// Re-export the current `act` from react-hooks (can be swapped later)
+/**
+ * @deprecated act from @testing-library/react-hooks is deprecated.
+ * Please use `act` from '@testing-library/react' instead.
+ */
 export const act = reactHooksAct
 
 export type { RenderHookOptions }

@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { account } from 'fixtures/account'

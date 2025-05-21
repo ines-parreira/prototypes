@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { render, waitFor } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks'
+import { act, render, waitFor } from '@testing-library/react'
 import { Device } from '@twilio/voice-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'

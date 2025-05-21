@@ -1,7 +1,5 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { campaign, campaignId } from 'fixtures/campaign'
@@ -64,7 +62,7 @@ describe('Campaign queries', () => {
             mockedResources.mockGetCampaign.mockResolvedValueOnce({
                 data: campaign,
             } as any)
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () =>
                     queries.useGetCampaign({
                         campaign_id: campaignId,
@@ -81,7 +79,7 @@ describe('Campaign queries', () => {
             mockedResources.mockGetCampaign.mockRejectedValueOnce(
                 Error('test error'),
             )
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () =>
                     queries.useGetCampaign(
                         {
@@ -98,7 +96,7 @@ describe('Campaign queries', () => {
         })
 
         it('should respect the enabled setting', async () => {
-            const { waitFor } = renderHook(
+            renderHook(
                 () =>
                     queries.useGetCampaign(
                         {
@@ -121,7 +119,7 @@ describe('Campaign queries', () => {
             mockedResources.mockListCampaigns.mockResolvedValueOnce({
                 data: [campaign],
             } as any)
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () =>
                     queries.useListCampaigns({
                         channelConnectionId: channelConnectionId,
@@ -138,7 +136,7 @@ describe('Campaign queries', () => {
             mockedResources.mockListCampaigns.mockRejectedValueOnce(
                 Error('test error'),
             )
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () =>
                     queries.useListCampaigns(
                         {
@@ -155,7 +153,7 @@ describe('Campaign queries', () => {
         })
 
         it('should respect the enabled setting', async () => {
-            const { waitFor } = renderHook(
+            renderHook(
                 () =>
                     queries.useListCampaigns(
                         {
@@ -206,7 +204,7 @@ describe('Campaign queries', () => {
                 mockedResources[mockedResource].mockResolvedValueOnce(
                     axiosSuccessResponse(returnedData) as any,
                 )
-                const { result, waitFor } = renderHook(() => queries[hook](), {
+                const { result } = renderHook(() => queries[hook](), {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             {children}

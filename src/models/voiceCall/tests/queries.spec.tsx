@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -37,7 +38,7 @@ describe('voiceCall queries', () => {
             listVoiceCallsSpy.mockResolvedValueOnce(
                 axiosSuccessResponse(voiceCalls) as any,
             )
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () => useListVoiceCalls({ ticket_id: 1 }),
                 {
                     wrapper,
@@ -49,7 +50,7 @@ describe('voiceCall queries', () => {
 
         it('should return expected error on failure', async () => {
             listVoiceCallsSpy.mockRejectedValueOnce(Error('test error'))
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () => useListVoiceCalls({ ticket_id: 1 }),
                 {
                     wrapper,
@@ -66,7 +67,7 @@ describe('voiceCall queries', () => {
                 axiosSuccessResponse(['testRecording']) as any,
             )
             const recordings = ['testRecording']
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () => useListRecordings({ call_id: 1 }),
                 {
                     wrapper,
@@ -80,7 +81,7 @@ describe('voiceCall queries', () => {
             listVoiceCallRecordingsSpy.mockRejectedValueOnce(
                 Error('test error'),
             )
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () => useListRecordings({ call_id: 1 }),
                 {
                     wrapper,
@@ -97,7 +98,7 @@ describe('voiceCall queries', () => {
                 axiosSuccessResponse(['testEvent']) as any,
             )
             const events = ['testEvent']
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () => useListVoiceCallEvents({ call_id: 1 }),
                 {
                     wrapper,
@@ -109,7 +110,7 @@ describe('voiceCall queries', () => {
 
         it('should return expected error on failure', async () => {
             listVoiceCallEventsSpy.mockRejectedValueOnce(Error('test error'))
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () => useListVoiceCallEvents({ call_id: 1 }),
                 {
                     wrapper,

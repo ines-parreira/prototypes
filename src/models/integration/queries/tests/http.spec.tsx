@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -32,7 +33,7 @@ describe('queries.spec.tsx', () => {
             mockedServer
                 .onGet('/api/integrations/1/events/')
                 .reply(200, response)
-            const { result, waitFor } = renderHook(() => useGetHTTPEvents(1), {
+            const { result } = renderHook(() => useGetHTTPEvents(1), {
                 wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={mockStore}>{children}</Provider>
@@ -50,7 +51,7 @@ describe('queries.spec.tsx', () => {
             mockedServer
                 .onGet('/api/custom-fields')
                 .reply(404, { message: 'error' })
-            const { result, waitFor } = renderHook(() => useGetHTTPEvents(1), {
+            const { result } = renderHook(() => useGetHTTPEvents(1), {
                 wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={mockStore}>{children}</Provider>
@@ -73,7 +74,7 @@ describe('queries.spec.tsx', () => {
             mockedServer
                 .onGet('/api/integrations/1/events/1')
                 .reply(200, response)
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () => useGetHTTPEvent({ integrationId: 1, eventId: 1 }),
                 {
                     wrapper: ({ children }) => (
@@ -95,7 +96,7 @@ describe('queries.spec.tsx', () => {
                 .onGet('/api/integrations/1/events/1')
                 .reply(404, { message: 'error' })
 
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () => useGetHTTPEvent({ integrationId: 1, eventId: 1 }),
                 {
                     wrapper: ({ children }) => (

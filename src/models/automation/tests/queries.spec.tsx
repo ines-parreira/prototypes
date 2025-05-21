@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
 
 import { fetchChatsApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/resources'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -31,17 +32,19 @@ describe('queries.spec.tsx', () => {
                 </QueryClientProvider>
             )
 
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () => useGetChatsApplicationAutomationSettings(['appId1']),
                 { wrapper },
             )
 
             await waitFor(() => result.current.isSuccess)
 
-            expect(result.current.data).toEqual(mockSettings)
-            expect(
-                fetchChatsApplicationAutomationSettings,
-            ).toHaveBeenCalledWith(['appId1'])
+            await waitFor(() => {
+                expect(result.current.data).toEqual(mockSettings)
+                expect(
+                    fetchChatsApplicationAutomationSettings,
+                ).toHaveBeenCalledWith(['appId1'])
+            })
         })
 
         it('should return an empty array if no application IDs are provided', async () => {
@@ -51,14 +54,16 @@ describe('queries.spec.tsx', () => {
                 </QueryClientProvider>
             )
 
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () => useGetChatsApplicationAutomationSettings([]),
                 { wrapper },
             )
 
             await waitFor(() => result.current.isSuccess)
 
-            expect(result.current.data).toEqual([])
+            await waitFor(() => {
+                expect(result.current.data).toEqual([])
+            })
         })
     })
 })

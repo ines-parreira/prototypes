@@ -1,7 +1,6 @@
 import { ReactNode } from 'react'
 
-import { fireEvent, screen, waitFor } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { useFormContext } from 'react-hook-form'
 
 import {

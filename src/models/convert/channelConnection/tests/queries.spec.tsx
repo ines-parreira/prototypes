@@ -1,7 +1,5 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import {
@@ -65,7 +63,7 @@ describe('Channel Connection queries', () => {
             mockedResources.mockGetChannelConnection.mockResolvedValueOnce({
                 data: channelConnection,
             } as any)
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () =>
                     queries.useGetChannelConnection(
                         {
@@ -85,7 +83,7 @@ describe('Channel Connection queries', () => {
             mockedResources.mockGetChannelConnection.mockRejectedValueOnce(
                 Error('test error'),
             )
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () =>
                     queries.useGetChannelConnection(
                         {
@@ -102,7 +100,7 @@ describe('Channel Connection queries', () => {
         })
 
         it('should respect the enabled setting', async () => {
-            const { waitFor } = renderHook(
+            renderHook(
                 () =>
                     queries.useGetChannelConnection(
                         {
@@ -134,7 +132,7 @@ describe('Channel Connection queries', () => {
                 data: [channelConnection],
             } as any)
 
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () => queries.useListChannelConnections(options),
                 {
                     wrapper,
@@ -148,7 +146,7 @@ describe('Channel Connection queries', () => {
             mockedResources.mockListChannelConnections.mockRejectedValueOnce(
                 Error('test error'),
             )
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () => queries.useListChannelConnections(options, testOverrides),
                 {
                     wrapper,
@@ -159,7 +157,7 @@ describe('Channel Connection queries', () => {
         })
 
         it('should respect the enabled setting', async () => {
-            const { waitFor } = renderHook(
+            renderHook(
                 () =>
                     queries.useListChannelConnections(options, {
                         ...testOverrides,
@@ -207,7 +205,7 @@ describe('Channel Connection queries', () => {
                 mockedResources[mockedResource].mockResolvedValueOnce(
                     axiosSuccessResponse(returnedData) as any,
                 )
-                const { result, waitFor } = renderHook(() => queries[hook](), {
+                const { result } = renderHook(() => queries[hook](), {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             {children}

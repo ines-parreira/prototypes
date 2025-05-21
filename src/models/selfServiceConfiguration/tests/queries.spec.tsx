@@ -1,6 +1,5 @@
-import React from 'react'
-
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
 
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -35,12 +34,14 @@ describe('useGetSelfServiceConfiguration', () => {
             selfServiceConfig,
         )
 
-        const { result, waitFor } = renderHook(
+        const { result } = renderHook(
             () => useGetSelfServiceConfiguration('testType', 'testShop'),
             { wrapper },
         )
 
-        await waitFor(() => result.current.isSuccess)
+        await waitFor(() => {
+            expect(result.current.status).toBe('success')
+        })
 
         expect(fetchSelfServiceConfigurationSSP).toHaveBeenCalledWith(
             'testShop',

@@ -1,5 +1,5 @@
 import * as ReactQuery from '@tanstack/react-query'
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 
 import { flushPromises } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'

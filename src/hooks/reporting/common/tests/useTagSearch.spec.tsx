@@ -1,7 +1,4 @@
-import React from 'react'
-
 import { act, waitFor } from '@testing-library/react'
-import { act as actHooks } from '@testing-library/react-hooks'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -65,7 +62,7 @@ describe('useTagSearch', () => {
             searchResponse = result.current.handleTagsSearch('abc')
         })
 
-        actHooks(() => {
+        act(() => {
             jest.runOnlyPendingTimers()
         })
 
@@ -86,7 +83,7 @@ describe('useTagSearch', () => {
             result.current.handleTagsSearch('abc')
         })
 
-        actHooks(() => {
+        act(() => {
             jest.runOnlyPendingTimers()
         })
 
@@ -126,7 +123,7 @@ describe('useTagSearch', () => {
         act(() => {
             result.current.handleTagsSearch('abc')
         })
-        actHooks(() => {
+        act(() => {
             jest.runOnlyPendingTimers()
         })
 

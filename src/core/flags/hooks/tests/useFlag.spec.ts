@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 import { ldClientMock } from 'jest-launchdarkly-mock'
 
 import { FeatureFlagKey } from 'config/featureFlags'

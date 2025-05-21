@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 
 import { SearchType } from '@gorgias/api-queries'
@@ -39,7 +40,7 @@ describe('useSearch', () => {
         const response = apiListCursorPaginationResponse(mockData)
         mockedServer.onPost('/api/search/').reply(200, response)
 
-        const { result, waitFor } = renderHook(() => useSearch(body), {
+        const { result } = renderHook(() => useSearch(body), {
             wrapper,
         })
 
@@ -49,7 +50,7 @@ describe('useSearch', () => {
 
     it('should call handleError when it returns an error', async () => {
         mockedServer.onPost('/api/search/').reply(400)
-        const { result, waitFor } = renderHook(() => useSearch(body), {
+        const { result } = renderHook(() => useSearch(body), {
             wrapper,
         })
 

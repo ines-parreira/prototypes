@@ -1,7 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { render, screen, waitFor } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'

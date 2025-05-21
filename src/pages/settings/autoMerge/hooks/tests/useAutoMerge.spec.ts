@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 
 import useAutoMerge from 'pages/settings/autoMerge/hooks/useAutoMerge'
 import { renderHook } from 'utils/testing/renderHook'

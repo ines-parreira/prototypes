@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react-hooks/dom'
+import { act } from '@testing-library/react'
 
 import { renderHook } from 'utils/testing/renderHook'
 

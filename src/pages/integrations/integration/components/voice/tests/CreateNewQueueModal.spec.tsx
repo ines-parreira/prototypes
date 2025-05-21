@@ -1,5 +1,4 @@
-import { screen, waitFor } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks'
+import { act, screen, waitFor } from '@testing-library/react'
 import fireEvent from '@testing-library/user-event'
 
 import { createVoiceQueues } from '@gorgias/api-client'

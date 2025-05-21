@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
@@ -40,7 +40,7 @@ describe('queries', () => {
                 .onGet(/article-recommendation\/predictions/)
                 .reply(200, articleRecommendationPredictionsResponseFixture)
 
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () =>
                     useArticleRecommendationPredictions({
                         page: 1,
@@ -65,7 +65,7 @@ describe('queries', () => {
                 .onGet(/article-recommendation\/predictions/)
                 .reply(200, articleRecommendationPredictionsResponseFixture)
 
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () =>
                     useArticleRecommendationPredictions({
                         page: 1,
@@ -94,7 +94,7 @@ describe('queries', () => {
                     updateArticleRecommendationPredictionsResponseFixture,
                 )
 
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () => useUpdateArticleRecommendationPredictions(),
                 {
                     wrapper,

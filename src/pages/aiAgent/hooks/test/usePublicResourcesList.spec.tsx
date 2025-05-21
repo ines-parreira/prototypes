@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import * as resources from 'models/helpCenter/resources'
@@ -182,7 +183,7 @@ describe('usePublicResourcesList', () => {
     })
 
     it('should return sourceItems per help center', async () => {
-        const { result, waitFor } = renderHook(
+        const { result } = renderHook(
             () =>
                 usePublicResourcesList({
                     shopNames: [STORE_NAME_1, STORE_NAME_2],
@@ -235,7 +236,7 @@ describe('usePublicResourcesList', () => {
     })
 
     it('should report errors', async () => {
-        const { result, waitFor } = renderHook(
+        const { result } = renderHook(
             () =>
                 usePublicResourcesList({
                     shopNames: [STORE_NAME_3],

@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { render, waitFor } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks'
+import { act, render, waitFor } from '@testing-library/react'
 import { DragSourceMonitor, DropTargetMonitor, useDragLayer } from 'react-dnd'
 
 import {

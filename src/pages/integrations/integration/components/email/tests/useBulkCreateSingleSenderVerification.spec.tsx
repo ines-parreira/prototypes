@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import { createVerification } from 'models/singleSenderVerification/resources'

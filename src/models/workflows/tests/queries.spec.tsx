@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
@@ -51,7 +51,7 @@ describe('queries', () => {
                 .onGet(/apps/)
                 .reply(200, actionsApps)
 
-            const { result, waitFor } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHookWithQueryClientProvider(() =>
                 useListActionsApps(),
             )
 
@@ -76,7 +76,7 @@ describe('queries', () => {
                 .onGet(/apps\/\w+/)
                 .reply(200, actionsApp)
 
-            const { result, waitFor } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHookWithQueryClientProvider(() =>
                 useGetActionsApp(actionsApp.id),
             )
 
@@ -110,7 +110,7 @@ describe('queries', () => {
                 .onPut(/apps\/\w+/)
                 .reply(200, actionsApp)
 
-            const { result, waitFor } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHookWithQueryClientProvider(() =>
                 useUpsertActionsApp(),
             )
 
@@ -146,7 +146,7 @@ describe('queries', () => {
                 .onGet(/\/configurations\/\w+\/executions/)
                 .reply(200, executionsResponse)
 
-            const { result, waitFor } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHookWithQueryClientProvider(() =>
                 useGetConfigurationExecutions({
                     configurationInternalId: 'someid',
                     from: new Date(),
@@ -183,7 +183,7 @@ describe('queries', () => {
                 .onGet(/\/configurations\/\w+\/executions\/\w+/)
                 .reply(200, executionsResponse)
 
-            const { result, waitFor } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHookWithQueryClientProvider(() =>
                 useGetConfigurationExecution('configurationId', 'executionId'),
             )
 
@@ -212,7 +212,7 @@ describe('queries', () => {
                 .onGet(/\/configurations\/\w+\/executions\/\w+/)
                 .reply(200, executionLogsResponse)
 
-            const { result, waitFor } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHookWithQueryClientProvider(() =>
                 useGetConfigurationExecutionLogs(
                     'configurationId',
                     'executionId',
@@ -230,7 +230,7 @@ describe('queries', () => {
                 .onGet(/\/configurations\/\w+\/executions\/\w+/)
                 .reply(404)
 
-            const { result, waitFor } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHookWithQueryClientProvider(() =>
                 useGetConfigurationExecutionLogs(
                     'configurationId',
                     'executionId',
@@ -250,7 +250,7 @@ describe('queries', () => {
                 .onDelete(/configuration-templates\/\w+/)
                 .reply(204)
 
-            const { result, waitFor } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHookWithQueryClientProvider(() =>
                 useDeleteWorkflowConfigurationTemplate(),
             )
 
@@ -280,7 +280,7 @@ describe('queries', () => {
                 .onGet(/configuration-templates/)
                 .reply(200, templatesResponse)
 
-            const { result, waitFor } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHookWithQueryClientProvider(() =>
                 useGetWorkflowConfigurationTemplates({
                     triggers: ['llm-prompt', 'reusable-llm-prompt'],
                 }),
@@ -310,7 +310,7 @@ describe('queries', () => {
                 .onGet(/trackstar/)
                 .reply(200, trackstarConnections)
 
-            const { result, waitFor } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHookWithQueryClientProvider(() =>
                 useListTrackstarConnections({
                     storeName: 'test-store',
                     storeType: 'shopify',
@@ -334,7 +334,7 @@ describe('queries', () => {
                 .onPost(/trackstar\/link/)
                 .reply(200, linkResponse)
 
-            const { result, waitFor } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHookWithQueryClientProvider(() =>
                 useCreateTrackstarLink(),
             )
 
@@ -365,7 +365,7 @@ describe('queries', () => {
                 .onPost(/trackstar\/token/)
                 .reply(200, tokenResponse)
 
-            const { result, waitFor } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHookWithQueryClientProvider(() =>
                 useCreateTrackstarToken(),
             )
 

@@ -1,3 +1,5 @@
+import { waitFor } from '@testing-library/react'
+
 import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
 import useWindowSize from 'hooks/useWindowSize'
 import { renderHook } from 'utils/testing/renderHook'
@@ -14,7 +16,7 @@ describe('useIsMobileResolution', () => {
     it('should return true if window width is greater than the mobile breakpoint', async () => {
         jest.useFakeTimers()
         mockUseWindowSize.mockReturnValue({ width: 1024, height: 768 })
-        const { result, waitFor } = renderHook(() => useIsMobileResolution())
+        const { result } = renderHook(() => useIsMobileResolution())
         await waitFor(() => {
             expect(result.current).toBe(false)
         })
@@ -23,7 +25,7 @@ describe('useIsMobileResolution', () => {
     it('should return true if window width is lesser than the mobile breakpoint', async () => {
         jest.useFakeTimers()
         mockUseWindowSize.mockReturnValue({ width: 100, height: 768 })
-        const { result, waitFor } = renderHook(() => useIsMobileResolution())
+        const { result } = renderHook(() => useIsMobileResolution())
 
         await waitFor(() => {
             expect(result.current).toBe(true)

@@ -1,8 +1,5 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { keyBy } from 'lodash'
 import { Provider } from 'react-redux'

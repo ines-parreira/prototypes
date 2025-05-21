@@ -1,13 +1,21 @@
 import React from 'react'
 
-import { act } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
 
-import * as utils from 'common/utils'
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
+import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { getSingleHelpCenterResponseFixture } from '../../fixtures/getHelpCentersResponse.fixture'
 import { useFileUpload } from '../useFileUpload'
+
+jest.mock('utils/file', () => ({
+    getBase64: jest.fn().mockResolvedValue('base64String'),
+}))
+
+jest.mock('rest_api/help_center_api/uploadAttachments', () => ({
+    uploadAttachments: jest.fn(),
+}))
 
 const renderOptions = {
     wrapper: ({ children }: { children?: React.ReactNode }) => (
@@ -19,10 +27,6 @@ const renderOptions = {
     ),
 }
 
-jest.mock('utils/file', () => ({
-    getBase64: jest.fn().mockResolvedValue('base64String'),
-}))
-
 describe('useFileUpload()', () => {
     const dummyFile = new File(['foo'], 'foo.txt', {
         type: 'text/plain',
@@ -30,7 +34,6 @@ describe('useFileUpload()', () => {
 
     it('is not touched in default state', () => {
         const { result } = renderHook(useFileUpload, renderOptions)
-
         expect(result.current.isTouched).toBeFalsy()
     })
 
@@ -57,53 +60,52 @@ describe('useFileUpload()', () => {
         expect(result.current.payload).toEqual(undefined)
     })
 
-    it('calls `uploadFiles` only if we have new changes', () => {
-        const uploadFilesSpy = jest
-            .spyOn(utils, 'uploadFiles')
-            .mockResolvedValue([])
+    it('calls `uploadFile` only if we have new changes', async () => {
+        const uploadAttachmentsSpy = uploadAttachments as jest.Mock
+        uploadAttachmentsSpy.mockResolvedValue([])
 
         const { result } = renderHook(useFileUpload, renderOptions)
 
-        void act(async () => {
+        await act(async () => {
             await result.current.uploadFile()
         })
 
-        expect(uploadFilesSpy).not.toHaveBeenCalled()
+        expect(uploadAttachmentsSpy).not.toHaveBeenCalled()
 
-        void act(async () => {
+        await act(async () => {
             result.current.changeFile(dummyFile)
             await result.current.uploadFile()
-            expect(uploadFilesSpy).toHaveBeenCalled()
         })
+
+        expect(uploadAttachmentsSpy).toHaveBeenCalled()
     })
 
-    it('returns the file upload URL', () => {
-        const uploadFilesSpy = jest
-            .spyOn(utils, 'uploadFiles')
-            .mockResolvedValueOnce([
-                {
-                    content_type: 'text/plain',
-                    name: 'foo.txt',
-                    size: 100,
-                    url: 'http://example.com/foo.text',
-                    type: 'txt',
-                },
-            ])
+    it('returns the file upload URL', async () => {
+        const uploadAttachmentsSpy = uploadAttachments as jest.Mock
+        uploadAttachmentsSpy.mockResolvedValueOnce([
+            {
+                content_type: 'text/plain',
+                name: 'foo.txt',
+                size: 100,
+                url: 'http://example.com/foo.text',
+                type: 'txt',
+            },
+        ])
 
         const { result } = renderHook(useFileUpload, renderOptions)
 
-        void act(async () => {
+        await act(async () => {
             result.current.changeFile(dummyFile)
             const url = await result.current.getFileUploadURL()
-            expect(uploadFilesSpy).toHaveBeenCalled()
+            expect(uploadAttachmentsSpy).toHaveBeenCalled()
             expect(url).toEqual('http://example.com/foo.text')
         })
     })
 
     it('serializes file and sets serialized file when file is provided', async () => {
-        const { result, waitFor } = renderHook(useFileUpload, renderOptions)
+        const { result } = renderHook(useFileUpload, renderOptions)
 
-        void act(() => {
+        act(() => {
             expect(result.current.serializedFile).toEqual('')
             result.current.changeFile(dummyFile)
         })
@@ -114,9 +116,9 @@ describe('useFileUpload()', () => {
     })
 
     it('sets serialized file to empty string when no file is provided', async () => {
-        const { result, waitFor } = renderHook(useFileUpload, renderOptions)
+        const { result } = renderHook(useFileUpload, renderOptions)
 
-        void act(() => {
+        act(() => {
             expect(result.current.serializedFile).toEqual('')
             result.current.changeFile(undefined)
         })

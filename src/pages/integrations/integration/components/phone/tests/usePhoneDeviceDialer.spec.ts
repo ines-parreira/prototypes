@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 import { isValidPhoneNumber } from 'libphonenumber-js'
 
 import { UserSearchResult } from 'models/search/types'
@@ -207,7 +207,7 @@ describe('usePhoneDeviceDialer', () => {
         )
     })
 
-    it('should return default country code', () => {
+    it('should return default country code', async () => {
         getCountryFromPhoneNumberMock.mockReturnValueOnce('US')
         const onCountryChange = jest.fn()
         jest.spyOn(React, 'createRef').mockReturnValue({
@@ -231,6 +231,8 @@ describe('usePhoneDeviceDialer', () => {
             mockPhoneIntegrations[1],
         )
 
-        expect(onCountryChange).toHaveBeenCalledWith('FR')
+        await waitFor(() => {
+            expect(onCountryChange).toHaveBeenCalledWith('FR')
+        })
     })
 })

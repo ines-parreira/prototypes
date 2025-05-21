@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 import * as reactQuery from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'

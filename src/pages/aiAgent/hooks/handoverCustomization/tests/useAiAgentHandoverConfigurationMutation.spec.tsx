@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 
 import {
     handoverConfigurationKeys,

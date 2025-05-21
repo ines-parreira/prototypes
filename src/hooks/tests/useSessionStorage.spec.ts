@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -25,7 +25,7 @@ describe('useSessionStorage', () => {
         expect(typeof setState).toBe('function')
     })
 
-    it('should update the value in sessionStorage when setState is called', () => {
+    it('should update the value in sessionStorage when setState is called', async () => {
         const { result } = renderHook(() =>
             useSessionStorage('testKey', 'initialValue'),
         )
@@ -35,10 +35,12 @@ describe('useSessionStorage', () => {
             setState('newValue')
         })
 
-        expect(sessionStorage.getItem('testKey')).toBe('"newValue"')
+        await waitFor(() => {
+            expect(sessionStorage.getItem('testKey')).toBe('"newValue"')
+        })
     })
 
-    it('should parse the value correctly from sessionStorage', () => {
+    it('should parse the value correctly from sessionStorage', async () => {
         sessionStorage.setItem('testKey', '{"name": "John"}')
 
         const { result } = renderHook(() => useSessionStorage('testKey', {}))
@@ -50,11 +52,13 @@ describe('useSessionStorage', () => {
             setState({ name: 'Mary' })
         })
 
-        expect(result.current[0]).toEqual({ name: 'Mary' })
-        expect(sessionStorage.getItem('testKey')).toBe('{"name":"Mary"}')
+        await waitFor(() => {
+            expect(result.current[0]).toEqual({ name: 'Mary' })
+            expect(sessionStorage.getItem('testKey')).toBe('{"name":"Mary"}')
+        })
     })
 
-    it('should handle raw values correctly', () => {
+    it('should handle raw values correctly', async () => {
         const { result } = renderHook(() =>
             useSessionStorage('testKey', 'initialValue', true),
         )
@@ -64,7 +68,9 @@ describe('useSessionStorage', () => {
             setState('newValue')
         })
 
-        expect(sessionStorage.getItem('testKey')).toBe('newValue')
+        await waitFor(() => {
+            expect(sessionStorage.getItem('testKey')).toBe('newValue')
+        })
     })
 
     it('should handle JSON parsing errors and fallback to initial value', () => {

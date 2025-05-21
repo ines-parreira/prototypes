@@ -1,6 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query'
-import { waitFor } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -113,7 +112,7 @@ describe('useSubmitAIAgentTicketMessagesFeedback', () => {
             feedback,
         )
 
-        const { result, waitFor } = renderHook(
+        const { result } = renderHook(
             () => useSubmitAIAgentTicketMessagesFeedback(),
             { wrapper },
         )
@@ -145,7 +144,7 @@ describe('useDeleteAIAgentTicketMessagesFeedback', () => {
             feedback,
         )
 
-        const { result, waitFor } = renderHook(
+        const { result } = renderHook(
             () => useDeleteAIAgentTicketMessagesFeedback(),
             { wrapper },
         )

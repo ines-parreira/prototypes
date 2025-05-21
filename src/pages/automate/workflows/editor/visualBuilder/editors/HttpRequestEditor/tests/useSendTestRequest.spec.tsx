@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 
 import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { renderHook } from 'utils/testing/renderHook'

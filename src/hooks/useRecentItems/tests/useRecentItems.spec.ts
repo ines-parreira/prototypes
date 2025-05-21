@@ -1,5 +1,4 @@
-import { waitFor } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks/dom'
+import { act, waitFor } from '@testing-library/react'
 
 import { DEBOUNCE_TIME, RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'

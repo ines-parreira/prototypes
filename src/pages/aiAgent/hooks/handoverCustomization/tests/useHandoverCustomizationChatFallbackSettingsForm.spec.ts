@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 
 import { Language } from 'constants/languages'
 import { useNotify } from 'hooks/useNotify'

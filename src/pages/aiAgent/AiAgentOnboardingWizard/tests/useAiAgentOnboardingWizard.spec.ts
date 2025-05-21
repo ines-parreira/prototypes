@@ -1,5 +1,4 @@
-import { waitFor } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 

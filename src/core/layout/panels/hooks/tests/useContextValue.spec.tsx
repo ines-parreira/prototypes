@@ -1,7 +1,4 @@
-import React from 'react'
-
-import { render, screen } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks'
+import { act, render, screen, waitFor } from '@testing-library/react'
 
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -18,7 +15,7 @@ describe('useContextValue', () => {
         })
     })
 
-    it('should add and remove a panel', () => {
+    it('should add and remove a panel', async () => {
         const Wrapper = () => {
             return (
                 <div data-testid="container">
@@ -43,13 +40,18 @@ describe('useContextValue', () => {
         act(() => {
             removePanel = result.current.addPanel('panel1', config, listener)
         })
-        expect(listener).toHaveBeenCalledWith({ size: 300 })
-        expect(result.current.totalSize).toBe(300)
+        await waitFor(() => {
+            expect(listener).toHaveBeenCalledWith({ size: 300 })
+            expect(result.current.totalSize).toBe(300)
+        })
 
         act(() => {
             removePanel()
         })
-        expect(result.current.totalSize).toBe(0)
+
+        await waitFor(() => {
+            expect(result.current.totalSize).toBe(0)
+        })
     })
 
     it('should subtract and restore size from the total', () => {

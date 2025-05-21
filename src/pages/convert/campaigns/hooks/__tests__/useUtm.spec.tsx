@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 
 import * as segment from 'common/segment'
 import { useUpdateChannelConnection } from 'models/convert/channelConnection/queries'

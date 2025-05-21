@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -133,7 +133,7 @@ describe('useHelpCenterCreationWizard', () => {
     })
 
     it('should create help center and navigate to next step', async () => {
-        const { result, waitFor } = renderHook(() =>
+        const { result } = renderHook(() =>
             useHelpCenterCreationWizard(
                 undefined,
                 HelpCenterCreationWizardStep.Basics,
@@ -152,7 +152,7 @@ describe('useHelpCenterCreationWizard', () => {
     })
 
     it('should update help center and navigate to home', async () => {
-        const { result, waitFor } = renderHook(() =>
+        const { result } = renderHook(() =>
             useHelpCenterCreationWizard(
                 helpCenter,
                 HelpCenterCreationWizardStep.Basics,
@@ -171,7 +171,7 @@ describe('useHelpCenterCreationWizard', () => {
     })
 
     it('should update help center and navigate to new help center with articles', async () => {
-        const { result, waitFor } = renderHook(() =>
+        const { result } = renderHook(() =>
             useHelpCenterCreationWizard(
                 helpCenter as HelpCenter,
                 HelpCenterCreationWizardStep.Automate,
@@ -197,7 +197,7 @@ describe('useHelpCenterCreationWizard', () => {
     })
 
     it('should update help center and navigate to new help center without articles', async () => {
-        const { result, waitFor } = renderHook(() =>
+        const { result } = renderHook(() =>
             useHelpCenterCreationWizard(
                 helpCenter as HelpCenter,
                 HelpCenterCreationWizardStep.Automate,
@@ -221,7 +221,7 @@ describe('useHelpCenterCreationWizard', () => {
     })
 
     it('should update help center and navigate to new help center without articles and enabled article recom', async () => {
-        const { result, waitFor } = renderHook(() =>
+        const { result } = renderHook(() =>
             useHelpCenterCreationWizard(
                 helpCenter as HelpCenter,
                 HelpCenterCreationWizardStep.Automate,

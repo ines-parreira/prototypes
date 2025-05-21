@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 
 import useThrottledValue from 'hooks/useThrottledValue'
 import { renderHook } from 'utils/testing/renderHook'

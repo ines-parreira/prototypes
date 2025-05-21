@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react'
 
-import { waitFor } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 import { produce } from 'immer'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -73,6 +72,46 @@ describe('useStatResource', () => {
 
     afterEach(() => {
         jest.useRealTimers()
+    })
+
+    it('should fetch the page with cursor when fetchPage is called', async () => {
+        const cursor = 'foo-cursor'
+        const store = mockStore(defaultState)
+
+        const { result } = renderHook(
+            () =>
+                useStatResource<TwoDimensionalChart>({
+                    statName: defaultStatName,
+                    resourceName: defaultResourceName,
+                    statsFilters: defaultStatsFilters,
+                }),
+            {
+                wrapper: createStoreWrapper(store),
+            },
+        )
+
+        // Wait for the initial fetch to complete
+        await waitFor(() => expect(fetchStatMock).toHaveBeenCalled())
+
+        // Clear the mock so we can isolate the cursor-based call
+        fetchStatMock.mockClear()
+
+        // Trigger a cursor-based fetch
+        act(() => {
+            result.current[2](cursor)
+        })
+
+        // Wait for the new fetch to be triggered with correct cursor
+        await waitFor(() =>
+            expect(fetchStatMock).toHaveBeenCalledWith(
+                defaultResourceName,
+                {
+                    filters: defaultStatsFilters,
+                    cursor,
+                },
+                { cancelToken: expect.anything() },
+            ),
+        )
     })
 
     it('should fetch and save the stat', async () => {
@@ -224,28 +263,37 @@ describe('useStatResource', () => {
     it('should fetch the page with cursor when fetchPage is called', async () => {
         const cursor = 'foo-cursor'
         const store = mockStore(defaultState)
+
         const { result } = renderHook(
-            () => {
-                return useStatResource<TwoDimensionalChart>({
+            () =>
+                useStatResource<TwoDimensionalChart>({
                     statName: defaultStatName,
                     resourceName: defaultResourceName,
                     statsFilters: defaultStatsFilters,
-                })
-            },
+                }),
             {
                 wrapper: createStoreWrapper(store),
             },
         )
 
-        const [, , fetchPage] = result.current
-        act(() => fetchPage(cursor))
+        // Wait for initial fetch
+        await waitFor(() => expect(fetchStatMock).toHaveBeenCalledTimes(1))
 
+        // Reset for the cursor-based fetch
+        fetchStatMock.mockClear()
+
+        // Trigger cursor update
+        act(() => {
+            result.current[2](cursor)
+        })
+
+        // Wait for internal effect (useEffect → handleFetchStat)
         await waitFor(() =>
-            expect(fetchStatMock).toHaveBeenLastCalledWith(
+            expect(fetchStatMock).toHaveBeenCalledWith(
                 defaultResourceName,
                 {
                     filters: defaultStatsFilters,
-                    cursor: cursor,
+                    cursor,
                 },
                 { cancelToken: expect.anything() },
             ),
@@ -255,18 +303,19 @@ describe('useStatResource', () => {
     it('should fetch the stats with empty cursor when filters change', async () => {
         const cursor = 'foo-cursor'
         const store = mockStore(defaultState)
+
         const updatedStatsFilters = {
             ...defaultStatsFilters,
             channels: [TicketChannel.Facebook],
         }
+
         const { result, rerender } = renderHook(
-            ({ statsFilters }) => {
-                return useStatResource<TwoDimensionalChart>({
+            ({ statsFilters }) =>
+                useStatResource<TwoDimensionalChart>({
                     statName: defaultStatName,
                     resourceName: defaultResourceName,
                     statsFilters,
-                })
-            },
+                }),
             {
                 initialProps: {
                     statsFilters: defaultStatsFilters,
@@ -275,10 +324,19 @@ describe('useStatResource', () => {
             },
         )
 
-        const [, , fetchPage] = result.current
-        act(() => fetchPage(cursor))
+        // Wait for the initial fetch
+        await waitFor(() => expect(fetchStatMock).toHaveBeenCalled())
+
+        // Clear previous calls
+        fetchStatMock.mockClear()
+
+        // Fetch page with cursor
+        act(() => {
+            result.current[2](cursor)
+        })
+
         await waitFor(() =>
-            expect(fetchStatMock).toHaveBeenLastCalledWith(
+            expect(fetchStatMock).toHaveBeenCalledWith(
                 defaultResourceName,
                 {
                     filters: defaultStatsFilters,
@@ -287,13 +345,21 @@ describe('useStatResource', () => {
                 { cancelToken: expect.anything() },
             ),
         )
-        rerender({
-            statsFilters: updatedStatsFilters,
-        })
-        act(() => jest.runAllTimers())
 
+        // Clear again before rerendering with new filters
+        fetchStatMock.mockClear()
+
+        // Trigger filters update
+        rerender({ statsFilters: updatedStatsFilters })
+
+        // Fast-forward debounce timer
+        act(() => {
+            jest.runAllTimers()
+        })
+
+        // Wait for the fetch with updated filters and cursor reset
         await waitFor(() =>
-            expect(fetchStatMock).toHaveBeenLastCalledWith(
+            expect(fetchStatMock).toHaveBeenCalledWith(
                 defaultResourceName,
                 {
                     filters: updatedStatsFilters,

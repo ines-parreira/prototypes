@@ -1,3 +1,5 @@
+import { waitFor } from '@testing-library/react'
+
 import { useFlag } from 'core/flags'
 import useElementSize from 'hooks/useElementSize'
 import useSplitTicketView from 'split-ticket-view-toggle/hooks/useSplitTicketView'
@@ -76,7 +78,7 @@ describe('useTickets', () => {
     })
 
     it('should return new tickets', async () => {
-        const { result, waitFor } = renderHook(() =>
+        const { result } = renderHook(() =>
             useTickets(123, 'created_datetime:asc'),
         )
 

@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 
 import { usePristineSteps } from 'pages/convert/campaigns/hooks/usePristineSteps'
 import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'

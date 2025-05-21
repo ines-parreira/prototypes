@@ -1,3 +1,5 @@
+import { waitFor } from '@testing-library/react'
+
 import { renderHook } from 'utils/testing/renderHook'
 
 import useHelpCenterCustomDomainHostnames from '../useHelpCenterCustomDomainHostnames'
@@ -46,7 +48,7 @@ describe('useHelpCenterCustomDomainUrls', () => {
             data: { data: mockDomains },
         })
 
-        const { result, waitFor } = renderHook(() =>
+        const { result } = renderHook(() =>
             useHelpCenterCustomDomainHostnames(1),
         )
 
@@ -70,7 +72,7 @@ describe('useHelpCenterCustomDomainUrls', () => {
             data: { data: mockDomains },
         })
 
-        const { result, waitFor } = renderHook(() =>
+        const { result } = renderHook(() =>
             useHelpCenterCustomDomainHostnames(1),
         )
 

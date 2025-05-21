@@ -1,6 +1,6 @@
 import { FormEvent } from 'react'
 
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 
 import { TicketStatus } from 'business/types/ticket'
 import { renderHook } from 'utils/testing/renderHook'

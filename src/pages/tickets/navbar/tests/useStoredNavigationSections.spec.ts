@@ -1,7 +1,9 @@
+import { act } from '@testing-library/react'
+
 import type { AccordionValues } from 'components/Accordion/utils/types'
 import type { ViewCategoryNavbar } from 'models/view/types'
 import { ViewVisibility } from 'models/view/types'
-import { act, renderHook } from 'utils/testing/renderHook'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { ViewCategories } from '../v2/constants'
 import { useStoredNavigationSections } from '../v2/useStoredNavigationSections'

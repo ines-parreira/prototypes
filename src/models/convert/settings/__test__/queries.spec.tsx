@@ -1,7 +1,5 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { channelConnectionId } from 'fixtures/channelConnection'
@@ -50,7 +48,7 @@ describe('Convert settings queries', () => {
                 data: [{ type: 'setting_type', data: { foo: 'bar' } }],
             } as any)
 
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () =>
                     queries.useGetSettingsList(
                         {
@@ -72,7 +70,7 @@ describe('Convert settings queries', () => {
             mockedResources.mockGetSettingList.mockRejectedValueOnce(
                 Error('test error'),
             )
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () =>
                     queries.useGetSettingsList(
                         {
@@ -89,7 +87,7 @@ describe('Convert settings queries', () => {
         })
 
         it('should respect the enabled setting', async () => {
-            const { waitFor } = renderHook(
+            renderHook(
                 () =>
                     queries.useGetSettingsList(
                         {
@@ -114,16 +112,13 @@ describe('Convert settings queries', () => {
             mockedResources.mockUpdateSettings.mockResolvedValueOnce(
                 axiosSuccessResponse({ type: 'test', data: { foo: 1 } }) as any,
             )
-            const { result, waitFor } = renderHook(
-                () => queries.useUpdateSetting(),
-                {
-                    wrapper: ({ children }) => (
-                        <QueryClientProvider client={queryClient}>
-                            {children}
-                        </QueryClientProvider>
-                    ),
-                },
-            )
+            const { result } = renderHook(() => queries.useUpdateSetting(), {
+                wrapper: ({ children }) => (
+                    <QueryClientProvider client={queryClient}>
+                        {children}
+                    </QueryClientProvider>
+                ),
+            })
             act(() => {
                 result.current.mutate([
                     {

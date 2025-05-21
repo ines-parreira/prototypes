@@ -1,7 +1,5 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 
 import { agents } from 'fixtures/agents'
 import {
@@ -49,12 +47,9 @@ describe('Agents queries', () => {
             mockedResources.mockFetchAgents.mockResolvedValueOnce(
                 axiosSuccessResponse(apiListCursorPaginationResponse(agents)),
             )
-            const { result, waitFor } = renderHook(
-                () => queries.useListAgent(),
-                {
-                    wrapper,
-                },
-            )
+            const { result } = renderHook(() => queries.useListAgent(), {
+                wrapper,
+            })
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
             expect(result.current.data?.data?.data).toStrictEqual(agents)
         })
@@ -63,12 +58,9 @@ describe('Agents queries', () => {
             mockedResources.mockFetchAgents.mockRejectedValueOnce(
                 Error('test error'),
             )
-            const { result, waitFor } = renderHook(
-                () => queries.useListAgent(),
-                {
-                    wrapper,
-                },
-            )
+            const { result } = renderHook(() => queries.useListAgent(), {
+                wrapper,
+            })
             await waitFor(() => expect(result.current.isError).toBe(true))
             expect(result.current.error).toStrictEqual(Error('test error'))
         })
@@ -77,12 +69,9 @@ describe('Agents queries', () => {
     describe('useGetAgent', () => {
         it('should return correct data on success', async () => {
             mockedResources.mockFetchAgent.mockResolvedValueOnce(agents[0])
-            const { result, waitFor } = renderHook(
-                () => queries.useGetAgent(1),
-                {
-                    wrapper,
-                },
-            )
+            const { result } = renderHook(() => queries.useGetAgent(1), {
+                wrapper,
+            })
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
             expect(result.current.data).toStrictEqual(agents[0])
         })
@@ -91,12 +80,9 @@ describe('Agents queries', () => {
             mockedResources.mockFetchAgent.mockRejectedValueOnce(
                 Error('test error'),
             )
-            const { result, waitFor } = renderHook(
-                () => queries.useGetAgent(1),
-                {
-                    wrapper,
-                },
-            )
+            const { result } = renderHook(() => queries.useGetAgent(1), {
+                wrapper,
+            })
             await waitFor(() => expect(result.current.isError).toBe(true))
             expect(result.current.error).toStrictEqual(Error('test error'))
         })
@@ -116,7 +102,7 @@ describe('Agents queries', () => {
                 mockedResources[mockedResource].mockResolvedValueOnce(
                     axiosSuccessResponse(returnedData) as any,
                 )
-                const { result, waitFor } = renderHook(() => queries[hook](), {
+                const { result } = renderHook(() => queries[hook](), {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             {children}

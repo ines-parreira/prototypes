@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
@@ -323,7 +324,7 @@ describe('useStoreActivations', () => {
             mockFlags({
                 [FeatureFlagKey.AiAgentNewActivationXp]: true,
             })
-            const { result, waitFor } = renderHookWithRouter({
+            const { result } = renderHookWithRouter({
                 initialEntry: '/store1',
             })
             await result.current.migrateToNewPricing()

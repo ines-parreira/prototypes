@@ -2,6 +2,7 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import * as reactQuery from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
 import _get from 'lodash/get'
 
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
@@ -56,12 +57,9 @@ describe('useGetShopifyPages', () => {
             getShopifyPages: 'success',
         })
 
-        const { result, waitFor } = renderHook(
-            () => useGetShopifyPages(helpCenterId),
-            {
-                wrapper,
-            },
-        )
+        const { result } = renderHook(() => useGetShopifyPages(helpCenterId), {
+            wrapper,
+        })
 
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
 
@@ -75,12 +73,9 @@ describe('useGetShopifyPages', () => {
             getShopifyPages: 'error',
         })
 
-        const { result, waitFor } = renderHook(
-            () => useGetShopifyPages(helpCenterId),
-            {
-                wrapper,
-            },
-        )
+        const { result } = renderHook(() => useGetShopifyPages(helpCenterId), {
+            wrapper,
+        })
 
         await waitFor(() => {
             expect(result.current.isError).toBeTruthy()
@@ -109,7 +104,7 @@ describe('useGetPageEmbedments', () => {
             getPageEmbedments: 'success',
         })
 
-        const { result, waitFor } = renderHook(
+        const { result } = renderHook(
             () => useGetPageEmbedments(helpCenterId),
             {
                 wrapper,
@@ -128,7 +123,7 @@ describe('useGetPageEmbedments', () => {
             getPageEmbedments: 'error',
         })
 
-        const { result, waitFor } = renderHook(
+        const { result } = renderHook(
             () => useGetPageEmbedments(helpCenterId),
             {
                 wrapper,
@@ -170,7 +165,7 @@ describe('useCreatePageEmbedment', () => {
             createPageEmbedment: 'success',
         })
 
-        const { result, waitFor } = renderHook(() => useCreatePageEmbedment(), {
+        const { result } = renderHook(() => useCreatePageEmbedment(), {
             wrapper,
         })
 
@@ -188,7 +183,7 @@ describe('useCreatePageEmbedment', () => {
             createPageEmbedment: 'error',
         })
 
-        const { result, waitFor } = renderHook(() => useCreatePageEmbedment(), {
+        const { result } = renderHook(() => useCreatePageEmbedment(), {
             wrapper,
         })
 
@@ -230,7 +225,7 @@ describe('useUpdatePageEmbedment', () => {
             updatePageEmbedment: 'success',
         })
 
-        const { result, waitFor } = renderHook(() => useUpdatePageEmbedment(), {
+        const { result } = renderHook(() => useUpdatePageEmbedment(), {
             wrapper,
         })
 
@@ -248,7 +243,7 @@ describe('useUpdatePageEmbedment', () => {
             updatePageEmbedment: 'error',
         })
 
-        const { result, waitFor } = renderHook(() => useUpdatePageEmbedment(), {
+        const { result } = renderHook(() => useUpdatePageEmbedment(), {
             wrapper,
         })
 
@@ -281,12 +276,9 @@ describe('useGetArticleTemplates', () => {
             getArticleTemplates: 'success',
         })
 
-        const { result, waitFor } = renderHook(
-            () => useGetArticleTemplates(locale),
-            {
-                wrapper,
-            },
-        )
+        const { result } = renderHook(() => useGetArticleTemplates(locale), {
+            wrapper,
+        })
 
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
 
@@ -300,12 +292,9 @@ describe('useGetArticleTemplates', () => {
             getArticleTemplates: 'error',
         })
 
-        const { result, waitFor } = renderHook(
-            () => useGetArticleTemplates(locale),
-            {
-                wrapper,
-            },
-        )
+        const { result } = renderHook(() => useGetArticleTemplates(locale), {
+            wrapper,
+        })
 
         await waitFor(() => {
             expect(result.current.isError).toBeTruthy()
@@ -335,7 +324,7 @@ describe('useGetArticleTemplate', () => {
             getArticleTemplate: 'success',
         })
 
-        const { result, waitFor } = renderHook(
+        const { result } = renderHook(
             () => useGetArticleTemplate(templateKey, locale),
             {
                 wrapper,
@@ -354,7 +343,7 @@ describe('useGetArticleTemplate', () => {
             getArticleTemplate: 'error',
         })
 
-        const { result, waitFor } = renderHook(
+        const { result } = renderHook(
             () => useGetArticleTemplate(templateKey, locale),
             {
                 wrapper,
@@ -390,7 +379,7 @@ describe('useGetAIGeneratedArticlesByHelpCenterAndStore', () => {
             getAIGeneratedArticlesByHelpCenterAndStore: 'success',
         })
 
-        const { result, waitFor } = renderHook(
+        const { result } = renderHook(
             () =>
                 useGetAIArticlesByHelpCenterAndStore(
                     helpCenterId,
@@ -492,7 +481,7 @@ describe('useGetAIGeneratedArticlesByHelpCenterAndStore', () => {
             getAIGeneratedArticlesByHelpCenterAndStore: 'error',
         })
 
-        const { result, waitFor } = renderHook(
+        const { result } = renderHook(
             () =>
                 useGetAIArticlesByHelpCenterAndStore(
                     helpCenterId,
@@ -539,12 +528,9 @@ describe('useUpsertArticleTemplateReview', () => {
             upsertArticleTemplateReview: 'success',
         })
 
-        const { result, waitFor } = renderHook(
-            () => useUpsertArticleTemplateReview(),
-            {
-                wrapper,
-            },
-        )
+        const { result } = renderHook(() => useUpsertArticleTemplateReview(), {
+            wrapper,
+        })
 
         result.current.mutate([sdkMocks.client, pathParams, payload])
 
@@ -558,12 +544,9 @@ describe('useUpsertArticleTemplateReview', () => {
             upsertArticleTemplateReview: 'error',
         })
 
-        const { result, waitFor } = renderHook(
-            () => useUpsertArticleTemplateReview(),
-            {
-                wrapper,
-            },
-        )
+        const { result } = renderHook(() => useUpsertArticleTemplateReview(), {
+            wrapper,
+        })
 
         result.current.mutate([sdkMocks.client, pathParams, payload])
 

@@ -1,3 +1,4 @@
+import { waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 
 import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
@@ -45,7 +46,7 @@ describe('useIsPaymentEnabled', () => {
     it('should render the no-payment-method use-case', async () => {
         mockedServer.onGet('/billing/state').reply(200, trial)
 
-        const { result, waitFor } =
+        const { result } =
             renderHookWithStoreAndQueryClientProvider(useIsPaymentEnabled)
 
         await waitFor(() => {
@@ -68,7 +69,7 @@ describe('useIsPaymentEnabled', () => {
     it('should render the credit-card use-case', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
 
-        const { result: isPaymentEnabled, waitFor } =
+        const { result: isPaymentEnabled } =
             renderHookWithStoreAndQueryClientProvider(useIsPaymentEnabled)
 
         await waitFor(() => {
@@ -86,7 +87,7 @@ describe('useIsPaymentEnabled', () => {
         const creditCard = payingWithCreditCard.customer
             .credit_card as CreditCard
 
-        const { result, waitFor } =
+        const { result } =
             renderHookWithStoreAndQueryClientProvider(useIsPaymentEnabled)
 
         await waitFor(() => {
@@ -109,7 +110,7 @@ describe('useIsPaymentEnabled', () => {
     it('should render the ach-debit use-case', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithAchDebit)
 
-        const { result: isPaymentEnabled, waitFor } =
+        const { result: isPaymentEnabled } =
             renderHookWithStoreAndQueryClientProvider(useIsPaymentEnabled)
 
         await waitFor(() => {
@@ -122,7 +123,7 @@ describe('useIsPaymentEnabled', () => {
     it('should render the ach-credit use-case', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithAchCredit)
 
-        const { result: isPaymentEnabled, waitFor } =
+        const { result: isPaymentEnabled } =
             renderHookWithStoreAndQueryClientProvider(useIsPaymentEnabled)
 
         await waitFor(() => {
@@ -137,7 +138,7 @@ describe('useIsPaymentEnabled', () => {
             .onGet('/billing/state')
             .reply(200, payWithShopifyButNotActivated)
 
-        const { result, waitFor } =
+        const { result } =
             renderHookWithStoreAndQueryClientProvider(useIsPaymentEnabled)
 
         await waitFor(() => {
@@ -161,7 +162,7 @@ describe('useIsPaymentEnabled', () => {
     it('should render the activated-shopify-billing use-case', async () => {
         mockedServer.onGet('/billing/state').reply(200, payWithShopify)
 
-        const { result: isPaymentEnabled, waitFor } =
+        const { result: isPaymentEnabled } =
             renderHookWithStoreAndQueryClientProvider(useIsPaymentEnabled)
 
         await waitFor(() => {

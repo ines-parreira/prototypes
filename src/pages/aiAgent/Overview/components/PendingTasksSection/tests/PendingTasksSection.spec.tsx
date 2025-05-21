@@ -1,7 +1,4 @@
-import React from 'react'
-
-import { fireEvent, render, screen } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import { IntegrationType } from 'models/integration/constants'
 import { AlwaysDisplayedTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/tests/AlwaysDisplayed.task'

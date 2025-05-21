@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 
 import { useCreateStoreSnippetHelpCenter } from 'models/aiAgent/queries'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
@@ -55,7 +55,7 @@ describe('useGetOrCreateSnippetHelpCenter', () => {
         mockUseGetHelpCenterList({ data: { data: [mockHelpCenter] } })
         mockUseCreateStoreSnippetHelpCenter(jest.fn())
 
-        const { result, waitFor } = renderUseGetOrCreateSnippetHelpCenterHook()
+        const { result } = renderUseGetOrCreateSnippetHelpCenterHook()
 
         await waitFor(() => result.current !== null)
 
@@ -78,7 +78,7 @@ describe('useGetOrCreateSnippetHelpCenter', () => {
         mockUseGetHelpCenterList({ data: { data: [] } })
         mockUseCreateStoreSnippetHelpCenter(createHelpCenter)
 
-        const { result, waitFor } = renderUseGetOrCreateSnippetHelpCenterHook()
+        const { result } = renderUseGetOrCreateSnippetHelpCenterHook()
 
         await act(async () => {
             await waitFor(() => result.current !== null)

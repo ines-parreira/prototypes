@@ -1,6 +1,5 @@
 import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
-import { waitFor } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks/dom'
+import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import moment from 'moment'
 import { Provider } from 'react-redux'

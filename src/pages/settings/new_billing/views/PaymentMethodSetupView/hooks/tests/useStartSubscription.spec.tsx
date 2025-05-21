@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { useHistory } from 'react-router-dom'

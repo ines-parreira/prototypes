@@ -1,5 +1,5 @@
 import { useStripe } from '@stripe/react-stripe-js'
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 
 import { confirmBillingPaymentMethodSetup } from '@gorgias/api-client'
@@ -33,7 +33,7 @@ describe('useSubmitPaymentMethodWithBillingContact hook', () => {
     it('should call updateBillingContact and submitPaymentMethod on submit', async () => {
         mockedServer.onPut('/api/billing/contact/').reply(200, {})
 
-        const { result, waitFor } = renderHookWithStoreAndQueryClientProvider(
+        const { result } = renderHookWithStoreAndQueryClientProvider(
             useSubmitPaymentMethodWithBillingContact,
         )
 
@@ -89,7 +89,7 @@ describe('useSubmitPaymentMethodWithBillingContact hook', () => {
                 }),
         )
 
-        const { result, waitFor } = renderHookWithStoreAndQueryClientProvider(
+        const { result } = renderHookWithStoreAndQueryClientProvider(
             useSubmitPaymentMethodWithBillingContact,
         )
 
@@ -113,7 +113,7 @@ describe('useSubmitPaymentMethodWithBillingContact hook', () => {
             confirmSetup: jest.fn().mockResolvedValue(new Promise(() => {})),
         } as any)
 
-        const { result, waitFor } = renderHookWithStoreAndQueryClientProvider(
+        const { result } = renderHookWithStoreAndQueryClientProvider(
             useSubmitPaymentMethodWithBillingContact,
         )
 

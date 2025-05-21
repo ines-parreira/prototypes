@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -107,7 +107,7 @@ describe('useHelpCenterAIArticlesLibrary', () => {
         )
     })
 
-    it('should handle the selection of an article type', () => {
+    it('should handle the selection of an article type', async () => {
         const { result } = renderHook(() =>
             useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop'),
         )
@@ -122,11 +122,13 @@ describe('useHelpCenterAIArticlesLibrary', () => {
             AIArticleToggleOptionValue.Old,
         )
 
-        expect(result.current.articles).toEqual(
-            AILibraryArticleItemsFixture.filter(
-                (aiArticle) => !aiArticle.isNew,
-            ),
-        )
+        await waitFor(() => {
+            expect(result.current.articles).toEqual(
+                AILibraryArticleItemsFixture.filter(
+                    (aiArticle) => !aiArticle.isNew,
+                ),
+            )
+        })
     })
 
     it('should return false when there is no email-to-store connection for single-store', () => {

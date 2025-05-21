@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 
 import { useListIngestedResources } from 'models/helpCenter/queries'
 import { getIngestedResourcesListResponse } from 'pages/aiAgent/fixtures/ingestedResource.fixture'

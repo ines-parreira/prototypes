@@ -1,4 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 
@@ -73,7 +74,7 @@ describe('hooks', () => {
                 Promise.resolve({} as HttpResponse<void>),
             )
 
-            const { result, waitFor } = render()
+            const { result } = render()
             const submittableData = {
                 name: 'new name',
                 meta: {
@@ -105,7 +106,7 @@ describe('hooks', () => {
                 Promise.resolve({} as HttpResponse<void>),
             )
 
-            const { result, waitFor } = render()
+            const { result } = render()
             const submittableData = {
                 name: 'new name',
                 meta: {
@@ -147,7 +148,7 @@ describe('hooks', () => {
         it('should dispatch error notification on error', async () => {
             updateAllPhoneSettingsMock.mockRejectedValue('An error occurred')
 
-            const { result, waitFor } = render()
+            const { result } = render()
 
             result.current.onSubmit({
                 name: 'new name',
@@ -190,7 +191,7 @@ describe('hooks', () => {
                 Promise.resolve({} as HttpResponse<void>),
             )
 
-            const { result, waitFor } = render()
+            const { result } = render()
             result.current.performDelete({ id: phoneIntegration.id })
 
             await waitFor(() => {
@@ -203,7 +204,7 @@ describe('hooks', () => {
         it('should dispatch error notification on error', async () => {
             deleteIntegrationMock.mockRejectedValue('An error occurred')
 
-            const { result, waitFor } = render()
+            const { result } = render()
 
             result.current.performDelete({ id: phoneIntegration.id })
 

@@ -1,5 +1,4 @@
-import { fireEvent } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks'
+import { act, fireEvent } from '@testing-library/react'
 
 import { renderHook } from 'utils/testing/renderHook'
 

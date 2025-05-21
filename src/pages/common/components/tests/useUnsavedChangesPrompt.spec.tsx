@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 import * as H from 'history'
 import { createMemoryHistory } from 'history'
 import { Route, Router } from 'react-router-dom'

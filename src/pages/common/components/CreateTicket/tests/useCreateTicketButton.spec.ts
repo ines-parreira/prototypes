@@ -1,6 +1,7 @@
+import { act } from '@testing-library/react'
 import { useHistory } from 'react-router-dom'
 
-import { act, renderHook } from 'utils/testing/renderHook'
+import { renderHook } from 'utils/testing/renderHook'
 
 import { useCreateTicketButton } from '../useCreateTicketButton'
 import useHandleTicketDraft from '../useHandleTicketDraft'

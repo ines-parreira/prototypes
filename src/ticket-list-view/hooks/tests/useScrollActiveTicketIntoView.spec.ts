@@ -1,5 +1,6 @@
 import { MutableRefObject } from 'react'
 
+import { waitFor } from '@testing-library/react'
 import { VirtuosoHandle } from 'react-virtuoso'
 
 import { TicketCompact } from 'ticket-list-view/types'
@@ -29,7 +30,7 @@ describe('useScrollActiveTicketIntoView', () => {
     }
 
     it('should pre-scroll the active ticket into view', async () => {
-        const { rerender, waitFor } = renderHook<HookParams, void>(
+        const { rerender } = renderHook<HookParams, void>(
             ({ ticketId, tickets, ticketIds, virtuosoRef }) =>
                 useScrollActiveTicketIntoView(
                     ticketId,

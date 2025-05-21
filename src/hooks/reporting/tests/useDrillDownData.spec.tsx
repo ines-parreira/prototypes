@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 import moment from 'moment/moment'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'

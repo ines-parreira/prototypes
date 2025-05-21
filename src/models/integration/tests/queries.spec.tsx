@@ -2,6 +2,7 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import * as reactQuery from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import {
@@ -68,7 +69,7 @@ describe('queries', () => {
                 ),
             )
 
-            const { result, waitFor } = renderHook(() => useListProducts(1), {
+            const { result } = renderHook(() => useListProducts(1), {
                 wrapper,
             })
 
@@ -95,7 +96,7 @@ describe('queries', () => {
             fetchIntegrationProductsMock.mockRejectedValueOnce(
                 Error('test error'),
             )
-            const { result, waitFor } = renderHook(() => useListProducts(1), {
+            const { result } = renderHook(() => useListProducts(1), {
                 wrapper,
             })
             await waitFor(() => expect(result.current.isError).toBe(true))
@@ -118,7 +119,7 @@ describe('queries', () => {
                 fromJS(productsResponse),
             )
 
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () => useGetProductsByIdsFromIntegration(1, [2]),
                 {
                     wrapper,
@@ -141,7 +142,7 @@ describe('queries', () => {
             fetchIntegrationProductsByIdsMock.mockRejectedValueOnce(
                 Error('test error'),
             )
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () => useGetProductsByIdsFromIntegration(1, [2]),
                 {
                     wrapper,
@@ -173,7 +174,7 @@ describe('queries', () => {
                 collectionResponse,
             } as any)
 
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () => useCollectionsFromShopifyIntegration(1),
                 {
                     wrapper,
@@ -189,7 +190,7 @@ describe('queries', () => {
             fetchShopifyCollectionsMock.mockRejectedValueOnce(
                 Error('test error'),
             )
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () => useCollectionsFromShopifyIntegration(1),
                 {
                     wrapper,

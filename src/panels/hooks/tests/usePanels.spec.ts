@@ -1,6 +1,6 @@
 import { MouseEvent as ReactMouseEvent } from 'react'
 
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 
 import { Config } from 'panels/types'
 import { renderHook } from 'utils/testing/renderHook'
@@ -74,29 +74,38 @@ describe('usePanels', () => {
         ])
     })
 
-    it('should attach mouse handlers when a drag starts', () => {
+    it('should attach mouse handlers when a drag starts', async () => {
         const { result } = renderHook(() => usePanels(config))
 
         act(() => {
             result.current.resizeStartHandlers[0](event)
         })
 
-        expect(event.preventDefault).toHaveBeenCalledWith()
-        expect(window.addEventListener).toHaveBeenCalledWith(
-            'mouseup',
-            expect.any(Function),
-        )
-        expect(window.addEventListener).toHaveBeenCalledWith(
-            'mousemove',
-            expect.any(Function),
-        )
+        await waitFor(() => {
+            expect(event.preventDefault).toHaveBeenCalledWith()
+            expect(window.addEventListener).toHaveBeenCalledWith(
+                'mouseup',
+                expect.any(Function),
+            )
+            expect(window.addEventListener).toHaveBeenCalledWith(
+                'mousemove',
+                expect.any(Function),
+            )
+        })
     })
 
-    it('should return new panel widths when the mouse is moved', () => {
+    it('should return new panel widths when the mouse is moved', async () => {
         const { result } = renderHook(() => usePanels(config))
 
         act(() => {
             result.current.resizeStartHandlers[0](event)
+        })
+
+        await waitFor(() => {
+            const hasMouseupListener = addEventListenerMock.mock.calls.some(
+                ([eventName]) => eventName === 'mouseup',
+            )
+            expect(hasMouseupListener).toBe(true)
         })
 
         const mouseMoveCall = addEventListenerMock.mock.calls.find(
@@ -111,11 +120,18 @@ describe('usePanels', () => {
         expect(result.current.panelWidths).toEqual([190, 810])
     })
 
-    it('should remove event listeners when a drag stops', () => {
+    it('should remove event listeners when a drag stops', async () => {
         const { result } = renderHook(() => usePanels(config))
 
         act(() => {
             result.current.resizeStartHandlers[0](event)
+        })
+
+        await waitFor(() => {
+            const hasMouseupListener = addEventListenerMock.mock.calls.some(
+                ([eventName]) => eventName === 'mouseup',
+            )
+            expect(hasMouseupListener).toBe(true)
         })
 
         const mouseUpCall = addEventListenerMock.mock.calls.find(
@@ -127,13 +143,15 @@ describe('usePanels', () => {
             mouseUp()
         })
 
-        expect(window.removeEventListener).toHaveBeenCalledWith(
-            'mouseup',
-            expect.any(Function),
-        )
-        expect(window.removeEventListener).toHaveBeenCalledWith(
-            'mousemove',
-            expect.any(Function),
-        )
+        await waitFor(() => {
+            expect(window.removeEventListener).toHaveBeenCalledWith(
+                'mouseup',
+                expect.any(Function),
+            )
+            expect(window.removeEventListener).toHaveBeenCalledWith(
+                'mousemove',
+                expect.any(Function),
+            )
+        })
     })
 })

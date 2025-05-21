@@ -1,5 +1,4 @@
-import { waitFor } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 import { produce } from 'immer'
 import { ulid } from 'ulidx'
 
@@ -492,7 +491,8 @@ describe('useWorkflowEditor()', () => {
             useWorkflowEditor(configuration.id, false),
         )
 
-        act(() => {
+        // Initial state
+        await act(async () => {
             jest.advanceTimersByTime(2000)
         })
         expect(result.current.isDirty).toBe(false)
@@ -501,21 +501,26 @@ describe('useWorkflowEditor()', () => {
         expect(result.current.configuration.steps).toHaveLength(4)
         expect(result.current.configuration.transitions).toHaveLength(3)
 
-        act(() => {
-            // Update the name
+        // Update the name
+        await act(async () => {
             result.current.dispatch({
                 type: 'SET_NAME',
                 name: 'Updated Test Flow',
             })
         })
 
-        // flow updated immediately, dirty should be false
+        // Immediately after update, dirty should be false
         expect(result.current.isDirty).toBe(false)
         expect(result.current.visualBuilderGraph.name).toBe('Updated Test Flow')
 
-        act(() => {
-            jest.advanceTimersByTime(2000)
+        // Advance timers to trigger debounced update
+        await act(async () => {
+            jest.advanceTimersByTime(1500)
         })
-        expect(result.current.isDirty).toBe(true)
+
+        // After debounce period, dirty should be true
+        await waitFor(() => {
+            expect(result.current.isDirty).toBe(true)
+        })
     })
 })

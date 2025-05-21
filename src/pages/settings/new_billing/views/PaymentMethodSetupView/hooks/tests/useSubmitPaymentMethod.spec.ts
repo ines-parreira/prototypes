@@ -1,5 +1,5 @@
 import { useStripe } from '@stripe/react-stripe-js'
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 
 import { confirmBillingPaymentMethodSetup } from '@gorgias/api-client'
 
@@ -37,7 +37,7 @@ describe('useSubmitPaymentMethod hook', () => {
     })
 
     it('should call confirmBillingPaymentMethodSetup on submit', async () => {
-        const { result, waitFor } = renderHookWithStoreAndQueryClientProvider(
+        const { result } = renderHookWithStoreAndQueryClientProvider(
             useSubmitPaymentMethod,
         )
 
@@ -101,7 +101,7 @@ describe('useSubmitPaymentMethod hook', () => {
             ),
         } as any)
 
-        const { result, waitFor } = renderHookWithStoreAndQueryClientProvider(
+        const { result } = renderHookWithStoreAndQueryClientProvider(
             useSubmitPaymentMethod,
         )
 
@@ -127,7 +127,7 @@ describe('useSubmitPaymentMethod hook', () => {
                 }),
         )
 
-        const { result, waitFor } = renderHookWithStoreAndQueryClientProvider(
+        const { result } = renderHookWithStoreAndQueryClientProvider(
             useSubmitPaymentMethod,
         )
 

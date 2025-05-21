@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -28,7 +29,7 @@ describe('teams queries', () => {
             fetchTeamsSpy.mockResolvedValueOnce(
                 axiosSuccessResponse(teams) as any,
             )
-            const { result, waitFor } = renderHook(() => useListTeams(), {
+            const { result } = renderHook(() => useListTeams(), {
                 wrapper,
             })
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
@@ -37,7 +38,7 @@ describe('teams queries', () => {
 
         it('should return expected error on failure', async () => {
             fetchTeamsSpy.mockRejectedValueOnce(Error('test error'))
-            const { result, waitFor } = renderHook(() => useListTeams(), {
+            const { result } = renderHook(() => useListTeams(), {
                 wrapper,
             })
             await waitFor(() => expect(result.current.isError).toBe(true))

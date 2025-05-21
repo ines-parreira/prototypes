@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react-hooks'
+import { act } from '@testing-library/react'
 
 import { AlertBannerTypes, BannerCategories, ContextBanner } from 'AlertBanners'
 import { useBannersContext } from 'AlertBanners/Context'

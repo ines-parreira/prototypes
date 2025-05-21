@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act } from '@testing-library/react-hooks'
+import { act, waitFor } from '@testing-library/react'
 import axios from 'axios'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
@@ -568,7 +568,7 @@ describe('useActivation', () => {
                 return false
             })
 
-            const { result, waitFor } = renderHookWithRouter()
+            const { result } = renderHookWithRouter()
 
             await act(async () => {
                 await result.current.earlyAccessModal.props.onUpgradeClick()
@@ -590,7 +590,7 @@ describe('useActivation', () => {
                 return false
             })
 
-            const { result, waitFor } = renderHookWithRouter()
+            const { result } = renderHookWithRouter()
 
             await act(async () => {
                 await result.current.earlyAccessModal.props.onUpgradeClick()

@@ -1,5 +1,4 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { voiceQueue } from 'fixtures/voiceQueue'
 import { useInfiniteListVoiceQueues } from 'hooks/reporting/common/useInfiniteListVoiceQueues'
