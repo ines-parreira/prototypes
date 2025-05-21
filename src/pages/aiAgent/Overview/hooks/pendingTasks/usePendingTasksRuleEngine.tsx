@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 import { runRuleEngine } from './ruleEngine'
 import { SetupAiAgentTask } from './tasks/SetupAiAgent.task'
@@ -16,6 +17,7 @@ import { useFetchFaqHelpCentersData } from './useFetchFaqHelpCentersData'
 import { useFetchFileIngestionData } from './useFetchFileIngestionData'
 import { useFetchGuidancesData } from './useFetchGuidancesData'
 import { useFetchPageInteractionsData } from './useFetchPageInteractionsData'
+import { useFetchPublicResourcesData } from './useFetchPublicResourcesData'
 import { useShopifyPermissionsData } from './useShopifyPermissionsData'
 import { useTicketViewData } from './useTicketViewData'
 
@@ -57,6 +59,11 @@ export const usePendingTasksRuleEngine = ({
         enabled: !shouldFakeTasks,
         retries: false,
     })
+
+    const {
+        isLoading: publicResourcesDataIsLoading,
+        data: publicResourcesData,
+    } = useFetchPublicResourcesData({ storeName })
 
     const {
         isLoading: fileIngestionDataIsLoading,
@@ -126,6 +133,11 @@ export const usePendingTasksRuleEngine = ({
         refetchOnWindowFocus,
     })
 
+    const selfServiceChatChannels = useSelfServiceChatChannels(
+        storeType,
+        storeName,
+    )
+
     const {
         isLoading: pageInteractionsDataIsLoading,
         isFetched: pageInteractionsDataIsFetched,
@@ -145,7 +157,8 @@ export const usePendingTasksRuleEngine = ({
         aiAgentPlaygroundExecutionsDataIsLoading ||
         chatIntegrationsStatusDataIsLoading ||
         ticketViewDataIsLoading ||
-        pageInteractionsDataIsLoading
+        pageInteractionsDataIsLoading ||
+        publicResourcesDataIsLoading
 
     const isFetched =
         aiAgentStoreConfigurationIsFetched &&
@@ -173,6 +186,10 @@ export const usePendingTasksRuleEngine = ({
         FeatureFlagKey.ConvertFloatingChatInput,
         false,
     )
+    const hasConversationStarters = useFlag(
+        FeatureFlagKey.ConversationStarters,
+        false,
+    )
 
     useEffect(() => {
         if (isReady) {
@@ -194,6 +211,9 @@ export const usePendingTasksRuleEngine = ({
                         pageInteractions: pageInteractionsData,
                         isActivationEnabled,
                         isConvertFloatingChatInputEnabled,
+                        hasConversationStarters,
+                        publicResources: publicResourcesData,
+                        selfServiceChatChannels,
                     },
                     {
                         aiAgentRoutes: routes,
@@ -216,6 +236,9 @@ export const usePendingTasksRuleEngine = ({
         pageInteractionsData,
         isActivationEnabled,
         isConvertFloatingChatInputEnabled,
+        hasConversationStarters,
+        publicResourcesData,
+        selfServiceChatChannels,
     ]) /* eslint-enable react-hooks/exhaustive-deps */
 
     if (shouldFakeTasks) {

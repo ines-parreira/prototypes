@@ -16,6 +16,8 @@ export const buildRuleEngineData = (
     pageInteractions: {} as any,
     isActivationEnabled: false,
     isConvertFloatingChatInputEnabled: false,
+    hasConversationStarters: false,
+    selfServiceChatChannels: [],
     ...data,
 })
 

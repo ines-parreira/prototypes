@@ -1,13 +1,14 @@
 import { AiAgentScope } from 'models/aiAgent/types'
+import { getChatActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 
 import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
 
-export class EnableInputLauncherOnChatTask extends Task {
+export class EnableSuggestedProductQuestionsTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
-            'Enable Ask anything input for Chat',
-            'Drive more sales by encouraging Shoppers to start a chat.',
+            'Enable Suggested Product Questions',
+            'Show dynamic AI-generated questions on product pages',
             'RECOMMENDED',
             data,
             routes,
@@ -18,15 +19,22 @@ export class EnableInputLauncherOnChatTask extends Task {
         return !!data?.aiAgentStoreConfiguration
     }
 
-    // No guidances including draft ones
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
+        const { enabled: isChatEnabled } = getChatActivation({
+            storeConfiguration: data.aiAgentStoreConfiguration,
+            chatIntegrationStatus: data.chatIntegrationsStatus,
+            selfServiceChatChannels: data.selfServiceChatChannels,
+            helpCentersFaq: data.faqHelpCenters,
+            publicResources: data.publicResources,
+        })
+
         return (
-            data.isConvertFloatingChatInputEnabled &&
+            isChatEnabled &&
+            data.hasConversationStarters &&
             data.aiAgentStoreConfiguration.scopes.includes(
                 AiAgentScope.Sales,
             ) &&
-            !data.aiAgentStoreConfiguration.floatingChatInputConfiguration
-                ?.isEnabled
+            !data.aiAgentStoreConfiguration.isConversationStartersEnabled
         )
     }
 

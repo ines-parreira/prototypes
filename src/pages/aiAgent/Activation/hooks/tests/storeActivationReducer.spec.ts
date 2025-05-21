@@ -5,6 +5,7 @@ import { Components } from 'rest_api/help_center_api/client.generated'
 
 import {
     Flags,
+    getChatActivation,
     isSalesEnabledWithNewActivationXp,
     KNOWLEDGE_ALERT_KIND,
     reducer,
@@ -1009,6 +1010,137 @@ describe('storeActivationReducer', () => {
                     }),
                 )
             })
+        })
+    })
+
+    describe('getChatActivation', () => {
+        it('should enable chat when chat in selfservice, is installed and has help center', () => {
+            const { enabled, installationMissing, integrationMissing } =
+                getChatActivation({
+                    storeConfiguration: mockStoreConfig,
+                    selfServiceChatChannels: [{ value: { id: 1 } } as any],
+                    chatIntegrationStatus: [
+                        { chatId: 1, installed: true } as any,
+                    ],
+                    helpCentersFaq,
+                })
+
+            expect(enabled).toBe(true)
+            expect(integrationMissing).toBe(false)
+            expect(installationMissing).toBe(false)
+        })
+
+        it('should enable chat when chat in selfservice, is installed and has public resources', () => {
+            const { enabled, installationMissing, integrationMissing } =
+                getChatActivation({
+                    storeConfiguration: mockStoreConfig,
+                    selfServiceChatChannels: [{ value: { id: 1 } } as any],
+                    chatIntegrationStatus: [
+                        { chatId: 1, installed: true } as any,
+                    ],
+                    publicResources: [{ id: 1 } as any],
+                })
+
+            expect(enabled).toBe(true)
+            expect(integrationMissing).toBe(false)
+            expect(installationMissing).toBe(false)
+        })
+
+        it('should disable chat when support scope is missing but chat is installed', () => {
+            const { enabled, installationMissing, integrationMissing } =
+                getChatActivation({
+                    storeConfiguration: { ...mockStoreConfig, scopes: [] },
+                    selfServiceChatChannels: [{ value: { id: 1 } } as any],
+                    chatIntegrationStatus: [
+                        { chatId: 1, installed: true } as any,
+                    ],
+                    helpCentersFaq,
+                })
+
+            expect(enabled).toBe(false)
+            expect(integrationMissing).toBe(false)
+            expect(installationMissing).toBe(false)
+        })
+
+        it('should disable chat when chat deactivation date is present but chat is installed', () => {
+            const { enabled, installationMissing, integrationMissing } =
+                getChatActivation({
+                    storeConfiguration: {
+                        ...mockStoreConfig,
+                        chatChannelDeactivatedDatetime:
+                            '2025-04-24T00:00:00.000Z',
+                    },
+                    selfServiceChatChannels: [{ value: { id: 1 } } as any],
+                    chatIntegrationStatus: [
+                        { chatId: 1, installed: true } as any,
+                    ],
+                    helpCentersFaq,
+                })
+
+            expect(enabled).toBe(false)
+            expect(integrationMissing).toBe(false)
+            expect(installationMissing).toBe(false)
+        })
+
+        it('should disable chat when knowledge is missing but chat is installed', () => {
+            const { enabled, installationMissing, integrationMissing } =
+                getChatActivation({
+                    storeConfiguration: mockStoreConfig,
+                    selfServiceChatChannels: [{ value: { id: 1 } } as any],
+                    chatIntegrationStatus: [
+                        { chatId: 1, installed: true } as any,
+                    ],
+                })
+
+            expect(enabled).toBe(false)
+            expect(integrationMissing).toBe(false)
+            expect(installationMissing).toBe(false)
+        })
+
+        it('should disable chat when no chat installed but integration is not missing', () => {
+            const { enabled, installationMissing, integrationMissing } =
+                getChatActivation({
+                    storeConfiguration: mockStoreConfig,
+                    selfServiceChatChannels: [{ value: { id: 1 } } as any],
+                    chatIntegrationStatus: [
+                        { chatId: 1, installed: false } as any,
+                    ],
+                    helpCentersFaq,
+                })
+
+            expect(enabled).toBe(false)
+            expect(integrationMissing).toBe(false)
+            expect(installationMissing).toBe(true)
+        })
+
+        it('should disable chat when no chat not in selfservice', () => {
+            const { enabled, installationMissing, integrationMissing } =
+                getChatActivation({
+                    storeConfiguration: mockStoreConfig,
+                    selfServiceChatChannels: [],
+                    chatIntegrationStatus: [
+                        { chatId: 1, installed: false } as any,
+                    ],
+                    helpCentersFaq,
+                })
+
+            expect(enabled).toBe(false)
+            expect(integrationMissing).toBe(true)
+            expect(installationMissing).toBe(false)
+        })
+
+        it('should return available chat integrations', () => {
+            const { availableMonitoredChat } = getChatActivation({
+                storeConfiguration: mockStoreConfig,
+                selfServiceChatChannels: [{ value: { id: 1 } } as any],
+                chatIntegrationStatus: [
+                    { chatId: 1, installed: true },
+                    { chatId: 2, installed: true },
+                ] as any,
+                helpCentersFaq,
+            })
+
+            expect(availableMonitoredChat).toStrictEqual([1])
         })
     })
 })

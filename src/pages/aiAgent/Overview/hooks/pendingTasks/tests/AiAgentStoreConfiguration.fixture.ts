@@ -28,11 +28,15 @@ export class AiAgentStoreConfigurationFixture {
             | 'withScopes'
             | 'withConnectedEmailIntegrations'
             | 'withoutConnectedEmailIntegrations'
+            | 'withConnectedChatIntegrations'
+            | 'withoutConnectedChatIntegrations'
             | 'withCreatedDatetime'
             | 'withDiscountLevelStrategy'
             | 'withoutDiscountLevelStrategy'
             | 'withFloatingChatInputConfiguration'
             | 'withoutFloatingChatInputConfiguration'
+            | 'withSuggestedProductQuestions'
+            | 'withoutSuggestedProductQuestions'
         >
     }
 
@@ -55,6 +59,40 @@ export class AiAgentStoreConfigurationFixture {
         this.aiAgentStoreConfigurationData.monitoredEmailIntegrations = []
         return this as AiAgentStoreConfigurationFixtureFullyConfigured &
             ConfiguredAiAgentStoreConfigurationFixture<
+                | 'withChatChannelEnabled'
+                | 'withEmailChannelEnabled'
+                | 'withHandoverTopics'
+                | 'withoutHandoverTopic'
+                | 'withConnectedHelpCenter'
+                | 'withoutConnectedHelpCenter'
+                | 'withScopes'
+                | 'withCreatedDatetime'
+            >
+    }
+
+    withConnectedChatIntegrations(ids: number[]) {
+        this.aiAgentStoreConfigurationData.monitoredChatIntegrations = ids
+        return this as AiAgentStoreConfigurationFixtureFullyConfigured &
+            ConfiguredAiAgentStoreConfigurationFixture<
+                | 'withConnectedEmailIntegrations'
+                | 'withoutConnectedEmailIntegrations'
+                | 'withChatChannelEnabled'
+                | 'withEmailChannelEnabled'
+                | 'withHandoverTopics'
+                | 'withoutHandoverTopic'
+                | 'withConnectedHelpCenter'
+                | 'withoutConnectedHelpCenter'
+                | 'withScopes'
+                | 'withCreatedDatetime'
+            >
+    }
+
+    withoutConnectedChatIntegrations() {
+        this.aiAgentStoreConfigurationData.monitoredChatIntegrations = []
+        return this as AiAgentStoreConfigurationFixtureFullyConfigured &
+            ConfiguredAiAgentStoreConfigurationFixture<
+                | 'withConnectedEmailIntegrations'
+                | 'withoutConnectedEmailIntegrations'
                 | 'withChatChannelEnabled'
                 | 'withEmailChannelEnabled'
                 | 'withHandoverTopics'
@@ -154,6 +192,16 @@ export class AiAgentStoreConfigurationFixture {
         this.aiAgentStoreConfigurationData.floatingChatInputConfiguration = {
             isEnabled: false,
         }
+        return this
+    }
+
+    withSuggestedProductQuestions() {
+        this.aiAgentStoreConfigurationData.isConversationStartersEnabled = true
+        return this
+    }
+
+    withoutSuggestedProductQuestions() {
+        this.aiAgentStoreConfigurationData.isConversationStartersEnabled = false
         return this
     }
 

@@ -1,5 +1,6 @@
+import { SourceItem } from 'pages/aiAgent/components/PublicSourcesSection/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { EnableInputLauncherOnChatTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/EnableInputLauncherOnChat.task'
+import { EnableAskAnythingInputTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/EnableAskAnythingInput.task'
 import { GiveFeedbackAIAgentTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/GiveFeedbackAIAgent.task'
 import { SetUpYourEmailTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/SetUpYourEmail.task'
 import { Task } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/Task'
@@ -8,6 +9,7 @@ import {
     AiAgentType,
     getAiAgentTypeFromScopes,
 } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
+import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 import { ConnectAHelpCenterTask } from './tasks/ConnectAHelpCenter.task'
 import { ConnectYourDefaultEmailTask } from './tasks/ConnectYourDefaultEmail.task'
@@ -17,6 +19,7 @@ import { CreateYourFirstGuidanceTask } from './tasks/CreateYourFirstGuidance.tas
 import { EnableAIAgentOnChatTask } from './tasks/EnableAIAgentOnChat.task'
 import { EnableAIAgentOnEmailTask } from './tasks/EnableAIAgentOnEmail.task'
 import { EnableSalesSkill } from './tasks/EnableSalesSkill'
+import { EnableSuggestedProductQuestionsTask } from './tasks/EnableSuggestedProductQuestions.task'
 import { InstallYourChatTask } from './tasks/InstallYourChat.task'
 import { PublishYourFirstGuidanceTask } from './tasks/PublishYourFirstGuidance.task'
 import { ReviewAIGeneratedGuidancesTask } from './tasks/ReviewAIGeneratedGuidances.task'
@@ -41,6 +44,7 @@ import { type TicketViewData } from './useTicketViewData'
 export type RuleEngineData = {
     aiAgentStoreConfiguration: AiAgentStoreConfigurationData
     faqHelpCenters?: FaqHelpCentersData
+    publicResources?: SourceItem[]
     fileIngestion?: FileIngestionData
     guidances?: GuidancesData
     actions?: ActionsData
@@ -48,10 +52,12 @@ export type RuleEngineData = {
     emailIntegrations?: EmailIntegrationsData
     shopifyIntegration?: ShopifyPermissionsData
     chatIntegrationsStatus?: ChatIntegrationsStatusData
+    selfServiceChatChannels: SelfServiceChatChannel[]
     ticketView?: TicketViewData
     pageInteractions: PageInteractionsData | null
     isActivationEnabled: boolean
     isConvertFloatingChatInputEnabled: boolean
+    hasConversationStarters: boolean
 }
 
 export type RuleEngineRoutes = {
@@ -82,7 +88,8 @@ const tasksPerAiAgentType: Record<
         new SetYourActionsLiveTask(data, routes),
         new GiveFeedbackAIAgentTask(data, routes),
         new UpdateYourDiscountStrategyTask(data, routes),
-        new EnableInputLauncherOnChatTask(data, routes),
+        new EnableAskAnythingInputTask(data, routes),
+        new EnableSuggestedProductQuestionsTask(data, routes),
     ],
     sales: (data: RuleEngineData, routes: RuleEngineRoutes) => [
         new InstallYourChatTask(data, routes),

@@ -338,6 +338,69 @@ const toggleSales = (
     }
 }
 
+export const getChatActivation = ({
+    chatIntegrationStatus,
+    helpCentersFaq,
+    publicResources,
+    selfServiceChatChannels,
+    storeConfiguration,
+}: {
+    chatIntegrationStatus?: ChatIntegrationsStatusData
+    helpCentersFaq?: Components.Schemas.GetHelpCenterDto[]
+    publicResources?: SourceItem[]
+    selfServiceChatChannels: SelfServiceChatChannel[]
+    storeConfiguration: StoreConfiguration
+}): {
+    availableMonitoredChat: number[]
+    enabled: boolean
+    installationMissing: boolean
+    integrationMissing: boolean
+} => {
+    const hasHelpCenterFaq = (helpCentersFaq ?? []).length > 0
+
+    const { scopes, chatChannelDeactivatedDatetime, helpCenterId } =
+        storeConfiguration
+
+    const hasHelpCenter =
+        helpCenterId !== null &&
+        !!helpCentersFaq?.some((it) => it.id === helpCenterId) &&
+        hasHelpCenterFaq
+    const hasPublicUrls = !!publicResources?.length
+
+    const isMissingKnowledge = !hasHelpCenter && !hasPublicUrls
+
+    const availableMonitoredChat =
+        storeConfiguration.monitoredChatIntegrations.filter((it) =>
+            selfServiceChatChannels.some((chat) => chat.value.id === it),
+        )
+
+    const isChatIntegrationMissing = !availableMonitoredChat.length
+    let isChatInstallationMissing: boolean
+    if (isChatIntegrationMissing) {
+        isChatInstallationMissing = false
+    } else {
+        isChatInstallationMissing = !chatIntegrationStatus
+            ?.filter((status) =>
+                availableMonitoredChat.some((id) => id === status.chatId),
+            )
+            .some((it) => it.installed)
+    }
+
+    const isEnabled =
+        scopes.includes(AiAgentScope.Support) &&
+        !chatChannelDeactivatedDatetime &&
+        !isChatIntegrationMissing &&
+        !isMissingKnowledge &&
+        !isChatInstallationMissing
+
+    return {
+        availableMonitoredChat,
+        enabled: isEnabled,
+        installationMissing: isChatInstallationMissing,
+        integrationMissing: isChatIntegrationMissing,
+    }
+}
+
 export const storeConfigurationToState = (
     state: State,
     {
@@ -363,7 +426,6 @@ export const storeConfigurationToState = (
             const {
                 storeName,
                 scopes,
-                chatChannelDeactivatedDatetime,
                 emailChannelDeactivatedDatetime,
                 monitoredEmailIntegrations,
                 helpCenterId,
@@ -394,31 +456,19 @@ export const storeConfigurationToState = (
             }
 
             const availableChatsForStore = selfServiceChatChannels[storeName]
-            const availableMonitoredChat =
-                storeConfiguration.monitoredChatIntegrations.filter((it) =>
-                    availableChatsForStore.some((chat) => chat.value.id === it),
-                )
 
-            const isChatIntegrationMissing = !availableMonitoredChat.length
-            let isChatInstallationMissing: boolean
-            if (isChatIntegrationMissing) {
-                isChatInstallationMissing = false
-            } else {
-                isChatInstallationMissing = !chatIntegrationStatus
-                    ?.filter((status) =>
-                        availableMonitoredChat.some(
-                            (id) => id === status.chatId,
-                        ),
-                    )
-                    .some((it) => it.installed)
-            }
-
-            const isChatEnabled =
-                scopes.includes(AiAgentScope.Support) &&
-                !chatChannelDeactivatedDatetime &&
-                !isChatIntegrationMissing &&
-                !isMissingKnowledge &&
-                !isChatInstallationMissing
+            const {
+                availableMonitoredChat,
+                enabled: isChatEnabled,
+                installationMissing: isChatInstallationMissing,
+                integrationMissing: isChatIntegrationMissing,
+            } = getChatActivation({
+                storeConfiguration,
+                selfServiceChatChannels: availableChatsForStore,
+                publicResources: publicResources?.[storeName],
+                helpCentersFaq,
+                chatIntegrationStatus,
+            })
 
             const isEmailIntegrationMissing = !monitoredEmailIntegrations.some(
                 ({ id }) => emailIntegrations.some((email) => email.id === id),

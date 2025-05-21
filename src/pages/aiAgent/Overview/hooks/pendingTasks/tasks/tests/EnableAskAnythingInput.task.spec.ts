@@ -1,17 +1,17 @@
 import { AiAgentScope } from 'models/aiAgent/types'
 
 import { AiAgentStoreConfigurationFixture } from '../../tests/AiAgentStoreConfiguration.fixture'
-import { EnableInputLauncherOnChatTask } from '../EnableInputLauncherOnChat.task'
+import { EnableAskAnythingInputTask } from '../EnableAskAnythingInput.task'
 import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'
 
-describe('EnableInputLauncherOnChatTask', () => {
+describe('EnableAskAnythingInputTask', () => {
     it('should display the task when floating input is not enabled', () => {
         const aiAgentStoreConfiguration =
             AiAgentStoreConfigurationFixture.start()
                 .withoutFloatingChatInputConfiguration([AiAgentScope.Sales])
                 .build()
 
-        const task = new EnableInputLauncherOnChatTask(
+        const task = new EnableAskAnythingInputTask(
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
                 isConvertFloatingChatInputEnabled: true,
@@ -27,7 +27,7 @@ describe('EnableInputLauncherOnChatTask', () => {
                 .withFloatingChatInputConfiguration([AiAgentScope.Sales])
                 .build()
 
-        const task = new EnableInputLauncherOnChatTask(
+        const task = new EnableAskAnythingInputTask(
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
                 isConvertFloatingChatInputEnabled: false,
@@ -44,7 +44,7 @@ describe('EnableInputLauncherOnChatTask', () => {
                 .withoutFloatingChatInputConfiguration([])
                 .build()
 
-        const task = new EnableInputLauncherOnChatTask(
+        const task = new EnableAskAnythingInputTask(
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
                 isConvertFloatingChatInputEnabled: false,

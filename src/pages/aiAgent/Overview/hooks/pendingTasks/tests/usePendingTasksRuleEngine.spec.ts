@@ -2,6 +2,7 @@ import moment from 'moment/moment'
 
 import { AiAgentScope } from 'models/aiAgent/types'
 import { ShopifyPermissionsDataFixture } from 'pages/aiAgent/Overview/hooks/pendingTasks/tests/ShopifyPermissionsData.fixture'
+import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -14,6 +15,7 @@ import { useFetchFaqHelpCentersData } from '../useFetchFaqHelpCentersData'
 import { useFetchFileIngestionData } from '../useFetchFileIngestionData'
 import { useFetchGuidancesData } from '../useFetchGuidancesData'
 import { useFetchPageInteractionsData } from '../useFetchPageInteractionsData'
+import { useFetchPublicResourcesData } from '../useFetchPublicResourcesData'
 import { usePendingTasksRuleEngine } from '../usePendingTasksRuleEngine'
 import { useShopifyPermissionsData } from '../useShopifyPermissionsData'
 import { useTicketViewData } from '../useTicketViewData'
@@ -31,6 +33,13 @@ jest.mock('../useFetchFaqHelpCentersData', () => ({
     useFetchFaqHelpCentersData: jest.fn(),
 }))
 const useFetchFaqHelpCentersDataMock = assumeMock(useFetchFaqHelpCentersData)
+jest.mock('../useFetchAiAgentStoreConfigurationData', () => ({
+    useFetchAiAgentStoreConfigurationData: jest.fn(),
+}))
+jest.mock('../useFetchPublicResourcesData', () => ({
+    useFetchPublicResourcesData: jest.fn(),
+}))
+const useFetchPublicResourcesDataMock = assumeMock(useFetchPublicResourcesData)
 jest.mock('../useFetchAiAgentStoreConfigurationData', () => ({
     useFetchAiAgentStoreConfigurationData: jest.fn(),
 }))
@@ -83,12 +92,22 @@ jest.mock('../useTicketViewData', () => ({
 }))
 const useTicketViewDataMock = assumeMock(useTicketViewData)
 
+jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () =>
+    jest.fn(),
+)
+const useSelfServiceChatChannelsMock = assumeMock(useSelfServiceChatChannels)
+
 // Will implements better testing after extracting the list of tasks from the ruleEngine
 describe('usePendingTasksRuleEngine', () => {
     useFetchFaqHelpCentersDataMock.mockReturnValue({
         isLoading: false,
         isFetched: true,
         data: HelpCenterDataFixture.start().withNoHelpCenter().build(),
+    })
+
+    useFetchPublicResourcesDataMock.mockReturnValue({
+        isLoading: false,
+        data: [],
     })
 
     useFetchFileIngestionDataMock.mockReturnValue({
@@ -145,6 +164,8 @@ describe('usePendingTasksRuleEngine', () => {
         data: {},
     })
 
+    useSelfServiceChatChannelsMock.mockReturnValue([])
+
     useFetchPageInteractionsDataMock.mockReturnValue({
         isLoading: false,
         isFetched: true,
@@ -158,7 +179,7 @@ describe('usePendingTasksRuleEngine', () => {
         {
             scopes: [AiAgentScope.Support, AiAgentScope.Sales],
             pendingTasks: 6,
-            completedTasks: 14,
+            completedTasks: 15,
         },
         {
             scopes: [AiAgentScope.Support],
@@ -181,6 +202,7 @@ describe('usePendingTasksRuleEngine', () => {
                     .withCreatedDatetime(
                         moment().subtract(10, 'days').toISOString(),
                     )
+                    .withoutConnectedChatIntegrations()
                     .withoutConnectedEmailIntegrations()
                     .withScopes(scopes)
                     .withoutConnectedHelpCenter()
