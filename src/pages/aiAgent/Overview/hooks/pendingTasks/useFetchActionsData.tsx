@@ -4,12 +4,14 @@ type Args = {
     storeName: string
     enabled: boolean
     refetchOnWindowFocus?: boolean
+    retries?: boolean
 }
 
 export const useFetchActionsData = ({
     enabled,
     storeName,
     refetchOnWindowFocus = true,
+    retries = true,
 }: Args) => {
     const { data, isLoading, isFetched } = useGetStoreWorkflowsConfigurations(
         {
@@ -17,7 +19,7 @@ export const useFetchActionsData = ({
             storeType: 'shopify',
             triggers: ['llm-prompt'],
         },
-        { enabled, refetchOnWindowFocus },
+        { enabled, refetchOnWindowFocus, ...(!retries && { retry: 0 }) },
     )
 
     return {

@@ -6,11 +6,13 @@ type Args = {
     storeName: string
     enabled: boolean
     refetchOnWindowFocus?: boolean
+    retries?: boolean
 }
 export const useFetchGuidancesData = ({
     storeName,
     enabled,
     refetchOnWindowFocus = true,
+    retries = true,
 }: Args) => {
     const {
         isLoading: isLoadingGuidanceHelpCenter,
@@ -26,6 +28,7 @@ export const useFetchGuidancesData = ({
             staleTime: 1000 * 60 * 5,
             refetchOnWindowFocus: false,
             enabled,
+            ...(!retries && { retry: 0 }),
         },
     )
 
@@ -35,6 +38,7 @@ export const useFetchGuidancesData = ({
         useGuidanceArticles(guidanceHelpCenterId!, {
             enabled: !!guidanceHelpCenterId,
             refetchOnWindowFocus,
+            ...(!retries && { retry: 0 }),
         })
 
     return {

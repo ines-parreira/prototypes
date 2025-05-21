@@ -53,7 +53,10 @@ export const usePendingTasksRuleEngine = ({
         isLoading: faqHelpCentersDataIsLoading,
         isFetched: FaqHelpCentersDataIsFetched,
         data: faqHelpCentersData,
-    } = useFetchFaqHelpCentersData({ enabled: !shouldFakeTasks })
+    } = useFetchFaqHelpCentersData({
+        enabled: !shouldFakeTasks,
+        retries: false,
+    })
 
     const {
         isLoading: fileIngestionDataIsLoading,
@@ -63,6 +66,7 @@ export const usePendingTasksRuleEngine = ({
         storeName,
         enabled: !shouldFakeTasks,
         refetchOnWindowFocus,
+        retries: false,
     })
 
     const {
@@ -73,6 +77,7 @@ export const usePendingTasksRuleEngine = ({
         storeName,
         enabled: !shouldFakeTasks,
         refetchOnWindowFocus,
+        retries: false,
     })
 
     const {
@@ -83,6 +88,7 @@ export const usePendingTasksRuleEngine = ({
         storeName,
         enabled: !shouldFakeTasks,
         refetchOnWindowFocus,
+        retries: false,
     })
 
     const {
@@ -94,12 +100,14 @@ export const usePendingTasksRuleEngine = ({
         storeName,
         enabled: !shouldFakeTasks,
         refetchOnWindowFocus,
+        retries: false,
     })
 
     const { isLoading: ticketViewDataIsLoading, data: ticketViewData } =
         useTicketViewData({
             accountDomain,
             refetchOnWindowFocus,
+            retries: false,
         })
 
     const { data: emailIntegrationsData } = useFetchEmailIntegrationsData()

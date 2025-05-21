@@ -7,12 +7,14 @@ type UseFetchFileIngestionArgs = {
     storeName: string
     enabled?: boolean
     refetchOnWindowFocus?: boolean
+    retries?: boolean
 }
 
 export const useFetchFileIngestionData = ({
     storeName,
     enabled = true,
     refetchOnWindowFocus = true,
+    retries = true,
 }: UseFetchFileIngestionArgs) => {
     const {
         data: snippetHelpCenterData,
@@ -24,7 +26,7 @@ export const useFetchFileIngestionData = ({
             per_page: 1,
             shop_name: storeName,
         },
-        { enabled, refetchOnWindowFocus },
+        { enabled, refetchOnWindowFocus, ...(!retries && { retry: 0 }) },
     )
 
     const snippetHelpCenterId = snippetHelpCenterData?.data?.data[0]?.id
@@ -36,6 +38,7 @@ export const useFetchFileIngestionData = ({
         {
             enabled: !!snippetHelpCenterId,
             refetchOnWindowFocus,
+            ...(!retries && { retry: 0 }),
         },
     )
 

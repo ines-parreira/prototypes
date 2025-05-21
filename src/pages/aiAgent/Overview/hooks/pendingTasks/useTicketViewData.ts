@@ -6,9 +6,11 @@ import { useGetViewTicketUpdates } from 'models/view/queries'
 export const useTicketViewData = ({
     accountDomain,
     refetchOnWindowFocus = true,
+    retries = true,
 }: {
     accountDomain: string
     refetchOnWindowFocus?: boolean
+    retries?: boolean
 }): { isLoading: boolean; data?: TicketViewData } => {
     const [viewId, setViewId] = useState<number | undefined>(undefined)
     const [ticketId, setTicketId] = useState<number | undefined>(undefined)
@@ -16,7 +18,10 @@ export const useTicketViewData = ({
     const {
         status: accountConfigurationDataStatus,
         data: accountConfigurationData,
-    } = useGetAccountConfiguration(accountDomain, { refetchOnWindowFocus })
+    } = useGetAccountConfiguration(accountDomain, {
+        refetchOnWindowFocus,
+        ...(!retries && { retry: 0 }),
+    })
 
     useEffect(() => {
         if (accountConfigurationDataStatus !== 'success') {
@@ -41,6 +46,7 @@ export const useTicketViewData = ({
             {
                 enabled: !!viewId,
                 refetchOnWindowFocus,
+                ...(!retries && { retry: 0 }),
             },
         )
 

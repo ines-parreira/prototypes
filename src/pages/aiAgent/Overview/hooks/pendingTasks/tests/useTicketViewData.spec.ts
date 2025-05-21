@@ -137,4 +137,34 @@ describe('useTicketViewData', () => {
             viewId: undefined,
         })
     })
+
+    it('set correct retries when retries disabled', () => {
+        const accountDomain = 'test-store'
+        const refetchOnWindowFocus = false
+        const retries = false
+
+        useGetAccountConfigurationMock.mockReturnValue({
+            status: 'success',
+            data: {
+                data: {
+                    accountConfiguration: {
+                        views: { Close: { id: 123 } },
+                    },
+                },
+            },
+        } as any)
+
+        renderHook(() =>
+            useTicketViewData({
+                accountDomain,
+                refetchOnWindowFocus,
+                retries,
+            }),
+        )
+
+        expect(useGetAccountConfigurationMock).toHaveBeenCalledWith(
+            accountDomain,
+            { refetchOnWindowFocus, retry: 0 },
+        )
+    })
 })

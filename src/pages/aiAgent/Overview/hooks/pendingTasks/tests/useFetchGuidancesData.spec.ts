@@ -43,6 +43,44 @@ describe('useFetchGuidancesData', () => {
         expect(result.current.data).toEqual([])
     })
 
+    it.each([true, false])(
+        'sets correct retries value when retries is set to %s',
+        (retries) => {
+            mockUseGetHelpCenterList.mockReturnValue({
+                isLoading: true,
+                data: undefined,
+            })
+            mockUseGuidanceArticles.mockReturnValue({
+                guidanceArticles: [],
+                isGuidanceArticleListLoading: false,
+            })
+
+            renderHook(() =>
+                useFetchGuidancesData({
+                    storeName,
+                    enabled: true,
+                    retries: retries,
+                }),
+            )
+
+            expect(mockUseGetHelpCenterList).toHaveBeenCalledWith(
+                {
+                    type: 'guidance',
+                    per_page: HELP_CENTER_MAX_CREATION,
+                    shop_name: storeName,
+                },
+                expect.objectContaining({
+                    ...(!retries && { retry: 0 }),
+                }),
+            )
+            expect(mockUseGuidanceArticles).toHaveBeenCalledWith(undefined, {
+                enabled: false,
+                refetchOnWindowFocus: true,
+                ...(!retries && { retry: 0 }),
+            })
+        },
+    )
+
     it('returns articles when both queries succeed', () => {
         mockUseGetHelpCenterList.mockReturnValue({
             isLoading: false,
