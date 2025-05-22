@@ -9,16 +9,17 @@ jest.mock('pages/tickets/detail/components/PhoneEvent/PhoneEvent', () => () => (
     <div>PhoneEvent</div>
 ))
 
+jest.mock(
+    'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCall',
+    () => () => <div>TicketVoiceCall</div>,
+)
+
 jest.mock('../TicketAIEvent', () => ({
     TicketAIEvent: () => <div>TicketAIEvent</div>,
 }))
 
 jest.mock('../TicketMessage', () => ({
     TicketMessage: () => <div>TicketMessage</div>,
-}))
-
-jest.mock('../TicketVoiceCall', () => ({
-    TicketVoiceCall: () => <div>TicketVoiceCall</div>,
 }))
 
 describe('TicketElement', () => {
