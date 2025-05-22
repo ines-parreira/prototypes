@@ -1,8 +1,9 @@
+import React from 'react'
+
 import { EmailIntegration, GmailIntegration } from '@gorgias/api-queries'
+import { Badge } from '@gorgias/merchant-ui-kit'
 
 import { OutlookIntegration } from 'models/integration/types'
-import Button, { type ButtonProps } from 'pages/common/components/button/Button'
-import Status, { StatusType } from 'pages/common/components/Status/Status'
 
 import { canIntegrationDomainBeVerified } from './helpers'
 
@@ -19,67 +20,56 @@ type Props = {
 export default function EmailIntegrationListVerificationStatus({
     active,
     isVerified,
-    isRowSubmitting,
-    redirectURI,
     isDomainVerificationWarningVisible,
     isForwardEmail,
     integration,
 }: Props) {
-    const commonButtonProps: Partial<ButtonProps> = {
-        isLoading: isRowSubmitting,
-        fillStyle: 'ghost',
-        intent: 'secondary',
-    }
-
     const canDomainBeVerified = canIntegrationDomainBeVerified(integration)
+    const isGmailOutlookIntegration =
+        !isForwardEmail && !canDomainBeVerified && active
+    const isGorgiasEmailVerified =
+        isForwardEmail && isVerified && !canDomainBeVerified
 
-    if (isForwardEmail && isVerified && !canDomainBeVerified) {
-        return null
-    }
-
-    if (!isForwardEmail && !canDomainBeVerified && active) {
-        return null
+    if (isGorgiasEmailVerified || isGmailOutlookIntegration) {
+        return (
+            <Badge corner="round" type="light-success">
+                <i className="material-icons-outlined">check_circle</i>
+                Verified
+            </Badge>
+        )
     }
 
     if (isForwardEmail && !isVerified) {
         return (
-            <Button {...commonButtonProps}>
-                <Status type={StatusType.Error}>
-                    Action Required: Verify Email
-                </Status>
-            </Button>
+            <Badge corner="round" type="light-error">
+                <i className="material-icons-outlined">error</i>
+                Verify Email
+            </Badge>
         )
     }
 
     if (!active && !isForwardEmail) {
         return (
-            <Button
-                {...commonButtonProps}
-                onClick={(e) => {
-                    e.preventDefault()
-                    window.open(redirectURI)
-                }}
-            >
-                <Status type={StatusType.Error}>
-                    Action Required: Reconnect Email
-                </Status>
-            </Button>
+            <Badge corner="round" type="light-error">
+                <i className="material-icons-outlined">error</i>
+                Reconnect Email
+            </Badge>
         )
     }
 
     if (isDomainVerificationWarningVisible) {
         return (
-            <Button {...commonButtonProps}>
-                <Status type={StatusType.Error}>
-                    Action Required: Verify Domain
-                </Status>
-            </Button>
+            <Badge corner="round" type="light-error">
+                <i className="material-icons-outlined">error</i>
+                Verify Domain
+            </Badge>
         )
     }
 
     return (
-        <Button {...commonButtonProps}>
-            <Status type={StatusType.Success}>Verified</Status>
-        </Button>
+        <Badge corner="round" type="light-success">
+            <i className="material-icons-outlined">check_circle</i>
+            Verified
+        </Badge>
     )
 }

@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react'
 
 import { fromJS, Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
@@ -14,7 +13,6 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import { getIconFromType } from 'state/integrations/helpers'
 import { getStoreIntegrations } from 'state/integrations/selectors'
 
-import { FeatureFlagKey } from '../../../../../../config/featureFlags'
 import {
     useCreateStoreMapping,
     useDeleteStoreMapping,
@@ -32,8 +30,6 @@ type Props = {
 
 const EmailIntegrationConnectStore = ({ integration }: Props) => {
     const storeIntegrations = useAppSelector(getStoreIntegrations)
-    const showStoreMapping: boolean | undefined =
-        useFlags()[FeatureFlagKey.EnableEmailToStoreMapping]
     const [storeIntegrationId, setStoreIntegration] = useState<number | null>(
         null,
     )
@@ -45,7 +41,7 @@ const EmailIntegrationConnectStore = ({ integration }: Props) => {
     } = useListStoreMappings<StoreMapping | undefined>(
         [integration.get('id')],
         {
-            enabled: !!integration.get('id') && showStoreMapping,
+            enabled: !!integration.get('id'),
             select: (data) => data[0],
             refetchOnWindowFocus: false,
             onSuccess(data) {
@@ -104,7 +100,6 @@ const EmailIntegrationConnectStore = ({ integration }: Props) => {
 
     const isLoading = isFetching || isCreating || isUpdating || isDeleting
 
-    if (!showStoreMapping) return null
     return (
         <div className={css.container}>
             <h3 className={css.header}>Connect Store</h3>

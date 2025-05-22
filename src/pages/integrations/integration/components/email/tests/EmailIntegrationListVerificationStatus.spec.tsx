@@ -1,6 +1,6 @@
 import React, { ComponentProps } from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 
 import { EmailIntegration } from '@gorgias/api-queries'
 
@@ -43,10 +43,10 @@ describe('EmailIntegrationListVerificationStatus', () => {
             isDomainVerificationWarningVisible: true,
         })
 
-        expect(container.innerHTML).toBe('')
+        expect(container.innerHTML).toContain('Verified')
     })
 
-    it(`should not render anything if it's a gmail/outlook active integration but canIntegrationDomainBeVerified is false`, () => {
+    it(`should render Verified if it's a gmail/outlook active integration but canIntegrationDomainBeVerified is false`, () => {
         canIntegrationDomainBeVerifiedMock.mockReturnValue(false)
 
         const { container } = renderComponent({
@@ -59,7 +59,7 @@ describe('EmailIntegrationListVerificationStatus', () => {
             isDomainVerificationWarningVisible: false,
         })
 
-        expect(container.innerHTML).toBe('')
+        expect(container.textContent).toContain('Verified')
     })
 
     it('should render Reconnect button and Tooltip when not active and isGmail is true', () => {
@@ -73,9 +73,7 @@ describe('EmailIntegrationListVerificationStatus', () => {
             isDomainVerificationWarningVisible: false,
         })
 
-        expect(
-            screen.getByText('Action Required: Reconnect Email'),
-        ).toBeInTheDocument()
+        expect(screen.getByText('Reconnect Email')).toBeInTheDocument()
     })
 
     it('should render Not verified message when isForwardEmail is true and isVerified is false', () => {
@@ -89,9 +87,7 @@ describe('EmailIntegrationListVerificationStatus', () => {
             isDomainVerificationWarningVisible: false,
         })
 
-        expect(
-            screen.getByText('Action Required: Verify Email'),
-        ).toBeInTheDocument()
+        expect(screen.getByText('Verify Email')).toBeInTheDocument()
     })
 
     it('should render  "Verify domain" message when isDomainVerificationWarningVisible is true', () => {
@@ -105,30 +101,7 @@ describe('EmailIntegrationListVerificationStatus', () => {
             isDomainVerificationWarningVisible: true,
         })
 
-        expect(
-            screen.getByText('Action Required: Verify Domain'),
-        ).toBeInTheDocument()
-    })
-
-    it('should open redirectURI when Reconnect button is clicked', () => {
-        const openSpy = jest
-            .spyOn(window, 'open')
-            .mockImplementation(() => null)
-
-        renderComponent({
-            integration,
-            active: false,
-            isForwardEmail: false,
-            isVerified: false,
-            isRowSubmitting: false,
-            redirectURI: 'http://example.com',
-            isDomainVerificationWarningVisible: false,
-        })
-
-        fireEvent.click(screen.getByText('Action Required: Reconnect Email'))
-        expect(openSpy).toHaveBeenCalledWith('http://example.com')
-
-        openSpy.mockRestore()
+        expect(screen.getByText('Verify Domain')).toBeInTheDocument()
     })
 
     it('should render "Verified" status', () => {
@@ -156,8 +129,6 @@ describe('EmailIntegrationListVerificationStatus', () => {
             isDomainVerificationWarningVisible: true,
         })
 
-        expect(
-            screen.getByText('Action Required: Reconnect Email'),
-        ).toBeInTheDocument()
+        expect(screen.getByText('Reconnect Email')).toBeInTheDocument()
     })
 })

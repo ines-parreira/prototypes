@@ -7,10 +7,11 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Container, Table } from 'reactstrap'
 
+import { Button } from '@gorgias/merchant-ui-kit'
+
 import { isChannel } from 'config'
 import { IntegrationType } from 'models/integration/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import withRouter from 'pages/common/utils/withRouter'
 import { getIntegrationConfig } from 'state/integrations/helpers'
@@ -57,6 +58,7 @@ type Props = {
     createIntegrationButtonHidden: boolean
 } & RouteComponentProps &
     ConnectedProps<typeof connector>
+
 /**
  * A generic component to edit integrations of a given type.
  * We can then have specific components for each integration type using this one.

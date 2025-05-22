@@ -59,17 +59,22 @@ export const useEmailDomainVerificationBanner = () => {
         canIntegrationDomainBeVerifiedList.every((integration: Map<any, any>) =>
             isOutboundDomainVerified(integration.toJS()),
         )
+    const isEmailSettingsPage =
+        location.pathname === '/app/settings/channels/email' ||
+        location.pathname === '/app/settings'
 
     const shouldNotShowBanner = useMemo(() => {
         return (
             !bannerList?.emailDomainVerificationBanner ||
             allEmailIntegrationsHaveDomainVerified ||
-            !isUserAdmin
+            !isUserAdmin ||
+            isEmailSettingsPage
         )
     }, [
         bannerList?.emailDomainVerificationBanner,
         allEmailIntegrationsHaveDomainVerified,
         isUserAdmin,
+        isEmailSettingsPage,
     ])
 
     useEffect(() => {

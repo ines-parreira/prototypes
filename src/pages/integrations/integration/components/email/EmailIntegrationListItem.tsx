@@ -53,8 +53,6 @@ export default function EmailIntegrationListItem({
 
     const showDefaultIntegration: boolean | undefined =
         useFlags()[FeatureFlagKey.DefaultEmailAddress]
-    const showStoreMapping: boolean | undefined =
-        useFlags()[FeatureFlagKey.EnableEmailToStoreMapping]
     const isNewDomainVerificationEnabled: boolean =
         useFlags()[FeatureFlagKey.NewDomainVerification] ?? false
 
@@ -162,7 +160,7 @@ export default function EmailIntegrationListItem({
     }
 
     return (
-        <tr key={integrationId} onClick={handleRowClick} className={css.row}>
+        <tr key={integrationId} className={css.row} onClick={handleRowClick}>
             <td className="smallest align-middle">{adapter.image}</td>
             <td className={classnames('align-middle')}>
                 <div className={css.address}>
@@ -174,25 +172,23 @@ export default function EmailIntegrationListItem({
                     {isDefault && <DefaultIntegrationBadge />}
                 </div>
             </td>
-            {showStoreMapping && (
-                <td className={classnames('align-middle pr-2', css.store)}>
-                    {storeIntegration ? (
-                        <span className={css.storeName}>
-                            <img
-                                height={16}
-                                width={16}
-                                src={getIconFromType(
-                                    storeIntegration.type as IntegrationType,
-                                )}
-                                alt="logo"
-                            />
-                            <span>{storeIntegration.name}</span>
-                        </span>
-                    ) : (
-                        'No store connected'
-                    )}
-                </td>
-            )}
+            <td className={classnames('align-middle pr-2', css.store)}>
+                {storeIntegration ? (
+                    <span className={css.storeName}>
+                        <img
+                            height={16}
+                            width={16}
+                            src={getIconFromType(
+                                storeIntegration.type as IntegrationType,
+                            )}
+                            alt="logo"
+                        />
+                        <span>{storeIntegration.name}</span>
+                    </span>
+                ) : (
+                    'No store connected'
+                )}
+            </td>
             <td className="smallest align-middle text-left p-0">
                 <EmailIntegrationListVerificationStatus
                     active={active}
