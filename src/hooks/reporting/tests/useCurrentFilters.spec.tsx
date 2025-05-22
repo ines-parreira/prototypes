@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
 
 import useCurrentFilters, {
     CURRENT_FILTERS,
@@ -68,7 +68,7 @@ describe('useCurrentFilters', () => {
         expect(result.current.filters).toStrictEqual(JSON.parse(response))
     })
 
-    it('should save the filters on sessionStorage and return them', () => {
+    it('should save the filters on sessionStorage and return them', async () => {
         const { result } = renderHook(() => useCurrentFilters({ period }))
 
         act(() => {
@@ -76,7 +76,11 @@ describe('useCurrentFilters', () => {
         })
 
         const response = JSON.stringify(filters)
-        expect(sessionStorage.getItem(CURRENT_FILTERS)).toStrictEqual(response)
+        await waitFor(() => {
+            expect(sessionStorage.getItem(CURRENT_FILTERS)).toStrictEqual(
+                response,
+            )
+        })
         expect(result.current.filters).toStrictEqual(filters)
     })
 
