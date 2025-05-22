@@ -10,6 +10,7 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
+import { useFetchChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
@@ -52,6 +53,28 @@ export const useConfigurationForm = ({
 
     // could have used a useReducer instead, but keeping it simple for now
     const [formValues, setFormValues] = useState<FormValues>(defaultValues)
+
+    const monitoredChatIntegrations = useMemo(() => {
+        return formValues.monitoredChatIntegrations
+    }, [formValues.monitoredChatIntegrations])
+
+    const { data: chatIntegrationStatus } = useFetchChatIntegrationsStatusData({
+        enabled: !!monitoredChatIntegrations?.length,
+        chatIds: monitoredChatIntegrations ?? [],
+    })
+
+    const hasUninstalledChatIntegration = useMemo(() => {
+        const uninstalledChatIds = new Set(
+            chatIntegrationStatus
+                ?.filter((chat) => !chat.installed)
+                .map((chat) => chat.chatId),
+        )
+        return (
+            monitoredChatIntegrations?.some((chat) =>
+                uninstalledChatIds.has(chat),
+            ) ?? false
+        )
+    }, [chatIntegrationStatus, monitoredChatIntegrations])
 
     const { storeConfiguration, isLoading: isStoreConfigurationLoading } =
         useAiAgentStoreConfigurationContext()
@@ -141,6 +164,7 @@ export const useConfigurationForm = ({
                     isAiAgentChatEnabled,
                     isOnboardingWizardPage,
                 },
+                hasUninstalledChatIntegration,
             )
         } catch (error) {
             if (error instanceof Error) {
