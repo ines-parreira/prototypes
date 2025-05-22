@@ -121,7 +121,7 @@ describe('getNotificationParams', () => {
         expect(result).toEqual({
             title: 'Your AI Agent knowledge is ready!',
             subtitle:
-                'We’ve finished syncing your website so AI Agent can use it to answer tickets.',
+                'We’ve finished syncing your store store_1 so AI Agent can use it to answer tickets.',
             redirectTo: '/app/ai-agent/overview',
         })
     })

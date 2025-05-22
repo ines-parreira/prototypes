@@ -58,8 +58,7 @@ export const getNotificationParams = (
         case AiAgentNotificationType.ScrapingProcessingFinished:
             return {
                 title: 'Your AI Agent knowledge is ready!',
-                subtitle:
-                    'We’ve finished syncing your website so AI Agent can use it to answer tickets.',
+                subtitle: `We’ve finished syncing your store ${shopName} so AI Agent can use it to answer tickets.`,
                 redirectTo: routes.overview,
             }
         case AiAgentNotificationType.FirstAiAgentTicket:
