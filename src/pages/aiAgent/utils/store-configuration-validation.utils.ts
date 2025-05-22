@@ -49,7 +49,6 @@ export const getValidStoreConfigurationFormValues = (
         isOnboardingWizardPage: boolean
         isAiAgentChatEnabled: boolean | undefined
     },
-    hasUninstalledChatIntegration: boolean,
 ): ValidFormValues => {
     const isWizardStepKnowledgeOrCompleted =
         formValues.wizard?.stepName === AiAgentOnboardingWizardStep.Knowledge ||
@@ -111,12 +110,6 @@ export const getValidStoreConfigurationFormValues = (
     ) {
         throw new Error(
             StoreConfigurationValidationMessage.EmailIntegrationError,
-        )
-    }
-
-    if (opts.isAiAgentChatEnabled && hasUninstalledChatIntegration) {
-        throw new Error(
-            StoreConfigurationValidationMessage.ChatIntegrationUninstalledError,
         )
     }
 

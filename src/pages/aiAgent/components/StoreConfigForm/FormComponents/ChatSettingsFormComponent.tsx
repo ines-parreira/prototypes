@@ -114,7 +114,9 @@ export const ChatSettingsFormComponent = ({
 
         if (
             selectedChats?.length &&
-            selectedChats.some((chat) => chat.value.isUninstalled ?? false)
+            selectedChats.some((chat) => chat.value.isUninstalled ?? false) &&
+            // Checks if the chat is enabled
+            isRequired
         ) {
             return buildChatErrorMessage(
                 selectedChats.find((chat) => chat.value.isUninstalled)!.value
