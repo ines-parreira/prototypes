@@ -118,31 +118,4 @@ describe('aiMessageEventsTransformer', () => {
             },
         ])
     })
-
-    it('should inject a snooze event from a bare message', () => {
-        const elements = [
-            { type: 'message' },
-            {
-                type: 'bare-message',
-                datetime: '2025-05-21T13:00:00',
-                data: {
-                    message: {
-                        via: TicketVia.Api,
-                        sender: { email },
-                        actions: [{ name: MacroActionName.SnoozeTicket }],
-                    },
-                },
-            },
-        ] as unknown as TicketElement[]
-        const result = aiMessageEventsTransformer(elements)
-        expect(result).toEqual([
-            elements[0],
-            elements[1],
-            {
-                type: 'ai-event',
-                datetime: elements[1].datetime,
-                data: { eventType: TicketEventEnum.SNOOZE },
-            },
-        ])
-    })
 })

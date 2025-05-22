@@ -2,13 +2,13 @@ import { TicketChannel } from 'business/types/ticket'
 import { MessageMetadataType } from 'models/ticket/types'
 
 import type { TicketElement } from '../../types'
-import { bareMessageTransformer } from '../bareMessageTransformer'
+import { minimalMessageTransformer } from '../minimalMessageTransformer'
 
-describe('bareMessageTransformer', () => {
+describe('minimalMessageTransformer', () => {
     it('should not transform non-message elements', () => {
         const elements = [{ type: 'event' }] as TicketElement[]
 
-        const result = bareMessageTransformer(elements)
+        const result = minimalMessageTransformer(elements)
         expect(result).toEqual(elements)
     })
 
@@ -20,7 +20,7 @@ describe('bareMessageTransformer', () => {
             },
         ] as TicketElement[]
 
-        const result = bareMessageTransformer(elements)
+        const result = minimalMessageTransformer(elements)
         expect(result).toEqual(elements)
     })
 
@@ -29,7 +29,7 @@ describe('bareMessageTransformer', () => {
             { type: 'message', data: { channel: TicketChannel.Email } },
         ] as TicketElement[]
 
-        const result = bareMessageTransformer(elements)
+        const result = minimalMessageTransformer(elements)
         expect(result).toEqual(elements)
     })
 
@@ -38,7 +38,7 @@ describe('bareMessageTransformer', () => {
             { type: 'message', data: { channel: TicketChannel.Chat } },
         ] as TicketElement[]
 
-        const result = bareMessageTransformer(elements)
+        const result = minimalMessageTransformer(elements)
         expect(result).toEqual(elements)
     })
 
@@ -49,7 +49,7 @@ describe('bareMessageTransformer', () => {
             { type: 'message', data: { channel: TicketChannel.Chat } },
         ] as TicketElement[]
 
-        const result = bareMessageTransformer(elements)
+        const result = minimalMessageTransformer(elements)
         expect(result).toEqual(elements)
     })
 
@@ -65,7 +65,7 @@ describe('bareMessageTransformer', () => {
             },
         ] as TicketElement[]
 
-        const result = bareMessageTransformer(elements)
+        const result = minimalMessageTransformer(elements)
         expect(result).toEqual(elements)
     })
 
@@ -84,7 +84,7 @@ describe('bareMessageTransformer', () => {
             },
         ] as TicketElement[]
 
-        const result = bareMessageTransformer(elements)
+        const result = minimalMessageTransformer(elements)
         expect(result).toEqual(elements)
     })
 
@@ -108,7 +108,7 @@ describe('bareMessageTransformer', () => {
             },
         ] as TicketElement[]
 
-        const result = bareMessageTransformer(elements)
+        const result = minimalMessageTransformer(elements)
         expect(result).toEqual(elements)
     })
 
@@ -134,7 +134,7 @@ describe('bareMessageTransformer', () => {
             },
         ] as TicketElement[]
 
-        const result = bareMessageTransformer(elements)
+        const result = minimalMessageTransformer(elements)
         expect(result).toEqual(elements)
     })
 
@@ -162,7 +162,7 @@ describe('bareMessageTransformer', () => {
             },
         ] as TicketElement[]
 
-        const result = bareMessageTransformer(elements)
+        const result = minimalMessageTransformer(elements)
         expect(result).toEqual(elements)
     })
 
@@ -190,12 +190,13 @@ describe('bareMessageTransformer', () => {
             },
         ] as TicketElement[]
 
-        const result = bareMessageTransformer(elements)
+        const result = minimalMessageTransformer(elements)
         expect(result).toEqual([
             elements[0],
             {
-                type: 'bare-message',
-                data: { isBare: true, message: elements[1].data },
+                type: 'message',
+                flags: ['minimal'],
+                data: elements[1].data,
             },
         ])
     })

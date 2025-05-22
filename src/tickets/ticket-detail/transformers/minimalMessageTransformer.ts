@@ -12,7 +12,7 @@ const groupingChannels: Partial<Record<TicketChannel, true>> = {
 
 const groupingDuration = 1000 * 60 * 5
 
-export function bareMessageTransformer(elements: TicketElement[]) {
+export function minimalMessageTransformer(elements: TicketElement[]) {
     let firstOfGroup: TicketMessageElement | null = null
 
     return elements.map<TicketElement>((element) => {
@@ -48,8 +48,7 @@ export function bareMessageTransformer(elements: TicketElement[]) {
 
         return {
             ...element,
-            type: 'bare-message',
-            data: { isBare: true, message: element.data },
+            flags: [...(element.flags || []), 'minimal'],
         }
     })
 }

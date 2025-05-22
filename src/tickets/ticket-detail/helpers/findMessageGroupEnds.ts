@@ -8,7 +8,11 @@ export function findMessageGroupEnds(elements: TicketElement[]): number[] {
 
         if (element.type === 'message') {
             let j = i + 1
-            while (j < elements.length && elements[j].type === 'bare-message') {
+            while (
+                j < elements.length &&
+                elements[j].type === 'message' &&
+                elements[j].flags?.includes('minimal')
+            ) {
                 j++
             }
 

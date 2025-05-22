@@ -7,14 +7,19 @@ type AIEvent = {
 }
 
 export type TicketElement =
-    | { data: AIEvent; datetime?: string; type: 'ai-event' }
-    | { data: Event; datetime?: string; type: 'event' }
+    | { data: AIEvent; datetime?: string; flags?: string[]; type: 'ai-event' }
+    | { data: Event; datetime?: string; flags?: string[]; type: 'event' }
     | {
-          data: { isBare: true; message: TicketMessage }
+          data: TicketMessage
           datetime: string
-          type: 'bare-message'
+          flags?: string[]
+          type: 'message'
       }
-    | { data: TicketMessage; datetime: string; type: 'message' }
-    | { data: VoiceCall; datetime?: string; type: 'voice-call' }
+    | {
+          data: VoiceCall
+          datetime?: string
+          flags?: string[]
+          type: 'voice-call'
+      }
 
 export type Transformer = (elements: TicketElement[]) => TicketElement[]

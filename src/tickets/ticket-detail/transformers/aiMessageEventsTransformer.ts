@@ -16,13 +16,7 @@ export function aiMessageEventsTransformer(
     const messageActionsArray = findMessageGroupEnds(elements)
         // first map all entries to the actual message data
         .map((index) => {
-            const e = elements[index]
-            const msg =
-                e.type === 'message'
-                    ? e.data
-                    : e.type === 'bare-message'
-                      ? e.data.message
-                      : null
+            const msg = elements[index].data as TicketMessage
             return [index, msg] as const
         })
         // filter out any messages we already know we don't care about

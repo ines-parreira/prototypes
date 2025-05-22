@@ -24,11 +24,11 @@ describe('findMessageGroupEnds', () => {
     it('should return ends for grouped messages', () => {
         const elements = [
             { type: 'message' },
-            { type: 'bare-message' },
-            { type: 'bare-message' },
+            { type: 'message', flags: ['minimal'] },
+            { type: 'message', flags: ['minimal'] },
             { type: 'event' },
             { type: 'message' },
-            { type: 'bare-message' },
+            { type: 'message', flags: ['minimal'] },
             { type: 'message' },
         ] as TicketElement[]
         const ends = findMessageGroupEnds(elements)
