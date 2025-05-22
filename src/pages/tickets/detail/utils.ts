@@ -1,16 +1,9 @@
 import { TicketElement, TicketMessage } from 'models/ticket/types'
 import { isVoiceCall } from 'models/voiceCall/types'
 
-import { ShoppingAssistantEvent } from './hooks/useInsertShoppingAssistantEventElements'
-
 export const getVoiceCallIndex = (
     voiceCallId: string,
-    elements: (
-        | 'header'
-        | TicketElement
-        | TicketMessage[]
-        | ShoppingAssistantEvent
-    )[],
+    elements: ('header' | TicketElement | TicketMessage[])[],
 ): number | 'LAST' => {
     const index = elements.findIndex((element) => {
         if (element === 'header') return false
@@ -22,13 +15,4 @@ export const getVoiceCallIndex = (
     })
 
     return index === -1 ? 'LAST' : index
-}
-
-export const isShoppingAssistantEvent = (
-    element: TicketElement | TicketMessage | ShoppingAssistantEvent,
-): element is ShoppingAssistantEvent => {
-    return (
-        'isShoppingAssistantEvent' in element &&
-        element.isShoppingAssistantEvent
-    )
 }

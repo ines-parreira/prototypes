@@ -35,13 +35,10 @@ import { generateTicketMessagesId } from 'utils'
 import { reportError } from 'utils/errors'
 
 import { TicketEventPrivateReplyData } from '../../../../models/event/types'
-import { ShoppingAssistantEvent } from '../hooks/useInsertShoppingAssistantEventElements'
-import { isShoppingAssistantEvent } from '../utils'
-import { InfluencedOrderEvent } from './ShoppingAssistantEvent/InfluencedOrderEvent'
 import TicketVoiceCall from './TicketVoiceCall/TicketVoiceCall'
 
 interface Props {
-    element: TicketElement | TicketMessage[] | ShoppingAssistantEvent
+    element: TicketElement | TicketMessage[]
     hasCursor: boolean
     highlightedElements: HighlightedElements | null
     index: number
@@ -139,10 +136,6 @@ const TicketBodyElement = ({
 
     if (isVoiceCall(element)) {
         return <TicketVoiceCall voiceCall={element} />
-    }
-
-    if (isShoppingAssistantEvent(element)) {
-        return <InfluencedOrderEvent event={element} isLast={isLast} />
     }
 
     if (!isTicketEvent(element)) {

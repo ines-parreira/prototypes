@@ -7,7 +7,7 @@ exports[`<TitleWrapper/> render() should render copy button if not editing 1`] =
   >
     <a
       class="orderTitle"
-      href="https://admin.shopify.com/store/shopify.gorgi.us/orders/456"
+      href="https://admin.shopify.com/store/undefined/orders/"
       rel="noopener noreferrer"
       target="_blank"
     >

@@ -32,30 +32,32 @@ export const KnowledgeResourceLine: React.FC<Props> = ({
     name,
     type,
     isReady,
-}) => (
-    <div className={css.line}>
-        <div className={css.icon}>{getIcon(type)}</div>
-        <div className={css.resource}>{name}</div>
-        <div className={css.status}>
-            {isReady ? (
-                <Badge className={css.badge} type={'light-success'}>
-                    <Fragment key=".0">
-                        <i className="material-icons">check_circle</i>
-                        <div>Ready</div>
-                    </Fragment>
-                </Badge>
-            ) : (
-                <Badge className={css.badge} type={'light-grey'}>
-                    <Fragment key=".0">
-                        <LoadingSpinner
-                            className={css.spinner}
-                            size="small"
-                            data-testid="loading-spinner"
-                        />
-                        <div>In Process</div>
-                    </Fragment>
-                </Badge>
-            )}
+}) => {
+    return (
+        <div className={css.line}>
+            <div className={css.icon}>{getIcon(type)}</div>
+            <div className={css.resource}>{name}</div>
+            <div className={css.status}>
+                {isReady ? (
+                    <Badge className={css.badge} type={'light-success'}>
+                        <Fragment key=".0">
+                            <i className="material-icons">check_circle</i>
+                            <div>Ready</div>
+                        </Fragment>
+                    </Badge>
+                ) : (
+                    <Badge className={css.badge} type={'light-grey'}>
+                        <Fragment key=".0">
+                            <LoadingSpinner
+                                className={css.spinner}
+                                size="small"
+                                data-testid="loading-spinner"
+                            />
+                            <div>In Process</div>
+                        </Fragment>
+                    </Badge>
+                )}
+            </div>
         </div>
-    </div>
-)
+    )
+}

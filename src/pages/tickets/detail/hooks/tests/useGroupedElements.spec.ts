@@ -66,13 +66,22 @@ describe('useGroupedElements', () => {
         })
     })
 
+    it('should always return the header', () => {
+        mockUseAppSelector
+            .mockReturnValueOnce([]) // bodyElement
+            .mockReturnValueOnce(Map()) // ticket
+
+        const { result } = renderHook(() => useGroupedElements())
+        expect(result.current).toEqual(['header'])
+    })
+
     it('should return elements that are arrays', () => {
         mockUseAppSelector
             .mockReturnValueOnce([[]]) // bodyElement
             .mockReturnValueOnce(Map()) // ticket
 
         const { result } = renderHook(() => useGroupedElements())
-        expect(result.current).toEqual([[]])
+        expect(result.current).toEqual(['header', []])
     })
 
     it('should not return rule suggestion elements that are empty', () => {
@@ -84,7 +93,7 @@ describe('useGroupedElements', () => {
         mockIsSuggestionEmpty.mockReturnValue(true)
 
         const { result } = renderHook(() => useGroupedElements())
-        expect(result.current).toEqual([])
+        expect(result.current).toEqual(['header'])
     })
 
     it('should return rule suggestion elements that have content', () => {
@@ -105,7 +114,7 @@ describe('useGroupedElements', () => {
             'rule-suggestion-content',
         )
 
-        expect(result.current).toEqual([{ foo: 'bar' }])
+        expect(result.current).toEqual(['header', { foo: 'bar' }])
     })
 
     it('should return elements that are not ticket events', () => {
@@ -116,7 +125,7 @@ describe('useGroupedElements', () => {
         mockIsTicketEvent.mockReturnValue(false)
 
         const { result } = renderHook(() => useGroupedElements())
-        expect(result.current).toEqual([{ foo: 'bar' }])
+        expect(result.current).toEqual(['header', { foo: 'bar' }])
     })
 
     it('should return audit log events that have content', () => {
@@ -125,7 +134,7 @@ describe('useGroupedElements', () => {
             .mockReturnValueOnce(Map()) // ticket
 
         const { result } = renderHook(() => useGroupedElements())
-        expect(result.current).toEqual([{ type: 'audit-log-event' }])
+        expect(result.current).toEqual(['header', { type: 'audit-log-event' }])
     })
 
     it('should return phone events that have content', () => {
@@ -134,7 +143,7 @@ describe('useGroupedElements', () => {
             .mockReturnValueOnce(Map()) // ticket
 
         const { result } = renderHook(() => useGroupedElements())
-        expect(result.current).toEqual([{ type: 'phone-event' }])
+        expect(result.current).toEqual(['header', { type: 'phone-event' }])
     })
 
     it('should return private reply actions', () => {
@@ -146,6 +155,7 @@ describe('useGroupedElements', () => {
 
         const { result } = renderHook(() => useGroupedElements())
         expect(result.current).toEqual([
+            'header',
             { data: { action_name: 'private-reply-action' } },
         ])
     })
@@ -162,6 +172,6 @@ describe('useGroupedElements', () => {
         })
 
         const { result } = renderHook(() => useGroupedElements())
-        expect(result.current).toEqual([{ foo: 'bar' }])
+        expect(result.current).toEqual(['header', { foo: 'bar' }])
     })
 })

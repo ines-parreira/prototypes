@@ -13,10 +13,6 @@ import useSearch from 'hooks/useSearch'
 import { message as defaultMessage } from 'models/ticket/tests/mocks'
 import TicketBody from 'pages/tickets/detail/components/TicketBody'
 import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement'
-import {
-    ShoppingAssistantEvent,
-    useInsertShoppingAssistantEventElements,
-} from 'pages/tickets/detail/hooks/useInsertShoppingAssistantEventElements'
 import { getQueryData } from 'state/queries/selectors'
 import { assumeMock } from 'utils/testing'
 
@@ -87,26 +83,10 @@ jest.mock(
 )
 const mockGetQueryData = assumeMock(getQueryData)
 
-jest.mock(
-    'pages/tickets/detail/hooks/useInsertShoppingAssistantEventElements',
-    () => ({
-        useInsertShoppingAssistantEventElements: jest.fn(),
-    }),
-)
-const mockUseInsertShoppingAssistantEventElements = assumeMock(
-    useInsertShoppingAssistantEventElements,
-)
-
 describe('TicketBody', () => {
     beforeEach(() => {
         mockTicketBodyElement.mockClear()
         mockUseSearch.mockReturnValue({ call_id: undefined })
-        mockUseInsertShoppingAssistantEventElements.mockReset()
-        mockUseInsertShoppingAssistantEventElements.mockImplementation(
-            (elements) => elements,
-        )
-
-        mockGetQueryData.mockReturnValue(jest.fn() as any)
     })
 
     it('should render an element for each given element', () => {
@@ -285,50 +265,5 @@ describe('TicketBody', () => {
                 initialTopMostItemIndex: { index: 'LAST' },
             }),
         )
-    })
-
-    it('should handle shopping assistant events correctly', () => {
-        // Create a mock shopping assistant event
-        const shoppingAssistantEvent: ShoppingAssistantEvent = {
-            isShoppingAssistantEvent: true,
-            type: 'influenced-order' as const, // Use const assertion to match the exact type
-            created_datetime: '2023-01-01T12:00:00Z',
-            data: {
-                orderId: 123,
-                orderNumber: 456,
-                shopName: 'Test Shop',
-                createdDatetime: '2023-01-01T12:00:00Z',
-            },
-        }
-
-        mockUseInsertShoppingAssistantEventElements.mockReturnValue([
-            defaultMessage,
-            shoppingAssistantEvent,
-        ])
-
-        const { getByText } = render(
-            <Provider
-                store={mockStore({
-                    ticket: fromJS({ messages: fromJS([defaultMessage]) }),
-                })}
-            >
-                <TicketBody
-                    elements={fromJS([defaultMessage])}
-                    hideTicket={() => Promise.resolve()}
-                    isShopperTyping={false}
-                    setStatus={() => {}}
-                    shopperName=""
-                    submit={() => {}}
-                />
-            </Provider>,
-        )
-
-        expect(getByText('TicketHeaderWrapper')).toBeInTheDocument()
-        expect(getByText('TicketBodyElement 1')).toBeInTheDocument() // defaultMessage
-        expect(getByText('TicketBodyElement 2')).toBeInTheDocument() // shoppingAssistantEvent
-
-        expect(
-            mockUseInsertShoppingAssistantEventElements,
-        ).toHaveBeenCalledWith([[defaultMessage]])
     })
 })

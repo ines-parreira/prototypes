@@ -12,7 +12,6 @@ export enum AiSalesAgentOrdersMeasure {
 
 export enum AiSalesAgentOrdersDimension {
     AccountId = 'AiSalesAgentOrders.accountId',
-    IntegrationId = 'AiSalesAgentOrders.integrationId',
     OrderId = 'AiSalesAgentOrders.orderId',
     TotalAmount = 'AiSalesAgentOrders.totalAmount',
     RefundedAmount = 'AiSalesAgentOrders.refundedAmount',

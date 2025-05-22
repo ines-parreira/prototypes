@@ -16,6 +16,8 @@ import { getTicketBodyElements, getTicketState } from 'state/ticket/selectors'
 
 import useRuleSuggestionForDemos from './useRuleSuggestionForDemos'
 
+type FakeVirtuosoItems = 'header'
+
 export default function useGroupedElements() {
     const bodyElements = useAppSelector(getTicketBodyElements)
     const ticket = useAppSelector(getTicketState)
@@ -25,8 +27,9 @@ export default function useGroupedElements() {
     )
 
     return useMemo(
-        () =>
-            bodyElements.filter((element) => {
+        () => [
+            'header' as FakeVirtuosoItems,
+            ...bodyElements.filter((element) => {
                 // filtering is applied to remove elements that would result in a null node rendered
                 // react-virtuoso yields a warning when a null node is passed because it shouldn't handle zero-sized elements
 
@@ -54,6 +57,7 @@ export default function useGroupedElements() {
                     !!actionConfig
                 )
             }),
+        ],
         [bodyElements, ticket, shouldDisplayDemoSuggestion],
     )
 }

@@ -1,11 +1,10 @@
-import { QueryObserverSuccessResult } from '@tanstack/react-query'
+import React from 'react'
+
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { InfluencedOrderData } from 'hooks/aiAgent/useFetchInfluencedOrders'
-import { useFetchInfluencedOrdersForCurrentTicket } from 'hooks/aiAgent/useFetchInfluencedOrdersForCurrentTicket'
 import { IntegrationType } from 'models/integration/constants'
 import { EditionContext } from 'providers/infobar/EditionContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
@@ -19,16 +18,10 @@ const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/notifications/actions')
 
-jest.mock('hooks/aiAgent/useFetchInfluencedOrdersForCurrentTicket')
-const mockUseFetchInfluencedOrdersForCurrentTicket = jest.mocked(
-    useFetchInfluencedOrdersForCurrentTicket,
-)
-
 const TitleWrapper = orderCustomization.TitleWrapper!
 const AfterTitle = orderCustomization.AfterTitle!
 
 describe('<TitleWrapper/>', () => {
-    const accountId = 1234
     const mockStore = configureMockStore()
     const integrationId = 1
     const integration = {
@@ -40,29 +33,13 @@ describe('<TitleWrapper/>', () => {
         meta: {
             currency: 'GBP',
             store_url: 'https://test.myshopify.com',
-            shop_name: 'shopify.gorgi.us',
         },
         integrationType: IntegrationType.Shopify,
         shopify: IntegrationType.Shopify,
     }
-
-    const mockTicketContext = {
-        accountId,
-        customerIds: [456],
-        orders: [],
-        shopifyIntegrations: [],
-    }
-
     beforeEach(() => {
         jest.resetAllMocks()
-        mockUseFetchInfluencedOrdersForCurrentTicket.mockReturnValue({
-            influencedOrders: {
-                data: [],
-            } as unknown as QueryObserverSuccessResult<InfluencedOrderData[]>,
-            ticketContext: mockTicketContext,
-        })
     })
-
     describe('render()', () => {
         it('should render copy button if not editing', () => {
             const store = mockStore({
@@ -74,12 +51,7 @@ describe('<TitleWrapper/>', () => {
                         createOrder: initialState,
                     },
                 },
-                currentAccount: fromJS({
-                    id: accountId,
-                    domain: 'test.domain.com',
-                }),
             })
-
             const { container } = render(
                 <Provider store={store}>
                     <IntegrationContext.Provider
@@ -92,10 +64,6 @@ describe('<TitleWrapper/>', () => {
                             source={fromJS({
                                 order_number: 123,
                                 name: 'name',
-                                id: 456,
-                                customer: {
-                                    id: 789,
-                                },
                                 meta: {
                                     shop_name: 'shopify.gorgi.us',
                                     admin_url_suffix: 'admin_12df',
@@ -122,10 +90,6 @@ describe('<TitleWrapper/>', () => {
                         createOrder: initialState,
                     },
                 },
-                currentAccount: fromJS({
-                    id: 123,
-                    domain: 'test.domain.com',
-                }),
             })
             render(
                 <Provider store={store}>
@@ -139,10 +103,6 @@ describe('<TitleWrapper/>', () => {
                             <TitleWrapper
                                 source={fromJS({
                                     order_number: 123,
-                                    id: 456,
-                                    customer: {
-                                        id: 789,
-                                    },
                                     meta: {
                                         shop_name: 'shopify.gorgi.us',
                                         admin_url_suffix: 'admin_12df',
@@ -157,152 +117,6 @@ describe('<TitleWrapper/>', () => {
             )
 
             expect(screen.queryByRole('button')).toBeNull()
-        })
-
-        it('should show AI influenced badge when order is influenced by AI', () => {
-            mockUseFetchInfluencedOrdersForCurrentTicket.mockReturnValue({
-                influencedOrders: {
-                    data: [{ id: 456, integrationId: 2, orderId: 'order1' }],
-                } as unknown as QueryObserverSuccessResult<
-                    InfluencedOrderData[]
-                >,
-                ticketContext: mockTicketContext,
-            })
-
-            const store = mockStore({
-                integrations: fromJS({
-                    integrations: [integration],
-                }),
-                infobarActions: {
-                    [IntegrationType.Shopify]: {
-                        createOrder: initialState,
-                    },
-                },
-                currentAccount: fromJS({
-                    id: accountId,
-                    domain: 'test.domain.com',
-                }),
-            })
-
-            render(
-                <Provider store={store}>
-                    <OrderContext.Provider
-                        value={{
-                            order: fromJS({}),
-                            orderId: 456,
-                            isOrderCancelled: false,
-                            isOrderRefunded: false,
-                            isOrderFulfilled: false,
-                            isOrderPartiallyFulfilled: false,
-                            isOldOrder: false,
-                            integrationId,
-                            integration: fromJS(integration),
-                        }}
-                    >
-                        <IntegrationContext.Provider
-                            value={{
-                                integration: fromJS(integration),
-                                integrationId: integrationId,
-                            }}
-                        >
-                            <TitleWrapper
-                                source={fromJS({
-                                    order_number: 123,
-                                    name: 'name',
-                                    id: 456,
-                                    fulfillment_status: 'fulfilled',
-                                    financial_status: 'paid',
-                                    customer: {
-                                        id: 789,
-                                    },
-                                    meta: {
-                                        shop_name: 'shopify.gorgi.us',
-                                        admin_url_suffix: 'admin_12df',
-                                    },
-                                })}
-                            >
-                                <div>foo bar</div>
-                            </TitleWrapper>
-                        </IntegrationContext.Provider>
-                    </OrderContext.Provider>
-                </Provider>,
-            )
-
-            expect(screen.getByText('Influenced by AI')).toBeInTheDocument()
-        })
-
-        it('should not show AI influenced badge when order is not influenced by AI', () => {
-            mockUseFetchInfluencedOrdersForCurrentTicket.mockReturnValue({
-                influencedOrders: {
-                    data: [],
-                } as unknown as QueryObserverSuccessResult<
-                    InfluencedOrderData[]
-                >,
-                ticketContext: mockTicketContext,
-            })
-
-            const store = mockStore({
-                integrations: fromJS({
-                    integrations: [integration],
-                }),
-                infobarActions: {
-                    [IntegrationType.Shopify]: {
-                        createOrder: initialState,
-                    },
-                },
-                currentAccount: fromJS({
-                    id: accountId,
-                    domain: 'test.domain.com',
-                }),
-            })
-
-            render(
-                <Provider store={store}>
-                    <OrderContext.Provider
-                        value={{
-                            order: fromJS({}),
-                            orderId: 456,
-                            isOrderCancelled: false,
-                            isOrderRefunded: false,
-                            isOrderFulfilled: false,
-                            isOrderPartiallyFulfilled: false,
-                            isOldOrder: false,
-                            integrationId,
-                            integration: fromJS(integration),
-                        }}
-                    >
-                        <IntegrationContext.Provider
-                            value={{
-                                integration: fromJS(integration),
-                                integrationId: integrationId,
-                            }}
-                        >
-                            <TitleWrapper
-                                source={fromJS({
-                                    order_number: 123,
-                                    name: 'name',
-                                    id: 456,
-                                    fulfillment_status: 'fulfilled',
-                                    financial_status: 'paid',
-                                    customer: {
-                                        id: 789,
-                                    },
-                                    meta: {
-                                        shop_name: 'shopify.gorgi.us',
-                                        admin_url_suffix: 'admin_12df',
-                                    },
-                                })}
-                            >
-                                <div>foo bar</div>
-                            </TitleWrapper>
-                        </IntegrationContext.Provider>
-                    </OrderContext.Provider>
-                </Provider>,
-            )
-
-            expect(
-                screen.queryByText('Influenced by AI'),
-            ).not.toBeInTheDocument()
         })
     })
 })

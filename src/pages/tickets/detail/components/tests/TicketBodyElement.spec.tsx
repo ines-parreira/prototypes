@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { render } from '@testing-library/react'
 import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
@@ -52,13 +54,6 @@ jest.mock(
 jest.mock(
     'pages/tickets/detail/components/TicketMessages/TicketMessages',
     () => () => <p>TicketMessages</p>,
-)
-
-jest.mock(
-    'pages/tickets/detail/components/ShoppingAssistantEvent/InfluencedOrderEvent',
-    () => ({
-        InfluencedOrderEvent: () => <p>InfluencedOrderEvent</p>,
-    }),
 )
 
 const isVoiceCallSpy = jest.spyOn(voiceCallTypes, 'isVoiceCall')
@@ -244,29 +239,6 @@ describe('TicketBodyElement', () => {
         )
 
         expect(queryByText('PrivateReplyEvent')).toBeNull()
-    })
-
-    it('should display a shopping assistant event', () => {
-        const { getByText } = render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketBodyElement
-                    {...defaultProps}
-                    element={{
-                        isShoppingAssistantEvent: true,
-                        type: 'influenced-order',
-                        created_datetime: '2024-03-21T11:00:00Z',
-                        data: {
-                            orderId: 789,
-                            orderNumber: 1001,
-                            shopName: 'Test Shop',
-                            createdDatetime: '2024-03-21T11:00:00Z',
-                        },
-                    }}
-                />
-            </Provider>,
-        )
-
-        expect(getByText('InfluencedOrderEvent')).toBeInTheDocument()
     })
 
     it('should display a generic event', () => {
