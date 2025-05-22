@@ -11,6 +11,7 @@ import {
     OffsetOptions,
     Placement,
     shift,
+    ShiftOptions,
     useClick,
     useDismiss,
     useFloating,
@@ -29,6 +30,8 @@ type Props = {
     footer?: ReactNode
     isOpen: boolean
     offsetValue?: OffsetOptions
+    shiftOptions?: ShiftOptions
+    showArrow?: boolean
     placement?: Placement
     setIsOpen: (value: boolean) => void
     target: RefObject<HTMLElement | null>
@@ -48,6 +51,8 @@ export default function Popover({
     footer,
     isOpen,
     offsetValue = 14,
+    shiftOptions,
+    showArrow = true,
     placement = 'bottom',
     setIsOpen,
     target,
@@ -64,8 +69,8 @@ export default function Popover({
         middleware: [
             offset(offsetValue),
             flip({ fallbackAxisSideDirection: 'end' }),
-            shift(),
-            arrow({ element: arrowRef }),
+            shift(shiftOptions),
+            ...(showArrow ? [arrow({ element: arrowRef })] : []),
         ],
         whileElementsMounted: autoUpdate,
     })
@@ -88,16 +93,18 @@ export default function Popover({
                 style={floatingStyles}
                 {...getFloatingProps()}
             >
-                <FloatingArrow
-                    className={css.arrow}
-                    fill={theme.tokens.Neutral.Grey_0.value}
-                    {...(theme.resolvedName === THEME_NAME.Dark && {
-                        stroke: theme.tokens.Neutral.Grey_2.value,
-                        strokeWidth: 1,
-                    })}
-                    ref={arrowRef}
-                    context={context}
-                />
+                {showArrow && (
+                    <FloatingArrow
+                        className={css.arrow}
+                        fill={theme.tokens.Neutral.Grey_0.value}
+                        {...(theme.resolvedName === THEME_NAME.Dark && {
+                            stroke: theme.tokens.Neutral.Grey_2.value,
+                            strokeWidth: 1,
+                        })}
+                        ref={arrowRef}
+                        context={context}
+                    />
+                )}
                 <div className={css.content}>{children}</div>
                 {footer ?? (
                     <Button

@@ -43,6 +43,8 @@ const TicketSummaryPopover = () => {
                     placement="bottom"
                     isOpen={isOpen}
                     setIsOpen={setIsOpen}
+                    shiftOptions={{ padding: 8 }}
+                    showArrow={false}
                     target={buttonRef}
                     footer={false}
                     offsetValue={8}
