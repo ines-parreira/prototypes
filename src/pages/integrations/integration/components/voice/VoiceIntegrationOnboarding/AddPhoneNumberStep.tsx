@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form'
 
 import { PhoneFunction, PhoneIntegration } from '@gorgias/api-queries'
 import { Button, Label, SelectField } from '@gorgias/merchant-ui-kit'
-import { RawOption } from '@gorgias/merchant-ui-kit/dist/SelectField'
+import type { SelectFieldRawOption } from '@gorgias/merchant-ui-kit'
 
 import { FormField } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
@@ -87,7 +87,7 @@ const AddPhoneNumberStep = ({ onCreateNewNumber }: Props) => {
                         field={SelectField}
                         options={[PhoneFunction.Standard, PhoneFunction.Ivr]}
                         selectedOption={phoneFunction}
-                        optionMapper={(option: RawOption) => ({
+                        optionMapper={(option: SelectFieldRawOption) => ({
                             value:
                                 option === PhoneFunction.Standard
                                     ? 'Standard'

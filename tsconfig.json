@@ -3,7 +3,7 @@
         "forceConsistentCasingInFileNames": true,
         "declaration": false,
         "module": "esnext",
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
         "pretty": true,
         "sourceMap": false,
         "target": "es6",
