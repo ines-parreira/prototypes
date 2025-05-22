@@ -191,6 +191,11 @@ export const usePendingTasksRuleEngine = ({
         false,
     )
 
+    const isAiSalesAgentHelpOnSearchTemplateQueryEnabled = useFlag(
+        FeatureFlagKey.AiSalesAgentHelpOnSearchTemplateQuery,
+        false,
+    )
+
     useEffect(() => {
         if (isReady) {
             setTasks(
@@ -211,6 +216,7 @@ export const usePendingTasksRuleEngine = ({
                         pageInteractions: pageInteractionsData,
                         isActivationEnabled,
                         isConvertFloatingChatInputEnabled,
+                        isAiSalesAgentHelpOnSearchTemplateQueryEnabled,
                         hasConversationStarters,
                         publicResources: publicResourcesData,
                         selfServiceChatChannels,
@@ -237,6 +243,7 @@ export const usePendingTasksRuleEngine = ({
         isActivationEnabled,
         isConvertFloatingChatInputEnabled,
         hasConversationStarters,
+        isAiSalesAgentHelpOnSearchTemplateQueryEnabled,
         publicResourcesData,
         selfServiceChatChannels,
     ]) /* eslint-enable react-hooks/exhaustive-deps */

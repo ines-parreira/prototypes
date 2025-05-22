@@ -20,6 +20,7 @@ import { EnableAIAgentOnChatTask } from './tasks/EnableAIAgentOnChat.task'
 import { EnableAIAgentOnEmailTask } from './tasks/EnableAIAgentOnEmail.task'
 import { EnableSalesSkill } from './tasks/EnableSalesSkill'
 import { EnableSuggestedProductQuestionsTask } from './tasks/EnableSuggestedProductQuestions.task'
+import { EnableTriggerOnSearchTask } from './tasks/EnableTriggerOnSearch.task'
 import { InstallYourChatTask } from './tasks/InstallYourChat.task'
 import { PublishYourFirstGuidanceTask } from './tasks/PublishYourFirstGuidance.task'
 import { ReviewAIGeneratedGuidancesTask } from './tasks/ReviewAIGeneratedGuidances.task'
@@ -58,6 +59,7 @@ export type RuleEngineData = {
     isActivationEnabled: boolean
     isConvertFloatingChatInputEnabled: boolean
     hasConversationStarters: boolean
+    isAiSalesAgentHelpOnSearchTemplateQueryEnabled: boolean
 }
 
 export type RuleEngineRoutes = {
@@ -89,6 +91,7 @@ const tasksPerAiAgentType: Record<
         new GiveFeedbackAIAgentTask(data, routes),
         new UpdateYourDiscountStrategyTask(data, routes),
         new EnableAskAnythingInputTask(data, routes),
+        new EnableTriggerOnSearchTask(data, routes),
         new EnableSuggestedProductQuestionsTask(data, routes),
     ],
     sales: (data: RuleEngineData, routes: RuleEngineRoutes) => [

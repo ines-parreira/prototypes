@@ -179,7 +179,7 @@ describe('usePendingTasksRuleEngine', () => {
         {
             scopes: [AiAgentScope.Support, AiAgentScope.Sales],
             pendingTasks: 6,
-            completedTasks: 15,
+            completedTasks: 16,
         },
         {
             scopes: [AiAgentScope.Support],

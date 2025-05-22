@@ -17,6 +17,7 @@ export const buildRuleEngineData = (
     isActivationEnabled: false,
     isConvertFloatingChatInputEnabled: false,
     hasConversationStarters: false,
+    isAiSalesAgentHelpOnSearchTemplateQueryEnabled: false,
     selfServiceChatChannels: [],
     ...data,
 })

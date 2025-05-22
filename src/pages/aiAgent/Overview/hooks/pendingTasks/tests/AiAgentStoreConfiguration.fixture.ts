@@ -37,6 +37,8 @@ export class AiAgentStoreConfigurationFixture {
             | 'withoutFloatingChatInputConfiguration'
             | 'withSuggestedProductQuestions'
             | 'withoutSuggestedProductQuestions'
+            | 'withTriggerOnSearch'
+            | 'withoutTriggerOnSearch'
         >
     }
 
@@ -192,6 +194,16 @@ export class AiAgentStoreConfigurationFixture {
         this.aiAgentStoreConfigurationData.floatingChatInputConfiguration = {
             isEnabled: false,
         }
+        return this
+    }
+
+    withTriggerOnSearch() {
+        this.aiAgentStoreConfigurationData.isSalesHelpOnSearchEnabled = true
+        return this
+    }
+
+    withoutTriggerOnSearch() {
+        this.aiAgentStoreConfigurationData.isSalesHelpOnSearchEnabled = false
         return this
     }
 
