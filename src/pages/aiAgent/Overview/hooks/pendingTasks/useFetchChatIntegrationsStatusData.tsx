@@ -30,7 +30,7 @@ export const useFetchChatIntegrationsStatusData = ({
     const chatIntegrations = useAppSelector(getChatIntegrations)
 
     const { isLoading, isFetched, data } = useQuery(
-        ['aiAgentChatInstallationStatus', `ids:${chatIds.sort().join(',')}`],
+        ['aiAgentChatInstallationStatus'],
         {
             queryFn: () => {
                 const mappedChats = chatIds

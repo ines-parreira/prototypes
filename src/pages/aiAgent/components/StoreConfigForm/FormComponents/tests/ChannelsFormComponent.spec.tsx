@@ -355,6 +355,52 @@ describe('ChannelsFormComponent', () => {
         )
     })
 
+    it('should disable chat channels that are not installed', () => {
+        // Setup mocks
+        const mockChatChannels = [
+            { value: { id: 1, name: 'Installed Channel', isDisabled: false } },
+            {
+                value: {
+                    id: 2,
+                    name: 'Another Installed Channel',
+                    isDisabled: false,
+                },
+            },
+            {
+                value: {
+                    id: 3,
+                    name: 'Not Installed Channel',
+                    isDisabled: false,
+                },
+            },
+        ]
+        ;(useSelfServiceChatChannels as jest.Mock).mockReturnValue(
+            mockChatChannels,
+        )
+
+        // Mock chat integration status with only channels 1 and 2 installed
+        ;(useFetchChatIntegrationsStatusData as jest.Mock).mockReturnValue({
+            data: [
+                { chatId: 1, installed: true },
+                { chatId: 2, installed: true },
+                { chatId: 3, installed: false },
+            ],
+        })
+
+        render(
+            <BrowserRouter>
+                <ChannelsFormComponent {...mockProps} />
+            </BrowserRouter>,
+        )
+
+        // After rendering, the useEffect should have modified the mockChatChannels array
+        // Channel 1 and 2 should be enabled
+        expect(mockChatChannels[0].value.isDisabled).toBe(false)
+        expect(mockChatChannels[1].value.isDisabled).toBe(false)
+        // Channel 3 should be disabled
+        expect(mockChatChannels[2].value.isDisabled).toBe(true)
+    })
+
     it('should handle empty chat integration status data', () => {
         // Setup mocks
         const mockChatChannels = [
@@ -376,8 +422,9 @@ describe('ChannelsFormComponent', () => {
             </BrowserRouter>,
         )
 
-        expect(mockChatChannels[0].value.isDisabled).toBe(false)
-        expect(mockChatChannels[1].value.isDisabled).toBe(false)
+        // After rendering, all channels should be disabled when no status data exists
+        expect(mockChatChannels[0].value.isDisabled).toBe(true)
+        expect(mockChatChannels[1].value.isDisabled).toBe(true)
     })
 
     it('should enable all chat channels that are installed', () => {
@@ -402,75 +449,5 @@ describe('ChannelsFormComponent', () => {
 
         // The channel should be enabled since it's installed
         expect(mockChatChannels[0].value.isDisabled).toBe(false)
-    })
-
-    it('should not disable uninstalled channels but show an error when selected', () => {
-        // Setup mocks
-        const mockChatChannels = [
-            { value: { id: 1, name: 'Installed Channel', isDisabled: false } },
-            {
-                value: {
-                    id: 3,
-                    name: 'Not Installed Channel',
-                    isDisabled: false,
-                    isUninstalled: true,
-                },
-            },
-        ]
-        ;(useSelfServiceChatChannels as jest.Mock).mockReturnValue(
-            mockChatChannels,
-        )
-
-        // Mock chat integration status with only channel 1 installed
-        ;(useFetchChatIntegrationsStatusData as jest.Mock).mockReturnValue({
-            data: [
-                { chatId: 1, installed: true },
-                { chatId: 3, installed: false },
-            ],
-        })
-
-        // Mock the ChatSettingsFormComponent to check if errors are passed correctly
-        const originalChatSettingsFormComponent = jest.requireMock(
-            'pages/aiAgent/components/StoreConfigForm/FormComponents/ChatSettingsFormComponent',
-        ).ChatSettingsFormComponent
-
-        jest.requireMock(
-            'pages/aiAgent/components/StoreConfigForm/FormComponents/ChatSettingsFormComponent',
-        ).ChatSettingsFormComponent = (props: Record<string, any>) => {
-            const result = originalChatSettingsFormComponent(props)
-            // Check that uninstalled channels are included in chatChannels
-            const hasUninstalledChannel = props.chatChannels.some(
-                (channel: { value: { isUninstalled?: boolean } }) =>
-                    channel.value.isUninstalled,
-            )
-            return (
-                <div>
-                    {result}
-                    <div
-                        data-testid="has-uninstalled-channels"
-                        data-value={hasUninstalledChannel}
-                    ></div>
-                </div>
-            )
-        }
-
-        render(
-            <BrowserRouter>
-                <ChannelsFormComponent
-                    {...mockProps}
-                    // Set to monitor the uninstalled channel
-                    monitoredChatIntegrations={[3]}
-                />
-            </BrowserRouter>,
-        )
-
-        // After rendering, the uninstalled channel should NOT be disabled
-        expect(mockChatChannels[1].value.isDisabled).toBe(false)
-
-        // Check ChatSettingsFormComponent receives channels with isUninstalled property
-        expect(screen.getByTestId('has-uninstalled-channels')).toHaveAttribute(
-            'data-value',
-            'true',
-        )
     })
 })

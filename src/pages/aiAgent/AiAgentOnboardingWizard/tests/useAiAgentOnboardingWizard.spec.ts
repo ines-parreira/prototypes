@@ -39,17 +39,6 @@ const mockUseParams = assumeMock(useParams)
 jest.mock('pages/common/components/wizard/hooks/useNavigateWizardSteps')
 const mockUseNavigateWizardSteps = assumeMock(useNavigateWizardSteps)
 
-jest.mock(
-    'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData',
-    () => ({
-        useFetchChatIntegrationsStatusData: jest.fn().mockReturnValue({
-            data: [],
-            isLoading: false,
-            isFetched: true,
-        }),
-    }),
-)
-
 jest.mock('models/helpCenter/queries')
 const mockUseGetHelpCenterList = assumeMock(useGetHelpCenterList)
 

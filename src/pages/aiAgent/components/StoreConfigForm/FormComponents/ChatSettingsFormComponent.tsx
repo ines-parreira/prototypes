@@ -1,18 +1,15 @@
 import React, { useCallback, useEffect, useMemo } from 'react'
 
 import classnames from 'classnames'
-import { Link } from 'react-router-dom'
 
-import {
-    ChatIntegrationListSelection,
-    InstallationStatusInjectedChatItem,
-} from 'pages/aiAgent/components/ChatIntegrationListSelection/ChatIntegrationListSelection'
+import { ChatIntegrationListSelection } from 'pages/aiAgent/components/ChatIntegrationListSelection/ChatIntegrationListSelection'
 import {
     INITIAL_FORM_VALUES,
     StoreConfigFormSection,
 } from 'pages/aiAgent/constants'
 import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
 import { FormValues, UpdateValue } from 'pages/aiAgent/types'
+import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import {
     SettingsCard,
     SettingsCardContent,
@@ -25,7 +22,7 @@ import css from './ChatSettingsFormComponent.less'
 type EmailFormComponentProps = {
     updateValue: UpdateValue<FormValues>
     monitoredChatIntegrations: number[] | null
-    chatChannels: InstallationStatusInjectedChatItem[]
+    chatChannels: SelfServiceChatChannel[]
     initialValue?: number
     isFieldDirty?: boolean
     isRequired?: boolean
@@ -81,52 +78,10 @@ export const ChatSettingsFormComponent = ({
         )
     }, [dirtySections])
 
-    const buildChatErrorMessage = (chatId: number) => {
-        return (
-            <>
-                <span>{'One or more Chats are not installed. '}</span>
-                <Link
-                    to={`/app/settings/channels/gorgias_chat/${chatId}/installation`}
-                >
-                    <span>{'Install Chat'}</span>{' '}
-                    <i className={'warningLinkIcon material-icons'}>
-                        open_in_new
-                    </i>
-                </Link>
-            </>
-        )
-    }
-
-    const selectedChats = useMemo(() => {
-        const monitoredChatIntegrationsSet = new Set(
-            monitoredChatIntegrations ?? [],
-        )
-        return chatChannels.filter((chat) =>
-            monitoredChatIntegrationsSet.has(chat.value.id),
-        )
-    }, [chatChannels, monitoredChatIntegrations])
-
-    const chatIntegrationsValidationError = useMemo(() => {
-        // The first error is displayed, so the errors should be pushed in order of priority
-        if (!selectedChats?.length && isRequired) {
-            return 'One or more Chats required.'
-        }
-
-        if (
-            selectedChats?.length &&
-            selectedChats.some((chat) => chat.value.isUninstalled ?? false)
-        ) {
-            return buildChatErrorMessage(
-                selectedChats.find((chat) => chat.value.isUninstalled)!.value
-                    .id,
-            )
-        }
-        return null
-    }, [selectedChats, isRequired])
-
-    const hasError = useMemo(() => {
-        return !!chatIntegrationsValidationError
-    }, [chatIntegrationsValidationError])
+    const isChatIntegrationsValid = useMemo(() => {
+        const isChatSelected = !!monitoredChatIntegrations?.length
+        return isChatSelected || !isRequired
+    }, [monitoredChatIntegrations?.length, isRequired])
 
     const handleSelectChatIntegration = useCallback(
         (values: number[]) => {
@@ -178,18 +133,18 @@ export const ChatSettingsFormComponent = ({
                                 }
                                 onSelectionChange={handleSelectChatIntegration}
                                 chatItems={chatChannels}
-                                hasError={hasError}
+                                hasError={!isChatIntegrationsValid}
                                 isDisabled={isDisabled}
                                 withDisabledText={dropDownWithDisabledText}
                                 disabledText={dropDownDisabledText}
                             />
                             <div
                                 className={classnames(css.formInputFooterInfo, {
-                                    [css.error]: hasError,
+                                    [css.error]: !isChatIntegrationsValid,
                                 })}
                             >
-                                {hasError
-                                    ? chatIntegrationsValidationError
+                                {!isChatIntegrationsValid
+                                    ? 'One or more Chats required.'
                                     : null}
                             </div>
                         </div>

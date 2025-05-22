@@ -1,6 +1,5 @@
 import React, { ReactNode, useRef, useState } from 'react'
 
-import { GorgiasChatIntegration } from 'models/integration/types'
 import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -14,10 +13,6 @@ import css from './ChatIntegrationListSelection.less'
 
 export type ChatItem = { name: string; id: string }
 
-export type InstallationStatusInjectedChatItem = SelfServiceChatChannel & {
-    value: GorgiasChatIntegration & { isUninstalled?: boolean }
-}
-
 type ChatIntegrationListSelectionProps = {
     /**
      * nextSelectedIds designates the next selected chat integration ids list
@@ -30,7 +25,7 @@ type ChatIntegrationListSelectionProps = {
     /**
      * Chat integration list to compute the dropdown items
      */
-    chatItems: InstallationStatusInjectedChatItem[]
+    chatItems: SelfServiceChatChannel[]
     /* id of connected label tag  */
     hasError?: boolean
     error?: string | ReactNode
@@ -74,9 +69,7 @@ export const ChatIntegrationListSelection = ({
         .map((selectedId) =>
             chatItems.find((chat) => chat.value.id === selectedId),
         )
-        .filter((input): input is InstallationStatusInjectedChatItem =>
-            Boolean(input),
-        )
+        .filter((input): input is SelfServiceChatChannel => Boolean(input))
         .map((selectedChat) => selectedChat?.value.name)
 
     // handle the toggle action on a list item then send the resulting list
@@ -133,8 +126,7 @@ export const ChatIntegrationListSelection = ({
                                         onClick={handleIdToggled}
                                         isDisabled={value.isDisabled}
                                     >
-                                        {(value.isDisabled ||
-                                            !!value.isUninstalled) &&
+                                        {value.isDisabled &&
                                         withDisabledText ? (
                                             <div
                                                 className={

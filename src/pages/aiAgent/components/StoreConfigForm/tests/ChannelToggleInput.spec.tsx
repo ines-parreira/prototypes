@@ -3,11 +3,13 @@ import { ComponentProps } from 'react'
 import { fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { TicketChannel } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
 import {
     BannerText,
     SettingsBannerType,
 } from 'pages/aiAgent/components/StoreConfigForm/constants'
+import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { ChannelToggleInput } from '../FormComponents/ChannelToggleInput'
@@ -131,7 +133,7 @@ describe('ChannelToggleInput', () => {
                 ).not.toBeInTheDocument()
             })
 
-            it('should show the banner and hide it when the close button is clicked', async () => {
+            it('should show the banner and hide it when the close button is clicked', () => {
                 localStorage.setItem(
                     `ai-settings-${channel}-banner-acknowledged`,
                     'false',
@@ -146,9 +148,7 @@ describe('ChannelToggleInput', () => {
                     screen.getByText(BannerText[channel]),
                 ).toBeInTheDocument()
 
-                await userEvent.click(
-                    screen.getByRole('img', { name: 'close-icon' }),
-                )
+                userEvent.click(screen.getByRole('img', { name: 'close-icon' }))
 
                 expect(
                     localStorage.getItem(
@@ -159,4 +159,79 @@ describe('ChannelToggleInput', () => {
             })
         },
     )
+
+    describe('Chat-specific behavior', () => {
+        it('should disable the toggle when warning banner is shown', () => {
+            const chatIntegrations: SelfServiceChatChannel[] = [
+                {
+                    type: TicketChannel.Chat,
+                    value: {
+                        id: 15,
+                        isDisabled: true,
+                    } as any,
+                },
+            ]
+
+            renderComponent({
+                type: SettingsBannerType.Chat,
+                chatIntegrations,
+            })
+
+            // Check that the element has the attributes that indicate it's disabled
+            const toggle = screen.getByRole('switch')
+            expect(toggle.className).toContain('disabled')
+            expect(toggle).toHaveAttribute('aria-checked', 'false')
+        })
+
+        it('should show warning banner and disable toggle when chatIntegrations is an empty array', () => {
+            const chatIntegrations: SelfServiceChatChannel[] = []
+
+            renderComponent({
+                type: SettingsBannerType.Chat,
+                chatIntegrations,
+            })
+
+            // Check that warning banner is shown with correct text
+            expect(
+                screen.getByText(
+                    'A chat integration must be installed for this store.',
+                ),
+            ).toBeInTheDocument()
+
+            // Check that the "Install Chat" link points to the correct URL
+            const installLink = screen.getByText('Install Chat')
+            expect(installLink.closest('a')).toHaveAttribute(
+                'to',
+                '/app/settings/channels/gorgias_chat/new/create-wizard',
+            )
+
+            // Check that the toggle is disabled
+            const toggle = screen.getByRole('switch')
+            expect(toggle.className).toContain('disabled')
+            expect(toggle).toHaveAttribute('aria-checked', 'false')
+        })
+
+        it('should not show warning banner for email type', () => {
+            const chatIntegrations: SelfServiceChatChannel[] = [
+                {
+                    type: TicketChannel.Chat,
+                    value: {
+                        id: 15,
+                        isDisabled: true,
+                    } as any,
+                },
+            ]
+
+            renderComponent({
+                type: SettingsBannerType.Email,
+                chatIntegrations,
+            })
+
+            expect(
+                screen.queryByText(
+                    'A chat integration must be installed for this store.',
+                ),
+            ).not.toBeInTheDocument()
+        })
+    })
 })

@@ -4,7 +4,6 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import { InstallationStatusInjectedChatItem } from 'pages/aiAgent/components/ChatIntegrationListSelection/ChatIntegrationListSelection'
 import { ConfigurationSection } from 'pages/aiAgent/components/ConfigurationSection/ConfigurationSection'
 import { HandoverCustomizationChatSettingsComponent } from 'pages/aiAgent/components/HandoverCustomization/HandoverCustomizationChatSettingsComponent'
 import { SettingsBannerType } from 'pages/aiAgent/components/StoreConfigForm/constants'
@@ -72,8 +71,7 @@ export const ChannelsFormComponent = ({
     const showToggles = !isAiAgentActivationEnabled || hasAiAgentNewActivationXp
 
     const hasAutomate = useAppSelector(getHasAutomate)
-    const chatChannels: InstallationStatusInjectedChatItem[] =
-        useSelfServiceChatChannels(shopType, shopName)
+    const chatChannels = useSelfServiceChatChannels(shopType, shopName)
 
     const { routes } = useAiAgentNavigation({ shopName })
 
@@ -103,7 +101,7 @@ export const ChannelsFormComponent = ({
         )
         chatChannels.forEach((chatChannel) => {
             const isAvailable = availableChatsSet.has(chatChannel.value.id)
-            chatChannel.value.isUninstalled = !isAvailable
+            chatChannel.value.isDisabled = !isAvailable
         })
 
         return [...chatChannels]
@@ -135,6 +133,7 @@ export const ChannelsFormComponent = ({
                                     chatChannelDeactivatedDatetime
                                 }
                                 type={SettingsBannerType.Chat}
+                                chatIntegrations={chatChannelsWithAvailableFlag}
                             />
                         </div>
                     )}
@@ -182,6 +181,7 @@ export const ChannelsFormComponent = ({
                                 routes.automationOrderManagement
                             }
                             flowsRoute={routes.automationFlows}
+                            chatIntegrations={chatChannelsWithAvailableFlag}
                         />
                     </div>
                 )}

@@ -14,7 +14,6 @@ import thunk from 'redux-thunk'
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
-import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { assumeMock, renderWithRouter } from 'utils/testing'
@@ -33,7 +32,10 @@ import { useAiAgentOnboardingWizard } from '../hooks/useAiAgentOnboardingWizard'
 const mockStore = configureMockStore([thunk])
 jest.mock(
     'pages/automate/common/hooks/useSelfServiceChatChannels',
-    () => () => mockChatChannels.slice(0, 2),
+    () => () => [
+        { name: '1', meta: { app_id: 1 }, id: 1 },
+        { name: '2', meta: { app_id: 2 }, id: 2 },
+    ],
 )
 jest.mock('../hooks/useAiAgentOnboardingWizard')
 jest.mock('hooks/useAppSelector')

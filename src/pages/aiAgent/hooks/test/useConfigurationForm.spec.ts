@@ -9,7 +9,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { useConfigurationForm } from 'pages/aiAgent/hooks/useConfigurationForm'
-import { useFetchChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import { notify } from 'state/notifications/actions'
 import { StoreState } from 'state/types'
@@ -53,13 +52,6 @@ const mockUseAppSelector = assumeMock(useAppSelector)
 jest.mock('../useStoreConfigurationMutation')
 const mockUseStoreConfigurationMutation = assumeMock(
     useStoreConfigurationMutation,
-)
-
-jest.mock(
-    'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData',
-)
-const mockUseFetchChatIntegrationsStatusData = assumeMock(
-    useFetchChatIntegrationsStatusData,
 )
 
 const mockUseGetHelpCenterList = assumeMock(useGetHelpCenterList)
@@ -107,11 +99,6 @@ const defaultStoreConfigurationContextMock = {
 describe('useConfigurationForm', () => {
     beforeEach(() => {
         mockUseGetHelpCenterList.mockReturnValue(mockHelpCenterListData)
-        mockUseFetchChatIntegrationsStatusData.mockReturnValue({
-            data: [],
-            isLoading: false,
-            isFetched: true,
-        })
         mockUseAiAgentStoreConfigurationContext.mockReturnValue(
             defaultStoreConfigurationContextMock,
         )
@@ -474,69 +461,5 @@ describe('useConfigurationForm', () => {
             'another test signature',
         )
         expect(result.current.isFormDirty).toBe(false)
-    })
-
-    it('should call the validation with the hasUninstalledChatIntegration flag', () => {
-        // Reset the mock
-        jest.mocked(notify).mockClear()
-
-        const validationSpy = jest
-            .spyOn(
-                require('pages/aiAgent/utils/store-configuration-validation.utils'),
-                'getValidStoreConfigurationFormValues',
-            )
-            .mockImplementation((formValues) => formValues)
-
-        mockUseFetchChatIntegrationsStatusData.mockReturnValue({
-            data: [
-                {
-                    chatId: 1,
-                    applicationId: 123,
-                    hasBeenRequestedOnce: true,
-                    installed: false,
-                    installedOnShopifyCheckout: false,
-                    minimumSnippetVersion: null,
-                },
-            ],
-            isLoading: false,
-            isFetched: true,
-        })
-
-        mockUseStoreConfigurationMutation.mockReturnValue({
-            isLoading: false,
-            upsertStoreConfiguration: jest.fn().mockResolvedValue({}),
-            createStoreConfiguration: jest.fn().mockResolvedValue({}),
-            error: null,
-        })
-
-        const { result } = renderHook(() =>
-            useConfigurationForm({
-                initValues: {
-                    ...INITIAL_FORM_VALUES,
-                    helpCenterId: 1,
-                    monitoredChatIntegrations: [1],
-                    signature: 'Test signature',
-                },
-                shopName,
-            }),
-        )
-
-        // Trigger validation by calling handleOnSave
-        act(() => {
-            result.current.handleOnSave({
-                shopName,
-                silentNotification: true,
-            })
-        })
-
-        // Just verify the hasUninstalledChatIntegration flag was passed as true
-        // From the error, we can see that the actual parameter count is 5, not 6
-        expect(validationSpy).toHaveBeenCalledWith(
-            expect.anything(), // formValues
-            undefined,
-            expect.anything(), // hasExternalFiles
-            expect.anything(), // options (isAiAgentChatEnabled, isOnboardingWizardPage)
-            true, // hasUninstalledChatIntegration is the 5th parameter
-        )
     })
 })

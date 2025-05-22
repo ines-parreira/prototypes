@@ -22,7 +22,6 @@ export enum StoreConfigurationValidationMessage {
     HelpCenterEmpty = 'Select a Help Center or add at least one public URL',
     EmailIntegrationError = 'Please select at least 1 email integration for AI Agent to use or disable AI Agent for email to proceed.',
     ChatIntegrationError = 'Please select at least 1 chat integration for AI Agent to use or disable AI Agent for chat to proceed.',
-    ChatIntegrationUninstalledError = 'All selected chat integrations need to be installed to continue.',
     NoChannelError = 'At least one channel must be selected.',
     HelpCenterError = 'You must add at least one knowledge source to continue.',
     FieldsMissing = 'One or more required fields not filled.',
@@ -49,7 +48,6 @@ export const getValidStoreConfigurationFormValues = (
         isOnboardingWizardPage: boolean
         isAiAgentChatEnabled: boolean | undefined
     },
-    hasUninstalledChatIntegration: boolean,
 ): ValidFormValues => {
     const isWizardStepKnowledgeOrCompleted =
         formValues.wizard?.stepName === AiAgentOnboardingWizardStep.Knowledge ||
@@ -111,12 +109,6 @@ export const getValidStoreConfigurationFormValues = (
     ) {
         throw new Error(
             StoreConfigurationValidationMessage.EmailIntegrationError,
-        )
-    }
-
-    if (opts.isAiAgentChatEnabled && hasUninstalledChatIntegration) {
-        throw new Error(
-            StoreConfigurationValidationMessage.ChatIntegrationUninstalledError,
         )
     }
 
