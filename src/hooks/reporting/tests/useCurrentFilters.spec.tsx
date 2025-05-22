@@ -2,8 +2,8 @@ import { act } from '@testing-library/react'
 
 import useCurrentFilters, {
     CURRENT_FILTERS,
-    getShallowTypedFilters,
     getValidator,
+    validateAndParseFilters,
 } from 'hooks/reporting/useCurrentFilters'
 import {
     isAggregationWindowFilter,
@@ -77,7 +77,7 @@ describe('useCurrentFilters', () => {
 
         const response = JSON.stringify(filters)
         expect(sessionStorage.getItem(CURRENT_FILTERS)).toStrictEqual(response)
-        expect(result.current.filters).toStrictEqual({ period })
+        expect(result.current.filters).toStrictEqual(filters)
     })
 
     it('should return default value if the filters retried are not correctly typed', () => {
@@ -87,15 +87,11 @@ describe('useCurrentFilters', () => {
         )
         const { result } = renderHook(() => useCurrentFilters({ period }))
         expect(result.current.filters).toStrictEqual({ period })
-        expect(logSpy).toHaveBeenCalledWith(
-            new Error(
-                'There seems to be an error with the filters retrieved from session storage',
-            ),
-        )
+        expect(logSpy).toHaveBeenCalledWith('Invalid filter type.')
     })
 })
 
-describe('getShallowTypedFilters', () => {
+describe('validateAndParseFilters', () => {
     const defaultValue = {
         [FilterKey.Period]: {
             start_datetime: '1970-01-01T00:00:00+00:00',
@@ -105,7 +101,7 @@ describe('getShallowTypedFilters', () => {
 
     it('should return default filters if already equal', () => {
         expect(
-            getShallowTypedFilters(JSON.stringify(defaultValue), defaultValue),
+            validateAndParseFilters(JSON.stringify(defaultValue), defaultValue),
         ).toStrictEqual(defaultValue)
     })
 
@@ -136,11 +132,81 @@ describe('getShallowTypedFilters', () => {
         }
 
         expect(
-            getShallowTypedFilters(JSON.stringify(filters), defaultValue),
+            validateAndParseFilters(JSON.stringify(filters), defaultValue),
         ).toStrictEqual(filters)
     })
 
-    it('should be false', () => {
+    it('should return default filters for invalid JSON input', () => {
+        expect(
+            validateAndParseFilters('invalid json', defaultValue),
+        ).toStrictEqual(defaultValue)
+        expect(logSpy).toHaveBeenCalled()
+    })
+
+    it('should return default filters for empty filters object', () => {
+        expect(
+            validateAndParseFilters(JSON.stringify({}), defaultValue),
+        ).toStrictEqual(defaultValue)
+        expect(logSpy).toHaveBeenCalledWith('Invalid filter structure.')
+    })
+
+    it('should return default filters when period is missing', () => {
+        const filters = {
+            [FilterKey.Agents]: {
+                values: ['Agent1'],
+                operator: LogicalOperatorEnum.ONE_OF,
+            },
+        }
+        expect(
+            validateAndParseFilters(JSON.stringify(filters), defaultValue),
+        ).toStrictEqual(defaultValue)
+        expect(logSpy).toHaveBeenCalledWith('Invalid filter structure.')
+    })
+
+    it('should handle multiple custom fields with different operators', () => {
+        const filters = {
+            [FilterKey.Period]: {
+                start_datetime: '2020-01-01T00:00:00+00:00',
+                end_datetime: '2020-01-01T00:00:00+00:00',
+            },
+            [FilterKey.CustomFields]: [
+                {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    customFieldId: 'field1',
+                    values: ['value1'],
+                },
+                {
+                    operator: LogicalOperatorEnum.NOT_ONE_OF,
+                    customFieldId: 'field2',
+                    values: ['value2'],
+                },
+            ],
+        }
+        expect(
+            validateAndParseFilters(JSON.stringify(filters), defaultValue),
+        ).toStrictEqual(filters)
+    })
+
+    it('should return default filters for invalid filter value types', () => {
+        const filters = {
+            [FilterKey.Period]: {
+                start_datetime: '2020-01-01T00:00:00+00:00',
+                end_datetime: '2020-01-01T00:00:00+00:00',
+            },
+            [FilterKey.Agents]: [
+                {
+                    values: 'not-an-array',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                },
+            ],
+        }
+        expect(
+            validateAndParseFilters(JSON.stringify(filters), defaultValue),
+        ).toStrictEqual(defaultValue)
+        expect(logSpy).toHaveBeenCalledWith('Invalid filter type.')
+    })
+
+    it('should return default filters for invalid filter structure', () => {
         const filters = {
             [FilterKey.Period]: {
                 start_datetime: '1970-01-01T00:00:00+00:00',
@@ -163,15 +229,14 @@ describe('getShallowTypedFilters', () => {
         }
 
         expect(
-            getShallowTypedFilters(JSON.stringify(filters), defaultValue),
+            validateAndParseFilters(JSON.stringify(filters), defaultValue),
         ).toStrictEqual(defaultValue)
-        expect(logSpy).toHaveBeenCalledWith(
-            new Error(
-                'There seems to be an error with the filters retrieved from session storage',
-            ),
-        )
+        expect(logSpy).toHaveBeenCalledWith('Invalid filter type.')
+    })
+
+    it('should return default filters for invalid filter keys', () => {
         expect(
-            getShallowTypedFilters(
+            validateAndParseFilters(
                 JSON.stringify({
                     [FilterKey.Period]: {
                         start_datetime: '1970-01-01T00:00:00+00:00',
@@ -182,6 +247,7 @@ describe('getShallowTypedFilters', () => {
                 defaultValue,
             ),
         ).toStrictEqual(defaultValue)
+        expect(logSpy).toHaveBeenCalledWith('Invalid filter type.')
     })
 })
 

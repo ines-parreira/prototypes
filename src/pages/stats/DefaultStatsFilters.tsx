@@ -29,34 +29,38 @@ export default function DefaultStatsFilters({
 }: Props) {
     useCustomFieldDefinitions(activeParams)
     const dispatch = useAppDispatch()
-    const statsFilters = useAppSelector(getStatsFiltersWithLogicalOperators)
+    const reduxFilters = useAppSelector(getStatsFiltersWithLogicalOperators)
     const isFilterDirty = useAppSelector(isCleanStatsDirty)
 
     const userTimezone = useAppSelector(getTimezone)
 
     const currentDay = userTimezone ? moment().tz(userTimezone) : moment()
 
-    const defaultFilters: StatsFiltersWithLogicalOperator = {
-        period: {
-            // default period: last 7 days
-            start_datetime: currentDay
-                .clone()
-                .startOf('day')
-                .subtract(6, 'days')
-                .format(),
-            end_datetime: currentDay.clone().endOf('day').format(),
-        },
-    }
+    const defaultFilters: StatsFiltersWithLogicalOperator = useMemo(() => {
+        return {
+            period: {
+                // default period: last 7 days
+                start_datetime: currentDay
+                    .clone()
+                    .startOf('day')
+                    .subtract(6, 'days')
+                    .format(),
+                end_datetime: currentDay.clone().endOf('day').format(),
+            },
+        }
+    }, [currentDay])
 
-    const { filters, persistFilters } = useCurrentFilters(defaultFilters)
+    const { filters: sessionFilters, persistFilters } =
+        useCurrentFilters(defaultFilters)
 
     const isReady = useMemo(
-        () => !_isEqual(statsFilters, defaultStatsFilters),
-        [statsFilters],
+        () => !_isEqual(reduxFilters, defaultStatsFilters),
+        [reduxFilters],
     )
 
     useEffect(() => {
-        dispatch(setStatsFiltersWithLogicalOperators(filters))
+        dispatch(setStatsFiltersWithLogicalOperators(sessionFilters))
+
         return () => {
             dispatch(resetStatsFilters())
             persistFilters(defaultStatsFilters)
@@ -65,10 +69,14 @@ export default function DefaultStatsFilters({
     }, [])
 
     useEffect(() => {
-        if (isReady && !isFilterDirty) {
-            persistFilters(statsFilters)
+        if (
+            isReady &&
+            !isFilterDirty &&
+            !_isEqual(sessionFilters, reduxFilters)
+        ) {
+            persistFilters(reduxFilters)
         }
-    }, [isReady, isFilterDirty, persistFilters, statsFilters])
+    }, [isReady, isFilterDirty, persistFilters, sessionFilters, reduxFilters])
 
     return <>{isReady ? children : notReadyFallback}</>
 }

@@ -13,6 +13,7 @@ import { useHasAccessToAILibrary } from 'pages/settings/helpCenter/components/AI
 import { useHelpCenterAIArticlesLibrary } from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { FiltersPanelWrapper } from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { ChartsActionMenu } from 'pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu'
 import AIBanner from 'pages/stats/help-center/components/AIBanner'
@@ -241,8 +242,6 @@ describe('<HelpCenterStats />', () => {
                     filters: {
                         cleanStatsFilters: {
                             ...initialState.filters,
-                            helpCenters: withDefaultLogicalOperator<number>([]),
-                            localeCodes: withDefaultLogicalOperator<string>([]),
                         },
                     },
                 },
@@ -267,6 +266,67 @@ describe('<HelpCenterStats />', () => {
                         helpCenters.sort(getSortByName)[0].id,
                     ]),
                     localeCodes: withDefaultLogicalOperator(['en-US']),
+                }),
+            )
+        })
+    })
+
+    it('should set initial help center filter with first help center from redux state', async () => {
+        const helpCenterFixture = getHelpCentersResponseFixture.data[0]
+        const helpCenters = [
+            { ...helpCenterFixture, name: 'B', id: 3 },
+            { ...helpCenterFixture, name: 'A', id: 1 },
+            { ...helpCenterFixture, name: 'C', id: 2 },
+            { ...helpCenterFixture, name: 'D', id: 4 },
+        ]
+        const helpCenterInitialState = {
+            helpCenters: withDefaultLogicalOperator<number>([123]),
+            localeCodes: withDefaultLogicalOperator<string>(
+                ['en-US', 'fr-FR'],
+                LogicalOperatorEnum.NOT_ONE_OF,
+            ),
+        }
+        const state = {
+            stats: {
+                filters: {
+                    ...initialState.filters,
+                    helpCenters: withDefaultLogicalOperator<number>([]),
+                    localeCodes: withDefaultLogicalOperator<string>([]),
+                },
+            },
+            ui: {
+                stats: {
+                    filters: {
+                        cleanStatsFilters: {
+                            ...initialState.filters,
+                            ...helpCenterInitialState,
+                        },
+                    },
+                },
+            },
+            integrations: fromJS({
+                integrations: [],
+            }),
+        } as RootState
+        mockUseHelpCenterList.mockReturnValue({
+            isLoading: false,
+            helpCenters: helpCenters,
+            hasMore: false,
+            fetchMore: jest.fn(),
+        })
+
+        const { store } = renderWithStore(<HelpCenterStats />, state)
+
+        await waitFor(() => {
+            expect(store.getActions()).toContainEqual(
+                mergeStatsFiltersWithLogicalOperator({
+                    helpCenters: withDefaultLogicalOperator<number>([
+                        helpCenterInitialState.helpCenters.values[0],
+                    ]),
+                    localeCodes: withDefaultLogicalOperator(
+                        helpCenterInitialState.localeCodes.values,
+                        helpCenterInitialState.localeCodes.operator,
+                    ),
                 }),
             )
         })

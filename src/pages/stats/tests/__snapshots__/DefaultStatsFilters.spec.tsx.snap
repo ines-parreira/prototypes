@@ -17,8 +17,8 @@ exports[`DefaultStatsFilters should reset the filters on unmount 1`] = `
   {
     "payload": {
       "period": {
-        "end_datetime": "2019-09-02T23:59:59-07:00",
-        "start_datetime": "2019-08-27T00:00:00-07:00",
+        "end_datetime": "2021-02-03T23:59:59.999Z",
+        "start_datetime": "2021-02-03T00:00:00.000Z",
       },
     },
     "type": "stats/setStatsFiltersWithLogicalOperators",
@@ -35,8 +35,8 @@ exports[`DefaultStatsFilters should set the default filters on mount 1`] = `
   {
     "payload": {
       "period": {
-        "end_datetime": "2019-09-02T23:59:59-07:00",
-        "start_datetime": "2019-08-27T00:00:00-07:00",
+        "end_datetime": "2021-02-03T23:59:59.999Z",
+        "start_datetime": "2021-02-03T00:00:00.000Z",
       },
     },
     "type": "stats/setStatsFiltersWithLogicalOperators",
@@ -49,8 +49,8 @@ exports[`DefaultStatsFilters should set the default period using user timezone  
   {
     "payload": {
       "period": {
-        "end_datetime": "2019-09-03T23:59:59+02:00",
-        "start_datetime": "2019-08-28T00:00:00+02:00",
+        "end_datetime": "2021-02-03T23:59:59.999Z",
+        "start_datetime": "2021-02-03T00:00:00.000Z",
       },
     },
     "type": "stats/setStatsFiltersWithLogicalOperators",

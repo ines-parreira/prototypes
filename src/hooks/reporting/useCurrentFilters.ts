@@ -1,3 +1,4 @@
+import _isEmpty from 'lodash/isEmpty'
 import _isEqual from 'lodash/isEqual'
 
 import useSessionStorage from 'hooks/useSessionStorage'
@@ -7,7 +8,6 @@ import {
     isFilterWithLogicalOperator,
     isPeriodFilter,
     isTagFilter,
-    OptionalFilter,
 } from 'models/reporting/queryFactories/utils'
 import { FilterKey, StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import { defaultStatsFilters } from 'state/stats/statsSlice'
@@ -48,49 +48,48 @@ export const getValidator = (
     }
 }
 
-export const getShallowTypedFilters = (
+export const validateAndParseFilters = (
     sessionFilters: string,
     defaultFilters: StatsFiltersWithLogicalOperator,
 ): StatsFiltersWithLogicalOperator => {
     try {
-        const filters = JSON.parse(sessionFilters) as {
-            [value: string]: OptionalFilter
-        }
+        const parsedSessionFilters: StatsFiltersWithLogicalOperator =
+            JSON.parse(sessionFilters)
 
-        if (_isEqual(filters, defaultStatsFilters)) {
+        if (_isEqual(parsedSessionFilters, defaultStatsFilters)) {
             return defaultFilters
         }
 
-        const isCorrectlyTypes =
-            typeof filters === 'object' &&
-            Object.entries(filters).length > 0 &&
-            Object.entries(filters).every(([filterKey, filter]) => {
-                if (
-                    !Object.values(FilterKey).includes(filterKey as FilterKey)
-                ) {
-                    return false
-                }
-                return getValidator(filterKey as FilterKey)(filter)
-            })
-
-        if (!isCorrectlyTypes) {
-            throw new Error(
-                'There seems to be an error with the filters retrieved from session storage',
-            )
+        if (
+            typeof parsedSessionFilters !== 'object' ||
+            _isEmpty(parsedSessionFilters) ||
+            !parsedSessionFilters[FilterKey.Period]
+        ) {
+            console.error('Invalid filter structure.')
+            return defaultFilters
         }
 
-        return filters as unknown as StatsFiltersWithLogicalOperator
-    } catch (error) {
-        console.error(error)
-        return defaultFilters
-    }
-}
+        const isFilterKey = (key: string): key is FilterKey => {
+            return Object.values(FilterKey).includes(key as FilterKey)
+        }
 
-const persistFilters = (values: StatsFiltersWithLogicalOperator) => {
-    try {
-        sessionStorage.setItem(CURRENT_FILTERS, JSON.stringify(values))
-    } catch {
-        // If user is in private mode or has storage restriction
+        const isValid = Object.entries(parsedSessionFilters).every(
+            ([key, value]) => {
+                if (!isFilterKey(key)) return false
+
+                return getValidator(key)(value)
+            },
+        )
+
+        if (!isValid) {
+            console.error('Invalid filter type.')
+            return defaultFilters
+        }
+
+        return parsedSessionFilters
+    } catch (error) {
+        console.error('Error validating filters:', error)
+        return defaultFilters
     }
 }
 
@@ -100,14 +99,23 @@ export default function useCurrentFilters(
     filters: StatsFiltersWithLogicalOperator
     persistFilters: (values: StatsFiltersWithLogicalOperator) => void
 } {
-    const [filters] = useSessionStorage<string>(
+    const [filters, persistFilters] = useSessionStorage<string>(
         CURRENT_FILTERS,
         JSON.stringify(defaultFilters),
         true,
     )
 
+    const saveFilters = (values: StatsFiltersWithLogicalOperator) => {
+        try {
+            persistFilters(JSON.stringify(values))
+        } catch (error) {
+            // If user is in private mode or has storage restriction
+            console.error('Error saving filters in session storage:', error)
+        }
+    }
+
     return {
-        filters: getShallowTypedFilters(filters, defaultFilters),
-        persistFilters,
+        filters: validateAndParseFilters(filters, defaultFilters),
+        persistFilters: saveFilters,
     }
 }

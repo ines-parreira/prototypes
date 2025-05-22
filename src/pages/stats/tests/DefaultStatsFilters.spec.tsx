@@ -8,6 +8,7 @@ import thunk from 'redux-thunk'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { user } from 'fixtures/users'
+import useCurrentFilters from 'hooks/reporting/useCurrentFilters'
 import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
 import { defaultStatsFilters } from 'state/stats/statsSlice'
 import { RootState, StoreDispatch } from 'state/types'
@@ -23,20 +24,25 @@ jest.mock('moment-timezone', () => () => {
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
+jest.mock('hooks/reporting/useCurrentFilters')
+const useCurrentFiltersMock = assumeMock(useCurrentFilters)
+const persistFiltersMock = jest.fn()
 
 describe('DefaultStatsFilters', () => {
+    const periodFilter = {
+        period: {
+            start_datetime: '2021-02-03T00:00:00.000Z',
+            end_datetime: '2021-02-03T23:59:59.999Z',
+        },
+    }
+
     const defaultState = {
         currentUser: fromJS({
             ...user,
             timezone: 'America/Los_Angeles',
         }),
         stats: {
-            filters: {
-                period: {
-                    start_datetime: '2021-02-03T00:00:00.000Z',
-                    end_datetime: '2021-02-03T23:59:59.999Z',
-                },
-            },
+            filters: periodFilter,
         },
         ui: {
             stats: {
@@ -46,6 +52,11 @@ describe('DefaultStatsFilters', () => {
             },
         },
     } as RootState
+
+    useCurrentFiltersMock.mockReturnValue({
+        filters: periodFilter,
+        persistFilters: persistFiltersMock,
+    })
 
     it('should render children when stats filters are not the default stats filters', () => {
         const { container } = render(
@@ -120,6 +131,7 @@ describe('DefaultStatsFilters', () => {
         )
         unmount()
 
+        expect(persistFiltersMock).toHaveBeenCalledWith(defaultStatsFilters)
         expect(store.getActions()).toMatchSnapshot()
     })
 
