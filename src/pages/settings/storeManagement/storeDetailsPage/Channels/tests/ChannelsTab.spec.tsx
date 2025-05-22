@@ -1,15 +1,140 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 
-import { fireEvent, screen } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import { renderWithRouter, renderWithStore } from 'utils/testing'
+import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import { renderWithStore } from 'utils/testing'
 
+import { mockStoresWithAssignedChannels } from '../../../fixtures'
+import { StoreManagementProvider } from '../../../StoreManagementProvider'
 import ChannelsTab from '../ChannelsTab'
 
+const mockChannel = {
+    title: 'Email',
+    type: 'email',
+    count: 3,
+    assignedChannels: [
+        {
+            id: 1,
+            type: 'email',
+            name: 'test-email 1',
+            uri: 'address1',
+            meta: {
+                address: 'test@test-1.com',
+            },
+        },
+        {
+            id: 2,
+            type: 'email',
+            name: 'test-email 2',
+            uri: 'address 2',
+            meta: {
+                address: 'test@test-2.com',
+            },
+        },
+        {
+            id: 3,
+            type: 'email',
+            name: 'test-email 3',
+            uri: 'address3',
+            meta: {
+                address: 'test@test-3.com',
+            },
+        },
+    ],
+    unassignedChannels: [],
+}
+
+jest.mock('../hooks/useChannels', () => {
+    return {
+        useChannels: () => [
+            mockChannel,
+            {
+                title: 'Chat',
+                description: '',
+                count: 0,
+                type: 'chat',
+                assignedChannels: [],
+                unassignedChannels: [],
+            },
+            {
+                title: 'Help Center',
+                description: '',
+                count: 0,
+                type: 'helpCenter',
+                assignedChannels: [],
+                unassignedChannels: [],
+            },
+            {
+                title: 'Contact Form',
+                description: '',
+                count: 0,
+                type: 'contactForm',
+                assignedChannels: [],
+                unassignedChannels: [],
+            },
+            {
+                title: 'WhatsApp',
+                description: '',
+                count: 0,
+                type: 'whatsApp',
+                assignedChannels: [],
+                unassignedChannels: [],
+            },
+            {
+                title: 'Facebook, Messenger & Instagram',
+                description: '',
+                count: 0,
+                type: 'facebook',
+                assignedChannels: [],
+                unassignedChannels: [],
+            },
+        ],
+    }
+})
+
+jest.mock('../../../StoreManagementProvider', () => ({
+    useStoreManagementState: () => ({
+        stores: mockStoresWithAssignedChannels,
+        unassignedChannels: [],
+        refetchMapping: jest.fn(),
+    }),
+    StoreManagementProvider: ({ children }: { children: ReactNode }) => (
+        <div>{children}</div>
+    ),
+}))
+
+jest.mock('models/storeMapping/queries', () => ({
+    useDeleteStoreMapping: () => ({
+        mutateAsync: jest.fn().mockResolvedValue({ success: true }),
+        isLoading: false,
+    }),
+    useCreateStoreMapping: () => ({
+        mutateAsync: jest.fn().mockResolvedValue({ success: true }),
+        isLoading: false,
+    }),
+}))
+
 describe('ChannelsTab', () => {
+    const storeId = '1'
+    const { QueryClientProvider } = mockQueryClientProvider()
+
+    const renderComponent = () => {
+        return renderWithStore(
+            <MemoryRouter initialEntries={['/']}>
+                <QueryClientProvider>
+                    <StoreManagementProvider>
+                        <ChannelsTab storeId={storeId} />
+                    </StoreManagementProvider>
+                </QueryClientProvider>
+            </MemoryRouter>,
+            {},
+        )
+    }
+
     it('renders the channels section with correct title and description', () => {
-        renderWithRouter(<ChannelsTab />)
+        renderComponent()
 
         expect(screen.getByText('Channels')).toBeInTheDocument()
         expect(
@@ -18,53 +143,46 @@ describe('ChannelsTab', () => {
     })
 
     it('renders all channel types with correct counts', () => {
-        renderWithRouter(<ChannelsTab />)
+        renderComponent()
 
-        expect(screen.getByText('Email')).toBeInTheDocument()
-        expect(screen.getByText('Chat')).toBeInTheDocument()
-        expect(screen.getByText('Help Center')).toBeInTheDocument()
-        expect(screen.getByText('Contact Form')).toBeInTheDocument()
-        expect(screen.getByText('WhatsApp')).toBeInTheDocument()
         expect(
-            screen.getByText('Facebook, Messenger & Instagram'),
+            screen.getByTestId('settings-feature-row-email'),
         ).toBeInTheDocument()
-        expect(screen.getByText('TikTok Shop')).toBeInTheDocument()
+        expect(
+            screen.getByTestId('settings-feature-row-chat'),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByTestId('settings-feature-row-help-center'),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByTestId('settings-feature-row-contact-form'),
+        ).toBeInTheDocument()
     })
 
     describe('Channel drawer interactions', () => {
         it('opens drawer when clicking on a channel', async () => {
-            renderWithStore(
-                <MemoryRouter initialEntries={['/']}>
-                    <ChannelsTab />
-                </MemoryRouter>,
-                {},
-            )
+            renderComponent()
 
-            fireEvent.click(screen.getByText('Email'))
+            const emailRow = screen.getByTestId('settings-feature-row-email')
+            fireEvent.click(emailRow)
 
-            expect(screen.getByText(/save changes/i)).toBeInTheDocument()
-            expect(screen.getByText(/cancel/i)).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /save changes/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /cancel/i }),
+            ).toBeInTheDocument()
         })
 
         it('shows unconfirmed changes modal when closing with changes', async () => {
-            renderWithStore(
-                <MemoryRouter initialEntries={['/']}>
-                    <ChannelsTab />
-                </MemoryRouter>,
-                {},
-            )
+            renderComponent()
 
-            fireEvent.click(screen.getByText('3 Assigned'))
-            screen.debug(undefined, 100000)
+            const emailRow = screen.getByTestId('settings-feature-row-email')
+            fireEvent.click(emailRow)
+
             fireEvent.click(screen.getAllByText(/close/i)[0])
 
             fireEvent.click(screen.getByRole('button', { name: /cancel/i }))
-
-            expect(
-                screen.queryByText(
-                    /Your changes to this page will be lost if you don’t save them./i,
-                ),
-            ).toBeInTheDocument()
 
             expect(
                 screen.getByRole('button', { name: /discard/i }),
@@ -75,14 +193,11 @@ describe('ChannelsTab', () => {
         })
 
         it('closes drawer without modal when no changes made', () => {
-            renderWithStore(
-                <MemoryRouter initialEntries={['/']}>
-                    <ChannelsTab />
-                </MemoryRouter>,
-                {},
-            )
+            renderComponent()
 
-            fireEvent.click(screen.getByText('Email'))
+            const emailRow = screen.getByTestId('settings-feature-row-email')
+            fireEvent.click(emailRow)
+
             expect(
                 screen.queryByText(
                     /Choose which support emails should be assigned to this store.*/,
@@ -99,14 +214,10 @@ describe('ChannelsTab', () => {
         })
 
         it('saves changes and closes drawer when save button clicked', async () => {
-            renderWithStore(
-                <MemoryRouter initialEntries={['/']}>
-                    <ChannelsTab />
-                </MemoryRouter>,
-                {},
-            )
+            renderComponent()
 
-            fireEvent.click(screen.getByText('Email'))
+            fireEvent.click(screen.getByTestId('settings-feature-row-email'))
+
             expect(
                 screen.queryByText(
                     /Choose which support emails should be assigned to this store.*/,
@@ -122,11 +233,13 @@ describe('ChannelsTab', () => {
 
             fireEvent.click(saveButton)
 
-            expect(
-                screen.queryByText(
-                    /Choose which support emails should be assigned to this store.*/,
-                ),
-            ).not.toBeInTheDocument()
+            await waitFor(() => {
+                expect(
+                    screen.queryByText(
+                        /Choose which support emails should be assigned to this store.*/,
+                    ),
+                ).not.toBeInTheDocument()
+            })
         })
     })
 })

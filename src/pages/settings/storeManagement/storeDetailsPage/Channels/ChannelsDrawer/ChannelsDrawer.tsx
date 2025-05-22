@@ -2,6 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
+import hideViewIcon from 'assets/img/icons/hide-view-right.svg'
 import { Drawer } from 'pages/common/components/Drawer'
 
 import { ChannelChange } from '../../../types'
@@ -43,6 +44,12 @@ export default function ChannelsDrawer({
         >
             <Drawer.Header className={css.drawerHeader}>
                 {activeChannel.title}
+                <img
+                    className={css.hideViewIcon}
+                    src={hideViewIcon}
+                    alt="hide-view-icon"
+                    onClick={onCloseDrawer}
+                />
             </Drawer.Header>
             <Drawer.Content className={css.drawerContent}>
                 <DrawerContent

@@ -1,36 +1,65 @@
 import React from 'react'
 
 import { act } from '@testing-library/react'
+import { Provider } from 'react-redux'
 
+import { mockStoresWithAssignedChannels } from 'pages/settings/storeManagement/fixtures'
+import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import { mockStore } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
-import { storeMappingFixture } from '../fixtures'
 import {
     StoreManagementProvider,
     useStoreManagementState,
 } from '../StoreManagementProvider'
 
+jest.mock('../hooks/useStoresWithMaps', () => ({
+    __esModule: true,
+    default: () => ({
+        enrichedStores: mockStoresWithAssignedChannels,
+        unassignedChannels: [],
+        refetchMapping: jest.fn(),
+    }),
+}))
+
 describe('StoreManagementProvider', () => {
+    const { QueryClientProvider } = mockQueryClientProvider()
+    const store = mockStore({} as any)
+
     it('provides initial state correctly', () => {
         const { result } = renderHook(() => useStoreManagementState(), {
             wrapper: ({ children }) => (
-                <StoreManagementProvider>{children}</StoreManagementProvider>
+                <Provider store={store}>
+                    <QueryClientProvider>
+                        <StoreManagementProvider>
+                            {children}
+                        </StoreManagementProvider>
+                    </QueryClientProvider>
+                </Provider>
             ),
         })
 
         const { stores, paginatedStores, currentPage, totalPages } =
             result.current
 
-        expect(stores.length).toBe(storeMappingFixture.length)
-        expect(paginatedStores.length).toBe(10)
+        expect(stores.length).toBe(mockStoresWithAssignedChannels.length)
+        expect(paginatedStores.length).toBe(3)
         expect(currentPage).toBe(1)
-        expect(totalPages).toBe(Math.ceil(storeMappingFixture.length / 10))
+        expect(totalPages).toBe(
+            Math.ceil(mockStoresWithAssignedChannels.length / 10),
+        )
     })
 
     it('handles pagination correctly', () => {
         const { result } = renderHook(() => useStoreManagementState(), {
             wrapper: ({ children }) => (
-                <StoreManagementProvider>{children}</StoreManagementProvider>
+                <Provider store={store}>
+                    <QueryClientProvider>
+                        <StoreManagementProvider>
+                            {children}
+                        </StoreManagementProvider>
+                    </QueryClientProvider>
+                </Provider>
             ),
         })
 
@@ -41,30 +70,5 @@ describe('StoreManagementProvider', () => {
         const { currentPage } = result.current
 
         expect(currentPage).toBe(2)
-    })
-
-    it('updates stores correctly', () => {
-        const { result } = renderHook(() => useStoreManagementState(), {
-            wrapper: ({ children }) => (
-                <StoreManagementProvider>{children}</StoreManagementProvider>
-            ),
-        })
-
-        act(() => {
-            result.current.setStores([
-                ...result.current.stores,
-                {
-                    id: 'new-store',
-                    name: 'New Store',
-                    url: 'www.new-store.com',
-                    type: 'shopify',
-                    channels: [],
-                },
-            ])
-        })
-
-        const { stores } = result.current
-
-        expect(stores.length).toBe(storeMappingFixture.length + 1)
     })
 })

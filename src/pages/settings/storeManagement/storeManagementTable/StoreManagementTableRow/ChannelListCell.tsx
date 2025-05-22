@@ -2,15 +2,14 @@ import React, { useMemo } from 'react'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
+import { Integration } from 'models/integration/types'
 import SourceIcon from 'pages/common/components/SourceIcon'
-
-import { Channel } from '../../types'
 
 import css from './ChannelListCell.less'
 
 interface ChannelListCellProps {
-    channels: Channel[]
-    storeId: string
+    channels: Integration[]
+    storeId: number
 }
 
 export default function ChannelListCell({

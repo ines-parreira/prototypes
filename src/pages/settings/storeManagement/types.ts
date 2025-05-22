@@ -1,5 +1,7 @@
 import { Integration, StoreIntegration } from 'models/integration/types'
 
+import { StoreMapping } from '../../../models/storeMapping/types'
+
 export type Channel = {
     name: string
     type: string
@@ -23,4 +25,10 @@ export interface ChannelChange {
 export type StoreWithAssignedChannels = {
     store: StoreIntegration
     assignedChannels: Integration[]
+}
+
+export type StoreMappingResponse = {
+    data: {
+        data: StoreMapping[]
+    }
 }

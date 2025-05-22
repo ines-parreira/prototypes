@@ -3,10 +3,9 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { storeMappingFixture } from '../fixtures'
+import { mockStoresWithAssignedChannels } from '../fixtures'
 import { StoreManagementProvider } from '../StoreManagementProvider'
 import { StoreManagementTable } from '../storeManagementTable/storeManagementTable'
-import { Store } from '../types'
 
 jest.mock('../StoreManagementProvider', () => ({
     useStoreManagementState: jest.fn(),
@@ -16,7 +15,7 @@ jest.mock('../StoreManagementProvider', () => ({
 }))
 
 describe('StoreManagementTable', () => {
-    const mockStores: Store[] = storeMappingFixture
+    const mockStores = mockStoresWithAssignedChannels
 
     const mockState = {
         currentPage: 1,
@@ -53,8 +52,8 @@ describe('StoreManagementTable', () => {
         )
 
         mockStores.forEach((store) => {
-            expect(screen.getByText(store.name)).toBeInTheDocument()
-            expect(screen.getByText(store.url)).toBeInTheDocument()
+            expect(screen.getByText(store.store.name)).toBeInTheDocument()
+            expect(screen.getByText(store.store.uri)).toBeInTheDocument()
         })
     })
 

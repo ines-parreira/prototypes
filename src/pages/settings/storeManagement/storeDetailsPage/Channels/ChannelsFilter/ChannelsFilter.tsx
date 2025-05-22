@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react'
 
 import SelectFilter from 'pages/stats/common/SelectFilter'
 
-import { Channel, ChannelIntegrationItem } from '../hooks/useChannels'
+import { Channel } from '../hooks/useChannels'
 import { useFilterOperations } from '../hooks/useFilterOperations'
 import CreateNewChannel from './CreateNewChannel'
 
@@ -40,7 +40,7 @@ export default function ChannelsFilter({
                 ...activeChannel.assignedChannels,
             ]
                 .filter((channel) => !assignedChannelIds.includes(channel.id))
-                .map((channel: ChannelIntegrationItem) => (
+                .map((channel) => (
                     <SelectFilter.Item
                         key={channel.id}
                         label={channel.name}

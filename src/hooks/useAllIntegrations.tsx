@@ -1,16 +1,28 @@
+import { useEffect, useState } from 'react'
+
 import { listIntegrations } from '@gorgias/api-client'
-import { queryKeys } from '@gorgias/api-queries'
+import { Integration, queryKeys } from '@gorgias/api-queries'
 
 import { useExhaustEndpoint } from './useExhaustEndpoint'
 
 export default function useAllIntegrations() {
-    const { data: integrations, isLoading } = useExhaustEndpoint(
+    const [allIntegrations, setAllIntegrations] = useState<Integration[]>([])
+
+    const { data, isLoading } = useExhaustEndpoint(
         queryKeys.integrations.listIntegrations(),
         (cursor) => listIntegrations({ cursor, limit: 100 }),
     )
 
+    useEffect(() => {
+        // prevent a reset of values on next fetch after window focus
+        // until useExhaustEndpoint is enhanced to received react-query params
+        if (data.length) {
+            setAllIntegrations(data)
+        }
+    }, [data])
+
     return {
-        integrations,
+        integrations: allIntegrations,
         isLoading,
     }
 }

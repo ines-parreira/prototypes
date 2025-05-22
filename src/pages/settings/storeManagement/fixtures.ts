@@ -1,266 +1,166 @@
-export const storeMappingFixture = [
+import { EmailProvider } from 'models/integration/constants'
+import {
+    Integration,
+    IntegrationType,
+    StoreIntegration,
+} from 'models/integration/types'
+
+import { StoreWithAssignedChannels } from './types'
+
+export const mockStoresWithAssignedChannels: StoreWithAssignedChannels[] = [
     {
-        name: 'test-1',
-        type: 'shopify',
-        url: 'www.test-1.com',
-        id: '1',
-        channels: [
-            { type: 'email', id: '1', name: 'Email', address: 'address1' },
-            { type: 'chat', id: '2', name: 'Chat', address: 'address2' },
-            {
-                type: 'facebook',
-                id: '3',
-                name: 'Facebook',
-                address: 'address3',
+        store: {
+            id: 1,
+            name: 'test-1',
+            type: IntegrationType.Shopify,
+            url: 'www.test-1.com',
+            uri: 'www.test-1.com',
+            meta: {
+                oauth: {
+                    access_token: 'test-token',
+                    refresh_token: 'test-refresh-token',
+                    expires_in: 3600,
+                    scope: ['read_products', 'write_products'],
+                    status: 'success',
+                    error: null,
+                },
+                shop_name: 'test-1',
+                shop_domain: 'www.test-1.com',
+                currency: 'USD',
+                webhooks: [],
             },
-        ],
-    },
-    {
-        name: 'test-2',
-        type: 'bigcommerce',
-        url: 'www.test-2.com',
-        id: '2',
-        channels: [
+        } as unknown as StoreIntegration,
+        assignedChannels: [
             {
-                type: 'help-center',
-                id: '4',
-                name: 'Helpcenter',
-                address: 'address4',
-            },
-            {
-                type: 'contact_form',
-                id: '5',
-                name: 'Contact Form',
-                address: 'address5',
-            },
-            {
-                type: 'whatsapp',
-                id: '6',
-                name: 'WhatsApp',
-                address: 'address6',
-            },
-        ],
-    },
-    {
-        name: 'test-3',
-        type: 'magento2',
-        url: 'www.test-3.com',
-        id: '3',
-        channels: [
-            { type: 'email', id: '7', name: 'Email', address: 'address7' },
-            { type: 'chat', id: '8', name: 'Chat', address: 'address8' },
-            {
-                type: 'facebook',
-                id: '9',
-                name: 'Facebook',
-                address: 'address9',
-            },
-            {
-                type: 'help-center',
-                id: '10',
-                name: 'Helpcenter',
-                address: 'address10',
-            },
-        ],
-    },
-    {
-        name: 'test-4',
-        type: 'shopify',
-        url: 'www.test-4.com',
-        id: '4',
-        channels: [
-            {
-                type: 'contact_form',
-                id: '11',
-                name: 'Contact Form',
-                address: 'address11',
-            },
-            {
-                type: 'whatsapp',
-                id: '12',
-                name: 'WhatsApp',
-                address: 'address12',
-            },
-            {
-                type: 'email',
-                id: '13',
+                id: 1,
+                type: IntegrationType.Email,
                 name: 'Email',
-                address: 'address13',
+                uri: 'address1',
+                meta: {
+                    address: 'test@test-1.com',
+                    preferred: true,
+                    provider: EmailProvider.Mailgun,
+                    outbound_verification_status: {
+                        single_sender: 'verified',
+                        domain: 'verified',
+                    },
+                },
             },
-        ],
-    },
-    {
-        name: 'test-5',
-        type: 'bigcommerce',
-        url: 'www.test-5.com',
-        id: '5',
-        channels: [
-            { type: 'chat', id: '14', name: 'Chat', address: 'address14' },
             {
-                type: 'facebook',
-                id: '15',
+                id: 2,
+                type: IntegrationType.GorgiasChat,
+                name: 'Chat',
+                uri: 'address2',
+                meta: {
+                    app_id: 'test-app-id',
+                    language: 'en',
+                    self_service: {
+                        enabled: true,
+                        configurations: [],
+                    },
+                    status: 'active',
+                    preferences: {
+                        email_capture_enforcement: 'optional',
+                    },
+                },
+            },
+            {
+                id: 3,
+                type: IntegrationType.Facebook,
                 name: 'Facebook',
-                address: 'address15',
+                uri: 'address3',
             },
-            {
-                type: 'help-center',
-                id: '16',
-                name: 'Helpcenter',
-                address: 'address16',
-            },
-            {
-                type: 'contact_form',
-                id: '17',
-                name: 'Contact Form',
-                address: 'address17',
-            },
-        ],
+        ] as unknown as Integration[],
     },
     {
-        name: 'test-6',
-        type: 'magento2',
-        url: 'www.test-6.com',
-        id: '6',
-        channels: [
+        store: {
+            id: 2,
+            name: 'test-2',
+            type: IntegrationType.BigCommerce,
+            url: 'www.test-2.com',
+            uri: 'www.test-2.com',
+            meta: {
+                oauth: {
+                    access_token: 'test-token',
+                    refresh_token: 'test-refresh-token',
+                    expires_in: 3600,
+                    scope: ['store_v2'],
+                    status: 'success',
+                    error: null,
+                },
+                store_hash: 'test-hash',
+                shop_domain: 'www.test-2.com',
+                shop_id: 123,
+                webhooks: [],
+                currency: 'USD',
+            },
+        } as unknown as StoreIntegration,
+        assignedChannels: [
             {
-                type: 'whatsapp',
-                id: '18',
-                name: 'WhatsApp',
-                address: 'address18',
+                id: 4,
+                type: IntegrationType.Http,
+                name: 'Helpcenter',
+                uri: 'address4',
+                meta: {},
+                http: {
+                    url: 'https://help.test-2.com',
+                },
             },
             {
-                type: 'email',
-                id: '19',
+                id: 5,
+                type: IntegrationType.Http,
+                name: 'Contact Form',
+                uri: 'address5',
+                meta: {},
+                http: {
+                    url: 'https://contact.test-2.com',
+                },
+            },
+            {
+                id: 6,
+                type: IntegrationType.WhatsApp,
+                name: 'WhatsApp',
+                uri: 'address6',
+                meta: {
+                    phone_number_id: 123,
+                    routing: {
+                        phone_number: '+1234567890',
+                    },
+                },
+            },
+        ] as unknown as Integration[],
+    },
+    {
+        store: {
+            id: 3,
+            name: 'test-3',
+            type: IntegrationType.Magento2,
+            url: 'www.test-3.com',
+            uri: 'www.test-3.com',
+            meta: {
+                store_url: 'www.test-3.com',
+                is_manual: false,
+                import_state: {
+                    is_over: true,
+                },
+            },
+        } as unknown as StoreIntegration,
+        assignedChannels: [
+            {
+                id: 7,
+                type: IntegrationType.Email,
                 name: 'Email',
-                address: 'address19',
+                uri: 'address7',
+                meta: {
+                    address: 'test@test-3.com',
+                    preferred: true,
+                    provider: EmailProvider.Mailgun,
+                    outbound_verification_status: {
+                        single_sender: 'verified',
+                        domain: 'verified',
+                    },
+                },
             },
-            { type: 'chat', id: '20', name: 'Chat', address: 'address20' },
-        ],
-    },
-    {
-        name: 'test-7',
-        type: 'shopify',
-        url: 'www.test-7.com',
-        id: '7',
-        channels: [
-            {
-                type: 'facebook',
-                id: '21',
-                name: 'Facebook',
-                address: 'address21',
-            },
-            {
-                type: 'help-center',
-                id: '22',
-                name: 'Helpcenter',
-                address: 'address22',
-            },
-            {
-                type: 'contact_form',
-                id: '23',
-                name: 'Contact Form',
-                address: 'address23',
-            },
-        ],
-    },
-    {
-        name: 'test-8',
-        type: 'bigcommerce',
-        url: 'www.test-8.com',
-        id: '8',
-        channels: [
-            {
-                type: 'whatsapp',
-                id: '24',
-                name: 'WhatsApp',
-                address: 'address24',
-            },
-            {
-                type: 'email',
-                id: '25',
-                name: 'Email',
-                address: 'address25',
-            },
-            { type: 'chat', id: '26', name: 'Chat', address: 'address26' },
-            {
-                type: 'facebook',
-                id: '27',
-                name: 'Facebook',
-                address: 'address27',
-            },
-        ],
-    },
-    {
-        name: 'test-9',
-        type: 'magento2',
-        url: 'www.test-9.com',
-        id: '9',
-        channels: [
-            {
-                type: 'help-center',
-                id: '28',
-                name: 'Helpcenter',
-                address: 'address28',
-            },
-            {
-                type: 'contact_form',
-                id: '29',
-                name: 'Contact Form',
-                address: 'address29',
-            },
-            {
-                type: 'whatsapp',
-                id: '30',
-                name: 'WhatsApp',
-                address: 'address30',
-            },
-        ],
-    },
-    {
-        name: 'test-10',
-        type: 'shopify',
-        url: 'www.test-10.com',
-        id: '10',
-        channels: [
-            {
-                type: 'email',
-                id: '31',
-                name: 'Email',
-                address: 'address31',
-            },
-            { type: 'chat', id: '32', name: 'Chat', address: 'address32' },
-            {
-                type: 'facebook',
-                id: '33',
-                name: 'Facebook',
-                address: 'address33',
-            },
-        ],
-    },
-    {
-        name: 'test-11',
-        type: 'bigcommerce',
-        url: 'www.test-11.com',
-        id: '11',
-        channels: [
-            {
-                type: 'help-center',
-                id: '34',
-                name: 'Helpcenter',
-                address: 'address34',
-            },
-            {
-                type: 'contact_form',
-                id: '35',
-                name: 'Contact Form',
-                address: 'address35',
-            },
-            {
-                type: 'whatsapp',
-                id: '36',
-                name: 'WhatsApp',
-                address: 'address36',
-            },
-        ],
+        ] as unknown as Integration[],
     },
 ]

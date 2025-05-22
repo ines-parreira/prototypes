@@ -3,8 +3,11 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
+import { IntegrationType } from 'models/integration/constants'
+import { Integration } from 'models/integration/types'
+
 import StoreManagementTableRow from '../storeManagementTable/StoreManagementTableRow/StoreManagementTableRow'
-import { Store } from '../types'
+import { StoreWithAssignedChannels } from '../types'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -14,33 +17,63 @@ jest.mock('react-router-dom', () => ({
 }))
 
 describe('StoreManagementTableRow', () => {
-    const mockStore: Store = {
-        id: '1',
-        name: 'Test Store',
-        url: 'www.teststore.com',
-        type: 'shopify',
-        channels: [
+    const mockStore = {
+        store: {
+            id: 1,
+            name: 'Test Store',
+            type: IntegrationType.Shopify,
+            uri: 'https://test-store.myshopify.com',
+            user: {
+                id: 1,
+            },
+            managed: false,
+            meta: {
+                shop_name: 'Test Store',
+                shop_domain: 'www.teststore.com',
+                shop_id: 123,
+                webhooks: [],
+            },
+        },
+        assignedChannels: [
             {
-                type: 'email',
+                id: 1,
                 name: 'email 1',
-                id: '1',
-                address: 'mail@email.com',
+                type: 'email',
+                uri: 'mailto:mail@email.com',
+                user: {
+                    id: 1,
+                },
+                managed: false,
+                meta: {
+                    address: 'mail@email.com',
+                },
             },
             {
-                type: 'chat',
+                id: 2,
                 name: 'en-US',
-                id: '2',
-                address: 'chat english',
+                type: 'chat',
+                uri: 'chat:english',
+                user: {
+                    id: 1,
+                },
+                managed: false,
+                meta: {
+                    address: 'chat english',
+                },
             },
-        ],
+        ] as Integration[],
     }
 
-    const renderComponent = (store: Store = mockStore) => {
+    const renderComponent = () => {
         return render(
             <MemoryRouter>
                 <table>
                     <tbody>
-                        <StoreManagementTableRow store={store} />
+                        <StoreManagementTableRow
+                            store={
+                                mockStore as unknown as StoreWithAssignedChannels
+                            }
+                        />
                     </tbody>
                 </table>
             </MemoryRouter>,

@@ -1,20 +1,29 @@
-import React, { ReactNode, useMemo, useState } from 'react'
+import {
+    createContext,
+    Dispatch,
+    ReactNode,
+    SetStateAction,
+    useMemo,
+    useState,
+} from 'react'
 
 import useSafeContext from 'hooks/useSafeContext'
+import { Integration } from 'models/integration/types'
 
-import { storeMappingFixture } from './fixtures'
-import { Store } from './types'
+import useStoresWithMaps from './hooks/useStoresWithMaps'
+import { StoreWithAssignedChannels } from './types'
 
 type StoreManagementContextType = {
-    stores: Store[]
-    setStores: React.Dispatch<React.SetStateAction<Store[]>>
-    paginatedStores: Store[]
+    stores: StoreWithAssignedChannels[]
+    unassignedChannels: Integration[]
+    refetchMapping: () => void
+    paginatedStores: StoreWithAssignedChannels[]
     currentPage: number
-    setCurrentPage: React.Dispatch<React.SetStateAction<number>>
+    setCurrentPage: Dispatch<SetStateAction<number>>
     totalPages: number
 }
 
-const StoreManagementContext = React.createContext<
+const StoreManagementContext = createContext<
     StoreManagementContextType | undefined
 >(undefined)
 StoreManagementContext.displayName = 'StoreManagementContext'
@@ -22,7 +31,11 @@ StoreManagementContext.displayName = 'StoreManagementContext'
 export const PAGE_SIZE = 10
 
 export function StoreManagementProvider({ children }: { children: ReactNode }) {
-    const [stores, setStores] = useState<Store[]>(storeMappingFixture)
+    const {
+        enrichedStores: stores,
+        unassignedChannels,
+        refetchMapping,
+    } = useStoresWithMaps()
 
     const [currentPage, setCurrentPage] = useState(1)
 
@@ -36,11 +49,12 @@ export function StoreManagementProvider({ children }: { children: ReactNode }) {
         <StoreManagementContext.Provider
             value={{
                 stores,
-                setStores,
                 paginatedStores,
                 currentPage,
                 setCurrentPage,
                 totalPages,
+                unassignedChannels,
+                refetchMapping,
             }}
         >
             {children}

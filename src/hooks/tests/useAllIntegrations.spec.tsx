@@ -84,7 +84,7 @@ const mockIntegration2: Integration = {
     },
 }
 
-describe('useGetIntegrations', () => {
+describe('useAllIntegrations', () => {
     beforeEach(() => {
         jest.clearAllMocks()
     })

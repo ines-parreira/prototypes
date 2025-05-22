@@ -1,12 +1,14 @@
 import { IconButton } from '@gorgias/merchant-ui-kit'
 
-import { ChannelIntegrationItem, ChannelTypes } from '../hooks/useChannels'
+import { Integration } from 'models/integration/types'
+
+import { ChannelTypes } from '../hooks/useChannels'
 
 import css from '../ChannelsDrawer/ChannelsDrawer.less'
 
 interface AssignedChannelsListProps {
     channelType: ChannelTypes
-    channels: ChannelIntegrationItem[]
+    channels: Integration[]
     onDelete: (id: number) => void
 }
 
@@ -27,7 +29,9 @@ export default function ChannelsList({
                     <div className={css.labels}>
                         <span className={css.primaryLabel}>{channel.name}</span>
                         <span className={css.secondaryLabel}>
-                            {channel.meta.address}
+                            {'address' in channel.meta
+                                ? channel.meta.address
+                                : ''}
                         </span>
                     </div>
                     {/*TODO links for open new*/}

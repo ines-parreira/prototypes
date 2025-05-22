@@ -1,6 +1,10 @@
 import React, { useRef } from 'react'
 
 import {
+    useCreateStoreMapping,
+    useDeleteStoreMapping,
+} from 'models/storeMapping/queries'
+import {
     SettingsCard,
     SettingsCardContent,
     SettingsCardHeader,
@@ -9,14 +13,23 @@ import {
 import { SettingsFeatureRow } from 'pages/common/components/SettingsCard/SettingsFeatureRow'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 
+import { useStoreManagementState } from '../../StoreManagementProvider'
 import ChannelsDrawer from './ChannelsDrawer/ChannelsDrawer'
 import useActiveChannel from './hooks/useActiveChannel'
 import { useChannels } from './hooks/useChannels'
 
 import css from '../StoreDetailsPage.less'
 
-export default function ChannelsTab() {
-    const { channels } = useChannels()
+interface ChannelsTabProps {
+    storeId: string
+}
+
+export default function ChannelsTab({ storeId }: ChannelsTabProps) {
+    const channels = useChannels()
+    const { refetchMapping } = useStoreManagementState()
+    const { mutateAsync: createMapping } = useCreateStoreMapping()
+    const { mutateAsync: deleteMapping } = useDeleteStoreMapping()
+
     const { activeChannel, setActiveChannel, reset, changes, setChanges } =
         useActiveChannel()
 
@@ -29,7 +42,25 @@ export default function ChannelsTab() {
         }
         reset()
     }
-    const onSaveDrawer = () => {
+    const onSaveDrawer = async () => {
+        try {
+            await Promise.all(
+                changes.map((change) =>
+                    change.action === 'add'
+                        ? createMapping([
+                              {
+                                  store_id: Number(storeId),
+                                  integration_id: change.channelId,
+                              },
+                          ])
+                        : deleteMapping([change.channelId]),
+                ),
+            )
+        } catch (error) {
+            //TODO: Handle errors
+            console.error('Error saving channel changes:', error)
+        }
+        refetchMapping()
         reset()
     }
 

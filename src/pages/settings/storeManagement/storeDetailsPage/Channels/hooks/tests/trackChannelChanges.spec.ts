@@ -1,3 +1,5 @@
+import { Integration } from 'models/integration/types'
+
 import { trackChannelChanges } from '../trackChannelChanges'
 import { Channel } from '../useChannels'
 
@@ -7,12 +9,15 @@ describe('trackChannelChanges', () => {
         description: '',
         count: assignedIds.length,
         type: 'email',
-        assignedChannels: assignedIds.map((id) => ({
-            id,
-            name: `Channel ${id}`,
-            type: 'email',
-            meta: { address: `test${id}@mail.com` },
-        })),
+        assignedChannels: assignedIds.map(
+            (id) =>
+                ({
+                    id,
+                    name: `Channel ${id}`,
+                    type: 'email',
+                    meta: { address: `test${id}@mail.com` },
+                }) as Integration,
+        ),
         unassignedChannels: [],
     })
 

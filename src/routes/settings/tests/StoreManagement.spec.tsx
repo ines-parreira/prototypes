@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 import { Route, useRouteMatch } from 'react-router-dom'
 
@@ -29,6 +30,14 @@ const mockedUseRouteMatch = assumeMock(useRouteMatch)
 const basePath = 'store-management'
 
 describe('StoreManagement', () => {
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: {
+                retry: false,
+            },
+        },
+    })
+
     beforeEach(() => {
         mockedUseRouteMatch.mockReturnValue({
             path: basePath,
@@ -46,7 +55,11 @@ describe('StoreManagement', () => {
     ])(
         'should call renderer and Route with correct props',
         ({ callOrder, path, component }) => {
-            render(<StoreManagement />)
+            render(
+                <QueryClientProvider client={queryClient}>
+                    <StoreManagement />
+                </QueryClientProvider>,
+            )
 
             expect(mockedRenderAppSettings.mock.calls[callOrder]).toEqual([
                 component,

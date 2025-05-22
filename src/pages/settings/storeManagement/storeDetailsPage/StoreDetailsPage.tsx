@@ -30,7 +30,7 @@ export default function StoreDetailsPage() {
             </SecondaryNavbar>
             <Switch>
                 <Route path={`/app/settings/store-management/:id/channels`}>
-                    <ChannelsTab />
+                    <ChannelsTab storeId={id} />
                 </Route>
                 <Route path={`/app/settings/store-management/:id/`}>
                     <Redirect

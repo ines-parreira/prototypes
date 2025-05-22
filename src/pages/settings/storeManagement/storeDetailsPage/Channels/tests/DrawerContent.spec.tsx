@@ -2,6 +2,8 @@ import React from 'react'
 
 import { screen } from '@testing-library/react'
 
+import { IntegrationType } from 'models/integration/constants'
+import { Integration } from 'models/integration/types'
 import { renderWithStore } from 'utils/testing'
 
 import DrawerContent from '../ChannelsDrawer/DrawerContent'
@@ -17,16 +19,16 @@ describe('ChannelsDrawerContent', () => {
             {
                 id: 1,
                 name: 'Channel 1',
-                type: 'email',
+                type: IntegrationType.Email,
                 meta: { address: 'test1@mail.com' },
             },
             {
                 id: 2,
                 name: 'Channel 2',
-                type: 'email',
+                type: IntegrationType.Email,
                 meta: { address: 'test2@mail.com' },
             },
-        ],
+        ] as Integration[],
         unassignedChannels: [
             {
                 id: 3,
@@ -34,7 +36,7 @@ describe('ChannelsDrawerContent', () => {
                 type: 'email',
                 meta: { address: 'test3@mail.com' },
             },
-        ],
+        ] as Integration[],
     }
 
     const mockSetChanges = jest.fn()

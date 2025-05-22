@@ -2,16 +2,13 @@ import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 
+import { mockStoresWithAssignedChannels } from '../fixtures'
 import ChannelListCell from '../storeManagementTable/StoreManagementTableRow/ChannelListCell'
-import { Channel } from '../types'
 
 describe('ChannelListCell', () => {
-    const mockChannels: Channel[] = [
-        { type: 'email', name: 'email 1', id: '1', address: 'email@email.com' },
-        { type: 'chat', name: 'chat', id: '2', address: 'en-US' },
-    ]
+    const mockChannels = mockStoresWithAssignedChannels[0].assignedChannels
 
-    const mockStoreId = 'store-123'
+    const mockStoreId = 123
 
     it('renders channel icons correctly', () => {
         render(
@@ -20,6 +17,10 @@ describe('ChannelListCell', () => {
 
         expect(screen.getByText('email')).toBeInTheDocument()
         expect(screen.getByText('forum')).toBeInTheDocument()
+        expect(
+            document.querySelector('.icon-facebook-feed'),
+        ).toBeInTheDocument()
+        screen.debug(undefined, 100000)
     })
 
     it('handles empty channels array', () => {

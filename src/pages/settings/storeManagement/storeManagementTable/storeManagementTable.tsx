@@ -42,7 +42,7 @@ export const StoreManagementTable = () => {
                     <TableBody>
                         {paginatedStores.map((store) => (
                             <StoreManagementTableRow
-                                key={store.id}
+                                key={store.store.id}
                                 store={store}
                             />
                         ))}

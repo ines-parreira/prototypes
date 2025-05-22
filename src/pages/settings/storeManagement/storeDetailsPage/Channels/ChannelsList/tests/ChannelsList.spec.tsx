@@ -1,5 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
+import { Integration } from 'models/integration/types'
+
 import ChannelsList from '../ChannelsList'
 
 const mockChannels = [
@@ -19,7 +21,16 @@ const mockChannels = [
             address: 'another@example.com',
         },
     },
-]
+] as Integration[]
+
+const mockChannelsWithoutAddress = [
+    {
+        id: 3,
+        name: 'Facebook',
+        type: 'facebook',
+        meta: {},
+    },
+] as Integration[]
 
 describe('AssignedChannelsList', () => {
     it('renders channels list correctly', () => {
@@ -66,5 +77,18 @@ describe('AssignedChannelsList', () => {
         fireEvent.click(deleteButtons[0])
 
         expect(onDelete).toHaveBeenCalledWith(1)
+    })
+
+    it('renders empty when channel meta does not have address', () => {
+        const onDelete = jest.fn()
+        render(
+            <ChannelsList
+                channelType="email"
+                channels={mockChannelsWithoutAddress}
+                onDelete={onDelete}
+            />,
+        )
+
+        expect(screen.getByText('Facebook')).toBeInTheDocument()
     })
 })

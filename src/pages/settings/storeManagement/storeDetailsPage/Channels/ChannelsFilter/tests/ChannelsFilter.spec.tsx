@@ -1,5 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react'
 
+import { Integration } from 'models/integration/types'
 import { renderWithStore } from 'utils/testing'
 
 import { Channel } from '../../hooks/useChannels'
@@ -28,7 +29,7 @@ describe('ChannelsFilter', () => {
                 type: 'email',
                 meta: { address: 'email3@test.com' },
             },
-        ],
+        ] as Integration[],
         assignedChannels: [
             {
                 id: 4,
@@ -36,7 +37,7 @@ describe('ChannelsFilter', () => {
                 type: 'email',
                 meta: { address: 'email4@test.com' },
             },
-        ],
+        ] as Integration[],
     }
 
     beforeEach(() => {
