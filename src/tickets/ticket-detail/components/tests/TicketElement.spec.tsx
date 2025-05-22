@@ -5,12 +5,12 @@ import { TicketEventEnum } from 'pages/tickets/detail/components/AIAgentFeedback
 import type { TicketElement as TicketElementType } from '../../types'
 import { TicketElement } from '../TicketElement'
 
+jest.mock('pages/tickets/detail/components/PhoneEvent/PhoneEvent', () => () => (
+    <div>PhoneEvent</div>
+))
+
 jest.mock('../TicketAIEvent', () => ({
     TicketAIEvent: () => <div>TicketAIEvent</div>,
-}))
-
-jest.mock('../TicketEvent', () => ({
-    TicketEvent: () => <div>TicketEvent</div>,
 }))
 
 jest.mock('../TicketMessage', () => ({
@@ -31,13 +31,13 @@ describe('TicketElement', () => {
         expect(screen.getByText('TicketMessage')).toBeInTheDocument()
     })
 
-    it('should render a TicketEvent for an event element', () => {
+    it('should render a PhoneEvent for a phone-event element', () => {
         const element = {
-            type: 'event',
+            type: 'phone-event',
             data: { id: 1 },
         } as TicketElementType
         render(<TicketElement element={element} />)
-        expect(screen.getByText('TicketEvent')).toBeInTheDocument()
+        expect(screen.getByText('PhoneEvent')).toBeInTheDocument()
     })
 
     it('should render a TicketAIEvent for an ai-event element', () => {

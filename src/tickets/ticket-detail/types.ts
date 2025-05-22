@@ -9,6 +9,7 @@ type AIEvent = {
 export type TicketElement =
     | { data: AIEvent; datetime?: string; flags?: string[]; type: 'ai-event' }
     | { data: Event; datetime?: string; flags?: string[]; type: 'event' }
+    | { data: Event; datetime?: string; flags?: string[]; type: 'phone-event' }
     | {
           data: TicketMessage
           datetime: string
