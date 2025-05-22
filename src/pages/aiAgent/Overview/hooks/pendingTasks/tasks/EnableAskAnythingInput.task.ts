@@ -1,4 +1,5 @@
 import { AiAgentScope } from 'models/aiAgent/types'
+import { getChatActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 
 import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
@@ -18,9 +19,17 @@ export class EnableAskAnythingInputTask extends Task {
         return !!data?.aiAgentStoreConfiguration
     }
 
-    // No guidances including draft ones
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
+        const { enabled: isChatEnabled } = getChatActivation({
+            storeConfiguration: data.aiAgentStoreConfiguration,
+            chatIntegrationStatus: data.chatIntegrationsStatus,
+            selfServiceChatChannels: data.selfServiceChatChannels,
+            helpCentersFaq: data.faqHelpCenters,
+            publicResources: data.publicResources,
+        })
+
         return (
+            isChatEnabled &&
             data.isConvertFloatingChatInputEnabled &&
             data.aiAgentStoreConfiguration.scopes.includes(
                 AiAgentScope.Sales,

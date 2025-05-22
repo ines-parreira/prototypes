@@ -4,15 +4,28 @@ import { AiAgentStoreConfigurationFixture } from '../../tests/AiAgentStoreConfig
 import { EnableAskAnythingInputTask } from '../EnableAskAnythingInput.task'
 import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'
 
+const baseEngineData = {
+    publicResources: [{ id: 1 }],
+    selfServiceChatChannels: [{ value: { id: 1 } }],
+    chatIntegrationsStatus: [{ chatId: 1, installed: true }],
+} as any
+
 describe('EnableAskAnythingInputTask', () => {
     it('should display the task when floating input is not enabled', () => {
         const aiAgentStoreConfiguration =
             AiAgentStoreConfigurationFixture.start()
-                .withoutFloatingChatInputConfiguration([AiAgentScope.Sales])
+                .withoutFloatingChatInputConfiguration([
+                    AiAgentScope.Sales,
+                    AiAgentScope.Support,
+                ])
+                .withConnectedChatIntegrations([1])
+                .withConnectedHelpCenter(1)
+                .withChatChannelEnabled()
                 .build()
 
         const task = new EnableAskAnythingInputTask(
             buildRuleEngineData({
+                ...baseEngineData,
                 aiAgentStoreConfiguration,
                 isConvertFloatingChatInputEnabled: true,
             }),
@@ -24,11 +37,18 @@ describe('EnableAskAnythingInputTask', () => {
     it('should not display the task when floating input is enabled', () => {
         const aiAgentStoreConfiguration =
             AiAgentStoreConfigurationFixture.start()
-                .withFloatingChatInputConfiguration([AiAgentScope.Sales])
+                .withoutFloatingChatInputConfiguration([
+                    AiAgentScope.Sales,
+                    AiAgentScope.Support,
+                ])
+                .withConnectedChatIntegrations([1])
+                .withConnectedHelpCenter(1)
+                .withChatChannelEnabled()
                 .build()
 
         const task = new EnableAskAnythingInputTask(
             buildRuleEngineData({
+                ...baseEngineData,
                 aiAgentStoreConfiguration,
                 isConvertFloatingChatInputEnabled: false,
             }),
@@ -41,11 +61,63 @@ describe('EnableAskAnythingInputTask', () => {
     it('should not display the task when sales scope is not enabled', () => {
         const aiAgentStoreConfiguration =
             AiAgentStoreConfigurationFixture.start()
-                .withoutFloatingChatInputConfiguration([])
+                .withoutFloatingChatInputConfiguration([AiAgentScope.Support])
+                .withConnectedChatIntegrations([1])
+                .withConnectedHelpCenter(1)
+                .withChatChannelEnabled()
                 .build()
 
         const task = new EnableAskAnythingInputTask(
             buildRuleEngineData({
+                ...baseEngineData,
+                aiAgentStoreConfiguration,
+                isConvertFloatingChatInputEnabled: false,
+            }),
+            buildRuleEngineRoutes(),
+        )
+
+        expect(task.display).toBe(false)
+    })
+
+    it('should not display the task when feature flag is not enabled', () => {
+        const aiAgentStoreConfiguration =
+            AiAgentStoreConfigurationFixture.start()
+                .withoutFloatingChatInputConfiguration([
+                    AiAgentScope.Sales,
+                    AiAgentScope.Support,
+                ])
+                .withConnectedChatIntegrations([1])
+                .withConnectedHelpCenter(1)
+                .withChatChannelEnabled()
+                .build()
+
+        const task = new EnableAskAnythingInputTask(
+            buildRuleEngineData({
+                ...baseEngineData,
+                aiAgentStoreConfiguration,
+                isConvertFloatingChatInputEnabled: false,
+            }),
+            buildRuleEngineRoutes(),
+        )
+
+        expect(task.display).toBe(false)
+    })
+
+    it('should not display the task when chat is not enabled', () => {
+        const aiAgentStoreConfiguration =
+            AiAgentStoreConfigurationFixture.start()
+                .withoutFloatingChatInputConfiguration([
+                    AiAgentScope.Sales,
+                    AiAgentScope.Support,
+                ])
+                .withoutConnectedChatIntegrations()
+                .withConnectedHelpCenter(1)
+                .withChatChannelEnabled()
+                .build()
+
+        const task = new EnableAskAnythingInputTask(
+            buildRuleEngineData({
+                ...baseEngineData,
                 aiAgentStoreConfiguration,
                 isConvertFloatingChatInputEnabled: false,
             }),
