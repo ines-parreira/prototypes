@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import moment, { Moment } from 'moment/moment'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
 import { PeriodFilter } from 'pages/stats/common/filters/PeriodFilter'
 import {
     dateInPastFromStartOfToday,
@@ -98,7 +97,7 @@ export const AdjustedPeriodFilter = () => {
 
     const [isPeriodFilterSet, setIsPeriodFilterSet] = useState(false)
 
-    useEffectOnce(() => {
+    useEffect(() => {
         if (
             pageStatsFilters.period.start_datetime ===
                 defaultStatsFilters.period.start_datetime ||
@@ -126,7 +125,7 @@ export const AdjustedPeriodFilter = () => {
         }
 
         setIsPeriodFilterSet(true)
-    })
+    }, [pageStatsFilters, dispatch])
 
     return (
         <>
