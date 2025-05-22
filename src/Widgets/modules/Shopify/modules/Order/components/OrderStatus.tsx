@@ -14,10 +14,15 @@ type FinancialBadgeProps = {
     financialStatus: FinancialStatus
 }
 
+type InfluencedByAIBadgeProps = {
+    isInfluencedByAI: boolean
+}
+
 type Props = FulfillmentBadgeProps &
-    FinancialBadgeProps & {
+    FinancialBadgeProps &
+    InfluencedByAIBadgeProps & {
         isCancelled: boolean
-    }
+    } & InfluencedByAIBadgeProps
 
 type FulfillmentValues = Map<FulfillmentStatus | null, [ColorType, string]>
 type FinancialValues = Map<FinancialStatus, ColorType>
@@ -43,12 +48,14 @@ export default function OrderStatus({
     fulfillmentStatus,
     financialStatus,
     isCancelled,
+    isInfluencedByAI,
 }: Props) {
     return (
         <>
             {isCancelled && <CancelledBadge />}
             <FinancialBadge financialStatus={financialStatus} />
             <FulfillmentBadge fulfillmentStatus={fulfillmentStatus} />
+            {isInfluencedByAI && <InfluencedByAIBadge />}
         </>
     )
 }
@@ -73,4 +80,19 @@ function FinancialBadge({ financialStatus }: FinancialBadgeProps) {
 
 function CancelledBadge() {
     return <Badge type={'error'}>Cancelled</Badge>
+}
+
+function InfluencedByAIBadge() {
+    return (
+        <Badge
+            style={{
+                backgroundColor: 'var(--accessory-magenta-25)',
+                background:
+                    'linear-gradient(90deg, rgba(203, 85, 239, 0.8) -12%, rgba(111, 12, 134, 0.8) 120%)',
+                color: 'white',
+            }}
+        >
+            Influenced by AI
+        </Badge>
+    )
 }
