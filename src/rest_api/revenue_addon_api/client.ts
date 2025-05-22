@@ -31,6 +31,13 @@ async function buildGorgiasRevenueAddonApiClient() {
     const api = new OpenAPIClientAxios({
         definition: OpenAPIDoc as Document,
         withServer: { url: baseUrl },
+        axiosConfigDefaults: {
+            paramsSerializer: {
+                // Setting `indexes: null` disables bracket notation for array parameters,
+                // ensuring compatibility with the convert API requirements.
+                indexes: null,
+            },
+        },
     })
     apiClient = await api.init<Client>()
     apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor)
