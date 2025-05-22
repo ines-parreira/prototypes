@@ -122,7 +122,7 @@ describe('getNotificationParams', () => {
             title: 'Your AI Agent knowledge is ready!',
             subtitle:
                 'We’ve finished syncing your store store_1 so AI Agent can use it to answer tickets.',
-            redirectTo: '/app/ai-agent/overview',
+            redirectTo: '/app/ai-agent/shopify/store_1/knowledge',
         })
     })
 

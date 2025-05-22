@@ -59,7 +59,7 @@ export const getNotificationParams = (
             return {
                 title: 'Your AI Agent knowledge is ready!',
                 subtitle: `We’ve finished syncing your store ${shopName} so AI Agent can use it to answer tickets.`,
-                redirectTo: routes.overview,
+                redirectTo: routes.knowledge,
             }
         case AiAgentNotificationType.FirstAiAgentTicket:
             return {
