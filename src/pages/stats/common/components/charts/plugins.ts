@@ -1,7 +1,7 @@
 import { Chart, Plugin, Tick } from 'chart.js'
 import moment, { Moment } from 'moment'
 
-import colorTokens from '@gorgias/design-tokens/dist/tokens/colors.json'
+import colorTokens from '@gorgias/design-tokens/tokens/colors'
 
 export type highlightOptions = {
     timeRanges: [[Moment, Moment]]
@@ -16,8 +16,8 @@ export const highlightTimeRanges: Plugin = {
         args,
         {
             timeRanges,
-            defaultColor = colorTokens['📺 Classic'].Neutral.Grey_2.value,
-            highlightColor = colorTokens['📺 Classic'].Neutral.Grey_0.value,
+            defaultColor = colorTokens.classic.neutral.grey_2.value,
+            highlightColor = colorTokens.classic.neutral.grey_0.value,
         }: highlightOptions,
     ) => {
         if (!chart.canvas || !timeRanges) {

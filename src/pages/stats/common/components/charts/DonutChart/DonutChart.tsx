@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useMemo, useState } from 'react'
+import { ReactNode, useCallback, useMemo, useState } from 'react'
 
 import {
     ActiveElement,
@@ -11,8 +11,8 @@ import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 import { Doughnut } from 'react-chartjs-2'
 
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
-import typography from '@gorgias/design-tokens/dist/tokens/typography.json'
+import colors from '@gorgias/design-tokens/tokens/colors'
+import typography from '@gorgias/design-tokens/tokens/typography'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { useTheme } from 'core/theme'
@@ -26,10 +26,10 @@ import { renderTickLabelAsNumber } from 'pages/stats/utils'
 import { DonutChartTooltip } from './DonutChartTooltip'
 
 const STAT_COLORS = [
-    colors['📺 Classic'].Main.Primary.value,
-    colors['📺 Classic'].Feedback.Warning.value,
-    colors['📺 Classic'].Feedback.Success.value,
-    colors['📺 Classic'].Feedback.Error.value,
+    colors.classic.main.primary.value,
+    colors.classic.feedback.warning.value,
+    colors.classic.feedback.success.value,
+    colors.classic.feedback.error.value,
 ]
 
 const innerLabelPlugin: Plugin<'doughnut'> = {
@@ -42,8 +42,7 @@ const innerLabelPlugin: Plugin<'doughnut'> = {
             const ctx = chart.ctx
 
             const total = renderTickLabelAsNumber(meta.total)
-            const currentTypography =
-                typography['💬 Help Desk'].Heading['Page | Semibold']
+            const currentTypography = typography.help_desk.heading.page_semibold
             ctx.textAlign = 'center'
             ctx.textBaseline = 'middle'
             ctx.font = `${currentTypography['font-weight'].value} ${currentTypography['font-size'].value} ${currentTypography['font-family'].value}`

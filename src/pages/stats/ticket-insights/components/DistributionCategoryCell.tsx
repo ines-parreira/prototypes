@@ -1,6 +1,6 @@
-import React, { PropsWithRef } from 'react'
+import { PropsWithRef } from 'react'
 
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+import colors from '@gorgias/design-tokens/tokens/colors'
 
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'models/reporting/queryFactories/utils'
 import BodyCell, {
@@ -15,7 +15,7 @@ type Props = {
     progress: number
 }
 
-const cellColor = colors['📺 Classic'].Accessory.Blue_bg.value
+const cellColor = colors.classic.accessory.blue_bg.value
 export const formatCategory = (category: string) =>
     category
         ?.split(TICKET_CUSTOM_FIELDS_API_SEPARATOR)

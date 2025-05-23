@@ -1,6 +1,6 @@
 import { Moment } from 'moment'
 
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+import colors from '@gorgias/design-tokens/tokens/colors'
 
 import { TicketChannel } from 'business/types/ticket'
 import {
@@ -186,14 +186,14 @@ export const getNewSetOfRanges = ({
 }
 
 export const LINES_COLORS = [
-    colors['🖥 Modern'].Main.Variations.Primary_2.value,
-    colors['🖥 Modern'].Feedback.Variations.Warning_4.value,
-    colors['📺 Classic'].Accessory.Purple_text.value,
-    colors['📺 Classic'].Accessory.Yellow_text.value,
-    colors['📺 Classic'].Accessory.Blue_text.value,
-    colors['📺 Classic'].Accessory.Brown_text.value,
-    colors['🖥 Modern'].Neutral.Grey_5.value,
-    colors['📺 Classic'].Feedback.Variations.Success_4.value,
-    colors['📺 Classic'].Accessory.Navy_text.value,
-    colors['🖤 Dark'].Main.Secondary.value,
+    colors.modern.main.variations.primary_2.value,
+    colors.modern.feedback.variations.warning_4.value,
+    colors.classic.accessory.purple_text.value,
+    colors.classic.accessory.yellow_text.value,
+    colors.classic.accessory.blue_text.value,
+    colors.classic.accessory.brown_text.value,
+    colors.modern.neutral.grey_5.value,
+    colors.classic.feedback.variations.success_4.value,
+    colors.classic.accessory.navy_text.value,
+    colors.dark.main.secondary.value,
 ]

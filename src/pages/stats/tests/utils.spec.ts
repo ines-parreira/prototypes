@@ -1,7 +1,7 @@
 import { ChartArea, TooltipItem } from 'chart.js'
 import moment from 'moment'
 
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+import colors from '@gorgias/design-tokens/tokens/colors'
 
 import { DisplayEventType } from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
 import { getAutomateColorsForEventType } from 'hooks/reporting/automate/utils'
@@ -290,32 +290,32 @@ describe('highlightString', () => {
 })
 
 describe('getAutomateColorsForEventType', () => {
-    const classicColors = colors['📺 Classic']
+    const classicColors = colors.classic
     it('should return Exact colors', () => {
         expect(
             getAutomateColorsForEventType(DisplayEventType.AI_AGENT),
-        ).toEqual(classicColors.Accessory.Navy_text.value)
+        ).toEqual(classicColors.accessory.navy_text.value)
         expect(
             getAutomateColorsForEventType(DisplayEventType.WORKFLOWS),
-        ).toEqual(classicColors.Main.Variations.Primary_3.value)
+        ).toEqual(classicColors.main.variations.primary_3.value)
         expect(
             getAutomateColorsForEventType(
                 DisplayEventType.QUICK_RESPONSES_DEPRECATED,
             ),
-        ).toEqual(classicColors.Feedback.Variations.Warning_3.value)
+        ).toEqual(classicColors.feedback.variations.warning_3.value)
         expect(
             getAutomateColorsForEventType(
                 DisplayEventType.ARTICLE_RECOMMENDATION,
             ),
-        ).toEqual(classicColors.Accessory.Purple_text.value)
+        ).toEqual(classicColors.accessory.purple_text.value)
         expect(
             getAutomateColorsForEventType(DisplayEventType.RETURN_ORDER),
-        ).toEqual(classicColors.Feedback.Variations.Error_3.value)
+        ).toEqual(classicColors.feedback.variations.error_3.value)
         expect(
             getAutomateColorsForEventType(DisplayEventType.REPORT_ORDER_ISSUE),
-        ).toEqual(classicColors.Neutral.Grey_5.value)
+        ).toEqual(classicColors.neutral.grey_5.value)
         expect(
             getAutomateColorsForEventType(DisplayEventType.AUTORESPONDERS),
-        ).toEqual(classicColors.Accessory.Yellow_text.value)
+        ).toEqual(classicColors.accessory.yellow_text.value)
     })
 })

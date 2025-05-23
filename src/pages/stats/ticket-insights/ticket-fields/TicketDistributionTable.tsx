@@ -1,4 +1,4 @@
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+import colors from '@gorgias/design-tokens/tokens/colors'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { useTicketsDistribution } from 'hooks/reporting/ticket-insights/useTicketsDistribution'
@@ -35,7 +35,7 @@ import { TicketFieldsMetric } from 'state/ui/stats/types'
 
 export const OUTSIDE_TOP_DATA = {
     title: 'Outside of Top used',
-    color: colors['📺 Classic'].Accessory.Purple_bg.value,
+    color: colors.classic.accessory.purple_bg.value,
 }
 
 const LoadingFallback = () => {

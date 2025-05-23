@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 
 import { Meta, StoryObj } from '@storybook/react'
 
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+import colors from '@gorgias/design-tokens/tokens/colors'
 
 import Legend from './Legend'
 
@@ -21,19 +21,19 @@ const defaultProps: ComponentProps<typeof Legend> = {
     items: [
         {
             label: 'Foo',
-            color: colors['📺 Classic'].Main.Variations.Primary_3.value,
+            color: colors.classic.main.variations.primary_3.value,
         },
         {
             label: 'Bar',
-            color: colors['📺 Classic'].Feedback.Variations.Error_3.value,
+            color: colors.classic.feedback.variations.error_3.value,
         },
         {
             label: 'Baz',
-            color: colors['📺 Classic'].Feedback.Variations.Warning_3.value,
+            color: colors.classic.feedback.variations.warning_3.value,
         },
         {
             label: 'Qux',
-            color: colors['📺 Classic'].Accessory.Purple_text.value,
+            color: colors.classic.accessory.purple_text.value,
         },
     ],
 }

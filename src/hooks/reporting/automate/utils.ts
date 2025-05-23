@@ -8,7 +8,7 @@ import mapValues from 'lodash/mapValues'
 import orderBy from 'lodash/orderBy'
 import moment, { Moment } from 'moment'
 
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+import colors from '@gorgias/design-tokens/tokens/colors'
 import { OrderDirection } from '@gorgias/helpdesk-queries'
 
 import {
@@ -140,26 +140,26 @@ function getAutomateStatsEventTypeMap(
 }
 
 export function getAutomateColorsForEventType(eventType: string): string {
-    const classicColors = colors['📺 Classic']
+    const classicColors = colors.classic
     switch (eventType) {
         case DisplayEventType.AI_AGENT:
-            return classicColors.Accessory.Navy_text.value
+            return classicColors.accessory.navy_text.value
         case DisplayEventType.WORKFLOWS:
-            return classicColors.Main.Variations.Primary_3.value
+            return classicColors.main.variations.primary_3.value
         case DisplayEventType.QUICK_RESPONSES_DEPRECATED:
-            return classicColors.Feedback.Variations.Warning_3.value
+            return classicColors.feedback.variations.warning_3.value
         case DisplayEventType.ARTICLE_RECOMMENDATION:
-            return classicColors.Accessory.Purple_text.value
+            return classicColors.accessory.purple_text.value
         case DisplayEventType.TRACK_ORDER:
-            return classicColors.Accessory.Green_text.value
+            return classicColors.accessory.green_text.value
         case DisplayEventType.RETURN_ORDER:
-            return classicColors.Feedback.Variations.Error_3.value
+            return classicColors.feedback.variations.error_3.value
         case DisplayEventType.REPORT_ORDER_ISSUE:
-            return classicColors.Neutral.Grey_5.value
+            return classicColors.neutral.grey_5.value
         case DisplayEventType.AUTORESPONDERS:
-            return classicColors.Accessory.Yellow_text.value
+            return classicColors.accessory.yellow_text.value
         default:
-            return colors['📺 Classic'].Neutral.Grey_5.value
+            return classicColors.neutral.grey_5.value
     }
 }
 

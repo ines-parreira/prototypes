@@ -1,8 +1,8 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import colorTokens from '@gorgias/design-tokens/dist/tokens/colors.json'
+import colorTokens from '@gorgias/design-tokens/tokens/colors'
 
 import { useTheme } from 'core/theme'
 import css from 'pages/stats/common/components/charts/Chart.less'
@@ -103,8 +103,8 @@ describe('<DonutChart />', () => {
 
     it('should pass custom colors', () => {
         const customColors = [
-            colorTokens['📺 Classic'].Neutral.Grey_0.value,
-            colorTokens['📺 Classic'].Neutral.Grey_6.value,
+            colorTokens.classic.neutral.grey_0.value,
+            colorTokens.classic.neutral.grey_6.value,
         ]
         renderComponent({
             data: [
@@ -249,8 +249,8 @@ describe('<DonutChart />', () => {
         })
 
         const initialCall = mockDoughnutProps.mock.calls[0][0]
-        const defaultColor0 = colorTokens['📺 Classic'].Main.Primary.value
-        const defaultColor1 = colorTokens['📺 Classic'].Feedback.Warning.value
+        const defaultColor0 = colorTokens.classic.main.primary.value
+        const defaultColor1 = colorTokens.classic.feedback.warning.value
 
         expect(initialCall.data.datasets[0].backgroundColor).toEqual([
             defaultColor0,
@@ -292,5 +292,101 @@ describe('<DonutChart />', () => {
         ])
 
         jest.useRealTimers()
+    })
+
+    it('should render inner label plugin when no children are provided', () => {
+        renderComponent({
+            data: [
+                { label: 'Label 1', value: 11 },
+                { label: 'Label 2', value: 12 },
+            ],
+        })
+
+        const { plugins } = mockDoughnutProps.mock.calls[0][0]
+        expect(plugins).toHaveLength(1)
+        expect(plugins[0].id).toBe('innerLabel')
+    })
+
+    it('should not render inner label plugin when children are provided', () => {
+        renderComponent({
+            data: [
+                { label: 'Label 1', value: 11 },
+                { label: 'Label 2', value: 12 },
+            ],
+            children: <div>children</div>,
+        })
+
+        const { plugins } = mockDoughnutProps.mock.calls[0][0]
+        expect(plugins).toHaveLength(0)
+    })
+
+    it('should use custom colors for legend when provided', () => {
+        const customColors = ['#FF0000', '#00FF00']
+        renderComponent({
+            data: [
+                { label: 'Label 1', value: 11 },
+                { label: 'Label 2', value: 12 },
+            ],
+            customColors,
+            displayLegend: true,
+        })
+
+        const legendItems = document.querySelectorAll('.legendItem')
+        expect(legendItems).toHaveLength(2)
+        expect(legendItems[0].querySelector('.legendCaret')).toHaveStyle({
+            backgroundColor: customColors[0],
+        })
+        expect(legendItems[1].querySelector('.legendCaret')).toHaveStyle({
+            backgroundColor: customColors[1],
+        })
+    })
+
+    it('should apply custom legend className when provided', () => {
+        renderComponent({
+            data: [
+                { label: 'Label 1', value: 11 },
+                { label: 'Label 2', value: 12 },
+            ],
+            displayLegend: true,
+            legendClassName: 'custom-legend',
+        })
+
+        expect(document.querySelector('.custom-legend')).toBeInTheDocument()
+    })
+
+    it('should render skeleton with custom height when provided', () => {
+        const skeletonHeight = 200
+        renderComponent({
+            data: [
+                { label: 'Label 1', value: 11 },
+                { label: 'Label 2', value: 12 },
+            ],
+            isLoading: true,
+            skeletonHeight,
+        })
+
+        const skeleton = document.querySelector('.react-loading-skeleton')
+        expect(skeleton).toHaveStyle({ height: `${skeletonHeight}px` })
+    })
+
+    it('should add clickable class when segment is hovered and onSegmentClick is provided', () => {
+        renderComponent({
+            data: [
+                { label: 'Label 1', value: 11 },
+                { label: 'Label 2', value: 12 },
+            ],
+            onSegmentClick: jest.fn(),
+        })
+
+        const initialCall = mockDoughnutProps.mock.calls[0][0]
+        const container = document.querySelector(`.${css.container}`)
+
+        expect(container).not.toHaveClass('clickable')
+
+        act(() => {
+            initialCall.options.onHover(null, [{ index: 1 }])
+        })
+
+        expect(container).toHaveClass('clickable')
     })
 })

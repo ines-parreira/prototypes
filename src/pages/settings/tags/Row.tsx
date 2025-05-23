@@ -1,10 +1,10 @@
-import React, { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 
 import classNames from 'classnames'
 import { Map } from 'immutable'
 import { Form } from 'reactstrap'
 
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+import colors from '@gorgias/design-tokens/tokens/colors'
 import { Tag, TagDecoration } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -48,7 +48,7 @@ export default function Row({ meta, refresh, row }: Props) {
         event.preventDefault()
 
         const decorationValue = {
-            color: decoration.color || colors['🤍 Light'].Neutral.Grey_3.value,
+            color: decoration.color || colors.light.neutral.grey_3.value,
         }
 
         if (!decoration.color) {
@@ -112,7 +112,7 @@ export default function Row({ meta, refresh, row }: Props) {
                     <ColorPicker
                         className={css.colorPicker}
                         value={decoration.color}
-                        defaultValue={colors['🤍 Light'].Neutral.Grey_3.value}
+                        defaultValue={colors.light.neutral.grey_3.value}
                         onChange={changeColor}
                     />
                     <Button intent="secondary" onClick={onCancel}>

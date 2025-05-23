@@ -1,4 +1,4 @@
-import colorTokens from '@gorgias/design-tokens/dist/tokens/colors.json'
+import colorTokens from '@gorgias/design-tokens/tokens/colors'
 
 const CAMPAIGN_PERFORMANCE_ROWS = [
     {
@@ -2156,13 +2156,13 @@ const CAMPAIGN_PERFORMANCE_ROWS = [
                 },
                 avatar_type: 'team-members',
                 conversation_color:
-                    colorTokens['📺 Classic'].Main.Variations.Primary_4.value,
+                    colorTokens.classic.main.variations.primary_4.value,
                 introduction_text: 'How can we help?',
                 launcher: {
                     label: 'Chat with us',
                     type: 'icon-label',
                 },
-                main_color: colorTokens['📺 Classic'].Feedback.Error.value,
+                main_color: colorTokens.classic.feedback.error.value,
                 offline_introduction_text: "We'll be back tomorrow",
                 position: {
                     alignment: 'bottom-right',

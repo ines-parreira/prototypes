@@ -1,9 +1,7 @@
-import React from 'react'
-
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import * as chartjs from 'chart.js'
 
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+import colors from '@gorgias/design-tokens/tokens/colors'
 
 import { ThemeProvider } from 'core/theme'
 import { ticketsCreatedDataItem } from 'fixtures/chart'
@@ -124,11 +122,11 @@ describe('<BarChart />', () => {
         ) => undefined
 
         expect(color({ tick: { value: 0 } })).toEqual(
-            colors['📺 Classic'].Main.Primary.value,
+            colors.classic.main.primary.value,
         )
 
         expect(color({ tick: { value: 1 } })).toEqual(
-            colors['📺 Classic'].Neutral.Grey_2.value,
+            colors.classic.neutral.grey_2.value,
         )
     })
 
@@ -145,11 +143,11 @@ describe('<BarChart />', () => {
         ) => undefined
 
         expect(color({ tick: { value: 0 } })).toEqual(
-            colors['📺 Classic'].Main.Primary.value,
+            colors.classic.main.primary.value,
         )
 
         expect(color({ tick: { value: 1 } })).toEqual(
-            colors['📺 Classic'].Neutral.Grey_2.value,
+            colors.classic.neutral.grey_2.value,
         )
     })
 

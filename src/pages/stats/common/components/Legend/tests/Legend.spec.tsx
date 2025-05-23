@@ -1,8 +1,8 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { render } from '@testing-library/react'
 
-import colorTokens from '@gorgias/design-tokens/dist/tokens/colors.json'
+import colorTokens from '@gorgias/design-tokens/tokens/colors'
 
 import Legend from '../Legend'
 
@@ -11,11 +11,11 @@ describe('Legend', () => {
         labels: [
             {
                 name: 'line 1',
-                background: colorTokens['📺 Classic'].Neutral.Grey_6.value,
+                background: colorTokens.classic.neutral.grey_6.value,
             },
             {
                 name: 'line 2',
-                background: colorTokens['📺 Classic'].Neutral.Grey_0.value,
+                background: colorTokens.classic.neutral.grey_0.value,
             },
             {
                 name: 'square line 1',

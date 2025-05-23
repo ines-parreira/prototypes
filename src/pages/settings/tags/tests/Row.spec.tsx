@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -27,8 +27,8 @@ const saveMock = assumeMock(save)
 const selectMock = assumeMock(select)
 
 const mockDefaultColor = '#ddd'
-jest.mock('@gorgias/design-tokens/dist/tokens/colors.json', () => ({
-    ['🤍 Light']: { Neutral: { Grey_3: { value: '#ddd' } } },
+jest.mock('@gorgias/design-tokens/tokens/colors', () => ({
+    ['light']: { neutral: { grey_3: { value: '#ddd' } } },
 }))
 
 describe('<Row />', () => {
