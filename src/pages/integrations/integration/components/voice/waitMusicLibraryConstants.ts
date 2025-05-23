@@ -1,6 +1,6 @@
 import {
-    UpdateWaitMusicLibrary,
-    WaitMusicType,
+    VoiceQueueWaitMusicLibrary,
+    VoiceQueueWaitMusicLibraryTypeType,
 } from '@gorgias/helpdesk-queries'
 
 export const RINGTONE_AUDIO_FILE_PATHS = [
@@ -31,7 +31,7 @@ export const RINGTONE_AUDIO_FILE_PATHS = [
     },
 ]
 
-export const STATIC_WAIT_MUSIC_LIBRARY: UpdateWaitMusicLibrary[] = [
+export const STATIC_WAIT_MUSIC_LIBRARY: VoiceQueueWaitMusicLibrary[] = [
     {
         key: 'chill',
         name: 'Chill While Waiting',
@@ -58,17 +58,17 @@ export const STATIC_WAIT_MUSIC_LIBRARY: UpdateWaitMusicLibrary[] = [
 ]
 export const DEFAULT_STATIC_WAIT_MUSIC_LIBRARY_INDEX = 3
 
-export const WAIT_MUSIC_LIBRARY: UpdateWaitMusicLibrary[] = [
+export const WAIT_MUSIC_LIBRARY: VoiceQueueWaitMusicLibrary[] = [
     ...RINGTONE_AUDIO_FILE_PATHS,
     ...STATIC_WAIT_MUSIC_LIBRARY,
 ]
 
 export const DEFAULT_WAIT_MUSIC_PREFERENCES = {
-    type: WaitMusicType.Library,
+    type: VoiceQueueWaitMusicLibraryTypeType.Library,
     library: STATIC_WAIT_MUSIC_LIBRARY[DEFAULT_STATIC_WAIT_MUSIC_LIBRARY_INDEX],
 }
 
 export const QUEUE_DEFAULT_WAIT_MUSIC_PREFERENCES = {
-    type: WaitMusicType.Library,
+    type: VoiceQueueWaitMusicLibraryTypeType.Library,
     library: STATIC_WAIT_MUSIC_LIBRARY[0],
 }

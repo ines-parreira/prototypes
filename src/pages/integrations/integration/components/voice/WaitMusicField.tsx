@@ -4,7 +4,8 @@ import _get from 'lodash/get'
 
 import {
     useUploadCustomVoiceRecording,
-    WaitMusicType,
+    VoiceQueueWaitMusicCustomRecordingTypeType,
+    VoiceQueueWaitMusicLibraryTypeType,
 } from '@gorgias/helpdesk-queries'
 import { CustomRecordingType } from '@gorgias/helpdesk-types'
 
@@ -38,7 +39,7 @@ const WaitMusicField = ({ value, onChange, shouldUpload = false }: Props) => {
             onSuccess: (response) => {
                 const newValue: LocalWaitMusicPreferences = {
                     ...value,
-                    type: WaitMusicType.CustomRecording,
+                    type: VoiceQueueWaitMusicCustomRecordingTypeType.CustomRecording,
                     custom_recording: {
                         audio_file_path: response.data.url,
                         audio_file_name: response.data.name,
@@ -60,7 +61,8 @@ const WaitMusicField = ({ value, onChange, shouldUpload = false }: Props) => {
     useEffect(() => {
         if (
             !customRecordingPath &&
-            value?.type === WaitMusicType.CustomRecording &&
+            value?.type ===
+                VoiceQueueWaitMusicCustomRecordingTypeType.CustomRecording &&
             value?.custom_recording?.audio_file_path
         ) {
             setCustomRecordingPath(value?.custom_recording?.audio_file_path)
@@ -78,7 +80,8 @@ const WaitMusicField = ({ value, onChange, shouldUpload = false }: Props) => {
             if (voiceRecordingUpload) {
                 if (
                     shouldUpload &&
-                    value.type === WaitMusicType.CustomRecording
+                    value.type ===
+                        VoiceQueueWaitMusicCustomRecordingTypeType.CustomRecording
                 ) {
                     const { uploadedFile } = voiceRecordingUpload
                     const params = {
@@ -122,7 +125,7 @@ const WaitMusicField = ({ value, onChange, shouldUpload = false }: Props) => {
         <>
             <div className={css.horizontalRadioButtons}>
                 <WaitMusicRadioButton
-                    waitMusicType={WaitMusicType.Library}
+                    waitMusicType={VoiceQueueWaitMusicLibraryTypeType.Library}
                     selectedWaitMusicType={value.type}
                     label="Choose from library"
                     onChange={(waitMusicType) => {
@@ -133,7 +136,9 @@ const WaitMusicField = ({ value, onChange, shouldUpload = false }: Props) => {
                     }}
                 />
                 <WaitMusicRadioButton
-                    waitMusicType={WaitMusicType.CustomRecording}
+                    waitMusicType={
+                        VoiceQueueWaitMusicCustomRecordingTypeType.CustomRecording
+                    }
                     selectedWaitMusicType={value.type}
                     label="Custom recording"
                     onChange={(waitMusicType) => {
@@ -141,7 +146,8 @@ const WaitMusicField = ({ value, onChange, shouldUpload = false }: Props) => {
                     }}
                 />
             </div>
-            {value.type === WaitMusicType.CustomRecording && (
+            {value.type ===
+                VoiceQueueWaitMusicCustomRecordingTypeType.CustomRecording && (
                 <VoiceRecordingInput
                     voiceRecordingPath={customRecordingPath}
                     onVoiceRecordingUpload={handleCustomRecordingUpload}
@@ -152,13 +158,13 @@ const WaitMusicField = ({ value, onChange, shouldUpload = false }: Props) => {
                     isLoading={isLoading}
                 />
             )}
-            {value.type === WaitMusicType.Library && (
+            {value.type === VoiceQueueWaitMusicLibraryTypeType.Library && (
                 <WaitMusicLibrarySelect
                     library={value.library}
                     onChange={(selectedLibrary) =>
                         onChange({
                             ...value,
-                            type: WaitMusicType.Library,
+                            type: VoiceQueueWaitMusicLibraryTypeType.Library,
                             library: selectedLibrary,
                         })
                     }
@@ -167,6 +173,10 @@ const WaitMusicField = ({ value, onChange, shouldUpload = false }: Props) => {
         </>
     )
 }
+
+type WaitMusicType =
+    | VoiceQueueWaitMusicLibraryTypeType
+    | VoiceQueueWaitMusicCustomRecordingTypeType
 
 type WaitMusicRadioButtonProps = {
     waitMusicType: WaitMusicType

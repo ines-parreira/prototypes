@@ -1,8 +1,7 @@
 // g/integrations/phone/schemas.py
 import {
     Integration as ApiIntegration,
-    UpdateWaitMusicLibrary,
-    WaitMusicType,
+    VoiceQueueWaitMusicLibrary,
 } from '@gorgias/helpdesk-queries'
 
 import { PhoneFunction } from 'business/twilio'
@@ -159,7 +158,7 @@ export type LocalWaitMusicCustomRecording = {
 }
 
 export type LocalWaitMusicPreferences = {
-    type: WaitMusicType
+    type: 'library' | 'custom_recording'
     custom_recording?: LocalWaitMusicCustomRecording
-    library?: UpdateWaitMusicLibrary
+    library?: VoiceQueueWaitMusicLibrary
 }

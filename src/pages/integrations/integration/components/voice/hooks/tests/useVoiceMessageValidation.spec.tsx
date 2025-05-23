@@ -5,7 +5,10 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { WaitMusicType } from '@gorgias/helpdesk-queries'
+import {
+    VoiceQueueWaitMusicCustomRecordingTypeType,
+    VoiceQueueWaitMusicLibraryTypeType,
+} from '@gorgias/helpdesk-queries'
 
 import {
     IvrMenuActionType,
@@ -786,10 +789,10 @@ describe('useVoiceMessageValidation().areWaitMusicPreferencesTheSame', () => {
     it('should not be the same when they have different type', () => {
         const { result } = renderAreWaitMusicPreferencesTheSame(
             {
-                type: WaitMusicType.Library,
+                type: VoiceQueueWaitMusicLibraryTypeType.Library,
             },
             {
-                type: WaitMusicType.CustomRecording,
+                type: VoiceQueueWaitMusicCustomRecordingTypeType.CustomRecording,
             },
         )
         expect(result.current).toBe(false)
@@ -798,7 +801,7 @@ describe('useVoiceMessageValidation().areWaitMusicPreferencesTheSame', () => {
     it('should be the same when they are both library and have the same key', () => {
         const { result } = renderAreWaitMusicPreferencesTheSame(
             {
-                type: WaitMusicType.Library,
+                type: VoiceQueueWaitMusicLibraryTypeType.Library,
                 library: {
                     audio_file_path:
                         'https://assets.gorgias.io/phone/Ringtone.mp3',
@@ -807,7 +810,7 @@ describe('useVoiceMessageValidation().areWaitMusicPreferencesTheSame', () => {
                 },
             },
             {
-                type: WaitMusicType.Library,
+                type: VoiceQueueWaitMusicLibraryTypeType.Library,
                 library: {
                     audio_file_path:
                         'https://assets.gorgias.io/phone/Ringtone.mp3',
@@ -822,7 +825,7 @@ describe('useVoiceMessageValidation().areWaitMusicPreferencesTheSame', () => {
     it('should not be the same when they are both library but have different key', () => {
         const { result } = renderAreWaitMusicPreferencesTheSame(
             {
-                type: WaitMusicType.Library,
+                type: VoiceQueueWaitMusicLibraryTypeType.Library,
                 library: {
                     audio_file_path:
                         'https://assets.gorgias.io/phone/Ringtone.mp3',
@@ -831,7 +834,7 @@ describe('useVoiceMessageValidation().areWaitMusicPreferencesTheSame', () => {
                 },
             },
             {
-                type: WaitMusicType.Library,
+                type: VoiceQueueWaitMusicLibraryTypeType.Library,
                 library: {
                     audio_file_path:
                         'https://assets.gorgias.io/phone/CatchyJingle.mp3',
@@ -846,7 +849,7 @@ describe('useVoiceMessageValidation().areWaitMusicPreferencesTheSame', () => {
     it('should be the same when they are both custom recording and have the same audio file URL', () => {
         const { result } = renderAreWaitMusicPreferencesTheSame(
             {
-                type: WaitMusicType.CustomRecording,
+                type: VoiceQueueWaitMusicCustomRecordingTypeType.CustomRecording,
                 custom_recording: {
                     audio_file_name: 'cool-rock-riffs.mp3',
                     audio_file_path:
@@ -855,7 +858,7 @@ describe('useVoiceMessageValidation().areWaitMusicPreferencesTheSame', () => {
                 },
             },
             {
-                type: WaitMusicType.CustomRecording,
+                type: VoiceQueueWaitMusicCustomRecordingTypeType.CustomRecording,
                 custom_recording: {
                     audio_file_name: 'cool-rock-riffs.mp3',
                     audio_file_path:
@@ -870,7 +873,7 @@ describe('useVoiceMessageValidation().areWaitMusicPreferencesTheSame', () => {
     it('should not be the same when they are both custom recording but have different audio file URL', () => {
         const { result } = renderAreWaitMusicPreferencesTheSame(
             {
-                type: WaitMusicType.CustomRecording,
+                type: VoiceQueueWaitMusicCustomRecordingTypeType.CustomRecording,
                 custom_recording: {
                     audio_file_name: 'cool-rock-riffs.mp3',
                     audio_file_path:
@@ -879,7 +882,7 @@ describe('useVoiceMessageValidation().areWaitMusicPreferencesTheSame', () => {
                 },
             },
             {
-                type: WaitMusicType.CustomRecording,
+                type: VoiceQueueWaitMusicCustomRecordingTypeType.CustomRecording,
                 custom_recording: {
                     audio_file_name: 'magic-bossa-nova.mp3',
                     audio_file_path:
@@ -894,7 +897,7 @@ describe('useVoiceMessageValidation().areWaitMusicPreferencesTheSame', () => {
     it.each([
         {
             preferences: {
-                type: WaitMusicType.CustomRecording,
+                type: VoiceQueueWaitMusicCustomRecordingTypeType.CustomRecording,
                 custom_recording: {
                     audio_file_name: 'cool-rock-riffs.mp3',
                     audio_file_path:
@@ -904,7 +907,7 @@ describe('useVoiceMessageValidation().areWaitMusicPreferencesTheSame', () => {
                 },
             },
             other: {
-                type: WaitMusicType.CustomRecording,
+                type: VoiceQueueWaitMusicCustomRecordingTypeType.CustomRecording,
                 custom_recording: {
                     audio_file_name: 'cool-rock-riffs.mp3',
                     audio_file_path:
@@ -915,7 +918,7 @@ describe('useVoiceMessageValidation().areWaitMusicPreferencesTheSame', () => {
         },
         {
             preferences: {
-                type: WaitMusicType.CustomRecording,
+                type: VoiceQueueWaitMusicCustomRecordingTypeType.CustomRecording,
                 custom_recording: {
                     audio_file_name: 'cool-rock-riffs.mp3',
                     audio_file_path:
@@ -924,7 +927,7 @@ describe('useVoiceMessageValidation().areWaitMusicPreferencesTheSame', () => {
                 },
             },
             other: {
-                type: WaitMusicType.CustomRecording,
+                type: VoiceQueueWaitMusicCustomRecordingTypeType.CustomRecording,
                 custom_recording: {
                     audio_file_name: 'cool-rock-riffs.mp3',
                     audio_file_path:

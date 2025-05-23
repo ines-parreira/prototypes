@@ -1,6 +1,9 @@
 import _pick from 'lodash/pick'
 
-import { WaitMusicType } from '@gorgias/helpdesk-queries'
+import {
+    VoiceQueueWaitMusicCustomRecordingTypeType,
+    VoiceQueueWaitMusicLibraryTypeType,
+} from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
@@ -338,15 +341,17 @@ export default function useVoiceMessageValidation() {
         other: LocalWaitMusicPreferences,
     ) => {
         if (
-            preferences.type === WaitMusicType.Library &&
-            other.type === WaitMusicType.Library
+            preferences.type === VoiceQueueWaitMusicLibraryTypeType.Library &&
+            other.type === VoiceQueueWaitMusicLibraryTypeType.Library
         ) {
             return preferences.library?.key === other.library?.key
         }
 
         if (
-            preferences.type === WaitMusicType.CustomRecording &&
-            other.type === WaitMusicType.CustomRecording
+            preferences.type ===
+                VoiceQueueWaitMusicCustomRecordingTypeType.CustomRecording &&
+            other.type ===
+                VoiceQueueWaitMusicCustomRecordingTypeType.CustomRecording
         ) {
             if (
                 preferences.custom_recording?.audio_file ||

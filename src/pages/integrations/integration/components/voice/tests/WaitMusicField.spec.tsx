@@ -1,7 +1,11 @@
 import { fireEvent, waitFor } from '@testing-library/react'
 
 import { uploadCustomVoiceRecording } from '@gorgias/helpdesk-client'
-import { CustomRecordingType, WaitMusicType } from '@gorgias/helpdesk-queries'
+import {
+    CustomRecordingType,
+    VoiceQueueWaitMusicCustomRecordingTypeType,
+    VoiceQueueWaitMusicLibraryTypeType,
+} from '@gorgias/helpdesk-queries'
 
 import { MAX_WAIT_MUSIC_CUSTOM_RECORDING_FILE_SIZE_MB } from 'models/integration/constants'
 import { LocalWaitMusicPreferences } from 'models/integration/types/phone'
@@ -51,7 +55,7 @@ describe('<WaitMusicField />', () => {
     it('should render', () => {
         const { queryByText } = renderWithQueryClientProvider(
             <WaitMusicField
-                value={{ type: WaitMusicType.Library }}
+                value={{ type: VoiceQueueWaitMusicLibraryTypeType.Library }}
                 onChange={onChange}
             />,
         )
@@ -63,7 +67,7 @@ describe('<WaitMusicField />', () => {
     it('should change wait music type to custom recording', () => {
         const { getByText } = renderWithQueryClientProvider(
             <WaitMusicField
-                value={{ type: WaitMusicType.Library }}
+                value={{ type: VoiceQueueWaitMusicLibraryTypeType.Library }}
                 onChange={onChange}
             />,
         )
@@ -71,14 +75,16 @@ describe('<WaitMusicField />', () => {
         fireEvent.click(getByText('Custom recording'))
 
         expect(onChange).toHaveBeenCalledWith({
-            type: WaitMusicType.CustomRecording,
+            type: VoiceQueueWaitMusicCustomRecordingTypeType.CustomRecording,
         })
     })
 
     it('should change wait music type to library', () => {
         const { getByText } = renderWithQueryClientProvider(
             <WaitMusicField
-                value={{ type: WaitMusicType.CustomRecording }}
+                value={{
+                    type: VoiceQueueWaitMusicCustomRecordingTypeType.CustomRecording,
+                }}
                 onChange={onChange}
             />,
         )
@@ -86,14 +92,14 @@ describe('<WaitMusicField />', () => {
         fireEvent.click(getByText('Choose from library'))
 
         expect(onChange).toHaveBeenCalledWith({
-            type: WaitMusicType.Library,
+            type: VoiceQueueWaitMusicLibraryTypeType.Library,
         })
     })
 
     it('should change library audio on select', async () => {
         const { getByText } = renderWithQueryClientProvider(
             <WaitMusicField
-                value={{ type: WaitMusicType.Library }}
+                value={{ type: VoiceQueueWaitMusicLibraryTypeType.Library }}
                 onChange={onChange}
             />,
         )
@@ -103,7 +109,7 @@ describe('<WaitMusicField />', () => {
 
         await waitFor(() => {
             expect(onChange).toHaveBeenCalledWith({
-                type: WaitMusicType.Library,
+                type: VoiceQueueWaitMusicLibraryTypeType.Library,
                 library: {
                     key: 'soothe',
                     name: 'Soothe',
@@ -132,7 +138,9 @@ describe('<WaitMusicField />', () => {
 
         const { container } = renderWithQueryClientProvider(
             <WaitMusicField
-                value={{ type: WaitMusicType.CustomRecording }}
+                value={{
+                    type: VoiceQueueWaitMusicCustomRecordingTypeType.CustomRecording,
+                }}
                 onChange={onChange}
                 shouldUpload
             />,
@@ -156,7 +164,7 @@ describe('<WaitMusicField />', () => {
 
         await waitFor(() => {
             expect(onChange).toHaveBeenCalledWith({
-                type: WaitMusicType.CustomRecording,
+                type: VoiceQueueWaitMusicCustomRecordingTypeType.CustomRecording,
                 custom_recording: {
                     audio_file_path: '123',
                     audio_file_name: 'example1.mp3',
@@ -179,7 +187,9 @@ describe('<WaitMusicField />', () => {
 
         const { container } = renderWithQueryClientProvider(
             <WaitMusicField
-                value={{ type: WaitMusicType.CustomRecording }}
+                value={{
+                    type: VoiceQueueWaitMusicCustomRecordingTypeType.CustomRecording,
+                }}
                 onChange={onChange}
                 shouldUpload
             />,
@@ -215,7 +225,9 @@ describe('<WaitMusicField />', () => {
 
         const { container } = renderWithQueryClientProvider(
             <WaitMusicField
-                value={{ type: WaitMusicType.CustomRecording }}
+                value={{
+                    type: VoiceQueueWaitMusicCustomRecordingTypeType.CustomRecording,
+                }}
                 onChange={onChange}
             />,
         )
@@ -230,7 +242,7 @@ describe('<WaitMusicField />', () => {
 
         await waitFor(() => {
             expect(onChange).toHaveBeenCalledWith({
-                type: WaitMusicType.CustomRecording,
+                type: VoiceQueueWaitMusicCustomRecordingTypeType.CustomRecording,
                 custom_recording: {
                     audio_file: 'data:audio/mpeg;base64,YXVkaW8gZGF0YQ==',
                     audio_file_name: 'example.mp3',

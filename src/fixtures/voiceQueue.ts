@@ -2,7 +2,7 @@ import {
     PhoneRingingBehaviour,
     VoiceQueue,
     VoiceQueueTargetScope,
-    WaitMusicType,
+    VoiceQueueWaitMusicLibraryTypeType,
 } from '@gorgias/helpdesk-queries'
 
 export const voiceQueue: VoiceQueue = {
@@ -20,7 +20,7 @@ export const voiceQueue: VoiceQueue = {
     target_scope: VoiceQueueTargetScope.AllAgents,
     wait_time: 120,
     wait_music: {
-        type: WaitMusicType.Library,
+        type: VoiceQueueWaitMusicLibraryTypeType.Library,
         library: {
             key: 'chill',
             name: 'Chill While Waiting',

@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 
-import { UpdateWaitMusicLibrary } from '@gorgias/helpdesk-queries'
+import { VoiceQueueWaitMusicLibrary } from '@gorgias/helpdesk-queries'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -15,8 +15,8 @@ import { WAIT_MUSIC_LIBRARY } from './waitMusicLibraryConstants'
 import css from './WaitMusicLibrarySelect.less'
 
 type Props = {
-    library?: UpdateWaitMusicLibrary
-    onChange: (selectedLibrary: UpdateWaitMusicLibrary) => void
+    library?: VoiceQueueWaitMusicLibrary
+    onChange: (selectedLibrary: VoiceQueueWaitMusicLibrary) => void
 }
 
 const WaitMusicLibrarySelect = ({ library, onChange }: Props) => {
