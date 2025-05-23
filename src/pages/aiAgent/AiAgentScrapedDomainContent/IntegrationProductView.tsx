@@ -137,6 +137,16 @@ const IntegrationProductView = ({ product }: Props) => {
                                         </span>{' '}
                                         {formatPrice(variant.price)}
                                     </div>
+                                    <div className={css.productField}>
+                                        <span className="body-semibold">
+                                            Inventory:
+                                        </span>{' '}
+                                        {variant.inventory_quantity > 0 ? (
+                                            `${variant.inventory_quantity} in stock`
+                                        ) : (
+                                            <span>Out of stock</span>
+                                        )}
+                                    </div>
                                 </div>
                             ))}
                         </div>

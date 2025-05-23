@@ -80,6 +80,7 @@ export const ScrapedDomainSelectedModal = ({
                 className={classnames({
                     backdrop: true,
                     opened: isOpened,
+                    [css.localBackdrop]: true,
                 })}
                 style={{
                     transitionDelay: isOpened

@@ -3,6 +3,10 @@
 :local {
     .productField {
         margin-bottom: @layout-spacing-xs;
+
+        &:last-of-type {
+            margin-bottom: 0;
+        }
     }
 
     .imageGrid {
@@ -39,11 +43,12 @@
     }
 
     .variantItem {
-        margin-top: @layout-spacing-xs;
+        padding: @layout-spacing-xs 0;
         border-bottom: 1px solid var(--neutral-grey-4);
 
         &:last-child {
             border-bottom: none;
+            padding-bottom: 0;
         }
     }
 
