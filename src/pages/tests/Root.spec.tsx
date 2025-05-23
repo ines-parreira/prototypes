@@ -1,12 +1,10 @@
-import React, { ComponentProps } from 'react'
+import React from 'react'
 import type { ReactNode } from 'react'
 
 import { render, screen } from '@testing-library/react'
 import type { Location } from 'history'
 import type { LDClient } from 'launchdarkly-js-client-sdk'
 import type { Store } from 'redux'
-
-import { RealtimeProvider } from '@gorgias/realtime'
 
 import activityTracker from 'services/activityTracker'
 import type { RootState } from 'state/types'
@@ -17,23 +15,16 @@ import { assumeMock } from 'utils/testing'
 import history from '../history'
 import Root from '../Root'
 
-const MockRealtimeProvider = jest
-    .fn()
-    .mockImplementation(
-        ({ children }: ComponentProps<typeof RealtimeProvider>) => (
+jest.mock(
+    'providers/realtime/RealtimeAppProvider',
+    () =>
+        ({ children }: { children: ReactNode }) => (
             <div>
-                <p>RealtimeProvider</p>
+                <p>RealtimeAppProvider</p>
                 {children}
             </div>
         ),
-    )
-
-jest.mock('@gorgias/realtime', () => ({
-    ...jest.requireActual('@gorgias/realtime'),
-    RealtimeProvider: (props: ComponentProps<typeof RealtimeProvider>) => (
-        <MockRealtimeProvider {...props} />
-    ),
-}))
+)
 
 jest.mock('@tanstack/react-query', () => ({
     QueryClientProvider: ({ children }: { children: ReactNode }) => (
@@ -110,11 +101,11 @@ describe('Root', () => {
         screen.getByText('QueryClientProvider')
         screen.getByText('ReduxProvider')
         screen.getByText('DndProvider')
-        screen.getByText('RealtimeProvider')
         screen.getByText('Router')
         screen.getByText('CompatRouter')
         screen.getByText('Main')
         screen.getByText('RoutesWrapper')
+        screen.getByText('RealtimeAppProvider')
     })
 
     it('should create a user context for the activity tracker', () => {
@@ -136,24 +127,5 @@ describe('Root', () => {
             userId: 20,
             path: '/app',
         })
-    })
-
-    it.each([
-        ['acme', true],
-        ['artemisathletix', true],
-        ['yakovishen', true],
-        ['walter-test', true],
-        ['other', false],
-    ])(`should set PNWorkerLogVerbosity to %s`, (domain, expected) => {
-        window.GORGIAS_STATE.currentAccount.domain = domain
-
-        render(<Root store={store} />)
-
-        expect(MockRealtimeProvider).toHaveBeenCalledWith(
-            expect.objectContaining({
-                subscriptionWorkerLogVerbosity: expected,
-            }),
-            {},
-        )
     })
 })

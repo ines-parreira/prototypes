@@ -121,8 +121,8 @@ importers:
         specifier: 0.31.0
         version: 0.31.0(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(reactstrap@8.9.0(react-dom@17.0.2(react@17.0.2))(react@17.0.2))
       '@gorgias/realtime':
-        specifier: ^0.11.4
-        version: 0.11.4(@tanstack/react-query@4.36.1(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2))(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)
+        specifier: ^0.13.3
+        version: 0.13.3(@tanstack/react-query@4.36.1(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2))(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.52.1(react@17.0.2))
@@ -2603,15 +2603,6 @@ packages:
       core-js: ^3.36
       react: ^17
 
-  '@gorgias/api-client@0.6.36':
-    resolution: {integrity: sha512-Cj1hB3fKIhlYj4NDs8DKxkd7rBYY2ERWeAoPmCJMif8nVsPJdY4che72nyFqKk1Gzr6RWBYp/K42VBRxkuqNag==, tarball: https://npm.pkg.github.com/download/@gorgias/api-client/0.6.36/4e9e526d07e0cb6364d0af3c2fb801e8d2d37088}
-
-  '@gorgias/api-queries@0.6.36':
-    resolution: {integrity: sha512-z3WJkk4aa4xOVahJO1WUcEVFqAU5W+POJggkIm2EjVh628Qhv8lbsnHKyK4LeOR6zG0hJ/tIoKtGQiZuDIkVYg==, tarball: https://npm.pkg.github.com/download/@gorgias/api-queries/0.6.36/e37750ba9840c675e54225b02786b0f2f0c3db32}
-
-  '@gorgias/api-types@0.6.36':
-    resolution: {integrity: sha512-vuFUDswV1FXY9HcgSsvTqhK8wxqU7YJr6T12XvEUGNFOna0+FNWjjeh8W1v4U+f38rS0zvKd6ZZVbYQ4W9Zdvg==, tarball: https://npm.pkg.github.com/download/@gorgias/api-types/0.6.36/1e20d35f18b68a0c64e9a34537175199ccb1e6d4}
-
   '@gorgias/branding-assets@0.2.1':
     resolution: {integrity: sha512-NxxSjkJ5xguwXqYpQwEuxoz1eEnJLMlfzRbTTk+cbQxucGyazUsterz0mdTXru2d/yd6iUnPAvZ1Q45s/mjJWg==, tarball: https://npm.pkg.github.com/download/@gorgias/branding-assets/0.2.1/78d49790593f16706d120f57cb71e8362e9080a3}
 
@@ -2668,8 +2659,8 @@ packages:
       react: ^17
       reactstrap: ^8.9.0
 
-  '@gorgias/realtime@0.11.4':
-    resolution: {integrity: sha512-sKUmUqO9can/IaJg/3SF6T4ClUs/lbAEvNkqSCLEKOLiugEgxep5C6aq9jCfnB8GyqC8ITf8YoA0Ck0B5K41Kw==, tarball: https://npm.pkg.github.com/download/@gorgias/realtime/0.11.4/48612bdd4aab3b4767b1525d32834c26cdeee9f4}
+  '@gorgias/realtime@0.13.3':
+    resolution: {integrity: sha512-6EGDMAW4SPPClyvrpdPiymDVIrtkBI+P2j4LNOV+DLx4eWwxRitlf4pRx9yI8cAaQH4sfJZbOaBvWL32y1zJ/A==, tarball: https://npm.pkg.github.com/download/@gorgias/realtime/0.13.3/8e464ec84164ac1bb8ce0c1df7ebcb34903f6452}
     engines: {node: '>=18'}
     peerDependencies:
       '@tanstack/react-query': 4.36.1
@@ -12750,22 +12741,6 @@ snapshots:
       core-js: 3.36.1
       react: 17.0.2
 
-  '@gorgias/api-client@0.6.36':
-    dependencies:
-      '@gorgias/api-types': 0.6.36
-      axios: 1.8.4
-    transitivePeerDependencies:
-      - debug
-
-  '@gorgias/api-queries@0.6.36':
-    dependencies:
-      '@gorgias/api-client': 0.6.36
-      '@gorgias/api-types': 0.6.36
-    transitivePeerDependencies:
-      - debug
-
-  '@gorgias/api-types@0.6.36': {}
-
   '@gorgias/branding-assets@0.2.1': {}
 
   '@gorgias/config@0.2.4(@babel/core@7.23.9)(@babel/eslint-parser@7.23.10(@babel/core@7.23.9)(eslint@8.1.0))(@trivago/prettier-plugin-sort-imports@5.2.2(prettier@3.5.2))(eslint-plugin-import@2.25.2(eslint@8.1.0))(eslint-plugin-jsx-a11y@6.4.1(eslint@8.1.0))(eslint-plugin-react-hooks@4.3.0(eslint@8.1.0))(eslint-plugin-react@7.26.1(eslint@8.1.0))(eslint@8.1.0)':
@@ -12848,10 +12823,10 @@ snapshots:
     transitivePeerDependencies:
       - react-dom
 
-  '@gorgias/realtime@0.11.4(@tanstack/react-query@4.36.1(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2))(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)':
+  '@gorgias/realtime@0.13.3(@tanstack/react-query@4.36.1(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2))(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)':
     dependencies:
-      '@gorgias/api-queries': 0.6.36
       '@gorgias/events': 0.4.2
+      '@gorgias/helpdesk-queries': 0.7.13(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)
       '@tanstack/react-query': 4.36.1(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)
       lodash-es: 4.17.21
       path-to-regexp: 8.2.0
@@ -13344,7 +13319,7 @@ snapshots:
       '@motionone/easing': 10.18.0
       '@motionone/types': 10.17.1
       '@motionone/utils': 10.18.0
-      tslib: 2.7.0
+      tslib: 2.8.1
 
   '@motionone/dom@10.12.0':
     dependencies:
@@ -13358,13 +13333,13 @@ snapshots:
   '@motionone/easing@10.18.0':
     dependencies:
       '@motionone/utils': 10.18.0
-      tslib: 2.7.0
+      tslib: 2.8.1
 
   '@motionone/generators@10.18.0':
     dependencies:
       '@motionone/types': 10.17.1
       '@motionone/utils': 10.18.0
-      tslib: 2.7.0
+      tslib: 2.8.1
 
   '@motionone/types@10.17.1': {}
 
@@ -13372,7 +13347,7 @@ snapshots:
     dependencies:
       '@motionone/types': 10.17.1
       hey-listen: 1.0.8
-      tslib: 2.7.0
+      tslib: 2.8.1
 
   '@nicolo-ribaudo/chokidar-2@2.1.8-no-fsevents.3':
     optional: true
@@ -15736,7 +15711,7 @@ snapshots:
 
   aria-hidden@1.2.4:
     dependencies:
-      tslib: 2.7.0
+      tslib: 2.8.1
 
   aria-query@4.2.2:
     dependencies:
@@ -15825,7 +15800,7 @@ snapshots:
 
   ast-types@0.16.1:
     dependencies:
-      tslib: 2.7.0
+      tslib: 2.8.1
 
   astral-regex@2.0.0: {}
 
@@ -16193,7 +16168,7 @@ snapshots:
   call-bound@1.0.3:
     dependencies:
       call-bind-apply-helpers: 1.0.1
-      get-intrinsic: 1.2.7
+      get-intrinsic: 1.3.0
 
   call-bound@1.0.4:
     dependencies:
@@ -17264,7 +17239,7 @@ snapshots:
   es-get-iterator@1.1.2:
     dependencies:
       call-bind: 1.0.7
-      get-intrinsic: 1.2.7
+      get-intrinsic: 1.3.0
       has-symbols: 1.1.0
       is-arguments: 1.1.1
       is-map: 2.0.2
@@ -18525,7 +18500,7 @@ snapshots:
   is-boolean-object@1.1.2:
     dependencies:
       call-bind: 1.0.7
-      has-tostringtag: 1.0.0
+      has-tostringtag: 1.0.2
 
   is-boolean-object@1.2.2:
     dependencies:
@@ -18556,7 +18531,7 @@ snapshots:
 
   is-date-object@1.0.5:
     dependencies:
-      has-tostringtag: 1.0.0
+      has-tostringtag: 1.0.2
 
   is-date-object@1.1.0:
     dependencies:
@@ -18615,7 +18590,7 @@ snapshots:
 
   is-number-object@1.0.6:
     dependencies:
-      has-tostringtag: 1.0.0
+      has-tostringtag: 1.0.2
 
   is-number-object@1.1.1:
     dependencies:
@@ -18708,7 +18683,7 @@ snapshots:
   is-weakset@2.0.2:
     dependencies:
       call-bind: 1.0.7
-      get-intrinsic: 1.2.7
+      get-intrinsic: 1.3.0
 
   is-weakset@2.0.4:
     dependencies:
@@ -18776,7 +18751,7 @@ snapshots:
 
   istanbul-lib-source-maps@4.0.1:
     dependencies:
-      debug: 4.3.7
+      debug: 4.4.0
       istanbul-lib-coverage: 3.2.0
       source-map: 0.6.1
     transitivePeerDependencies:

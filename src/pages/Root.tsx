@@ -1,4 +1,4 @@
-import { useLayoutEffect, useMemo, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
@@ -13,11 +13,10 @@ import { Router } from 'react-router-dom'
 import { CompatRouter } from 'react-router-dom-v5-compat'
 import { Store } from 'redux'
 
-import { ExponentialRetryPolicy, RealtimeProvider } from '@gorgias/realtime'
-
 import { appQueryClient } from 'api/queryClient'
 import useEffectOnce from 'hooks/useEffectOnce'
 import { Main } from 'main/app'
+import RealtimeAppProvider from 'providers/realtime/RealtimeAppProvider'
 import RoutesWrapper from 'routes'
 import activityTracker from 'services/activityTracker'
 import { RootState } from 'state/types'
@@ -34,22 +33,6 @@ if (envVars.NODE_ENV !== NodeEnv.Production) {
 }
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
-
-const pubNubWorkerUrl = window.PUBNUB_WORKER_URL
-
-const PNLogVerbosityWhitelistedAccounts = [
-    'acme',
-    'artemisathletix',
-    'yakovishen',
-    'walter-test',
-]
-
-const realtimeRetryPolicy = ExponentialRetryPolicy({
-    minimumDelay: 2,
-    maximumDelay: 10,
-    maximumRetry: 3,
-    excluded: [],
-})
 
 const Root = ({ store }: Props) => {
     const [LDClient, setLDClient] = useState<LDClient>()
@@ -76,14 +59,6 @@ const Root = ({ store }: Props) => {
         return unlisten
     })
 
-    const pubNubWorkerLogVerbosity = useMemo(
-        () =>
-            PNLogVerbosityWhitelistedAccounts.includes(
-                window.GORGIAS_STATE.currentAccount.domain,
-            ),
-        [],
-    )
-
     return (
         <QueryClientProvider client={appQueryClient}>
             <Provider store={store}>
@@ -94,19 +69,7 @@ const Root = ({ store }: Props) => {
                         reactOptions={{ useCamelCaseFlagKeys: false }}
                         context={LDContext}
                     >
-                        <RealtimeProvider
-                            publishKey={window.PUBNUB_PUBLISH_KEY}
-                            subscribeKey={window.PUBNUB_SUBSCRIBE_KEY}
-                            presenceTimeout={5}
-                            heartbeatInterval={2}
-                            subscriptionWorkerUrl={pubNubWorkerUrl}
-                            subscriptionWorkerUnsubscribeOfflineClients={true}
-                            subscriptionWorkerOfflineClientsCheckInterval={5}
-                            subscriptionWorkerLogVerbosity={
-                                pubNubWorkerLogVerbosity
-                            }
-                            retryConfiguration={realtimeRetryPolicy}
-                        >
+                        <RealtimeAppProvider>
                             <Router history={history}>
                                 <CompatRouter>
                                     <Main>
@@ -114,7 +77,7 @@ const Root = ({ store }: Props) => {
                                     </Main>
                                 </CompatRouter>
                             </Router>
-                        </RealtimeProvider>
+                        </RealtimeAppProvider>
                     </LDProvider>
                 </DndProvider>
             </Provider>
