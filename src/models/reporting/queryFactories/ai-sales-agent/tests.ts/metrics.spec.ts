@@ -387,6 +387,7 @@ describe('totalNumberProductRecommendationsDrillDownQueryFactory', () => {
             dimensions: [
                 AiSalesAgentConversationsDimension.TicketId,
                 AiSalesAgentConversationsDimension.ProductId,
+                AiSalesAgentConversationsDimension.StoreIntegrationId,
             ],
             filters: [
                 {
@@ -432,6 +433,7 @@ describe('totalNumberProductRecommendationsDrillDownQueryFactory', () => {
             dimensions: [
                 AiSalesAgentConversationsDimension.TicketId,
                 AiSalesAgentConversationsDimension.ProductId,
+                AiSalesAgentConversationsDimension.StoreIntegrationId,
             ],
             filters: [
                 {

@@ -284,6 +284,7 @@ export const totalNumberProductRecommendationsDrillDownQueryFactory = (
     dimensions: [
         AiSalesAgentConversationsDimension.TicketId,
         AiSalesAgentConversationsDimension.ProductId,
+        AiSalesAgentConversationsDimension.StoreIntegrationId,
     ],
     limit: DRILLDOWN_QUERY_LIMIT,
     order: sorting
