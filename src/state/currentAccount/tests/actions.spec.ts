@@ -121,16 +121,99 @@ describe('current account actions', () => {
     })
 
     describe('update subscription', () => {
-        it('update subscription', () => {
-            const subscription = { prices: [basicMonthlyHelpdeskPlan.price_id] }
+        describe('when new products are loaded', () => {
+            beforeEach(() => {
+                const updatedSubscription = {
+                    products: {
+                        [HELPDESK_PRODUCT_ID]:
+                            basicMonthlyHelpdeskPlan.price_id,
+                    },
+                }
 
-            mockServer
-                .onPut('/api/billing/subscription/')
-                .reply(202, subscription)
+                mockServer
+                    .onPut('/api/billing/subscription/')
+                    .reply(202, updatedSubscription)
+            })
 
-            return store
-                .dispatch(actions.updateSubscription(subscription))
-                .then(() => expect(store.getActions()).toMatchSnapshot())
+            it('should update subscription', () => {
+                return store
+                    .dispatch(
+                        actions.updateSubscription({
+                            prices: [basicMonthlyHelpdeskPlan.price_id],
+                        }),
+                    )
+                    .then(() => expect(store.getActions()).toMatchSnapshot())
+            })
+
+            it('should notify that the update was successful', () => {
+                return store
+                    .dispatch(
+                        actions.updateSubscription({
+                            prices: [basicMonthlyHelpdeskPlan.price_id],
+                        }),
+                    )
+                    .then(() =>
+                        expect(notifyMock).toHaveBeenCalledWith({
+                            status: NotificationStatus.Success,
+                            message: 'Your subscription was updated.',
+                        }),
+                    )
+            })
+        })
+
+        describe('when new products are not loaded', () => {
+            beforeEach(() => {
+                const updatedSubscription = {
+                    products: {
+                        [HELPDESK_PRODUCT_ID]: 'not-loaded-product-price-id',
+                    },
+                }
+
+                mockServer
+                    .onPut('/api/billing/subscription/')
+                    .reply(202, updatedSubscription)
+            })
+
+            it('should notify that the update was successful', () => {
+                return store
+                    .dispatch(
+                        actions.updateSubscription({
+                            prices: [basicMonthlyHelpdeskPlan.price_id],
+                        }),
+                    )
+                    .then(() =>
+                        expect(notifyMock).toHaveBeenCalledWith({
+                            status: NotificationStatus.Success,
+                            message: 'Your subscription was updated.',
+                        }),
+                    )
+            })
+
+            it('it should not update store', () => {
+                return store
+                    .dispatch(
+                        actions.updateSubscription({
+                            prices: [basicMonthlyHelpdeskPlan.price_id],
+                        }),
+                    )
+                    .then(() => expect(store.getActions()).toHaveLength(0))
+            })
+        })
+
+        describe('when the update fails', () => {
+            beforeEach(() => {
+                mockServer.onPut('/api/billing/subscription/').reply(400)
+            })
+
+            it('should dispatch that the update failed', () => {
+                return store
+                    .dispatch(
+                        actions.updateSubscription({
+                            prices: [basicMonthlyHelpdeskPlan.price_id],
+                        }),
+                    )
+                    .then(() => expect(store.getActions()).toMatchSnapshot())
+            })
         })
     })
 

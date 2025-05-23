@@ -59,7 +59,6 @@ export const useActivation = (
         earlyAccessPlan,
         isLoading,
         handleSubscriptionUpdate,
-        isSubscriptionUpdating,
     } = useEarlyAccessModalState({
         hasActivationEnabled,
         autoDisplayDisabled: options.autoDisplayEarlyAccessDisabled,
@@ -87,6 +86,8 @@ export const useActivation = (
         storeNameToSaveOnSubscriptionUpdate,
         setStoreNameToSaveOnSubscriptionUpdate,
     ] = useState<string | undefined>(undefined)
+
+    const [isSubscriptionUpdating, setIsSubscriptionUpdating] = useState(false)
 
     const shouldSaveAfterUpgrade = useRef(false)
     useEffect(() => {
@@ -207,6 +208,8 @@ export const useActivation = (
                 }}
                 onUpgradeClick={async () => {
                     try {
+                        setIsSubscriptionUpdating(true)
+
                         await handleSubscriptionUpdate()
                         if (hasAiAgentNewActivationXp) {
                             await migrateToNewPricing()
@@ -215,7 +218,13 @@ export const useActivation = (
                             await endTrial()
                         }
 
-                        closeEarlyAccessModal('upgraded')
+                        logEvent(
+                            SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
+                            {
+                                page: pageName,
+                                reason: 'upgraded',
+                            },
+                        )
 
                         if (storeNameToSaveOnSubscriptionUpdate) {
                             changeSales(
@@ -225,6 +234,8 @@ export const useActivation = (
                             shouldSaveAfterUpgrade.current = true
                         }
                     } catch {
+                        setIsSubscriptionUpdating(false)
+
                         closeEarlyAccessModal('upgrade-failed')
                     }
                 }}

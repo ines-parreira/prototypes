@@ -122,15 +122,25 @@ exports[`current account actions update subscription product plans updates the l
 ]
 `;
 
-exports[`current account actions update subscription update subscription 1`] = `
+exports[`current account actions update subscription when new products are loaded should update subscription 1`] = `
 [
   {
     "subscription": {
-      "prices": [
-        "price_1LJBjWI9qXomtXqSPZn8LqlD",
-      ],
+      "products": {
+        "prod_LsH6kV35G6zKWo": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+      },
     },
     "type": "UPDATE_SUBSCRIPTION_SUCCESS",
+  },
+]
+`;
+
+exports[`current account actions update subscription when the update fails should dispatch that the update failed 1`] = `
+[
+  {
+    "error": [Error: Request failed with status code 400],
+    "reason": "Failed to update the current subscription.",
+    "type": "UPDATE_SUBSCRIPTION_ERROR",
   },
 ]
 `;

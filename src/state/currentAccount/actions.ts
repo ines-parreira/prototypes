@@ -9,6 +9,7 @@ import { AgentsTableViews } from 'pages/stats/support-performance/agents/AgentsT
 import { ChannelsTableViews } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import { ProductInsightsTableViews } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableConfig'
 import GorgiasApi from 'services/gorgiasApi'
+import { getAvailablePlansMap } from 'state/billing/selectors'
 import { ProductData, Subscription } from 'state/billing/types'
 import * as constants from 'state/currentAccount/constants'
 import {
@@ -210,7 +211,11 @@ export function submitProductInsightsTableConfigView(
 }
 
 export function updateSubscription(subscription: Subscription) {
-    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
+    return (
+        dispatch: StoreDispatch,
+        getState: () => RootState,
+    ): Promise<ReturnType<StoreDispatch>> => {
+        const plansMap = getAvailablePlansMap(getState())
         return client
             .put<Record<string, string>>(
                 '/api/billing/subscription/',
@@ -225,10 +230,17 @@ export function updateSubscription(subscription: Subscription) {
                             message: 'Your subscription was updated.',
                         }),
                     )
-                    return dispatch({
-                        type: constants.UPDATE_SUBSCRIPTION_SUCCESS,
-                        subscription: resp,
-                    })
+
+                    const areProductsLoaded = Object.values(
+                        resp?.products ?? {},
+                    ).every((priceId) => !!plansMap[priceId])
+
+                    if (areProductsLoaded) {
+                        return dispatch({
+                            type: constants.UPDATE_SUBSCRIPTION_SUCCESS,
+                            subscription: resp,
+                        })
+                    }
                 },
                 (error) => {
                     return dispatch({
