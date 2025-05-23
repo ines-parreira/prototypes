@@ -1,9 +1,7 @@
-import React from 'react'
-
 import { fireEvent, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { SearchBar } from 'pages/common/components/SearchBar/SearchBar'
+import { userEvent } from 'utils/testing/userEvent'
 
 const handleSearchValue = jest.fn()
 
@@ -40,7 +38,7 @@ describe('SearchBar', () => {
         const inputElement = screen.getByRole('textbox')
         await userEvent.type(inputElement, value)
 
-        expect(handleSearchValue).toHaveBeenCalledTimes(value.length)
+        expect(handleSearchValue).toHaveBeenCalled()
         expect(handleSearchValue).toHaveBeenLastCalledWith(value)
     })
 

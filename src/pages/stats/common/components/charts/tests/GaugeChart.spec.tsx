@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { act, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import {
     ChatWorkload,
@@ -9,6 +8,7 @@ import {
     InstagramWorkload,
     PhoneWorkload,
 } from 'fixtures/chart'
+import { userEvent } from 'utils/testing/userEvent'
 
 import GaugeChart from '../GaugeChart'
 

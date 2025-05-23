@@ -1,10 +1,10 @@
 import React, { ComponentProps } from 'react'
 
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { bigCommerceAvailablePaymentOptionsDataResponseFixture } from 'fixtures/bigcommerce'
 import { BigCommerceRefundType } from 'models/integration/types'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { defaultBigCommerceRefundType } from '../../consts'
 import { BigCommerceRefundActionType } from '../../types'

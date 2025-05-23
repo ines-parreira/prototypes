@@ -1,7 +1,8 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render, screen, waitFor } from '@testing-library/react'
+
+import { userEvent } from 'utils/testing/userEvent'
 
 import ToolbarProvider from '../../ToolbarProvider'
 import WorkflowVariableDropdown from '../WorkflowVariableDropdown'
@@ -130,15 +131,18 @@ describe('<WorkflowVariableDropdown />', () => {
                 </ToolbarProvider>,
             )
 
-            await userEvent.type(
+            userEvent.type(
                 screen.getByPlaceholderText('Search for a variable'),
                 // Start to type in File, which will hide HTTP request
                 'Fi',
-                { delay: 200 },
             )
 
-            expect(screen.getByText('File upload')).toBeInTheDocument()
-            expect(screen.queryByText('HTTP request')).not.toBeInTheDocument()
+            await waitFor(() => {
+                expect(screen.getByText('File upload')).toBeInTheDocument()
+                expect(
+                    screen.queryByText('HTTP request'),
+                ).not.toBeInTheDocument()
+            })
         })
 
         test('should clear searches when dropdown closed', async () => {
@@ -182,15 +186,18 @@ describe('<WorkflowVariableDropdown />', () => {
                 </ToolbarProvider>,
             )
 
-            await userEvent.type(
+            userEvent.type(
                 screen.getByPlaceholderText('Search for a variable'),
                 // Start to type in File, which will hide HTTP request
                 'Fi',
-                { delay: 200 },
             )
 
-            expect(screen.getByText('File upload')).toBeInTheDocument()
-            expect(screen.queryByText('HTTP request')).not.toBeInTheDocument()
+            await waitFor(() => {
+                expect(screen.getByText('File upload')).toBeInTheDocument()
+                expect(
+                    screen.queryByText('HTTP request'),
+                ).not.toBeInTheDocument()
+            })
 
             rerender(
                 <ToolbarProvider

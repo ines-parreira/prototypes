@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { useSearchParam } from 'hooks/useSearchParam'
@@ -16,6 +15,7 @@ import {
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
 import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
+import { userEvent } from 'utils/testing/userEvent'
 
 import {
     CustomerHttpIntegrationDataMock,

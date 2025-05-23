@@ -2,7 +2,6 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -18,6 +17,7 @@ import {
 } from 'models/integration/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import DiscountCodeCreateModal from '../DiscountCodeCreateModal'
 import { setupValidModalParameters } from '../utils'

@@ -1,7 +1,5 @@
-import React from 'react'
-
-import { render } from '@testing-library/react'
-import userEvent, { TargetElement } from '@testing-library/user-event'
+import { render, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { THEME_NAME, useTheme } from 'core/theme'
 
@@ -30,12 +28,14 @@ describe('<BaseCard />', () => {
         expect(getByText(props.title)).toBeInTheDocument()
     })
 
-    it('should execute callback onClick', () => {
+    it('should execute callback onClick', async () => {
         const onClick = jest.fn()
         const { container } = render(<BaseCard {...props} onClick={onClick} />)
 
-        userEvent.click(container.firstChild as TargetElement)
-        expect(onClick).toHaveBeenCalled()
+        userEvent.click(container.firstChild as Element)
+        await waitFor(() => {
+            expect(onClick).toHaveBeenCalled()
+        })
     })
 
     it('should display optional elements', () => {

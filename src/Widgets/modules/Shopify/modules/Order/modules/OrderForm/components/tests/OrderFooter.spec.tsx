@@ -1,13 +1,13 @@
 import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS, Map } from 'immutable'
 
 import {
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture,
 } from 'fixtures/shopify'
+import { userEvent } from 'utils/testing/userEvent'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import OrderFooter from '../OrderFooter'

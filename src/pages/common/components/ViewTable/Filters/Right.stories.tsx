@@ -2,7 +2,6 @@ import React, { ComponentProps } from 'react'
 
 import { Meta, StoryFn } from '@storybook/react'
 import { within } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { Identifier } from 'estree'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -10,6 +9,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { ThemeProvider } from 'core/theme'
 import RightContainer from 'pages/common/components/ViewTable/Filters/Right'
+import { userEvent } from 'utils/testing/userEvent'
 
 const defaultState = {}
 

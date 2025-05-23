@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -13,6 +12,7 @@ import {
     products,
 } from 'fixtures/productPrices'
 import { RootState, StoreDispatch } from 'state/types'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { sendRemoveNotificationZap } from '../../../utils/sendRemoveNotificationZap'
 import CancelAAOModal, { CancelAAOModalProps } from '../CancelAAOModal'

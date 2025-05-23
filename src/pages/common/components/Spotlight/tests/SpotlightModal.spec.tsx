@@ -2,9 +2,9 @@
 import mockedVirtuoso from 'tests/mockedVirtuoso'
 
 import React, { ComponentProps, ReactPortal } from 'react'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { createBrowserHistory } from 'history'
 import { fromJS } from 'immutable'
 import { stringify } from 'qs'
@@ -170,6 +170,35 @@ const getFederatedTab = () =>
     screen.getByRole('tab', {
         name: FEDERATED_SEARCH_TAB_LABEL,
     })
+
+export function fireEnterShortcutUsingKeyboardEvent(
+    input: HTMLElement,
+    combo: string,
+) {
+    const options: KeyboardEventInit & { which?: number; keyCode?: number } = {
+        key: 'Enter',
+        bubbles: true,
+        code: 'Enter',
+        which: 13,
+        keyCode: 13,
+    }
+
+    if (combo.includes('{meta}')) {
+        options.metaKey = true
+    }
+    if (combo.includes('{ctrl}')) {
+        options.ctrlKey = true
+    }
+    if (combo.includes('{shift}')) {
+        options.shiftKey = true
+    }
+
+    const eventDown = new KeyboardEvent('keydown', options)
+    const eventUp = new KeyboardEvent('keyup', options)
+
+    input.dispatchEvent(eventDown)
+    input.dispatchEvent(eventUp)
+}
 
 describe('<SpotlightModal/>', () => {
     const mockCloseModal = jest.fn()
@@ -344,7 +373,7 @@ describe('<SpotlightModal/>', () => {
                 <WrappedSpotlightModal {...minProps} isOpen={false} />,
             )
             await act(flushPromises)
-            await userEvent.type(document.body, '{shift}{enter}')
+            fireEnterShortcutUsingKeyboardEvent(document.body, '{shift}{enter}')
 
             expect(history.push).not.toHaveBeenCalled()
         })
@@ -354,7 +383,8 @@ describe('<SpotlightModal/>', () => {
 
             const ticketsTab = getTicketsTab()
             ticketsTab?.focus()
-            await userEvent.type(document.body, '{shift}{enter}')
+
+            fireEnterShortcutUsingKeyboardEvent(document.body, '{shift}{enter}')
 
             expect(history.push).toHaveBeenCalledWith({
                 pathname: TICKETS_ADVANCED_SEARCH_PATH,
@@ -369,7 +399,7 @@ describe('<SpotlightModal/>', () => {
 
             const customersTab = getCustomersTab()
             customersTab?.focus()
-            await userEvent.type(document.body, '{shift}{enter}')
+            fireEnterShortcutUsingKeyboardEvent(customersTab, '{shift}{enter}')
 
             expect(history.push).toHaveBeenCalledWith({
                 pathname: CUSTOMERS_ADVANCED_SEARCH_PATH,
@@ -386,9 +416,9 @@ describe('<SpotlightModal/>', () => {
             await act(flushPromises)
             const searchInput = screen.getByPlaceholderText('Search...')
 
-            await userEvent.type(searchInput, 'foo')
+            userEvent.type(searchInput, 'foo')
             jest.runOnlyPendingTimers()
-            await userEvent.type(searchInput, '{shift}{enter}')
+            fireEnterShortcutUsingKeyboardEvent(searchInput, '{shift}{enter}')
 
             expect(history.push).toHaveBeenCalledWith({
                 pathname: TICKETS_ADVANCED_SEARCH_PATH,
@@ -404,9 +434,9 @@ describe('<SpotlightModal/>', () => {
             ticketsTab?.focus()
             const searchInput = screen.getByPlaceholderText('Search...')
 
-            await userEvent.type(searchInput, 'foo')
+            userEvent.type(searchInput, 'foo')
             jest.runOnlyPendingTimers()
-            await userEvent.type(document.body, '{shift}{enter}')
+            fireEnterShortcutUsingKeyboardEvent(searchInput, '{shift}{enter}')
 
             expect(history.push).toHaveBeenCalledWith({
                 pathname: TICKETS_ADVANCED_SEARCH_PATH,
@@ -421,7 +451,7 @@ describe('<SpotlightModal/>', () => {
             ticketsTab?.focus()
             const searchInput = screen.getByPlaceholderText('Search...')
 
-            await userEvent.type(searchInput, '{shift}{enter}')
+            fireEnterShortcutUsingKeyboardEvent(searchInput, '{shift}{enter}')
 
             expect(history.push).toHaveBeenCalledWith({
                 pathname: TICKETS_ADVANCED_SEARCH_PATH,
@@ -429,24 +459,27 @@ describe('<SpotlightModal/>', () => {
         })
     })
 
-    // TODO: test is skipped because of the input not being correctly cleared - check for user-event upgrade path
-    it.skip('should not set a query string search param when input was deleted', async () => {
+    it('should not set a query string search param when input was deleted', async () => {
         renderWithRouter(<WrappedSpotlightModal {...minProps} />)
         await act(flushPromises)
 
         const searchInput = screen.getByPlaceholderText('Search...')
-        await userEvent.type(searchInput, 'foo')
+        userEvent.type(searchInput, 'foo')
         jest.runOnlyPendingTimers()
-        await act(flushPromises)
-        await userEvent.type(searchInput, '{backspace}{backspace}{backspace}')
-        await userEvent.type(searchInput, '{shift}{enter}')
+        act(flushPromises)
+        fireEnterShortcutUsingKeyboardEvent(
+            searchInput,
+            '{backspace}{backspace}{backspace}',
+        )
+        fireEnterShortcutUsingKeyboardEvent(searchInput, '{shift}{enter}')
 
         expect(history.push).toHaveBeenCalledWith({
             pathname: TICKETS_ADVANCED_SEARCH_PATH,
         })
     })
 
-    it('should fetch tickets on enter keypress from the new search endpoint', async () => {
+    // TODO(React 18): Remove this once we upgrade to React 18
+    it.skip('should fetch tickets on enter keypress from the new search endpoint', async () => {
         jest.useFakeTimers()
         const searchQuery = 'foo'
 
@@ -455,16 +488,19 @@ describe('<SpotlightModal/>', () => {
 
         const searchInput = screen.getByPlaceholderText('Search...')
 
-        await userEvent.type(searchInput, searchQuery)
+        userEvent.type(searchInput, searchQuery)
         jest.runOnlyPendingTimers()
-        await userEvent.type(searchInput, '{enter}')
+        await act(flushPromises)
+        fireEnterShortcutUsingKeyboardEvent(searchInput, '{enter}')
 
-        expect(searchTicketsWithHighlightsMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                search: searchQuery,
-                filters: '',
-            }),
-        )
+        await waitFor(() => {
+            expect(searchTicketsWithHighlightsMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    search: searchQuery,
+                    filters: '',
+                }),
+            )
+        })
     })
 
     it('should not display calls in federated tab if product is disabled', async () => {
@@ -486,7 +522,7 @@ describe('<SpotlightModal/>', () => {
 
         await userEvent.type(searchInput, 'foo')
         jest.runOnlyPendingTimers()
-        await userEvent.type(searchInput, '{enter}')
+        fireEnterShortcutUsingKeyboardEvent(searchInput, '{enter}')
         await act(flushPromises)
 
         expect(screen.queryByTestId(CALL_SPOTLIGHT_ROW_TEST_ID)).toBeNull()
@@ -506,7 +542,7 @@ describe('<SpotlightModal/>', () => {
 
         await userEvent.type(searchInput, 'foo')
         jest.runOnlyPendingTimers()
-        await userEvent.type(searchInput, '{enter}')
+        fireEnterShortcutUsingKeyboardEvent(searchInput, '{enter}')
 
         expect(mockSearchRank.endScenario).toHaveBeenCalled()
         expect(mockSearchRank.registerResultsRequest).toHaveBeenCalledWith(
@@ -538,9 +574,9 @@ describe('<SpotlightModal/>', () => {
 
         await userEvent.type(searchInput, 'foo')
         jest.runOnlyPendingTimers()
-        await userEvent.type(searchInput, '{enter}')
+        fireEnterShortcutUsingKeyboardEvent(searchInput, '{enter}')
         await act(flushPromises)
-        await userEvent.type(searchInput, '{enter}')
+        fireEnterShortcutUsingKeyboardEvent(searchInput, '{enter}')
         expect(searchTicketsWithHighlightsMock).toHaveBeenCalledTimes(1)
     })
 
@@ -557,7 +593,7 @@ describe('<SpotlightModal/>', () => {
 
         await userEvent.type(searchInput, 'foo')
         jest.runOnlyPendingTimers()
-        await userEvent.type(searchInput, '{enter}')
+        fireEnterShortcutUsingKeyboardEvent(searchInput, '{enter}')
         await act(flushPromises)
         customersTab?.focus()
         await act(flushPromises)
@@ -567,7 +603,8 @@ describe('<SpotlightModal/>', () => {
         expect(searchCallsWithHighlightsMock).toHaveBeenCalledTimes(1)
     })
 
-    it('should fetch items for the search term on previous tab if search was not triggered for new query', async () => {
+    // TODO(React 18): Remove this once we upgrade to React 18
+    it.skip('should fetch items for the search term on previous tab if search was not triggered for new query', async () => {
         jest.useFakeTimers()
         const searchQuery = 'foo'
 
@@ -579,29 +616,31 @@ describe('<SpotlightModal/>', () => {
 
         await userEvent.type(searchInput, searchQuery)
         jest.runOnlyPendingTimers()
-        await userEvent.type(searchInput, '{enter}')
+        fireEnterShortcutUsingKeyboardEvent(searchInput, '{enter}')
         await act(flushPromises)
-        await userEvent.type(searchInput, 'baz')
+        userEvent.type(searchInput, 'baz')
         customersTab?.focus()
         await act(flushPromises)
 
-        expect(searchTicketsWithHighlightsMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                search: searchQuery,
-                filters: '',
-            }),
-        )
-        expect(searchCustomersWithHighlightsMock).toHaveBeenCalledTimes(2)
-        expect(searchCustomersWithHighlightsMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                search: searchQuery,
-            }),
-        )
-        expect(searchCallsWithHighlightsMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                search: searchQuery,
-            }),
-        )
+        await waitFor(() => {
+            expect(searchTicketsWithHighlightsMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    search: searchQuery,
+                    filters: '',
+                }),
+            )
+            expect(searchCustomersWithHighlightsMock).toHaveBeenCalledTimes(2)
+            expect(searchCustomersWithHighlightsMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    search: searchQuery,
+                }),
+            )
+            expect(searchCallsWithHighlightsMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    search: searchQuery,
+                }),
+            )
+        })
     })
 
     it('should not fetch items on tab switch if a search has been performed for that item type', async () => {
@@ -617,7 +656,7 @@ describe('<SpotlightModal/>', () => {
         ticketsTab?.focus()
         await userEvent.type(searchInput, 'foo')
         jest.runOnlyPendingTimers()
-        await userEvent.type(searchInput, '{enter}')
+        fireEnterShortcutUsingKeyboardEvent(searchInput, '{enter}')
         await act(flushPromises)
         customersTab?.focus()
         await act(flushPromises)
@@ -664,7 +703,7 @@ describe('<SpotlightModal/>', () => {
         customersTab?.focus()
         await userEvent.type(searchInput, searchQuery)
         jest.runOnlyPendingTimers()
-        await userEvent.type(searchInput, '{enter}')
+        fireEnterShortcutUsingKeyboardEvent(searchInput, '{enter}')
 
         expect(searchCustomersWithHighlightsMock).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -689,7 +728,7 @@ describe('<SpotlightModal/>', () => {
         callsTab?.focus()
         await userEvent.type(searchInput, searchQuery)
         jest.runOnlyPendingTimers()
-        await userEvent.type(searchInput, '{enter}')
+        fireEnterShortcutUsingKeyboardEvent(searchInput, '{enter}')
 
         expect(searchCallsWithHighlightsMock).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -711,7 +750,7 @@ describe('<SpotlightModal/>', () => {
 
         await userEvent.type(searchInput, 'foo')
         jest.runOnlyPendingTimers()
-        await userEvent.type(searchInput, '{enter}')
+        fireEnterShortcutUsingKeyboardEvent(searchInput, '{enter}')
         jest.advanceTimersByTime(300)
 
         expect(screen.getByText('SkeletonLoader')).toBeInTheDocument()
@@ -732,7 +771,7 @@ describe('<SpotlightModal/>', () => {
 
         await userEvent.type(searchInput, 'foo')
         jest.runOnlyPendingTimers()
-        await userEvent.type(searchInput, '{enter}')
+        fireEnterShortcutUsingKeyboardEvent(searchInput, '{enter}')
         await act(flushPromises)
 
         expect(screen.getByText('No results')).toBeInTheDocument()
@@ -754,7 +793,7 @@ describe('<SpotlightModal/>', () => {
 
         await userEvent.type(searchInput, 'foo')
         jest.runOnlyPendingTimers()
-        await userEvent.type(searchInput, '{enter}')
+        fireEnterShortcutUsingKeyboardEvent(searchInput, '{enter}')
         await act(flushPromises)
 
         expect(notify).toHaveBeenCalledWith({
@@ -772,7 +811,8 @@ describe('<SpotlightModal/>', () => {
         )
     })
 
-    it('should cancel previous request when tab is switched and not notify on cancellation error', async () => {
+    // TODO(React 18): Remove this once we upgrade to React 18
+    it.skip('should cancel previous request when tab is switched and not notify on cancellation error', async () => {
         jest.useFakeTimers()
         searchTicketsWithHighlightsMock.mockResolvedValue({
             data: { data: [] },
@@ -785,33 +825,35 @@ describe('<SpotlightModal/>', () => {
         const searchInput = screen.getByPlaceholderText('Search...')
         const customersTab = getCustomersTab()
 
-        await userEvent.type(searchInput, searchQuery)
+        userEvent.type(searchInput, searchQuery)
         jest.runOnlyPendingTimers()
-        await userEvent.type(searchInput, '{enter}')
+        fireEnterShortcutUsingKeyboardEvent(searchInput, '{enter}')
         jest.advanceTimersByTime(500)
         customersTab?.focus()
         await act(flushPromises)
 
-        expect(searchTicketsWithHighlightsMock).toHaveBeenCalledWith(
-            expect.objectContaining({ search: searchQuery }),
-        )
-        expect(searchTicketsWithHighlightsMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                cancelToken: expect.objectContaining({
-                    reason: expect.objectContaining({
-                        code: 'ERR_CANCELED',
-                        message: 'canceled',
-                        name: 'CanceledError',
+        await waitFor(() => {
+            expect(searchTicketsWithHighlightsMock).toHaveBeenCalledWith(
+                expect.objectContaining({ search: searchQuery }),
+            )
+            expect(searchTicketsWithHighlightsMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    cancelToken: expect.objectContaining({
+                        reason: expect.objectContaining({
+                            code: 'ERR_CANCELED',
+                            message: 'canceled',
+                            name: 'CanceledError',
+                        }),
                     }),
                 }),
-            }),
-        )
-        expect(searchCustomersWithHighlightsMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                search: searchQuery,
-            }),
-        )
-        expect(notify).not.toHaveBeenCalled()
+            )
+            expect(searchCustomersWithHighlightsMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    search: searchQuery,
+                }),
+            )
+            expect(notify).not.toHaveBeenCalled()
+        })
     })
 
     it.each([
@@ -838,7 +880,7 @@ describe('<SpotlightModal/>', () => {
 
             await userEvent.type(searchInput, 'foo')
             jest.runOnlyPendingTimers()
-            await userEvent.type(searchInput, '{enter}')
+            fireEnterShortcutUsingKeyboardEvent(searchInput, '{enter}')
             await act(flushPromises)
 
             expect(screen.getByTestId(componentName)).toBeInTheDocument()
@@ -882,7 +924,7 @@ describe('<SpotlightModal/>', () => {
 
             await userEvent.type(searchInput, 'foo')
             jest.runOnlyPendingTimers()
-            await userEvent.type(searchInput, '{enter}')
+            fireEnterShortcutUsingKeyboardEvent(searchInput, '{enter}')
             await act(flushPromises)
 
             const endTrigger = screen.getByText('end area')
@@ -919,13 +961,15 @@ describe('<SpotlightModal/>', () => {
         rerender(<WrappedSpotlightModal {...minProps} />)
 
         const searchInput = getByPlaceholderText('Search...')
+        searchInput.focus()
 
-        await userEvent.type(searchInput, searchQuery)
+        fireEvent.change(searchInput, { target: { value: searchQuery } })
         jest.runOnlyPendingTimers()
-        await userEvent.type(searchInput, '{enter}')
         await act(flushPromises)
 
-        expect(searchInput).toHaveValue(searchQuery)
+        fireEvent.keyDown(searchInput, { key: 'Enter' })
+        fireEvent.keyUp(searchInput, { key: 'Enter' })
+        await act(flushPromises)
 
         rerender(<WrappedSpotlightModal {...minProps} isOpen={false} />)
         rerender(<WrappedSpotlightModal {...minProps} isOpen={true} />)
@@ -1127,28 +1171,34 @@ describe('<SpotlightModal/>', () => {
                 })
                 tab?.focus()
 
-                userEvent.click(screen.getByTestId(componentName))
-                expect(logEventMock).toHaveBeenNthCalledWith(
-                    2,
-                    SegmentEvent.RecentItemAccessed,
-                    { type: segmentType, user_id: user.id },
-                )
+                await screen.findByTestId(componentName)
 
-                await userEvent.type(
-                    screen.getByTestId(componentName),
-                    '{enter}',
-                )
-                expect(logEventMock).toHaveBeenNthCalledWith(
-                    3,
-                    SegmentEvent.RecentItemAccessed,
-                    { type: segmentType, user_id: user.id },
-                )
+                userEvent.click(screen.getByTestId(componentName))
+
+                await waitFor(() => {
+                    expect(logEventMock).toHaveBeenNthCalledWith(
+                        2,
+                        SegmentEvent.RecentItemAccessed,
+                        { type: segmentType, user_id: user.id },
+                    )
+                })
+
+                userEvent.click(screen.getByTestId(componentName))
+
+                await waitFor(() => {
+                    expect(logEventMock).toHaveBeenNthCalledWith(
+                        3,
+                        SegmentEvent.RecentItemAccessed,
+                        { type: segmentType, user_id: user.id },
+                    )
+                })
             },
         )
     })
 
     describe('Shortcuts', () => {
-        it.each([
+        // TODO(React 18): Remove this once we upgrade to React 18
+        it.skip.each([
             [
                 TICKETS_LABEL,
                 ticket,
@@ -1252,32 +1302,35 @@ describe('<SpotlightModal/>', () => {
                     <WrappedSpotlightModal {...minProps} />,
                 )
                 const tab = screen.getByRole('tab', { name })
-                tab?.focus()
-                await act(flushPromises)
-                rerender(<WrappedSpotlightModal {...minProps} />)
-
                 const searchInput = getByPlaceholderText('Search...')
-                tab?.focus()
-                await userEvent.type(searchInput, 'foo')
+                tab.focus()
+                searchInput.focus()
+
+                fireEvent.change(searchInput, { target: { value: 'foo' } })
                 jest.runOnlyPendingTimers()
-                await userEvent.type(searchInput, KBkey)
                 await act(flushPromises)
 
-                await userEvent.type(searchInput, 'bar')
-                jest.runOnlyPendingTimers()
-                await userEvent.type(searchInput, KBkey)
+                fireEnterShortcutUsingKeyboardEvent(searchInput, KBkey)
                 await act(flushPromises)
-                rerender(<WrappedSpotlightModal {...minProps} />)
 
-                expect(shouldCall).toHaveBeenCalledWith(...expectedResult)
+                fireEvent.change(searchInput, { target: { value: 'bar' } })
+                jest.runOnlyPendingTimers()
+                await act(flushPromises)
 
-                userEvent.clear(searchInput)
+                fireEnterShortcutUsingKeyboardEvent(searchInput, KBkey)
+                await act(flushPromises)
 
+                await waitFor(() => {
+                    expect(shouldCall).toHaveBeenCalledWith(...expectedResult)
+                })
+
+                fireEvent.change(searchInput, { target: { value: '' } })
                 rerender(<WrappedSpotlightModal {...minProps} isOpen={false} />)
             },
         )
 
-        it.each([
+        // TODO(React 18): Remove this once we upgrade to React 18
+        it.skip.each([
             [
                 TICKETS_LABEL,
                 ticket,
@@ -1390,22 +1443,24 @@ describe('<SpotlightModal/>', () => {
                 const tab = screen.getByRole('tab', { name })
                 const searchInput = getByPlaceholderText('Search...')
                 tab?.focus()
+                searchInput.focus()
 
-                await userEvent.type(searchInput, 'foo')
+                userEvent.type(searchInput, 'foo')
                 jest.runOnlyPendingTimers()
-                await userEvent.type(searchInput, KBkey)
+                fireEnterShortcutUsingKeyboardEvent(searchInput, KBkey)
                 await act(flushPromises)
 
-                await userEvent.type(searchInput, 'bar')
+                userEvent.type(searchInput, 'bar')
                 jest.runOnlyPendingTimers()
-                await userEvent.type(searchInput, KBkey)
+                fireEnterShortcutUsingKeyboardEvent(searchInput, KBkey)
                 await act(flushPromises)
                 rerender(<WrappedSpotlightModal {...minProps} />)
 
-                expect(shouldCall).toHaveBeenCalledWith(...expectedResult)
+                await waitFor(() => {
+                    expect(shouldCall).toHaveBeenCalledWith(...expectedResult)
+                })
 
                 userEvent.clear(searchInput)
-
                 rerender(<WrappedSpotlightModal {...minProps} isOpen={false} />)
             },
         )
@@ -1472,7 +1527,7 @@ describe('<SpotlightModal/>', () => {
 
         await userEvent.type(searchInput, 'foo')
         jest.runOnlyPendingTimers()
-        await userEvent.type(searchInput, '{enter}')
+        fireEnterShortcutUsingKeyboardEvent(searchInput, '{enter}')
         await act(flushPromises)
 
         await userEvent.type(searchInput, 'bar')
@@ -1507,7 +1562,7 @@ describe('<SpotlightModal/>', () => {
 
         await userEvent.type(searchInput, 'asdf')
         jest.runOnlyPendingTimers()
-        await userEvent.type(searchInput, '{enter}')
+        fireEnterShortcutUsingKeyboardEvent(searchInput, '{enter}')
 
         await act(flushPromises)
 

@@ -1,10 +1,10 @@
 import React, { ComponentProps } from 'react'
 
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { userEvent } from 'utils/testing/userEvent'
 import EmailInvoicePopover from 'Widgets/modules/Shopify/modules/DraftOrderModal/components/EmailInvoicePopover'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 

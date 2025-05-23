@@ -2,7 +2,6 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, render, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import { Provider } from 'react-redux'
 import { Router, useLocation } from 'react-router-dom'
@@ -16,6 +15,7 @@ import { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import ABGroupContainer from '../ABGroupContainer'
 

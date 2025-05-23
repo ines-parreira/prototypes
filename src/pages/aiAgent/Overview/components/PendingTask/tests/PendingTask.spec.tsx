@@ -1,9 +1,9 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { PendingTask } from '../PendingTask'
 

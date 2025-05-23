@@ -1,13 +1,13 @@
 import React from 'react'
 
 import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { navigateBackToUserList } from 'pages/settings/users/Detail/constants'
 import {
     DeleteModal,
     REMOVE_MESSAGE_ABOUT_SAVED_FILTERS,
 } from 'pages/settings/users/Detail/DeleteModal'
+import { userEvent } from 'utils/testing/userEvent'
 
 const mockedDeleteAgent = jest.fn(() => Promise.resolve(true))
 jest.mock('hooks/agents/useDeleteAgent', () => ({

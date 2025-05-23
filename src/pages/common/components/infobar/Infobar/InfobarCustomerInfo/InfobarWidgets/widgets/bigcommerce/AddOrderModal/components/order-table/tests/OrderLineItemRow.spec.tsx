@@ -1,13 +1,13 @@
 import React, { ComponentProps } from 'react'
 
 import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { produce } from 'immer'
 
 import {
     bigCommerceLineItemFixture,
     bigCommerceProductFixture,
 } from 'fixtures/bigcommerce'
+import { userEvent } from 'utils/testing/userEvent'
 
 import OrderLineItemRow from '../OrderLineItemRow'
 

@@ -1,7 +1,6 @@
 import React, { ComponentProps } from 'react'
 
 import { render } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS, List, Map } from 'immutable'
 import _noop from 'lodash/noop'
 
@@ -9,6 +8,7 @@ import useAgentsViewing from 'hooks/realtime/useAgentsViewing'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { scrollToReactNode } from 'pages/common/utils/keyboard'
 import * as viewsActions from 'state/views/actions'
+import { userEvent } from 'utils/testing/userEvent'
 
 import * as viewsConfig from '../../../../../../config/views'
 import * as agentsFixtures from '../../../../../../fixtures/agents'

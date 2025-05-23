@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { Link, useParams } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -19,6 +18,7 @@ import {
 } from 'fixtures/customField'
 import useDebouncedValue from 'hooks/useDebouncedValue'
 import { assumeMock, getLastMockCall } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import CustomFields from '../CustomFields'
 

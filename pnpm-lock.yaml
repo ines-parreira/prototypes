@@ -641,8 +641,8 @@ importers:
         specifier: 8.0.1
         version: 8.0.1(@types/react@17.0.83)(react-dom@17.0.2(react@17.0.2))(react-test-renderer@17.0.2(react@17.0.2))(react@17.0.2)
       '@testing-library/user-event':
-        specifier: 12.1.7
-        version: 12.1.7(@testing-library/dom@10.4.0)
+        specifier: 14.5.2
+        version: 14.5.2(@testing-library/dom@10.4.0)
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^5.2.2
         version: 5.2.2(prettier@3.5.2)
@@ -4153,12 +4153,6 @@ packages:
     peerDependencies:
       react: <18.0.0
       react-dom: <18.0.0
-
-  '@testing-library/user-event@12.1.7':
-    resolution: {integrity: sha512-wuJiPqSQTVIHsYuumv1PAOBjblSrYA5vyN1nkUDF5HgfuWGz44jQsO22u7PQNkuACGYJE4eU0sybX8CzsySv+Q==}
-    engines: {node: '>=10', npm: '>=6'}
-    peerDependencies:
-      '@testing-library/dom': '>=7.21.4'
 
   '@testing-library/user-event@14.5.2':
     resolution: {integrity: sha512-YAh82Wh4TIrxYLmfGcixwD18oIjyC1pFQC2Y01F2lzV2HTMiYrI0nze0FD0ocB//CKS/7jIUgae+adPqxK5yCQ==}
@@ -14854,11 +14848,6 @@ snapshots:
       react-dom: 17.0.2(react@17.0.2)
     transitivePeerDependencies:
       - '@types/react'
-
-  '@testing-library/user-event@12.1.7(@testing-library/dom@10.4.0)':
-    dependencies:
-      '@babel/runtime': 7.26.0
-      '@testing-library/dom': 10.4.0
 
   '@testing-library/user-event@14.5.2(@testing-library/dom@10.4.0)':
     dependencies:

@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useUpdateCustomFieldArchiveStatus } from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
@@ -11,6 +10,7 @@ import {
 } from 'fixtures/customField'
 import { TableBodyRowDraggable } from 'pages/common/components/table/TableBodyRowDraggable'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import Row from '../Row'
 

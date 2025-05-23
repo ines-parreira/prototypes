@@ -2,7 +2,6 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -23,6 +22,7 @@ import {
 } from 'models/discountCodes/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import UniqueDiscountCodeResults from '../UniqueDiscountOfferResults'
 

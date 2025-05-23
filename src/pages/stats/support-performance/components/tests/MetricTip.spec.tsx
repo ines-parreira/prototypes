@@ -1,9 +1,9 @@
 import React from 'react'
 
 import { act, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import MetricTip from 'pages/stats/support-performance/components/MetricTip'
+import { userEvent } from 'utils/testing/userEvent'
 
 describe('<MetricTip />', () => {
     it('should render the metric tip', () => {

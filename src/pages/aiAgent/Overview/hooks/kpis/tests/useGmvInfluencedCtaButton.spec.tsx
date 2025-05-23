@@ -1,6 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { useLocation } from 'react-router-dom'
@@ -21,6 +20,7 @@ import {
 import { getStoresEligibleForTrial } from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
+import { userEvent } from 'utils/testing/userEvent'
 
 const mockStore = createMockStore([thunk])
 const queryClient = new QueryClient({})

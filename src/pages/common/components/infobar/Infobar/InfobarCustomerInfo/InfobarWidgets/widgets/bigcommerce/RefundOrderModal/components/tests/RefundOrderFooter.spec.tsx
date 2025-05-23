@@ -1,7 +1,8 @@
 import { ComponentProps } from 'react'
 
 import { act, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+
+import { userEvent } from 'utils/testing/userEvent'
 
 import { BigCommerceRefundActionType } from '../../types'
 import { RefundOrderFooter } from '../RefundOrderFooter'

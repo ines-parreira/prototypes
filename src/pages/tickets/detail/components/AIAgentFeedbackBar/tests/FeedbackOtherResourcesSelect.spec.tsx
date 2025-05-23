@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react'
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
@@ -9,6 +8,7 @@ import {
     UseAIAgentGetOtherResourcesProps,
 } from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { MultiLevelSelectProps } from '../Deprecated_MultiLevelSelect/Deprecated_MultiLevelSelect'
 import FeedbackOtherResourcesSelect, {

@@ -2,7 +2,6 @@ import React from 'react'
 
 import { UseQueryResult } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
@@ -24,6 +23,7 @@ import {
     ticketInsightsSlice,
 } from 'state/ui/stats/ticketInsightsSlice'
 import { assumeMock, renderWithStore } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)

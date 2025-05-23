@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { HelpCenter } from 'models/helpCenter/types'
@@ -24,6 +23,7 @@ import { emptyFilter } from 'pages/stats/common/filters/helpers'
 import * as statsSlice from 'state/stats/statsSlice'
 import { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)

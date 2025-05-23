@@ -2,7 +2,6 @@ import React from 'react'
 
 import { within } from '@testing-library/dom'
 import { act, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
@@ -63,6 +62,7 @@ import {
     initialState as ticketInsightsSliceStatsInitialState,
 } from 'state/ui/stats/ticketInsightsSlice'
 import { assumeMock, renderWithStore } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 const mockedLocales = [
     { name: 'English', code: 'en-US' },

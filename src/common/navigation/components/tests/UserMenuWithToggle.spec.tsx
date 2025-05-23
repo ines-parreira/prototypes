@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { render } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
 import {
@@ -9,6 +8,7 @@ import {
     isAvailable as getIsAvailable,
 } from 'state/currentUser/selectors'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import UserMenuWithToggle from '../UserMenuWithToggle'
 

@@ -2,13 +2,13 @@ import React from 'react'
 
 import { Location } from '@sentry/react/types/types'
 import { cleanup, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS, List } from 'immutable'
 import { Provider } from 'react-redux'
 import { MemoryRouter, Route } from 'react-router-dom'
 
 import * as useAppSelector from 'hooks/useAppSelector'
 import { mockStore, renderWithRouter } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import EmailDisconnectedBanner from '..'
 

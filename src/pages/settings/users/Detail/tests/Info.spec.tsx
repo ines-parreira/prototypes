@@ -1,7 +1,6 @@
-import React from 'react'
+import { render, screen, waitFor } from '@testing-library/react'
 
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { Info } from '../Info'
 import { AgentState } from '../types'
@@ -29,7 +28,7 @@ describe('Info', () => {
     it('should call setAgentState when editing', async () => {
         render(<Info {...props} />)
         const nameInput = screen.getByPlaceholderText('Robin McHelpful')
-        await userEvent.type(nameInput, 'M')
+        userEvent.type(nameInput, props.name + 'M')
         expect(props.setAgentState.mock.calls[0][0]({} as AgentState)).toEqual({
             name: props.name + 'M',
         })
@@ -37,7 +36,7 @@ describe('Info', () => {
         props.setAgentState.mockClear()
 
         const emailInput = screen.getByPlaceholderText('robin@mchelpful.com')
-        await userEvent.type(emailInput, 'N')
+        userEvent.type(emailInput, props.email + 'N')
         expect(props.setAgentState.mock.calls[0][0]({} as AgentState)).toEqual({
             email: props.email + 'N',
         })
@@ -51,10 +50,12 @@ describe('Info', () => {
         ).toBeDisabled()
     })
 
-    it('should call inviteAgent when clicking invite button', () => {
+    it('should call inviteAgent when clicking invite button', async () => {
         render(<Info {...props} isEdit />)
         const inviteButton = screen.getByText('Resend invite')
         userEvent.click(inviteButton)
-        expect(mockedInviteAgent).toHaveBeenNthCalledWith(1, [1])
+        await waitFor(() => {
+            expect(mockedInviteAgent).toHaveBeenNthCalledWith(1, [1])
+        })
     })
 })

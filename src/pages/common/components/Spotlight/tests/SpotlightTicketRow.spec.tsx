@@ -1,7 +1,6 @@
 import React, { ComponentProps } from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -13,6 +12,7 @@ import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import { PickedTicket } from 'models/search/types'
 import SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
+import { userEvent } from 'utils/testing/userEvent'
 
 const mockStore = configureMockStore([thunk])
 

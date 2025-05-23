@@ -1,7 +1,6 @@
 import React, { ComponentProps } from 'react'
 
 import { act, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { StyleSheetTestUtils } from 'aphrodite'
 import { fromJS, List, Map } from 'immutable'
 
@@ -9,6 +8,7 @@ import { AttachmentEnum } from 'common/types'
 import * as discountedPriceFlagModule from 'pages/convert/common/hooks/useIsProductCardDiscountedPriceEnabled'
 import { Account } from 'state/currentAccount/types'
 import { replaceAttachmentURL } from 'utils'
+import { userEvent } from 'utils/testing/userEvent'
 
 import TicketAttachments from '../TicketAttachments'
 

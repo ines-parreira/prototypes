@@ -1,8 +1,5 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
-import { render, screen, within } from '@testing-library/react'
-import user from '@testing-library/user-event'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import MockDate from 'mockdate'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -22,6 +19,7 @@ import { useExtendTrialWithSideEffects } from 'pages/settings/new_billing/hooks/
 import { useReactivateTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 const availableHdAoCoupons = [
     'sales-hd+ao-year-05%-once',
@@ -168,22 +166,25 @@ describe('BillingInternalViewUI', () => {
         expect(screen.getByText('Next invoice')).toBeInTheDocument()
 
         // When clicking on 'Extend trial' button
-        user.click(screen.getByRole('button', { name: /Extend trial/i }))
+        userEvent.click(screen.getByRole('button', { name: /Extend trial/i }))
         const confirmButton = await screen.findByRole('button', {
             name: /Confirm/i,
         })
-        user.click(confirmButton)
+
+        userEvent.click(confirmButton)
 
         expect(useExtendTrialMutateMock).toHaveBeenCalledWith([])
 
         // When clicking on 'Apply coupon' button
-        user.click(screen.getByRole('button', { name: /Apply coupon/i }))
+        userEvent.click(screen.getByRole('button', { name: /Apply coupon/i }))
 
         // Then a modal should show up
         const modal = screen.getByRole('dialog')
-        expect(
-            within(modal).getByText(/Apply Helpdesk and AI Agent coupon/i),
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                within(modal).getByText(/Apply Helpdesk and AI Agent coupon/i),
+            ).toBeInTheDocument()
+        })
 
         // with a dropdown having the list of available coupons
         const items = document.getElementsByClassName('dropdown-item')
@@ -283,27 +284,33 @@ describe('BillingInternalViewUI', () => {
         expect(screen.queryByText(/Trial ended on/i)).toBeInTheDocument()
 
         // When clicking on 'Reactivate trial' button
-        user.click(screen.getByRole('button', { name: /Reactivate trial/i }))
+        userEvent.click(
+            screen.getByRole('button', { name: /Reactivate trial/i }),
+        )
 
         // Then
-        expect(
-            screen.getByText(/Do you want to reactivate trial until/i),
-        ).toBeInTheDocument()
-        expect(screen.getByText(/August 17, 2050/i)).toBeInTheDocument()
-        expect(
-            screen.getByText(
-                /Note, that once confirmed, the reactivation cannot be undone./i,
-            ),
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.getByText(/Do you want to reactivate trial until/i),
+            ).toBeInTheDocument()
+            expect(screen.getByText(/August 17, 2050/i)).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    /Note, that once confirmed, the reactivation cannot be undone./i,
+                ),
+            ).toBeInTheDocument()
+        })
 
         expect(useReactivateTrialMutateMock).not.toHaveBeenCalledWith([])
 
         const confirmButton = await screen.findByRole('button', {
             name: /Confirm/i,
         })
-        user.click(confirmButton)
+        userEvent.click(confirmButton)
 
-        expect(useReactivateTrialMutateMock).toHaveBeenCalledWith([])
+        await waitFor(() => {
+            expect(useReactivateTrialMutateMock).toHaveBeenCalledWith([])
+        })
     })
 
     it('When trial has ended and has been extended previously + customer hasn’t converted (no active subscription)', () => {

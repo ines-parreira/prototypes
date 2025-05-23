@@ -1,7 +1,6 @@
 import React, { ComponentProps } from 'react'
 
 import { fireEvent, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { clone } from 'lodash'
 import { Provider } from 'react-redux'
@@ -20,6 +19,7 @@ import { customerFieldDefinitions } from 'fixtures/customField'
 import { CustomerChannel } from 'models/customerChannel/types'
 import { initialState } from 'state/twilio/voiceDevice'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { assumeMock } from '../../../../../../../utils/testing'
 import { CustomerChannels } from '../CustomerChannels'

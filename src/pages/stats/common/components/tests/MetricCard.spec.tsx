@@ -1,11 +1,11 @@
 import React from 'react'
 
 import { act, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import MetricCard from 'pages/stats/common/components/MetricCard'
 import { ChartsActionMenu } from 'pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu')
 const ChartsActionMenuMock = assumeMock(ChartsActionMenu)

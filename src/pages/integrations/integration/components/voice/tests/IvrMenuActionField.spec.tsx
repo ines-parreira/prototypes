@@ -1,5 +1,4 @@
-import { act, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { act, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -14,6 +13,7 @@ import {
     VoiceMessageType,
 } from 'models/integration/types'
 import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
+import { userEvent } from 'utils/testing/userEvent'
 
 import IvrMenuActionField from '../IvrMenuActionField'
 
@@ -96,11 +96,11 @@ describe('<IvrMenuActionField />', () => {
     it('should open drawer when clicking edit message button', async () => {
         renderComponent()
 
-        await act(async () => {
-            await userEvent.click(screen.getByText('Edit message'))
-        })
+        await userEvent.click(screen.getByText('Edit message'))
 
-        expect(screen.getByText('Message')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('Message')).toBeInTheDocument()
+        })
     })
 
     it('should open drawer when clicking add message button', async () => {

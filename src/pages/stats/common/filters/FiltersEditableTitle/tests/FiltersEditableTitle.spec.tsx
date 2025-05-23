@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { act, fireEvent, render } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { FILTER_WARNING_ICON } from 'pages/stats/common/components/Filter/constants'
@@ -14,6 +13,7 @@ import {
 } from 'pages/stats/common/filters/FiltersEditableTitle/FiltersEditableTitle'
 import { isTeamLead } from 'utils'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('utils')
 const isTeamLeadMock = assumeMock(isTeamLead)

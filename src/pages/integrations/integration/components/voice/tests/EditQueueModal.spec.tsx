@@ -138,14 +138,16 @@ describe('EditQueueModal', () => {
         })
     })
 
-    it('calls onClose when cancel button is clicked', () => {
+    it('calls onClose when cancel button is clicked', async () => {
         renderComponent()
 
         act(() => {
             fireEvent.click(screen.getByText('Cancel'))
         })
 
-        expect(mockOnClose).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(mockOnClose).toHaveBeenCalled()
+        })
     })
 
     it('does not render when isOpen is false', () => {

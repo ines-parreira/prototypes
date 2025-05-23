@@ -1,12 +1,12 @@
 import React from 'react'
 
 import { act, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import TrendBadge, {
     DEFAULT_BADGE_TEXT,
 } from 'pages/stats/common/components/TrendBadge/TrendBadge'
 import { formatMetricValue } from 'pages/stats/common/utils'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock(
     '@gorgias/merchant-ui-kit',

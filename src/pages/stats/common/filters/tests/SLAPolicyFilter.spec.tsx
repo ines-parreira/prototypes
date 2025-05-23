@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { screen, within } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { SLAPolicy, useListSlaPolicies } from '@gorgias/helpdesk-queries'
 
@@ -30,6 +29,7 @@ import * as statsSlice from 'state/stats/statsSlice'
 import { RootState } from 'state/types'
 import * as filtersSlice from 'state/ui/stats/filtersSlice'
 import { assumeMock, renderWithStore } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('@gorgias/helpdesk-queries')
 const useListSlaPoliciesMock = assumeMock(useListSlaPolicies)

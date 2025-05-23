@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import CheckboxCard from '../CheckboxCard'
@@ -57,9 +57,11 @@ describe('CheckboxCard', () => {
         render(<CheckboxCard {...defaultProps} />)
 
         const checkbox = screen.getByRole('checkbox')
-        await userEvent.type(checkbox, '{enter}')
+        userEvent.type(checkbox, '{enter}')
 
-        expect(defaultProps.onKeyDown).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(defaultProps.onKeyDown).toHaveBeenCalled()
+        })
     })
 
     it('should apply custom className when provided', () => {
@@ -78,8 +80,10 @@ describe('CheckboxCard', () => {
         await userEvent.tab()
         expect(checkbox).toHaveFocus()
 
-        await userEvent.type(checkbox, '{enter}')
-        expect(defaultProps.onKeyDown).toHaveBeenCalled()
+        userEvent.type(checkbox, '{enter}')
+        await waitFor(() => {
+            expect(defaultProps.onKeyDown).toHaveBeenCalled()
+        })
     })
 
     it('should maintain accessibility attributes', () => {

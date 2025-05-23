@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import {
     IntentCard,
     IntentCardProps,
 } from 'pages/stats/common/components/IntentCard'
 import TrendBadge from 'pages/stats/common/components/TrendBadge/TrendBadge'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('pages/stats/common/components/TrendBadge/TrendBadge', () => ({
     __esModule: true,

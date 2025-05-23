@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { fireEvent, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { withLogicalOperator } from 'models/reporting/queryFactories/utils'
@@ -29,6 +28,7 @@ import * as statsSlice from 'state/stats/statsSlice'
 import { RootState } from 'state/types'
 import * as filtersSlice from 'state/ui/stats/filtersSlice'
 import { renderWithStore } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 const mockedRemove = jest.fn()
 

@@ -7,7 +7,6 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -22,6 +21,7 @@ import { initialState } from 'state/twilio/voiceDevice'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockDevice } from 'tests/twilioMocks'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import ClickablePhoneNumber from '../ClickablePhoneNumber'
 

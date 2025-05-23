@@ -1,7 +1,6 @@
 import { ComponentProps } from 'react'
 
 import { screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
@@ -28,6 +27,7 @@ import {
 import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 import { fetchWidgets, selectContext } from 'state/widgets/actions'
 import { assumeMock, renderWithRouter } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import {
     AI_FEEDBACK_TAB,

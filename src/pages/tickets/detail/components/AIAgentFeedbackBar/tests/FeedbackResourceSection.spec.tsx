@@ -1,13 +1,11 @@
-import React from 'react'
-
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render, screen, waitFor } from '@testing-library/react'
 import { useCookies } from 'react-cookie'
 
 import { logEventWithSampling } from 'common/segment/segment'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { Feedback, FeedbackOnResource } from 'models/aiAgentFeedback/types'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { SegmentEvent } from '../../../../../../common/segment'
 import {
@@ -136,7 +134,7 @@ describe('FeedbackResourceSection', () => {
         expect(tooltip).toBeNull()
     })
 
-    it('calls setCookie when handleBlur is triggered and cookie is not set', () => {
+    it('calls setCookie when handleBlur is triggered and cookie is not set', async () => {
         renderFeedbackResourceComponent('thumbs_up')
         const thumbsButton = screen.getByTitle(
             'Prioritize this knowledge source in requests like this',
@@ -144,7 +142,12 @@ describe('FeedbackResourceSection', () => {
         userEvent.click(thumbsButton)
         userEvent.tab() // simulate blur event on button by tabbing
 
-        expect(mockSetCookie).toHaveBeenCalledWith(TOOLTIP_COOKIE_NAME, true)
+        await waitFor(() => {
+            expect(mockSetCookie).toHaveBeenCalledWith(
+                TOOLTIP_COOKIE_NAME,
+                true,
+            )
+        })
     })
 
     it('does not call setCookie when handleBlur is triggered and cookie is already set', () => {

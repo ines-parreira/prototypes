@@ -2,7 +2,6 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS, Map } from 'immutable'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
@@ -16,6 +15,7 @@ import {
 } from 'state/currentAccount/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import SatisfactionSurveyView from '../SatisfactionSurveyView'
 

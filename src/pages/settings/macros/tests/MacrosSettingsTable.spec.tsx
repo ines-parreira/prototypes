@@ -2,7 +2,6 @@ import React, { ComponentProps } from 'react'
 
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { useRouteMatch } from 'react-router-dom'
 
 import { useFlag } from 'core/flags'
@@ -13,6 +12,7 @@ import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { OrderDirection } from 'models/api/types'
 import { MacroSortableProperties } from 'models/macro/types'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { MacrosSettingsTable } from '../MacrosSettingsTable'
 

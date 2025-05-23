@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { render } from '@testing-library/react'
+import { render, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import CheckBox from '../CheckBox'
@@ -37,17 +37,19 @@ describe('<CheckBox />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should call `onChange` when clicking on the input', () => {
+    it('should call `onChange` when clicking on the input', async () => {
         const { getByLabelText } = render(
             <CheckBox {...minProps}>Shopify</CheckBox>,
         )
 
         userEvent.click(getByLabelText(/shopify/i))
 
-        expect(minProps.onChange).toHaveBeenCalledWith(true)
+        await waitFor(() => {
+            expect(minProps.onChange).toHaveBeenCalledWith(true)
+        })
     })
 
-    it('should not call `onChange` when clicking on the disabled input', () => {
+    it('should not call `onChange` when clicking on the disabled input', async () => {
         const { getByLabelText } = render(
             <CheckBox {...minProps} isDisabled>
                 Shopify
@@ -56,6 +58,8 @@ describe('<CheckBox />', () => {
 
         userEvent.click(getByLabelText(/shopify/i))
 
-        expect(minProps.onChange).not.toHaveBeenCalled()
+        await waitFor(() => {
+            expect(minProps.onChange).not.toHaveBeenCalled()
+        })
     })
 })

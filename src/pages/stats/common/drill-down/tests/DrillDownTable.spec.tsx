@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from 'react'
 
 import { act, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -47,6 +46,7 @@ import {
     SlaMetric,
 } from 'state/ui/stats/types'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 

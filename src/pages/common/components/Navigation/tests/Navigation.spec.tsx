@@ -1,9 +1,9 @@
 import React, { ComponentProps } from 'react'
 
 import { render } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import Navigation from 'pages/common/components/Navigation/Navigation'
+import { userEvent } from 'utils/testing/userEvent'
 
 const commonProps: ComponentProps<typeof Navigation> = {
     hasNextItems: true,

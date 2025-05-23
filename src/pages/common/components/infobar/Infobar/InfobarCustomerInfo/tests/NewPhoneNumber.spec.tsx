@@ -7,7 +7,6 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { isValidPhoneNumber } from 'libphonenumber-js'
 import { Provider } from 'react-redux'
 
@@ -20,6 +19,7 @@ import {
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { assumeMock, mockStore } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import NewPhoneNumber from '../NewPhoneNumber'
 

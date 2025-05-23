@@ -2,7 +2,6 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -31,6 +30,7 @@ import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { getLDClient } from 'utils/launchDarkly'
 import { assumeMock, flushPromises } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import ConvertSimplifiedEditorModal from '../ConvertSimplifiedEditorModal'
 

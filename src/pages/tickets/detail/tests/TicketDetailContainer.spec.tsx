@@ -2,7 +2,6 @@ import React, { ComponentProps } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { createMemoryHistory } from 'history'
 import { fromJS, Map } from 'immutable'
@@ -46,6 +45,7 @@ import {
     makeExecuteKeyboardAction,
     renderWithRouter,
 } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import TicketView from '../components/TicketView'
 import useTicketActivityTracking from '../hooks/useTicketActivityTracking'

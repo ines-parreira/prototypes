@@ -1,11 +1,9 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import NotificationsItem from 'common/navigation/components/NotificationsItem'
 import { useNotificationsOverlay } from 'common/notifications'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('common/notifications', () => ({
     useNotificationsOverlay: jest.fn(),

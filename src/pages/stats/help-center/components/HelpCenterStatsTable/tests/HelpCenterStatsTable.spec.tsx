@@ -1,11 +1,12 @@
 import React, { ComponentProps } from 'react'
 
 import { act, fireEvent, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import { userEvent } from 'utils/testing/userEvent'
 
 import HelpCenterStatsTable, { TableCellType } from '../HelpCenterStatsTable'
 

@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { act, render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useNotify } from 'hooks/useNotify'
@@ -12,6 +11,7 @@ import {
 } from 'pages/stats/voice-of-customer/product-insights/placeholder/TopProductsPerIntentConfig'
 import { TopProductsPerIntentTable } from 'pages/stats/voice-of-customer/product-insights/placeholder/TopProductsPerIntentTable'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('hooks/reporting/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)

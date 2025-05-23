@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -12,6 +11,7 @@ import { TableCellType } from 'pages/stats/help-center/components/HelpCenterStat
 import { PerformanceByArticle } from 'pages/stats/help-center/components/PerformanceByArticle/PerformanceByArticle'
 import { usePerformanceByArticleMetrics } from 'pages/stats/help-center/hooks/usePerformanceByArticleMetrics'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock(
     'pages/stats/help-center/hooks/usePerformanceByArticleMetrics',

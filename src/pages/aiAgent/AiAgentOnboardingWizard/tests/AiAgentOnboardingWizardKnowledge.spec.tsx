@@ -4,7 +4,6 @@ import React, { ComponentProps } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
@@ -27,6 +26,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock, renderWithRouter } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import {
     ARTICLE_INGESTION_LOGS_STATUS,

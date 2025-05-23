@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { tags } from 'fixtures/tag'
 import { useTicketCountPerTag } from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
@@ -19,6 +18,7 @@ import { RootState } from 'state/types'
 import { ValueMode } from 'state/ui/stats/types'
 import { calculatePercentage } from 'utils/reporting'
 import { assumeMock, renderWithStore } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('hooks/reporting/ticket-insights/useTicketCountPerTag')
 const useTicketCountPerTagMock = assumeMock(useTicketCountPerTag)

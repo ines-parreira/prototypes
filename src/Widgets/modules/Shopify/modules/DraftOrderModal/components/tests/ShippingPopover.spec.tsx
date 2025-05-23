@@ -1,7 +1,6 @@
 import React, { ComponentProps } from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS, Map } from 'immutable'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -9,6 +8,7 @@ import {
     shopifyAvailableShippingRate,
     shopifyShippingLineFixture,
 } from 'fixtures/shopify'
+import { userEvent } from 'utils/testing/userEvent'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import ShippingPopover from '../ShippingPopover'

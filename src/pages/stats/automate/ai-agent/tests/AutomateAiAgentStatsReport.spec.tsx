@@ -1,7 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import moment from 'moment-timezone'
 
@@ -26,6 +25,7 @@ import { getCurrentUser } from 'state/currentUser/selectors'
 import { getStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 import { getSelectedCustomField } from 'state/ui/stats/ticketInsightsSlice'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock(
     'hooks/useAppSelector',

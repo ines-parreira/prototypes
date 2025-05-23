@@ -4,7 +4,6 @@ import type { ComponentProps } from 'react'
 import { NotificationFeed, useKnockFeed } from '@knocklabs/react'
 import type { RenderItemProps } from '@knocklabs/react'
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import {
     logEvent,
@@ -12,6 +11,7 @@ import {
     SegmentEvent,
 } from 'common/segment'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import Feed from '../Feed'
 import FeedHeader from '../FeedHeader'

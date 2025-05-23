@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { useRouteMatch } from 'react-router-dom'
@@ -24,6 +23,7 @@ import history from 'pages/history'
 import { notify } from 'state/notifications/actions'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { MacrosSettingsContent } from '../MacrosSettingsContent'
 

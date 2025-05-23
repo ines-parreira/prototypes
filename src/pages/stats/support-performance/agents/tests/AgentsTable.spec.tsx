@@ -1,7 +1,6 @@
 import React, { ComponentProps } from 'react'
 
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -33,6 +32,7 @@ import {
 } from 'state/ui/stats/agentPerformanceSlice'
 import { AgentsTableColumn } from 'state/ui/stats/types'
 import { assumeMock, renderWithStore } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

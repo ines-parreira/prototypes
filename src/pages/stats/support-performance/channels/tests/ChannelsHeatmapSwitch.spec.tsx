@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { act, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import {
     HEATMAP_MODE_LABEL,
@@ -15,6 +14,7 @@ import {
     toggleHeatmapMode,
 } from 'state/ui/stats/channelsSlice'
 import { renderWithStore } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 describe('ChannelsHeatmapSwitch', () => {
     const defaultState = {

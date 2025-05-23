@@ -1,12 +1,13 @@
 import React from 'react'
 
 import { render, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { CancelToken } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import { userEvent } from 'utils/testing/userEvent'
 
 import client from '../../../../models/api/resources'
 import { StoreDispatch } from '../../../../state/types'

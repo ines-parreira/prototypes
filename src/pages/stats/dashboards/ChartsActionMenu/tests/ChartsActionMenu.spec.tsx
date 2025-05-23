@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { act, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -22,6 +21,7 @@ import {
 } from 'pages/stats/dashboards/types'
 import { OverviewChart } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import { assumeMock, renderWithStore } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('hooks/reporting/dashboards/useDashboardActions')
 const useDashboardActionsMock = assumeMock(useDashboardActions)

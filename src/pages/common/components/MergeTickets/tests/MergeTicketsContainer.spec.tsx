@@ -1,12 +1,12 @@
 import React from 'react'
 
 import { screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS, Map } from 'immutable'
 import _noop from 'lodash/noop'
 
 import MergeTicketsContainer from 'pages/common/components/MergeTickets/MergeTicketsContainer'
 import { renderWithStore } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('@gorgias/realtime', () => ({
     useAgentActivity: () => ({

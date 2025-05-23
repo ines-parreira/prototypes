@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -14,6 +13,7 @@ import {
 } from 'fixtures/productPrices'
 import { CurrentContactFormContext } from 'pages/settings/contactForm/contexts/currentContactForm.context'
 import { useContactFormApi } from 'pages/settings/contactForm/hooks/useContactFormApi'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { account } from '../../../../../../fixtures/account'
 import { billingState } from '../../../../../../fixtures/billing'

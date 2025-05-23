@@ -1,7 +1,6 @@
 import React, { ComponentProps } from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { History, Location } from 'history'
 import { fromJS } from 'immutable'
 import { match } from 'react-router-dom'
@@ -13,6 +12,7 @@ import {
 } from 'constants/integration'
 import { SmileIntegrationDetailComponent } from 'pages/integrations/integration/components/smile/SmileIntegrationDetail'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.useFakeTimers()
 

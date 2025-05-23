@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -12,6 +11,7 @@ import thunk from 'redux-thunk'
 import AutoMergeSettings from 'pages/settings/autoMerge/AutoMergeSettings'
 import { submitSetting } from 'state/currentAccount/actions'
 import { AccountSettingType } from 'state/currentAccount/types'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('state/currentAccount/actions')
 

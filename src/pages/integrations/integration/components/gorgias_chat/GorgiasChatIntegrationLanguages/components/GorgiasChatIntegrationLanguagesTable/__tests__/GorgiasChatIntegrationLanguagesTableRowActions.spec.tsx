@@ -1,9 +1,9 @@
 import React, { ComponentProps, ReactNode } from 'react'
 
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import Modal from 'pages/common/components/modal/Modal'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { GorgiasChatIntegrationLanguagesTableRowActions } from '../GorgiasChatIntegrationLanguagesTableRowActions'
 import { LanguageItemRow } from '../types'

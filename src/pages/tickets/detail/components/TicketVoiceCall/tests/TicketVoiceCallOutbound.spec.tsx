@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { render } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import {
     OutboundVoiceCall,
@@ -9,6 +8,7 @@ import {
     VoiceCallStatus,
 } from 'models/voiceCall/types'
 import * as utils from 'models/voiceCall/utils'
+import { userEvent } from 'utils/testing/userEvent'
 
 import TicketVoiceCallOutbound from '../TicketVoiceCallOutbound'
 

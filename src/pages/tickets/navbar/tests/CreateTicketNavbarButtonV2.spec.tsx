@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route } from 'react-router-dom'
 
 import { useCreateTicketButton } from 'pages/common/components/CreateTicket/useCreateTicketButton'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { CreateTicketNavbarButtonV2 } from '../v2/CreateTicketNavbarButtonV2'
 

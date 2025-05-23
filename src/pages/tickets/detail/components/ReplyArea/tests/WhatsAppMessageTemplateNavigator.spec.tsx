@@ -1,13 +1,11 @@
-import React from 'react'
-
-import { cleanup, fireEvent, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import { whatsAppMessageTemplates as mockWhatsAppMessageTemplates } from 'fixtures/whatsAppMessageTemplates'
 import { useListWhatsAppMessageTemplates } from 'models/whatsAppMessageTemplates/queries'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import WhatsAppMessageTemplateNavigator from '../WhatsAppMessageTemplateNavigator'
 
@@ -52,12 +50,15 @@ describe('WhatsAppMessageTemplateNavigator', () => {
         ).toBeVisible()
     })
 
-    it('should display the preview of the hovered template', () => {
+    it('should display the preview of the hovered template', async () => {
         renderComponent()
         userEvent.hover(screen.getByText('rejected_template_sample'))
-        expect(
-            screen.getByText('rejected template content', { exact: false }),
-        ).toBeVisible()
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('rejected template content', { exact: false }),
+            ).toBeVisible()
+        })
     })
 
     it('should trigger onClick when clicking on a template', () => {

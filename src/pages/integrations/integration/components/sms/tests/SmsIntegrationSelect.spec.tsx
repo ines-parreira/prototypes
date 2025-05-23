@@ -1,9 +1,9 @@
 import React from 'react'
 
 import { act, render } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { SmsIntegration } from 'models/integration/types'
+import { userEvent } from 'utils/testing/userEvent'
 
 import SmsIntegrationSelect from '../SmsIntegrationSelect'
 

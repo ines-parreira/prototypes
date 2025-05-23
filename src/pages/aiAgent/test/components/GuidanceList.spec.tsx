@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { render, screen, within } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -9,6 +8,7 @@ import thunk from 'redux-thunk'
 import { IntegrationType } from 'models/integration/constants'
 import { getGuidanceArticleFixture } from 'pages/aiAgent/fixtures/guidanceArticle.fixture'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { GuidanceList } from '../../components/GuidanceList/GuidanceList'
 

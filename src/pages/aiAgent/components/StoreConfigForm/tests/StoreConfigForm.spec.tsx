@@ -300,7 +300,10 @@ const renderComponent = (
         </Provider>,
     )
 
-const getDrawer = () => screen.getByRole('dialog')
+const getDrawer = () => {
+    const drawer = screen.getByRole('dialog', { hidden: true })
+    return drawer
+}
 
 jest.mock('pages/aiAgent/hooks/useFileIngestion', () => ({
     useFileIngestion: jest.fn(),
@@ -839,7 +842,7 @@ describe('<StoreConfigForm />', () => {
         expect(mockSetSearchParam).toHaveBeenCalledWith(null)
     })
 
-    it('should handle enabled mode correctly', () => {
+    it('should handle enabled mode correctly', async () => {
         mockFlags({
             [FeatureFlagKey.AiAgentTrialMode]: true,
             [FeatureFlagKey.AiAgentChat]: false,
@@ -865,22 +868,25 @@ describe('<StoreConfigForm />', () => {
 
         // Check that updateValue was called with the correct arguments
         // emailChannelDeactivatedDatetime + chatChannelDeactivatedDatetime + trialModeActivatedDatetime + previewModeActivatedDatetime
-        expect(updateValueMocked).toHaveBeenCalledTimes(4)
-        expect(updateValueMocked).toHaveBeenCalledWith(
-            'emailChannelDeactivatedDatetime',
-            null,
-        )
-        expect(updateValueMocked).toHaveBeenCalledWith(
-            'trialModeActivatedDatetime',
-            null,
-        )
-        expect(updateValueMocked).toHaveBeenCalledWith(
-            'previewModeActivatedDatetime',
-            null,
-        )
+
+        await waitFor(() => {
+            expect(updateValueMocked).toHaveBeenCalledTimes(4)
+            expect(updateValueMocked).toHaveBeenCalledWith(
+                'emailChannelDeactivatedDatetime',
+                null,
+            )
+            expect(updateValueMocked).toHaveBeenCalledWith(
+                'trialModeActivatedDatetime',
+                null,
+            )
+            expect(updateValueMocked).toHaveBeenCalledWith(
+                'previewModeActivatedDatetime',
+                null,
+            )
+        })
     })
 
-    it('should handle trial mode correctly', () => {
+    it('should handle trial mode correctly', async () => {
         mockFlags({
             [FeatureFlagKey.AiAgentTrialMode]: true,
             [FeatureFlagKey.AiAgentChat]: false,
@@ -903,22 +909,24 @@ describe('<StoreConfigForm />', () => {
 
         // Check that updateValue was called with the correct arguments
         // emailChannelDeactivatedDatetime + chatChannelDeactivatedDatetime + trialModeActivatedDatetime + previewModeActivatedDatetime
-        expect(updateValueMocked).toHaveBeenCalledTimes(4)
-        expect(updateValueMocked).toHaveBeenCalledWith(
-            'emailChannelDeactivatedDatetime',
-            expect.any(String),
-        )
-        expect(updateValueMocked).toHaveBeenCalledWith(
-            'trialModeActivatedDatetime',
-            expect.any(String),
-        )
-        expect(updateValueMocked).toHaveBeenCalledWith(
-            'previewModeActivatedDatetime',
-            expect.any(String),
-        )
+        await waitFor(() => {
+            expect(updateValueMocked).toHaveBeenCalledTimes(4)
+            expect(updateValueMocked).toHaveBeenCalledWith(
+                'emailChannelDeactivatedDatetime',
+                expect.any(String),
+            )
+            expect(updateValueMocked).toHaveBeenCalledWith(
+                'trialModeActivatedDatetime',
+                expect.any(String),
+            )
+            expect(updateValueMocked).toHaveBeenCalledWith(
+                'previewModeActivatedDatetime',
+                expect.any(String),
+            )
+        })
     })
 
-    it('should handle disabled mode correctly', () => {
+    it('should handle disabled mode correctly', async () => {
         mockFlags({
             [FeatureFlagKey.AiAgentTrialMode]: true,
             [FeatureFlagKey.AiAgentChat]: false,
@@ -931,19 +939,21 @@ describe('<StoreConfigForm />', () => {
 
         // Check that updateValue was called with the correct arguments
         // emailChannelDeactivatedDatetime + chatChannelDeactivatedDatetime + trialModeActivatedDatetime + previewModeActivatedDatetime
-        expect(updateValueMocked).toHaveBeenCalledTimes(4)
-        expect(updateValueMocked).toHaveBeenCalledWith(
-            'emailChannelDeactivatedDatetime',
-            expect.any(String),
-        )
-        expect(updateValueMocked).toHaveBeenCalledWith(
-            'trialModeActivatedDatetime',
-            null,
-        )
-        expect(updateValueMocked).toHaveBeenCalledWith(
-            'previewModeActivatedDatetime',
-            null,
-        )
+        await waitFor(() => {
+            expect(updateValueMocked).toHaveBeenCalledTimes(4)
+            expect(updateValueMocked).toHaveBeenCalledWith(
+                'emailChannelDeactivatedDatetime',
+                expect.any(String),
+            )
+            expect(updateValueMocked).toHaveBeenCalledWith(
+                'trialModeActivatedDatetime',
+                null,
+            )
+            expect(updateValueMocked).toHaveBeenCalledWith(
+                'previewModeActivatedDatetime',
+                null,
+            )
+        })
     })
 
     it('should deactivate email channel', () => {
@@ -1051,7 +1061,7 @@ describe('<StoreConfigForm />', () => {
         })
     })
 
-    it('should trigger cancelation call on activate AI agent notification when AI agent email is activated', () => {
+    it('should trigger cancellation call on activate AI agent notification when AI agent email is activated', () => {
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: {
                 ...storeConfiguration,
@@ -1086,7 +1096,7 @@ describe('<StoreConfigForm />', () => {
         ).toHaveBeenCalled()
     })
 
-    it('should trigger cancelation call on activate AI agent notification when AI agent chat is activated', () => {
+    it('should trigger cancellation call on activate AI agent notification when AI agent chat is activated', () => {
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: {
                 ...storeConfiguration,
@@ -1127,12 +1137,14 @@ describe('<StoreConfigForm />', () => {
         // Click on the Tags row to open the drawer
         userEvent.click(screen.getAllByText('Tags')[0])
 
-        expect(getDrawer()).toBeVisible()
-        expect(getDrawer()).toBeInTheDocument()
-        expect(
-            within(getDrawer()).getByText('Save Changes'),
-        ).toBeInTheDocument()
-        expect(within(getDrawer()).getByText('Cancel')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(getDrawer()).toBeVisible()
+            expect(getDrawer()).toBeInTheDocument()
+            expect(
+                within(getDrawer()).getByText('Save Changes'),
+            ).toBeInTheDocument()
+            expect(within(getDrawer()).getByText('Cancel')).toBeInTheDocument()
+        })
     })
 
     it('should update form values when saving drawer content', async () => {
@@ -1147,13 +1159,19 @@ describe('<StoreConfigForm />', () => {
         // Open the drawer by clicking on Tags
         userEvent.click(screen.getAllByText('Tags')[0])
 
+        await waitFor(() => {
+            expect(getDrawer()).toBeVisible()
+        })
+
         // Save changes
         const saveButton = within(getDrawer()).getByRole('button', {
             name: /save changes/i,
         })
         userEvent.click(saveButton)
 
-        expect(mockOnSubmit).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(mockOnSubmit).toHaveBeenCalled()
+        })
     })
 
     it('should update form values when saving drawer content with new tags', async () => {
@@ -1162,7 +1180,12 @@ describe('<StoreConfigForm />', () => {
         // Open the drawer by clicking on Tags
         userEvent.click(screen.getAllByText('Tags')[0])
 
+        await waitFor(() => {
+            expect(getDrawer()).toBeVisible()
+        })
+
         userEvent.click(screen.getByRole('button', { name: /add tag/i }))
+        await screen.findByText(/choose tag/i)
         userEvent.click(screen.getByText(/choose tag/i))
         await userEvent.type(screen.getByRole('textbox'), 'Test')
 
@@ -1172,26 +1195,38 @@ describe('<StoreConfigForm />', () => {
         })
         userEvent.click(saveButton)
 
-        expect(updateValueMocked).toHaveBeenCalledWith('tags', [
-            {
-                name: '',
-                description: 'Test',
-            },
-        ])
+        await waitFor(() => {
+            expect(updateValueMocked).toHaveBeenCalledWith('tags', [
+                {
+                    name: '',
+                    description: 'Test',
+                },
+            ])
+        })
     })
 
     it('should update form values when saving drawer content with new ticket fields', async () => {
         mockFlags({
             [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]: true,
         })
+
         renderComponent()
 
         // Open the drawer by clicking on Ticket Fields
         userEvent.click(screen.getAllByText('Ticket Fields')[0])
+
+        await waitFor(() => {
+            expect(getDrawer()).toBeVisible()
+        })
+
         userEvent.click(
             screen.getByRole('button', { name: /add ticket field/i }),
         )
-        userEvent.click(screen.getByText(ticketInputFieldDefinition.label))
+
+        const ticketFieldCheckbox = await screen.findByLabelText(
+            ticketInputFieldDefinition.label,
+        )
+        fireEvent.click(ticketFieldCheckbox)
 
         // Save changes
         const saveButton = within(getDrawer()).getByRole('button', {
@@ -1199,7 +1234,11 @@ describe('<StoreConfigForm />', () => {
         })
         userEvent.click(saveButton)
 
-        expect(updateValueMocked).toHaveBeenCalledWith('customFieldIds', [123])
+        await waitFor(() => {
+            expect(updateValueMocked).toHaveBeenCalledWith('customFieldIds', [
+                ticketInputFieldDefinition.id,
+            ])
+        })
     })
 
     it('should update form values when saving drawer content with new handover topics', async () => {
@@ -1207,7 +1246,15 @@ describe('<StoreConfigForm />', () => {
 
         // Open the drawer by clicking on the handover topics link
         userEvent.click(screen.getByText('handover topics'))
+
+        await waitFor(() => {
+            expect(getDrawer()).toBeVisible()
+        })
+
         userEvent.click(screen.getByRole('button', { name: /add topic/i }))
+
+        await screen.findByRole('textbox')
+
         await userEvent.type(screen.getByRole('textbox'), 'Test')
 
         // Save changes
@@ -1216,9 +1263,11 @@ describe('<StoreConfigForm />', () => {
         })
         userEvent.click(saveButton)
 
-        expect(updateValueMocked).toHaveBeenCalledWith('excludedTopics', [
-            'Test',
-        ])
+        await waitFor(() => {
+            expect(updateValueMocked).toHaveBeenCalledWith('excludedTopics', [
+                'Test',
+            ])
+        })
     })
 
     it('should not update form values when closing drawer', async () => {
@@ -1233,11 +1282,21 @@ describe('<StoreConfigForm />', () => {
         // Open the drawer by clicking on Tags
         userEvent.click(screen.getAllByText('Tags')[0])
 
-        // Add tags
-        userEvent.click(screen.getByRole('button', { name: 'Add Tag' }))
+        // Wait for drawer to be visible
+        await waitFor(() => {
+            expect(getDrawer()).toBeVisible()
+        })
+
+        // Find and click the add tag button
+        const addTagButton = within(getDrawer()).getByRole('button', {
+            name: /add tag/i,
+        })
+        userEvent.click(addTagButton)
 
         // Cancel changes
-        const cancelButton = screen.getByRole('button', { name: /cancel/i })
+        const cancelButton = within(getDrawer()).getByRole('button', {
+            name: /cancel/i,
+        })
         userEvent.click(cancelButton)
 
         expect(mockOnSubmit).not.toHaveBeenCalled()
@@ -1251,6 +1310,12 @@ describe('<StoreConfigForm />', () => {
 
         // Open Tags drawer
         userEvent.click(screen.getAllByText('Tags')[0])
+
+        // Wait for drawer to be visible
+        await waitFor(() => {
+            expect(getDrawer()).toBeVisible()
+        })
+
         expect(within(getDrawer()).getByText('Tags')).toBeVisible()
 
         // Close drawer
@@ -1261,9 +1326,11 @@ describe('<StoreConfigForm />', () => {
 
         // Open Ticket Fields drawer
         userEvent.click(screen.getAllByText('Ticket Fields')[0])
-        expect(
-            within(getDrawer()).getAllByText('Ticket Fields')[0],
-        ).toBeVisible()
+        await waitFor(() => {
+            expect(
+                within(getDrawer()).getAllByText('Ticket Fields')[0],
+            ).toBeVisible()
+        })
     })
 
     it('should not render the drawer when isOpen is false', () => {
@@ -1400,7 +1467,6 @@ describe('<StoreConfigForm />', () => {
 
         await userEvent.click(screen.getByText('Ticket Fields'))
 
-        screen.debug(document.body, Infinity)
         expect(
             screen.getByDisplayValue(ticketInputFieldDefinition.label),
         ).toBeInTheDocument()
@@ -2245,13 +2311,15 @@ describe('<StoreConfigForm />', () => {
                 screen.getByRole('button', { name: 'Save Changes' }),
             )
 
-            expect(mockOnSubmit).toHaveBeenCalledWith({
-                publicUrls: ['https://test.com'],
-                hasExternalFiles: true,
-                aiAgentMode: 'enabled',
-                onSuccess: expect.any(Function),
-                shopName: 'test-shop',
-                silentNotification: true,
+            await waitFor(() => {
+                expect(mockOnSubmit).toHaveBeenCalledWith({
+                    publicUrls: ['https://test.com'],
+                    hasExternalFiles: true,
+                    aiAgentMode: 'enabled',
+                    onSuccess: expect.any(Function),
+                    shopName: 'test-shop',
+                    silentNotification: true,
+                })
             })
         })
     })

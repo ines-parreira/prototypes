@@ -4,7 +4,6 @@ import 'tests/__mocks__/editionManagerContextMock'
 import React from 'react'
 
 import { screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -25,6 +24,7 @@ import {
 } from 'pages/settings/helpCenter/fixtures/wizard.fixture'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { renderWithRouter } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { useGetHelpCenterArticles } from '../../../hooks/useGetHelpCenterArticles'
 import { useHelpCenterArticlesForm } from '../../../hooks/useHelpCenterArticlesForm'

@@ -1,6 +1,5 @@
 import React from 'react'
 
-import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
@@ -14,6 +13,7 @@ import {
 } from 'models/integration/types'
 import history from 'pages/history'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import { userEvent } from 'utils/testing/userEvent'
 
 import VoiceIntegrationIvr from '../VoiceIntegrationIvr'
 

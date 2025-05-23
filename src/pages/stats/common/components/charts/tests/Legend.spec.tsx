@@ -1,7 +1,8 @@
 import { act, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import colors from '@gorgias/design-tokens/tokens/colors'
+
+import { userEvent } from 'utils/testing/userEvent'
 
 import Legend from '../Legend'
 

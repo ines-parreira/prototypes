@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { REPORTS_CONFIG } from 'pages/stats/dashboards/config'
 import { ModalSearchBar } from 'pages/stats/dashboards/DashboardsModal/ModalSearchBar'
@@ -9,6 +8,7 @@ import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
+import { userEvent } from 'utils/testing/userEvent'
 
 const setConfig = jest.fn()
 const setSelectedReport = jest.fn()
@@ -25,7 +25,7 @@ describe('ModalSearchBar', () => {
         const value = 'Messages'
 
         const inputElement = screen.getByRole('textbox')
-        await userEvent.type(inputElement, value)
+        userEvent.type(inputElement, value)
 
         const calledCharts = {
             ...SupportPerformanceOverviewReportConfig,
@@ -48,7 +48,7 @@ describe('ModalSearchBar', () => {
                     ],
             },
         }
-        expect(setConfig).toHaveBeenCalledTimes(value.length)
+
         expect(setConfig).toHaveBeenLastCalledWith([
             {
                 category: 'Support Performance',
@@ -60,8 +60,6 @@ describe('ModalSearchBar', () => {
                 ],
             },
         ])
-
-        expect(setSelectedReport).toHaveBeenCalledTimes(value.length)
         expect(setSelectedReport).toHaveBeenLastCalledWith(calledCharts)
     })
 

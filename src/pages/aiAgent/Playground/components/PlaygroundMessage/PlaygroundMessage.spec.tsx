@@ -1,13 +1,13 @@
 import React, { ComponentProps } from 'react'
 
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { AgentSkill, MessageType } from 'models/aiAgentPlayground/types'
 import { AI_AGENT } from 'pages/aiAgent/constants'
 import { storeWithActiveSubscriptionWithConvert } from 'pages/settings/new_billing/fixtures'
+import { userEvent } from 'utils/testing/userEvent'
 
 import {
     playgroundAttachmentFixture,

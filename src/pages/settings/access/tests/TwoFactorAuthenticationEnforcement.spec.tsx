@@ -1,7 +1,4 @@
-import React from 'react'
-
 import { fireEvent, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import moment from 'moment'
 import { Provider } from 'react-redux'
@@ -12,6 +9,7 @@ import TwoFactorAuthenticationEnforcement from 'pages/settings/access/TwoFactorA
 import { OwnProps } from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
 import { TWO_FA_REQUIRED_AFTER_DAYS } from 'state/currentUser/constants'
 import { RootState, StoreDispatch } from 'state/types'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock(
     'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal',

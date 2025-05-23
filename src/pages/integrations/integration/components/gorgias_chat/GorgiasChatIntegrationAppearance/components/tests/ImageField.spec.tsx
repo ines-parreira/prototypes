@@ -1,11 +1,9 @@
-import React from 'react'
-
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { RootState, StoreDispatch } from 'state/types'
+import { userEvent } from 'utils/testing/userEvent'
 
 import ImageField, { ImageFieldVariant } from '../ImageField'
 
@@ -43,13 +41,11 @@ describe('<ImageField />', () => {
         const testFile = new File(['test'], 'test.png', { type: 'image/png' })
         const fileInput = container.querySelector('input')
 
-        await act(async () => {
-            await waitFor(() => {
-                userEvent.upload(fileInput!, testFile)
-            })
-        })
+        userEvent.upload(fileInput!, testFile)
 
-        expect(onChangeMock).toHaveBeenLastCalledWith('testUrl')
+        await waitFor(() => {
+            expect(onChangeMock).toHaveBeenLastCalledWith('testUrl')
+        })
     })
 
     it('discards an image', () => {

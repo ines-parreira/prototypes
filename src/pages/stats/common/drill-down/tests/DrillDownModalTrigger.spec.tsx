@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -13,6 +12,7 @@ import { RootState, StoreDispatch } from 'state/types'
 import { DrillDownMetric, setMetricData } from 'state/ui/stats/drillDownSlice'
 import { VoiceAgentsMetric, VoiceMetric } from 'state/ui/stats/types'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)

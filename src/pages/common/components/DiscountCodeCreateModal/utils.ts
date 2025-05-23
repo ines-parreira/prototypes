@@ -1,5 +1,6 @@
 import { screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+
+import { userEvent } from 'utils/testing/userEvent'
 
 export const setupValidModalParameters = async () => {
     const codeInput = screen.getByLabelText('Discount code')

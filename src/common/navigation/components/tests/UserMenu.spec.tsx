@@ -2,7 +2,6 @@ import React from 'react'
 import type { ReactNode } from 'react'
 
 import { render } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { StaticRouter } from 'react-router-dom'
 
@@ -18,6 +17,7 @@ import shortcutManager from 'services/shortcutManager'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { ignoreHTML } from 'tests/ignoreHTML'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import UserMenu from '../UserMenu'
 

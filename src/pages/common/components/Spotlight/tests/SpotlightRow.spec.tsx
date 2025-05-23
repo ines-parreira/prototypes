@@ -1,7 +1,6 @@
 import React, { ComponentProps } from 'react'
 
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { createBrowserHistory, History } from 'history'
 import { MemoryRouter, Router } from 'react-router-dom'
 
@@ -10,6 +9,7 @@ import { EntityType } from 'hooks/useSearchRankScenario'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
 import * as platform from 'utils/platform'
+import { userEvent } from 'utils/testing/userEvent'
 
 describe('<SpotlightRow/>', () => {
     const mockOnClose = jest.fn()

@@ -2,10 +2,10 @@
 import React from 'react'
 
 import { act, fireEvent, render, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import * as useDismissFlag from 'hooks/useDismissFlag'
 import * as useLocalStorage from 'hooks/useLocalStorage'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { CampaignFooter } from '../CampaignFooter'
 

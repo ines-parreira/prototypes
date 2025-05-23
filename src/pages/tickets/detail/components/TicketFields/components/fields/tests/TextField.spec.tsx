@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -112,12 +110,12 @@ describe('<TextField />', () => {
 
         await waitFor(() => {
             expect(mockedServer.history.put[0].data).toEqual('"a"')
+            expect(store.dispatch).toHaveBeenNthCalledWith(
+                3,
+                updateCustomFieldValue(fieldState.id, trimmedNewValue),
+            )
+            expect(store.dispatch).toHaveBeenCalledTimes(3)
         })
-        expect(store.dispatch).toHaveBeenNthCalledWith(
-            3,
-            updateCustomFieldValue(fieldState.id, trimmedNewValue),
-        )
-        expect(store.dispatch).toHaveBeenCalledTimes(3)
     })
 
     it('should not http update value when blurred on a new ticket', async () => {

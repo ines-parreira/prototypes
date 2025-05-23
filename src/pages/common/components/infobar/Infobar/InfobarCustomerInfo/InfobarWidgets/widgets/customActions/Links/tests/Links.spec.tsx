@@ -1,13 +1,13 @@
 import React from 'react'
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import * as actions from 'state/widgets/actions'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { Link } from '../../types'
 import { Links } from '../Links'
@@ -189,11 +189,13 @@ describe('<Links/>', () => {
         )
 
         fireEvent.click(screen.getByText('Add Link'))
+
         await waitFor(() => {
             expect(screen.getByText('Save'))
         })
-        await userEvent.type(screen.getByText('Title'), 'Gorgias')
-        await userEvent.type(screen.getByText('Link'), 'www.gorgias.com')
+
+        userEvent.type(screen.getByLabelText('Title'), 'Gorgias')
+        userEvent.type(screen.getByLabelText('Link'), 'www.gorgias.com')
 
         fireEvent.click(screen.getByText('Save'))
 

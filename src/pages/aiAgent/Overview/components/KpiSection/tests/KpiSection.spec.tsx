@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { createMemoryHistory, History } from 'history'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
@@ -15,6 +14,7 @@ import { initialState as initialStatsFiltersState } from 'state/stats/statsSlice
 import { RootState, StoreDispatch, StoreState } from 'state/types'
 import { initialState } from 'state/ui/stats/filtersSlice'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { KpiSection } from '../KpiSection'
 

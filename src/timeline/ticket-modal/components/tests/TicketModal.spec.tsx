@@ -1,12 +1,12 @@
 import { ReactNode } from 'react'
 
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { IconButton } from '@gorgias/merchant-ui-kit'
 
 import { TicketDetail } from 'tickets/ticket-detail'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { TicketModal } from '../TicketModal'
 

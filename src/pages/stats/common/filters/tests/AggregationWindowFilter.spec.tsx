@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { ReportingGranularity } from 'models/reporting/types'
@@ -19,6 +18,7 @@ import * as statsSlice from 'state/stats/statsSlice'
 import { RootState } from 'state/types'
 import * as filtersSlice from 'state/ui/stats/filtersSlice'
 import { renderWithStore } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),

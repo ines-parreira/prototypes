@@ -1,3 +1,4 @@
+import { waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 
 import { getAccessToken, isValidAccessToken } from './auth'
@@ -41,8 +42,10 @@ describe('utils', () => {
             const firstToken = await getAccessToken()
             const secondToken = await getAccessToken()
 
-            expect(firstToken).toBeDefined()
-            expect(firstToken).toEqual(secondToken)
+            await waitFor(() => {
+                expect(firstToken).toBeDefined()
+                expect(firstToken).toEqual(secondToken)
+            })
         })
 
         it('should renew the token after the expiry timeout', async () => {

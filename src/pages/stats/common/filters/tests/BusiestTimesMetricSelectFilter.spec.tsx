@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
@@ -17,6 +16,7 @@ import {
     setSelectedMetric,
 } from 'state/ui/stats/busiestTimesSlice'
 import { assumeMock, renderWithStore } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),

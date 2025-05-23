@@ -3,7 +3,6 @@ import 'tests/__mocks__/intersectionObserverMock'
 import React, { ComponentProps } from 'react'
 
 import { screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
@@ -18,6 +17,7 @@ import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { assumeMock, renderWithRouter } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import {
     AiAgentChannel,

@@ -4,7 +4,7 @@ import mockedVirtuoso from 'tests/mockedVirtuoso'
 import React from 'react'
 
 import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { customer } from 'fixtures/customer'
 import { ticket } from 'fixtures/ticket'

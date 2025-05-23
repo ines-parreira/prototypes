@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { ToneOfVoiceComponent } from '../ToneOfVoiceComponent'
@@ -11,6 +11,51 @@ describe('ToneOfVoiceComponent', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+    })
+
+    describe('keyboard navigation', () => {
+        it('should handle space key press to select an option', async () => {
+            render(<ToneOfVoiceComponent {...defaultProps} />)
+
+            const professionalCheckbox = screen.getByLabelText(
+                'Professional: Precise, polished, authoritative',
+            )
+
+            // Navigate to the Professional checkbox
+            await userEvent.tab()
+            await userEvent.tab()
+
+            await waitFor(() => {
+                expect(professionalCheckbox).toHaveFocus()
+            })
+
+            // Press space to select
+            await userEvent.type(professionalCheckbox, ' ')
+            await waitFor(() => {
+                expect(defaultProps.onChange).toHaveBeenCalledWith(
+                    'Professional',
+                )
+            })
+        })
+
+        it('should maintain focus when navigating between options', async () => {
+            render(<ToneOfVoiceComponent {...defaultProps} />)
+
+            const friendlyCheckbox = screen.getByLabelText(
+                'Friendly: Warm, inviting, encouraging',
+            )
+            const professionalCheckbox = screen.getByLabelText(
+                'Professional: Precise, polished, authoritative',
+            )
+
+            // Start at Friendly
+            await userEvent.tab()
+            expect(friendlyCheckbox).toHaveFocus()
+
+            // Tab to Professional
+            await userEvent.tab()
+            expect(professionalCheckbox).toHaveFocus()
+        })
     })
 
     it('should render all tone of voice options correctly', () => {
@@ -88,44 +133,5 @@ describe('ToneOfVoiceComponent', () => {
         expect(() =>
             userEvent.click(screen.getByText('Professional')),
         ).not.toThrow()
-    })
-
-    describe('keyboard navigation', () => {
-        it('should handle space key press to select an option', async () => {
-            render(<ToneOfVoiceComponent {...defaultProps} />)
-
-            const professionalCheckbox = screen.getByLabelText(
-                'Professional: Precise, polished, authoritative',
-            )
-
-            // Navigate to the Professional checkbox
-            await userEvent.tab()
-            await userEvent.tab()
-
-            expect(professionalCheckbox).toHaveFocus()
-
-            // Press space to select
-            await userEvent.type(professionalCheckbox, ' ')
-            expect(defaultProps.onChange).toHaveBeenCalledWith('Professional')
-        })
-
-        it('should maintain focus when navigating between options', async () => {
-            render(<ToneOfVoiceComponent {...defaultProps} />)
-
-            const friendlyCheckbox = screen.getByLabelText(
-                'Friendly: Warm, inviting, encouraging',
-            )
-            const professionalCheckbox = screen.getByLabelText(
-                'Professional: Precise, polished, authoritative',
-            )
-
-            // Start at Friendly
-            await userEvent.tab()
-            expect(friendlyCheckbox).toHaveFocus()
-
-            // Tab to Professional
-            await userEvent.tab()
-            expect(professionalCheckbox).toHaveFocus()
-        })
     })
 })

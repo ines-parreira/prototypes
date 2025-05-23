@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Link } from 'react-router-dom'
 
@@ -12,6 +11,7 @@ import useDebouncedValue from 'hooks/useDebouncedValue'
 import useUpdateCustomFieldConditions from 'pages/settings/conditionalFields/hooks/useUpdateCustomFieldConditions'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 import { assumeMock, getLastMockCall } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import ConditionalFields, { MAX_CONDITIONS } from '../ConditionalFields'

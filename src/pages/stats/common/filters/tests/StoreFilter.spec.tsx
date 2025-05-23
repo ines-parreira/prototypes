@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { fireEvent, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -30,6 +29,7 @@ import {
 } from 'state/stats/statsSlice'
 import { RootState } from 'state/types'
 import { assumeMock, renderWithStore } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 const mockedDispatch = jest.fn()
 const mockedRemove = jest.fn()

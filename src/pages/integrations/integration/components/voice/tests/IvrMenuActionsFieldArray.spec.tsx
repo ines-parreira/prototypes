@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { act, fireEvent } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { times } from 'lodash'
 import { Provider } from 'react-redux'
@@ -15,6 +14,7 @@ import {
 } from 'models/integration/types'
 import { RootState } from 'state/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import { userEvent } from 'utils/testing/userEvent'
 
 import IvrMenuActionsFieldArray from '../IvrMenuActionsFieldArray'
 

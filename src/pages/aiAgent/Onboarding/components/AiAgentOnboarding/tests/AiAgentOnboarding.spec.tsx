@@ -8,7 +8,6 @@ import LD from 'launchdarkly-react-client-sdk'
 
 import '@testing-library/jest-dom/extend-expect'
 
-import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -27,6 +26,7 @@ import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyInte
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock, renderWithRouter } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 

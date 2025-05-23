@@ -1,12 +1,9 @@
-import React from 'react'
-
 import {
     QueryClient,
     QueryClientProvider,
     UseQueryResult,
 } from '@tanstack/react-query'
 import { act, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -22,6 +19,7 @@ import { TicketSatisfactionSurveyMeasure } from 'models/reporting/cubes/TicketSa
 import { ReportingGranularity } from 'models/reporting/types'
 import { AverageScorePerDimensionTrendChart } from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerDimensionTrendChart'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock(
     'hooks/reporting/quality-management/satisfaction/useAverageScorePerDimensionTimeSeries',

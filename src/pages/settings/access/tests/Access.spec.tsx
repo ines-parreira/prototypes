@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { render } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -12,6 +11,7 @@ import {
     AccountSettingType,
 } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { AccessContainer } from '../Access'
 

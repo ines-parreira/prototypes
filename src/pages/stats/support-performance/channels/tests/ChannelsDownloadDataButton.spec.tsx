@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { channels } from 'fixtures/channels'
@@ -9,6 +8,7 @@ import { useChannelsReportMetrics } from 'hooks/reporting/support-performance/ch
 import { ChannelsDownloadDataButton } from 'pages/stats/support-performance/channels/ChannelsDownloadDataButton'
 import { saveZippedFiles } from 'utils/file'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock(
     'hooks/reporting/support-performance/channels/useChannelsReportMetrics',

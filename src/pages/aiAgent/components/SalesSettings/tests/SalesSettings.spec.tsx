@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import { act } from 'react-dom/test-utils'
@@ -132,7 +132,7 @@ describe('<SalesSettings />', () => {
             const track = document.querySelectorAll('.track')[0]
             track.getBoundingClientRect = jest.fn().mockReturnValue(trackRect)
             // Try clicking beyond the end of track to select the last value
-            userEvent.click(track, {
+            fireEvent.click(track, {
                 clientX: 500,
             })
 
@@ -151,7 +151,7 @@ describe('<SalesSettings />', () => {
             const track = document.querySelectorAll('.track')[1]
             track.getBoundingClientRect = jest.fn().mockReturnValue(trackRect)
             // Try clicking beyond the end of track to select the last value
-            userEvent.click(track, {
+            fireEvent.click(track, {
                 clientX: 500,
             })
 
@@ -170,7 +170,7 @@ describe('<SalesSettings />', () => {
             const track = document.querySelectorAll('.track')[1]
             track.getBoundingClientRect = jest.fn().mockReturnValue(trackRect)
             // Try clicking before the start of track to select the first value
-            userEvent.click(track, {
+            fireEvent.click(track, {
                 clientX: 0,
             })
 
@@ -193,7 +193,7 @@ describe('<SalesSettings />', () => {
         const track = document.querySelectorAll('.track')[1]
         track.getBoundingClientRect = jest.fn().mockReturnValue(trackRect)
 
-        userEvent.click(track, {
+        fireEvent.click(track, {
             clientX: 0,
         })
 
@@ -247,7 +247,7 @@ describe('<SalesSettings />', () => {
             const track = document.querySelectorAll('.track')[1]
             track.getBoundingClientRect = jest.fn().mockReturnValue(trackRect)
             // Try clicking before the start of track to select the first value
-            userEvent.click(track, {
+            fireEvent.click(track, {
                 clientX: 0,
             })
 
@@ -258,7 +258,6 @@ describe('<SalesSettings />', () => {
             ).toBeInTheDocument()
         })
 
-        // Wait for maxDiscountPercentage to update in the DOM
         await waitFor(() => {
             expect(maxDiscountInput()).toBeInTheDocument()
             expect(maxDiscountInput().getAttribute('value')).toBe('0') // Ensure value is 0
@@ -268,7 +267,7 @@ describe('<SalesSettings />', () => {
             const track = document.querySelectorAll('.track')[1]
             track.getBoundingClientRect = jest.fn().mockReturnValue(trackRect)
             // Try clicking beyond the end of track to select the last value
-            userEvent.click(track, { clientX: 500 })
+            fireEvent.click(track, { clientX: 500 })
 
             expect(
                 screen.getByText(
@@ -286,16 +285,18 @@ describe('<SalesSettings />', () => {
     })
 
     it('should update the max percentage discount and change the discount strategy when the value is 0', async () => {
+        const user = userEvent.setup()
         renderComponent()
 
-        await userEvent.clear(maxDiscountInput())
-        userEvent.type(maxDiscountInput(), '0')
+        const input = maxDiscountInput()
+        await user.click(input)
+        await user.keyboard('{Control>}a{/Control}')
+        await user.keyboard('{Backspace}')
+        await user.type(input, '0')
 
-        await waitFor(() => expect(maxDiscountInput().value).toBe('0'))
+        await waitFor(() => expect(input.value).toBe('0'))
 
-        await userEvent.click(
-            screen.getByRole('button', { name: 'Save Changes' }),
-        )
+        await user.click(screen.getByRole('button', { name: 'Save Changes' }))
 
         await waitFor(() =>
             expect(screen.queryByText(/Must be a number between 1 and 100/i)),
@@ -339,6 +340,7 @@ describe('<SalesSettings />', () => {
 
     describe('when user clicks on the save button with new settings', () => {
         it('should call updateStoreConfiguration', async () => {
+            const user = userEvent.setup()
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
                     ...storeConfiguration,
@@ -354,14 +356,17 @@ describe('<SalesSettings />', () => {
 
             renderComponent()
 
-            await userEvent.clear(maxDiscountInput())
-            await userEvent.type(maxDiscountInput(), '2')
-            userEvent.click(
+            const input = maxDiscountInput()
+            await user.click(input)
+            await user.keyboard('{Control>}a{/Control}')
+            await user.keyboard('{Backspace}')
+            await user.type(input, '2')
+            await user.click(
                 screen.getByRole('button', { name: 'Save Changes' }),
             )
 
             await waitFor(() => {
-                expect(maxDiscountInput().value).toBe('2')
+                expect(input.value).toBe('2')
                 expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith(
                     newStoreConfig,
                 )
@@ -369,11 +374,15 @@ describe('<SalesSettings />', () => {
         })
 
         it('should dispatch a success message', async () => {
+            const user = userEvent.setup()
             renderComponent()
 
-            await userEvent.clear(maxDiscountInput())
-            await userEvent.type(maxDiscountInput(), '2')
-            userEvent.click(
+            const input = maxDiscountInput()
+            await user.click(input)
+            await user.keyboard('{Control>}a{/Control}')
+            await user.keyboard('{Backspace}')
+            await user.type(input, '2')
+            await user.click(
                 screen.getByRole('button', { name: 'Save Changes' }),
             )
 
@@ -390,6 +399,7 @@ describe('<SalesSettings />', () => {
         })
 
         it('should not call updateStoreConfiguration when there is not storeConfiguration', async () => {
+            const user = userEvent.setup()
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: undefined,
                 isLoading: false,
@@ -400,9 +410,12 @@ describe('<SalesSettings />', () => {
 
             renderComponent()
 
-            await userEvent.clear(maxDiscountInput())
-            await userEvent.type(maxDiscountInput(), '2')
-            userEvent.click(
+            const input = maxDiscountInput()
+            await user.click(input)
+            await user.keyboard('{Control>}a{/Control}')
+            await user.keyboard('{Backspace}')
+            await user.type(input, '2')
+            await user.click(
                 screen.getByRole('button', { name: 'Save Changes' }),
             )
 
@@ -416,13 +429,17 @@ describe('<SalesSettings />', () => {
 
     describe('when user clicks on the save button with new settings and it fails', () => {
         it('should dispatch an error message', async () => {
+            const user = userEvent.setup()
             mockUpdateStoreConfiguration.mockRejectedValue('ERROR')
 
             renderComponent()
 
-            await userEvent.clear(maxDiscountInput())
-            await userEvent.type(maxDiscountInput(), '2')
-            userEvent.click(
+            const input = maxDiscountInput()
+            await user.click(input)
+            await user.keyboard('{Control>}a{/Control}')
+            await user.keyboard('{Backspace}')
+            await user.type(input, '2')
+            await user.click(
                 screen.getByRole('button', { name: 'Save Changes' }),
             )
 

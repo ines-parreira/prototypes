@@ -159,7 +159,7 @@ describe('<LegacyAiAgentActivationStoreCard />', () => {
         ).toBeInTheDocument()
     })
 
-    it('should allow to select a Support channel when there is no alert', () => {
+    it('should allow to select a Support channel when there is no alert', async () => {
         const { getByLabelText } = renderComponent({
             store: storeWithoutAlert,
             onSalesChange,
@@ -171,10 +171,13 @@ describe('<LegacyAiAgentActivationStoreCard />', () => {
 
         const supportChatCheckbox = getByLabelText('Chat')
         userEvent.click(supportChatCheckbox!)
-        expect(onSupportChatChange).toHaveBeenCalledWith(false)
+
+        await waitFor(() => {
+            expect(onSupportChatChange).toHaveBeenCalledWith(false)
+        })
     })
 
-    it('should not allow select a Support channel when there is some alerts', () => {
+    it('should not allow select a Support channel when there is some alerts', async () => {
         const { getByLabelText } = renderComponent({
             store: storeWithAlert,
             onSalesChange,
@@ -185,11 +188,14 @@ describe('<LegacyAiAgentActivationStoreCard />', () => {
         })
 
         const supportChatCheckbox = getByLabelText('Chat')
-        userEvent.click(supportChatCheckbox!)
-        expect(onSupportChatChange).not.toHaveBeenCalled()
+        userEvent.click(supportChatCheckbox)
+
+        await waitFor(() => {
+            expect(onSupportChatChange).not.toHaveBeenCalled()
+        })
     })
 
-    it('should close the modal when clicking on an alert link', () => {
+    it('should close the modal when clicking on an alert link', async () => {
         const { getByText } = renderComponent({
             store: storeWithAlert,
             onSalesChange,
@@ -201,7 +207,9 @@ describe('<LegacyAiAgentActivationStoreCard />', () => {
 
         const visitKnowledge = getByText('Visit Knowledge')
         userEvent.click(visitKnowledge)
-        expect(closeModal).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(closeModal).toHaveBeenCalled()
+        })
     })
 
     it.each([
@@ -209,7 +217,7 @@ describe('<LegacyAiAgentActivationStoreCard />', () => {
         { integration: 'email', text: 'Select Integration for Email' },
     ])(
         'should close the modal when clicking on a missing $integration integration',
-        ({ text }) => {
+        async ({ text }) => {
             const { getByText } = renderComponent({
                 store: storeWithIntegrationMissing,
                 onSalesChange,
@@ -221,7 +229,9 @@ describe('<LegacyAiAgentActivationStoreCard />', () => {
 
             const missingIntegrationLink = getByText(text)
             userEvent.click(missingIntegrationLink)
-            expect(closeModal).toHaveBeenCalled()
+            await waitFor(() => {
+                expect(closeModal).toHaveBeenCalled()
+            })
         },
     )
 

@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { act, fireEvent, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -24,6 +23,7 @@ import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/Cam
 import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import { SETTING_TYPE_BUSINESS_HOURS } from 'state/currentAccount/constants'
 import { RootState, StoreDispatch } from 'state/types'
+import { userEvent } from 'utils/testing/userEvent'
 
 import {
     CampaignPublishScheduleStep,

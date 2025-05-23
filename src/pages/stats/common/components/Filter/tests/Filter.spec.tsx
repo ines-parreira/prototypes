@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import {
@@ -13,6 +12,7 @@ import Filter, {
     getWarningTooltip,
 } from 'pages/stats/common/components/Filter/Filter'
 import { NON_EXISTENT_VALUES_WARNING_MESSAGE } from 'pages/stats/common/filters/utils'
+import { userEvent } from 'utils/testing/userEvent'
 
 describe('Filter', () => {
     const filterName = 'Test Filter'

@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from 'react'
 
 import { act, render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 
 import client from 'models/api/resources'
@@ -10,6 +9,7 @@ import {
     SearchInputResultProps,
     SearchInputSubResultProps,
 } from 'pages/common/forms/SearchInput/types'
+import { userEvent } from 'utils/testing/userEvent'
 
 type SubResultType = {
     id: number

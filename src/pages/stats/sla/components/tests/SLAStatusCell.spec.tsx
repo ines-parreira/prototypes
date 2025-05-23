@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import {
     TicketSLADimension,
@@ -13,6 +12,7 @@ import {
     SLAStatusCell,
 } from 'pages/stats/sla/components/SlaStatusCell'
 import { SlaStatusLabel } from 'services/reporting/constants'
+import { userEvent } from 'utils/testing/userEvent'
 
 describe('<SLAStatusCell />', () => {
     it("should render Ticket SLA's status with metrics in a tooltip", () => {

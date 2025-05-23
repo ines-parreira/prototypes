@@ -1,8 +1,8 @@
 import { screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { AxiosError } from 'axios'
 
 import { UniqueDiscountOfferCreatePayload } from 'models/convert/discountOffer/types'
+import { userEvent } from 'utils/testing/userEvent'
 
 export const transformAxiosError = (
     errors?: AxiosError<{

@@ -2,7 +2,6 @@ import React from 'react'
 
 import { UseQueryResult } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -24,6 +23,7 @@ import {
     ticketInsightsSlice,
 } from 'state/ui/stats/ticketInsightsSlice'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)

@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { act, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { campaign, campaignVariant } from 'fixtures/campaign'
 import { channelConnection } from 'fixtures/channelConnection'
@@ -10,6 +9,7 @@ import { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import history from 'pages/history'
 import { assumeMock, renderWithStore } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import CampaignFromABTestModal from '../CampaignFromABTestModal'
 

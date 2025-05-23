@@ -1,8 +1,9 @@
 import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
+
+import { userEvent } from 'utils/testing/userEvent'
 
 import ActionSelect from '../ActionSelect'
 import { actionsConfig } from '../config'

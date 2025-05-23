@@ -1,9 +1,9 @@
 import React from 'react'
 
 import { render } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { Cadence } from 'models/billing/types'
+import { userEvent } from 'utils/testing/userEvent'
 
 import BillingFrequency, { BillingFrequencyProps } from '../BillingFrequency'
 

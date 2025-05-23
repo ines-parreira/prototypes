@@ -4,10 +4,10 @@ import 'pages/aiAgent/test/mock-activation-hooks.utils'
 import React from 'react'
 
 import { screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import history from 'pages/history'
 import { renderWithRouter } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { GuidanceAiSuggestionsList } from '../components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
 import { getAIGuidanceFixture } from '../fixtures/aiGuidance.fixture'

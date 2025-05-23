@@ -4,7 +4,7 @@ import mockedVirtuoso from 'tests/mockedVirtuoso'
 import React, { ComponentProps } from 'react'
 
 import { render } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { Customer } from 'models/customer/types'
 import { PickedCustomer } from 'models/search/types'

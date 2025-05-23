@@ -1,10 +1,10 @@
 import React from 'react'
 
 import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { Locale, LocaleCode } from 'models/helpCenter/types'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { LanguageTagList } from '../LanguageTagList'
 

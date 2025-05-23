@@ -1,7 +1,6 @@
 import { ComponentProps } from 'react'
 
 import { act, fireEvent, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { agents } from 'fixtures/agents'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
@@ -15,6 +14,7 @@ import {
     pageSet,
 } from 'state/ui/stats/voiceAgentsPerformanceSlice'
 import { assumeMock, renderWithStore } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { VoiceAgentsTable } from '../VoiceAgentsTable'
 

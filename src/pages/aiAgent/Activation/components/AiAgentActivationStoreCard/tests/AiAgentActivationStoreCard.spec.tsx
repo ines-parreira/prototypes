@@ -1,7 +1,6 @@
 import { ComponentProps } from 'react'
 
 import { screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
 import {
@@ -11,6 +10,7 @@ import {
 import { getStoreConfigurationFixture } from 'pages/aiAgent/Activation/hooks/tests/fixtures/store-configurations.fixture'
 import { AlertType } from 'pages/common/components/Alert/Alert'
 import { renderWithRouter } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { AiAgentActivationStoreCard } from '../AiAgentActivationStoreCard'
 

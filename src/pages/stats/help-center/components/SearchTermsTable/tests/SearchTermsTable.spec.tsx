@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -17,6 +16,7 @@ import { ReportingGranularity } from 'models/reporting/types'
 import { SearchTermsTable } from 'pages/stats/help-center/components/SearchTermsTable/SearchTermsTable'
 import { useSelectedHelpCenter } from 'pages/stats/help-center/hooks/useSelectedHelpCenter'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('hooks/reporting/useMetric', () => ({
     useMetric: jest.fn(),

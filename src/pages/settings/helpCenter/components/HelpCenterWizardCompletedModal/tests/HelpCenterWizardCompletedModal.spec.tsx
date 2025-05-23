@@ -1,9 +1,9 @@
 import React from 'react'
 
 import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { useSearchParam } from 'hooks/useSearchParam'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { HELP_CENTER_WIZARD_COMPLETED_STATE } from '../../../constants'
 import HelpCenterWizardCompletedModal from '../HelpCenterWizardCompletedModal'

@@ -1,7 +1,6 @@
-import React from 'react'
+import { fireEvent, render, waitFor } from '@testing-library/react'
 
-import { render } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { userEvent } from 'utils/testing/userEvent'
 
 import Search from '../Search'
 
@@ -25,7 +24,7 @@ describe('<Search />', () => {
         const text = 'hello there'
         const { getByPlaceholderText } = render(<Search />)
         const input = getByPlaceholderText(/Search/)
-        await userEvent.type(input, text)
+        userEvent.type(input, text)
         expect(input).toHaveValue(text)
     })
 
@@ -49,7 +48,7 @@ describe('<Search />', () => {
             <Search searchDebounceTime={100} onChange={onChange} />,
         )
         const input = getByPlaceholderText(/Search/)
-        await userEvent.type(input, text)
+        userEvent.type(input, text)
 
         expect(onChange).not.toHaveBeenCalled()
 
@@ -58,13 +57,17 @@ describe('<Search />', () => {
         expect(onChange).toHaveBeenCalledWith(text)
     })
 
-    it('blur input when entering escape key', async () => {
+    it('blur input when entering escape key (with fireEvent)', async () => {
         const onBlur = jest.fn()
         const { getByPlaceholderText } = render(<Search onBlur={onBlur} />)
 
         const input = getByPlaceholderText(/Search/)
-        await userEvent.type(input, '{esc}')
+        input.focus()
 
-        expect(onBlur).toHaveBeenCalled()
+        fireEvent.keyDown(input, { key: 'Escape', code: 'Escape', keyCode: 27 })
+
+        await waitFor(() => {
+            expect(onBlur).toHaveBeenCalled()
+        })
     })
 })

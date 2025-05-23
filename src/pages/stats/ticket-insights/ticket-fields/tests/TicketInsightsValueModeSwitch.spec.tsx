@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { act, render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -13,6 +12,7 @@ import { TicketInsightsValueModeSwitch } from 'pages/stats/ticket-insights/ticke
 import { toggleValueMode } from 'state/ui/stats/ticketInsightsSlice'
 import { ValueMode } from 'state/ui/stats/types'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('hooks/useAppSelector')
 jest.mock('state/ui/stats/ticketInsightsSlice')

@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { fireEvent, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { useListAnalyticsFilters } from '@gorgias/helpdesk-queries'
 
@@ -20,6 +19,7 @@ import {
 import { initialiseSavedFilterDraftFromFilters } from 'state/ui/stats/filtersSlice'
 import { isTeamLead } from 'utils'
 import { assumeMock, renderWithStore } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('state/currentUser/selectors', () => ({
     getCurrentUser: jest.fn(),

@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+
+import { userEvent } from 'utils/testing/userEvent'
 
 import { BANNER_DETAILS } from '../constants'
 import FlowsBanner, { FlowsBannerProps } from '../FlowsBanner'

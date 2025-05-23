@@ -1,9 +1,6 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 import { within } from '@testing-library/dom'
 import { screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import randomstring from 'randomstring'
 import { MemoryRouter } from 'react-router-dom'
@@ -61,6 +58,7 @@ import {
 } from 'state/ui/stats/filtersSlice'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock, renderWithStore } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 const queryClient = mockQueryClient()
 jest.mock('pages/stats/common/filters/FiltersPanel')
@@ -496,7 +494,7 @@ describe('SavedFiltersPanel', () => {
         })
     })
 
-    it('should update Filter name', () => {
+    it('should update Filter name', async () => {
         const savedFilterName = 'Some Name draft'
         const savedFilterDraft: SavedFilter = {
             id: 123,
@@ -537,12 +535,16 @@ describe('SavedFiltersPanel', () => {
             state,
         )
 
-        userEvent.clear(screen.getByRole('textbox'))
-        userEvent.paste(screen.getByRole('textbox'), nameChange)
-
-        expect(store.getActions()).toContainEqual(
-            updateSavedFilterDraftName(`${savedFilterName}${nameChange}`),
+        userEvent.paste(
+            screen.getByRole('textbox'),
+            savedFilterName + nameChange,
         )
+
+        await waitFor(() => {
+            expect(store.getActions()).toContainEqual(
+                updateSavedFilterDraftName(`${savedFilterName}${nameChange}`),
+            )
+        })
     })
 
     it('should delete Saved Filter after confirmation', () => {
@@ -1395,18 +1397,20 @@ describe('SavedFiltersPanel', () => {
             ).not.toBeInTheDocument()
 
             userEvent.click(screen.getByText(COLLAPSE_CLOSED_ICON))
-            await userEvent.type(
+            userEvent.type(
                 screen.getByPlaceholderText('Name Filter'),
-                'asdf',
+                savedFilterName + 'asdf',
             )
 
-            expect(
-                screen.getByText(
-                    getMaxSavedFilterNameLengthErrorText(
-                        MAX_SAVED_FILTER_NAME_LENGTH,
+            await waitFor(() => {
+                expect(
+                    screen.getByText(
+                        getMaxSavedFilterNameLengthErrorText(
+                            MAX_SAVED_FILTER_NAME_LENGTH,
+                        ),
                     ),
-                ),
-            ).toBeInTheDocument()
+                ).toBeInTheDocument()
+            })
         })
 
         it('should disable save button if not changes have been made', () => {

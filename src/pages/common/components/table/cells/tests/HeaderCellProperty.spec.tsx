@@ -1,10 +1,10 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { OrderDirection } from 'models/api/types'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import { userEvent } from 'utils/testing/userEvent'
 
 describe('<HeaderCellProperty/>', () => {
     const minProps = {

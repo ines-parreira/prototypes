@@ -353,18 +353,15 @@ describe('YourProfileView', () => {
                 </Provider>,
             )
 
-            act(() => {
-                userEvent.click(
-                    screen.getByRole('radio', {
-                        name: settingLabel,
-                    }),
-                )
-            })
-            act(() => {
-                userEvent.click(
-                    screen.getByRole('button', { name: 'Save Changes' }),
-                )
-            })
+            await userEvent.click(
+                screen.getByRole('radio', {
+                    name: settingLabel,
+                }),
+            )
+
+            await userEvent.click(
+                screen.getByRole('button', { name: 'Save Changes' }),
+            )
 
             await waitFor(() => {
                 expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
@@ -387,7 +384,7 @@ describe('YourProfileView', () => {
         it(
             'should submit user data and reset the password confirmation field ' +
                 'because the email field was marked as changed',
-            () => {
+            async () => {
                 const updateCurrentUserSpy = jest.fn(() => {
                     return Promise.resolve(user)
                 })
@@ -407,22 +404,25 @@ describe('YourProfileView', () => {
                         'q',
                     )
                 })
-                act(() => {
-                    void userEvent.type(
-                        screen.getByPlaceholderText('Your password'),
-                        'a-password',
-                    )
-                })
 
-                act(() => {
-                    userEvent.click(
-                        screen.getByRole('button', { name: 'Save Changes' }),
-                    )
-                })
+                await screen.findByPlaceholderText('Your password')
 
-                expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
-                expect(updateCurrentUserSpy).toHaveBeenCalled()
-                expect(logEventMock).toHaveBeenCalledTimes(0)
+                await userEvent.type(
+                    screen.getByPlaceholderText('Your password'),
+                    'a-password',
+                )
+
+                await screen.findByRole('button', { name: 'Save Changes' })
+
+                await userEvent.click(
+                    screen.getByRole('button', { name: 'Save Changes' }),
+                )
+
+                await waitFor(() => {
+                    expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
+                    expect(updateCurrentUserSpy).toHaveBeenCalled()
+                    expect(logEventMock).toHaveBeenCalledTimes(0)
+                })
             },
         )
 
@@ -502,12 +502,14 @@ describe('YourProfileView', () => {
             )
             // Select light theme
             userEvent.click(screen.getAllByRole('radio')[6])
-            expect(setThemeSpy).toHaveBeenCalledWith('light')
+            await waitFor(() => {
+                expect(setThemeSpy).toHaveBeenCalledWith('light')
+            })
         })
     })
 
     describe('_saveProfilePicture', () => {
-        it('should save profile picture', () => {
+        it('should save profile picture', async () => {
             const fileUrl = 'https://config.gorgias.io/production/blabla'
             const updateCurrentUserSpy = jest.fn(() => Promise.resolve(user))
             render(
@@ -526,12 +528,15 @@ describe('YourProfileView', () => {
                 </Provider>,
             )
 
-            userEvent.click(screen.getByText('Save Changes'))
+            await screen.findByText('Save Changes')
+            await userEvent.click(screen.getByText('Save Changes'))
 
-            expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
+            await waitFor(() => {
+                expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
+            })
         })
 
-        it('should remove profile picture', () => {
+        it('should remove profile picture', async () => {
             const updateCurrentUserSpy = jest.fn(() => Promise.resolve(user))
             render(
                 <Provider store={mockedStore(defaultState)}>
@@ -550,9 +555,11 @@ describe('YourProfileView', () => {
             )
 
             const removePictureButton = screen.getByText('Remove Picture')
-            fireEvent.click(removePictureButton)
+            await userEvent.click(removePictureButton)
 
-            expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
+            await waitFor(() => {
+                expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
+            })
         })
     })
 

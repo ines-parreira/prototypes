@@ -1,5 +1,4 @@
 import { screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { useParams } from 'react-router-dom'
 
 import * as segment from 'common/segment'
@@ -11,6 +10,7 @@ import {
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import history from 'pages/history'
 import { assumeMock, renderWithRouter } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('pages/history')
 jest.mock('common/segment')

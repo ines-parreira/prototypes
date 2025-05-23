@@ -1,7 +1,4 @@
-import React from 'react'
-
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import user from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -12,6 +9,7 @@ import client from 'models/api/resources'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { RootState, StoreDispatch } from 'state/types'
+import { userEvent } from 'utils/testing/userEvent'
 
 import RemoveShopifyBilling from '../RemoveShopifyBilling'
 
@@ -82,8 +80,8 @@ describe('<RemoveShopifyBilling />', () => {
         const button = screen.getByRole('button', {
             name: 'Remove Shopify Billing',
         })
-        user.click(button)
-        user.click(screen.getByText('Confirm'))
+        userEvent.click(button)
+        userEvent.click(screen.getByText('Confirm'))
 
         await waitFor(() => {
             expect(mockedServer.history.post.length).toBe(1)

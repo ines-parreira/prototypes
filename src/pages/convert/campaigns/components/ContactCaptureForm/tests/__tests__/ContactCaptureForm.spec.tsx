@@ -1,7 +1,5 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, fireEvent, render } from '@testing-library/react'
+import { act, render, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -122,6 +120,7 @@ describe('ContactForm test suite', () => {
     })
 
     it('should add tags in the first step and the next step should be available', async () => {
+        const user = userEvent.setup()
         const { getByText, getByPlaceholderText } = render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
@@ -136,12 +135,19 @@ describe('ContactForm test suite', () => {
             </Provider>,
         )
         const addTagsBtn = getByPlaceholderText('Add tags...')
-        act(() => addTagsBtn.click())
-        await userEvent.type(addTagsBtn, 'Foo{enter}')
-        const deleteTagBtn = getByText('Foo').nextElementSibling
+        await user.click(addTagsBtn)
+        await user.type(addTagsBtn, 'Foo')
+        await user.keyboard('{Enter}')
+
+        const tagElement = getByText('Foo')
+        expect(tagElement).toBeInTheDocument()
+
+        const deleteTagBtn = tagElement.nextElementSibling
         expect(deleteTagBtn).toBeInTheDocument()
-        if (deleteTagBtn) fireEvent.click(deleteTagBtn)
-        act(() => getByText('Next').click())
+        if (deleteTagBtn) await user.click(deleteTagBtn)
+
+        const nextButton = getByText('Next')
+        await user.click(nextButton)
     })
 
     it('should render the Customization step', async () => {
@@ -249,7 +255,7 @@ describe('ContactForm test suite', () => {
         expect(mockOnOpenChange).toHaveBeenCalledWith(true)
     })
 
-    it('should close when the backdrop area is clicked', () => {
+    it('should close when the backdrop area is clicked', async () => {
         const mockOnOpenChange = jest.fn()
         const { baseElement } = render(
             <Provider store={store}>
@@ -266,7 +272,10 @@ describe('ContactForm test suite', () => {
         act(() =>
             userEvent.click(baseElement.getElementsByClassName('backdrop')[0]),
         )
-        expect(mockOnOpenChange).toHaveBeenCalledWith(false)
+
+        await waitFor(() => {
+            expect(mockOnOpenChange).toHaveBeenCalledWith(false)
+        })
     })
 
     it('should show error state when tags number is over 5 on setup', async () => {
@@ -276,16 +285,21 @@ describe('ContactForm test suite', () => {
             </Provider>,
         )
         const addTagsBtn = getByPlaceholderText('Add tags...')
-        act(() => addTagsBtn.click())
+        await userEvent.click(addTagsBtn)
         await userEvent.type(addTagsBtn, 'abc{enter}')
         await userEvent.type(addTagsBtn, 'def{enter}')
         await userEvent.type(addTagsBtn, 'ghi{enter}')
         await userEvent.type(addTagsBtn, 'jkl{enter}')
         await userEvent.type(addTagsBtn, 'mno{enter}')
         await userEvent.type(addTagsBtn, 'pqr{enter}')
+
         const nextBtn = getByText('Next')
-        expect(nextBtn).toBeDisabled()
-        expect(getByText('You are allowed up to 5 tags.')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(nextBtn).toBeDisabled()
+            expect(
+                getByText('You are allowed up to 5 tags.'),
+            ).toBeInTheDocument()
+        })
     })
 
     it('should show error state when message is too long on post submission message step', () => {

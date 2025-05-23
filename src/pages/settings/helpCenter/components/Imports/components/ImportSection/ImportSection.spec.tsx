@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react'
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { createMemoryHistory } from 'history'
 import { mockFlags, resetLDMocks } from 'jest-launchdarkly-mock'
@@ -20,6 +19,7 @@ import { initialState as articlesState } from 'state/entities/helpCenter/article
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
 import { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
+import { userEvent } from 'utils/testing/userEvent'
 
 import {
     helpCenterMigrationConfig,

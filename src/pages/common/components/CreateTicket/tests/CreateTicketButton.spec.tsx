@@ -1,11 +1,11 @@
 import React, { forwardRef } from 'react'
 
 import { act } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
 import { flushPromises, renderWithRouter } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import useHandleTicketDraft from '../useHandleTicketDraft'
 

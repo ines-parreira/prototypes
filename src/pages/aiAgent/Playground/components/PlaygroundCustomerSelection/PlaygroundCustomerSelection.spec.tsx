@@ -1,9 +1,9 @@
 import React, { ComponentProps } from 'react'
 
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { useSearchCustomer } from 'models/aiAgent/queries'
+import { userEvent } from 'utils/testing/userEvent'
 
 import {
     CustomerHttpIntegrationDataMock,

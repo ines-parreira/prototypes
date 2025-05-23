@@ -2,13 +2,13 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { CONTACT_FORM_EMBED_FORM_TEXTS } from 'pages/settings/contactForm/constants'
 import { ShopifyPagesListFixture } from 'pages/settings/contactForm/fixtures/shopifyPage'
 import { useCreatePageEmbedment } from 'pages/settings/contactForm/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { MODAL_LABELS } from '../constants'
 import ContactFormAutoEmbedModalAssistant from '../ContactFormAutoEmbedModalAssistant'

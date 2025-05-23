@@ -1,13 +1,13 @@
 import React from 'react'
 
 import { render } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import _noop from 'lodash/noop'
 import { Moment } from 'moment'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import useShortcuts from 'hooks/useShortcuts'
+import { userEvent } from 'utils/testing/userEvent'
 
 import Snooze from '../Snooze'
 

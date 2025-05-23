@@ -1,9 +1,10 @@
 import React from 'react'
 
 import { render } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
+
+import { userEvent } from 'utils/testing/userEvent'
 
 import BusinessHoursForm from '../BusinessHoursForm'
 

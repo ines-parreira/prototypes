@@ -1,5 +1,3 @@
-import React from 'react'
-
 import {
     act,
     fireEvent,
@@ -8,7 +6,6 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react'
-import userEvent, { TargetElement } from '@testing-library/user-event'
 import { fromJS, Map } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
@@ -36,6 +33,7 @@ import { RootState, StoreDispatch } from 'state/types'
 import { toJS } from 'utils'
 import { getLDClient } from 'utils/launchDarkly'
 import { assumeMock, flushPromises } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { Campaign } from '../../../types/Campaign'
 import { CampaignDetailsForm } from '../CampaignDetailsForm'
@@ -321,7 +319,7 @@ describe('<CampaignDetailsForm />', () => {
 
             const scheduleOption = result.container.querySelector(
                 `#${CampaignScheduleModeEnum.Schedule}`,
-            ) as TargetElement
+            ) as Element
 
             act(() => {
                 userEvent.click(scheduleOption)

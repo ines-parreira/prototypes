@@ -20,7 +20,7 @@ exports[`JsonField display invalid message 1`] = `
           id="id-input-2"
           rows="6"
         >
-          "value"t
+          some input
         </textarea>
         <div
           class="invalid-feedback"

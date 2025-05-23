@@ -1,7 +1,6 @@
 import { ComponentProps } from 'react'
 
 import { act, render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
@@ -13,6 +12,7 @@ import {
 } from 'fixtures/bigcommerce'
 import client from 'models/api/resources'
 import { renderHook } from 'utils/testing/renderHook'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { ShippingMethod, useShippingMethods } from '../ShippingMethod'
 

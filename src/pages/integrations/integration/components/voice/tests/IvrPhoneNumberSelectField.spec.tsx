@@ -1,12 +1,13 @@
 import React from 'react'
 
 import { act, render } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import { userEvent } from 'utils/testing/userEvent'
 
 import IvrPhoneNumberSelectField from '../IvrPhoneNumberSelectField'
 

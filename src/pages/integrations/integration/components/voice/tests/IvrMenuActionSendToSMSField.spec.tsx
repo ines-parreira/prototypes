@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { act } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -13,6 +12,7 @@ import {
 import { IvrSmsDeflection, VoiceMessageType } from 'models/integration/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import { userEvent } from 'utils/testing/userEvent'
 
 import IvrMenuActionSendToSMSField from '../IvrMenuActionSendToSMSField'
 

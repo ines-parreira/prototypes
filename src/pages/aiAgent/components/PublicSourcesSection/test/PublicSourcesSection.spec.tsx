@@ -1,7 +1,6 @@
 import React, { ComponentProps } from 'react'
 
 import { screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { useSearchParam } from 'hooks/useSearchParam'
 import {
@@ -12,6 +11,7 @@ import { usePublicResourceMutation } from 'pages/aiAgent/hooks/usePublicResource
 import { usePublicResourcesPooling } from 'pages/aiAgent/hooks/usePublicResourcesPooling'
 import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { PublicSourcesSection } from '../PublicSourcesSection'
 import { SourceItem } from '../types'
@@ -91,7 +91,7 @@ describe('<PublicSourcesSection />', () => {
         renderComponent()
 
         const addButton = screen.getByText('Add URL')
-        addButton.click()
+        userEvent.click(addButton)
 
         expect(screen.getAllByText(/Sync URL/)).toHaveLength(1)
     })
@@ -108,9 +108,9 @@ describe('<PublicSourcesSection />', () => {
         renderComponent()
 
         const addButton = screen.getByText('Add URL')
-        addButton.click()
+        userEvent.click(addButton)
         const deleteButton = screen.getByLabelText('Delete public URL')
-        deleteButton.click()
+        userEvent.click(deleteButton)
 
         expect(screen.queryByTestId('source-item')).not.toBeInTheDocument()
     })
@@ -119,7 +119,7 @@ describe('<PublicSourcesSection />', () => {
         const url = 'https://example.com/faqs'
         renderComponent()
         const addButton = screen.getByText('Add URL')
-        addButton.click()
+        userEvent.click(addButton)
 
         const openButton = screen.getByLabelText('Open public URL')
         expect(openButton).toBeAriaDisabled()

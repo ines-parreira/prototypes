@@ -186,7 +186,9 @@ describe('UpcomingInvoiceCard', () => {
         })
         user.click(confirmButton)
 
-        expect(useExtendTrialMutateMock).toHaveBeenCalledWith([])
+        await waitFor(() => {
+            expect(useExtendTrialMutateMock).toHaveBeenCalledWith([])
+        })
     })
 
     it('should NOT show "Extend trial" button if in trial but trial has already been extended', () => {
@@ -202,7 +204,7 @@ describe('UpcomingInvoiceCard', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should show the Modal when "Apply Coupon" button is clicked', () => {
+    it('should show the Modal when "Apply Coupon" button is clicked', async () => {
         render(
             <UpcomingInvoiceCard
                 {...upcomingInvoiceCardParams}
@@ -211,19 +213,21 @@ describe('UpcomingInvoiceCard', () => {
         )
         user.click(screen.getByRole('button', { name: /Apply coupon/i }))
 
-        expect(AddSalesCouponModalMock).toHaveBeenLastCalledWith(
-            {
-                alreadyAppliedCoupon: undefined,
-                availableCoupons: availableCoupons,
-                isModalOpen: true,
-                onCloseModal: expect.any(Function),
-                title: 'Apply Helpdesk and AI Agent coupon',
-            },
-            {},
-        )
+        await waitFor(() => {
+            expect(AddSalesCouponModalMock).toHaveBeenLastCalledWith(
+                {
+                    alreadyAppliedCoupon: undefined,
+                    availableCoupons: availableCoupons,
+                    isModalOpen: true,
+                    onCloseModal: expect.any(Function),
+                    title: 'Apply Helpdesk and AI Agent coupon',
+                },
+                {},
+            )
+        })
     })
 
-    it('should show coupon name and "Edit Coupon" button if a coupon has been applied', () => {
+    it('should show coupon name and "Edit Coupon" button if a coupon has been applied', async () => {
         render(
             <UpcomingInvoiceCard
                 {...upcomingInvoiceCardParams}
@@ -242,16 +246,18 @@ describe('UpcomingInvoiceCard', () => {
 
         user.click(editCouponButton)
 
-        expect(AddSalesCouponModalMock).toHaveBeenLastCalledWith(
-            {
-                alreadyAppliedCoupon: coupon.name,
-                availableCoupons: availableCoupons,
-                isModalOpen: true,
-                onCloseModal: expect.any(Function),
-                title: 'Apply Helpdesk and AI Agent coupon',
-            },
-            {},
-        )
+        await waitFor(() => {
+            expect(AddSalesCouponModalMock).toHaveBeenLastCalledWith(
+                {
+                    alreadyAppliedCoupon: coupon.name,
+                    availableCoupons: availableCoupons,
+                    isModalOpen: true,
+                    onCloseModal: expect.any(Function),
+                    title: 'Apply Helpdesk and AI Agent coupon',
+                },
+                {},
+            )
+        })
     })
 
     it(`should allow to reactivate trial when the last subscription is cancelled and trial wasn't extended before`, async () => {
