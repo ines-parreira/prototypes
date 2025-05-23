@@ -63,7 +63,7 @@ const TicketTags = ({
         if (!isExpanded) {
             setWrapperElementCount(getWrappedElementCount(element, ['button']))
         }
-    }, [element, width, height, isExpanded])
+    }, [element, width, height, isExpanded, ticketTags.length])
 
     const hiddenTags = wrappedElementCount
         ? tags.slice(tags.length - wrappedElementCount).map((tag) => tag?.name)
