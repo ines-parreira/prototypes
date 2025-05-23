@@ -152,6 +152,7 @@ const config = {
             new rspack.CircularDependencyRspackPlugin({
                 exclude: /node_modules/,
                 allowAsyncCycles: true,
+                failOnError: true,
             }),
         isDev && new ReactRefreshPlugin(),
         isDev && new rspack.HotModuleReplacementPlugin(),
