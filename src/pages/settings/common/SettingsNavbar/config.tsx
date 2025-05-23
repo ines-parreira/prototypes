@@ -91,7 +91,7 @@ const productivitySection: Category = {
             shouldRender: ({ hasAutomate, integrations }) =>
                 !hasAutomate || integrations.length === 0,
             to: 'automate',
-            text: 'Automate',
+            text: 'AI Agent',
             extra: <AutomateUpgradeBadge />,
         },
         {

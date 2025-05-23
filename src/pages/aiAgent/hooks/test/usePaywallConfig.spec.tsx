@@ -32,7 +32,7 @@ describe('usePaywallConfig', () => {
                 'Leads customers to fast resolutions in seconds, not hours.',
                 'Enhances team productivity, reducing workload & response times by automating up to 60% of your tickets.',
                 'Offers tailored discounts and product recommendations to drive personalized shopping experiences.',
-                'AI Agent features: Flows with logic to answer FAQs, suggest products, and manage orders by status.',
+                'Additional automation features: Flows with logic to answer FAQs, etc.',
             ],
             toggleElements: [
                 {
@@ -145,7 +145,7 @@ describe('usePaywallConfig', () => {
                 'Leads customers to fast resolutions in seconds, not hours.',
                 'Enhances team productivity, reducing workload & response times by automating up to 60% of your tickets.',
                 'Offers tailored discounts and product recommendations to drive personalized shopping experiences.',
-                'AI Agent features: Flows with logic to answer FAQs, suggest products, and manage orders by status.',
+                'Additional automation features: Flows with logic to answer FAQs, etc.',
             ],
             toggleElements: [
                 {

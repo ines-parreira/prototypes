@@ -482,7 +482,7 @@ const ROICalculator = () => {
                     </div>
                     <div className={css.resultRowBackground}>
                         <div className={css.withAutomate}>
-                            <div className={css.resultTitle}>With Automate</div>
+                            <div className={css.resultTitle}>With AI Agent</div>
                             <div
                                 className={classNames(
                                     css.automateCost,

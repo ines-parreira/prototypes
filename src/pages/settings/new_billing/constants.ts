@@ -38,7 +38,7 @@ export const PRODUCT_INFO = {
         counter: 'automated interactions',
         perTicket: 'per automated interaction',
         tooltip:
-            'An interaction is automated when your customer solves their request without human intervention using a feature from our Automate.',
+            'An interaction is automated when your customer solves their request without human intervention.',
         tooltipLink: 'https://link.gorgias.com/5jnkqn7',
         bannerLink: '/app/automation',
     },
