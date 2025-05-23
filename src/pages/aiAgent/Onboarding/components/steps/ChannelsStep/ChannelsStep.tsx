@@ -78,7 +78,7 @@ import {
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import { STEPS_INDEX } from '../../AiAgentOnboarding/AiAgentOnboarding'
+import { STEPS_INDEX } from '../../AiAgentOnboarding/steps'
 import { useSelectedEmailsBeforeRedirect } from './hooks/useSelectedEmailsBeforeRedirect'
 
 export const emailSortingCallback = (a: EmailItem, b: EmailItem) => {
