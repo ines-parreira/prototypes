@@ -1073,6 +1073,7 @@ describe('ticket reducers', () => {
                 } as unknown as GorgiasAction).toJS(),
             ).toMatchSnapshot()
         })
+
         it('should update customer', () => {
             const newName = 'Alex'
 
@@ -1086,6 +1087,28 @@ describe('ticket reducers', () => {
                 {
                     type: types.MERGE_CUSTOMER,
                     customer: {
+                        id: 1,
+                        name: newName,
+                    },
+                } as unknown as GorgiasAction,
+            )
+
+            expect(newState.getIn(['customer', 'name'])).toEqual(newName)
+        })
+
+        it('should merge updated customer with ticket customer if they match', () => {
+            const newName = 'Alex'
+
+            const newState = reducer(
+                initialState.mergeDeep({
+                    customer: {
+                        id: 1,
+                        name: 'Romain',
+                    },
+                }),
+                {
+                    type: customerTypes.SUBMIT_CUSTOMER_SUCCESS,
+                    resp: {
                         id: 1,
                         name: newName,
                     },

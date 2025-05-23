@@ -565,8 +565,11 @@ export default function reducer(
             return newState
         }
 
+        case customerTypes.SUBMIT_CUSTOMER_SUCCESS:
         case types.MERGE_CUSTOMER: {
-            const { customer } = action
+            // if action is from SUBMIT_CUSTOMER_SUCCESS, customer is in the resp key
+            let customer = action.customer || action.resp
+
             let customerData = fromJS(customer) as Map<any, any>
 
             // if received customer data does not concern current customer of ticket, do nothing
