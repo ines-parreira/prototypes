@@ -3,7 +3,7 @@ import { useCallback, useRef } from 'react'
 import _uniqueId from 'lodash/uniqueId'
 import { POSITIONS } from 'reapop'
 
-import { JobType } from '@gorgias/api-queries'
+import { JobType } from '@gorgias/helpdesk-queries'
 
 import {
     AlertNotification,

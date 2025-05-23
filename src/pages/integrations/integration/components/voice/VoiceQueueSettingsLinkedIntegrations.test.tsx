@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { VoiceQueueIntegration } from '@gorgias/api-queries'
+import { VoiceQueueIntegration } from '@gorgias/helpdesk-queries'
 
 import { NewPhoneNumber } from 'models/phoneNumber/types'
 import { NewPhoneNumbersState } from 'state/entities/phoneNumbers/types'

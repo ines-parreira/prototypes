@@ -1,4 +1,4 @@
-import { IntegrationType } from '@gorgias/api-types'
+import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { WOOCOMMERCE_WIDGET_TYPE } from 'state/widgets/constants'
 import { WidgetType } from 'state/widgets/types'

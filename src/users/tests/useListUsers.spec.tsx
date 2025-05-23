@@ -4,7 +4,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import * as reactQuery from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 
-import { ListUsersRolesItem, queryKeys } from '@gorgias/api-queries'
+import { ListUsersRolesItem, queryKeys } from '@gorgias/helpdesk-queries'
 
 import { agents } from 'fixtures/agents'
 import {

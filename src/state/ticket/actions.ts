@@ -7,7 +7,7 @@ import { compressToEncodedURIComponent } from 'lz-string'
 import { Moment } from 'moment'
 import { dismissNotification } from 'reapop'
 
-import { Macro as MacroModel, Tag } from '@gorgias/api-types'
+import { Macro as MacroModel, Tag } from '@gorgias/helpdesk-types'
 
 import {
     TicketChannel,

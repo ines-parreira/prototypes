@@ -3,12 +3,12 @@ import { act } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 
-import { createIntegration } from '@gorgias/api-client'
+import { createIntegration } from '@gorgias/helpdesk-client'
 import {
     CreateIntegrationBody,
     PhoneFunction,
     PhoneIntegration,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { DEFAULT_IVR_SETTINGS } from 'models/integration/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -21,7 +21,7 @@ import {
     validateOnboardingForm,
 } from '../useVoiceOnboardingForm'
 
-jest.mock('@gorgias/api-client')
+jest.mock('@gorgias/helpdesk-client')
 const createIntegrationMock = assumeMock(createIntegration)
 
 jest.mock('hooks/useNotify')

@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { useGetTicket } from '@gorgias/api-queries'
+import { useGetTicket } from '@gorgias/helpdesk-queries'
 
 import { transformers } from '../transformers'
 import type { TicketElement } from '../types'

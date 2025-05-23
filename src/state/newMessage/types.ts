@@ -1,7 +1,7 @@
 import { ContentState, SelectionState } from 'draft-js'
 import { List, Map } from 'immutable'
 
-import { Macro } from '@gorgias/api-queries'
+import { Macro } from '@gorgias/helpdesk-queries'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { GenericAttachment } from 'common/types'

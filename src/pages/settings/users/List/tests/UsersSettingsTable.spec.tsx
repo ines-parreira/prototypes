@@ -2,8 +2,8 @@ import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 
-import { ListUsersParams } from '@gorgias/api-queries'
-import { User } from '@gorgias/api-types'
+import { ListUsersParams } from '@gorgias/helpdesk-queries'
+import { User } from '@gorgias/helpdesk-types'
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { agents } from 'fixtures/agents'

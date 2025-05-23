@@ -2,13 +2,13 @@ import React from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 
-import { useGetVoiceCallRecordingTranscription } from '@gorgias/api-queries'
+import { useGetVoiceCallRecordingTranscription } from '@gorgias/helpdesk-queries'
 
 import { VoiceCallRecordingType } from 'models/voiceCall/types'
 
 import TranscriptionData from '../TranscriptionData'
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 const mockUseGetVoiceCallRecordingTranscription =
     useGetVoiceCallRecordingTranscription as jest.Mock
 

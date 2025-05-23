@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import { useGetVoiceQueue, VoiceQueue } from '@gorgias/api-queries'
+import { useGetVoiceQueue, VoiceQueue } from '@gorgias/helpdesk-queries'
 
 import { useVoiceQueueSearch } from 'hooks/reporting/common/useVoiceQueueSearch'
 import { assumeMock, getLastMockCall } from 'utils/testing'
@@ -9,8 +9,8 @@ import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import CreateNewQueueModal from '../CreateNewQueueModal'
 import VoiceQueueSelectField from '../VoiceQueueSelectField'
 
-jest.mock('@gorgias/api-queries', () => ({
-    ...jest.requireActual('@gorgias/api-queries'),
+jest.mock('@gorgias/helpdesk-queries', () => ({
+    ...jest.requireActual('@gorgias/helpdesk-queries'),
     useListVoiceQueues: jest.fn(),
     useGetVoiceQueue: jest.fn(),
 }))

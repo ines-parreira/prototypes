@@ -3,7 +3,7 @@ import React from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 
-import { useUpdateSlaPolicy } from '@gorgias/api-queries'
+import { useUpdateSlaPolicy } from '@gorgias/helpdesk-queries'
 
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
@@ -23,7 +23,7 @@ jest.mock('../../views/SLAListView', () => () => <div>SLAListView</div>)
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 const mockUseUpdateSlaPolicy = useUpdateSlaPolicy as jest.Mock
 
 const queryClient = mockQueryClient()

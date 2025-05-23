@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from 'axios'
 
-import { ListMacrosParams, Macro } from '@gorgias/api-queries'
+import { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
 
 import client from 'models/api/resources'
 import { ApiListResponseCursorPagination } from 'models/api/types'

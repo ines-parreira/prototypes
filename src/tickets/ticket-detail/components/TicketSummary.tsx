@@ -1,4 +1,4 @@
-import type { Ticket } from '@gorgias/api-types'
+import type { Ticket } from '@gorgias/helpdesk-types'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'

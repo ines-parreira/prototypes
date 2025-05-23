@@ -1,4 +1,4 @@
-import { Team } from '@gorgias/api-queries'
+import { Team } from '@gorgias/helpdesk-queries'
 
 import { ApiPaginationParams, OrderDirection } from 'models/api/types'
 

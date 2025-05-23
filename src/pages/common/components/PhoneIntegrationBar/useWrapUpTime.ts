@@ -5,7 +5,7 @@ import moment from 'moment'
 import {
     useEndWrapUpTime,
     useGetAgentWrapUpCallStatus,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import useInterval from 'hooks/useInterval'
 import { useNotify } from 'hooks/useNotify'

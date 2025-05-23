@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { CursorPaginationMeta } from '@gorgias/api-queries'
+import { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
 import TicketUpdatesManager from '../TicketUpdatesManager'
 import { TicketPartial } from '../types'

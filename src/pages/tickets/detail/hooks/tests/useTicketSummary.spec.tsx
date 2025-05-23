@@ -1,6 +1,6 @@
 import { act } from '@testing-library/react'
 
-import { useGenerateTicketSummary } from '@gorgias/api-queries'
+import { useGenerateTicketSummary } from '@gorgias/helpdesk-queries'
 
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
@@ -12,7 +12,7 @@ jest.mock('hooks/useTimeout', () => ({
     useTimeout: () => [mockSetTimeout],
 }))
 
-jest.mock('@gorgias/api-queries', () => ({
+jest.mock('@gorgias/helpdesk-queries', () => ({
     useGenerateTicketSummary: jest.fn(),
 }))
 

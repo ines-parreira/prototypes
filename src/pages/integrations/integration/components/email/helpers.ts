@@ -4,7 +4,7 @@ import { isEmpty } from 'lodash'
 import {
     EmailIntegration as NEW_EmailIntegration,
     GmailIntegration as NEW_GmailIntegration,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import {

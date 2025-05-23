@@ -5,7 +5,7 @@ import { Moment } from 'moment'
 import { notify as updateNotification } from 'reapop'
 import { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
 
-import { JobType } from '@gorgias/api-queries'
+import { JobType } from '@gorgias/helpdesk-queries'
 
 import * as viewsConfig from 'config/views'
 import { SearchRank } from 'hooks/useSearchRankScenario'

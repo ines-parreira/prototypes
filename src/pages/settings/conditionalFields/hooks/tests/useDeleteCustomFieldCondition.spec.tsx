@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 import {
     queryKeys,
     useDeleteCustomFieldCondition as useDelete,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { customFieldCondition } from 'fixtures/customFieldCondition'
@@ -21,7 +21,7 @@ import useDeleteCustomFieldCondition from '../useDeleteCustomFieldCondition'
 
 const queryClient = mockQueryClient()
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 const useDeleteCustomFieldConditionMock = assumeMock(useDelete)
 
 const mockStore = configureMockStore([thunk])()

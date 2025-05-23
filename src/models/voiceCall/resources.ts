@@ -1,4 +1,4 @@
-import { searchVoiceCalls as apiSearchVoiceCalls } from '@gorgias/api-client'
+import { searchVoiceCalls as apiSearchVoiceCalls } from '@gorgias/helpdesk-client'
 
 import client from 'models/api/resources'
 import { ApiListResponseCursorPagination } from 'models/api/types'

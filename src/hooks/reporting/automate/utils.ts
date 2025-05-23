@@ -8,8 +8,8 @@ import mapValues from 'lodash/mapValues'
 import orderBy from 'lodash/orderBy'
 import moment, { Moment } from 'moment'
 
-import { OrderDirection } from '@gorgias/api-queries'
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+import { OrderDirection } from '@gorgias/helpdesk-queries'
 
 import {
     calculateRate,

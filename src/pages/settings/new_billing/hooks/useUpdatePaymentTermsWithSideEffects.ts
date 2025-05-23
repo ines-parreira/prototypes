@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 
-import { queryKeys, useUpdatePaymentTerms } from '@gorgias/api-queries'
+import { queryKeys, useUpdatePaymentTerms } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'

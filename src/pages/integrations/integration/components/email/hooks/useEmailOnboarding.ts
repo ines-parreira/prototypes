@@ -15,7 +15,7 @@ import {
     useDeleteIntegration,
     useSendVerificationEmail,
     useUpdateIntegration,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { FormErrors } from 'core/forms'

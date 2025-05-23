@@ -3,7 +3,7 @@ import React, { MouseEvent, useCallback } from 'react'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 
-import { CustomFieldCondition } from '@gorgias/api-queries'
+import { CustomFieldCondition } from '@gorgias/helpdesk-queries'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
 import IconButton from 'pages/common/components/button/IconButton'

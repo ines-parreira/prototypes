@@ -5,8 +5,8 @@ import configureMockStore from 'redux-mock-store'
 import {
     UploadedCustomRecording,
     useUploadCustomVoiceRecording,
-} from '@gorgias/api-queries'
-import { CustomRecordingType } from '@gorgias/api-types'
+} from '@gorgias/helpdesk-queries'
+import { CustomRecordingType } from '@gorgias/helpdesk-types'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { VoiceMessage, VoiceMessageType } from 'models/integration/types'
@@ -18,7 +18,7 @@ import { assumeMock } from 'utils/testing'
 
 import VoiceMessageField from '../VoiceMessageField'
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 jest.mock('state/notifications/actions')
 
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())

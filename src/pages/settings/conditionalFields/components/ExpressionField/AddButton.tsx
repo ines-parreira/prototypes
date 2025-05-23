@@ -1,4 +1,4 @@
-import { CustomFieldConditionExpression } from '@gorgias/api-queries'
+import { CustomFieldConditionExpression } from '@gorgias/helpdesk-queries'
 
 import { useWatch } from 'core/forms'
 import Button from 'pages/common/components/button/Button'

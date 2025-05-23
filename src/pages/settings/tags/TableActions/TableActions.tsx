@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import { List } from 'immutable'
 
-import { Tag } from '@gorgias/api-queries'
+import { Tag } from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { getTags } from 'state/tags/selectors'

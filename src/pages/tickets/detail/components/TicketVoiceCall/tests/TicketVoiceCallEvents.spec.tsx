@@ -2,7 +2,7 @@ import React from 'react'
 
 import { cleanup, render, screen } from '@testing-library/react'
 
-import { VoiceCallTerminationStatus } from '@gorgias/api-queries'
+import { VoiceCallTerminationStatus } from '@gorgias/helpdesk-queries'
 
 import * as queries from 'models/voiceCall/queries'
 

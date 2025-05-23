@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 
-import { ObjectType } from '@gorgias/api-queries'
+import { ObjectType } from '@gorgias/helpdesk-queries'
 
 import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
 import {

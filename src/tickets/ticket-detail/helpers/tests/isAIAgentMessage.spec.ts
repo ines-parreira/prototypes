@@ -1,4 +1,4 @@
-import type { TicketMessage } from '@gorgias/api-types'
+import type { TicketMessage } from '@gorgias/helpdesk-types'
 
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
 

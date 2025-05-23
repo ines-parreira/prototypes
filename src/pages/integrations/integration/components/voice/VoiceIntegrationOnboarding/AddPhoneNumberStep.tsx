@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { useFormContext } from 'react-hook-form'
 
-import { PhoneFunction, PhoneIntegration } from '@gorgias/api-queries'
+import { PhoneFunction, PhoneIntegration } from '@gorgias/helpdesk-queries'
 import { Button, Label, SelectField } from '@gorgias/merchant-ui-kit'
 import type { SelectFieldRawOption } from '@gorgias/merchant-ui-kit'
 

@@ -2,7 +2,7 @@ import { List } from 'immutable'
 import { notify as updateNotification } from 'reapop'
 import { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
 
-import { JobType } from '@gorgias/api-queries'
+import { JobType } from '@gorgias/helpdesk-queries'
 
 import { JOBS_PATH } from 'models/job/resources'
 

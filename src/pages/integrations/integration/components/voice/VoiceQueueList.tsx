@@ -2,7 +2,7 @@ import { useRef } from 'react'
 
 import { TableVirtuoso, VirtuosoHandle } from 'react-virtuoso'
 
-import { VoiceQueue, VoiceQueueStatus } from '@gorgias/api-queries'
+import { VoiceQueue, VoiceQueueStatus } from '@gorgias/helpdesk-queries'
 import {
     Badge,
     IconButton,

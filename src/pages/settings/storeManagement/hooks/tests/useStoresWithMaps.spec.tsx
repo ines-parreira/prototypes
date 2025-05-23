@@ -1,4 +1,4 @@
-import { useGetStoreMappingsByAccountId } from '@gorgias/api-queries'
+import { useGetStoreMappingsByAccountId } from '@gorgias/helpdesk-queries'
 
 import useAllIntegrations from 'hooks/useAllIntegrations'
 import { Integration, IntegrationType } from 'models/integration/types'
@@ -6,7 +6,7 @@ import { renderHook } from 'utils/testing/renderHook'
 
 import useStoresWithMaps from '../useStoresWithMaps'
 
-jest.mock('@gorgias/api-queries', () => ({
+jest.mock('@gorgias/helpdesk-queries', () => ({
     useGetStoreMappingsByAccountId: jest.fn(),
 }))
 

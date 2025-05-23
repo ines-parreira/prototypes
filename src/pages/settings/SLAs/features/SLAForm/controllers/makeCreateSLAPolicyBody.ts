@@ -1,7 +1,7 @@
 import { isString } from 'lodash'
 import _isNumber from 'lodash/isNumber'
 
-import { CreateSLAPolicy, SLAPolicyMetric } from '@gorgias/api-types'
+import { CreateSLAPolicy, SLAPolicyMetric } from '@gorgias/helpdesk-types'
 
 import { SLAFormValues } from './useFormValues'
 

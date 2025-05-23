@@ -5,7 +5,7 @@ import {
     TicketQAScoreDimensionName,
     useListTicketQaScoreDimensions,
     useUpsertTicketQaScoreDimension,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 

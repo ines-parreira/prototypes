@@ -2,11 +2,11 @@ import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 
 import { produce } from 'immer'
 
-import { RequirementType } from '@gorgias/api-queries'
+import { RequirementType } from '@gorgias/helpdesk-queries'
 import {
     CustomFieldConditionField,
     ExpressionFieldType,
-} from '@gorgias/api-types'
+} from '@gorgias/helpdesk-types'
 
 import { CustomField } from 'custom-fields/types'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'

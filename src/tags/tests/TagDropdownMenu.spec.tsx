@@ -8,7 +8,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { queryKeys } from '@gorgias/api-queries'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { UserRole } from 'config/types/user'
 import { user } from 'fixtures/users'

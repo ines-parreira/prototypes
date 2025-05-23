@@ -2,7 +2,7 @@ import React from 'react'
 
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 
-import { useListLiveCallQueueAgents } from '@gorgias/api-queries'
+import { useListLiveCallQueueAgents } from '@gorgias/helpdesk-queries'
 
 import { FilterKey, StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import { assumeMock } from 'utils/testing'
@@ -12,7 +12,7 @@ import LiveVoiceAgentsSection from './LiveVoiceAgentsSection'
 jest.mock('@gorgias/merchant-ui-kit', () => ({
     Skeleton: () => <div>Skeleton</div>,
 }))
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 
 const useListLiveCallQueueAgentsMock = assumeMock(useListLiveCallQueueAgents)

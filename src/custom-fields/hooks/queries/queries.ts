@@ -1,7 +1,7 @@
 // Will be autogenerate with API SDK
 import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
 
-import { ObjectType } from '@gorgias/api-queries'
+import { ObjectType } from '@gorgias/helpdesk-queries'
 
 import {
     createCustomField,

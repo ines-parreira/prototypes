@@ -6,7 +6,7 @@ import {
     useGetVoiceCallRecordingTranscription,
     VoiceCallRecordingTranscriptionSpeakersItem,
     VoiceCallRecordingTranscriptionTranscriptionItem,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { VoiceCallRecordingType } from 'models/voiceCall/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'

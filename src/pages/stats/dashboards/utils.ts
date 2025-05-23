@@ -5,7 +5,7 @@ import {
     AnalyticsCustomReportChartSchema,
     AnalyticsCustomReportRowSchema,
     AnalyticsCustomReportSectionSchema,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 import {
     AnalyticsCustomReportChartSchemaType,
     AnalyticsCustomReportChildrenItem,
@@ -13,7 +13,7 @@ import {
     AnalyticsCustomReportSectionSchemaType,
     CreateAnalyticsCustomReportBody,
     CreateAnalyticsCustomReportBodyChildrenItem,
-} from '@gorgias/api-types'
+} from '@gorgias/helpdesk-types'
 
 import { isGorgiasApiError } from 'models/api/types'
 import {

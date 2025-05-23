@@ -37,7 +37,7 @@ import { assumeMock } from 'utils/testing'
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 jest.mock('state/notifications/actions')
 jest.mock('@tanstack/react-query')
 const useQueryClientMock = assumeMock(useQueryClient)

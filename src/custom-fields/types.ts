@@ -1,7 +1,7 @@
 import {
     CustomFieldDefinition as ApiCustomFieldDefinition,
     ExpressionFieldType,
-} from '@gorgias/api-types'
+} from '@gorgias/helpdesk-types'
 
 import { ApiPaginationParams } from 'models/api/types'
 

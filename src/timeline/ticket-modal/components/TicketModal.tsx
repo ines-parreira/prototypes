@@ -1,4 +1,4 @@
-import { TicketCompact } from '@gorgias/api-queries'
+import { TicketCompact } from '@gorgias/helpdesk-queries'
 import { Button, IconButton } from '@gorgias/merchant-ui-kit'
 
 import Modal from 'pages/common/components/modal/Modal'

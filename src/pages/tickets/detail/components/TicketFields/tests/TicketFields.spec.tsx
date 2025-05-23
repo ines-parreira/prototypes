@@ -13,7 +13,7 @@ import {
     ExpressionOperator,
     RequirementType,
     TicketStatus,
-} from '@gorgias/api-types'
+} from '@gorgias/helpdesk-types'
 
 import useFlag from 'core/flags/hooks/useFlag'
 import { useCustomFieldConditions } from 'custom-fields/hooks/queries/useCustomFieldConditions'

@@ -13,7 +13,7 @@ import {
     useDeleteAnalyticsFilter,
     useListAnalyticsFilters,
     useUpdateAnalyticsFilter,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { UserRole } from 'config/types/user'
 import {
@@ -67,7 +67,7 @@ jest.mock('pages/stats/common/filters/FiltersPanel')
 jest.mock('pages/stats/convert/providers/CampaignStatsFilters')
 const CampaignStatsFiltersMock = assumeMock(CampaignStatsFilters)
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 const useListAnalyticsFiltersMock = assumeMock(useListAnalyticsFilters)
 const useCreateAnalyticsFilterMock = assumeMock(useCreateAnalyticsFilter)
 const useUpdateAnalyticsFilterMock = assumeMock(useUpdateAnalyticsFilter)

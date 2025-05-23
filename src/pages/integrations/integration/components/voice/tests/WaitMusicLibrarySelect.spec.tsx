@@ -1,6 +1,6 @@
 import { fireEvent, render } from '@testing-library/react'
 
-import { UpdateWaitMusicLibrary } from '@gorgias/api-queries'
+import { UpdateWaitMusicLibrary } from '@gorgias/helpdesk-queries'
 
 import { STATIC_WAIT_MUSIC_LIBRARY } from '../waitMusicLibraryConstants'
 import WaitMusicLibrarySelect from '../WaitMusicLibrarySelect'

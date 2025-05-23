@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { useParams } from 'react-router-dom'
 
-import { TicketCompact } from '@gorgias/api-queries'
+import { TicketCompact } from '@gorgias/helpdesk-queries'
 import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'

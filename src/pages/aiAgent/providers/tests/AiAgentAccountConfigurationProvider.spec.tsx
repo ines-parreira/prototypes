@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { IntegrationType } from '@gorgias/api-queries'
+import { IntegrationType } from '@gorgias/helpdesk-queries'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'

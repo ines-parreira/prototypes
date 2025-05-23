@@ -1,6 +1,6 @@
 import { render, RenderResult, screen } from '@testing-library/react'
 
-import { VoiceQueueTargetScope } from '@gorgias/api-queries'
+import { VoiceQueueTargetScope } from '@gorgias/helpdesk-queries'
 
 import { FormField, useFormContext } from 'core/forms'
 import * as forms from 'core/forms'

@@ -2,7 +2,7 @@ import React, { ComponentProps, useMemo } from 'react'
 
 import { parseToHsla } from 'color2k'
 
-import { TicketTagDecorationProperty } from '@gorgias/api-types'
+import { TicketTagDecorationProperty } from '@gorgias/helpdesk-types'
 
 import { Tag } from 'components/Tag/Tag'
 import { FeatureFlagKey } from 'config/featureFlags'

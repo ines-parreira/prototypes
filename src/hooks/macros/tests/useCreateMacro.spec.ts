@@ -1,6 +1,6 @@
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 
-import { useCreateMacro as useCreateMacroPrimitive } from '@gorgias/api-queries'
+import { useCreateMacro as useCreateMacroPrimitive } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
@@ -10,7 +10,7 @@ import { renderHook } from 'utils/testing/renderHook'
 
 import { useCreateMacro } from '../useCreateMacro'
 
-jest.mock('@gorgias/api-queries', () => ({
+jest.mock('@gorgias/helpdesk-queries', () => ({
     __esModule: true,
     useCreateMacro: jest.fn(),
     queryKeys: {

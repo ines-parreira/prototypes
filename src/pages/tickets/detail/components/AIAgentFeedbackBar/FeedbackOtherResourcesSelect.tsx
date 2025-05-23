@@ -6,7 +6,7 @@ import React, {
     useState,
 } from 'react'
 
-import { Tag } from '@gorgias/api-types'
+import { Tag } from '@gorgias/helpdesk-types'
 import { Badge, BadgeIcon, Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { SegmentEvent } from 'common/segment'

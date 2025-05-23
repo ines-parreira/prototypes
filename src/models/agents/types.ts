@@ -1,7 +1,7 @@
 import {
     ListUsersRelationshipsItem,
     ListUsersRolesItem,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { ApiPaginationParams, OrderParams } from 'models/api/types'
 

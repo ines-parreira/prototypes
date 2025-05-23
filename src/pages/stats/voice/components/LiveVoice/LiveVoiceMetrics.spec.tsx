@@ -3,7 +3,7 @@ import { ComponentProps } from 'react'
 import { render } from '@testing-library/react'
 import { Moment } from 'moment'
 
-import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/api-queries'
+import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-queries'
 
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 import { formatReportingQueryDate } from 'utils/reporting'

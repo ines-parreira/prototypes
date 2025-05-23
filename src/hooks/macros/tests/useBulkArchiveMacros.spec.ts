@@ -1,6 +1,6 @@
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 
-import { useBulkArchiveMacros as useBulkArchiveMacrosPrimitive } from '@gorgias/api-queries'
+import { useBulkArchiveMacros as useBulkArchiveMacrosPrimitive } from '@gorgias/helpdesk-queries'
 
 import { macros } from 'fixtures/macro'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -11,7 +11,7 @@ import { renderHook } from 'utils/testing/renderHook'
 
 import { useBulkArchiveMacros } from '../useBulkArchiveMacros'
 
-jest.mock('@gorgias/api-queries', () => ({
+jest.mock('@gorgias/helpdesk-queries', () => ({
     __esModule: true,
     useBulkArchiveMacros: jest.fn(),
     queryKeys: {

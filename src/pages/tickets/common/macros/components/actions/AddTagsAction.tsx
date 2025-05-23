@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import { fromJS, Map } from 'immutable'
 
-import { Tag, TicketTag } from '@gorgias/api-types'
+import { Tag, TicketTag } from '@gorgias/helpdesk-types'
 
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 

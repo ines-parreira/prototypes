@@ -4,7 +4,7 @@ import {
     ExpressionFieldType,
     ExpressionOperator,
     TicketStatus,
-} from '@gorgias/api-types'
+} from '@gorgias/helpdesk-types'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { customFieldCondition } from 'fixtures/customFieldCondition'

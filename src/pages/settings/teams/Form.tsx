@@ -16,7 +16,7 @@ import {
     Row,
 } from 'reactstrap'
 
-import { Team } from '@gorgias/api-queries'
+import { Team } from '@gorgias/helpdesk-queries'
 import { Button, IconButton, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { useAppNode } from 'appNode'

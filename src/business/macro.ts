@@ -1,4 +1,4 @@
-import { Macro } from '@gorgias/api-queries'
+import { Macro } from '@gorgias/helpdesk-queries'
 
 import { MacroActionName } from 'models/macroAction/types'
 import { NotificationStatus } from 'state/notifications/types'

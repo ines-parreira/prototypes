@@ -5,7 +5,7 @@ import { ContentState, EditorState } from 'draft-js'
 import { fromJS, List, Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
 
-import { Macro } from '@gorgias/api-queries'
+import { Macro } from '@gorgias/helpdesk-queries'
 
 import { clearMacroBeforeApply } from 'business/macro'
 import { logEvent, SegmentEvent } from 'common/segment'

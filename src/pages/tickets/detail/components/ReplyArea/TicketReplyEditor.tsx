@@ -9,7 +9,7 @@ import _debounce from 'lodash/debounce'
 import _noop from 'lodash/noop'
 import { connect, ConnectedProps } from 'react-redux'
 
-import { Macro } from '@gorgias/api-queries'
+import { Macro } from '@gorgias/helpdesk-queries'
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { humanize } from 'business/format'

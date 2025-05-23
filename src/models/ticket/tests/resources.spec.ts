@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { searchTickets as apiSearchTickets } from '@gorgias/api-client'
+import { searchTickets as apiSearchTickets } from '@gorgias/helpdesk-client'
 
 import { ticket } from 'fixtures/ticket'
 import { ApiListResponseCursorPagination } from 'models/api/types'
@@ -11,7 +11,7 @@ import {
 import { Ticket } from 'models/ticket/types'
 import { assumeMock } from 'utils/testing'
 
-jest.mock('@gorgias/api-client')
+jest.mock('@gorgias/helpdesk-client')
 const searchTicketsMock = assumeMock(apiSearchTickets)
 
 describe('ticket resources', () => {

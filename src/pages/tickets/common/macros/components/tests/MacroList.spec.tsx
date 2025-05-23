@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { Macro } from '@gorgias/api-queries'
+import { Macro } from '@gorgias/helpdesk-queries'
 
 import { logEvent } from 'common/segment'
 import { user } from 'fixtures/users'

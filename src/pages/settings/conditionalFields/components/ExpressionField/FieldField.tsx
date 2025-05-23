@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react'
 
-import { CustomFieldConditionExpressionField } from '@gorgias/api-queries'
+import { CustomFieldConditionExpressionField } from '@gorgias/helpdesk-queries'
 import { SelectField } from '@gorgias/merchant-ui-kit'
 
 import { useFormContext } from 'core/forms'

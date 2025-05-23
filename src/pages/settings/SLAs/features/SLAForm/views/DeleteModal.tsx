@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 
-import { queryKeys, useArchiveSlaPolicy } from '@gorgias/api-queries'
+import { queryKeys, useArchiveSlaPolicy } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'

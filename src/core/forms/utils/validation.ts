@@ -1,7 +1,7 @@
 import { capitalize, isArray, isObject } from 'lodash'
 import type { FieldErrors, FieldValues, ResolverResult } from 'react-hook-form'
 
-import { ValidationResult, Validator } from '@gorgias/api-validators'
+import { ValidationResult, Validator } from '@gorgias/helpdesk-validators'
 
 export type FormErrors<V extends FieldValues> = Partial<
     Record<keyof V, unknown>

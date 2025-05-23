@@ -1,4 +1,7 @@
-import { SLAPolicyMetricType, SLAPolicyMetricUnit } from '@gorgias/api-types'
+import {
+    SLAPolicyMetricType,
+    SLAPolicyMetricUnit,
+} from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
 import { slaPolicy3 } from 'pages/settings/SLAs/fixtures/fixtures'

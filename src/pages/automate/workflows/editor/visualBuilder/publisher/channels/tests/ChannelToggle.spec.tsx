@@ -1,7 +1,7 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 
-import { LegacyChannelSlug } from '@gorgias/api-queries'
+import { LegacyChannelSlug } from '@gorgias/helpdesk-queries'
 
 import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
 import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'

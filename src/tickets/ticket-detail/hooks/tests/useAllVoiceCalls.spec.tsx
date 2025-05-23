@@ -1,14 +1,14 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-import { listVoiceCalls } from '@gorgias/api-client'
-import type { VoiceCall } from '@gorgias/api-types'
+import { listVoiceCalls } from '@gorgias/helpdesk-client'
+import type { VoiceCall } from '@gorgias/helpdesk-types'
 
 import { useExhaustEndpoint } from 'hooks/useExhaustEndpoint'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { useAllVoiceCalls } from '../useAllVoiceCalls'
 
-jest.mock('@gorgias/api-client', () => ({
+jest.mock('@gorgias/helpdesk-client', () => ({
     listVoiceCalls: jest.fn(),
 }))
 const listVoiceCallsMock = listVoiceCalls as jest.Mock

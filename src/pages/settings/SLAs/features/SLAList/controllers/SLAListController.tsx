@@ -4,7 +4,7 @@ import {
     HttpResponse,
     queryKeys,
     useUpdateSlaPolicy,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import Loader from 'pages/settings/SLAs/features/Loader/Loader'

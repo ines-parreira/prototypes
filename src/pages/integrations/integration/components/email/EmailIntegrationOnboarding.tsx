@@ -1,6 +1,6 @@
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { EmailIntegration } from '@gorgias/api-queries'
+import { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import PageHeader from 'pages/common/components/PageHeader'

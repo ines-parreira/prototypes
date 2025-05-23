@@ -1,4 +1,4 @@
-import { useGetPaymentTerms } from '@gorgias/api-queries'
+import { useGetPaymentTerms } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { FETCH_BILLING_PAYMENT_TERMS_ERROR } from 'state/billing/constants'
@@ -14,7 +14,7 @@ useAppDispatchMock.mockReturnValue(dispatch)
 
 jest.mock('state/notifications/actions')
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 const useGetPaymentTermsMock = assumeMock(useGetPaymentTerms)
 
 describe('useGetPaymentTermsWithSideEffects', () => {

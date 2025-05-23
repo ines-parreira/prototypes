@@ -1,4 +1,4 @@
-import { ExpressionFieldSource } from '@gorgias/api-types'
+import { ExpressionFieldSource } from '@gorgias/helpdesk-types'
 
 import { CustomFieldState } from 'custom-fields/types'
 import { TicketStateWithoutImmutable } from 'state/ticket/types'

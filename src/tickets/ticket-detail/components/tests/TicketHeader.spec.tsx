@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import type { TicketCompact, TicketTag } from '@gorgias/api-queries'
+import type { TicketCompact, TicketTag } from '@gorgias/helpdesk-queries'
 
 import { TicketStatus } from 'business/types/ticket'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'

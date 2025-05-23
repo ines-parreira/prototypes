@@ -2,7 +2,7 @@ import {
     CreateCustomFieldCondition,
     CustomFieldCondition,
     UpdateCustomFieldCondition,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 import { Label } from '@gorgias/merchant-ui-kit'
 
 import { Form, FormField, FormSubmitButton } from 'core/forms'

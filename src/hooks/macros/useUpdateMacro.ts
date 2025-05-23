@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import {
     queryKeys,
     useUpdateMacro as useUpdateMacroPrimitive,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { GorgiasApiError } from 'models/api/types'

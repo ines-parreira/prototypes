@@ -12,7 +12,7 @@ import {
     AnalyticsCustomReportSectionSchemaChildrenItem,
     AnalyticsCustomReportSectionSchemaType,
     AnalyticsCustomReportType,
-} from '@gorgias/api-types'
+} from '@gorgias/helpdesk-types'
 
 import { REPORTS_CONFIG } from 'pages/stats/dashboards/config'
 import { ReportsIDs } from 'pages/stats/dashboards/constants'

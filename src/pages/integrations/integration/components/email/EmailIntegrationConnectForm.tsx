@@ -1,6 +1,6 @@
 import pick from 'lodash/pick'
 
-import type { EmailIntegration } from '@gorgias/api-queries'
+import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { Form, FormField } from 'core/forms'
 import FormRow from 'pages/common/forms/FormRow'

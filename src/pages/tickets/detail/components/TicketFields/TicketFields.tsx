@@ -2,7 +2,7 @@ import React, { memo, useEffect, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { ExpressionFieldType, RequirementType } from '@gorgias/api-types'
+import { ExpressionFieldType, RequirementType } from '@gorgias/helpdesk-types'
 
 import { getWrappedElementCount } from 'common/utils'
 import { AI_MANAGED_TYPES, OBJECT_TYPES } from 'custom-fields/constants'

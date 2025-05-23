@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
-import { useGetAnalyticsCustomReport } from '@gorgias/api-queries'
+import { useGetAnalyticsCustomReport } from '@gorgias/helpdesk-queries'
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'

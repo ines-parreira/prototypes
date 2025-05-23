@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 
-import { UpdateWaitMusicLibrary } from '@gorgias/api-queries'
+import { UpdateWaitMusicLibrary } from '@gorgias/helpdesk-queries'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

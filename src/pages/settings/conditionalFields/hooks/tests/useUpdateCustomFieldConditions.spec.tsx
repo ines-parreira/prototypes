@@ -10,7 +10,7 @@ import {
     ListCustomFieldConditionsQueryResult,
     queryKeys,
     useUpdateCustomFieldConditions as useBulkUpdate,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import {
     apiListCursorPaginationResponse,
@@ -25,7 +25,7 @@ import useUpdateCustomFieldConditions from '../useUpdateCustomFieldConditions'
 
 const queryClient = mockQueryClient()
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 const useUpdateCustomFieldConditionsMock = assumeMock(useBulkUpdate)
 
 const mockStore = configureMockStore([thunk])()

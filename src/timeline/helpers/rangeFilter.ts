@@ -1,4 +1,4 @@
-import { TicketCompact } from '@gorgias/api-queries'
+import { TicketCompact } from '@gorgias/helpdesk-queries'
 
 import { DateTimeResultFormatType } from 'constants/datetime'
 import { formatDatetime } from 'utils'

@@ -1,4 +1,4 @@
-import type { TicketMessage as TicketMessageType } from '@gorgias/api-types'
+import type { TicketMessage as TicketMessageType } from '@gorgias/helpdesk-types'
 
 type Props = {
     data: TicketMessageType

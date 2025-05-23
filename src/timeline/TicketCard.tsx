@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 import cn from 'classnames'
 
-import { TicketCompact } from '@gorgias/api-queries'
+import { TicketCompact } from '@gorgias/helpdesk-queries'
 
 import { SourceBadge } from 'tickets/ticket-detail/components/SourceBadge'
 import { TicketStatus } from 'tickets/ticket-detail/components/TicketStatus'

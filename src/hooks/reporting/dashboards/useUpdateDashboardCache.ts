@@ -5,7 +5,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import {
     GetAnalyticsCustomReportResult,
     getGetAnalyticsCustomReportQueryOptions,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { DashboardSchema } from 'pages/stats/dashboards/types'
 import { createDashboardPayload } from 'pages/stats/dashboards/utils'

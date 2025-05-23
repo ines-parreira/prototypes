@@ -4,7 +4,7 @@ import { isObject } from 'lodash'
 import {
     SearchVoiceCalls200DataItemHighlights,
     SearchVoiceCallsParams,
-} from '@gorgias/api-types'
+} from '@gorgias/helpdesk-types'
 
 import {
     ApiListResponse,

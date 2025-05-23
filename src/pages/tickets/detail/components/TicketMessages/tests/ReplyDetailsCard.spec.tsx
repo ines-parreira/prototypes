@@ -5,7 +5,7 @@ import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { useGetTicketMessage } from '@gorgias/api-queries'
+import { useGetTicketMessage } from '@gorgias/helpdesk-queries'
 
 import ReplyDetailsCard from 'pages/tickets/detail/components/TicketMessages/ReplyDetailsCard'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -14,7 +14,7 @@ import { assumeMock } from 'utils/testing'
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore()
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 const mockUseGetTicketMessage = assumeMock(useGetTicketMessage)
 
 describe('ReplyDetailsCard', () => {

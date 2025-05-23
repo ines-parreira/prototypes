@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 
-import { EmailIntegration } from '@gorgias/api-queries'
+import { EmailIntegration } from '@gorgias/helpdesk-queries'
 import { Label } from '@gorgias/merchant-ui-kit'
 
 import { Form, FormField } from 'core/forms'

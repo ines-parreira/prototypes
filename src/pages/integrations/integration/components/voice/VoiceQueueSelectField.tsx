@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 
-import { useGetVoiceQueue, VoiceQueue } from '@gorgias/api-queries'
+import { useGetVoiceQueue, VoiceQueue } from '@gorgias/helpdesk-queries'
 import { Button, Label, Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { useVoiceQueueSearch } from 'hooks/reporting/common/useVoiceQueueSearch'

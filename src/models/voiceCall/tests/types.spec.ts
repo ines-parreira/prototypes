@@ -1,4 +1,4 @@
-import { VoiceCallTerminationStatus } from '@gorgias/api-queries'
+import { VoiceCallTerminationStatus } from '@gorgias/helpdesk-queries'
 
 import { voiceCall } from 'fixtures/voiceCalls'
 import { getCombinations } from 'utils/testing'

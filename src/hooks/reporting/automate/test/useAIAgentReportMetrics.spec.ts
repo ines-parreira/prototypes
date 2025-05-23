@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-import { OrderDirection } from '@gorgias/api-queries'
+import { OrderDirection } from '@gorgias/helpdesk-queries'
 
 import { AI_MANAGED_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'

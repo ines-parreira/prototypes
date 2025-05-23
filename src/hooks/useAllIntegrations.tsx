@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import { listIntegrations } from '@gorgias/api-client'
-import { Integration, queryKeys } from '@gorgias/api-queries'
+import { listIntegrations } from '@gorgias/helpdesk-client'
+import { Integration, queryKeys } from '@gorgias/helpdesk-queries'
 
 import { useExhaustEndpoint } from './useExhaustEndpoint'
 

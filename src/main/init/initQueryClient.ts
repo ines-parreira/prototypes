@@ -1,4 +1,4 @@
-import { queryKeys } from '@gorgias/api-queries'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { queryCache } from 'api/queryClient'
 import { store } from 'common/store'

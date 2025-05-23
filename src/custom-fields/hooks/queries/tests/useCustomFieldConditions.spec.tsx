@@ -5,7 +5,10 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { queryKeys, useListCustomFieldConditions } from '@gorgias/api-queries'
+import {
+    queryKeys,
+    useListCustomFieldConditions,
+} from '@gorgias/helpdesk-queries'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import {
@@ -22,7 +25,7 @@ import { renderHook } from 'utils/testing/renderHook'
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore([thunk])()
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 const useListCustomFieldConditionsMock = assumeMock(
     useListCustomFieldConditions,
 )

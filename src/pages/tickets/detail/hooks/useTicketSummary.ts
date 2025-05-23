@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
     TicketSummaryProperty,
     useGenerateTicketSummary,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { useTimeout } from 'hooks/useTimeout'
 import socketManager from 'services/socketManager/socketManager'

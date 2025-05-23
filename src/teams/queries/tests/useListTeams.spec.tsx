@@ -2,7 +2,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import * as reactQuery from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 
-import { ListTeamsOrderBy, queryKeys } from '@gorgias/api-queries'
+import { ListTeamsOrderBy, queryKeys } from '@gorgias/helpdesk-queries'
 
 import {
     apiListCursorPaginationResponse,

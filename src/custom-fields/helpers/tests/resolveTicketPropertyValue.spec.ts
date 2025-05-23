@@ -1,4 +1,4 @@
-import { ExpressionFieldSource } from '@gorgias/api-types'
+import { ExpressionFieldSource } from '@gorgias/helpdesk-types'
 
 import { TicketChannel, TicketStatus } from 'business/types/ticket'
 import { ticket } from 'fixtures/ticket'

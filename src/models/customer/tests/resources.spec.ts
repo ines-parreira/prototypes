@@ -1,7 +1,7 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-import { searchCustomers as apiSearchCustomers } from '@gorgias/api-client'
+import { searchCustomers as apiSearchCustomers } from '@gorgias/helpdesk-client'
 
 import { customer } from 'fixtures/customer'
 import client from 'models/api/resources'
@@ -17,7 +17,7 @@ import { assumeMock } from 'utils/testing'
 
 const mockedServer = new MockAdapter(client)
 
-jest.mock('@gorgias/api-client')
+jest.mock('@gorgias/helpdesk-client')
 const apiSearchCustomersMock = assumeMock(apiSearchCustomers)
 
 describe('Customer resources', () => {

@@ -4,7 +4,7 @@ import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { Tag } from '@gorgias/api-queries'
+import { Tag } from '@gorgias/helpdesk-queries'
 
 import { TicketFeedback } from 'models/aiAgentFeedback/types'
 import { TicketMessage } from 'models/ticket/types'

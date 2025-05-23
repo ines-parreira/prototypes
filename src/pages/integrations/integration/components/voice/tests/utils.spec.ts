@@ -2,7 +2,7 @@ import {
     PhoneRingingBehaviour,
     UpdateVoiceQueue,
     VoiceQueueTargetScope,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { voiceQueue } from 'fixtures/voiceQueue'
 import { VoiceMessageType } from 'models/integration/constants'

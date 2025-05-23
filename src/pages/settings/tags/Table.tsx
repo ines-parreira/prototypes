@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import classnames from 'classnames'
 import { List } from 'immutable'
 
-import { ListTagsOrderBy, Tag } from '@gorgias/api-queries'
+import { ListTagsOrderBy, Tag } from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { ORDER_BY, OrderBy } from 'models/tag/types'

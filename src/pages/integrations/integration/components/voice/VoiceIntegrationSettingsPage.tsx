@@ -6,8 +6,8 @@ import {
     PhoneIntegration,
     UpdateAllPhoneIntegrationSettings,
     useGetIntegration,
-} from '@gorgias/api-queries'
-import { validateUpdateAllPhoneIntegrationSettings } from '@gorgias/api-validators'
+} from '@gorgias/helpdesk-queries'
+import { validateUpdateAllPhoneIntegrationSettings } from '@gorgias/helpdesk-validators'
 
 import { Form, toFormErrors } from 'core/forms'
 import { useNotify } from 'hooks/useNotify'

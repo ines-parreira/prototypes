@@ -2,7 +2,7 @@ import {
     HttpResponse,
     ListSlaPolicies200,
     useListSlaPolicies,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { slaPolicy1, UISLAPolicy1 } from 'pages/settings/SLAs/fixtures/fixtures'
 import { renderHook } from 'utils/testing/renderHook'
@@ -10,7 +10,7 @@ import { renderHook } from 'utils/testing/renderHook'
 import makeUISLAPolicy from '../makeUISLAPolicy'
 import useGetSLAPolicies from '../useGetSLAPolicies'
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 const mockUseListSlaPolicies = useListSlaPolicies as jest.Mock
 jest.mock('../makeUISLAPolicy')
 const mockMakeUISLAPolicy = makeUISLAPolicy as jest.Mock

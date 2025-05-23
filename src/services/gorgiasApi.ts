@@ -6,7 +6,7 @@ import axios, {
 } from 'axios'
 import { fromJS, List, Map } from 'immutable'
 
-import { ListSatisfactionSurveys200 } from '@gorgias/api-types'
+import { ListSatisfactionSurveys200 } from '@gorgias/helpdesk-types'
 
 import { EditOrderAction } from 'constants/integrations/types/shopify'
 import type {

@@ -1,6 +1,6 @@
 import { stringify } from 'qs'
 
-import { searchTickets as apiSearchTickets } from '@gorgias/api-client'
+import { searchTickets as apiSearchTickets } from '@gorgias/helpdesk-client'
 
 import client from 'models/api/resources'
 import {

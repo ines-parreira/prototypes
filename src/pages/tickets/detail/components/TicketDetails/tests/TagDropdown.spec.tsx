@@ -3,7 +3,7 @@ import React, { ComponentProps } from 'react'
 import { render } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
-import { Tag, TicketTag } from '@gorgias/api-queries'
+import { Tag, TicketTag } from '@gorgias/helpdesk-queries'
 
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import { TagDropdownMenu } from 'tags'

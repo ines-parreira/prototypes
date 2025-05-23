@@ -1,4 +1,4 @@
-import { MacroAction } from '@gorgias/api-queries'
+import { MacroAction } from '@gorgias/helpdesk-queries'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { ActionTemplate } from 'config'

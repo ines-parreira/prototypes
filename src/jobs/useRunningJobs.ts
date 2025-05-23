@@ -1,5 +1,5 @@
-import { useListJobs } from '@gorgias/api-queries'
-import { Job, JobStatus } from '@gorgias/api-types'
+import { useListJobs } from '@gorgias/helpdesk-queries'
+import { Job, JobStatus } from '@gorgias/helpdesk-types'
 
 const RUNNING_JOB_STATUSES: string[] = [
     JobStatus.Running,

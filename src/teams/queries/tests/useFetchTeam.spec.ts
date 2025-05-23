@@ -1,4 +1,4 @@
-import { useGetTeam } from '@gorgias/api-queries'
+import { useGetTeam } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
@@ -8,7 +8,7 @@ import { renderHook } from 'utils/testing/renderHook'
 
 import { useFetchTeam } from '../useFetchTeam'
 
-jest.mock('@gorgias/api-queries', () => ({
+jest.mock('@gorgias/helpdesk-queries', () => ({
     __esModule: true,
     useGetTeam: jest.fn(),
 }))

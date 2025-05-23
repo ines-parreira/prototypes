@@ -1,4 +1,4 @@
-import { PhoneIntegration } from '@gorgias/api-types'
+import { PhoneIntegration } from '@gorgias/helpdesk-types'
 
 import { Form } from 'core/forms'
 import { isPhoneIntegration } from 'models/integration/types'

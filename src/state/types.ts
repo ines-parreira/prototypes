@@ -2,7 +2,7 @@ import { List, Map } from 'immutable'
 import { AnyAction } from 'redux'
 import { ThunkDispatch } from 'redux-thunk'
 
-import { Tag } from '@gorgias/api-queries'
+import { Tag } from '@gorgias/helpdesk-queries'
 
 import { TicketMessageSourceType, TicketVia } from 'business/types/ticket'
 import { LegacyPaginationMeta, OrderDirection } from 'models/api/types'

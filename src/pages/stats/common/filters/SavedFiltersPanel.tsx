@@ -9,7 +9,7 @@ import {
     useDeleteAnalyticsFilter,
     useListAnalyticsFilters,
     useUpdateAnalyticsFilter,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

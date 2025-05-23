@@ -1,8 +1,8 @@
 import { act, screen, waitFor } from '@testing-library/react'
 import fireEvent from '@testing-library/user-event'
 
-import { updateVoiceQueue } from '@gorgias/api-client'
-import { VoiceQueue } from '@gorgias/api-queries'
+import { updateVoiceQueue } from '@gorgias/helpdesk-client'
+import { VoiceQueue } from '@gorgias/helpdesk-queries'
 
 import { voiceQueue } from 'fixtures/voiceQueue'
 import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
@@ -10,7 +10,7 @@ import { assumeMock } from 'utils/testing'
 
 import EditQueueModal from '../EditQueueModal'
 
-jest.mock('@gorgias/api-client')
+jest.mock('@gorgias/helpdesk-client')
 const updateVoiceQueueMock = assumeMock(updateVoiceQueue)
 
 const mockNotify = {

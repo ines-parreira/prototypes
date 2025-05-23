@@ -5,7 +5,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { updateEmailIntegrationDomain } from '@gorgias/api-client'
+import { updateEmailIntegrationDomain } from '@gorgias/helpdesk-client'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
@@ -22,7 +22,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([])
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('state/notifications/actions')
-jest.mock('@gorgias/api-client')
+jest.mock('@gorgias/helpdesk-client')
 
 const notifyMock = assumeMock(notify)
 const useAppDispatchMock = assumeMock(useAppDispatch)

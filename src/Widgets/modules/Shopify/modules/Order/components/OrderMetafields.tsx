@@ -1,4 +1,4 @@
-import { useListShopifyOrderMetafields } from '@gorgias/api-queries'
+import { useListShopifyOrderMetafields } from '@gorgias/helpdesk-queries'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import {

@@ -1,7 +1,7 @@
 import { fromJS, List, Map } from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 
-import { TicketTag } from '@gorgias/api-types'
+import { TicketTag } from '@gorgias/helpdesk-types'
 
 import { fromAST } from 'common/utils'
 import ticketLanguages from 'config/ticketLanguages'

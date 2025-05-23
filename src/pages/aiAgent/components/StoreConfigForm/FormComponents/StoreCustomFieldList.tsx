@@ -1,4 +1,4 @@
-import { RequirementType } from '@gorgias/api-queries'
+import { RequirementType } from '@gorgias/helpdesk-queries'
 import { IconButton } from '@gorgias/merchant-ui-kit'
 
 import { CustomField } from 'custom-fields/types'

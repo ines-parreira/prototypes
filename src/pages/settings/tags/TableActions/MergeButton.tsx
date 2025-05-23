@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 
 import { List } from 'immutable'
 
-import { Tag } from '@gorgias/api-queries'
+import { Tag } from '@gorgias/helpdesk-queries'
 
 import Button from 'pages/common/components/button/Button'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'

@@ -1,4 +1,4 @@
-import type { TicketMessage } from '@gorgias/api-types'
+import type { TicketMessage } from '@gorgias/helpdesk-types'
 
 import { TicketStatus } from 'business/types/ticket'
 import { MacroActionName } from 'models/macroAction/types'

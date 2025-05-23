@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import {
     TicketCompact,
     TicketStatus as TicketStatusType,
-} from '@gorgias/api-types'
+} from '@gorgias/helpdesk-types'
 
 import { TicketStatus } from '../TicketStatus'
 

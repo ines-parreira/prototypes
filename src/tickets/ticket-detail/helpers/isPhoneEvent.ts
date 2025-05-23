@@ -1,4 +1,4 @@
-import type { Event } from '@gorgias/api-types'
+import type { Event } from '@gorgias/helpdesk-types'
 
 import { PHONE_EVENTS } from 'constants/event'
 

@@ -1,6 +1,6 @@
 import { isString } from 'lodash'
 
-import { SLAPolicy } from '@gorgias/api-queries'
+import { SLAPolicy } from '@gorgias/helpdesk-queries'
 
 import { UISLAPolicy } from 'pages/settings/SLAs/features/SLAList/types'
 

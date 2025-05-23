@@ -1,6 +1,6 @@
 import { act } from '@testing-library/react'
 
-import { CursorPaginationMeta } from '@gorgias/api-queries'
+import { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
 import { renderHook } from 'utils/testing/renderHook'
 

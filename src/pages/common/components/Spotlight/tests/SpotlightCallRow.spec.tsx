@@ -1,7 +1,7 @@
 import {
     VoiceCallDirection,
     VoiceCallTerminationStatus,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { voiceCall } from 'fixtures/voiceCalls'
 import {

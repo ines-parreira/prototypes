@@ -1,6 +1,6 @@
 import { fromJS, List, Map } from 'immutable'
 
-import { Integration, IntegrationType } from '@gorgias/api-queries'
+import { Integration, IntegrationType } from '@gorgias/helpdesk-queries'
 
 export interface IntegrationWithDefaultFlag {
     integration_id: number

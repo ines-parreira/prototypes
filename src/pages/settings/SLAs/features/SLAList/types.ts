@@ -1,6 +1,6 @@
 import { DropTargetMonitor } from 'react-dnd'
 
-import { SLAPolicy } from '@gorgias/api-queries'
+import { SLAPolicy } from '@gorgias/helpdesk-queries'
 
 import { DragItemRequired } from 'pages/common/hooks/useReorderDnD'
 

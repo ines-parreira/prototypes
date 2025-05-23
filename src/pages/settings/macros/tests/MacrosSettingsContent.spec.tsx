@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import { useRouteMatch } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import { useListMacros } from '@gorgias/api-queries'
+import { useListMacros } from '@gorgias/helpdesk-queries'
 
 import { macros as macrosFixtures } from 'fixtures/macro'
 import { user } from 'fixtures/users'
@@ -76,7 +76,7 @@ jest.mock(
 )
 const mockUseRouteMatch = useRouteMatch as jest.Mock
 
-jest.mock('@gorgias/api-queries', () => ({
+jest.mock('@gorgias/helpdesk-queries', () => ({
     __esModule: true,
     useListMacros: jest.fn(),
     queryKeys: {

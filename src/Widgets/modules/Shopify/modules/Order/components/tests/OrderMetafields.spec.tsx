@@ -5,11 +5,11 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useListShopifyOrderMetafields } from '@gorgias/api-queries'
+import { useListShopifyOrderMetafields } from '@gorgias/helpdesk-queries'
 
 import { OrderMetafields } from '../OrderMetafields'
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 
 const mockUseListShopifyOrderMetafields =
     useListShopifyOrderMetafields as jest.Mock

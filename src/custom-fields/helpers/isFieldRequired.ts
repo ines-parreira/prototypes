@@ -1,4 +1,4 @@
-import { ExpressionFieldType, RequirementType } from '@gorgias/api-types'
+import { ExpressionFieldType, RequirementType } from '@gorgias/helpdesk-types'
 
 import { CustomField } from 'custom-fields/types'
 

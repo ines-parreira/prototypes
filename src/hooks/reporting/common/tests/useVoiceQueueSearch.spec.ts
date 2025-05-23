@@ -6,7 +6,7 @@ import {
     HttpResponse,
     ListVoiceQueues200,
     VoiceQueue,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'

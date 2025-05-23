@@ -5,7 +5,7 @@ import {
     ListCustomFieldConditionsQueryResult,
     queryKeys,
     useUpdateCustomFieldCondition as useUpdate,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 /**
  * Wrapper for the SDK's useUpdateCustomFieldCondition method with:

@@ -1,4 +1,4 @@
-import { Macro } from '@gorgias/api-queries'
+import { Macro } from '@gorgias/helpdesk-queries'
 
 import { isFieldErrored } from 'custom-fields/helpers/isFieldErrored'
 import {

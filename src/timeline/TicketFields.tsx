@@ -8,7 +8,7 @@ import {
     TicketCompact,
     TicketCompactCustomFieldsAnyOf,
     useListCustomFields,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import getWrappedElementCount from 'common/utils/getWrappedElementCount'

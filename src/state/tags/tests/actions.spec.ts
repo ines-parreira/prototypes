@@ -6,7 +6,7 @@ import _isEqual from 'lodash/isEqual'
 import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { ListTagsOrderBy, Tag } from '@gorgias/api-queries'
+import { ListTagsOrderBy, Tag } from '@gorgias/helpdesk-queries'
 
 import client from 'models/api/resources'
 import { OrderDirection } from 'models/api/types'

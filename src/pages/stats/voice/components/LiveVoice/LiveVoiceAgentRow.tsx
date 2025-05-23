@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import classNames from 'classnames'
 
-import { LiveCallQueueAgent } from '@gorgias/api-queries'
+import { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useInterval from 'hooks/useInterval'

@@ -1,7 +1,7 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
-import { deleteVoiceQueue } from '@gorgias/api-client'
+import { deleteVoiceQueue } from '@gorgias/helpdesk-client'
 
 import { voiceQueue } from 'fixtures/voiceQueue'
 import history from 'pages/history'
@@ -11,7 +11,7 @@ import { assumeMock } from 'utils/testing'
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import VoiceQueueDelete from '../VoiceQueueDelete'
 
-jest.mock('@gorgias/api-client', () => ({
+jest.mock('@gorgias/helpdesk-client', () => ({
     deleteVoiceQueue: jest.fn(() => ({
         mutate: jest.fn(),
         isLoading: false,

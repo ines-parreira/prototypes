@@ -15,7 +15,7 @@ import {
     LegacyChannelSlug,
     useGetCustomer,
     useUpdateCustomer,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -23,7 +23,7 @@ import { assumeMock, mockStore } from 'utils/testing'
 
 import NewPhoneNumber from '../NewPhoneNumber'
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 jest.mock('libphonenumber-js')
 jest.mock('state/notifications/actions')
 

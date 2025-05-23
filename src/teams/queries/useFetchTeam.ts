@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { useGetTeam } from '@gorgias/api-queries'
+import { useGetTeam } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { GorgiasApiError } from 'models/api/types'

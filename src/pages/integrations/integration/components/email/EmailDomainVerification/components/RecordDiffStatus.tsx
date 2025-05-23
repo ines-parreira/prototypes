@@ -1,4 +1,4 @@
-import { EmailDNSRecord } from '@gorgias/api-queries'
+import { EmailDNSRecord } from '@gorgias/helpdesk-queries'
 import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import CharDiff from './CharDiff'

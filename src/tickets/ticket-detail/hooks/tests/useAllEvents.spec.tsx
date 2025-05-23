@@ -1,14 +1,14 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-import { listEvents } from '@gorgias/api-client'
-import type { Event } from '@gorgias/api-types'
+import { listEvents } from '@gorgias/helpdesk-client'
+import type { Event } from '@gorgias/helpdesk-types'
 
 import { useExhaustEndpoint } from 'hooks/useExhaustEndpoint'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { useAllEvents } from '../useAllEvents'
 
-jest.mock('@gorgias/api-client', () => ({
+jest.mock('@gorgias/helpdesk-client', () => ({
     listEvents: jest.fn(),
 }))
 const listEventsMock = listEvents as jest.Mock

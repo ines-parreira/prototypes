@@ -4,7 +4,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import MockDate from 'mockdate'
 
-import { Macro, MacroAction } from '@gorgias/api-queries'
+import { Macro, MacroAction } from '@gorgias/helpdesk-queries'
 
 import {
     useBulkArchiveMacros,

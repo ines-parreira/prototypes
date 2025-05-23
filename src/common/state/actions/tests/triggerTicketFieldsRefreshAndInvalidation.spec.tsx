@@ -5,13 +5,13 @@ import { Provider } from 'react-redux'
 import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { listCustomFieldConditions } from '@gorgias/api-client'
-import { RequirementType } from '@gorgias/api-queries'
+import { listCustomFieldConditions } from '@gorgias/helpdesk-client'
+import { RequirementType } from '@gorgias/helpdesk-queries'
 import {
     ExpressionFieldSource,
     ExpressionFieldType,
     ExpressionOperator,
-} from '@gorgias/api-types'
+} from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'
 import { getCustomFields } from 'custom-fields/resources'
@@ -36,7 +36,7 @@ type MockedRootState = {
 }
 
 jest.mock('custom-fields/resources')
-jest.mock('@gorgias/api-client')
+jest.mock('@gorgias/helpdesk-client')
 jest.mock('core/flags/hooks/useFlag')
 
 const mockedGetCustomFields = assumeMock(getCustomFields)

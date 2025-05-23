@@ -9,7 +9,7 @@ import {
     useTransferCall,
     VoiceCallTransferReceiverType,
     VoiceCallTransferType,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { getCallSid } from 'hooks/integrations/phone/utils'
 import useAppDispatch from 'hooks/useAppDispatch'

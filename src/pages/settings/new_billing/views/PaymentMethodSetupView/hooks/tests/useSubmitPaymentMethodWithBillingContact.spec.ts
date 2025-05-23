@@ -2,7 +2,7 @@ import { useStripe } from '@stripe/react-stripe-js'
 import { act, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 
-import { confirmBillingPaymentMethodSetup } from '@gorgias/api-client'
+import { confirmBillingPaymentMethodSetup } from '@gorgias/helpdesk-client'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import client from 'models/api/resources'
@@ -25,7 +25,7 @@ jest.mock('@stripe/react-stripe-js', () => ({
 
 jest.mock('utils/errors')
 
-jest.mock('@gorgias/api-client')
+jest.mock('@gorgias/helpdesk-client')
 
 const mockedServer = new MockAdapter(client)
 

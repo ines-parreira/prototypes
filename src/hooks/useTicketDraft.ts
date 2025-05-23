@@ -4,7 +4,7 @@ import { convertFromRaw, RawDraftContentState, SelectionState } from 'draft-js'
 import { fromJS, List, Map } from 'immutable'
 import { v4 as uuidv4 } from 'uuid'
 
-import { Macro } from '@gorgias/api-queries'
+import { Macro } from '@gorgias/helpdesk-queries'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'

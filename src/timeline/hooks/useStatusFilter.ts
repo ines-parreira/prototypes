@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import { TicketCompact } from '@gorgias/api-queries'
+import { TicketCompact } from '@gorgias/helpdesk-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 

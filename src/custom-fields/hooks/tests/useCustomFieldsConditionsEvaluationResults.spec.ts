@@ -1,5 +1,8 @@
-import { ExpressionFieldSource, ExpressionOperator } from '@gorgias/api-queries'
-import { ExpressionFieldType } from '@gorgias/api-types'
+import {
+    ExpressionFieldSource,
+    ExpressionOperator,
+} from '@gorgias/helpdesk-queries'
+import { ExpressionFieldType } from '@gorgias/helpdesk-types'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldConditions } from 'custom-fields/hooks/queries/useCustomFieldConditions'

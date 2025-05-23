@@ -4,7 +4,7 @@ import {
     HttpResponse,
     ListSlaPolicies200,
     useListSlaPolicies,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { UISLAPolicy } from '../types'
 import makeUISLAPolicy from './makeUISLAPolicy'

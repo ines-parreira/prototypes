@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { useGetPaymentTerms } from '@gorgias/api-queries'
+import { useGetPaymentTerms } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { FETCH_BILLING_PAYMENT_TERMS_ERROR } from 'state/billing/constants'

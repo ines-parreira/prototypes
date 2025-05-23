@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom'
 
-import { CreateVoiceQueue, useCreateVoiceQueues } from '@gorgias/api-queries'
+import {
+    CreateVoiceQueue,
+    useCreateVoiceQueues,
+} from '@gorgias/helpdesk-queries'
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import { useNotify } from 'hooks/useNotify'

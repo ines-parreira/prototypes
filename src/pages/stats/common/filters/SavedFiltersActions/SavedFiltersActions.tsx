@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 
-import { useListAnalyticsFilters } from '@gorgias/api-queries'
+import { useListAnalyticsFilters } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

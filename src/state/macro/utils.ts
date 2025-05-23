@@ -1,6 +1,6 @@
 import _forEach from 'lodash/forEach'
 
-import { Macro, MacroAction } from '@gorgias/api-queries'
+import { Macro, MacroAction } from '@gorgias/helpdesk-queries'
 
 import { MacroActionName } from '../../models/macroAction/types'
 import { getActionTemplate } from '../../utils'

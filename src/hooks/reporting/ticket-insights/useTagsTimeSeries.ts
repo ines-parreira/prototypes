@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import _fromPairs from 'lodash/fromPairs'
 import _sortBy from 'lodash/sortBy'
 
-import { Tag } from '@gorgias/api-queries'
+import { Tag } from '@gorgias/helpdesk-queries'
 
 import { useTagSearch } from 'hooks/reporting/common/useTagSearch'
 import { getTagValuesByOperator } from 'hooks/reporting/helpers'

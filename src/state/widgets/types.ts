@@ -1,6 +1,6 @@
 import { Map } from 'immutable'
 
-import { IntegrationType } from '@gorgias/api-types'
+import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { PartialTemplate } from 'models/widget/types'
 import {

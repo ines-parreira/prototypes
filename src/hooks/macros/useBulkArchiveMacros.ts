@@ -5,7 +5,7 @@ import {
     Macro,
     queryKeys,
     useBulkArchiveMacros as useBulkArchiveMacrosPrimitive,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'

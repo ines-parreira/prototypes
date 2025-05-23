@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { RequirementType } from '@gorgias/api-queries'
+import { RequirementType } from '@gorgias/helpdesk-queries'
 import { Label } from '@gorgias/merchant-ui-kit'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'

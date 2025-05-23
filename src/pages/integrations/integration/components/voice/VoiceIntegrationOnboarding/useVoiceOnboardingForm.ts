@@ -5,8 +5,8 @@ import {
     PhoneFunction,
     PhoneIntegration,
     useCreateIntegration,
-} from '@gorgias/api-queries'
-import { validatePhoneIntegrationMeta } from '@gorgias/api-validators'
+} from '@gorgias/helpdesk-queries'
+import { validatePhoneIntegrationMeta } from '@gorgias/helpdesk-validators'
 
 import { toFormErrors } from 'core/forms'
 import { useNotify } from 'hooks/useNotify'

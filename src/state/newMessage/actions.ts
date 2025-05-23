@@ -10,7 +10,7 @@ import _pick from 'lodash/pick'
 import _split from 'lodash/split'
 import _throttle from 'lodash/throttle'
 
-import { Macro } from '@gorgias/api-queries'
+import { Macro } from '@gorgias/helpdesk-queries'
 
 import {
     TicketChannel,

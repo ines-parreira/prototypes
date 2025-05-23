@@ -2,11 +2,11 @@ import { ComponentProps, ReactNode } from 'react'
 
 import { DefaultValues } from 'react-hook-form'
 
-import { CreateVoiceQueue, UpdateVoiceQueue } from '@gorgias/api-queries'
+import { CreateVoiceQueue, UpdateVoiceQueue } from '@gorgias/helpdesk-queries'
 import {
     validateCreateVoiceQueue,
     validateUpdateVoiceQueue,
-} from '@gorgias/api-validators'
+} from '@gorgias/helpdesk-validators'
 
 import { Form, toFormErrors } from 'core/forms'
 

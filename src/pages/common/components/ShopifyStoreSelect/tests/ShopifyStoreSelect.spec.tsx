@@ -10,7 +10,7 @@ import { FormState } from '../../infobar/Infobar/InfobarCustomerInfo/CustomerSyn
 import { getDefaultStore } from '../helpers'
 import ShopifyStoreSelect from '../ShopifyStoreSelect'
 
-jest.mock('@gorgias/api-queries', () => ({
+jest.mock('@gorgias/helpdesk-queries', () => ({
     useListCustomerIntegrationsWithChannelDefault: jest.fn(),
 }))
 

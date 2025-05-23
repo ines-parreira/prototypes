@@ -1,10 +1,10 @@
-import { useListAnalyticsCustomReports } from '@gorgias/api-queries'
+import { useListAnalyticsCustomReports } from '@gorgias/helpdesk-queries'
 
 import { useDashboardNameValidation } from 'hooks/reporting/dashboards/useDashboardNameValidation'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 const useListAnalyticsCustomReportsMock = assumeMock(
     useListAnalyticsCustomReports,
 )

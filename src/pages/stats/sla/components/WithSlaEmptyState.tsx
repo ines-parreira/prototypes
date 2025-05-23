@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 
-import { useListSlaPolicies } from '@gorgias/api-queries'
+import { useListSlaPolicies } from '@gorgias/helpdesk-queries'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { ServiceLevelAgreementsEmptyState } from 'pages/stats/sla/ServiceLevelAgreementsEmptyState'

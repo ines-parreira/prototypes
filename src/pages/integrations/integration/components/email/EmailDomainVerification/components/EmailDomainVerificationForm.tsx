@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 
 import { FormGroup, Label } from 'reactstrap'
 
-import { useUpdateEmailIntegrationDomain } from '@gorgias/api-queries'
+import { useUpdateEmailIntegrationDomain } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'

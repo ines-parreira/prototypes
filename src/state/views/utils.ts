@@ -8,7 +8,7 @@ import _isObject from 'lodash/isObject'
 import _isString from 'lodash/isString'
 import moment from 'moment'
 
-import { User } from '@gorgias/api-queries'
+import { User } from '@gorgias/helpdesk-queries'
 
 import { fromAST } from 'common/utils'
 import { QaScoreDimensions } from 'pages/common/components/ViewTable/Filters/utils/qaScoreDimensions'

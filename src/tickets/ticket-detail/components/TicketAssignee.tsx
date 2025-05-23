@@ -1,6 +1,6 @@
 import { Emoji } from 'emoji-mart'
 
-import { TicketAssigneeTeam, TicketAssigneeUser } from '@gorgias/api-types'
+import { TicketAssigneeTeam, TicketAssigneeUser } from '@gorgias/helpdesk-types'
 import { Avatar } from '@gorgias/merchant-ui-kit'
 
 import css from './TicketAssignee.less'

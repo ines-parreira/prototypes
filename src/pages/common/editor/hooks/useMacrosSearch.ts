@@ -5,7 +5,7 @@ import _flatten from 'lodash/flatten'
 import _isEqual from 'lodash/isEqual'
 import { notify } from 'reapop'
 
-import { queryKeys } from '@gorgias/api-queries'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'

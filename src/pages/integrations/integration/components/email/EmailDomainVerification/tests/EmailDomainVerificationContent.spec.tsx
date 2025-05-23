@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 
-import { EmailIntegration } from '@gorgias/api-queries'
+import { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import * as integrationsSelectors from 'state/integrations/selectors'
 import { assumeMock } from 'utils/testing'

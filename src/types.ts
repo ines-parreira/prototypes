@@ -1,6 +1,6 @@
 import { Map } from 'immutable'
 
-import { Tag } from '@gorgias/api-queries'
+import { Tag } from '@gorgias/helpdesk-queries'
 
 import { RecentChatTicket } from 'business/types/recentChats'
 import { User } from 'config/types/user'

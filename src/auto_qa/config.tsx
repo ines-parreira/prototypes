@@ -3,7 +3,7 @@ import cn from 'classnames'
 import {
     TicketQAScoreDimension,
     TicketQAScoreDimensionName,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import type { DimensionConfig } from './types'
 

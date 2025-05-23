@@ -2,14 +2,14 @@ import {
     TicketQAScoreDimensionName,
     useListTicketQaScoreDimensions,
     useUpsertTicketQaScoreDimension,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 // TODO(React18): Remove act import this once we upgrade to React 18
 import { act, renderHook } from 'utils/testing/renderHook'
 
 import useAutoQA from '../useAutoQA'
 
-jest.mock('@gorgias/api-queries', () => ({
+jest.mock('@gorgias/helpdesk-queries', () => ({
     TicketQAScoreDimensionName: {
         CommunicationSkills: 'communication_skills',
         ResolutionCompleteness: 'resolution_completeness',

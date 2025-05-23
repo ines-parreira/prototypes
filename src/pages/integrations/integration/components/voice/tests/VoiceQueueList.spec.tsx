@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { VoiceQueue, VoiceQueueStatus } from '@gorgias/api-queries'
+import { VoiceQueue, VoiceQueueStatus } from '@gorgias/helpdesk-queries'
 
 import { voiceQueue } from 'fixtures/voiceQueue'
 import history from 'pages/history'

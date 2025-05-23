@@ -4,8 +4,8 @@ import { renderHook } from 'utils/testing/renderHook'
 
 import { useTimelinePanel } from '../useTimelinePanel'
 
-jest.mock('@gorgias/api-queries', () => ({
-    ...jest.requireActual('@gorgias/api-queries'),
+jest.mock('@gorgias/helpdesk-queries', () => ({
+    ...jest.requireActual('@gorgias/helpdesk-queries'),
     useListTickets: jest.fn(),
 }))
 jest.mock('hooks/useSearchParam')

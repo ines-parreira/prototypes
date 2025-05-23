@@ -1,4 +1,7 @@
-import { UpdateWaitMusicLibrary, WaitMusicType } from '@gorgias/api-queries'
+import {
+    UpdateWaitMusicLibrary,
+    WaitMusicType,
+} from '@gorgias/helpdesk-queries'
 
 export const RINGTONE_AUDIO_FILE_PATHS = [
     {

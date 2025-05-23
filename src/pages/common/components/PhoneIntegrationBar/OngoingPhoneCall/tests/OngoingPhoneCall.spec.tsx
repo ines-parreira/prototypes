@@ -8,7 +8,7 @@ import { Provider } from 'react-redux'
 import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { usePutCallParticipantOnHold } from '@gorgias/api-queries'
+import { usePutCallParticipantOnHold } from '@gorgias/helpdesk-queries'
 
 import { TwilioSocketEventType } from 'business/twilio'
 import * as utils from 'hooks/integrations/phone/utils'
@@ -26,7 +26,7 @@ import OngoingPhoneCall from '../OngoingPhoneCall'
 
 jest.mock('@twilio/voice-sdk')
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 
 jest.unmock('services/socketManager')
 jest.unmock('services/socketManager/socketManager')

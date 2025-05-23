@@ -1,4 +1,4 @@
-import { TicketCompact } from '@gorgias/api-queries'
+import { TicketCompact } from '@gorgias/helpdesk-queries'
 
 import { STATUS_FILTERS } from '../constants'
 import { FilterKey } from '../types'

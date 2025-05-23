@@ -1,4 +1,4 @@
-import { VoiceCallDirection } from '@gorgias/api-queries'
+import { VoiceCallDirection } from '@gorgias/helpdesk-queries'
 
 import {
     VoiceCallDimension,

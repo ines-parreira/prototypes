@@ -1,4 +1,4 @@
-import { ListMacrosParams, Macro } from '@gorgias/api-queries'
+import { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
 
 import { ApiPaginationParams, OrderParams } from 'models/api/types'
 

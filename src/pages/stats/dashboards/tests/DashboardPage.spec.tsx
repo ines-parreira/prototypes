@@ -9,7 +9,7 @@ import {
 import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
-import { useGetAnalyticsCustomReport } from '@gorgias/api-queries'
+import { useGetAnalyticsCustomReport } from '@gorgias/helpdesk-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { AGENT_ROLE, BASIC_AGENT_ROLE } from 'config/user'
@@ -46,7 +46,7 @@ jest.mock('state/notifications/actions')
 jest.mock('hooks/reporting/dashboards/useUpdateDashboardCache')
 const useUpdateDashboardCacheMock = assumeMock(useUpdateDashboardCache)
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 const useGetAnalyticsCustomReportMock = assumeMock(useGetAnalyticsCustomReport)
 
 jest.mock('pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper')

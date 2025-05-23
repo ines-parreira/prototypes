@@ -2,7 +2,7 @@ import React from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 
-import { TicketQAScoreDimension } from '@gorgias/api-queries'
+import { TicketQAScoreDimension } from '@gorgias/helpdesk-queries'
 
 import Dimension from 'auto_qa/components/Dimension'
 import {

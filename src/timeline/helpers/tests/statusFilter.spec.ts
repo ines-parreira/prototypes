@@ -1,4 +1,4 @@
-import { TicketCompact } from '@gorgias/api-queries'
+import { TicketCompact } from '@gorgias/helpdesk-queries'
 
 import { FilterKey } from '../../types'
 import { filterTicketsByStatus, getOptionLabels } from '../statusFilter'

@@ -2,7 +2,7 @@ import React, { ComponentProps, useCallback, useMemo } from 'react'
 
 import { useRouteMatch } from 'react-router-dom'
 
-import { ListMacrosParams, Macro } from '@gorgias/api-queries'
+import { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { DateAndTimeFormatting } from 'constants/datetime'

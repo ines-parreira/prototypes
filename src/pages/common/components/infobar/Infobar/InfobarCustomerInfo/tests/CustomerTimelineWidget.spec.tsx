@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
 
-import { TicketCompact } from '@gorgias/api-types'
+import { TicketCompact } from '@gorgias/helpdesk-types'
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'

@@ -1,6 +1,6 @@
 import { act, render, waitFor } from '@testing-library/react'
 
-import { LiveCallQueueAgent } from '@gorgias/api-queries'
+import { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
 
 import useInterval from 'hooks/useInterval'
 import { getFormattedDurationOngoingCall } from 'models/voiceCall/utils'

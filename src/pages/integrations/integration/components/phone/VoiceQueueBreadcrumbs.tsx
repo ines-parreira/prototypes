@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import { useGetVoiceQueue } from '@gorgias/api-queries'
-import { VoiceQueueStatus } from '@gorgias/api-types'
+import { useGetVoiceQueue } from '@gorgias/helpdesk-queries'
+import { VoiceQueueStatus } from '@gorgias/helpdesk-types'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../voice/constants'
 import VoiceQueueStatusToggle from '../voice/VoiceQueueStatusToggle'

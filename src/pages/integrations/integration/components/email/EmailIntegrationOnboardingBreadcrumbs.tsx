@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import { EmailIntegration } from '@gorgias/api-queries'
+import { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import css from './EmailIntegrationOnboardingBreadcrumbs.less'
 

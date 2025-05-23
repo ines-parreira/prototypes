@@ -1,8 +1,8 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-import { searchVoiceCalls as apiSearchVoiceCalls } from '@gorgias/api-client'
-import { SearchVoiceCalls200 } from '@gorgias/api-types'
+import { searchVoiceCalls as apiSearchVoiceCalls } from '@gorgias/helpdesk-client'
+import { SearchVoiceCalls200 } from '@gorgias/helpdesk-types'
 
 import { voiceCall } from 'fixtures/voiceCalls'
 import client from 'models/api/resources'
@@ -18,7 +18,7 @@ import {
 
 const mockedServer = new MockAdapter(client)
 
-jest.mock('@gorgias/api-client')
+jest.mock('@gorgias/helpdesk-client')
 const searchCallsMock = assumeMock(apiSearchVoiceCalls)
 
 describe('list voice calls resources', () => {

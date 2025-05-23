@@ -3,7 +3,7 @@ import React, { useCallback, useMemo } from 'react'
 import _noop from 'lodash/noop'
 import { connect } from 'react-redux'
 
-import { useListSlaPolicies } from '@gorgias/api-queries'
+import { useListSlaPolicies } from '@gorgias/helpdesk-queries'
 
 import { FilterKey, StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'

@@ -18,7 +18,7 @@ import {
     ListTagsParams,
     OrderDirection,
     Tag,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { useAppNode } from 'appNode'
 import useAppDispatch from 'hooks/useAppDispatch'

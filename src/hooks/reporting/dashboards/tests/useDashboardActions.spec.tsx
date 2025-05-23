@@ -18,7 +18,7 @@ import {
     useDeleteAnalyticsCustomReport,
     useListAnalyticsCustomReports,
     useUpdateAnalyticsCustomReport,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import {
     DASHBOARD_DELETED_ERROR_MESSAGE,
@@ -56,7 +56,7 @@ const useListAnalyticsCustomReportsMock = assumeMock(
 const useUpdateAnalyticsCustomReportMock = assumeMock(
     useUpdateAnalyticsCustomReport,
 )
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 const getListAnalyticsCustomReportsQueryOptionsMock = assumeMock(
     getListAnalyticsCustomReportsQueryOptions,
 )
@@ -67,7 +67,7 @@ const getGetAnalyticsCustomReportQueryOptionsMock = assumeMock(
 const mockedDispatch = jest.fn()
 const onCloseMock = jest.fn()
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/notifications/actions')
 

@@ -2,7 +2,10 @@ import React, { ComponentProps } from 'react'
 
 import { render } from '@testing-library/react'
 
-import { SLAPolicyMetricType, SLAPolicyMetricUnit } from '@gorgias/api-types'
+import {
+    SLAPolicyMetricType,
+    SLAPolicyMetricUnit,
+} from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
 

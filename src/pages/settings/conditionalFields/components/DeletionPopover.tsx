@@ -1,6 +1,6 @@
 import React, { ComponentProps } from 'react'
 
-import { CustomFieldCondition } from '@gorgias/api-queries'
+import { CustomFieldCondition } from '@gorgias/helpdesk-queries'
 
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import history from 'pages/history'

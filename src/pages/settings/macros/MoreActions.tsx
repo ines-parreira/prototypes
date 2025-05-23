@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react'
 import classNames from 'classnames'
 import { useRouteMatch } from 'react-router-dom'
 
-import { ArchiveMacroAsUserResult, Macro } from '@gorgias/api-queries'
+import { ArchiveMacroAsUserResult, Macro } from '@gorgias/helpdesk-queries'
 
 import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'
 import IconButton from 'pages/common/components/button/IconButton'

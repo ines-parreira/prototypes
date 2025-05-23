@@ -1,4 +1,4 @@
-import { VoiceCallTerminationStatus } from '@gorgias/api-queries'
+import { VoiceCallTerminationStatus } from '@gorgias/helpdesk-queries'
 
 import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
 

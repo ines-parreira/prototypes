@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import {
     TicketCustomFieldValue,
     useListCustomFields,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import getWrappedElementCount from 'common/utils/getWrappedElementCount'
 import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
@@ -18,8 +18,8 @@ import { assumeMock } from 'utils/testing'
 
 import TicketFields from '../TicketFields'
 
-jest.mock('@gorgias/api-queries', () => ({
-    ...jest.requireActual('@gorgias/api-queries'),
+jest.mock('@gorgias/helpdesk-queries', () => ({
+    ...jest.requireActual('@gorgias/helpdesk-queries'),
     useListCustomFields: jest.fn(),
 }))
 jest.mock('common/utils/getWrappedElementCount')

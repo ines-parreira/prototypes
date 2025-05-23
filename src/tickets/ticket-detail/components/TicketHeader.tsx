@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-import type { Ticket, TicketCompact } from '@gorgias/api-queries'
+import type { Ticket, TicketCompact } from '@gorgias/helpdesk-queries'
 
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 import TicketFields from 'timeline/TicketFields'

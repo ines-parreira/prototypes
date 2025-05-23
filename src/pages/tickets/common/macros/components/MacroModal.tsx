@@ -16,7 +16,7 @@ import {
     Macro,
     MacroAction,
     UpdateMacroBodyLanguage,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { DEFAULT_ACTIONS } from 'config'

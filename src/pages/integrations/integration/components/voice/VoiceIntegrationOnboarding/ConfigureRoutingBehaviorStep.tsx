@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { PhoneFunction, PhoneIntegration } from '@gorgias/api-queries'
+import { PhoneFunction, PhoneIntegration } from '@gorgias/helpdesk-queries'
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import { FormSubmitButton, useFormContext } from 'core/forms'

@@ -1,4 +1,4 @@
-import { EmailIntegration } from '@gorgias/api-queries'
+import { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { Form } from 'core/forms'
 import FormRow from 'pages/common/forms/FormRow'

@@ -1,4 +1,4 @@
-import { SLAPolicyMetricUnit } from '@gorgias/api-types'
+import { SLAPolicyMetricUnit } from '@gorgias/helpdesk-types'
 
 export const timeUnits = {
     second: {

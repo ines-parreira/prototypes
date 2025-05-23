@@ -1,4 +1,4 @@
-import { SatisfactionSurvey, Tag } from '@gorgias/api-queries'
+import { SatisfactionSurvey, Tag } from '@gorgias/helpdesk-queries'
 
 import {
     TicketChannel,

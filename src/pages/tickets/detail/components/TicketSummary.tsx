@@ -2,7 +2,7 @@ import React, { forwardRef, useCallback, useMemo } from 'react'
 
 import cn from 'classnames'
 
-import { TicketSummaryProperty } from '@gorgias/api-types'
+import { TicketSummaryProperty } from '@gorgias/helpdesk-types'
 import { Badge, Button, IconButton } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'

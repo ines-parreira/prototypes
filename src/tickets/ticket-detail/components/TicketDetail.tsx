@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-import { TicketCompact } from '@gorgias/api-queries'
+import { TicketCompact } from '@gorgias/helpdesk-queries'
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { useTicket } from '../hooks/useTicket'

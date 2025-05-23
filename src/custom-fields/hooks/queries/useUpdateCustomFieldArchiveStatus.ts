@@ -1,7 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query'
 import moment from 'moment'
 
-import { ObjectType } from '@gorgias/api-queries'
+import { ObjectType } from '@gorgias/helpdesk-queries'
 
 import { OBJECT_TYPE_SETTINGS } from 'custom-fields/constants'
 import {

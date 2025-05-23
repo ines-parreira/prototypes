@@ -1,4 +1,4 @@
-import { useGetStoreMappingsByAccountId } from '@gorgias/api-queries'
+import { useGetStoreMappingsByAccountId } from '@gorgias/helpdesk-queries'
 
 import useAllIntegrations from 'hooks/useAllIntegrations'
 import { Integration } from 'models/integration/types'

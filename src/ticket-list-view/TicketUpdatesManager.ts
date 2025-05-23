@@ -1,4 +1,4 @@
-import { CursorPaginationMeta } from '@gorgias/api-queries'
+import { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
 /* istanbul ignore file */
 import { appQueryClient } from 'api/queryClient'

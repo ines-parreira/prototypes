@@ -1,4 +1,4 @@
-import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/api-queries'
+import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-queries'
 
 import { agents } from 'fixtures/agents'
 import { useMetric } from 'hooks/reporting/useMetric'

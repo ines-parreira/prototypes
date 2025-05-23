@@ -2,7 +2,7 @@ import React from 'react'
 
 import { act, render } from '@testing-library/react'
 
-import { LiveCallQueueVoiceCall } from '@gorgias/api-queries'
+import { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
 
 import * as ToggleButton from 'pages/common/components/ToggleButton'
 import { assumeMock } from 'utils/testing'

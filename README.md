@@ -63,7 +63,7 @@ pnpm install
 
 ### PNPM Catalogs
 
-This project uses [PNPM Catalogs](https://pnpm.io/catalogs) to manage dependency versions across the workspace. Catalogs allow defining dependency versions as reusable constants in `pnpm-workspace.yaml`, which can then be referenced in `package.json` files using the `catalog:` protocol (e.g., `"@gorgias/api-queries": "catalog:rest-api-sdk"`).
+This project uses [PNPM Catalogs](https://pnpm.io/catalogs) to manage dependency versions across the workspace. Catalogs allow defining dependency versions as reusable constants in `pnpm-workspace.yaml`, which can then be referenced in `package.json` files using the `catalog:` protocol (e.g., `"@gorgias/helpdesk-queries": "catalog:rest-api-sdk"`).
 
 This helps maintain unique versions, signal that some dependencies should be changed together, simplifies upgrades, and reduces merge conflicts. You can see the catalog definitions in the `pnpm-workspace.yaml` file and references in the `package.json` files (e.g., `react: catalog:react`).
 

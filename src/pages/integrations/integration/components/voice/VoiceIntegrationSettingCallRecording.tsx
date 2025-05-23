@@ -1,7 +1,7 @@
 import { useFormContext } from 'react-hook-form'
 
-import { UpdateAllPhoneIntegrationSettings } from '@gorgias/api-queries'
-import { CustomRecordingType } from '@gorgias/api-types'
+import { UpdateAllPhoneIntegrationSettings } from '@gorgias/helpdesk-queries'
+import { CustomRecordingType } from '@gorgias/helpdesk-types'
 import { Label, ToggleField } from '@gorgias/merchant-ui-kit'
 
 import { FormField } from 'core/forms'

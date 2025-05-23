@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import cn from 'classnames'
 
-import { ListMacrosParams } from '@gorgias/api-queries'
+import { ListMacrosParams } from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { MacrosProperties } from 'models/macro/types'

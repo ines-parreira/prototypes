@@ -5,7 +5,7 @@ import _uniqueId from 'lodash/uniqueId'
 import { Link } from 'react-router-dom'
 import { Table } from 'reactstrap'
 
-import { CursorPaginationMeta } from '@gorgias/api-queries'
+import { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'

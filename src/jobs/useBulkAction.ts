@@ -4,7 +4,7 @@ import { AxiosError } from 'axios'
 import { Notification, notify as updateNotification } from 'reapop'
 import { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
 
-import { JobType, useCreateJob } from '@gorgias/api-queries'
+import { JobType, useCreateJob } from '@gorgias/helpdesk-queries'
 
 import { getConfigByType } from 'config/views'
 import useAppDispatch from 'hooks/useAppDispatch'

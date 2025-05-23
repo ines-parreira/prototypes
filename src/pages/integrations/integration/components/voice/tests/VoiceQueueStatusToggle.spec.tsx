@@ -1,14 +1,14 @@
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
-import { updateVoiceQueue } from '@gorgias/api-client'
-import { VoiceQueueStatus } from '@gorgias/api-queries'
+import { updateVoiceQueue } from '@gorgias/helpdesk-client'
+import { VoiceQueueStatus } from '@gorgias/helpdesk-queries'
 
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
 import VoiceQueueStatusToggle from '../VoiceQueueStatusToggle'
 
-jest.mock('@gorgias/api-client')
+jest.mock('@gorgias/helpdesk-client')
 
 const mockNotify = {
     success: jest.fn(),

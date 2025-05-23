@@ -14,7 +14,7 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import { JobType } from '@gorgias/api-queries'
+import { JobType } from '@gorgias/helpdesk-queries'
 
 import { useAppNode } from 'appNode'
 import { logEvent, SegmentEvent } from 'common/segment'

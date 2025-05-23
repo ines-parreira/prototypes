@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import { VoiceCallStatus } from '@gorgias/api-queries'
+import { VoiceCallStatus } from '@gorgias/helpdesk-queries'
 
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 import VoiceCallStatusLabel from 'pages/common/components/VoiceCallStatusLabel/VoiceCallStatusLabel'

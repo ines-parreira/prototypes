@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 import { CancelToken } from 'axios'
 import { filter } from 'lodash'
 
-import { ListTagsOrderBy, ListTagsParams, Tag } from '@gorgias/api-queries'
+import { ListTagsOrderBy, ListTagsParams, Tag } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

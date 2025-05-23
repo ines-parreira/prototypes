@@ -1,4 +1,4 @@
-import { useListLiveCallQueueAgents } from '@gorgias/api-queries'
+import { useListLiveCallQueueAgents } from '@gorgias/helpdesk-queries'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { FilterKey, StatsFiltersWithLogicalOperator } from 'models/stat/types'

@@ -2,7 +2,7 @@ import { ComponentProps, useMemo } from 'react'
 
 import moment from 'moment'
 
-import { VoiceCallDirection } from '@gorgias/api-queries'
+import { VoiceCallDirection } from '@gorgias/helpdesk-queries'
 
 import { TicketStatus } from 'business/types/ticket'
 import { DateAndTimeFormatting } from 'constants/datetime'

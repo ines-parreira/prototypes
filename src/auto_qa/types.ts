@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import type { TicketQAScoreDimension } from '@gorgias/api-queries'
+import type { TicketQAScoreDimension } from '@gorgias/helpdesk-queries'
 
 export type DimensionConfig = {
     autoExpandThreshold?: number

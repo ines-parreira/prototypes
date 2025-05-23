@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
-import { User } from '@gorgias/api-queries'
+import { User } from '@gorgias/helpdesk-queries'
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { Item } from 'components/Dropdown'

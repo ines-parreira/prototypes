@@ -6,7 +6,7 @@ import { dismissNotification } from 'reapop'
 import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { ListSatisfactionSurveys200, Tag } from '@gorgias/api-types'
+import { ListSatisfactionSurveys200, Tag } from '@gorgias/helpdesk-types'
 
 import { agents } from 'fixtures/agents'
 import { teams } from 'fixtures/teams'

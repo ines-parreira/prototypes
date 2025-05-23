@@ -6,7 +6,7 @@ import {
     UpdateAllPhoneIntegrationSettings,
     useDeleteIntegration,
     useUpdateAllPhoneSettings,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useNotify } from 'hooks/useNotify'

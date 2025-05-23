@@ -1,5 +1,8 @@
-import { SLAPolicy } from '@gorgias/api-queries'
-import { SLAPolicyMetricType, SLAPolicyMetricUnit } from '@gorgias/api-types'
+import { SLAPolicy } from '@gorgias/helpdesk-queries'
+import {
+    SLAPolicyMetricType,
+    SLAPolicyMetricUnit,
+} from '@gorgias/helpdesk-types'
 
 import { TicketChannel } from 'business/types/ticket'
 import { UISLAPolicy } from 'pages/settings/SLAs/features/SLAList/types'

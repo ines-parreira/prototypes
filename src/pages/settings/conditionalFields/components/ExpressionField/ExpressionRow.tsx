@@ -1,4 +1,4 @@
-import { ExpressionOperator } from '@gorgias/api-queries'
+import { ExpressionOperator } from '@gorgias/helpdesk-queries'
 
 import { FormField, useWatch } from 'core/forms'
 import { CustomField } from 'custom-fields/types'

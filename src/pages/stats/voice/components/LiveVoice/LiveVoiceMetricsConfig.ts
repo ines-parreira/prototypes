@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react'
 
-import { LiveCallQueueVoiceCall } from '@gorgias/api-queries'
+import { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
 
 import { useMetric } from 'hooks/reporting/useMetric'
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'

@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useCallback, useMemo } from 'react'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { ListMacrosTagsItem, Macro } from '@gorgias/api-queries'
+import { ListMacrosTagsItem, Macro } from '@gorgias/helpdesk-queries'
 
 import { DateTimeResultFormatType } from 'constants/datetime'
 import { ISO639English } from 'constants/languages'

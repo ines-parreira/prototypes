@@ -1,4 +1,4 @@
-import { TicketChannel } from '@gorgias/api-queries'
+import { TicketChannel } from '@gorgias/helpdesk-queries'
 
 export type Metric = {
     name: string
@@ -6,7 +6,7 @@ export type Metric = {
     unit: 'second' | 'minute' | 'hour' | 'day'
 }
 
-// Should be retrieved from @gorgias/api-queries when available
+// Should be retrieved from @gorgias/helpdesk-queries when available
 export type SLAPolicy = {
     id: number
     name: string

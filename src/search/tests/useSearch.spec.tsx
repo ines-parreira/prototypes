@@ -4,7 +4,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 
-import { SearchType } from '@gorgias/api-queries'
+import { SearchType } from '@gorgias/helpdesk-queries'
 
 import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
 import { handleError } from 'hooks/agents/errorHandler'

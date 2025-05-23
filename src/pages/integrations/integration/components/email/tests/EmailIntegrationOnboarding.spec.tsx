@@ -8,7 +8,7 @@ import { MemoryRouter } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { EmailIntegration } from '@gorgias/api-queries'
+import { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { RootState, StoreDispatch } from 'state/types'

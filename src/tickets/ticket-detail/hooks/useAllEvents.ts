@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { listEvents } from '@gorgias/api-client'
+import { listEvents } from '@gorgias/helpdesk-client'
 
 import { useExhaustEndpoint } from 'hooks/useExhaustEndpoint'
 

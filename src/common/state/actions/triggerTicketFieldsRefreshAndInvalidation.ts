@@ -1,5 +1,5 @@
-import { listCustomFieldConditions } from '@gorgias/api-client'
-import { queryKeys } from '@gorgias/api-queries'
+import { listCustomFieldConditions } from '@gorgias/helpdesk-client'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { appQueryClient } from 'api/queryClient'
 import { OBJECT_TYPES } from 'custom-fields/constants'

@@ -13,7 +13,7 @@ import {
     useListCustomerIntegrationsWithChannelDefault,
     useScheduleShopifyCreateNewCustomerAction,
     useScheduleShopifyUpdateCustomerAction,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -30,8 +30,8 @@ const mockUseAppDispatch = assumeMock(useAppDispatch)
 jest.mock('state/notifications/actions')
 const mockNotify = assumeMock(notify)
 
-jest.mock('@gorgias/api-queries', () => ({
-    ...jest.requireActual('@gorgias/api-queries'),
+jest.mock('@gorgias/helpdesk-queries', () => ({
+    ...jest.requireActual('@gorgias/helpdesk-queries'),
     useListCustomerIntegrationsWithChannelDefault: jest
         .fn()
         .mockReturnValue({ data: [] }),
@@ -41,7 +41,7 @@ const activeCustomer = Map({
     name: 'John Smith',
 })
 
-jest.mock('@gorgias/api-queries', () => ({
+jest.mock('@gorgias/helpdesk-queries', () => ({
     useListCustomerIntegrationsWithChannelDefault: jest.fn(),
     useScheduleShopifyCreateNewCustomerAction: jest.fn(),
     useScheduleShopifyUpdateCustomerAction: jest.fn(),

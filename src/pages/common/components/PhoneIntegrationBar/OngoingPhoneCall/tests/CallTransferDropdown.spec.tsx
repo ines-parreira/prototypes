@@ -16,7 +16,7 @@ import {
     useTransferCall,
     VoiceCallTransferReceiverType,
     VoiceCallTransferType,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import * as notificationActions from 'state/notifications/actions'
 import { mockIncomingCall } from 'tests/twilioMocks'
@@ -40,7 +40,7 @@ jest.mock('pages/common/utils/labels', () => ({
     ),
 }))
 jest.mock('pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/utils')
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 
 const mockUseTransferCall = useTransferCall as jest.Mock
 const mockUseListUsers = useListUsers as jest.Mock

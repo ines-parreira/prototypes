@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { RequirementType } from '@gorgias/api-queries'
+import { RequirementType } from '@gorgias/helpdesk-queries'
 
 import { useUpdateCustomFieldDefinition } from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinition'
 import { CustomField, CustomFieldObjectTypes } from 'custom-fields/types'

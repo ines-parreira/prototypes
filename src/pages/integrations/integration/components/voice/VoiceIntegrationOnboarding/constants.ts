@@ -2,7 +2,7 @@ import {
     IntegrationType,
     PhoneFunction,
     VoiceMessageType,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { DEFAULT_VOICE_MESSAGE } from 'models/integration/constants'
 

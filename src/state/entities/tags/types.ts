@@ -1,6 +1,6 @@
 import { PayloadActionCreator } from '@reduxjs/toolkit'
 
-import { Tag } from '@gorgias/api-queries'
+import { Tag } from '@gorgias/helpdesk-queries'
 
 import {
     TAG_CREATED,

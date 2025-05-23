@@ -3,7 +3,7 @@ import {
     Integration as ApiIntegration,
     UpdateWaitMusicLibrary,
     WaitMusicType,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { PhoneFunction } from 'business/twilio'
 

@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { useUpdateVoiceQueue } from '@gorgias/api-queries'
-import { VoiceQueue, VoiceQueueStatus } from '@gorgias/api-types'
+import { useUpdateVoiceQueue } from '@gorgias/helpdesk-queries'
+import { VoiceQueue, VoiceQueueStatus } from '@gorgias/helpdesk-types'
 import { Button, ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { useNotify } from 'hooks/useNotify'

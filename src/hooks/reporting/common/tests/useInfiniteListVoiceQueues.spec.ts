@@ -3,8 +3,8 @@ import {
     useInfiniteQuery,
 } from '@tanstack/react-query'
 
-import { listVoiceQueues } from '@gorgias/api-client'
-import { queryKeys } from '@gorgias/api-queries'
+import { listVoiceQueues } from '@gorgias/helpdesk-client'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
@@ -14,7 +14,7 @@ import { useInfiniteListVoiceQueues } from '../useInfiniteListVoiceQueues'
 jest.mock('@tanstack/react-query')
 const useInfiniteQueryMock = assumeMock(useInfiniteQuery)
 
-jest.mock('@gorgias/api-client')
+jest.mock('@gorgias/helpdesk-client')
 const listVoiceQueuesMock = assumeMock(listVoiceQueues)
 
 describe('useInfiniteListVoiceQueues', () => {

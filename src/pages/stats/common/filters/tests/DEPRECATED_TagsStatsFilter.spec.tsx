@@ -7,7 +7,7 @@ import { Action } from 'redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { ListTagsOrderBy } from '@gorgias/api-queries'
+import { ListTagsOrderBy } from '@gorgias/helpdesk-queries'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { tags as tagsFixtures } from 'fixtures/tag'

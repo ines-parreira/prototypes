@@ -1,6 +1,6 @@
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 
-import { useDeleteMacro as useDeleteMacroPrimitive } from '@gorgias/api-queries'
+import { useDeleteMacro as useDeleteMacroPrimitive } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
@@ -10,7 +10,7 @@ import { renderHook } from 'utils/testing/renderHook'
 
 import { useDeleteMacro } from '../useDeleteMacro'
 
-jest.mock('@gorgias/api-queries', () => ({
+jest.mock('@gorgias/helpdesk-queries', () => ({
     __esModule: true,
     useDeleteMacro: jest.fn(),
     queryKeys: {

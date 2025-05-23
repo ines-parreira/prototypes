@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 
-import { LiveCallQueueAgent } from '@gorgias/api-queries'
+import { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'

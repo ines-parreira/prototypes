@@ -1,7 +1,7 @@
 import _isEqual from 'lodash/isEqual'
 import times from 'lodash/times'
 
-import { AnalyticsFilter } from '@gorgias/api-queries'
+import { AnalyticsFilter } from '@gorgias/helpdesk-queries'
 
 import {
     FilterComponentKey,

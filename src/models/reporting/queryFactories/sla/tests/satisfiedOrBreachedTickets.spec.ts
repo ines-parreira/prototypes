@@ -1,6 +1,6 @@
 import moment from 'moment/moment'
 
-import { QueryFiltersItemOperator } from '@gorgias/api-types'
+import { QueryFiltersItemOperator } from '@gorgias/helpdesk-types'
 
 import { OrderDirection } from 'models/api/types'
 import {

@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-import { TicketCompact } from '@gorgias/api-types'
+import { TicketCompact } from '@gorgias/helpdesk-types'
 
 import { KeysMatching } from 'types'
 

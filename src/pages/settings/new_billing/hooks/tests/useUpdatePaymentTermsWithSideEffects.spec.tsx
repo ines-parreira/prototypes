@@ -1,6 +1,6 @@
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 
-import { useUpdatePaymentTerms } from '@gorgias/api-queries'
+import { useUpdatePaymentTerms } from '@gorgias/helpdesk-queries'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -24,7 +24,7 @@ const useQueryClientMock = assumeMock(useQueryClient)
 
 jest.mock('state/notifications/actions')
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 const useUpdatePaymentTermsMock = assumeMock(useUpdatePaymentTerms)
 
 describe('useUpdatePaymentTermsWithSideEffects', () => {

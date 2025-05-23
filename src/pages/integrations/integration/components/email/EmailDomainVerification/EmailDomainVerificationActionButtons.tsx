@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { EmailIntegration, GmailIntegration } from '@gorgias/api-queries'
+import { EmailIntegration, GmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { OutlookIntegration } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'

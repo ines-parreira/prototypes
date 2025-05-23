@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 
-import { RequirementType } from '@gorgias/api-queries'
+import { RequirementType } from '@gorgias/helpdesk-queries'
 import {
     SelectField,
     type SelectFieldTriggerProps,

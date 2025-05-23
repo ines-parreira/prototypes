@@ -3,7 +3,7 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { EmailDNSRecord } from '@gorgias/api-queries'
+import { EmailDNSRecord } from '@gorgias/helpdesk-queries'
 
 import RecordDiffStatus from '../components/RecordDiffStatus'
 

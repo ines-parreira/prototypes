@@ -1,6 +1,6 @@
 import { CancelToken } from 'axios'
 
-import { searchCustomers as apiSearchCustomers } from '@gorgias/api-client'
+import { searchCustomers as apiSearchCustomers } from '@gorgias/helpdesk-client'
 
 import client from 'models/api/resources'
 import { deepMapKeysToSnakeCase } from 'models/api/utils'

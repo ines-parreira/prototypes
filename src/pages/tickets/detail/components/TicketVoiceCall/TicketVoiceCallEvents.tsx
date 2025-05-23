@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { VoiceCallTerminationStatus } from '@gorgias/api-queries'
+import { VoiceCallTerminationStatus } from '@gorgias/helpdesk-queries'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { DateAndTimeFormatting } from 'constants/datetime'

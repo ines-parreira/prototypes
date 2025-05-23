@@ -1,4 +1,7 @@
-import { ExpressionFieldSource, ExpressionOperator } from '@gorgias/api-queries'
+import {
+    ExpressionFieldSource,
+    ExpressionOperator,
+} from '@gorgias/helpdesk-queries'
 
 import { SUPPORTED_UI_DATA_TYPES } from 'custom-fields/constants'
 import { SupportedUIDataType } from 'custom-fields/types'

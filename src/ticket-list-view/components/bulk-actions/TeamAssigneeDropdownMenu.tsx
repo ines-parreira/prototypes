@@ -6,7 +6,7 @@ import React, {
     useState,
 } from 'react'
 
-import { ListTeamsOrderBy } from '@gorgias/api-queries'
+import { ListTeamsOrderBy } from '@gorgias/helpdesk-queries'
 
 import { Body, Context, focusOnNextItem, Item } from 'components/Dropdown'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'

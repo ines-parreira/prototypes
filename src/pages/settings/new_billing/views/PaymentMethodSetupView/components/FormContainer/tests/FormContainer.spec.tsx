@@ -88,7 +88,7 @@ const mockStripeElementsValue = ({
     })
 }
 
-jest.mock('@gorgias/api-client')
+jest.mock('@gorgias/helpdesk-client')
 
 const mockedServer = new MockAdapter(client)
 

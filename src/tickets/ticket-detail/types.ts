@@ -1,4 +1,4 @@
-import type { Event, TicketMessage, VoiceCall } from '@gorgias/api-queries'
+import type { Event, TicketMessage, VoiceCall } from '@gorgias/helpdesk-queries'
 
 import type { TicketEventEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 

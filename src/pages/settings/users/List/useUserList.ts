@@ -2,13 +2,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import axios, { CancelToken, CancelTokenSource } from 'axios'
 
-import { listUsers } from '@gorgias/api-client'
-import { ListUsersParams, useListUsers } from '@gorgias/api-queries'
+import { listUsers } from '@gorgias/helpdesk-client'
+import { ListUsersParams, useListUsers } from '@gorgias/helpdesk-queries'
 import {
     ListUsersOrderBy,
     ListUsersRelationshipsItem,
     User,
-} from '@gorgias/api-types'
+} from '@gorgias/helpdesk-types'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'

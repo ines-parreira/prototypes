@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { useFormContext } from 'react-hook-form'
 
-import { PhoneIntegration } from '@gorgias/api-types'
+import { PhoneIntegration } from '@gorgias/helpdesk-types'
 import { CheckBoxField } from '@gorgias/merchant-ui-kit'
 
 import { FormField, FormSubmitButton } from 'core/forms'

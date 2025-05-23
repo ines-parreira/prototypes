@@ -14,7 +14,7 @@ import {
     ListTagsParams,
     queryKeys,
     Tag,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { Body, Context, focusOnNextItem, Item } from 'components/Dropdown'
 import { UserRole } from 'config/types/user'

@@ -12,7 +12,7 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import { Macro } from '@gorgias/api-queries'
+import { Macro } from '@gorgias/helpdesk-queries'
 
 import { ACTION_TEMPLATES, ActionTemplateExecution } from 'config'
 import { FeatureFlagKey } from 'config/featureFlags'

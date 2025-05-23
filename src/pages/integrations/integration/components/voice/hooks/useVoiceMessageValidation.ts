@@ -1,6 +1,6 @@
 import _pick from 'lodash/pick'
 
-import { WaitMusicType } from '@gorgias/api-queries'
+import { WaitMusicType } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {

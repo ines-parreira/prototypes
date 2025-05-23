@@ -3,7 +3,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { Link } from 'react-router-dom'
 
-import { User } from '@gorgias/api-types'
+import { User } from '@gorgias/helpdesk-types'
 import { Badge } from '@gorgias/merchant-ui-kit'
 
 import {

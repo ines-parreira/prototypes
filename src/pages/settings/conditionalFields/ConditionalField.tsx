@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import { useGetCustomFieldCondition } from '@gorgias/api-queries'
+import { useGetCustomFieldCondition } from '@gorgias/helpdesk-queries'
 
 import useTitle from 'hooks/useTitle'
 import Loader from 'pages/common/components/Loader/Loader'

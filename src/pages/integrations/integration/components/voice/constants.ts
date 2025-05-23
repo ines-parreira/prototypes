@@ -3,7 +3,7 @@ import {
     PhoneRingingBehaviour,
     UpdateVoiceQueue,
     VoiceQueueTargetScope,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { QUEUE_DEFAULT_WAIT_MUSIC_PREFERENCES } from './waitMusicLibraryConstants'
 

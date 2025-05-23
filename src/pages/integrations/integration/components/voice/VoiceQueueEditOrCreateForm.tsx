@@ -1,4 +1,4 @@
-import { VoiceQueue } from '@gorgias/api-client'
+import { VoiceQueue } from '@gorgias/helpdesk-client'
 
 import VoiceQueueSettingsFormCallFlowSection from './VoiceQueueSettingsFormCallFlowSection'
 import VoiceQueueSettingsFormGeneralSection from './VoiceQueueSettingsFormGeneralSection'

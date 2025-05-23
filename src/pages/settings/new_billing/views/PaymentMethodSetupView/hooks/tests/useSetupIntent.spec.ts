@@ -1,13 +1,13 @@
 import { waitFor } from '@testing-library/react'
 
-import { useCreateBillingPaymentMethodSetup } from '@gorgias/api-queries'
+import { useCreateBillingPaymentMethodSetup } from '@gorgias/helpdesk-queries'
 
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { useSetupIntent } from '../useSetupIntent'
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 
 const renderUseSetupIntentHook = (
     useCreateBillingPaymentMethodSetupReturnValue: Partial<

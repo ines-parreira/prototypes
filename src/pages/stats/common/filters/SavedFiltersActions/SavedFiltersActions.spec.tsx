@@ -3,7 +3,7 @@ import React from 'react'
 import { fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { useListAnalyticsFilters } from '@gorgias/api-queries'
+import { useListAnalyticsFilters } from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { APPLY_SAVED_FILTERS } from 'pages/stats/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
@@ -34,7 +34,7 @@ const useAppSelectorMock = assumeMock(useAppSelector)
 jest.mock('utils')
 const isTeamLeadMock = assumeMock(isTeamLead)
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 const useListAnalyticsFiltersMock = assumeMock(useListAnalyticsFilters)
 
 describe('SavedFiltersActions for an Agent', () => {

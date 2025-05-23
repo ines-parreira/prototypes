@@ -1,4 +1,4 @@
-import { useListTickets } from '@gorgias/api-queries'
+import { useListTickets } from '@gorgias/helpdesk-queries'
 
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
@@ -6,8 +6,8 @@ import { renderHook } from 'utils/testing/renderHook'
 import { TICKET_FETCH_STALE_TIME, TICKET_FETCHED_LIMIT } from '../../constants'
 import { useTimelineData } from '../useTimelineData'
 
-jest.mock('@gorgias/api-queries', () => ({
-    ...jest.requireActual('@gorgias/api-queries'),
+jest.mock('@gorgias/helpdesk-queries', () => ({
+    ...jest.requireActual('@gorgias/helpdesk-queries'),
     useListTickets: jest.fn(),
 }))
 

@@ -3,7 +3,7 @@ import { ComponentProps, Fragment, useEffect, useMemo, useState } from 'react'
 import classnames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
 
-import { Tag, TicketTag as TicketTagType } from '@gorgias/api-types'
+import { Tag, TicketTag as TicketTagType } from '@gorgias/helpdesk-types'
 import { Badge, BadgeIcon, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { getWrappedElementCount } from 'common/utils'

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 
-import { Tag, TicketTag } from '@gorgias/api-types'
+import { Tag, TicketTag } from '@gorgias/helpdesk-types'
 import { Label } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'

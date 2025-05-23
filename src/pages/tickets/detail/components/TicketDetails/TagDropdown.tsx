@@ -2,7 +2,7 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 
 import cn from 'classnames'
 
-import { Tag, TicketTag } from '@gorgias/api-queries'
+import { Tag, TicketTag } from '@gorgias/helpdesk-queries'
 
 import { Item } from 'components/Dropdown'
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'

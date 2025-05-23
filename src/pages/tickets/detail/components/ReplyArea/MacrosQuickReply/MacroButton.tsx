@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Macro } from '@gorgias/api-queries'
+import { Macro } from '@gorgias/helpdesk-queries'
 
 import Button from 'pages/common/components/button/Button'
 

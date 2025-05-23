@@ -5,7 +5,7 @@ import {
     EmailIntegration,
     EmailProvider,
     GmailIntegration,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import gmailImg from 'assets/img/integrations/gmail.svg'
 import officeImg from 'assets/img/integrations/office.svg'

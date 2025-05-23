@@ -7,7 +7,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Form } from 'reactstrap'
 
-import type { Language, Macro } from '@gorgias/api-queries'
+import type { Language, Macro } from '@gorgias/helpdesk-queries'
 
 import { useAppNode } from 'appNode'
 import { DEFAULT_ACTIONS } from 'config'

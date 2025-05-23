@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { VoiceQueueIntegration } from '@gorgias/api-queries'
+import { VoiceQueueIntegration } from '@gorgias/helpdesk-queries'
 import { Button, Label } from '@gorgias/merchant-ui-kit'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'

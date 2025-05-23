@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { VoiceCallDirection } from '@gorgias/api-queries'
+import { VoiceCallDirection } from '@gorgias/helpdesk-queries'
 
 import { VoiceCallSummary } from 'pages/stats/voice/models/types'
 

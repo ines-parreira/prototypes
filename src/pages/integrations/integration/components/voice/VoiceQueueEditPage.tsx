@@ -6,7 +6,7 @@ import {
     UpdateVoiceQueue,
     useGetVoiceQueue,
     useUpdateVoiceQueue,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import { useNotify } from 'hooks/useNotify'

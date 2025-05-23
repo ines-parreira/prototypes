@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Container } from 'reactstrap'
 
-import { CustomFieldCondition } from '@gorgias/api-queries'
+import { CustomFieldCondition } from '@gorgias/helpdesk-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { OBJECT_TYPES } from 'custom-fields/constants'

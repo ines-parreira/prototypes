@@ -4,8 +4,8 @@ import classNames from 'classnames'
 import { Map } from 'immutable'
 import { Form } from 'reactstrap'
 
-import { Tag, TagDecoration } from '@gorgias/api-queries'
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+import { Tag, TagDecoration } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'

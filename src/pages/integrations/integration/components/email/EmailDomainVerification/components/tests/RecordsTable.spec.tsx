@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 
-import { EmailDomain } from '@gorgias/api-queries'
+import { EmailDomain } from '@gorgias/helpdesk-queries'
 
 import { assumeMock } from 'utils/testing'
 

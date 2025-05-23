@@ -1,7 +1,7 @@
 import { useLocation, useParams } from 'react-router-dom'
 
-import { useGetSlaPolicy } from '@gorgias/api-queries'
-import { validateCreateSLAPolicy } from '@gorgias/api-validators'
+import { useGetSlaPolicy } from '@gorgias/helpdesk-queries'
+import { validateCreateSLAPolicy } from '@gorgias/helpdesk-validators'
 
 import { toFormErrors } from 'core/forms'
 import { SLATemplate } from 'pages/settings/SLAs/config/templates'

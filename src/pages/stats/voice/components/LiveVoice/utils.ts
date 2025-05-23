@@ -4,7 +4,7 @@ import {
     LiveCallQueueVoiceCall,
     VoiceCallDirection,
     VoiceCallStatus,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { OrderDirection } from 'models/api/types'
 import {

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
-import { useGetAnalyticsCustomReport } from '@gorgias/api-queries'
+import { useGetAnalyticsCustomReport } from '@gorgias/helpdesk-queries'
 
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import { Dashboard, findChartIndex } from 'pages/stats/dashboards/Dashboard'
@@ -29,7 +29,7 @@ jest.mock('react-router-dom', () => ({
 jest.mock('pages/stats/common/drill-down/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 const useGetAnalyticsCustomReportMock = assumeMock(useGetAnalyticsCustomReport)
 
 jest.mock('pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper')

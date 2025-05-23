@@ -5,8 +5,8 @@ import _get from 'lodash/get'
 import {
     useUploadCustomVoiceRecording,
     WaitMusicType,
-} from '@gorgias/api-queries'
-import { CustomRecordingType } from '@gorgias/api-types'
+} from '@gorgias/helpdesk-queries'
+import { CustomRecordingType } from '@gorgias/helpdesk-types'
 
 import { useNotify } from 'hooks/useNotify'
 import { GorgiasApiResponseDataError } from 'models/api/types'

@@ -5,7 +5,7 @@ import { screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 
-import { createBillingPaymentMethodSetup } from '@gorgias/api-client'
+import { createBillingPaymentMethodSetup } from '@gorgias/helpdesk-client'
 
 import { account } from 'fixtures/account'
 import { products } from 'fixtures/productPrices'
@@ -40,7 +40,7 @@ jest.mock('pages/common/components/Loader/Loader', () => () => (
     <div data-testid="loader" />
 ))
 
-jest.mock('@gorgias/api-client')
+jest.mock('@gorgias/helpdesk-client')
 
 const mockedServer = new MockAdapter(client)
 

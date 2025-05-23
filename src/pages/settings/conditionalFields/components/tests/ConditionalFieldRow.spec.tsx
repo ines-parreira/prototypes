@@ -14,10 +14,10 @@ const mockUpdateCondition = jest.fn().mockResolvedValue({})
 const mockDeleteCondition = jest.fn().mockResolvedValue({})
 
 jest.mock(
-    '@gorgias/api-queries',
+    '@gorgias/helpdesk-queries',
     () =>
         ({
-            ...jest.requireActual('@gorgias/api-queries'),
+            ...jest.requireActual('@gorgias/helpdesk-queries'),
             useListCustomFieldConditions: jest.fn(),
             useCreateCustomFieldCondition: () => ({
                 mutateAsync: mockCreateCondition,

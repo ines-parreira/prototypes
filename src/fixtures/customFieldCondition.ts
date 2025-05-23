@@ -1,4 +1,4 @@
-import { CustomFieldCondition, ObjectType } from '@gorgias/api-queries'
+import { CustomFieldCondition, ObjectType } from '@gorgias/helpdesk-queries'
 
 export const customFieldCondition: CustomFieldCondition = {
     id: 123,

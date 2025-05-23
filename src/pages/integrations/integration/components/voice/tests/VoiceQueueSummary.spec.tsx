@@ -1,13 +1,13 @@
 import { fireEvent, screen } from '@testing-library/react'
 
-import { useGetTeam, useGetVoiceQueue } from '@gorgias/api-queries'
+import { useGetTeam, useGetVoiceQueue } from '@gorgias/helpdesk-queries'
 
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
 import VoiceQueueSummary from '../VoiceQueueSummary'
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 const useGetVoiceQueueMock = assumeMock(useGetVoiceQueue)
 const useGetTeamMock = assumeMock(useGetTeam)
 

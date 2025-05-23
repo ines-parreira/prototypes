@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 
-import { EmailIntegration } from '@gorgias/api-queries'
+import { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { FormSubmitButton } from 'core/forms'
 import Button from 'pages/common/components/button/Button'

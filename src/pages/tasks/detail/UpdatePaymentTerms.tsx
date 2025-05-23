@@ -2,7 +2,7 @@ import React, { ComponentProps } from 'react'
 
 import classnames from 'classnames'
 
-import { UpdatePaymentTerms as UpdatePaymentTermsInputType } from '@gorgias/api-queries'
+import { UpdatePaymentTerms as UpdatePaymentTermsInputType } from '@gorgias/helpdesk-queries'
 import {
     SelectField,
     SelectFieldRawOption,

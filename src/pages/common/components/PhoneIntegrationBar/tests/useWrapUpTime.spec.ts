@@ -1,7 +1,10 @@
 import { waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
-import { endWrapUpTime, getAgentWrapUpCallStatus } from '@gorgias/api-client'
+import {
+    endWrapUpTime,
+    getAgentWrapUpCallStatus,
+} from '@gorgias/helpdesk-client'
 
 import useInterval from 'hooks/useInterval'
 import { useNotify } from 'hooks/useNotify'
@@ -13,7 +16,7 @@ import { assumeMock } from 'utils/testing'
 
 import useWrapUpTime from '../useWrapUpTime'
 
-jest.mock('@gorgias/api-client')
+jest.mock('@gorgias/helpdesk-client')
 jest.mock('hooks/useNotify')
 jest.mock('services/socketManager', () => ({
     registerReceivedEvents: jest.fn(),

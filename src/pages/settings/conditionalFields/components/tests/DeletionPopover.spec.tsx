@@ -3,7 +3,7 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import { Router } from 'react-router-dom'
 
-import { CustomFieldCondition } from '@gorgias/api-queries'
+import { CustomFieldCondition } from '@gorgias/helpdesk-queries'
 
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import history from 'pages/history'

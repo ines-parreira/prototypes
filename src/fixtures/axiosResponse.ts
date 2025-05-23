@@ -1,6 +1,6 @@
 import { AxiosHeaders, AxiosResponse } from 'axios'
 
-import { CursorPaginationMeta } from '@gorgias/api-queries'
+import { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
 import { ApiListResponseCursorPagination } from 'models/api/types'
 

@@ -1,7 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { useStore } from 'react-redux'
 
-import { useConfirmBillingPaymentMethodSetup } from '@gorgias/api-queries'
+import { useConfirmBillingPaymentMethodSetup } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { getBillingStateQuery } from 'models/billing/queries'

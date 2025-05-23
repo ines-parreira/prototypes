@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { LiveCallQueueVoiceCall } from '@gorgias/api-queries'
+import { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { StatsFiltersWithLogicalOperator } from 'models/stat/types'

@@ -1,7 +1,7 @@
 import { act, screen, waitFor } from '@testing-library/react'
 import fireEvent from '@testing-library/user-event'
 
-import { createVoiceQueues } from '@gorgias/api-client'
+import { createVoiceQueues } from '@gorgias/helpdesk-client'
 
 import history from 'pages/history'
 import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
@@ -10,7 +10,7 @@ import { assumeMock } from 'utils/testing'
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import VoiceQueueCreatePage from '../VoiceQueueCreatePage'
 
-jest.mock('@gorgias/api-client')
+jest.mock('@gorgias/helpdesk-client')
 const createVoiceQueuesMock = assumeMock(createVoiceQueues)
 
 const mockNotify = {

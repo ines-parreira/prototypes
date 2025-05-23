@@ -1,4 +1,4 @@
-import { Macro } from '@gorgias/api-queries'
+import { Macro } from '@gorgias/helpdesk-queries'
 
 import { TicketStatus } from 'business/types/ticket'
 import { User } from 'config/types/user'

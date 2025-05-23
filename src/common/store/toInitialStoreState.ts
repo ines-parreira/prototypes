@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable'
 
-import { Tag } from '@gorgias/api-queries'
+import { Tag } from '@gorgias/helpdesk-queries'
 
 import { NewPhoneNumber, OldPhoneNumber } from 'models/phoneNumber/types'
 import { View } from 'models/view/types'

@@ -9,10 +9,10 @@ overrides:
 
 catalogs:
   rest-api-sdk:
-    '@gorgias/api-queries': '0.7.3'
-    '@gorgias/api-validators': '0.7.3'
-    '@gorgias/api-client': '0.7.3'
-    '@gorgias/api-types': '0.7.3'
+    '@gorgias/helpdesk-queries': '0.7.12'
+    '@gorgias/helpdesk-validators': '0.7.12'
+    '@gorgias/helpdesk-client': '0.7.12'
+    '@gorgias/helpdesk-types': '0.7.12'
     '@tanstack/react-query': '4.36.1'
   react:
     react: '17.0.2'

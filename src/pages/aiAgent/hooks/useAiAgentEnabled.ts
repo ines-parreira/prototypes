@@ -4,7 +4,7 @@ import { useCallback, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
-import { RuleType } from '@gorgias/api-queries'
+import { RuleType } from '@gorgias/helpdesk-queries'
 
 import { updateRule } from 'models/rule/resources'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'

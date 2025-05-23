@@ -1,7 +1,7 @@
 import { fireEvent, waitFor } from '@testing-library/react'
 
-import { uploadCustomVoiceRecording } from '@gorgias/api-client'
-import { CustomRecordingType, WaitMusicType } from '@gorgias/api-queries'
+import { uploadCustomVoiceRecording } from '@gorgias/helpdesk-client'
+import { CustomRecordingType, WaitMusicType } from '@gorgias/helpdesk-queries'
 
 import { MAX_WAIT_MUSIC_CUSTOM_RECORDING_FILE_SIZE_MB } from 'models/integration/constants'
 import { LocalWaitMusicPreferences } from 'models/integration/types/phone'
@@ -11,7 +11,7 @@ import { assumeMock } from 'utils/testing'
 import useVoiceMessageValidation from '../hooks/useVoiceMessageValidation'
 import WaitMusicField from '../WaitMusicField'
 
-jest.mock('@gorgias/api-client')
+jest.mock('@gorgias/helpdesk-client')
 
 const uploadCustomVoiceRecordingMock = assumeMock(uploadCustomVoiceRecording)
 

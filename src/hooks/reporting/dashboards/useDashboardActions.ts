@@ -13,7 +13,7 @@ import {
     useDeleteAnalyticsCustomReport,
     useListAnalyticsCustomReports,
     useUpdateAnalyticsCustomReport,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {

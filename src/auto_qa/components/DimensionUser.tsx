@@ -1,4 +1,4 @@
-import { useGetUser } from '@gorgias/api-queries'
+import { useGetUser } from '@gorgias/helpdesk-queries'
 
 import Avatar from 'pages/common/components/Avatar/Avatar'
 

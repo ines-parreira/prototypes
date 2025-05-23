@@ -5,7 +5,7 @@ import {
     ListTagsParams,
     OrderDirection,
     Tag,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import client from 'models/api/resources'
 import { ApiListResponseCursorPagination } from 'models/api/types'

@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 
-import { SearchBody } from '@gorgias/api-queries'
+import { SearchBody } from '@gorgias/helpdesk-queries'
 
 import { handleError } from 'hooks/agents/errorHandler'
 import useAppDispatch from 'hooks/useAppDispatch'

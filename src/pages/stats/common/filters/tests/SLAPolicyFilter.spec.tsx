@@ -3,7 +3,7 @@ import React from 'react'
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { SLAPolicy, useListSlaPolicies } from '@gorgias/api-queries'
+import { SLAPolicy, useListSlaPolicies } from '@gorgias/helpdesk-queries'
 
 import { TicketChannel } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -31,7 +31,7 @@ import { RootState } from 'state/types'
 import * as filtersSlice from 'state/ui/stats/filtersSlice'
 import { assumeMock, renderWithStore } from 'utils/testing'
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 const useListSlaPoliciesMock = assumeMock(useListSlaPolicies)
 
 jest.mock('common/segment', () => ({

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { useCreateBillingPaymentMethodSetup } from '@gorgias/api-queries'
+import { useCreateBillingPaymentMethodSetup } from '@gorgias/helpdesk-queries'
 
 export const useSetupIntent = () => {
     const {

@@ -3,8 +3,8 @@ import React from 'react'
 import { UseQueryResult } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
-import { RequirementType } from '@gorgias/api-queries'
-import { ExpressionFieldType } from '@gorgias/api-types'
+import { RequirementType } from '@gorgias/helpdesk-queries'
+import { ExpressionFieldType } from '@gorgias/helpdesk-types'
 
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'

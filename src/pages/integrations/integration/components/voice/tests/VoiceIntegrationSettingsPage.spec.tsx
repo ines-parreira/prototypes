@@ -1,12 +1,12 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
 
-import { IntegrationType } from '@gorgias/api-client'
+import { IntegrationType } from '@gorgias/helpdesk-client'
 import {
     PhoneIntegration,
     useGetIntegration,
     useUpdateAllPhoneSettings,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { integrationsState } from 'fixtures/integrations'
 import history from 'pages/history'
@@ -34,7 +34,7 @@ jest.mock('hooks/useNotify', () => ({
 
 jest.mock('pages/history')
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 const useGetIntegrationMock = assumeMock(useGetIntegration)
 useGetIntegrationMock.mockReturnValue({
     data: { data: phoneIntegration },

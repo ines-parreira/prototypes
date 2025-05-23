@@ -1,6 +1,6 @@
 import { createContext } from 'react'
 
-import { VoiceQueue } from '@gorgias/api-queries'
+import { VoiceQueue } from '@gorgias/helpdesk-queries'
 
 type VoiceQueueContextType = {
     getQueueFromId: (id: number) => VoiceQueue | null | undefined

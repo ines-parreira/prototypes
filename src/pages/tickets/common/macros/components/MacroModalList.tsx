@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { ListMacrosParams, Macro } from '@gorgias/api-queries'
+import { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
 
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'

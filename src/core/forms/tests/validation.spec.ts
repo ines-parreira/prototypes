@@ -1,4 +1,4 @@
-import { validateCreateCustomerBody } from '@gorgias/api-validators'
+import { validateCreateCustomerBody } from '@gorgias/helpdesk-validators'
 
 import { GorgiasApiResponseDataError } from 'models/api/types'
 

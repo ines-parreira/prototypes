@@ -12,7 +12,7 @@ import { assumeMock } from 'utils/testing'
 
 import { getDefaultValues, useFormSubmit } from '../useVoiceSettingsForm'
 
-jest.mock('@gorgias/api-client')
+jest.mock('@gorgias/helpdesk-client')
 
 jest.mock('hooks/useAppDispatch')
 const dispatchMock = jest.fn()

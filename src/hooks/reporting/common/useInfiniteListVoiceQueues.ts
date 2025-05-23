@@ -9,8 +9,8 @@ import {
     listVoiceQueues,
     ListVoiceQueues200,
     ListVoiceQueuesParams,
-} from '@gorgias/api-client'
-import { queryKeys } from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-client'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 
 export function useInfiniteListVoiceQueues<
     TData = HttpResponse<ListVoiceQueues200>,

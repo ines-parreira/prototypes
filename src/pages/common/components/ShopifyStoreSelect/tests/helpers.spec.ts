@@ -1,6 +1,6 @@
 import { fromJS, List, Map } from 'immutable'
 
-import { IntegrationType } from '@gorgias/api-queries'
+import { IntegrationType } from '@gorgias/helpdesk-queries'
 
 import {
     getDefaultStore,

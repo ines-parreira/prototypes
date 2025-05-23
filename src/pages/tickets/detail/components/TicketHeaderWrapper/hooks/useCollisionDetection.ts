@@ -1,4 +1,4 @@
-import { User } from '@gorgias/api-queries'
+import { User } from '@gorgias/helpdesk-queries'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'

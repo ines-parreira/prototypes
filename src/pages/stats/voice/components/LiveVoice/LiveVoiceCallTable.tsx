@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
 
-import { LiveCallQueueVoiceCall } from '@gorgias/api-queries'
+import { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
 
 import useOrderBy from 'hooks/useOrderBy'
 import { OrderDirection } from 'models/api/types'

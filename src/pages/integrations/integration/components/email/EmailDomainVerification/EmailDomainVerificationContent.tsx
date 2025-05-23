@@ -1,4 +1,4 @@
-import { EmailIntegration, GmailIntegration } from '@gorgias/api-queries'
+import { EmailIntegration, GmailIntegration } from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { OutlookIntegration } from 'models/integration/types'

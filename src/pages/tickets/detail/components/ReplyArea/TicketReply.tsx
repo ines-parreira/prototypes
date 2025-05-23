@@ -3,7 +3,7 @@ import React, { ReactNode, useCallback } from 'react'
 import classNames from 'classnames'
 import { Map } from 'immutable'
 
-import { Macro } from '@gorgias/api-queries'
+import { Macro } from '@gorgias/helpdesk-queries'
 
 import { canReply } from 'business/ticket'
 import { UserRole } from 'config/types/user'

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import { EmailIntegration } from '@gorgias/api-queries'
+import { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { isCommonDomainEmail } from 'pages/integrations/integration/components/email/helpers'
 

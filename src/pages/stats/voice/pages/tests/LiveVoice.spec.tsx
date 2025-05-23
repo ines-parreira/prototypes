@@ -2,7 +2,7 @@ import React, { ComponentType } from 'react'
 
 import { render } from '@testing-library/react'
 
-import * as apiQueries from '@gorgias/api-queries'
+import * as apiQueries from '@gorgias/helpdesk-queries'
 
 import { FilterKey, StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
@@ -17,7 +17,7 @@ import LiveVoiceMetrics from '../../components/LiveVoice/LiveVoiceMetrics'
 import LiveVoice from '../LiveVoice'
 
 jest.mock('state/ui/stats/selectors')
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 jest.mock(
     'pages/stats/voice/components/LiveVoice/LiveVoiceFilters',
     () => () => <div>LiveVoiceFilters</div>,

@@ -1,6 +1,6 @@
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
-import { getVoiceQueue, updateVoiceQueue } from '@gorgias/api-client'
+import { getVoiceQueue, updateVoiceQueue } from '@gorgias/helpdesk-client'
 
 import { voiceQueue } from 'fixtures/voiceQueue'
 import history from 'pages/history'
@@ -10,7 +10,7 @@ import { assumeMock } from 'utils/testing'
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import VoiceQueueEditPage from '../VoiceQueueEditPage'
 
-jest.mock('@gorgias/api-client', () => ({
+jest.mock('@gorgias/helpdesk-client', () => ({
     getVoiceQueue: jest.fn(),
     updateVoiceQueue: jest.fn(),
 }))

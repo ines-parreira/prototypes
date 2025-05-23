@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { fromJS } from 'immutable'
 
-import { User } from '@gorgias/api-queries'
+import { User } from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {

@@ -1,4 +1,4 @@
-import { useListLiveCallQueueVoiceCalls } from '@gorgias/api-queries'
+import { useListLiveCallQueueVoiceCalls } from '@gorgias/helpdesk-queries'
 
 import { PaywallConfig, paywallConfigs } from 'config/paywalls'
 import useAppSelector from 'hooks/useAppSelector'

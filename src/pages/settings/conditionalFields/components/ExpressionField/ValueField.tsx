@@ -1,6 +1,6 @@
 import React, { forwardRef, ReactNode } from 'react'
 
-import { CustomFieldConditionExpressionValues } from '@gorgias/api-queries'
+import { CustomFieldConditionExpressionValues } from '@gorgias/helpdesk-queries'
 import { SelectField } from '@gorgias/merchant-ui-kit'
 
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'

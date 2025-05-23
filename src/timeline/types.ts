@@ -1,4 +1,4 @@
-import { TicketStatus } from '@gorgias/api-queries'
+import { TicketStatus } from '@gorgias/helpdesk-queries'
 
 import { SORTABLE_KEY_TO_LABEL, SORTABLE_KEYS } from './constants'
 

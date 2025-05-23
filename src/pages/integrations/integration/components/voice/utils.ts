@@ -7,7 +7,7 @@ import {
     VoiceMessageType,
     VoiceQueue,
     VoiceQueueTargetScope,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { VoiceMessage } from 'models/integration/types'
 

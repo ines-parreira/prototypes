@@ -6,7 +6,7 @@ import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { EmailProvider } from '@gorgias/api-queries'
+import { EmailProvider } from '@gorgias/helpdesk-queries'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { IntegrationType } from 'models/integration/types'

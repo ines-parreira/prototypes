@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import {
     queryKeys,
     useCreateCustomFieldCondition as useCreate,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'

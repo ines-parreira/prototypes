@@ -2,7 +2,7 @@ import {
     CustomFieldCondition,
     queryKeys,
     useListCustomFieldConditions,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { CustomFieldObjectTypes } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'

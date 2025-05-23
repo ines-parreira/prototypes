@@ -1,4 +1,4 @@
-import { CustomFieldDefinition } from '@gorgias/api-types'
+import { CustomFieldDefinition } from '@gorgias/helpdesk-types'
 
 import { ExhaustiveUIDataType } from 'custom-fields/types'
 

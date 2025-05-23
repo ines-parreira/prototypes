@@ -2,7 +2,7 @@ import React, { ComponentProps } from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { CustomFieldCondition } from '@gorgias/api-queries'
+import { CustomFieldCondition } from '@gorgias/helpdesk-queries'
 
 import '@testing-library/jest-dom/extend-expect'
 

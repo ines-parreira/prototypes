@@ -3,7 +3,7 @@ import { fromJS, List, Map } from 'immutable'
 import { cloneDeep } from 'lodash'
 import _find from 'lodash/find'
 
-import { queryKeys } from '@gorgias/api-queries'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { appQueryClient } from 'api/queryClient'
 import { shouldTicketBeDisplayedInRecentChats } from 'business/recentChats'

@@ -2,7 +2,10 @@ import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 
-import { ExpressionFieldSource, ExpressionOperator } from '@gorgias/api-queries'
+import {
+    ExpressionFieldSource,
+    ExpressionOperator,
+} from '@gorgias/helpdesk-queries'
 
 import { useFieldArray, useFormState, UseFormStateReturn } from 'core/forms'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'

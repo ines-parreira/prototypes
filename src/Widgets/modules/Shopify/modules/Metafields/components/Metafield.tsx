@@ -9,8 +9,8 @@ import {
     ShopifyMetafield,
     VolumeShopifyMetafieldData,
     WeightShopifyMetafieldData,
-} from '@gorgias/api-queries'
-import { ShopifyMetafieldType } from '@gorgias/api-types'
+} from '@gorgias/helpdesk-queries'
+import { ShopifyMetafieldType } from '@gorgias/helpdesk-types'
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { DateAndTimeFormatting } from 'constants/datetime'

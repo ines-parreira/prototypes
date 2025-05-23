@@ -1,6 +1,6 @@
 import { PayloadActionCreator } from '@reduxjs/toolkit'
 
-import { Macro } from '@gorgias/api-queries'
+import { Macro } from '@gorgias/helpdesk-queries'
 
 import {
     MACRO_CREATED,

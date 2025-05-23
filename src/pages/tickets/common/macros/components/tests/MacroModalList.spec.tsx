@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { Macro, MacroAction } from '@gorgias/api-queries'
+import { Macro, MacroAction } from '@gorgias/helpdesk-queries'
 
 import shortcutManager from 'services/shortcutManager'
 import { makeExecuteKeyboardAction } from 'utils/testing'

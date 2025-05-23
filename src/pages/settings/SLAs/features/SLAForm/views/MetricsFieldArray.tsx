@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { CreateSLAPolicy } from '@gorgias/api-types'
+import { CreateSLAPolicy } from '@gorgias/helpdesk-types'
 
 import {
     FormField,

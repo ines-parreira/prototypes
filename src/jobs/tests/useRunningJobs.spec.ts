@@ -1,12 +1,12 @@
-import { useListJobs } from '@gorgias/api-queries'
-import { JobStatus } from '@gorgias/api-types'
+import { useListJobs } from '@gorgias/helpdesk-queries'
+import { JobStatus } from '@gorgias/helpdesk-types'
 
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { useRunningJobs } from '../useRunningJobs'
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 const useListJobsMock = assumeMock(useListJobs)
 const jobWithStatus = (status: JobStatus) => ({
     status,

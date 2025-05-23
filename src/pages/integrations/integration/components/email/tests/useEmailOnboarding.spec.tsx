@@ -12,8 +12,8 @@ import {
     EmailIntegration,
     sendVerificationEmail,
     updateIntegration,
-} from '@gorgias/api-client'
-import { HttpResponse, Integration } from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-client'
+import { HttpResponse, Integration } from '@gorgias/helpdesk-queries'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -41,7 +41,7 @@ const queryClient = mockQueryClient()
 const store = mockStore({})
 
 jest.mock('pages/history')
-jest.mock('@gorgias/api-client')
+jest.mock('@gorgias/helpdesk-client')
 jest.mock('state/integrations/actions')
 jest.mock('state/notifications/actions')
 jest.mock('services/socketManager')

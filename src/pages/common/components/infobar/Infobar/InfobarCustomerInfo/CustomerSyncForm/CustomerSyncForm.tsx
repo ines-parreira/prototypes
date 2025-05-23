@@ -12,7 +12,7 @@ import {
     useListCustomerIntegrationsWithChannelDefault,
     useScheduleShopifyCreateNewCustomerAction,
     useScheduleShopifyUpdateCustomerAction,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 import { Button, TextField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'

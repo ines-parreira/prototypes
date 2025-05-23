@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 
-import { ListUsersParams } from '@gorgias/api-queries'
-import { User } from '@gorgias/api-types'
+import { ListUsersParams } from '@gorgias/helpdesk-queries'
+import { User } from '@gorgias/helpdesk-types'
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { OrderDirection } from 'models/api/types'

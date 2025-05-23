@@ -1,6 +1,6 @@
 import { act } from '@testing-library/react'
 
-import { useSearch } from '@gorgias/api-queries'
+import { useSearch } from '@gorgias/helpdesk-queries'
 
 import * as searchTypes from 'models/search/types'
 import { assumeMock } from 'utils/testing'
@@ -16,7 +16,7 @@ jest.mock(
             debounce: jest.fn((fn: () => void) => fn),
         }) as Record<string, any>,
 )
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 
 const useSearchMock = assumeMock(useSearch)
 

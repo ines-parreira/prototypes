@@ -1,19 +1,22 @@
 import { screen, waitFor } from '@testing-library/react'
 
-import { getVoiceQueue } from '@gorgias/api-client'
-import { useGetVoiceQueue, useUpdateVoiceQueue } from '@gorgias/api-queries'
+import { getVoiceQueue } from '@gorgias/helpdesk-client'
+import {
+    useGetVoiceQueue,
+    useUpdateVoiceQueue,
+} from '@gorgias/helpdesk-queries'
 
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 import { assumeMock } from 'utils/testing'
 
 import VoiceQueueBreadcrumbs from '../VoiceQueueBreadcrumbs'
 
-jest.mock('@gorgias/api-client', () => ({
+jest.mock('@gorgias/helpdesk-client', () => ({
     getVoiceQueue: jest.fn(),
 }))
 
-jest.mock('@gorgias/api-queries', () => ({
-    ...jest.requireActual('@gorgias/api-queries'),
+jest.mock('@gorgias/helpdesk-queries', () => ({
+    ...jest.requireActual('@gorgias/helpdesk-queries'),
     useUpdateVoiceQueue: jest.fn(),
     useGetVoiceQueue: jest.fn(),
 }))

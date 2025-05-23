@@ -1,4 +1,4 @@
-import { ShopifyMetafieldType } from '@gorgias/api-types'
+import { ShopifyMetafieldType } from '@gorgias/helpdesk-types'
 
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 

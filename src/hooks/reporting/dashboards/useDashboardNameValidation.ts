@@ -1,7 +1,7 @@
 import {
     AnalyticsCustomReport,
     useListAnalyticsCustomReports,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 const validateDashboardName = (
     name: string,

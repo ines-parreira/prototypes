@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 import {
     queryKeys,
     useUpdateCustomFieldCondition as useUpdate,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { customFieldCondition } from 'fixtures/customFieldCondition'
@@ -20,7 +20,7 @@ import useUpdateCustomFieldCondition from '../useUpdateCustomFieldCondition'
 
 const queryClient = mockQueryClient()
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 const useUpdateCustomFieldConditionMock = assumeMock(useUpdate)
 
 const mockStore = configureMockStore([thunk])()

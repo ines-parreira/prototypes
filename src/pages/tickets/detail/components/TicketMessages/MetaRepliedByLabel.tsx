@@ -1,4 +1,4 @@
-import { useGetTicketMessage } from '@gorgias/api-queries'
+import { useGetTicketMessage } from '@gorgias/helpdesk-queries'
 
 import { ReplyMetaTicketMessage } from 'models/ticket/types'
 import { AgentLabel } from 'pages/common/utils/labels'

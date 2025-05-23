@@ -4,7 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { useParams } from 'react-router-dom'
 
-import { Macro } from '@gorgias/api-queries'
+import { Macro } from '@gorgias/helpdesk-queries'
 
 import { macros as macrosFixtures } from 'fixtures/macro'
 import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'

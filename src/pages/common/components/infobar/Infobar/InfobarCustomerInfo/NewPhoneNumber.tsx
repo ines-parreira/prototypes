@@ -7,7 +7,7 @@ import {
     UpdateCustomerBodyChannelsItem,
     useGetCustomer,
     useUpdateCustomer,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'

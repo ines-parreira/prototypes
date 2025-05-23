@@ -5,7 +5,7 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { Tag, TicketTag } from '@gorgias/api-types'
+import { Tag, TicketTag } from '@gorgias/helpdesk-types'
 
 import useElementSize from 'hooks/useElementSize'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'

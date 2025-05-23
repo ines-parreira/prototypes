@@ -1,6 +1,6 @@
 import { Map } from 'immutable'
 
-import { VoiceCallRecording } from '@gorgias/api-types'
+import { VoiceCallRecording } from '@gorgias/helpdesk-types'
 
 import { RecentChatTicket } from 'business/types/recentChats'
 import { TicketChannel } from 'business/types/ticket'

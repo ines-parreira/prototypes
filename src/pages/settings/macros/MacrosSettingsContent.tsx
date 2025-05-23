@@ -3,7 +3,11 @@ import React, { useCallback, useEffect, useState } from 'react'
 import classnames from 'classnames'
 import { NavLink, useRouteMatch } from 'react-router-dom'
 
-import { ListMacrosParams, Macro, useListMacros } from '@gorgias/api-queries'
+import {
+    ListMacrosParams,
+    Macro,
+    useListMacros,
+} from '@gorgias/helpdesk-queries'
 
 import { useCreateMacro, useDeleteMacro } from 'hooks/macros'
 import useAppDispatch from 'hooks/useAppDispatch'

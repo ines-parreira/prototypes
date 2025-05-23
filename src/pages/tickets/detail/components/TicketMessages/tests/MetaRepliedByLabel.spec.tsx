@@ -3,7 +3,7 @@ import React from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 
-import { useGetTicketMessage } from '@gorgias/api-queries'
+import { useGetTicketMessage } from '@gorgias/helpdesk-queries'
 
 import MetaRepliedByLabel from 'pages/tickets/detail/components/TicketMessages/MetaRepliedByLabel'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -11,7 +11,7 @@ import { assumeMock } from 'utils/testing'
 
 const queryClient = mockQueryClient()
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 const mockUseGetTicketMessage = assumeMock(useGetTicketMessage)
 
 describe('MetaRepliedByLabel', () => {

@@ -10,7 +10,7 @@ import { LDFlagSet } from 'launchdarkly-js-client-sdk'
 import { withLDConsumer } from 'launchdarkly-react-client-sdk'
 import { Badge } from 'reactstrap'
 
-import { File, MacroAction } from '@gorgias/api-queries'
+import { File, MacroAction } from '@gorgias/helpdesk-queries'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { ActionTemplateExecution } from 'config'

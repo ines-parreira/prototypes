@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 import { List } from 'immutable'
 
-import { ListTagsParams, Tag } from '@gorgias/api-queries'
+import { ListTagsParams, Tag } from '@gorgias/helpdesk-queries'
 
 import client from 'models/api/resources'
 import { fetchTags as fetchTagsResources } from 'models/tag/resources'

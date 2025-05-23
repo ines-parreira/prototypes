@@ -1,7 +1,7 @@
 import { ContentState, EditorState, SelectionState } from 'draft-js'
 import { fromJS, List, Map } from 'immutable'
 
-import { TicketVia } from '@gorgias/api-types'
+import { TicketVia } from '@gorgias/helpdesk-types'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import { ticket } from 'fixtures/ticket'

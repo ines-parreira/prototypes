@@ -9,7 +9,7 @@ import {
     queryKeys,
     useCreateSlaPolicy,
     useUpdateSlaPolicy,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock, mockStore } from 'utils/testing'
@@ -18,8 +18,8 @@ import { renderHook } from 'utils/testing/renderHook'
 import { SLAFormValues } from '../useFormValues'
 import useSubmitPolicy from '../useSubmitPolicy'
 
-jest.mock('@gorgias/api-queries', () => ({
-    ...jest.requireActual('@gorgias/api-queries'),
+jest.mock('@gorgias/helpdesk-queries', () => ({
+    ...jest.requireActual('@gorgias/helpdesk-queries'),
     useCreateSlaPolicy: jest.fn(),
     useUpdateSlaPolicy: jest.fn(),
 }))

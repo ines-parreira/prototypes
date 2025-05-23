@@ -2,7 +2,7 @@ import {
     Ticket,
     TicketCompact,
     TicketStatus as TicketStatusType,
-} from '@gorgias/api-types'
+} from '@gorgias/helpdesk-types'
 
 import { StatusLabel } from 'pages/common/utils/labels'
 

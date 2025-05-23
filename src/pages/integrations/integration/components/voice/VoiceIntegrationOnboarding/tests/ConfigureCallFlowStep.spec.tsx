@@ -2,7 +2,7 @@ import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { PhoneFunction } from '@gorgias/api-queries'
+import { PhoneFunction } from '@gorgias/helpdesk-queries'
 
 import { FormField, FormSubmitButton, useFormContext } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'

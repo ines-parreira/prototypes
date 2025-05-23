@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import { isEmpty } from 'lodash'
 
 import { Card } from '@gorgias/analytics-ui-kit'
-import { EmailDomain } from '@gorgias/api-queries'
+import { EmailDomain } from '@gorgias/helpdesk-queries'
 
 import { EmailProvider } from 'models/integration/constants'
 import {

@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import cn from 'classnames'
 
-import { TicketQAScoreDimension } from '@gorgias/api-queries'
+import { TicketQAScoreDimension } from '@gorgias/helpdesk-queries'
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { dimensionOrderOfManualDimensions } from 'auto_qa/config'

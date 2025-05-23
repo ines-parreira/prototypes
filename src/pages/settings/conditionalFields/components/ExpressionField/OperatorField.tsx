@@ -3,7 +3,7 @@ import React, { forwardRef } from 'react'
 import {
     CustomFieldConditionExpressionField,
     ExpressionOperator,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 import { SelectField } from '@gorgias/merchant-ui-kit'
 
 import { useFormContext } from 'core/forms'

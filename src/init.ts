@@ -14,7 +14,7 @@ import {
 } from 'chart.js'
 import moment from 'moment-timezone'
 
-import { setDefaultConfig } from '@gorgias/api-queries'
+import { setDefaultConfig } from '@gorgias/helpdesk-queries'
 
 import './polyfills'
 

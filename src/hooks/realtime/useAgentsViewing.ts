@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { User } from '@gorgias/api-queries'
+import { User } from '@gorgias/helpdesk-queries'
 import { useAgentActivity } from '@gorgias/realtime'
 
 import { FeatureFlagKey } from 'config/featureFlags'

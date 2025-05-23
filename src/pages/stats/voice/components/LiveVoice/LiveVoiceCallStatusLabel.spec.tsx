@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 
-import { VoiceCallDirection } from '@gorgias/api-queries'
+import { VoiceCallDirection } from '@gorgias/helpdesk-queries'
 
 import { VoiceCallStatus } from 'models/voiceCall/types'
 import { assumeMock } from 'utils/testing'

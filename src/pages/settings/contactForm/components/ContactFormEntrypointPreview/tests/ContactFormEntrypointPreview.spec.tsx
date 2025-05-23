@@ -8,7 +8,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { IntegrationType } from '@gorgias/api-queries'
+import { IntegrationType } from '@gorgias/helpdesk-queries'
 
 import { useListWorkflowEntryPoints } from 'models/workflows/queries'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'

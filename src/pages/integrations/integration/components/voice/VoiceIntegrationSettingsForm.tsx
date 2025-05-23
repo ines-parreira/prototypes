@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { PhoneIntegration } from '@gorgias/api-queries'
+import { PhoneIntegration } from '@gorgias/helpdesk-queries'
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'

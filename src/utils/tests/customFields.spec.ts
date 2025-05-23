@@ -1,5 +1,5 @@
-import { Macro } from '@gorgias/api-queries'
-import { RequirementType } from '@gorgias/api-types'
+import { Macro } from '@gorgias/helpdesk-queries'
+import { RequirementType } from '@gorgias/helpdesk-types'
 
 import { ticketInputFieldDefinition } from 'fixtures/customField'
 import { macroFixture, setCustomFieldValueAction } from 'fixtures/macro'

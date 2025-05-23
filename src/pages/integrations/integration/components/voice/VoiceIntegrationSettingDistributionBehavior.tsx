@@ -1,4 +1,4 @@
-import { UpdateAllPhoneIntegrationSettings } from '@gorgias/api-queries'
+import { UpdateAllPhoneIntegrationSettings } from '@gorgias/helpdesk-queries'
 
 import { FormField, useFormContext } from 'core/forms'
 import CheckBoxField from 'pages/common/forms/CheckBoxField'

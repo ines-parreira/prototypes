@@ -10,7 +10,7 @@ import {
     EmailIntegration,
     EmailProvider,
     GmailIntegration,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { IntegrationType, OutlookIntegration } from 'models/integration/types'

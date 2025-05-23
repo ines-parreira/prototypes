@@ -1,4 +1,4 @@
-import { User } from '@gorgias/api-queries'
+import { User } from '@gorgias/helpdesk-queries'
 
 import {
     AvailabilityStatusTag,

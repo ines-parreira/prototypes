@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
-import { Tag, useListSlaPolicies } from '@gorgias/api-queries'
+import { Tag, useListSlaPolicies } from '@gorgias/helpdesk-queries'
 
 import { useGetCustomFieldDefinitions } from 'custom-fields/hooks/queries/queries'
 import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
@@ -74,7 +74,7 @@ const mockedLocales = [
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
     useSupportedLocales: () => mockedLocales,
 }))
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 const useListSlaPoliciesMock = assumeMock(useListSlaPolicies)
 jest.mock('custom-fields/hooks/queries/queries')
 const useGetCustomFieldDefinitionsMock = assumeMock(

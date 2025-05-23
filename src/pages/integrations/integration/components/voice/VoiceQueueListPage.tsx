@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-import { VoiceQueue } from '@gorgias/api-queries'
+import { VoiceQueue } from '@gorgias/helpdesk-queries'
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import { useInfiniteListVoiceQueues } from 'hooks/reporting/common/useInfiniteListVoiceQueues'

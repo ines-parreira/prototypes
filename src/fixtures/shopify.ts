@@ -3,7 +3,7 @@ import {
     RatingShopifyMetafield,
     VolumeShopifyMetafield,
     WeightShopifyMetafield,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 import {
     BooleanShopifyMetafield,
     CollectionReferenceListShopifyMetafield,
@@ -43,7 +43,7 @@ import {
     VariantReferenceShopifyMetafield,
     VolumeListShopifyMetafield,
     WeightListShopifyMetafield,
-} from '@gorgias/api-types'
+} from '@gorgias/helpdesk-types'
 
 import {
     Address,

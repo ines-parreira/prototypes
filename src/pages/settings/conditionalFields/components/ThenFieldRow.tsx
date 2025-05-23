@@ -1,4 +1,4 @@
-import { ExpressionFieldType } from '@gorgias/api-types'
+import { ExpressionFieldType } from '@gorgias/helpdesk-types'
 
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import { CustomFieldDefinition } from 'custom-fields/types'

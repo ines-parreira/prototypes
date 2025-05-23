@@ -1,4 +1,4 @@
-import { useGetTicket } from '@gorgias/api-queries'
+import { useGetTicket } from '@gorgias/helpdesk-queries'
 
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -6,7 +6,7 @@ import { useAllEvents } from '../useAllEvents'
 import { useAllVoiceCalls } from '../useAllVoiceCalls'
 import { useTicket } from '../useTicket'
 
-jest.mock('@gorgias/api-queries', () => ({ useGetTicket: jest.fn() }))
+jest.mock('@gorgias/helpdesk-queries', () => ({ useGetTicket: jest.fn() }))
 const useGetTicketMock = useGetTicket as jest.Mock
 
 jest.mock('../../transformers', () => ({ transformers: [] }))

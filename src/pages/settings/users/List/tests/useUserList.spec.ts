@@ -1,12 +1,12 @@
 import { act, waitFor } from '@testing-library/react'
 import axios from 'axios'
 
-import { listUsers } from '@gorgias/api-client'
-import { useListUsers } from '@gorgias/api-queries'
+import { listUsers } from '@gorgias/helpdesk-client'
+import { useListUsers } from '@gorgias/helpdesk-queries'
 import {
     ListUsersOrderBy,
     ListUsersRelationshipsItem,
-} from '@gorgias/api-types'
+} from '@gorgias/helpdesk-types'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
@@ -17,8 +17,8 @@ import { renderHook } from 'utils/testing/renderHook'
 
 import { STALE_TIME_MS, USERS_PER_PAGE, useUserList } from '../useUserList'
 
-jest.mock('@gorgias/api-queries')
-jest.mock('@gorgias/api-client')
+jest.mock('@gorgias/helpdesk-queries')
+jest.mock('@gorgias/helpdesk-client')
 const mockedUseListUsers = jest.mocked(useListUsers)
 const mockedListUsers = jest.mocked(listUsers)
 

@@ -2,7 +2,7 @@ import { UIEventHandler, useEffect, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { Tag } from '@gorgias/api-queries'
+import { Tag } from '@gorgias/helpdesk-queries'
 
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { calculateDecile } from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'

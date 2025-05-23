@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { AnalyticsFilter } from '@gorgias/api-queries'
+import { AnalyticsFilter } from '@gorgias/helpdesk-queries'
 
 import { TicketChannel } from 'business/types/ticket'
 import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'

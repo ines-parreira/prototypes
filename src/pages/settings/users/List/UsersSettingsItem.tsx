@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { User } from '@gorgias/api-types'
+import { User } from '@gorgias/helpdesk-types'
 import { Badge, ColorType } from '@gorgias/merchant-ui-kit'
 
 import { AvailabilityStatusTag, UserRole } from 'config/types/user'

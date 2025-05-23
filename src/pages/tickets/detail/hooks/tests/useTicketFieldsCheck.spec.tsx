@@ -1,12 +1,12 @@
 import { Map as mockMap } from 'immutable'
 
-import { RequirementType } from '@gorgias/api-queries'
+import { RequirementType } from '@gorgias/helpdesk-queries'
 import {
     ExpressionFieldSource,
     ExpressionFieldType,
     ExpressionOperator,
     TicketStatus,
-} from '@gorgias/api-types'
+} from '@gorgias/helpdesk-types'
 
 import { useCustomFieldConditions } from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'

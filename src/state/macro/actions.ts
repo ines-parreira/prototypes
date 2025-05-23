@@ -1,7 +1,7 @@
 import axios, { AxiosError, CancelToken } from 'axios'
 import { fromJS, List, Map } from 'immutable'
 
-import { ListMacrosParams, Macro } from '@gorgias/api-queries'
+import { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
 
 import client from 'models/api/resources'
 import { fetchMacros as fetchMacrosRequest } from 'models/macro/resources'

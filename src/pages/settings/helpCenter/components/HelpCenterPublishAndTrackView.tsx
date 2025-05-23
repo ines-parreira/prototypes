@@ -6,7 +6,7 @@ import { get } from 'lodash'
 import _debounce from 'lodash/debounce'
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
 
-import { IntegrationType } from '@gorgias/api-queries'
+import { IntegrationType } from '@gorgias/helpdesk-queries'
 
 import warningIcon from 'assets/img/icons/warning2.svg'
 import { logEvent, SegmentEvent } from 'common/segment'

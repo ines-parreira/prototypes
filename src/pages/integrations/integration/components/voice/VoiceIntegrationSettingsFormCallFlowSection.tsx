@@ -1,4 +1,4 @@
-import { CustomRecordingType } from '@gorgias/api-types'
+import { CustomRecordingType } from '@gorgias/helpdesk-types'
 
 import { FormField } from 'core/forms'
 import Accordion from 'pages/common/components/accordion/Accordion'

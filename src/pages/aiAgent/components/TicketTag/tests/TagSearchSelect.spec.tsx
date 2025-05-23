@@ -2,7 +2,7 @@ import React, { ComponentProps } from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { Tag } from '@gorgias/api-queries'
+import { Tag } from '@gorgias/helpdesk-queries'
 
 import { TagDropdownMenu } from 'tags'
 

@@ -6,7 +6,7 @@ import _isEqual from 'lodash/isEqual'
 import moment from 'moment-timezone'
 import { Table } from 'reactstrap'
 
-import { CursorPaginationMeta } from '@gorgias/api-queries'
+import { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

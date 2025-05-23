@@ -10,7 +10,7 @@ import {
     PhoneIntegration,
     updateAllPhoneSettings,
     VoiceMessageType,
-} from '@gorgias/api-client'
+} from '@gorgias/helpdesk-client'
 
 import { integrationsState } from 'fixtures/integrations'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -34,7 +34,7 @@ import {
 
 const queryClient = mockQueryClient()
 
-jest.mock('@gorgias/api-client')
+jest.mock('@gorgias/helpdesk-client')
 const updateAllPhoneSettingsMock = assumeMock(updateAllPhoneSettings)
 const deleteIntegrationMock = assumeMock(deleteIntegration)
 

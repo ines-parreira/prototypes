@@ -1,4 +1,4 @@
-import { useGetTicketMessage } from '@gorgias/api-queries'
+import { useGetTicketMessage } from '@gorgias/helpdesk-queries'
 
 import { Actor, ReplyMetaTicketMessage, Source } from 'models/ticket/types'
 import TicketMessageEmbeddedCard from 'pages/common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'

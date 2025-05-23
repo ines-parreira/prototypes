@@ -7,7 +7,7 @@ import moment from 'moment'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { JobType } from '@gorgias/api-queries'
+import { JobType } from '@gorgias/helpdesk-queries'
 
 import { baseView, getExpirationTimeForCount } from 'config/views'
 import { customer } from 'fixtures/customer'

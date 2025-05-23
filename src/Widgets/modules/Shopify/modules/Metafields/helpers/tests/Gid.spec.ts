@@ -1,4 +1,4 @@
-import { ShopifyMetafieldType } from '@gorgias/api-queries'
+import { ShopifyMetafieldType } from '@gorgias/helpdesk-queries'
 
 import { extractGid, prepareGidUrl } from '../Gid'
 

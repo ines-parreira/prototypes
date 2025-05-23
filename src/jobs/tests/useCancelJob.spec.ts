@@ -1,6 +1,6 @@
 import { POSITIONS } from 'reapop'
 
-import { useCancelJob as useCancelJobQuery } from '@gorgias/api-queries'
+import { useCancelJob as useCancelJobQuery } from '@gorgias/helpdesk-queries'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { notify } from 'state/notifications/actions'
@@ -15,7 +15,7 @@ import useCancelJob from '../useCancelJob'
 
 jest.mock('reapop')
 
-jest.mock('@gorgias/api-queries')
+jest.mock('@gorgias/helpdesk-queries')
 const useCancelJobMock = assumeMock(useCancelJobQuery)
 
 jest.mock('state/notifications/actions')

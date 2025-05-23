@@ -8,8 +8,8 @@ import {
     PhoneRingingBehaviour,
     UpdateVoiceQueue,
     VoiceQueueTargetScope,
-} from '@gorgias/api-queries'
-import * as validators from '@gorgias/api-validators'
+} from '@gorgias/helpdesk-queries'
+import * as validators from '@gorgias/helpdesk-validators'
 
 import { FormField } from 'core/forms/components/FormField'
 import { voiceQueue } from 'fixtures/voiceQueue'
@@ -28,7 +28,7 @@ import { getVoiceQueueEditableFields } from '../utils'
 import VoiceQueueSettingsForm from '../VoiceQueueSettingsForm'
 import { QUEUE_DEFAULT_WAIT_MUSIC_PREFERENCES } from '../waitMusicLibraryConstants'
 
-jest.mock('@gorgias/api-validators', () => ({
+jest.mock('@gorgias/helpdesk-validators', () => ({
     validateCreateVoiceQueue: jest.fn(),
     validateUpdateVoiceQueue: jest.fn(),
 }))

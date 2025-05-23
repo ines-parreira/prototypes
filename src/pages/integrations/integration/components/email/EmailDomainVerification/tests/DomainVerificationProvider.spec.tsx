@@ -9,7 +9,7 @@ import {
     HttpResponse,
     updateEmailIntegrationDomain,
     verifyEmailIntegrationDomain,
-} from '@gorgias/api-client'
+} from '@gorgias/helpdesk-client'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
@@ -27,7 +27,7 @@ import useDomainVerification from '../useDomainVerification'
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('state/notifications/actions')
-jest.mock('@gorgias/api-client')
+jest.mock('@gorgias/helpdesk-client')
 jest.mock('../../helpers')
 
 const queryClient = mockQueryClient()

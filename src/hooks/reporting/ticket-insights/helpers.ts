@@ -1,6 +1,6 @@
 import { orderBy } from 'lodash'
 
-import { Tag } from '@gorgias/api-queries'
+import { Tag } from '@gorgias/helpdesk-queries'
 
 import { TagSelection } from 'hooks/reporting/tags/useTagResultsSelection'
 import {

@@ -2,12 +2,12 @@ import { useContext } from 'react'
 
 import { render, waitFor } from '@testing-library/react'
 
-import { useListVoiceQueues } from '@gorgias/api-queries'
+import { useListVoiceQueues } from '@gorgias/helpdesk-queries'
 
 import { VoiceQueueContext } from './VoiceQueueContext'
 import VoiceQueueProvider from './VoiceQueueProvider'
 
-jest.mock('@gorgias/api-queries', () => ({
+jest.mock('@gorgias/helpdesk-queries', () => ({
     useListVoiceQueues: jest.fn(),
 }))
 

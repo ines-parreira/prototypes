@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios'
 
-import { useCancelJob as useCancelJobQuery } from '@gorgias/api-queries'
+import { useCancelJob as useCancelJobQuery } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'

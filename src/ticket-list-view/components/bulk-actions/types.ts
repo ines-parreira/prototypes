@@ -1,4 +1,4 @@
-import { JobType } from '@gorgias/api-queries'
+import { JobType } from '@gorgias/helpdesk-queries'
 
 import { Item } from 'components/Dropdown'
 import { Update } from 'jobs'

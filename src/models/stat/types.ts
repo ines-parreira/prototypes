@@ -1,4 +1,4 @@
-import { CursorPaginationMeta } from '@gorgias/api-queries'
+import { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
 import { ReportingGranularity } from 'models/reporting/types'
 import { ReportIssueReasons } from 'models/selfServiceConfiguration/types'

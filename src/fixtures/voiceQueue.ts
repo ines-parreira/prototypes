@@ -3,7 +3,7 @@ import {
     VoiceQueue,
     VoiceQueueTargetScope,
     WaitMusicType,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 export const voiceQueue: VoiceQueue = {
     id: 1,

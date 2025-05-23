@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import type { TicketMessage } from '@gorgias/api-types'
+import type { TicketMessage } from '@gorgias/helpdesk-types'
 
 import { TicketBareMessage } from '../TicketBareMessage'
 

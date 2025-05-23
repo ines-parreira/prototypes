@@ -1,18 +1,18 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 
-import { listIntegrations } from '@gorgias/api-client'
+import { listIntegrations } from '@gorgias/helpdesk-client'
 import type {
     HttpResponse,
     Integration,
     ListIntegrations200,
-} from '@gorgias/api-client'
+} from '@gorgias/helpdesk-client'
 
 import { renderHook } from 'utils/testing/renderHook'
 
 import useAllIntegrations from '../useAllIntegrations'
 
-jest.mock('@gorgias/api-client', () => ({
+jest.mock('@gorgias/helpdesk-client', () => ({
     listIntegrations: jest.fn(),
 }))
 

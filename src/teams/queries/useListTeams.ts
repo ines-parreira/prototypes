@@ -5,7 +5,7 @@ import {
     UseInfiniteQueryOptions,
 } from '@tanstack/react-query'
 
-import { queryKeys } from '@gorgias/api-queries'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { handleError } from 'hooks/agents/errorHandler'
 import useAppDispatch from 'hooks/useAppDispatch'

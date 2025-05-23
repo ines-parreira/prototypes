@@ -11,7 +11,7 @@ import {
     useGetEmailIntegrationDomain,
     useUpdateEmailIntegrationDomain,
     useVerifyEmailIntegrationDomain,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useInterval from 'hooks/useInterval'

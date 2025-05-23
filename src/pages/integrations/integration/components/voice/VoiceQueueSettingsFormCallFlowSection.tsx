@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import {
     PhoneRingingBehaviour,
     VoiceQueueTargetScope,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 import {
     Banner,
     Button,

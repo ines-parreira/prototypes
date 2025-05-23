@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { useFormContext } from 'react-hook-form'
 
-import { PhoneFunction } from '@gorgias/api-queries'
+import { PhoneFunction } from '@gorgias/helpdesk-queries'
 
 import { FormField } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'

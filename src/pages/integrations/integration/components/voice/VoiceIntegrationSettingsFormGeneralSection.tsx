@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import {
     PhoneIntegration,
     UpdateAllPhoneIntegrationSettings,
-} from '@gorgias/api-queries'
+} from '@gorgias/helpdesk-queries'
 import { Label } from '@gorgias/merchant-ui-kit'
 
 import { FormField } from 'core/forms'

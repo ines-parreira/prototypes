@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { useListTickets } from '@gorgias/api-queries'
+import { useListTickets } from '@gorgias/helpdesk-queries'
 
 import { TICKET_FETCH_STALE_TIME, TICKET_FETCHED_LIMIT } from '../constants'
 
