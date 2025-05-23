@@ -6,6 +6,7 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
+import { getAiShoppingAssistantTrialExtensionEnabledFlag } from 'pages/aiAgent/Activation/utils'
 import { AIButton } from 'pages/common/components/AIButton/AIButton'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 
@@ -21,6 +22,8 @@ const AiShoppingAssistantExpireBanner: React.FC<
         FeatureFlagKey.AiSalesAgentBypassPlanCheck,
         false,
     )
+    const trialExtensionPeriodInDays =
+        getAiShoppingAssistantTrialExtensionEnabledFlag()
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
     const hasNewAutomatePlan = (currentAutomatePlan?.generation ?? 0) >= 6
 
@@ -35,8 +38,13 @@ const AiShoppingAssistantExpireBanner: React.FC<
 
         const deactiveDate = moment(deactiveDatetime)
         const currentDate = moment()
+        if (trialExtensionPeriodInDays) {
+            return deactiveDate
+                .add(trialExtensionPeriodInDays, 'days')
+                .diff(currentDate, 'days')
+        }
         return deactiveDate.diff(currentDate, 'days')
-    }, [deactiveDatetime])
+    }, [deactiveDatetime, trialExtensionPeriodInDays])
 
     if (
         days === undefined ||

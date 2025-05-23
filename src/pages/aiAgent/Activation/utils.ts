@@ -17,6 +17,15 @@ export const getAiShoppingAssistantTrialEnabledFlag = () => {
     )
 }
 
+export const getAiShoppingAssistantTrialExtensionEnabledFlag = (): number => {
+    const launchDarklyClient = getLDClient()
+    return (
+        launchDarklyClient?.variation(
+            FeatureFlagKey.AiShoppingAssistantTrialExtension,
+        ) ?? 0
+    )
+}
+
 export const SalesEarlyAccessUtils = (accountId: number) => ({
     get modalDisplayedAtKey() {
         return `account-${accountId}.aiSalesAgentEarlyAccessModalDisplayedAt`

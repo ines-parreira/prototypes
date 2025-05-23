@@ -1,7 +1,12 @@
+import moment from 'moment'
+
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 
-import { getAiShoppingAssistantTrialEnabledFlag } from '../Activation/utils'
+import {
+    getAiShoppingAssistantTrialEnabledFlag,
+    getAiShoppingAssistantTrialExtensionEnabledFlag,
+} from '../Activation/utils'
 
 export enum TrialState {
     NotTrial = 'notTrial',
@@ -32,6 +37,9 @@ export const isStoreEligibleForTrial = (storeActivation: StoreActivation) => {
 export const getAiSalesAgentTrialState = (
     storeConfiguration: StoreConfiguration,
 ): TrialState => {
+    const trialExtensionPeriodInDays =
+        getAiShoppingAssistantTrialExtensionEnabledFlag()
+
     const trialEnd = storeConfiguration.salesDeactivatedDatetime
     const now = new Date()
 
@@ -41,6 +49,14 @@ export const getAiSalesAgentTrialState = (
             return TrialState.Trial
         }
         if (trialEndDate < now) {
+            if (
+                trialExtensionPeriodInDays &&
+                moment(trialEndDate)
+                    .add(trialExtensionPeriodInDays, 'days')
+                    .isAfter(now)
+            ) {
+                return TrialState.Trial
+            }
             return TrialState.TrialEnded
         }
     }

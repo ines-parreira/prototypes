@@ -1,12 +1,19 @@
 import { StoreConfiguration } from 'models/aiAgent/types'
+import { getAiShoppingAssistantTrialExtensionEnabledFlag } from 'pages/aiAgent/Activation/utils'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import {
     getAiSalesAgentTrialState,
     isAccountPartOfCanduTrial,
     TrialState,
 } from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('models/aiAgent/resources/configuration')
+
+jest.mock('pages/aiAgent/Activation/utils')
+const getAiShoppingAssistantTrialExtensionEnabledFlagMock = assumeMock(
+    getAiShoppingAssistantTrialExtensionEnabledFlag,
+)
 
 describe('aiSalesAgentTrialUtils', () => {
     beforeAll(() => {
@@ -80,6 +87,22 @@ describe('aiSalesAgentTrialUtils', () => {
             const result = getAiSalesAgentTrialState(storeConfiguration)
 
             expect(result).toBe(TrialState.TrialEnded)
+        })
+
+        it('should return TrialState.Trial if the trial is extended for 3 days', () => {
+            getAiShoppingAssistantTrialExtensionEnabledFlagMock.mockReturnValue(
+                3,
+            )
+            const currentDate = new Date('2023-01-01T00:00:00Z')
+            jest.setSystemTime(currentDate)
+            const storeConfiguration = getStoreConfigurationFixture({
+                salesDeactivatedDatetime: new Date(
+                    currentDate.getTime() - 10000,
+                ).toISOString(),
+            })
+            const result = getAiSalesAgentTrialState(storeConfiguration)
+
+            expect(result).toBe(TrialState.Trial)
         })
 
         it('should return undefined if salesDeactivatedDatetime is not defined', () => {
