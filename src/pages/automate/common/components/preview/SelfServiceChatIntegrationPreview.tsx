@@ -74,9 +74,6 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
                     SELF_SERVICE_PREVIEW_ROUTES.REPORT_ISSUE &&
                     !reportOrderIssueReason?.action?.showHelpfulPrompt)
             }
-            renderPoweredBy={
-                location.pathname === SELF_SERVICE_PREVIEW_ROUTES.HOME
-            }
             autoResponderEnabled={meta.preferences?.auto_responder?.enabled}
             autoResponderReply={meta.preferences?.auto_responder?.reply}
             hideButton

@@ -45,7 +45,6 @@ import {
     getThemeBasedOnContrast,
 } from './color-utils'
 import CustomizedChatLauncher from './CustomizedChatLauncher'
-import GorgiasChatPoweredBy from './GorgiasChatPoweredBy'
 import { AddIcon, PlaneIcon } from './icon-utils'
 import PrivacyPolicyDisclaimer from './PrivacyPolicyDisclaimer'
 
@@ -84,7 +83,6 @@ type Props = {
     children: ReactNode
     renderFooter?: boolean
     renderPrivacyPolicyDisclaimer?: boolean
-    renderPoweredBy?: boolean
     position?: GorgiasChatPosition
     editedPositionAxis?: PositionAxis | null
     autoResponderEnabled?: boolean
@@ -120,7 +118,6 @@ const ChatIntegrationPreview = (props: Props) => {
         renderFooter = true,
         renderPrivacyPolicyDisclaimer = false,
         privacyPolicyDisclaimerText = '',
-        renderPoweredBy = false,
         position = {
             alignment: GorgiasChatPositionAlignmentEnum.BOTTOM_RIGHT,
             offsetX: 0,
@@ -370,12 +367,6 @@ const ChatIntegrationPreview = (props: Props) => {
                                         privacyPolicyDisclaimerText
                                     }
                                     variant="collapsed"
-                                />
-                            )}
-
-                            {renderPoweredBy && (
-                                <GorgiasChatPoweredBy
-                                    translatedTexts={translatedTexts}
                                 />
                             )}
 

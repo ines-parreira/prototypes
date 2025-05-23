@@ -800,14 +800,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends Component<
             }
         }
 
-        const previewRenderPoweredBy = (preview: string) => {
-            return (
-                preview === PREVIEW_CONTROL_TICKET_VOLUME ||
-                (preview === PREVIEW_PRIVACY_POLICY_DISCLAIMER &&
-                    selfServiceConfigurationEnabled)
-            )
-        }
-
         const showPrivacyPolicyDisclaimer =
             !!flags?.[FeatureFlagKey.ChatPrivacyPolicyDisclaimer]
 
@@ -851,7 +843,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends Component<
                     this.state.privacyPolicyDisclaimerText ||
                     widgetTranslatedTexts.privacyPolicyDisclaimer
                 }
-                renderPoweredBy={previewRenderPoweredBy(preview)}
                 isWidgetConversation={previewIsWidgetConversation(preview)}
                 backgroundColorStyle={integration.getIn(
                     ['decoration', 'background_color_style'],

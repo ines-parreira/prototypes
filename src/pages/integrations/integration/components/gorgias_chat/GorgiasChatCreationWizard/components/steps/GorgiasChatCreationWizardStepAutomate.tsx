@@ -313,7 +313,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                         integration={integration}
                         isOpen
                         showStatusToggle={false}
-                        renderPoweredBy={isPreviewHomePage}
                         renderFooter={false}
                         isWidgetConversation={!isPreviewHomePage}
                         showGoBackButton

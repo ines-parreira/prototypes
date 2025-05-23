@@ -13,7 +13,6 @@ import { GorgiasChatAvatarSettings } from 'models/integration/types'
 import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 
 import ConversationAvatars from './ConversationAvatars'
-import GorgiasChatPoweredBy from './GorgiasChatPoweredBy'
 import { AddIcon, BoxIcon, ChevronRightIcon, PlaneIcon } from './icon-utils'
 import PrivacyPolicyDisclaimer from './PrivacyPolicyDisclaimer'
 
@@ -76,9 +75,7 @@ const ChatHomePreview: React.FC<Props> = ({
                                 variant="expanded"
                             />
                         )}
-                        <GorgiasChatPoweredBy
-                            translatedTexts={translatedTexts}
-                        />
+
                         <ChatMessageInput
                             aria-label={'Gorgias message input'}
                             placeholder={translatedTexts.inputPlaceholder}

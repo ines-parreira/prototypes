@@ -50,7 +50,6 @@ type Props = {
     showOfflineMessages?: boolean
     isWidgetConversation?: boolean
     showGoBackButton?: boolean
-    renderPoweredBy?: boolean
     renderFooter?: boolean
     children?: React.ReactNode
 }
@@ -68,7 +67,6 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
     showOfflineMessages: showOfflineMessagesProp,
     isWidgetConversation,
     showGoBackButton,
-    renderPoweredBy,
     renderFooter,
     children,
 }) => {
@@ -226,7 +224,6 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
                     GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT
                 }
                 autoResponderReply={GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC}
-                renderPoweredBy={renderPoweredBy}
                 avatar={avatar}
                 displayBotLabel={displayBotLabel}
                 useMainColorOutsideBusinessHours={

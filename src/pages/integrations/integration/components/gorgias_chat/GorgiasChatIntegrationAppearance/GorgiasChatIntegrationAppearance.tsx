@@ -771,10 +771,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 launcher={state.launcher}
                 isOpen={isChatOpenInPreview}
                 renderFooter={isOnline && preview === PREVIEW_CONVERSATION}
-                renderPoweredBy={
-                    preview === PREVIEW_HOME_PAGE &&
-                    selfServiceConfigurationEnabled
-                }
                 isWidgetConversation={preview === PREVIEW_CONVERSATION}
                 backgroundColorStyle={backgroundColorStyle}
                 headerPictureUrl={
