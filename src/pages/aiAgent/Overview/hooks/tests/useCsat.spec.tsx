@@ -52,19 +52,16 @@ describe('useCsat', () => {
         useGetStoresConfigurationForAccountMock.mockReturnValue({
             isLoading: false,
             data: {
-                data: {
-                    storeConfigurations: [
-                        {
-                            emailChannelDeactivatedDatetime: null,
-                            storeName: 'My Phone Integration 1',
-                        },
-                        {
-                            emailChannelDeactivatedDatetime:
-                                '2025-02-25T11:17:10Z',
-                            storeName: 'My Phone Integration 2',
-                        },
-                    ],
-                },
+                storeConfigurations: [
+                    {
+                        emailChannelDeactivatedDatetime: null,
+                        storeName: 'My Phone Integration 1',
+                    },
+                    {
+                        emailChannelDeactivatedDatetime: '2025-02-25T11:17:10Z',
+                        storeName: 'My Phone Integration 2',
+                    },
+                ],
             },
         } as any)
 
@@ -98,20 +95,16 @@ describe('useCsat', () => {
         useGetStoresConfigurationForAccountMock.mockReturnValue({
             isLoading: false,
             data: {
-                data: {
-                    storeConfigurations: [
-                        {
-                            emailChannelDeactivatedDatetime:
-                                '2025-02-25T11:17:10Z',
-                            storeName: 'My Phone Integration 1',
-                        },
-                        {
-                            emailChannelDeactivatedDatetime:
-                                '2025-02-25T11:17:10Z',
-                            storeName: 'My Phone Integration 2',
-                        },
-                    ],
-                },
+                storeConfigurations: [
+                    {
+                        emailChannelDeactivatedDatetime: '2025-02-25T11:17:10Z',
+                        storeName: 'My Phone Integration 1',
+                    },
+                    {
+                        emailChannelDeactivatedDatetime: '2025-02-25T11:17:10Z',
+                        storeName: 'My Phone Integration 2',
+                    },
+                ],
             },
         } as any)
 
@@ -134,19 +127,16 @@ describe('useCsat', () => {
         useGetStoresConfigurationForAccountMock.mockReturnValue({
             isLoading: false,
             data: {
-                data: {
-                    storeConfigurations: [
-                        {
-                            emailChannelDeactivatedDatetime: null,
-                            storeName: 'My Phone Integration 1',
-                        },
-                        {
-                            emailChannelDeactivatedDatetime:
-                                '2025-02-25T11:17:10Z',
-                            storeName: 'My Phone Integration 2',
-                        },
-                    ],
-                },
+                storeConfigurations: [
+                    {
+                        emailChannelDeactivatedDatetime: null,
+                        storeName: 'My Phone Integration 1',
+                    },
+                    {
+                        emailChannelDeactivatedDatetime: '2025-02-25T11:17:10Z',
+                        storeName: 'My Phone Integration 2',
+                    },
+                ],
             },
         } as any)
 
@@ -175,19 +165,17 @@ describe('useCsat', () => {
             useGetStoresConfigurationForAccountMock.mockReturnValue({
                 isLoading: storeIntegrationsLoading,
                 data: {
-                    data: {
-                        storeConfigurations: [
-                            {
-                                emailChannelDeactivatedDatetime: null,
-                                storeName: 'My Phone Integration 1',
-                            },
-                            {
-                                emailChannelDeactivatedDatetime:
-                                    '2025-02-25T11:17:10Z',
-                                storeName: 'My Phone Integration 2',
-                            },
-                        ],
-                    },
+                    storeConfigurations: [
+                        {
+                            emailChannelDeactivatedDatetime: null,
+                            storeName: 'My Phone Integration 1',
+                        },
+                        {
+                            emailChannelDeactivatedDatetime:
+                                '2025-02-25T11:17:10Z',
+                            storeName: 'My Phone Integration 2',
+                        },
+                    ],
                 },
             } as any)
 

@@ -129,6 +129,7 @@ describe('KpiSection', () => {
         it('should not render view report button when given sales analytics feature flag is false', () => {
             useAiAgentTypeMock.mockReturnValue({
                 isLoading: false,
+                aiAgentType: 'sales' as const,
             })
 
             const { queryByRole } = renderComponent()
@@ -145,6 +146,7 @@ describe('KpiSection', () => {
 
             useAiAgentTypeMock.mockReturnValue({
                 isLoading: false,
+                aiAgentType: 'sales' as const,
             })
 
             const { getByRole } = renderComponent()

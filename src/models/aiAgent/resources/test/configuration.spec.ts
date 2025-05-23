@@ -26,6 +26,7 @@ import {
     getOnboardingDataByShopName,
     getOnboardingNotificationState,
     getStoreConfiguration,
+    getStoresConfigurations,
     getWelcomePageAcknowledged,
     updateOnboardingData,
     upsertAccountConfiguration,
@@ -722,6 +723,71 @@ describe('Configuration', () => {
                         payload,
                     ),
                 ).rejects.toThrow('Request failed with status code 400')
+            })
+        })
+
+        describe('getStoresConfigurations', () => {
+            const accountDomain = 'acme'
+
+            it('should resolve with data on success', async () => {
+                const mockData = {
+                    storeConfigurations: [
+                        getStoreConfigurationFixture({ storeName: 'store1' }),
+                        getStoreConfigurationFixture({ storeName: 'store2' }),
+                    ],
+                }
+
+                apiServer
+                    .onGet(
+                        `/config/accounts/${accountDomain}/stores/configurations?with_wizard=true&with_floating_chat_input_configuration=true`,
+                    )
+                    .reply(200, mockData)
+
+                const result = await getStoresConfigurations(accountDomain, {
+                    withWizard: true,
+                    withFloatingInput: true,
+                })
+
+                expect(result).toEqual(mockData)
+            })
+
+            it('should return fallback when 404 error occurs', async () => {
+                const consoleWarnSpy = jest
+                    .spyOn(console, 'warn')
+                    .mockImplementation()
+
+                apiServer
+                    .onGet(
+                        `/config/accounts/${accountDomain}/stores/configurations?with_wizard=true&with_floating_chat_input_configuration=true`,
+                    )
+                    .reply(404)
+
+                const result = await getStoresConfigurations(accountDomain, {
+                    withWizard: true,
+                    withFloatingInput: true,
+                })
+
+                expect(consoleWarnSpy).toHaveBeenCalledWith(
+                    `[getStoresConfigurations] 404 for ${accountDomain} — returning fallback`,
+                )
+                expect(result).toEqual({ storeConfigurations: [] })
+
+                consoleWarnSpy.mockRestore()
+            })
+
+            it('should throw when non-404 error occurs', async () => {
+                apiServer
+                    .onGet(
+                        `/config/accounts/${accountDomain}/stores/configurations?with_wizard=true&with_floating_chat_input_configuration=true`,
+                    )
+                    .reply(500)
+
+                await expect(
+                    getStoresConfigurations(accountDomain, {
+                        withWizard: true,
+                        withFloatingInput: true,
+                    }),
+                ).rejects.toThrow('Request failed with status code 500')
             })
         })
     })

@@ -82,7 +82,7 @@ export const useFetchChatIntegrationsStatusData = ({
 
     return {
         data,
-        isLoading,
+        isLoading: enabled && isLoading,
         isFetched,
     }
 }

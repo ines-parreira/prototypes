@@ -80,18 +80,16 @@ describe('useAiAgentType', () => {
             useGetStoresConfigurationForAccountMock.mockReturnValue({
                 isLoading: false,
                 data: {
-                    data: {
-                        storeConfigurations: [
-                            {
-                                storeName: 'My Phone Integration 1',
-                                scopes: [AiAgentScope.Sales],
-                            },
-                            {
-                                storeName: 'My Phone Integration 2',
-                                scopes: [AiAgentScope.Sales],
-                            },
-                        ],
-                    },
+                    storeConfigurations: [
+                        {
+                            storeName: 'My Phone Integration 1',
+                            scopes: [AiAgentScope.Sales],
+                        },
+                        {
+                            storeName: 'My Phone Integration 2',
+                            scopes: [AiAgentScope.Sales],
+                        },
+                    ],
                 },
             } as any)
 
@@ -106,18 +104,16 @@ describe('useAiAgentType', () => {
             useGetStoresConfigurationForAccountMock.mockReturnValue({
                 isLoading: false,
                 data: {
-                    data: {
-                        storeConfigurations: [
-                            {
-                                storeName: 'My Phone Integration 1',
-                                scopes: [AiAgentScope.Support],
-                            },
-                            {
-                                storeName: 'My Phone Integration 2',
-                                scopes: [AiAgentScope.Support],
-                            },
-                        ],
-                    },
+                    storeConfigurations: [
+                        {
+                            storeName: 'My Phone Integration 1',
+                            scopes: [AiAgentScope.Support],
+                        },
+                        {
+                            storeName: 'My Phone Integration 2',
+                            scopes: [AiAgentScope.Support],
+                        },
+                    ],
                 },
             } as any)
 
@@ -133,17 +129,12 @@ describe('useAiAgentType', () => {
             useGetStoresConfigurationForAccountMock.mockReturnValue({
                 isLoading: false,
                 data: {
-                    data: {
-                        storeConfigurations: [
-                            {
-                                storeName: 'My Phone Integration 1',
-                                scopes: [
-                                    AiAgentScope.Support,
-                                    AiAgentScope.Sales,
-                                ],
-                            },
-                        ],
-                    },
+                    storeConfigurations: [
+                        {
+                            storeName: 'My Phone Integration 1',
+                            scopes: [AiAgentScope.Support, AiAgentScope.Sales],
+                        },
+                    ],
                 },
             } as any)
 
@@ -158,21 +149,16 @@ describe('useAiAgentType', () => {
             useGetStoresConfigurationForAccountMock.mockReturnValue({
                 isLoading: false,
                 data: {
-                    data: {
-                        storeConfigurations: [
-                            {
-                                storeName: 'My Phone Integration 1',
-                                scopes: [AiAgentScope.Support],
-                            },
-                            {
-                                storeName: 'My Phone Integration 2',
-                                scopes: [
-                                    AiAgentScope.Support,
-                                    AiAgentScope.Sales,
-                                ],
-                            },
-                        ],
-                    },
+                    storeConfigurations: [
+                        {
+                            storeName: 'My Phone Integration 1',
+                            scopes: [AiAgentScope.Support],
+                        },
+                        {
+                            storeName: 'My Phone Integration 2',
+                            scopes: [AiAgentScope.Support, AiAgentScope.Sales],
+                        },
+                    ],
                 },
             } as any)
 

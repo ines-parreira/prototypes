@@ -29,11 +29,9 @@ export const useStoreConfiguration = ({
 
     return {
         isLoading: isStoreConfigurationLoading,
-        storeConfiguration:
-            storeConfigurationData?.data?.storeConfigurations.find(
-                (storeConfiguration) =>
-                    storeConfiguration.storeName === shopName,
-            ),
+        storeConfiguration: storeConfigurationData?.storeConfigurations.find(
+            (storeConfiguration) => storeConfiguration.storeName === shopName,
+        ),
         error,
         isFetched,
     }

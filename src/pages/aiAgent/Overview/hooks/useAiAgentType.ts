@@ -28,10 +28,7 @@ export const getAiAgentTypeFromScopes = (
     return 'support'
 }
 
-export const useAiAgentTypeForAccount = (): {
-    isLoading: boolean
-    aiAgentType?: AiAgentType
-} => {
+export const useAiAgentTypeForAccount = () => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
     const stores = useAppSelector(getStoreIntegrations)

@@ -9,13 +9,11 @@ jest.mock('models/aiAgent/queries', () => ({
 
 describe('useStoreConfigurationForAccount', () => {
     const mockStoreConfigurations = {
-        data: {
-            storeConfigurations: [
-                { storeName: 'store1', storeId: '1' },
-                { storeName: 'store2', storeId: '2' },
-                { storeName: 'store3', storeId: '3' },
-            ],
-        },
+        storeConfigurations: [
+            { storeName: 'store1', storeId: '1' },
+            { storeName: 'store2', storeId: '2' },
+            { storeName: 'store3', storeId: '3' },
+        ],
     }
 
     beforeEach(() => {
@@ -42,7 +40,7 @@ describe('useStoreConfigurationForAccount', () => {
 
         expect(result.current.isLoading).toBe(false)
         expect(result.current.storeConfigurations).toEqual(
-            mockStoreConfigurations.data.storeConfigurations,
+            mockStoreConfigurations.storeConfigurations,
         )
     })
 

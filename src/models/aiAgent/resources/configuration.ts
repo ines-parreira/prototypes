@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 
 import { HelpCenter } from 'models/helpCenter/types'
 import { AiAgentChannel } from 'pages/aiAgent/constants'
@@ -96,9 +96,22 @@ export const getStoresConfigurations = async (
             with_floating_chat_input_configuration: 'true',
         }),
     })
-    return await apiClient.get<StoreConfigurationsResponse>(
-        `/config/accounts/${accountDomain}/stores/configurations?${queryParams.toString()}`,
-    )
+
+    try {
+        const res = await apiClient.get<StoreConfigurationsResponse>(
+            `/config/accounts/${accountDomain}/stores/configurations?${queryParams.toString()}`,
+        )
+        return res.data
+    } catch (e) {
+        const status = (e as AxiosError)?.response?.status
+        if (status === 404) {
+            console.warn(
+                `[getStoresConfigurations] 404 for ${accountDomain} — returning fallback`,
+            )
+            return { storeConfigurations: [] }
+        }
+        throw e
+    }
 }
 
 /**

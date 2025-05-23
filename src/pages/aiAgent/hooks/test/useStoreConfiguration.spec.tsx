@@ -6,7 +6,6 @@ import {
     UseQueryResult,
 } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
-import { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 
 import { useGetStoresConfigurationForAccount } from 'models/aiAgent/queries'
 import { StoreConfigurationsResponse } from 'models/aiAgent/types'
@@ -44,15 +43,7 @@ describe('useStoreConfiguration', () => {
         mockUseGetStoresConfigurationForAccount.mockReturnValue({
             isLoading: true,
             data: undefined,
-        } as Partial<
-            UseQueryResult<
-                AxiosResponse<StoreConfigurationsResponse, any>,
-                unknown
-            >
-        > as UseQueryResult<
-            AxiosResponse<StoreConfigurationsResponse, any>,
-            unknown
-        >)
+        } as UseQueryResult<StoreConfigurationsResponse, unknown>)
 
         const { result } = renderHook(
             () => useStoreConfiguration({ shopName, accountDomain }),
@@ -75,30 +66,14 @@ describe('useStoreConfiguration', () => {
             storeName: 'another-store',
         })
 
-        const mockAxiosResponse: AxiosResponse<StoreConfigurationsResponse> = {
-            data: {
-                storeConfigurations: [storeConfig, anotherStoreConfig],
-            },
-            status: 200,
-            statusText: 'OK',
-            headers: {},
-            config: {
-                headers: {} as any,
-            } as InternalAxiosRequestConfig,
+        const mockResponse: StoreConfigurationsResponse = {
+            storeConfigurations: [storeConfig, anotherStoreConfig],
         }
 
         mockUseGetStoresConfigurationForAccount.mockReturnValue({
             isLoading: false,
-            data: mockAxiosResponse,
-        } as Partial<
-            UseQueryResult<
-                AxiosResponse<StoreConfigurationsResponse, any>,
-                unknown
-            >
-        > as UseQueryResult<
-            AxiosResponse<StoreConfigurationsResponse, any>,
-            unknown
-        >)
+            data: mockResponse,
+        } as UseQueryResult<StoreConfigurationsResponse, unknown>)
 
         const { result } = renderHook(
             () => useStoreConfiguration({ shopName, accountDomain }),
@@ -116,30 +91,14 @@ describe('useStoreConfiguration', () => {
             storeName: 'another-store',
         })
 
-        const mockAxiosResponse: AxiosResponse<StoreConfigurationsResponse> = {
-            data: {
-                storeConfigurations: [anotherStoreConfig],
-            },
-            status: 200,
-            statusText: 'OK',
-            headers: {},
-            config: {
-                headers: {} as any,
-            } as InternalAxiosRequestConfig,
+        const mockResponse: StoreConfigurationsResponse = {
+            storeConfigurations: [anotherStoreConfig],
         }
 
         mockUseGetStoresConfigurationForAccount.mockReturnValue({
             isLoading: false,
-            data: mockAxiosResponse,
-        } as Partial<
-            UseQueryResult<
-                AxiosResponse<StoreConfigurationsResponse, any>,
-                unknown
-            >
-        > as UseQueryResult<
-            AxiosResponse<StoreConfigurationsResponse, any>,
-            unknown
-        >)
+            data: mockResponse,
+        } as UseQueryResult<StoreConfigurationsResponse, unknown>)
 
         const { result } = renderHook(
             () => useStoreConfiguration({ shopName, accountDomain }),
@@ -156,15 +115,7 @@ describe('useStoreConfiguration', () => {
         mockUseGetStoresConfigurationForAccount.mockReturnValue({
             isLoading: false,
             data: undefined,
-        } as Partial<
-            UseQueryResult<
-                AxiosResponse<StoreConfigurationsResponse, any>,
-                unknown
-            >
-        > as UseQueryResult<
-            AxiosResponse<StoreConfigurationsResponse, any>,
-            unknown
-        >)
+        } as UseQueryResult<StoreConfigurationsResponse, unknown>)
 
         renderHook(
             () =>
