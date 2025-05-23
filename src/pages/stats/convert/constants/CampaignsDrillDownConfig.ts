@@ -2,6 +2,7 @@ import { useEnrichedDrillDownData } from 'hooks/reporting/useDrillDownData'
 import { EnrichmentFields } from 'models/reporting/types'
 import { formatConvertCampaignSalesDrillDownRowData } from 'pages/stats/common/drill-down/DrillDownFormatters'
 import { DomainConfig } from 'pages/stats/common/drill-down/DrillDownTableConfig'
+import { getDrillDownQuery } from 'pages/stats/common/drill-down/helpers'
 import { Domain } from 'pages/stats/common/drill-down/types'
 import { CampaignSalesDrillDownTableContent } from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
 import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
@@ -16,6 +17,7 @@ export const ConvertMetricsConfig = {
 
 export const useConvertDrillDownHook = (metricData: DrillDownMetric) =>
     useEnrichedDrillDownData(
+        getDrillDownQuery(metricData),
         metricData,
         [EnrichmentFields.CustomerIntegrationDataByExternalId],
         formatConvertCampaignSalesDrillDownRowData,

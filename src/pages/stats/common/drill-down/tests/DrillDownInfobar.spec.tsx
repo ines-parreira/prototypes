@@ -5,6 +5,7 @@ import { render, screen } from '@testing-library/react'
 import { DRILL_DOWN_PER_PAGE } from 'hooks/reporting/useDrillDownData'
 import { DrillDownDownloadButton } from 'pages/stats/common/drill-down/DrillDownDownloadButton'
 import { DrillDownInfoBar } from 'pages/stats/common/drill-down/DrillDownInfoBar'
+import { getDrillDownConfig } from 'pages/stats/common/drill-down/DrillDownModal'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 import {
@@ -41,6 +42,7 @@ describe('<DrillDownInfobar />', () => {
             <DrillDownInfoBar
                 metricData={metricData}
                 useDataHook={useDrillDownDataMock}
+                domainConfig={getDrillDownConfig(metricData)}
             />,
         )
 
@@ -60,6 +62,7 @@ describe('<DrillDownInfobar />', () => {
             <DrillDownInfoBar
                 metricData={metricData}
                 useDataHook={useDrillDownDataMock}
+                domainConfig={getDrillDownConfig(metricData)}
             />,
         )
 
@@ -79,6 +82,7 @@ describe('<DrillDownInfobar />', () => {
             <DrillDownInfoBar
                 metricData={metricData}
                 useDataHook={useDrillDownDataMock}
+                domainConfig={getDrillDownConfig(metricData)}
             />,
         )
 
@@ -101,6 +105,7 @@ describe('<DrillDownInfobar />', () => {
             <DrillDownInfoBar
                 metricData={metricData}
                 useDataHook={useDrillDownDataMock}
+                domainConfig={getDrillDownConfig(metricData)}
             />,
         )
 
@@ -138,6 +143,7 @@ describe('<DrillDownInfobar />', () => {
                 <DrillDownInfoBar
                     metricData={metricData}
                     useDataHook={useDrillDownDataMock}
+                    domainConfig={getDrillDownConfig(metricData)}
                 />,
             )
 
@@ -172,6 +178,7 @@ describe('<DrillDownInfobar />', () => {
             <DrillDownInfoBar
                 metricData={metricData}
                 useDataHook={useDrillDownDataMock}
+                domainConfig={getDrillDownConfig(metricData)}
             />,
         )
 

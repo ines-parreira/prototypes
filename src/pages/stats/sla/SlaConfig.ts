@@ -5,8 +5,10 @@ import {
     breachedTicketsDrillDownQueryFactory,
     satisfiedOrBreachedTicketsDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/sla/satisfiedOrBreachedTickets'
-import { DrillDownQueryFactory } from 'pages/stats/common/drill-down/DrillDownTableConfig'
-import { Domain } from 'pages/stats/common/drill-down/types'
+import {
+    Domain,
+    DrillDownQueryFactory,
+} from 'pages/stats/common/drill-down/types'
 import { MetricTrendFormat } from 'pages/stats/common/utils'
 import { TooltipData } from 'pages/stats/types'
 import { SlaMetric } from 'state/ui/stats/types'

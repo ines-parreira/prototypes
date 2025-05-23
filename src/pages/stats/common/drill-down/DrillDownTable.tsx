@@ -9,12 +9,14 @@ import {
     VoiceCallDrillDownRowData,
 } from 'pages/stats/common/drill-down/DrillDownFormatters'
 import css from 'pages/stats/common/drill-down/DrillDownTable.less'
+import { ColumnConfig } from 'pages/stats/common/drill-down/types'
 import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 
 export const DrillDownTable = ({
     metricData,
     useDataHook,
     TableContent,
+    columnConfig,
 }: {
     metricData: DrillDownMetric
     useDataHook: DrillDownDataHook<
@@ -25,7 +27,9 @@ export const DrillDownTable = ({
 
     TableContent: FunctionComponent<{
         metricData: DrillDownMetric
+        columnConfig: ColumnConfig
     }>
+    columnConfig: ColumnConfig
 }) => {
     const { currentPage, pagesCount, onPageChange } = useDataHook(metricData)
 
@@ -33,7 +37,10 @@ export const DrillDownTable = ({
         <>
             <div className={css.container}>
                 <TableWrapper className={css.table}>
-                    <TableContent metricData={metricData} />
+                    <TableContent
+                        metricData={metricData}
+                        columnConfig={columnConfig}
+                    />
                 </TableWrapper>
             </div>
             {pagesCount > 1 && (

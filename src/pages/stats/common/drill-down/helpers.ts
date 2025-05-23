@@ -14,10 +14,9 @@ import {
     AiSalesAgentMetricsWithDrillDownConfig,
 } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import {
-    DomainsConfig,
+    ColumnConfig,
     DrillDownQueryFactory,
-    MetricsConfig,
-} from 'pages/stats/common/drill-down/DrillDownTableConfig'
+} from 'pages/stats/common/drill-down/types'
 import { MetricValueFormat } from 'pages/stats/common/utils'
 import { campaignSalesDrillDownQueryFactory } from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
 import {
@@ -357,22 +356,10 @@ const isAiSalesAgentMetric = (
     )
 }
 
-export const getObjectType = (metricData: DrillDownMetric) =>
-    DomainsConfig[MetricsConfig[metricData.metricName].domain].infoBarObjectType
-
-export const isMetricDataDownloadable = (
-    metricData: DrillDownMetric,
-): boolean =>
-    DomainsConfig[MetricsConfig[metricData.metricName].domain]
-        .isMetricDataDownloadable
-
 export const getDrillDownMetricColumn = (
     metricData: DrillDownMetric,
-): {
-    metricTitle: string
-    showMetric: boolean
-    metricValueFormat: MetricValueFormat | typeof SLA_FORMAT
-} => {
+    showMetric: boolean,
+): ColumnConfig => {
     let metricTitle = ''
     let metricValueFormat: MetricValueFormat | typeof SLA_FORMAT = 'decimal'
 
@@ -536,6 +523,6 @@ export const getDrillDownMetricColumn = (
     return {
         metricTitle,
         metricValueFormat,
-        showMetric: MetricsConfig[metricData.metricName].showMetric,
+        showMetric,
     }
 }

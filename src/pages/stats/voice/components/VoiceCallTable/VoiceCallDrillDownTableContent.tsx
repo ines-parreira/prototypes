@@ -1,5 +1,6 @@
 import { useDrillDownData } from 'hooks/reporting/useDrillDownData'
 import { formatVoiceDrillDownRowData } from 'pages/stats/common/drill-down/DrillDownFormatters'
+import { getDrillDownQuery } from 'pages/stats/common/drill-down/helpers'
 import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 
 import { getVoiceDrillDownColumns } from './utils'
@@ -11,6 +12,7 @@ type Props = {
 
 export default function VoiceCallDrillDownTableContent({ metricData }: Props) {
     const { data, isFetching } = useDrillDownData(
+        getDrillDownQuery(metricData),
         metricData,
         formatVoiceDrillDownRowData,
     )

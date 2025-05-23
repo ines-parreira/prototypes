@@ -66,8 +66,10 @@ import {
     fetchTotalProductRecommendations,
     useTotalProductRecommendations,
 } from 'pages/stats/automate/aiSalesAgent/metrics/useTotalProductRecommendations'
-import { DrillDownQueryFactory } from 'pages/stats/common/drill-down/DrillDownTableConfig'
-import { Domain } from 'pages/stats/common/drill-down/types'
+import {
+    Domain,
+    DrillDownQueryFactory,
+} from 'pages/stats/common/drill-down/types'
 import { MetricTrendFormat } from 'pages/stats/common/utils'
 import { TooltipData } from 'pages/stats/types'
 

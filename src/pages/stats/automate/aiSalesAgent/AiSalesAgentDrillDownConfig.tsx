@@ -12,11 +12,13 @@ import {
 } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { formatTicketDrillDownRowData } from 'pages/stats/common/drill-down/DrillDownFormatters'
 import { DomainConfig } from 'pages/stats/common/drill-down/DrillDownTableConfig'
+import { getDrillDownQuery } from 'pages/stats/common/drill-down/helpers'
 import { TicketDrillDownTableContent } from 'pages/stats/common/drill-down/TicketDrillDownTableContent'
 import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 
 const useTicketDrillDownHook = (metricData: DrillDownMetric) =>
     useEnrichedDrillDownData(
+        getDrillDownQuery(metricData),
         metricData,
         extraEnrichmentFieldsPerMetric[metricData.metricName] ||
             defaultEnrichmentFields,

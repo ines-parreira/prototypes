@@ -23,8 +23,10 @@ import { messagesSentMetricPerTicketDrillDownQueryFactory } from 'models/reporti
 import { ticketsCreatedPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import { ticketsRepliedMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import { isMediumOrSmallScreen } from 'pages/common/utils/mobile'
-import { DrillDownQueryFactory } from 'pages/stats/common/drill-down/DrillDownTableConfig'
-import { Domain } from 'pages/stats/common/drill-down/types'
+import {
+    Domain,
+    DrillDownQueryFactory,
+} from 'pages/stats/common/drill-down/types'
 import { MetricValueFormat } from 'pages/stats/common/utils'
 import {
     METRIC_COLUMN_WIDTH,

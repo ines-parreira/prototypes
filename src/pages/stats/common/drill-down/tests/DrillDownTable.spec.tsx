@@ -22,8 +22,10 @@ import {
     TicketDrillDownRowData,
 } from 'pages/stats/common/drill-down/DrillDownFormatters'
 import { DrillDownTable } from 'pages/stats/common/drill-down/DrillDownTable'
+import { MetricsConfig } from 'pages/stats/common/drill-down/DrillDownTableConfig'
 import { getDrillDownMetricColumn } from 'pages/stats/common/drill-down/helpers'
 import { TicketDrillDownTableContent } from 'pages/stats/common/drill-down/TicketDrillDownTableContent'
+import { ColumnConfig } from 'pages/stats/common/drill-down/types'
 import { CampaignSalesDrillDownTableContent } from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
 import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 import { SLA_FORMAT, SlaMetricConfig } from 'pages/stats/sla/SlaConfig'
@@ -97,11 +99,16 @@ describe('<DrillDownTable />', () => {
         metricData: DrillDownMetric,
         content: FunctionComponent<{
             metricData: DrillDownMetric
+            columnConfig: ColumnConfig
         }>,
     ) => {
         return render(
             <Provider store={mockStore(defaultState)}>
                 <DrillDownTable
+                    columnConfig={getDrillDownMetricColumn(
+                        metricData,
+                        MetricsConfig[metricData.metricName].showMetric,
+                    )}
                     metricData={metricData}
                     useDataHook={useDataHookMock}
                     TableContent={content}

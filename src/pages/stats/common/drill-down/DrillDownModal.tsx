@@ -12,6 +12,8 @@ import {
     DrillDownHook,
     MetricsConfig,
 } from 'pages/stats/common/drill-down/DrillDownTableConfig'
+import { getDrillDownMetricColumn } from 'pages/stats/common/drill-down/helpers'
+import { ColumnConfig } from 'pages/stats/common/drill-down/types'
 import {
     closeDrillDownModal,
     DrillDownMetric,
@@ -23,10 +25,14 @@ const getTableContent = (
     metricData: DrillDownMetric,
 ): FunctionComponent<{
     metricData: DrillDownMetric
+    columnConfig: ColumnConfig
 }> => DomainsConfig[MetricsConfig[metricData.metricName].domain].tableComponent
 
 export const getDrillDownHook = (metricData: DrillDownMetric): DrillDownHook =>
     DomainsConfig[MetricsConfig[metricData.metricName].domain].drillDownHook
+
+export const getDrillDownConfig = (metricData: DrillDownMetric) =>
+    DomainsConfig[MetricsConfig[metricData.metricName].domain]
 
 export const DrillDownModal = () => {
     const isOpen = useAppSelector(getDrillDownModalState)
@@ -48,11 +54,16 @@ export const DrillDownModal = () => {
                         <DrillDownInfoBar
                             metricData={metricData}
                             useDataHook={getDrillDownHook(metricData)}
+                            domainConfig={getDrillDownConfig(metricData)}
                         />
                         <DrillDownTable
                             metricData={metricData}
                             useDataHook={getDrillDownHook(metricData)}
                             TableContent={getTableContent(metricData)}
+                            columnConfig={getDrillDownMetricColumn(
+                                metricData,
+                                MetricsConfig[metricData.metricName].showMetric,
+                            )}
                         />
                     </>
                 )}

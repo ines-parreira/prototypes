@@ -16,8 +16,10 @@ import { languageProficiencyDrillDownQueryFactory } from 'models/reporting/query
 import { resolutionCompletenessDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
 import { reviewedClosedTicketsDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
 import { isMediumOrSmallScreen } from 'pages/common/utils/mobile'
-import { DrillDownQueryFactory } from 'pages/stats/common/drill-down/DrillDownTableConfig'
-import { Domain } from 'pages/stats/common/drill-down/types'
+import {
+    Domain,
+    DrillDownQueryFactory,
+} from 'pages/stats/common/drill-down/types'
 import { MetricValueFormat } from 'pages/stats/common/utils'
 import {
     AGENT_NAME_COLUMN_WIDTH,

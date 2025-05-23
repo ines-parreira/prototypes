@@ -27,6 +27,7 @@ import { StatsFilters, TicketTimeReference } from 'models/stat/types'
 import { CSAT_DRILL_DOWN_LABEL } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableConfig'
 import { AiSalesAgentChart } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { MetricsConfig } from 'pages/stats/common/drill-down/DrillDownTableConfig'
 import {
     getDrillDownMetricColumn,
     getDrillDownQuery,
@@ -1232,7 +1233,12 @@ describe('getDrillDownMetric', () => {
     it.each(testCases)(
         'getDrillDownMetricColumn',
         ({ metricData, expectedValues }) => {
-            expect(getDrillDownMetricColumn(metricData)).toEqual(expectedValues)
+            expect(
+                getDrillDownMetricColumn(
+                    metricData,
+                    MetricsConfig[metricData.metricName].showMetric,
+                ),
+            ).toEqual(expectedValues)
         },
     )
 })

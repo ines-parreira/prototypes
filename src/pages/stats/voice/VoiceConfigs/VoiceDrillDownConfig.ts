@@ -1,6 +1,7 @@
 import { useDrillDownData } from 'hooks/reporting/useDrillDownData'
 import { formatVoiceDrillDownRowData } from 'pages/stats/common/drill-down/DrillDownFormatters'
 import { DomainConfig } from 'pages/stats/common/drill-down/DrillDownTableConfig'
+import { getDrillDownQuery } from 'pages/stats/common/drill-down/helpers'
 import VoiceCallDrillDownTableContent from 'pages/stats/voice/components/VoiceCallTable/VoiceCallDrillDownTableContent'
 import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 import { VoiceAgentsMetric, VoiceMetric } from 'state/ui/stats/types'
@@ -9,7 +10,11 @@ import { VoiceAgentsMetricsConfig } from './VoiceAgentMetricsConfig'
 import { VoiceMetricsConfig } from './VoiceMetricsConfig'
 
 export const useVoiceDrillDownHook = (metricData: DrillDownMetric) =>
-    useDrillDownData(metricData, formatVoiceDrillDownRowData)
+    useDrillDownData(
+        getDrillDownQuery(metricData),
+        metricData,
+        formatVoiceDrillDownRowData,
+    )
 
 export const VoiceDrillDownConfig: DomainConfig<
     VoiceMetric | VoiceAgentsMetric

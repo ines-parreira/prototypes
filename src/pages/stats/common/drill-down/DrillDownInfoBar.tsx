@@ -7,10 +7,7 @@ import {
     VoiceCallDrillDownRowData,
 } from 'pages/stats/common/drill-down/DrillDownFormatters'
 import css from 'pages/stats/common/drill-down/DrillDownInfobar.less'
-import {
-    getObjectType,
-    isMetricDataDownloadable,
-} from 'pages/stats/common/drill-down/helpers'
+import { DomainConfig } from 'pages/stats/common/drill-down/DrillDownTableConfig'
 import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 import { DRILLDOWN_QUERY_LIMIT } from 'utils/reporting'
 
@@ -33,6 +30,7 @@ const getTheInfoLabel = (totalResults: number, objectType: string) => {
 export const DrillDownInfoBar = ({
     metricData,
     useDataHook,
+    domainConfig,
 }: {
     metricData: DrillDownMetric
     useDataHook: DrillDownDataHook<
@@ -40,11 +38,12 @@ export const DrillDownInfoBar = ({
         | ConvertDrillDownRowData
         | VoiceCallDrillDownRowData
     >
+    domainConfig: DomainConfig<any>
 }) => {
     const { isFetching, totalResults } = useDataHook(metricData)
-    const objectType = getObjectType(metricData)
+    const objectType = domainConfig.infoBarObjectType
     const resultsPlaceholder = `Fetching ${objectType}...`
-    const shouldDisplayDownloadButton = isMetricDataDownloadable(metricData)
+    const shouldDisplayDownloadButton = domainConfig.isMetricDataDownloadable
 
     return (
         <div className={css.wrapper}>

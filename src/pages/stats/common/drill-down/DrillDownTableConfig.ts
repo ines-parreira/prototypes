@@ -5,10 +5,7 @@ import {
     DrillDownDataHook,
     useEnrichedDrillDownData,
 } from 'hooks/reporting/useDrillDownData'
-import { OrderDirection } from 'models/api/types'
-import { DrillDownReportingQuery } from 'models/job/types'
 import { EnrichmentFields } from 'models/reporting/types'
-import { StatsFilters } from 'models/stat/types'
 import { AiInsightsMetricConfig } from 'pages/stats/automate/AiInsightsMetricConfig'
 import { AiSalesAgentDrillDownConfig } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentDrillDownConfig'
 import {
@@ -17,8 +14,9 @@ import {
     TicketDrillDownRowData,
     VoiceCallDrillDownRowData,
 } from 'pages/stats/common/drill-down/DrillDownFormatters'
+import { getDrillDownQuery } from 'pages/stats/common/drill-down/helpers'
 import { TicketDrillDownTableContent } from 'pages/stats/common/drill-down/TicketDrillDownTableContent'
-import { Domain } from 'pages/stats/common/drill-down/types'
+import { ColumnConfig, Domain } from 'pages/stats/common/drill-down/types'
 import { ConvertDrillDownConfig } from 'pages/stats/convert/constants/CampaignsDrillDownConfig'
 import {
     SatisfactionAverageSurveyScoreMetricConfig,
@@ -60,16 +58,12 @@ import {
 export type DrillDownHook = DrillDownDataHook<
     TicketDrillDownRowData | ConvertDrillDownRowData | VoiceCallDrillDownRowData
 >
-export type DrillDownQueryFactory = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection,
-) => DrillDownReportingQuery
 
 export type DomainConfig<T extends string> = {
     drillDownHook: DrillDownHook
     tableComponent: FunctionComponent<{
         metricData: DrillDownMetric
+        columnConfig: ColumnConfig
     }>
     infoBarObjectType: string
     isMetricDataDownloadable: boolean
@@ -84,6 +78,7 @@ type MetricConfig = {
 
 const useTicketDrillDownHook = (metricData: DrillDownMetric) =>
     useEnrichedDrillDownData(
+        getDrillDownQuery(metricData),
         metricData,
         defaultEnrichmentFields,
         formatTicketDrillDownRowData,

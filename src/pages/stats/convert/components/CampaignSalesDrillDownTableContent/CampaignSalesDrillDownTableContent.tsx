@@ -8,6 +8,7 @@ import TableHead from 'pages/common/components/table/TableHead'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { DrillDownTableContentSkeleton } from 'pages/stats/common/components/Table/DrillDownTableContentSkeleton'
 import { formatConvertCampaignSalesDrillDownRowData } from 'pages/stats/common/drill-down/DrillDownFormatters'
+import { getDrillDownQuery } from 'pages/stats/common/drill-down/helpers'
 import {
     formatCurrency,
     NOT_AVAILABLE_PLACEHOLDER,
@@ -42,6 +43,7 @@ export const CampaignSalesDrillDownTableContent = ({
     metricData: DrillDownMetric
 }) => {
     const { data, isFetching } = useEnrichedDrillDownData(
+        getDrillDownQuery(metricData),
         metricData,
         [EnrichmentFields.CustomerIntegrationDataByExternalId],
         formatConvertCampaignSalesDrillDownRowData,

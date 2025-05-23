@@ -22,7 +22,8 @@ import { TruncateCellContent } from 'pages/stats/common/components/TruncateCellC
 import { formatTicketDrillDownRowData } from 'pages/stats/common/drill-down/DrillDownFormatters'
 import css from 'pages/stats/common/drill-down/DrillDownTable.less'
 import { DrillDownTicketDetailsCell } from 'pages/stats/common/drill-down/DrillDownTicketDetailsCell'
-import { getDrillDownMetricColumn } from 'pages/stats/common/drill-down/helpers'
+import { getDrillDownQuery } from 'pages/stats/common/drill-down/helpers'
+import { ColumnConfig } from 'pages/stats/common/drill-down/types'
 import { HintTooltipContent } from 'pages/stats/common/HintTooltip'
 import {
     formatMetricValue,
@@ -119,8 +120,10 @@ const getOnClickHandler =
 
 export const TicketDrillDownTableContent = ({
     metricData,
+    columnConfig,
 }: {
     metricData: DrillDownMetric
+    columnConfig: ColumnConfig
 }) => {
     const isAutoQAResolutionCompleteness =
         metricData.metricName === AutoQAMetric.ResolutionCompleteness ||
@@ -131,8 +134,7 @@ export const TicketDrillDownTableContent = ({
     const showSurveyScore =
         metricData.metricName === SatisfactionMetric.SatisfactionScore
 
-    const { showMetric, metricTitle, metricValueFormat } =
-        getDrillDownMetricColumn(metricData)
+    const { showMetric, metricTitle, metricValueFormat } = columnConfig
 
     const isAiInsightsMetric =
         metricData.metricName === AIInsightsMetric.TicketCustomFieldsTicketCount
@@ -162,6 +164,7 @@ export const TicketDrillDownTableContent = ({
         AiSalesAgentChart.AiSalesAgentTotalProductRecommendations
 
     const { data, isFetching } = useEnrichedDrillDownData(
+        getDrillDownQuery(metricData),
         metricData,
         extraEnrichmentFieldsPerMetric[metricData.metricName] ||
             defaultEnrichmentFields,

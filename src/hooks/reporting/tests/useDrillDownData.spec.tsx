@@ -12,6 +12,7 @@ import {
     defaultEnrichmentFields,
     DRILL_DOWN_PER_PAGE,
     filterCSATDataBasedOnIntent,
+    getDrillDownMetricOrder,
     useDrillDownData,
     useEnrichedDrillDownData,
 } from 'hooks/reporting/useDrillDownData'
@@ -41,6 +42,7 @@ import {
     formatConvertCampaignSalesDrillDownRowData,
     formatTicketDrillDownRowData,
 } from 'pages/stats/common/drill-down/DrillDownFormatters'
+import { getDrillDownQuery } from 'pages/stats/common/drill-down/helpers'
 import { OrderConversionDimension } from 'pages/stats/convert/clients/constants'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'
@@ -161,6 +163,7 @@ describe('DrillDownData hooks', () => {
             const { result } = renderHook(
                 () =>
                     useEnrichedDrillDownData(
+                        getDrillDownQuery(metricData),
                         metricData,
                         defaultEnrichmentFields,
                         formatTicketDrillDownRowData,
@@ -206,6 +209,7 @@ describe('DrillDownData hooks', () => {
             const { result } = renderHook(
                 () =>
                     useEnrichedDrillDownData(
+                        getDrillDownQuery(metricData),
                         metricData,
                         defaultEnrichmentFields,
                         formatTicketDrillDownRowData,
@@ -248,6 +252,7 @@ describe('DrillDownData hooks', () => {
             const { result } = renderHook(
                 () =>
                     useEnrichedDrillDownData(
+                        getDrillDownQuery(metricData),
                         metricData,
                         defaultEnrichmentFields,
                         formatTicketDrillDownRowData,
@@ -291,6 +296,7 @@ describe('DrillDownData hooks', () => {
             renderHook(
                 () =>
                     useEnrichedDrillDownData(
+                        getDrillDownQuery(metricData),
                         metricData,
                         defaultEnrichmentFields,
                         formatTicketDrillDownRowData,
@@ -334,6 +340,7 @@ describe('DrillDownData hooks', () => {
             renderHook(
                 () =>
                     useEnrichedDrillDownData(
+                        getDrillDownQuery(metricData),
                         metricData,
                         defaultEnrichmentFields,
                         formatTicketDrillDownRowData,
@@ -374,6 +381,7 @@ describe('DrillDownData hooks', () => {
             renderHook(
                 () =>
                     useEnrichedDrillDownData(
+                        getDrillDownQuery(metricData),
                         metricData,
                         defaultEnrichmentFields,
                         formatTicketDrillDownRowData,
@@ -426,6 +434,7 @@ describe('DrillDownData hooks', () => {
             const { result } = renderHook(
                 () =>
                     useEnrichedDrillDownData(
+                        getDrillDownQuery(metricData),
                         metricData,
                         defaultEnrichmentFields,
                         formatTicketDrillDownRowData,
@@ -474,6 +483,7 @@ describe('DrillDownData hooks', () => {
             const { result } = renderHook(
                 () =>
                     useEnrichedDrillDownData(
+                        getDrillDownQuery(metricData),
                         metricData,
                         defaultEnrichmentFields,
                         formatTicketDrillDownRowData,
@@ -509,6 +519,7 @@ describe('DrillDownData hooks', () => {
             const { result } = renderHook(
                 () =>
                     useEnrichedDrillDownData(
+                        getDrillDownQuery(metricData),
                         metricData,
                         defaultEnrichmentFields,
                         formatTicketDrillDownRowData,
@@ -597,6 +608,7 @@ describe('DrillDownData hooks', () => {
             const { result } = renderHook(
                 () =>
                     useEnrichedDrillDownData(
+                        getDrillDownQuery(metricData),
                         metricData,
                         defaultEnrichmentFields,
                         formatTicketDrillDownRowData,
@@ -659,6 +671,7 @@ describe('DrillDownData hooks', () => {
             const { result } = renderHook(
                 () =>
                     useDrillDownData(
+                        getDrillDownQuery(metricData),
                         metricData,
                         formatConvertCampaignSalesDrillDownRowData,
                     ),
@@ -688,9 +701,15 @@ describe('DrillDownData hooks', () => {
         })
 
         it('should return formatted Data with measure instead of dimension', () => {
+            const query = getDrillDownQuery(metricData)(
+                statsFilters,
+                userTimezone,
+                getDrillDownMetricOrder(metricData.metricName),
+            )
             const { result } = renderHook(
                 () =>
                     useDrillDownData(
+                        getDrillDownQuery(metricData),
                         {
                             metricName: OverviewMetric.MessagesSent,
                         },
@@ -715,7 +734,7 @@ describe('DrillDownData hooks', () => {
                 data: rowData.map((row) =>
                     formatTicketDrillDownRowData({
                         row,
-                        metricField: HelpdeskMessageMeasure.MessageCount,
+                        metricField: query.dimensions[1] ?? query.measures[0],
                         agents,
                         ticketIdField: TicketDimension.TicketId,
                     }),
@@ -733,6 +752,7 @@ describe('DrillDownData hooks', () => {
             const { result } = renderHook(
                 () =>
                     useDrillDownData(
+                        getDrillDownQuery(metricData),
                         metricData,
                         formatConvertCampaignSalesDrillDownRowData,
                     ),
@@ -770,6 +790,7 @@ describe('DrillDownData hooks', () => {
             const { result } = renderHook(
                 () =>
                     useDrillDownData(
+                        getDrillDownQuery(metricData),
                         metricData,
                         formatConvertCampaignSalesDrillDownRowData,
                     ),

@@ -66,8 +66,10 @@ import { ticketsCreatedPerTicketDrillDownQueryFactory } from 'models/reporting/q
 import { ticketsRepliedMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsPerTicketQueryFactory } from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
 import { FilterKey } from 'models/stat/types'
-import { DrillDownQueryFactory } from 'pages/stats/common/drill-down/DrillDownTableConfig'
-import { Domain } from 'pages/stats/common/drill-down/types'
+import {
+    Domain,
+    DrillDownQueryFactory,
+} from 'pages/stats/common/drill-down/types'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import { MetricTrendFormat } from 'pages/stats/common/utils'
 import { TooltipData } from 'pages/stats/types'

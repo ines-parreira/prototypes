@@ -163,6 +163,7 @@ describe('getDrillDownHook', () => {
             const hook = getDrillDownHook(metricData)
             hook(metricData)
             expect(useEnrichedDrillDownDataMock).toHaveBeenCalledWith(
+                expect.any(Function),
                 metricData,
                 defaultEnrichmentFields,
                 formatTicketDrillDownRowData,
@@ -177,6 +178,7 @@ describe('getDrillDownHook', () => {
             const hook = getDrillDownHook(metricData)
             hook(metricData)
             expect(useDrillDownDataMock).toHaveBeenCalledWith(
+                expect.any(Function),
                 metricData,
                 formatVoiceDrillDownRowData,
             )
@@ -191,6 +193,7 @@ describe('getDrillDownHook', () => {
             hook(metricData)
 
             expect(useEnrichedDrillDownDataMock).toHaveBeenCalledWith(
+                expect.any(Function),
                 metricData,
                 [EnrichmentFields.CustomerIntegrationDataByExternalId],
                 formatConvertCampaignSalesDrillDownRowData,

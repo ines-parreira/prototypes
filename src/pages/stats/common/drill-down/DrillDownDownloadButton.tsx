@@ -9,6 +9,7 @@ import { JobContext, JobType } from 'models/job/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import css from 'pages/stats/common/drill-down/DrillDownDownloadButton.less'
+import { getDrillDownQuery } from 'pages/stats/common/drill-down/helpers'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import {
     createExportDrillDownJob,
@@ -68,7 +69,10 @@ export const DrillDownDownloadButton = ({
         hasRole(currentUser, UserRole.Agent)
     )
     const isDisabled = hasNoPermissions || isLoading || running !== false
-    const query = useDrillDownQueryWithoutLimit(metricData)
+    const query = useDrillDownQueryWithoutLimit(
+        metricData,
+        getDrillDownQuery(metricData),
+    )
 
     const clickHandler = () => {
         void dispatch(

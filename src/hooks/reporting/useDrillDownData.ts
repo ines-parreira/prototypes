@@ -20,7 +20,7 @@ import {
     BaseDrillDownRowData,
     DrillDownFormatterProps,
 } from 'pages/stats/common/drill-down/DrillDownFormatters'
-import { getDrillDownQuery } from 'pages/stats/common/drill-down/helpers'
+import { DrillDownQueryFactory } from 'pages/stats/common/drill-down/types'
 import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'
@@ -121,10 +121,13 @@ export const getDrillDownMetricOrder = (
         : OrderDirection.Desc
 }
 
-export const useDrillDownQuery = (metricData: DrillDownMetric) => {
+export const useDrillDownQuery = (
+    query: DrillDownQueryFactory,
+    metricData: DrillDownMetric,
+) => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
-    return getDrillDownQuery(metricData)(
+    return query(
         cleanStatsFilters,
         userTimezone,
         getDrillDownMetricOrder(metricData.metricName),
@@ -140,8 +143,9 @@ function withoutLimit<T extends ReportingQuery>(query: T): T {
 
 export const useDrillDownQueryWithoutLimit = (
     metricData: DrillDownMetric,
+    queryFactory: DrillDownQueryFactory,
 ): DrillDownReportingQuery => {
-    const query = useDrillDownQuery(metricData)
+    const query = useDrillDownQuery(queryFactory, metricData)
 
     return withoutLimit(query)
 }
@@ -195,6 +199,7 @@ export const filterCSATDataBasedOnIntent = (
 }
 
 export function useEnrichedDrillDownData<T>(
+    queryFactory: DrillDownQueryFactory,
     metricData: DrillDownMetric,
     enrichmentFields: EnrichmentFields[],
     getDrillDownFormatter: (props: DrillDownFormatterProps) => T,
@@ -203,7 +208,7 @@ export function useEnrichedDrillDownData<T>(
 ): DrillDownData<T> {
     const dispatch = useAppDispatch()
     const currentPage = useAppSelector(getDrillDownCurrentPage)
-    const query = useDrillDownQuery(metricData)
+    const query = useDrillDownQuery(queryFactory, metricData)
     const agents = useAppSelector(getHumanAndAutomationBotAgentsJS)
     const { data: someData, isFetching } =
         useMetricPerDimensionWithEnrichmentOnTwoDimensions(
@@ -256,12 +261,13 @@ export function useEnrichedDrillDownData<T>(
 }
 
 export function useDrillDownData<T>(
+    queryFactory: DrillDownQueryFactory,
     metricData: DrillDownMetric,
     getDrillDownFormatter: (props: DrillDownFormatterProps) => T,
 ): DrillDownData<T> {
     const dispatch = useAppDispatch()
     const currentPage = useAppSelector(getDrillDownCurrentPage)
-    const query = useDrillDownQuery(metricData)
+    const query = useDrillDownQuery(queryFactory, metricData)
     const { data: someData, isFetching } = useMetricPerDimension(query)
 
     const rowData = useMemo(() => someData?.allData || [], [someData])

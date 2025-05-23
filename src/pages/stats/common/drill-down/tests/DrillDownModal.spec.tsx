@@ -7,8 +7,13 @@ import thunk from 'redux-thunk'
 
 import { AiSalesAgentChart } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { DrillDownInfoBar } from 'pages/stats/common/drill-down/DrillDownInfoBar'
-import { DrillDownModal } from 'pages/stats/common/drill-down/DrillDownModal'
+import {
+    DrillDownModal,
+    getDrillDownConfig,
+} from 'pages/stats/common/drill-down/DrillDownModal'
 import { DrillDownTable } from 'pages/stats/common/drill-down/DrillDownTable'
+import { MetricsConfig } from 'pages/stats/common/drill-down/DrillDownTableConfig'
+import { getDrillDownMetricColumn } from 'pages/stats/common/drill-down/helpers'
 import { TicketDrillDownTableContent } from 'pages/stats/common/drill-down/TicketDrillDownTableContent'
 import { CampaignSalesDrillDownTableContent } from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
@@ -35,7 +40,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<DrillDownModal />', () => {
     const title = 'drill down'
-    const metricData: DrillDownMetric = {
+    const defaultMetricData: DrillDownMetric = {
         title,
         metricName: OverviewMetric.MessagesReceived,
     }
@@ -44,7 +49,7 @@ describe('<DrillDownModal />', () => {
             stats: {
                 drillDown: {
                     isOpen: true,
-                    metricData,
+                    metricData: defaultMetricData,
                 },
             },
         },
@@ -108,15 +113,16 @@ describe('<DrillDownModal />', () => {
     ])(
         'should render correct drill down table content for metric %s',
         (metric, ExpectedTableContentComponent) => {
+            const metricData = {
+                title: 'Metric title',
+                metricName: metric,
+            } as DrillDownMetric
             const state = {
                 ui: {
                     stats: {
                         drillDown: {
                             isOpen: true,
-                            metricData: {
-                                title: 'Metric title',
-                                metricName: metric,
-                            },
+                            metricData: metricData,
                         },
                     },
                 },
@@ -133,6 +139,10 @@ describe('<DrillDownModal />', () => {
                     metricData: state.ui.stats.drillDown.metricData,
                     useDataHook: expect.any(Function),
                     TableContent: ExpectedTableContentComponent,
+                    columnConfig: getDrillDownMetricColumn(
+                        metricData,
+                        MetricsConfig[metricData.metricName].showMetric,
+                    ),
                 }),
                 {},
             )
@@ -140,6 +150,7 @@ describe('<DrillDownModal />', () => {
                 {
                     metricData: state.ui.stats.drillDown.metricData,
                     useDataHook: expect.any(Function),
+                    domainConfig: getDrillDownConfig(metricData),
                 },
                 {},
             )

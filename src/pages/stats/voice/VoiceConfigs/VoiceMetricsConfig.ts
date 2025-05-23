@@ -7,8 +7,10 @@ import {
     waitingTimeCallsListQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
 import { StatsFilters } from 'models/stat/types'
-import { DrillDownQueryFactory } from 'pages/stats/common/drill-down/DrillDownTableConfig'
-import { Domain } from 'pages/stats/common/drill-down/types'
+import {
+    Domain,
+    DrillDownQueryFactory,
+} from 'pages/stats/common/drill-down/types'
 import { VoiceMetric } from 'state/ui/stats/types'
 
 export const VoiceMetricsConfig: Record<
