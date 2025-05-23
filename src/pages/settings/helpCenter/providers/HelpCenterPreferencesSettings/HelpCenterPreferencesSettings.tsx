@@ -267,6 +267,8 @@ export const HelpCenterPreferencesSettings = ({
             draftSettings.defaultLanguage = helpCenter.default_locale
             draftSettings.availableLanguages = helpCenter.supported_locales
             draftSettings.connectedShop.shopName = helpCenter.shop_name
+            draftSettings.connectedShop.shopIntegrationId =
+                helpCenter.shop_integration_id
             draftSettings.connectedShop.selfServiceDeactivated = Boolean(
                 helpCenter.self_service_deactivated_datetime,
             )

@@ -101,6 +101,7 @@ export const HelpCenterInstallationView: React.FC = () => {
 
     const selectedShop = useStoreIntegrationByShopName(
         preferences.connectedShop.shopName ?? '',
+        preferences.connectedShop.shopIntegrationId,
     )
 
     const isConnectedToShopifyShop = useMemo(
@@ -328,7 +329,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                 >
                     <ConnectToShopSection
                         onUpdate={onConnectedShopChange}
-                        shopName={preferences.connectedShop.shopName}
+                        shopName={selectedShop?.name || null}
                         shopType={selectedShop?.type || null}
                         shopIntegrationId={selectedShop?.id || null}
                     />
