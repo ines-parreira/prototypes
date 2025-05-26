@@ -1,8 +1,12 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
 
-import { Product } from 'constants/integrations/types/shopify'
+import {
+    Product,
+    ProductStatus,
+    ProductWithAiAgentStatus,
+} from 'constants/integrations/types/shopify'
 import {
     ApiPaginationParams,
     ApiPaginationParamsWithFilter,
@@ -15,10 +19,9 @@ interface UsePaginatedProductIntegrationProps {
     initialParams?: ApiPaginationParams
     enabled?: boolean
 }
-
 interface UsePaginatedProductIntegrationReturn {
     items: IntegrationDataItem<Product>[]
-    itemsData: Product[]
+    itemsData: ProductWithAiAgentStatus[]
     isLoading: boolean
     isError: boolean
     searchTerm: string
@@ -34,6 +37,17 @@ const integrationKeys = {
         integrationId: number,
         params?: ApiPaginationParamsWithFilter,
     ) => ['integration', integrationId, 'product', params],
+}
+
+export const isProductExcludedFromAiAgent = (product: Product): boolean => {
+    const DO_NOT_RECOMMEND_TAG = 'gorgias_do_not_recommend'
+
+    return (
+        product.status !== ProductStatus.Active ||
+        product.variants?.length === 0 ||
+        !product.published_at ||
+        Boolean(product.tags && product.tags.includes(DO_NOT_RECOMMEND_TAG))
+    )
 }
 
 export const usePaginatedProductIntegration = ({
@@ -78,9 +92,16 @@ export const usePaginatedProductIntegration = ({
         }
     }, [prevCursor])
 
+    const itemsData: ProductWithAiAgentStatus[] = useMemo(() => {
+        return (products || []).map((item) => ({
+            ...item.data,
+            is_used_by_ai_agent: !isProductExcludedFromAiAgent(item.data),
+        }))
+    }, [products])
+
     return {
         items: products || [],
-        itemsData: products?.map((item) => item.data) || [],
+        itemsData,
         isLoading,
         isError,
         searchTerm,

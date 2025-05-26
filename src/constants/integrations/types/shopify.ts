@@ -397,6 +397,7 @@ export type Product = {
     status?: ProductStatus
     vendor?: string
     body_html?: string
+    tags?: string
 }
 
 export type DraftOrderInvoice = {
@@ -523,4 +524,8 @@ export type PriceSet = {
 export type MoneyAmount = {
     amount: string
     currency_code: string
+}
+
+export type ProductWithAiAgentStatus = Product & {
+    is_used_by_ai_agent: boolean
 }

@@ -3,7 +3,7 @@ import React from 'react'
 import { QueryClientProvider, QueryKey } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
 
-import { Product } from 'constants/integrations/types/shopify'
+import { Product, ProductStatus } from 'constants/integrations/types/shopify'
 import {
     apiListCursorPaginationResponse,
     axiosSuccessResponse,
@@ -14,7 +14,10 @@ import { IntegrationDataItem } from 'models/integration/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderHook } from 'utils/testing/renderHook'
 
-import { usePaginatedProductIntegration } from '../hooks/usePaginatedProductIntegration'
+import {
+    isProductExcludedFromAiAgent,
+    usePaginatedProductIntegration,
+} from '../hooks/usePaginatedProductIntegration'
 
 const fetchIntegrationProducts = jest.spyOn(
     resources,
@@ -65,7 +68,10 @@ describe('usePaginatedProductIntegration', () => {
 
         expect(result.current.items).toEqual(mockProducts)
         expect(result.current.itemsData).toEqual(
-            mockProducts.map((item: IntegrationDataItem<Product>) => item.data),
+            mockProducts.map((item: IntegrationDataItem<Product>) => ({
+                ...item.data,
+                is_used_by_ai_agent: false,
+            })),
         )
     })
 
@@ -167,5 +173,54 @@ describe('usePaginatedProductIntegration', () => {
         expect(result.current.isLoading).toBe(false)
         expect(result.current.items).toEqual([])
         expect(result.current.itemsData).toEqual([])
+    })
+
+    describe('isProductExcludedFromAiAgent', () => {
+        it('should return true when product is not active', () => {
+            const product = {
+                ...integrationDataItemProductFixture().data,
+                status: ProductStatus.Archived,
+            }
+            expect(isProductExcludedFromAiAgent(product)).toBe(true)
+        })
+
+        it('should return true when product has no variants', () => {
+            const product = {
+                ...integrationDataItemProductFixture().data,
+                variants: [],
+            }
+            expect(isProductExcludedFromAiAgent(product)).toBe(true)
+        })
+
+        it('should return true when product is not published', () => {
+            const product = {
+                ...integrationDataItemProductFixture().data,
+                published_at: undefined,
+            }
+            expect(isProductExcludedFromAiAgent(product)).toBe(true)
+        })
+
+        it('should return true when product has do not recommend tag', () => {
+            const product = {
+                ...integrationDataItemProductFixture().data,
+                tags: 'gorgias_do_not_recommend',
+            }
+            expect(isProductExcludedFromAiAgent(product)).toBe(true)
+        })
+
+        it('should return false when product meets all criteria', () => {
+            const product = {
+                ...integrationDataItemProductFixture().data,
+                status: ProductStatus.Active,
+                variants: [
+                    {
+                        ...integrationDataItemProductFixture().data.variants[0],
+                        id: 1,
+                    },
+                ],
+                published_at: '2024-01-01',
+            }
+            expect(isProductExcludedFromAiAgent(product)).toBe(false)
+        })
     })
 })

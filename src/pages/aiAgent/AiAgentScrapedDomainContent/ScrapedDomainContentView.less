@@ -24,10 +24,27 @@
         margin-bottom: 0;
     }
 
+    .productCell {
+        width: 600px;
+    }
+
+    .productTable {
+        th:first-of-type {
+            width: 600px;
+        }
+        th:nth-of-type(2) {
+            width: 100px;
+        }
+    }
+
     .tableBodyRow {
         &:last-of-type {
             border-bottom: none;
         }
+    }
+
+    .aiAgentStatus {
+        margin-left: @layout-spacing-s;
     }
 
     .toggleInput {
@@ -56,5 +73,15 @@
         display: flex;
         padding: @layout-spacing-s @layout-spacing-m;
         border-top: 1px solid var(--neutral-grey-3);
+    }
+
+    .checkIcon {
+        font-size: 24px !important;
+        color: var(--feedback-success-3);
+    }
+
+    .closeIcon {
+        font-size: 24px !important;
+        color: var(--neutral-grey-5);
     }
 }

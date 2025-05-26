@@ -1,17 +1,18 @@
 import React from 'react'
 
-import { Banner } from '@gorgias/merchant-ui-kit'
+import { Badge, Banner } from '@gorgias/merchant-ui-kit'
 
 import hideViewIcon from 'assets/img/icons/hide-view-right.svg'
 import languageIcon from 'assets/img/icons/language.svg'
 import logoShopify from 'assets/img/integrations/shopify.svg'
-import { Product } from 'constants/integrations/types/shopify'
+import { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
 import { ArticleWithLocalTranslation } from 'models/helpCenter/types'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
 import { AlertType } from 'pages/common/components/Alert/Alert'
+import IconInput from 'pages/common/forms/input/IconInput'
 
 import {
     CONTENT_TYPE,
@@ -34,7 +35,7 @@ type QuestionProps = {
 
 type ProductProps = {
     contentType: typeof CONTENT_TYPE.PRODUCT
-    selectedContent: Product | null
+    selectedContent: ProductWithAiAgentStatus | null
     detail?: IngestedProduct | null
 }
 
@@ -54,7 +55,7 @@ const SelectedProductView = ({
     product,
     detail,
 }: {
-    product: Product
+    product: ProductWithAiAgentStatus
     detail: IngestedProduct
 }) => {
     return (
@@ -132,9 +133,34 @@ const ScrapedDomainSelectedContent = ({
     )
     const contentForProduct = (
         <SelectedProductView
-            product={selectedContent as Product}
+            product={selectedContent as ProductWithAiAgentStatus}
             detail={detail as IngestedProduct}
         />
+    )
+
+    const UsedByAiAgentBadge = () => (
+        <Badge type="light-success" upperCase={false}>
+            <IconInput icon="check" className={css.badgeIcon} />
+            In use by AI Agent
+        </Badge>
+    )
+
+    const NotUsedByAiAgentBadge = () => (
+        <Badge type="light-grey" upperCase={false}>
+            <IconInput icon="close" className={css.badgeIcon} />
+            Not in use by AI Agent
+        </Badge>
+    )
+
+    const additionalContentForProduct = (
+        <div className={css.additionalContent}>
+            {(selectedContent as ProductWithAiAgentStatus)
+                ?.is_used_by_ai_agent ? (
+                <UsedByAiAgentBadge />
+            ) : (
+                <NotUsedByAiAgentBadge />
+            )}
+        </div>
     )
 
     const title =
@@ -147,6 +173,11 @@ const ScrapedDomainSelectedContent = ({
             ? contentForQuestion
             : contentForProduct
 
+    const additionalContent =
+        contentType === CONTENT_TYPE.PRODUCT
+            ? additionalContentForProduct
+            : null
+
     return (
         <ScrapedDomainSelectedModal
             isLoading={isLoading}
@@ -158,12 +189,15 @@ const ScrapedDomainSelectedContent = ({
         >
             <div className={css.header}>
                 <div className={css.headerTitle}>{title}</div>
-                <img
-                    src={hideViewIcon}
-                    alt="hide-view-icon"
-                    className={css.headerAction}
-                    onClick={onClose}
-                />
+                <div className={css.headerActions}>
+                    {additionalContent}
+                    <img
+                        src={hideViewIcon}
+                        alt="hide-view-icon"
+                        className={css.headerAction}
+                        onClick={onClose}
+                    />
+                </div>
             </div>
             {content}
         </ScrapedDomainSelectedModal>

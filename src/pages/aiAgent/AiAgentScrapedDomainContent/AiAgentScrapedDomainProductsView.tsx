@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import { Product } from 'constants/integrations/types/shopify'
+import { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
 import { useGetEcommerceItemByExternalId } from 'models/ecommerce/queries'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
@@ -31,7 +31,8 @@ const AiAgentScrapedDomainProductsView = ({
         string | null
     >(null)
     const [isOpened, setIsOpened] = useState(false)
-    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
+    const [selectedProduct, setSelectedProduct] =
+        useState<ProductWithAiAgentStatus | null>(null)
 
     const {
         storeDomain,
@@ -57,7 +58,7 @@ const AiAgentScrapedDomainProductsView = ({
         }
     }, [syncIsPending, setSyncStoreDomainStatus])
 
-    const handleOnSelect = (content: Product) => {
+    const handleOnSelect = (content: ProductWithAiAgentStatus) => {
         setSelectedProduct(content)
         setIsOpened(true)
     }
@@ -115,7 +116,7 @@ const AiAgentScrapedDomainProductsView = ({
             handleTriggerSync={handleTriggerSync}
             syncStoreDomainStatus={syncStoreDomainStatus}
         >
-            <ScrapedDomainContentView<Product>
+            <ScrapedDomainContentView<ProductWithAiAgentStatus>
                 searchValue={searchTerm}
                 onSearch={setSearchTerm}
                 isLoading={isDataLoading || syncIsPending}

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import classnames from 'classnames'
 import Skeleton from 'react-loading-skeleton'
 
-import { ToggleField } from '@gorgias/merchant-ui-kit'
+import { ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import Navigation from 'pages/common/components/Navigation/Navigation'
@@ -13,6 +13,7 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
+import IconInput from 'pages/common/forms/input/IconInput'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -54,6 +55,35 @@ const EmptyStateView = ({ pageType }: { pageType: string }) => {
     )
 }
 
+const ColumnIsUsedByAiAgent = ({ id }: { id: number }) => (
+    <BodyCell>
+        <IconInput
+            id={`ai-agent-status-${id}`}
+            icon="check"
+            className={css.checkIcon}
+        />
+        <Tooltip target={`ai-agent-status-${id}`} placement="bottom">
+            Product is currently in use by AI Agent as knowledge
+        </Tooltip>
+    </BodyCell>
+)
+
+const ColumnIsNotUsedByAiAgent = ({ id }: { id: number }) => (
+    <BodyCell>
+        <IconInput
+            id={`ai-agent-status-${id}`}
+            icon="close"
+            className={css.closeIcon}
+        />
+
+        <Tooltip target={`ai-agent-status-${id}`} placement="bottom">
+            Product is not in use by AI Agent if it is not active or published,
+            does not have at least 1 variant or has the tag
+            ‘gorgias_do_not_recommend’ in Shopify
+        </Tooltip>
+    </BodyCell>
+)
+
 function ScrapedDomainContentView<
     T extends {
         id: number
@@ -62,6 +92,7 @@ function ScrapedDomainContentView<
             src: string
         } | null
         status?: string
+        is_used_by_ai_agent?: boolean
     },
 >({
     isLoading,
@@ -152,9 +183,16 @@ function ScrapedDomainContentView<
                     searchValue={searchValue}
                     onSearch={onSearch}
                 />
-                <TableWrapper className={css.tableWrapper}>
+                <TableWrapper
+                    className={classnames(css.tableWrapper, {
+                        [css.productTable]: pageType === CONTENT_TYPE.PRODUCT,
+                    })}
+                >
                     <TableHead>
                         <HeaderCellProperty title={pageType} />
+                        {pageType === CONTENT_TYPE.PRODUCT && !isLoading && (
+                            <HeaderCellProperty title="IN USE BY AI AGENT" />
+                        )}
                     </TableHead>
 
                     <TableBody>
@@ -191,7 +229,13 @@ function ScrapedDomainContentView<
                                     className={css.tableBodyRow}
                                     onClick={() => onSelect(content)}
                                 >
-                                    <BodyCell>
+                                    <BodyCell
+                                        className={classnames({
+                                            [css.productCell]:
+                                                pageType ===
+                                                CONTENT_TYPE.PRODUCT,
+                                        })}
+                                    >
                                         {pageType === CONTENT_TYPE.QUESTION ? (
                                             <div
                                                 onClick={(e) => {
@@ -221,7 +265,18 @@ function ScrapedDomainContentView<
 
                                         {content.title}
                                     </BodyCell>
-                                    <BodyCell>
+
+                                    {pageType === CONTENT_TYPE.PRODUCT &&
+                                        (content.is_used_by_ai_agent ? (
+                                            <ColumnIsUsedByAiAgent
+                                                id={content.id}
+                                            />
+                                        ) : (
+                                            <ColumnIsNotUsedByAiAgent
+                                                id={content.id}
+                                            />
+                                        ))}
+                                    <BodyCell justifyContent="right">
                                         <i
                                             className={classnames(
                                                 'material-icons',

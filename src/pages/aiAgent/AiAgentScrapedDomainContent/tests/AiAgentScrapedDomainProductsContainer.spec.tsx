@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 
 import { toImmutable } from 'common/utils'
 import { FeatureFlagKey } from 'config/featureFlags'
-import { Product } from 'constants/integrations/types/shopify'
+import { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
 import { useGetEcommerceItemByExternalId } from 'models/ecommerce/queries'
 import { getIngestionLogFixture } from 'pages/aiAgent/fixtures/ingestionLog.fixture'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
@@ -222,7 +222,8 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
                 {
                     id: 1,
                     title: 'Duo Baguette Birthstone Ring',
-                } as Product,
+                    is_used_by_ai_agent: false,
+                } as ProductWithAiAgentStatus,
             ],
             isLoading: false,
             searchTerm: '',
@@ -243,5 +244,35 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
         expect(screen.getByText('Product details')).toBeInTheDocument()
         const hideIcon = screen.getByAltText('hide-view-icon')
         expect(hideIcon).toBeInTheDocument()
+        expect(screen.getByText('Not in use by AI Agent')).toBeInTheDocument()
+    })
+
+    it('should be used by AI Agent', async () => {
+        mockUsePaginatedProductIntegration.mockReturnValue({
+            itemsData: [
+                {
+                    id: 1,
+                    title: 'Duo Baguette Birthstone Ring',
+                    is_used_by_ai_agent: true,
+                } as ProductWithAiAgentStatus,
+            ],
+            isLoading: false,
+            searchTerm: '',
+            setSearchTerm: jest.fn(),
+            fetchNext: jest.fn(),
+            hasNextPage: false,
+            hasPrevPage: false,
+            isError: false,
+            fetchPrev: jest.fn(),
+            items: [],
+        })
+
+        renderComponent()
+
+        const productRow = screen.getByText('Duo Baguette Birthstone Ring')
+        fireEvent.click(productRow)
+
+        expect(screen.getByText('Product details')).toBeInTheDocument()
+        expect(screen.getByText('In use by AI Agent')).toBeInTheDocument()
     })
 })
