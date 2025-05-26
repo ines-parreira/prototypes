@@ -28,6 +28,7 @@ import {
 } from 'state/views/actions'
 import { getActiveView, getLastViewId } from 'state/views/selectors'
 import { slugify } from 'utils'
+import { isMacOs } from 'utils/platform'
 import { systemViewIcons } from 'utils/views'
 
 import { ViewTableHeaderToggle } from './ViewTableHeaderToggle'
@@ -169,8 +170,12 @@ export class HeaderContainer extends Component<Props, State> {
                                                 inputClassName={classnames(
                                                     css.title,
                                                     {
-                                                        [css.withEmojiPicker]:
-                                                            showEmojiPicker,
+                                                        [css.withMacOSEmojiPicker]:
+                                                            showEmojiPicker &&
+                                                            isMacOs,
+                                                        [css.withWindowsEmojiPicker]:
+                                                            showEmojiPicker &&
+                                                            !isMacOs,
                                                     },
                                                 )}
                                                 title={activeView.get(
