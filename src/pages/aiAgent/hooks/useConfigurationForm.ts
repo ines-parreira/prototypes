@@ -18,30 +18,14 @@ import { NotificationStatus } from 'state/notifications/types'
 import { getStoreConfigurationFromFormValues } from '../components/StoreConfigForm/StoreConfigForm.utils'
 import { CHANGES_SAVED_SUCCESS, DEFAULT_FORM_VALUES } from '../constants'
 import { FormValues, UpdateValue, ValidFormValues } from '../types'
-import { getValidStoreConfigurationFormValues } from '../utils/store-configuration-validation.utils'
+import {
+    ConfigurationPage,
+    getConfigurationPage,
+    getValidStoreConfigurationFormValues,
+} from '../utils/store-configuration-validation.utils'
 import { useAiAgentNavigation } from './useAiAgentNavigation'
 import { useStoreConfigurationMutation } from './useStoreConfigurationMutation'
 import { getFormValuesFromStoreConfiguration } from './utils/configurationForm.utils'
-
-export enum ConfigurationPage {
-    SettingsChannels = 'settings-channels',
-    OnboardingWizard = 'onboarding-wizard',
-}
-
-export const getConfigurationPage = ({
-    routes,
-    pathname,
-}: Pick<ReturnType<typeof useAiAgentNavigation>, 'routes'> & {
-    pathname: string
-}): ConfigurationPage | undefined => {
-    if (pathname.includes(routes.settingsChannels)) {
-        return ConfigurationPage.SettingsChannels
-    }
-
-    if (pathname.includes(routes.onboardingWizard)) {
-        return ConfigurationPage.OnboardingWizard
-    }
-}
 
 export const useConfigurationForm = ({
     initValues,

@@ -8,7 +8,7 @@ import {
     SIGNATURE_MAX_LENGTH,
     ToneOfVoice,
 } from '../constants'
-import { ConfigurationPage } from '../hooks/useConfigurationForm'
+import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import { FormValues, ValidFormValues } from '../types'
 
 export enum StoreConfigurationValidationMessage {
@@ -29,6 +29,11 @@ export enum StoreConfigurationValidationMessage {
     FieldsMissing = 'One or more required fields not filled.',
 }
 
+export enum ConfigurationPage {
+    SettingsChannels = 'settings-channels',
+    OnboardingWizard = 'onboarding-wizard',
+}
+
 const isEmailIntegrationMissing = (formValues: FormValues) =>
     formValues.monitoredEmailIntegrations?.length === 0
 
@@ -40,6 +45,21 @@ const simplifyWizardErrors = (formValues: FormValues, message: string) => {
         return StoreConfigurationValidationMessage.FieldsMissing
     }
     return message
+}
+
+export const getConfigurationPage = ({
+    routes,
+    pathname,
+}: Pick<ReturnType<typeof useAiAgentNavigation>, 'routes'> & {
+    pathname: string
+}): ConfigurationPage | undefined => {
+    if (pathname.includes(routes.settingsChannels)) {
+        return ConfigurationPage.SettingsChannels
+    }
+
+    if (pathname.includes(routes.onboardingWizard)) {
+        return ConfigurationPage.OnboardingWizard
+    }
 }
 
 export const getValidStoreConfigurationFormValues = (

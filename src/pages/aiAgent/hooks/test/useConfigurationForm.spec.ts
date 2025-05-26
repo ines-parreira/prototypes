@@ -8,11 +8,7 @@ import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import useAppSelector from 'hooks/useAppSelector'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
-import {
-    ConfigurationPage,
-    getConfigurationPage,
-    useConfigurationForm,
-} from 'pages/aiAgent/hooks/useConfigurationForm'
+import { useConfigurationForm } from 'pages/aiAgent/hooks/useConfigurationForm'
 import { useFetchChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import { notify } from 'state/notifications/actions'
@@ -478,36 +474,5 @@ describe('useConfigurationForm', () => {
             'another test signature',
         )
         expect(result.current.isFormDirty).toBe(false)
-    })
-})
-
-describe('getConfigurationPage', () => {
-    const routes = {
-        settingsChannels: '/app/ai-agent/shopify/test-store/settings/channels',
-        onboardingWizard: '/app/ai-agent/shopify/test-store/new',
-    } as any
-
-    it('should return SettingsChannels when pathname includes settingsChannels route', () => {
-        const pathname = '/app/ai-agent/shopify/test-store/settings/channels'
-
-        const result = getConfigurationPage({ routes, pathname })
-
-        expect(result).toBe(ConfigurationPage.SettingsChannels)
-    })
-
-    it('should return OnboardingWizard when pathname includes onboardingWizard route', () => {
-        const pathname = '/app/ai-agent/shopify/test-store/new'
-
-        const result = getConfigurationPage({ routes, pathname })
-
-        expect(result).toBe(ConfigurationPage.OnboardingWizard)
-    })
-
-    it('should return undefined when pathname does not include any known route', () => {
-        const pathname = '/app/ai-agent/shopify/test-store/knowledge/sources'
-
-        const result = getConfigurationPage({ routes, pathname })
-
-        expect(result).toBeUndefined()
     })
 })

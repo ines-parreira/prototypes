@@ -1,5 +1,4 @@
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
-import { ConfigurationPage } from 'pages/aiAgent/hooks/useConfigurationForm'
 
 import {
     AiAgentChannel,
@@ -9,6 +8,8 @@ import {
 } from '../../constants'
 import { FormValues, ValidFormValues, WizardFormValues } from '../../types'
 import {
+    ConfigurationPage,
+    getConfigurationPage,
     getValidStoreConfigurationFormValues,
     StoreConfigurationValidationMessage,
 } from '../store-configuration-validation.utils'
@@ -445,5 +446,36 @@ describe('store-configuration-validation', () => {
                 )
             })
         })
+    })
+})
+
+describe('getConfigurationPage', () => {
+    const routes = {
+        settingsChannels: '/app/ai-agent/shopify/test-store/settings/channels',
+        onboardingWizard: '/app/ai-agent/shopify/test-store/new',
+    } as any
+
+    it('should return SettingsChannels when pathname includes settingsChannels route', () => {
+        const pathname = '/app/ai-agent/shopify/test-store/settings/channels'
+
+        const result = getConfigurationPage({ routes, pathname })
+
+        expect(result).toBe(ConfigurationPage.SettingsChannels)
+    })
+
+    it('should return OnboardingWizard when pathname includes onboardingWizard route', () => {
+        const pathname = '/app/ai-agent/shopify/test-store/new'
+
+        const result = getConfigurationPage({ routes, pathname })
+
+        expect(result).toBe(ConfigurationPage.OnboardingWizard)
+    })
+
+    it('should return undefined when pathname does not include any known route', () => {
+        const pathname = '/app/ai-agent/shopify/test-store/knowledge/sources'
+
+        const result = getConfigurationPage({ routes, pathname })
+
+        expect(result).toBeUndefined()
     })
 })
