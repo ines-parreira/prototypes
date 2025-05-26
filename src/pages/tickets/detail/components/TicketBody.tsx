@@ -18,6 +18,10 @@ import {
     useKeyboardNavigation,
     useLastMessageDatetimeAfterMount,
 } from '../hooks'
+import {
+    ShoppingAssistantEvent,
+    useInsertShoppingAssistantEventElements,
+} from '../hooks/useInsertShoppingAssistantEventElements'
 import { getVoiceCallIndex } from '../utils'
 import MessageQuoteContext from './MessageQuoteContext'
 import TicketBodyElement from './TicketBodyElement'
@@ -38,6 +42,10 @@ interface Props {
     onToggleUnread?: OnToggleUnreadFn
 }
 
+enum FakeVirtuosoItems {
+    Header = 'header',
+}
+
 export default function TicketBody({
     customScrollParentRef,
     elements,
@@ -51,7 +59,18 @@ export default function TicketBody({
 }: Props) {
     const virtuosoRef = useRef<VirtuosoHandle | null>(null)
     const [expandedMessages, toggleMessage] = useExpandedMessages()
-    const groupedElements = useGroupedElements()
+    const baseGroupedElements = useGroupedElements()
+    const groupedElementsWithShoppingAssistantEvents =
+        useInsertShoppingAssistantEventElements(baseGroupedElements)
+
+    const groupedElements = useMemo(
+        () => [
+            FakeVirtuosoItems.Header,
+            ...groupedElementsWithShoppingAssistantEvents,
+        ],
+        [groupedElementsWithShoppingAssistantEvents],
+    )
+
     const [highlightedElements, setHighlightedElements] =
         useHighlightedElements()
     const lastMessageDatetimeAfterMount =
@@ -99,7 +118,14 @@ export default function TicketBody({
     )
 
     const getItemContent = useCallback(
-        (index: number, element: TicketElement | TicketMessage[] | 'header') =>
+        (
+            index: number,
+            element:
+                | TicketElement
+                | TicketMessage[]
+                | ShoppingAssistantEvent
+                | 'header',
+        ) =>
             element === 'header' ? (
                 <TicketHeaderWrapper
                     hideTicket={hideTicket}
@@ -145,7 +171,10 @@ export default function TicketBody({
                 }}
             >
                 <Virtuoso<
-                    TicketElement | TicketMessage[] | 'header',
+                    | TicketElement
+                    | TicketMessage[]
+                    | ShoppingAssistantEvent
+                    | 'header',
                     TicketFooterContext
                 >
                     ref={virtuosoRef}

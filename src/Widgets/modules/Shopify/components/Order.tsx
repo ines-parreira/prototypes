@@ -1,4 +1,4 @@
-import React, {
+import {
     createContext,
     FunctionComponent,
     ReactNode,
@@ -14,6 +14,7 @@ import {
     FinancialStatus,
     FulfillmentStatus,
 } from 'constants/integrations/types/shopify'
+import { useFetchInfluencedOrdersForCurrentTicket } from 'hooks/aiAgent/useFetchInfluencedOrdersForCurrentTicket'
 import useAppSelector from 'hooks/useAppSelector'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
@@ -264,6 +265,16 @@ function TitleWrapper({ children, source }: TitleWrapperProps) {
     const { isOrderCancelled } = useContext(OrderContext)
     const shopName: string = integration.getIn(['meta', 'shop_name']) as string
 
+    const orderId = source.get('id') as number
+
+    const {
+        influencedOrders: { data: influencedOrders },
+    } = useFetchInfluencedOrdersForCurrentTicket()
+
+    const isInfluencedByAI = (influencedOrders ?? []).some(
+        (order) => order.id === orderId,
+    )
+
     return (
         <>
             <div className={css.orderTitleContainer}>
@@ -300,6 +311,7 @@ function TitleWrapper({ children, source }: TitleWrapperProps) {
                         source.get('financial_status') as FinancialStatus
                     }
                     isCancelled={!!isOrderCancelled}
+                    isInfluencedByAI={isInfluencedByAI}
                 />
             </div>
         </>
