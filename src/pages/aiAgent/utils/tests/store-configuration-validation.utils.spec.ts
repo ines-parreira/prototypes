@@ -59,6 +59,7 @@ describe('store-configuration-validation', () => {
                 VALID_FORM_VALUES,
                 [],
                 false,
+                false,
                 DEFAULT_OPTIONS,
             )
 
@@ -83,6 +84,7 @@ describe('store-configuration-validation', () => {
                 getValidStoreConfigurationFormValues(
                     formValues,
                     [],
+                    false,
                     false,
                     DEFAULT_OPTIONS,
                 ),
@@ -112,6 +114,7 @@ describe('store-configuration-validation', () => {
                     formValues,
                     [],
                     false,
+                    false,
                     DEFAULT_OPTIONS,
                 ),
             ).toEqual(expected)
@@ -127,6 +130,7 @@ describe('store-configuration-validation', () => {
                 getValidStoreConfigurationFormValues(
                     formValues,
                     [],
+                    false,
                     false,
                     DEFAULT_OPTIONS,
                 ),
@@ -144,6 +148,7 @@ describe('store-configuration-validation', () => {
                 getValidStoreConfigurationFormValues(
                     formValues,
                     [],
+                    false,
                     false,
                     DEFAULT_OPTIONS,
                 ),
@@ -165,6 +170,7 @@ describe('store-configuration-validation', () => {
                     formValues,
                     [],
                     false,
+                    false,
                     DEFAULT_OPTIONS,
                 ),
             ).toThrow(StoreConfigurationValidationMessage.FieldsMissing)
@@ -179,6 +185,7 @@ describe('store-configuration-validation', () => {
                 getValidStoreConfigurationFormValues(
                     formValues,
                     [],
+                    false,
                     false,
                     DEFAULT_OPTIONS,
                 ),
@@ -195,6 +202,7 @@ describe('store-configuration-validation', () => {
                 getValidStoreConfigurationFormValues(
                     formValues,
                     [],
+                    false,
                     false,
                     DEFAULT_OPTIONS,
                 ),
@@ -216,6 +224,7 @@ describe('store-configuration-validation', () => {
                     formValues,
                     [],
                     false,
+                    false,
                     DEFAULT_OPTIONS,
                 ),
             ).toThrow(
@@ -233,10 +242,16 @@ describe('store-configuration-validation', () => {
                 helpCenterId: null,
             }
             expect(() =>
-                getValidStoreConfigurationFormValues(formValues, [], false, {
-                    ...DEFAULT_OPTIONS,
-                    configurationPage: ConfigurationPage.OnboardingWizard,
-                }),
+                getValidStoreConfigurationFormValues(
+                    formValues,
+                    [],
+                    false,
+                    false,
+                    {
+                        ...DEFAULT_OPTIONS,
+                        configurationPage: ConfigurationPage.OnboardingWizard,
+                    },
+                ),
             ).toThrow(StoreConfigurationValidationMessage.HelpCenterError)
         })
 
@@ -252,10 +267,16 @@ describe('store-configuration-validation', () => {
                 emailChannelDeactivatedDatetime: '2021-01-01T00:00:00',
             }
             expect(() =>
-                getValidStoreConfigurationFormValues(formValues, [], false, {
-                    ...DEFAULT_OPTIONS,
-                    configurationPage: ConfigurationPage.SettingsChannels,
-                }),
+                getValidStoreConfigurationFormValues(
+                    formValues,
+                    [],
+                    false,
+                    false,
+                    {
+                        ...DEFAULT_OPTIONS,
+                        configurationPage: ConfigurationPage.SettingsChannels,
+                    },
+                ),
             ).toThrow(StoreConfigurationValidationMessage.HelpCenterError)
         })
 
@@ -272,10 +293,16 @@ describe('store-configuration-validation', () => {
                 chatChannelDeactivatedDatetime: '2021-01-01T00:00:00',
             }
             expect(() =>
-                getValidStoreConfigurationFormValues(formValues, [], false, {
-                    ...DEFAULT_OPTIONS,
-                    configurationPage: ConfigurationPage.SettingsChannels,
-                }),
+                getValidStoreConfigurationFormValues(
+                    formValues,
+                    [],
+                    false,
+                    false,
+                    {
+                        ...DEFAULT_OPTIONS,
+                        configurationPage: ConfigurationPage.SettingsChannels,
+                    },
+                ),
             ).toThrow(StoreConfigurationValidationMessage.HelpCenterError)
         })
 
@@ -287,9 +314,15 @@ describe('store-configuration-validation', () => {
             }
 
             expect(() =>
-                getValidStoreConfigurationFormValues(formValues, [], false, {
-                    ...DEFAULT_OPTIONS,
-                }),
+                getValidStoreConfigurationFormValues(
+                    formValues,
+                    [],
+                    false,
+                    false,
+                    {
+                        ...DEFAULT_OPTIONS,
+                    },
+                ),
             ).toThrow(StoreConfigurationValidationMessage.EmailIntegrationError)
         })
 
@@ -309,6 +342,7 @@ describe('store-configuration-validation', () => {
                     getValidStoreConfigurationFormValues(
                         formValues,
                         [],
+                        false,
                         false,
                         {
                             ...DEFAULT_OPTIONS,
@@ -334,6 +368,7 @@ describe('store-configuration-validation', () => {
                         formValues,
                         [],
                         false,
+                        false,
                         {
                             ...DEFAULT_OPTIONS,
                             configurationPage:
@@ -357,6 +392,7 @@ describe('store-configuration-validation', () => {
                         formValues,
                         [],
                         false,
+                        false,
                         {
                             ...DEFAULT_OPTIONS,
                             configurationPage:
@@ -379,6 +415,7 @@ describe('store-configuration-validation', () => {
                         formValues,
                         [],
                         false,
+                        false,
                         {
                             ...DEFAULT_OPTIONS,
                         },
@@ -396,6 +433,7 @@ describe('store-configuration-validation', () => {
                     getValidStoreConfigurationFormValues(
                         formValues,
                         [],
+                        false,
                         false,
                         {
                             ...DEFAULT_OPTIONS,
@@ -415,12 +453,39 @@ describe('store-configuration-validation', () => {
                         formValues,
                         [],
                         false,
+                        false,
                         {
                             ...DEFAULT_OPTIONS,
                         },
                     ),
                 ).toThrow(
                     StoreConfigurationValidationMessage.EmailIntegrationError,
+                )
+            })
+
+            it('should throw an error if no chat integration is installed and chat channel is enabled', () => {
+                const formValues: FormValues = {
+                    ...VALID_FORM_VALUES,
+                    monitoredEmailIntegrations: [EMAIL_INTEGRATION],
+                    monitoredChatIntegrations: [1],
+                    chatChannelDeactivatedDatetime: null,
+                }
+                expect(() =>
+                    getValidStoreConfigurationFormValues(
+                        formValues,
+                        [],
+                        false,
+                        true,
+                        {
+                            ...DEFAULT_OPTIONS,
+                            isAiAgentChatEnabled: true,
+                            configurationPage:
+                                ConfigurationPage.SettingsChannels,
+                            hasAiAgentNewActivationXp: true,
+                        },
+                    ),
+                ).toThrow(
+                    StoreConfigurationValidationMessage.ChatIntegrationUninstalledError,
                 )
             })
 
@@ -435,6 +500,7 @@ describe('store-configuration-validation', () => {
                     getValidStoreConfigurationFormValues(
                         formValues,
                         [],
+                        false,
                         false,
                         {
                             ...DEFAULT_OPTIONS,

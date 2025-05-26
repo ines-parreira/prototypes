@@ -24,6 +24,7 @@ import {
     getValidStoreConfigurationFormValues,
 } from '../utils/store-configuration-validation.utils'
 import { useAiAgentNavigation } from './useAiAgentNavigation'
+import { useHasUninstalledChatIntegration } from './useHasUninstalledChatIntegration'
 import { useStoreConfigurationMutation } from './useStoreConfigurationMutation'
 import { getFormValuesFromStoreConfiguration } from './utils/configurationForm.utils'
 
@@ -47,6 +48,8 @@ export const useConfigurationForm = ({
 
     const isAiAgentChatEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentChat]
+    const hasAiAgentNewActivationXp =
+        !!useFlags()[FeatureFlagKey.AiAgentNewActivationXp]
 
     const defaultValues = useMemo(
         () => ({
@@ -61,6 +64,10 @@ export const useConfigurationForm = ({
 
     const { storeConfiguration, isLoading: isStoreConfigurationLoading } =
         useAiAgentStoreConfigurationContext()
+
+    const hasUninstalledChatIntegration = useHasUninstalledChatIntegration(
+        formValues.monitoredChatIntegrations || [],
+    )
 
     // Only update form values if the form hasn't been initialized yet
     // This is used to prevent the form from being updated when the store configuration is updated
@@ -143,9 +150,11 @@ export const useConfigurationForm = ({
                 enrichedFormValues,
                 publicUrls,
                 hasExternalFiles ?? false,
+                hasUninstalledChatIntegration,
                 {
                     isAiAgentChatEnabled,
                     configurationPage,
+                    hasAiAgentNewActivationXp,
                 },
             )
         } catch (error) {

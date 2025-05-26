@@ -66,9 +66,11 @@ export const getValidStoreConfigurationFormValues = (
     formValues: FormValues,
     publicUrls: string[] | null | undefined,
     hasExternalFiles: boolean,
+    hasUninstalledChatIntegration: boolean,
     opts: {
         configurationPage?: ConfigurationPage
         isAiAgentChatEnabled: boolean | undefined
+        hasAiAgentNewActivationXp?: boolean
     },
 ): ValidFormValues => {
     const isWizardStepKnowledgeOrCompleted =
@@ -131,6 +133,18 @@ export const getValidStoreConfigurationFormValues = (
     ) {
         throw new Error(
             StoreConfigurationValidationMessage.EmailIntegrationError,
+        )
+    }
+
+    if (
+        opts.isAiAgentChatEnabled &&
+        opts.hasAiAgentNewActivationXp &&
+        hasUninstalledChatIntegration &&
+        opts.configurationPage === ConfigurationPage.SettingsChannels &&
+        formValues.chatChannelDeactivatedDatetime === null
+    ) {
+        throw new Error(
+            StoreConfigurationValidationMessage.ChatIntegrationUninstalledError,
         )
     }
 

@@ -9,7 +9,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { useConfigurationForm } from 'pages/aiAgent/hooks/useConfigurationForm'
-import { useFetchChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import { notify } from 'state/notifications/actions'
 import { StoreState } from 'state/types'
@@ -20,6 +19,7 @@ import { ToneOfVoice } from '../../constants'
 import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'
 import { useAiAgentStoreConfigurationContext } from '../../providers/AiAgentStoreConfigurationContext'
 import { FormValues } from '../../types'
+import { useHasUninstalledChatIntegration } from '../useHasUninstalledChatIntegration'
 import { useStoreConfigurationMutation } from '../useStoreConfigurationMutation'
 
 const INITIAL_FORM_VALUES: FormValues = {
@@ -55,11 +55,9 @@ const mockUseStoreConfigurationMutation = assumeMock(
     useStoreConfigurationMutation,
 )
 
-jest.mock(
-    'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData',
-)
-const mockUseFetchChatIntegrationsStatusData = assumeMock(
-    useFetchChatIntegrationsStatusData,
+jest.mock('../useHasUninstalledChatIntegration')
+const mockUseHasUninstalledChatIntegration = assumeMock(
+    useHasUninstalledChatIntegration,
 )
 
 const mockUseGetHelpCenterList = assumeMock(useGetHelpCenterList)
@@ -107,11 +105,7 @@ const defaultStoreConfigurationContextMock = {
 describe('useConfigurationForm', () => {
     beforeEach(() => {
         mockUseGetHelpCenterList.mockReturnValue(mockHelpCenterListData)
-        mockUseFetchChatIntegrationsStatusData.mockReturnValue({
-            data: [],
-            isLoading: false,
-            isFetched: true,
-        })
+        mockUseHasUninstalledChatIntegration.mockReturnValue(false)
         mockUseAiAgentStoreConfigurationContext.mockReturnValue(
             defaultStoreConfigurationContextMock,
         )
