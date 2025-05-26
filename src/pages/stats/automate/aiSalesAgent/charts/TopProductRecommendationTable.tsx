@@ -36,6 +36,9 @@ const TopProductRecommendationTable = ({
     return (
         <ChartCard
             title="Top products recommended"
+            hint={{
+                title: 'The 25 top recommended products by the Shopping Assistant.',
+            }}
             noPadding={true}
             chartId={chartId}
             dashboard={dashboard}

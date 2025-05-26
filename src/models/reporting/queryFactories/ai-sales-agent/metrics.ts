@@ -398,6 +398,8 @@ export const productRecommendationsQueryFactory = (
             filters,
         ),
     ],
+    order: [[AiSalesAgentConversationsMeasure.Count, OrderDirection.Desc]],
+    limit: 25,
     timezone,
 })
 
