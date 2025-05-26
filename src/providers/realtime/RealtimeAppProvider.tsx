@@ -45,13 +45,12 @@ const RealtimeAppProvider = ({ children }: RealtimeAppProviderProps) => {
 
     const handleErrorStatus = useCallback(
         (status: RealtimeStatus) => {
-            const { statusCode, operation } = status
-
             isCatchPNErrorsEnabled &&
                 reportError(new Error(`PubNub Status error`), {
                     tags: {
-                        operation: operation ?? 'unknown',
-                        statusCode: statusCode ?? 'unknown',
+                        operation: status.operation ?? 'unknown',
+                        statusCode: status.statusCode ?? 'unknown',
+                        category: status.category ?? 'unknown',
                     },
                     extra: { status: toPlainObject(status) },
                 })

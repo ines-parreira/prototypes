@@ -68,15 +68,39 @@ describe('RealtimeAppProvider', () => {
         MockRealtimeProvider.mock.calls[0][0].onErrorStatus({
             statusCode: '400',
             operation: 'foo',
+            category: 'bar',
         })
 
         expect(mockReportError).toHaveBeenCalledWith(pnError, {
             tags: {
                 operation: 'foo',
                 statusCode: '400',
+                category: 'bar',
             },
             extra: {
-                status: { statusCode: '400', operation: 'foo' },
+                status: {
+                    statusCode: '400',
+                    operation: 'foo',
+                    category: 'bar',
+                },
+            },
+        })
+    })
+
+    it('should call report error with fallback values when status is not an object', () => {
+        const pnError = new Error(`PubNub Status error`)
+        render(<RealtimeAppProvider>foo</RealtimeAppProvider>)
+
+        MockRealtimeProvider.mock.calls[0][0].onErrorStatus({})
+
+        expect(mockReportError).toHaveBeenCalledWith(pnError, {
+            tags: {
+                operation: 'unknown',
+                statusCode: 'unknown',
+                category: 'unknown',
+            },
+            extra: {
+                status: {},
             },
         })
     })
