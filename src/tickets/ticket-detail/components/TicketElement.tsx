@@ -15,7 +15,7 @@ type Props = {
 export function TicketElement({ element }: Props) {
     switch (element.type) {
         case 'message':
-            return <TicketMessage data={element.data} />
+            return <TicketMessage element={element} />
 
         case 'phone-event':
             return <PhoneEvent event={fromJS(element.data)} isLast={false} />

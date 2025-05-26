@@ -1,0 +1,94 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .content {
+        background-color: var(--neutral-grey-0);
+        color: var(--neutral-grey-6);
+        font-size: 1em;
+
+        > * {
+            position: inherit;
+        }
+
+        & :global {
+            [style*='fixed'] {
+                position: relative !important;
+            }
+
+            img {
+                max-width: 100%;
+                /* prevent alt text from overflowing */
+                overflow: hidden;
+            }
+
+            audio {
+                display: block;
+                margin: 6px 0;
+            }
+
+            // fixes UI for Shopify emails
+            // https://github.com/gorgias/helpdesk-web-app/pull/5983
+            .row.content {
+                margin-left: 0;
+                padding: 0;
+            }
+
+            .row.actions {
+                .mail-button {
+                    margin-left: 15px;
+                    padding-left: 15px;
+                }
+            }
+
+            .row.subtotal-table {
+                margin-left: 10px;
+            }
+
+            .subtotal-line__title,
+            .subtotal-line__value {
+                width: 50%;
+            }
+
+            .subtotal-line__title {
+                text-align: left;
+            }
+            .subtotal-line__value {
+                text-align: right;
+            }
+
+            .subtotal-table tbody {
+                width: 100%;
+            }
+
+            .order-list__item td img {
+                max-width: unset;
+            }
+        }
+    }
+
+    .failed {
+        color: var(--neutral-grey-4);
+    }
+
+    .whiteSpace {
+        white-space: pre-line;
+    }
+
+    .disclaimerTruncatedMessage {
+        color: var(--neutral-grey-5);
+        display: flex;
+        margin-top: 8px;
+
+        i {
+            font-size: 16px;
+            width: 16px;
+            margin-right: 8px;
+        }
+
+        p {
+            .caption-regular();
+            margin-bottom: 0;
+        }
+    }
+}

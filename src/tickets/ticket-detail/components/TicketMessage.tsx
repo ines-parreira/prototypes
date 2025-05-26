@@ -1,9 +1,15 @@
-import type { TicketMessage as TicketMessageType } from '@gorgias/helpdesk-types'
+import { TicketMessageElement } from '../types'
+import { MessageContent } from './MessageContent'
 
 type Props = {
-    data: TicketMessageType
+    element: TicketMessageElement
 }
 
-export function TicketMessage({ data }: Props) {
-    return <pre data-testid="dump">{JSON.stringify(data, null, '  ')}</pre>
+export function TicketMessage({ element }: Props) {
+    return (
+        <MessageContent
+            message={element.data}
+            isFailed={element.flags?.includes('failed') ?? false}
+        />
+    )
 }

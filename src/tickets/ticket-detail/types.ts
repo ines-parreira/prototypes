@@ -6,16 +6,18 @@ type AIEvent = {
     eventType: TicketEventEnum
 }
 
+export type TicketMessageElement = {
+    data: TicketMessage
+    datetime: string
+    flags?: string[]
+    type: 'message'
+}
+
 export type TicketElement =
     | { data: AIEvent; datetime?: string; flags?: string[]; type: 'ai-event' }
     | { data: Event; datetime?: string; flags?: string[]; type: 'event' }
     | { data: Event; datetime?: string; flags?: string[]; type: 'phone-event' }
-    | {
-          data: TicketMessage
-          datetime: string
-          flags?: string[]
-          type: 'message'
-      }
+    | TicketMessageElement
     | {
           data: VoiceCall
           datetime?: string

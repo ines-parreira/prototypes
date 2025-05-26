@@ -1,4 +1,4 @@
-@import '~css/typography.less';
+@import (reference) '~css/typography.less';
 
 :local {
     .container {
@@ -7,6 +7,7 @@
         gap: var(--layout-spacing-xs);
         // needed for ellipsis to work
         min-width: 0;
+        height: 24px;
     }
 
     .avatar {
