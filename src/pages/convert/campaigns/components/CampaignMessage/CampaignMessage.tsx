@@ -5,7 +5,7 @@ import { EditorState } from 'draft-js'
 import objectHash from 'object-hash'
 
 import { UploadType } from 'common/types'
-import { User } from 'config/types/user'
+import { User, UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
@@ -120,6 +120,11 @@ export const CampaignMessage = memo(
             ]
 
             return agents.reduce((acc, agent) => {
+                // Exclude support@gorgias.com from the list
+                if (agent.role.name === UserRole.GorgiasAgent) {
+                    return acc
+                }
+
                 const props: Record<string, string> = {
                     name: agent.name,
                 }

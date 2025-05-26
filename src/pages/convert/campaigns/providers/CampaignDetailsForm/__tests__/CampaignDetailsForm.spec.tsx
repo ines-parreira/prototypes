@@ -12,7 +12,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { AttachmentEnum } from 'common/types'
-import { User } from 'config/types/user'
+import { User, UserRole } from 'config/types/user'
 import {
     campaign as campaignFixture,
     campaignProductRecommendationAttachment,
@@ -79,18 +79,27 @@ const agents = [
             profile_picture_url:
                 'https://config.gorgi.us/development/Zr1WE86rb6J4Mvgl/profile/Zr1WE86rb6J4Mvgl/0d18d2f5-97c0-44b5-b192-8c58367c60be.jpeg',
         },
+        role: {
+            name: UserRole.Agent,
+        },
     },
     {
         id: 2,
         meta: {},
         name: 'Alex Plugaru',
         email: 'alex@gorgias.io',
+        role: {
+            name: UserRole.Agent,
+        },
     },
     {
         id: 3,
         name: 'Bob Smith',
         email: 'agent-smith@gorgias.io',
         meta: {},
+        role: {
+            name: UserRole.Agent,
+        },
     },
 ]
 

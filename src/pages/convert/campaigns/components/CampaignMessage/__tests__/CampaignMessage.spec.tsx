@@ -5,6 +5,7 @@ import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import { User, UserRole } from 'config/types/user'
 import {
     InventoryManagement as ShipifyInventoryManagement,
     InventoryPolicy as ShipifyInventoryPolicy,
@@ -107,7 +108,18 @@ describe('<CampaignMessage>', () => {
                         shouldGenerateInitialSuggestion={true}
                         isAiCopyAssistantEnabled={true}
                         richAreaRef={jest.fn()}
-                        agents={[]}
+                        agents={[
+                            {
+                                name: 'Dummy Agent',
+                                role: { name: UserRole.Agent },
+                                email: 'dummy@gorgias.com',
+                            } as User,
+                            {
+                                name: 'Gorgias Support Agent',
+                                role: { name: UserRole.GorgiasAgent },
+                                email: 'support@gorgias.com',
+                            } as User,
+                        ]}
                         html=""
                         text=""
                         selectedAgent=""
@@ -328,6 +340,15 @@ describe('<CampaignMessage>', () => {
             fireEvent.click(applyButton)
 
             expect(onSuggestionApply).toHaveBeenCalledWith('Suggestion 1')
+        })
+
+        it('should not display the Gorgias Support Agent user in the agent list', async () => {
+            const { queryByText } = renderCampaignMessage({}, true)
+
+            await act(flushPromises)
+
+            expect(queryByText('Dummy Agent')).toBeInTheDocument()
+            expect(queryByText('Gorgias Support Agent')).not.toBeInTheDocument()
         })
     })
 })
