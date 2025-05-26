@@ -1,5 +1,3 @@
-import { Fragment } from 'react'
-
 import { Badge, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { KnowledgeSourceType } from '../types'
@@ -40,21 +38,17 @@ export const KnowledgeResourceLine: React.FC<Props> = ({
             <div className={css.status}>
                 {isReady ? (
                     <Badge className={css.badge} type={'light-success'}>
-                        <Fragment key=".0">
-                            <i className="material-icons">check_circle</i>
-                            <div>Ready</div>
-                        </Fragment>
+                        <i className="material-icons">check_circle</i>
+                        <div>Ready</div>
                     </Badge>
                 ) : (
                     <Badge className={css.badge} type={'light-grey'}>
-                        <Fragment key=".0">
-                            <LoadingSpinner
-                                className={css.spinner}
-                                size="small"
-                                data-testid="loading-spinner"
-                            />
-                            <div>In Process</div>
-                        </Fragment>
+                        <LoadingSpinner
+                            className={css.spinner}
+                            size="small"
+                            data-testid="loading-spinner"
+                        />
+                        <div>In Process</div>
                     </Badge>
                 )}
             </div>
