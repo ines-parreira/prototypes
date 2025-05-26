@@ -33,25 +33,6 @@ describe('billing actions', () => {
         mockServer.reset()
     })
 
-    it('fetch current usage', () => {
-        const usage = {
-            data: {
-                cost: 12.35,
-                ticket: 12323,
-            },
-            meta: {
-                startDate: '2016-11-13T18:30:19+00:00',
-                endDate: '2016-12-13T18:30:19+00:00',
-            },
-        }
-
-        mockServer.onGet('/api/billing/current-usage/').reply(200, usage)
-
-        return store
-            .dispatch(actions.fetchCurrentUsage())
-            .then(() => expect(store.getActions()).toMatchSnapshot())
-    })
-
     it('fetch invoices', () => {
         const invoices = [
             {

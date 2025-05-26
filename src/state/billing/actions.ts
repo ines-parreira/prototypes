@@ -4,12 +4,7 @@ import client from '../../models/api/resources'
 import { ApiListResponseLegacyPagination } from '../../models/api/types'
 import { StoreDispatch } from '../types'
 import * as constants from './constants'
-import {
-    CurrentProductsUsages,
-    CurrentUsage,
-    Invoice,
-    PaymentMethod,
-} from './types'
+import { CurrentProductsUsages, Invoice, PaymentMethod } from './types'
 
 /**
  * Update an invoice in the list of invoices.
@@ -20,29 +15,6 @@ export const updateInvoiceInList = (
     return {
         type: constants.UPDATE_INVOICE_IN_LIST,
         invoice,
-    }
-}
-
-export function fetchCurrentUsage() {
-    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return client
-            .get<CurrentUsage>('/api/billing/current-usage')
-            .then((json) => json?.data)
-            .then(
-                (resp) => {
-                    return dispatch({
-                        type: constants.FETCH_CURRENT_USAGE_SUCCESS,
-                        resp,
-                    })
-                },
-                (error) => {
-                    return dispatch({
-                        type: constants.FETCH_CURRENT_USAGE_ERROR,
-                        error,
-                        reason: 'Unable to get current usage information.',
-                    })
-                },
-            )
     }
 }
 

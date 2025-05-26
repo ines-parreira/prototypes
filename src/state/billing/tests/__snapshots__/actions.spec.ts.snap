@@ -1,15 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`billing actions fetch current usage 1`] = `
-[
-  {
-    "error": [Error: Request failed with status code 404],
-    "reason": "Unable to get current usage information.",
-    "type": "FETCH_CURRENT_USAGE_ERROR",
-  },
-]
-`;
-
 exports[`billing actions fetch invoices 1`] = `
 [
   {

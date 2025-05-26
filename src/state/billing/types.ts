@@ -3,13 +3,6 @@ import { Map } from 'immutable'
 import { Product, ProductType } from 'models/billing/types'
 import { AlertType } from 'pages/common/components/Alert/Alert'
 
-export type CurrentUsage = {
-    cost: number
-    extra_tickets: number
-    messages: number
-    tickets: number
-}
-
 export type CurrentUsagePerProduct = {
     data: {
         extra_tickets_cost_in_cents: number

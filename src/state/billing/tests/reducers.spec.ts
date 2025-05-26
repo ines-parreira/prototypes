@@ -55,26 +55,6 @@ describe('billing reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('fetch current usage', () => {
-        const usage = {
-            data: {
-                cost: 12.35,
-                ticket: 12323,
-            },
-            meta: {
-                startDate: '2016-11-13T18:30:19+00:00',
-                endDate: '2016-12-13T18:30:19+00:00',
-            },
-        }
-
-        expect(
-            reducer(initialState, {
-                type: types.FETCH_CURRENT_USAGE_SUCCESS,
-                resp: usage,
-            }),
-        ).toMatchSnapshot()
-    })
-
     describe('SET_CREDIT_CARD', () => {
         const creditCard = fromJS({
             last4: '1235',

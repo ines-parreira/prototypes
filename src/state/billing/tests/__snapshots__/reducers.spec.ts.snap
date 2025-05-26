@@ -50,21 +50,6 @@ Immutable.Map {
 }
 `;
 
-exports[`billing reducers fetch current usage 1`] = `
-Immutable.Map {
-  "currentUsage": Immutable.Map {
-    "data": Immutable.Map {
-      "cost": 12.35,
-      "ticket": 12323,
-    },
-    "meta": Immutable.Map {
-      "startDate": "2016-11-13T18:30:19+00:00",
-      "endDate": "2016-12-13T18:30:19+00:00",
-    },
-  },
-}
-`;
-
 exports[`billing reducers fetch invoices 1`] = `
 Immutable.Map {
   "invoices": Immutable.List [
