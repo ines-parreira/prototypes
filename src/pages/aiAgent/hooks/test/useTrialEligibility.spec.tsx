@@ -86,7 +86,7 @@ describe('useTrialEligibility', () => {
         const isOnUsd5Plan = true
         const isCurrentUserTeamLead = true
 
-        const mockGetMembership = jest.fn().mockResolvedValue(['GqzPfgRSY3'])
+        const mockGetMembership = jest.fn().mockResolvedValue(['FADCAHMBM2'])
         window.Candu = { getMembership: mockGetMembership } as any
 
         const { result } = renderHook(() =>

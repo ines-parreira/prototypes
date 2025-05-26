@@ -38,7 +38,7 @@ describe('aiSalesAgentTrialUtils', () => {
         it('should return true if the account is part of the Candu trial', async () => {
             const mockGetMembership = jest
                 .fn()
-                .mockResolvedValue(['GqzPfgRSY3'])
+                .mockResolvedValue(['FADCAHMBM2'])
             window.Candu = { getMembership: mockGetMembership } as any
 
             const result = await isAccountPartOfCanduTrial()

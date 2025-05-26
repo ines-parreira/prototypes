@@ -3,10 +3,7 @@ import moment from 'moment'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 
-import {
-    getAiShoppingAssistantTrialEnabledFlag,
-    getAiShoppingAssistantTrialExtensionEnabledFlag,
-} from '../Activation/utils'
+import { getAiShoppingAssistantTrialExtensionEnabledFlag } from '../Activation/utils'
 
 export enum TrialState {
     NotTrial = 'notTrial',
@@ -64,12 +61,7 @@ export const getAiSalesAgentTrialState = (
 }
 
 export const isAccountPartOfCanduTrial = async (): Promise<boolean> => {
-    // This feature flag will be used to enable the release of the trial feature to segment FADCAHMBM2.
-    const isAiShoppingAssistantTrialEnabled =
-        getAiShoppingAssistantTrialEnabledFlag()
-    const CANDU_TRIAL_MEMBERSHIP_SEGMENT_ID = isAiShoppingAssistantTrialEnabled
-        ? 'FADCAHMBM2'
-        : 'GqzPfgRSY3'
+    const CANDU_TRIAL_MEMBERSHIP_SEGMENT_ID = 'FADCAHMBM2'
 
     if (!window.Candu) return false
     const canduMembership = await window.Candu.getMembership()

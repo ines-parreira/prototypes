@@ -10,13 +10,6 @@ export const getAiSalesAgentEmailEnabledFlag = () => {
     )
 }
 
-export const getAiShoppingAssistantTrialEnabledFlag = () => {
-    const launchDarklyClient = getLDClient()
-    return !!launchDarklyClient?.variation(
-        FeatureFlagKey.AiShoppingAssistantTrialEnabled,
-    )
-}
-
 export const getAiShoppingAssistantTrialExtensionEnabledFlag = (): number => {
     const launchDarklyClient = getLDClient()
     return (
