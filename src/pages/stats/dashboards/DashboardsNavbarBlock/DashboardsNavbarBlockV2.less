@@ -25,6 +25,10 @@
 
     .actionsContainer {
         position: relative;
+        &:hover {
+            border-radius: 8px;
+            background: var(--navigation-background-accent);
+        }
 
         .toggle {
             border: none;
@@ -32,12 +36,12 @@
             align-items: center;
             justify-content: center;
             color: var(--navigation-text-item) !important;
-            font-size: 14px;
+            font-size: 16px;
             line-height: 20px;
-            padding: 3px 6px;
+            padding: 3px;
             transform: translateY(-1px);
             position: absolute;
-            right: 20px;
+            right: 30px;
             bottom: 4px;
             z-index: 10;
 
@@ -48,9 +52,7 @@
 
             &:hover,
             &:focus {
-                background-color: var(
-                    --navbar-block-toggle-hover-background-color
-                );
+                background-color: var(--navbar-link-hover-background-color);
                 color: var(--navbar-block-toggle-hover-color) !important;
                 box-shadow: unset;
             }
