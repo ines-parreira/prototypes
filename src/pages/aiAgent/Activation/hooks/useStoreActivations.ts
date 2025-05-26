@@ -66,10 +66,14 @@ export const computeActivationPercentage = (
     return Math.round(safeDivide(currentScore, totalScore) * 100)
 }
 
-export const useStoreConfigurations = (accountDomain: string) => {
+export const useStoreConfigurations = (
+    accountDomain: string,
+    storeName?: string,
+) => {
     const { storeConfigurations: allStoreConfigurations, isLoading } =
         useStoreConfigurationForAccount({
             accountDomain,
+            storesName: storeName ? [storeName] : undefined,
         })
 
     const storeConfigurations: StoreConfiguration[] = useMemo(() => {
@@ -92,10 +96,12 @@ export const useStoreActivations = ({
     pageName,
     withPublicResources = false,
     withChatIntegrationsStatus = false,
+    storeName,
 }: {
     pageName: string
     withPublicResources?: boolean
     withChatIntegrationsStatus?: boolean
+    storeName?: string
 }): {
     storeActivations: Record<string, StoreActivation>
     progressPercentage: number
@@ -163,7 +169,7 @@ export const useStoreActivations = ({
         storeConfigurations,
         storeNames,
         isLoading: isStoreConfigurationLoading,
-    } = useStoreConfigurations(accountDomain)
+    } = useStoreConfigurations(accountDomain, storeName)
 
     const chatIds = useMemo(() => {
         return storeConfigurations.flatMap(

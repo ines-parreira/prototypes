@@ -187,6 +187,23 @@ describe('useStoreConfigurations', () => {
             'store3',
         ])
     })
+
+    it('should return storeConfigurations for a single store', () => {
+        useStoreConfigurationForAccountMock.mockReturnValue({
+            storeConfigurations: [
+                getStoreConfigurationFixture({ storeName: 'store1' }),
+            ],
+            isLoading: false,
+        })
+
+        const { result } = renderHook(() =>
+            useStoreConfigurations('my-account', 'store1'),
+        )
+        expect(result.current.storeConfigurations).toHaveLength(1)
+        expect(result.current.storeConfigurations[0].storeName).toEqual(
+            'store1',
+        )
+    })
 })
 
 describe('useStoreActivations', () => {
