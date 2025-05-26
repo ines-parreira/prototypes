@@ -10,6 +10,7 @@ import {
     MANAGED_TYPES,
     OBJECT_TYPES,
     SUPPORTED_UI_DATA_TYPES,
+    SYSTEM_READ_ONLY_MANAGED_TYPES,
 } from './constants'
 
 export type CustomFieldObjectTypes =
@@ -75,6 +76,15 @@ export function isCustomFieldAIManagedType(
 ): managedType is CustomFieldAIManagedType {
     return Boolean(
         managedType && Object.values(AI_MANAGED_TYPES).includes(managedType),
+    )
+}
+
+export function isCustomFieldSystemReadOnly(
+    managedType: string | null,
+): boolean {
+    return Boolean(
+        managedType &&
+            Object.values(SYSTEM_READ_ONLY_MANAGED_TYPES).includes(managedType),
     )
 }
 

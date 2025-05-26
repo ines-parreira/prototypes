@@ -1,3 +1,5 @@
+import { ManagedTicketFieldType } from '@gorgias/helpdesk-types'
+
 import {
     CustomFieldManagedType,
     CustomFieldObjectTypes,
@@ -98,6 +100,11 @@ export const AI_MANAGED_TYPES = {
     AI_SALES: 'ai_sales',
     AI_DISCOUNT: 'ai_discount',
     MANAGED_SENTIMENT: 'managed_sentiment',
+}
+
+export const SYSTEM_READ_ONLY_MANAGED_TYPES = {
+    ...AI_MANAGED_TYPES,
+    CALL_STATUS: ManagedTicketFieldType.CallStatus,
 }
 
 export const MANAGED_TYPES = {

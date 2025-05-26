@@ -3,7 +3,7 @@ import React, { memo } from 'react'
 import {
     CustomField,
     CustomFieldState,
-    isCustomFieldAIManagedType,
+    isCustomFieldSystemReadOnly,
 } from 'custom-fields/types'
 import NumberField, {
     Props as NumberFieldProps,
@@ -26,7 +26,7 @@ function TicketField({ fieldDefinition, fieldState, isRequired }: Props) {
         label,
         fieldState,
         isRequired,
-        isDisabled: isCustomFieldAIManagedType(managed_type),
+        isDisabled: isCustomFieldSystemReadOnly(managed_type),
     }
 
     if (

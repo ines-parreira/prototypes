@@ -6,9 +6,12 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import { ManagedTicketFieldType } from '@gorgias/helpdesk-types'
+
 import { isFieldRequired } from 'custom-fields/helpers/isFieldRequired'
 import { CustomFieldDefinition } from 'custom-fields/types'
 import {
+    callStatusManagedTicketInputFieldDefinition,
     ticketDropdownFieldDefinition,
     ticketFieldDefinitions,
     ticketInputFieldDefinition,
@@ -129,6 +132,14 @@ describe('<TicketField />', () => {
                 ...ticketInputFieldDefinition.definition,
             },
             managed_type: 'ai_intent',
+            should_be_disabled: true,
+        },
+        {
+            ...ticketInputFieldDefinition,
+            definition: {
+                ...callStatusManagedTicketInputFieldDefinition.definition,
+            },
+            managed_type: ManagedTicketFieldType.CallStatus,
             should_be_disabled: true,
         },
     ])(

@@ -3,9 +3,11 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { SYSTEM_READ_ONLY_MANAGED_TYPES } from 'custom-fields/constants'
 import { useUpdateCustomFieldArchiveStatus } from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
 import {
     aiManagedTicketInputFieldDefinition,
+    callStatusManagedTicketInputFieldDefinition,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
 import { TableBodyRowDraggable } from 'pages/common/components/table/TableBodyRowDraggable'
@@ -136,8 +138,12 @@ describe('<Row />', () => {
         })
     })
 
-    it.each([ticketInputFieldDefinition, aiManagedTicketInputFieldDefinition])(
-        'should render correctly AI Agent managed field',
+    it.each([
+        ticketInputFieldDefinition,
+        aiManagedTicketInputFieldDefinition,
+        callStatusManagedTicketInputFieldDefinition,
+    ])(
+        'should render correctly system read only field',
         (ticketFieldDefinition) => {
             const props = {
                 ...defaultProps,
@@ -155,7 +161,9 @@ describe('<Row />', () => {
                 </table>,
             )
 
-            ticketFieldDefinition.managed_type === 'ai_intent'
+            ticketFieldDefinition.managed_type === 'ai_intent' ||
+            ticketFieldDefinition.managed_type ===
+                SYSTEM_READ_ONLY_MANAGED_TYPES.CALL_STATUS
                 ? expect(queryByTitle('Archive')).toHaveAttribute(
                       'aria-disabled',
                       'true',
@@ -164,7 +172,11 @@ describe('<Row />', () => {
         },
     )
 
-    it.each([ticketInputFieldDefinition, aiManagedTicketInputFieldDefinition])(
+    it.each([
+        ticketInputFieldDefinition,
+        aiManagedTicketInputFieldDefinition,
+        callStatusManagedTicketInputFieldDefinition,
+    ])(
         'should render correctly AI Agent managed field when archived',
         (ticketFieldDefinition) => {
             const props = {
@@ -184,7 +196,9 @@ describe('<Row />', () => {
             )
 
             expect(queryByTitle('Archive')).not.toBeInTheDocument()
-            ticketFieldDefinition.managed_type === 'ai_intent'
+            ticketFieldDefinition.managed_type === 'ai_intent' ||
+            ticketFieldDefinition.managed_type ===
+                SYSTEM_READ_ONLY_MANAGED_TYPES.CALL_STATUS
                 ? expect(queryByTitle('Unarchive')).toHaveAttribute(
                       'aria-disabled',
                       'true',

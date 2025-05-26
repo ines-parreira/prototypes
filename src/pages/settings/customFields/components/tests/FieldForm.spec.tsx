@@ -1,7 +1,11 @@
 import { createEvent, fireEvent, screen, waitFor } from '@testing-library/react'
 import { omit } from 'lodash'
 
-import { OBJECT_TYPE_SETTINGS, OBJECT_TYPES } from 'custom-fields/constants'
+import {
+    OBJECT_TYPE_SETTINGS,
+    OBJECT_TYPES,
+    SYSTEM_READ_ONLY_MANAGED_TYPES,
+} from 'custom-fields/constants'
 import { useUpdateCustomFieldArchiveStatus } from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
 import {
     aiManagedTicketInputFieldDefinition,
@@ -393,11 +397,14 @@ describe('<FieldForm/>', () => {
         })
     })
 
-    describe('AI managed field', () => {
-        it('should show a back button when the field is ai managed', () => {
+    describe('System read only fields', () => {
+        it('should show a back button when the field is system read only', () => {
             const props = {
                 ...defaultProps,
-                field: aiManagedTicketInputFieldDefinition,
+                field: {
+                    ...aiManagedTicketInputFieldDefinition,
+                    managed_type: SYSTEM_READ_ONLY_MANAGED_TYPES.CALL_STATUS,
+                },
             }
 
             renderWithRouter(<FieldForm {...props} />)

@@ -1,4 +1,7 @@
-import { OBJECT_TYPES } from 'custom-fields/constants'
+import {
+    OBJECT_TYPES,
+    SYSTEM_READ_ONLY_MANAGED_TYPES,
+} from 'custom-fields/constants'
 import {
     CustomField,
     CustomFieldInput,
@@ -182,6 +185,11 @@ export const aiManagedTicketInputFieldDefinition: CustomField = {
             placeholder: 'Some placeholder',
         },
     },
+}
+
+export const callStatusManagedTicketInputFieldDefinition: CustomField = {
+    ...ticketInputFieldDefinition,
+    managed_type: SYSTEM_READ_ONLY_MANAGED_TYPES.CALL_STATUS,
 }
 
 export const aiAgentManagedTicketDropdownFieldDefinition: CustomField = {

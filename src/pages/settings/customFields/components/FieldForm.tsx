@@ -11,7 +11,7 @@ import {
     CustomField,
     CustomFieldInput,
     isCustomField,
-    isCustomFieldAIManagedType,
+    isCustomFieldSystemReadOnly,
 } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
@@ -59,7 +59,7 @@ export default function FieldForm(props: FieldFormProps) {
 
     const objectTypeSettings = OBJECT_TYPE_SETTINGS[props.field.object_type]
     const customFieldTitleLabel = objectTypeSettings.TITLE_LABEL
-    const isAIManaged = isCustomFieldAIManagedType(props.field.managed_type)
+    const isReadOnly = isCustomFieldSystemReadOnly(props.field.managed_type)
     const { mutateAsync } = useUpdateCustomFieldArchiveStatus(
         // this `: 0` case should never happen
         isCustomField(props.field) ? props.field.id : 0,
@@ -160,7 +160,7 @@ export default function FieldForm(props: FieldFormProps) {
     )
 
     const showRequired =
-        props.field.object_type === OBJECT_TYPES.TICKET && !isAIManaged
+        props.field.object_type === OBJECT_TYPES.TICKET && !isReadOnly
 
     return (
         <form onSubmit={(evt) => evt.preventDefault()} ref={formRef}>
@@ -200,7 +200,7 @@ export default function FieldForm(props: FieldFormProps) {
                 value={form.description || undefined}
                 onChange={(val) => setValue('description', val)}
                 className={css.formRow}
-                isDisabled={isAIManaged}
+                isDisabled={isReadOnly}
             />
             {showRequired && (
                 <RequirementTypeInput
@@ -214,7 +214,7 @@ export default function FieldForm(props: FieldFormProps) {
                     htmlFor="type"
                     className={css.formLabel}
                     isRequired
-                    isDisabled={isAIManaged}
+                    isDisabled={isReadOnly}
                 >
                     Type
                 </Label>
@@ -235,7 +235,7 @@ export default function FieldForm(props: FieldFormProps) {
                     }}
                     isDisabled={isCustomField(props.field)}
                 />
-                {!isAIManaged && (
+                {!isReadOnly && (
                     <Caption>
                         Field type can’t be changed once it’s been saved.
                     </Caption>
@@ -263,7 +263,7 @@ export default function FieldForm(props: FieldFormProps) {
                             field={props.field}
                             value={form.definition.input_settings.choices}
                             onChange={handleChoiceChange}
-                            isDisabled={isAIManaged}
+                            isDisabled={isReadOnly}
                             objectType={props.field.object_type}
                         />
                     </div>
@@ -271,7 +271,7 @@ export default function FieldForm(props: FieldFormProps) {
 
             <div className={css.buttons}>
                 <div className={css.leftGroup}>
-                    {isAIManaged ? (
+                    {isReadOnly ? (
                         <Button
                             intent="secondary"
                             onClick={props.onClose}
@@ -307,7 +307,7 @@ export default function FieldForm(props: FieldFormProps) {
                     )}
                 </div>
 
-                {isCustomField(props.field) && !isAIManaged && (
+                {isCustomField(props.field) && !isReadOnly && (
                     <>
                         {!props.field.deactivated_datetime && (
                             <div className={css.rightGroup}>

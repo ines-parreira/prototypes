@@ -1,7 +1,10 @@
+import { SYSTEM_READ_ONLY_MANAGED_TYPES } from 'custom-fields/constants'
+
 import {
     CustomField,
     isCustomField,
     isCustomFieldAIManagedType,
+    isCustomFieldSystemReadOnly,
 } from '../types'
 
 describe('custom field types', () => {
@@ -38,6 +41,20 @@ describe('custom field types', () => {
             expect(isCustomFieldAIManagedType('contact_reason')).toBe(false)
             expect(isCustomFieldAIManagedType('product')).toBe(false)
             expect(isCustomFieldAIManagedType('resolution')).toBe(false)
+        })
+    })
+
+    describe('is system read only', () => {
+        it.each(Object.values(SYSTEM_READ_ONLY_MANAGED_TYPES))(
+            'should return true as managedType match',
+            (managedType) => {
+                expect(isCustomFieldSystemReadOnly(managedType)).toBe(true)
+            },
+        )
+
+        it('should return false as managedType does not match', () => {
+            expect(isCustomFieldSystemReadOnly('contact_reason')).toBe(false)
+            expect(isCustomFieldSystemReadOnly(null)).toBe(false)
         })
     })
 })

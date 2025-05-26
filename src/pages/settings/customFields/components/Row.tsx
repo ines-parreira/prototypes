@@ -9,7 +9,11 @@ import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { DateAndTimeFormatting } from 'constants/datetime'
 import { useUpdateCustomFieldArchiveStatus } from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
-import { CustomField, isCustomFieldAIManagedType } from 'custom-fields/types'
+import {
+    CustomField,
+    isCustomFieldAIManagedType,
+    isCustomFieldSystemReadOnly,
+} from 'custom-fields/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
@@ -132,7 +136,7 @@ export default function Row({
                             fillStyle="ghost"
                             intent="secondary"
                             isLoading={isLoading}
-                            isDisabled={isCustomFieldAIManagedType(
+                            isDisabled={isCustomFieldSystemReadOnly(
                                 customField.managed_type,
                             )}
                             title="Archive"
@@ -168,7 +172,7 @@ export default function Row({
                         }}
                         fillStyle="ghost"
                         intent="secondary"
-                        isDisabled={isCustomFieldAIManagedType(
+                        isDisabled={isCustomFieldSystemReadOnly(
                             customField.managed_type,
                         )}
                         isLoading={isLoading}
