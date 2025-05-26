@@ -45,8 +45,13 @@ const isNumber = (value?: number): value is number => typeof value === 'number'
 
 const TicketAssignment = () => {
     const dispatch = useAppDispatch()
-    const isExceedingMaxAgentCapacityAvailable = useFlag(
+    const isExceedingMaxAgentCapacityEnabled = useFlag(
         FeatureFlagKey.CanExceedMaxAgentCapacity,
+        false,
+    )
+
+    const isAssignTicketToLastAgentEnabled = useFlag(
+        FeatureFlagKey.AssignTicketToLastAgentResponder,
         false,
     )
 
@@ -79,6 +84,12 @@ const TicketAssignment = () => {
         ticketAssignmentSettings.getIn(
             ['data', 'can_exceed_max_agent_capacity'],
             true,
+        ) as boolean,
+    )
+    const [assignTicketToLastAgent, setAssignTicketToLastAgent] = useState(
+        ticketAssignmentSettings.getIn(
+            ['data', 'assign_ticket_to_last_agent_responder'],
+            false,
         ) as boolean,
     )
     const [assignmentChannels, setAssignmentChannels] = useState(() => {
@@ -187,10 +198,16 @@ const TicketAssignment = () => {
                     assignment_channels: assignmentChannels,
                     max_user_chat_ticket: chatTicketsLimit,
                     max_user_non_chat_ticket: nonChatTicketsLimit,
-                    ...(isExceedingMaxAgentCapacityAvailable
+                    ...(isExceedingMaxAgentCapacityEnabled
                         ? {
                               can_exceed_max_agent_capacity:
                                   canExceedMaxAgentCapacity,
+                          }
+                        : {}),
+                    ...(isAssignTicketToLastAgentEnabled
+                        ? {
+                              auto_assign_ticket_to_responding_agent:
+                                  assignTicketToLastAgent,
                           }
                         : {}),
                 } as AccountSettingTicketAssignment['data'],
@@ -291,7 +308,7 @@ const TicketAssignment = () => {
                                             }
                                         />
                                     </div>
-                                    {isExceedingMaxAgentCapacityAvailable && (
+                                    {isExceedingMaxAgentCapacityEnabled && (
                                         <div className={settingsCss.mb16}>
                                             <CheckBoxField
                                                 label=" Allow tickets to exceed max capacity when re-opened"
@@ -310,6 +327,28 @@ const TicketAssignment = () => {
                                                         tickets can enter the
                                                         queue even if it’s at
                                                         full capacity.
+                                                    </span>
+                                                }
+                                            />
+                                        </div>
+                                    )}
+                                    {isAssignTicketToLastAgentEnabled && (
+                                        <div className={settingsCss.mb16}>
+                                            <CheckBoxField
+                                                label=" Reassign tickets to the last responding agent"
+                                                name="auto_assign_ticket_to_responding_agent"
+                                                value={assignTicketToLastAgent}
+                                                onChange={(value: boolean) =>
+                                                    setAssignTicketToLastAgent(
+                                                        value,
+                                                    )
+                                                }
+                                                caption={
+                                                    <span>
+                                                        When enabled, unassigned
+                                                        tickets will be assigned
+                                                        to the last agent that
+                                                        responded.
                                                     </span>
                                                 }
                                             />

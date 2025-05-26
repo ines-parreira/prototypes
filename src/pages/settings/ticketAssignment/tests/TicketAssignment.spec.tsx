@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
@@ -9,6 +9,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { teams } from 'fixtures/teams'
@@ -73,7 +74,6 @@ jest.mock('pages/common/components/UnsavedChangesPrompt', () =>
     jest.fn().mockReturnValue(null),
 )
 const UnsavedChangesPromptMock = UnsavedChangesPrompt as jest.Mock
-
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
@@ -106,7 +106,7 @@ const mockStore = configureMockStore<RootState>([thunk])
 
 describe('<TicketAssignment />', () => {
     beforeEach(() => {
-        useFlagMock.mockReturnValue(false)
+        useFlagMock.mockReset()
     })
 
     it('should call `submitSetting` and call `fetchChats` on submit when the account has no `ticket-assignment` setting', async () => {
@@ -120,6 +120,17 @@ describe('<TicketAssignment />', () => {
                 <TicketAssignment />
             </Provider>,
         )
+
+        expect(
+            screen.queryByText(
+                /When enabled, re-opened tickets can enter the queue/,
+            ),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByText(
+                /When enabled, unassigned tickets will be assigned/,
+            ),
+        ).not.toBeInTheDocument()
 
         fireEvent.click(screen.getByText('Save changes'))
 
@@ -292,7 +303,11 @@ describe('<TicketAssignment />', () => {
     })
 
     it('should send updated can_exceed_max_agent_capacity setting on submit', async () => {
-        useFlagMock.mockReturnValue(true)
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.CanExceedMaxAgentCapacity) {
+                return true
+            }
+        })
         render(
             <Provider store={mockStore(defaultState)}>
                 <TicketAssignment />
@@ -311,6 +326,34 @@ describe('<TicketAssignment />', () => {
             type: AccountSettingType.TicketAssignment,
             data: expect.objectContaining({
                 can_exceed_max_agent_capacity: true,
+            }),
+        })
+    })
+
+    it('should send updated auto_assign_ticket_to_responding_agent setting on submit', async () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.AssignTicketToLastAgentResponder) {
+                return true
+            }
+        })
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketAssignment />
+            </Provider>,
+        )
+
+        fireEvent.click(
+            screen.getByText(
+                /When enabled, unassigned tickets will be assigned/,
+            ),
+        )
+        fireEvent.click(screen.getByText('Save changes'))
+
+        expect(submitSettingMock).toHaveBeenCalledWith({
+            id: 1,
+            type: AccountSettingType.TicketAssignment,
+            data: expect.objectContaining({
+                auto_assign_ticket_to_responding_agent: false,
             }),
         })
     })

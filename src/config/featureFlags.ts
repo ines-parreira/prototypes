@@ -37,6 +37,7 @@ export enum FeatureFlagKey {
     AiShoppingAssistantTrialSystemBanner = 'ai-shopping-assistant-trial-system-banner',
     AITicketSummary = 'linear.project-ai-summaries.ai-ticket-summary-component-frontend',
     AnalyticsDeferredLoadingExperiment = 'analytics-deferred-loading-experiment',
+    AssignTicketToLastAgentResponder = 'linear.project_assign-ticket-to-last-agent-responder',
     AutomateAIAgentInteractions = 'automate-ai-agent-interactions',
     AutomateNonFilteredDenominatorInAutomationRate = 'use-non-filtered-automated-interactions-in-automation-rate-denominator',
     AutomateOverviewChannelsFilter = 'automate-overview-channels-filter',

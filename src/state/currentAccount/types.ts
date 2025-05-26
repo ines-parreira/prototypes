@@ -119,6 +119,7 @@ export type AccountSettingTicketAssignment = {
         max_user_chat_ticket: number
         max_user_non_chat_ticket: number
         can_exceed_max_agent_capacity?: boolean
+        auto_assign_ticket_to_responding_agent?: boolean
     }
 }
 
