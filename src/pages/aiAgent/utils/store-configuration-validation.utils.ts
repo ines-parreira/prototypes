@@ -8,6 +8,7 @@ import {
     SIGNATURE_MAX_LENGTH,
     ToneOfVoice,
 } from '../constants'
+import { ConfigurationPage } from '../hooks/useConfigurationForm'
 import { FormValues, ValidFormValues } from '../types'
 
 export enum StoreConfigurationValidationMessage {
@@ -46,7 +47,7 @@ export const getValidStoreConfigurationFormValues = (
     publicUrls: string[] | null | undefined,
     hasExternalFiles: boolean,
     opts: {
-        isOnboardingWizardPage: boolean
+        configurationPage?: ConfigurationPage
         isAiAgentChatEnabled: boolean | undefined
     },
 ): ValidFormValues => {
@@ -124,7 +125,10 @@ export const getValidStoreConfigurationFormValues = (
     }
 
     // Wizard related validations
-    if (opts.isOnboardingWizardPage && formValues.wizard) {
+    if (
+        opts.configurationPage === ConfigurationPage.OnboardingWizard &&
+        formValues.wizard
+    ) {
         // we must have at least one channel selected in the wizard
         if (
             formValues.wizard.enabledChannels &&
@@ -168,17 +172,26 @@ export const getValidStoreConfigurationFormValues = (
         )
     }
 
-    if (
+    const isKnowledgeMissing =
         formValues.helpCenterId === null &&
         !hasExternalFiles &&
-        (!publicUrls || publicUrls.length === 0) &&
-        (!formValues.wizard || formValues.wizard.completedDatetime !== null)
-    ) {
-        const errorMessage = opts.isOnboardingWizardPage
-            ? StoreConfigurationValidationMessage.HelpCenterError
-            : StoreConfigurationValidationMessage.HelpCenterEmpty
+        (!publicUrls || publicUrls.length === 0)
 
-        throw new Error(errorMessage)
+    if (
+        isKnowledgeMissing &&
+        (!formValues.wizard || formValues.wizard.completedDatetime !== null) &&
+        opts.configurationPage === ConfigurationPage.OnboardingWizard
+    ) {
+        throw new Error(StoreConfigurationValidationMessage.HelpCenterError)
+    }
+
+    if (
+        opts.configurationPage === ConfigurationPage.SettingsChannels &&
+        isKnowledgeMissing &&
+        (formValues.chatChannelDeactivatedDatetime === null ||
+            formValues.emailChannelDeactivatedDatetime === null)
+    ) {
+        throw new Error(StoreConfigurationValidationMessage.HelpCenterError)
     }
 
     return {

@@ -1,4 +1,5 @@
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
+import { ConfigurationPage } from 'pages/aiAgent/hooks/useConfigurationForm'
 
 import {
     AiAgentChannel,
@@ -33,7 +34,6 @@ const VALID_FORM_VALUES: ValidFormValues = {
 }
 
 const DEFAULT_OPTIONS = {
-    isOnboardingWizardPage: false,
     isAiAgentChatEnabled: false,
     isMultiChannelEnabled: false,
 }
@@ -234,12 +234,12 @@ describe('store-configuration-validation', () => {
             expect(() =>
                 getValidStoreConfigurationFormValues(formValues, [], false, {
                     ...DEFAULT_OPTIONS,
-                    isOnboardingWizardPage: true,
+                    configurationPage: ConfigurationPage.OnboardingWizard,
                 }),
             ).toThrow(StoreConfigurationValidationMessage.HelpCenterError)
         })
 
-        it('should throw an error if no help center selected and public urls is empty when wizard finished and this is not onboarding page', () => {
+        it('should throw an error if knowledge is missing when trying to enable chat on the settings page', () => {
             const formValues: FormValues = {
                 ...VALID_FORM_VALUES,
                 wizard: {
@@ -247,13 +247,35 @@ describe('store-configuration-validation', () => {
                     completedDatetime: '2021-01-01T00:00:00',
                 },
                 helpCenterId: null,
+                chatChannelDeactivatedDatetime: null,
+                emailChannelDeactivatedDatetime: '2021-01-01T00:00:00',
             }
             expect(() =>
                 getValidStoreConfigurationFormValues(formValues, [], false, {
                     ...DEFAULT_OPTIONS,
-                    isOnboardingWizardPage: false,
+                    configurationPage: ConfigurationPage.SettingsChannels,
                 }),
-            ).toThrow(StoreConfigurationValidationMessage.HelpCenterEmpty)
+            ).toThrow(StoreConfigurationValidationMessage.HelpCenterError)
+        })
+
+        it('should throw an error if knowledge is missing when trying to enable email on the settings page', () => {
+            const formValues: FormValues = {
+                ...VALID_FORM_VALUES,
+                wizard: {
+                    ...WIZARD_FORM_VALUES,
+                    completedDatetime: '2021-01-01T00:00:00',
+                },
+                helpCenterId: null,
+                emailChannelDeactivatedDatetime: null,
+                monitoredEmailIntegrations: [EMAIL_INTEGRATION],
+                chatChannelDeactivatedDatetime: '2021-01-01T00:00:00',
+            }
+            expect(() =>
+                getValidStoreConfigurationFormValues(formValues, [], false, {
+                    ...DEFAULT_OPTIONS,
+                    configurationPage: ConfigurationPage.SettingsChannels,
+                }),
+            ).toThrow(StoreConfigurationValidationMessage.HelpCenterError)
         })
 
         it('should throw an error if monitored email integrations is empty and email ai agent is active', () => {
@@ -289,7 +311,8 @@ describe('store-configuration-validation', () => {
                         false,
                         {
                             ...DEFAULT_OPTIONS,
-                            isOnboardingWizardPage: true,
+                            configurationPage:
+                                ConfigurationPage.OnboardingWizard,
                         },
                     ),
                 ).toThrow(StoreConfigurationValidationMessage.FieldsMissing)
@@ -312,7 +335,8 @@ describe('store-configuration-validation', () => {
                         false,
                         {
                             ...DEFAULT_OPTIONS,
-                            isOnboardingWizardPage: true,
+                            configurationPage:
+                                ConfigurationPage.OnboardingWizard,
                         },
                     ),
                 ).toThrow(StoreConfigurationValidationMessage.FieldsMissing)
@@ -334,7 +358,8 @@ describe('store-configuration-validation', () => {
                         false,
                         {
                             ...DEFAULT_OPTIONS,
-                            isOnboardingWizardPage: true,
+                            configurationPage:
+                                ConfigurationPage.OnboardingWizard,
                         },
                     ),
                 ).toThrow(StoreConfigurationValidationMessage.NoChannelError)

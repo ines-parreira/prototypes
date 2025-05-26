@@ -23,6 +23,26 @@ import { useAiAgentNavigation } from './useAiAgentNavigation'
 import { useStoreConfigurationMutation } from './useStoreConfigurationMutation'
 import { getFormValuesFromStoreConfiguration } from './utils/configurationForm.utils'
 
+export enum ConfigurationPage {
+    SettingsChannels = 'settings-channels',
+    OnboardingWizard = 'onboarding-wizard',
+}
+
+export const getConfigurationPage = ({
+    routes,
+    pathname,
+}: Pick<ReturnType<typeof useAiAgentNavigation>, 'routes'> & {
+    pathname: string
+}): ConfigurationPage | undefined => {
+    if (pathname.includes(routes.settingsChannels)) {
+        return ConfigurationPage.SettingsChannels
+    }
+
+    if (pathname.includes(routes.onboardingWizard)) {
+        return ConfigurationPage.OnboardingWizard
+    }
+}
+
 export const useConfigurationForm = ({
     initValues,
     shopName,
@@ -36,9 +56,11 @@ export const useConfigurationForm = ({
     const { isLoading, createStoreConfiguration, upsertStoreConfiguration } =
         useStoreConfigurationMutation({ shopName, accountDomain })
     const { routes } = useAiAgentNavigation({ shopName })
-    const isOnboardingWizardPage = window.location.pathname.includes(
-        routes.onboardingWizard,
-    )
+    const configurationPage = getConfigurationPage({
+        pathname: window.location.pathname,
+        routes,
+    })
+
     const isAiAgentChatEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentChat]
 
@@ -139,7 +161,7 @@ export const useConfigurationForm = ({
                 hasExternalFiles ?? false,
                 {
                     isAiAgentChatEnabled,
-                    isOnboardingWizardPage,
+                    configurationPage,
                 },
             )
         } catch (error) {
@@ -208,7 +230,10 @@ export const useConfigurationForm = ({
 
             onSuccess?.()
 
-            if (isOnboardingWizardPage || silentNotification) {
+            if (
+                configurationPage === ConfigurationPage.OnboardingWizard ||
+                silentNotification
+            ) {
                 return res
             }
 
