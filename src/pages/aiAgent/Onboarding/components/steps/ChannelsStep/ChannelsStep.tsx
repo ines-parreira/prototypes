@@ -22,7 +22,7 @@ import {
     EmailItem,
 } from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'
 import { ToggleCard } from 'pages/aiAgent/components/ToggleCard/ToggleCard'
-import { useGetUsedEmailIntegrations } from 'pages/aiAgent/hooks/useGetUsedEmailIntegrations'
+import { useGetAlreadyUsedEmailIntegrations } from 'pages/aiAgent/hooks/useGetAlreadyUsedEmailIntegrations'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
 import EmailIntegrationModal from 'pages/aiAgent/Onboarding/components/EmailIntegrationModal/EmailIntegrationModal'
@@ -181,7 +181,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
         isUpdatingOnboarding ||
         isLoadingStoreConfigurations
 
-    const usedEmailIntegrations = useGetUsedEmailIntegrations()
+    const alreadyUsedEmailIntegrations = useGetAlreadyUsedEmailIntegrations()
     const usedChatChannels = useMemo(() => {
         return storeConfigurations
             ? storeConfigurations.reduce<number[]>(
@@ -259,9 +259,9 @@ export const ChannelsStep: React.FC<StepProps> = ({
     const filteredPreselectedEmails = useMemo(
         () =>
             preselectedEmails.filter(
-                (entry) => !usedEmailIntegrations.includes(entry),
+                (entry) => !alreadyUsedEmailIntegrations.includes(entry),
             ),
-        [preselectedEmails, usedEmailIntegrations],
+        [preselectedEmails, alreadyUsedEmailIntegrations],
     )
 
     const methods = useForm<ChannelsFormValues>({
@@ -314,11 +314,11 @@ export const ChannelsStep: React.FC<StepProps> = ({
             email: integration.meta.address,
             id: integration.id,
             isDefault: defaultIntegrations?.data?.email === integration.id,
-            isDisabled: usedEmailIntegrations.includes(integration.id),
+            isDisabled: alreadyUsedEmailIntegrations.includes(integration.id),
         }))
     }, [
         emailIntegrations,
-        usedEmailIntegrations,
+        alreadyUsedEmailIntegrations,
         defaultIntegrations?.data?.email,
     ])
 

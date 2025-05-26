@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { uniq } from 'lodash'
 import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -8,7 +9,7 @@ import { useGetOnboardings } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardi
 import { getCurrentDomain } from 'state/currentAccount/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
-export const useGetUsedEmailIntegrations = (shopNameParam?: string) => {
+export const useGetAlreadyUsedEmailIntegrations = (shopNameParam?: string) => {
     const accountDomain = useAppSelector(getCurrentDomain)
     const { shopName: shopNameFromParams } = useParams<{ shopName: string }>()
 
@@ -30,28 +31,35 @@ export const useGetUsedEmailIntegrations = (shopNameParam?: string) => {
         storesName,
     })
 
-    const usedEmailIntegrations = useMemo(() => {
-        const usedInConfigurations = storeConfigurations
-            ? storeConfigurations.reduce<number[]>(
-                  (acc, element) =>
-                      acc.concat(
-                          element.monitoredEmailIntegrations.map(
-                              (item) => item.id,
-                          ),
-                      ),
-                  [],
-              )
-            : []
-        const usedInOnboarding = currentOnboardings
-            ? currentOnboardings
-                  .filter((element) => element.shopName !== shopName)
-                  .reduce<
-                      number[]
-                  >((acc, element) => acc.concat(element.emailIntegrationIds ?? []), [])
-            : []
+    const alreadyUsedEmailIntegrations = useMemo(() => {
+        const otherStoreConfigurations =
+            storeConfigurations?.filter(
+                (configuration) => configuration.storeName !== shopName,
+            ) ?? []
 
-        return [...usedInConfigurations, ...usedInOnboarding]
+        const usedInConfigurations = otherStoreConfigurations.reduce<number[]>(
+            (used, configuration) =>
+                used.concat(
+                    configuration.monitoredEmailIntegrations.map(
+                        (integration) => integration.id,
+                    ),
+                ),
+            [],
+        )
+
+        const otherOnboardings =
+            currentOnboardings?.filter(
+                (onboarding) => onboarding.shopName !== shopName,
+            ) ?? []
+
+        const usedInOnboarding = otherOnboardings.reduce<number[]>(
+            (used, onboarding) =>
+                used.concat(onboarding.emailIntegrationIds ?? []),
+            [],
+        )
+
+        return uniq([...usedInConfigurations, ...usedInOnboarding])
     }, [storeConfigurations, currentOnboardings, shopName])
 
-    return usedEmailIntegrations
+    return alreadyUsedEmailIntegrations
 }

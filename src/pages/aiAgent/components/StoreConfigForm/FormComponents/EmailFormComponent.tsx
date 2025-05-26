@@ -9,7 +9,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { EmailIntegrationListSelection } from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'
 import { INITIAL_FORM_VALUES } from 'pages/aiAgent/constants'
-import { useGetUsedEmailIntegrations } from 'pages/aiAgent/hooks/useGetUsedEmailIntegrations'
+import { useGetAlreadyUsedEmailIntegrations } from 'pages/aiAgent/hooks/useGetAlreadyUsedEmailIntegrations'
 import { emailSortingCallback } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep'
 import { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import {
@@ -53,15 +53,15 @@ export const EmailFormComponent = ({
         [],
     )
     const emailIntegrations = useAppSelector(selector)
-    const usedEmailIntegrations = useGetUsedEmailIntegrations()
+    const alreadyUsedEmailIntegrations = useGetAlreadyUsedEmailIntegrations()
     const emailItems = useMemo(() => {
         return emailIntegrations.map((integration) => ({
             email: integration.meta.address,
             id: integration.id,
             isDefault: integration.meta.preferred,
-            isDisabled: usedEmailIntegrations.includes(integration.id),
+            isDisabled: alreadyUsedEmailIntegrations.includes(integration.id),
         }))
-    }, [emailIntegrations, usedEmailIntegrations])
+    }, [emailIntegrations, alreadyUsedEmailIntegrations])
 
     useEffect(() => {
         if (

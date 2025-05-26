@@ -21,7 +21,7 @@ import { renderHook } from 'utils/testing/renderHook'
 import { StoreConfiguration } from '../../../../models/aiAgent/types'
 import { assumeMock } from '../../../../utils/testing'
 import { useGetOnboardings } from '../../Onboarding/hooks/useGetOnboardings'
-import { useGetUsedEmailIntegrations } from '../useGetUsedEmailIntegrations'
+import { useGetAlreadyUsedEmailIntegrations } from '../useGetAlreadyUsedEmailIntegrations'
 import { useStoreConfigurationForAccount } from '../useStoreConfigurationForAccount'
 
 jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardings')
@@ -57,19 +57,35 @@ jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
 }))
+const useParamsMock = jest.mocked(useParams)
 
-const wrapper = ({ children }: { children?: React.ReactNode }) => {
-    ;(useParams as jest.Mock).mockReturnValue({ shopName: 'Test' })
-    return (
-        <QueryClientProvider client={mockQueryClient()}>
-            <Provider store={mockStore(defaultState)}>{children}</Provider>
-        </QueryClientProvider>
-    )
-}
+const wrapper = ({ children }: { children?: React.ReactNode }) => (
+    <QueryClientProvider client={mockQueryClient()}>
+        <Provider store={mockStore(defaultState)}>{children}</Provider>
+    </QueryClientProvider>
+)
 
-describe('useGetUsedEmailIntegrations', () => {
+describe('useGetAlreadyUsedEmailIntegrations', () => {
+    const defaultStoreConfiguration = {
+        storeName: 'test-shop',
+        helpCenterId: 123,
+        chatChannelDeactivatedDatetime: '2024-01-01',
+        emailChannelDeactivatedDatetime: '2024-01-01',
+        trialModeActivatedDatetime: '2024-02-01',
+        previewModeActivatedDatetime: '2024-02-01',
+        previewModeValidUntilDatetime: '2024-02-08',
+        monitoredEmailIntegrations: [],
+        monitoredChatIntegrations: [],
+        customToneOfVoiceGuidance: 'Be friendly',
+        signature: 'Best regards, Store',
+        silentHandover: true,
+        tags: [],
+        excludedTopics: [],
+    }
     beforeEach(() => {
         jest.resetAllMocks()
+
+        useParamsMock.mockReturnValue({ shopName: 'Test' })
 
         useGetOnboardingsMock.mockReturnValue({
             data: [
@@ -85,24 +101,11 @@ describe('useGetUsedEmailIntegrations', () => {
         useStoreConfigurationForAccountMock.mockReturnValue({
             storeConfigurations: [
                 {
-                    helpCenterId: 123,
-                    chatChannelDeactivatedDatetime: '2024-01-01',
-                    emailChannelDeactivatedDatetime: '2024-01-01',
-                    trialModeActivatedDatetime: '2024-02-01',
-                    previewModeActivatedDatetime: '2024-02-01',
-                    previewModeValidUntilDatetime: '2024-02-08',
+                    ...defaultStoreConfiguration,
                     monitoredEmailIntegrations: [
                         { id: 2, email: 'email1@example.com' },
                         { id: 3, email: 'email2@example.com' },
                     ],
-                    monitoredChatIntegrations: [2, 3],
-                    customToneOfVoiceGuidance: 'Be friendly',
-                    signature: 'Best regards, Store',
-                    silentHandover: true,
-                    tags: [],
-                    excludedTopics: ['topic1', 'topic2'],
-                    ticketSampleRate: 0.5,
-                    wizard: undefined,
                 } as unknown as StoreConfiguration,
             ],
             isLoading: false,
@@ -110,9 +113,12 @@ describe('useGetUsedEmailIntegrations', () => {
     })
 
     it('should return email integrations data', async () => {
-        const { result } = renderHook(() => useGetUsedEmailIntegrations(), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useGetAlreadyUsedEmailIntegrations(),
+            {
+                wrapper,
+            },
+        )
         expect(result.current).toEqual([2, 3, 1, 15])
     })
 
@@ -127,9 +133,12 @@ describe('useGetUsedEmailIntegrations', () => {
             isLoading: false,
         })
 
-        const { result } = renderHook(() => useGetUsedEmailIntegrations(), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useGetAlreadyUsedEmailIntegrations(),
+            {
+                wrapper,
+            },
+        )
 
         expect(result.current).toEqual([])
     })
@@ -151,9 +160,12 @@ describe('useGetUsedEmailIntegrations', () => {
             isLoading: false,
         })
 
-        const { result } = renderHook(() => useGetUsedEmailIntegrations(), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useGetAlreadyUsedEmailIntegrations(),
+            {
+                wrapper,
+            },
+        )
 
         expect(result.current).toEqual([1, 15])
     })
@@ -167,33 +179,95 @@ describe('useGetUsedEmailIntegrations', () => {
         useStoreConfigurationForAccountMock.mockReturnValue({
             storeConfigurations: [
                 {
-                    helpCenterId: 123,
-                    chatChannelDeactivatedDatetime: '2024-01-01',
-                    emailChannelDeactivatedDatetime: '2024-01-01',
-                    trialModeActivatedDatetime: '2024-02-01',
-                    previewModeActivatedDatetime: '2024-02-01',
-                    previewModeValidUntilDatetime: '2024-02-08',
+                    ...defaultStoreConfiguration,
                     monitoredEmailIntegrations: [
                         { id: 2, email: 'email1@example.com' },
                         { id: 3, email: 'email2@example.com' },
                     ],
-                    monitoredChatIntegrations: [2, 3],
-                    customToneOfVoiceGuidance: 'Be friendly',
-                    signature: 'Best regards, Store',
-                    silentHandover: true,
-                    tags: [],
-                    excludedTopics: ['topic1', 'topic2'],
-                    ticketSampleRate: 0.5,
-                    wizard: undefined,
                 } as unknown as StoreConfiguration,
             ],
             isLoading: false,
         })
 
-        const { result } = renderHook(() => useGetUsedEmailIntegrations(), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useGetAlreadyUsedEmailIntegrations(),
+            {
+                wrapper,
+            },
+        )
 
         expect(result.current).toEqual([2, 3])
+    })
+
+    it('should only return emails from other storeConfigurations', async () => {
+        useParamsMock.mockReturnValue({ shopName: 'current-shop' })
+
+        useStoreConfigurationForAccountMock.mockReturnValue({
+            storeConfigurations: [
+                {
+                    ...defaultStoreConfiguration,
+                    storeName: 'current-shop',
+                    monitoredEmailIntegrations: [
+                        { id: 1, email: 'email1@example.com' },
+                        { id: 2, email: 'email2@example.com' },
+                    ],
+                } as unknown as StoreConfiguration, // Should be filtered out - same as current
+                {
+                    ...defaultStoreConfiguration,
+                    storeName: 'other-shop',
+                    monitoredEmailIntegrations: [
+                        { id: 3, email: 'email3@example.com' },
+                        { id: 4, email: 'email4@example.com' },
+                    ],
+                } as unknown as StoreConfiguration, // Should be included - different from current
+            ],
+            isLoading: false,
+        })
+
+        useGetOnboardingsMock.mockReturnValue({
+            data: [],
+            isLoading: false,
+        } as any)
+
+        const { result } = renderHook(
+            () => useGetAlreadyUsedEmailIntegrations(),
+            {
+                wrapper,
+            },
+        )
+
+        expect(result.current).toEqual([3, 4])
+    })
+
+    it('should only return emails from other onboardings', async () => {
+        useParamsMock.mockReturnValue({ shopName: 'current-shop' })
+
+        useGetOnboardingsMock.mockReturnValue({
+            data: [
+                {
+                    ...defaultOnboardingData,
+                    shopName: 'current-shop', // Should be filtered out - same as current
+                    emailIntegrationIds: [1, 2],
+                },
+                {
+                    ...defaultOnboardingData,
+                    shopName: 'other-shop', // Should be included - different from current
+                    emailIntegrationIds: [3, 4],
+                },
+            ],
+            isLoading: false,
+        } as any)
+
+        useStoreConfigurationForAccountMock.mockReturnValue({
+            storeConfigurations: [],
+            isLoading: false,
+        })
+
+        const { result } = renderHook(
+            () => useGetAlreadyUsedEmailIntegrations('current-shop'),
+            { wrapper },
+        )
+
+        expect(result.current).toEqual([3, 4])
     })
 })
