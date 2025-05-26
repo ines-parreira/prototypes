@@ -1,8 +1,9 @@
-import {
+import type {
     AxiosRequestConfig,
     OpenAPIClient,
     OperationResponse,
     Parameters,
+    UnknownParamsObject,
 } from 'openapi-client-axios'
 
 declare namespace Paths {
@@ -135,10 +136,10 @@ export interface OperationMethods {
      * getInstallationSnippet - Get installation snippet
      */
     'getInstallationSnippet'(
-        parameters?: Parameters<
-            Paths.GetInstallationSnippet.PathParameters &
-                Paths.GetInstallationSnippet.HeaderParameters
-        > | null,
+        parameters: Parameters<
+            Paths.GetInstallationSnippet.HeaderParameters &
+                Paths.GetInstallationSnippet.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<any>
@@ -154,10 +155,10 @@ export interface OperationMethods {
      * getApplicationAgents - Get application agents
      */
     'getApplicationAgents'(
-        parameters?: Parameters<
-            Paths.GetApplicationAgents.PathParameters &
-                Paths.GetApplicationAgents.HeaderParameters
-        > | null,
+        parameters: Parameters<
+            Paths.GetApplicationAgents.HeaderParameters &
+                Paths.GetApplicationAgents.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<any>
@@ -165,10 +166,10 @@ export interface OperationMethods {
      * getApplicationTexts - GET application texts
      */
     'getApplicationTexts'(
-        parameters?: Parameters<
-            Paths.GetApplicationTexts.PathParameters &
-                Paths.GetApplicationTexts.HeaderParameters
-        > | null,
+        parameters: Parameters<
+            Paths.GetApplicationTexts.HeaderParameters &
+                Paths.GetApplicationTexts.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<any>
@@ -176,10 +177,10 @@ export interface OperationMethods {
      * updateApplicationTexts - Update application texts
      */
     'updateApplicationTexts'(
-        parameters?: Parameters<
-            Paths.UpdateApplicationTexts.PathParameters &
-                Paths.UpdateApplicationTexts.HeaderParameters
-        > | null,
+        parameters: Parameters<
+            Paths.UpdateApplicationTexts.HeaderParameters &
+                Paths.UpdateApplicationTexts.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<any>
@@ -187,10 +188,10 @@ export interface OperationMethods {
      * getInstallationStatus - GET installation status
      */
     'getInstallationStatus'(
-        parameters?: Parameters<
-            Paths.GetInstallationStatus.PathParameters &
-                Paths.GetInstallationStatus.HeaderParameters
-        > | null,
+        parameters: Parameters<
+            Paths.GetInstallationStatus.HeaderParameters &
+                Paths.GetInstallationStatus.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<any>
@@ -209,10 +210,10 @@ export interface OperationMethods {
      * getApplicationAutomationSettings - GET application automation settings
      */
     'getApplicationAutomationSettings'(
-        parameters?: Parameters<
-            Paths.GetApplicationAutomationSettings.PathParameters &
-                Paths.GetApplicationAutomationSettings.HeaderParameters
-        > | null,
+        parameters: Parameters<
+            Paths.GetApplicationAutomationSettings.HeaderParameters &
+                Paths.GetApplicationAutomationSettings.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<any>
@@ -220,10 +221,10 @@ export interface OperationMethods {
      * upsertApplicationAutomationSettings - Upsert application automation settings
      */
     'upsertApplicationAutomationSettings'(
-        parameters?: Parameters<
-            Paths.UpsertApplicationAutomationSettings.PathParameters &
-                Paths.UpsertApplicationAutomationSettings.HeaderParameters
-        > | null,
+        parameters: Parameters<
+            Paths.UpsertApplicationAutomationSettings.HeaderParameters &
+                Paths.UpsertApplicationAutomationSettings.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<any>
@@ -235,10 +236,10 @@ export interface PathsDictionary {
          * getInstallationSnippet - Get installation snippet
          */
         'get'(
-            parameters?: Parameters<
-                Paths.GetInstallationSnippet.PathParameters &
-                    Paths.GetInstallationSnippet.HeaderParameters
-            > | null,
+            parameters: Parameters<
+                Paths.GetInstallationSnippet.HeaderParameters &
+                    Paths.GetInstallationSnippet.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<any>
@@ -258,10 +259,10 @@ export interface PathsDictionary {
          * getApplicationAgents - Get application agents
          */
         'get'(
-            parameters?: Parameters<
-                Paths.GetApplicationAgents.PathParameters &
-                    Paths.GetApplicationAgents.HeaderParameters
-            > | null,
+            parameters: Parameters<
+                Paths.GetApplicationAgents.HeaderParameters &
+                    Paths.GetApplicationAgents.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<any>
@@ -271,10 +272,10 @@ export interface PathsDictionary {
          * getApplicationTexts - GET application texts
          */
         'get'(
-            parameters?: Parameters<
-                Paths.GetApplicationTexts.PathParameters &
-                    Paths.GetApplicationTexts.HeaderParameters
-            > | null,
+            parameters: Parameters<
+                Paths.GetApplicationTexts.HeaderParameters &
+                    Paths.GetApplicationTexts.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<any>
@@ -282,10 +283,10 @@ export interface PathsDictionary {
          * updateApplicationTexts - Update application texts
          */
         'put'(
-            parameters?: Parameters<
-                Paths.UpdateApplicationTexts.PathParameters &
-                    Paths.UpdateApplicationTexts.HeaderParameters
-            > | null,
+            parameters: Parameters<
+                Paths.UpdateApplicationTexts.HeaderParameters &
+                    Paths.UpdateApplicationTexts.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<any>
@@ -295,10 +296,10 @@ export interface PathsDictionary {
          * getInstallationStatus - GET installation status
          */
         'get'(
-            parameters?: Parameters<
-                Paths.GetInstallationStatus.PathParameters &
-                    Paths.GetInstallationStatus.HeaderParameters
-            > | null,
+            parameters: Parameters<
+                Paths.GetInstallationStatus.HeaderParameters &
+                    Paths.GetInstallationStatus.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<any>
@@ -321,10 +322,10 @@ export interface PathsDictionary {
          * upsertApplicationAutomationSettings - Upsert application automation settings
          */
         'put'(
-            parameters?: Parameters<
-                Paths.UpsertApplicationAutomationSettings.PathParameters &
-                    Paths.UpsertApplicationAutomationSettings.HeaderParameters
-            > | null,
+            parameters: Parameters<
+                Paths.UpsertApplicationAutomationSettings.HeaderParameters &
+                    Paths.UpsertApplicationAutomationSettings.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<any>
@@ -332,10 +333,10 @@ export interface PathsDictionary {
          * getApplicationAutomationSettings - GET application automation settings
          */
         'get'(
-            parameters?: Parameters<
-                Paths.GetApplicationAutomationSettings.PathParameters &
-                    Paths.GetApplicationAutomationSettings.HeaderParameters
-            > | null,
+            parameters: Parameters<
+                Paths.GetApplicationAutomationSettings.HeaderParameters &
+                    Paths.GetApplicationAutomationSettings.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<any>
