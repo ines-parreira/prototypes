@@ -7,50 +7,58 @@ import useAppSelector from 'hooks/useAppSelector'
 import EmailIntegrationCreate from '../EmailIntegrationCreate'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
-
 const useAppSelectorMock = useAppSelector as jest.Mock
-
-const renderComponent = () => render(<EmailIntegrationCreate />)
 
 describe('<EmailIntegrationCreate/>', () => {
     beforeEach(() => {
+        window.open = jest.fn()
+
+        render(<EmailIntegrationCreate />)
         useAppSelectorMock
             .mockReturnValueOnce('testGmail')
             .mockReturnValueOnce('testOutlook')
     })
 
-    it('should link to the new onboarding flow', () => {
-        renderComponent()
+    it('should have correct link for email forwarding when email forwarding card is clicked', () => {
+        const emailForwardingCard = screen.getByText('Email forwarding')
 
-        const link = screen
-            .getByRole('button', {
-                name: 'Get started',
-            })
-            .closest('a')
+        const linkContainer = emailForwardingCard.closest('a[to]')
 
-        expect(link).toHaveAttribute(
+        expect(linkContainer).not.toBeNull()
+        expect(linkContainer).toHaveAttribute(
             'to',
             '/app/settings/channels/email/new/onboarding',
         )
     })
 
     it('should open Gmail redirect URI on Gmail card click', () => {
-        renderComponent()
-        const gmailCard = screen.getByText('Connect Gmail account')
+        const gmailCard = screen.getByText('Gmail')
 
-        window.open = jest.fn()
         fireEvent.click(gmailCard)
 
         expect(window.open).toHaveBeenCalledWith('testGmail')
     })
 
     it('should open Outlook redirect URI on Microsoft card click', () => {
-        renderComponent()
-        const outlookCard = screen.getByText('Connect Microsoft account')
+        const outlookCard = screen.getByText('Microsoft 365')
 
-        window.open = jest.fn()
         fireEvent.click(outlookCard)
 
         expect(window.open).toHaveBeenCalledWith('testOutlook')
+    })
+
+    it('should render Email integrations documentation link with correct URL', () => {
+        const docsLink = screen.getByText('Email integrations')
+
+        expect(docsLink).toBeInTheDocument()
+
+        const linkElement = docsLink.closest('a')
+        expect(linkElement).toHaveAttribute(
+            'href',
+            'https://docs.gorgias.com/en-US/email-integrations-81753#find-out-who-your-provider-is',
+        )
+
+        expect(linkElement).toHaveAttribute('target', '_blank')
+        expect(linkElement).toHaveAttribute('rel', 'noopener noreferrer')
     })
 })

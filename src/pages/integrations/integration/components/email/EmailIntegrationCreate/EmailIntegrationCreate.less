@@ -1,9 +1,14 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/layout';
 @import (reference) '~css/typography';
+@import '~css/new/mixins';
 
 :local {
+    .cards {
+        padding: @layout-spacing-m;
+    }
+
     .logo {
-        width: 32px;
+        width: @layout-spacing-l;
     }
 
     .section {
@@ -30,5 +35,15 @@
         & > * {
             flex: 1;
         }
+
+        @media @mobiles {
+            width: 100%;
+            flex-direction: column;
+        }
+    }
+
+    .emailIcon {
+        font-size: 32px;
+        color: var(--neutral-grey-6);
     }
 }

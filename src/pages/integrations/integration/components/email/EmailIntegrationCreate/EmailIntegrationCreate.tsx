@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 
+import cn from 'classnames'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
@@ -7,15 +8,16 @@ import gmailLogo from 'assets/img/integrations/gmail.svg'
 import officeLogo from 'assets/img/integrations/office.svg'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import { TemplateCard } from 'pages/common/components/TemplateCard'
-import settingsCss from 'pages/settings/settings.less'
-import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 import { getRedirectUri } from 'state/integrations/selectors'
 
 import css from './EmailIntegrationCreate.less'
+
+const EMAIL_FORWARDING_LINK = '/app/settings/channels/email/new/onboarding'
+const HELP_DOC_LINK =
+    'https://docs.gorgias.com/en-US/email-integrations-81753#find-out-who-your-provider-is'
 
 export default function EmailIntegrationCreate() {
     const gmailRedirectUri = useAppSelector(
@@ -49,72 +51,66 @@ export default function EmailIntegrationCreate() {
             />
 
             <SettingsPageContainer>
-                <SettingsContent>
-                    <h2 className={settingsCss.headingSection}>
-                        Integrate a new support email address
-                    </h2>
+                <div className={css.cards}>
                     <p>
-                        Integrate a new support email address to receive
-                        customer emails as tickets in Gorgias. Use one-click
-                        authentication for Gmail and Microsoft 365 or follow the
-                        step-by-step wizard for other providers.
+                        You will need admin access to your email provider and
+                        domain settings to complete the email and domain setup.
                     </p>
+
                     <a
-                        href={
-                            'https://docs.gorgias.com/en-US/email-integrations-81753#find-out-who-your-provider-is'
-                        }
+                        href={HELP_DOC_LINK}
                         rel="noopener noreferrer"
                         target="_blank"
                     >
                         <i className="material-icons mr-2">menu_book</i>
-                        Learn which method is right for you
+                        Email integrations
                     </a>
 
                     <div className={css.connectCards}>
+                        <Link to={EMAIL_FORWARDING_LINK}>
+                            <TemplateCard
+                                title="Email forwarding"
+                                description="Connect any email account to Gorgias inbox. Suitable for all volumes and preferred for high-volume use (500+ emails/day)."
+                                icon={
+                                    <i
+                                        className={cn(
+                                            'material-icons-outlined',
+                                            css.emailIcon,
+                                        )}
+                                    >
+                                        email
+                                    </i>
+                                }
+                            />
+                        </Link>
                         <TemplateCard
-                            title="Connect Gmail account"
-                            description="Log into your Gmail or Google Workspace  account to allow Gorgias access to emails."
+                            title="Gmail"
+                            description="Connect Gmail or Google Workspace account to Gorgias inbox. Recommended only for low-volume use (under 500 emails/day)."
                             icon={
                                 <img
                                     className={css.logo}
                                     src={gmailLogo}
                                     alt="gmail logo"
+                                    height={32}
                                 />
                             }
                             onClick={(e) => handleSubmit(e, gmailRedirectUri)}
                         />
                         <TemplateCard
-                            title="Connect Microsoft account"
-                            description="Log into your Microsoft365 account to allow Gorgias access to emails."
+                            title="Microsoft 365"
+                            description="Connect Microsoft 365 account to Gorgias inbox. Recommended only for low-volume use (under 500 emails/day)."
                             icon={
                                 <img
                                     className={css.logo}
                                     src={officeLogo}
                                     alt="microsoft logo"
+                                    height={32}
                                 />
                             }
                             onClick={(e) => handleSubmit(e, outlookRedirectUri)}
                         />
                     </div>
-
-                    <div className={css.section}>
-                        <div className={css.sectionLabel}>
-                            Need to connect another provider?
-                        </div>
-                        <p className={css.sectionDescription}>
-                            Set up email forwarding from providers like Gmail
-                            Alias, Google Groups, MS Exchange, Outlook Alias,
-                            GoDaddy, or Zoho Mail using the setup wizard. Admin
-                            access is required for configuration.
-                        </p>
-                    </div>
-
-                    <Link to="/app/settings/channels/email/new/onboarding">
-                        <Button type="submit" intent="secondary">
-                            Get started
-                        </Button>
-                    </Link>
-                </SettingsContent>
+                </div>
             </SettingsPageContainer>
         </div>
     )
