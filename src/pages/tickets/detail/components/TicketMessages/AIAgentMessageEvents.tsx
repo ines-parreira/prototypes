@@ -18,7 +18,7 @@ export type Props = {
     message: TicketMessage
 }
 
-const ByAIAgent = () => (
+export const ByAIAgent = () => (
     <div className={css.byAIAgent}>
         by{' '}
         <i className={classNames('material-icons', css.awesomeIcon)}>
