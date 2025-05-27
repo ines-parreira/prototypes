@@ -397,14 +397,18 @@ describe('getDrillDownQuery', () => {
         {
             metricName: AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
             perAgentId: '1',
-            customFieldId: 1,
-            customFieldValue: null,
+            intentFieldId: 1,
+            outcomeFieldId: 2,
+            intentFieldValues: undefined,
+            integrationIds: ['chat::123'],
         },
         {
             metricName: AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
             perAgentId: '1',
-            customFieldId: 1,
-            customFieldValue: ['value'],
+            intentFieldId: 1,
+            outcomeFieldId: 2,
+            intentFieldValues: ['value'],
+            integrationIds: ['chat::123'],
         },
         {
             metricName: AIInsightsMetric.TicketDrillDownPerCoverageRate,
@@ -1208,8 +1212,11 @@ describe('getDrillDownMetric', () => {
             metricData: {
                 metricName:
                     AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
-                customFieldId: 789,
-                customFieldValue: null,
+                intentFieldId: 1,
+                intentFieldValues: null,
+                outcomeFieldId: 2,
+                perAgentId: '1',
+                integrationIds: ['chat::123'],
             },
             expectedValues: {
                 metricTitle: CSAT_DRILL_DOWN_LABEL,

@@ -422,7 +422,7 @@ export const coverageRateTicketDrillDownQueryFactory = (
 export const aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    perAgentId?: string,
+    perAgentId: string,
     intentFieldId?: number,
     outcomeFieldId?: number,
     sorting?: OrderDirection,
@@ -435,7 +435,7 @@ export const aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory = (
         sorting,
         intentFieldId: intentFieldId,
         outcomeFieldId: outcomeFieldId,
-        aiAgentUserId: String(perAgentId),
+        aiAgentUserId: perAgentId,
         integrationIds,
         intentIds,
     })

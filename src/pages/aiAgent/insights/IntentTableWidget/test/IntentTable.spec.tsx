@@ -33,6 +33,17 @@ jest.mock('hooks/reporting/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 jest.mock('hooks/reporting/automate/useAIAgentUserId')
+const useAIAgentUserIdMock = assumeMock(
+    require('hooks/reporting/automate/useAIAgentUserId').useAIAgentUserId,
+)
+
+jest.mock(
+    'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
+)
+const useGetCustomTicketsFieldsDefinitionDataMock = assumeMock(
+    require('pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData')
+        .useGetCustomTicketsFieldsDefinitionData,
+)
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
@@ -53,11 +64,13 @@ const defaultPaginatedIntents = {
             id: 'order::track',
             [IntentTableColumn.IntentName]: 'order/track',
             [IntentTableColumn.SuccessRateUpliftOpportunity]: 10,
+            [IntentTableColumn.AvgCustomerSatisfaction]: 4.5,
         },
         {
             id: 'order::cancel',
             [IntentTableColumn.IntentName]: 'order/cancel',
             [IntentTableColumn.SuccessRateUpliftOpportunity]: 20,
+            [IntentTableColumn.AvgCustomerSatisfaction]: 3.8,
         },
     ],
     allIntents: [
@@ -65,11 +78,13 @@ const defaultPaginatedIntents = {
             id: 'order::track',
             [IntentTableColumn.IntentName]: 'order/track',
             [IntentTableColumn.SuccessRateUpliftOpportunity]: 10,
+            [IntentTableColumn.AvgCustomerSatisfaction]: 4.5,
         },
         {
             id: 'order::cancel',
             [IntentTableColumn.IntentName]: 'order/cancel',
             [IntentTableColumn.SuccessRateUpliftOpportunity]: 20,
+            [IntentTableColumn.AvgCustomerSatisfaction]: 3.8,
         },
     ],
     currentPage: 1,
@@ -102,6 +117,9 @@ const filters = {
     },
 }
 const userTimezone = 'UTC'
+const aiAgentUserId = 'agent-123'
+const intentFieldId = 123
+const outcomeFieldId = 346
 
 const renderWithProvider = (
     ui: React.ReactElement,
@@ -123,6 +141,11 @@ describe('Intent Table components', () => {
             } as unknown as ReturnType<typeof useStatsFilters>)
 
             getTicketChannelsStoreIntegrationsMock.mockReturnValue(['1'])
+            useAIAgentUserIdMock.mockReturnValue(undefined)
+            useGetCustomTicketsFieldsDefinitionDataMock.mockReturnValue({
+                intentCustomFieldId: null,
+                outcomeCustomFieldId: null,
+            })
         })
         it('renders table with data', () => {
             const store = mockStore(initialState)
@@ -190,6 +213,84 @@ describe('Intent Table components', () => {
 
             expect(screen.queryByText('1')).toBeNull()
             expect(screen.getByText('Intent')).toBeInTheDocument()
+        })
+
+        it('do not show customer satisfaction drilldown when agentId is not present', () => {
+            const store = mockStore({
+                ...initialState,
+                ui: {
+                    stats: {
+                        insightsSlice: {
+                            paginatedIntents: defaultPaginatedIntents,
+                        },
+                    },
+                },
+            })
+
+            useAIAgentUserIdMock.mockReturnValue(undefined)
+            renderWithProvider(
+                <IntentTable paginatedIntents={defaultPaginatedIntents} />,
+                store,
+            )
+
+            // Find all cells in the AvgCustomerSatisfaction column
+            const csatCells = screen
+                .getAllByRole('cell')
+                .filter(
+                    (cell) =>
+                        cell.textContent === '4.6' || cell.textContent === '-',
+                )
+
+            // Verify that none of the cells have drilldown functionality by checking for the DrillDownModalTrigger's span element
+            csatCells.forEach((cell) => {
+                const drillDownTrigger = cell.querySelector(
+                    'span[class*="text"]',
+                )
+                expect(drillDownTrigger).toBeNull()
+            })
+        })
+
+        it('show customer satisfaction drilldown when all required values are present', () => {
+            const store = mockStore({
+                ...initialState,
+                ui: {
+                    stats: {
+                        insightsSlice: {
+                            paginatedIntents: defaultPaginatedIntents,
+                        },
+                    },
+                },
+            })
+
+            // Set up all required values
+            useAIAgentUserIdMock.mockReturnValue(aiAgentUserId)
+            useGetCustomTicketsFieldsDefinitionDataMock.mockReturnValue({
+                intentCustomFieldId: intentFieldId,
+                outcomeCustomFieldId: outcomeFieldId,
+            })
+
+            renderWithProvider(
+                <IntentTable paginatedIntents={defaultPaginatedIntents} />,
+                store,
+            )
+
+            // Find all cells in the AvgCustomerSatisfaction column
+            const csatCells = screen
+                .getAllByRole('cell')
+                .filter(
+                    (cell) =>
+                        cell.textContent === '4.6' ||
+                        cell.textContent === '3.8',
+                )
+
+            // Verify that all cells have drilldown functionality by checking for the DrillDownModalTrigger's span element
+            csatCells.forEach((cell) => {
+                const drillDownTrigger = cell.querySelector(
+                    'span[class*="text"]',
+                )
+                expect(drillDownTrigger).not.toBeNull()
+                expect(drillDownTrigger).toHaveClass('highlighted')
+            })
         })
     })
     describe('LoadingTableRows', () => {

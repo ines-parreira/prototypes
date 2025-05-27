@@ -141,8 +141,14 @@ export type TicketFieldsMetrics = {
     }
 } & CommonMetrics
 
-export type AIInsightsMetrics = {
-    metricName: AIInsightsMetric
+export type AIInsightsMetrics =
+    | AIInsightsDefaultMetrics
+    | AIInsightsCustomerSatisfactionDrillDownMetric
+
+export type AIInsightsDefaultMetrics = {
+    metricName:
+        | AIInsightsMetric.TicketDrillDownPerCoverageRate
+        | AIInsightsMetric.TicketCustomFieldsTicketCount
     customFieldId: number | null
     customFieldValue: string[] | null
     dateRange?: {
@@ -155,6 +161,15 @@ export type AIInsightsMetrics = {
     intentFieldValues?: string[]
     intentFieldId?: number
     integrationIds?: string[]
+} & CommonMetrics
+
+export type AIInsightsCustomerSatisfactionDrillDownMetric = {
+    metricName: AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction
+    perAgentId: string
+    outcomeFieldId: number
+    intentFieldId: number
+    intentFieldValues?: string[] | null
+    integrationIds: string[]
 } & CommonMetrics
 
 export type TagsFieldsMetrics = {

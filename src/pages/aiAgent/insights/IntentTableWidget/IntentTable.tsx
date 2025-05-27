@@ -140,17 +140,23 @@ export const IntentTable = ({
                     customFieldValue: null,
                 }
             case IntentTableColumn.AvgCustomerSatisfaction:
+                if (
+                    !aiAgentUserId ||
+                    !intentCustomFieldId ||
+                    !outcomeCustomFieldId
+                ) {
+                    return null
+                }
+
                 return {
                     metricName:
                         AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
                     title: intentName,
                     perAgentId: aiAgentUserId,
-                    intentFieldId: intentCustomFieldId ?? null,
-                    outcomeFieldId: outcomeCustomFieldId ?? null,
+                    intentFieldId: intentCustomFieldId,
+                    outcomeFieldId: outcomeCustomFieldId,
                     intentFieldValues: [intent.id],
                     integrationIds: integrationIds,
-                    customFieldId: null,
-                    customFieldValue: null,
                 }
             default:
                 return null
