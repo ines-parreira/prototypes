@@ -1,9 +1,8 @@
-import { ChannelChange } from '../../../types'
-import { Channel } from './useChannels'
+import { ChannelChange, ChannelWithMetadata } from '../../../types'
 
 export const trackChannelChanges = (
     assignedChannelIds: number[],
-    activeChannel: Channel | null,
+    activeChannel: ChannelWithMetadata | null,
 ): ChannelChange[] => {
     if (!activeChannel) {
         return []

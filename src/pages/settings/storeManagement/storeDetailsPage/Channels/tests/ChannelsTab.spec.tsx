@@ -43,7 +43,17 @@ const mockChannel = {
             },
         },
     ],
-    unassignedChannels: [],
+    unassignedChannels: [
+        {
+            id: 4,
+            type: 'email',
+            name: 'test-email 4',
+            uri: 'address4',
+            meta: {
+                address: 'test@test-4.com',
+            },
+        },
+    ],
 }
 
 jest.mock('../hooks/useChannels', () => {
@@ -94,26 +104,37 @@ jest.mock('../hooks/useChannels', () => {
     }
 })
 
+const mockCreateMapping = jest.fn().mockResolvedValue({ success: true })
+const mockDeleteMapping = jest.fn().mockResolvedValue({ success: true })
+const mockRefetchMapping = jest.fn()
+
+jest.mock('models/storeMapping/queries', () => ({
+    useCreateStoreMapping: () => ({
+        mutateAsync: mockCreateMapping,
+        isLoading: false,
+    }),
+    useDeleteStoreMapping: () => ({
+        mutateAsync: mockDeleteMapping,
+        isLoading: false,
+    }),
+}))
+
+const mockHandleMappingResults = jest.fn()
+jest.mock('../hooks/useNotifications', () => ({
+    useNotifications: () => ({
+        handleMappingResults: mockHandleMappingResults,
+    }),
+}))
+
 jest.mock('../../../StoreManagementProvider', () => ({
     useStoreManagementState: () => ({
         stores: mockStoresWithAssignedChannels,
         unassignedChannels: [],
-        refetchMapping: jest.fn(),
+        refetchMapping: mockRefetchMapping,
     }),
     StoreManagementProvider: ({ children }: { children: ReactNode }) => (
         <div>{children}</div>
     ),
-}))
-
-jest.mock('models/storeMapping/queries', () => ({
-    useDeleteStoreMapping: () => ({
-        mutateAsync: jest.fn().mockResolvedValue({ success: true }),
-        isLoading: false,
-    }),
-    useCreateStoreMapping: () => ({
-        mutateAsync: jest.fn().mockResolvedValue({ success: true }),
-        isLoading: false,
-    }),
 }))
 
 describe('ChannelsTab', () => {
@@ -240,6 +261,72 @@ describe('ChannelsTab', () => {
                     ),
                 ).not.toBeInTheDocument()
             })
+        })
+
+        it('creates new channel mapping when adding a channel', async () => {
+            renderComponent()
+
+            fireEvent.click(screen.getByTestId('settings-feature-row-email'))
+
+            const assignEmailButton = screen.getByRole('button', {
+                name: /assign email/i,
+            })
+            fireEvent.click(assignEmailButton)
+
+            const emailToAssign = screen.getByText('test-email 4')
+            fireEvent.click(emailToAssign)
+            expect(screen.getByText('Deselect')).toBeInTheDocument()
+
+            const saveButton = screen.getByRole('button', {
+                name: /save changes/i,
+            })
+            expect(saveButton).toBeEnabled()
+            fireEvent.click(document)
+            expect(screen.queryByText('Deselect')).not.toBeInTheDocument()
+
+            fireEvent.click(saveButton)
+
+            await waitFor(() => {
+                expect(mockCreateMapping).toHaveBeenCalledWith([
+                    {
+                        store_id: 1,
+                        integration_id: 4,
+                    },
+                ])
+            })
+        })
+    })
+
+    it('should handle errors during mapping operations', async () => {
+        mockDeleteMapping.mockRejectedValueOnce(
+            new Error('Failed to create mapping'),
+        )
+
+        renderComponent()
+
+        fireEvent.click(screen.getByTestId('settings-feature-row-email'))
+
+        expect(
+            screen.queryByText(
+                /Choose which support emails should be assigned to this store.*/,
+            ),
+        ).toBeInTheDocument()
+
+        fireEvent.click(screen.getAllByText(/close/i)[0])
+
+        const saveButton = screen.getByRole('button', {
+            name: /save changes/i,
+        })
+        expect(saveButton).toBeEnabled()
+
+        fireEvent.click(saveButton)
+
+        await waitFor(() => {
+            expect(mockHandleMappingResults).toHaveBeenCalledWith(
+                [{ channelId: 1 }],
+                [{ channelId: 1, action: 'remove' }],
+            )
+            expect(mockRefetchMapping).toHaveBeenCalled()
         })
     })
 })

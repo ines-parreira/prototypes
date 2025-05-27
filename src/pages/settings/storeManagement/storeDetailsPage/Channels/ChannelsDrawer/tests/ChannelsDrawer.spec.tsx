@@ -4,11 +4,10 @@ import { fireEvent, screen } from '@testing-library/react'
 
 import { renderWithStore } from 'utils/testing'
 
-import { ChannelChange } from '../../../../types'
-import { Channel } from '../../hooks/useChannels'
+import { ChannelChange, ChannelWithMetadata } from '../../../../types'
 import ChannelsDrawer from '../ChannelsDrawer'
 
-const mockChannel: Channel = {
+const mockChannel: ChannelWithMetadata = {
     title: 'Test Channel',
     description: 'Test Description',
     count: 1,

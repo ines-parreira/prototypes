@@ -2,12 +2,11 @@ import { act } from '@testing-library/react'
 
 import { renderHook } from 'utils/testing/renderHook'
 
-import { ChannelChange } from '../../../../types'
+import { ChannelChange, ChannelWithMetadata } from '../../../../types'
 import UseActiveChannel from '../useActiveChannel'
-import { Channel } from '../useChannels'
 
 describe('useActiveChannel', () => {
-    const mockChannel: Channel = {
+    const mockChannel: ChannelWithMetadata = {
         title: 'Test Channel',
         description: 'Test Description',
         count: 1,

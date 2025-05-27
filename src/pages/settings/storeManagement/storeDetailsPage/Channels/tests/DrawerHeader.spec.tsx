@@ -4,11 +4,13 @@ import { screen } from '@testing-library/react'
 
 import { renderWithRouter } from 'utils/testing'
 
+import { ChannelWithMetadata } from '../../../types'
 import DrawerHeader from '../ChannelsDrawer/DrawerHeader'
-import { Channel } from '../hooks/useChannels'
 
 describe('DrawerHeader', () => {
-    const createChannel = (type: Channel['type']): Channel => ({
+    const createChannel = (
+        type: ChannelWithMetadata['type'],
+    ): ChannelWithMetadata => ({
         title: '',
         description: '',
         count: 0,

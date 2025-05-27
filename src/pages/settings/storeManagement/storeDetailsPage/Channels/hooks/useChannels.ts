@@ -3,8 +3,6 @@ import { useMemo } from 'react'
 import { toNumber } from 'lodash'
 import { useParams } from 'react-router-dom'
 
-import { Integration } from 'models/integration/types'
-
 import {
     isChatChannel,
     isEmailChannel,
@@ -16,28 +14,9 @@ import {
     isWhatsAppChannel,
 } from '../../../helpers/isIntegration'
 import { useStoreManagementState } from '../../../StoreManagementProvider'
+import { ChannelWithMetadata } from '../../../types'
 
-export type ChannelTypes =
-    | 'email'
-    | 'chat'
-    | 'helpCenter'
-    | 'contactForm'
-    | 'voice'
-    | 'sms'
-    | 'whatsApp'
-    | 'facebook'
-    | 'tiktokShop'
-
-export interface Channel {
-    title: string
-    description: string
-    count: number
-    type: ChannelTypes
-    assignedChannels: Integration[]
-    unassignedChannels: Integration[]
-}
-
-export const useChannels = (): Channel[] => {
+export const useChannels = (): ChannelWithMetadata[] => {
     const { id } = useParams<{ id: string }>()
     const { stores, unassignedChannels } = useStoreManagementState()
     const store = stores.find((store) => store.store.id === toNumber(id))

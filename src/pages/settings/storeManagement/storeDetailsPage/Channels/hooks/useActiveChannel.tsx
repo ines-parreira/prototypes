@@ -1,10 +1,10 @@
 import { useState } from 'react'
 
-import { ChannelChange } from '../../../types'
-import { Channel } from './useChannels'
+import { ChannelChange, ChannelWithMetadata } from '../../../types'
 
 export default function UseActiveChannel() {
-    const [activeChannel, setActiveChannel] = useState<Channel | null>(null)
+    const [activeChannel, setActiveChannel] =
+        useState<ChannelWithMetadata | null>(null)
     const [changes, setChanges] = useState<ChannelChange[]>([])
 
     const reset = () => {

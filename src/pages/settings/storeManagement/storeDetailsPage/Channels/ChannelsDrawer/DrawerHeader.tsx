@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 
-import { Channel } from '../hooks/useChannels'
+import { ChannelWithMetadata } from '../../../types'
 
 interface MappedChannelsDrawerInfoBlockProps {
-    channel: Channel
+    channel: ChannelWithMetadata
 }
 
 export default function DrawerHeader({

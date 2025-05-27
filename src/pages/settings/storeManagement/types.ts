@@ -2,21 +2,6 @@ import { Integration, StoreIntegration } from 'models/integration/types'
 
 import { StoreMapping } from '../../../models/storeMapping/types'
 
-export type Channel = {
-    name: string
-    type: string
-    id: string
-    address: string
-}
-
-export type Store = {
-    id: string
-    name: string
-    url: string
-    type: string
-    channels: Channel[]
-}
-
 export interface ChannelChange {
     channelId: number
     action: 'add' | 'remove'
@@ -31,4 +16,24 @@ export type StoreMappingResponse = {
     data: {
         data: StoreMapping[]
     }
+}
+
+export type ChannelTypes =
+    | 'email'
+    | 'chat'
+    | 'helpCenter'
+    | 'contactForm'
+    | 'voice'
+    | 'sms'
+    | 'whatsApp'
+    | 'facebook'
+    | 'tiktokShop'
+
+export interface ChannelWithMetadata {
+    title: string
+    description: string
+    count: number
+    type: ChannelTypes
+    assignedChannels: Integration[]
+    unassignedChannels: Integration[]
 }

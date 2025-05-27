@@ -4,10 +4,10 @@ import { screen } from '@testing-library/react'
 
 import { renderWithRouter } from 'utils/testing'
 
-import { Channel, ChannelTypes } from '../../hooks/useChannels'
+import { ChannelTypes, ChannelWithMetadata } from '../../../../types'
 import CreateNewChannel from '../CreateNewChannel'
 
-const createMockChannel = (type: ChannelTypes): Channel => ({
+const createMockChannel = (type: ChannelTypes): ChannelWithMetadata => ({
     title: `${type} channel`,
     description: '',
     count: 0,

@@ -2,12 +2,12 @@ import React from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { Channel, ChannelTypes } from '../hooks/useChannels'
+import { ChannelTypes, ChannelWithMetadata } from '../../../types'
 
 import css from './CreateNewChannel.less'
 
 interface CreateNewChannelProps {
-    activeChannel?: Channel
+    activeChannel?: ChannelWithMetadata
 }
 
 const CHANNEL_CONFIG: Record<ChannelTypes, { path: string; label: string }> = {

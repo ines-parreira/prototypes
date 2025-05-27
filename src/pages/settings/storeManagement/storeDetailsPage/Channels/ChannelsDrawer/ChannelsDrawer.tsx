@@ -5,15 +5,14 @@ import { Button } from '@gorgias/merchant-ui-kit'
 import hideViewIcon from 'assets/img/icons/hide-view-right.svg'
 import { Drawer } from 'pages/common/components/Drawer'
 
-import { ChannelChange } from '../../../types'
-import { Channel } from '../hooks/useChannels'
+import { ChannelChange, ChannelWithMetadata } from '../../../types'
 import DrawerContent from './DrawerContent'
 
 import css from './ChannelsDrawer.less'
 
 interface ChannelsDrawerProps {
     isLoading?: boolean
-    activeChannel: Channel
+    activeChannel: ChannelWithMetadata
     changes: ChannelChange[]
     onCloseDrawer: () => void
     onSaveDrawer: () => void

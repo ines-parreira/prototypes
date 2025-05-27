@@ -1,16 +1,15 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
-import { ChannelChange } from '../../../types'
+import { ChannelChange, ChannelWithMetadata } from '../../../types'
 import ChannelsFilter from '../ChannelsFilter/ChannelsFilter'
 import ChannelsList from '../ChannelsList/ChannelsList'
 import { trackChannelChanges } from '../hooks/trackChannelChanges'
-import { Channel } from '../hooks/useChannels'
 import DrawerHeader from './DrawerHeader'
 
 import css from './ChannelsDrawer.less'
 
 interface ChannelsDrawerContentProps {
-    activeChannel: Channel
+    activeChannel: ChannelWithMetadata
     setChanges: Dispatch<SetStateAction<ChannelChange[]>>
 }
 

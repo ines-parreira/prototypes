@@ -6,11 +6,11 @@ import { IntegrationType } from 'models/integration/constants'
 import { Integration } from 'models/integration/types'
 import { renderWithStore } from 'utils/testing'
 
+import { ChannelWithMetadata } from '../../../types'
 import DrawerContent from '../ChannelsDrawer/DrawerContent'
-import { Channel } from '../hooks/useChannels'
 
 describe('ChannelsDrawerContent', () => {
-    const mockActiveChannel: Channel = {
+    const mockActiveChannel: ChannelWithMetadata = {
         title: 'Test Channel',
         description: 'Test Description',
         count: 2,

@@ -2,7 +2,7 @@ import { IconButton } from '@gorgias/merchant-ui-kit'
 
 import { Integration } from 'models/integration/types'
 
-import { ChannelTypes } from '../hooks/useChannels'
+import { ChannelTypes } from '../../../types'
 
 import css from '../ChannelsDrawer/ChannelsDrawer.less'
 

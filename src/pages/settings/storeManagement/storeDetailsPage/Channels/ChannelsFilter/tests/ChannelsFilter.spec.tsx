@@ -3,7 +3,7 @@ import { fireEvent, screen } from '@testing-library/react'
 import { Integration } from 'models/integration/types'
 import { renderWithStore } from 'utils/testing'
 
-import { Channel } from '../../hooks/useChannels'
+import { ChannelWithMetadata } from '../../../../types'
 import * as filterOperations from '../../hooks/useFilterOperations'
 import ChannelsFilter from '../ChannelsFilter'
 
@@ -11,7 +11,7 @@ describe('ChannelsFilter', () => {
     const mockSetAssignedChannelIds = jest.fn()
     const mockUpdateSelectedIntegrations = jest.fn()
 
-    const activeChannel: Channel = {
+    const activeChannel: ChannelWithMetadata = {
         description: 'Test Channel Description',
         count: 3,
         type: 'email',

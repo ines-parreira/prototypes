@@ -2,12 +2,12 @@ import { Dispatch, SetStateAction } from 'react'
 
 import SelectFilter from 'pages/stats/common/SelectFilter'
 
-import { Channel } from '../hooks/useChannels'
+import { ChannelWithMetadata } from '../../../types'
 import { useFilterOperations } from '../hooks/useFilterOperations'
 import CreateNewChannel from './CreateNewChannel'
 
 interface ChannelsFilterProps {
-    activeChannel?: Channel
+    activeChannel?: ChannelWithMetadata
     assignedChannelIds: number[]
     setAssignedChannelIds: Dispatch<SetStateAction<number[]>>
 }

@@ -17,6 +17,7 @@ import { useStoreManagementState } from '../../StoreManagementProvider'
 import ChannelsDrawer from './ChannelsDrawer/ChannelsDrawer'
 import useActiveChannel from './hooks/useActiveChannel'
 import { useChannels } from './hooks/useChannels'
+import { useNotifications } from './hooks/useNotifications'
 
 import css from '../StoreDetailsPage.less'
 
@@ -29,6 +30,7 @@ export default function ChannelsTab({ storeId }: ChannelsTabProps) {
     const { refetchMapping } = useStoreManagementState()
     const { mutateAsync: createMapping } = useCreateStoreMapping()
     const { mutateAsync: deleteMapping } = useDeleteStoreMapping()
+    const { handleMappingResults } = useNotifications(channels)
 
     const { activeChannel, setActiveChannel, reset, changes, setChanges } =
         useActiveChannel()
@@ -43,23 +45,28 @@ export default function ChannelsTab({ storeId }: ChannelsTabProps) {
         reset()
     }
     const onSaveDrawer = async () => {
-        try {
-            await Promise.all(
-                changes.map((change) =>
-                    change.action === 'add'
-                        ? createMapping([
-                              {
-                                  store_id: Number(storeId),
-                                  integration_id: change.channelId,
-                              },
-                          ])
-                        : deleteMapping([change.channelId]),
-                ),
-            )
-        } catch (error) {
-            //TODO: Handle errors
-            console.error('Error saving channel changes:', error)
-        }
+        const errors: { channelId: number }[] = []
+        await Promise.allSettled(
+            changes.map(async (change) => {
+                try {
+                    if (change.action === 'add') {
+                        await createMapping([
+                            {
+                                store_id: Number(storeId),
+                                integration_id: change.channelId,
+                            },
+                        ])
+                    } else {
+                        await deleteMapping([change.channelId])
+                    }
+                } catch {
+                    errors.push({
+                        channelId: change.channelId,
+                    })
+                }
+            }),
+        )
+        handleMappingResults(errors, changes)
         refetchMapping()
         reset()
     }

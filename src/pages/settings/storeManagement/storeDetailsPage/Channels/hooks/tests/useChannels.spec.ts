@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { useStoreManagementState } from '../../../../StoreManagementProvider'
-import { Channel, useChannels } from '../useChannels'
+import { ChannelWithMetadata } from '../../../../types'
+import { useChannels } from '../useChannels'
 
 jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),
@@ -50,7 +51,7 @@ describe('useChannels', () => {
         const { result } = renderHook(() => useChannels())
 
         const emailChannel = result.current.find(
-            (channel: Channel) => channel.type === 'email',
+            (channel: ChannelWithMetadata) => channel.type === 'email',
         )
 
         expect(emailChannel).toEqual({
@@ -63,7 +64,7 @@ describe('useChannels', () => {
         })
 
         const chatChannel = result.current.find(
-            (channel: Channel) => channel.type === 'chat',
+            (channel: ChannelWithMetadata) => channel.type === 'chat',
         )
         expect(chatChannel).toEqual({
             title: 'Chat',
@@ -80,7 +81,7 @@ describe('useChannels', () => {
 
         const { result } = renderHook(() => useChannels())
 
-        result.current.forEach((channel: Channel) => {
+        result.current.forEach((channel: ChannelWithMetadata) => {
             expect(channel.count).toBe(0)
             expect(channel.assignedChannels).toEqual([])
         })
@@ -94,7 +95,7 @@ describe('useChannels', () => {
 
         const { result } = renderHook(() => useChannels())
 
-        result.current.forEach((channel: Channel) => {
+        result.current.forEach((channel: ChannelWithMetadata) => {
             expect(channel.count).toBe(0)
             expect(channel.assignedChannels).toEqual([])
             expect(channel.unassignedChannels).toEqual([])

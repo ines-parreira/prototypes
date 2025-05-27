@@ -1,10 +1,10 @@
 import { Integration } from 'models/integration/types'
 
+import { ChannelWithMetadata } from '../../../../types'
 import { trackChannelChanges } from '../trackChannelChanges'
-import { Channel } from '../useChannels'
 
 describe('trackChannelChanges', () => {
-    const makeChannel = (assignedIds: number[]): Channel => ({
+    const makeChannel = (assignedIds: number[]): ChannelWithMetadata => ({
         title: 'Test',
         description: '',
         count: assignedIds.length,
