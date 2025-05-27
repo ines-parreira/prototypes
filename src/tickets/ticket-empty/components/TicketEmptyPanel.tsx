@@ -1,6 +1,8 @@
 import { Panel } from 'core/layout/panels'
 import { EmptyTicket } from 'ticket-page'
 
+import css from './TicketEmptyPanel.less'
+
 const panelConfig = {
     defaultSize: Infinity,
     minSize: 100,
@@ -10,7 +12,7 @@ const panelConfig = {
 export default function TicketEmptyPanel() {
     return (
         <Panel name="ticket-empty" config={panelConfig}>
-            <EmptyTicket />
+            <EmptyTicket className={css.empty} />
         </Panel>
     )
 }

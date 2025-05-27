@@ -1,49 +1,37 @@
-import React, { ReactNode, useState } from 'react'
+import { ReactNode, useState } from 'react'
 
 import _sample from 'lodash/sample'
 
 import useEffectOnce from 'hooks/useEffectOnce'
+import { EmptyTicket } from 'ticket-page'
 
 import css from './BlankState.less'
-
-type Header = {
-    title: string
-    emojis: string[]
-}
 
 type Props = {
     message?: ReactNode
 }
 
-const headers: Header[] = [
-    { title: 'Great job!', emojis: ['✨', '🌈'] },
-    { title: 'Great job, you crushed it!', emojis: ['🔥'] },
-    { title: "Great job, let's celebrate!", emojis: ['🎉', '🎊', '🏆'] },
+const messages = [
+    'Great job!',
+    'Great job, you crushed it!',
+    "Great job, let's celebrate!",
 ]
 
 const BlankState = ({ message }: Props) => {
-    const [header, setHeader] = useState<Header>()
-    const [emoji, setEmoji] = useState<string>()
+    const [title, setTitle] = useState<string>()
 
     useEffectOnce(() => {
-        const header = _sample(headers)
-        setHeader(header)
-        setEmoji(_sample(header?.emojis))
+        setTitle(_sample(messages))
     })
 
     return (
-        <div className={css['blank-state']}>
+        <div className={css.wrapper}>
             {message ? (
                 message
             ) : (
-                <div className={css['blank-state-message']}>
-                    <div className={css['blank-state-message-icon']}>
-                        {emoji}
-                    </div>
-                    <div className={css['blank-state-message-title']}>
-                        {header?.title}
-                    </div>
-                    <div className={css['blank-state-message-text']}>
+                <div className={css.message}>
+                    <EmptyTicket title={title} />
+                    <div className={css.text}>
                         You’ve just helped all your customers. Enjoy your day
                         now!
                     </div>
