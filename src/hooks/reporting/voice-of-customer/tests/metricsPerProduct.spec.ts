@@ -6,11 +6,14 @@ import {
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
 import {
+    fetchReturnMentionsPerProduct,
     fetchTicketCountPerProduct,
+    useReturnMentionsPerProduct,
     useTicketCountPerProduct,
 } from 'hooks/reporting/voice-of-customer/metricsPerProduct'
 import { OrderDirection } from 'models/api/types'
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { returnMentionsPerProductQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/returnMentionsPerProduct'
 import { ticketCountPerProductQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/ticketsWithProducts'
 import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import { assumeMock } from 'utils/testing'
@@ -79,6 +82,72 @@ describe('metricsPerProduct', () => {
 
                 expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
                     queryFactory(statsFilters, timezone, sorting),
+                    agentId,
+                )
+            },
+        )
+    })
+
+    describe('metricsPerProductAndIntent', () => {
+        const intentsCustomFieldId = '1'
+
+        it.each([
+            [
+                'useReturnMentionsPerProduct',
+                useReturnMentionsPerProduct,
+                returnMentionsPerProductQueryFactory,
+            ],
+        ])(
+            '%s should pass the query to useMetricPerDimension hook',
+            (_, useFn, queryFactory) => {
+                renderHook(
+                    () =>
+                        useFn(
+                            statsFilters,
+                            timezone,
+                            intentsCustomFieldId,
+                            sorting,
+                            agentId,
+                        ),
+                    {},
+                )
+
+                expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                    queryFactory(
+                        statsFilters,
+                        timezone,
+                        intentsCustomFieldId,
+                        sorting,
+                    ),
+                    agentId,
+                )
+            },
+        )
+
+        it.each([
+            [
+                'fetchReturnMentionsPerProduct',
+                fetchReturnMentionsPerProduct,
+                returnMentionsPerProductQueryFactory,
+            ],
+        ])(
+            '%s should pass the query to useMetricPerDimension hook',
+            async (_, fetchFn, queryFactory) => {
+                await fetchFn(
+                    statsFilters,
+                    timezone,
+                    intentsCustomFieldId,
+                    sorting,
+                    agentId,
+                )
+
+                expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
+                    queryFactory(
+                        statsFilters,
+                        timezone,
+                        intentsCustomFieldId,
+                        sorting,
+                    ),
                     agentId,
                 )
             },
