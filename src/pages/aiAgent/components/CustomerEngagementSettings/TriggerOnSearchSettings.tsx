@@ -20,7 +20,7 @@ import { EngagementSettingsCardLinkButton } from './card/EngagementSettingsCardL
 import { EngagementSettingsCardToggle } from './card/EngagementSettingsCardToggle'
 import { usePotentialImpact } from './hooks/usePotentialImpact'
 
-const ESTIMATED_INFLUENCED_GMV = 0.6
+const ESTIMATED_INFLUENCED_GMV = 0.06
 
 type Props = {
     gmv: TimeSeriesDataItem[][] | undefined
