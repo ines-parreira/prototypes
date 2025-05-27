@@ -1,7 +1,55 @@
 @import '~@gorgias/design-tokens/dist/css/layout';
 
 :local {
+    .divider {
+        height: 1px;
+        margin-top: @layout-spacing-s;
+        margin-bottom: @layout-spacing-s;
+        background-color: var(--neutral-grey-3);
+    }
+
     .wizardProgressHeader {
         margin-bottom: @layout-spacing-xl;
+    }
+
+    .form {
+        flex: 2;
+    }
+
+    .formPreview {
+        flex: 1;
+        max-width: 550px;
+
+        .emailPreviewTagWrapper {
+            align-items: flex-start;
+            display: flex;
+
+            p {
+                width: 40px;
+            }
+        }
+
+        .card {
+            align-items: flex-start;
+            border-radius: 12px;
+            border: 1px solid var(--neutral-grey-3);
+            background: var(--neutral-grey-0);
+            display: flex;
+            gap: var(--spacing-s, 16px);
+            flex-direction: column;
+            flex: 1 0 0;
+            min-height: 160px;
+            padding: @layout-spacing-s;
+        }
+
+        .emailIcon {
+            font-size: @layout-spacing-m;
+            margin-right: @layout-spacing-xs;
+        }
+    }
+
+    .formPreviewTitle {
+        color: var(--neutral-grey-4);
+        text-align: center;
     }
 }

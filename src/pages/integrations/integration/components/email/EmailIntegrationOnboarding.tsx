@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
@@ -9,7 +11,6 @@ import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressH
 import WizardStep from 'pages/common/components/wizard/WizardStep'
 import EmailIntegrationOnboardingBreadcrumbs from 'pages/integrations/integration/components/email/EmailIntegrationOnboardingBreadcrumbs'
 import SettingsContent from 'pages/settings/SettingsContent'
-import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 
 import DomainVerificationProvider from './EmailDomainVerification/DomainVerificationProvider'
 import EmailDomainVerificationSupportContentSidebar from './EmailDomainVerification/EmailDomainVerificationSupportContentSidebar'
@@ -35,113 +36,112 @@ export default function EmailIntegrationOnboarding({ integration }: Props) {
         useFlags()[FeatureFlagKey.NewDomainVerification] ?? false
 
     return (
-        <>
-            <div className="full-width">
-                <PageHeader
-                    title={
-                        <EmailIntegrationOnboardingBreadcrumbs
-                            integration={integration}
-                        />
+        <div className="full-width">
+            <PageHeader
+                title={
+                    <EmailIntegrationOnboardingBreadcrumbs
+                        integration={integration}
+                    />
+                }
+            />
+
+            <div className="full-width flex">
+                <SettingsContent
+                    fullWidth={
+                        currentStep ===
+                        EmailIntegrationOnboardingStep.ConnectIntegration
                     }
-                />
-
-                <SettingsPageContainer>
-                    <SettingsContent>
-                        <Wizard
-                            startAt={currentStep}
-                            steps={
-                                isNewDomainVerificationEnabled
-                                    ? Object.values(
-                                          EmailIntegrationOnboardingStep,
-                                      )
-                                    : Object.values(
-                                          EmailIntegrationOnboardingStep,
-                                      ).filter(
-                                          (step) =>
-                                              step !==
-                                              EmailIntegrationOnboardingStep.DomainVerification,
-                                      )
+                >
+                    <Wizard
+                        startAt={currentStep}
+                        steps={
+                            isNewDomainVerificationEnabled
+                                ? Object.values(EmailIntegrationOnboardingStep)
+                                : Object.values(
+                                      EmailIntegrationOnboardingStep,
+                                  ).filter(
+                                      (step) =>
+                                          step !==
+                                          EmailIntegrationOnboardingStep.DomainVerification,
+                                  )
+                        }
+                    >
+                        <WizardProgressHeader
+                            labels={{
+                                [EmailIntegrationOnboardingStep.ConnectIntegration]:
+                                    'Connect email',
+                                [EmailIntegrationOnboardingStep.ForwardingSetup]:
+                                    'Receive emails',
+                                [EmailIntegrationOnboardingStep.Verification]:
+                                    'Verify integration',
+                                ...(isNewDomainVerificationEnabled
+                                    ? {
+                                          [EmailIntegrationOnboardingStep.DomainVerification]:
+                                              'Send emails',
+                                      }
+                                    : {}),
+                            }}
+                            className={css.wizardProgressHeader}
+                        />
+                        <WizardStep
+                            name={
+                                EmailIntegrationOnboardingStep.ConnectIntegration
                             }
-                        >
-                            <WizardProgressHeader
-                                labels={{
-                                    [EmailIntegrationOnboardingStep.ConnectIntegration]:
-                                        'Connect email',
-                                    [EmailIntegrationOnboardingStep.ForwardingSetup]:
-                                        'Receive emails',
-                                    [EmailIntegrationOnboardingStep.Verification]:
-                                        'Verify integration',
-                                    ...(isNewDomainVerificationEnabled
-                                        ? {
-                                              [EmailIntegrationOnboardingStep.DomainVerification]:
-                                                  'Send emails',
-                                          }
-                                        : {}),
-                                }}
-                                className={css.wizardProgressHeader}
-                            />
+                        />
+                        <WizardStep
+                            name={
+                                EmailIntegrationOnboardingStep.ForwardingSetup
+                            }
+                        />
+                        <WizardStep
+                            name={EmailIntegrationOnboardingStep.Verification}
+                        />
+                        {isNewDomainVerificationEnabled && (
                             <WizardStep
                                 name={
-                                    EmailIntegrationOnboardingStep.ConnectIntegration
+                                    EmailIntegrationOnboardingStep.DomainVerification
                                 }
                             />
-                            <WizardStep
-                                name={
-                                    EmailIntegrationOnboardingStep.ForwardingSetup
-                                }
-                            />
-                            <WizardStep
-                                name={
-                                    EmailIntegrationOnboardingStep.Verification
-                                }
-                            />
-                            {isNewDomainVerificationEnabled && (
-                                <WizardStep
-                                    name={
-                                        EmailIntegrationOnboardingStep.DomainVerification
-                                    }
-                                />
-                            )}
+                        )}
 
-                            {currentStep ===
-                                EmailIntegrationOnboardingStep.ConnectIntegration && (
-                                <EmailIntegrationConnectForm
-                                    integration={integration}
-                                />
+                        {currentStep ===
+                            EmailIntegrationOnboardingStep.ConnectIntegration && (
+                            <EmailIntegrationConnectForm
+                                integration={integration}
+                            />
+                        )}
+                        {currentStep ===
+                            EmailIntegrationOnboardingStep.ForwardingSetup && (
+                            <EmailIntegrationForwardingSetupForm
+                                integration={integration}
+                            />
+                        )}
+                        {currentStep ===
+                            EmailIntegrationOnboardingStep.Verification && (
+                            <EmailIntegrationVerificationForm
+                                integration={integration}
+                            />
+                        )}
+                        {currentStep ===
+                            EmailIntegrationOnboardingStep.DomainVerification &&
+                            integration && (
+                                <DomainVerificationProvider
+                                    domainName={getDomainFromEmailAddress(
+                                        integration.meta?.address ?? '',
+                                    )}
+                                >
+                                    <EmailIntegrationOnboardingDomainVerification
+                                        integration={integration}
+                                    />
+                                </DomainVerificationProvider>
                             )}
-                            {currentStep ===
-                                EmailIntegrationOnboardingStep.ForwardingSetup && (
-                                <EmailIntegrationForwardingSetupForm
-                                    integration={integration}
-                                />
-                            )}
-                            {currentStep ===
-                                EmailIntegrationOnboardingStep.Verification && (
-                                <EmailIntegrationVerificationForm
-                                    integration={integration}
-                                />
-                            )}
-                            {currentStep ===
-                                EmailIntegrationOnboardingStep.DomainVerification &&
-                                integration && (
-                                    <DomainVerificationProvider
-                                        domainName={getDomainFromEmailAddress(
-                                            integration.meta?.address ?? '',
-                                        )}
-                                    >
-                                        <EmailIntegrationOnboardingDomainVerification
-                                            integration={integration}
-                                        />
-                                    </DomainVerificationProvider>
-                                )}
-                        </Wizard>
-                    </SettingsContent>
-                    {currentStep ===
-                        EmailIntegrationOnboardingStep.DomainVerification && (
-                        <EmailDomainVerificationSupportContentSidebar />
-                    )}
-                </SettingsPageContainer>
+                    </Wizard>
+                </SettingsContent>
+                {currentStep ===
+                    EmailIntegrationOnboardingStep.DomainVerification && (
+                    <EmailDomainVerificationSupportContentSidebar />
+                )}
             </div>
-        </>
+        </div>
     )
 }

@@ -2,8 +2,9 @@ import React, { CSSProperties, MouseEventHandler, ReactNode } from 'react'
 
 import classNames from 'classnames'
 
+import { Button } from '@gorgias/merchant-ui-kit'
+
 import { THEME_NAME, useTheme } from 'core/theme'
-import Button from 'pages/common/components/button/Button'
 
 import css from './Card.less'
 
