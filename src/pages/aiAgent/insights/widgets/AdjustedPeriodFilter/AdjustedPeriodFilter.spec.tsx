@@ -5,8 +5,10 @@ import { screen } from '@testing-library/react'
 import moment from 'moment'
 import { Provider } from 'react-redux'
 
+import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import { ReportingGranularity } from 'models/reporting/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock, mockStore, renderWithRouter } from 'utils/testing'
 
@@ -20,8 +22,31 @@ jest.mock('hooks/useAppSelector', () => jest.fn())
 jest.mock('pages/stats/common/filters/PeriodFilter', () => ({
     PeriodFilter: jest.fn(() => <>Date</>),
 }))
+jest.mock('hooks/reporting/automate/useAutomateFilters')
+
+jest.mock('hooks/reporting/useMetricPerDimension', () => ({
+    useMetricPerDimension: jest.fn(() => ({
+        data: {
+            allData: [{ ticket_count: 500 }],
+        },
+        isFetching: false,
+    })),
+}))
+jest.mock(
+    'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
+    () => ({
+        useGetCustomTicketsFieldsDefinitionData: jest.fn(() => ({
+            intentCustomFieldId: 'intent-id',
+            outcomeCustomFieldId: 'outcome-id',
+        })),
+    }),
+)
+jest.mock('hooks/integrations/useGetTicketChannelsStoreIntegrations', () => ({
+    useGetTicketChannelsStoreIntegrations: jest.fn(() => ['integration-id']),
+}))
 
 const useAppSelectorMock = assumeMock(useAppSelector)
+const mockUseAutomateFilters = assumeMock(useAutomateFilters)
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = assumeMock(useAppDispatch)
@@ -30,17 +55,6 @@ useAppDispatchMock.mockReturnValue(dispatchMock)
 
 const SHOP_NAME = 'shopify-store'
 const SHOP_TYPE = 'shopify'
-
-jest.mock('moment', () => {
-    const actualMoment = jest.requireActual<typeof moment>('moment')
-    return jest.fn((params) => {
-        if (params) {
-            return actualMoment(params)
-        }
-
-        return actualMoment('2024-01-01T12:00:00.000Z')
-    })
-})
 
 const defaultStore = {
     stats: {
@@ -94,6 +108,18 @@ describe('subtractsPeriodWithoutDataIfNeeded', () => {
 })
 
 describe('AdjustedPeriodFilter Component', () => {
+    beforeEach(() => {
+        mockUseAutomateFilters.mockReturnValue({
+            userTimezone: 'UTC',
+            statsFilters: {
+                period: {
+                    start_datetime: '2021-01-01',
+                    end_datetime: '2021-01-31',
+                },
+            },
+            granularity: ReportingGranularity.Day,
+        })
+    })
     it('should render the PeriodFilter when isPeriodFilterSet is true', () => {
         useAppSelectorMock.mockReturnValue({
             period: {
@@ -116,6 +142,6 @@ describe('AdjustedPeriodFilter Component', () => {
         })
         renderComponent()
 
-        expect(useAppDispatchMock).toHaveBeenCalledTimes(2)
+        expect(useAppDispatchMock).toHaveBeenCalledTimes(3)
     })
 })

@@ -10,7 +10,7 @@ import { Provider } from 'react-redux'
 
 import { toImmutable } from 'common/utils'
 import { account } from 'fixtures/account'
-import { PeriodFilter } from 'pages/stats/common/filters/PeriodFilter'
+import { AdjustedPeriodFilter } from 'pages/aiAgent/insights/widgets/AdjustedPeriodFilter/AdjustedPeriodFilter'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore, renderWithRouter } from 'utils/testing'
 
@@ -22,9 +22,12 @@ import {
     subtractsPeriodWithoutDataIfNeeded,
 } from './OptimizeContainer'
 
-jest.mock('pages/stats/common/filters/PeriodFilter', () => ({
-    PeriodFilter: jest.fn(() => <></>),
-}))
+jest.mock(
+    'pages/aiAgent/insights/widgets/AdjustedPeriodFilter/AdjustedPeriodFilter',
+    () => ({
+        AdjustedPeriodFilter: jest.fn(() => <></>),
+    }),
+)
 
 jest.mock('../IntentTableWidget/IntentTableWidget', () => ({
     IntentTableWidget: jest.fn(() => <></>),
@@ -91,36 +94,10 @@ describe('OptimizeContainer', () => {
     it('renders the component correctly', () => {
         renderComponent()
 
-        expect(PeriodFilter).toHaveBeenCalled()
+        expect(AdjustedPeriodFilter).toHaveBeenCalled()
         expect(Level1IntentsPerformance).toHaveBeenCalled()
         expect(IntentTableWidget).toHaveBeenCalled()
     })
-
-    it('passes correct props to PeriodFilter', () => {
-        renderComponent()
-
-        const mockedPeriodFilter = jest.mocked(PeriodFilter)
-
-        expect(mockedPeriodFilter).toHaveBeenCalledWith(
-            expect.objectContaining({
-                value: {
-                    start_datetime: null,
-                    end_datetime: null,
-                },
-                initialSettings: {
-                    maxDate: expect.any(Object),
-                    minDate: expect.any(Object),
-                },
-                tooltipMessageForPreviousPeriod:
-                    'There is no data available on this date yet.',
-                initialV2Props: {
-                    dateRanges: expect.any(Object),
-                },
-            }),
-            {},
-        )
-    })
-
     describe('subtractsPeriodWithoutData', () => {
         it('should subtract 72 hours from the given moment date', () => {
             const inputDate: Moment = moment('2024-01-01T12:00:00.000Z')
