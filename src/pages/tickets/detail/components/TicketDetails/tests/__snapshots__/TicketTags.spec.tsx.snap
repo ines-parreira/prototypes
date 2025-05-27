@@ -15,7 +15,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
         TagDropdownMock
       </div>
       <div
-        class="tag withTrailIcon black"
+        class="tag withTrailIcon"
       >
         <span
           class="text"
@@ -50,7 +50,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
         </div>
       </div>
       <div
-        class="tag withTrailIcon black"
+        class="tag withTrailIcon"
       >
         <span
           class="text"
@@ -68,7 +68,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
         </span>
       </div>
       <div
-        class="tag withTrailIcon black"
+        class="tag withTrailIcon"
       >
         <span
           class="text"
@@ -86,7 +86,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
         </span>
       </div>
       <div
-        class="tag withTrailIcon black"
+        class="tag withTrailIcon"
       >
         <span
           class="text"

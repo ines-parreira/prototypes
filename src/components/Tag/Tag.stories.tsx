@@ -2,9 +2,9 @@ import { ComponentProps } from 'react'
 
 import { Meta, StoryFn } from '@storybook/react'
 
-import { Tag, TagColor } from './Tag'
+import { Tag } from './Tag'
 
-const colors: TagColor[] = [
+const colors = [
     'black',
     'red',
     'green',
@@ -26,9 +26,7 @@ const storyConfig: Meta = {
     argTypes: {
         color: {
             description: 'Color of the tag.',
-            control: {
-                type: 'select',
-            },
+            control: { type: 'select' },
             options: colors,
         },
         text: {

@@ -20,128 +20,25 @@
             padding-right: @layout-spacing-xxs;
         }
 
-        // Color properties
-
-        &.black {
-            --tag-background-color: var(--neutral-grey-3);
-            --tag-text-color: var(--neutral-grey-6);
-        }
-
-        &.red {
-            --tag-background-color: var(--accessory-red-1);
-            --tag-text-color: var(--accessory-red-3);
-        }
-
-        &.green {
-            --tag-background-color: var(--accessory-green-1);
-            --tag-text-color: var(--accessory-green-3);
-        }
-
-        &.yellow {
-            --tag-background-color: var(--accessory-yellow-1);
-            --tag-text-color: var(--accessory-yellow-3);
-        }
-
-        &.blue {
-            --tag-background-color: var(--accessory-blue-1);
-            --tag-text-color: var(--accessory-blue-3);
-        }
-
-        &.gray {
-            --tag-background-color: var(--neutral-grey-1);
-            --tag-text-color: var(--neutral-grey-5);
-        }
-
-        &.pink {
-            --tag-background-color: var(--accessory-magenta-1);
-            --tag-text-color: var(--accessory-magenta-3);
-        }
-
-        &.purple {
-            --tag-background-color: var(--accessory-violet-1);
-            --tag-text-color: var(--accessory-violet-3);
-        }
-
-        &.orange {
-            --tag-background-color: var(--accessory-orange-1);
-            --tag-text-color: var(--accessory-orange-3);
-        }
-
-        &.teal {
-            --tag-background-color: var(--accessory-teal-1);
-            --tag-text-color: var(--accessory-teal-3);
-        }
-
-        background: var(--tag-background-color);
-        color: var(--tag-text-color);
-
-        &.newTag {
-            background-color: var(--neutral-grey-0);
-            border: 1px solid var(--neutral-grey-3);
-        }
+        background-color: var(--neutral-grey-0);
+        border: 1px solid var(--neutral-grey-3);
     }
 
     .text {
-        .caption-semibold();
-        line-height: 14px;
         text-wrap: nowrap;
+        display: inline-flex;
+        align-items: center;
+        gap: @layout-spacing-xxs;
+        .caption-regular();
+        line-height: 14px;
 
-        // Color properties
-        &.black {
-            --tag-dot-color: var(--neutral-grey-6);
-        }
-
-        &.red {
-            --tag-dot-color: var(--accessory-red-2);
-        }
-
-        &.green {
-            --tag-dot-color: var(--accessory-green-2);
-        }
-
-        &.yellow {
-            --tag-dot-color: var(--accessory-yellow-2);
-        }
-
-        &.blue {
-            --tag-dot-color: var(--accessory-blue-2);
-        }
-
-        &.gray {
-            --tag-dot-color: var(--neutral-grey-4);
-        }
-
-        &.pink {
-            --tag-dot-color: var(--accessory-magenta-2);
-        }
-
-        &.purple {
-            --tag-dot-color: var(--accessory-violet-2);
-        }
-
-        &.orange {
-            --tag-dot-color: var(--accessory-orange-2);
-        }
-
-        &.teal {
-            --tag-dot-color: var(--accessory-teal-2);
-        }
-
-        &.newText {
-            display: inline-flex;
-            align-items: center;
-            gap: @layout-spacing-xxs;
-            .caption-regular();
-            line-height: 14px;
-
-            &::before {
-                content: '';
-                mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="4" /></svg>');
-                mask-repeat: no-repeat;
-                width: 12px;
-                height: 12px;
-                background-color: var(--tag-dot-color);
-            }
+        &::before {
+            content: '';
+            mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="4" /></svg>');
+            mask-repeat: no-repeat;
+            width: 12px;
+            height: 12px;
+            background-color: var(--tag-dot-color);
         }
     }
 

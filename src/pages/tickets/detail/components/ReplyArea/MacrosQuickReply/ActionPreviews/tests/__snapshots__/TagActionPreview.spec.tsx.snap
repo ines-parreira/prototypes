@@ -13,7 +13,7 @@ exports[`<TagPreviewContainer/> should render tags 1`] = `
     class="propsRowWrapper"
   >
     <div
-      class="tag black"
+      class="tag"
     >
       <span
         class="text"
@@ -22,7 +22,7 @@ exports[`<TagPreviewContainer/> should render tags 1`] = `
       </span>
     </div>
     <div
-      class="tag black"
+      class="tag"
     >
       <span
         class="text"
@@ -31,11 +31,11 @@ exports[`<TagPreviewContainer/> should render tags 1`] = `
       </span>
     </div>
     <div
-      class="tag black"
-      style="color: rgb(222, 222, 222); background-color: rgb(247, 247, 247);"
+      class="tag"
     >
       <span
         class="text"
+        style="--tag-dot-color: #dedede;"
       >
         refund accepted
       </span>

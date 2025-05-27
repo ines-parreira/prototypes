@@ -2,34 +2,18 @@ import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
-
 import { Tag } from '../Tag'
 
-jest.mock('core/flags', () => ({
-    useFlag: jest.fn(),
-}))
-const mockUseFlag = useFlag as jest.Mock
-
-const mockFlagSet = {
-    [FeatureFlagKey.TagNewDesign]: false,
-}
-
 describe('<Tag />', () => {
-    beforeEach(() => {
-        mockUseFlag.mockImplementation(
-            (featureFlag: keyof typeof mockFlagSet) => {
-                return mockFlagSet[featureFlag]
-            },
-        )
-    })
+    it('should render', () => {
+        const text = 'text'
+        const color = '#123456' // hsl(210, 65%, 20%)
+        render(<Tag color={color} text={text} />)
 
-    it('should not render leadIcon', () => {
-        render(<Tag color="black" text="text" />)
+        const tag = screen.getByText(text)
 
-        const leadIcon = document.querySelector('.icon')
-        expect(leadIcon).toBeNull()
+        expect(tag).toBeInTheDocument()
+        expect(tag).toHaveStyle(`--tag-dot-color: ${color}`)
     })
 
     it('should not render trailIcon', () => {
@@ -75,23 +59,5 @@ describe('<Tag />', () => {
 
         fireEvent.click(screen.getByText(trailIcon))
         expect(onTrailIconClick).toHaveBeenCalled()
-    })
-
-    it('should render new design', () => {
-        mockUseFlag.mockReturnValue(true)
-        const text = 'myTag'
-        const color = 'teal'
-        const customColor = '#456123'
-
-        const { container } = render(
-            <Tag color={color} text={text} customColor={customColor} />,
-        )
-
-        expect(container.firstChild).toHaveClass('newTag')
-        expect(screen.getByText(text)).toHaveClass('newText')
-        expect(screen.getByText(text)).toHaveClass(color)
-        expect(screen.getByText(text)).toHaveStyle(
-            `--tag-dot-color: ${customColor}`,
-        )
     })
 })

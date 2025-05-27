@@ -166,7 +166,7 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
                           class="tags right"
                         >
                           <div
-                            class="tag black"
+                            class="tag"
                           >
                             <span
                               class="text"
@@ -379,7 +379,7 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
                           class="tags right"
                         >
                           <div
-                            class="tag black"
+                            class="tag"
                           >
                             <span
                               class="text"

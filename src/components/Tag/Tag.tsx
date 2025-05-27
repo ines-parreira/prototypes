@@ -10,32 +10,16 @@ import {
 
 import classNames from 'classnames'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
-
 import css from './Tag.less'
-
-export type TagColor =
-    | 'black'
-    | 'red'
-    | 'green'
-    | 'yellow'
-    | 'blue'
-    | 'gray'
-    | 'pink'
-    | 'purple'
-    | 'orange'
-    | 'teal'
 
 type Props = {
     className?: string
-    color?: TagColor
-    customColor?: string | null
+    color?: string | null
     onTrailIconClick?: () => void
     text?: string
     textClassName?: string
     trailIcon?: ReactNode
-} & HTMLAttributes<HTMLDivElement>
+} & Omit<HTMLAttributes<HTMLDivElement>, 'color'>
 
 /**
  * @deprecated This component is deprecated and will be removed in future versions.
@@ -47,7 +31,6 @@ export const Tag = forwardRef(function Tag(
     {
         className,
         color = 'black',
-        customColor,
         onTrailIconClick,
         text,
         textClassName,
@@ -59,28 +42,21 @@ export const Tag = forwardRef(function Tag(
     const ref = useRef<HTMLInputElement>(null)
     useImperativeHandle(forwardedRef, () => ref.current!)
 
-    const hasNewTag = useFlag(FeatureFlagKey.TagNewDesign)
-
     return (
         <div
             className={classNames(css.tag, className, {
                 [css.withTrailIcon]: !!trailIcon,
                 [css.withIconOnly]: !text,
-                [css[color]]: !hasNewTag,
-                [css.newTag]: hasNewTag,
             })}
             {...props}
         >
             {text && (
                 <span
                     ref={ref}
-                    className={classNames(css.text, textClassName, {
-                        [css[color]]: hasNewTag,
-                        [css.newText]: hasNewTag,
-                    })}
-                    {...(!!customColor && {
+                    className={classNames(css.text, textClassName)}
+                    {...(!!color && {
                         style: {
-                            '--tag-dot-color': customColor,
+                            '--tag-dot-color': color,
                         } as CSSProperties,
                     })}
                 >

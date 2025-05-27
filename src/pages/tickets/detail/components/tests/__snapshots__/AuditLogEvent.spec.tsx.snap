@@ -1366,7 +1366,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
         Tagged
       </span>
       <div
-        class="tag equalFiller black"
+        class="tag equalFiller"
       >
         <span
           class="text"
@@ -1427,7 +1427,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
         Tagged
       </span>
       <div
-        class="tag equalFiller black"
+        class="tag equalFiller"
       >
         <span
           class="text"
@@ -1436,7 +1436,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
         </span>
       </div>
       <div
-        class="tag equalFiller black"
+        class="tag equalFiller"
       >
         <span
           class="text"
@@ -1497,7 +1497,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
         Untagged
       </span>
       <div
-        class="tag equalFiller black"
+        class="tag equalFiller"
       >
         <span
           class="text"
@@ -1558,7 +1558,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
         Untagged
       </span>
       <div
-        class="tag equalFiller black"
+        class="tag equalFiller"
       >
         <span
           class="text"
@@ -1567,7 +1567,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
         </span>
       </div>
       <div
-        class="tag equalFiller black"
+        class="tag equalFiller"
       >
         <span
           class="text"
