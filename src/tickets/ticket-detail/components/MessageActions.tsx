@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 
 import classnames from 'classnames'
 import { fromJS } from 'immutable'
@@ -6,19 +6,20 @@ import _get from 'lodash/get'
 import _truncate from 'lodash/truncate'
 import { Badge } from 'reactstrap'
 
+import { TicketMessage } from '@gorgias/helpdesk-types'
 import { LoadingSpinner, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { ActionTemplate, ActionTemplateExecution } from 'config'
 import { ContentType } from 'models/api/types'
 import { MacroActionName } from 'models/macroAction/types'
-import { Action, ActionStatus, TicketMessage } from 'models/ticket/types'
+import { Action, ActionStatus } from 'models/ticket/types'
 import { JSONTree } from 'pages/common/components/JSONTree'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import { getActionTemplate, toRGBA } from 'utils'
 
-import css from './Actions.less'
+import css from './MessageActions.less'
 
 const SHOPIFY_ACTION_NAMES = [
     MacroActionName.ShopifyCancelLastOrder,
@@ -30,6 +31,7 @@ const SHOPIFY_ACTION_NAMES = [
     MacroActionName.ShopifyPartialRefundLastOrder,
     MacroActionName.ShopifyRefundShippingCostLastOrder,
 ] as const
+
 const displayedArg: Record<string, string> = {
     [MacroActionName.AddTags]: 'tags',
     [MacroActionName.AddAttachments]: 'attachments',
@@ -191,9 +193,9 @@ export default class Actions extends Component<Props, State> {
 
         const backActions = message.actions.filter(
             ({ name }) =>
-                getActionTemplate(name)?.execution !==
+                getActionTemplate(name as string)?.execution !==
                 ActionTemplateExecution.Front,
-        )
+        ) as Action[]
 
         if (backActions.length === 0) return null
 
@@ -202,7 +204,7 @@ export default class Actions extends Component<Props, State> {
                 <div className={classnames(css.title, 'mb-2 text-muted')}>
                     Actions performed:
                 </div>
-                {backActions.map((action, index) => {
+                {backActions.map((action: Action, index: number) => {
                     const getIcon = (icon: string) => (
                         <i
                             className={classnames(
@@ -239,7 +241,10 @@ export default class Actions extends Component<Props, State> {
                     )
                     const isExternalTemplateAction =
                         action.name === MacroActionName.ApplyExternalTemplate
-                    const contentType = _get(action, 'arguments.content_type')
+                    const contentType = _get(
+                        action,
+                        'arguments.content_type',
+                    ) as ContentType
 
                     const arg = this._renderActionArg(action)
 

@@ -2,11 +2,13 @@ import React, { useState } from 'react'
 
 import classNames from 'classnames'
 
+import { TicketMessage as TicketMessageType } from '@gorgias/helpdesk-types'
+
 import { hasFailedAction, isFailed, isPending } from 'models/ticket/predicates'
 import { TicketMessage } from 'models/ticket/types'
+import Actions from 'tickets/ticket-detail/components/MessageActions'
+import { MessageAttachments } from 'tickets/ticket-detail/components/MessageAttachments'
 
-import Actions from './Actions'
-import Attachments from './Attachments'
 import Body from './Body'
 import Errors from './Errors'
 import ReplyDetailsCard from './ReplyDetailsCard'
@@ -64,8 +66,10 @@ export default function Message({
                 hasError={hasError}
                 messagePosition={messagePosition}
             />
-            <Attachments message={message} />
-            {!isAIAgentMessage && <Actions message={message} />}
+            <MessageAttachments message={message as TicketMessageType} />
+            {!isAIAgentMessage && (
+                <Actions message={message as TicketMessageType} />
+            )}
             <Errors
                 message={message}
                 ticketId={ticketId}

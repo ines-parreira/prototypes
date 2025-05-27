@@ -1,20 +1,19 @@
 import classNamesBind from 'classnames/bind'
 import { fromJS } from 'immutable'
 
-import { TicketMessage } from '../../../../../models/ticket/types'
-import TicketAttachments from '../ReplyArea/TicketAttachments'
+import { TicketMessage } from '@gorgias/helpdesk-types'
 
-import css from './Attachments.less'
+import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
+
+import css from './MessageAttachments.less'
 
 const classNames = classNamesBind.bind(css)
 
-type Props = {
+type MessageAttachmentsProps = {
     message: TicketMessage
 }
 
-const Attachments = (props: Props) => {
-    const { message } = props
-
+export function MessageAttachments({ message }: MessageAttachmentsProps) {
     if (!message.attachments || !message.attachments.length) {
         return null
     }
@@ -33,5 +32,3 @@ const Attachments = (props: Props) => {
         </div>
     )
 }
-
-export default Attachments

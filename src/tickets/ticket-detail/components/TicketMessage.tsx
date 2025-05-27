@@ -1,4 +1,5 @@
 import { TicketMessageElement } from '../types'
+import { MessageBody } from './MessageBody'
 import { MessageContent } from './MessageContent'
 
 type Props = {
@@ -6,10 +7,11 @@ type Props = {
 }
 
 export function TicketMessage({ element }: Props) {
+    const isAI = element.flags?.includes('ai') ?? false
+    const isFailed = element.flags?.includes('failed') ?? false
     return (
-        <MessageContent
-            message={element.data}
-            isFailed={element.flags?.includes('failed') ?? false}
-        />
+        <MessageBody message={element.data} isAI={isAI}>
+            <MessageContent message={element.data} isFailed={isFailed} />
+        </MessageBody>
     )
 }

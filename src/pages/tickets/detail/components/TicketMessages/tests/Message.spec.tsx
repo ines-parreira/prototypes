@@ -1,14 +1,19 @@
 import { render } from '@testing-library/react'
 
 import { TicketMessage } from 'models/ticket/types'
-import Message from 'pages/tickets/detail/components/TicketMessages/Message'
+
+import Message from '../Message'
 
 jest.mock('pages/common/components/AIBanner/AIBanner', () => () => (
     <div>AIBanner</div>
 ))
+jest.mock('tickets/ticket-detail/components/MessageActions', () => () => (
+    <div>Actions</div>
+))
+jest.mock('tickets/ticket-detail/components/MessageAttachments', () => ({
+    MessageAttachments: () => <div>Attachments</div>,
+}))
 jest.mock('../Body', () => () => <div>Body</div>)
-jest.mock('../Actions', () => () => <div>Actions</div>)
-jest.mock('../Attachments', () => () => <div>Attachments</div>)
 jest.mock('../Errors', () => () => <div>Errors</div>)
 jest.mock('../ReplyDetailsCard', () => () => <div>ReplyDetailsCard</div>)
 jest.mock('../SourceDetailsHeader', () => () => <div>SourceDetailsHeader</div>)

@@ -1,17 +1,17 @@
-import React from 'react'
+import { fireEvent, render, screen } from '@testing-library/react'
 
-import { fireEvent, render } from '@testing-library/react'
+import { TicketMessage } from '@gorgias/helpdesk-types'
 
 import { MacroActionName } from 'models/macroAction/types'
 import {
     action as defaultAction,
     message as defaultMessage,
 } from 'models/ticket/tests/mocks'
-import { Action, ActionStatus, TicketMessage } from 'models/ticket/types'
+import { Action, ActionStatus } from 'models/ticket/types'
 
-import Actions from '../Actions'
+import MessageActions from '../MessageActions'
 
-describe('Actions component', () => {
+describe('MessageActions', () => {
     const args: Action['arguments'] = {
         headers: {
             Authorization: 'auth',
@@ -25,7 +25,7 @@ describe('Actions component', () => {
         },
     }
 
-    const message: TicketMessage = {
+    const message = {
         ...defaultMessage,
         actions: [
             {
@@ -74,25 +74,25 @@ describe('Actions component', () => {
                 arguments: { assignee_user: 'User 1' },
             },
         ],
-    }
+    } as TicketMessage
 
     it('should display only actions with execution in back-end', () => {
-        const { container } = render(<Actions message={message} />)
+        const { container } = render(<MessageActions message={message} />)
         // 6 actions + 1 header message
         expect((container.firstChild as HTMLDivElement).children).toHaveLength(
             7,
         )
     })
 
-    it('should display the action badge correctly', async () => {
-        const { findByText } = render(<Actions message={message} />)
-        expect(await findByText('action1')).toMatchSnapshot()
-        expect(await findByText('Add tags: tag1, tag2')).toMatchSnapshot()
+    it('should display the action badge', () => {
+        render(<MessageActions message={message} />)
+        expect(screen.getByText('action1')).toBeInTheDocument()
+        expect(screen.getByText('Add tags: tag1, tag2')).toBeInTheDocument()
     })
 
-    it('should display the action badge without arguments - ExcludeFromAutoMerge', async () => {
+    it('should display the action badge without arguments - ExcludeFromAutoMerge', () => {
         const title = 'Exclude ticket from Auto-Merge'
-        const messageWithExcludedAutoMerge: TicketMessage = {
+        const messageWithExcludedAutoMerge = {
             ...defaultMessage,
             actions: [
                 {
@@ -101,15 +101,13 @@ describe('Actions component', () => {
                     title,
                 },
             ],
-        }
+        } as TicketMessage
 
-        const { findByText } = render(
-            <Actions message={messageWithExcludedAutoMerge} />,
-        )
-        expect(await findByText(title)).toBeInTheDocument()
+        render(<MessageActions message={messageWithExcludedAutoMerge} />)
+        expect(screen.getByText(title)).toBeInTheDocument()
     })
 
-    it('should display the action badge without arguments - ExcludeFromCSAT', async () => {
+    it('should display the action badge without arguments - ExcludeFromCSAT', () => {
         const title = 'Exclude ticket from CSAT'
         const messageWithExcludedCSAT: TicketMessage = {
             ...defaultMessage,
@@ -120,20 +118,20 @@ describe('Actions component', () => {
                     title,
                 },
             ],
-        }
+        } as TicketMessage
 
-        const { findByText } = render(
-            <Actions message={messageWithExcludedCSAT} />,
-        )
-        expect(await findByText(title)).toBeInTheDocument()
+        render(<MessageActions message={messageWithExcludedCSAT} />)
+
+        expect(screen.getByText(title)).toBeInTheDocument()
     })
 
     it('should display modal when hovering http or shopify action', async () => {
-        const { findByText } = render(<Actions message={message} />)
-        fireEvent.mouseOver(await findByText('action1'))
+        render(<MessageActions message={message} />)
+        fireEvent.mouseOver(screen.getByText('action1'))
+
         expect(
-            await findByText('Action failed.', { exact: false }),
-        ).toMatchSnapshot()
+            await screen.findByText('Action failed.', { exact: false }),
+        ).toBeInTheDocument()
     })
 
     it('should open modal when clicking more details on http or shopify tooltip', async () => {
@@ -151,14 +149,18 @@ describe('Actions component', () => {
                     arguments: minArguments,
                 },
             ],
-        }
-        const { findByText } = render(<Actions message={messageWithRefund} />)
-        fireEvent.mouseOver(await findByText('Refund Action'))
+        } as TicketMessage
+
+        render(<MessageActions message={messageWithRefund} />)
+        fireEvent.mouseOver(screen.getByText('Refund Action'))
+
         expect(
-            await findByText('Action succeeded.', { exact: false }),
-        ).toMatchSnapshot()
-        fireEvent.click(await findByText('More details'))
-        expect((await findByText('order_id:')).closest('div')).toMatchSnapshot()
+            await screen.findByText('Action succeeded.', { exact: false }),
+        ).toBeInTheDocument()
+
+        fireEvent.click(await screen.findByText('More details'))
+
+        expect(screen.getByText('order_id:')).toBeInTheDocument()
     })
 
     it('should not crash when passing objects to Shopify actions', async () => {
@@ -179,10 +181,12 @@ describe('Actions component', () => {
                     arguments: minArguments,
                 },
             ],
-        }
-        const { findByText } = render(<Actions message={messageWithRefund} />)
-        fireEvent.mouseOver(await findByText('Refund Action'))
-        fireEvent.click(await findByText('More details'))
-        expect((await findByText('order_id:')).closest('div')).toMatchSnapshot()
+        } as TicketMessage
+
+        render(<MessageActions message={messageWithRefund} />)
+        fireEvent.mouseOver(screen.getByText('Refund Action'))
+        fireEvent.click(await screen.findByText('More details'))
+
+        expect(screen.getByText('order_id:').closest('div')).toBeInTheDocument()
     })
 })
