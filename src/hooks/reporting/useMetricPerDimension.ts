@@ -1,5 +1,6 @@
 import { UseQueryResult } from '@tanstack/react-query'
 
+import { RequestedData } from 'hooks/reporting/types'
 import {
     TicketCustomFieldsTicketCountData,
     withBreakdown,
@@ -29,17 +30,12 @@ import { EnrichmentFields, ReportingQuery } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import { WithChildren } from 'pages/common/components/table/TableBodyRowExpandable'
 
-type Requested = {
-    isFetching: boolean
-    isError: boolean
-}
-
 export type ReportingMetricItem<TCube extends Cubes = Cubes> = Record<
     TCube['measures'][0] | TCube['dimensions'][0] | 'decile',
     string | null
 >
 
-export type MetricWithDecile<TCube extends Cubes = Cubes> = Requested & {
+export type MetricWithDecile<TCube extends Cubes = Cubes> = RequestedData & {
     data: {
         value: number | null
         decile: number | null
@@ -54,14 +50,15 @@ export type MetricWithDecileFetch = (
     agentAssigneeId?: string,
 ) => Promise<MetricWithDecile>
 
-export type MetricPerDimensionTrend<TCube extends Cubes = Cubes> = Requested & {
-    data: {
-        value: QueryReturnType<TCube>
-        prevValue: QueryReturnType<TCube>
+export type MetricPerDimensionTrend<TCube extends Cubes = Cubes> =
+    RequestedData & {
+        data: {
+            value: QueryReturnType<TCube>
+            prevValue: QueryReturnType<TCube>
+        }
     }
-}
 
-export type MetricWithBreakdown = Requested & {
+export type MetricWithBreakdown = RequestedData & {
     data: {
         allData: WithChildren<TicketCustomFieldsTicketCountData>[]
     } | null
@@ -70,7 +67,7 @@ export type MetricWithBreakdown = Requested & {
 export type MetricWithEnrichment<
     T extends string,
     ID extends string,
-> = Requested & {
+> = RequestedData & {
     data: {
         allData: (MergedRecord<
             T,
