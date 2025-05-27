@@ -26,7 +26,11 @@ interface ChannelsTabProps {
 }
 
 export default function ChannelsTab({ storeId }: ChannelsTabProps) {
-    const channels = useChannels()
+    const allChannels = useChannels()
+    const channels = allChannels.filter(
+        (channel) =>
+            !['contactForm', 'helpCenter', 'chat'].includes(channel.type),
+    )
     const { refetchMapping } = useStoreManagementState()
     const { mutateAsync: createMapping } = useCreateStoreMapping()
     const { mutateAsync: deleteMapping } = useDeleteStoreMapping()

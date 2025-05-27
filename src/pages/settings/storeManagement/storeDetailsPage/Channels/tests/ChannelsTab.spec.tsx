@@ -169,15 +169,6 @@ describe('ChannelsTab', () => {
         expect(
             screen.getByTestId('settings-feature-row-email'),
         ).toBeInTheDocument()
-        expect(
-            screen.getByTestId('settings-feature-row-chat'),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByTestId('settings-feature-row-help-center'),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByTestId('settings-feature-row-contact-form'),
-        ).toBeInTheDocument()
     })
 
     describe('Channel drawer interactions', () => {
