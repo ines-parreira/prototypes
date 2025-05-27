@@ -55,7 +55,7 @@ export default function DrawerHeader({
             return (
                 <div>
                     Choose which phone lines should be assigned to this store.
-                    Manage all integrations in
+                    Manage all integrations in{' '}
                     <Link to={'/app/settings/phone-numbers'}>
                         Voice settings.
                     </Link>{' '}
@@ -65,7 +65,7 @@ export default function DrawerHeader({
             return (
                 <div>
                     Choose which SMS should be assigned to this store. Manage
-                    all integrations in
+                    all integrations in{' '}
                     <Link to={'/app/settings/channels/sms'}>
                         SMS settings.
                     </Link>{' '}
@@ -75,7 +75,7 @@ export default function DrawerHeader({
             return (
                 <div>
                     Choose which WhatsApp numbers should be assigned to this
-                    store. Manage all integrations in
+                    store. Manage all integrations in{' '}
                     <Link to={'/app/settings/integrations/whatsapp'}>
                         WhatsApp settings.
                     </Link>{' '}
@@ -97,7 +97,7 @@ export default function DrawerHeader({
             return (
                 <div>
                     Choose which TikTok Shop accounts should be assigned to this
-                    store. Manage all accounts in
+                    store. Manage all accounts in{' '}
                     <Link
                         to={
                             '/app/settings/integrations/app/653a626236234a4ec85eca67'
