@@ -25,20 +25,7 @@ describe('messageTransformer', () => {
         const result = messageTransformer(elements)
         expect(result).toEqual([
             { type: 'event' },
-            { type: 'message', data: { meta: {} }, flags: [] },
-        ])
-    })
-
-    it('should add failed flag to failed messages', () => {
-        const elements = [
             { type: 'message', data: { meta: {} } },
-        ] as TicketElement[]
-
-        isFailedMock.mockReturnValue(true)
-
-        const result = messageTransformer(elements)
-        expect(result).toEqual([
-            { type: 'message', data: { meta: {} }, flags: ['failed'] },
         ])
     })
 })

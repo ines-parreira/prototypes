@@ -1,0 +1,38 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import '~css/new/mixins';
+
+:local {
+    .component {
+        margin-top: @layout-spacing-s;
+    }
+
+    .message {
+        max-height: 20px;
+    }
+
+    .failedActionsToggle {
+        margin-left: @layout-spacing-s;
+    }
+
+    .failedActions {
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        height: 0;
+        opacity: 0;
+        transition: all 0.1s ease-out;
+    }
+
+    .showFailedActions .failedActions {
+        padding-top: @layout-spacing-s;
+        height: auto;
+        opacity: 1;
+    }
+
+    .failedActionError {
+        margin-left: @layout-spacing-s;
+        &:not(:last-of-type) {
+            margin-bottom: 10px;
+        }
+    }
+}

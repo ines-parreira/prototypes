@@ -1,6 +1,7 @@
 import type { Transformer } from '../types'
 import { aiMessageEventsTransformer } from './aiMessageEventsTransformer'
 import { eventTransformer } from './eventTransformer'
+import { failedMessageTransformer } from './failedMessageTransformer'
 import { messageTransformer } from './messageTransformer'
 import { minimalMessageTransformer } from './minimalMessageTransformer'
 import { phoneEventTransformer } from './phoneEventTransformer'
@@ -13,4 +14,5 @@ export const transformers: Transformer[] = [
     minimalMessageTransformer,
     aiMessageEventsTransformer,
     signalMessagesTransformer,
+    failedMessageTransformer,
 ]

@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react'
 
-import type { TicketMessageElement } from '../../types'
+import type { FailedFlag, TicketMessageElement } from '../../types'
 import { MessageBody } from '../MessageBody'
 import { MessageContent } from '../MessageContent'
+import { MessageError } from '../MessageError'
 import { TicketMessage } from '../TicketMessage'
 
 jest.mock('../MessageContent', () => ({
@@ -13,12 +14,15 @@ jest.mock('../MessageBody', () => ({
     MessageBody: jest.fn(({ children }) => <div>body {children}</div>),
 }))
 
+jest.mock('../MessageError', () => ({
+    MessageError: jest.fn(() => <div>MessageError</div>),
+}))
+
 describe('TicketMessage', () => {
     const mockedElement = {
         data: {
             id: 123,
         },
-        flags: ['failed'],
         datetime: '2024-01-13T14:08:53Z',
         type: 'message',
     } as TicketMessageElement
@@ -30,7 +34,7 @@ describe('TicketMessage', () => {
             expect(MessageContent).toHaveBeenCalledWith(
                 {
                     message: mockedElement.data,
-                    isFailed: true,
+                    isFailed: false,
                 },
                 expect.anything(),
             )
@@ -117,6 +121,40 @@ describe('TicketMessage', () => {
             const messageBody = screen.getByText(/body/i)
             expect(messageBody).toBeInTheDocument()
             expect(messageBody).toHaveTextContent('MessageContent')
+        })
+    })
+
+    describe('MessageError', () => {
+        it('should call MessageError with correct props when error flag is present', () => {
+            const error = { message: 'Test error', failedActions: [] }
+            const elementWithError = {
+                ...mockedElement,
+                flags: [['failed', error] as FailedFlag],
+            }
+            render(<TicketMessage element={elementWithError} />)
+
+            expect(MessageError).toHaveBeenCalledWith(
+                {
+                    error,
+                },
+                expect.anything(),
+            )
+        })
+
+        it('should not call MessageError when no error flag is present', () => {
+            render(<TicketMessage element={mockedElement} />)
+
+            expect(MessageError).not.toHaveBeenCalled()
+        })
+
+        it('should not call MessageError when flags are undefined', () => {
+            render(
+                <TicketMessage
+                    element={{ ...mockedElement, flags: undefined }}
+                />,
+            )
+
+            expect(MessageError).not.toHaveBeenCalled()
         })
     })
 })
