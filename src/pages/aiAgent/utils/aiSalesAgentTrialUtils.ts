@@ -28,7 +28,11 @@ export const getStoresEligibleForTrial = (
 }
 
 export const isStoreEligibleForTrial = (storeActivation: StoreActivation) => {
-    return !storeActivation.support.chat.isIntegrationMissing
+    return (
+        !storeActivation.support.chat.isIntegrationMissing &&
+        getAiSalesAgentTrialState(storeActivation.configuration) ===
+            TrialState.NotTrial
+    )
 }
 
 export const getAiSalesAgentTrialState = (
