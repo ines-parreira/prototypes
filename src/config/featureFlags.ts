@@ -28,6 +28,7 @@ export enum FeatureFlagKey {
     AiAgentUseNewAgenticArchitecture = 'ai-agent-use-new-agentic-architecture',
     AiAgentUsesStoreConfigurationCustomFields = 'ai-agent-uses-store-configuration-custom-fields',
     AIAgentWelcomePage = 'ai-agent-welcome-page',
+    AiJourneyAvailable = 'ai-journey-available',
     AiSalesAgentActivationEmailSettings = 'linear.project_ai-sales-agent-email-settings',
     AiSalesAgentBeta = 'ai-sales-agent-beta',
     AiSalesAgentBypassPlanCheck = 'ai-sales-agent-bypass-plan-check',
