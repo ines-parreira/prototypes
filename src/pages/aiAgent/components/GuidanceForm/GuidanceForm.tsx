@@ -322,7 +322,7 @@ export const GuidanceForm = ({
                                             name: 'shopify',
                                             variables: [
                                                 {
-                                                    name: 'Country name',
+                                                    name: 'Shipping address - Country',
                                                     value: 'customer.country',
                                                     category: 'customer',
                                                 },
@@ -334,7 +334,7 @@ export const GuidanceForm = ({
                                         “If{' '}
                                         <GuidanceVariableTag value="customer.country">
                                             <span className={css.variable}>
-                                                Country name
+                                                Shipping address - Country
                                             </span>
                                         </GuidanceVariableTag>{' '}
                                         is from Canada or Australia, let them
@@ -352,15 +352,6 @@ export const GuidanceForm = ({
                                 </b>
                             </i>
                         )}
-                    </p>
-                    <p>
-                        Instructions can also be general:{' '}
-                        <i>
-                            <b>
-                                “Always end by asking if they need more help, no
-                                matter what they asked.”
-                            </b>
-                        </i>
                     </p>
                     <p>
                         Instructions can also be general:{' '}
