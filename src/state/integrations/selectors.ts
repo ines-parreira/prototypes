@@ -11,6 +11,7 @@ import {
 } from 'models/integration/constants'
 import {
     AppIntegration,
+    GorgiasChatIntegration,
     Integration,
     IntegrationFromType,
     IntegrationType,
@@ -82,6 +83,17 @@ export const getIntegrations = createSelector(
     getIntegrationsState,
     (state) => state.integrations,
 )
+
+export const getGorgiasChatIntegrationsByStoreName = (storeName: string) =>
+    createSelector(
+        getIntegrationsByType<GorgiasChatIntegration>(
+            IntegrationType.GorgiasChat,
+        ),
+        (storeIntegrations: GorgiasChatIntegration[]) =>
+            storeIntegrations.find(
+                (integration) => integration.meta.shop_name === storeName,
+            ),
+    )
 
 export const getIntegrationsCountPerType = createSelector(
     getIntegrations,

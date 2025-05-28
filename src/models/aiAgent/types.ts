@@ -167,6 +167,7 @@ export type FloatingChatInputConfiguration = {
     id?: number
     isEnabled?: boolean
     isDesktopOnly?: boolean
+    needHelpText?: string
 }
 
 export type CreateWizardPayload = Pick<Wizard, 'stepName' | 'stepData'>

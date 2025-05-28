@@ -3,6 +3,7 @@ import React from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, waitFor, within } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
+import { fromJS } from 'immutable'
 import { ldClientMock } from 'jest-launchdarkly-mock'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { act } from 'react-dom/test-utils'
@@ -11,6 +12,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { integrationsState } from 'fixtures/integrations'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
@@ -24,7 +26,8 @@ import { renderWithRouter } from 'utils/testing'
 import { CustomerEngagementSettings } from '../CustomerEngagementSettings'
 
 const queryClient = mockQueryClient()
-const mockStore = configureMockStore([thunk])()
+const mockStore = configureMockStore([thunk])
+const store = mockStore({ integrations: fromJS(integrationsState) })
 
 let history = createMemoryHistory({
     initialEntries: ['/shopify/test-store/customer-engagement'],
@@ -32,7 +35,7 @@ let history = createMemoryHistory({
 
 const renderComponent = () =>
     renderWithRouter(
-        <Provider store={mockStore}>
+        <Provider store={store}>
             <QueryClientProvider client={queryClient}>
                 <CustomerEngagementSettings />
             </QueryClientProvider>
@@ -51,7 +54,13 @@ const newStoreConfig = {
     ...storeConfiguration,
     isConversationStartersEnabled: true,
 }
-
+jest.mock('state/integrations/actions', () => {
+    return {
+        getTranslations: jest.fn().mockResolvedValue({}),
+        getApplicationTexts: jest.fn().mockResolvedValue({}),
+        updateApplicationTexts: jest.fn().mockResolvedValue({}),
+    }
+})
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
 jest.mock('pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor')
 jest.mock(
@@ -77,6 +86,27 @@ jest.mock('pages/settings/helpCenter/hooks/useStoreIntegrationByShopName')
 jest.mock(
     'pages/aiAgent/components/AiShoppingAssistantExpireBanner/AiShoppingAssistantExpireBanner',
     () => () => <div>AI-Shopping-Assistant-Expire-Banner</div>,
+)
+jest.mock(
+    'pages/aiAgent/components/CustomerEngagementSettings/hooks/useTexts',
+    () => ({
+        useTexts: () => ({
+            texts: {
+                'en-US': {
+                    texts: {},
+                    sspTexts: {},
+                    meta: {},
+                },
+            },
+            translations: {
+                texts: {},
+                sspTexts: {},
+                meta: {},
+            },
+            isLoading: false,
+            error: null,
+        }),
+    }),
 )
 
 const mockUseGetChatIntegrationColor = jest.mocked(
@@ -135,7 +165,7 @@ const click = (element: HTMLElement) => fireEvent(element, getClickEvent())
 
 describe('CustomerEngagementSettings', () => {
     beforeEach(() => {
-        mockStore.clearActions()
+        store.clearActions()
         jest.clearAllMocks()
 
         history = createMemoryHistory({
@@ -208,6 +238,7 @@ describe('CustomerEngagementSettings', () => {
                     floatingChatInputConfiguration: {
                         isEnabled: false,
                         isDesktopOnly: false,
+                        needHelpText: '',
                     },
                 })
             })
@@ -227,7 +258,7 @@ describe('CustomerEngagementSettings', () => {
             click(saveButton)
 
             await waitFor(() => {
-                expect(mockStore.getActions()).toMatchObject([
+                expect(store.getActions()).toMatchObject([
                     {
                         payload: {
                             message: CHANGES_SAVED_SUCCESS,
@@ -285,7 +316,7 @@ describe('CustomerEngagementSettings', () => {
             click(getSaveButton(result))
 
             await waitFor(() => {
-                expect(mockStore.getActions()).toMatchObject([
+                expect(store.getActions()).toMatchObject([
                     {
                         payload: {
                             status: NotificationStatus.Error,

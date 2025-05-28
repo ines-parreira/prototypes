@@ -20,7 +20,7 @@ type Props = {
     keyName: string
     defaultValue: string
     isRequired: boolean
-    isRichText: boolean
+    isRichText?: boolean
     saveValue: (key: string, value: string) => void
     focus?: boolean
     trackInputMethod?: (key: string) => void
@@ -32,7 +32,7 @@ const GorgiasTranslateInputField = ({
     keyName,
     defaultValue,
     isRequired,
-    isRichText,
+    isRichText = false,
     saveValue,
     focus = false,
     trackInputMethod,
@@ -71,9 +71,9 @@ const GorgiasTranslateInputField = ({
     }
 
     // Synced with https://github.com/gorgias/gorgias-chat/blob/main/packages/api/src/endpoints/applications/applicationSchemas.ts#L542
-    const strippedValue = value.replace(/<[^>]*>?/gm, '')
+    const strippedValue = value?.replace(/<[^>]*>?/gm, '')
 
-    const hasError = strippedValue.length > maxLength
+    const hasError = strippedValue?.length > maxLength
 
     return (
         <Container fluid className={css.inputContainer}>

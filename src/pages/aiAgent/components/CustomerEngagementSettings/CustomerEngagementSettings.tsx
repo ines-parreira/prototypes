@@ -1,7 +1,8 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFlags } from 'launchdarkly-react-client-sdk'
+import { get } from 'lodash'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router'
 import { z } from 'zod'
@@ -9,11 +10,15 @@ import { z } from 'zod'
 import { Box, Button } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { getPrimaryLanguageFromChatConfig } from 'config/integrations/gorgias_chat'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
+import * as IntegrationsActions from 'state/integrations/actions'
+import { getGorgiasChatIntegrationsByStoreName } from 'state/integrations/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -21,6 +26,7 @@ import AiShoppingAssistantExpireBanner from '../AiShoppingAssistantExpireBanner'
 import { ConversationLauncherSettings } from './ConversationLauncherSettings'
 import { ConversationStartersSettings } from './ConversationStartersSettings'
 import { useGmvUsdOver30Days } from './hooks/useGmvUsdOver30Days'
+import { useTexts } from './hooks/useTexts'
 import { TriggerOnSearchSettings } from './TriggerOnSearchSettings'
 
 import css from './CustomerEngagementSettings.less'
@@ -30,6 +36,7 @@ const customerEngagementSchema = z.object({
     isFloatingInputEnabled: z.boolean(),
     isFloatingInputDesktopOnly: z.boolean(),
     isSalesHelpOnSearchEnabled: z.boolean(),
+    needHelpText: z.string(),
 })
 
 type CustomerEngagementData = z.infer<typeof customerEngagementSchema>
@@ -39,6 +46,23 @@ export const CustomerEngagementSettings = () => {
     const { storeConfiguration, updateStoreConfiguration } =
         useAiAgentStoreConfigurationContext()
 
+    const { shopName } = useParams<{
+        shopName: string
+    }>()
+
+    const gorgiasChatIntegrations = useAppSelector(
+        getGorgiasChatIntegrationsByStoreName(shopName),
+    )
+
+    const appId = useMemo(
+        () => gorgiasChatIntegrations?.meta.app_id || '',
+        [gorgiasChatIntegrations?.meta.app_id],
+    )
+
+    const primaryLanguage = getPrimaryLanguageFromChatConfig(
+        gorgiasChatIntegrations?.meta,
+    )
+
     const flags = useFlags()
     const isConversationStartersFeatureEnabled =
         flags[FeatureFlagKey.ConversationStarters]
@@ -47,6 +71,19 @@ export const CustomerEngagementSettings = () => {
         flags[FeatureFlagKey.ConvertFloatingChatInput]
     const isTriggerOnSearchEnabled =
         !!flags[FeatureFlagKey.AiSalesAgentHelpOnSearchTemplateQuery]
+
+    const shouldFetchTexts =
+        storeConfiguration?.monitoredChatIntegrations.length === 1
+
+    const { texts, translations } = useTexts({
+        appId,
+        primaryLanguage,
+        shouldFetch: shouldFetchTexts,
+    })
+
+    const primaryLanguageTexts = texts[primaryLanguage as keyof typeof texts]
+    const needHelpTextInitialValue =
+        get(primaryLanguageTexts, 'sspTexts.needHelp') || ''
 
     const methods = useForm<CustomerEngagementData>({
         values: {
@@ -58,6 +95,7 @@ export const CustomerEngagementSettings = () => {
             isFloatingInputDesktopOnly:
                 storeConfiguration?.floatingChatInputConfiguration
                     ?.isDesktopOnly ?? false,
+            needHelpText: needHelpTextInitialValue ?? '',
             isSalesHelpOnSearchEnabled:
                 storeConfiguration?.isSalesHelpOnSearchEnabled ?? false,
         },
@@ -83,10 +121,32 @@ export const CustomerEngagementSettings = () => {
                             ...storeConfiguration?.floatingChatInputConfiguration,
                             isEnabled: data.isFloatingInputEnabled,
                             isDesktopOnly: data.isFloatingInputDesktopOnly,
+                            needHelpText: data.needHelpText,
                         },
                         isSalesHelpOnSearchEnabled:
                             data.isSalesHelpOnSearchEnabled,
                     })
+
+                    const primaryLanguageTexts =
+                        texts[primaryLanguage as keyof typeof texts]
+
+                    const mergedData = {
+                        ...texts,
+                        [primaryLanguage]: {
+                            ...primaryLanguageTexts,
+                            sspTexts: {
+                                ...primaryLanguageTexts.sspTexts,
+                                needHelp: data.needHelpText,
+                            },
+                        },
+                    }
+
+                    await IntegrationsActions.updateApplicationTexts(
+                        appId,
+                        mergedData,
+                    )
+
+                    reset(data, { keepDirty: false })
 
                     void dispatch(
                         notify({
@@ -105,12 +165,17 @@ export const CustomerEngagementSettings = () => {
                 }
             }
         },
-        [updateStoreConfiguration, storeConfiguration, dispatch],
+        [
+            updateStoreConfiguration,
+            storeConfiguration,
+            dispatch,
+            texts,
+            primaryLanguage,
+            appId,
+            reset,
+        ],
     )
 
-    const { shopName } = useParams<{
-        shopName: string
-    }>()
     const storeIntegration = useStoreIntegrationByShopName(shopName)
     const { data: gmv, isLoading: isGmvLoading } = useGmvUsdOver30Days(
         storeIntegration?.id,
@@ -154,6 +219,8 @@ export const CustomerEngagementSettings = () => {
                         <ConversationLauncherSettings
                             gmv={gmv}
                             isGmvLoading={isGmvLoading}
+                            primaryLanguage={primaryLanguage}
+                            translations={translations}
                         />
                     )}
                     <Box className={css.saveButtonWrapper}>

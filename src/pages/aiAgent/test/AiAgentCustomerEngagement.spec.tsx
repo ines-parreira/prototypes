@@ -26,6 +26,34 @@ jest.mock(
     'pages/aiAgent/components/AiShoppingAssistantExpireBanner/AiShoppingAssistantExpireBanner',
     () => () => <div>AI-Shopping-Assistant-Expire-Banner</div>,
 )
+jest.mock('state/integrations/actions', () => {
+    return {
+        getTranslations: jest.fn().mockResolvedValue({}),
+        getApplicationTexts: jest.fn().mockResolvedValue({}),
+        updateApplicationTexts: jest.fn().mockResolvedValue({}),
+    }
+})
+jest.mock(
+    'pages/aiAgent/components/CustomerEngagementSettings/hooks/useTexts',
+    () => ({
+        useTexts: () => ({
+            texts: {
+                'en-US': {
+                    texts: {},
+                    sspTexts: {},
+                    meta: {},
+                },
+            },
+            translations: {
+                texts: {},
+                sspTexts: {},
+                meta: {},
+            },
+            isLoading: false,
+            error: null,
+        }),
+    }),
+)
 
 const mockUseGetChatIntegrationColor = jest.mocked(
     chatColorHook.useGetChatIntegrationColor,
