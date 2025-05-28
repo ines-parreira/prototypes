@@ -13,7 +13,7 @@ export const usePollStoreDomainIngestionLog = ({
     helpCenterId: number
     shopName: string
     storeUrl: string | null
-    onStatusChange?: (status: string | null) => void
+    onStatusChange: (status: string | null) => void
 }) => {
     const { status, isGetIngestionLogsLoading: isFetchLoading } =
         useGetStoreDomainIngestionLog({
@@ -29,7 +29,7 @@ export const usePollStoreDomainIngestionLog = ({
     useEffect(() => {
         // reset the status when the storeUrl changes
         previousStatusRef.current = null
-        onStatusChange?.(null)
+        onStatusChange(null)
     }, [storeUrl, onStatusChange])
 
     useEffect(() => {
@@ -38,7 +38,7 @@ export const usePollStoreDomainIngestionLog = ({
         // initially set the status only if the status is pending
         if (status === IngestionLogStatus.Pending) {
             previousStatusRef.current = status
-            onStatusChange?.(status)
+            onStatusChange(status)
         }
 
         // if the status is initially not pending, we don't want to set it
@@ -49,7 +49,7 @@ export const usePollStoreDomainIngestionLog = ({
             previousStatusRef.current = status
 
             if (status !== IngestionLogStatus.Pending) {
-                onStatusChange?.(status)
+                onStatusChange(status)
                 resetAllBanner()
             }
         }

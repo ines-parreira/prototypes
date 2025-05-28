@@ -11,16 +11,21 @@ import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import { IngestionType } from '../AiAgentScrapedDomainContent/constant'
+import {
+    IngestionLogStatus,
+    IngestionType,
+} from '../AiAgentScrapedDomainContent/constant'
 import { useGetStoreDomainIngestionLog } from './useGetStoreDomainIngestionLog'
 import { useIngestionLogMutation } from './useIngestionLogMutation'
 
 export const useSyncStoreDomain = ({
     helpCenterId,
     shopName,
+    onStatusChange,
 }: {
     helpCenterId: number
     shopName: string
+    onStatusChange: (status: string | null) => void
 }) => {
     const dispatch = useAppDispatch()
     const storeIntegration: ShopifyIntegration = useAppSelector(
@@ -50,6 +55,7 @@ export const useSyncStoreDomain = ({
 
         try {
             startIngestion({ url: storeUrl, type: IngestionType.Domain })
+            onStatusChange(IngestionLogStatus.Pending)
         } catch {
             void dispatch(
                 notify({
@@ -59,7 +65,7 @@ export const useSyncStoreDomain = ({
                 }),
             )
         }
-    }, [dispatch, startIngestion, storeUrl])
+    }, [dispatch, startIngestion, storeUrl, onStatusChange])
 
     const handleTriggerSync = useCallback(() => {
         if (storeDomainIngestionLog) {

@@ -226,6 +226,9 @@ export const AiAgentKnowledgeContainer = () => {
                                                 helpCenterId={
                                                     snippetHelpCenter.id
                                                 }
+                                                syncStoreDomainStatus={
+                                                    syncStoreDomainStatus
+                                                }
                                                 onStatusChange={
                                                     setSyncStoreDomainStatus
                                                 }

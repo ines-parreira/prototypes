@@ -40,7 +40,11 @@ const AiAgentScrapedDomainQuestionsView = ({
         handleTriggerSync,
         handleOnSync,
         handleOnCancel,
-    } = useSyncStoreDomain({ helpCenterId, shopName })
+    } = useSyncStoreDomain({
+        helpCenterId,
+        shopName,
+        onStatusChange: setSyncStoreDomainStatus,
+    })
 
     const { syncIsPending } = usePollStoreDomainIngestionLog({
         helpCenterId,
@@ -88,6 +92,8 @@ const AiAgentScrapedDomainQuestionsView = ({
     const isDataLoading =
         isFetchLoading ||
         (!!storeDomainIngestionLog && isListIngestedResourceLoading)
+    const isSyncPending =
+        syncIsPending || syncStoreDomainStatus === IngestionLogStatus.Pending
 
     const { data: articleData, isInitialLoading: isFetchingArticleLoading } =
         useGetHelpCenterArticle(
@@ -113,7 +119,7 @@ const AiAgentScrapedDomainQuestionsView = ({
             <ScrapedDomainContentView<IngestedResourceWithArticleId>
                 searchValue={searchTerm}
                 onSearch={setSearchTerm}
-                isLoading={isDataLoading || syncIsPending}
+                isLoading={isDataLoading || isSyncPending}
                 contents={paginatedQuestions}
                 onSelect={handleOnSelect}
                 pageType={CONTENT_TYPE.QUESTION}

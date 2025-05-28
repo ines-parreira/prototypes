@@ -36,6 +36,7 @@ describe('usePollStoreDomainIngestionLog', () => {
                 helpCenterId: 1,
                 storeUrl: mockedStoreUrl,
                 shopName: mockedStoreName,
+                onStatusChange: mockedOnStatusChange,
             }),
         )
 
@@ -60,6 +61,7 @@ describe('usePollStoreDomainIngestionLog', () => {
                 helpCenterId: 1,
                 storeUrl: mockedStoreUrl,
                 shopName: mockedStoreName,
+                onStatusChange: mockedOnStatusChange,
             }),
         )
 

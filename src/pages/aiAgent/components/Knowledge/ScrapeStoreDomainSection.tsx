@@ -1,6 +1,7 @@
 import { Button, Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useId from 'hooks/useId'
+import { IngestionLogStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import SyncDomainConfirmationModal from 'pages/aiAgent/AiAgentScrapedDomainContent/SyncDomainConfirmationModal'
 import {
     getFormattedSyncDate,
@@ -19,12 +20,14 @@ import css from './ScrapeStoreDomainSection.less'
 type Props = {
     shopName: string
     helpCenterId: number
+    syncStoreDomainStatus: string | null
     onStatusChange: (status: string | null) => void
 }
 
 export const ScrapeStoreDomainSection = ({
     shopName,
     helpCenterId,
+    syncStoreDomainStatus,
     onStatusChange,
 }: Props) => {
     const id = useId()
@@ -45,7 +48,7 @@ export const ScrapeStoreDomainSection = ({
         handleTriggerSync,
         handleOnSync,
         handleOnCancel,
-    } = useSyncStoreDomain({ helpCenterId, shopName })
+    } = useSyncStoreDomain({ helpCenterId, shopName, onStatusChange })
 
     const { syncIsPending } = usePollStoreDomainIngestionLog({
         helpCenterId,
@@ -53,6 +56,9 @@ export const ScrapeStoreDomainSection = ({
         storeUrl,
         onStatusChange,
     })
+
+    const isSyncPending =
+        syncStoreDomainStatus === IngestionLogStatus.Pending || syncIsPending
 
     const latestSync = storeDomainIngestionLog?.latest_sync
     const syncDateString = getFormattedSyncDate(latestSync)
@@ -70,8 +76,9 @@ export const ScrapeStoreDomainSection = ({
             <div className={css.label}>
                 <Label>Store website</Label>
                 <span>
-                    Allow AI Agent to use knowledge content and product
-                    information from your store website.
+                    Use your website’s content and product pages as knowledge
+                    for AI Agent. Re-sync when your site is updated to ensure
+                    accurate responses.
                 </span>
             </div>
             <div className={css.storeDomain}>
@@ -101,7 +108,7 @@ export const ScrapeStoreDomainSection = ({
                             fillStyle="ghost"
                             onClick={handleTriggerSync}
                             leadingIcon="sync"
-                            isLoading={syncIsPending}
+                            isLoading={isSyncPending}
                             isDisabled={
                                 !storeDomain ||
                                 isFetchLoading ||

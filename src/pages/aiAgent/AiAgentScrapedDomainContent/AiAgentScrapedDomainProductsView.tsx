@@ -43,7 +43,11 @@ const AiAgentScrapedDomainProductsView = ({
         handleTriggerSync,
         handleOnSync,
         handleOnCancel,
-    } = useSyncStoreDomain({ helpCenterId, shopName })
+    } = useSyncStoreDomain({
+        helpCenterId,
+        shopName,
+        onStatusChange: setSyncStoreDomainStatus,
+    })
 
     const { syncIsPending } = usePollStoreDomainIngestionLog({
         helpCenterId,
@@ -86,6 +90,8 @@ const AiAgentScrapedDomainProductsView = ({
     })
 
     const isDataLoading = isFetchLoading || isLoading
+    const isSyncPending =
+        syncIsPending || syncStoreDomainStatus === IngestionLogStatus.Pending
 
     const { data: ecommerceProduct, isLoading: isLoadingEcommerceProduct } =
         useGetEcommerceItemByExternalId(
@@ -119,7 +125,7 @@ const AiAgentScrapedDomainProductsView = ({
             <ScrapedDomainContentView<ProductWithAiAgentStatus>
                 searchValue={searchTerm}
                 onSearch={setSearchTerm}
-                isLoading={isDataLoading || syncIsPending}
+                isLoading={isDataLoading || isSyncPending}
                 contents={paginatedProducts}
                 pageType={CONTENT_TYPE.PRODUCT}
                 onSelect={handleOnSelect}

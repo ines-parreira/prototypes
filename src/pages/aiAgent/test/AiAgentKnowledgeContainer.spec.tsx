@@ -411,7 +411,7 @@ describe('AiAgentKnowledgeContainer', () => {
         expect(screen.getByText('Store website')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Allow AI Agent to use knowledge content and product information from your store website.',
+                'Use your website’s content and product pages as knowledge for AI Agent. Re-sync when your site is updated to ensure accurate responses.',
             ),
         ).toBeInTheDocument()
         expect(screen.getByText('Sync')).toBeInTheDocument()

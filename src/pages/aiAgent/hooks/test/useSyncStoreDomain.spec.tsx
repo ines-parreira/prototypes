@@ -31,6 +31,7 @@ const mockedStoreDomainIngestionLog = getIngestionLogFixture({
     url: `https://${mockedShopName}.myshopify.com`,
 })
 const mockedStartIngestion = jest.fn()
+const mockedOnStatusChange = jest.fn()
 
 jest.mock('state/notifications/actions')
 
@@ -78,7 +79,11 @@ describe('useSyncStoreDomain', () => {
     it('returns the expected values', () => {
         const { result } = renderHook(
             () =>
-                useSyncStoreDomain({ helpCenterId: 1, shopName: 'test-shop' }),
+                useSyncStoreDomain({
+                    helpCenterId: 1,
+                    shopName: 'test-shop',
+                    onStatusChange: mockedOnStatusChange,
+                }),
             {
                 wrapper: ({ children }) => (
                     <Provider store={mockStore}>{children}</Provider>
@@ -105,7 +110,11 @@ describe('useSyncStoreDomain', () => {
     it('should call startIngestion when handleOnSync is called', () => {
         const { result } = renderHook(
             () =>
-                useSyncStoreDomain({ helpCenterId: 1, shopName: 'test-shop' }),
+                useSyncStoreDomain({
+                    helpCenterId: 1,
+                    shopName: 'test-shop',
+                    onStatusChange: mockedOnStatusChange,
+                }),
             {
                 wrapper: ({ children }) => (
                     <Provider store={mockStore}>{children}</Provider>
@@ -124,7 +133,11 @@ describe('useSyncStoreDomain', () => {
     it('shoudl set syncTriggered to false when handleOnCancel is called', () => {
         const { result } = renderHook(
             () =>
-                useSyncStoreDomain({ helpCenterId: 1, shopName: 'test-shop' }),
+                useSyncStoreDomain({
+                    helpCenterId: 1,
+                    shopName: 'test-shop',
+                    onStatusChange: mockedOnStatusChange,
+                }),
             {
                 wrapper: ({ children }) => (
                     <Provider store={mockStore}>{children}</Provider>
@@ -140,7 +153,11 @@ describe('useSyncStoreDomain', () => {
     it('should set syncTriggered to true when handleTriggerSync is called and storeDomainIngestionLog is exist', () => {
         const { result } = renderHook(
             () =>
-                useSyncStoreDomain({ helpCenterId: 1, shopName: 'test-shop' }),
+                useSyncStoreDomain({
+                    helpCenterId: 1,
+                    shopName: 'test-shop',
+                    onStatusChange: mockedOnStatusChange,
+                }),
             {
                 wrapper: ({ children }) => (
                     <Provider store={mockStore}>{children}</Provider>
@@ -162,7 +179,11 @@ describe('useSyncStoreDomain', () => {
 
         const { result } = renderHook(
             () =>
-                useSyncStoreDomain({ helpCenterId: 1, shopName: 'test-shop' }),
+                useSyncStoreDomain({
+                    helpCenterId: 1,
+                    shopName: 'test-shop',
+                    onStatusChange: mockedOnStatusChange,
+                }),
             {
                 wrapper: ({ children }) => (
                     <Provider store={mockStore}>{children}</Provider>
@@ -181,7 +202,11 @@ describe('useSyncStoreDomain', () => {
     it('should set syncTriggered to false when handleOnSync is called', () => {
         const { result } = renderHook(
             () =>
-                useSyncStoreDomain({ helpCenterId: 1, shopName: 'test-shop' }),
+                useSyncStoreDomain({
+                    helpCenterId: 1,
+                    shopName: 'test-shop',
+                    onStatusChange: mockedOnStatusChange,
+                }),
             {
                 wrapper: ({ children }) => (
                     <Provider store={mockStore}>{children}</Provider>
@@ -201,7 +226,11 @@ describe('useSyncStoreDomain', () => {
 
         const { result } = renderHook(
             () =>
-                useSyncStoreDomain({ helpCenterId: 1, shopName: 'test-shop' }),
+                useSyncStoreDomain({
+                    helpCenterId: 1,
+                    shopName: 'test-shop',
+                    onStatusChange: mockedOnStatusChange,
+                }),
             {
                 wrapper: ({ children }) => (
                     <Provider store={mockStore}>{children}</Provider>
