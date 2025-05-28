@@ -93,18 +93,21 @@ export const CurrentlyViewingDropdown = <T extends SelfServiceChannel>({
                 channels: channels.filter(
                     (channel) => channel.type === TicketChannel.Chat,
                 ),
+                link: '/app/settings/channels/gorgias_chat',
             },
             {
                 label: 'Help Center',
                 channels: channels.filter(
                     (channel) => channel.type === TicketChannel.HelpCenter,
                 ),
+                link: '/app/settings/help-center',
             },
             {
                 label: 'Contact Form',
                 channels: channels.filter(
                     (channel) => channel.type === TicketChannel.ContactForm,
                 ),
+                link: '/app/settings/contact-form',
             },
         ],
         [channels],
@@ -190,7 +193,7 @@ export const CurrentlyViewingDropdown = <T extends SelfServiceChannel>({
                                     ))}
                                     {channelGroup.channels.length === 0 && (
                                         <Link
-                                            to={link}
+                                            to={channelGroup.link}
                                             className={css.dropdownGroupLink}
                                         >
                                             Go to {channelGroup.label}
