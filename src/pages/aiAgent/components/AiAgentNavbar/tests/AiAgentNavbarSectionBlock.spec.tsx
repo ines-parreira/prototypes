@@ -10,6 +10,23 @@ import thunk from 'redux-thunk'
 
 import { appQueryClient } from 'api/queryClient'
 import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { shopifyIntegration } from 'fixtures/integrations'
+import {
+    advancedMonthlyAutomatePlan,
+    advancedYearlyAutomatePlan,
+    automate02MonthlyMeteredPlan,
+    AUTOMATION_PRODUCT_ID,
+    basicMonthlyAutomationPlan,
+    basicMonthlyHelpdeskPlan,
+    basicYearlyAutomationPlan,
+    firstTierMonthlyAutomationPlan,
+    HELPDESK_PRODUCT_ID,
+    proMonthlyAutomationPlan,
+    proYearlyAutomationPlan,
+} from 'fixtures/productPrices'
+import { statsFilters } from 'fixtures/stats'
+import { ProductType } from 'models/billing/types'
 import { IntegrationType } from 'models/integration/constants'
 import { ShopType } from 'models/selfServiceConfiguration/types'
 import { AiAgentNavbarSectionBlock } from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbarSectionBlock'
@@ -25,6 +42,7 @@ import {
     TrialState,
 } from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import { fromLegacyStatsFilters } from 'state/stats/utils'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
@@ -63,6 +81,9 @@ const defaultState = {
             },
         ],
     }),
+    billing: fromJS({
+        products: [],
+    }),
     entities: {
         helpCenter: {
             helpCenters: {
@@ -83,9 +104,9 @@ const defaultProps = {
     isExpanded: true,
 }
 
-const renderComponent = () => {
+const renderComponent = (store = defaultState) => {
     const { container } = renderWithRouter(
-        <Provider store={mockStore(defaultState)}>
+        <Provider store={mockStore(store)}>
             <QueryClientProvider client={appQueryClient}>
                 <AiAgentNavbarSectionBlock {...defaultProps} />
             </QueryClientProvider>
@@ -199,9 +220,101 @@ describe('AiAgentNavbarSectionBlock', () => {
         })
         mockGetAiAgentTrialState.mockReturnValue(TrialState.Trial)
 
-        renderComponent()
+        const store: any = {
+            currentAccount: fromJS({
+                ...account,
+                current_subscription: {
+                    ...account.current_subscription,
+                    products: {
+                        [HELPDESK_PRODUCT_ID]:
+                            basicMonthlyHelpdeskPlan.price_id,
+                        [AUTOMATION_PRODUCT_ID]:
+                            automate02MonthlyMeteredPlan.price_id,
+                    },
+                    status: 'active',
+                },
+            }),
+            billing: fromJS({
+                ...billingState,
+                products: [
+                    {
+                        id: AUTOMATION_PRODUCT_ID,
+                        type: ProductType.Automation,
+                        prices: [
+                            basicMonthlyAutomationPlan,
+                            basicYearlyAutomationPlan,
+                            proMonthlyAutomationPlan,
+                            proYearlyAutomationPlan,
+                            advancedMonthlyAutomatePlan,
+                            advancedYearlyAutomatePlan,
+                            firstTierMonthlyAutomationPlan,
+                            automate02MonthlyMeteredPlan,
+                            firstTierMonthlyAutomationPlan,
+                        ],
+                    },
+                ],
+            }),
+            integrations: fromJS([shopifyIntegration]),
+            stats: { filters: fromLegacyStatsFilters(statsFilters) },
+        }
+        renderComponent(store)
 
         expect(screen.getByText('Shopping Assistant')).toBeInTheDocument()
         expect(screen.getByText('TRIAL')).toBeInTheDocument()
+    })
+
+    test('does not render TRIAL badge for Sales item when on USD-6 plan', () => {
+        mockUseAiAgentNavigation.mockReturnValue({
+            // @ts-ignore We don't test this part
+            routes: { main: '/main' },
+            navigationItems: [
+                { route: '/route1', title: 'Route 1' },
+                { route: '/route2', title: 'Route 2' },
+                { route: '/route3', title: 'Shopping Assistant' },
+            ],
+        })
+        mockGetAiAgentTrialState.mockReturnValue(TrialState.Trial)
+
+        const store: any = {
+            currentAccount: fromJS({
+                ...account,
+                current_subscription: {
+                    ...account.current_subscription,
+                    products: {
+                        [HELPDESK_PRODUCT_ID]:
+                            basicMonthlyHelpdeskPlan.price_id,
+                        [AUTOMATION_PRODUCT_ID]:
+                            firstTierMonthlyAutomationPlan.price_id,
+                    },
+                    status: 'active',
+                },
+            }),
+            billing: fromJS({
+                ...billingState,
+                products: [
+                    {
+                        id: AUTOMATION_PRODUCT_ID,
+                        type: ProductType.Automation,
+                        prices: [
+                            basicMonthlyAutomationPlan,
+                            basicYearlyAutomationPlan,
+                            proMonthlyAutomationPlan,
+                            proYearlyAutomationPlan,
+                            advancedMonthlyAutomatePlan,
+                            advancedYearlyAutomatePlan,
+                            firstTierMonthlyAutomationPlan,
+                            automate02MonthlyMeteredPlan,
+                            firstTierMonthlyAutomationPlan,
+                        ],
+                    },
+                ],
+            }),
+            integrations: fromJS([shopifyIntegration]),
+            stats: { filters: fromLegacyStatsFilters(statsFilters) },
+        }
+        renderComponent(store)
+
+        expect(screen.getByText('Shopping Assistant')).toBeInTheDocument()
+        expect(screen.queryByText('TRIAL')).not.toBeInTheDocument()
     })
 })

@@ -23,6 +23,7 @@ import {
     getAiSalesAgentTrialState,
     TrialState,
 } from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
+import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getIconFromType } from 'state/integrations/helpers'
 
@@ -53,6 +54,8 @@ export const AiAgentNavbarSectionBlockV2 = ({
         shopName,
         accountDomain,
     })
+    const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
+    const isOnUsd5Plan = currentAutomatePlan?.generation === 5
     const isTrialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
 
     const hasAiAgentTrialEnabled = isPreviewModeActivated({
@@ -98,7 +101,7 @@ export const AiAgentNavbarSectionBlockV2 = ({
                 return (
                     <div className={css.item}>
                         {item.title}
-                        {trialState === TrialState.Trial && (
+                        {trialState === TrialState.Trial && isOnUsd5Plan && (
                             <Badge
                                 className={css.trialBadge}
                                 type="light-success"

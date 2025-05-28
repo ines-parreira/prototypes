@@ -412,6 +412,7 @@ export const automate02MonthlyMeteredPlan: AutomatePlan = {
     cadence: Cadence.Month,
     extra_ticket_cost: 1.9,
     public: true,
+    generation: 5,
     custom: false,
     plan_id: 'aut-02-monthly-usd-5',
     features: automatePlanFeatures,
