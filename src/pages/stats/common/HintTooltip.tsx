@@ -1,3 +1,5 @@
+import { ReactNode } from 'react'
+
 import classnames from 'classnames'
 
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
@@ -6,11 +8,15 @@ import css from 'pages/stats/common/HintTooltip.less'
 import { TooltipData } from 'pages/stats/types'
 import { DOCUMENTATION_LINK_TEXT } from 'services/reporting/constants'
 
+type Props = Omit<TooltipData, 'title'> & {
+    title: string | ReactNode
+}
+
 export const HintTooltipContent = ({
     title,
     link,
     linkText = DOCUMENTATION_LINK_TEXT,
-}: TooltipData) => {
+}: Props) => {
     return (
         <>
             {title}
@@ -24,12 +30,7 @@ export const HintTooltipContent = ({
     )
 }
 
-export const HintTooltip = ({
-    title,
-    link,
-    linkText,
-    className,
-}: TooltipData) => {
+export const HintTooltip = ({ title, link, linkText, className }: Props) => {
     return (
         <IconTooltip
             tooltipProps={{

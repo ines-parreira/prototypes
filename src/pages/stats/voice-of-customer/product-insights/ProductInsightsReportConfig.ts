@@ -36,7 +36,7 @@ export const PRODUCT_INSIGHTS_OPTIONAL_FILTERS = [
 
 export const ProductInsightsPlaceholderReportConfig: ReportConfig<ProductInsightsChart> =
     {
-        id: ReportsIDs.SupportPerformanceAgentsReportConfig,
+        id: ReportsIDs.ProductInsightsReportConfig,
         reportName: AGENT_PERFORMANCE_SECTION_TITLE,
         reportPath: VOICE_OF_CUSTOMER_ROUTES.PRODUCT_INSIGHTS,
         charts: {

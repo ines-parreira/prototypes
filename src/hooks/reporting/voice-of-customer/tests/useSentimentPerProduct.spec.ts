@@ -2,14 +2,17 @@ import { UseQueryResult } from '@tanstack/react-query'
 import moment from 'moment'
 
 import {
-    INTENT_DIMENSION,
-    PRODUCT_ID_DIMENSION,
     Sentiment,
-    TICKET_COUNT_MEASURE,
+    useNegativeSentimentsPerProductMetricTrend,
     useSentimentPerProduct,
 } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { usePostReporting } from 'models/reporting/queries'
-import { sentimentsTicketCountPerProductQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/sentimentPerProduct'
+import {
+    INTENT_DIMENSION,
+    PRODUCT_ID_DIMENSION,
+    sentimentsTicketCountPerProductQueryFactory,
+    TICKET_COUNT_MEASURE,
+} from 'models/reporting/queryFactories/voice-of-customer/sentimentPerProduct'
 import { StatsFilters } from 'models/stat/types'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
@@ -242,5 +245,44 @@ describe('useSentimentPerProduct', () => {
 
         expect(result.current.data.value).toBeNull()
         expect(result.current.data.allData).toEqual({})
+    })
+
+    describe('useNegativeSentimentsPerProductMetricTrend', () => {
+        const sentimentCustomFieldId = 123
+
+        it('should return current and previous values', () => {
+            usePostReportingMock.mockReturnValueOnce({
+                ...defaultReporting,
+                data: [
+                    {
+                        [PRODUCT_ID_DIMENSION]: firstProductId,
+                        [INTENT_DIMENSION]: Sentiment.Negative,
+                        [TICKET_COUNT_MEASURE]: '5',
+                    },
+                ],
+            } as UseQueryResult)
+            usePostReportingMock.mockReturnValueOnce({
+                ...defaultReporting,
+                data: [
+                    {
+                        [PRODUCT_ID_DIMENSION]: firstProductId,
+                        [INTENT_DIMENSION]: Sentiment.Negative,
+                        [TICKET_COUNT_MEASURE]: '1',
+                    },
+                ],
+            } as UseQueryResult)
+
+            const { result } = renderHook(() =>
+                useNegativeSentimentsPerProductMetricTrend(
+                    statsFilters,
+                    timezone,
+                    sentimentCustomFieldId,
+                    firstProductId,
+                ),
+            )
+
+            expect(result.current.data?.value).toEqual(5)
+            expect(result.current.data?.prevValue).toEqual(1)
+        })
     })
 })

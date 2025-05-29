@@ -6,7 +6,10 @@ import { CustomField } from 'custom-fields/types'
 import { ApiListResponseCursorPagination } from 'models/api/types'
 import { renderHook } from 'utils/testing/renderHook'
 
-import { useGetCustomTicketsFieldsDefinitionData } from '../useGetCustomTicketsFieldsDefinitionData'
+import {
+    TICKET_FIELD_ID_NOT_AVAILABLE,
+    useGetCustomTicketsFieldsDefinitionData,
+} from '../useGetCustomTicketsFieldsDefinitionData'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = jest.mocked(useCustomFieldDefinitions)
@@ -25,8 +28,7 @@ describe('useGetCustomTicketsFieldsDefinitionData', () => {
                 ],
             },
         } as unknown as UseQueryResult<
-            ApiListResponseCursorPagination<CustomField[]>,
-            unknown
+            ApiListResponseCursorPagination<CustomField[]>
         >
 
         useCustomFieldDefinitionsMock.mockReturnValue(mockData)
@@ -48,8 +50,7 @@ describe('useGetCustomTicketsFieldsDefinitionData', () => {
                 data: [{ id: '3', managed_type: 'OTHER_TYPE' }],
             },
         } as unknown as UseQueryResult<
-            ApiListResponseCursorPagination<CustomField[]>,
-            unknown
+            ApiListResponseCursorPagination<CustomField[]>
         >
 
         useCustomFieldDefinitionsMock.mockReturnValue(mockData)
@@ -59,9 +60,9 @@ describe('useGetCustomTicketsFieldsDefinitionData', () => {
         )
 
         expect(result.current).toEqual({
-            outcomeCustomFieldId: -1,
-            intentCustomFieldId: -1,
-            sentimentCustomFieldId: -1,
+            outcomeCustomFieldId: TICKET_FIELD_ID_NOT_AVAILABLE,
+            intentCustomFieldId: TICKET_FIELD_ID_NOT_AVAILABLE,
+            sentimentCustomFieldId: null,
         })
     })
 
@@ -78,9 +79,9 @@ describe('useGetCustomTicketsFieldsDefinitionData', () => {
         )
 
         expect(result.current).toEqual({
-            outcomeCustomFieldId: -1,
-            intentCustomFieldId: -1,
-            sentimentCustomFieldId: -1,
+            outcomeCustomFieldId: TICKET_FIELD_ID_NOT_AVAILABLE,
+            intentCustomFieldId: TICKET_FIELD_ID_NOT_AVAILABLE,
+            sentimentCustomFieldId: null,
         })
     })
 })

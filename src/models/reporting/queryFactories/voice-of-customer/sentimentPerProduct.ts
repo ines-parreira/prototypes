@@ -1,13 +1,15 @@
 import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { OrderDirection } from 'models/api/types'
-import { TicketProductsEnrichedDimension } from 'models/reporting/cubes/core/TicketProductsEnrichedCube'
+import {
+    TicketProductsEnrichedDimension,
+    TicketProductsEnrichedMeasure,
+} from 'models/reporting/cubes/core/TicketProductsEnrichedCube'
 import {
     TicketCubeWithJoins,
     TicketDimension,
 } from 'models/reporting/cubes/TicketCube'
 import {
     TicketCustomFieldsDimension,
-    TicketCustomFieldsMeasure,
     TicketCustomFieldsMember,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { injectDrillDownCustomFieldId } from 'models/reporting/queryFactories/utils'
@@ -24,6 +26,11 @@ import {
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
+
+export const PRODUCT_ID_DIMENSION = TicketProductsEnrichedDimension.ProductId
+export const INTENT_DIMENSION =
+    TicketCustomFieldsDimension.TicketCustomFieldsValueString
+export const TICKET_COUNT_MEASURE = TicketProductsEnrichedMeasure.TicketCount
 
 export const sentimentsTicketCountPerProductQueryFactory = (
     statsFilters: StatsFilters,
@@ -60,28 +67,18 @@ export const sentimentsTicketCountPerProductQueryFactory = (
 
     if (productId) {
         filters.push({
-            member: TicketProductsEnrichedDimension.ProductId,
+            member: PRODUCT_ID_DIMENSION,
             operator: ReportingFilterOperator.Equals,
             values: [productId],
         })
     }
 
     return {
-        measures: [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount],
-        dimensions: [
-            TicketProductsEnrichedDimension.ProductId,
-            TicketCustomFieldsDimension.TicketCustomFieldsValueString,
-        ],
+        measures: [TICKET_COUNT_MEASURE],
+        dimensions: [PRODUCT_ID_DIMENSION, INTENT_DIMENSION],
         timezone,
         filters,
-        order: sorting
-            ? [
-                  [
-                      TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
-                      sorting,
-                  ],
-              ]
-            : undefined,
+        order: sorting ? [[TICKET_COUNT_MEASURE, sorting]] : undefined,
     }
 }
 

@@ -3,6 +3,7 @@ import {
     closeSidePanel,
     getSidePanelActiveTab,
     getSidePanelIsOpen,
+    getSidePanelProductId,
     initialState,
     setSidePanelActiveTab,
     setSidePanelData,
@@ -71,6 +72,22 @@ describe('sidePanelSlice', () => {
             expect(getSidePanelActiveTab(state)).toBe(
                 SidePanelTab.trendOverview,
             )
+        })
+
+        it('should get the side panel productId', () => {
+            const productId = '123'
+            const state = {
+                ui: {
+                    stats: {
+                        sidePanel: {
+                            ...initialState,
+                            productId,
+                        },
+                    },
+                },
+            } as RootState
+
+            expect(getSidePanelProductId(state)).toBe(productId)
         })
     })
 })

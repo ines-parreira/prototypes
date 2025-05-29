@@ -28,7 +28,7 @@ export type TwoDimensionalDataItem = {
 }
 
 export type TooltipData = {
-    title: ReactNode
+    title: string
     link?: string
     linkText?: string
     className?: string
@@ -57,3 +57,8 @@ export type Prettify<T> = {
 export type OptionalProperty<T, K extends keyof T> = Prettify<
     Omit<T, K> & Partial<Pick<T, K>>
 >
+
+export type MetricConfig = {
+    title: string
+    hint: TooltipData
+}

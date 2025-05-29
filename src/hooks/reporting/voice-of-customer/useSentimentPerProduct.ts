@@ -3,15 +3,17 @@ import { useMemo } from 'react'
 import _get from 'lodash/get'
 
 import { QueryReturnType } from 'hooks/reporting/useMetricPerDimension'
-import {
-    TicketProductsEnrichedDimension,
-    TicketProductsEnrichedMeasure,
-} from 'models/reporting/cubes/core/TicketProductsEnrichedCube'
+import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import { TicketCubeWithJoins } from 'models/reporting/cubes/TicketCube'
-import { TicketCustomFieldsDimension } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { usePostReporting } from 'models/reporting/queries'
-import { sentimentsTicketCountPerProductQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/sentimentPerProduct'
+import {
+    INTENT_DIMENSION,
+    PRODUCT_ID_DIMENSION,
+    sentimentsTicketCountPerProductQueryFactory,
+    TICKET_COUNT_MEASURE,
+} from 'models/reporting/queryFactories/voice-of-customer/sentimentPerProduct'
 import { StatsFilters } from 'models/stat/types'
+import { getPreviousPeriod } from 'utils/reporting'
 
 export enum Sentiment {
     Positive = 'Positive',
@@ -31,11 +33,6 @@ export type DataPerProductPerSentiment = Record<
     SentimentMap | undefined
 >
 
-export const PRODUCT_ID_DIMENSION = TicketProductsEnrichedDimension.ProductId
-export const INTENT_DIMENSION =
-    TicketCustomFieldsDimension.TicketCustomFieldsValueString
-export const TICKET_COUNT_MEASURE = TicketProductsEnrichedMeasure.TicketCount
-
 export const useSentimentPerProduct = (
     statsFilters: StatsFilters,
     timezone: string,
@@ -49,7 +46,7 @@ export const useSentimentPerProduct = (
         sentimentCustomFieldId,
     )
 
-    const { data, isLoading, isError } = usePostReporting<
+    const { data, isFetching, isError } = usePostReporting<
         QueryReturnType<TicketCubeWithJoins>,
         QueryReturnType<TicketCubeWithJoins>
     >([query], { select: (data) => data.data.data })
@@ -85,7 +82,43 @@ export const useSentimentPerProduct = (
 
     return {
         data: { value, allData: normalizedData },
-        isLoading,
+        isFetching,
         isError,
+    }
+}
+
+export const useNegativeSentimentsPerProductMetricTrend = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sentimentCustomFieldId: number,
+    productId: string,
+): MetricTrend => {
+    const currentPeriodMetric = useSentimentPerProduct(
+        statsFilters,
+        timezone,
+        String(sentimentCustomFieldId),
+        Sentiment.Negative,
+        productId,
+    )
+
+    const prevPeriodMetric = useSentimentPerProduct(
+        {
+            ...statsFilters,
+            period: getPreviousPeriod(statsFilters.period),
+        },
+        timezone,
+        String(sentimentCustomFieldId),
+        Sentiment.Negative,
+        productId,
+    )
+
+    return {
+        isFetching:
+            currentPeriodMetric.isFetching || prevPeriodMetric.isFetching,
+        isError: currentPeriodMetric.isError || prevPeriodMetric.isError,
+        data: {
+            value: currentPeriodMetric.data.value,
+            prevValue: prevPeriodMetric.data.value,
+        },
     }
 }

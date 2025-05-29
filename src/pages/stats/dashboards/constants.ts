@@ -13,6 +13,7 @@ export enum ReportsIDs {
     CampaignsReportConfig = 'CampaignsReportConfig',
     ChannelsReportConfig = 'ChannelsReportConfig',
     HelpCenterReportConfig = 'HelpCenterReportConfig',
+    ProductInsightsReportConfig = 'ProductInsightsReportConfig',
     SatisfactionReportConfig = 'SatisfactionReportConfig',
     ServiceLevelAgreementsReportConfig = 'ServiceLevelAgreementsReportConfig',
     SupportPerformanceAgentsReportConfig = 'SupportPerformanceAgentsReportConfig',
@@ -21,6 +22,7 @@ export enum ReportsIDs {
     SupportPerformanceSatisfactionReportConfig = 'SupportPerformanceSatisfactionReportConfig',
     TicketFieldsReportConfig = 'TicketFieldsReportConfig',
     TicketInsightsTagsReportConfig = 'TicketInsightsTagsReportConfig',
+    TrendOverviewReportConfig = 'TrendOverviewReportConfig',
     VoiceAgentsReportConfig = 'VoiceAgentsReportConfig',
     VoiceOverviewReportConfig = 'VoiceOverviewReportConfig',
 }

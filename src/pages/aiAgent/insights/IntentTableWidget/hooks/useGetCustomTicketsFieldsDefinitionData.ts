@@ -7,7 +7,7 @@ export const TICKET_FIELD_ID_NOT_AVAILABLE = -1
 export const useGetCustomTicketsFieldsDefinitionData = (): {
     outcomeCustomFieldId: number
     intentCustomFieldId: number
-    sentimentCustomFieldId: number
+    sentimentCustomFieldId: number | null
 } => {
     const { data: { data: activeFields = [] } = {} } =
         useCustomFieldDefinitions(activeParams)
@@ -29,7 +29,6 @@ export const useGetCustomTicketsFieldsDefinitionData = (): {
             outcomeCustomField?.id || TICKET_FIELD_ID_NOT_AVAILABLE,
         intentCustomFieldId:
             intentCustomField?.id || TICKET_FIELD_ID_NOT_AVAILABLE,
-        sentimentCustomFieldId:
-            sentimentCustomField?.id || TICKET_FIELD_ID_NOT_AVAILABLE,
+        sentimentCustomFieldId: sentimentCustomField?.id || null,
     }
 }

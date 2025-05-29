@@ -5,6 +5,10 @@ import { TabNavigation } from '@gorgias/merchant-ui-kit'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { Drawer } from 'pages/common/components/Drawer/Drawer'
+import {
+    INSIGHTS_LABEL,
+    TREND_OVERVIEW_LABEL,
+} from 'pages/stats/voice-of-customer/side-panel/constants'
 import css from 'pages/stats/voice-of-customer/side-panel/VoCSidePanel.less'
 import {
     closeSidePanel,
@@ -27,21 +31,16 @@ type VoCSidePanelTabsType = Record<
 export const VoCSidePanelTabs: VoCSidePanelTabsType = {
     insights: {
         value: SidePanelTab.insights,
-        label: 'Insights',
+        label: INSIGHTS_LABEL,
         icon: 'psychology',
         content: () => <div>Insights_Content</div>,
     },
     trendOverview: {
         value: SidePanelTab.trendOverview,
-        label: 'Trend Overview',
+        label: TREND_OVERVIEW_LABEL,
         icon: 'show_chart',
         content: () => <div>Trend_Overview_Content</div>,
     },
-}
-
-export type SidePanelProps = {
-    setIsOpen: (value: boolean) => void
-    activeTab?: SidePanelTab
 }
 
 export const VoCSidePanel = () => {

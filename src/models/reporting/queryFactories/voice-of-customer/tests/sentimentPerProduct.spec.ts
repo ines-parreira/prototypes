@@ -3,6 +3,7 @@ import { OrderDirection } from 'models/api/types'
 import {
     sentimentsTicketCountPerProductDrillDownQueryFactory,
     sentimentsTicketCountPerProductQueryFactory,
+    TICKET_COUNT_MEASURE,
 } from 'models/reporting/queryFactories/voice-of-customer/sentimentPerProduct'
 import { StatsFilters } from 'models/stat/types'
 
@@ -32,7 +33,7 @@ describe('sentimentsTicketCountPerProduct', () => {
             )
 
             const expected = {
-                measures: ['TicketCustomFieldsEnriched.ticketCount'],
+                measures: [TICKET_COUNT_MEASURE],
                 dimensions: [
                     'TicketProductsEnriched.productId',
                     'TicketCustomFieldsEnriched.valueString',
@@ -123,7 +124,7 @@ describe('sentimentsTicketCountPerProduct', () => {
             )
 
             const expected = {
-                measures: ['TicketCustomFieldsEnriched.ticketCount'],
+                measures: [TICKET_COUNT_MEASURE],
                 dimensions: ['TicketEnriched.ticketId'],
                 timezone,
                 filters: [

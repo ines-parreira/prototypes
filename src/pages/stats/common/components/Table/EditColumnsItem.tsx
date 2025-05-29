@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef } from 'react'
+import React, { useRef } from 'react'
 
 import { useDrag, useDrop } from 'react-dnd'
 import { DropdownItem } from 'reactstrap'
@@ -12,7 +12,7 @@ type Props = {
     isChecked: boolean
     isIndeterminate?: boolean
     onChange: (value: boolean) => void
-    tooltip?: ReactNode
+    tooltip?: string
     disabled?: boolean
     option: { id: string }
     onDrop: (item: { id: string }, monitor: { id: string }) => { id: string }

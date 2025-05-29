@@ -40,5 +40,8 @@ export const getSidePanelIsOpen = (state: RootState) =>
 export const getSidePanelActiveTab = (state: RootState) =>
     state.ui.stats[sidePanelSlice.name].activeTab
 
+export const getSidePanelProductId = (state: RootState) =>
+    state.ui.stats[sidePanelSlice.name].productId
+
 export const { setSidePanelData, closeSidePanel, setSidePanelActiveTab } =
     sidePanelSlice.actions

@@ -1,17 +1,12 @@
 import { tagsTicketCountDrillDownByReferenceQueryFactory } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
 import { Domain } from 'pages/stats/common/drill-down/types'
-import { TooltipData } from 'pages/stats/types'
+import { MetricConfig } from 'pages/stats/types'
 import { TagsMetric } from 'state/ui/stats/types'
 
 export enum TicketInsightsTagsMetric {
     AllUsedTagsTableChart = 'all-used-tags-table-chart',
     TagsTrendChart = 'tags-trend-chart',
     TopUsedTagsChart = 'top-used-tags-chart',
-}
-
-type MetricConfig = {
-    title: string
-    hint: TooltipData
 }
 
 export const TicketInsightsTagsMetricConfig: Record<

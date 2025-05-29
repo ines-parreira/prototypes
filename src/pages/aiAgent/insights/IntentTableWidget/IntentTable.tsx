@@ -302,11 +302,7 @@ export const IntentTableWithDefaultState = ({
         <div>
             <ChartCard
                 title={tableTitle}
-                hint={{
-                    title: tableHint?.title,
-                    link: tableHint?.link,
-                    linkText: tableHint?.linkText,
-                }}
+                hint={tableHint}
                 noPadding
                 className={
                     shouldRemoveButtonBorder ? intentTableCss.noBorder : ''
