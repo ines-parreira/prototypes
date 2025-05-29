@@ -1,6 +1,5 @@
 import React, { memo, RefObject, useCallback, useEffect, useState } from 'react'
 
-import { getSizedImageUrl } from '@shopify/theme-images'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import _debounce from 'lodash/debounce'
@@ -18,6 +17,7 @@ import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomer
 import { ProductStockQuantity } from 'pages/common/components/StockQuantity'
 import CheckBox from 'pages/common/forms/CheckBox'
 import NumberInput from 'pages/common/forms/input/NumberInput'
+import { getSizedImageUrl } from 'utils/shopify'
 import DiscountPopover from 'Widgets/modules/Shopify/modules/DiscountPopover'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 

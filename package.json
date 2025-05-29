@@ -99,7 +99,6 @@
         "@reduxjs/toolkit": "^1.9.7",
         "@sentry/react": "7.119.1",
         "@sentry/tracing": "7.119.1",
-        "@shopify/theme-images": "3.0.3",
         "@stripe/react-stripe-js": "^2.8.0",
         "@stripe/stripe-js": "^4.5.0",
         "@tanstack/react-query": "catalog:rest-api-sdk",

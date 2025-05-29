@@ -1,9 +1,8 @@
-import { getSizedImageUrl } from '@shopify/theme-images'
 import classnames from 'classnames'
 
-import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
 import { IntegrationType } from 'models/integration/constants'
 import { ProductStockQuantity } from 'pages/common/components/StockQuantity'
+import { getImageSrc } from 'utils/shopify'
 
 import css from './Result.less'
 
@@ -20,18 +19,6 @@ export type Props = {
     disabled?: boolean
     disabledReason?: string
     ignoreStockAvailability?: boolean
-}
-
-const getImageSrc = (
-    image: { src?: string; alt?: string; type?: IntegrationType } | null,
-) => {
-    let imageSrc = image?.src
-
-    if (image?.src && image.type === IntegrationType.Shopify) {
-        imageSrc = getSizedImageUrl(image.src, 'small')
-    }
-
-    return imageSrc || (defaultImage as string)
 }
 
 export default function Result({

@@ -147,9 +147,6 @@ importers:
       '@sentry/tracing':
         specifier: 7.119.1
         version: 7.119.1
-      '@shopify/theme-images':
-        specifier: 3.0.3
-        version: 3.0.3
       '@stripe/react-stripe-js':
         specifier: ^2.8.0
         version: 2.8.0(@stripe/stripe-js@4.5.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
@@ -3678,10 +3675,6 @@ packages:
 
   '@sheerun/mutationobserver-shim@0.3.3':
     resolution: {integrity: sha512-DetpxZw1fzPD5xUBrIAoplLChO2VB8DlL5Gg+I1IR9b2wPqYIca2WSUxL5g1vLeR4MsQq1NeWriXAVffV+U1Fw==}
-
-  '@shopify/theme-images@3.0.3':
-    resolution: {integrity: sha512-YVzwkuIsxv2Qx3SXMKa8wLPildaeGmNqs99xBboNqqqGSu3kCS72EEYLRJA4h32NlDl/sQ2hVieI7e+OYoquGQ==}
-    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   '@sinclair/typebox@0.27.8':
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
@@ -14171,8 +14164,6 @@ snapshots:
       '@sentry/types': 7.119.1
 
   '@sheerun/mutationobserver-shim@0.3.3': {}
-
-  '@shopify/theme-images@3.0.3': {}
 
   '@sinclair/typebox@0.27.8': {}
 
