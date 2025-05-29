@@ -4,6 +4,7 @@ import moment from 'moment'
 import {
     Sentiment,
     useNegativeSentimentsPerProductMetricTrend,
+    usePositiveSentimentsPerProductMetricTrend,
     useSentimentPerProduct,
 } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { usePostReporting } from 'models/reporting/queries'
@@ -274,6 +275,45 @@ describe('useSentimentPerProduct', () => {
 
             const { result } = renderHook(() =>
                 useNegativeSentimentsPerProductMetricTrend(
+                    statsFilters,
+                    timezone,
+                    sentimentCustomFieldId,
+                    firstProductId,
+                ),
+            )
+
+            expect(result.current.data?.value).toEqual(5)
+            expect(result.current.data?.prevValue).toEqual(1)
+        })
+    })
+
+    describe('usePositiveSentimentsPerProductMetricTrend', () => {
+        const sentimentCustomFieldId = 123
+
+        it('should return current and previous values', () => {
+            usePostReportingMock.mockReturnValueOnce({
+                ...defaultReporting,
+                data: [
+                    {
+                        [PRODUCT_ID_DIMENSION]: firstProductId,
+                        [INTENT_DIMENSION]: Sentiment.Positive,
+                        [TICKET_COUNT_MEASURE]: '5',
+                    },
+                ],
+            } as UseQueryResult)
+            usePostReportingMock.mockReturnValueOnce({
+                ...defaultReporting,
+                data: [
+                    {
+                        [PRODUCT_ID_DIMENSION]: firstProductId,
+                        [INTENT_DIMENSION]: Sentiment.Positive,
+                        [TICKET_COUNT_MEASURE]: '1',
+                    },
+                ],
+            } as UseQueryResult)
+
+            const { result } = renderHook(() =>
+                usePositiveSentimentsPerProductMetricTrend(
                     statsFilters,
                     timezone,
                     sentimentCustomFieldId,

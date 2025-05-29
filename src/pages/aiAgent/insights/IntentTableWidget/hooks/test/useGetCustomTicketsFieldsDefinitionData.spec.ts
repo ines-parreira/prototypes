@@ -4,12 +4,11 @@ import { AI_MANAGED_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { CustomField } from 'custom-fields/types'
 import { ApiListResponseCursorPagination } from 'models/api/types'
-import { renderHook } from 'utils/testing/renderHook'
-
 import {
     TICKET_FIELD_ID_NOT_AVAILABLE,
     useGetCustomTicketsFieldsDefinitionData,
-} from '../useGetCustomTicketsFieldsDefinitionData'
+} from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = jest.mocked(useCustomFieldDefinitions)

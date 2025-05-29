@@ -1,14 +1,19 @@
-import { useNegativeSentimentsPerProductMetricTrend } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
+import {
+    useNegativeSentimentsPerProductMetricTrend,
+    usePositiveSentimentsPerProductMetricTrend,
+} from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { InterpretAs } from 'pages/stats/common/components/TrendBadge'
 import { Domain } from 'pages/stats/common/drill-down/types'
 import { MetricTrendFormat } from 'pages/stats/common/utils'
 
 export enum VoiceOfCustomerMetric {
     NegativeSentimentsPerProduct = 'negative_sentiments_per_product',
+    PositiveSentimentsPerProduct = 'positive_sentiments_per_product',
 }
 
 const integer: MetricTrendFormat = 'decimal'
 const lessIsBetter: InterpretAs = 'less-is-better'
+const moreIsBetter: InterpretAs = 'more-is-better'
 
 export const VoiceOfCustomerMetricConfig = {
     [VoiceOfCustomerMetric.NegativeSentimentsPerProduct]: {
@@ -18,6 +23,17 @@ export const VoiceOfCustomerMetricConfig = {
         },
         useTrend: useNegativeSentimentsPerProductMetricTrend,
         interpretAs: lessIsBetter,
+        metricFormat: integer,
+        showMetric: false,
+        domain: Domain.Ticket,
+    },
+    [VoiceOfCustomerMetric.PositiveSentimentsPerProduct]: {
+        title: 'Positive sentiments',
+        hint: {
+            title: 'AI classified positive sentiment including Positive and Promoter categorizations.',
+        },
+        useTrend: usePositiveSentimentsPerProductMetricTrend,
+        interpretAs: moreIsBetter,
         metricFormat: integer,
         showMetric: false,
         domain: Domain.Ticket,

@@ -122,3 +122,39 @@ export const useNegativeSentimentsPerProductMetricTrend = (
         },
     }
 }
+
+export const usePositiveSentimentsPerProductMetricTrend = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sentimentCustomFieldId: number,
+    productId: string,
+): MetricTrend => {
+    const currentPeriodMetric = useSentimentPerProduct(
+        statsFilters,
+        timezone,
+        String(sentimentCustomFieldId),
+        Sentiment.Positive,
+        productId,
+    )
+
+    const prevPeriodMetric = useSentimentPerProduct(
+        {
+            ...statsFilters,
+            period: getPreviousPeriod(statsFilters.period),
+        },
+        timezone,
+        String(sentimentCustomFieldId),
+        Sentiment.Positive,
+        productId,
+    )
+
+    return {
+        isFetching:
+            currentPeriodMetric.isFetching || prevPeriodMetric.isFetching,
+        isError: currentPeriodMetric.isError || prevPeriodMetric.isError,
+        data: {
+            value: currentPeriodMetric.data.value,
+            prevValue: prevPeriodMetric.data.value,
+        },
+    }
+}
