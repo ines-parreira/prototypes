@@ -145,5 +145,7 @@ export enum FeatureFlagKey {
     SwitchToShopifyThemeAppExtension = 'switch-to-shopify-theme-app-extension',
     TicketDemoSuggestion = 'ticket-demo-suggestion',
     TimelineTicketModal = 'timeline-ticket-modal',
+    VoiceCallbackEnabled1 = 'voice-callback-enabled',
+    VoiceCallbackEnabled2 = 'voice-callback-enabled-MILESTONE-2-FEATURE-RELEASE',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
 }

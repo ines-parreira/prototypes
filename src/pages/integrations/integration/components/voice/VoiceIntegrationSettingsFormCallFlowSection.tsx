@@ -3,6 +3,8 @@ import { CustomRecordingType } from '@gorgias/helpdesk-types'
 import { FormField } from 'core/forms'
 import Accordion from 'pages/common/components/accordion/Accordion'
 
+import useIsCallbackRequestsEnabled from './useIsCallbackRequestsEnabled'
+import VoiceIntegrationSettingCallbackRequests from './VoiceIntegrationSettingCallbackRequests'
 import VoiceIntegrationSettingCallRecording from './VoiceIntegrationSettingCallRecording'
 import VoiceIntegrationSettingCallTranscription from './VoiceIntegrationSettingCallTranscription'
 import VoiceIntegrationSettingDistributionBehavior from './VoiceIntegrationSettingDistributionBehavior'
@@ -11,6 +13,8 @@ import VoiceMessageField from './VoiceMessageField'
 import VoiceSettingAccordionItem from './VoiceSettingAccordionItem'
 
 function VoiceIntegrationSettingsFormCallFlowSection(): JSX.Element {
+    const isCallbackRequestsEnabled = useIsCallbackRequestsEnabled()
+
     return (
         <div>
             <Accordion>
@@ -36,6 +40,16 @@ function VoiceIntegrationSettingsFormCallFlowSection(): JSX.Element {
                 >
                     <VoiceIntegrationSettingDistributionBehavior />
                 </VoiceSettingAccordionItem>
+                {isCallbackRequestsEnabled && (
+                    <VoiceSettingAccordionItem
+                        subtitle={'Callback requests'}
+                        description={
+                            'Customize how customers can request callbacks'
+                        }
+                    >
+                        <VoiceIntegrationSettingCallbackRequests />
+                    </VoiceSettingAccordionItem>
+                )}
                 <VoiceSettingAccordionItem
                     subtitle={'Voicemail'}
                     description={'Customize your voicemail'}

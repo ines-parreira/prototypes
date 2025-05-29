@@ -135,3 +135,17 @@ export const DEFAULT_RECORDING_NOTIFICATION = {
         'This call may be recorded for notetaking, training, or record-keeping purposes.',
 }
 export const RECORDING_NOTIFICATION_MAX_DURATION = 1 * 60
+
+export const DEFAULT_CALLBACK_REQUESTS = {
+    enabled: false,
+    prompt_message: {
+        voice_message_type: VoiceMessageType.TextToSpeech,
+        text_to_speech_content: `You can request a callback at any time. Just press star and we'll return your call as soon as we can.`,
+    },
+    confirmation_message: {
+        voice_message_type: VoiceMessageType.TextToSpeech,
+        text_to_speech_content:
+            'Your callback has been requested. Please leave a message after the tone.',
+    },
+    allow_to_leave_voicemail: true,
+}

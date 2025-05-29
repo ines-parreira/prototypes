@@ -15,6 +15,7 @@ import {
 import { integrationsState } from 'fixtures/integrations'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
+    DEFAULT_CALLBACK_REQUESTS,
     DEFAULT_GREETING_MESSAGE,
     DEFAULT_RECORDING_NOTIFICATION,
     VOICEMAIL_DEFAULT_VOICE_MESSAGE,
@@ -26,6 +27,7 @@ import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { DEFAULT_TRANSCRIBE_PREFERENCES } from '../constants'
+import useIsCallbackRequestsEnabled from '../useIsCallbackRequestsEnabled'
 import {
     getDefaultValues,
     useDeletePhoneIntegration,
@@ -53,6 +55,13 @@ jest.mock('hooks/useNotify', () => ({
 jest.mock('state/integrations/actions')
 const fetchIntegrationsMock = assumeMock(fetchIntegrations)
 
+jest.mock(
+    'pages/integrations/integration/components/voice/useIsCallbackRequestsEnabled',
+)
+const useIsCallbackRequestsEnabledMock = assumeMock(
+    useIsCallbackRequestsEnabled,
+)
+
 const phoneIntegration = integrationsState.integrations.find(
     (integration) => integration.type === IntegrationType.Phone,
 ) as unknown as PhoneIntegration
@@ -69,6 +78,10 @@ describe('hooks', () => {
                 initialProps: { integration: phoneIntegration },
             })
 
+        beforeEach(() => {
+            useIsCallbackRequestsEnabledMock.mockReturnValue(true)
+        })
+
         it('should call update with full payload', async () => {
             updateAllPhoneSettingsMock.mockReturnValue(
                 Promise.resolve({} as HttpResponse<void>),
@@ -82,6 +95,10 @@ describe('hooks', () => {
                     phone_team_id: 2,
                     preferences: { test: 'test', record_inbound_calls: true },
                     recording_notification: true,
+                    callback_requests: {
+                        ...DEFAULT_CALLBACK_REQUESTS,
+                        enabled: true,
+                    },
                 },
             } as any
 
@@ -99,6 +116,41 @@ describe('hooks', () => {
                 'Integration settings successfully updated.',
             )
             expect(fetchIntegrationsMock).toHaveBeenCalled()
+        })
+
+        it('should exclude callback requests if FF is disabled', async () => {
+            useIsCallbackRequestsEnabledMock.mockReturnValue(false)
+
+            const { result } = render()
+
+            const submittableData = {
+                name: 'new name',
+                meta: {
+                    emoji: 'new emoji',
+                    phone_team_id: 2,
+                    preferences: { test: 'test', record_inbound_calls: true },
+                    callback_requests: {
+                        ...DEFAULT_CALLBACK_REQUESTS,
+                        enabled: true,
+                    },
+                },
+            } as any
+
+            result.current.onSubmit(submittableData)
+
+            await waitFor(() => {
+                expect(updateAllPhoneSettingsMock).toHaveBeenCalledWith(
+                    phoneIntegration.id,
+                    {
+                        ...submittableData,
+                        meta: {
+                            ...submittableData.meta,
+                            callback_requests: undefined,
+                        },
+                    },
+                    undefined,
+                )
+            })
         })
 
         it('should call exclude recording notification changes if disabled', async () => {
@@ -246,6 +298,19 @@ describe('getDefaultValues', () => {
                         ...VOICEMAIL_DEFAULT_VOICE_MESSAGE,
                     },
                 },
+                callback_requests: {
+                    enabled: false,
+                    prompt_message: {
+                        voice_message_type: VoiceMessageType.TextToSpeech,
+                        text_to_speech_content: `You can request a callback at any time. Just press star and we'll return your call as soon as we can.`,
+                    },
+                    confirmation_message: {
+                        voice_message_type: VoiceMessageType.TextToSpeech,
+                        text_to_speech_content:
+                            'Your callback has been requested. Please leave a message after the tone.',
+                    },
+                    allow_to_leave_voicemail: true,
+                },
             },
         })
     })
@@ -262,6 +327,18 @@ describe('getDefaultValues', () => {
                 },
                 recording_notification: {
                     voice_message_type: VoiceMessageType.TextToSpeech,
+                },
+                callback_requests: {
+                    enabled: true,
+                    prompt_message: {
+                        voice_message_type: VoiceMessageType.TextToSpeech,
+                        text_to_speech_content: `Test prompt message`,
+                    },
+                    confirmation_message: {
+                        voice_message_type: VoiceMessageType.TextToSpeech,
+                        text_to_speech_content: `Test confirmation message`,
+                    },
+                    allow_to_leave_voicemail: false,
                 },
             },
         }
@@ -289,6 +366,18 @@ describe('getDefaultValues', () => {
                         use_during_business_hours_settings: true,
                         ...VOICEMAIL_DEFAULT_VOICE_MESSAGE,
                     },
+                },
+                callback_requests: {
+                    enabled: true,
+                    prompt_message: {
+                        voice_message_type: VoiceMessageType.TextToSpeech,
+                        text_to_speech_content: `Test prompt message`,
+                    },
+                    confirmation_message: {
+                        voice_message_type: VoiceMessageType.TextToSpeech,
+                        text_to_speech_content: `Test confirmation message`,
+                    },
+                    allow_to_leave_voicemail: false,
                 },
             },
         })

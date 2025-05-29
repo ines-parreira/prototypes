@@ -12,6 +12,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { useNotify } from 'hooks/useNotify'
 import { isGorgiasApiError } from 'models/api/types'
 import {
+    DEFAULT_CALLBACK_REQUESTS,
     DEFAULT_GREETING_MESSAGE,
     DEFAULT_RECORDING_NOTIFICATION,
     VOICEMAIL_DEFAULT_VOICE_MESSAGE,
@@ -27,10 +28,13 @@ import {
     DEFAULT_TRANSCRIBE_PREFERENCES,
     PHONE_INTEGRATION_BASE_URL,
 } from './constants'
+import useIsCallbackRequestsEnabled from './useIsCallbackRequestsEnabled'
 
 export function useFormSubmit(integration: PhoneIntegration) {
     const dispatch = useAppDispatch()
     const notify = useNotify()
+
+    const isCallbackRequestsEnabled = useIsCallbackRequestsEnabled()
 
     const { mutate: updateAllPhoneSettings } = useUpdateAllPhoneSettings({
         mutation: {
@@ -61,6 +65,10 @@ export function useFormSubmit(integration: PhoneIntegration) {
 
             if (!isRecordingEnabled) {
                 meta.recording_notification = undefined
+            }
+
+            if (!isCallbackRequestsEnabled) {
+                delete meta.callback_requests
             }
         }
 
@@ -124,6 +132,7 @@ export const getDefaultValues = (
                 },
             },
             greeting_message: DEFAULT_GREETING_MESSAGE,
+            callback_requests: DEFAULT_CALLBACK_REQUESTS,
         },
     }
 
