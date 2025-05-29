@@ -207,8 +207,17 @@ describe('ChannelsTab', () => {
         it('closes drawer without modal when no changes made', () => {
             renderComponent()
 
-            const emailRow = screen.getByTestId('settings-feature-row-email')
-            fireEvent.click(emailRow)
+            fireEvent.click(screen.getByTestId('settings-feature-row-email'))
+
+            const assignEmailButton = screen.getByRole('button', {
+                name: /assign email/i,
+            })
+            fireEvent.click(assignEmailButton)
+
+            const emailToAssign = screen.getByText('test@test-4.com')
+            fireEvent.click(emailToAssign)
+            fireEvent.click(emailToAssign)
+            fireEvent.click(assignEmailButton)
 
             expect(
                 screen.queryByText(
@@ -264,16 +273,14 @@ describe('ChannelsTab', () => {
             })
             fireEvent.click(assignEmailButton)
 
-            const emailToAssign = screen.getByText('test-email 4')
+            const emailToAssign = screen.getByText('test@test-4.com')
             fireEvent.click(emailToAssign)
-            expect(screen.getByText('Deselect')).toBeInTheDocument()
 
             const saveButton = screen.getByRole('button', {
                 name: /save changes/i,
             })
             expect(saveButton).toBeEnabled()
-            fireEvent.click(document)
-            expect(screen.queryByText('Deselect')).not.toBeInTheDocument()
+            fireEvent.click(assignEmailButton)
 
             fireEvent.click(saveButton)
 

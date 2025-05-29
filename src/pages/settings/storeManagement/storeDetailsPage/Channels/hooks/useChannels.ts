@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom'
 
 import {
     isChatChannel,
+    isContactFormChannel,
     isEmailChannel,
     isFacebookChannel,
     isHelpCenterChannel,
@@ -32,9 +33,9 @@ export const useChannels = (): ChannelWithMetadata[] => {
     const unassignedHelpCenters = unassignedChannels.filter(isHelpCenterChannel)
 
     const assignedContactForms =
-        store?.assignedChannels.filter(isHelpCenterChannel)
+        store?.assignedChannels.filter(isContactFormChannel)
     const unassignedContactForms =
-        unassignedChannels.filter(isHelpCenterChannel)
+        unassignedChannels.filter(isContactFormChannel)
 
     const assignedVoice = store?.assignedChannels.filter(isVoiceChannel)
     const unnasignedVoice = unassignedChannels.filter(isVoiceChannel)

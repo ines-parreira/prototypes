@@ -1,15 +1,51 @@
-import { fireEvent, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
+import { MemoryRouter, Route } from 'react-router-dom'
 
 import { Integration } from 'models/integration/types'
 import { renderWithStore } from 'utils/testing'
 
 import { ChannelWithMetadata } from '../../../../types'
-import * as filterOperations from '../../hooks/useFilterOperations'
 import ChannelsFilter from '../ChannelsFilter'
+
+const mockStores = [
+    {
+        store: { id: 1 },
+        assignedChannels: [
+            {
+                id: 1,
+                name: 'Support Email',
+                meta: { address: 'store1support@company.com' },
+                type: 'email',
+            },
+            {
+                id: 2,
+                name: 'Sales Email',
+                meta: { address: 'store1sales@company.com' },
+                type: 'email',
+            },
+        ],
+    },
+    {
+        store: { id: 2 },
+        assignedChannels: [
+            {
+                id: 3,
+                name: 'Support Email',
+                meta: { address: 'store2suppport@company.com' },
+                type: 'email',
+            },
+        ],
+    },
+]
+
+jest.mock('../../../../StoreManagementProvider', () => ({
+    useStoreManagementState: () => ({
+        stores: mockStores,
+    }),
+}))
 
 describe('ChannelsFilter', () => {
     const mockSetAssignedChannelIds = jest.fn()
-    const mockUpdateSelectedIntegrations = jest.fn()
 
     const activeChannel: ChannelWithMetadata = {
         description: 'Test Channel Description',
@@ -42,11 +78,6 @@ describe('ChannelsFilter', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        jest.spyOn(filterOperations, 'useFilterOperations').mockReturnValue({
-            selectedFilterItems: [],
-            updateSelectedIntegrations: mockUpdateSelectedIntegrations,
-            handleFilterClose: jest.fn(),
-        })
     })
 
     it('renders SelectFilter with correct props', () => {
@@ -61,21 +92,32 @@ describe('ChannelsFilter', () => {
         expect(
             screen.getByText(`Assign ${activeChannel.title}`),
         ).toBeInTheDocument()
-        expect(screen.getByText('Add New Email')).toBeInTheDocument()
     })
 
     it('filters out already assigned channels', () => {
         renderWithStore(
-            <ChannelsFilter
-                activeChannel={activeChannel}
-                assignedChannelIds={[2]}
-                setAssignedChannelIds={mockSetAssignedChannelIds}
-            />,
+            <MemoryRouter initialEntries={[`/settings/stores/1}`]}>
+                <Route path="/settings/stores/:id">
+                    <ChannelsFilter
+                        activeChannel={activeChannel}
+                        assignedChannelIds={[2]}
+                        setAssignedChannelIds={mockSetAssignedChannelIds}
+                    />
+                    ,
+                </Route>
+            </MemoryRouter>,
             {},
         )
-        expect(screen.queryByText('Email 2')).not.toBeInTheDocument()
-        expect(screen.getByText('Email 3')).toBeInTheDocument()
-        expect(screen.getByText('Email 4')).toBeInTheDocument()
+
+        const button = screen.getByText(`Assign ${activeChannel.title}`)
+        button.click()
+
+        expect(screen.queryByText('email2@test.com')).not.toBeInTheDocument()
+        expect(
+            screen.queryByText('store2suppport@company.com'),
+        ).toBeInTheDocument()
+        expect(screen.getByText('email3@test.com')).toBeInTheDocument()
+        expect(screen.getByText('email4@test.com')).toBeInTheDocument()
     })
 
     it('renders nothing when activeChannel is not provided', () => {
@@ -88,27 +130,5 @@ describe('ChannelsFilter', () => {
             {},
         )
         expect(container.firstChild).toBeNull()
-    })
-
-    it('calls updateSelectedIntegrations when SelectFilter value changes', () => {
-        renderWithStore(
-            <ChannelsFilter
-                activeChannel={activeChannel}
-                assignedChannelIds={[]}
-                setAssignedChannelIds={mockSetAssignedChannelIds}
-            />,
-            {},
-        )
-
-        const dropdownButton = screen
-            .getByText(`Assign ${activeChannel.title}`)
-            .closest('button')!
-        fireEvent.click(dropdownButton)
-
-        const checkbox2 = screen.getByLabelText('Email 2')
-
-        fireEvent.click(checkbox2)
-
-        expect(mockUpdateSelectedIntegrations).toHaveBeenCalledWith([2])
     })
 })

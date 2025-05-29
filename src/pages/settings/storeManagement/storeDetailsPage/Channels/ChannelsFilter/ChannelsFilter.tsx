@@ -1,10 +1,16 @@
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useRef, useState } from 'react'
 
-import SelectFilter from 'pages/stats/common/SelectFilter'
+import { Button } from '@gorgias/merchant-ui-kit'
 
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
+
+import deriveLabelFromIntegration from '../../../helpers/deriveLabelFromIntegration'
 import { ChannelWithMetadata } from '../../../types'
-import { useFilterOperations } from '../hooks/useFilterOperations'
 import CreateNewChannel from './CreateNewChannel'
+import UnselectableItems from './UnselectableItems'
 
 interface ChannelsFilterProps {
     activeChannel?: ChannelWithMetadata
@@ -17,37 +23,76 @@ export default function ChannelsFilter({
     assignedChannelIds,
     setAssignedChannelIds,
 }: ChannelsFilterProps) {
-    const {
-        selectedFilterItems,
-        updateSelectedIntegrations,
-        handleFilterClose,
-    } = useFilterOperations(setAssignedChannelIds)
+    const [selectedFilterItems, setSelectedFilterItems] = useState<number[]>([])
+
+    const handleFilterClose = () => {
+        setAssignedChannelIds((prev) => [...prev, ...selectedFilterItems])
+        setSelectedFilterItems([])
+    }
+
+    const buttonRef = useRef<HTMLButtonElement>(null)
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+
+    const onToggle = () => {
+        if (isDropdownOpen) {
+            handleFilterClose()
+        }
+
+        setIsDropdownOpen(!isDropdownOpen)
+    }
 
     if (!activeChannel) {
         return null
     }
 
+    const availableChannels = [
+        ...activeChannel.unassignedChannels,
+        ...activeChannel.assignedChannels,
+    ].filter((channel) => !assignedChannelIds.includes(channel.id))
+
+    const handleItemClick = (value: number) => {
+        const newSelectedItems = selectedFilterItems.includes(value)
+            ? selectedFilterItems.filter((item) => item !== value)
+            : [...selectedFilterItems, value]
+        setSelectedFilterItems(newSelectedItems)
+    }
+
     return (
-        <SelectFilter
-            onChange={(value) => updateSelectedIntegrations(value as number[])}
-            onClose={handleFilterClose}
-            value={selectedFilterItems}
-            label={`Assign ${activeChannel.title}`}
-            searchPlaceholder={activeChannel.title}
-        >
-            {[
-                ...activeChannel.unassignedChannels,
-                ...activeChannel.assignedChannels,
-            ]
-                .filter((channel) => !assignedChannelIds.includes(channel.id))
-                .map((channel) => (
-                    <SelectFilter.Item
-                        key={channel.id}
-                        label={channel.name}
-                        value={channel.id}
-                    />
-                ))}
-            <CreateNewChannel activeChannel={activeChannel} />
-        </SelectFilter>
+        <>
+            <div>
+                <Button
+                    onClick={onToggle}
+                    ref={buttonRef}
+                    intent="secondary"
+                    trailingIcon="arrow_drop_down"
+                >
+                    Assign {activeChannel.title}
+                </Button>
+            </div>
+
+            <Dropdown
+                isMultiple
+                isOpen={isDropdownOpen}
+                onToggle={onToggle}
+                target={buttonRef}
+                value={selectedFilterItems}
+            >
+                <DropdownSearch autoFocus />
+                <DropdownBody>
+                    {availableChannels.map((channel) => (
+                        <DropdownItem
+                            key={channel.id}
+                            option={{
+                                label: deriveLabelFromIntegration(channel),
+                                value: channel.id,
+                            }}
+                            onClick={handleItemClick}
+                        />
+                    ))}
+                    <UnselectableItems activeChannel={activeChannel} />
+                </DropdownBody>
+                <CreateNewChannel activeChannel={activeChannel} />
+            </Dropdown>
+        </>
     )
 }
