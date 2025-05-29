@@ -64,6 +64,7 @@ export const SettingsFeatureRow = ({
                         </Badge>
                     )}
                     <IconButton
+                        iconClassName={css.arrow}
                         isDisabled={isDisabled}
                         icon="keyboard_arrow_right"
                         fillStyle="ghost"
