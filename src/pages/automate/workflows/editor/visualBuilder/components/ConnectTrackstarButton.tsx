@@ -1,11 +1,12 @@
 import { useTrackstarLink } from '@trackstar/react-trackstar-link'
 
+import { Button } from '@gorgias/merchant-ui-kit'
+
 import {
     useCreateTrackstarLink,
     useCreateTrackstarToken,
 } from 'models/workflows/queries'
 import { useStoreTrackstarContext } from 'pages/aiAgent/actions/providers/StoreTrackstarContext'
-import Button from 'pages/common/components/button/Button'
 import { Paths } from 'rest_api/workflows_api/client.generated'
 
 import { App } from '../../../../actionsPlatform/types'

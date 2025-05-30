@@ -40,6 +40,7 @@ describe('ActionEventRow', () => {
             current_step_id: '1',
             id: '1',
             state: {
+                channel: 'email',
                 trigger: 'llm-prompt',
             },
             trigger: 'llm-prompt',
@@ -91,6 +92,7 @@ describe('ActionEventRow', () => {
             current_step_id: '1',
             id: '1',
             state: {
+                channel: 'email',
                 trigger: 'llm-prompt',
                 user_journey_id: 'user_journey_id',
             },

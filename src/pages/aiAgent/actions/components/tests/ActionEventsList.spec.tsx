@@ -12,6 +12,7 @@ describe('<ActionEventsList />', () => {
         const execution: LlmTriggeredExecution = {
             id: '1',
             state: {
+                channel: 'email',
                 trigger: 'llm-prompt',
             },
             trigger: 'llm-prompt',

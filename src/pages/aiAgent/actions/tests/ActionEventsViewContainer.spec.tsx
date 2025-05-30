@@ -363,7 +363,6 @@ describe('ActionEventsViewContainer', () => {
                 id: executionId,
                 configuration_id: '1',
                 configuration_internal_id: '1',
-                success: true,
                 state: {
                     trigger: 'llm-prompt',
                 },

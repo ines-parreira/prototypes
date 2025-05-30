@@ -19,7 +19,12 @@ declare namespace Components {
                 updated_date: string // date-time
             }
             event_type: 'connection-error.created'
-            integration_name: 'sandbox' | 'shiphero' | 'shipstation' | 'shipbob'
+            integration_name:
+                | 'sandbox'
+                | 'shiphero'
+                | 'shipstation'
+                | 'shipbob'
+                | 'dear-systems'
         }
         export interface CreateTokenBodyDto {
             auth_code: string
@@ -996,6 +1001,7 @@ declare namespace Components {
                           | 'shiphero'
                           | 'shipstation'
                           | 'shipbob'
+                          | 'dear-systems'
                   }
               }
         export interface GetAutomationEventResponseDto {
@@ -1370,7 +1376,6 @@ declare namespace Components {
                 history_index?: number | null
                 max_history_index?: number | null
                 needs_auth?: boolean | null
-                success?: boolean | null
                 status?: 'success' | 'error' | 'partial_success'
             }[]
         }
@@ -3334,7 +3339,6 @@ declare namespace Components {
             history_index?: number | null
             max_history_index?: number | null
             needs_auth?: boolean | null
-            success?: boolean | null
             status?: 'success' | 'error' | 'partial_success'
         }
         export type GetWfExecutionResponseDto = {
@@ -3411,6 +3415,8 @@ declare namespace Components {
                     helpdesk_integration_id: number
                 } | null
                 preview_mode?: boolean | null
+                channel: 'chat' | 'help-center' | 'contact-form' | 'email'
+                channel_integration_id?: number | null
                 trigger: 'llm-prompt'
                 entrypoint?: 'llm-conversation'
                 objects?: {
@@ -3679,7 +3685,6 @@ declare namespace Components {
                         | string
                 } | null
                 user_journey_id?: string | null
-                channel?: 'email'
                 callback_url?: string | null
                 steps_state?: {
                     [name: string]:
@@ -5246,6 +5251,7 @@ declare namespace Components {
                           | 'shiphero'
                           | 'shipstation'
                           | 'shipbob'
+                          | 'dear-systems'
                   }
               }
         )[]
@@ -6246,7 +6252,12 @@ declare namespace Components {
             store_name: string
             store_type: 'shopify'
             account_id: number
-            integration_name: 'sandbox' | 'shiphero' | 'shipstation' | 'shipbob'
+            integration_name:
+                | 'sandbox'
+                | 'shiphero'
+                | 'shipstation'
+                | 'shipbob'
+                | 'dear-systems'
             error: boolean
         }[]
         export type ListWfConfigurationTemplatesResponseDto = {
@@ -8372,6 +8383,8 @@ declare namespace Components {
                           helpdesk_integration_id: number
                       } | null
                       preview_mode?: boolean | null
+                      channel: 'chat' | 'help-center' | 'contact-form' | 'email'
+                      channel_integration_id?: number | null
                       trigger: 'llm-prompt'
                       entrypoint?: 'llm-conversation'
                       objects?: {
@@ -8642,7 +8655,6 @@ declare namespace Components {
                               | string
                       } | null
                       user_journey_id?: string | null
-                      channel?: 'email'
                       callback_url?: string | null
                       steps_state?: {
                           [name: string]:
@@ -10397,6 +10409,7 @@ declare namespace Components {
                       | 'fi-FI'
                       | 'ja-JP'
                       | 'pt-BR'
+                  channel_integration_id?: number | null
                   shop_name: string
                   shop_type?: string
                   user_journey_id: string
@@ -10427,6 +10440,7 @@ declare namespace Components {
                   user_journey_id?: string | null
                   callback_url?: string | null // uri
                   channel?: 'email' | 'chat'
+                  channel_integration_id?: number | null
               }
         export type StartWfExecutionResponseDto =
             | {
@@ -11103,6 +11117,8 @@ declare namespace Components {
                           helpdesk_integration_id: number
                       } | null
                       preview_mode?: boolean | null
+                      channel: 'chat' | 'help-center' | 'contact-form' | 'email'
+                      channel_integration_id?: number | null
                       trigger: 'llm-prompt'
                       entrypoint?: 'llm-conversation'
                       objects?: {
@@ -11373,7 +11389,6 @@ declare namespace Components {
                               | string
                       } | null
                       user_journey_id?: string | null
-                      channel?: 'email'
                       callback_url?: string | null
                       steps_state?: {
                           [name: string]:
@@ -13131,6 +13146,7 @@ declare namespace Components {
             user_journey_id?: string | null
             callback_url?: string | null // uri
             channel?: 'email' | 'chat'
+            channel_integration_id?: number | null
         }
         export type TestWfExecutionResponseDto = {
             trigger: 'llm-prompt'
@@ -13206,6 +13222,8 @@ declare namespace Components {
                     helpdesk_integration_id: number
                 } | null
                 preview_mode?: boolean | null
+                channel: 'chat' | 'help-center' | 'contact-form' | 'email'
+                channel_integration_id?: number | null
                 trigger: 'llm-prompt'
                 entrypoint?: 'llm-conversation'
                 objects?: {
@@ -13474,7 +13492,6 @@ declare namespace Components {
                         | string
                 } | null
                 user_journey_id?: string | null
-                channel?: 'email'
                 callback_url?: string | null
                 steps_state?: {
                     [name: string]:
@@ -15026,6 +15043,7 @@ declare namespace Components {
                           | 'shiphero'
                           | 'shipstation'
                           | 'shipbob'
+                          | 'dear-systems'
                   }
               }
         export type UpsertAppRequestResponseDto =
@@ -15060,6 +15078,7 @@ declare namespace Components {
                           | 'shiphero'
                           | 'shipstation'
                           | 'shipbob'
+                          | 'dear-systems'
                   }
               }
         export interface UpsertStoreAppRequestBodyDto {

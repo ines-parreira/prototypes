@@ -15,6 +15,7 @@ const queryClient = mockQueryClient()
 const execution: LlmTriggeredExecution = {
     id: '1',
     state: {
+        channel: 'email',
         trigger: 'llm-prompt',
     },
     trigger: 'llm-prompt',
@@ -82,6 +83,7 @@ describe('<ActionEventSidePanel />', () => {
         const executionWithState: LlmTriggeredExecution = {
             ...execution,
             state: {
+                channel: 'email',
                 trigger: 'llm-prompt',
                 steps_state: {
                     '01J7ZRM17Q8VYJRP2F0HBH1B37': {
