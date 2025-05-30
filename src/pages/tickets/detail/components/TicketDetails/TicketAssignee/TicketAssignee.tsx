@@ -24,7 +24,7 @@ import PeopleSearchInput from 'pages/common/forms/PeopleSearchInput/PeopleSearch
 import PeopleSearchResults from 'pages/common/forms/PeopleSearchInput/PeopleSearchResults'
 import { AgentLabel, TeamLabel } from 'pages/common/utils/labels'
 import shortcutManager from 'services/shortcutManager/index'
-import { getHumanAgents } from 'state/agents/selectors'
+import { getHumanAgentsExceptGorgiasSupport } from 'state/agents/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getTeams } from 'state/teams/selectors'
 import { setAgent, setTeam } from 'state/ticket/actions'
@@ -74,7 +74,7 @@ const TicketAssignee = ({
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const [search, setSearch] = useState('')
 
-    const allUsers = useAppSelector(getHumanAgents)
+    const allUsers = useAppSelector(getHumanAgentsExceptGorgiasSupport)
     const allTeams = useAppSelector(getTeams)
     const currentUser = useAppSelector(getCurrentUser)
 

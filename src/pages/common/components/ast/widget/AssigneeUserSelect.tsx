@@ -85,7 +85,7 @@ export class AssigneeUserSelectContainer extends Component<
 
 const connector = connect(
     (state: RootState) => ({
-        agents: agentSelectors.getHumanAgents(state),
+        agents: agentSelectors.getHumanAgentsExceptGorgiasSupport(state),
     }),
     (dispatch) => ({
         actions: bindActionCreators(userActions, dispatch),

@@ -12,6 +12,13 @@ const users: Map<any, any> = fromJS({
     all: [
         { id: 1, name: 'User 1', email: 'email1@foo.com', meta: {} },
         { id: 2, name: 'User 2', email: 'email2@foo.com', meta: {} },
+        {
+            id: 3,
+            name: 'Gorgias Support Agent',
+            email: 'support@gorgias.xyz',
+            meta: {},
+            role: { name: 'internal-agent' },
+        },
     ],
 })
 
@@ -134,6 +141,7 @@ describe('<TicketAssignee />', () => {
 
             expect(getByText(/Users/)).toBeInTheDocument()
             expect(queryByText(/Teams/)).not.toBeInTheDocument()
+            expect(queryByText(/Gorgias Support Agent/)).not.toBeInTheDocument()
         })
 
         it('should display teams only', () => {

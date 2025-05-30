@@ -17,6 +17,12 @@ import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from './constants'
 export const isHumanAgent = (agent: Map<any, any>) =>
     agent.getIn(['role', 'name'], '') !== UserRole.Bot
 
+export const isGorgiasSupportAgent = (agent: Map<any, any>) =>
+    agent.getIn(['role', 'name'], '') === UserRole.GorgiasAgent
+
+export const isHumanAgentExceptGorgiasSupport = (agent: Map<any, any>) =>
+    isHumanAgent(agent) && !isGorgiasSupportAgent(agent)
+
 export const isAutomationBot = (agent: Map<any, any>) =>
     agent.getIn(['role', 'name'], '') === UserRole.Bot &&
     AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS.includes(agent.get('email', ''))
@@ -37,6 +43,15 @@ export const getHumanAgents = createImmutableSelector(
     getAllAgents,
     (agents) => {
         return (agents || fromJS([])).filter(isHumanAgent) as List<any>
+    },
+)
+
+export const getHumanAgentsExceptGorgiasSupport = createImmutableSelector(
+    getAllAgents,
+    (agents) => {
+        return (agents || fromJS([])).filter(
+            isHumanAgentExceptGorgiasSupport,
+        ) as List<any>
     },
 )
 

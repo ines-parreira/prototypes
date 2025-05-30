@@ -126,6 +126,39 @@ describe('agents selectors', () => {
         expect(selectors.getOtherAgents(state)).toEqualImmutable(expected)
     })
 
+    describe('getHumanAgentsExceptGorgiasSupport()', () => {
+        it('should return a list of all human agents except the Gorgias Support Agent', () => {
+            expect(
+                selectors.getHumanAgentsExceptGorgiasSupport(state),
+            ).toEqualImmutable(
+                (state.agents.get('all') as List<any>).filter(
+                    selectors.isHumanAgentExceptGorgiasSupport,
+                ),
+            )
+        })
+
+        it('should return an empty list when state is empty', () => {
+            expect(
+                selectors.getHumanAgentsExceptGorgiasSupport({} as RootState),
+            ).toEqualImmutable(fromJS([]))
+        })
+
+        it('should return the same reference on agents state change when change is not in "all" part of the state', () => {
+            const newState = {
+                ...state,
+                agents: state.agents.set(
+                    'locations',
+                    fromJS({
+                        ...agentFixtures.locations['1'],
+                    }),
+                ),
+            }
+            expect(selectors.getHumanAgentsExceptGorgiasSupport(state)).toBe(
+                selectors.getHumanAgentsExceptGorgiasSupport(newState),
+            )
+        })
+    })
+
     it('getAgent()', () => {
         expect(selectors.getAgent(1)(state)).toEqualImmutable(
             (state.agents.get('all') as List<any>).first(),
