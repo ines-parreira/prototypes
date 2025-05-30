@@ -541,6 +541,19 @@ export type ReshipForFreeNodeType = Node<
     'reship_for_free'
 >
 
+export type EditOrderNoteNodeType = Node<
+    {
+        customerId: string
+        orderExternalId: string
+        integrationId: string
+        note: string
+        isGreyedOut?: boolean | null
+        errors?: Record<string, never> | null
+        touched?: Record<string, never> | null
+    },
+    'edit_order_note'
+>
+
 export type RefundShippingCostsNodeType = Node<
     {
         customerId: string
@@ -637,6 +650,7 @@ export type VisualBuilderNode =
     | CancelSubscriptionNodeType
     | SkipChargeNodeType
     | ReusableLLMPromptCallNodeType
+    | EditOrderNoteNodeType
 
 export type VisualBuilderEdge = Edge<{
     name?: string | null

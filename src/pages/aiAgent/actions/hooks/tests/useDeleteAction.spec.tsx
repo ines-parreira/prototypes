@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
@@ -61,7 +59,7 @@ describe('useDeleteAction', () => {
         })
 
         useDeleteWorkflowConfigurationMock.mock.calls[0][0]?.onSuccess!(
-            axiosSuccessResponse(null),
+            axiosSuccessResponse(null) as any,
             [internalId],
             undefined,
         )

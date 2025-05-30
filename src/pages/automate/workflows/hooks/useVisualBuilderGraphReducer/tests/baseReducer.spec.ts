@@ -386,6 +386,28 @@ describe('baseReducer', () => {
         ])
     })
 
+    test('INSERT_EDIT_ORDER_NOTE_NODE', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        const nextG = baseReducer(g, {
+            type: 'INSERT_EDIT_ORDER_NOTE_NODE',
+            beforeNodeId: 'automated_message1',
+            customerId: 'customerId',
+            orderExternalId: 'orderExternalId',
+            integrationId: 'integrationId',
+        })
+
+        expect(nextG.nodes.length).toEqual(g.nodes.length + 2) // 1 new node + 1 failure end
+        expect(nextG.edges.length).toEqual(g.edges.length + 2)
+        expect(
+            nextG.nodes.find(
+                (n) =>
+                    n.type === 'edit_order_note' &&
+                    n.data.customerId === 'customerId' &&
+                    n.data.orderExternalId === 'orderExternalId' &&
+                    n.data.integrationId === 'integrationId',
+            ),
+        ).toBeDefined()
+    })
     test('INSERT_CREATE_DISCOUNT_CODE_NODE', () => {
         const g = visualBuilderGraphSimpleChoicesFixture
         const nextG = baseReducer(g, {

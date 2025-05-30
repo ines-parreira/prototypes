@@ -38,6 +38,7 @@ import {
     buildCancelOrderNode,
     buildCancelSubscriptionNode,
     buildCreateDiscountCodeNode,
+    buildEditOrderNoteNode,
     buildEndNode,
     buildFileUploadNode,
     buildOrderLineItemSelectionNode,
@@ -312,6 +313,13 @@ export type VisualBuilderBaseAction =
       }
     | {
           type: 'MIGRATE_TO_ADVANCED_STEP_BUILDER'
+      }
+    | {
+          type: 'INSERT_EDIT_ORDER_NOTE_NODE'
+          beforeNodeId: string
+          customerId: string
+          orderExternalId: string
+          integrationId: string
       }
 
 export function baseReducer(
@@ -647,6 +655,14 @@ export function baseReducer(
                     action.beforeNodeId,
                 ),
             )
+        case 'INSERT_EDIT_ORDER_NOTE_NODE':
+            return computeNodesPositions(
+                insertFallibleNode(
+                    graph,
+                    buildEditOrderNoteNode(action),
+                    action.beforeNodeId,
+                ),
+            )
         case 'INSERT_RESHIP_FOR_FREE_NODE':
             return computeNodesPositions(
                 insertFallibleNode(
@@ -927,7 +943,8 @@ function insertFallibleNode(
             nodeToInsert.type !== 'cancel_order' &&
             nodeToInsert.type !== 'reship_for_free' &&
             nodeToInsert.type !== 'refund_shipping_costs' &&
-            nodeToInsert.type !== 'create_discount_code'
+            nodeToInsert.type !== 'create_discount_code' &&
+            nodeToInsert.type !== 'edit_order_note'
         ) {
             draft.nodeEditingId = nodeToInsert.id
             draft.choiceEventIdEditing = null
@@ -974,6 +991,7 @@ function computeAppUsage(
             case 'create_discount_code':
             case 'reship_for_free':
             case 'refund_shipping_costs':
+            case 'edit_order_note':
                 acc['shopify'] = true
                 break
             case 'cancel_subscription':

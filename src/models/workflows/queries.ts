@@ -335,7 +335,12 @@ export const useGetWorkflowConfigurations = (
     >,
 ) => {
     const params = includeDrafts
-        ? { is_draft: ['0', '1'] as ('0' | '1')[] }
+        ? {
+              is_draft: [
+                  '0',
+                  '1',
+              ] as Paths.WfConfigurationControllerList.QueryParameters['is_draft'],
+          }
         : {}
     return useQuery({
         queryKey: workflowsConfigurationDefinitionKeys.list(params),
@@ -550,7 +555,7 @@ export const useListWorkflowEntryPoints = ({
             const client = await getGorgiasWfApiClient()
             const response = await client.WfEntrypointController_list(
                 {
-                    ids,
+                    ids: ids as Paths.WfEntrypointControllerList.QueryParameters['ids'],
                     language,
                 },
                 {},

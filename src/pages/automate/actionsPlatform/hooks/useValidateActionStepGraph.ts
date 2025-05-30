@@ -67,12 +67,6 @@ const useValidateActionStepGraph = (
                                 getVariableListForNode(node.id),
                             )
                             break
-                        case 'end':
-                            break
-                        case 'cancel_order':
-                            break
-                        case 'refund_order':
-                            break
                         case 'skip_charge':
                             node.data.errors = getSkipChargeNodeErrors(
                                 node,
@@ -85,8 +79,7 @@ const useValidateActionStepGraph = (
                                 getVariableListForNode(node.id),
                             )
                             break
-                        case 'create_discount_code':
-                            break
+
                         case 'replace_item':
                             node.data.errors = getReplaceItemNodeErrors(
                                 node,
@@ -105,6 +98,12 @@ const useValidateActionStepGraph = (
                                     node,
                                     getVariableListForNode(node.id),
                                 )
+                            break
+                        case 'create_discount_code':
+                        case 'edit_order_note':
+                        case 'end':
+                        case 'cancel_order':
+                        case 'refund_order':
                             break
                     }
                 })

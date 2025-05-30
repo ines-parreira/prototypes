@@ -1280,6 +1280,13 @@ export const buildWorkflowVariableFromNode = (
             value: `steps_state.${node.id}.success`,
             type: 'boolean',
         }
+    } else if (node.type === 'edit_order_note') {
+        return {
+            name: 'Edit order note success',
+            nodeType: 'edit_order_note',
+            value: `steps_state.${node.id}.success`,
+            type: 'boolean',
+        }
     } else if (node.type === 'reusable_llm_prompt_call') {
         const configuration = steps.find(
             (step) =>
@@ -1644,6 +1651,22 @@ export function extractVariablesFromNode(
                     (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.validFor).map(
+                    (variable) => variable.value,
+                ),
+            ]
+            break
+        case 'edit_order_note':
+            variables = [
+                ...extractVariablesFromText(node.data.customerId).map(
+                    (variable) => variable.value,
+                ),
+                ...extractVariablesFromText(node.data.orderExternalId).map(
+                    (variable) => variable.value,
+                ),
+                ...extractVariablesFromText(node.data.integrationId).map(
+                    (variable) => variable.value,
+                ),
+                ...extractVariablesFromText(node.data.note).map(
                     (variable) => variable.value,
                 ),
             ]

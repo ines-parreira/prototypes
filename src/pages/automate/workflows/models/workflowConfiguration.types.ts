@@ -292,6 +292,17 @@ export type WorkflowStepReusableLLMPromptCall = {
     }
 }
 
+export type WorkflowStepEditOrderNote = {
+    id: string
+    kind: 'edit-order-note'
+    settings: {
+        customer_id: string
+        order_external_id: string
+        integration_id: string
+        note: string
+    }
+}
+
 export type WorkflowStep =
     | WorkflowStepTextInput
     | WorkflowStepAttachmentsInput
@@ -316,6 +327,7 @@ export type WorkflowStep =
     | WorkflowStepCancelSubscription
     | WorkflowStepSkipCharge
     | WorkflowStepReusableLLMPromptCall
+    | WorkflowStepEditOrderNote
 
 export type WorkflowTransition = {
     id: string
@@ -326,7 +338,7 @@ export type WorkflowTransition = {
         kind: 'choices'
     }>
     name?: string | null
-    conditions?: ConditionsSchema
+    conditions?: ConditionsSchema | null
 }
 
 export const supportedLanguages = [

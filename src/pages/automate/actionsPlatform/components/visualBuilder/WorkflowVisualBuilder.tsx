@@ -32,6 +32,7 @@ import UpdateShippingAddressNode from 'pages/automate/workflows/editor/visualBui
 import css from 'pages/automate/workflows/editor/visualBuilder/WorkflowVisualBuilder.less'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 
+import EditOrderNoteNode from '../../../workflows/editor/visualBuilder/nodes/EditOrderNoteNode'
 import VisualBuilderControls from './VisualBuilderControls'
 
 const nodeTypes = {
@@ -50,6 +51,7 @@ const nodeTypes = {
     cancel_subscription: CancelSubscriptionNode,
     skip_charge: SkipChargeNode,
     reusable_llm_prompt_call: ReusableLLMPromptCallNode,
+    edit_order_note: EditOrderNoteNode,
     end: EndNode,
 }
 

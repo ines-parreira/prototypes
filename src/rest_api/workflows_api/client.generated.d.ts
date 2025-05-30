@@ -1,4 +1,4 @@
-import {
+import type {
     AxiosRequestConfig,
     OpenAPIClient,
     OperationResponse,
@@ -19,7 +19,7 @@ declare namespace Components {
                 updated_date: string // date-time
             }
             event_type: 'connection-error.created'
-            integration_name: 'sandbox' | 'shiphero' | 'shipstation'
+            integration_name: 'sandbox' | 'shiphero' | 'shipstation' | 'shipbob'
         }
         export interface CreateTokenBodyDto {
             auth_code: string
@@ -90,8 +90,8 @@ declare namespace Components {
                       kind: 'handover'
                       settings?: {
                           ticket_tags?: string[] | null
-                          ticket_assignee_user_id?: null | number
-                          ticket_assignee_team_id?: null | number
+                          ticket_assignee_user_id?: number | null
+                          ticket_assignee_team_id?: number | null
                       } | null
                   }
                 | {
@@ -237,8 +237,8 @@ declare namespace Components {
                       kind: 'helpful-prompt'
                       settings?: {
                           ticket_tags?: string[] | null
-                          ticket_assignee_user_id?: null | number
-                          ticket_assignee_team_id?: null | number
+                          ticket_assignee_user_id?: number | null
+                          ticket_assignee_team_id?: number | null
                       } | null
                   }
                 | {
@@ -454,6 +454,16 @@ declare namespace Components {
                           }
                       }
                   }
+                | {
+                      id: string
+                      kind: 'edit-order-note'
+                      settings: {
+                          customer_id: string
+                          order_external_id: string
+                          integration_id: string
+                          note: string
+                      }
+                  }
             )[]
             inputs?:
                 | (
@@ -518,7 +528,7 @@ declare namespace Components {
                 } | null
                 name?: string | null
                 conditions?:
-                    | {
+                    | ({
                           or: (
                               | {
                                     equals: any
@@ -563,8 +573,8 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
-                    | {
+                      } | null)
+                    | ({
                           and: (
                               | {
                                     equals: any
@@ -609,7 +619,7 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
+                      } | null)
             }[]
             available_languages: (
                 | 'en-US'
@@ -675,7 +685,7 @@ declare namespace Components {
                                       }
                                 )[]
                                 conditions?:
-                                    | {
+                                    | ({
                                           or: (
                                               | {
                                                     equals: any
@@ -720,8 +730,8 @@ declare namespace Components {
                                                     greaterOrEqual: any
                                                 }
                                           )[]
-                                      }
-                                    | {
+                                      } | null)
+                                    | ({
                                           and: (
                                               | {
                                                     equals: any
@@ -766,7 +776,7 @@ declare namespace Components {
                                                     greaterOrEqual: any
                                                 }
                                           )[]
-                                      }
+                                      } | null)
                                 outputs: {
                                     id: string
                                     description: string
@@ -776,7 +786,9 @@ declare namespace Components {
                         }
                       | {
                             kind: 'channel'
-                            settings: {}
+                            settings: {
+                                [key: string]: never
+                            }
                         }
                       | {
                             kind: 'reusable-llm-prompt'
@@ -838,8 +850,8 @@ declare namespace Components {
                             trigger: 'reusable-llm-prompt'
                             settings: {
                                 requires_confirmation: boolean
-                                conditions:
-                                    | {
+                                conditions?:
+                                    | ({
                                           or: (
                                               | {
                                                     equals: any
@@ -884,8 +896,8 @@ declare namespace Components {
                                                     greaterOrEqual: any
                                                 }
                                           )[]
-                                      }
-                                    | {
+                                      } | null)
+                                    | ({
                                           and: (
                                               | {
                                                     equals: any
@@ -930,7 +942,7 @@ declare namespace Components {
                                                     greaterOrEqual: any
                                                 }
                                           )[]
-                                      }
+                                      } | null)
                             }
                         }
                   )[]
@@ -979,7 +991,11 @@ declare namespace Components {
                   name?: string | null
                   auth_type: 'trackstar'
                   auth_settings: {
-                      integration_name: 'sandbox' | 'shiphero' | 'shipstation'
+                      integration_name:
+                          | 'sandbox'
+                          | 'shiphero'
+                          | 'shipstation'
+                          | 'shipbob'
                   }
               }
         export interface GetAutomationEventResponseDto {
@@ -1014,7 +1030,7 @@ declare namespace Components {
             meta: {
                 pagination: {
                     current_page: number
-                    next_page?: null | number
+                    next_page?: number | null
                     total_pages: number
                     total_size: number
                     page_size: number
@@ -1071,8 +1087,8 @@ declare namespace Components {
                               }
                           }[]
                           ticket_tags?: string[] | null
-                          ticket_assignee_user_id?: null | number
-                          ticket_assignee_team_id?: null | number
+                          ticket_assignee_user_id?: number | null
+                          ticket_assignee_team_id?: number | null
                           not_automatable?: boolean | null
                           shopper_email?: string | null
                       }
@@ -1335,172 +1351,17 @@ declare namespace Components {
                       }
                 )[]
                 event?:
-                    | {
-                          id: string
-                          kind: 'choices'
-                          choice_label?: string | null
-                      }
-                    | {
-                          kind: 'go-back'
-                      }
-                    | {
-                          kind: 'go-next'
-                      }
-                    | {
-                          kind: 'text-input'
-                          content: {
-                              text: string
-                          }
-                      }
-                    | {
-                          kind: 'attachments-input'
-                          attachments: {
-                              content_type: string
-                              url: string
-                          }[]
-                      }
-                    | {
-                          kind: 'shopper-authentication'
-                          id_token: string
-                      }
-                    | {
-                          id: string
-                          kind: 'order-selection'
-                          order?: {
-                              name: string
-                              external_id?: string | null
-                              shopper_external_id?: string | null
-                              number?: string | null
-                              currency: {
-                                  code: string
-                                  decimals: number
-                              }
-                              discount_amount?: number | null
-                              subtotal_amount?: number | null
-                              shipping_amount?: number | null
-                              tax_amount?: number | null
-                              cancelled_datetime?: string | null // date-time
-                              created_datetime: string // date-time
-                              external_status?: string | null
-                              external_fulfillment_status?: string | null
-                              billing_address?: {
-                                  line_1: string | null
-                                  line_2: string | null
-                                  city: string | null
-                                  country: string | null
-                                  state: string | null
-                                  zip_code: string | null
-                                  first_name: string | null
-                                  last_name: string | null
-                                  phone_number: string | null
-                              } | null
-                              shipping_address?: {
-                                  line_1: string | null
-                                  line_2: string | null
-                                  city: string | null
-                                  country: string | null
-                                  state: string | null
-                                  zip_code: string | null
-                                  first_name: string | null
-                                  last_name: string | null
-                                  phone_number: string | null
-                              } | null
-                              external_payment_status?: string | null
-                              total_amount: number
-                              tracking_url?: string | null
-                              shipping_datetime?: string | null // date-time
-                              tracking_number?: string | null
-                              status?:
-                                  | 'partially_fulfilled'
-                                  | 'completed'
-                                  | 'canceled'
-                                  | 'on_hold'
-                                  | 'awaiting_fulfillment'
-                                  | 'awaiting_payment'
-                                  | 'scheduled'
-                                  | 'order_pending'
-                              line_items: {
-                                  name: string
-                                  total_amount: number
-                                  quantity: number
-                                  external_id?: string | null
-                                  external_product_id?: string | null
-                                  product?: {
-                                      external_id: string
-                                      images: string[]
-                                      name?: string | null
-                                      external_type?: string | null
-                                      variants?:
-                                          | {
-                                                external_id: string
-                                                external_gid?: string | null
-                                                quantity?: number | null
-                                                name?: string | null
-                                            }[]
-                                          | null
-                                  } | null
-                              }[]
-                              fulfillments?:
-                                  | {
-                                        status?:
-                                            | 'unfulfilled'
-                                            | 'processing_fulfillment'
-                                            | 'pending_delivery'
-                                            | 'attempted_delivery'
-                                            | 'ready_for_pickup'
-                                            | 'in_transit'
-                                            | 'out_for_delivery'
-                                            | 'delivered'
-                                            | 'failed_delivery'
-                                            | 'failed_fulfillment'
-                                            | 'partially_refunded'
-                                            | 'refunded'
-                                            | 'cancelled'
-                                            | 'shipment_status_unavailable'
-                                            | 'status_unavailable'
-                                        external_shipment_status?: string | null
-                                        updated_datetime?: string | null // date-time
-                                    }[]
-                                  | null
-                              shipping_lines?:
-                                  | {
-                                        external_method_id?: string | null
-                                        method_name?: string | null
-                                    }[]
-                                  | null
-                              tags_stringified?: string | null
-                              note?: string | null
-                          } | null
-                      }
-                    | {
-                          items: {
-                              external_id: string
-                              quantity: number
-                              name?: string | null
-                          }[]
-                          kind: 'order-line-item-selection'
-                      }
-                    | {
-                          success: boolean
-                          errors: {
-                              message: string
-                          }[]
-                          kind: 'edit-order'
-                      }
-                    | {
-                          success: boolean
-                          errors: {
-                              message: string
-                          }[]
-                          kind: 'refund-shipping-costs'
-                      }
-                    | {
-                          success: boolean
-                          errors: {
-                              message: string
-                          }[]
-                          kind: 'reship-for-free'
-                      }
+                    | null
+                    | null
+                    | null
+                    | null
+                    | null
+                    | null
+                    | null
+                    | null
+                    | null
+                    | null
+                    | null
                 parent_configuration_id?: string | null
                 parent_configuration_internal_id?: string | null
                 parent_step_id?: string | null
@@ -1573,8 +1434,8 @@ declare namespace Components {
                       kind: 'handover'
                       settings?: {
                           ticket_tags?: string[] | null
-                          ticket_assignee_user_id?: null | number
-                          ticket_assignee_team_id?: null | number
+                          ticket_assignee_user_id?: number | null
+                          ticket_assignee_team_id?: number | null
                       } | null
                   }
                 | {
@@ -1720,8 +1581,8 @@ declare namespace Components {
                       kind: 'helpful-prompt'
                       settings?: {
                           ticket_tags?: string[] | null
-                          ticket_assignee_user_id?: null | number
-                          ticket_assignee_team_id?: null | number
+                          ticket_assignee_user_id?: number | null
+                          ticket_assignee_team_id?: number | null
                       } | null
                   }
                 | {
@@ -1937,6 +1798,16 @@ declare namespace Components {
                           }
                       }
                   }
+                | {
+                      id: string
+                      kind: 'edit-order-note'
+                      settings: {
+                          customer_id: string
+                          order_external_id: string
+                          integration_id: string
+                          note: string
+                      }
+                  }
             )[]
             inputs?:
                 | (
@@ -2001,7 +1872,7 @@ declare namespace Components {
                 } | null
                 name?: string | null
                 conditions?:
-                    | {
+                    | ({
                           or: (
                               | {
                                     equals: any
@@ -2046,8 +1917,8 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
-                    | {
+                      } | null)
+                    | ({
                           and: (
                               | {
                                     equals: any
@@ -2092,7 +1963,7 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
+                      } | null)
             }[]
             available_languages: (
                 | 'en-US'
@@ -2157,7 +2028,7 @@ declare namespace Components {
                                 }
                           )[]
                           conditions?:
-                              | {
+                              | ({
                                     or: (
                                         | {
                                               equals: any
@@ -2202,8 +2073,8 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
-                              | {
+                                } | null)
+                              | ({
                                     and: (
                                         | {
                                               equals: any
@@ -2248,7 +2119,7 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
+                                } | null)
                           outputs: {
                               id: string
                               description: string
@@ -2258,7 +2129,9 @@ declare namespace Components {
                   }
                 | {
                       kind: 'channel'
-                      settings: {}
+                      settings: {
+                          [key: string]: never
+                      }
                   }
                 | {
                       kind: 'reusable-llm-prompt'
@@ -2318,8 +2191,8 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          conditions:
-                              | {
+                          conditions?:
+                              | ({
                                     or: (
                                         | {
                                               equals: any
@@ -2364,8 +2237,8 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
-                              | {
+                                } | null)
+                              | ({
                                     and: (
                                         | {
                                               equals: any
@@ -2410,7 +2283,7 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
+                                } | null)
                       }
                   }
             )[]
@@ -2584,6 +2457,16 @@ declare namespace Components {
                   }
                 | {
                       id: string
+                      kind: 'edit-order-note'
+                      settings: {
+                          customer_id: string
+                          order_external_id: string
+                          integration_id: string
+                          note: string
+                      }
+                  }
+                | {
+                      id: string
                       kind: 'conditions'
                       settings: {
                           name: string
@@ -2685,7 +2568,7 @@ declare namespace Components {
                 } | null
                 name?: string | null
                 conditions?:
-                    | {
+                    | ({
                           or: (
                               | {
                                     equals: any
@@ -2730,8 +2613,8 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
-                    | {
+                      } | null)
+                    | ({
                           and: (
                               | {
                                     equals: any
@@ -2776,7 +2659,7 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
+                      } | null)
             }[]
             available_languages: (
                 | 'en-US'
@@ -2841,7 +2724,7 @@ declare namespace Components {
                                 }
                           )[]
                           conditions?:
-                              | {
+                              | ({
                                     or: (
                                         | {
                                               equals: any
@@ -2886,8 +2769,8 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
-                              | {
+                                } | null)
+                              | ({
                                     and: (
                                         | {
                                               equals: any
@@ -2932,7 +2815,7 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
+                                } | null)
                           outputs: {
                               id: string
                               description: string
@@ -2942,7 +2825,9 @@ declare namespace Components {
                   }
                 | {
                       kind: 'channel'
-                      settings: {}
+                      settings: {
+                          [key: string]: never
+                      }
                   }
                 | {
                       kind: 'reusable-llm-prompt'
@@ -3002,8 +2887,8 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          conditions:
-                              | {
+                          conditions?:
+                              | ({
                                     or: (
                                         | {
                                               equals: any
@@ -3048,8 +2933,8 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
-                              | {
+                                } | null)
+                              | ({
                                     and: (
                                         | {
                                               equals: any
@@ -3094,7 +2979,7 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
+                                } | null)
                       }
                   }
             )[]
@@ -3166,8 +3051,8 @@ declare namespace Components {
                           }
                       }[]
                       ticket_tags?: string[] | null
-                      ticket_assignee_user_id?: null | number
-                      ticket_assignee_team_id?: null | number
+                      ticket_assignee_user_id?: number | null
+                      ticket_assignee_team_id?: number | null
                       not_automatable?: boolean | null
                       shopper_email?: string | null
                   }
@@ -3430,172 +3315,17 @@ declare namespace Components {
                   }
             )[]
             event?:
-                | {
-                      id: string
-                      kind: 'choices'
-                      choice_label?: string | null
-                  }
-                | {
-                      kind: 'go-back'
-                  }
-                | {
-                      kind: 'go-next'
-                  }
-                | {
-                      kind: 'text-input'
-                      content: {
-                          text: string
-                      }
-                  }
-                | {
-                      kind: 'attachments-input'
-                      attachments: {
-                          content_type: string
-                          url: string
-                      }[]
-                  }
-                | {
-                      kind: 'shopper-authentication'
-                      id_token: string
-                  }
-                | {
-                      id: string
-                      kind: 'order-selection'
-                      order?: {
-                          name: string
-                          external_id?: string | null
-                          shopper_external_id?: string | null
-                          number?: string | null
-                          currency: {
-                              code: string
-                              decimals: number
-                          }
-                          discount_amount?: number | null
-                          subtotal_amount?: number | null
-                          shipping_amount?: number | null
-                          tax_amount?: number | null
-                          cancelled_datetime?: string | null // date-time
-                          created_datetime: string // date-time
-                          external_status?: string | null
-                          external_fulfillment_status?: string | null
-                          billing_address?: {
-                              line_1: string | null
-                              line_2: string | null
-                              city: string | null
-                              country: string | null
-                              state: string | null
-                              zip_code: string | null
-                              first_name: string | null
-                              last_name: string | null
-                              phone_number: string | null
-                          } | null
-                          shipping_address?: {
-                              line_1: string | null
-                              line_2: string | null
-                              city: string | null
-                              country: string | null
-                              state: string | null
-                              zip_code: string | null
-                              first_name: string | null
-                              last_name: string | null
-                              phone_number: string | null
-                          } | null
-                          external_payment_status?: string | null
-                          total_amount: number
-                          tracking_url?: string | null
-                          shipping_datetime?: string | null // date-time
-                          tracking_number?: string | null
-                          status?:
-                              | 'partially_fulfilled'
-                              | 'completed'
-                              | 'canceled'
-                              | 'on_hold'
-                              | 'awaiting_fulfillment'
-                              | 'awaiting_payment'
-                              | 'scheduled'
-                              | 'order_pending'
-                          line_items: {
-                              name: string
-                              total_amount: number
-                              quantity: number
-                              external_id?: string | null
-                              external_product_id?: string | null
-                              product?: {
-                                  external_id: string
-                                  images: string[]
-                                  name?: string | null
-                                  external_type?: string | null
-                                  variants?:
-                                      | {
-                                            external_id: string
-                                            external_gid?: string | null
-                                            quantity?: number | null
-                                            name?: string | null
-                                        }[]
-                                      | null
-                              } | null
-                          }[]
-                          fulfillments?:
-                              | {
-                                    status?:
-                                        | 'unfulfilled'
-                                        | 'processing_fulfillment'
-                                        | 'pending_delivery'
-                                        | 'attempted_delivery'
-                                        | 'ready_for_pickup'
-                                        | 'in_transit'
-                                        | 'out_for_delivery'
-                                        | 'delivered'
-                                        | 'failed_delivery'
-                                        | 'failed_fulfillment'
-                                        | 'partially_refunded'
-                                        | 'refunded'
-                                        | 'cancelled'
-                                        | 'shipment_status_unavailable'
-                                        | 'status_unavailable'
-                                    external_shipment_status?: string | null
-                                    updated_datetime?: string | null // date-time
-                                }[]
-                              | null
-                          shipping_lines?:
-                              | {
-                                    external_method_id?: string | null
-                                    method_name?: string | null
-                                }[]
-                              | null
-                          tags_stringified?: string | null
-                          note?: string | null
-                      } | null
-                  }
-                | {
-                      items: {
-                          external_id: string
-                          quantity: number
-                          name?: string | null
-                      }[]
-                      kind: 'order-line-item-selection'
-                  }
-                | {
-                      success: boolean
-                      errors: {
-                          message: string
-                      }[]
-                      kind: 'edit-order'
-                  }
-                | {
-                      success: boolean
-                      errors: {
-                          message: string
-                      }[]
-                      kind: 'refund-shipping-costs'
-                  }
-                | {
-                      success: boolean
-                      errors: {
-                          message: string
-                      }[]
-                      kind: 'reship-for-free'
-                  }
+                | null
+                | null
+                | null
+                | null
+                | null
+                | null
+                | null
+                | null
+                | null
+                | null
+                | null
             parent_configuration_id?: string | null
             parent_configuration_internal_id?: string | null
             parent_step_id?: string | null
@@ -4578,122 +4308,68 @@ declare namespace Components {
                                       | {
                                             kind: 'cancel-order'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'refund-order'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'update-shipping-address'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'cancel-subscription'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'skip-charge'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'remove-item'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'replace-item'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'create-discount-code'
                                             discount_code?: string | null
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'reship-for-free'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'refund-shipping-costs'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
+                                            at: string // date-time
+                                        }
+                                      | {
+                                            kind: 'edit-order-note'
+                                            success: boolean
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
@@ -4723,98 +4399,50 @@ declare namespace Components {
                         | {
                               kind: 'cancel-order'
                               success: boolean
-                              error?:
-                                  | {
-                                        [name: string]: any
-                                    }
-                                  | {
-                                        message: string
-                                    }[]
+                              error?: null | null
                               at: string // date-time
                           }
                         | {
                               kind: 'refund-order'
                               success: boolean
-                              error?:
-                                  | {
-                                        [name: string]: any
-                                    }
-                                  | {
-                                        message: string
-                                    }[]
+                              error?: null | null
                               at: string // date-time
                           }
                         | {
                               kind: 'update-shipping-address'
                               success: boolean
-                              error?:
-                                  | {
-                                        [name: string]: any
-                                    }
-                                  | {
-                                        message: string
-                                    }[]
+                              error?: null | null
                               at: string // date-time
                           }
                         | {
                               kind: 'cancel-subscription'
                               success: boolean
-                              error?:
-                                  | {
-                                        [name: string]: any
-                                    }
-                                  | {
-                                        message: string
-                                    }[]
+                              error?: null | null
                               at: string // date-time
                           }
                         | {
                               kind: 'skip-charge'
                               success: boolean
-                              error?:
-                                  | {
-                                        [name: string]: any
-                                    }
-                                  | {
-                                        message: string
-                                    }[]
+                              error?: null | null
                               at: string // date-time
                           }
                         | {
                               kind: 'remove-item'
                               success: boolean
-                              error?:
-                                  | {
-                                        [name: string]: any
-                                    }
-                                  | {
-                                        message: string
-                                    }[]
+                              error?: null | null
                               at: string // date-time
                           }
                         | {
                               kind: 'replace-item'
                               success: boolean
-                              error?:
-                                  | {
-                                        [name: string]: any
-                                    }
-                                  | {
-                                        message: string
-                                    }[]
+                              error?: null | null
                               at: string // date-time
                           }
                         | {
                               kind: 'create-discount-code'
                               discount_code?: string | null
                               success: boolean
-                              error?:
-                                  | {
-                                        [name: string]: any
-                                    }
-                                  | {
-                                        message: string
-                                    }[]
+                              error?: null | null
                               at: string // date-time
                           }
                         | {
@@ -5470,122 +5098,68 @@ declare namespace Components {
                                       | {
                                             kind: 'cancel-order'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'refund-order'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'update-shipping-address'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'cancel-subscription'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'skip-charge'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'remove-item'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'replace-item'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'create-discount-code'
                                             discount_code?: string | null
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'reship-for-free'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'refund-shipping-costs'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
+                                            at: string // date-time
+                                        }
+                                      | {
+                                            kind: 'edit-order-note'
+                                            success: boolean
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
@@ -5599,30 +5173,24 @@ declare namespace Components {
                         | {
                               kind: 'reship-for-free'
                               success: boolean
-                              error?:
-                                  | {
-                                        [name: string]: any
-                                    }
-                                  | {
-                                        message: string
-                                    }[]
+                              error?: null | null
                               at: string // date-time
                           }
                         | {
                               kind: 'refund-shipping-costs'
                               success: boolean
-                              error?:
-                                  | {
-                                        [name: string]: any
-                                    }
-                                  | {
-                                        message: string
-                                    }[]
+                              error?: null | null
                               at: string // date-time
                           }
                         | {
                               kind: 'end'
                               success: boolean
+                              at: string // date-time
+                          }
+                        | {
+                              kind: 'edit-order-note'
+                              success: boolean
+                              error?: null | null
                               at: string // date-time
                           }
                 } | null
@@ -5673,7 +5241,11 @@ declare namespace Components {
                   name?: string | null
                   auth_type: 'trackstar'
                   auth_settings: {
-                      integration_name: 'sandbox' | 'shiphero' | 'shipstation'
+                      integration_name:
+                          | 'sandbox'
+                          | 'shiphero'
+                          | 'shipstation'
+                          | 'shipbob'
                   }
               }
         )[]
@@ -5741,8 +5313,8 @@ declare namespace Components {
                       kind: 'handover'
                       settings?: {
                           ticket_tags?: string[] | null
-                          ticket_assignee_user_id?: null | number
-                          ticket_assignee_team_id?: null | number
+                          ticket_assignee_user_id?: number | null
+                          ticket_assignee_team_id?: number | null
                       } | null
                   }
                 | {
@@ -5888,8 +5460,8 @@ declare namespace Components {
                       kind: 'helpful-prompt'
                       settings?: {
                           ticket_tags?: string[] | null
-                          ticket_assignee_user_id?: null | number
-                          ticket_assignee_team_id?: null | number
+                          ticket_assignee_user_id?: number | null
+                          ticket_assignee_team_id?: number | null
                       } | null
                   }
                 | {
@@ -6105,6 +5677,16 @@ declare namespace Components {
                           }
                       }
                   }
+                | {
+                      id: string
+                      kind: 'edit-order-note'
+                      settings: {
+                          customer_id: string
+                          order_external_id: string
+                          integration_id: string
+                          note: string
+                      }
+                  }
             )[]
             inputs?:
                 | (
@@ -6169,7 +5751,7 @@ declare namespace Components {
                 } | null
                 name?: string | null
                 conditions?:
-                    | {
+                    | ({
                           or: (
                               | {
                                     equals: any
@@ -6214,8 +5796,8 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
-                    | {
+                      } | null)
+                    | ({
                           and: (
                               | {
                                     equals: any
@@ -6260,7 +5842,7 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
+                      } | null)
             }[]
             available_languages: (
                 | 'en-US'
@@ -6325,7 +5907,7 @@ declare namespace Components {
                                 }
                           )[]
                           conditions?:
-                              | {
+                              | ({
                                     or: (
                                         | {
                                               equals: any
@@ -6370,8 +5952,8 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
-                              | {
+                                } | null)
+                              | ({
                                     and: (
                                         | {
                                               equals: any
@@ -6416,7 +5998,7 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
+                                } | null)
                           outputs: {
                               id: string
                               description: string
@@ -6426,7 +6008,9 @@ declare namespace Components {
                   }
                 | {
                       kind: 'channel'
-                      settings: {}
+                      settings: {
+                          [key: string]: never
+                      }
                   }
                 | {
                       kind: 'reusable-llm-prompt'
@@ -6486,8 +6070,8 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          conditions:
-                              | {
+                          conditions?:
+                              | ({
                                     or: (
                                         | {
                                               equals: any
@@ -6532,8 +6116,8 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
-                              | {
+                                } | null)
+                              | ({
                                     and: (
                                         | {
                                               equals: any
@@ -6578,7 +6162,7 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
+                                } | null)
                       }
                   }
             )[]
@@ -6662,7 +6246,7 @@ declare namespace Components {
             store_name: string
             store_type: 'shopify'
             account_id: number
-            integration_name: 'sandbox' | 'shiphero' | 'shipstation'
+            integration_name: 'sandbox' | 'shiphero' | 'shipstation' | 'shipbob'
             error: boolean
         }[]
         export type ListWfConfigurationTemplatesResponseDto = {
@@ -6818,6 +6402,16 @@ declare namespace Components {
                   }
                 | {
                       id: string
+                      kind: 'edit-order-note'
+                      settings: {
+                          customer_id: string
+                          order_external_id: string
+                          integration_id: string
+                          note: string
+                      }
+                  }
+                | {
+                      id: string
                       kind: 'conditions'
                       settings: {
                           name: string
@@ -6919,7 +6513,7 @@ declare namespace Components {
                 } | null
                 name?: string | null
                 conditions?:
-                    | {
+                    | ({
                           or: (
                               | {
                                     equals: any
@@ -6964,8 +6558,8 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
-                    | {
+                      } | null)
+                    | ({
                           and: (
                               | {
                                     equals: any
@@ -7010,7 +6604,7 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
+                      } | null)
             }[]
             available_languages: (
                 | 'en-US'
@@ -7075,7 +6669,7 @@ declare namespace Components {
                                 }
                           )[]
                           conditions?:
-                              | {
+                              | ({
                                     or: (
                                         | {
                                               equals: any
@@ -7120,8 +6714,8 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
-                              | {
+                                } | null)
+                              | ({
                                     and: (
                                         | {
                                               equals: any
@@ -7166,7 +6760,7 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
+                                } | null)
                           outputs: {
                               id: string
                               description: string
@@ -7176,7 +6770,9 @@ declare namespace Components {
                   }
                 | {
                       kind: 'channel'
-                      settings: {}
+                      settings: {
+                          [key: string]: never
+                      }
                   }
                 | {
                       kind: 'reusable-llm-prompt'
@@ -7236,8 +6832,8 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          conditions:
-                              | {
+                          conditions?:
+                              | ({
                                     or: (
                                         | {
                                               equals: any
@@ -7282,8 +6878,8 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
-                              | {
+                                } | null)
+                              | ({
                                     and: (
                                         | {
                                               equals: any
@@ -7328,7 +6924,7 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
+                                } | null)
                       }
                   }
             )[]
@@ -7404,8 +7000,8 @@ declare namespace Components {
                       kind: 'handover'
                       settings?: {
                           ticket_tags?: string[] | null
-                          ticket_assignee_user_id?: null | number
-                          ticket_assignee_team_id?: null | number
+                          ticket_assignee_user_id?: number | null
+                          ticket_assignee_team_id?: number | null
                       } | null
                   }
                 | {
@@ -7527,8 +7123,8 @@ declare namespace Components {
                       kind: 'helpful-prompt'
                       settings?: {
                           ticket_tags?: string[] | null
-                          ticket_assignee_user_id?: null | number
-                          ticket_assignee_team_id?: null | number
+                          ticket_assignee_user_id?: number | null
+                          ticket_assignee_team_id?: number | null
                       } | null
                   }
                 | {
@@ -7744,6 +7340,16 @@ declare namespace Components {
                           }
                       }
                   }
+                | {
+                      id: string
+                      kind: 'edit-order-note'
+                      settings: {
+                          customer_id: string
+                          order_external_id: string
+                          integration_id: string
+                          note: string
+                      }
+                  }
             )[]
             inputs?:
                 | (
@@ -7808,7 +7414,7 @@ declare namespace Components {
                 } | null
                 name?: string | null
                 conditions?:
-                    | {
+                    | ({
                           or: (
                               | {
                                     equals: any
@@ -7853,8 +7459,8 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
-                    | {
+                      } | null)
+                    | ({
                           and: (
                               | {
                                     equals: any
@@ -7899,7 +7505,7 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
+                      } | null)
             }[]
             available_languages: (
                 | 'en-US'
@@ -7951,10 +7557,16 @@ declare namespace Components {
                   }
                 | {
                       kind: 'attachments-input'
-                      attachments: {
-                          content_type: string
-                          url: string
-                      }[]
+                      attachments: [
+                          {
+                              content_type: string
+                              url: string
+                          },
+                          ...{
+                              content_type: string
+                              url: string
+                          }[],
+                      ]
                   }
                 | {
                       kind: 'shopper-authentication'
@@ -8070,11 +7682,18 @@ declare namespace Components {
                       } | null
                   }
                 | {
-                      items: {
-                          external_id: string
-                          quantity: number
-                          name?: string | null
-                      }[]
+                      items: [
+                          {
+                              external_id: string
+                              quantity: number
+                              name?: string | null
+                          },
+                          ...{
+                              external_id: string
+                              quantity: number
+                              name?: string | null
+                          }[],
+                      ]
                       kind: 'order-line-item-selection'
                   }
         }
@@ -8122,8 +7741,8 @@ declare namespace Components {
                                 }
                             }[]
                             ticket_tags?: string[] | null
-                            ticket_assignee_user_id?: null | number
-                            ticket_assignee_team_id?: null | number
+                            ticket_assignee_user_id?: number | null
+                            ticket_assignee_team_id?: number | null
                             not_automatable?: boolean | null
                             shopper_email?: string | null
                         }
@@ -8487,8 +8106,8 @@ declare namespace Components {
                                 }
                             }[]
                             ticket_tags?: string[] | null
-                            ticket_assignee_user_id?: null | number
-                            ticket_assignee_team_id?: null | number
+                            ticket_assignee_user_id?: number | null
+                            ticket_assignee_team_id?: number | null
                             not_automatable?: boolean | null
                             shopper_email?: string | null
                         }
@@ -9754,122 +9373,68 @@ declare namespace Components {
                                             | {
                                                   kind: 'cancel-order'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'refund-order'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'update-shipping-address'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'cancel-subscription'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'skip-charge'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'remove-item'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'replace-item'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'create-discount-code'
                                                   discount_code?: string | null
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'reship-for-free'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'refund-shipping-costs'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
+                                                  at: string // date-time
+                                              }
+                                            | {
+                                                  kind: 'edit-order-note'
+                                                  success: boolean
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
@@ -9899,98 +9464,50 @@ declare namespace Components {
                               | {
                                     kind: 'cancel-order'
                                     success: boolean
-                                    error?:
-                                        | {
-                                              [name: string]: any
-                                          }
-                                        | {
-                                              message: string
-                                          }[]
+                                    error?: null | null
                                     at: string // date-time
                                 }
                               | {
                                     kind: 'refund-order'
                                     success: boolean
-                                    error?:
-                                        | {
-                                              [name: string]: any
-                                          }
-                                        | {
-                                              message: string
-                                          }[]
+                                    error?: null | null
                                     at: string // date-time
                                 }
                               | {
                                     kind: 'update-shipping-address'
                                     success: boolean
-                                    error?:
-                                        | {
-                                              [name: string]: any
-                                          }
-                                        | {
-                                              message: string
-                                          }[]
+                                    error?: null | null
                                     at: string // date-time
                                 }
                               | {
                                     kind: 'cancel-subscription'
                                     success: boolean
-                                    error?:
-                                        | {
-                                              [name: string]: any
-                                          }
-                                        | {
-                                              message: string
-                                          }[]
+                                    error?: null | null
                                     at: string // date-time
                                 }
                               | {
                                     kind: 'skip-charge'
                                     success: boolean
-                                    error?:
-                                        | {
-                                              [name: string]: any
-                                          }
-                                        | {
-                                              message: string
-                                          }[]
+                                    error?: null | null
                                     at: string // date-time
                                 }
                               | {
                                     kind: 'remove-item'
                                     success: boolean
-                                    error?:
-                                        | {
-                                              [name: string]: any
-                                          }
-                                        | {
-                                              message: string
-                                          }[]
+                                    error?: null | null
                                     at: string // date-time
                                 }
                               | {
                                     kind: 'replace-item'
                                     success: boolean
-                                    error?:
-                                        | {
-                                              [name: string]: any
-                                          }
-                                        | {
-                                              message: string
-                                          }[]
+                                    error?: null | null
                                     at: string // date-time
                                 }
                               | {
                                     kind: 'create-discount-code'
                                     discount_code?: string | null
                                     success: boolean
-                                    error?:
-                                        | {
-                                              [name: string]: any
-                                          }
-                                        | {
-                                              message: string
-                                          }[]
+                                    error?: null | null
                                     at: string // date-time
                                 }
                               | {
@@ -10754,122 +10271,68 @@ declare namespace Components {
                                             | {
                                                   kind: 'cancel-order'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'refund-order'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'update-shipping-address'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'cancel-subscription'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'skip-charge'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'remove-item'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'replace-item'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'create-discount-code'
                                                   discount_code?: string | null
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'reship-for-free'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'refund-shipping-costs'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
+                                                  at: string // date-time
+                                              }
+                                            | {
+                                                  kind: 'edit-order-note'
+                                                  success: boolean
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
@@ -10883,30 +10346,24 @@ declare namespace Components {
                               | {
                                     kind: 'reship-for-free'
                                     success: boolean
-                                    error?:
-                                        | {
-                                              [name: string]: any
-                                          }
-                                        | {
-                                              message: string
-                                          }[]
+                                    error?: null | null
                                     at: string // date-time
                                 }
                               | {
                                     kind: 'refund-shipping-costs'
                                     success: boolean
-                                    error?:
-                                        | {
-                                              [name: string]: any
-                                          }
-                                        | {
-                                              message: string
-                                          }[]
+                                    error?: null | null
                                     at: string // date-time
                                 }
                               | {
                                     kind: 'end'
                                     success: boolean
+                                    at: string // date-time
+                                }
+                              | {
+                                    kind: 'edit-order-note'
+                                    success: boolean
+                                    error?: null | null
                                     at: string // date-time
                                 }
                       } | null
@@ -10969,7 +10426,7 @@ declare namespace Components {
                   } | null
                   user_journey_id?: string | null
                   callback_url?: string | null // uri
-                  channel?: 'email'
+                  channel?: 'email' | 'chat'
               }
         export type StartWfExecutionResponseDto =
             | {
@@ -11015,8 +10472,8 @@ declare namespace Components {
                                 }
                             }[]
                             ticket_tags?: string[] | null
-                            ticket_assignee_user_id?: null | number
-                            ticket_assignee_team_id?: null | number
+                            ticket_assignee_user_id?: number | null
+                            ticket_assignee_team_id?: number | null
                             not_automatable?: boolean | null
                             shopper_email?: string | null
                         }
@@ -11380,8 +10837,8 @@ declare namespace Components {
                                 }
                             }[]
                             ticket_tags?: string[] | null
-                            ticket_assignee_user_id?: null | number
-                            ticket_assignee_team_id?: null | number
+                            ticket_assignee_user_id?: number | null
+                            ticket_assignee_team_id?: number | null
                             not_automatable?: boolean | null
                             shopper_email?: string | null
                         }
@@ -12647,122 +12104,68 @@ declare namespace Components {
                                             | {
                                                   kind: 'cancel-order'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'refund-order'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'update-shipping-address'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'cancel-subscription'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'skip-charge'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'remove-item'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'replace-item'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'create-discount-code'
                                                   discount_code?: string | null
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'reship-for-free'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'refund-shipping-costs'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
+                                                  at: string // date-time
+                                              }
+                                            | {
+                                                  kind: 'edit-order-note'
+                                                  success: boolean
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
@@ -12792,98 +12195,50 @@ declare namespace Components {
                               | {
                                     kind: 'cancel-order'
                                     success: boolean
-                                    error?:
-                                        | {
-                                              [name: string]: any
-                                          }
-                                        | {
-                                              message: string
-                                          }[]
+                                    error?: null | null
                                     at: string // date-time
                                 }
                               | {
                                     kind: 'refund-order'
                                     success: boolean
-                                    error?:
-                                        | {
-                                              [name: string]: any
-                                          }
-                                        | {
-                                              message: string
-                                          }[]
+                                    error?: null | null
                                     at: string // date-time
                                 }
                               | {
                                     kind: 'update-shipping-address'
                                     success: boolean
-                                    error?:
-                                        | {
-                                              [name: string]: any
-                                          }
-                                        | {
-                                              message: string
-                                          }[]
+                                    error?: null | null
                                     at: string // date-time
                                 }
                               | {
                                     kind: 'cancel-subscription'
                                     success: boolean
-                                    error?:
-                                        | {
-                                              [name: string]: any
-                                          }
-                                        | {
-                                              message: string
-                                          }[]
+                                    error?: null | null
                                     at: string // date-time
                                 }
                               | {
                                     kind: 'skip-charge'
                                     success: boolean
-                                    error?:
-                                        | {
-                                              [name: string]: any
-                                          }
-                                        | {
-                                              message: string
-                                          }[]
+                                    error?: null | null
                                     at: string // date-time
                                 }
                               | {
                                     kind: 'remove-item'
                                     success: boolean
-                                    error?:
-                                        | {
-                                              [name: string]: any
-                                          }
-                                        | {
-                                              message: string
-                                          }[]
+                                    error?: null | null
                                     at: string // date-time
                                 }
                               | {
                                     kind: 'replace-item'
                                     success: boolean
-                                    error?:
-                                        | {
-                                              [name: string]: any
-                                          }
-                                        | {
-                                              message: string
-                                          }[]
+                                    error?: null | null
                                     at: string // date-time
                                 }
                               | {
                                     kind: 'create-discount-code'
                                     discount_code?: string | null
                                     success: boolean
-                                    error?:
-                                        | {
-                                              [name: string]: any
-                                          }
-                                        | {
-                                              message: string
-                                          }[]
+                                    error?: null | null
                                     at: string // date-time
                                 }
                               | {
@@ -13647,122 +13002,68 @@ declare namespace Components {
                                             | {
                                                   kind: 'cancel-order'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'refund-order'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'update-shipping-address'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'cancel-subscription'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'skip-charge'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'remove-item'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'replace-item'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'create-discount-code'
                                                   discount_code?: string | null
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'reship-for-free'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
                                                   kind: 'refund-shipping-costs'
                                                   success: boolean
-                                                  error?:
-                                                      | {
-                                                            [name: string]: any
-                                                        }
-                                                      | {
-                                                            message: string
-                                                        }[]
+                                                  error?: null | null
+                                                  at: string // date-time
+                                              }
+                                            | {
+                                                  kind: 'edit-order-note'
+                                                  success: boolean
+                                                  error?: null | null
                                                   at: string // date-time
                                               }
                                             | {
@@ -13776,30 +13077,24 @@ declare namespace Components {
                               | {
                                     kind: 'reship-for-free'
                                     success: boolean
-                                    error?:
-                                        | {
-                                              [name: string]: any
-                                          }
-                                        | {
-                                              message: string
-                                          }[]
+                                    error?: null | null
                                     at: string // date-time
                                 }
                               | {
                                     kind: 'refund-shipping-costs'
                                     success: boolean
-                                    error?:
-                                        | {
-                                              [name: string]: any
-                                          }
-                                        | {
-                                              message: string
-                                          }[]
+                                    error?: null | null
                                     at: string // date-time
                                 }
                               | {
                                     kind: 'end'
                                     success: boolean
+                                    at: string // date-time
+                                }
+                              | {
+                                    kind: 'edit-order-note'
+                                    success: boolean
+                                    error?: null | null
                                     at: string // date-time
                                 }
                       } | null
@@ -13835,7 +13130,7 @@ declare namespace Components {
             } | null
             user_journey_id?: string | null
             callback_url?: string | null // uri
-            channel?: 'email'
+            channel?: 'email' | 'chat'
         }
         export type TestWfExecutionResponseDto = {
             trigger: 'llm-prompt'
@@ -14808,122 +14103,68 @@ declare namespace Components {
                                       | {
                                             kind: 'cancel-order'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'refund-order'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'update-shipping-address'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'cancel-subscription'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'skip-charge'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'remove-item'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'replace-item'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'create-discount-code'
                                             discount_code?: string | null
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'reship-for-free'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'refund-shipping-costs'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
+                                            at: string // date-time
+                                        }
+                                      | {
+                                            kind: 'edit-order-note'
+                                            success: boolean
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
@@ -14953,98 +14194,50 @@ declare namespace Components {
                         | {
                               kind: 'cancel-order'
                               success: boolean
-                              error?:
-                                  | {
-                                        [name: string]: any
-                                    }
-                                  | {
-                                        message: string
-                                    }[]
+                              error?: null | null
                               at: string // date-time
                           }
                         | {
                               kind: 'refund-order'
                               success: boolean
-                              error?:
-                                  | {
-                                        [name: string]: any
-                                    }
-                                  | {
-                                        message: string
-                                    }[]
+                              error?: null | null
                               at: string // date-time
                           }
                         | {
                               kind: 'update-shipping-address'
                               success: boolean
-                              error?:
-                                  | {
-                                        [name: string]: any
-                                    }
-                                  | {
-                                        message: string
-                                    }[]
+                              error?: null | null
                               at: string // date-time
                           }
                         | {
                               kind: 'cancel-subscription'
                               success: boolean
-                              error?:
-                                  | {
-                                        [name: string]: any
-                                    }
-                                  | {
-                                        message: string
-                                    }[]
+                              error?: null | null
                               at: string // date-time
                           }
                         | {
                               kind: 'skip-charge'
                               success: boolean
-                              error?:
-                                  | {
-                                        [name: string]: any
-                                    }
-                                  | {
-                                        message: string
-                                    }[]
+                              error?: null | null
                               at: string // date-time
                           }
                         | {
                               kind: 'remove-item'
                               success: boolean
-                              error?:
-                                  | {
-                                        [name: string]: any
-                                    }
-                                  | {
-                                        message: string
-                                    }[]
+                              error?: null | null
                               at: string // date-time
                           }
                         | {
                               kind: 'replace-item'
                               success: boolean
-                              error?:
-                                  | {
-                                        [name: string]: any
-                                    }
-                                  | {
-                                        message: string
-                                    }[]
+                              error?: null | null
                               at: string // date-time
                           }
                         | {
                               kind: 'create-discount-code'
                               discount_code?: string | null
                               success: boolean
-                              error?:
-                                  | {
-                                        [name: string]: any
-                                    }
-                                  | {
-                                        message: string
-                                    }[]
+                              error?: null | null
                               at: string // date-time
                           }
                         | {
@@ -15700,122 +14893,68 @@ declare namespace Components {
                                       | {
                                             kind: 'cancel-order'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'refund-order'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'update-shipping-address'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'cancel-subscription'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'skip-charge'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'remove-item'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'replace-item'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'create-discount-code'
                                             discount_code?: string | null
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'reship-for-free'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
                                             kind: 'refund-shipping-costs'
                                             success: boolean
-                                            error?:
-                                                | {
-                                                      [name: string]: any
-                                                  }
-                                                | {
-                                                      message: string
-                                                  }[]
+                                            error?: null | null
+                                            at: string // date-time
+                                        }
+                                      | {
+                                            kind: 'edit-order-note'
+                                            success: boolean
+                                            error?: null | null
                                             at: string // date-time
                                         }
                                       | {
@@ -15829,30 +14968,24 @@ declare namespace Components {
                         | {
                               kind: 'reship-for-free'
                               success: boolean
-                              error?:
-                                  | {
-                                        [name: string]: any
-                                    }
-                                  | {
-                                        message: string
-                                    }[]
+                              error?: null | null
                               at: string // date-time
                           }
                         | {
                               kind: 'refund-shipping-costs'
                               success: boolean
-                              error?:
-                                  | {
-                                        [name: string]: any
-                                    }
-                                  | {
-                                        message: string
-                                    }[]
+                              error?: null | null
                               at: string // date-time
                           }
                         | {
                               kind: 'end'
                               success: boolean
+                              at: string // date-time
+                          }
+                        | {
+                              kind: 'edit-order-note'
+                              success: boolean
+                              error?: null | null
                               at: string // date-time
                           }
                 } | null
@@ -15888,7 +15021,11 @@ declare namespace Components {
                   name?: string | null
                   auth_type: 'trackstar'
                   auth_settings: {
-                      integration_name: 'sandbox' | 'shiphero' | 'shipstation'
+                      integration_name:
+                          | 'sandbox'
+                          | 'shiphero'
+                          | 'shipstation'
+                          | 'shipbob'
                   }
               }
         export type UpsertAppRequestResponseDto =
@@ -15918,7 +15055,11 @@ declare namespace Components {
                   name?: string | null
                   auth_type: 'trackstar'
                   auth_settings: {
-                      integration_name: 'sandbox' | 'shiphero' | 'shipstation'
+                      integration_name:
+                          | 'sandbox'
+                          | 'shiphero'
+                          | 'shipstation'
+                          | 'shipbob'
                   }
               }
         export interface UpsertStoreAppRequestBodyDto {
@@ -15986,8 +15127,8 @@ declare namespace Components {
                       kind: 'handover'
                       settings?: {
                           ticket_tags?: string[] | null
-                          ticket_assignee_user_id?: null | number
-                          ticket_assignee_team_id?: null | number
+                          ticket_assignee_user_id?: number | null
+                          ticket_assignee_team_id?: number | null
                       } | null
                   }
                 | {
@@ -16133,8 +15274,8 @@ declare namespace Components {
                       kind: 'helpful-prompt'
                       settings?: {
                           ticket_tags?: string[] | null
-                          ticket_assignee_user_id?: null | number
-                          ticket_assignee_team_id?: null | number
+                          ticket_assignee_user_id?: number | null
+                          ticket_assignee_team_id?: number | null
                       } | null
                   }
                 | {
@@ -16350,6 +15491,16 @@ declare namespace Components {
                           }
                       }
                   }
+                | {
+                      id: string
+                      kind: 'edit-order-note'
+                      settings: {
+                          customer_id: string
+                          order_external_id: string
+                          integration_id: string
+                          note: string
+                      }
+                  }
             )[]
             inputs?:
                 | (
@@ -16414,7 +15565,7 @@ declare namespace Components {
                 } | null
                 name?: string | null
                 conditions?:
-                    | {
+                    | ({
                           or: (
                               | {
                                     equals: any
@@ -16459,8 +15610,8 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
-                    | {
+                      } | null)
+                    | ({
                           and: (
                               | {
                                     equals: any
@@ -16505,7 +15656,7 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
+                      } | null)
             }[]
             available_languages: (
                 | 'en-US'
@@ -16567,7 +15718,7 @@ declare namespace Components {
                                 }
                           )[]
                           conditions?:
-                              | {
+                              | ({
                                     or: (
                                         | {
                                               equals: any
@@ -16612,8 +15763,8 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
-                              | {
+                                } | null)
+                              | ({
                                     and: (
                                         | {
                                               equals: any
@@ -16658,7 +15809,7 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
+                                } | null)
                           outputs: {
                               id: string
                               description: string
@@ -16668,7 +15819,9 @@ declare namespace Components {
                   }
                 | {
                       kind: 'channel'
-                      settings: {}
+                      settings: {
+                          [key: string]: never
+                      }
                   }
                 | {
                       kind: 'reusable-llm-prompt'
@@ -16728,8 +15881,8 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          conditions:
-                              | {
+                          conditions?:
+                              | ({
                                     or: (
                                         | {
                                               equals: any
@@ -16774,8 +15927,8 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
-                              | {
+                                } | null)
+                              | ({
                                     and: (
                                         | {
                                               equals: any
@@ -16820,7 +15973,7 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
+                                } | null)
                       }
                   }
             )[]
@@ -16898,8 +16051,8 @@ declare namespace Components {
                       kind: 'handover'
                       settings?: {
                           ticket_tags?: string[] | null
-                          ticket_assignee_user_id?: null | number
-                          ticket_assignee_team_id?: null | number
+                          ticket_assignee_user_id?: number | null
+                          ticket_assignee_team_id?: number | null
                       } | null
                   }
                 | {
@@ -17045,8 +16198,8 @@ declare namespace Components {
                       kind: 'helpful-prompt'
                       settings?: {
                           ticket_tags?: string[] | null
-                          ticket_assignee_user_id?: null | number
-                          ticket_assignee_team_id?: null | number
+                          ticket_assignee_user_id?: number | null
+                          ticket_assignee_team_id?: number | null
                       } | null
                   }
                 | {
@@ -17262,6 +16415,16 @@ declare namespace Components {
                           }
                       }
                   }
+                | {
+                      id: string
+                      kind: 'edit-order-note'
+                      settings: {
+                          customer_id: string
+                          order_external_id: string
+                          integration_id: string
+                          note: string
+                      }
+                  }
             )[]
             inputs?:
                 | (
@@ -17326,7 +16489,7 @@ declare namespace Components {
                 } | null
                 name?: string | null
                 conditions?:
-                    | {
+                    | ({
                           or: (
                               | {
                                     equals: any
@@ -17371,8 +16534,8 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
-                    | {
+                      } | null)
+                    | ({
                           and: (
                               | {
                                     equals: any
@@ -17417,7 +16580,7 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
+                      } | null)
             }[]
             available_languages: (
                 | 'en-US'
@@ -17482,7 +16645,7 @@ declare namespace Components {
                                 }
                           )[]
                           conditions?:
-                              | {
+                              | ({
                                     or: (
                                         | {
                                               equals: any
@@ -17527,8 +16690,8 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
-                              | {
+                                } | null)
+                              | ({
                                     and: (
                                         | {
                                               equals: any
@@ -17573,7 +16736,7 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
+                                } | null)
                           outputs: {
                               id: string
                               description: string
@@ -17583,7 +16746,9 @@ declare namespace Components {
                   }
                 | {
                       kind: 'channel'
-                      settings: {}
+                      settings: {
+                          [key: string]: never
+                      }
                   }
                 | {
                       kind: 'reusable-llm-prompt'
@@ -17643,8 +16808,8 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          conditions:
-                              | {
+                          conditions?:
+                              | ({
                                     or: (
                                         | {
                                               equals: any
@@ -17689,8 +16854,8 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
-                              | {
+                                } | null)
+                              | ({
                                     and: (
                                         | {
                                               equals: any
@@ -17735,7 +16900,7 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
+                                } | null)
                       }
                   }
             )[]
@@ -17811,8 +16976,8 @@ declare namespace Components {
                       kind: 'handover'
                       settings?: {
                           ticket_tags?: string[] | null
-                          ticket_assignee_user_id?: null | number
-                          ticket_assignee_team_id?: null | number
+                          ticket_assignee_user_id?: number | null
+                          ticket_assignee_team_id?: number | null
                       } | null
                   }
                 | {
@@ -17958,8 +17123,8 @@ declare namespace Components {
                       kind: 'helpful-prompt'
                       settings?: {
                           ticket_tags?: string[] | null
-                          ticket_assignee_user_id?: null | number
-                          ticket_assignee_team_id?: null | number
+                          ticket_assignee_user_id?: number | null
+                          ticket_assignee_team_id?: number | null
                       } | null
                   }
                 | {
@@ -18175,6 +17340,16 @@ declare namespace Components {
                           }
                       }
                   }
+                | {
+                      id: string
+                      kind: 'edit-order-note'
+                      settings: {
+                          customer_id: string
+                          order_external_id: string
+                          integration_id: string
+                          note: string
+                      }
+                  }
             )[]
             inputs?:
                 | (
@@ -18239,7 +17414,7 @@ declare namespace Components {
                 } | null
                 name?: string | null
                 conditions?:
-                    | {
+                    | ({
                           or: (
                               | {
                                     equals: any
@@ -18284,8 +17459,8 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
-                    | {
+                      } | null)
+                    | ({
                           and: (
                               | {
                                     equals: any
@@ -18330,7 +17505,7 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
+                      } | null)
             }[]
             available_languages: (
                 | 'en-US'
@@ -18393,7 +17568,7 @@ declare namespace Components {
                                       }
                                 )[]
                                 conditions?:
-                                    | {
+                                    | ({
                                           or: (
                                               | {
                                                     equals: any
@@ -18438,8 +17613,8 @@ declare namespace Components {
                                                     greaterOrEqual: any
                                                 }
                                           )[]
-                                      }
-                                    | {
+                                      } | null)
+                                    | ({
                                           and: (
                                               | {
                                                     equals: any
@@ -18484,7 +17659,7 @@ declare namespace Components {
                                                     greaterOrEqual: any
                                                 }
                                           )[]
-                                      }
+                                      } | null)
                                 outputs: {
                                     id: string
                                     description: string
@@ -18494,7 +17669,9 @@ declare namespace Components {
                         }
                       | {
                             kind: 'channel'
-                            settings: {}
+                            settings: {
+                                [key: string]: never
+                            }
                         }
                       | {
                             kind: 'reusable-llm-prompt'
@@ -18556,8 +17733,8 @@ declare namespace Components {
                             trigger: 'reusable-llm-prompt'
                             settings: {
                                 requires_confirmation: boolean
-                                conditions:
-                                    | {
+                                conditions?:
+                                    | ({
                                           or: (
                                               | {
                                                     equals: any
@@ -18602,8 +17779,8 @@ declare namespace Components {
                                                     greaterOrEqual: any
                                                 }
                                           )[]
-                                      }
-                                    | {
+                                      } | null)
+                                    | ({
                                           and: (
                                               | {
                                                     equals: any
@@ -18648,7 +17825,7 @@ declare namespace Components {
                                                     greaterOrEqual: any
                                                 }
                                           )[]
-                                      }
+                                      } | null)
                             }
                         }
                   )[]
@@ -18727,8 +17904,8 @@ declare namespace Components {
                       kind: 'handover'
                       settings?: {
                           ticket_tags?: string[] | null
-                          ticket_assignee_user_id?: null | number
-                          ticket_assignee_team_id?: null | number
+                          ticket_assignee_user_id?: number | null
+                          ticket_assignee_team_id?: number | null
                       } | null
                   }
                 | {
@@ -18874,8 +18051,8 @@ declare namespace Components {
                       kind: 'helpful-prompt'
                       settings?: {
                           ticket_tags?: string[] | null
-                          ticket_assignee_user_id?: null | number
-                          ticket_assignee_team_id?: null | number
+                          ticket_assignee_user_id?: number | null
+                          ticket_assignee_team_id?: number | null
                       } | null
                   }
                 | {
@@ -19091,6 +18268,16 @@ declare namespace Components {
                           }
                       }
                   }
+                | {
+                      id: string
+                      kind: 'edit-order-note'
+                      settings: {
+                          customer_id: string
+                          order_external_id: string
+                          integration_id: string
+                          note: string
+                      }
+                  }
             )[]
             inputs?:
                 | (
@@ -19155,7 +18342,7 @@ declare namespace Components {
                 } | null
                 name?: string | null
                 conditions?:
-                    | {
+                    | ({
                           or: (
                               | {
                                     equals: any
@@ -19200,8 +18387,8 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
-                    | {
+                      } | null)
+                    | ({
                           and: (
                               | {
                                     equals: any
@@ -19246,7 +18433,7 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
+                      } | null)
             }[]
             available_languages: (
                 | 'en-US'
@@ -19312,7 +18499,7 @@ declare namespace Components {
                                       }
                                 )[]
                                 conditions?:
-                                    | {
+                                    | ({
                                           or: (
                                               | {
                                                     equals: any
@@ -19357,8 +18544,8 @@ declare namespace Components {
                                                     greaterOrEqual: any
                                                 }
                                           )[]
-                                      }
-                                    | {
+                                      } | null)
+                                    | ({
                                           and: (
                                               | {
                                                     equals: any
@@ -19403,7 +18590,7 @@ declare namespace Components {
                                                     greaterOrEqual: any
                                                 }
                                           )[]
-                                      }
+                                      } | null)
                                 outputs: {
                                     id: string
                                     description: string
@@ -19413,7 +18600,9 @@ declare namespace Components {
                         }
                       | {
                             kind: 'channel'
-                            settings: {}
+                            settings: {
+                                [key: string]: never
+                            }
                         }
                       | {
                             kind: 'reusable-llm-prompt'
@@ -19475,8 +18664,8 @@ declare namespace Components {
                             trigger: 'reusable-llm-prompt'
                             settings: {
                                 requires_confirmation: boolean
-                                conditions:
-                                    | {
+                                conditions?:
+                                    | ({
                                           or: (
                                               | {
                                                     equals: any
@@ -19521,8 +18710,8 @@ declare namespace Components {
                                                     greaterOrEqual: any
                                                 }
                                           )[]
-                                      }
-                                    | {
+                                      } | null)
+                                    | ({
                                           and: (
                                               | {
                                                     equals: any
@@ -19567,7 +18756,7 @@ declare namespace Components {
                                                     greaterOrEqual: any
                                                 }
                                           )[]
-                                      }
+                                      } | null)
                             }
                         }
                   )[]
@@ -19741,6 +18930,16 @@ declare namespace Components {
                   }
                 | {
                       id: string
+                      kind: 'edit-order-note'
+                      settings: {
+                          customer_id: string
+                          order_external_id: string
+                          integration_id: string
+                          note: string
+                      }
+                  }
+                | {
+                      id: string
                       kind: 'conditions'
                       settings: {
                           name: string
@@ -19842,7 +19041,7 @@ declare namespace Components {
                 } | null
                 name?: string | null
                 conditions?:
-                    | {
+                    | ({
                           or: (
                               | {
                                     equals: any
@@ -19887,8 +19086,8 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
-                    | {
+                      } | null)
+                    | ({
                           and: (
                               | {
                                     equals: any
@@ -19933,7 +19132,7 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
+                      } | null)
             }[]
             available_languages: (
                 | 'en-US'
@@ -19995,7 +19194,7 @@ declare namespace Components {
                                 }
                           )[]
                           conditions?:
-                              | {
+                              | ({
                                     or: (
                                         | {
                                               equals: any
@@ -20040,8 +19239,8 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
-                              | {
+                                } | null)
+                              | ({
                                     and: (
                                         | {
                                               equals: any
@@ -20086,7 +19285,7 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
+                                } | null)
                           outputs: {
                               id: string
                               description: string
@@ -20096,7 +19295,9 @@ declare namespace Components {
                   }
                 | {
                       kind: 'channel'
-                      settings: {}
+                      settings: {
+                          [key: string]: never
+                      }
                   }
                 | {
                       kind: 'reusable-llm-prompt'
@@ -20156,8 +19357,8 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          conditions:
-                              | {
+                          conditions?:
+                              | ({
                                     or: (
                                         | {
                                               equals: any
@@ -20202,8 +19403,8 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
-                              | {
+                                } | null)
+                              | ({
                                     and: (
                                         | {
                                               equals: any
@@ -20248,7 +19449,7 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
+                                } | null)
                       }
                   }
             )[]
@@ -20420,6 +19621,16 @@ declare namespace Components {
                   }
                 | {
                       id: string
+                      kind: 'edit-order-note'
+                      settings: {
+                          customer_id: string
+                          order_external_id: string
+                          integration_id: string
+                          note: string
+                      }
+                  }
+                | {
+                      id: string
                       kind: 'conditions'
                       settings: {
                           name: string
@@ -20521,7 +19732,7 @@ declare namespace Components {
                 } | null
                 name?: string | null
                 conditions?:
-                    | {
+                    | ({
                           or: (
                               | {
                                     equals: any
@@ -20566,8 +19777,8 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
-                    | {
+                      } | null)
+                    | ({
                           and: (
                               | {
                                     equals: any
@@ -20612,7 +19823,7 @@ declare namespace Components {
                                     greaterOrEqual: any
                                 }
                           )[]
-                      }
+                      } | null)
             }[]
             available_languages: (
                 | 'en-US'
@@ -20677,7 +19888,7 @@ declare namespace Components {
                                 }
                           )[]
                           conditions?:
-                              | {
+                              | ({
                                     or: (
                                         | {
                                               equals: any
@@ -20722,8 +19933,8 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
-                              | {
+                                } | null)
+                              | ({
                                     and: (
                                         | {
                                               equals: any
@@ -20768,7 +19979,7 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
+                                } | null)
                           outputs: {
                               id: string
                               description: string
@@ -20778,7 +19989,9 @@ declare namespace Components {
                   }
                 | {
                       kind: 'channel'
-                      settings: {}
+                      settings: {
+                          [key: string]: never
+                      }
                   }
                 | {
                       kind: 'reusable-llm-prompt'
@@ -20838,8 +20051,8 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          conditions:
-                              | {
+                          conditions?:
+                              | ({
                                     or: (
                                         | {
                                               equals: any
@@ -20884,8 +20097,8 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
-                              | {
+                                } | null)
+                              | ({
                                     and: (
                                         | {
                                               equals: any
@@ -20930,7 +20143,7 @@ declare namespace Components {
                                               greaterOrEqual: any
                                           }
                                     )[]
-                                }
+                                } | null)
                       }
                   }
             )[]
@@ -20967,6 +20180,9 @@ declare namespace Paths {
         }
         export interface PathParameters {
             id: Parameters.Id
+        }
+        namespace Responses {
+            export interface $204 {}
         }
     }
     namespace AppControllerGet {
@@ -21128,6 +20344,9 @@ declare namespace Paths {
             store_name: Parameters.StoreName
             type: Parameters.Type
         }
+        namespace Responses {
+            export interface $204 {}
+        }
     }
     namespace StoreAppControllerList {
         namespace Parameters {
@@ -21249,6 +20468,9 @@ declare namespace Paths {
     namespace TrackstarControllerWebhook {
         export type RequestBody =
             Components.Schemas.ConnectionErrorWebhookBodyDto
+        namespace Responses {
+            export interface $201 {}
+        }
     }
     namespace WfConfigurationControllerDelete {
         namespace Parameters {
@@ -21256,6 +20478,9 @@ declare namespace Paths {
         }
         export interface PathParameters {
             internal_id: Parameters.InternalId
+        }
+        namespace Responses {
+            export interface $204 {}
         }
     }
     namespace WfConfigurationControllerDuplicate {
@@ -21337,8 +20562,8 @@ declare namespace Paths {
             page?: Parameters.Page
             success?: Parameters.Success
             status?: Parameters.Status
-            end_date: Parameters.EndDate // date-time
-            start_date: Parameters.StartDate // date-time
+            end_date: Parameters.EndDate /* date-time */
+            start_date: Parameters.StartDate /* date-time */
         }
         namespace Responses {
             export type $200 =
@@ -21347,7 +20572,10 @@ declare namespace Paths {
     }
     namespace WfConfigurationControllerList {
         namespace Parameters {
-            export type IsDraft = ('0' | '1' | 'true' | 'false')[]
+            export type IsDraft = [
+                '0' | '1' | 'true' | 'false',
+                ...('0' | '1' | 'true' | 'false')[],
+            ]
         }
         export interface QueryParameters {
             is_draft?: Parameters.IsDraft
@@ -21377,6 +20605,9 @@ declare namespace Paths {
         }
         export interface PathParameters {
             internal_id: Parameters.InternalId
+        }
+        namespace Responses {
+            export interface $204 {}
         }
     }
     namespace WfConfigurationTemplateControllerGet {
@@ -21445,6 +20676,9 @@ declare namespace Paths {
             internal_id: Parameters.InternalId
             lang: Parameters.Lang
         }
+        namespace Responses {
+            export interface $204 {}
+        }
     }
     namespace WfConfigurationTranslationsControllerGet {
         namespace Parameters {
@@ -21508,7 +20742,7 @@ declare namespace Paths {
     }
     namespace WfEntrypointControllerList {
         namespace Parameters {
-            export type Ids = string[]
+            export type Ids = [string, ...string[]]
             export type Language =
                 | 'en-US'
                 | 'en-GB'
@@ -21554,6 +20788,9 @@ declare namespace Paths {
         }
         export type RequestBody =
             Components.Schemas.WfExecutionHandoverCallbackRequestDto
+        namespace Responses {
+            export interface $204 {}
+        }
     }
     namespace WfExecutionControllerSend {
         export type RequestBody =
@@ -21582,7 +20819,7 @@ export interface OperationMethods {
      * AutomationEventController_get
      */
     'AutomationEventController_get'(
-        parameters?: Parameters<Paths.AutomationEventControllerGet.PathParameters> | null,
+        parameters: Parameters<Paths.AutomationEventControllerGet.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.AutomationEventControllerGet.Responses.$200>
@@ -21598,7 +20835,7 @@ export interface OperationMethods {
      * WfConfigurationController_get
      */
     'WfConfigurationController_get'(
-        parameters?: Parameters<Paths.WfConfigurationControllerGet.PathParameters> | null,
+        parameters: Parameters<Paths.WfConfigurationControllerGet.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.WfConfigurationControllerGet.Responses.$200>
@@ -21606,7 +20843,7 @@ export interface OperationMethods {
      * WfConfigurationController_upsert
      */
     'WfConfigurationController_upsert'(
-        parameters?: Parameters<Paths.WfConfigurationControllerUpsert.PathParameters> | null,
+        parameters: Parameters<Paths.WfConfigurationControllerUpsert.PathParameters>,
         data?: Paths.WfConfigurationControllerUpsert.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.WfConfigurationControllerUpsert.Responses.$201>
@@ -21614,15 +20851,15 @@ export interface OperationMethods {
      * WfConfigurationController_delete
      */
     'WfConfigurationController_delete'(
-        parameters?: Parameters<Paths.WfConfigurationControllerDelete.PathParameters> | null,
+        parameters: Parameters<Paths.WfConfigurationControllerDelete.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.WfConfigurationControllerDelete.Responses.$204>
     /**
      * WfConfigurationController_duplicate
      */
     'WfConfigurationController_duplicate'(
-        parameters?: Parameters<Paths.WfConfigurationControllerDuplicate.PathParameters> | null,
+        parameters: Parameters<Paths.WfConfigurationControllerDuplicate.PathParameters>,
         data?: Paths.WfConfigurationControllerDuplicate.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.WfConfigurationControllerDuplicate.Responses.$201>
@@ -21630,7 +20867,7 @@ export interface OperationMethods {
      * WfConfigurationController_exportStepLogs
      */
     'WfConfigurationController_exportStepLogs'(
-        parameters?: Parameters<Paths.WfConfigurationControllerExportStepLogs.PathParameters> | null,
+        parameters: Parameters<Paths.WfConfigurationControllerExportStepLogs.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<any>
@@ -21638,7 +20875,7 @@ export interface OperationMethods {
      * WfConfigurationController_exportExecutionLogs
      */
     'WfConfigurationController_exportExecutionLogs'(
-        parameters?: Parameters<Paths.WfConfigurationControllerExportExecutionLogs.PathParameters> | null,
+        parameters: Parameters<Paths.WfConfigurationControllerExportExecutionLogs.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.WfConfigurationControllerExportExecutionLogs.Responses.$200>
@@ -21646,7 +20883,7 @@ export interface OperationMethods {
      * WfConfigurationController_getExecution
      */
     'WfConfigurationController_getExecution'(
-        parameters?: Parameters<Paths.WfConfigurationControllerGetExecution.PathParameters> | null,
+        parameters: Parameters<Paths.WfConfigurationControllerGetExecution.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.WfConfigurationControllerGetExecution.Responses.$200>
@@ -21654,10 +20891,10 @@ export interface OperationMethods {
      * WfConfigurationController_getExecutions
      */
     'WfConfigurationController_getExecutions'(
-        parameters?: Parameters<
-            Paths.WfConfigurationControllerGetExecutions.PathParameters &
-                Paths.WfConfigurationControllerGetExecutions.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.WfConfigurationControllerGetExecutions.QueryParameters &
+                Paths.WfConfigurationControllerGetExecutions.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.WfConfigurationControllerGetExecutions.Responses.$200>
@@ -21665,7 +20902,7 @@ export interface OperationMethods {
      * WfConfigurationTranslationsController_get
      */
     'WfConfigurationTranslationsController_get'(
-        parameters?: Parameters<Paths.WfConfigurationTranslationsControllerGet.PathParameters> | null,
+        parameters: Parameters<Paths.WfConfigurationTranslationsControllerGet.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.WfConfigurationTranslationsControllerGet.Responses.$200>
@@ -21673,7 +20910,7 @@ export interface OperationMethods {
      * WfConfigurationTranslationsController_upsert
      */
     'WfConfigurationTranslationsController_upsert'(
-        parameters?: Parameters<Paths.WfConfigurationTranslationsControllerUpsert.PathParameters> | null,
+        parameters: Parameters<Paths.WfConfigurationTranslationsControllerUpsert.PathParameters>,
         data?: Paths.WfConfigurationTranslationsControllerUpsert.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.WfConfigurationTranslationsControllerUpsert.Responses.$201>
@@ -21681,10 +20918,10 @@ export interface OperationMethods {
      * WfConfigurationTranslationsController_delete
      */
     'WfConfigurationTranslationsController_delete'(
-        parameters?: Parameters<Paths.WfConfigurationTranslationsControllerDelete.PathParameters> | null,
+        parameters: Parameters<Paths.WfConfigurationTranslationsControllerDelete.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.WfConfigurationTranslationsControllerDelete.Responses.$204>
     /**
      * WfEntrypointController_list
      */
@@ -21721,7 +20958,7 @@ export interface OperationMethods {
      * WfExecutionController_get
      */
     'WfExecutionController_get'(
-        parameters?: Parameters<Paths.WfExecutionControllerGet.PathParameters> | null,
+        parameters: Parameters<Paths.WfExecutionControllerGet.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.WfExecutionControllerGet.Responses.$200>
@@ -21729,18 +20966,18 @@ export interface OperationMethods {
      * WfExecutionController_handleHandoverCallback
      */
     'WfExecutionController_handleHandoverCallback'(
-        parameters?: Parameters<Paths.WfExecutionControllerHandleHandoverCallback.PathParameters> | null,
+        parameters: Parameters<Paths.WfExecutionControllerHandleHandoverCallback.PathParameters>,
         data?: Paths.WfExecutionControllerHandleHandoverCallback.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.WfExecutionControllerHandleHandoverCallback.Responses.$204>
     /**
      * StoreWfConfigurationController_list
      */
     'StoreWfConfigurationController_list'(
-        parameters?: Parameters<
-            Paths.StoreWfConfigurationControllerList.PathParameters &
-                Paths.StoreWfConfigurationControllerList.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.StoreWfConfigurationControllerList.QueryParameters &
+                Paths.StoreWfConfigurationControllerList.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.StoreWfConfigurationControllerList.Responses.$200>
@@ -21748,7 +20985,7 @@ export interface OperationMethods {
      * StoreWfConfigurationController_upsert
      */
     'StoreWfConfigurationController_upsert'(
-        parameters?: Parameters<Paths.StoreWfConfigurationControllerUpsert.PathParameters> | null,
+        parameters: Parameters<Paths.StoreWfConfigurationControllerUpsert.PathParameters>,
         data?: Paths.StoreWfConfigurationControllerUpsert.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.StoreWfConfigurationControllerUpsert.Responses.$201>
@@ -21756,7 +20993,7 @@ export interface OperationMethods {
      * StoreWfEntrypointController_list
      */
     'StoreWfEntrypointController_list'(
-        parameters?: Parameters<Paths.StoreWfEntrypointControllerList.PathParameters> | null,
+        parameters: Parameters<Paths.StoreWfEntrypointControllerList.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.StoreWfEntrypointControllerList.Responses.$200>
@@ -21764,7 +21001,7 @@ export interface OperationMethods {
      * WfConfigurationTemplateController_upsert
      */
     'WfConfigurationTemplateController_upsert'(
-        parameters?: Parameters<Paths.WfConfigurationTemplateControllerUpsert.PathParameters> | null,
+        parameters: Parameters<Paths.WfConfigurationTemplateControllerUpsert.PathParameters>,
         data?: Paths.WfConfigurationTemplateControllerUpsert.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.WfConfigurationTemplateControllerUpsert.Responses.$201>
@@ -21772,10 +21009,10 @@ export interface OperationMethods {
      * WfConfigurationTemplateController_delete
      */
     'WfConfigurationTemplateController_delete'(
-        parameters?: Parameters<Paths.WfConfigurationTemplateControllerDelete.PathParameters> | null,
+        parameters: Parameters<Paths.WfConfigurationTemplateControllerDelete.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.WfConfigurationTemplateControllerDelete.Responses.$204>
     /**
      * WfConfigurationTemplateController_list
      */
@@ -21788,7 +21025,7 @@ export interface OperationMethods {
      * WfConfigurationTemplateController_get
      */
     'WfConfigurationTemplateController_get'(
-        parameters?: Parameters<Paths.WfConfigurationTemplateControllerGet.PathParameters> | null,
+        parameters: Parameters<Paths.WfConfigurationTemplateControllerGet.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.WfConfigurationTemplateControllerGet.Responses.$200>
@@ -21796,7 +21033,7 @@ export interface OperationMethods {
      * StoreAppController_list
      */
     'StoreAppController_list'(
-        parameters?: Parameters<Paths.StoreAppControllerList.PathParameters> | null,
+        parameters: Parameters<Paths.StoreAppControllerList.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.StoreAppControllerList.Responses.$200>
@@ -21804,7 +21041,7 @@ export interface OperationMethods {
      * StoreAppController_upsert
      */
     'StoreAppController_upsert'(
-        parameters?: Parameters<Paths.StoreAppControllerUpsert.PathParameters> | null,
+        parameters: Parameters<Paths.StoreAppControllerUpsert.PathParameters>,
         data?: Paths.StoreAppControllerUpsert.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.StoreAppControllerUpsert.Responses.$201>
@@ -21812,10 +21049,10 @@ export interface OperationMethods {
      * StoreAppController_delete
      */
     'StoreAppController_delete'(
-        parameters?: Parameters<Paths.StoreAppControllerDelete.PathParameters> | null,
+        parameters: Parameters<Paths.StoreAppControllerDelete.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.StoreAppControllerDelete.Responses.$204>
     /**
      * AppController_list
      */
@@ -21828,7 +21065,7 @@ export interface OperationMethods {
      * AppController_get
      */
     'AppController_get'(
-        parameters?: Parameters<Paths.AppControllerGet.PathParameters> | null,
+        parameters: Parameters<Paths.AppControllerGet.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.AppControllerGet.Responses.$200>
@@ -21836,7 +21073,7 @@ export interface OperationMethods {
      * AppController_upsert
      */
     'AppController_upsert'(
-        parameters?: Parameters<Paths.AppControllerUpsert.PathParameters> | null,
+        parameters: Parameters<Paths.AppControllerUpsert.PathParameters>,
         data?: Paths.AppControllerUpsert.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.AppControllerUpsert.Responses.$201>
@@ -21844,15 +21081,15 @@ export interface OperationMethods {
      * AppController_delete
      */
     'AppController_delete'(
-        parameters?: Parameters<Paths.AppControllerDelete.PathParameters> | null,
+        parameters: Parameters<Paths.AppControllerDelete.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.AppControllerDelete.Responses.$204>
     /**
      * TrackstarController_link
      */
     'TrackstarController_link'(
-        parameters?: Parameters<Paths.TrackstarControllerLink.PathParameters> | null,
+        parameters: Parameters<Paths.TrackstarControllerLink.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.TrackstarControllerLink.Responses.$200>
@@ -21868,7 +21105,7 @@ export interface OperationMethods {
      * TrackstarController_list
      */
     'TrackstarController_list'(
-        parameters?: Parameters<Paths.TrackstarControllerList.PathParameters> | null,
+        parameters: Parameters<Paths.TrackstarControllerList.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.TrackstarControllerList.Responses.$200>
@@ -21879,7 +21116,7 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.TrackstarControllerWebhook.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.TrackstarControllerWebhook.Responses.$201>
     /**
      * HealthController_check
      */
@@ -21887,10 +21124,7 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.HealthControllerCheck.Responses.$200
-        | Paths.HealthControllerCheck.Responses.$503
-    >
+    ): OperationResponse<Paths.HealthControllerCheck.Responses.$200>
 }
 
 export interface PathsDictionary {
@@ -21899,7 +21133,7 @@ export interface PathsDictionary {
          * AutomationEventController_get
          */
         'get'(
-            parameters?: Parameters<Paths.AutomationEventControllerGet.PathParameters> | null,
+            parameters: Parameters<Paths.AutomationEventControllerGet.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.AutomationEventControllerGet.Responses.$200>
@@ -21919,7 +21153,7 @@ export interface PathsDictionary {
          * WfConfigurationController_get
          */
         'get'(
-            parameters?: Parameters<Paths.WfConfigurationControllerGet.PathParameters> | null,
+            parameters: Parameters<Paths.WfConfigurationControllerGet.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.WfConfigurationControllerGet.Responses.$200>
@@ -21929,7 +21163,7 @@ export interface PathsDictionary {
          * WfConfigurationController_upsert
          */
         'put'(
-            parameters?: Parameters<Paths.WfConfigurationControllerUpsert.PathParameters> | null,
+            parameters: Parameters<Paths.WfConfigurationControllerUpsert.PathParameters>,
             data?: Paths.WfConfigurationControllerUpsert.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.WfConfigurationControllerUpsert.Responses.$201>
@@ -21937,17 +21171,17 @@ export interface PathsDictionary {
          * WfConfigurationController_delete
          */
         'delete'(
-            parameters?: Parameters<Paths.WfConfigurationControllerDelete.PathParameters> | null,
+            parameters: Parameters<Paths.WfConfigurationControllerDelete.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.WfConfigurationControllerDelete.Responses.$204>
     }
     ['/configurations/{id}/duplicate']: {
         /**
          * WfConfigurationController_duplicate
          */
         'post'(
-            parameters?: Parameters<Paths.WfConfigurationControllerDuplicate.PathParameters> | null,
+            parameters: Parameters<Paths.WfConfigurationControllerDuplicate.PathParameters>,
             data?: Paths.WfConfigurationControllerDuplicate.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.WfConfigurationControllerDuplicate.Responses.$201>
@@ -21957,7 +21191,7 @@ export interface PathsDictionary {
          * WfConfigurationController_exportStepLogs
          */
         'get'(
-            parameters?: Parameters<Paths.WfConfigurationControllerExportStepLogs.PathParameters> | null,
+            parameters: Parameters<Paths.WfConfigurationControllerExportStepLogs.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<any>
@@ -21967,7 +21201,7 @@ export interface PathsDictionary {
          * WfConfigurationController_exportExecutionLogs
          */
         'get'(
-            parameters?: Parameters<Paths.WfConfigurationControllerExportExecutionLogs.PathParameters> | null,
+            parameters: Parameters<Paths.WfConfigurationControllerExportExecutionLogs.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.WfConfigurationControllerExportExecutionLogs.Responses.$200>
@@ -21977,7 +21211,7 @@ export interface PathsDictionary {
          * WfConfigurationController_getExecution
          */
         'get'(
-            parameters?: Parameters<Paths.WfConfigurationControllerGetExecution.PathParameters> | null,
+            parameters: Parameters<Paths.WfConfigurationControllerGetExecution.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.WfConfigurationControllerGetExecution.Responses.$200>
@@ -21987,10 +21221,10 @@ export interface PathsDictionary {
          * WfConfigurationController_getExecutions
          */
         'get'(
-            parameters?: Parameters<
-                Paths.WfConfigurationControllerGetExecutions.PathParameters &
-                    Paths.WfConfigurationControllerGetExecutions.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.WfConfigurationControllerGetExecutions.QueryParameters &
+                    Paths.WfConfigurationControllerGetExecutions.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.WfConfigurationControllerGetExecutions.Responses.$200>
@@ -22000,7 +21234,7 @@ export interface PathsDictionary {
          * WfConfigurationTranslationsController_get
          */
         'get'(
-            parameters?: Parameters<Paths.WfConfigurationTranslationsControllerGet.PathParameters> | null,
+            parameters: Parameters<Paths.WfConfigurationTranslationsControllerGet.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.WfConfigurationTranslationsControllerGet.Responses.$200>
@@ -22008,7 +21242,7 @@ export interface PathsDictionary {
          * WfConfigurationTranslationsController_upsert
          */
         'put'(
-            parameters?: Parameters<Paths.WfConfigurationTranslationsControllerUpsert.PathParameters> | null,
+            parameters: Parameters<Paths.WfConfigurationTranslationsControllerUpsert.PathParameters>,
             data?: Paths.WfConfigurationTranslationsControllerUpsert.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.WfConfigurationTranslationsControllerUpsert.Responses.$201>
@@ -22016,10 +21250,10 @@ export interface PathsDictionary {
          * WfConfigurationTranslationsController_delete
          */
         'delete'(
-            parameters?: Parameters<Paths.WfConfigurationTranslationsControllerDelete.PathParameters> | null,
+            parameters: Parameters<Paths.WfConfigurationTranslationsControllerDelete.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.WfConfigurationTranslationsControllerDelete.Responses.$204>
     }
     ['/entrypoints']: {
         /**
@@ -22066,7 +21300,7 @@ export interface PathsDictionary {
          * WfExecutionController_get
          */
         'get'(
-            parameters?: Parameters<Paths.WfExecutionControllerGet.PathParameters> | null,
+            parameters: Parameters<Paths.WfExecutionControllerGet.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.WfExecutionControllerGet.Responses.$200>
@@ -22076,20 +21310,20 @@ export interface PathsDictionary {
          * WfExecutionController_handleHandoverCallback
          */
         'post'(
-            parameters?: Parameters<Paths.WfExecutionControllerHandleHandoverCallback.PathParameters> | null,
+            parameters: Parameters<Paths.WfExecutionControllerHandleHandoverCallback.PathParameters>,
             data?: Paths.WfExecutionControllerHandleHandoverCallback.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.WfExecutionControllerHandleHandoverCallback.Responses.$204>
     }
     ['/stores/{store_type}/{store_name}/configurations']: {
         /**
          * StoreWfConfigurationController_list
          */
         'get'(
-            parameters?: Parameters<
-                Paths.StoreWfConfigurationControllerList.PathParameters &
-                    Paths.StoreWfConfigurationControllerList.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.StoreWfConfigurationControllerList.QueryParameters &
+                    Paths.StoreWfConfigurationControllerList.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.StoreWfConfigurationControllerList.Responses.$200>
@@ -22099,7 +21333,7 @@ export interface PathsDictionary {
          * StoreWfConfigurationController_upsert
          */
         'put'(
-            parameters?: Parameters<Paths.StoreWfConfigurationControllerUpsert.PathParameters> | null,
+            parameters: Parameters<Paths.StoreWfConfigurationControllerUpsert.PathParameters>,
             data?: Paths.StoreWfConfigurationControllerUpsert.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.StoreWfConfigurationControllerUpsert.Responses.$201>
@@ -22109,7 +21343,7 @@ export interface PathsDictionary {
          * StoreWfEntrypointController_list
          */
         'get'(
-            parameters?: Parameters<Paths.StoreWfEntrypointControllerList.PathParameters> | null,
+            parameters: Parameters<Paths.StoreWfEntrypointControllerList.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.StoreWfEntrypointControllerList.Responses.$200>
@@ -22119,7 +21353,7 @@ export interface PathsDictionary {
          * WfConfigurationTemplateController_upsert
          */
         'put'(
-            parameters?: Parameters<Paths.WfConfigurationTemplateControllerUpsert.PathParameters> | null,
+            parameters: Parameters<Paths.WfConfigurationTemplateControllerUpsert.PathParameters>,
             data?: Paths.WfConfigurationTemplateControllerUpsert.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.WfConfigurationTemplateControllerUpsert.Responses.$201>
@@ -22127,10 +21361,10 @@ export interface PathsDictionary {
          * WfConfigurationTemplateController_delete
          */
         'delete'(
-            parameters?: Parameters<Paths.WfConfigurationTemplateControllerDelete.PathParameters> | null,
+            parameters: Parameters<Paths.WfConfigurationTemplateControllerDelete.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.WfConfigurationTemplateControllerDelete.Responses.$204>
     }
     ['/configuration-templates']: {
         /**
@@ -22147,7 +21381,7 @@ export interface PathsDictionary {
          * WfConfigurationTemplateController_get
          */
         'get'(
-            parameters?: Parameters<Paths.WfConfigurationTemplateControllerGet.PathParameters> | null,
+            parameters: Parameters<Paths.WfConfigurationTemplateControllerGet.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.WfConfigurationTemplateControllerGet.Responses.$200>
@@ -22157,7 +21391,7 @@ export interface PathsDictionary {
          * StoreAppController_list
          */
         'get'(
-            parameters?: Parameters<Paths.StoreAppControllerList.PathParameters> | null,
+            parameters: Parameters<Paths.StoreAppControllerList.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.StoreAppControllerList.Responses.$200>
@@ -22167,7 +21401,7 @@ export interface PathsDictionary {
          * StoreAppController_upsert
          */
         'put'(
-            parameters?: Parameters<Paths.StoreAppControllerUpsert.PathParameters> | null,
+            parameters: Parameters<Paths.StoreAppControllerUpsert.PathParameters>,
             data?: Paths.StoreAppControllerUpsert.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.StoreAppControllerUpsert.Responses.$201>
@@ -22175,10 +21409,10 @@ export interface PathsDictionary {
          * StoreAppController_delete
          */
         'delete'(
-            parameters?: Parameters<Paths.StoreAppControllerDelete.PathParameters> | null,
+            parameters: Parameters<Paths.StoreAppControllerDelete.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.StoreAppControllerDelete.Responses.$204>
     }
     ['/apps']: {
         /**
@@ -22195,7 +21429,7 @@ export interface PathsDictionary {
          * AppController_get
          */
         'get'(
-            parameters?: Parameters<Paths.AppControllerGet.PathParameters> | null,
+            parameters: Parameters<Paths.AppControllerGet.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.AppControllerGet.Responses.$200>
@@ -22203,7 +21437,7 @@ export interface PathsDictionary {
          * AppController_upsert
          */
         'put'(
-            parameters?: Parameters<Paths.AppControllerUpsert.PathParameters> | null,
+            parameters: Parameters<Paths.AppControllerUpsert.PathParameters>,
             data?: Paths.AppControllerUpsert.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.AppControllerUpsert.Responses.$201>
@@ -22211,17 +21445,17 @@ export interface PathsDictionary {
          * AppController_delete
          */
         'delete'(
-            parameters?: Parameters<Paths.AppControllerDelete.PathParameters> | null,
+            parameters: Parameters<Paths.AppControllerDelete.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.AppControllerDelete.Responses.$204>
     }
     ['/trackstar/link/{connection_id}']: {
         /**
          * TrackstarController_link
          */
         'post'(
-            parameters?: Parameters<Paths.TrackstarControllerLink.PathParameters> | null,
+            parameters: Parameters<Paths.TrackstarControllerLink.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.TrackstarControllerLink.Responses.$200>
@@ -22241,7 +21475,7 @@ export interface PathsDictionary {
          * TrackstarController_list
          */
         'get'(
-            parameters?: Parameters<Paths.TrackstarControllerList.PathParameters> | null,
+            parameters: Parameters<Paths.TrackstarControllerList.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.TrackstarControllerList.Responses.$200>
@@ -22254,7 +21488,7 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.TrackstarControllerWebhook.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.TrackstarControllerWebhook.Responses.$201>
     }
     ['/health']: {
         /**
@@ -22264,10 +21498,7 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.HealthControllerCheck.Responses.$200
-            | Paths.HealthControllerCheck.Responses.$503
-        >
+        ): OperationResponse<Paths.HealthControllerCheck.Responses.$200>
     }
 }
 

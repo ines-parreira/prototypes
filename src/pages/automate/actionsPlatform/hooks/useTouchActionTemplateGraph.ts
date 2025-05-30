@@ -34,21 +34,11 @@ const useTouchActionTemplateGraph = () => {
                             node,
                         )
                         break
-                    case 'reusable_llm_prompt_call':
-                        break
-                    case 'end':
-                        break
-                    case 'cancel_order':
-                        break
-                    case 'refund_order':
-                        break
                     case 'skip_charge':
                         node.data.touched = getSkipChargeNodeTouched()
                         break
                     case 'cancel_subscription':
                         node.data.touched = getCancelSubscriptionNodeTouched()
-                        break
-                    case 'create_discount_code':
                         break
                     case 'replace_item':
                         node.data.touched = getReplaceItemNodeTouched()
@@ -59,6 +49,13 @@ const useTouchActionTemplateGraph = () => {
                     case 'update_shipping_address':
                         node.data.touched =
                             getUpdateShippingAddressNodeTouched()
+                        break
+                    case 'create_discount_code':
+                    case 'edit_order_note':
+                    case 'reusable_llm_prompt_call':
+                    case 'end':
+                    case 'cancel_order':
+                    case 'refund_order':
                         break
                 }
             })

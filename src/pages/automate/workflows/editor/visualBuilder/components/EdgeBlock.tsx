@@ -74,6 +74,10 @@ export type VisualBuilderEdgeProps = {
         nodeId: string
         isClickable: boolean
     }
+    incomingEditOrderNoteCondition?: {
+        label: string
+        nodeId: string
+    }
 } & Pick<VisualBuilderContextType, 'dispatch'>
 
 export default function EdgeBlock({
@@ -92,6 +96,7 @@ export default function EdgeBlock({
     incomingCancelSubscriptionCondition,
     incomingSkipChargeCondition,
     incomingReusableLLMPromptCallCondition,
+    incomingEditOrderNoteCondition,
     isSelected,
     dispatch,
 }: VisualBuilderEdgeProps) {
@@ -121,7 +126,8 @@ export default function EdgeBlock({
                     incomingRefundShippingCostsCondition ||
                     incomingCancelSubscriptionCondition ||
                     incomingSkipChargeCondition ||
-                    incomingReusableLLMPromptCallCondition
+                    incomingReusableLLMPromptCallCondition ||
+                    incomingEditOrderNoteCondition
                         ? -48
                         : -46,
             }}
@@ -269,6 +275,11 @@ export default function EdgeBlock({
                     type="reusable_llm_prompt_call"
                 >
                     {incomingReusableLLMPromptCallCondition.label}
+                </EdgeLabel>
+            )}
+            {incomingEditOrderNoteCondition && (
+                <EdgeLabel isSelected={isSelected} type="edit_order_note">
+                    {incomingEditOrderNoteCondition.label}
                 </EdgeLabel>
             )}
             {incomingCondition && (

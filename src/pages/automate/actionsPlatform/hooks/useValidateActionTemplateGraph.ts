@@ -70,14 +70,6 @@ const useValidateActionTemplateGraph = (
                                 getVariableListForNode(node.id),
                             )
                             break
-                        case 'reusable_llm_prompt_call':
-                            break
-                        case 'end':
-                            break
-                        case 'cancel_order':
-                            break
-                        case 'refund_order':
-                            break
                         case 'skip_charge':
                             node.data.errors = getSkipChargeNodeErrors(
                                 node,
@@ -89,8 +81,6 @@ const useValidateActionTemplateGraph = (
                                 node,
                                 getVariableListForNode(node.id),
                             )
-                            break
-                        case 'create_discount_code':
                             break
                         case 'replace_item':
                             node.data.errors = getReplaceItemNodeErrors(
@@ -110,6 +100,13 @@ const useValidateActionTemplateGraph = (
                                     node,
                                     getVariableListForNode(node.id),
                                 )
+                            break
+                        case 'create_discount_code':
+                        case 'reusable_llm_prompt_call':
+                        case 'end':
+                        case 'cancel_order':
+                        case 'refund_order':
+                        case 'edit_order_note':
                             break
                     }
                 })

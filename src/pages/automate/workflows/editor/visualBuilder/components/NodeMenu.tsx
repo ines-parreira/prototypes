@@ -782,6 +782,39 @@ const SkipChargeMenuItem = ({
     )
 }
 
+const EditOrderNoteMenuItem = ({
+    nodeId,
+    floatingRef,
+    customerId,
+    orderExternalId,
+    integrationId,
+}: {
+    nodeId: string
+    floatingRef?: HTMLElement | null
+    customerId: string
+    orderExternalId: string
+    integrationId: string
+}) => {
+    const { dispatch } = useVisualBuilderContext()
+
+    return (
+        <MenuItem
+            label={labelByVisualBuilderNodeType.edit_order_note}
+            icon={<VisualBuilderActionIcon nodeType="edit_order_note" />}
+            onClick={() => {
+                dispatch({
+                    type: 'INSERT_EDIT_ORDER_NOTE_NODE',
+                    beforeNodeId: nodeId,
+                    customerId,
+                    orderExternalId,
+                    integrationId,
+                })
+            }}
+            floatingRef={floatingRef}
+        />
+    )
+}
+
 const LLMPromptTemplateShopifyMenuItems = ({
     nodeId,
     floatingRef,
@@ -812,6 +845,13 @@ const LLMPromptTemplateShopifyMenuItems = ({
                 integrationId="{{store.helpdesk_integration_id}}"
             />
             <UpdateShippingAddressMenuItem
+                nodeId={nodeId}
+                floatingRef={floatingRef}
+                customerId="{{objects.customer.id}}"
+                orderExternalId="{{objects.order.external_id}}"
+                integrationId="{{store.helpdesk_integration_id}}"
+            />
+            <EditOrderNoteMenuItem
                 nodeId={nodeId}
                 floatingRef={floatingRef}
                 customerId="{{objects.customer.id}}"

@@ -270,6 +270,130 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
         )
     })
 
+    it('should transform graph with a edit order note step', () => {
+        const triggers = [
+            ['llm_prompt_trigger', 'llm-prompt'],
+            ['reusable_llm_prompt_trigger', 'reusable-llm-prompt'],
+        ]
+        for (const [nodeTrigger, flowTrigger] of triggers) {
+            const configuration =
+                transformVisualBuilderGraphIntoWfConfiguration(
+                    {
+                        id: '',
+                        internal_id: '',
+                        is_draft: false,
+                        isTemplate: false,
+                        name: 'Edit order note',
+                        available_languages: ['en-US'],
+                        inputs: [],
+                        values: {},
+                        nodes: [
+                            {
+                                ...buildNodeCommonProperties(),
+                                id: 'trigger',
+                                type: nodeTrigger as any,
+                                data: {
+                                    instructions:
+                                        'This action edits an order note',
+                                    requires_confirmation: false,
+                                    inputs: [],
+                                    conditionsType: null,
+                                    conditions: [],
+                                },
+                            },
+                            {
+                                ...buildNodeCommonProperties(),
+                                id: 'edit_order_note',
+                                type: 'edit_order_note',
+                                data: {
+                                    integrationId:
+                                        '{{store.helpdesk_integration_id}}',
+                                    orderExternalId:
+                                        '{{objects.order.external_id}}',
+                                    customerId: '{{objects.customer.id}}',
+                                    note: '',
+                                },
+                            },
+                            {
+                                ...buildNodeCommonProperties(),
+                                id: 'end_success',
+                                type: 'end',
+                                data: {
+                                    action: 'end',
+                                },
+                            },
+                            {
+                                ...buildNodeCommonProperties(),
+                                id: 'end_failure',
+                                type: 'end',
+                                data: {
+                                    action: 'end',
+                                },
+                            },
+                        ],
+                        edges: [
+                            {
+                                ...buildEdgeCommonProperties(),
+                                source: 'trigger',
+                                target: 'edit_order_note',
+                            },
+                            {
+                                ...buildEdgeCommonProperties(),
+                                source: 'edit_order_note',
+                                target: 'end_success',
+                            },
+                            {
+                                ...buildEdgeCommonProperties(),
+                                source: 'edit_order_note',
+                                target: 'end_failure',
+                            },
+                        ],
+                        nodeEditingId: null,
+                        choiceEventIdEditing: null,
+                        branchIdsEditing: [],
+                    },
+                    true,
+                    [],
+                )
+            expect(configuration.triggers).toEqual([
+                expect.objectContaining({
+                    kind: flowTrigger,
+                }),
+            ])
+            expect(configuration.steps).toEqual([
+                {
+                    id: 'edit_order_note',
+                    kind: 'edit-order-note',
+                    settings: {
+                        integration_id: '{{store.helpdesk_integration_id}}',
+                        order_external_id: '{{objects.order.external_id}}',
+                        customer_id: '{{objects.customer.id}}',
+                        note: '{{values.note}}',
+                    },
+                },
+                {
+                    id: 'end_success',
+                    kind: 'end',
+                },
+                {
+                    id: 'end_failure',
+                    kind: 'end',
+                },
+            ])
+            expect(configuration.values).toEqual({
+                note: '',
+            })
+            expect(configuration.inputs).toEqual([
+                {
+                    id: 'note',
+                    name: 'Order Note',
+                    description: '',
+                    data_type: 'string',
+                },
+            ])
+        }
+    })
+
     it('should transform graph with a create discount code step', () => {
         const configuration = transformVisualBuilderGraphIntoWfConfiguration(
             {

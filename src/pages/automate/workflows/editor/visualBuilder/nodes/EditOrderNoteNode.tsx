@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import React, { memo } from 'react'
 
 import { NodeProps } from 'reactflow'
 
@@ -7,7 +7,7 @@ import {
     useVisualBuilderNodeProps,
     VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import { UpdateShippingAddressNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { EditOrderNoteNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
@@ -15,13 +15,10 @@ import { defaultNodeNames } from './constants'
 import VisualBuilderNode from './VisualBuilderNode'
 import VisualBuilderNodeContent from './VisualBuilderNodeContent'
 
-type Props = VisualBuilderNodeProps & {
-    isErrored: boolean
-}
+type Props = VisualBuilderNodeProps
 
-const UpdateShippingAddressNode = memo(function UpdateShippingAddressNode({
+const EditOrderNoteNode = memo(function EditOrderNoteNode({
     isSelected,
-    isErrored,
     isGreyedOut,
     edgeProps,
     deleteProps,
@@ -30,14 +27,13 @@ const UpdateShippingAddressNode = memo(function UpdateShippingAddressNode({
         <div>
             <EdgeBlock {...edgeProps} />
             <VisualBuilderNode
-                isClickable
+                isClickable={false}
                 isSelected={isSelected}
-                isErrored={isErrored}
                 isGreyedOut={isGreyedOut}
             >
-                <VisualBuilderActionTag nodeType="update_shipping_address" />
+                <VisualBuilderActionTag nodeType="edit_order_note" />
                 <VisualBuilderNodeContent>
-                    {defaultNodeNames['update-shipping-address']}
+                    {defaultNodeNames['edit-order-note']}
                 </VisualBuilderNodeContent>
                 <NodeDeleteIcon {...deleteProps} />
             </VisualBuilderNode>
@@ -45,15 +41,10 @@ const UpdateShippingAddressNode = memo(function UpdateShippingAddressNode({
     )
 })
 
-export default function UpdateShippingAddressNodeWrapper(
-    node: NodeProps<UpdateShippingAddressNodeType['data']>,
+export default function EditOrderNoteNodeWrapper(
+    node: NodeProps<EditOrderNoteNodeType['data']>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 
-    return (
-        <UpdateShippingAddressNode
-            {...commonProps}
-            isErrored={!!node.data.errors}
-        />
-    )
+    return <EditOrderNoteNode {...commonProps} />
 }

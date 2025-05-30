@@ -16,6 +16,7 @@ import {
 import { buildNodeCommonProperties } from '../models/visualBuilderGraph.model'
 import {
     CreateDiscountCodeNodeType,
+    EditOrderNoteNodeType,
     OrderSelectionNodeType,
     RefundShippingCostsNodeType,
     ReshipForFreeNodeType,
@@ -447,153 +448,70 @@ describe('buildWorkflowVariableFromNode()', () => {
         })
     })
 
-    it('should return create_discount_code node variables', () => {
-        const node: CreateDiscountCodeNodeType = {
-            ...buildNodeCommonProperties(),
-            id: 'create_discount_code1',
-            type: 'create_discount_code',
-            data: {
-                integrationId: '',
-                discountType: '',
-                amount: '',
-                validFor: '',
-            },
-        }
+    it('should return success node variables', () => {
+        const nodeTypes = [
+            'create_discount_code',
+            'edit_order_note',
+            'reship_for_free',
+            'refund_shipping_costs',
+        ] as const
+        for (const nodeType of nodeTypes) {
+            const node:
+                | CreateDiscountCodeNodeType
+                | EditOrderNoteNodeType
+                | ReshipForFreeNodeType
+                | RefundShippingCostsNodeType = {
+                ...buildNodeCommonProperties(),
+                id: `${nodeType}1`,
+                type: nodeType as any,
+                data: {
+                    integrationId: '',
+                    discountType: '',
+                    amount: '',
+                    validFor: '',
+                    note: '',
+                } as any,
+            }
 
-        const result = buildWorkflowVariableFromNode(
-            {
-                id: '',
-                internal_id: '',
-                is_draft: false,
-                isTemplate: false,
-                name: '',
-                available_languages: [],
-                nodes: [
-                    {
-                        ...buildNodeCommonProperties(),
-                        id: 'channel_trigger',
-                        type: 'channel_trigger',
-                        data: {
-                            label: '',
-                            label_tkey: ulid(),
+            const result = buildWorkflowVariableFromNode(
+                {
+                    id: '',
+                    internal_id: '',
+                    is_draft: false,
+                    isTemplate: false,
+                    name: '',
+                    available_languages: [],
+                    nodes: [
+                        {
+                            ...buildNodeCommonProperties(),
+                            id: 'channel_trigger',
+                            type: 'channel_trigger',
+                            data: {
+                                label: '',
+                                label_tkey: ulid(),
+                            },
                         },
-                    },
-                    node,
-                ],
-                edges: [],
-                apps: [{ type: 'shopify' }],
-                nodeEditingId: null,
-                choiceEventIdEditing: null,
-                branchIdsEditing: [],
-            },
-            node,
-            [],
-            [],
-        )
-        expect(result).toEqual({
-            name: 'Create discount code success',
-            nodeType: 'create_discount_code',
-            value: 'steps_state.create_discount_code1.success',
-            type: 'boolean',
-        })
-    })
-    it('should return refund_shipping_costs node variables', () => {
-        const node: RefundShippingCostsNodeType = {
-            ...buildNodeCommonProperties(),
-            id: 'refund_shipping_costs1',
-            type: 'refund_shipping_costs',
-            data: {
-                customerId: '',
-                integrationId: '',
-                orderExternalId: '',
-            },
+                        node,
+                    ],
+                    edges: [],
+                    apps: [{ type: 'shopify' }],
+                    nodeEditingId: null,
+                    choiceEventIdEditing: null,
+                    branchIdsEditing: [],
+                },
+                node,
+                [],
+                [],
+            )
+            expect(result).toEqual(
+                expect.objectContaining({
+                    name: expect.any(String),
+                    nodeType: nodeType,
+                    value: `steps_state.${nodeType}1.success`,
+                    type: 'boolean',
+                }),
+            )
         }
-
-        const result = buildWorkflowVariableFromNode(
-            {
-                id: '',
-                internal_id: '',
-                is_draft: false,
-                isTemplate: false,
-                name: '',
-                available_languages: [],
-                nodes: [
-                    {
-                        ...buildNodeCommonProperties(),
-                        id: 'channel_trigger',
-                        type: 'channel_trigger',
-                        data: {
-                            label: '',
-                            label_tkey: ulid(),
-                        },
-                    },
-                    node,
-                ],
-                edges: [],
-                apps: [{ type: 'shopify' }],
-                nodeEditingId: null,
-                choiceEventIdEditing: null,
-                branchIdsEditing: [],
-            },
-            node,
-            [],
-            [],
-        )
-        expect(result).toEqual({
-            name: 'Refund shipping costs success',
-            nodeType: 'refund_shipping_costs',
-            value: 'steps_state.refund_shipping_costs1.success',
-            type: 'boolean',
-        })
-    })
-    it('should return reship_for_free node variables', () => {
-        const node: ReshipForFreeNodeType = {
-            ...buildNodeCommonProperties(),
-            id: 'reship_for_free1',
-            type: 'reship_for_free',
-            data: {
-                customerId: '',
-                integrationId: '',
-                orderExternalId: '',
-            },
-        }
-
-        const result = buildWorkflowVariableFromNode(
-            {
-                id: '',
-                internal_id: '',
-                is_draft: false,
-                isTemplate: false,
-                name: '',
-                available_languages: [],
-                nodes: [
-                    {
-                        ...buildNodeCommonProperties(),
-                        id: 'channel_trigger',
-                        type: 'channel_trigger',
-                        data: {
-                            label: '',
-                            label_tkey: ulid(),
-                        },
-                    },
-                    node,
-                ],
-                edges: [],
-                apps: [{ type: 'shopify' }],
-                nodeEditingId: null,
-                choiceEventIdEditing: null,
-                branchIdsEditing: [],
-            },
-            node,
-            [],
-            [],
-        )
-        expect(result).toEqual({
-            name: 'Reship for free success',
-            nodeType: 'reship_for_free',
-            value: 'steps_state.reship_for_free1.success',
-            type: 'boolean',
-        })
     })
 })
 

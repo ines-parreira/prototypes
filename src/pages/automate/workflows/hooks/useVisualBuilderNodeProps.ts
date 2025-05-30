@@ -109,6 +109,12 @@ export function useVisualBuilderNodeProps({
         'skip_charge',
         steps,
     )
+    const incomingEditOrderNoteCondition = getIncoming(
+        visualBuilderGraph,
+        id,
+        'edit_order_note',
+        steps,
+    )
     const incomingReusableLLMPromptCallCondition = getIncoming(
         visualBuilderGraph,
         id,
@@ -166,6 +172,11 @@ export function useVisualBuilderNodeProps({
             visualBuilderGraph.nodeEditingId
         if (isSkipChargeSelected) return true
 
+        const isEditOrderNoteSelected =
+            incomingEditOrderNoteCondition?.nodeId ===
+            visualBuilderGraph.nodeEditingId
+        if (isEditOrderNoteSelected) return true
+
         const isReusableLLMPromptCallSelected =
             incomingReusableLLMPromptCallCondition?.nodeId ===
             visualBuilderGraph.nodeEditingId
@@ -183,6 +194,7 @@ export function useVisualBuilderNodeProps({
         incomingRefundShippingCostsCondition,
         incomingCancelSubscriptionCondition,
         incomingSkipChargeCondition,
+        incomingEditOrderNoteCondition,
         incomingReusableLLMPromptCallCondition,
         visualBuilderGraph.branchIdsEditing,
         visualBuilderGraph.nodeEditingId,
@@ -296,6 +308,14 @@ export function useVisualBuilderNodeProps({
                           nodeId: incomingSkipChargeCondition.nodeId,
                       }
                     : undefined,
+            incomingEditOrderNoteCondition:
+                incomingEditOrderNoteCondition?.nodeId &&
+                incomingEditOrderNoteCondition?.label
+                    ? {
+                          label: incomingEditOrderNoteCondition.label,
+                          nodeId: incomingEditOrderNoteCondition.nodeId,
+                      }
+                    : undefined,
             incomingReusableLLMPromptCallCondition:
                 incomingReusableLLMPromptCallCondition?.nodeId &&
                 incomingReusableLLMPromptCallCondition?.label &&
@@ -341,6 +361,8 @@ export function useVisualBuilderNodeProps({
             incomingCancelSubscriptionCondition?.nodeId,
             incomingSkipChargeCondition?.label,
             incomingSkipChargeCondition?.nodeId,
+            incomingEditOrderNoteCondition?.label,
+            incomingEditOrderNoteCondition?.nodeId,
             incomingReusableLLMPromptCallCondition?.label,
             incomingReusableLLMPromptCallCondition?.nodeId,
             incomingReusableLLMPromptCallCondition?.isClickable,

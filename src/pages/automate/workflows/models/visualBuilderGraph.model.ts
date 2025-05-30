@@ -71,6 +71,7 @@ import {
     WorkflowStepChoices,
     WorkflowStepConditions,
     WorkflowStepCreateDiscountCode,
+    WorkflowStepEditOrderNote,
     WorkflowStepEnd,
     WorkflowStepHandover,
     WorkflowStepHelpfulPrompt,
@@ -1276,6 +1277,64 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
 
                     setReusableLLMPromptObjectInputs(g, node, trigger)
                 }
+            } else if (node.type === 'edit_order_note') {
+                // TODO remove when UI for merchant inputs is implemented
+                setStaticInputs(
+                    c,
+                    [
+                        {
+                            id: 'note',
+                            name: 'Order Note',
+                            description: '',
+                            data_type: 'string',
+                        },
+                    ],
+                    {
+                        note: '',
+                    },
+                )
+
+                const step: WorkflowStepEditOrderNote = {
+                    id: node.id,
+                    kind: 'edit-order-note',
+                    settings: {
+                        integration_id: node.data.integrationId,
+                        note: '{{values.note}}',
+                        customer_id: node.data.customerId,
+                        order_external_id: node.data.orderExternalId,
+                    },
+                }
+                c.steps.push(step)
+                stepIdByNodeId[node.id] = step.id
+
+                const trigger = c.triggers?.[0]
+
+                if (trigger?.kind === 'llm-prompt') {
+                    trigger.settings.outputs.push({
+                        id: node.id,
+                        description: 'Order note updated',
+                        path: `steps_state.${node.id}.success`,
+                    })
+
+                    setLLMPromptObjectInputs(
+                        g,
+                        node,
+                        trigger,
+                        availableIntegrations,
+                    )
+                }
+
+                if (trigger?.kind === 'reusable-llm-prompt') {
+                    trigger.settings.outputs.push({
+                        id: node.id,
+                        name: 'Order note',
+                        description: '',
+                        path: `steps_state.${node.id}.success`,
+                        data_type: 'string',
+                    })
+
+                    setReusableLLMPromptObjectInputs(g, node, trigger)
+                }
             } else if (node.type === 'reship_for_free') {
                 const step: WorkflowStepReshipForFree = {
                     id: node.id,
@@ -1459,7 +1518,8 @@ export function getIncoming(
         | 'reship_for_free'
         | 'cancel_subscription'
         | 'skip_charge'
-        | 'reusable_llm_prompt_call',
+        | 'reusable_llm_prompt_call'
+        | 'edit_order_note',
     steps: WorkflowConfiguration[],
 ) {
     const incomingEdge = visualBuilderGraph.edges.find(
@@ -1521,7 +1581,8 @@ export function getIncoming(
         case 'refund_shipping_costs':
         case 'reship_for_free':
         case 'cancel_subscription':
-        case 'skip_charge': {
+        case 'skip_charge':
+        case 'edit_order_note': {
             const branchName = incomingEdge.data?.name
 
             if (previousNode && previousNode.type === type) {

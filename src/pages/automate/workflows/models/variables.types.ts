@@ -28,6 +28,7 @@ type BaseWorkflowVariable<T extends WorkflowVariableType> = {
         | 'create_discount_code'
         | 'reship_for_free'
         | 'refund_shipping_costs'
+        | 'edit_order_note'
         | 'cancel_subscription'
         | 'skip_charge'
         | 'app'

@@ -14,6 +14,7 @@ import {
     ChannelTriggerNodeType,
     ConditionsNodeType,
     CreateDiscountCodeNodeType,
+    EditOrderNoteNodeType,
     EndNodeType,
     FileUploadNodeType,
     HttpRequestNodeType,
@@ -602,6 +603,21 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph<
                     discountType: step.settings.type,
                     amount: step.settings.amount,
                     validFor: step.settings.valid_for,
+                },
+            }
+
+            nodeIdByStepId[step.id] = node.id
+            nodes.push(node)
+        } else if (step.kind === 'edit-order-note') {
+            const node: EditOrderNoteNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'edit_order_note',
+                data: {
+                    customerId: step.settings.customer_id,
+                    orderExternalId: step.settings.order_external_id,
+                    integrationId: step.settings.integration_id,
+                    note: step.settings.note,
                 },
             }
 

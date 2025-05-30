@@ -13,6 +13,7 @@ import {
     CancelSubscriptionNodeType,
     ConditionsNodeType,
     CreateDiscountCodeNodeType,
+    EditOrderNoteNodeType,
     EndNodeType,
     FileUploadNodeType,
     HttpRequestNodeType,
@@ -507,6 +508,28 @@ export const buildReusableLLMPromptCallNode = ({
             objects: {},
             custom_inputs: {},
             values,
+        },
+    }
+}
+
+export const buildEditOrderNoteNode = ({
+    customerId,
+    orderExternalId,
+    integrationId,
+}: Pick<
+    EditOrderNoteNodeType['data'],
+    'customerId' | 'orderExternalId' | 'integrationId'
+>): EditOrderNoteNodeType => {
+    const id = ulid()
+    return {
+        ...buildNodeCommonProperties(),
+        id,
+        type: 'edit_order_note',
+        data: {
+            customerId,
+            orderExternalId,
+            integrationId,
+            note: '',
         },
     }
 }

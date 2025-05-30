@@ -9,4 +9,5 @@ export const defaultNodeNames = {
     'reship-for-free': 'Reship for free.',
     'cancel-subscription': 'Cancel active subscription.',
     'skip-charge': 'Skip next shipment of an ongoing subscription.',
+    'edit-order-note': 'Edit order note.',
 }

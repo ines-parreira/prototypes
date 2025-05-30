@@ -113,6 +113,10 @@ export const colorByVisualBuilderNodeType: Record<
         color: 'var(--neutral-grey-6)',
         backgroundColor: 'var(--neutral-grey-3)',
     },
+    edit_order_note: {
+        color: 'var(--neutral-grey-5)',
+        backgroundColor: 'var(--neutral-grey-2)',
+    },
 }
 
 export const iconByVisualBuilderNodeType: Record<
@@ -151,6 +155,7 @@ export const iconByVisualBuilderNodeType: Record<
     app: <i className="material-icons">key</i>,
     replace_item: <i className="material-icons">swap_horiz</i>,
     llm_prompt_trigger: <i className="material-icons">data_object</i>,
+    edit_order_note: <i className="material-icons">note</i>,
 }
 
 export const labelByVisualBuilderNodeType: Record<
@@ -180,6 +185,7 @@ export const labelByVisualBuilderNodeType: Record<
     refund_shipping_costs: 'Refund shipping costs',
     reship_for_free: 'Reship for free',
     replace_item: 'Replace order item',
+    edit_order_note: 'Edit order note',
 }
 
 export const endNodeActionLabelByAction: Record<

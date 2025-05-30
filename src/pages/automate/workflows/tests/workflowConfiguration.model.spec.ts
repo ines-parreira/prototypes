@@ -623,6 +623,181 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
             },
         ])
     })
+    test('configuration containing edit-order-note step', () => {
+        const c: WorkflowConfiguration = {
+            internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
+            id: '01J7ZTERAST0PVVPF347XA37FR',
+            name: 'Edit Order Note',
+            is_draft: true,
+            initial_step_id: 'edit_order_note',
+            entrypoint: null,
+            available_languages: ['en-US'],
+            steps: [
+                {
+                    id: 'edit_order_note',
+                    kind: 'edit-order-note',
+                    settings: {
+                        note: '{{values.note}}',
+                        integration_id: '{{store.helpdesk_integration_id}}',
+                        order_external_id: '{{objects.order.external_id}}',
+                        customer_id: '{{objects.customer.id}}',
+                    },
+                },
+                {
+                    id: 'end_success',
+                    kind: 'end',
+                },
+                {
+                    id: 'end_failure',
+                    kind: 'end',
+                },
+            ],
+            transitions: [
+                {
+                    id: '01J87E4X5V8YDKSF81BX80CCS5',
+                    from_step_id: 'edit_order_note',
+                    to_step_id: 'end_success',
+                    name: undefined,
+                    event: undefined,
+                    conditions: undefined,
+                },
+                {
+                    id: '01J87E4X5VZ7NTSXPV74384JKN',
+                    from_step_id: 'edit_order_note',
+                    to_step_id: 'end_failure',
+                    name: undefined,
+                    event: undefined,
+                    conditions: undefined,
+                },
+            ],
+            updated_datetime: '2024-09-17T11:18:00.201Z',
+            triggers: [
+                {
+                    kind: 'llm-prompt',
+                    settings: {
+                        custom_inputs: [],
+                        object_inputs: [],
+                        conditions: null,
+                        outputs: [
+                            {
+                                id: 'edit_order_note',
+                                description: '',
+                                path: 'steps_state.edit_order_note.success',
+                            },
+                        ],
+                    },
+                },
+            ],
+            entrypoints: [
+                {
+                    kind: 'llm-conversation',
+                    trigger: 'llm-prompt',
+                    settings: {
+                        requires_confirmation: false,
+                        instructions: 'This action edits the order note',
+                    },
+                },
+            ],
+        }
+        const visualBuilderGraph =
+            transformWorkflowConfigurationIntoVisualBuilderGraph(
+                transformVisualBuilderGraphIntoWfConfiguration(
+                    transformWorkflowConfigurationIntoVisualBuilderGraph(c),
+                    true,
+                    [],
+                ),
+            )
+        expect(visualBuilderGraph.nodes.length).toBe(4)
+        expect(visualBuilderGraph.edges.length).toBe(3)
+        expect(visualBuilderGraph.nodes).toEqual([
+            {
+                id: 'trigger_button',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'llm_prompt_trigger',
+                data: {
+                    instructions: 'This action edits the order note',
+                    requires_confirmation: false,
+                    inputs: [],
+                    conditionsType: null,
+                    conditions: [],
+                },
+            },
+            {
+                id: 'edit_order_note',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'edit_order_note',
+                data: {
+                    note: '{{values.note}}',
+                    integrationId: '{{store.helpdesk_integration_id}}',
+                    orderExternalId: '{{objects.order.external_id}}',
+                    customerId: '{{objects.customer.id}}',
+                },
+            },
+            {
+                id: 'end_success',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'end',
+                data: {
+                    action: 'end',
+                },
+            },
+            {
+                id: 'end_failure',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'end',
+                data: {
+                    action: 'end',
+                },
+            },
+        ])
+        expect(visualBuilderGraph.edges).toEqual([
+            {
+                id: 'trigger_button-edit_order_note',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'trigger_button',
+                target: 'edit_order_note',
+            },
+            {
+                id: 'edit_order_note-end_success',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'edit_order_note',
+                target: 'end_success',
+            },
+            {
+                id: 'edit_order_note-end_failure',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'edit_order_note',
+                target: 'end_failure',
+            },
+        ])
+    })
 
     test('configuration containing reship-for-free step', () => {
         const c: WorkflowConfiguration = {
