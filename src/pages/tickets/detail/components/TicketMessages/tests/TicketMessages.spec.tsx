@@ -9,12 +9,14 @@ import thunk from 'redux-thunk'
 
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'
+import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents } from 'state/ticket/selectors'
 import { RootState } from 'state/types'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
+import { getLDClient } from 'utils/launchDarkly'
 import { assumeMock } from 'utils/testing'
 
 import AIAgentDraftMessage from '../../AIAgentDraftMessage/AIAgentDraftMessage'
@@ -31,6 +33,7 @@ jest.mock('state/ui/ticketAIAgentFeedback')
 jest.mock('state/currentAccount/selectors')
 jest.mock('state/ticket/selectors')
 jest.mock('common/segment/segment')
+jest.mock('common/utils/useIsTicketAfterFeedbackCollectionPeriod')
 
 const getSelectedAIMessageMock = assumeMock(getSelectedAIMessage)
 const getCurrentAccountIdMock = assumeMock(getCurrentAccountId)
@@ -38,6 +41,9 @@ const getShouldDisplayAuditLogEventsMock = assumeMock(
     getShouldDisplayAuditLogEvents,
 )
 const logEventMock = assumeMock(logEventWithSampling)
+const useTicketIsAfterFeedbackCollectionPeriodMock = assumeMock(
+    useTicketIsAfterFeedbackCollectionPeriod,
+)
 
 jest.mock('pages/tickets/detail/components/TicketMessages/Message', () =>
     jest.fn(() => <p>Message</p>),
@@ -57,6 +63,11 @@ jest.mock(
     'pages/tickets/detail/components/AIAgentDraftMessage/AIAgentDraftMessage',
     () => jest.fn(() => <p>AIAgentDraftMessage</p>),
 )
+
+jest.mock('utils/launchDarkly')
+const allFlagsMock = getLDClient().allFlags as jest.MockedFunction<
+    ReturnType<typeof getLDClient>['allFlags']
+>
 
 const mockStore = configureMockStore([thunk])
 const defaultState: Partial<RootState> = {}
@@ -87,12 +98,16 @@ describe('TicketMessages', () => {
     } as unknown as ComponentProps<typeof TicketMessages>
 
     beforeEach(() => {
+        allFlagsMock.mockReturnValue({
+            [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: false,
+        })
         getSelectedAIMessageMock.mockReturnValue({
             ticket_id: 1,
             id: messageFeedback.messageId,
         } as unknown as ReturnType<typeof getSelectedAIMessage>)
         getCurrentAccountIdMock.mockReturnValue(1)
         getShouldDisplayAuditLogEventsMock.mockReturnValue(true)
+        useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValue(false)
         mockFlags({
             [FeatureFlagKey.FeedbackToAIAgentInTicketViews]: false,
         })

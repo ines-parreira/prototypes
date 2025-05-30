@@ -2,16 +2,20 @@ import { Component, ReactNode } from 'react'
 
 import classNamesBind from 'classnames/bind'
 import { fromJS, Map } from 'immutable'
+import { LDFlagSet } from 'launchdarkly-js-client-sdk'
+import { withLDConsumer } from 'launchdarkly-react-client-sdk'
 import _memoize from 'lodash/memoize'
 import moment, { Moment } from 'moment'
 
 import { TicketVia } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { IntegrationType } from 'models/integration/constants'
 import { isFailed, isPending } from 'models/ticket/predicates'
 import { MessageMetadataType, TicketMessage } from 'models/ticket/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import { getDisplayCustomerLastSeenOnChat } from 'pages/common/components/infobar/utils'
 import { scrollToReactNode } from 'pages/common/utils/keyboard'
+import SimplifiedAIAgentBanner from 'pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner'
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
 
 import AIAgentBanner from './AIAgentBanner'
@@ -41,13 +45,15 @@ type Props = {
     isAIAgentInternalNote?: boolean
     isAIAgentMessage?: boolean
     isAIAgentMessageSelected?: boolean
+    isTicketAfterFeedbackCollectionPeriod?: boolean
     allowsAIFeedback?: boolean
     customer: Map<any, any>
     lastCustomerMessageDateTime?: string
     shouldDisplayAuditLogEvents?: boolean
+    flags?: LDFlagSet
 }
 
-export default class Container extends Component<Props> {
+export class Container extends Component<Props> {
     componentDidUpdate(prevProps: Props) {
         // only if it just got the cursor.
         // to prevent focusing on the cursor item when a different one updates.
@@ -73,7 +79,13 @@ export default class Container extends Component<Props> {
             timezone,
             containsLastCustomerMessage,
             shouldDisplayAuditLogEvents = false,
+            isTicketAfterFeedbackCollectionPeriod = false,
+            flags,
         } = this.props
+
+        const isSimplifiedFeedbackCollectionEnabled =
+            !!flags?.[FeatureFlagKey.SimplifyAiAgentFeedbackCollection] &&
+            isTicketAfterFeedbackCollectionPeriod
 
         const sender = fromJS(message.sender || {}) as Map<any, any>
         let avatar
@@ -220,16 +232,23 @@ export default class Container extends Component<Props> {
                                 isMessageFromAIAgent={isAIAgentMessage}
                             />
                             {!isAIAgentInternalNote && children}
-                            {isAIAgentMessage && (
-                                <AIAgentBanner
-                                    message={message}
-                                    messages={messages}
-                                    className={classNames({
-                                        [css.withVerticalSpacing]:
-                                            !isAIAgentInternalNote,
-                                    })}
-                                />
-                            )}
+                            {isAIAgentMessage &&
+                                (isSimplifiedFeedbackCollectionEnabled ? (
+                                    <SimplifiedAIAgentBanner
+                                        message={message}
+                                        messages={messages}
+                                    />
+                                ) : (
+                                    <AIAgentBanner
+                                        message={message}
+                                        messages={messages}
+                                        className={classNames({
+                                            [css.withVerticalSpacing]:
+                                                !isAIAgentInternalNote,
+                                        })}
+                                    />
+                                ))}
+
                             <Footer
                                 id={this.props.id}
                                 message={message}
@@ -249,3 +268,5 @@ export default class Container extends Component<Props> {
         )
     }
 }
+
+export default withLDConsumer()(Container)

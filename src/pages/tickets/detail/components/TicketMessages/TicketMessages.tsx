@@ -6,6 +6,7 @@ import { Moment } from 'moment'
 
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'
+import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -62,6 +63,8 @@ export default function TicketMessages({
 }: Props) {
     const isFeedbackToAiAgentEnabled =
         useFlags()[FeatureFlagKey.FeedbackToAIAgentInTicketViews]
+    const isTicketAfterFeedbackCollectionPeriod =
+        useTicketIsAfterFeedbackCollectionPeriod()
 
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
     const accountId = useAppSelector(getCurrentAccountId)
@@ -188,6 +191,9 @@ export default function TicketMessages({
             isAIAgentMessage={isAIAgentMessage}
             isAIAgentMessageSelected={
                 !!message.id && selectedAIMessage?.id === message.id
+            }
+            isTicketAfterFeedbackCollectionPeriod={
+                isTicketAfterFeedbackCollectionPeriod
             }
             shouldDisplayAuditLogEvents={shouldDisplayAuditLogEvents}
             customer={customer}

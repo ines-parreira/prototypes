@@ -1,0 +1,261 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:root {
+    --success-green: #1a9970;
+}
+
+:local {
+    .container {
+        padding: var(--layout-spacing-s);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        gap: var(--layout-spacing-s);
+        overflow-y: auto;
+    }
+
+    .heading {
+        .heading-subsection-semibold();
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .sources {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xs);
+    }
+
+    .source {
+        display: flex;
+        align-items: stretch;
+        width: 100%;
+        gap: var(--layout-spacing-xxs);
+
+        .badge {
+            background-color: var(--neutral-grey-2);
+            color: var(--neutral-grey-5);
+            padding: var(--layout-spacing-xxs);
+        }
+
+        .openInNewTabIcon {
+            padding: var(--layout-spacing-xxs);
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        &:hover {
+            .sourceName {
+                background-color: var(--neutral-grey-2);
+                span {
+                    color: var(--main-primary);
+                }
+                .openInNewTabIcon {
+                    opacity: 1;
+                    color: var(--main-primary);
+                }
+
+                &.deleted {
+                    background-color: var(--neutral-grey-0);
+                    cursor: not-allowed;
+                    span {
+                        color: var(--neutral-grey-4) !important;
+                    }
+
+                    .openInNewTabIcon {
+                        opacity: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    .sourceName {
+        .caption-regular();
+        flex-grow: 1;
+        border-radius: var(--layout-spacing-xxs);
+        display: flex;
+        align-items: center;
+        gap: var(--layout-spacing-xxs);
+        overflow: hidden;
+        cursor: pointer;
+        color: var(--neutral-grey-6);
+
+        span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+            width: 100%;
+        }
+    }
+
+    .negativeFeedback,
+    .positiveFeedback {
+        cursor: default !important;
+        border-color: var(--neutral-grey-4) !important;
+    }
+
+    .positiveFeedback {
+        color: var(--success-green) !important;
+    }
+
+    .negativeFeedback {
+        color: var(--feedback-error) !important;
+    }
+
+    .button {
+        background-color: var(--neutral-grey-1) !important;
+        padding: 0 var(--layout-spacing-xxs);
+        flex-shrink: 0;
+        :global {
+            .material-icons {
+                font-size: 16px;
+            }
+        }
+    }
+
+    .shopifyLogo {
+        width: 20px;
+        height: 20px;
+        background-color: var(--neutral-grey-2);
+        border-radius: 100px;
+        padding: var(--layout-spacing-xxs);
+    }
+
+    .info {
+        .caption-regular();
+        color: var(--neutral-grey-5);
+        margin-bottom: var(--layout-spacing-xs);
+    }
+    .internalNote {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xxs);
+
+        .info {
+            margin-bottom: var(--layout-spacing-xxs);
+        }
+
+        .label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        textarea {
+            background-color: var(--neutral-grey-0);
+            border-color: var(--neutral-grey-4);
+            color: var(--neutral-grey-6);
+        }
+    }
+
+    .separator {
+        margin: var(--layout-spacing-xs) 0;
+        flex-shrink: 0;
+    }
+
+    .missingKnowledgeSelect {
+        .label {
+            margin-bottom: var(--layout-spacing-xs);
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--layout-spacing-xxs);
+            margin-top: var(--layout-spacing-xs);
+        }
+
+        .tag {
+            overflow: hidden;
+            .caption-regular();
+
+            .badge {
+                background-color: var(--neutral-grey-3);
+                color: var(--neutral-grey-6);
+                padding: 0;
+                font-size: 12px;
+            }
+
+            &:hover {
+                .tagText {
+                    color: var(--main-primary);
+                }
+            }
+        }
+
+        .tagText {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .tagIcon {
+            font-size: 12px;
+        }
+    }
+
+    .dropdownLink {
+        display: flex;
+        width: 100%;
+        flex-grow: 1;
+        align-items: center;
+        .body-regular();
+        color: var(--neutral-grey-6);
+        &:hover {
+            color: var(--neutral-grey-6);
+        }
+    }
+
+    .dropdownItem {
+        align-items: stretch;
+    }
+
+    .footer {
+        display: flex;
+        background-color: var(--neutral-grey-1);
+        padding: 12px 16px;
+    }
+    .autoSaveBadge {
+        background: var(--neutral-grey-2);
+        color: var(--neutral-grey-5);
+        max-width: 100%;
+        min-width: 28px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0px;
+
+        div.text {
+            max-width: 100px;
+            overflow: hidden;
+            transition:
+                max-width 0.5s linear,
+                margin 0.5s linear;
+            opacity: 1;
+            margin-left: 4px;
+        }
+
+        div.hidden {
+            max-width: 0;
+            opacity: 0;
+            margin-left: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    }
+
+    .skeletonContainer {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        gap: var(--layout-spacing-xxs);
+
+        span:nth-of-type(2) {
+            width: 100%;
+        }
+    }
+}

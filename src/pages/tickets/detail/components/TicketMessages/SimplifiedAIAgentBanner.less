@@ -1,0 +1,54 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        margin: @layout-spacing-xs 0;
+        padding: 16px;
+        display: flex;
+        gap: @layout-spacing-s;
+        border: 1px solid var(--accessory-magenta-3);
+        border-radius: @layout-spacing-xxs;
+        background-color: var(--neutral-grey-0);
+
+        .icon {
+            font-size: 20px !important;
+            color: var(--accessory-magenta-3);
+            align-self: flex-start;
+        }
+
+        &.hasError {
+            border: 1px solid var(--feedback-error);
+
+            .icon {
+                color: var(--feedback-error);
+            }
+        }
+    }
+    .activeButton {
+        border-color: var(--neutral-grey-4) !important;
+    }
+    .content {
+        flex: 1;
+        display: flex;
+        overflow: auto;
+        gap: @layout-spacing-m;
+        justify-content: space-between;
+
+        :global {
+            .message-content {
+                background: var(--neutral-grey-0) !important;
+            }
+        }
+    }
+
+    .boldMessage {
+        .body-semibold();
+    }
+
+    .executionId {
+        .caption-regular();
+        color: var(--neutral-grey-5);
+        margin-top: @layout-spacing-xxs;
+    }
+}

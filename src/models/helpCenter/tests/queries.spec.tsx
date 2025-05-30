@@ -10,6 +10,7 @@ import {
 } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { HelpCenterClient } from 'rest_api/help_center_api/client'
+import { Components } from 'rest_api/help_center_api/client.generated'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -27,6 +28,8 @@ import {
     useGetHelpCenterList,
     useGetHelpCenterListMulti,
     useGetIngestionLogs,
+    useGetMultipleFileIngestion,
+    useGetMultipleHelpCenterArticleLists,
     useListIngestedResources,
     useStartArticleIngestion,
     useStartIngestion,
@@ -120,6 +123,281 @@ describe('queries', () => {
             )
 
             expect(getHelpCenterArticles).toHaveBeenCalledTimes(0)
+        })
+    })
+
+    describe('useGetMultipleHelpCenterArticleLists', () => {
+        const helpCenterIds = [1, 2, 3]
+        const queryParams = { locale: 'en-US' as const }
+
+        // Define article mock data that matches the expected structure
+        const mockArticles = [
+            {
+                id: 1,
+                unlisted_id: 'unlisted1',
+                created_datetime: '2023-01-01T00:00:00Z',
+                updated_datetime: '2023-01-02T00:00:00Z',
+                ingested_resource_id: 1,
+                category_id: 100,
+                help_center_id: 1,
+                available_locales: ['en-US'],
+                translation: {
+                    created_datetime: '2023-01-01T00:00:00Z',
+                    updated_datetime: '2023-01-02T00:00:00Z',
+                    title: 'Article 1',
+                    excerpt: 'Excerpt 1',
+                    content: 'Content 1',
+                    slug: 'article-1',
+                    locale: 'en-US',
+                    article_id: 1,
+                    category_id: 100,
+                    article_unlisted_id: 'unlisted1',
+                    seo_meta: { title: null, description: null },
+                    visibility_status: 'PUBLIC',
+                    is_current: true,
+                    rating: { up: 0, down: 0 },
+                },
+                rating: { up: 0, down: 0 },
+            },
+            {
+                id: 2,
+                unlisted_id: 'unlisted2',
+                created_datetime: '2023-01-01T00:00:00Z',
+                updated_datetime: '2023-01-02T00:00:00Z',
+                ingested_resource_id: 1,
+                category_id: 100,
+                slug: 'article-2',
+                help_center_id: 2,
+                available_locales: ['en-US'],
+                translation: {
+                    created_datetime: '2023-01-01T00:00:00Z',
+                    updated_datetime: '2023-01-02T00:00:00Z',
+                    title: 'Article 2',
+                    excerpt: 'Excerpt 2',
+                    content: 'Content 2',
+                    slug: 'article-2',
+                    locale: 'en-US',
+                    article_id: 2,
+                    category_id: 100,
+                    article_unlisted_id: 'unlisted2',
+                    seo_meta: { title: null, description: null },
+                    visibility_status: 'PUBLIC',
+                    is_current: true,
+                    rating: { up: 0, down: 0 },
+                },
+                rating: { up: 0, down: 0 },
+            },
+            {
+                id: 3,
+                unlisted_id: 'unlisted3',
+                created_datetime: '2023-01-01T00:00:00Z',
+                updated_datetime: '2023-01-02T00:00:00Z',
+                ingested_resource_id: 1,
+                category_id: 100,
+                slug: 'article-3',
+                help_center_id: 3,
+                available_locales: ['en-US'],
+                translation: {
+                    created_datetime: '2023-01-01T00:00:00Z',
+                    updated_datetime: '2023-01-02T00:00:00Z',
+                    title: 'Article 3',
+                    excerpt: 'Excerpt 3',
+                    content: 'Content 3',
+                    slug: 'article-3',
+                    locale: 'en-US',
+                    article_id: 3,
+                    category_id: 100,
+                    article_unlisted_id: 'unlisted3',
+                    seo_meta: { title: null, description: null },
+                    visibility_status: 'PUBLIC',
+                    is_current: true,
+                    rating: { up: 0, down: 0 },
+                },
+                rating: { up: 0, down: 0 },
+            },
+        ] as Components.Schemas.ArticleListDataDto[]
+
+        beforeEach(() => {
+            mockUseHelpCenterApi.mockReturnValue({
+                client: {} as HelpCenterClient,
+                isReady: true,
+            })
+        })
+
+        it('should fetch articles from multiple help centers and add helpCenterId to each article', async () => {
+            getHelpCenterArticles
+                .mockResolvedValueOnce({
+                    data: [mockArticles[0]],
+                    meta: {
+                        page: 1,
+                        per_page: 10,
+                        current_page: '1',
+                        item_count: 1,
+                        nb_pages: 1,
+                    },
+                    object: 'list',
+                })
+                .mockResolvedValueOnce({
+                    data: [mockArticles[1]],
+                    meta: {
+                        page: 1,
+                        per_page: 10,
+                        current_page: '1',
+                        item_count: 1,
+                        nb_pages: 1,
+                    },
+                    object: 'list',
+                })
+                .mockResolvedValueOnce({
+                    data: [mockArticles[2]],
+                    meta: {
+                        page: 1,
+                        per_page: 10,
+                        current_page: '1',
+                        item_count: 1,
+                        nb_pages: 1,
+                    },
+                    object: 'list',
+                })
+
+            const { result } = renderHook(
+                () =>
+                    useGetMultipleHelpCenterArticleLists(
+                        helpCenterIds,
+                        queryParams,
+                    ),
+                { wrapper },
+            )
+
+            expect(result.current.isLoading).toBe(true)
+
+            await waitFor(() => expect(result.current.isLoading).toBe(false))
+
+            expect(result.current.articles).toHaveLength(3)
+            expect(result.current.articles[0]).toEqual({
+                ...mockArticles[0],
+                helpCenterId: helpCenterIds[0],
+            })
+            expect(result.current.articles[1]).toEqual({
+                ...mockArticles[1],
+                helpCenterId: helpCenterIds[1],
+            })
+            expect(result.current.articles[2]).toEqual({
+                ...mockArticles[2],
+                helpCenterId: helpCenterIds[2],
+            })
+
+            expect(getHelpCenterArticles).toHaveBeenCalledTimes(3)
+            expect(getHelpCenterArticles).toHaveBeenNthCalledWith(
+                1,
+                expect.anything(),
+                { help_center_id: helpCenterIds[0] },
+                queryParams,
+            )
+            expect(getHelpCenterArticles).toHaveBeenNthCalledWith(
+                2,
+                expect.anything(),
+                { help_center_id: helpCenterIds[1] },
+                queryParams,
+            )
+            expect(getHelpCenterArticles).toHaveBeenNthCalledWith(
+                3,
+                expect.anything(),
+                { help_center_id: helpCenterIds[2] },
+                queryParams,
+            )
+        })
+
+        it('should handle empty responses gracefully', async () => {
+            getHelpCenterArticles
+                .mockResolvedValueOnce({
+                    data: [],
+                    meta: {
+                        page: 1,
+                        per_page: 10,
+                        current_page: '1',
+                        item_count: 0,
+                        nb_pages: 1,
+                    },
+                    object: 'list',
+                })
+                .mockResolvedValueOnce(null)
+                .mockResolvedValueOnce({
+                    data: [mockArticles[2]],
+                    meta: {
+                        page: 1,
+                        per_page: 10,
+                        current_page: '1',
+                        item_count: 1,
+                        nb_pages: 1,
+                    },
+                    object: 'list',
+                })
+
+            const { result } = renderHook(
+                () =>
+                    useGetMultipleHelpCenterArticleLists(
+                        helpCenterIds,
+                        queryParams,
+                    ),
+                { wrapper },
+            )
+
+            await waitFor(() => expect(result.current.isLoading).toBe(false))
+
+            expect(result.current.articles).toHaveLength(1)
+            expect(result.current.articles[0]).toEqual({
+                ...mockArticles[2],
+                helpCenterId: helpCenterIds[2],
+            })
+        })
+
+        it('should not call the api function when client is not set', () => {
+            mockUseHelpCenterApi.mockReturnValue({
+                client: undefined,
+                isReady: false,
+            })
+
+            renderHook(
+                () =>
+                    useGetMultipleHelpCenterArticleLists(
+                        helpCenterIds,
+                        queryParams,
+                    ),
+                { wrapper },
+            )
+
+            expect(getHelpCenterArticles).not.toHaveBeenCalled()
+        })
+
+        it('should not call the api function for invalid helpCenterIds', async () => {
+            getHelpCenterArticles.mockResolvedValue({
+                data: [],
+                meta: {
+                    page: 1,
+                    per_page: 10,
+                    current_page: '1',
+                    item_count: 0,
+                    nb_pages: 1,
+                },
+                object: 'list',
+            })
+
+            renderHook(
+                () =>
+                    useGetMultipleHelpCenterArticleLists(
+                        [0, undefined as unknown as number, 3],
+                        queryParams,
+                    ),
+                { wrapper },
+            )
+
+            expect(getHelpCenterArticles).toHaveBeenCalledTimes(1)
+            expect(getHelpCenterArticles).toHaveBeenCalledWith(
+                expect.anything(),
+                { help_center_id: 3 },
+                queryParams,
+            )
         })
     })
 
@@ -682,6 +960,208 @@ describe('queries', () => {
                 },
             )
             expect(getFileIngestion).toHaveBeenCalledTimes(0)
+        })
+    })
+
+    describe('useGetMultipleFileIngestion', () => {
+        const helpCenterIds = [1, 2, 3]
+        const fileIds = [101, 102, 103]
+        const mockFileData = [
+            {
+                id: 101,
+                filename: 'file1.pdf',
+                help_center_id: 1,
+                google_storage_url: 'https://storage.googleapis.com/file1.pdf',
+                status: 'SUCCESSFUL' as 'SUCCESSFUL' | 'FAILED' | 'PENDING',
+                uploaded_datetime: '2023-01-01T00:00:00Z',
+                snippets_article_ids: [],
+            },
+            {
+                id: 102,
+                filename: 'file2.pdf',
+                help_center_id: 2,
+                google_storage_url: 'https://storage.googleapis.com/file2.pdf',
+                status: 'SUCCESSFUL' as 'SUCCESSFUL' | 'FAILED' | 'PENDING',
+                uploaded_datetime: '2023-01-01T00:00:00Z',
+                snippets_article_ids: [],
+            },
+            {
+                id: 103,
+                filename: 'file3.pdf',
+                help_center_id: 3,
+                google_storage_url: 'https://storage.googleapis.com/file3.pdf',
+                status: 'SUCCESSFUL' as 'SUCCESSFUL' | 'FAILED' | 'PENDING',
+                uploaded_datetime: '2023-01-01T00:00:00Z',
+                snippets_article_ids: [],
+            },
+        ]
+
+        beforeEach(() => {
+            mockUseHelpCenterApi.mockReturnValue({
+                client: {} as HelpCenterClient,
+                isReady: true,
+            })
+        })
+
+        it('should fetch files from multiple help centers and add helpCenterId to each file', async () => {
+            getFileIngestion
+                .mockResolvedValueOnce({
+                    data: [mockFileData[0]],
+                    status: 200,
+                    statusText: 'OK',
+                    headers: {},
+                    config: {} as any,
+                })
+                .mockResolvedValueOnce({
+                    data: [mockFileData[1]],
+                    status: 200,
+                    statusText: 'OK',
+                    headers: {},
+                    config: {} as any,
+                })
+                .mockResolvedValueOnce({
+                    data: [mockFileData[2]],
+                    status: 200,
+                    statusText: 'OK',
+                    headers: {},
+                    config: {} as any,
+                })
+
+            const { result } = renderHook(
+                () =>
+                    useGetMultipleFileIngestion(helpCenterIds, {
+                        ids: fileIds,
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current.isLoading).toBe(true)
+
+            await waitFor(() => expect(result.current.isLoading).toBe(false))
+
+            expect(result.current.ingestedFiles).toHaveLength(3)
+            expect(result.current.ingestedFiles[0]).toEqual({
+                ...mockFileData[0],
+                helpCenterId: helpCenterIds[0],
+            })
+            expect(result.current.ingestedFiles[1]).toEqual({
+                ...mockFileData[1],
+                helpCenterId: helpCenterIds[1],
+            })
+            expect(result.current.ingestedFiles[2]).toEqual({
+                ...mockFileData[2],
+                helpCenterId: helpCenterIds[2],
+            })
+
+            expect(getFileIngestion).toHaveBeenCalledTimes(3)
+            expect(getFileIngestion).toHaveBeenNthCalledWith(
+                1,
+                expect.anything(),
+                {
+                    help_center_id: helpCenterIds[0],
+                    ids: fileIds,
+                },
+            )
+            expect(getFileIngestion).toHaveBeenNthCalledWith(
+                2,
+                expect.anything(),
+                {
+                    help_center_id: helpCenterIds[1],
+                    ids: fileIds,
+                },
+            )
+            expect(getFileIngestion).toHaveBeenNthCalledWith(
+                3,
+                expect.anything(),
+                {
+                    help_center_id: helpCenterIds[2],
+                    ids: fileIds,
+                },
+            )
+        })
+
+        it('should handle empty responses gracefully', async () => {
+            getFileIngestion
+                .mockResolvedValueOnce({
+                    data: [],
+                    status: 200,
+                    statusText: 'OK',
+                    headers: {},
+                    config: {} as any,
+                })
+                .mockResolvedValueOnce(null)
+                .mockResolvedValueOnce({
+                    data: [mockFileData[2]],
+                    status: 200,
+                    statusText: 'OK',
+                    headers: {},
+                    config: {} as any,
+                })
+
+            const { result } = renderHook(
+                () => useGetMultipleFileIngestion(helpCenterIds),
+                { wrapper },
+            )
+
+            await waitFor(() => expect(result.current.isLoading).toBe(false))
+
+            expect(result.current.ingestedFiles).toHaveLength(1)
+            expect(result.current.ingestedFiles[0]).toEqual({
+                ...mockFileData[2],
+                helpCenterId: helpCenterIds[2],
+            })
+        })
+
+        it('should not call the api function when client is not set', () => {
+            mockUseHelpCenterApi.mockReturnValue({
+                client: undefined,
+                isReady: false,
+            })
+
+            renderHook(() => useGetMultipleFileIngestion(helpCenterIds), {
+                wrapper,
+            })
+
+            expect(getFileIngestion).not.toHaveBeenCalled()
+        })
+
+        it('should not call the api function for invalid helpCenterIds', async () => {
+            getFileIngestion.mockResolvedValue({
+                data: [],
+                status: 200,
+                statusText: 'OK',
+                headers: {},
+                config: {} as any,
+            })
+
+            renderHook(() => useGetMultipleFileIngestion([0, -1, 3]), {
+                wrapper,
+            })
+
+            expect(getFileIngestion).toHaveBeenCalledTimes(1)
+            expect(getFileIngestion).toHaveBeenCalledWith(expect.anything(), {
+                help_center_id: 3,
+            })
+        })
+
+        it('should pass optional file ids when provided', async () => {
+            getFileIngestion.mockResolvedValue({
+                data: [],
+                status: 200,
+                statusText: 'OK',
+                headers: {},
+                config: {} as any,
+            })
+
+            renderHook(
+                () => useGetMultipleFileIngestion([5], { ids: [10, 20] }),
+                { wrapper },
+            )
+
+            expect(getFileIngestion).toHaveBeenCalledWith(expect.anything(), {
+                help_center_id: 5,
+                ids: [10, 20],
+            })
         })
     })
 

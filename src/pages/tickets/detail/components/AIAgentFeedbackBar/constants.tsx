@@ -39,3 +39,59 @@ export const BANNER_TYPE = {
 }
 
 export const SAMPLE_RATE = 0.1
+
+export const SIMPLIFIED_RESOURCE_LABELS: Record<string, string> = {
+    soft_action: 'Actions::Soft action::',
+    action: 'Actions::',
+    hard_action: 'Actions::Hard action::',
+    guidance: 'Guidance::',
+    article: 'Help Center articles::',
+    external_snippet: 'External websites::',
+    macro: 'Macros::',
+    file_external_snippet: 'External files::',
+}
+
+export enum KnowledgeSourceTypeIcon {
+    webhook = 'webhook',
+    map = 'map',
+    article = 'article',
+    language = 'language',
+    bolt = 'bolt',
+    link = 'link',
+    attach_file = 'attach_file',
+    shopify = 'shopify',
+}
+
+export const KNOWLEDGE_SOURCE_TYPE = {
+    action: { icon: KnowledgeSourceTypeIcon.webhook, label: 'Action' },
+    guidance: { icon: KnowledgeSourceTypeIcon.map, label: 'Guidance' },
+    article: {
+        icon: KnowledgeSourceTypeIcon.article,
+        label: 'Help Center article',
+    },
+    website: { icon: KnowledgeSourceTypeIcon.language, label: 'Store website' },
+    macro: { icon: KnowledgeSourceTypeIcon.bolt, label: 'Macro' },
+    link: { icon: KnowledgeSourceTypeIcon.link, label: 'Public URL' },
+    external_snippet: {
+        icon: KnowledgeSourceTypeIcon.attach_file,
+        label: 'External file',
+    },
+    order: { icon: KnowledgeSourceTypeIcon.shopify, label: 'Order' },
+    product: { icon: KnowledgeSourceTypeIcon.shopify, label: 'Product' },
+}
+
+export type KnowledgeSourceType = keyof typeof KNOWLEDGE_SOURCE_TYPE
+
+export const LEGACY_TO_SIMPLIFIED_KNOWLEDGE_SOURCE_ICON_MAP: Record<
+    string,
+    KnowledgeSourceType
+> = {
+    'Soft action': 'action',
+    'Hard action': 'action',
+    'Help Center articles': 'article',
+    Actions: 'action',
+    Macros: 'macro',
+    'External websites': 'website',
+    'External files': 'external_snippet',
+    Guidance: 'guidance',
+}

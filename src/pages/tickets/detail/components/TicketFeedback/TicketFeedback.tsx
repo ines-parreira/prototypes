@@ -1,14 +1,16 @@
 import { useCallback } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
 import { AutoQA } from 'auto_qa'
+import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import AIAgentFeedbackBar from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentFeedbackBar'
+import AIAgentSimplifiedFeedback from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback'
 import useAiAgentMessageFeedback from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useAiAgentMessageFeedback'
 import { changeTicketMessage } from 'state/ui/ticketAIAgentFeedback'
 import TicketListInfo from 'ticket-list-view/components/TicketListInfo'
@@ -22,8 +24,11 @@ export default function TicketFeedback() {
     const hasAIAgent = useHasAIAgent()
     const hasAgentPrivileges = useHasAgentPrivileges()
     const messageFeedback = useAiAgentMessageFeedback()
+    const isAfterFeedbackCollectionPeriod =
+        useTicketIsAfterFeedbackCollectionPeriod()
     const isSimplifiedFeedbackCollectionEnabled =
-        useFlags()[FeatureFlagKey.SimplifyAiAgentFeedbackCollection]
+        useFlag(FeatureFlagKey.SimplifyAiAgentFeedbackCollection) &&
+        isAfterFeedbackCollectionPeriod
 
     const handleClickBack = useCallback(() => {
         dispatch(changeTicketMessage({ message: undefined }))
@@ -42,9 +47,9 @@ export default function TicketFeedback() {
 
     if (isSimplifiedFeedbackCollectionEnabled) {
         return (
-            <div className={css.container}>
-                <AIAgentFeedbackBar />
-            </div>
+            <HelpCenterApiClientProvider>
+                <AIAgentSimplifiedFeedback />
+            </HelpCenterApiClientProvider>
         )
     }
 

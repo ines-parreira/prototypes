@@ -1,8 +1,6 @@
-import React from 'react'
-
 import { render } from '@testing-library/react'
 
-// import useAppDispatch from 'hooks/useAppDispatch'
+import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import useAiAgentMessageFeedback from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useAiAgentMessageFeedback'
 
@@ -21,6 +19,10 @@ jest.mock(
 )
 const useAiAgentMessageFeedbackMock = useAiAgentMessageFeedback as jest.Mock
 
+jest.mock('common/utils/useIsTicketAfterFeedbackCollectionPeriod')
+const useTicketIsAfterFeedbackCollectionPeriodMock =
+    useTicketIsAfterFeedbackCollectionPeriod as jest.Mock
+
 jest.mock('../hooks/useHasAIAgent', () => jest.fn())
 const useHasAIAgentMock = useHasAIAgent as jest.Mock
 
@@ -32,6 +34,7 @@ describe('TicketFeedback', () => {
         useAiAgentMessageFeedbackMock.mockReturnValue(null)
         useHasAIAgentMock.mockReturnValue(false)
         useHasAgentPrivilegesMock.mockReturnValue(false)
+        useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValue(false)
     })
 
     it('should render an unauthorised message if neither AutoQA nor Agent AI are active', () => {

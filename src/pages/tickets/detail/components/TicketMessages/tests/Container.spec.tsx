@@ -4,6 +4,7 @@ import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import moment from 'moment'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { IntegrationType } from 'models/integration/constants'
 import {
     duplicatedHiddenFacebookMessage,
@@ -45,6 +46,7 @@ jest.mock('pages/tickets/detail/components/TicketMessages/Header', () => () => (
 ))
 
 describe('Container', () => {
+    const flags = { [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: false }
     const props = {
         id: 'some-header',
         hasCursor: false,
@@ -57,6 +59,7 @@ describe('Container', () => {
         isBodyHighlighted: false,
         containsLastCustomerMessage: false,
         customer,
+        flags,
     }
 
     it('should render', () => {

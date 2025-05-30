@@ -14,12 +14,16 @@ const UPDATE_STATUS_INTERVAL_MS = 5000
 
 export const useFileIngestion = ({
     helpCenterId,
+    ingestedFileIds,
     onSuccess,
     onFailure,
+    queryOptionsOverrides,
 }: {
     helpCenterId: number
+    ingestedFileIds?: number[]
     onSuccess?: () => void
     onFailure?: (dto: Components.Schemas.RetrieveFileIngestionLogDto) => void
+    queryOptionsOverrides?: Parameters<typeof useGetFileIngestion>[1]
 }): {
     ingestFile: (
         createFileIngestionLogDto: Components.Schemas.CreateFileIngestionLogDto,
@@ -47,8 +51,11 @@ export const useFileIngestion = ({
     const { data: ingestedFiles, isLoading } = useGetFileIngestion(
         {
             help_center_id: helpCenterId,
+            ids: ingestedFileIds,
         },
         {
+            ...queryOptionsOverrides,
+            enabled: !!helpCenterId && !!ingestedFileIds,
             refetchOnWindowFocus: false,
             refetchInterval:
                 ingestingFileId === null ? false : UPDATE_STATUS_INTERVAL_MS,

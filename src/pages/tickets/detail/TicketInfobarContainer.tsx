@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import classNames from 'classnames'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { connect, ConnectedProps } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
 import { Navbar } from 'reactstrap'
@@ -11,7 +10,9 @@ import { AutoQA } from 'auto_qa'
 import { TicketStatus } from 'business/types/ticket'
 import { SegmentEvent } from 'common/segment'
 import { logEvent, logEventWithSampling } from 'common/segment/segment'
+import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearchParam } from 'hooks/useSearchParam'
@@ -78,8 +79,12 @@ export const TicketInfobarContainer = ({
     const hasAutomate = useAppSelector(getHasAutomate)
     const location = useLocation()
     const hasAIAgent = useHasAIAgent()
+    const isAfterFeedbackCollectionPeriod =
+        useTicketIsAfterFeedbackCollectionPeriod()
     const isSimplifiedFeedbackCollectionEnabled =
-        useFlags()[FeatureFlagKey.SimplifyAiAgentFeedbackCollection]
+        useFlag(FeatureFlagKey.SimplifyAiAgentFeedbackCollection) &&
+        isAfterFeedbackCollectionPeriod
+
     useEffect(() => {
         dispatch(actions.selectContext())
         void dispatch(actions.fetchWidgets())

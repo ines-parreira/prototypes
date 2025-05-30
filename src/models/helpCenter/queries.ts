@@ -1,4 +1,11 @@
-import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
+import { useMemo } from 'react'
+
+import {
+    useMutation,
+    useQueries,
+    useQuery,
+    UseQueryOptions,
+} from '@tanstack/react-query'
 
 import { MutationOverrides } from 'types/query'
 
@@ -147,6 +154,56 @@ export const useGetHelpCenterArticleList = (
         ...overrides,
         enabled: !!client && (overrides === undefined || overrides.enabled),
     })
+}
+
+/**
+ * Hook to fetch articles from multiple help centers in parallel
+ */
+export const useGetMultipleHelpCenterArticleLists = (
+    helpCenterIds: Paths.ListArticles.Parameters.HelpCenterId[],
+    queryParams: Paths.ListArticles.QueryParameters,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getHelpCenterArticles>>
+    >,
+) => {
+    const { client } = useHelpCenterApi()
+
+    const queries = useQueries({
+        queries: helpCenterIds.map((helpCenterId) => ({
+            queryKey: helpCenterKeys.articles(helpCenterId, queryParams),
+            queryFn: async () =>
+                getHelpCenterArticles(
+                    client,
+                    { help_center_id: helpCenterId },
+                    queryParams,
+                ),
+            ...overrides,
+            enabled:
+                !!client &&
+                !!helpCenterId &&
+                (overrides === undefined || overrides.enabled),
+        })),
+    })
+
+    // Compute loading state
+    const isLoading = queries.some((query) => query.isLoading)
+
+    // Combine articles from all help centers and add helpCenterId to each article
+    const articles = useMemo(() => {
+        return queries.flatMap((query, index) => {
+            const helpCenterId = helpCenterIds[index]
+            return (query.data?.data || []).map((article) => ({
+                ...article,
+                helpCenterId, // Add helpCenterId to each article
+            }))
+        })
+    }, [queries, helpCenterIds])
+
+    return {
+        queries,
+        articles,
+        isLoading,
+    }
 }
 
 export const useGetHelpCenterCategoryTree = (
@@ -582,6 +639,62 @@ export const useGetFileIngestion = (
             !!helpCenterClient &&
             (overrides === undefined || overrides.enabled),
     })
+}
+
+/**
+ * Hook to fetch ingested files from multiple help centers in parallel
+ */
+export const useGetMultipleFileIngestion = (
+    helpCenterIds: number[],
+    fileParams?: { ids?: number[] },
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof getFileIngestion>>>,
+) => {
+    const { client: helpCenterClient } = useHelpCenterApi()
+
+    const queries = useQueries({
+        queries: helpCenterIds.map((helpCenterId) => ({
+            queryKey: helpCenterKeys.fileIngestions(
+                helpCenterId,
+                fileParams?.ids ? { ids: fileParams.ids } : undefined,
+            ),
+            queryFn: async () => {
+                const result = await getFileIngestion(helpCenterClient, {
+                    help_center_id: helpCenterId,
+                    ...(fileParams?.ids ? { ids: fileParams.ids } : {}),
+                })
+                return result
+            },
+            ...overrides,
+            enabled:
+                !!helpCenterClient &&
+                helpCenterId > 0 &&
+                (overrides === undefined || overrides.enabled),
+            refetchOnWindowFocus: false,
+        })),
+    })
+
+    // Track loading state
+    const isLoading = useMemo(
+        () => queries.some((query) => query.isLoading),
+        [queries],
+    )
+
+    // Combine all ingested files and add helpCenterId to each
+    const ingestedFiles = useMemo(() => {
+        return queries.flatMap((query, index) => {
+            const helpCenterId = helpCenterIds[index]
+            return (query.data?.data || []).map((file) => ({
+                ...file,
+                helpCenterId,
+            }))
+        })
+    }, [queries, helpCenterIds])
+
+    return {
+        queries,
+        isLoading,
+        ingestedFiles,
+    }
 }
 
 export const useDeleteFileIngestion = (

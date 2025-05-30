@@ -10,9 +10,8 @@ import {
     ArticleWithLocalTranslationAndRating,
     LocaleCode,
 } from 'models/helpCenter/types'
-
-import { mapArticleApiToGuidanceArticle } from '../utils/guidance.utils'
-import { GUIDANCE_ARTICLES_QUERY_PARAMS } from './useGuidanceArticles'
+import { GUIDANCE_ARTICLES_QUERY_PARAMS } from 'pages/aiAgent/hooks/useGuidanceArticles'
+import { mapArticleApiToGuidanceArticle } from 'pages/aiAgent/utils/guidance.utils'
 
 export const useGuidanceArticle = ({
     guidanceArticleId,

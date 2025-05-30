@@ -1,16 +1,20 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useRef } from 'react'
 
 import cn from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 
 import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
 
+import { SaveState } from 'auto_qa/hooks/useSaveState'
 import { TicketStatus } from 'business/types/ticket'
+import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import AutoSaveBadge from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
+import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { getTicket } from 'state/ticket/selectors'
 import TicketListInfo from 'ticket-list-view/components/TicketListInfo'
 
@@ -27,13 +31,35 @@ export default function AutoQA() {
     const hasAgentPrivileges = useHasAgentPrivileges()
     const { changeHandlers, dimensions, isLoading, lastUpdated, saveState } =
         useAutoQA(ticket.id)
+    const isAfterFeedbackCollectionPeriod =
+        useTicketIsAfterFeedbackCollectionPeriod()
     const isSimplifiedFeedbackCollectionEnabled =
-        useFlags()[FeatureFlagKey.SimplifyAiAgentFeedbackCollection]
+        useFlag(FeatureFlagKey.SimplifyAiAgentFeedbackCollection) &&
+        isAfterFeedbackCollectionPeriod
 
     const lastUpdatedString = useMemo(
         () => moment(lastUpdated).calendar(),
         [lastUpdated],
     )
+
+    const prevSaveBadgeState = useRef<SaveState>('idle')
+
+    const newSaveBadgeState = useMemo(() => {
+        let newState = AutoSaveState.INITIAL
+
+        if (
+            (prevSaveBadgeState.current === 'saved' && saveState === 'idle') ||
+            saveState === 'saved'
+        ) {
+            newState = AutoSaveState.SAVED
+        } else if (saveState === 'saving') {
+            newState = AutoSaveState.SAVING
+        }
+
+        prevSaveBadgeState.current = saveState
+
+        return newState
+    }, [saveState])
 
     if (!hasAgentPrivileges && isSimplifiedFeedbackCollectionEnabled) {
         return (
@@ -66,7 +92,18 @@ export default function AutoQA() {
                     </Tooltip>
                     <Badge type={'magenta'}>BETA</Badge>
                 </div>
-                <SaveBadge state={saveState} />
+                {isSimplifiedFeedbackCollectionEnabled ? (
+                    <AutoSaveBadge
+                        state={newSaveBadgeState}
+                        updatedAt={
+                            lastUpdated
+                                ? new Date(lastUpdated).toLocaleString()
+                                : undefined
+                        }
+                    />
+                ) : (
+                    <SaveBadge state={saveState} />
+                )}
             </header>
 
             {isLoading ? (

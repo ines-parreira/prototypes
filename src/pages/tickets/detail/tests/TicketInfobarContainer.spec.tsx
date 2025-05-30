@@ -2,13 +2,12 @@ import { ComponentProps } from 'react'
 
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { TicketStatus } from 'business/types/ticket'
-import { FeatureFlagKey } from 'config/featureFlags'
+import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
 import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import { ticket } from 'fixtures/ticket'
@@ -58,6 +57,11 @@ const getHasAutomateMock = assumeMock(getHasAutomate)
 
 jest.mock('pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent')
 const useHasAIAgentMock = assumeMock(useHasAIAgent)
+
+jest.mock('common/utils/useIsTicketAfterFeedbackCollectionPeriod')
+const useTicketIsAfterFeedbackCollectionPeriodMock = assumeMock(
+    useTicketIsAfterFeedbackCollectionPeriod,
+)
 
 jest.mock('state/widgets/actions')
 
@@ -140,9 +144,6 @@ describe('<TicketInfobarContainer />', () => {
         store.dispatch = jest.fn()
 
         useHasAIAgentMock.mockReturnValue(true)
-        mockFlags({
-            [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: false,
-        })
         getCurrentUserMock.mockReturnValue(
             fromJS({
                 id: 2,
@@ -150,6 +151,7 @@ describe('<TicketInfobarContainer />', () => {
             }),
         )
         useFlagMock.mockReturnValue(false)
+        useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValue(false)
         getHasAutomateMock.mockReturnValue(true)
         useHasAIAgentMock.mockReturnValue(true)
         mockedGetAIAgentMessages.mockReturnValue([
@@ -352,7 +354,8 @@ describe('<TicketInfobarContainer />', () => {
     })
 
     it('should not render AUTO_QA tab when SimplifyAiAgentFeedbackCollection is disabled', () => {
-        mockFlags({ [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: false })
+        useFlagMock.mockReturnValue(false)
+        useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValueOnce(true)
 
         renderWithRouter(
             <Provider store={store}>
@@ -370,7 +373,8 @@ describe('<TicketInfobarContainer />', () => {
     })
 
     it('should render AUTO_QA tab when SimplifyAiAgentFeedbackCollection is enabled', () => {
-        mockFlags({ [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: true })
+        useFlagMock.mockReturnValue(true)
+        useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValueOnce(true)
 
         renderWithRouter(
             <Provider store={store}>
@@ -388,7 +392,8 @@ describe('<TicketInfobarContainer />', () => {
     })
 
     it('should call changeActive tab and render AUTO_QA content when AUTO_QA tab is clicked', () => {
-        mockFlags({ [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: true })
+        useFlagMock.mockReturnValue(true)
+        useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValueOnce(true)
 
         renderWithRouter(
             <Provider store={store}>
@@ -427,7 +432,8 @@ describe('<TicketInfobarContainer />', () => {
     })
 
     it('should render AUTO_QA content when activeTab is AutoQA and feature flag is enabled', () => {
-        mockFlags({ [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: true })
+        useFlagMock.mockReturnValue(true)
+        useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValueOnce(true)
         mockedGetActiveTab.mockReturnValue(TicketAIAgentFeedbackTab.AutoQA)
 
         renderWithRouter(
@@ -444,7 +450,7 @@ describe('<TicketInfobarContainer />', () => {
     })
 
     it('should not render AUTO_QA content when activeTab is AutoQA but feature flag is disabled', () => {
-        mockFlags({ [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: false })
+        useFlagMock.mockReturnValue(false)
 
         mockedGetActiveTab.mockReturnValue(TicketAIAgentFeedbackTab.AutoQA)
 

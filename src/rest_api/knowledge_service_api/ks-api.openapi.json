@@ -1,0 +1,1382 @@
+{
+    "openapi": "3.0.0",
+    "paths": {
+        "/api/knowledge-resources": {
+            "get": {
+                "operationId": "findAllKnowledgeResources",
+                "summary": "Get all knowledge resources",
+                "parameters": [
+                    {
+                        "name": "accountId",
+                        "required": true,
+                        "in": "query",
+                        "oneOf": [{ "type": "string" }, { "type": "number" }],
+                        "description": "Account ID to filter by",
+                        "schema": { "example": 1 }
+                    },
+                    {
+                        "name": "sourceSetIds",
+                        "required": true,
+                        "in": "query",
+                        "oneOf": [
+                            { "type": "string" },
+                            { "type": "array", "items": { "type": "string" } },
+                            { "type": "array", "items": { "type": "number" } }
+                        ],
+                        "description": "Source Set IDs to filter by (Ex. Help Center ID)",
+                        "schema": { "example": [1, 2], "type": "array" }
+                    },
+                    {
+                        "name": "sourceIds",
+                        "required": false,
+                        "in": "query",
+                        "oneOf": [
+                            { "type": "string" },
+                            { "type": "array", "items": { "type": "string" } }
+                        ],
+                        "description": "Source IDs to filter by",
+                        "schema": { "example": ["1", "2"], "type": "array" }
+                    },
+                    {
+                        "name": "locale",
+                        "required": false,
+                        "in": "query",
+                        "description": "Locale to filter by",
+                        "schema": { "example": "en-US", "type": "string" }
+                    },
+                    {
+                        "name": "tags",
+                        "required": false,
+                        "in": "query",
+                        "oneOf": [
+                            { "type": "string" },
+                            { "type": "array", "items": { "type": "string" } }
+                        ],
+                        "description": "Tags to filter by",
+                        "schema": {
+                            "example": ["DEFAULT", "CONTEXT_SPECIFIC"],
+                            "type": "array"
+                        }
+                    },
+                    {
+                        "name": "includeWithoutTags",
+                        "required": false,
+                        "in": "query",
+                        "oneOf": [{ "type": "boolean" }, { "type": "string" }],
+                        "description": "Include resources with empty tags",
+                        "schema": { "default": false, "example": true }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of knowledge resources",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/KnowledgeResourceDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["knowledge-resources"]
+            }
+        },
+        "/api/knowledge-resources/{id}": {
+            "get": {
+                "operationId": "findOneKnowledgeResources",
+                "summary": "Get a knowledge resource by ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Knowledge resource details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/KnowledgeResourceDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["knowledge-resources"]
+            }
+        },
+        "/api/feedback": {
+            "get": {
+                "operationId": "findFeedbackFeedback",
+                "summary": "Get all resources used by AI Agent and the related feedback",
+                "parameters": [
+                    {
+                        "name": "objectType",
+                        "required": true,
+                        "in": "query",
+                        "description": "Type of object",
+                        "schema": {
+                            "example": "TICKET",
+                            "enum": ["TICKET", "SEARCH_BAR"],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "objectId",
+                        "required": true,
+                        "in": "query",
+                        "description": "Object identifier",
+                        "schema": { "example": "789", "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resources and feedback",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FeedbackDto"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Feedback feature is not available"
+                    }
+                },
+                "tags": ["feedback"]
+            },
+            "post": {
+                "operationId": "upsertFeedbackFeedback",
+                "summary": "Upsert feedback",
+                "description": "Creates or updates feedback records. To delete knowledge resource feedback records, provide the ID and set feedbackValue to null.",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FeedbackUpsertRequestDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Feedback successfully upserted or deleted"
+                    },
+                    "403": {
+                        "description": "Feedback feature is not available"
+                    }
+                },
+                "tags": ["feedback"]
+            }
+        },
+        "/api/health/ready": {
+            "get": {
+                "operationId": "readyHealth",
+                "parameters": [],
+                "responses": { "200": { "description": "" } }
+            }
+        },
+        "/api/health/startup": {
+            "get": {
+                "operationId": "startupHealth",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "The Health Check is successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "ok"
+                                        },
+                                        "info": {
+                                            "type": "object",
+                                            "example": {
+                                                "database": { "status": "up" }
+                                            },
+                                            "additionalProperties": {
+                                                "type": "object",
+                                                "required": ["status"],
+                                                "properties": {
+                                                    "status": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "additionalProperties": true
+                                            },
+                                            "nullable": true
+                                        },
+                                        "error": {
+                                            "type": "object",
+                                            "example": {},
+                                            "additionalProperties": {
+                                                "type": "object",
+                                                "required": ["status"],
+                                                "properties": {
+                                                    "status": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "additionalProperties": true
+                                            },
+                                            "nullable": true
+                                        },
+                                        "details": {
+                                            "type": "object",
+                                            "example": {
+                                                "database": { "status": "up" }
+                                            },
+                                            "additionalProperties": {
+                                                "type": "object",
+                                                "required": ["status"],
+                                                "properties": {
+                                                    "status": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "additionalProperties": true
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "503": {
+                        "description": "The Health Check is not successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "info": {
+                                            "type": "object",
+                                            "example": {
+                                                "database": { "status": "up" }
+                                            },
+                                            "additionalProperties": {
+                                                "type": "object",
+                                                "required": ["status"],
+                                                "properties": {
+                                                    "status": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "additionalProperties": true
+                                            },
+                                            "nullable": true
+                                        },
+                                        "error": {
+                                            "type": "object",
+                                            "example": {
+                                                "redis": {
+                                                    "status": "down",
+                                                    "message": "Could not connect"
+                                                }
+                                            },
+                                            "additionalProperties": {
+                                                "type": "object",
+                                                "required": ["status"],
+                                                "properties": {
+                                                    "status": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "additionalProperties": true
+                                            },
+                                            "nullable": true
+                                        },
+                                        "details": {
+                                            "type": "object",
+                                            "example": {
+                                                "database": { "status": "up" },
+                                                "redis": {
+                                                    "status": "down",
+                                                    "message": "Could not connect"
+                                                }
+                                            },
+                                            "additionalProperties": {
+                                                "type": "object",
+                                                "required": ["status"],
+                                                "properties": {
+                                                    "status": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "additionalProperties": true
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/health/live": {
+            "get": {
+                "operationId": "liveHealth",
+                "parameters": [],
+                "responses": { "200": { "description": "" } }
+            }
+        }
+    },
+    "info": {
+        "title": "Knowledge Resources API",
+        "description": "The Knowledge Resources API description",
+        "version": "1.0",
+        "contact": {}
+    },
+    "tags": [{ "name": "knowledge-resources", "description": "" }],
+    "servers": [],
+    "components": {
+        "securitySchemes": {
+            "X-API-Key": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "X-API-Key",
+                "description": "Enter your API token"
+            }
+        },
+        "schemas": {
+            "FindAllQueryDto": {
+                "type": "object",
+                "properties": {
+                    "accountId": {
+                        "oneOf": [{ "type": "string" }, { "type": "number" }],
+                        "description": "Account ID to filter by",
+                        "example": 1
+                    },
+                    "sourceSetIds": {
+                        "oneOf": [
+                            { "type": "string" },
+                            { "type": "array", "items": { "type": "string" } },
+                            { "type": "array", "items": { "type": "number" } }
+                        ],
+                        "description": "Source Set IDs to filter by (Ex. Help Center ID)",
+                        "example": [1, 2],
+                        "type": "array",
+                        "items": { "type": "number" }
+                    },
+                    "sourceIds": {
+                        "oneOf": [
+                            { "type": "string" },
+                            { "type": "array", "items": { "type": "string" } }
+                        ],
+                        "description": "Source IDs to filter by",
+                        "example": ["1", "2"],
+                        "type": "array",
+                        "items": { "type": "string" }
+                    },
+                    "locale": {
+                        "type": "string",
+                        "description": "Locale to filter by",
+                        "example": "en-US"
+                    },
+                    "tags": {
+                        "oneOf": [
+                            { "type": "string" },
+                            { "type": "array", "items": { "type": "string" } }
+                        ],
+                        "description": "Tags to filter by",
+                        "example": ["DEFAULT", "CONTEXT_SPECIFIC"],
+                        "type": "array",
+                        "items": { "type": "string" }
+                    },
+                    "includeWithoutTags": {
+                        "default": false,
+                        "oneOf": [{ "type": "boolean" }, { "type": "string" }],
+                        "description": "Include resources with empty tags",
+                        "example": true
+                    }
+                },
+                "required": ["accountId", "sourceSetIds"]
+            },
+            "KnowledgeResourceDto": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "number" },
+                    "accountId": { "type": "number" },
+                    "sourceId": { "type": "string" },
+                    "sourceSetId": { "type": "string" },
+                    "processingState": {
+                        "type": "string",
+                        "enum": ["pending", "completed", "failed"]
+                    },
+                    "locale": { "type": "string" },
+                    "body": { "type": "string" },
+                    "title": { "type": "string" },
+                    "tags": { "type": "array", "items": { "type": "string" } },
+                    "type": {
+                        "type": "string",
+                        "enum": ["guidance", "article", "external_snippet"]
+                    },
+                    "createdDatetime": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedDatetime": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "accountId",
+                    "sourceId",
+                    "sourceSetId",
+                    "processingState",
+                    "locale",
+                    "body",
+                    "title",
+                    "tags",
+                    "type",
+                    "createdDatetime",
+                    "updatedDatetime"
+                ]
+            },
+            "FeedbackMutationDto": {
+                "discriminator": { "propertyName": "feedbackType" },
+                "oneOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "number",
+                                "description": "Optional feedback ID",
+                                "example": 123
+                            },
+                            "objectType": {
+                                "type": "string",
+                                "enum": ["TICKET"],
+                                "example": "TICKET"
+                            },
+                            "objectId": {
+                                "type": "string",
+                                "description": "Object identifier",
+                                "example": "789"
+                            },
+                            "executionId": {
+                                "type": "string",
+                                "description": "Execution identifier",
+                                "example": "exec-123"
+                            },
+                            "targetType": {
+                                "type": "string",
+                                "enum": ["TICKET"],
+                                "example": "TICKET"
+                            },
+                            "targetId": {
+                                "type": "string",
+                                "description": "Target identifier",
+                                "example": "target-123"
+                            },
+                            "feedbackValue": {
+                                "type": "string",
+                                "enum": ["UP", "DOWN"],
+                                "example": "UP"
+                            },
+                            "feedbackType": {
+                                "type": "string",
+                                "enum": ["TICKET_BINARY"]
+                            }
+                        },
+                        "required": [
+                            "objectType",
+                            "objectId",
+                            "executionId",
+                            "targetType",
+                            "targetId",
+                            "feedbackValue",
+                            "feedbackType"
+                        ]
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "number",
+                                "description": "Optional feedback ID",
+                                "example": 123
+                            },
+                            "objectType": {
+                                "type": "string",
+                                "enum": ["TICKET"],
+                                "example": "TICKET"
+                            },
+                            "objectId": {
+                                "type": "string",
+                                "description": "Object identifier",
+                                "example": "789"
+                            },
+                            "executionId": {
+                                "type": "string",
+                                "description": "Execution identifier",
+                                "example": "exec-123"
+                            },
+                            "targetType": {
+                                "type": "string",
+                                "enum": ["TICKET"],
+                                "example": "TICKET"
+                            },
+                            "targetId": {
+                                "type": "string",
+                                "description": "Target identifier",
+                                "example": "target-123"
+                            },
+                            "feedbackValue": {
+                                "oneOf": [
+                                    { "type": "string" },
+                                    { "type": "null" }
+                                ],
+                                "example": "This was very helpful feedback"
+                            },
+                            "feedbackType": {
+                                "type": "string",
+                                "enum": ["TICKET_FREEFORM"]
+                            }
+                        },
+                        "required": [
+                            "objectType",
+                            "objectId",
+                            "executionId",
+                            "targetType",
+                            "targetId",
+                            "feedbackValue",
+                            "feedbackType"
+                        ]
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "number",
+                                "description": "Optional feedback ID",
+                                "example": 123
+                            },
+                            "objectType": {
+                                "type": "string",
+                                "enum": ["TICKET"],
+                                "example": "TICKET"
+                            },
+                            "objectId": {
+                                "type": "string",
+                                "description": "Object identifier",
+                                "example": "789"
+                            },
+                            "executionId": {
+                                "type": "string",
+                                "description": "Execution identifier",
+                                "example": "exec-123"
+                            },
+                            "targetType": {
+                                "type": "string",
+                                "enum": ["KNOWLEDGE_RESOURCE"],
+                                "example": "KNOWLEDGE_RESOURCE"
+                            },
+                            "targetId": {
+                                "type": "string",
+                                "example": "article-123"
+                            },
+                            "feedbackValue": {
+                                "type": "string",
+                                "enum": ["UP", "DOWN"],
+                                "example": "UP"
+                            },
+                            "feedbackType": {
+                                "type": "string",
+                                "enum": ["KNOWLEDGE_RESOURCE_BINARY"]
+                            }
+                        },
+                        "required": [
+                            "objectType",
+                            "objectId",
+                            "executionId",
+                            "targetType",
+                            "targetId",
+                            "feedbackValue",
+                            "feedbackType"
+                        ]
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "number",
+                                "description": "Optional feedback ID",
+                                "example": 123
+                            },
+                            "objectType": {
+                                "type": "string",
+                                "enum": ["TICKET"],
+                                "example": "TICKET"
+                            },
+                            "objectId": {
+                                "type": "string",
+                                "description": "Object identifier",
+                                "example": "789"
+                            },
+                            "executionId": {
+                                "type": "string",
+                                "description": "Execution identifier",
+                                "example": "exec-123"
+                            },
+                            "targetType": {
+                                "type": "string",
+                                "enum": ["TICKET"],
+                                "example": "TICKET"
+                            },
+                            "targetId": {
+                                "type": "string",
+                                "example": "article-123"
+                            },
+                            "feedbackValue": {
+                                "oneOf": [
+                                    { "type": "string" },
+                                    { "type": "null" }
+                                ]
+                            },
+                            "feedbackType": {
+                                "type": "string",
+                                "enum": ["SUGGESTED_RESOURCE"]
+                            }
+                        },
+                        "required": [
+                            "objectType",
+                            "objectId",
+                            "executionId",
+                            "targetType",
+                            "targetId",
+                            "feedbackValue",
+                            "feedbackType"
+                        ]
+                    }
+                ],
+                "description": "Feedback record for different types of content"
+            },
+            "FeedbackDto": {
+                "type": "object",
+                "properties": {
+                    "accountId": {
+                        "type": "number",
+                        "description": "Account ID",
+                        "example": 1
+                    },
+                    "objectType": {
+                        "type": "string",
+                        "enum": ["TICKET", "SEARCH_BAR"],
+                        "description": "Type of object",
+                        "example": "TICKET"
+                    },
+                    "objectId": {
+                        "type": "string",
+                        "description": "Object identifier",
+                        "example": "789"
+                    },
+                    "executions": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "executionId": {
+                                    "type": "string",
+                                    "description": "Execution identifier",
+                                    "example": "571ec9ca-2adb-4e68-b5c7-c31d1b0a9630"
+                                },
+                                "resources": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "description": "Internal resource id. Use it as targetId to create feedback."
+                                            },
+                                            "resourceId": {
+                                                "type": "string",
+                                                "description": "Resource identifier"
+                                            },
+                                            "resourceType": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "ORDER",
+                                                    "GUIDANCE",
+                                                    "ACTION",
+                                                    "ARTICLE",
+                                                    "MACRO",
+                                                    "EXTERNAL_SNIPPET",
+                                                    "FILE_EXTERNAL_SNIPPET"
+                                                ],
+                                                "description": "Resource type"
+                                            },
+                                            "resourceSetId": {
+                                                "type": "string",
+                                                "description": "Resource set ID"
+                                            },
+                                            "resourceLocale": {
+                                                "oneOf": [
+                                                    { "type": "string" },
+                                                    { "type": "null" }
+                                                ],
+                                                "description": "Resource locale"
+                                            },
+                                            "resourceTitle": {
+                                                "type": "string",
+                                                "description": "Resource title"
+                                            },
+                                            "feedback": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "number",
+                                                                "description": "Optional feedback ID",
+                                                                "example": 123
+                                                            },
+                                                            "objectType": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                    "TICKET"
+                                                                ],
+                                                                "example": "TICKET"
+                                                            },
+                                                            "objectId": {
+                                                                "type": "string",
+                                                                "description": "Object identifier",
+                                                                "example": "789"
+                                                            },
+                                                            "executionId": {
+                                                                "type": "string",
+                                                                "description": "Execution identifier",
+                                                                "example": "exec-123"
+                                                            },
+                                                            "targetType": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                    "KNOWLEDGE_RESOURCE"
+                                                                ],
+                                                                "example": "KNOWLEDGE_RESOURCE"
+                                                            },
+                                                            "targetId": {
+                                                                "type": "string",
+                                                                "example": "article-123"
+                                                            },
+                                                            "feedbackValue": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                    "UP",
+                                                                    "DOWN"
+                                                                ],
+                                                                "example": "UP"
+                                                            },
+                                                            "submittedBy": {
+                                                                "type": "number",
+                                                                "description": "User ID who submitted the feedback"
+                                                            },
+                                                            "createdDatetime": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "description": "Feedback creation datetime"
+                                                            },
+                                                            "updatedDatetime": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "description": "Feedback update datetime"
+                                                            },
+                                                            "feedbackType": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                    "KNOWLEDGE_RESOURCE_BINARY"
+                                                                ]
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "objectType",
+                                                            "objectId",
+                                                            "executionId",
+                                                            "targetType",
+                                                            "targetId",
+                                                            "feedbackValue",
+                                                            "submittedBy",
+                                                            "createdDatetime",
+                                                            "updatedDatetime",
+                                                            "feedbackType"
+                                                        ]
+                                                    },
+                                                    { "type": "null" }
+                                                ],
+                                                "description": "Resource feedback"
+                                            }
+                                        },
+                                        "required": [
+                                            "id",
+                                            "resourceId",
+                                            "resourceType",
+                                            "resourceSetId",
+                                            "resourceLocale",
+                                            "resourceTitle",
+                                            "feedback"
+                                        ]
+                                    },
+                                    "description": "Resources used in the execution"
+                                },
+                                "storeConfiguration": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "shopName": {
+                                                    "type": "string",
+                                                    "example": "My Shop"
+                                                },
+                                                "shopType": {
+                                                    "type": "string",
+                                                    "example": "shopify"
+                                                },
+                                                "faqHelpCenterId": {
+                                                    "oneOf": [
+                                                        { "type": "number" },
+                                                        { "type": "null" }
+                                                    ],
+                                                    "example": 1
+                                                },
+                                                "guidanceHelpCenterId": {
+                                                    "type": "number",
+                                                    "example": 2
+                                                },
+                                                "snippetHelpCenterId": {
+                                                    "type": "number",
+                                                    "example": 3
+                                                }
+                                            },
+                                            "required": [
+                                                "shopName",
+                                                "shopType",
+                                                "faqHelpCenterId",
+                                                "guidanceHelpCenterId",
+                                                "snippetHelpCenterId"
+                                            ]
+                                        },
+                                        { "type": "null" }
+                                    ],
+                                    "description": "Store configuration at the time of the execution"
+                                },
+                                "feedback": {
+                                    "type": "array",
+                                    "items": {
+                                        "discriminator": {
+                                            "propertyName": "feedbackType"
+                                        },
+                                        "oneOf": [
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number",
+                                                        "description": "Optional feedback ID",
+                                                        "example": 123
+                                                    },
+                                                    "objectType": {
+                                                        "type": "string",
+                                                        "enum": ["TICKET"],
+                                                        "example": "TICKET"
+                                                    },
+                                                    "objectId": {
+                                                        "type": "string",
+                                                        "description": "Object identifier",
+                                                        "example": "789"
+                                                    },
+                                                    "executionId": {
+                                                        "type": "string",
+                                                        "description": "Execution identifier",
+                                                        "example": "exec-123"
+                                                    },
+                                                    "targetType": {
+                                                        "type": "string",
+                                                        "enum": ["TICKET"],
+                                                        "example": "TICKET"
+                                                    },
+                                                    "targetId": {
+                                                        "type": "string",
+                                                        "description": "Target identifier",
+                                                        "example": "target-123"
+                                                    },
+                                                    "feedbackValue": {
+                                                        "type": "string",
+                                                        "enum": ["UP", "DOWN"],
+                                                        "example": "UP"
+                                                    },
+                                                    "submittedBy": {
+                                                        "type": "number",
+                                                        "description": "User ID who submitted the feedback"
+                                                    },
+                                                    "createdDatetime": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "description": "Feedback creation datetime"
+                                                    },
+                                                    "updatedDatetime": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "description": "Feedback update datetime"
+                                                    },
+                                                    "feedbackType": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "TICKET_BINARY"
+                                                        ]
+                                                    }
+                                                },
+                                                "required": [
+                                                    "objectType",
+                                                    "objectId",
+                                                    "executionId",
+                                                    "targetType",
+                                                    "targetId",
+                                                    "feedbackValue",
+                                                    "submittedBy",
+                                                    "createdDatetime",
+                                                    "updatedDatetime",
+                                                    "feedbackType"
+                                                ]
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number",
+                                                        "description": "Optional feedback ID",
+                                                        "example": 123
+                                                    },
+                                                    "objectType": {
+                                                        "type": "string",
+                                                        "enum": ["TICKET"],
+                                                        "example": "TICKET"
+                                                    },
+                                                    "objectId": {
+                                                        "type": "string",
+                                                        "description": "Object identifier",
+                                                        "example": "789"
+                                                    },
+                                                    "executionId": {
+                                                        "type": "string",
+                                                        "description": "Execution identifier",
+                                                        "example": "exec-123"
+                                                    },
+                                                    "targetType": {
+                                                        "type": "string",
+                                                        "enum": ["TICKET"],
+                                                        "example": "TICKET"
+                                                    },
+                                                    "targetId": {
+                                                        "type": "string",
+                                                        "description": "Target identifier",
+                                                        "example": "target-123"
+                                                    },
+                                                    "feedbackValue": {
+                                                        "oneOf": [
+                                                            {
+                                                                "type": "string"
+                                                            },
+                                                            { "type": "null" }
+                                                        ],
+                                                        "example": "This was very helpful feedback"
+                                                    },
+                                                    "submittedBy": {
+                                                        "type": "number",
+                                                        "description": "User ID who submitted the feedback"
+                                                    },
+                                                    "createdDatetime": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "description": "Feedback creation datetime"
+                                                    },
+                                                    "updatedDatetime": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "description": "Feedback update datetime"
+                                                    },
+                                                    "feedbackType": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "TICKET_FREEFORM"
+                                                        ]
+                                                    }
+                                                },
+                                                "required": [
+                                                    "objectType",
+                                                    "objectId",
+                                                    "executionId",
+                                                    "targetType",
+                                                    "targetId",
+                                                    "feedbackValue",
+                                                    "submittedBy",
+                                                    "createdDatetime",
+                                                    "updatedDatetime",
+                                                    "feedbackType"
+                                                ]
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number",
+                                                        "description": "Optional feedback ID",
+                                                        "example": 123
+                                                    },
+                                                    "objectType": {
+                                                        "type": "string",
+                                                        "enum": ["TICKET"],
+                                                        "example": "TICKET"
+                                                    },
+                                                    "objectId": {
+                                                        "type": "string",
+                                                        "description": "Object identifier",
+                                                        "example": "789"
+                                                    },
+                                                    "executionId": {
+                                                        "type": "string",
+                                                        "description": "Execution identifier",
+                                                        "example": "exec-123"
+                                                    },
+                                                    "targetType": {
+                                                        "type": "string",
+                                                        "enum": ["TICKET"],
+                                                        "example": "TICKET"
+                                                    },
+                                                    "targetId": {
+                                                        "type": "string",
+                                                        "example": "article-123"
+                                                    },
+                                                    "feedbackValue": {
+                                                        "oneOf": [
+                                                            {
+                                                                "type": "string"
+                                                            },
+                                                            { "type": "null" }
+                                                        ]
+                                                    },
+                                                    "submittedBy": {
+                                                        "type": "number",
+                                                        "description": "User ID who submitted the feedback"
+                                                    },
+                                                    "createdDatetime": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "description": "Feedback creation datetime"
+                                                    },
+                                                    "updatedDatetime": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "description": "Feedback update datetime"
+                                                    },
+                                                    "feedbackType": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "SUGGESTED_RESOURCE"
+                                                        ]
+                                                    }
+                                                },
+                                                "required": [
+                                                    "objectType",
+                                                    "objectId",
+                                                    "executionId",
+                                                    "targetType",
+                                                    "targetId",
+                                                    "feedbackValue",
+                                                    "submittedBy",
+                                                    "createdDatetime",
+                                                    "updatedDatetime",
+                                                    "feedbackType"
+                                                ]
+                                            }
+                                        ],
+                                        "description": "Feedback given at object level"
+                                    },
+                                    "description": "Feedback given at the object level"
+                                }
+                            },
+                            "required": [
+                                "executionId",
+                                "resources",
+                                "storeConfiguration",
+                                "feedback"
+                            ]
+                        }
+                    }
+                },
+                "required": [
+                    "accountId",
+                    "objectType",
+                    "objectId",
+                    "executions"
+                ]
+            },
+            "FeedbackUpsertRequestDto": {
+                "type": "object",
+                "properties": {
+                    "feedbackToUpsert": {
+                        "type": "array",
+                        "items": {
+                            "discriminator": { "propertyName": "feedbackType" },
+                            "oneOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "description": "Optional feedback ID",
+                                            "example": 123
+                                        },
+                                        "objectType": {
+                                            "type": "string",
+                                            "enum": ["TICKET"],
+                                            "example": "TICKET"
+                                        },
+                                        "objectId": {
+                                            "type": "string",
+                                            "description": "Object identifier",
+                                            "example": "789"
+                                        },
+                                        "executionId": {
+                                            "type": "string",
+                                            "description": "Execution identifier",
+                                            "example": "exec-123"
+                                        },
+                                        "targetType": {
+                                            "type": "string",
+                                            "enum": ["TICKET"],
+                                            "example": "TICKET"
+                                        },
+                                        "targetId": {
+                                            "type": "string",
+                                            "description": "Target identifier",
+                                            "example": "target-123"
+                                        },
+                                        "feedbackValue": {
+                                            "type": "string",
+                                            "enum": ["UP", "DOWN"],
+                                            "example": "UP"
+                                        },
+                                        "feedbackType": {
+                                            "type": "string",
+                                            "enum": ["TICKET_BINARY"]
+                                        }
+                                    },
+                                    "required": [
+                                        "objectType",
+                                        "objectId",
+                                        "executionId",
+                                        "targetType",
+                                        "targetId",
+                                        "feedbackValue",
+                                        "feedbackType"
+                                    ]
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "description": "Optional feedback ID",
+                                            "example": 123
+                                        },
+                                        "objectType": {
+                                            "type": "string",
+                                            "enum": ["TICKET"],
+                                            "example": "TICKET"
+                                        },
+                                        "objectId": {
+                                            "type": "string",
+                                            "description": "Object identifier",
+                                            "example": "789"
+                                        },
+                                        "executionId": {
+                                            "type": "string",
+                                            "description": "Execution identifier",
+                                            "example": "exec-123"
+                                        },
+                                        "targetType": {
+                                            "type": "string",
+                                            "enum": ["TICKET"],
+                                            "example": "TICKET"
+                                        },
+                                        "targetId": {
+                                            "type": "string",
+                                            "description": "Target identifier",
+                                            "example": "target-123"
+                                        },
+                                        "feedbackValue": {
+                                            "oneOf": [
+                                                { "type": "string" },
+                                                { "type": "null" }
+                                            ],
+                                            "example": "This was very helpful feedback"
+                                        },
+                                        "feedbackType": {
+                                            "type": "string",
+                                            "enum": ["TICKET_FREEFORM"]
+                                        }
+                                    },
+                                    "required": [
+                                        "objectType",
+                                        "objectId",
+                                        "executionId",
+                                        "targetType",
+                                        "targetId",
+                                        "feedbackValue",
+                                        "feedbackType"
+                                    ]
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "description": "Optional feedback ID",
+                                            "example": 123
+                                        },
+                                        "objectType": {
+                                            "type": "string",
+                                            "enum": ["TICKET"],
+                                            "example": "TICKET"
+                                        },
+                                        "objectId": {
+                                            "type": "string",
+                                            "description": "Object identifier",
+                                            "example": "789"
+                                        },
+                                        "executionId": {
+                                            "type": "string",
+                                            "description": "Execution identifier",
+                                            "example": "exec-123"
+                                        },
+                                        "targetType": {
+                                            "type": "string",
+                                            "enum": ["KNOWLEDGE_RESOURCE"],
+                                            "example": "KNOWLEDGE_RESOURCE"
+                                        },
+                                        "targetId": {
+                                            "type": "string",
+                                            "example": "article-123"
+                                        },
+                                        "feedbackValue": {
+                                            "type": "string",
+                                            "enum": ["UP", "DOWN"],
+                                            "example": "UP"
+                                        },
+                                        "feedbackType": {
+                                            "type": "string",
+                                            "enum": [
+                                                "KNOWLEDGE_RESOURCE_BINARY"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "objectType",
+                                        "objectId",
+                                        "executionId",
+                                        "targetType",
+                                        "targetId",
+                                        "feedbackValue",
+                                        "feedbackType"
+                                    ]
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "description": "Optional feedback ID",
+                                            "example": 123
+                                        },
+                                        "objectType": {
+                                            "type": "string",
+                                            "enum": ["TICKET"],
+                                            "example": "TICKET"
+                                        },
+                                        "objectId": {
+                                            "type": "string",
+                                            "description": "Object identifier",
+                                            "example": "789"
+                                        },
+                                        "executionId": {
+                                            "type": "string",
+                                            "description": "Execution identifier",
+                                            "example": "exec-123"
+                                        },
+                                        "targetType": {
+                                            "type": "string",
+                                            "enum": ["TICKET"],
+                                            "example": "TICKET"
+                                        },
+                                        "targetId": {
+                                            "type": "string",
+                                            "example": "article-123"
+                                        },
+                                        "feedbackValue": {
+                                            "oneOf": [
+                                                { "type": "string" },
+                                                { "type": "null" }
+                                            ]
+                                        },
+                                        "feedbackType": {
+                                            "type": "string",
+                                            "enum": ["SUGGESTED_RESOURCE"]
+                                        }
+                                    },
+                                    "required": [
+                                        "objectType",
+                                        "objectId",
+                                        "executionId",
+                                        "targetType",
+                                        "targetId",
+                                        "feedbackValue",
+                                        "feedbackType"
+                                    ]
+                                }
+                            ],
+                            "description": "Feedback record for different types of content",
+                            "$ref": "#/components/schemas/FeedbackMutationDto"
+                        },
+                        "minItems": 1,
+                        "maxItems": 50,
+                        "description": "Array of feedback records to upsert",
+                        "example": [
+                            {
+                                "objectType": "TICKET",
+                                "objectId": "789",
+                                "executionId": "exec-123",
+                                "targetType": "TICKET",
+                                "feedbackType": "TICKET_BINARY",
+                                "feedbackValue": "UP"
+                            }
+                        ]
+                    }
+                },
+                "required": ["feedbackToUpsert"],
+                "description": "Request to upsert multiple feedback records"
+            }
+        }
+    },
+    "security": [{ "X-API-Key": [] }]
+}

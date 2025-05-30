@@ -10,7 +10,7 @@ export const useAiAgentHelpCenter = ({
     helpCenterType,
 }: {
     shopName: string
-    helpCenterType: 'guidance' | 'snippet'
+    helpCenterType: 'guidance' | 'snippet' | 'faq'
 }): HelpCenter | undefined => {
     // We expect to handle only 1 guidance help center
     const { data } = useGetHelpCenterList(
