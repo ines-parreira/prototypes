@@ -92,7 +92,7 @@ export const AutomateSavingsCard = ({
                                                 {`Of agents' time`}
                                             </p>
                                             <HintTooltip
-                                                title="How much time your agents would have spent resolving all the customer questions that got instantly resolved by Automate. Based on your actual automated interactions and average handle time (AHT)."
+                                                title="How much time your agents would have spent resolving all the customer questions that got instantly resolved by AI Agent. Based on your actual automated interactions and average handle time (AHT)."
                                                 link="https://link.gorgias.com/jax"
                                             />
                                         </div>
@@ -122,7 +122,7 @@ export const AutomateSavingsCard = ({
                                             In average first response
                                         </p>
                                         <HintTooltip
-                                            title="How much longer customers would have had to wait for a first response if you were not using Automate, based on your average first response time."
+                                            title="How much longer customers would have had to wait for a first response if you were not using AI Agent, based on your average first response time."
                                             link="https://link.gorgias.com/mal"
                                         />
                                     </div>

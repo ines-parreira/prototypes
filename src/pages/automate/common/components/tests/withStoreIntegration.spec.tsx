@@ -52,7 +52,7 @@ describe('withStoreIntegrations', () => {
         expect(screen.getByText('Hello')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Connect Shopify, Magento or BigCommerce stores to start using Automate!',
+                'Connect Shopify, Magento or BigCommerce stores to start using AI Agent!',
             ),
         ).toBeInTheDocument()
     })

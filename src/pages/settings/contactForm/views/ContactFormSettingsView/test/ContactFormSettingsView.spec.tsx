@@ -197,7 +197,7 @@ describe('<ContactFormSettingsView />', () => {
         await screen.findByLabelText('contact form preview')
     })
 
-    it('should display "Automate" tab', () => {
+    it('should display "AI Agent" tab', () => {
         const history = createMemoryHistory({
             initialEntries: [
                 insertContactFormIdParam(CONTACT_FORM_SETTINGS_PATH, FORM_ID),
@@ -212,11 +212,11 @@ describe('<ContactFormSettingsView />', () => {
         })
 
         expect(
-            screen.getByRole('link', { name: /Automate/i }),
+            screen.getByRole('link', { name: /AI Agent/i }),
         ).toBeInTheDocument()
     })
 
-    it('should hide the "Automate" tab', () => {
+    it('should hide the "AI Agent" tab', () => {
         const history = createMemoryHistory({
             initialEntries: [
                 insertContactFormIdParam(CONTACT_FORM_SETTINGS_PATH, FORM_ID),
@@ -231,7 +231,7 @@ describe('<ContactFormSettingsView />', () => {
         })
 
         expect(
-            screen.queryByRole('link', { name: /Automate/i }),
+            screen.queryByRole('link', { name: /AI Agent/i }),
         ).not.toBeInTheDocument()
     })
 })

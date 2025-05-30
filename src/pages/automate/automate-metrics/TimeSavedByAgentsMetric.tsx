@@ -12,7 +12,7 @@ type Props = {
 } & DashboardChartProps
 
 export const TIME_SAVED_BY_AGENTS_TOOLTIP = {
-    title: 'How much time agents would have spent resolving customer inquiries without Gorgias Automate.',
+    title: 'How much time agents would have spent resolving customer inquiries without Gorgias AI Agent.',
     link: 'https://link.gorgias.com/jax',
     linkText: 'How is it calculated?',
 }

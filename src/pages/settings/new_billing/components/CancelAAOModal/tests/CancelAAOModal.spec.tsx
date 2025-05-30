@@ -63,14 +63,14 @@ describe('CancelAAOModal', () => {
         const { getByText } = screen
         setup()
         expect(
-            getByText('Are you sure you want to unsubscribe from Automate?'),
+            getByText('Are you sure you want to unsubscribe from AI Agent?'),
         ).toBeInTheDocument()
     })
 
-    it('should call handleOnClose when the "Keep using automate" button is clicked', () => {
+    it('should call handleOnClose when the "Keep using AI Agent" button is clicked', () => {
         const { getByText } = screen
         setup()
-        const closeButton = getByText('Keep using automate')
+        const closeButton = getByText('Keep using AI Agent')
         userEvent.click(closeButton)
         expect(mockHandleOnClose).toHaveBeenCalled()
     })

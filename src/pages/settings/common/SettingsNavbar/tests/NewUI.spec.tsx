@@ -191,7 +191,7 @@ describe('NewUI', () => {
             }),
         )
 
-        expect(screen.getByText('Automate')).toBeInTheDocument()
+        expect(screen.getByText('AI Agent')).toBeInTheDocument()
         expect(screen.getByText('UPGRADE')).toBeInTheDocument()
     })
 

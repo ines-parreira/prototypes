@@ -76,9 +76,9 @@ describe('setAutomationNotification', () => {
         })
 
         expect(notification?.message).toContain(
-            'Woohoo! You now have access to <strong>Automate!</strong>',
+            'Woohoo! You now have access to <strong>AI Agent!</strong>',
         )
-        expect(notification?.buttons?.[0].name).toBe('Set Up Automate')
+        expect(notification?.buttons?.[0].name).toBe('Set Up AI Agent')
     })
 
     it('renders upgrade message when new product amount is greater', () => {
@@ -104,7 +104,7 @@ describe('setAutomationNotification', () => {
         expect(notification?.message).toContain(
             `Success! You now have <strong>${newPlan.num_quota_tickets} automated interactions per month</strong>`,
         )
-        expect(notification?.buttons?.[0].name).toBe('Automate Settings')
+        expect(notification?.buttons?.[0].name).toBe('AI Agent Settings')
     })
 
     it('renders downgrade message when new product amount is less', () => {

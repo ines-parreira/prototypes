@@ -7,7 +7,7 @@ import { BaseAutomateMetricProps } from './types'
 import { getTrendProps, toDuration } from './utils'
 
 export const DECREASE_IN_FIRST_RESPONSE_TOOLTIP = {
-    title: 'How much longer customers would have had to wait for a first response if you were not using Gorgias Automate, based on your average first response time.',
+    title: 'How much longer customers would have had to wait for a first response if you were not using Gorgias AI Agent, based on your average first response time.',
     link: 'https://link.gorgias.com/mal',
     linkText: 'How is it calculated?',
 }

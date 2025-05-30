@@ -214,7 +214,7 @@ export const HELP_CENTER_STEPS_LABELS: Partial<
     [HelpCenterCreationWizardStep.Basics]: 'Set up the basics',
     [HelpCenterCreationWizardStep.Branding]: 'Add your branding',
     [HelpCenterCreationWizardStep.Articles]: 'Add articles',
-    [HelpCenterCreationWizardStep.Automate]: 'Automate',
+    [HelpCenterCreationWizardStep.Automate]: 'AI Agent',
 }
 
 export const HELP_CENTER_STEPS_TITLES: Partial<
@@ -226,7 +226,7 @@ export const HELP_CENTER_STEPS_TITLES: Partial<
         template: 'Add articles using templates',
         ai: 'Add recommended articles generated with AI',
     },
-    [HelpCenterCreationWizardStep.Automate]: 'Automate',
+    [HelpCenterCreationWizardStep.Automate]: 'AI Agent',
 }
 
 export const HELP_CENTER_STEPS_DESCRIPTIONS: Partial<

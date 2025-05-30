@@ -15,7 +15,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
         <div
           class="title"
         >
-          Automate
+          AI Agent
         </div>
       </div>
       <div
@@ -272,7 +272,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
         <div
           class="title"
         >
-          Automate
+          AI Agent
         </div>
       </div>
       <div
@@ -304,7 +304,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
         <div
           class="title"
         >
-          Automate
+          AI Agent
         </div>
       </div>
       <div
@@ -561,7 +561,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
         <div
           class="title"
         >
-          Automate
+          AI Agent
         </div>
       </div>
       <div

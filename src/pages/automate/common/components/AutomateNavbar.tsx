@@ -22,7 +22,7 @@ const AutomateNavbar = () => {
     )
 
     return (
-        <Navbar activeContent={ActiveContent.Automate} title="Automate">
+        <Navbar activeContent={ActiveContent.Automate} title="AI Agent">
             {(hasAutomate || hasAiAgentPreview) && (
                 <>
                     <div

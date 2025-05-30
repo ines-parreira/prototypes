@@ -13,7 +13,7 @@ export const ROUTE_OLD_PERFORMANCE_BY_FEATURES = 'automation-add-on-features'
 export const ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES = 'performance-by-features'
 
 export const PAGE_DESCRIPTION =
-    'This page provides an overview of the performance of features included in the Automate. This view shows data from chat and help center channels combined.'
+    'This page provides an overview of the performance of features included in AI Agent. This view shows data from chat and help center channels combined.'
 
 export const FIRST_RESPONSE_TIME_LABEL = 'First response time'
 export const RESOLUTION_TIME_LABEL = 'Resolution time'

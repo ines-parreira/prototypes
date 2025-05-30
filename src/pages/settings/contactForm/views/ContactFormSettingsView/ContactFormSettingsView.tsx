@@ -178,7 +178,7 @@ const ContactFormSettingsView = (): JSX.Element => {
                             <>
                                 <AutomateSubscriptionButton
                                     fillStyle="ghost"
-                                    label="Upgrade your contact form with automate"
+                                    label="Upgrade your contact form with AI Agent"
                                     onClick={() =>
                                         setIsAutomationModalOpened(true)
                                     }
@@ -206,7 +206,7 @@ const ContactFormSettingsView = (): JSX.Element => {
                 {Object.entries({
                     ...navLinks,
                     ...(hasAutomate
-                        ? { Automate: CONTACT_FORM_AUTOMATE_PATH }
+                        ? { 'AI Agent': CONTACT_FORM_AUTOMATE_PATH }
                         : {}),
                 }).map(([name, to]) => (
                     <NavLink
@@ -214,7 +214,7 @@ const ContactFormSettingsView = (): JSX.Element => {
                         to={insertContactFormIdParam(to, contactFormId)}
                     >
                         {name}
-                        {name === 'Automate' && !contactForm.shop_name && (
+                        {name === 'AI Agent' && !contactForm.shop_name && (
                             <img
                                 alt="status icon"
                                 src={dotError}

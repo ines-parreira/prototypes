@@ -24,10 +24,10 @@ describe('usePaywallConfig', () => {
         )
 
         const expectedConfig: PaywallFeature = {
-            headerTitle: 'Automate',
+            headerTitle: 'AI Agent',
             paywallLogo:
                 'https://mockedurl.com/img/self-service/automate-logo.svg',
-            paywallLogoAlt: 'Gorgias Automate',
+            paywallLogoAlt: 'Gorgias AI Agent',
             paywallTitle:
                 'Automate 60%+ of your support with AI and grow your brand',
             descriptions: [
@@ -134,7 +134,7 @@ describe('usePaywallConfig', () => {
         )
 
         const expectedConfig: PaywallFeature = {
-            headerTitle: 'Automate',
+            headerTitle: 'AI Agent',
             paywallLogo: 'https://mockedurl.com/img/ai-agent/ai-agent-logo.png',
             paywallLogoAlt: 'AI Agent',
             paywallTitle:

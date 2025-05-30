@@ -217,7 +217,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
     it('should render', () => {
         renderComponent({})
 
-        expect(screen.getAllByText('Automate')[0]).toBeInTheDocument()
+        expect(screen.getAllByText('AI Agent')[0]).toBeInTheDocument()
         expect(screen.getByText('Connect a store')).toBeInTheDocument()
         expect(screen.getByText('Order management')).toBeInTheDocument()
     })

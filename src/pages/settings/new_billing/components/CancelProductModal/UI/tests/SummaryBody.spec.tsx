@@ -34,7 +34,7 @@ describe('SummaryBody', () => {
                 strickenOut: true,
             },
             {
-                title: 'Automate',
+                title: 'AI Agent',
                 label: null,
                 cadence: Cadence.Month,
                 quotaAmount: 1000,

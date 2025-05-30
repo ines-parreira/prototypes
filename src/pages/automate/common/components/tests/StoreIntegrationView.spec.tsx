@@ -29,7 +29,7 @@ describe('StoreIntegrationView', () => {
     test('renders correct description text', () => {
         render(<StoreIntegrationView title="Test Title" />)
         const descriptionElement = screen.getByText(
-            'Connect Shopify, Magento or BigCommerce stores to start using Automate!',
+            'Connect Shopify, Magento or BigCommerce stores to start using AI Agent!',
         )
         expect(descriptionElement).toBeInTheDocument()
     })

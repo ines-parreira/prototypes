@@ -80,7 +80,7 @@ const NewUI = () => {
                     />
                     <Item
                         to="automate"
-                        text="Automate"
+                        text="AI Agent"
                         requiredRole={AGENT_ROLE}
                         shouldRender={shouldRenderAutomate}
                         extra={<AutomateUpgradeBadge />}

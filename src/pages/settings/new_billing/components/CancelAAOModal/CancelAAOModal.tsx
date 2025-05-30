@@ -120,7 +120,7 @@ const CancelAAOModal = ({
                 onClose={handleOnClose}
                 classNameDialog={css.container}
             >
-                <ModalHeader title="Are you sure you want to unsubscribe from Automate?" />
+                <ModalHeader title="Are you sure you want to unsubscribe from AI Agent?" />
                 <ModalBody>
                     {automatedInteractions >= 50 && (
                         <div className={css.warningInteractions}>
@@ -158,7 +158,7 @@ const CancelAAOModal = ({
                 </ModalBody>
                 <ModalActionsFooter>
                     <Button intent="secondary" onClick={handleOnClose}>
-                        Keep using automate
+                        Keep using AI Agent
                     </Button>
                     <Button onClick={handleOpenSecondModal}>Continue</Button>
                 </ModalActionsFooter>

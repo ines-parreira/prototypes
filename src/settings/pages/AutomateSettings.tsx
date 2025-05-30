@@ -7,7 +7,7 @@ export function AutomateSettings() {
     const integrations = useStoreIntegrations()
 
     if (integrations.length === 0) {
-        return <StoreIntegrationView title="Automate" />
+        return <StoreIntegrationView title="AI Agent" />
     }
 
     return <Redirect to="flows" />

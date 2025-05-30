@@ -130,7 +130,7 @@ export const REPORTS_CONFIG: ReportsModalConfig = [
         ],
     },
     {
-        category: 'Automate',
+        category: 'AI Agent',
         children: [
             {
                 type: AutomateOverviewChart,
@@ -181,7 +181,7 @@ export const LEGACY_REPORTS_CONFIG: ReportsModalConfig = [
         ],
     },
     {
-        category: 'Automate',
+        category: 'AI Agent',
         children: [
             {
                 type: AutomateAiAgentsChart,

@@ -20,7 +20,7 @@ const StoreIntegrationView = ({ title }: { title: string }) => {
                 </div>
                 <div className={css.description}>
                     Connect Shopify, Magento or BigCommerce stores to start
-                    using Automate!
+                    using AI Agent!
                 </div>
 
                 <LinkButton

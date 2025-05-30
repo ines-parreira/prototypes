@@ -77,8 +77,8 @@ export const setAutomationNotification = ({
 
     if (!oldPlan) {
         // New AI Agent subscription
-        message = 'Woohoo! You now have access to <strong>Automate!</strong>'
-        buttonLabel = 'Set Up Automate'
+        message = 'Woohoo! You now have access to <strong>AI Agent!</strong>'
+        buttonLabel = 'Set Up AI Agent'
     } else if (
         // Downgrade AI Agent subscription
         oldPlan.amount > (newPlan?.amount ?? 0)
@@ -93,7 +93,7 @@ export const setAutomationNotification = ({
         message = `Success! You now have <strong>${
             newPlan?.num_quota_tickets ?? ''
         } ${PRODUCT_INFO.automation.counter} per ${cadence}</strong>`
-        buttonLabel = 'Automate Settings'
+        buttonLabel = 'AI Agent Settings'
     }
 
     // Add the notification

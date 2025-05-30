@@ -170,7 +170,7 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                             <>
                                 <AutomateSubscriptionButton
                                     fillStyle="ghost"
-                                    label="Upgrade your help center with automate"
+                                    label="Upgrade your help center with AI Agent"
                                     onClick={() =>
                                         setIsAutomationModalOpened(true)
                                     }

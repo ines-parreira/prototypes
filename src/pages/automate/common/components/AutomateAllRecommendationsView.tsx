@@ -124,7 +124,7 @@ const AutomateAllRecommendationsView = ({
     const isMultiStore = storeFilter && storeFilter.options.length > 1
 
     return (
-        <StatsPage title="Automate">
+        <StatsPage title="AI Agent">
             <div className={css.wrapper}>
                 <div className={css.headerSection}>
                     <div className={css.goBackButtonWrapper}>

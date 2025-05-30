@@ -29,7 +29,7 @@ export default function useAutomationFeatures() {
             description: 'Answer customer questions with AI',
         },
         {
-            title: 'Automate statistics',
+            title: 'Automation statistics',
             icon: 'bar_chart',
             description: 'Measure and track your automation performance',
         },

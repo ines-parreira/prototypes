@@ -97,7 +97,7 @@ export const tips: Record<MetricName, Record<TipQualifier, string[]>> = {
             `Create Auto-tag <a href="/app/settings/rules" target="_blank">Rules</a> and route tickets based on channel, language, or other qualities`,
         ],
         [TipQualifier.LightSuccess]: [
-            `Use our <a href="/app/automation" target="_blank">Automate</a> to its full potential to reduce your FRT.`,
+            `Use our <a href="/app/automation" target="_blank">AI Agent</a> to its full potential to reduce your FRT.`,
         ],
         [TipQualifier.Success]: [
             'High FRT is often correlated to a lower <a href="/app/stats/satisfaction" target="_blank">CSAT</a> - make sure yours doesn’t drop.',

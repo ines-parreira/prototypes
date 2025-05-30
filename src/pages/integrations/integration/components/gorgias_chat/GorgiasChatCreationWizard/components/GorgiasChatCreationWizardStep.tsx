@@ -21,7 +21,7 @@ type Props = {
 const labels: Record<GorgiasChatCreationWizardSteps, string> = {
     [GorgiasChatCreationWizardSteps.Basics]: 'Set up the basics',
     [GorgiasChatCreationWizardSteps.Branding]: 'Customize your chat',
-    [GorgiasChatCreationWizardSteps.Automate]: 'Automate',
+    [GorgiasChatCreationWizardSteps.Automate]: 'AI Agent',
     [GorgiasChatCreationWizardSteps.Installation]: 'Install and launch',
 }
 

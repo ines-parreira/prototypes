@@ -56,7 +56,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                     >
                       bolt
                     </i>
-                    Upgrade your help center with automate
+                    Upgrade your help center with AI Agent
                   </span>
                 </span>
               </button>

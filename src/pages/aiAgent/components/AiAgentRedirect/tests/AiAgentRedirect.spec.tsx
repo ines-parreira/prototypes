@@ -94,7 +94,7 @@ describe('AiAgentRedirect', () => {
         expect(history.location.pathname).toBe('/app/ai-agent')
         expect(
             getByText(
-                'Connect Shopify, Magento or BigCommerce stores to start using Automate!',
+                'Connect Shopify, Magento or BigCommerce stores to start using AI Agent!',
             ),
         ).toBeInTheDocument()
     })

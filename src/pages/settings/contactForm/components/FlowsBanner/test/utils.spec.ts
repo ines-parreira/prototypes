@@ -38,11 +38,11 @@ describe('getBannerDetails', () => {
         )
 
         expect(result).toEqual({
-            title: 'Build dynamic forms with Automate',
+            title: 'Build dynamic forms with AI Agent',
             description:
                 'Build fully customizable forms with branching logic to collect customer data.',
             button: {
-                text: 'Learn About Automate',
+                text: 'Learn About AI Agent',
                 icon: 'bolt',
                 link: '/app/automation',
             },
@@ -62,7 +62,7 @@ describe('getBannerDetails', () => {
         )
 
         expect(result).toEqual({
-            title: 'Build dynamic forms with Automate',
+            title: 'Build dynamic forms with AI Agent',
             description:
                 'First, connect your form to a Shopify store to enable the Flows feature.',
             button: {

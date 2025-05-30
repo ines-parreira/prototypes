@@ -8,14 +8,14 @@ export const BANNER_DETAILS = {
         TRACKING: SegmentEvent.ContactFormRedirectToFlows,
     },
     CONNECTED_TO_SHOP_AND_AUTOMATION_DISABLED: {
-        TITLE: 'Build dynamic forms with Automate',
+        TITLE: 'Build dynamic forms with AI Agent',
         DESCRIPTION:
             'Build fully customizable forms with branching logic to collect customer data.',
-        BUTTON_TEXT: 'Learn About Automate',
+        BUTTON_TEXT: 'Learn About AI Agent',
         TRACKING: SegmentEvent.ContactFormRedirectToAutomate,
     },
     NOT_CONNECTED_TO_SHOP: {
-        TITLE: 'Build dynamic forms with Automate',
+        TITLE: 'Build dynamic forms with AI Agent',
         DESCRIPTION:
             'First, connect your form to a Shopify store to enable the Flows feature.',
         BUTTON_TEXT: 'Connect Store',
