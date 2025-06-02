@@ -37,7 +37,7 @@ describe('AssignedChannelsList', () => {
         const onDelete = jest.fn()
         render(
             <ChannelsList
-                channelType="email"
+                listLabel="Assigned Email"
                 channels={mockChannels}
                 onDelete={onDelete}
             />,
@@ -54,7 +54,7 @@ describe('AssignedChannelsList', () => {
         const onDelete = jest.fn()
         const { container } = render(
             <ChannelsList
-                channelType="email"
+                listLabel="Assigned Email"
                 channels={[]}
                 onDelete={onDelete}
             />,
@@ -66,13 +66,13 @@ describe('AssignedChannelsList', () => {
         const onDelete = jest.fn()
         render(
             <ChannelsList
-                channelType="email"
+                listLabel="Assigned Email"
                 channels={mockChannels}
                 onDelete={onDelete}
             />,
         )
 
-        const deleteButtons = screen.getAllByText('close')
+        const deleteButtons = screen.getAllByText('delete')
 
         fireEvent.click(deleteButtons[0])
 
@@ -83,7 +83,7 @@ describe('AssignedChannelsList', () => {
         const onDelete = jest.fn()
         render(
             <ChannelsList
-                channelType="email"
+                listLabel="Assigned Facebook"
                 channels={mockChannelsWithoutAddress}
                 onDelete={onDelete}
             />,

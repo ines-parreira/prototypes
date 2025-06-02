@@ -37,7 +37,7 @@
 
     .labels {
         display: flex;
-        gap: @layout-spacing-xxs;
+        gap: @layout-spacing-xs;
         flex: 1;
     }
 
@@ -50,6 +50,11 @@
         letter-spacing: -0.14px;
     }
     .secondaryLabel {
+        color: var(--neutral-grey-5);
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
     }
     .assignedChannelsListContainer {
         border: 1px solid var(--neutral-grey-3);
@@ -66,5 +71,10 @@
         font-style: normal;
         line-height: 14px;
         letter-spacing: 0.55px;
+    }
+
+    .actions {
+        display: flex;
+        gap: @layout-spacing-xs;
     }
 }

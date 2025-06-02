@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { ChannelChange, ChannelWithMetadata } from '../../../types'
 import ChannelsFilter from '../ChannelsFilter/ChannelsFilter'
 import ChannelsList from '../ChannelsList/ChannelsList'
+import determineChannelLabels from '../helpers/determineChannelLabels'
 import { trackChannelChanges } from '../hooks/trackChannelChanges'
 import DrawerHeader from './DrawerHeader'
 
@@ -30,17 +31,18 @@ export default function DrawerContent({
             prev.filter((channelId) => channelId !== id),
         )
     }
-
+    const labels = determineChannelLabels(activeChannel)
     return (
         <div className={css.formGroup}>
             <DrawerHeader channel={activeChannel} />
             <ChannelsFilter
+                selectorLabel={labels.selectorLabel}
                 setAssignedChannelIds={setAssignedChannelIds}
                 assignedChannelIds={assignedChannelIds}
                 activeChannel={activeChannel}
             />
             <ChannelsList
-                channelType={activeChannel.type}
+                listLabel={labels.listLabel}
                 channels={[
                     ...activeChannel.unassignedChannels,
                     ...activeChannel.assignedChannels,

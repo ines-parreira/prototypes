@@ -69,7 +69,7 @@ describe('useNotifications', () => {
         result.current.handleMappingResults([], changes)
 
         expect(mockSuccess).toHaveBeenCalledWith(
-            'Successfully saved all mapping changes.',
+            'Changes are saved to this store.',
         )
         expect(mockError).not.toHaveBeenCalled()
     })
@@ -82,7 +82,7 @@ describe('useNotifications', () => {
         result.current.handleMappingResults(errors, changes)
 
         expect(mockError).toHaveBeenCalledWith(
-            'Failed to save mapping changes.',
+            'We couldn’t save your changes. Please try again.',
         )
         expect(mockSuccess).not.toHaveBeenCalled()
     })

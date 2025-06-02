@@ -15,12 +15,12 @@ export const useNotifications = (channels: ChannelWithMetadata[]) => {
         changes: ChannelChange[],
     ) => {
         if (errors.length === 0) {
-            success('Successfully saved all mapping changes.')
+            success('Changes are saved to this store.')
             return
         }
 
         if (errors.length === changes.length) {
-            error('Failed to save mapping changes.')
+            error('We couldn’t save your changes. Please try again.')
             return
         }
 

@@ -13,12 +13,14 @@ import CreateNewChannel from './CreateNewChannel'
 import UnselectableItems from './UnselectableItems'
 
 interface ChannelsFilterProps {
+    selectorLabel: string
     activeChannel?: ChannelWithMetadata
     assignedChannelIds: number[]
     setAssignedChannelIds: Dispatch<SetStateAction<number[]>>
 }
 
 export default function ChannelsFilter({
+    selectorLabel,
     activeChannel,
     assignedChannelIds,
     setAssignedChannelIds,
@@ -66,7 +68,7 @@ export default function ChannelsFilter({
                     intent="secondary"
                     trailingIcon="arrow_drop_down"
                 >
-                    Assign {activeChannel.title}
+                    {selectorLabel}
                 </Button>
             </div>
 

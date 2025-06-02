@@ -30,7 +30,7 @@ describe('DrawerHeader', () => {
                 ),
             ).toBeInTheDocument()
 
-            expect(screen.getByText('Email settings')).toHaveAttribute(
+            expect(screen.getByText('Email settings.')).toHaveAttribute(
                 'to',
                 '/app/settings/channels/email',
             )
@@ -46,7 +46,7 @@ describe('DrawerHeader', () => {
                 ),
             ).toBeInTheDocument()
 
-            expect(screen.getByText('Chat settings')).toHaveAttribute(
+            expect(screen.getByText('Chat settings.')).toHaveAttribute(
                 'to',
                 '/app/settings/channels/gorgias_chat',
             )

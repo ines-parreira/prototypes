@@ -16,7 +16,7 @@ export default function DrawerHeader({
                     Choose which support emails should be assigned to this
                     store. Manage all integrations in{' '}
                     <Link to={'/app/settings/channels/email'}>
-                        Email settings
+                        Email settings.
                     </Link>{' '}
                 </div>
             )
@@ -26,7 +26,7 @@ export default function DrawerHeader({
                     Choose which Chats that should be assigned to this store.
                     Manage all integrations in{' '}
                     <Link to={'/app/settings/channels/gorgias_chat'}>
-                        Chat settings
+                        Chat settings.
                     </Link>{' '}
                 </div>
             )

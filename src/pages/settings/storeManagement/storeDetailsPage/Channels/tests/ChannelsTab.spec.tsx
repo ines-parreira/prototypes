@@ -192,7 +192,7 @@ describe('ChannelsTab', () => {
             const emailRow = screen.getByTestId('settings-feature-row-email')
             fireEvent.click(emailRow)
 
-            fireEvent.click(screen.getAllByText(/close/i)[0])
+            fireEvent.click(screen.getAllByText(/delete/i)[0])
 
             fireEvent.click(screen.getByRole('button', { name: /cancel/i }))
 
@@ -245,7 +245,7 @@ describe('ChannelsTab', () => {
                 ),
             ).toBeInTheDocument()
 
-            fireEvent.click(screen.getAllByText(/close/i)[0])
+            fireEvent.click(screen.getAllByText(/delete/i)[0])
 
             const saveButton = screen.getByRole('button', {
                 name: /save changes/i,
@@ -310,7 +310,7 @@ describe('ChannelsTab', () => {
             ),
         ).toBeInTheDocument()
 
-        fireEvent.click(screen.getAllByText(/close/i)[0])
+        fireEvent.click(screen.getAllByText(/delete/i)[0])
 
         const saveButton = screen.getByRole('button', {
             name: /save changes/i,

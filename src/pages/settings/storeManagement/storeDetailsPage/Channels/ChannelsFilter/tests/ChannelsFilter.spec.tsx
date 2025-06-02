@@ -83,6 +83,7 @@ describe('ChannelsFilter', () => {
     it('renders SelectFilter with correct props', () => {
         renderWithStore(
             <ChannelsFilter
+                selectorLabel="Assign Test Channel"
                 activeChannel={activeChannel}
                 assignedChannelIds={[]}
                 setAssignedChannelIds={mockSetAssignedChannelIds}
@@ -99,6 +100,7 @@ describe('ChannelsFilter', () => {
             <MemoryRouter initialEntries={[`/settings/stores/1}`]}>
                 <Route path="/settings/stores/:id">
                     <ChannelsFilter
+                        selectorLabel="Assign Test Channel"
                         activeChannel={activeChannel}
                         assignedChannelIds={[2]}
                         setAssignedChannelIds={mockSetAssignedChannelIds}
@@ -123,6 +125,7 @@ describe('ChannelsFilter', () => {
     it('renders nothing when activeChannel is not provided', () => {
         const { container } = renderWithStore(
             <ChannelsFilter
+                selectorLabel="Assign Test Channel"
                 activeChannel={undefined}
                 assignedChannelIds={[]}
                 setAssignedChannelIds={mockSetAssignedChannelIds}
