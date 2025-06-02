@@ -55,7 +55,10 @@ const ContactFormPreferences = (): JSX.Element => {
     const [updateContactFormDto, setUpdateContactFormDto] = useState<
         Pick<
             UpdateContactFormDto,
-            'name' | 'email_integration' | 'default_locale' | 'shop_name'
+            | 'name'
+            | 'email_integration'
+            | 'default_locale'
+            | 'shop_integration_id'
         >
     >({})
 
@@ -169,7 +172,7 @@ const ContactFormPreferences = (): JSX.Element => {
         ((updateContactFormDto.name && updateContactFormDto.name.length > 1) ||
             updateContactFormDto.email_integration ||
             updateContactFormDto.default_locale ||
-            updateContactFormDto.shop_name !== undefined) &&
+            updateContactFormDto.shop_integration_id !== undefined) &&
         !isNameInvalid &&
         !isLoading &&
         isDirty
@@ -279,8 +282,12 @@ const ContactFormPreferences = (): JSX.Element => {
                 {hasAutomate && (
                     <ConnectContactFormToShopSection
                         onUpdate={onConnectedShopChange}
-                        shopName={contactForm.shop_name}
-                        shopIntegrationId={contactForm.shop_integration_id}
+                        shopName={
+                            contactForm.shop_integration?.shop_name ?? null
+                        }
+                        shopIntegrationId={
+                            contactForm.shop_integration?.integration_id ?? null
+                        }
                     />
                 )}
 

@@ -56,7 +56,11 @@ const SHOP_INTEGRATION = {
 } as ShopifyIntegration
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-
+const shop_integration = {
+    shop_name: SHOP_INTEGRATION.name,
+    shop_type: SHOP_INTEGRATION.type,
+    integration_id: SHOP_INTEGRATION.id,
+}
 describe('ContactFormPublish', () => {
     const defaultState: Partial<RootState> = {
         integrations: fromJS(integrationsState),
@@ -148,7 +152,10 @@ describe('ContactFormPublish', () => {
 
         renderView({
             state: defaultState,
-            contactForm: { ...ContactFormFixture, shop_name: 'test' },
+            contactForm: {
+                ...ContactFormFixture,
+                shop_integration,
+            },
         })
         expect(useGetPageEmbedments).toHaveBeenLastCalledWith(
             ContactFormFixture.id,
@@ -166,7 +173,10 @@ describe('ContactFormPublish', () => {
 
             renderView({
                 state: defaultState,
-                contactForm: { ...ContactFormFixture, shop_name: 'test' },
+                contactForm: {
+                    ...ContactFormFixture,
+                    shop_integration,
+                },
             })
 
             expect(
@@ -185,7 +195,10 @@ describe('ContactFormPublish', () => {
 
             renderView({
                 state: defaultState,
-                contactForm: { ...ContactFormFixture, shop_name: 'test' },
+                contactForm: {
+                    ...ContactFormFixture,
+                    shop_integration,
+                },
             })
 
             expect(screen.getByText('Replace email links')).toBeInTheDocument()
@@ -200,7 +213,10 @@ describe('ContactFormPublish', () => {
 
             renderView({
                 state: defaultState,
-                contactForm: { ...ContactFormFixture, shop_name: 'test' },
+                contactForm: {
+                    ...ContactFormFixture,
+                    shop_integration,
+                },
             })
 
             expect(

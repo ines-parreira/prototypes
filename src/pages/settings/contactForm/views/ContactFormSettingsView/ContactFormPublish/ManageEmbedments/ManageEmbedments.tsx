@@ -285,9 +285,9 @@ const ManageEmbedments = ({
                     <TableBody>
                         {embedments.map(
                             (embedment: ContactFormPageEmbedment) => {
-                                const previewLink = contactForm?.shop_name
+                                const previewLink = contactForm.shop_integration
                                     ? `https://${
-                                          contactForm.shop_name
+                                          contactForm.shop_integration.shop_name
                                       }.myshopify.com/${
                                           embedment.page_path_url.startsWith(
                                               '/',

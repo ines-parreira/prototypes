@@ -23,7 +23,8 @@ const ContactFormEntrypointPreview = ({
         getIntegrationsByType(IntegrationType.Shopify),
     )
     const contactFormShopIntegration = integrations?.find(
-        (integration) => integration.name === contactForm.shop_name,
+        (integration) =>
+            integration.id === contactForm.shop_integration?.integration_id,
     )
     const hasAutomate = useAppSelector(getHasAutomate)
     if (contactFormShopIntegration && hasAutomate) {

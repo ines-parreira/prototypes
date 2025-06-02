@@ -156,7 +156,7 @@ const ContactFormSettingsView = (): JSX.Element => {
                 <div className={css.header}>
                     {!changeAutomateSettingButtomPosition &&
                         (hasAutomate ? (
-                            !contactForm.shop_name && (
+                            !contactForm.shop_integration && (
                                 <Button
                                     fillStyle="ghost"
                                     intent="primary"
@@ -214,19 +214,20 @@ const ContactFormSettingsView = (): JSX.Element => {
                         to={insertContactFormIdParam(to, contactFormId)}
                     >
                         {name}
-                        {name === 'AI Agent' && !contactForm.shop_name && (
-                            <img
-                                alt="status icon"
-                                src={dotError}
-                                className={css.redDot}
-                            />
-                        )}
+                        {name === 'AI Agent' &&
+                            !contactForm.shop_integration && (
+                                <img
+                                    alt="status icon"
+                                    src={dotError}
+                                    className={css.redDot}
+                                />
+                            )}
                     </NavLink>
                 ))}
                 {changeAutomateSettingButtomPosition &&
                     (hasAutomate ? (
                         <>
-                            {!contactForm.shop_name && (
+                            {!contactForm.shop_integration && (
                                 <Button
                                     fillStyle="ghost"
                                     intent="primary"

@@ -62,14 +62,16 @@ const getBannerDetails = ({
 const ContactFormPublish = (): JSX.Element => {
     const contactForm = useCurrentContactForm()
     const getPageEmbedments = useGetPageEmbedments(contactForm.id, {
-        enabled: Boolean(contactForm.shop_name),
+        enabled: Boolean(contactForm.shop_integration),
     })
     const { copyButtonText } = useClipboard('#copy-shareable-link')
 
     const { isWorking, isLoading } = useIsShopifyCredentialsWorking()
 
     const { integrationId, integration, needScopeUpdate } =
-        useShopifyIntegrationAndScope(contactForm.shop_name ?? '')
+        useShopifyIntegrationAndScope(
+            contactForm.shop_integration?.shop_name ?? '',
+        )
 
     const onCopyClick = () => {
         logEvent(SegmentEvent.HelpCenterContactFormCopyLink)
@@ -81,7 +83,7 @@ const ContactFormPublish = (): JSX.Element => {
     const bannerDetails = getBannerDetails({
         integrationId,
         entityId: contactForm.id,
-        shopName: contactForm.shop_name,
+        shopName: contactForm.shop_integration?.shop_name ?? null,
         needScopeUpdate,
     })
 
@@ -166,7 +168,10 @@ const ContactFormPublish = (): JSX.Element => {
                                         !getPageEmbedments.isFetched)
                                 }
                                 contactFormId={contactForm.id}
-                                contactFormShopName={contactForm.shop_name}
+                                contactFormShopName={
+                                    contactForm.shop_integration?.shop_name ||
+                                    null
+                                }
                                 pageEmbedments={
                                     isLoading || !isWorking
                                         ? []
@@ -176,10 +181,13 @@ const ContactFormPublish = (): JSX.Element => {
 
                             <ContactFormManualEmbedCard
                                 codeSnippet={contactForm.code_snippet_template}
-                                shopName={contactForm.shop_name}
+                                shopName={
+                                    contactForm.shop_integration?.shop_name ||
+                                    null
+                                }
                             />
                         </section>
-                        {contactForm.shop_name &&
+                        {contactForm.shop_integration &&
                             integration &&
                             canUseIntegration && (
                                 <section>

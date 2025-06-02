@@ -12,7 +12,7 @@ export function useIsShopifyCredentialsWorking() {
     const contactForm = useCurrentContactForm()
     const shopifyIntegration = useAppSelector(
         getShopifyIntegrationByShopName(
-            contactForm?.shop_name || SHOP_NAME_PLACEHOLDER,
+            contactForm?.shop_integration?.shop_name || SHOP_NAME_PLACEHOLDER,
         ),
     )
 
@@ -23,7 +23,7 @@ export function useIsShopifyCredentialsWorking() {
         : false
 
     const getShopifyPages = useGetShopifyPages(contactForm.id, {
-        enabled: !needScopeUpdate && Boolean(contactForm.shop_name),
+        enabled: !needScopeUpdate && Boolean(contactForm.shop_integration),
     })
 
     return {

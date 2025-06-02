@@ -33,6 +33,7 @@ export const ContactFormFixture: ContactForm = {
     updated_datetime: '2023-02-21T19:21:06.804Z',
     deactivated_datetime: null,
     shop_name: null,
+    shop_integration: null,
     shop_integration_id: null,
     automation_settings_id: null,
     form_display_mode: ContactFormDisplayMode.SHOW_IMMEDIATELY,
@@ -70,7 +71,11 @@ export const ContactFormListFixtures: Components.Schemas.ContactFormsListPageDto
                 name: 'Standalone Contact Form connected to a shop',
                 uid: 'abcd4321',
                 source: 'manual',
-                shop_name: 'test-shop.myshopify.com',
+                shop_integration: {
+                    shop_name: 'test-shop.myshopify.com',
+                    shop_type: 'shopify',
+                    integration_id: 1,
+                },
             },
             {
                 ...ContactFormFixture,

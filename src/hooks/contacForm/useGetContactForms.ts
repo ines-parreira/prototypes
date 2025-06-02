@@ -47,7 +47,10 @@ export const useGetContactFromIntegrationIdsForStore = ({
             )
 
             allContactForms.forEach((cf) => {
-                if (cf.shop_name === shopName && cf.integration_id) {
+                if (
+                    cf.shop_integration?.shop_name === shopName &&
+                    cf.integration_id
+                ) {
                     contactFormIntegrationsWithName.push({
                         id: cf.integration_id,
                         channel: CONTACT_FORM_CHANNEL,

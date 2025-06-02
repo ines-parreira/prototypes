@@ -60,7 +60,11 @@ const embedments: ContactFormPageEmbedment[] = Array.from({ length: 3 }).map(
 
 const contactForm = {
     ...ContactFormFixture,
-    shop_name: 'shop-name',
+    shop_integration: {
+        shop_name: 'shop-name',
+        shop_type: 'shopify' as const,
+        integration_id: 1,
+    },
 }
 
 const defaultState: Partial<RootState> = {
@@ -136,7 +140,7 @@ describe('ContactFormPublish', () => {
             const link = screen.getByTestId(`preview-button-${embedment.id}`)
             expect(link).toHaveAttribute(
                 'href',
-                `https://${contactForm.shop_name}.myshopify.com${embedment.page_path_url}`,
+                `https://${contactForm.shop_integration.shop_name}.myshopify.com${embedment.page_path_url}`,
             )
         })
 

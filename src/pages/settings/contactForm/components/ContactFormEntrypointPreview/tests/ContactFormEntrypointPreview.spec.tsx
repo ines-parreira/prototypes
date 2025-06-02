@@ -112,6 +112,12 @@ const renderComponent = ({
     )
 }
 
+const shop_integration = {
+    shop_name: CONTACT_FORM_SHOP_NAME,
+    shop_type: 'shopify' as const,
+    integration_id: 1,
+}
+
 describe('<ContactFormEntrypointPreview />', () => {
     beforeEach(() => {
         mockUseSelfServiceConfiguration.mockReturnValue(
@@ -133,7 +139,7 @@ describe('<ContactFormEntrypointPreview />', () => {
         renderComponent({
             contactForm: {
                 ...ContactFormFixture,
-                shop_name: CONTACT_FORM_SHOP_NAME,
+                shop_integration,
             },
         })
 
@@ -144,7 +150,7 @@ describe('<ContactFormEntrypointPreview />', () => {
         renderComponent({
             contactForm: {
                 ...ContactFormFixture,
-                shop_name: CONTACT_FORM_SHOP_NAME,
+                shop_integration,
             },
         })
 
@@ -156,7 +162,7 @@ describe('<ContactFormEntrypointPreview />', () => {
             isFormHidden: false,
             contactForm: {
                 ...ContactFormFixture,
-                shop_name: CONTACT_FORM_SHOP_NAME,
+                shop_integration,
             },
         })
 
@@ -167,7 +173,7 @@ describe('<ContactFormEntrypointPreview />', () => {
         renderComponent({
             contactForm: {
                 ...ContactFormFixture,
-                shop_name: CONTACT_FORM_SHOP_NAME,
+                shop_integration,
             },
             automationSettings: CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS,
         })

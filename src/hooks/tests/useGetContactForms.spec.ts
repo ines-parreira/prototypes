@@ -19,17 +19,23 @@ describe('useGetContactFromIntegrationIdsForStore', () => {
                     data: [
                         {
                             integration_id: 1,
-                            shop_name: 'shop1',
+                            shop_integration: {
+                                shop_name: 'shop1',
+                            },
                             email_integration: { id: 101 },
                         },
                         {
                             integration_id: 2,
-                            shop_name: 'shop2',
+                            shop_integration: {
+                                shop_name: 'shop2',
+                            },
                             email_integration: { id: 102 },
                         },
                         {
                             integration_id: 3,
-                            shop_name: 'shop1',
+                            shop_integration: {
+                                shop_name: 'shop1',
+                            },
                             email_integration: { id: 103 },
                         },
                     ],

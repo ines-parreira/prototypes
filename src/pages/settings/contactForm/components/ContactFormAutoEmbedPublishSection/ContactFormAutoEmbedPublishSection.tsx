@@ -7,7 +7,7 @@ import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyInte
 import ContactFormAutoEmbedCard from '../ContactFormAutoEmbedCard'
 
 export type ContactFormAutoEmbedPublishSectionProps = {
-    contactFormShopName: ContactForm['shop_name']
+    contactFormShopName: string | null
     contactFormId: ContactForm['id']
     pageEmbedments: ContactFormPageEmbedment[]
     isDisabled?: boolean

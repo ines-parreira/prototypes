@@ -52,13 +52,17 @@ describe('<ContactFormTableRow />', () => {
         const form = {
             ...ContactFormFixture,
             name: 'Contact Form name',
-            shop_name: 'shopify-store',
+            shop_integration: {
+                shop_name: 'shopify-store',
+                shop_type: 'shopify' as const,
+                integration_id: 1,
+            },
         }
 
         const { container } = renderComponent(form.id, form)
 
         screen.getByText(form.name)
-        screen.getByText(form.shop_name)
+        screen.getByText(form.shop_integration.shop_name)
 
         expect(container.firstChild).toMatchSnapshot()
     })

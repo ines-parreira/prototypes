@@ -30,8 +30,7 @@ const useSelfServiceStandaloneContactFormChannels = (
             .filter(
                 (contactForm) =>
                     contactForm.help_center_id === null &&
-                    (contactForm.shop_integration?.shop_name === shopName ||
-                        contactForm.shop_name === shopName),
+                    contactForm.shop_integration?.shop_name === shopName,
             )
             .map((contactForm) => ({
                 type: TicketChannel.ContactForm,

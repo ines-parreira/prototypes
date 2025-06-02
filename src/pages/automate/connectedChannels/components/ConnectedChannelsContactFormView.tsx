@@ -56,10 +56,7 @@ export const ConnectedChannelsContactFormView = ({
             ]
         }
 
-        return [
-            contactForm ? 'shopify' : shopTypeParam,
-            contactForm ? (contactForm.shop_name ?? '') : shopNameParam,
-        ]
+        return [shopTypeParam, shopNameParam]
     }, [contactForm, shopTypeParam, shopNameParam])
 
     const isAutomateSettings = useIsAutomateSettings()

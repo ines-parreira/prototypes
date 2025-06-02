@@ -184,10 +184,10 @@ const ContactFormCustomization = (): JSX.Element => {
                     </Button>
                 </div>
                 <section className={contactFormCss.mtXl}>
-                    {contactForm.shop_name && (
+                    {contactForm.shop_integration && (
                         <ContactFormFlowsBanner
                             contactFormId={contactForm.id}
-                            shopName={contactForm.shop_name}
+                            shopName={contactForm.shop_integration.shop_name}
                         />
                     )}
                 </section>

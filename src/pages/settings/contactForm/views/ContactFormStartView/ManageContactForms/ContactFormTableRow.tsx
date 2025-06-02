@@ -37,8 +37,8 @@ export const ContactFormTableRow = ({
             </BodyCell>
             <BodyCell>
                 <StoreName
-                    name={form.shop_name}
-                    shopIntegrationId={form.shop_integration_id}
+                    name={form.shop_integration?.shop_name ?? null}
+                    shopIntegrationId={form.shop_integration?.integration_id}
                 />
             </BodyCell>
 
