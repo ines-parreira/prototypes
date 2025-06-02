@@ -190,6 +190,11 @@ const DefaultDropdownMenu = ({
     <DropdownMenu {...props} className={classnames(css.dropdown, className)} />
 )
 
+/**
+ * @deprecated
+ * @date 2025-06-02
+ * @type feature-component
+ */
 const SelectFilter = ({
     children,
     className,
