@@ -6,6 +6,8 @@ import { useHistory } from 'react-router-dom'
 import { Container } from 'reactstrap'
 import { ulid } from 'ulidx'
 
+import { Button } from '@gorgias/merchant-ui-kit'
+
 import {
     useVisualBuilder,
     VisualBuilderContext,
@@ -17,7 +19,6 @@ import {
     transformWorkflowConfigurationIntoVisualBuilderGraph,
     WorkflowConfigurationBuilder,
 } from 'pages/automate/workflows/models/workflowConfiguration.model'
-import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -25,8 +26,6 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import PageHeader from 'pages/common/components/PageHeader'
 import InputField from 'pages/common/forms/input/InputField'
 
-import { AiAgentMovedBanner } from '../common/components/AiAgentMovedBanner'
-import { useDisplayAiAgentMovedBanner } from '../common/hooks/useDisplayAiAgentMovedBanner'
 import ActionsPlatformStepAppSelectBox from './components/ActionsPlatformStepAppSelectBox'
 import WorkflowVisualBuilder from './components/visualBuilder/WorkflowVisualBuilder'
 import useApps from './hooks/useApps'
@@ -90,7 +89,6 @@ const ActionsPlatformCreateStepView = () => {
     const { isLoading: isCreateActionTemplateLoading, createActionTemplate } =
         useCreateActionTemplate()
     const { apps = [], isLoading: isAppsLoading, actionsApps } = useApps()
-    const displayAiAgentMovedBanner = useDisplayAiAgentMovedBanner()
 
     const history = useHistory()
     const template = useMemo(() => getInitialTemplate(), [])
@@ -173,7 +171,6 @@ const ActionsPlatformCreateStepView = () => {
 
     return (
         <div className={css.page}>
-            {displayAiAgentMovedBanner && <AiAgentMovedBanner />}
             <PageHeader
                 className={css.header}
                 title={

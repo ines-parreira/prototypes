@@ -21,7 +21,6 @@ import {
 import { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
-import { useDisplayAiAgentMovedBanner } from '../../common/hooks/useDisplayAiAgentMovedBanner'
 import ActionsPlatformCreateStepView from '../ActionsPlatformCreateStepView'
 import useApps from '../hooks/useApps'
 import useCreateActionTemplate from '../hooks/useCreateActionTemplate'
@@ -82,19 +81,7 @@ mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
     isInitialLoading: false,
 } as unknown as ReturnType<typeof useGetWorkflowConfigurationTemplates>)
 
-jest.mock('../../common/hooks/useDisplayAiAgentMovedBanner', () => ({
-    useDisplayAiAgentMovedBanner: jest.fn(),
-}))
-
-jest.mock('../../common/components/AiAgentMovedBanner', () => ({
-    AiAgentMovedBanner: () => <div>AI Agent Moved Banner</div>,
-}))
-
 describe('<ActionsPlatformCreateStepView />', () => {
-    beforeEach(() => {
-        ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReset()
-    })
-
     it('should render create step visual builder', () => {
         render(
             <Provider store={mockStore}>
@@ -182,31 +169,5 @@ describe('<ActionsPlatformCreateStepView />', () => {
         })
 
         expect(screen.getByText('Name is required')).toBeInTheDocument()
-    })
-
-    it('should render AI Agent Moved banner when useDisplayAiAgentMovedBanner returns true', () => {
-        ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReturnValue(true)
-
-        render(
-            <Provider store={mockStore}>
-                <ActionsPlatformCreateStepView />
-            </Provider>,
-        )
-
-        expect(screen.getByText('AI Agent Moved Banner')).toBeInTheDocument()
-    })
-
-    it('should not render AI Agent Moved banner when useDisplayAiAgentMovedBanner returns false', () => {
-        ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReturnValue(false)
-
-        render(
-            <Provider store={mockStore}>
-                <ActionsPlatformCreateStepView />
-            </Provider>,
-        )
-
-        expect(
-            screen.queryByText('AI Agent Moved Banner'),
-        ).not.toBeInTheDocument()
     })
 })

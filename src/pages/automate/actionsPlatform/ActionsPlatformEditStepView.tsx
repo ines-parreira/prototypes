@@ -19,8 +19,6 @@ import PageHeader from 'pages/common/components/PageHeader'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import InputField from 'pages/common/forms/input/InputField'
 
-import { AiAgentMovedBanner } from '../common/components/AiAgentMovedBanner'
-import { useDisplayAiAgentMovedBanner } from '../common/hooks/useDisplayAiAgentMovedBanner'
 import WorkflowVisualBuilder from './components/visualBuilder/WorkflowVisualBuilder'
 import useEditActionTemplate from './hooks/useEditActionTemplate'
 import useTouchActionStepGraph from './hooks/useTouchActionStepGraph'
@@ -37,8 +35,6 @@ type Props = {
 const ActionsPlatformEditStepView = ({ template }: Props) => {
     const { isLoading: isEditActionTemplateLoading, editActionTemplate } =
         useEditActionTemplate()
-
-    const displayAiAgentMovedBanner = useDisplayAiAgentMovedBanner()
 
     const visualBuilderGraph = useMemo(
         () =>
@@ -128,7 +124,6 @@ const ActionsPlatformEditStepView = ({ template }: Props) => {
 
     return (
         <div className={css.page}>
-            {displayAiAgentMovedBanner && <AiAgentMovedBanner />}
             <PageHeader
                 className={css.header}
                 title={

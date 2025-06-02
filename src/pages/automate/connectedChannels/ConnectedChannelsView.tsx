@@ -12,9 +12,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
-import { AiAgentMovedBanner } from '../common/components/AiAgentMovedBanner'
 import { AVAILABLE_CHANNELS, CHANNELS } from '../common/components/constants'
-import { useDisplayAiAgentMovedBanner } from '../common/hooks/useDisplayAiAgentMovedBanner'
 import { ConnectedChannelsChatView } from './components/ConnectedChannelsChatView'
 import { ConnectedChannelsContactFormView } from './components/ConnectedChannelsContactFormView'
 import { ConnectedChannelsEmailView } from './components/ConnectedChannelsEmailView'
@@ -23,7 +21,6 @@ import { ConnectedChannelsHelpCenterView } from './components/ConnectedChannelsH
 import css from './ConnectedChannelsView.less'
 
 export const ConnectedChannelsView = () => {
-    const displayAiAgentMovedBanner = useDisplayAiAgentMovedBanner()
     const { shopType, shopName } = useParams<{
         shopType: string
         shopName: string
@@ -60,7 +57,6 @@ export const ConnectedChannelsView = () => {
 
     return (
         <div className={css.pageContainer}>
-            {displayAiAgentMovedBanner && <AiAgentMovedBanner />}
             {!isAutomateSettings && (
                 <div className={css.pageHeader}>
                     <PageHeader title={CHANNELS} />

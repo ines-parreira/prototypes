@@ -7,24 +7,16 @@ import AutomateLandingPageDashboardV2 from 'pages/automate/common/components/Aut
 import { last28DaysStatsFilters } from 'pages/automate/common/utils/last28DaysStatsFilters'
 import StatsPage from 'pages/stats/common/layout/StatsPage'
 
-import { useDisplayAiAgentMovedBanner } from '../hooks/useDisplayAiAgentMovedBanner'
-import { AiAgentMovedBanner } from './AiAgentMovedBanner'
 import { AutomateLandingPageTopQuestions } from './TopQuestions/AutomateLandingPageTopQuestions'
 
 const AutomateLandingPage = () => {
-    const displayAiAgentMovedBanner = useDisplayAiAgentMovedBanner()
-
     const [checkListNode, setCheckListNode] = useCallbackRef()
     useInjectStyleToCandu(checkListNode)
 
     const filters: StatsFilters = useMemo(last28DaysStatsFilters, [])
 
     return (
-        <StatsPage
-            title="Overview"
-            headerCanduId="header-my-automate"
-            banner={displayAiAgentMovedBanner && <AiAgentMovedBanner />}
-        >
+        <StatsPage title="Overview" headerCanduId="header-my-automate">
             <AutomateLandingPageDashboardV2 filters={filters} />
 
             <AutomateLandingPageTopQuestions />

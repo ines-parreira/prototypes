@@ -22,9 +22,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
-import { AiAgentMovedBanner } from '../common/components/AiAgentMovedBanner'
 import { FLOWS } from '../common/components/constants'
-import { useDisplayAiAgentMovedBanner } from '../common/hooks/useDisplayAiAgentMovedBanner'
 import { useHistoryTracking } from '../common/hooks/useHistoryTracking'
 import { WORKFLOWS_DESCRIPTION } from './common/constants'
 import WorkflowsEmptyState from './components/WorkflowsEmptyState'
@@ -55,8 +53,6 @@ export default function WorkflowsView({
     notifyMerchant,
 }: WorkflowsViewProps) {
     useHistoryTracking(SegmentEvent.AutomateFlowsVisited)
-
-    const displayAiAgentMovedBanner = useDisplayAiAgentMovedBanner()
 
     const { path } = useRouteMatch()
     const location = useLocation()
@@ -97,7 +93,6 @@ export default function WorkflowsView({
 
     const workflowsHeader = (
         <div className={css.pageHeaderContainer}>
-            {displayAiAgentMovedBanner && <AiAgentMovedBanner />}
             <PageHeader title={FLOWS}>
                 <div className={css.headerContainer}>
                     <Button onClick={goToNewWorkflowPage} intent="secondary">

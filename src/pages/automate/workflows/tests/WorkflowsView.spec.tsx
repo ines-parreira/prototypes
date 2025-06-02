@@ -20,18 +20,9 @@ import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithDnD, renderWithRouterAndDnD } from 'utils/testing'
 
-import { useDisplayAiAgentMovedBanner } from '../../common/hooks/useDisplayAiAgentMovedBanner'
 import useStoreWorkflows from '../hooks/useStoreWorkflows'
 import { useStoreWorkflowsApi } from '../hooks/useStoreWorkflowsApi'
 import WorkflowsView from '../WorkflowsView'
-
-jest.mock('../../common/hooks/useDisplayAiAgentMovedBanner', () => ({
-    useDisplayAiAgentMovedBanner: jest.fn(),
-}))
-
-jest.mock('../../common/components/AiAgentMovedBanner', () => ({
-    AiAgentMovedBanner: () => <div>AI Agent Moved Banner</div>,
-}))
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const queryClient = mockQueryClient()
@@ -117,7 +108,6 @@ describe('<WorkflowsView />', () => {
             >
 
         mockUseStoreWorkflowsApi.mockReturnValue(mockStoreWorkflowsApi)
-        ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReset()
     })
 
     it('should display skeleton while workflow entrypoints are being fetched', async () => {
@@ -370,70 +360,6 @@ describe('<WorkflowsView />', () => {
                 ),
             ).toBeInTheDocument()
         })
-    })
-
-    it('should render AI Agent Moved banner when useDisplayAiAgentMovedBanner returns true and not on templates route', () => {
-        ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReturnValue(true)
-        useStoreWorkflowsMock.mockReturnValue({
-            isFetchPending: false,
-            workflows: [],
-            storeIntegrationId: 1,
-        })
-
-        renderWithDnD(
-            <MemoryRouter initialEntries={[legacyBaseUrl]}>
-                <Route path={legacyBaseUrl}>
-                    <Provider store={mockStore(defaultState)}>
-                        <QueryClientProvider client={queryClient}>
-                            <WorkflowsView
-                                shopName="ShopName"
-                                shopType="shopify"
-                                goToEditWorkflowPage={jest.fn()}
-                                goToWorkflowTemplatesPage={jest.fn()}
-                                goToNewWorkflowPage={jest.fn()}
-                                goToNewWorkflowFromTemplatePage={jest.fn()}
-                                notifyMerchant={jest.fn()}
-                            />
-                        </QueryClientProvider>
-                    </Provider>
-                </Route>
-            </MemoryRouter>,
-        )
-
-        expect(screen.getByText('AI Agent Moved Banner')).toBeInTheDocument()
-    })
-
-    it('should not render AI Agent Moved banner when useDisplayAiAgentMovedBanner returns false', () => {
-        ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReturnValue(false)
-        useStoreWorkflowsMock.mockReturnValue({
-            isFetchPending: false,
-            workflows: [],
-            storeIntegrationId: 1,
-        })
-
-        renderWithDnD(
-            <MemoryRouter initialEntries={[legacyBaseUrl]}>
-                <Route path={legacyBaseUrl}>
-                    <Provider store={mockStore(defaultState)}>
-                        <QueryClientProvider client={queryClient}>
-                            <WorkflowsView
-                                shopName="ShopName"
-                                shopType="shopify"
-                                goToEditWorkflowPage={jest.fn()}
-                                goToWorkflowTemplatesPage={jest.fn()}
-                                goToNewWorkflowPage={jest.fn()}
-                                goToNewWorkflowFromTemplatePage={jest.fn()}
-                                notifyMerchant={jest.fn()}
-                            />
-                        </QueryClientProvider>
-                    </Provider>
-                </Route>
-            </MemoryRouter>,
-        )
-
-        expect(
-            screen.queryByText('AI Agent Moved Banner'),
-        ).not.toBeInTheDocument()
     })
 
     it('should not render header elements when on a non-root route', () => {

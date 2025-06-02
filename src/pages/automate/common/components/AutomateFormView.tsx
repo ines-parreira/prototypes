@@ -9,9 +9,6 @@ import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
-import { useDisplayAiAgentMovedBanner } from '../hooks/useDisplayAiAgentMovedBanner'
-import { AiAgentMovedBanner } from './AiAgentMovedBanner'
-
 import css from './AutomateFormView.less'
 
 type NavbarItem = {
@@ -34,12 +31,9 @@ const AutomateFormView = ({
     isLoading,
     children,
 }: Props) => {
-    const displayAiAgentMovedBanner = useDisplayAiAgentMovedBanner()
-
     return (
         <div className="full-width">
             <div className={css.header}>
-                {displayAiAgentMovedBanner && <AiAgentMovedBanner />}
                 <PageHeader title={title} />
                 {headerNavbarItems && (
                     <SecondaryNavbar>

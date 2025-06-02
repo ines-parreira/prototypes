@@ -10,7 +10,6 @@ import { billingState } from 'fixtures/billing'
 import { RootState, StoreDispatch } from 'state/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
-import { useDisplayAiAgentMovedBanner } from '../../hooks/useDisplayAiAgentMovedBanner'
 import AutomateLandingPage from '../AutomateLandingPage'
 
 jest.mock('hooks/useCallbackRef', () => jest.fn(() => [null, jest.fn()]))
@@ -25,17 +24,11 @@ jest.mock('../TopQuestions/AutomateLandingPageTopQuestions', () => ({
         <div>AutomateLandingPageTopQuestions</div>
     ),
 }))
-jest.mock('../../hooks/useDisplayAiAgentMovedBanner', () => ({
-    useDisplayAiAgentMovedBanner: jest.fn(),
-}))
 
 jest.mock('../TopQuestions/AutomateLandingPageTopQuestions', () => ({
     AutomateLandingPageTopQuestions: () => (
         <div>AutomateLandingPageTopQuestions</div>
     ),
-}))
-jest.mock('../AiAgentMovedBanner', () => ({
-    AiAgentMovedBanner: () => <div>AI Agent Moved Banner</div>,
 }))
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
@@ -44,10 +37,6 @@ const store = mockStore({
 } as unknown as RootState)
 
 describe('AutomateLandingPage', () => {
-    beforeEach(() => {
-        ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReset()
-    })
-
     test('renders with title "Overview"', () => {
         renderWithQueryClientProvider(
             <Provider store={store}>
@@ -55,31 +44,5 @@ describe('AutomateLandingPage', () => {
             </Provider>,
         )
         expect(screen.getByText('Overview')).toBeInTheDocument()
-    })
-
-    test('renders AI Agent Moved banner when useDisplayAiAgentMovedBanner returns true', () => {
-        ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReturnValue(true)
-
-        renderWithQueryClientProvider(
-            <Provider store={store}>
-                <AutomateLandingPage />
-            </Provider>,
-        )
-
-        expect(screen.getByText('AI Agent Moved Banner')).toBeInTheDocument()
-    })
-
-    test('does not render AI Agent Moved banner when useDisplayAiAgentMovedBanner returns false', () => {
-        ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReturnValue(false)
-
-        renderWithQueryClientProvider(
-            <Provider store={store}>
-                <AutomateLandingPage />
-            </Provider>,
-        )
-
-        expect(
-            screen.queryByText('AI Agent Moved Banner'),
-        ).not.toBeInTheDocument()
     })
 })

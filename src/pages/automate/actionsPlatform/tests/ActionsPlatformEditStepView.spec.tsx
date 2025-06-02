@@ -14,7 +14,6 @@ import {
 import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import { RootState, StoreDispatch } from 'state/types'
 
-import { useDisplayAiAgentMovedBanner } from '../../common/hooks/useDisplayAiAgentMovedBanner'
 import ActionsPlatformEditStepView from '../ActionsPlatformEditStepView'
 import useApps from '../hooks/useApps'
 import useEditActionTemplate from '../hooks/useEditActionTemplate'
@@ -23,14 +22,6 @@ import { ActionTemplate } from '../types'
 jest.mock('models/workflows/queries')
 jest.mock('../hooks/useEditActionTemplate')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
-
-jest.mock('../../common/hooks/useDisplayAiAgentMovedBanner', () => ({
-    useDisplayAiAgentMovedBanner: jest.fn(),
-}))
-
-jest.mock('../../common/components/AiAgentMovedBanner', () => ({
-    AiAgentMovedBanner: () => <div>AI Agent Moved Banner</div>,
-}))
 
 const mockUseApps = jest.mocked(useApps)
 mockUseApps.mockReturnValue({
@@ -110,10 +101,6 @@ b.insertHttpRequestConditionAndEndStepAndSelect('error')
 const template = b.build()
 
 describe('<ActionsPlatformEditStepView />', () => {
-    beforeEach(() => {
-        ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReset()
-    })
-
     it('should render edit step visual builder', () => {
         render(
             <Provider store={mockStore}>
@@ -229,35 +216,5 @@ describe('<ActionsPlatformEditStepView />', () => {
         await waitFor(() => {
             expect(mockEditActionTemplate).not.toHaveBeenCalled()
         })
-    })
-
-    it('should render AI Agent Moved banner when useDisplayAiAgentMovedBanner returns true', () => {
-        ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReturnValue(true)
-
-        render(
-            <Provider store={mockStore}>
-                <ActionsPlatformEditStepView
-                    template={template as ActionTemplate}
-                />
-            </Provider>,
-        )
-
-        expect(screen.getByText('AI Agent Moved Banner')).toBeInTheDocument()
-    })
-
-    it('should not render AI Agent Moved banner when useDisplayAiAgentMovedBanner returns false', () => {
-        ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReturnValue(false)
-
-        render(
-            <Provider store={mockStore}>
-                <ActionsPlatformEditStepView
-                    template={template as ActionTemplate}
-                />
-            </Provider>,
-        )
-
-        expect(
-            screen.queryByText('AI Agent Moved Banner'),
-        ).not.toBeInTheDocument()
     })
 })

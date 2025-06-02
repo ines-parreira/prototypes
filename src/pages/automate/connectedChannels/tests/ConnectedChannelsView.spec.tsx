@@ -24,7 +24,6 @@ import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { initialState as articlesState } from '../../../../state/entities/helpCenter/articles'
 import { initialState as categoriesState } from '../../../../state/entities/helpCenter/categories'
-import { useDisplayAiAgentMovedBanner } from '../../common/hooks/useDisplayAiAgentMovedBanner'
 import { ConnectedChannelsView } from '../ConnectedChannelsView'
 
 const mockChannels = [
@@ -272,14 +271,6 @@ jest.mock(
 
 jest.mock('settings/automate/hooks/useIsAutomateSettings')
 
-jest.mock('../../common/hooks/useDisplayAiAgentMovedBanner', () => ({
-    useDisplayAiAgentMovedBanner: jest.fn(),
-}))
-
-jest.mock('../../common/components/AiAgentMovedBanner', () => ({
-    AiAgentMovedBanner: () => <div>AI Agent Moved Banner</div>,
-}))
-
 jest.mock('../components/ConnectedChannelsChatView', () => ({
     ConnectedChannelsChatView: () => (
         <div data-testid="connected-channels-chat-view" />
@@ -396,7 +387,6 @@ describe('ConnectedChannelsView', () => {
             },
             isFetchPending: false,
         })
-        ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReset()
     })
     it('should render', () => {
         renderWithRouter(<ConnectedChannelsView />)
@@ -404,24 +394,6 @@ describe('ConnectedChannelsView', () => {
         expect(screen.getByText('Help Center')).toBeInTheDocument()
         expect(screen.getByText('Contact Form')).toBeInTheDocument()
         expect(screen.getByText('Email')).toBeInTheDocument()
-    })
-
-    it('should render AI Agent Moved banner when useDisplayAiAgentMovedBanner returns true', () => {
-        ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReturnValue(true)
-
-        renderWithRouter(<ConnectedChannelsView />)
-
-        expect(screen.getByText('AI Agent Moved Banner')).toBeInTheDocument()
-    })
-
-    it('should not render AI Agent Moved banner when useDisplayAiAgentMovedBanner returns false', () => {
-        ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReturnValue(false)
-
-        renderWithRouter(<ConnectedChannelsView />)
-
-        expect(
-            screen.queryByText('AI Agent Moved Banner'),
-        ).not.toBeInTheDocument()
     })
 
     describe('routing', () => {
