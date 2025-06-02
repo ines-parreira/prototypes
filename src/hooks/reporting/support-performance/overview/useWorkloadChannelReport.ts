@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 import { useDistributionTrendReportData } from 'hooks/reporting/common/useDistributionTrendReportData'
 import {
     fetchWorkloadPerChannelDistribution,
@@ -11,15 +13,18 @@ export const useWorkloadChannelReport = (
     userTimezone: string,
     fetchingEnabled = true,
 ) => {
-    const workloadDistributions = {
-        fetchCurrentDistribution: fetchWorkloadPerChannelDistribution,
-        fetchPreviousDistribution: fetchingEnabled
-            ? fetchWorkloadPerChannelDistributionForPreviousPeriod
-            : () => Promise.resolve({ data: [] }),
-        labelPrefix: WORKLOAD_BY_CHANNEL_LABEL,
-        title: 'distributions',
-        metricFormat: 'decimal' as const,
-    }
+    const workloadDistributions = useMemo(
+        () => ({
+            fetchCurrentDistribution: fetchWorkloadPerChannelDistribution,
+            fetchPreviousDistribution: fetchingEnabled
+                ? fetchWorkloadPerChannelDistributionForPreviousPeriod
+                : () => Promise.resolve({ data: [] }),
+            labelPrefix: WORKLOAD_BY_CHANNEL_LABEL,
+            title: 'distributions',
+            metricFormat: 'decimal' as const,
+        }),
+        [fetchingEnabled],
+    )
 
     const distributions = useDistributionTrendReportData(
         cleanStatsFilters,
