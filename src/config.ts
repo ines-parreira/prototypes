@@ -850,6 +850,22 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
     },
     {
         execution: ActionTemplateExecution.Back,
+        name: MacroActionName.SetPriority,
+        title: 'Set priority',
+        partialUpdateKeys: 'priority',
+        partialUpdateValues: 'priority',
+        icon: 'check_box',
+        arguments: {
+            priority: {
+                default: 'normal',
+                input: {
+                    type: 'priority-select',
+                },
+            },
+        },
+    },
+    {
+        execution: ActionTemplateExecution.Back,
         name: MacroActionName.AddInternalNote,
         title: 'Send internal note',
         icon: 'note',

@@ -6,9 +6,11 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useFlag } from 'core/flags'
 import _schemas from 'fixtures/openapi.json'
 import { humanizeChannel } from 'state/ticket/utils'
 import { getLanguageDisplayName } from 'utils'
+import { assumeMock } from 'utils/testing'
 
 import Widget from '../Widget'
 import _astCodeContains from './fixtures/astCodeContains.json'
@@ -28,6 +30,13 @@ const defaultState = {
         integrations: [],
     }),
 }
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+
+const useFlagMock = assumeMock(useFlag)
+useFlagMock.mockReturnValue(true)
 
 describe('<Widget />', () => {
     const commonProps = {
@@ -322,6 +331,48 @@ describe('<Widget />', () => {
                 5,
                 'UPDATE',
             )
+        })
+    })
+
+    describe('Priority select', () => {
+        it('should render PrioritySelect field', () => {
+            const enumValues = ['high', 'medium', 'low']
+            const leftsiblings = fromJS(['actions', 'priority'])
+            const value = 'high'
+            const rule = fromJS({
+                code_ast: astCodeEq,
+            })
+            render(
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        schemas: fromJS({
+                            definitions: {
+                                Ticket: {
+                                    properties: {
+                                        priority: {
+                                            meta: {
+                                                enum: enumValues,
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        }),
+                    })}
+                >
+                    <Widget
+                        {...commonProps}
+                        value={value}
+                        leftsiblings={leftsiblings}
+                        rule={rule}
+                    />
+                </Provider>,
+            )
+
+            enumValues.forEach((value) => {
+                expect(screen.getByText(value)).toBeInTheDocument()
+            })
         })
     })
 

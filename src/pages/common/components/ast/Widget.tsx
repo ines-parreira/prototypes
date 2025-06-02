@@ -46,6 +46,7 @@ import CustomFieldSelect from './widget/CustomFieldSelect'
 import IntegrationSelect from './widget/IntegrationSelect'
 import { IntentsSentimentsSelect } from './widget/IntentsSentimentsSelect'
 import MacroSelect from './widget/MacroSelect'
+import PrioritySelect from './widget/PrioritySelect'
 import Select from './widget/ReactSelect'
 import SelfServiceFlowSelect from './widget/SelfServiceFlowSelect'
 import SelfServiceStoreIntegrationSelect from './widget/SelfServiceStoreIntegrationSelect'
@@ -615,6 +616,14 @@ export class Widget extends Component<Props, State> {
             case 'status-select':
                 return (
                     <StatusSelect
+                        {...widget}
+                        className={className}
+                        onChange={this._handleChange}
+                    />
+                )
+            case 'priority-select':
+                return (
+                    <PrioritySelect
                         {...widget}
                         className={className}
                         onChange={this._handleChange}

@@ -201,6 +201,7 @@ export const ACTION_TYPES = [
     'setTags',
     'setTeamAssignee',
     'trashTicket',
+    'setPriority',
 ] as const
 
 export type ActionType = (typeof ACTION_TYPES)[number]

@@ -1,8 +1,7 @@
-import React from 'react'
-
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
+import { useFlag } from 'core/flags'
 import { userEvent } from 'utils/testing/userEvent'
 
 import ActionSelect from '../ActionSelect'
@@ -20,7 +19,16 @@ const commonProps = {
 
 const systemRule = fromJS({ type: 'system' })
 
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = useFlag as jest.Mock
+
 describe('<ActionSelect />', () => {
+    beforeEach(() => {
+        mockUseFlag.mockReturnValue(false)
+    })
+
     it('should render `Select action` when value is empty', () => {
         render(<ActionSelect {...commonProps} />)
 
@@ -42,9 +50,11 @@ describe('<ActionSelect />', () => {
     })
 
     it('should render all non-system actions for non-system rules', () => {
+        mockUseFlag.mockReturnValue(true)
         render(<ActionSelect {...commonProps} />)
 
         fireEvent.click(screen.getByText('Select action'))
+
         Object.values(actionsConfig).filter((config) => {
             if (config.type !== 'system') {
                 expect(
@@ -57,9 +67,11 @@ describe('<ActionSelect />', () => {
     })
 
     it('should render all actions for system rules', () => {
+        mockUseFlag.mockReturnValue(true)
         render(<ActionSelect {...commonProps} rule={systemRule} />)
 
         fireEvent.click(screen.getByText('Select action'))
+
         Object.values(actionsConfig).filter((config) => {
             expect(
                 screen.getByRole('menuitem', {

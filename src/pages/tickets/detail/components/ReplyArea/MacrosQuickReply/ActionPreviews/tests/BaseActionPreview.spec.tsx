@@ -1,17 +1,19 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 
 import { BaseActionPreview } from '../BaseActionPreview'
 
 describe('<BaseActionPreview />', () => {
+    const text = 'foo'
     const minProps: ComponentProps<typeof BaseActionPreview> = {
         actionName: 'test action',
-        children: <div>foo</div>,
+        children: <div>{text}</div>,
     }
-    it('should render the component', () => {
-        const { container } = render(<BaseActionPreview {...minProps} />)
 
-        expect(container.firstChild).toMatchSnapshot()
+    it('should render the component', () => {
+        render(<BaseActionPreview {...minProps} />)
+
+        expect(screen.getByText(text)).toBeInTheDocument()
     })
 })

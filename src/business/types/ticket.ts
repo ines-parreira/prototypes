@@ -87,3 +87,10 @@ export enum TicketVia {
     Rule = 'rule',
     Api = 'api',
 }
+
+export enum TicketPriority {
+    Low = 'low',
+    Normal = 'normal',
+    High = 'high',
+    Critical = 'critical',
+}

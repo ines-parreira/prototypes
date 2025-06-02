@@ -34,6 +34,7 @@ import IntegrationAction from './actions/IntegrationAction'
 import ResponseAction from './actions/ResponseAction'
 import SetAssigneeAction from './actions/SetAssigneeAction'
 import SetCustomFieldValueAction from './actions/SetCustomFieldValueAction'
+import SetPriorityAction from './actions/SetPriorityAction'
 import SetStatusAction from './actions/SetStatusAction'
 import SetSubjectAction from './actions/SetSubjectAction'
 import SnoozeTicketAction from './actions/SnoozeTicketAction'
@@ -142,8 +143,10 @@ export class MacroEdit extends Component<Props> {
 
     renderNewActionMenu = ({
         isMacroForwardByEmailEnabled,
+        isTicketAllowPriorityUsageEnabled,
     }: {
         isMacroForwardByEmailEnabled: boolean
+        isTicketAllowPriorityUsageEnabled: boolean
     }) => {
         const ticketActions = ACTION_TEMPLATES.filter(
             (template) =>
@@ -151,8 +154,10 @@ export class MacroEdit extends Component<Props> {
         )
             .filter(
                 ({ name }) =>
-                    isMacroForwardByEmailEnabled ||
-                    name !== MacroActionName.ForwardByEmail,
+                    (isMacroForwardByEmailEnabled ||
+                        name !== MacroActionName.ForwardByEmail) &&
+                    (isTicketAllowPriorityUsageEnabled ||
+                        name !== MacroActionName.SetPriority),
             )
             // remove actions that have already been used
             // except for SetCustomFieldValue which is allowed multiple times
@@ -403,6 +408,18 @@ export class MacroEdit extends Component<Props> {
                     ),
                 }
                 break
+            case MacroActionName.SetPriority:
+                config = {
+                    title: 'Set priority',
+                    content: (
+                        <SetPriorityAction
+                            index={index}
+                            action={action}
+                            updateActionArgs={this._updateActionArguments}
+                        />
+                    ),
+                }
+                break
             default: {
                 const integrationType =
                     getActionTemplate(action.get('name'))?.integrationType || ''
@@ -448,6 +465,9 @@ export class MacroEdit extends Component<Props> {
 
         const isMacroForwardByEmailEnabled =
             !!flags[FeatureFlagKey.MacroForwardByEmail]
+
+        const isTicketAllowPriorityUsageEnabled =
+            !!flags[FeatureFlagKey.TicketAllowPriorityUsage]
 
         if (!currentMacro || !Object.keys(currentMacro).length) return null
 
@@ -499,9 +519,12 @@ export class MacroEdit extends Component<Props> {
                     {this.props.actions
                         ?.filter(
                             (action: Map<any, any>) =>
-                                isMacroForwardByEmailEnabled ||
-                                action.get('name') !==
-                                    MacroActionName.ForwardByEmail,
+                                (isMacroForwardByEmailEnabled ||
+                                    action.get('name') !==
+                                        MacroActionName.ForwardByEmail) &&
+                                (isTicketAllowPriorityUsageEnabled ||
+                                    action.get('name') !==
+                                        MacroActionName.SetPriority),
                         )
                         .map(
                             (action: Map<any, any>, index) =>
@@ -522,6 +545,7 @@ export class MacroEdit extends Component<Props> {
                             </DropdownToggle>
                             {this.renderNewActionMenu({
                                 isMacroForwardByEmailEnabled,
+                                isTicketAllowPriorityUsageEnabled,
                             })}
                         </UncontrolledButtonDropdown>
 

@@ -96,6 +96,10 @@ const SET_CUSTOM_FIELD_VALUE_ACTION_DEFAULT = {
     value: '',
 }
 
+const SET_PRIORITY_ACTION_DEFAULT = {
+    priority: 'normal',
+}
+
 export const ACTION_DEFAULT_STATE = {
     applyMacro: APPLY_MACRO_ACTION_DEFAULT,
     sendEmail: SEND_EMAIL_ACTION_DEFAULT,
@@ -111,6 +115,7 @@ export const ACTION_DEFAULT_STATE = {
     addInternalNote: ADD_INTERNAL_NOTE_ACTION_DEFAULT,
     snoozeTicket: SNOOZE_ACTION_DEFAULT,
     setCustomFieldValue: SET_CUSTOM_FIELD_VALUE_ACTION_DEFAULT,
+    setPriority: SET_PRIORITY_ACTION_DEFAULT,
 }
 
 export const DEFAULT_STATEMENT = {

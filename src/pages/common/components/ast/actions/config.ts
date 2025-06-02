@@ -149,6 +149,7 @@ export type Argument = {
     cc: Pick<Properties, 'name' | 'validate' | 'widget'>
     bcc: Pick<Properties, 'name' | 'validate' | 'widget'>
     snooze_timedelta: Pick<Properties, 'widget'>
+    priority: Pick<Properties, 'widget'>
     custom_field_id: Pick<Properties, 'widget'>
     value: Pick<Properties, 'widget'>
 }
@@ -293,6 +294,15 @@ export const actionsConfig: { [key in ActionType | 'notify']: ActionConfig } = {
     setStatus: {
         compact: true,
         name: 'Set status',
+    },
+    setPriority: {
+        compact: true,
+        name: 'Set priority',
+        args: {
+            priority: {
+                widget: 'priority-select',
+            },
+        },
     },
     setCustomFieldValue: {
         compact: true,

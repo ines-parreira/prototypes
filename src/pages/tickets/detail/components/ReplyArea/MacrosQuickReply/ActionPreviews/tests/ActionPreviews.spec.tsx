@@ -1,6 +1,6 @@
 import React, { ComponentProps } from 'react'
 
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -12,7 +12,8 @@ import { ActionPreviews } from '../ActionPreviews'
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => '42')
 
-jest.mock('pages/tickets/common/macros/Preview', () => () => <>Preview</>)
+const mockPreview = 'Preview'
+jest.mock('pages/tickets/common/macros/Preview', () => () => <>{mockPreview}</>)
 
 describe('<ActionPreviews />', () => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
@@ -23,22 +24,32 @@ describe('<ActionPreviews />', () => {
         textPreviewMinWidth: 200,
         actions: [],
     }
+
     beforeEach(() => {
         store = mockStore({})
     })
+
     it.each([
-        ['set text action', [setTextAction]],
-        ['other type of action', [setOpenStatusAction]],
+        ['set text action', [setTextAction], [mockPreview]],
+        [
+            'other type of action',
+            [setOpenStatusAction],
+            [setOpenStatusAction.title],
+        ],
         [
             'both set text action and other type of action',
             [setTextAction, setOpenStatusAction],
+            [mockPreview, setOpenStatusAction.title],
         ],
-    ])('should render %s ', (_, actions) => {
-        const { container } = render(
+    ])('should render %s ', (_, actions, expectedTexts) => {
+        render(
             <Provider store={store}>
                 <ActionPreviews {...minProps} actions={actions} />
             </Provider>,
         )
-        expect(container.firstChild).toMatchSnapshot()
+
+        expectedTexts.forEach((text) => {
+            expect(screen.getByText(text)).toBeInTheDocument()
+        })
     })
 })

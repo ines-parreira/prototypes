@@ -39,6 +39,7 @@ const displayedArg: Record<string, string> = {
     [MacroActionName.SetAssignee]: 'assignee_user',
     [MacroActionName.SetResponseText]: 'body_text',
     [MacroActionName.SetStatus]: 'status',
+    [MacroActionName.SetPriority]: 'priority',
     [MacroActionName.SetSubject]: 'subject',
     [MacroActionName.SetTeamAssignee]: 'assignee_team',
     [MacroActionName.SnoozeTicket]: 'snooze_timedelta',

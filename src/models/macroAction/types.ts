@@ -20,6 +20,7 @@ export enum MacroActionName {
     RemoveTags = 'removeTags',
     SetAssignee = 'setAssignee',
     SetCustomFieldValue = 'setCustomFieldValue',
+    SetPriority = 'setPriority',
     SetResponseText = 'setResponseText',
     SetStatus = 'setStatus',
     SetSubject = 'setSubject',
@@ -57,6 +58,7 @@ export type MacroAction = {
         url?: string
         params?: Record<string, unknown>[]
         status?: string
+        priority?: string
         assignee_user?: User
         assignee_team?: Team
         subject?: string

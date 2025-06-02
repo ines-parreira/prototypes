@@ -198,10 +198,17 @@ export const TimedeltaLabel = ({
     )
 }
 
-const STATUS_TO_BADGE: Record<string, ColorType | undefined> = {
+const STATUS_TO_BADGE: Record<string, ColorType> = {
     open: 'classic',
     snoozed: 'blue',
     closed: 'light-dark',
+}
+
+export const PRIORITY_TO_BADGE: Record<string, ColorType> = {
+    low: 'classic',
+    normal: 'blue',
+    high: 'light-warning',
+    critical: 'light-error',
 }
 
 export const StatusLabel = ({
@@ -216,6 +223,22 @@ export const StatusLabel = ({
     return (
         <Badge className={className ?? 'text-center'} type={type}>
             {status}
+        </Badge>
+    )
+}
+
+export const PriorityLabel = ({
+    className,
+    priority,
+}: {
+    className?: string
+    priority: string
+}) => {
+    const type = PRIORITY_TO_BADGE[priority] || 'modern'
+
+    return (
+        <Badge className={className ?? 'text-center'} type={type}>
+            {priority}
         </Badge>
     )
 }

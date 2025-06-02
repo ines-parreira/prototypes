@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
+import { LDFlagSet } from 'launchdarkly-js-client-sdk'
+import { withLDConsumer } from 'launchdarkly-react-client-sdk'
 import _debounce from 'lodash/debounce'
 import { connect, ConnectedProps } from 'react-redux'
 
@@ -9,6 +11,7 @@ import { Label } from '@gorgias/merchant-ui-kit'
 
 import { withAppNode, WithAppNodeProps } from 'appNode'
 import { FORM_CONTENT_TYPE } from 'config'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { getIconFromActionType } from 'models/macroAction/helpers'
 import { MacroActionName } from 'models/macroAction/types'
 import CustomFieldIdInput from 'pages/common/components/ast/widget/CustomFieldIdInput'
@@ -22,6 +25,7 @@ import AddInternalNoteAction from 'pages/tickets/common/macros/components/action
 import AddTagsAction from 'pages/tickets/common/macros/components/actions/AddTagsAction'
 import ResponseAction from 'pages/tickets/common/macros/components/actions/ResponseAction'
 import SetAssigneeAction from 'pages/tickets/common/macros/components/actions/SetAssigneeAction'
+import SetPriorityAction from 'pages/tickets/common/macros/components/actions/SetPriorityAction'
 import SetStatusAction from 'pages/tickets/common/macros/components/actions/SetStatusAction'
 import SnoozeTicketAction from 'pages/tickets/common/macros/components/actions/SnoozeTicketAction'
 import { updateActionArgsOnApplied } from 'state/ticket/actions'
@@ -36,6 +40,7 @@ type Props = {
     ticketId: number
     disabled?: boolean
     className?: string
+    flags?: LDFlagSet
 } & ConnectedProps<typeof connector> &
     WithAppNodeProps
 
@@ -275,6 +280,25 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                     disabled={this.props.disabled}
                                 />
                             )
+                        case 'priority-select':
+                            return (
+                                <SetPriorityAction
+                                    key={key}
+                                    index={0}
+                                    action={action}
+                                    updateActionArgs={(_, value) => {
+                                        this.setValue(
+                                            key,
+                                            value.get('priority'),
+                                        )
+                                    }}
+                                    fullWidth={false}
+                                    dropdownContainer={
+                                        this.props.appNode ?? undefined
+                                    }
+                                    disabled={this.props.disabled}
+                                />
+                            )
                         case 'tags-select':
                             return (
                                 <div className={css.tagsSelect} key={key}>
@@ -364,7 +388,9 @@ export class TicketReplyActionContainer extends Component<Props, State> {
     }
 
     render() {
-        const { remove, ticketId, className } = this.props
+        const { flags, remove, ticketId, className } = this.props
+        const isTicketPriorityEnabled =
+            !!flags?.[FeatureFlagKey.TicketAllowPriorityUsage]
         const action = this.getAction()
 
         let type = action.get('name')
@@ -372,6 +398,13 @@ export class TicketReplyActionContainer extends Component<Props, State> {
 
         if (template && template.integrationType) {
             type = template.integrationType
+        }
+
+        if (
+            !isTicketPriorityEnabled &&
+            action.get('name') === MacroActionName.SetPriority
+        ) {
+            return null
         }
 
         const icon = template?.icon
@@ -544,4 +577,6 @@ const connector = connect(null, {
     updateActionArgsOnApplied,
 })
 
-export default connector(withAppNode(TicketReplyActionContainer))
+export default connector(
+    withLDConsumer()(withAppNode(TicketReplyActionContainer)),
+)

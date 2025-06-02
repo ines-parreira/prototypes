@@ -464,4 +464,25 @@ describe('components utils: labels', () => {
             )
         })
     })
+
+    describe('<PriorityLabel/>', () => {
+        Object.entries(labels.PRIORITY_TO_BADGE).forEach(([priority, type]) => {
+            it(`should call Badge with correct type based on priority prop's value ${priority}`, () => {
+                render(<labels.PriorityLabel priority={priority} />)
+                expect(Badge).toHaveBeenCalledWith(
+                    expect.objectContaining({ type }),
+                    {},
+                )
+            })
+        })
+
+        it('should fallback to `modern` as default badge type', () => {
+            const madeUpPriority = 'non-existing'
+            render(<labels.PriorityLabel priority={madeUpPriority} />)
+            expect(Badge).toHaveBeenCalledWith(
+                expect.objectContaining({ type: 'modern' }),
+                {},
+            )
+        })
+    })
 })

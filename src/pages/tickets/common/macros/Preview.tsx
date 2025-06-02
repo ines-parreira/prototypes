@@ -23,6 +23,7 @@ import TicketTag from 'pages/common/components/TicketTag'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import {
     AgentLabel,
+    PriorityLabel,
     RecipientsLabel,
     StatusLabel,
     TeamLabel,
@@ -162,6 +163,23 @@ class Preview extends Component<Props> {
                 <strong className="text-muted mr-2">Set status:</strong>
                 <StatusLabel
                     status={setStatusAction.arguments.status as string}
+                />
+            </div>
+        )
+    }
+
+    renderSetPriority(
+        isTicketAllowPriorityUsageEnabled: boolean,
+        setPriorityAction?: MacroAction,
+    ) {
+        if (!setPriorityAction || !isTicketAllowPriorityUsageEnabled)
+            return null
+
+        return (
+            <div className={css.macroData}>
+                <strong className="text-muted mr-2">Set priority:</strong>
+                <PriorityLabel
+                    priority={setPriorityAction.arguments.priority as string}
                 />
             </div>
         )
@@ -374,7 +392,10 @@ class Preview extends Component<Props> {
         if (!actions?.length) return null
 
         const isMacroForwardByEmailEnabled =
-            flags[FeatureFlagKey.MacroForwardByEmail]
+            !!flags[FeatureFlagKey.MacroForwardByEmail]
+
+        const isTicketAllowPriorityUsageEnabled =
+            !!flags[FeatureFlagKey.TicketAllowPriorityUsage]
 
         const findAction = (actionName: string) =>
             actions.find((action) => action?.name === actionName)
@@ -382,6 +403,10 @@ class Preview extends Component<Props> {
         return (
             <div className={classnames(css.component, className)}>
                 {this.renderSetStatus(findAction(MacroActionName.SetStatus))}
+                {this.renderSetPriority(
+                    isTicketAllowPriorityUsageEnabled,
+                    findAction(MacroActionName.SetPriority),
+                )}
                 {this.renderSnoozeTicket(
                     findAction(MacroActionName.SnoozeTicket),
                 )}

@@ -144,6 +144,7 @@ export enum FeatureFlagKey {
     SimplifyAiAgentFeedbackCollection = 'linear.project_simplify-ai-agent-feedback-collection.enable_feedback_collection',
     StandaloneConvAiOverviewPageResourceSection = 'standalone-conv-ai_overview-page-resource-section',
     SwitchToShopifyThemeAppExtension = 'switch-to-shopify-theme-app-extension',
+    TicketAllowPriorityUsage = 'ticket-allow-priority-usage',
     TicketDemoSuggestion = 'ticket-demo-suggestion',
     TimelineTicketModal = 'timeline-ticket-modal',
     VoiceCallbackEnabled1 = 'voice-callback-enabled',

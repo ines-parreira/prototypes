@@ -293,6 +293,15 @@ export const forwardByEmailAction: MacroAction = {
     },
 }
 
+export const setPriorityAction: MacroAction = {
+    name: MacroActionName.SetPriority,
+    type: MacroActionType.User,
+    title: 'Set priority',
+    arguments: {
+        priority: 'normal',
+    },
+}
+
 export const macroFixture = {
     category: null,
     usage: 0,

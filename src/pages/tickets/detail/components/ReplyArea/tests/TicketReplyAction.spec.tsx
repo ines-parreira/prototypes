@@ -1,12 +1,11 @@
-import React from 'react'
-
-import { createEvent, fireEvent, render } from '@testing-library/react'
+import { createEvent, fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { FORM_CONTENT_TYPE } from 'config'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { integrationsState } from 'fixtures/integrations'
 import { MacroActionName } from 'models/macroAction/types'
 
@@ -26,6 +25,9 @@ describe('<TicketReplyAction />', () => {
         ticketId: 1,
         updateActionArgsOnApplied: jest.fn(),
         appNode: null,
+        flags: {
+            [FeatureFlagKey.TicketAllowPriorityUsage]: true,
+        },
     }
 
     it('should call updateActionArgsOnApplied when the internal note is updated', () => {
@@ -51,7 +53,7 @@ describe('<TicketReplyAction />', () => {
     })
 
     it('should call updateActionArgsOnApplied when the dict argument is updated', () => {
-        const { getByDisplayValue } = render(
+        render(
             <Provider
                 store={mockStore({ integrations: fromJS(integrationsState) })}
             >
@@ -74,7 +76,9 @@ describe('<TicketReplyAction />', () => {
             </Provider>,
         )
 
-        fireEvent.change(getByDisplayValue(/bar/), { target: { value: 'baz' } })
+        fireEvent.change(screen.getByDisplayValue(/bar/), {
+            target: { value: 'baz' },
+        })
 
         expect(minProps.updateActionArgsOnApplied).toHaveBeenNthCalledWith(
             1,
@@ -94,7 +98,7 @@ describe('<TicketReplyAction />', () => {
     })
 
     it('should call updateActionArgsOnApplied when the argument is updated', () => {
-        const { queryAllByRole } = render(
+        render(
             <Provider
                 store={mockStore({ integrations: fromJS(integrationsState) })}
             >
@@ -111,7 +115,7 @@ describe('<TicketReplyAction />', () => {
             </Provider>,
         )
 
-        fireEvent.click(queryAllByRole('checkbox')[0])
+        fireEvent.click(screen.queryAllByRole('checkbox')[0])
 
         expect(minProps.updateActionArgsOnApplied).toHaveBeenNthCalledWith(
             1,
@@ -122,5 +126,46 @@ describe('<TicketReplyAction />', () => {
             }),
             1,
         )
+    })
+
+    it('should render priority-select when action has priority-select input type', () => {
+        const priority = 'high'
+        render(
+            <Provider
+                store={mockStore({ integrations: fromJS(integrationsState) })}
+            >
+                <TicketReplyActionContainer
+                    {...minProps}
+                    action={fromJS({
+                        name: MacroActionName.SetPriority,
+                        arguments: {
+                            priority,
+                        },
+                    })}
+                />
+            </Provider>,
+        )
+
+        expect(screen.getByText(new RegExp(priority, 'i'))).toBeInTheDocument()
+    })
+
+    it('should not display priority-select when feature flag is disabled', () => {
+        const { container } = render(
+            <Provider
+                store={mockStore({ integrations: fromJS(integrationsState) })}
+            >
+                <TicketReplyActionContainer
+                    {...minProps}
+                    flags={{
+                        [FeatureFlagKey.TicketAllowPriorityUsage]: false,
+                    }}
+                    action={fromJS({
+                        name: MacroActionName.SetPriority,
+                    })}
+                />
+            </Provider>,
+        )
+
+        expect(container.firstChild).toBeNull()
     })
 })

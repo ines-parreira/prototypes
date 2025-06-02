@@ -12,6 +12,7 @@ import { integrationsState } from 'fixtures/integrations'
 import {
     addInternalNoteAction,
     setOpenStatusAction,
+    setPriorityAction,
     setSubjectAction,
     setTextAction,
     snoozeTicketAction,
@@ -107,6 +108,7 @@ const setTeamAssignee = {
 const flags = {
     [FeatureFlagKey.MacroResponseTextCcBcc]: true,
     [FeatureFlagKey.MacroForwardByEmail]: true,
+    [FeatureFlagKey.TicketAllowPriorityUsage]: true,
 }
 
 mockFlags(flags)
@@ -145,12 +147,19 @@ describe('MacroEdit component', () => {
     } as any as ComponentProps<typeof MacroEdit>
 
     it('should render the macro edit form', () => {
-        const { container } = render(
+        render(
             <Provider store={mockStore({ integrations: fromJS(state) })}>
                 <MacroEdit {...defaultProps} />
             </Provider>,
         )
-        expect(container.firstChild).toMatchSnapshot()
+
+        expect(screen.getByDisplayValue(defaultProps.name)).toBeInTheDocument()
+        expect(
+            screen.getByText(new RegExp('Add action', 'i')),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(new RegExp('Add shopify action', 'i')),
+        ).toBeInTheDocument()
     })
 
     it('should change name input value', () => {
@@ -163,6 +172,7 @@ describe('MacroEdit component', () => {
         fireEvent.change(screen.getByDisplayValue('Pizza Capricciosa'), {
             target: { value: 'Pizza 4 formaggi' },
         })
+
         expect(defaultProps.setName).toHaveBeenCalledWith('Pizza 4 formaggi')
     })
 
@@ -323,6 +333,7 @@ describe('MacroEdit component', () => {
         fireEvent.change(screen.getByDisplayValue('http action title'), {
             target: { value: 'new title' },
         })
+
         expect(defaultProps.setActions).toHaveBeenCalledWith(
             fromJS([
                 {
@@ -349,6 +360,7 @@ describe('MacroEdit component', () => {
         )
 
         fireEvent.click(screen.getByText('close'))
+
         expect(defaultProps.setActions).toHaveBeenCalledWith(fromJS([]))
     })
 
@@ -438,5 +450,18 @@ describe('MacroEdit component', () => {
         )
 
         expect(screen.getByText('Snooze for')).toBeInTheDocument()
+    })
+
+    it('should set priority action', () => {
+        render(
+            <Provider store={mockStore({ integrations: fromJS(state) })}>
+                <MacroEdit
+                    {...defaultProps}
+                    actions={fromJS([setPriorityAction])}
+                />
+            </Provider>,
+        )
+
+        expect(screen.getByText('Set priority')).toBeInTheDocument()
     })
 })

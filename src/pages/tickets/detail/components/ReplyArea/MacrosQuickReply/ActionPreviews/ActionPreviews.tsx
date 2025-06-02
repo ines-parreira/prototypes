@@ -32,6 +32,7 @@ type AvailableActions =
     | MacroActionName.ExcludeFromAutoMerge
     | MacroActionName.ExcludeFromCSAT
     | MacroActionName.SetCustomFieldValue
+    | MacroActionName.SetPriority
 
 const ACTION_COMPONENT_MAPPER: Record<
     AvailableActions,
@@ -49,6 +50,7 @@ const ACTION_COMPONENT_MAPPER: Record<
     [MacroActionName.ExcludeFromAutoMerge]: SimpleActionPreview,
     [MacroActionName.ExcludeFromCSAT]: SimpleActionPreview,
     [MacroActionName.SetCustomFieldValue]: SimpleActionPreview,
+    [MacroActionName.SetPriority]: SimpleActionPreview,
 }
 
 export const ActionPreviews = ({ actions, textPreviewMinWidth }: Props) => {

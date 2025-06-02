@@ -26,6 +26,13 @@ export const SimpleActionPreview = ({ action }: Props) => {
                         className={css.smallTag}
                     />
                 )
+            case MacroActionName.SetPriority:
+                return (
+                    <Label.PriorityLabel
+                        priority={args.priority!}
+                        className={css.smallTag}
+                    />
+                )
             case MacroActionName.SnoozeTicket:
                 return (
                     <Label.TimedeltaLabel
