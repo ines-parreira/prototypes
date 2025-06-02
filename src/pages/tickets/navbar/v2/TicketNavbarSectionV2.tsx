@@ -86,17 +86,19 @@ export function TicketNavbarSectionContainerV2({
             onDrop={handleDrop}
             shallow={false}
         >
-            <TicketNavbarDropTarget
-                accept={TicketNavbarElementType.View}
-                bottomIndicatorClassName={css.viewIntoSectionIndicator}
-                onDrop={handleDrop}
-                canDrop={(item) =>
-                    section.private
-                        ? views[item.id].visibility === ViewVisibility.Private
-                        : views[item.id].visibility !== ViewVisibility.Private
-                }
-            >
-                <Navigation.Section value={section.id}>
+            <Navigation.Section value={section.id}>
+                <TicketNavbarDropTarget
+                    accept={TicketNavbarElementType.View}
+                    bottomIndicatorClassName={css.viewIntoSectionIndicator}
+                    onDrop={handleDrop}
+                    canDrop={(item) =>
+                        section.private
+                            ? views[item.id].visibility ===
+                              ViewVisibility.Private
+                            : views[item.id].visibility !==
+                              ViewVisibility.Private
+                    }
+                >
                     <div
                         ref={nameRef}
                         className={css.navbarSectionTriggerContainer}
@@ -164,20 +166,20 @@ export function TicketNavbarSectionContainerV2({
                             </Dropdown>
                         )}
                     </div>
-                    <Navigation.SectionContent
-                        className={css.navBarSectionContentContainer}
-                    >
-                        {children.map((view) => (
-                            <TicketNavbarViewV2
-                                key={view.id}
-                                view={view}
-                                viewCount={viewsCount[view.id]}
-                                isNested={true}
-                            />
-                        ))}
-                    </Navigation.SectionContent>
-                </Navigation.Section>
-            </TicketNavbarDropTarget>
+                </TicketNavbarDropTarget>
+                <Navigation.SectionContent
+                    className={css.navBarSectionContentContainer}
+                >
+                    {children.map((view) => (
+                        <TicketNavbarViewV2
+                            key={view.id}
+                            view={view}
+                            viewCount={viewsCount[view.id]}
+                            isNested={true}
+                        />
+                    ))}
+                </Navigation.SectionContent>
+            </Navigation.Section>
         </TicketNavbarDropTarget>
     )
 }

@@ -71,33 +71,44 @@ const TicketNavbarViewLink = (
     )
 
     return (
-        <Navigation.SectionItem
-            {...(canduId ? { 'data-candu-id': canduId } : {})}
-            as={Link}
+        <div
             id={ticketNavbarId}
             ref={ref}
-            displayType={isNested ? 'indent' : 'default'}
-            isSelected={isActiveView}
-            onClick={() => dispatch(activeViewIdSet(view.id))}
-            className={classnames(css.viewLink, className)}
-            to={linkTo}
+            {...(canduId ? { 'data-candu-id': canduId } : {})}
         >
-            <span className={navbarCss['item-name']}>
-                {icon && (
-                    <i className={classnames('material-icons', navbarCss.icon)}>
-                        {icon}
-                    </i>
-                )}
-                <ViewName viewName={view.name} emoji={view.decoration?.emoji} />
-            </span>
-            <span className={navbarCss['item-count']}>
-                <ViewCount
-                    viewId={view.id}
-                    viewCount={viewCount}
-                    isDeactivated={!!view.deactivated_datetime}
-                />
-            </span>
-        </Navigation.SectionItem>
+            <Navigation.SectionItem
+                as={Link}
+                displayType={isNested ? 'indent' : 'default'}
+                isSelected={isActiveView}
+                onClick={() => dispatch(activeViewIdSet(view.id))}
+                className={classnames(css.viewLink, className)}
+                to={linkTo}
+            >
+                <span className={navbarCss['item-name']}>
+                    {icon && (
+                        <i
+                            className={classnames(
+                                'material-icons',
+                                navbarCss.icon,
+                            )}
+                        >
+                            {icon}
+                        </i>
+                    )}
+                    <ViewName
+                        viewName={view.name}
+                        emoji={view.decoration?.emoji}
+                    />
+                </span>
+                <span className={navbarCss['item-count']}>
+                    <ViewCount
+                        viewId={view.id}
+                        viewCount={viewCount}
+                        isDeactivated={!!view.deactivated_datetime}
+                    />
+                </span>
+            </Navigation.SectionItem>
+        </div>
     )
 }
 

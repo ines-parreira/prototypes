@@ -1,12 +1,15 @@
 import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router'
 import { StaticRouter } from 'react-router-dom'
 
 import { useFlag } from 'core/flags'
+import { view } from 'fixtures/views'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useViewId from 'hooks/useViewId'
 import type { View } from 'models/view/types'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
-import { assumeMock } from 'utils/testing'
+import { assumeMock, mockStore } from 'utils/testing'
 
 import TicketNavbarViewLink from '../v2/TicketNavbarViewLinkV2'
 
@@ -22,6 +25,12 @@ const useViewIdMock = assumeMock(useViewId)
 jest.mock('split-ticket-view-toggle', () => ({ useSplitTicketView: jest.fn() }))
 const useSplitTicketViewMock = assumeMock(useSplitTicketView)
 type SplitTicketViewContext = ReturnType<typeof useSplitTicketView>
+
+const minProps = {
+    view,
+    viewCount: 5,
+    isNested: false,
+}
 
 describe('TicketNavbarViewLinkV2', () => {
     let dispatch: jest.Mock
@@ -103,5 +112,33 @@ describe('TicketNavbarViewLinkV2', () => {
             'data-candu-id',
             expectedDataCanduId,
         )
+    })
+
+    it('should have the correct component structure', () => {
+        const { container } = render(
+            <Provider
+                store={mockStore({
+                    entities: {},
+                    currentUser: {},
+                })}
+            >
+                <MemoryRouter initialEntries={['/']}>
+                    <TicketNavbarViewLink {...minProps} />
+                </MemoryRouter>
+            </Provider>,
+        )
+
+        // Verify the outer div structure for DnD functionality
+        const outerDiv = container.firstChild as HTMLElement
+        expect(outerDiv.tagName).toBe('DIV')
+        expect(outerDiv).toHaveAttribute(
+            'id',
+            `ticket-navbar-view-${minProps.view.id}`,
+        )
+
+        // Verify the Navigation.SectionItem is wrapped inside the DnD div
+        const sectionItem = outerDiv.firstChild as HTMLElement
+        expect(sectionItem).toHaveClass('item viewLink')
+        expect(sectionItem.tagName).toBe('A') // Navigation.SectionItem renders as a Link (anchor)
     })
 })

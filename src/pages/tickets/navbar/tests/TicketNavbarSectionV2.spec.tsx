@@ -17,6 +17,20 @@ import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import { TicketNavbarSectionContainerV2 } from '../v2/TicketNavbarSectionV2'
 
+// Mock TicketNavbarDropTarget for this test
+jest.mock('../TicketNavbarDropTarget', () => ({
+    __esModule: true,
+    default: ({ children, className, ...props }: any) => (
+        <div
+            className={className}
+            data-testid="ticket-navbar-drop-target"
+            {...props}
+        >
+            {children}
+        </div>
+    ),
+}))
+
 const minProps = {
     currentUser: fromJS(user),
     notify: jest.fn(),
@@ -112,5 +126,55 @@ describe('<TicketNavbarSectionV2/>', () => {
             'data-candu-id',
             'ticket-navbar-ai-agent-section-link-ai-agent',
         )
+    })
+
+    it('should have the correct component structure', () => {
+        const { container } = render(
+            <DndProvider backend={HTML5Backend}>
+                <Provider
+                    store={mockStore({
+                        entities: fromJS({}),
+                        currentUser: fromJS(user),
+                    })}
+                >
+                    <MemoryRouter initialEntries={['/']}>
+                        <SplitTicketViewProvider>
+                            <Navigation.Root>
+                                <TicketNavbarSectionContainerV2 {...minProps} />
+                            </Navigation.Root>
+                        </SplitTicketViewProvider>
+                    </MemoryRouter>
+                </Provider>
+            </DndProvider>,
+        )
+
+        // Verify the outer DnD target structure
+        const outerDndTarget = container.firstChild as HTMLElement
+        expect(outerDndTarget).toHaveClass('root')
+        expect(outerDndTarget.firstChild).toHaveAttribute(
+            'data-testid',
+            'ticket-navbar-drop-target',
+        )
+
+        // Verify the Navigation.Section structure
+        const navigationSection = outerDndTarget.firstChild as HTMLElement
+        expect(navigationSection).toHaveClass('section section')
+
+        // Verify the inner DnD target for views
+        const innerDndTarget = navigationSection.firstChild as HTMLElement
+        expect(innerDndTarget).toHaveAttribute(
+            'data-testid',
+            'ticket-navbar-drop-target',
+        )
+        expect(innerDndTarget).toHaveAttribute('accept', 'view')
+        expect(innerDndTarget).toHaveAttribute(
+            'bottomindicatorclassname',
+            'viewIntoSectionIndicator',
+        )
+
+        // Verify the section trigger container
+        const triggerContainer = innerDndTarget.firstChild as HTMLElement
+        expect(triggerContainer).toHaveClass('navbarSectionTriggerContainer')
+        expect(triggerContainer).toHaveAttribute('draggable', 'true')
     })
 })

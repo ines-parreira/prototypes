@@ -19,6 +19,8 @@ ignore:
   - src/pages/settings/helpCenter/utils/algolia.ts
   - src/pages/common/hooks/useAutoScrollOnDragging.ts
   - src/pages/tickets/navbar/TicketNavbarV2.tsx
+  - src/pages/tickets/navbar/v2/TicketNavbarSectionV2.tsx
+  - src/pages/tickets/navbar/v2/TicketNavbarViewLinkV2.tsx
   - src/routes/Routes.tsx
 
 coverage:
