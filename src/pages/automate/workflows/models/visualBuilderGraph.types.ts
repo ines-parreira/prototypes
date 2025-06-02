@@ -679,10 +679,12 @@ export type VisualBuilderGraphAppApp = {
     errors?: {
         api_key?: string
         refresh_token?: string
+        trackstar_connection?: string
     } | null
     touched?: {
         api_key?: boolean
         refresh_token?: boolean
+        trackstar_connection?: boolean
     } | null
 }
 
@@ -752,10 +754,12 @@ export type VisualBuilderGraph<
         name?: string
         nodes?: string
         category?: string
+        trackstar_connection_id?: string
     } | null
     touched?: {
         name?: boolean
         nodes?: boolean
         category?: boolean
+        trackstar_connection_id?: boolean
     } | null
 }

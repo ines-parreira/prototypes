@@ -3,6 +3,7 @@ import { useCallback } from 'react'
 import { produce } from 'immer'
 import _set from 'lodash/set'
 
+import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import { VisualBuilderContextType } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     getConditionsNodeErrors,
@@ -13,10 +14,15 @@ import {
 import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
+import { useStoreTrackstarContext } from '../providers/StoreTrackstarContext'
+
 const useValidateActionGraph = (
     getVariableListForNode: VisualBuilderContextType['getVariableListForNode'],
     actions: Pick<WorkflowConfiguration, 'id' | 'name'>[],
 ) => {
+    const { actionsApps } = useApps()
+    const { connections } = useStoreTrackstarContext()
+
     return useCallback(
         (graph: VisualBuilderGraph) => {
             return produce(graph, (draft) => {
@@ -54,7 +60,19 @@ const useValidateActionGraph = (
 
                     switch (app.type) {
                         case 'app':
-                            app.errors = getGraphAppAppErrors(app)
+                            const actionApp = actionsApps.find(
+                                (actionApp) => actionApp.id === app.app_id,
+                            )
+
+                            app.errors = getGraphAppAppErrors(
+                                app,
+                                actionApp?.auth_type === 'trackstar'
+                                    ? connections[
+                                          actionApp.auth_settings
+                                              .integration_name
+                                      ]
+                                    : undefined,
+                            )
                             break
                     }
                 })
@@ -99,7 +117,7 @@ const useValidateActionGraph = (
                 })
             })
         },
-        [getVariableListForNode, actions],
+        [getVariableListForNode, actions, connections, actionsApps],
     )
 }
 

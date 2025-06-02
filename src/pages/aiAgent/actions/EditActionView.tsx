@@ -43,7 +43,6 @@ import useTouchActionGraph from './hooks/useTouchActionGraph'
 import useUpsertAction from './hooks/useUpsertAction'
 import useValidateActionGraph from './hooks/useValidateActionGraph'
 import StoreAppsProvider from './providers/StoreAppsProvider'
-import StoreTrackstarProvider from './providers/StoreTrackstarProvider'
 import { StoreWorkflowsConfiguration } from './types'
 
 import css from './CreateActionView.less'
@@ -206,25 +205,23 @@ const EditActionView = ({ configuration }: Props) => {
 
     if (isEditingSteps) {
         return (
-            <StoreTrackstarProvider storeName={shopName} storeType={shopType}>
-                <StoreAppsProvider storeName={shopName} storeType={shopType}>
-                    <VisualBuilderContext.Provider
-                        value={visualBuilderContextValue}
-                    >
-                        <ActionsPlatformTemplateVisualBuilderView
-                            visualBuilderGraph={visualBuilderGraph}
-                            handleValidate={handleValidate}
-                            handleTouch={handleTouch}
-                            onExit={() => {
-                                setIsEditingSteps(false)
-                            }}
-                            onSave={() => {
-                                setVisualBuilderGraph(visualBuilderGraphDirty)
-                            }}
-                        />
-                    </VisualBuilderContext.Provider>
-                </StoreAppsProvider>
-            </StoreTrackstarProvider>
+            <StoreAppsProvider storeName={shopName} storeType={shopType}>
+                <VisualBuilderContext.Provider
+                    value={visualBuilderContextValue}
+                >
+                    <ActionsPlatformTemplateVisualBuilderView
+                        visualBuilderGraph={visualBuilderGraph}
+                        handleValidate={handleValidate}
+                        handleTouch={handleTouch}
+                        onExit={() => {
+                            setIsEditingSteps(false)
+                        }}
+                        onSave={() => {
+                            setVisualBuilderGraph(visualBuilderGraphDirty)
+                        }}
+                    />
+                </VisualBuilderContext.Provider>
+            </StoreAppsProvider>
         )
     }
 
@@ -260,24 +257,17 @@ const EditActionView = ({ configuration }: Props) => {
                     </Button>
                 </div>
                 <div className={css.form}>
-                    <StoreTrackstarProvider
-                        storeName={shopName}
-                        storeType={shopType}
+                    <VisualBuilderContext.Provider
+                        value={visualBuilderContextValue}
                     >
-                        <VisualBuilderContext.Provider
-                            value={visualBuilderContextValue}
-                        >
-                            <ActionFormView
-                                onEditSteps={() => {
-                                    setIsEditingSteps(true)
-                                    setVisualBuilderGraph(
-                                        visualBuilderGraphDirty,
-                                    )
-                                }}
-                                steps={steps}
-                            />
-                        </VisualBuilderContext.Provider>
-                    </StoreTrackstarProvider>
+                        <ActionFormView
+                            onEditSteps={() => {
+                                setIsEditingSteps(true)
+                                setVisualBuilderGraph(visualBuilderGraphDirty)
+                            }}
+                            steps={steps}
+                        />
+                    </VisualBuilderContext.Provider>
                 </div>
                 <div className={css.actions}>
                     <Button

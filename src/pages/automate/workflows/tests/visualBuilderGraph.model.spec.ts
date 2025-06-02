@@ -1907,6 +1907,12 @@ describe('touched', () => {
         })
     })
 
+    it('should touch Trackstar graph app app', () => {
+        expect(getGraphAppAppTouched('trackstar')).toEqual({
+            trackstar_connection: true,
+        })
+    })
+
     it('should touch LLM prompt trigger node', () => {
         expect(
             getLLMPromptTriggerNodeTouched({
@@ -2230,6 +2236,19 @@ describe('errors', () => {
                 }),
             ).toEqual({
                 refresh_token: 'Refresh token is required',
+            })
+        })
+        it('should validate Trackstar graph app app', () => {
+            expect(
+                getGraphAppAppErrors({
+                    app_id: 'someid',
+                    type: 'app',
+                    touched: {
+                        trackstar_connection: true,
+                    },
+                }),
+            ).toEqual({
+                trackstar_connection: 'Trackstar connection is required',
             })
         })
     })

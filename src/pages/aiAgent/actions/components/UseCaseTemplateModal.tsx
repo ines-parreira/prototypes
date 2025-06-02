@@ -270,41 +270,9 @@ const UseCaseTemplateModal = ({ template, onClose }: Props) => {
                                                     steps,
                                                 })
                                             } else {
-                                                let beforeNodeId = endNodeId
-
-                                                for (const templateNode of templateNodes.slice(
-                                                    index,
-                                                )) {
-                                                    const node =
-                                                        graph.nodes.find(
-                                                            (node) => {
-                                                                return (
-                                                                    node.type ===
-                                                                        'reusable_llm_prompt_call' &&
-                                                                    node.data
-                                                                        .configuration_id ===
-                                                                        templateNode
-                                                                            .data
-                                                                            .configuration_id &&
-                                                                    node.data
-                                                                        .configuration_internal_id ===
-                                                                        templateNode
-                                                                            .data
-                                                                            .configuration_internal_id
-                                                                )
-                                                            },
-                                                        )
-
-                                                    if (node) {
-                                                        beforeNodeId = node.id
-
-                                                        break
-                                                    }
-                                                }
-
                                                 dispatch({
                                                     type: 'INSERT_REUSABLE_LLM_PROMPT_CALL_NODE',
-                                                    beforeNodeId,
+                                                    beforeNodeId: endNodeId,
                                                     configurationId: step.id,
                                                     configurationInternalId:
                                                         step.internal_id,

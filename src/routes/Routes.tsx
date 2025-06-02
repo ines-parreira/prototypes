@@ -26,7 +26,7 @@ import { useFlag } from 'core/flags'
 import ActionEventsViewContainer from 'pages/aiAgent/actions/ActionEventsViewContainer'
 import ActionsTemplatesViewContainer from 'pages/aiAgent/actions/ActionsTemplatesViewContainer'
 import ActionsViewContainer from 'pages/aiAgent/actions/ActionsViewContainer'
-import CreateActionView from 'pages/aiAgent/actions/CreateActionView'
+import CreateActionViewContainer from 'pages/aiAgent/actions/CreateActionViewContainer'
 import EditActionViewContainer from 'pages/aiAgent/actions/EditActionViewContainer'
 import { AiAgentAnalytics } from 'pages/aiAgent/AiAgentAnalytics'
 import AiAgentConfigurationContainer from 'pages/aiAgent/AiAgentConfigurationContainer'
@@ -513,7 +513,7 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                         <Route
                             path={`${path}/actions/new`}
                             exact
-                            component={CreateActionView}
+                            component={CreateActionViewContainer}
                         />
                         <Route
                             path={`${path}/actions/edit/:id`}

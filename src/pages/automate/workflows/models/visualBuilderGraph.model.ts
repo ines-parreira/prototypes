@@ -1707,12 +1707,15 @@ export function getGraphAppAppTouched(
                 refresh_token: true,
             }
         case 'trackstar':
-            return {}
+            return {
+                trackstar_connection: true,
+            }
     }
 }
 
 export function getGraphAppAppErrors(
     app: VisualBuilderGraphAppApp,
+    trackstarConnection?: TrackstarConnection,
 ): VisualBuilderGraphAppApp['errors'] {
     let errors: VisualBuilderGraphAppApp['errors'] = null
 
@@ -1725,6 +1728,14 @@ export function getGraphAppAppErrors(
             errors,
             'refresh_token',
             'Refresh token is required',
+        )
+    }
+
+    if (app.touched?.trackstar_connection && !trackstarConnection) {
+        errors = mergeErrors(
+            errors,
+            'trackstar_connection',
+            'Trackstar connection is required',
         )
     }
 

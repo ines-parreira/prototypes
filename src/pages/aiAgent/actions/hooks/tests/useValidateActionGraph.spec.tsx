@@ -1,15 +1,80 @@
+import { QueryClientProvider } from '@tanstack/react-query'
+
+import { IntegrationType } from 'models/integration/constants'
+import { useListTrackstarConnections } from 'models/workflows/queries'
+import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderHook } from 'utils/testing/renderHook'
 
 import useValidateActionGraph from '../useValidateActionGraph'
 
+jest.mock('models/workflows/queries')
+jest.mock('pages/automate/actionsPlatform/hooks/useApps')
+
+const queryClient = mockQueryClient()
+const mockUseApps = jest.mocked(useApps)
+const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
+
 describe('useValidateActionGraph()', () => {
+    beforeEach(() => {
+        mockUseListTrackstarConnections.mockReturnValue({
+            data: { sandbox: { integration_name: 'sandbox', error: true } },
+            isLoading: false,
+        } as unknown as ReturnType<typeof useListTrackstarConnections>)
+        mockUseApps.mockReturnValue({
+            apps: [
+                {
+                    icon: '/assets/img/integrations/someid.png',
+                    id: 'someid',
+                    name: 'Some App',
+                    type: IntegrationType.App,
+                },
+                {
+                    icon: '/assets/img/integrations/recharge.png',
+                    id: 'recharge',
+                    name: 'Recharge',
+                    type: IntegrationType.Recharge,
+                },
+                {
+                    icon: '/assets/img/integrations/shopify.png',
+                    id: 'shopify',
+                    name: 'Shopify',
+                    type: IntegrationType.Shopify,
+                },
+                {
+                    icon: '/assets/img/integrations/sandbox.png',
+                    id: 'sandbox',
+                    name: 'Sandbox',
+                    type: IntegrationType.App,
+                },
+            ],
+            isLoading: false,
+            actionsApps: [
+                {
+                    id: 'sandbox',
+                    auth_type: 'trackstar',
+                    auth_settings: {
+                        integration_name: 'sandbox',
+                    },
+                },
+            ],
+        })
+    })
+
     it('should validate action graph', () => {
-        const { result } = renderHook(() =>
-            useValidateActionGraph(() => [], []),
+        const { result } = renderHook(
+            () => useValidateActionGraph(() => [], []),
+            {
+                wrapper: ({ children }) => (
+                    <QueryClientProvider client={queryClient}>
+                        {children}
+                    </QueryClientProvider>
+                ),
+            },
         )
 
         expect(
