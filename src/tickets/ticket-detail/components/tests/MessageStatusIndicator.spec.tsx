@@ -1,5 +1,7 @@
 import { render } from '@testing-library/react'
 
+import { TicketMessage } from '@gorgias/helpdesk-types'
+
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { message } from 'models/ticket/tests/mocks'
 
@@ -9,6 +11,7 @@ import MessageStatusIndicator, {
 } from '../MessageStatusIndicator'
 
 describe('getMessageStatus', () => {
+    const castMessage = message as TicketMessage
     it.each([
         {
             description: 'with sent_datetime',
@@ -58,11 +61,11 @@ describe('getMessageStatus', () => {
         'should return Failed if the message has a failed_datetime ($description)',
         ({ sent }) => {
             const failedMessage = {
-                ...message,
+                ...castMessage,
                 sent_datetime: sent ? new Date().toISOString() : undefined,
                 opened_datetime: null,
                 failed_datetime: new Date().toISOString(),
-            }
+            } as TicketMessage
 
             expect(getMessageStatus(failedMessage)).toBe(MessageStatus.Failed)
         },
@@ -110,7 +113,7 @@ describe('MessageStatusIndicator', () => {
             sent_datetime: new Date().toISOString(),
             opened_datetime: null,
             failed_datetime: null,
-        }
+        } as TicketMessage
 
         const { container } = render(
             <MessageStatusIndicator message={sentMessage} />,
@@ -126,7 +129,7 @@ describe('MessageStatusIndicator', () => {
             ...message,
             from_agent: true,
             id: undefined,
-        }
+        } as unknown as TicketMessage
 
         const { container } = render(
             <MessageStatusIndicator message={transientMessage} />,
@@ -145,7 +148,7 @@ describe('MessageStatusIndicator', () => {
             ...message,
             from_agent: true,
             id: undefined,
-        }
+        } as unknown as TicketMessage
         const { container, rerender } = render(
             <MessageStatusIndicator message={transientMessage} />,
         )
@@ -175,7 +178,7 @@ describe('MessageStatusIndicator', () => {
             sent_datetime: new Date().toISOString(),
             opened_datetime: null,
             failed_datetime: null,
-        }
+        } as TicketMessage
 
         const { container } = render(
             <MessageStatusIndicator message={messageFromCustomer} />,
@@ -188,10 +191,10 @@ describe('MessageStatusIndicator', () => {
         const pendingMessage = {
             ...message,
             from_agent: true,
-            sent_datetime: undefined,
+            sent_datetime: null,
             opened_datetime: null,
             failed_datetime: null,
-        }
+        } as TicketMessage
 
         const { container } = render(
             <MessageStatusIndicator message={pendingMessage} />,
@@ -210,7 +213,7 @@ describe('MessageStatusIndicator', () => {
             source: {
                 type: TicketMessageSourceType.InternalNote,
             },
-        }
+        } as TicketMessage
 
         const { container } = render(
             <MessageStatusIndicator message={internalNoteMessage} />,

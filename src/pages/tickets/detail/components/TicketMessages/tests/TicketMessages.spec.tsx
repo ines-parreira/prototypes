@@ -49,14 +49,22 @@ jest.mock('pages/tickets/detail/components/TicketMessages/Message', () =>
     jest.fn(() => <p>Message</p>),
 )
 
+jest.mock('pages/tickets/detail/components/TicketMessages/Header', () => () => (
+    <p>Header</p>
+))
+
 jest.mock(
-    'pages/tickets/detail/components/TicketMessages/Header',
-    () => () => () => <p>Header</p>,
+    'pages/tickets/detail/components/TicketMessages/SourceDetailsHeader',
+    () => jest.fn(() => <p>SourceDetailsHeader</p>),
+)
+
+jest.mock('pages/tickets/detail/components/TicketMessages/Body', () =>
+    jest.fn(() => <p>Body</p>),
 )
 
 jest.mock(
     'pages/tickets/detail/components/TicketMessages/AIAgentBanner',
-    () => () => () => <p>AIAgentBanner</p>,
+    () => () => <p>AIAgentBanner</p>,
 )
 
 jest.mock(

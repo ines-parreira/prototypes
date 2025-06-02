@@ -21,6 +21,7 @@ type Props = {
     createdDatetime: string
     source: SourceType
     channel?: TicketChannel | string
+    containerRef?: React.RefObject<HTMLDivElement>
 }
 
 export default function Source({
@@ -29,6 +30,7 @@ export default function Source({
     isForwarded,
     source,
     channel,
+    containerRef,
 }: Props) {
     const channelIdentifier = source.type ?? channel
     const sourceChannel = isTicketMessageSourceType(channelIdentifier)
@@ -48,7 +50,12 @@ export default function Source({
                     variant="secondary"
                 />
             </span>
-            <Tooltip target={id} placement="bottom" autohide={false}>
+            <Tooltip
+                target={id}
+                placement="bottom"
+                autohide={false}
+                container={containerRef}
+            >
                 <div className={css.details}>
                     <ul>
                         <SourceAddressElement

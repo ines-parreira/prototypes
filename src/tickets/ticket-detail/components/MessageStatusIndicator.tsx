@@ -2,12 +2,16 @@ import { memo, useState } from 'react'
 
 import { v4 as uuidv4 } from 'uuid'
 
+import { TicketMessage } from '@gorgias/helpdesk-types'
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import { TicketMessage } from 'models/ticket/types'
+import {
+    SourceType,
+    TicketMessage as TicketMessage_DEPRECATED,
+} from 'models/ticket/types'
 import { isInternalNote } from 'tickets/common/utils'
 
-import css from './MessageStatusIndicator.style.less'
+import css from './MessageStatusIndicator.less'
 
 export enum MessageStatus {
     Transient = 'transient', // has been created within the web app but not yet on our backend
@@ -17,7 +21,9 @@ export enum MessageStatus {
     Opened = 'opened',
 }
 
-export const getMessageStatus = (message: TicketMessage): MessageStatus => {
+export const getMessageStatus = (
+    message: TicketMessage | TicketMessage_DEPRECATED,
+): MessageStatus => {
     if (!message.id) {
         return MessageStatus.Transient
     } else if (!!message.failed_datetime) {
@@ -57,7 +63,7 @@ type Props = {
     message: TicketMessage
 }
 
-function MessageStatusIndicator({ message }: Props) {
+export function MessageStatusIndicator({ message }: Props) {
     const [elementId] = useState(
         `message-status-indicator-id-${message.id ?? uuidv4()}`,
     )
@@ -68,7 +74,7 @@ function MessageStatusIndicator({ message }: Props) {
     if (
         !message.from_agent ||
         messageStatus === MessageStatus.Pending ||
-        isInternalNote(message.source?.type)
+        isInternalNote(message.source?.type as SourceType)
     ) {
         // for now we don't want to display anything for the `Pending` status
         // as there are many use cases for which messages could remain in this

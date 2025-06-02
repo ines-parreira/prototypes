@@ -1,3 +1,5 @@
+import { ReactNode } from 'react'
+
 import classnames from 'classnames'
 import classNamesBind from 'classnames/bind'
 import { fromJS, Map } from 'immutable'
@@ -8,7 +10,6 @@ import { isForwardedMessage } from 'tickets/common/utils'
 
 import Meta from './Meta'
 import Source from './Source'
-import SourceDetailsHeader from './SourceDetailsHeader'
 
 import css from './Header.less'
 
@@ -21,6 +22,8 @@ type Props = {
     isMessageHidden?: boolean
     isMessageDeleted?: boolean
     isMessageFromAIAgent?: boolean
+    sourceDetails?: ReactNode
+    containerRef?: React.RefObject<HTMLDivElement>
 }
 
 export default function Header({
@@ -30,6 +33,8 @@ export default function Header({
     isMessageHidden,
     isMessageDeleted,
     isMessageFromAIAgent = false,
+    sourceDetails = null,
+    containerRef,
 }: Props) {
     const sender = fromJS(message.sender || {}) as Map<any, any>
     const isForwarded = isForwardedMessage(message)
@@ -99,15 +104,12 @@ export default function Header({
                         createdDatetime={message.created_datetime}
                         channel={message.channel}
                         source={message.source}
+                        containerRef={containerRef}
                     />
                 )}
                 {metaContent}
             </div>
-            <SourceDetailsHeader
-                className={css.sourceDetails}
-                message={message}
-                isMessageDeleted={isMessageDeleted}
-            />
+            {sourceDetails}
         </div>
     )
 }

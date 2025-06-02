@@ -6,11 +6,13 @@ import {
     duplicatedHiddenFacebookMessage,
     message,
 } from 'models/ticket/tests/mocks'
+import { Source as SourceType } from 'models/ticket/types'
 import Meta from 'pages/tickets/detail/components/TicketMessages/Meta'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock } from 'utils/testing'
 
 import Header from '../Header'
+import Source from '../Source'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({} as RootState)
@@ -22,10 +24,10 @@ jest.mock(
         default: () => null,
     }),
 )
-jest.mock(
-    'pages/tickets/detail/components/TicketMessages/SourceDetailsHeader',
-    () => () => null,
+jest.mock('pages/tickets/detail/components/TicketMessages/Source', () =>
+    jest.fn(() => null),
 )
+
 const metaMock = assumeMock(Meta)
 
 describe('Header', () => {
@@ -123,5 +125,39 @@ describe('Header', () => {
         )
 
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should display the passed sourceDetail node', () => {
+        const { getByText } = render(
+            <Provider store={store}>
+                <Header
+                    id="some-header"
+                    message={message}
+                    sourceDetails={<div>SourceDetails</div>}
+                />
+            </Provider>,
+        )
+
+        expect(getByText('SourceDetails')).toBeInTheDocument()
+    })
+
+    it('should pass the containerRef to the Source component', () => {
+        const containerRef = { current: document.createElement('div') }
+        render(
+            <Provider store={store}>
+                <Header
+                    id="some-header"
+                    message={{
+                        ...message,
+                        source: { type: 'email' } as SourceType,
+                    }}
+                    containerRef={containerRef}
+                />
+            </Provider>,
+        )
+        expect(Source).toHaveBeenCalledWith(
+            expect.objectContaining({ containerRef }),
+            expect.any(Object),
+        )
     })
 })

@@ -2,12 +2,14 @@ import React, { ReactNode, useMemo, useState } from 'react'
 
 import classnames from 'classnames'
 
+import { TicketMessage } from '@gorgias/helpdesk-types'
+
 import useDebouncedValue from 'hooks/useDebouncedValue'
 import useMeasure from 'hooks/useMeasure'
-import { TicketMessage } from 'models/ticket/types'
+import { TicketMessage as TicketMessage_DEPRECATED } from 'models/ticket/types'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import MessageStatusIndicator from 'tickets/ticket-detail/components/MessageStatusIndicator'
 
-import MessageStatusIndicator from './MessageStatusIndicator'
 import SourceActionsHeader from './SourceActionsHeader'
 import SourceDetailsContext from './SourceDetailsContext'
 
@@ -19,7 +21,7 @@ type Props = {
     showMessageStatusIndicator?: boolean
     hideTimestamp?: boolean
     isMessageDeleted?: boolean
-    message: TicketMessage
+    message: TicketMessage_DEPRECATED | TicketMessage
     showIntents?: boolean
 }
 
@@ -53,7 +55,7 @@ export default function SourceDetailsHeader({
                 <SourceDetailsContext.Provider value={{ setFocus }}>
                     <SourceActionsHeader
                         showIntents={showIntents}
-                        message={message}
+                        message={message as TicketMessage_DEPRECATED}
                         collapseActions={collapseActions}
                         collapseIntents={collapseIntents}
                     />
@@ -64,13 +66,15 @@ export default function SourceDetailsHeader({
         return null
     }, [isMessageDeleted, message, debouncedWidth, showIntents])
 
+    const meta = message.meta as TicketMessage_DEPRECATED['meta']
+
     const infoWidget = useMemo(() => {
-        if (message?.meta?.is_duplicated) {
+        if (meta?.is_duplicated) {
             return (
                 <From label="go to" key="ref-widget">
                     <a
                         target="_blank"
-                        href={message.meta.private_reply!.original_ticket_id}
+                        href={meta.private_reply!.original_ticket_id}
                         rel="noopener noreferrer"
                     >
                         ticket
@@ -84,7 +88,7 @@ export default function SourceDetailsHeader({
                 className={classnames({ [css.hideTimestamp]: hideTimestamp })}
             />
         )
-    }, [message?.meta, message.created_datetime, hideTimestamp])
+    }, [meta, message.created_datetime, hideTimestamp])
 
     return (
         <div
@@ -95,7 +99,9 @@ export default function SourceDetailsHeader({
             <div className={classnames(css.content, contentClassName)}>
                 {actionHeader}
                 {showMessageStatusIndicator && (
-                    <MessageStatusIndicator message={message} />
+                    <MessageStatusIndicator
+                        message={message as TicketMessage}
+                    />
                 )}
                 {infoWidget}
             </div>

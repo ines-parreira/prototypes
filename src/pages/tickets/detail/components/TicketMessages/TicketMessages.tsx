@@ -20,6 +20,7 @@ import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents } from 'state/ticket/selectors'
 import { buildFirstTicketMessage } from 'state/ticket/utils'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
+import { getMessageStatus } from 'tickets/ticket-detail/components/MessageStatusIndicator'
 
 import AIAgentDraftMessage from '../AIAgentDraftMessage/AIAgentDraftMessage'
 import {
@@ -30,7 +31,6 @@ import {
 import { isTrialMessageFromAIAgent } from '../AIAgentFeedbackBar/utils'
 import Container from './Container'
 import Message from './Message'
-import { getMessageStatus } from './MessageStatusIndicator'
 
 type Props = {
     id: string

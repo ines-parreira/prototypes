@@ -14,6 +14,8 @@ import { MessageMetadataType, TicketMessage } from 'models/ticket/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 
 import Container from '../Container'
+import Header from '../Header'
+import SourceDetailsHeader from '../SourceDetailsHeader'
 
 const customer = fromJS({
     integrations: {
@@ -41,9 +43,14 @@ jest.mock('pages/tickets/detail/components/TicketMessages/Footer', () => () => (
     <div>Footer</div>
 ))
 
-jest.mock('pages/tickets/detail/components/TicketMessages/Header', () => () => (
-    <div>Header</div>
-))
+jest.mock('pages/tickets/detail/components/TicketMessages/Header', () =>
+    jest.fn(({ sourceDetails }) => <div>Header{sourceDetails}</div>),
+)
+
+jest.mock(
+    'pages/tickets/detail/components/TicketMessages/SourceDetailsHeader',
+    () => jest.fn(() => <div>SourceDetailsHeader</div>),
+)
 
 describe('Container', () => {
     const flags = { [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: false }
@@ -104,7 +111,7 @@ describe('Container', () => {
         expect(queryByText('Avatar')).not.toBeInTheDocument()
     })
 
-    it('should render container with isBodyHiglighted because it should be highlighted', () => {
+    it('should render container with isBodyHighlighted because it should be highlighted', () => {
         const { container } = render(
             <Container {...props} isBodyHighlighted={true} />,
         )
@@ -164,5 +171,23 @@ describe('Container', () => {
         )
 
         expect(getByText('Avatar')).toMatchSnapshot()
+    })
+
+    it('should call Header with the correct props', () => {
+        render(<Container {...props} />)
+
+        expect(Header).toHaveBeenCalledWith(
+            expect.objectContaining({
+                message: props.message,
+                sourceDetails: expect.any(Object),
+            }),
+            expect.any(Object),
+        )
+        expect(SourceDetailsHeader).toHaveBeenCalledWith(
+            expect.objectContaining({
+                message: props.message,
+            }),
+            expect.any(Object),
+        )
     })
 })

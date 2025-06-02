@@ -30,6 +30,9 @@ exports[`Container should render 1`] = `
   >
     <div>
       Header
+      <div>
+        SourceDetailsHeader
+      </div>
     </div>
     <div>
       Footer

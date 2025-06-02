@@ -4,16 +4,18 @@ import type { FailedFlag, TicketMessageElement } from '../../types'
 import { MessageBody } from '../MessageBody'
 import { MessageContent } from '../MessageContent'
 import { MessageError } from '../MessageError'
+import { MessageHeader } from '../MessageHeader'
 import { TicketMessage } from '../TicketMessage'
 
 jest.mock('../MessageContent', () => ({
     MessageContent: jest.fn(() => <div>MessageContent</div>),
 }))
-
 jest.mock('../MessageBody', () => ({
     MessageBody: jest.fn(({ children }) => <div>body {children}</div>),
 }))
-
+jest.mock('../MessageHeader', () => ({
+    MessageHeader: jest.fn(() => <div>MessageHeader</div>),
+}))
 jest.mock('../MessageError', () => ({
     MessageError: jest.fn(() => <div>MessageError</div>),
 }))
@@ -26,6 +28,72 @@ describe('TicketMessage', () => {
         datetime: '2024-01-13T14:08:53Z',
         type: 'message',
     } as TicketMessageElement
+
+    it('should set isFailed to true when the error flag is set', () => {
+        const error = { message: 'Test error', failedActions: [] }
+        const elementWithError = {
+            ...mockedElement,
+            flags: [['failed', error] as FailedFlag],
+        }
+        render(<TicketMessage element={elementWithError} />)
+
+        expect(MessageContent).toHaveBeenCalledWith(
+            expect.objectContaining({
+                isFailed: true,
+            }),
+            expect.anything(),
+        )
+
+        expect(MessageHeader).toHaveBeenCalledWith(
+            expect.objectContaining({
+                isFailed: true,
+            }),
+            expect.anything(),
+        )
+    })
+
+    it('should set isAI to true when flags include ai', () => {
+        render(<TicketMessage element={{ ...mockedElement, flags: ['ai'] }} />)
+
+        expect(MessageHeader).toHaveBeenCalledWith(
+            expect.objectContaining({
+                isAI: true,
+            }),
+            expect.anything(),
+        )
+
+        expect(MessageBody).toHaveBeenCalledWith(
+            expect.objectContaining({
+                isAI: true,
+            }),
+            expect.anything(),
+        )
+    })
+
+    describe('MessageHeader', () => {
+        it('should render the message header for non-minimal messages', () => {
+            render(<TicketMessage element={mockedElement} />)
+            expect(screen.getByText('MessageHeader')).toBeInTheDocument()
+            expect(MessageHeader).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message: mockedElement.data,
+                    isAI: false,
+                    isFailed: false,
+                    containerRef: expect.any(Object),
+                }),
+                expect.any(Object),
+            )
+        })
+
+        it('should not render the message header for minimal messages', () => {
+            render(
+                <TicketMessage
+                    element={{ ...mockedElement, flags: ['minimal'] }}
+                />,
+            )
+            expect(screen.queryByText('MessageHeader')).not.toBeInTheDocument()
+        })
+    })
 
     describe('MessageContent', () => {
         it('should call MessageContent with the correct props', () => {
@@ -40,24 +108,8 @@ describe('TicketMessage', () => {
             )
         })
 
-        it('should set isFailed to false when flags do not include failed', () => {
+        it('should set isFailed to false when flags do not include the error flag', () => {
             render(<TicketMessage element={{ ...mockedElement, flags: [] }} />)
-
-            expect(MessageContent).toHaveBeenCalledWith(
-                {
-                    message: mockedElement.data,
-                    isFailed: false,
-                },
-                expect.anything(),
-            )
-        })
-
-        it('should handle undefined flags', () => {
-            render(
-                <TicketMessage
-                    element={{ ...mockedElement, flags: undefined }}
-                />,
-            )
 
             expect(MessageContent).toHaveBeenCalledWith(
                 {

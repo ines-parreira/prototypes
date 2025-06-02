@@ -22,6 +22,7 @@ import AIAgentBanner from './AIAgentBanner'
 import AIAgentMessageEvents from './AIAgentMessageEvents'
 import Footer from './Footer'
 import Header from './Header'
+import SourceDetailsHeader from './SourceDetailsHeader'
 
 import css from './Container.less'
 
@@ -230,6 +231,13 @@ export class Container extends Component<Props> {
                                 isMessageHidden={isMessageHidden}
                                 isMessageDeleted={isMessageDeleted}
                                 isMessageFromAIAgent={isAIAgentMessage}
+                                sourceDetails={
+                                    <SourceDetailsHeader
+                                        className={css.sourceDetails}
+                                        message={message}
+                                        isMessageDeleted={isMessageDeleted}
+                                    />
+                                }
                             />
                             {!isAIAgentInternalNote && children}
                             {isAIAgentMessage &&
