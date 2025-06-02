@@ -88,8 +88,8 @@ export enum AiAgentBinaryFeedbackEnum {
 export const suggestedResourceValueSchema = z.object({
     resourceId: z.string(),
     resourceType: z.nativeEnum(AiAgentKnowledgeResourceTypeEnum),
-    resourceSetId: z.string().optional(),
-    resourceLocale: z.string().optional(),
+    resourceSetId: z.string().optional().nullable(),
+    resourceLocale: z.string().optional().nullable(),
 })
 
 export type SuggestedResourceValue = z.infer<

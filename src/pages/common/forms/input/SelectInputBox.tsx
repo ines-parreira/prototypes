@@ -36,6 +36,7 @@ type Props = {
     isDisabled?: boolean
     label?: string | string[] | null
     onToggle?: (nextValue: boolean) => void
+    onAffixClick?: () => void
     placeholder?: string
     prefix?: ReactNode
     suffix?: ReactNode
@@ -66,6 +67,7 @@ const SelectInputBox = (
         ['aria-controls']: ariaControls, // TODO: make aria-controls and aria-expanded required to comply with role="combobox" requirements https://github.com/evcohen/eslint-plugin-jsx-a11y/tree/master/docs/rules/role-has-required-aria-props.md
         ['aria-expanded']: ariaExpanded,
         ['aria-labelledby']: ariaLabelledBy,
+        onAffixClick,
         ...props
     }: Props,
     ref: ForwardedRef<HTMLDivElement>,
@@ -95,7 +97,8 @@ const SelectInputBox = (
 
     const handleAffixClick = useCallback(() => {
         inputElement.current?.focus()
-    }, [])
+        onAffixClick?.()
+    }, [onAffixClick])
 
     const handleFocus = useCallback(() => {
         if (isDisabledMemoized) {

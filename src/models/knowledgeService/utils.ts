@@ -6,7 +6,7 @@ import {
     Paths,
 } from 'rest_api/knowledge_service_api/client.generated'
 
-const generateUniqueId = (newData: Components.Schemas.FeedbackDto) => {
+export const generateUniqueId = (newData: Components.Schemas.FeedbackDto) => {
     let maxId = 0
     if (!newData.executions) return maxId
 
@@ -30,6 +30,7 @@ export const optimisticallyUpdateFeedback =
     (prevData?: Components.Schemas.FeedbackDto) => {
         if (!prevData) return prevData
         const newData = cloneDeep(prevData)
+
         for (const item of data.feedbackToUpsert) {
             if (!item) continue
 
@@ -104,10 +105,10 @@ export const optimisticallyUpdateFeedback =
                                         (f) => f.id !== feedback.id,
                                     )
                             }
-                            optimisticallyUpdatedFeedback = true
                         } else {
                             suggestedExecution.feedback.push(newFeedback)
                         }
+                        optimisticallyUpdatedFeedback = true
                     }
                     if (!optimisticallyUpdatedFeedback) {
                         newData.executions[0]?.feedback.push(newFeedback)

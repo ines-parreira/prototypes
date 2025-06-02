@@ -4,7 +4,8 @@ import cn from 'classnames'
 
 import { Badge, LoadingSpinner, Tooltip } from '@gorgias/merchant-ui-kit'
 
-import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
+import { DateAndTimeFormatting } from 'constants/datetime'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { useTimeout } from 'hooks/useTimeout'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
@@ -14,7 +15,7 @@ const STALE_TIMEOUT = 3000
 
 type AutoSaveBadgeProps = {
     state: AutoSaveState
-    updatedAt?: string
+    updatedAt?: Date
 }
 
 const AutoSaveBadge = ({ state, updatedAt }: AutoSaveBadgeProps) => {
@@ -22,7 +23,15 @@ const AutoSaveBadge = ({ state, updatedAt }: AutoSaveBadgeProps) => {
     const [isStaleSaved, setIsStaleSaved] = useState(false)
     const [setTimeout, clearTimeout] = useTimeout()
 
+    const datetimeFormat = useGetDateAndTimeFormat(
+        DateAndTimeFormatting.RelativeDateAndTime,
+    )
+
     useEffect(() => {
+        if (state === AutoSaveState.INITIAL && updatedAt) {
+            setIsStaleSaved(true)
+            return
+        }
         if (state === AutoSaveState.SAVED) {
             setIsStaleSaved(false)
             setTimeout(() => setIsStaleSaved(true), STALE_TIMEOUT)
@@ -30,14 +39,16 @@ const AutoSaveBadge = ({ state, updatedAt }: AutoSaveBadgeProps) => {
         }
 
         setIsStaleSaved(false)
-    }, [state, setTimeout, clearTimeout])
+    }, [state, setTimeout, clearTimeout, updatedAt])
 
-    if (state === AutoSaveState.INITIAL) {
+    if (state === AutoSaveState.INITIAL && !updatedAt) {
         return null
     }
 
     const showSaving = state === AutoSaveState.SAVING
-    const showSaved = state === AutoSaveState.SAVED
+    const showSaved =
+        state === AutoSaveState.SAVED ||
+        (updatedAt && state === AutoSaveState.INITIAL)
     const showSavedText = showSaved && !isStaleSaved
     const isTooltipEnabled = updatedAt && showSaved && isStaleSaved
 
@@ -63,11 +74,9 @@ const AutoSaveBadge = ({ state, updatedAt }: AutoSaveBadgeProps) => {
             {isTooltipEnabled && (
                 <Tooltip target={badgeRef}>
                     {`Last updated: ${formatDatetime(
-                        updatedAt,
-                        DateTimeFormatMapper[
-                            DateTimeFormatType
-                                .RELATIVE_DATE_AND_TIME_EN_US_AM_PM
-                        ],
+                        updatedAt.toISOString(),
+                        datetimeFormat,
+                        Intl.DateTimeFormat().resolvedOptions().timeZone,
                     )}`}
                 </Tooltip>
             )}

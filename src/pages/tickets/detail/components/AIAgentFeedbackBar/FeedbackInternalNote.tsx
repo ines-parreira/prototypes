@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 
 import { Label } from '@gorgias/merchant-ui-kit'
 
@@ -10,6 +10,7 @@ import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBa
 type FeedbackInternalNoteProps = {
     onChange: (value: string) => void
     value: string
+    lastUpdated?: string
     isMutationLoading?: boolean
 }
 
@@ -17,11 +18,10 @@ const FeedbackInternalNote = ({
     onChange,
     value,
     isMutationLoading,
+    lastUpdated,
 }: FeedbackInternalNoteProps) => {
-    const [lastUpdated, setLastUpdated] = useState(new Date().toLocaleString())
     const handleChange = useCallback(
         (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-            setLastUpdated(new Date().toLocaleString())
             onChange(e as unknown as string)
         },
         [onChange],
@@ -39,7 +39,7 @@ const FeedbackInternalNote = ({
                               ? AutoSaveState.SAVING
                               : AutoSaveState.SAVED
                     }
-                    updatedAt={lastUpdated}
+                    updatedAt={lastUpdated ? new Date(lastUpdated) : undefined}
                 />
             </Label>
             <div className={css.info}>

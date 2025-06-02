@@ -53,7 +53,9 @@ export const useFeedbackActions = ({
                     if (!action) return null
                     return {
                         resourceType: AiAgentKnowledgeResourceTypeEnum.ACTION,
-                        resourceId: action.id,
+                        resourceId: action.id.toString(),
+                        resourceSetId: null,
+                        resourceLocale: null,
                     }
                 }
                 case AiAgentKnowledgeResourceTypeEnum.GUIDANCE: {
@@ -93,6 +95,7 @@ export const useFeedbackActions = ({
                         resourceId: sourceItem.id.toString(),
                         resourceSetId:
                             storeConfiguration?.snippetHelpCenterId?.toString(),
+                        resourceLocale: null,
                     }
                 }
                 case AiAgentKnowledgeResourceTypeEnum.MACRO: {
@@ -103,6 +106,8 @@ export const useFeedbackActions = ({
                     return {
                         resourceType: AiAgentKnowledgeResourceTypeEnum.MACRO,
                         resourceId: macro.id?.toString(),
+                        resourceSetId: null,
+                        resourceLocale: null,
                     }
                 }
                 case AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET: {
@@ -115,7 +120,9 @@ export const useFeedbackActions = ({
                             AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
                         resourceId: file.id.toString(),
                         resourceSetId:
-                            storeConfiguration?.snippetHelpCenterId?.toString(),
+                            storeConfiguration?.snippetHelpCenterId?.toString() ??
+                            null,
+                        resourceLocale: null,
                     }
                 }
                 default:

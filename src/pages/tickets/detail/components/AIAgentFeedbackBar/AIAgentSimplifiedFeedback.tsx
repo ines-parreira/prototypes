@@ -1,11 +1,4 @@
-import {
-    Dispatch,
-    SetStateAction,
-    useCallback,
-    useEffect,
-    useRef,
-    useState,
-} from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { v4 as uuidv4 } from 'uuid'
 
@@ -39,17 +32,7 @@ import { getViewsState } from 'state/views/selectors'
 const AIAgentSimplifiedFeedback = () => {
     const [freeFormFeedback, setFreeFormFeedback] = useState('')
     const [isInitialLoad, setIsInitialLoad] = useState(true)
-    const [loadingMutations, _setLoadingMutations] = useState<string[]>()
-    const [lastUpdatedMutations, setLastUpdatedMutations] = useState<string>(
-        new Date().toDateString(),
-    )
-
-    const setLoadingMutations: Dispatch<
-        SetStateAction<string[] | undefined>
-    > = (value) => {
-        _setLoadingMutations(value)
-        setLastUpdatedMutations(new Date().toLocaleString())
-    }
+    const [loadingMutations, setLoadingMutations] = useState<string[]>()
 
     const viewsState = useAppSelector(getViewsState)
     const existingSections = useAppSelector(getSectionIdByName)
@@ -76,6 +59,26 @@ const AIAgentSimplifiedFeedback = () => {
         objectId: ticketId.toString(),
         objectType: 'TICKET',
     })
+
+    const lastUpdatedMutations = useMemo(() => {
+        const maxDate = feedback?.executions?.reduce((acc, execution) => {
+            return Math.max(
+                acc,
+                ...(execution.resources?.map((resource) =>
+                    resource.feedback?.updatedDatetime
+                        ? new Date(resource.feedback.updatedDatetime).getTime()
+                        : 0,
+                ) ?? []),
+                ...(execution.feedback?.map((feedback) =>
+                    feedback.updatedDatetime
+                        ? new Date(feedback.updatedDatetime).getTime()
+                        : 0,
+                ) ?? []),
+            )
+        }, 0)
+
+        return maxDate ? new Date(maxDate) : new Date()
+    }, [feedback])
 
     const shopName =
         feedback?.executions?.[0]?.storeConfiguration?.shopName ?? ''
@@ -282,6 +285,7 @@ const AIAgentSimplifiedFeedback = () => {
                             snippetHelpCenterId={
                                 storeConfiguration?.snippetHelpCenterId
                             }
+                            knowledgeResources={enrichedData.knowledgeResources}
                             enrichedData={{
                                 isLoading: isLoadingEnrichedData,
                                 enrichedData,
@@ -310,6 +314,9 @@ const AIAgentSimplifiedFeedback = () => {
                             onChange={handleFeedbackInternalNoteChange}
                             isMutationLoading={loadingFreeFormMutation}
                             value={freeFormFeedback}
+                            lastUpdated={
+                                enrichedData.freeForm?.feedback?.updatedDatetime
+                            }
                         />
                     </>
                 )}

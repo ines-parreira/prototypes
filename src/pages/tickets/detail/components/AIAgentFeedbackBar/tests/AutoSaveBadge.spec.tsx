@@ -1,5 +1,6 @@
 import { act, render, screen, waitFor } from '@testing-library/react'
 
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 
 import AutoSaveBadge from '../AutoSaveBadge'
@@ -14,9 +15,19 @@ jest.mock('@gorgias/merchant-ui-kit', () => {
     }
 })
 
+// Mock useGetDateAndTimeFormat hook
+jest.mock('hooks/useGetDateAndTimeFormat')
+const useGetDateAndTimeFormatMock = useGetDateAndTimeFormat as jest.Mock
+
 describe('AutoSaveBadge', () => {
+    beforeEach(() => {
+        // Set default mock implementation for the hook
+        useGetDateAndTimeFormatMock.mockReturnValue('MMMM DD, YYYY')
+    })
+
     afterEach(() => {
         jest.clearAllTimers()
+        jest.clearAllMocks()
     })
 
     it('renders nothing when state is INITIAL', () => {
@@ -49,7 +60,7 @@ describe('AutoSaveBadge', () => {
     })
 
     it('should show tooltip after STALE_TIMEOUT if updatedAt is provided', async () => {
-        const updatedAt = new Date().toISOString()
+        const updatedAt = new Date()
         render(
             <AutoSaveBadge state={AutoSaveState.SAVED} updatedAt={updatedAt} />,
         )
@@ -76,6 +87,45 @@ describe('AutoSaveBadge', () => {
 
         await waitFor(() => {
             expect(screen.queryByText('Tooltip')).not.toBeInTheDocument()
+        })
+    })
+
+    it('should handle string updatedAt prop correctly', async () => {
+        const dateString = new Date('2023-01-01T12:00:00Z')
+        render(
+            <AutoSaveBadge
+                state={AutoSaveState.SAVED}
+                updatedAt={dateString}
+            />,
+        )
+
+        act(() => {
+            jest.advanceTimersByTime(3000)
+        })
+
+        await waitFor(() => {
+            expect(screen.queryByText('Tooltip')).toBeInTheDocument()
+        })
+    })
+
+    it('should handle initial state with updatedAt correctly', async () => {
+        const updatedAt = new Date()
+        render(
+            <AutoSaveBadge
+                state={AutoSaveState.INITIAL}
+                updatedAt={updatedAt}
+            />,
+        )
+
+        // Should not be empty when state is INITIAL but updatedAt is provided
+        expect(screen.getByText('check')).toBeInTheDocument()
+
+        act(() => {
+            jest.advanceTimersByTime(3000)
+        })
+
+        await waitFor(() => {
+            expect(screen.queryByText('Tooltip')).toBeInTheDocument()
         })
     })
 })

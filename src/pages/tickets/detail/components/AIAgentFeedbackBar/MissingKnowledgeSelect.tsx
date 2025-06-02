@@ -14,6 +14,7 @@ import {
 import KnowledgeSourceIcon from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceIcon'
 import {
     AiAgentKnowledgeResourceTypeEnum,
+    KnowledgeResource,
     SuggestedResource,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { useEnrichFeedbackData } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
@@ -28,6 +29,7 @@ type MissingKnowledgeSelectProps = {
     onSubmit: (choices: Array<ChoiceOption>) => void
     onRemove: (choice: Array<ChoiceOption>) => void
     disabled?: boolean
+    knowledgeResources?: KnowledgeResource[]
 }
 
 export type ChoiceOption = {
@@ -45,6 +47,7 @@ const MissingKnowledgeSelect = ({
     onSubmit,
     onRemove,
     initialValues,
+    knowledgeResources,
     accountId,
     enrichedData,
     disabled,
@@ -54,42 +57,113 @@ const MissingKnowledgeSelect = ({
     const choices = useMemo(
         () =>
             [
-                ...enrichedData.actions.map((action) => ({
-                    label: `${SIMPLIFIED_RESOURCE_LABELS.action}${action.name}`,
-                    value: action.id,
-                    type: 'ACTION',
-                })),
-                ...enrichedData.guidanceArticles.map((guidance) => ({
-                    label: `${SIMPLIFIED_RESOURCE_LABELS.guidance}${guidance.title}`,
-                    value: guidance.id.toString(),
-                    type: 'GUIDANCE',
-                    hide: guidance.helpCenterId !== guidanceHelpCenterId,
-                })),
-                ...enrichedData.articles.map((article) => ({
-                    label: `${SIMPLIFIED_RESOURCE_LABELS.article}${article.translation.title}`,
-                    value: article.id.toString(),
-                    type: 'ARTICLE',
-                    hide: article.helpCenterId !== helpCenterId,
-                })),
-                ...enrichedData.sourceItems.map((snippet) => ({
-                    label: `${SIMPLIFIED_RESOURCE_LABELS.external_snippet}${snippet.url ?? ''}`,
-                    value: snippet.id.toString(),
-                    type: 'EXTERNAL_SNIPPET',
-                    hide: snippet.helpCenterId !== snippetHelpCenterId,
-                })),
-                ...enrichedData.ingestedFiles.map((snippet) => ({
-                    label: `${SIMPLIFIED_RESOURCE_LABELS.file_external_snippet}${snippet.filename}`,
-                    value: snippet.id.toString(),
-                    type: 'FILE_EXTERNAL_SNIPPET',
-                    hide: snippet.helpCenterId !== snippetHelpCenterId,
-                })),
-                ...enrichedData.macros.map((macro) => ({
-                    label: `${SIMPLIFIED_RESOURCE_LABELS.macro}${macro.name ?? ''}`,
-                    value: macro.id?.toString() ?? '',
-                    type: 'MACRO',
-                })),
+                ...enrichedData.actions
+                    .filter((action) => {
+                        return !knowledgeResources?.find(
+                            (resource) =>
+                                resource.resource.resourceId ===
+                                    action.id.toString() &&
+                                resource.resource.resourceType === 'ACTION',
+                        )
+                    })
+                    .map((action) => ({
+                        label: `${SIMPLIFIED_RESOURCE_LABELS.action}${action.name}`,
+                        value: action.id.toString(),
+                        type: 'ACTION',
+                        hide: action?.entrypoints?.[0]?.deactivated_datetime,
+                    })),
+                ...enrichedData.guidanceArticles
+                    .filter((guidance) => {
+                        return !knowledgeResources?.find(
+                            (resource) =>
+                                resource.resource.resourceId ===
+                                    guidance.id.toString() &&
+                                resource.resource.resourceType === 'GUIDANCE',
+                        )
+                    })
+                    .map((guidance) => ({
+                        label: `${SIMPLIFIED_RESOURCE_LABELS.guidance}${guidance.title}`,
+                        value: guidance.id.toString(),
+                        type: 'GUIDANCE',
+                        hide:
+                            guidance.helpCenterId !== guidanceHelpCenterId ||
+                            guidance.visibility === 'UNLISTED',
+                    })),
+                ...enrichedData.articles
+                    .filter((article) => {
+                        return !knowledgeResources?.find(
+                            (resource) =>
+                                resource.resource.resourceId ===
+                                    article.id.toString() &&
+                                resource.resource.resourceType === 'ARTICLE',
+                        )
+                    })
+                    .map((article) => ({
+                        label: `${SIMPLIFIED_RESOURCE_LABELS.article}${article.translation.title}`,
+                        value: article.id.toString(),
+                        type: 'ARTICLE',
+                        hide:
+                            article.helpCenterId !== helpCenterId ||
+                            !article.translation.is_current,
+                    })),
+                ...enrichedData.sourceItems
+                    .filter((snippet) => {
+                        return !knowledgeResources?.find(
+                            (resource) =>
+                                resource.resource.resourceId ===
+                                    snippet.id.toString() &&
+                                resource.resource.resourceType ===
+                                    'EXTERNAL_SNIPPET',
+                        )
+                    })
+                    .map((snippet) => ({
+                        label: `${SIMPLIFIED_RESOURCE_LABELS.external_snippet}${snippet.url}`,
+                        value: snippet.id.toString(),
+                        type: 'EXTERNAL_SNIPPET',
+                        hide:
+                            snippet.helpCenterId !== snippetHelpCenterId ||
+                            snippet.status !== 'done',
+                    })),
+                ...enrichedData.ingestedFiles
+                    .filter((file) => {
+                        return !knowledgeResources?.find(
+                            (resource) =>
+                                resource.resource.resourceId ===
+                                    file.id.toString() &&
+                                resource.resource.resourceType ===
+                                    'FILE_EXTERNAL_SNIPPET',
+                        )
+                    })
+                    .map((snippet) => ({
+                        label: `${SIMPLIFIED_RESOURCE_LABELS.file_external_snippet}${snippet.filename}`,
+                        value: snippet.id.toString(),
+                        type: 'FILE_EXTERNAL_SNIPPET',
+                        hide:
+                            snippet.helpCenterId !== snippetHelpCenterId ||
+                            snippet.status !== 'SUCCESSFUL',
+                    })),
+                ...enrichedData.macros
+                    .filter((macro) => {
+                        return !knowledgeResources?.find(
+                            (resource) =>
+                                resource.resource.resourceId ===
+                                    macro.id?.toString() &&
+                                resource.resource.resourceType === 'MACRO',
+                        )
+                    })
+                    .map((macro) => ({
+                        label: `${SIMPLIFIED_RESOURCE_LABELS.macro}${macro.name}`,
+                        value: macro.id?.toString(),
+                        type: 'MACRO',
+                    })),
             ] as ChoiceOption[],
-        [enrichedData, helpCenterId, guidanceHelpCenterId, snippetHelpCenterId],
+        [
+            enrichedData,
+            helpCenterId,
+            guidanceHelpCenterId,
+            snippetHelpCenterId,
+            knowledgeResources,
+        ],
     )
 
     useEffect(() => {
@@ -120,11 +194,19 @@ const MissingKnowledgeSelect = ({
     const handleChange = useCallback(
         (value) => {
             const newValues = Array.isArray(value) ? value : [...values, value]
-            setValues(newValues)
 
-            const choicesToSubmit = choices.filter((v) =>
-                newValues.includes(v.label),
-            )
+            const choicesToSubmit = choices
+                .filter((v) => newValues.includes(v.label))
+                .filter((choice) => {
+                    return !initialValues.find((initialValue) => {
+                        return (
+                            initialValue.parsedResource.resourceId ===
+                                choice.value &&
+                            initialValue.parsedResource.resourceType ===
+                                choice.type
+                        )
+                    })
+                })
 
             const choicesToRemove = initialValues
                 .filter((initialValue) => {
@@ -205,6 +287,7 @@ const MissingKnowledgeSelect = ({
                         <SelectInputBox
                             placeholder="Select knowledge"
                             onClick={onFocus}
+                            onAffixClick={onFocus}
                         />
                     </div>
                 )}
@@ -233,7 +316,7 @@ type KnowledgeTagProps = {
     handleRemove: (option: string) => void
 }
 
-const KnowledgeTag = ({ choice, handleRemove }: KnowledgeTagProps) => {
+export const KnowledgeTag = ({ choice, handleRemove }: KnowledgeTagProps) => {
     const tagRef = React.useRef<HTMLSpanElement>(null)
 
     const isOverflowing = tagRef.current

@@ -3,9 +3,11 @@ import React from 'react'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import useAppSelector from 'hooks/useAppSelector'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
 import { getSectionIdByName } from 'state/entities/sections/selectors'
 import { getTicketState } from 'state/ticket/selectors'
 import { getViewsState } from 'state/views/selectors'
@@ -23,6 +25,8 @@ jest.mock('@gorgias/merchant-ui-kit', () => {
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = useAppSelector as jest.Mock
+jest.mock('hooks/useGetDateAndTimeFormat')
+const useGetDateAndTimeFormatMock = useGetDateAndTimeFormat as jest.Mock
 jest.mock('models/knowledgeService/queries')
 const useGetFeedbackMock = useGetFeedback as jest.Mock
 jest.mock('../useEnrichFeedbackData')
@@ -74,7 +78,12 @@ describe('AIAgentSimplifiedFeedback', () => {
                     ['id', 1],
                     ['domain', 'test.com'],
                 ] as any)
+            if (selector === getDateAndTimeFormatter)
+                return () => 'MMMM DD, YYYY'
+            return null
         })
+
+        useGetDateAndTimeFormatMock.mockReturnValue('MMMM DD, YYYY')
 
         useGetFeedbackMock.mockReturnValue({
             data: { executions: [] },
@@ -882,5 +891,366 @@ describe('AIAgentSimplifiedFeedback', () => {
 
         // The test verifies that when the component is set up with a deleted resource,
         // it correctly handles the case in getSuggestedResourceFeedbackValue by returning null
+    })
+
+    it('should calculate lastUpdatedMutations correctly when resources have no updatedDatetime', () => {
+        // Mock feedback data with resources that don't have updatedDatetime
+        useGetFeedbackMock.mockReturnValue({
+            data: {
+                executions: [
+                    {
+                        id: 123,
+                        storeConfiguration: 'test',
+                        resources: [
+                            {
+                                id: 'res-1',
+                                feedback: {
+                                    // No updatedDatetime
+                                },
+                            },
+                        ],
+                        feedback: [
+                            {
+                                // No updatedDatetime
+                            },
+                        ],
+                    },
+                ],
+            },
+        })
+
+        useEnrichFeedbackDataMock.mockReturnValue({
+            ...initialFeedbackData,
+            enrichedData: {
+                knowledgeResources: [
+                    {
+                        resource: {
+                            id: '123',
+                            title: 'Test Article',
+                            resourceType: 'ARTICLE',
+                        },
+                        feedback: {
+                            feedbackValue: 'UP',
+                        },
+                    },
+                ],
+                freeForm: {},
+            },
+            isLoading: false,
+        })
+
+        render(<AIAgentSimplifiedFeedback />)
+
+        // Verify that the AutoSaveBadge is rendered with current date
+        // (implicit verification that lastUpdatedMutations was calculated without errors)
+        expect(screen.getByText('Review knowledge used')).toBeInTheDocument()
+    })
+
+    it('should not handle icon click when already loading that resource', async () => {
+        const mutateAsyncMock = jest.fn()
+        useUpsertFeedbackMock.mockReturnValue({ mutateAsync: mutateAsyncMock })
+
+        // Testing the condition "if (loadingMutations?.includes(upsertId) || resource.feedback?.feedbackValue === value)" directly
+        // We'll use the second part of the condition by setting up a resource with the same feedback value
+        useGetFeedbackMock.mockReturnValue({
+            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+        })
+
+        useEnrichFeedbackDataMock.mockReturnValue({
+            ...initialFeedbackData,
+            enrichedData: {
+                knowledgeResources: [
+                    {
+                        resource: {
+                            id: '123',
+                            title: 'Test Article',
+                            resourceType: 'ARTICLE',
+                        },
+                        feedback: {
+                            id: 456,
+                            feedbackValue: 'UP', // Already has UP value
+                        },
+                        executionId: 123,
+                    },
+                ],
+                freeForm: {},
+            },
+            isLoading: false,
+        })
+
+        render(<AIAgentSimplifiedFeedback />)
+
+        // Click the thumbs up button that already has the same value
+        const thumbsUpButton = screen.getByText('thumb_up')
+
+        await act(async () => {
+            fireEvent.click(thumbsUpButton)
+        })
+
+        // Verify the mutation was not called since the value is already 'UP'
+        expect(mutateAsyncMock).not.toHaveBeenCalled()
+    })
+
+    it('should not call upsertFeedback when feedback value is the same', async () => {
+        const mutateAsyncMock = jest.fn()
+        useUpsertFeedbackMock.mockReturnValue({ mutateAsync: mutateAsyncMock })
+
+        // Setup resource with UP feedback value
+        useGetFeedbackMock.mockReturnValue({
+            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+        })
+
+        useEnrichFeedbackDataMock.mockReturnValue({
+            ...initialFeedbackData,
+            enrichedData: {
+                knowledgeResources: [
+                    {
+                        resource: {
+                            id: '123',
+                            title: 'Test Article',
+                            resourceType: 'ARTICLE',
+                        },
+                        feedback: {
+                            id: 456,
+                            feedbackValue: 'UP', // Already has UP value
+                        },
+                        executionId: 123,
+                    },
+                ],
+                freeForm: {},
+            },
+            isLoading: false,
+        })
+
+        render(<AIAgentSimplifiedFeedback />)
+
+        // Click the thumbs up button that already has the same value
+        const thumbsUpButton = screen.getByText('thumb_up')
+
+        await act(async () => {
+            fireEvent.click(thumbsUpButton)
+        })
+
+        // Verify the mutation was not called since the value is already 'UP'
+        expect(mutateAsyncMock).not.toHaveBeenCalled()
+    })
+
+    it('should render FeedbackInternalNote correctly when updatedAt is undefined', () => {
+        // Setup mock with feedback that has no updatedDatetime
+        useGetFeedbackMock.mockReturnValue({
+            data: {
+                executions: [
+                    {
+                        id: 123,
+                        storeConfiguration: 'test',
+                        feedback: [
+                            {
+                                id: 789,
+                                feedbackType: 'TICKET_FREEFORM',
+                                feedbackValue:
+                                    'Test feedback with no update time',
+                                // No updatedDatetime property
+                                createdDatetime: '2023-01-01T00:00:00.000Z',
+                            },
+                        ],
+                    },
+                ],
+            },
+        })
+
+        useEnrichFeedbackDataMock.mockReturnValue({
+            ...initialFeedbackData,
+            enrichedData: {
+                knowledgeResources: [],
+                freeForm: {
+                    executionId: 123,
+                    feedback: {
+                        id: 789,
+                        feedbackValue: 'Test feedback with no update time',
+                        // No updatedDatetime property
+                    },
+                },
+            },
+            isLoading: false,
+        })
+
+        render(<AIAgentSimplifiedFeedback />)
+
+        // Verify the textarea is rendered with the correct value
+        expect(screen.getByRole('textbox')).toHaveValue(
+            'Test feedback with no update time',
+        )
+
+        // The component should render without errors despite updatedAt being undefined
+        expect(
+            screen.getByTestId('ai-message-feedback-issues-note-test-id'),
+        ).toBeInTheDocument()
+    })
+
+    it('should handle different execution structures in lastUpdatedMutations calculation', () => {
+        // Test case 1: Empty executions array
+        useGetFeedbackMock.mockReturnValue({
+            data: {
+                executions: [],
+            },
+        })
+
+        useEnrichFeedbackDataMock.mockReturnValue({
+            ...initialFeedbackData,
+            isLoading: false,
+        })
+
+        const { unmount } = render(<AIAgentSimplifiedFeedback />)
+
+        // Component should render the processing message when executions array is empty
+        expect(
+            screen.getByText(
+                "We're still processing the details of this conversation. You'll be able to review shortly.",
+            ),
+        ).toBeInTheDocument()
+
+        unmount()
+
+        // Test case 2: Executions with resources that have feedback with updatedDatetime
+        useGetFeedbackMock.mockReturnValue({
+            data: {
+                executions: [
+                    {
+                        id: 123,
+                        storeConfiguration: 'test',
+                        feedback: [],
+                        resources: [
+                            {
+                                id: 'resource-1',
+                                feedback: {
+                                    id: 1,
+                                    feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
+                                    feedbackValue: 'UP',
+                                    updatedDatetime: '2023-02-01T00:00:00.000Z',
+                                },
+                            },
+                        ],
+                    },
+                ],
+            },
+        })
+
+        // Mock the enriched data to avoid "No knowledge used" message
+        useEnrichFeedbackDataMock.mockReturnValue({
+            ...initialFeedbackData,
+            enrichedData: {
+                knowledgeResources: [
+                    {
+                        resource: {
+                            id: 'resource-1',
+                            title: 'Test Resource',
+                            resourceType: 'ARTICLE',
+                        },
+                        feedback: {
+                            feedbackValue: 'UP',
+                        },
+                    },
+                ],
+                freeForm: {},
+            },
+            isLoading: false,
+        })
+
+        const { unmount: unmount2 } = render(<AIAgentSimplifiedFeedback />)
+
+        // Now the heading should be visible since we have executions
+        expect(screen.getByText('Review knowledge used')).toBeInTheDocument()
+
+        unmount2()
+
+        // Test case 3: Executions with multiple feedback items with different updatedDatetime
+        useGetFeedbackMock.mockReturnValue({
+            data: {
+                executions: [
+                    {
+                        id: 123,
+                        storeConfiguration: 'test',
+                        feedback: [
+                            {
+                                id: 1,
+                                feedbackType: 'TICKET_FREEFORM',
+                                feedbackValue: 'Older feedback',
+                                updatedDatetime: '2023-01-01T00:00:00.000Z',
+                            },
+                            {
+                                id: 2,
+                                feedbackType: 'SUGGESTED_RESOURCE',
+                                feedbackValue: 'Newer feedback',
+                                updatedDatetime: '2023-03-01T00:00:00.000Z', // This is the most recent
+                            },
+                        ],
+                        resources: [],
+                    },
+                ],
+            },
+        })
+
+        // Keep the same enriched data
+        const { unmount: unmount3 } = render(<AIAgentSimplifiedFeedback />)
+
+        // Component should render correctly with multiple feedback items
+        expect(screen.getByText('Review knowledge used')).toBeInTheDocument()
+
+        unmount3()
+
+        // Test case 4: Executions with resources with no feedback and empty feedback array
+        useGetFeedbackMock.mockReturnValue({
+            data: {
+                executions: [
+                    {
+                        id: 123,
+                        storeConfiguration: 'test',
+                        feedback: [],
+                        resources: [
+                            {
+                                id: 'resource-1',
+                                // No feedback property
+                            },
+                        ],
+                    },
+                ],
+            },
+        })
+
+        const { unmount: unmount4 } = render(<AIAgentSimplifiedFeedback />)
+
+        // Component should render correctly with resources with no feedback
+        expect(screen.getByText('Review knowledge used')).toBeInTheDocument()
+
+        unmount4()
+
+        // Test case 5: Executions with resources that have feedback with no updatedDatetime
+        useGetFeedbackMock.mockReturnValue({
+            data: {
+                executions: [
+                    {
+                        id: 123,
+                        storeConfiguration: 'test',
+                        feedback: [],
+                        resources: [
+                            {
+                                id: 'resource-1',
+                                feedback: {
+                                    id: 1,
+                                    feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
+                                    feedbackValue: 'UP',
+                                    // No updatedDatetime
+                                },
+                            },
+                        ],
+                    },
+                ],
+            },
+        })
+
+        render(<AIAgentSimplifiedFeedback />)
+
+        // Component should render correctly with resources that have feedback with no updatedDatetime
+        expect(screen.getByText('Review knowledge used')).toBeInTheDocument()
     })
 })

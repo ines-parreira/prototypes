@@ -2,9 +2,11 @@ import { render } from '@testing-library/react'
 
 import { TicketStatus } from 'business/types/ticket'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { assumeMock } from 'utils/testing'
 
 import useAutoQA from '../../hooks/useAutoQA'
@@ -26,6 +28,16 @@ const useTicketIsAfterFeedbackCollectionPeriodMock = assumeMock(
 
 jest.mock('../AutoQASkeleton', () => () => <div>Loading...</div>)
 jest.mock('../Dimension', () => () => <p>Dimension</p>)
+jest.mock('../SaveBadge', () => ({ state }: { state: string }) => (
+    <div data-testid="save-badge">{state}</div>
+))
+jest.mock(
+    'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge',
+    () =>
+        ({ state }: { state: number }) => (
+            <div data-testid="auto-save-badge">{state}</div>
+        ),
+)
 
 jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
 const useFlagMock = useFlag as jest.Mock
@@ -41,6 +53,7 @@ describe('AutoQA', () => {
             dimensions: [],
             isLoading: false,
             lastUpdated: new Date('2024-09-17T21:00:00Z'),
+            saveState: 'idle',
         })
     })
 
@@ -58,6 +71,7 @@ describe('AutoQA', () => {
             ],
             isLoading: true,
             lastUpdated: new Date('2024-09-17T21:00:00Z'),
+            saveState: 'idle',
         })
 
         const { getByText } = render(<AutoQA />)
@@ -70,6 +84,7 @@ describe('AutoQA', () => {
             dimensions: [],
             isLoading: false,
             lastUpdated: null,
+            saveState: 'idle',
         })
 
         const { getByText } = render(<AutoQA />)
@@ -90,6 +105,7 @@ describe('AutoQA', () => {
             dimensions: [],
             isLoading: false,
             lastUpdated: null,
+            saveState: 'idle',
         })
 
         const { getByText } = render(<AutoQA />)
@@ -109,6 +125,7 @@ describe('AutoQA', () => {
             ],
             isLoading: false,
             lastUpdated: new Date('2024-09-17T21:00:00Z'),
+            saveState: 'idle',
         })
 
         const { getAllByText } = render(<AutoQA />)
@@ -133,6 +150,7 @@ describe('AutoQA', () => {
                 0,
                 0,
             ),
+            saveState: 'idle',
         })
         const { getByText } = render(<AutoQA />)
         expect(getByText('Last updated: Today at 9:00 PM')).toBeInTheDocument()
@@ -147,5 +165,98 @@ describe('AutoQA', () => {
         expect(
             getByText('You do not have permission to view ticket feedback.'),
         ).toBeInTheDocument()
+    })
+
+    // Tests for newSaveBadgeState logic
+    describe('saveBadgeState logic', () => {
+        beforeEach(() => {
+            // Enable SimplifyAiAgentFeedbackCollection for all these tests
+            useFlagMock.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.SimplifyAiAgentFeedbackCollection) {
+                    return true
+                }
+                return false
+            })
+        })
+
+        it('should set AutoSaveBadge state to SAVED when saveState is saved', () => {
+            useAutoQAMock.mockReturnValue({
+                changeHandlers: [],
+                dimensions: [],
+                isLoading: false,
+                lastUpdated: new Date(),
+                saveState: 'saved',
+            })
+
+            const { getByTestId } = render(<AutoQA />)
+            expect(getByTestId('auto-save-badge').textContent).toBe(
+                AutoSaveState.SAVED.toString(),
+            )
+        })
+
+        it('should set AutoSaveBadge state to SAVED when prevSaveBadgeState is saved and saveState is idle', () => {
+            // First render with 'saved' state
+            useAutoQAMock.mockReturnValue({
+                changeHandlers: [],
+                dimensions: [],
+                isLoading: false,
+                lastUpdated: new Date(),
+                saveState: 'saved',
+            })
+
+            const { rerender, getByTestId } = render(<AutoQA />)
+
+            // Verify initial state is SAVED
+            expect(getByTestId('auto-save-badge').textContent).toBe(
+                AutoSaveState.SAVED.toString(),
+            )
+
+            // Then change to 'idle' state
+            useAutoQAMock.mockReturnValue({
+                changeHandlers: [],
+                dimensions: [],
+                isLoading: false,
+                lastUpdated: new Date(),
+                saveState: 'idle',
+            })
+
+            rerender(<AutoQA />)
+
+            // Should still be in SAVED state because prevSaveBadgeState.current was 'saved'
+            expect(getByTestId('auto-save-badge').textContent).toBe(
+                AutoSaveState.SAVED.toString(),
+            )
+        })
+
+        it('should set AutoSaveBadge state to SAVING when saveState is saving', () => {
+            useAutoQAMock.mockReturnValue({
+                changeHandlers: [],
+                dimensions: [],
+                isLoading: false,
+                lastUpdated: new Date(),
+                saveState: 'saving',
+            })
+
+            const { getByTestId } = render(<AutoQA />)
+            expect(getByTestId('auto-save-badge').textContent).toBe(
+                AutoSaveState.SAVING.toString(),
+            )
+        })
+
+        it('should set AutoSaveBadge state to INITIAL for any other saveState value', () => {
+            // Test with 'idle' state when prevSaveBadgeState is not 'saved'
+            useAutoQAMock.mockReturnValue({
+                changeHandlers: [],
+                dimensions: [],
+                isLoading: false,
+                lastUpdated: new Date(),
+                saveState: 'idle',
+            })
+
+            const { getByTestId } = render(<AutoQA />)
+            expect(getByTestId('auto-save-badge').textContent).toBe(
+                AutoSaveState.INITIAL.toString(),
+            )
+        })
     })
 })

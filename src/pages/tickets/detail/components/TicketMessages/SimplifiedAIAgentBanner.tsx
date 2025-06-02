@@ -122,7 +122,7 @@ const SimplifiedAIAgentBanner = ({
                                     lastMessageWithFeedback?.feedback
                                         .executionId && (
                                         <div className={css.executionId}>
-                                            {`executionId: ${lastMessageWithFeedback.feedback.executionId}`}
+                                            {`Execution ID: ${lastMessageWithFeedback.feedback.executionId}`}
                                         </div>
                                     )}
                             </>

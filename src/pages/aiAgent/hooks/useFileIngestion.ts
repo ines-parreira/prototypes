@@ -55,7 +55,7 @@ export const useFileIngestion = ({
         },
         {
             ...queryOptionsOverrides,
-            enabled: !!helpCenterId && !!ingestedFileIds,
+            enabled: !!helpCenterId,
             refetchOnWindowFocus: false,
             refetchInterval:
                 ingestingFileId === null ? false : UPDATE_STATUS_INTERVAL_MS,

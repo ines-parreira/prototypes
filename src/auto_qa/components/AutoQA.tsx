@@ -96,9 +96,7 @@ export default function AutoQA() {
                     <AutoSaveBadge
                         state={newSaveBadgeState}
                         updatedAt={
-                            lastUpdated
-                                ? new Date(lastUpdated).toLocaleString()
-                                : undefined
+                            lastUpdated ? new Date(lastUpdated) : undefined
                         }
                     />
                 ) : (

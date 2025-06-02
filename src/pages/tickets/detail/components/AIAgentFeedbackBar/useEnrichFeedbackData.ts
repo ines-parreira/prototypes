@@ -13,6 +13,7 @@ import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
 import { useMultipleGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 import { useMultiplePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
 import {
+    AiAgentKnowledgeResourceTypeEnum,
     FreeForm,
     KnowledgeResource,
     SuggestedResource,
@@ -204,7 +205,7 @@ const getResourceMetadata = (
     },
 ) => {
     switch (resource.resourceType) {
-        case 'ARTICLE': {
+        case AiAgentKnowledgeResourceTypeEnum.ARTICLE: {
             const article = articles.find(
                 (article) => article.id === Number(resource.resourceId),
             )
@@ -214,9 +215,8 @@ const getResourceMetadata = (
                       content: article.translation.content ?? '',
                   }
                 : { title: '', content: '', isDeleted: true }
-            break
         }
-        case 'GUIDANCE': {
+        case AiAgentKnowledgeResourceTypeEnum.GUIDANCE: {
             const guidance = guidanceArticles.find(
                 (guidance) => guidance.id === Number(resource.resourceId),
             )
@@ -226,9 +226,8 @@ const getResourceMetadata = (
                       content: guidance.content ?? '',
                   }
                 : { title: '', content: '', isDeleted: true }
-            break
         }
-        case 'EXTERNAL_SNIPPET': {
+        case AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET: {
             const snippet = sourceItems.find(
                 (snippet) => snippet.id === Number(resource.resourceId),
             )
@@ -239,9 +238,8 @@ const getResourceMetadata = (
                       url: snippet.url ?? '',
                   }
                 : { title: '', content: '', isDeleted: true }
-            break
         }
-        case 'FILE_EXTERNAL_SNIPPET': {
+        case AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET: {
             const fileSnippet = ingestedFiles
                 .filter((file) => file.status === 'SUCCESSFUL')
                 .find(
@@ -255,9 +253,8 @@ const getResourceMetadata = (
                       url: fileSnippet.google_storage_url ?? '',
                   }
                 : { title: '', content: '', isDeleted: true }
-            break
         }
-        case 'MACRO': {
+        case AiAgentKnowledgeResourceTypeEnum.MACRO: {
             const macro = macros.find(
                 (macro) => macro.id === Number(resource.resourceId),
             )
@@ -267,21 +264,19 @@ const getResourceMetadata = (
                       content: macro.intent ?? '',
                   }
                 : { title: '', content: '', isDeleted: true }
-            break
         }
-        case 'ACTION': {
+        case AiAgentKnowledgeResourceTypeEnum.ACTION: {
             const action = actions.find(
                 (action) => action.id === resource.resourceId,
             )
-            action
+            return action
                 ? {
                       title: action.name ?? '',
                       content: action.name ?? '',
                   }
                 : { title: '', content: '', isDeleted: true }
-            break
         }
-        case 'ORDER': {
+        case AiAgentKnowledgeResourceTypeEnum.ORDER: {
             return {
                 title: `Order ${resource.resourceTitle}`,
                 content: `Order ${resource.resourceTitle}`,

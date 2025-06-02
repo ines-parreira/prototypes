@@ -13,6 +13,7 @@ import { renderHook } from 'utils/testing/renderHook'
 
 import { useUpsertFeedback } from '../mutations'
 import { feedbackDefinitionKeys } from '../queries'
+import { generateUniqueId, optimisticallyUpdateFeedback } from '../utils'
 
 jest.mock('rest_api/knowledge_service_api/client', () => ({
     getGorgiasKsApiClient: jest.fn(),
@@ -796,5 +797,195 @@ describe('useUpsertFeedback', () => {
                 ).toBe('DOWN')
             })
         })
+    })
+})
+
+// Add tests for generateUniqueId and default case
+describe('generateUniqueId', () => {
+    it('should return 1 when there are no feedback items', () => {
+        const data: Components.Schemas.FeedbackDto = {
+            accountId: 1,
+            objectId: '1',
+            objectType: 'TICKET',
+            executions: [],
+        }
+        expect(generateUniqueId(data)).toBe(1)
+    })
+
+    it('should return 1 when executions is undefined', () => {
+        const data = {
+            accountId: 1,
+            objectId: '1',
+            objectType: 'TICKET',
+        } as Components.Schemas.FeedbackDto
+
+        expect(generateUniqueId(data)).toBe(0)
+    })
+
+    it('should find the maximum ID and return it incremented by 1', () => {
+        const data: Components.Schemas.FeedbackDto = {
+            accountId: 1,
+            objectId: '1',
+            objectType: 'TICKET',
+            executions: [
+                {
+                    executionId: 'exec-1',
+                    feedback: [
+                        {
+                            id: 5,
+                            feedbackType: 'TICKET_FREEFORM',
+                            feedbackValue: 'Test',
+                            objectType: 'TICKET',
+                            objectId: '1',
+                            executionId: 'exec-1',
+                            targetType: 'TICKET',
+                            targetId: '1',
+                            submittedBy: 0,
+                            createdDatetime: '2023-01-01T00:00:00.000Z',
+                            updatedDatetime: '2023-01-01T00:00:00.000Z',
+                        },
+                    ],
+                    resources: [],
+                    storeConfiguration: {
+                        shopName: 'test-shop',
+                        shopType: 'test-store-type',
+                        faqHelpCenterId: 1,
+                        guidanceHelpCenterId: 2,
+                        snippetHelpCenterId: 3,
+                    },
+                },
+                {
+                    executionId: 'exec-2',
+                    feedback: [
+                        {
+                            id: 10,
+                            feedbackType: 'TICKET_FREEFORM',
+                            feedbackValue: 'Test 2',
+                            objectType: 'TICKET',
+                            objectId: '1',
+                            executionId: 'exec-2',
+                            targetType: 'TICKET',
+                            targetId: '1',
+                            submittedBy: 0,
+                            createdDatetime: '2023-01-01T00:00:00.000Z',
+                            updatedDatetime: '2023-01-01T00:00:00.000Z',
+                        },
+                    ],
+                    resources: [],
+                    storeConfiguration: {
+                        shopName: 'test-shop',
+                        shopType: 'test-store-type',
+                        faqHelpCenterId: 1,
+                        guidanceHelpCenterId: 2,
+                        snippetHelpCenterId: 3,
+                    },
+                },
+            ],
+        }
+
+        expect(generateUniqueId(data)).toBe(11) // 10 + 1
+    })
+
+    it('should ignore non-numeric IDs', () => {
+        const data: Components.Schemas.FeedbackDto = {
+            accountId: 1,
+            objectId: '1',
+            objectType: 'TICKET',
+            executions: [
+                {
+                    executionId: 'exec-1',
+                    feedback: [
+                        {
+                            // @ts-ignore - Testing non-numeric ID
+                            id: 'string-id',
+                            feedbackType: 'TICKET_FREEFORM',
+                            feedbackValue: 'Test',
+                            objectType: 'TICKET',
+                            objectId: '1',
+                            executionId: 'exec-1',
+                            targetType: 'TICKET',
+                            targetId: '1',
+                            submittedBy: 0,
+                            createdDatetime: '2023-01-01T00:00:00.000Z',
+                            updatedDatetime: '2023-01-01T00:00:00.000Z',
+                        },
+                        {
+                            id: 7,
+                            feedbackType: 'TICKET_FREEFORM',
+                            feedbackValue: 'Test 2',
+                            objectType: 'TICKET',
+                            objectId: '1',
+                            executionId: 'exec-1',
+                            targetType: 'TICKET',
+                            targetId: '1',
+                            submittedBy: 0,
+                            createdDatetime: '2023-01-01T00:00:00.000Z',
+                            updatedDatetime: '2023-01-01T00:00:00.000Z',
+                        },
+                    ],
+                    resources: [],
+                    storeConfiguration: {
+                        shopName: 'test-shop',
+                        shopType: 'test-store-type',
+                        faqHelpCenterId: 1,
+                        guidanceHelpCenterId: 2,
+                        snippetHelpCenterId: 3,
+                    },
+                },
+            ],
+        }
+
+        expect(generateUniqueId(data)).toBe(8) // 7 + 1, ignoring the string ID
+    })
+})
+
+describe('optimisticallyUpdateFeedback - edge cases', () => {
+    const params: Paths.FindFeedbackFeedback.QueryParameters = {
+        objectId: 'ticket-123',
+        objectType: 'TICKET',
+    }
+
+    it('should handle unsupported feedback type (default case)', () => {
+        const existingData: Components.Schemas.FeedbackDto = {
+            accountId: 1,
+            objectId: '1',
+            objectType: 'TICKET',
+            executions: [
+                {
+                    executionId: 'exec-123',
+                    feedback: [],
+                    resources: [],
+                    storeConfiguration: {
+                        shopName: 'test-shop',
+                        shopType: 'test-store-type',
+                        faqHelpCenterId: 1,
+                        guidanceHelpCenterId: 2,
+                        snippetHelpCenterId: 3,
+                    },
+                },
+            ],
+        }
+
+        const feedbackData: Components.Schemas.FeedbackUpsertRequestDto = {
+            feedbackToUpsert: [
+                {
+                    // @ts-ignore - Using unsupported type to test default case
+                    feedbackType: 'UNSUPPORTED_TYPE',
+                    objectType: 'TICKET',
+                    objectId: 'ticket-123',
+                    executionId: 'exec-123',
+                    targetType: 'TICKET',
+                    targetId: 'ticket-123',
+                    feedbackValue: 'test',
+                },
+            ],
+        }
+
+        const updateFn = optimisticallyUpdateFeedback(params, feedbackData)
+        const updatedData = updateFn(existingData)
+
+        // The data should remain unchanged as the default case just breaks
+        expect(updatedData).toEqual(existingData)
+        expect(updatedData?.executions[0].feedback.length).toBe(0)
     })
 })

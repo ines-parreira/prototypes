@@ -593,6 +593,7 @@ describe('useEnrichFeedbackData', () => {
             'EXTERNAL_SNIPPET',
             'FILE_EXTERNAL_SNIPPET',
             'MACRO',
+            'ACTION',
             'ORDER',
         ])
 
@@ -608,6 +609,7 @@ describe('useEnrichFeedbackData', () => {
             'EXTERNAL_SNIPPET',
             'FILE_EXTERNAL_SNIPPET',
             'MACRO',
+            'ACTION',
             'ARTICLE',
         ])
         // Check for the freeForm feedback
