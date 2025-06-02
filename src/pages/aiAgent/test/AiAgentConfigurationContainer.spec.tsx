@@ -49,6 +49,10 @@ const mockUseGetOrCreateSnippetHelpCenter = jest.mocked(
     useGetOrCreateSnippetHelpCenter,
 )
 
+jest.mock(
+    'pages/aiAgent/components/StoreConfigForm/hooks/useVerifyChannelsActivation',
+)
+
 jest.mock('hooks/useAppDispatch')
 const mockUseAppDispatch = useAppDispatch as jest.Mock
 
@@ -64,6 +68,13 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterList', () => ({
     useHelpCenterList: () => ({
         isLoading: false,
         helpCenters: [],
+    }),
+}))
+
+jest.mock('pages/aiAgent/hooks/useStoresDomainIngestionLogs', () => ({
+    useStoresDomainIngestionLogs: () => ({
+        isLoading: false,
+        data: undefined,
     }),
 }))
 

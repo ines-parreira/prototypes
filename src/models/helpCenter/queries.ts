@@ -106,6 +106,12 @@ export const helpCenterKeys = {
             'ingestion-logs',
             queryParams,
         ].filter(Boolean),
+    ingestionLogsList: (
+        params: {
+            helpCenterId: number
+            queryParams?: Paths.GetIngestionLogs.QueryParameters
+        }[],
+    ) => [...helpCenterKeys.all(), 'ingestion-logs', params].filter(Boolean),
     fileIngestions: (
         helpCenterId: number,
         queryParams?: Paths.GetFileIngestion.QueryParameters,
@@ -555,6 +561,46 @@ export const useGetIngestionLogs = (
     return useQuery({
         queryFn: async () => getIngestionLogs(helpCenterClient, pathParams),
         queryKey: helpCenterKeys.ingestionLogs(pathParams.help_center_id),
+        staleTime: STALE_TIME,
+        ...overrides,
+        enabled:
+            Boolean(helpCenterClient) &&
+            (overrides === undefined || overrides.enabled),
+    })
+}
+
+export const useGetIngestionLogsList = (
+    pathParams: (Paths.GetIngestionLogs.PathParameters &
+        Paths.GetIngestionLogs.QueryParameters)[],
+    overrides?: UseQueryOptions<
+        Awaited<{
+            helpCenterId: number
+            ingestionLogs: Awaited<ReturnType<typeof getIngestionLogs>>
+        }>[]
+    >,
+) => {
+    const { client: helpCenterClient } = useHelpCenterApi()
+
+    return useQuery({
+        queryFn: async () => {
+            const promises = pathParams.map((pathParam) =>
+                getIngestionLogs(helpCenterClient, pathParam).then((res) => {
+                    return {
+                        helpCenterId: pathParam.help_center_id,
+                        ingestionLogs: res,
+                    }
+                }),
+            )
+            return await Promise.all(promises)
+        },
+        queryKey: helpCenterKeys.ingestionLogsList(
+            pathParams.map(
+                ({ help_center_id: helpCenterId, ...queryParams }) => ({
+                    helpCenterId,
+                    ...queryParams,
+                }),
+            ),
+        ),
         staleTime: STALE_TIME,
         ...overrides,
         enabled:

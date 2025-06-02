@@ -67,6 +67,13 @@ jest.mock('pages/aiAgent/hooks/usePublicResourcesMutation', () => ({
     })),
 }))
 
+jest.mock('pages/aiAgent/hooks/useStoresDomainIngestionLogs', () => ({
+    useStoresDomainIngestionLogs: () => ({
+        isLoading: false,
+        data: undefined,
+    }),
+}))
+
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 const mockUseAiAgentNavigation = assumeMock(useAiAgentNavigation)
 

@@ -21,6 +21,7 @@ import { useAiAgentStoreConfigurationContext } from '../../providers/AiAgentStor
 import { FormValues } from '../../types'
 import { useHasUninstalledChatIntegration } from '../useHasUninstalledChatIntegration'
 import { useStoreConfigurationMutation } from '../useStoreConfigurationMutation'
+import { useStoresDomainIngestionLogs } from '../useStoresDomainIngestionLogs'
 
 const INITIAL_FORM_VALUES: FormValues = {
     toneOfVoice: null,
@@ -58,6 +59,10 @@ const mockUseStoreConfigurationMutation = assumeMock(
 jest.mock('../useHasUninstalledChatIntegration')
 const mockUseHasUninstalledChatIntegration = assumeMock(
     useHasUninstalledChatIntegration,
+)
+jest.mock('../useStoresDomainIngestionLogs')
+const mockUseStoresDomainIngestionLogs = assumeMock(
+    useStoresDomainIngestionLogs,
 )
 
 const mockUseGetHelpCenterList = assumeMock(useGetHelpCenterList)
@@ -109,6 +114,16 @@ describe('useConfigurationForm', () => {
         mockUseAiAgentStoreConfigurationContext.mockReturnValue(
             defaultStoreConfigurationContextMock,
         )
+        mockUseStoresDomainIngestionLogs.mockReturnValue({
+            data: {
+                [shopName]: [
+                    {
+                        latest_sync: '2023-10-01T00:00:00Z',
+                        status: 'SUCCESSFUL',
+                    },
+                ],
+            },
+        } as any)
 
         mockUseAppSelector.mockImplementation((selector) => {
             if (selector === getCurrentAutomatePlan) {

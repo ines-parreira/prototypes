@@ -4,6 +4,7 @@ import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/Perso
 import { Components } from 'rest_api/help_center_api/client.generated'
 
 import {
+    checkIsMissingKnowledge,
     Flags,
     getChatActivation,
     isSalesEnabledWithNewActivationXp,
@@ -1014,7 +1015,7 @@ describe('storeActivationReducer', () => {
     })
 
     describe('getChatActivation', () => {
-        it('should enable chat when chat in selfservice, is installed and has help center', () => {
+        it('should enable chat when chat in selfservice, is installed and has knowledge', () => {
             const { enabled, installationMissing, integrationMissing } =
                 getChatActivation({
                     storeConfiguration: mockStoreConfig,
@@ -1023,22 +1024,6 @@ describe('storeActivationReducer', () => {
                         { chatId: 1, installed: true } as any,
                     ],
                     helpCentersFaq,
-                })
-
-            expect(enabled).toBe(true)
-            expect(integrationMissing).toBe(false)
-            expect(installationMissing).toBe(false)
-        })
-
-        it('should enable chat when chat in selfservice, is installed and has public resources', () => {
-            const { enabled, installationMissing, integrationMissing } =
-                getChatActivation({
-                    storeConfiguration: mockStoreConfig,
-                    selfServiceChatChannels: [{ value: { id: 1 } } as any],
-                    chatIntegrationStatus: [
-                        { chatId: 1, installed: true } as any,
-                    ],
-                    publicResources: [{ id: 1 } as any],
                 })
 
             expect(enabled).toBe(true)
@@ -1141,6 +1126,57 @@ describe('storeActivationReducer', () => {
             })
 
             expect(availableMonitoredChat).toStrictEqual([1])
+        })
+    })
+
+    describe('checkIsMissingKnowledge', () => {
+        it('should return true when no knowledge sources are available', () => {
+            const isMissing = checkIsMissingKnowledge({
+                helpCentersFaq: [],
+                publicResources: [],
+                helpCenterId: null,
+                storeDomainIngestionLogs: undefined,
+            })
+
+            expect(isMissing).toBe(true)
+        })
+
+        it('should return false when a help center is availble', () => {
+            const isMissing = checkIsMissingKnowledge({
+                helpCentersFaq: [{ id: 1 } as any],
+                publicResources: [],
+                helpCenterId: 1,
+                storeDomainIngestionLogs: undefined,
+            })
+
+            expect(isMissing).toBe(false)
+        })
+
+        it('should return false when public resources are available', () => {
+            const isMissing = checkIsMissingKnowledge({
+                helpCentersFaq: [],
+                publicResources: [{ id: 1 } as any],
+                helpCenterId: 1,
+                storeDomainIngestionLogs: undefined,
+            })
+
+            expect(isMissing).toBe(false)
+        })
+
+        it('should return true when store has been synced once', () => {
+            const isMissing = checkIsMissingKnowledge({
+                helpCentersFaq: [],
+                publicResources: [],
+                helpCenterId: null,
+                storeDomainIngestionLogs: [
+                    {
+                        latest_sync: '2025-01-01T00:00:00Z',
+                        status: 'SUCCESSFUL',
+                    },
+                ] as any,
+            })
+
+            expect(isMissing).toBe(false)
         })
     })
 })

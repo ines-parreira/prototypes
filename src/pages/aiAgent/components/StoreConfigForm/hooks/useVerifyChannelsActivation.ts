@@ -118,6 +118,7 @@ export const useVerifyChannelsActivation = ({
 
         void deactivateAiAgentChannels(channelsToDeactivate)
     }, [
+        deactivateAiAgentChannels,
         storeConfiguration?.chatChannelDeactivatedDatetime,
         storeConfiguration?.emailChannelDeactivatedDatetime,
         storeConfiguration?.monitoredChatIntegrations,

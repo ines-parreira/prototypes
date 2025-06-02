@@ -28,6 +28,7 @@ import {
     useGetHelpCenterList,
     useGetHelpCenterListMulti,
     useGetIngestionLogs,
+    useGetIngestionLogsList,
     useGetMultipleFileIngestion,
     useGetMultipleHelpCenterArticleLists,
     useListIngestedResources,
@@ -713,6 +714,45 @@ describe('queries', () => {
                 },
             )
             expect(getArticleIngestionLogs).toHaveBeenCalledTimes(0)
+        })
+    })
+
+    describe('useGetIngestionLogsList', () => {
+        it('should return correct data on success', async () => {
+            getIngestionLogs.mockReturnValue(Promise.resolve(null))
+            mockUseHelpCenterApi.mockReturnValue({
+                client: {} as HelpCenterClient,
+                isReady: true,
+            })
+            const { result } = renderHook(
+                () =>
+                    useGetIngestionLogsList(
+                        [{ help_center_id: helpCenterId }],
+                        {},
+                    ),
+                {
+                    wrapper,
+                },
+            )
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+            expect(result.current.data).toStrictEqual([
+                { helpCenterId: 1, ingestionLogs: null },
+            ])
+        })
+
+        it('should not call the api function when enabled false', () => {
+            getIngestionLogs.mockReturnValue(Promise.resolve(null))
+            renderHook(
+                () =>
+                    useGetIngestionLogsList(
+                        [{ help_center_id: helpCenterId }],
+                        { enabled: false },
+                    ),
+                {
+                    wrapper,
+                },
+            )
+            expect(getIngestionLogs).toHaveBeenCalledTimes(0)
         })
     })
 

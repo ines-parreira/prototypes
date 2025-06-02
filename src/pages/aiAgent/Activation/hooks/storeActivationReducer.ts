@@ -4,11 +4,14 @@ import { LDFlagSet } from 'launchdarkly-react-client-sdk'
 import cloneDeep from 'lodash/cloneDeep'
 
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
+import { HelpCenter } from 'models/helpCenter/types'
 import {
     EmailIntegration,
     GmailIntegration,
     OutlookIntegration,
 } from 'models/integration/types'
+import { IngestionLog } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
+import { hasSuccessfullySyncedOnce } from 'pages/aiAgent/AiAgentScrapedDomainContent/utils'
 import { SourceItem } from 'pages/aiAgent/components/PublicSourcesSection/types'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
@@ -16,7 +19,6 @@ import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/Perso
 import { ChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
 import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { AlertType } from 'pages/common/components/Alert/Alert'
-import { type Components } from 'rest_api/help_center_api/client.generated'
 
 export const isSalesEnabledWithNewActivationXp = ({
     storeHasSales,
@@ -110,10 +112,11 @@ type UpdateStoreConfiguration = {
         | GmailIntegration
         | OutlookIntegration
     )[]
-    helpCentersFaq?: Components.Schemas.GetHelpCenterDto[]
+    helpCentersFaq?: HelpCenter[]
     ldFlags: LDFlagSet
     chatIntegrationStatus?: ChatIntegrationsStatusData
     publicResources?: Record<string, SourceItem[]>
+    storesDomainIngestionLogs?: Record<string, IngestionLog[]>
     hasNewAutomatePlan: boolean
     flags: Flags
 }
@@ -338,16 +341,41 @@ const toggleSales = (
     }
 }
 
+export const checkIsMissingKnowledge = ({
+    helpCenterId,
+    helpCentersFaq,
+    publicResources,
+    storeDomainIngestionLogs,
+}: {
+    helpCenterId: number | null
+    helpCentersFaq?: HelpCenter[]
+    publicResources?: SourceItem[]
+    storeDomainIngestionLogs?: IngestionLog[]
+}): boolean => {
+    const hasHelpCenterFaq = (helpCentersFaq ?? []).length > 0
+
+    const hasHelpCenter =
+        helpCenterId !== null &&
+        !!helpCentersFaq?.some((it) => it.id === helpCenterId) &&
+        hasHelpCenterFaq
+    const hasPublicUrls = !!publicResources?.length
+    const hasSyncedOnce = hasSuccessfullySyncedOnce(storeDomainIngestionLogs)
+
+    return !hasHelpCenter && !hasPublicUrls && !hasSyncedOnce
+}
+
 export const getChatActivation = ({
     chatIntegrationStatus,
     helpCentersFaq,
     publicResources,
+    storeDomainIngestionLogs,
     selfServiceChatChannels,
     storeConfiguration,
 }: {
     chatIntegrationStatus?: ChatIntegrationsStatusData
-    helpCentersFaq?: Components.Schemas.GetHelpCenterDto[]
+    helpCentersFaq?: HelpCenter[]
     publicResources?: SourceItem[]
+    storeDomainIngestionLogs?: IngestionLog[]
     selfServiceChatChannels: SelfServiceChatChannel[]
     storeConfiguration: StoreConfiguration
 }): {
@@ -356,18 +384,15 @@ export const getChatActivation = ({
     installationMissing: boolean
     integrationMissing: boolean
 } => {
-    const hasHelpCenterFaq = (helpCentersFaq ?? []).length > 0
-
     const { scopes, chatChannelDeactivatedDatetime, helpCenterId } =
         storeConfiguration
 
-    const hasHelpCenter =
-        helpCenterId !== null &&
-        !!helpCentersFaq?.some((it) => it.id === helpCenterId) &&
-        hasHelpCenterFaq
-    const hasPublicUrls = !!publicResources?.length
-
-    const isMissingKnowledge = !hasHelpCenter && !hasPublicUrls
+    const isMissingKnowledge = checkIsMissingKnowledge({
+        helpCenterId,
+        helpCentersFaq,
+        publicResources,
+        storeDomainIngestionLogs,
+    })
 
     const availableMonitoredChat =
         storeConfiguration.monitoredChatIntegrations.filter((it) =>
@@ -411,6 +436,7 @@ export const storeConfigurationToState = (
         chatIntegrationStatus,
         ldFlags,
         publicResources,
+        storesDomainIngestionLogs,
         hasNewAutomatePlan,
         flags: {
             hasAiAgentNewActivationXp,
@@ -419,8 +445,6 @@ export const storeConfigurationToState = (
         },
     }: UpdateStoreConfiguration,
 ): State => {
-    const hasHelpCenterFaq = (helpCentersFaq ?? []).length > 0
-
     return storeConfigurations.reduce<Record<string, StoreActivation>>(
         (acc, storeConfiguration) => {
             const {
@@ -431,13 +455,13 @@ export const storeConfigurationToState = (
                 helpCenterId,
             } = storeConfiguration
 
-            const hasHelpCenter =
-                helpCenterId !== null &&
-                !!helpCentersFaq?.some((it) => it.id === helpCenterId) &&
-                hasHelpCenterFaq
-            const hasPublicUrls = !!publicResources?.[storeName].length
-
-            const isMissingKnowledge = !hasHelpCenter && !hasPublicUrls
+            const isMissingKnowledge = checkIsMissingKnowledge({
+                helpCenterId,
+                helpCentersFaq,
+                publicResources: publicResources?.[storeName],
+                storeDomainIngestionLogs:
+                    storesDomainIngestionLogs?.[storeName],
+            })
 
             const alerts: StoreActivationAlert[] = []
             const knowledgeAlert: StoreActivationAlert = {
@@ -466,6 +490,8 @@ export const storeConfigurationToState = (
                 storeConfiguration,
                 selfServiceChatChannels: availableChatsForStore,
                 publicResources: publicResources?.[storeName],
+                storeDomainIngestionLogs:
+                    storesDomainIngestionLogs?.[storeName],
                 helpCentersFaq,
                 chatIntegrationStatus,
             })

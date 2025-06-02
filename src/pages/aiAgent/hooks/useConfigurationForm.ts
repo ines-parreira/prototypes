@@ -26,6 +26,7 @@ import {
 import { useAiAgentNavigation } from './useAiAgentNavigation'
 import { useHasUninstalledChatIntegration } from './useHasUninstalledChatIntegration'
 import { useStoreConfigurationMutation } from './useStoreConfigurationMutation'
+import { useStoresDomainIngestionLogs } from './useStoresDomainIngestionLogs'
 import { getFormValuesFromStoreConfiguration } from './utils/configurationForm.utils'
 
 export const useConfigurationForm = ({
@@ -44,6 +45,9 @@ export const useConfigurationForm = ({
     const configurationPage = getConfigurationPage({
         pathname: window.location.pathname,
         routes,
+    })
+    const { data: storesDomainIngestionLogs } = useStoresDomainIngestionLogs({
+        storeNames: [shopName],
     })
 
     const isAiAgentChatEnabled: boolean | undefined =
@@ -152,6 +156,7 @@ export const useConfigurationForm = ({
                 publicUrls,
                 hasExternalFiles ?? false,
                 hasUninstalledChatIntegration,
+                storesDomainIngestionLogs?.[shopName],
                 {
                     isAiAgentChatEnabled,
                     configurationPage,

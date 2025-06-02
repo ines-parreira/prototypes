@@ -18,6 +18,7 @@ import { useFetchFileIngestionData } from './useFetchFileIngestionData'
 import { useFetchGuidancesData } from './useFetchGuidancesData'
 import { useFetchPageInteractionsData } from './useFetchPageInteractionsData'
 import { useFetchPublicResourcesData } from './useFetchPublicResourcesData'
+import { useFetchStoreDomainIngestionLogsData } from './useFetchStoreDomainIngestionLogsData'
 import { useShopifyPermissionsData } from './useShopifyPermissionsData'
 import { useTicketViewData } from './useTicketViewData'
 
@@ -117,6 +118,13 @@ export const usePendingTasksRuleEngine = ({
             retries: false,
         })
 
+    const {
+        data: storeDomainIngestionLogsData,
+        isLoading: storeDomainIngestionLogsDataIsLoading,
+    } = useFetchStoreDomainIngestionLogsData({
+        storeName,
+    })
+
     const { data: emailIntegrationsData } = useFetchEmailIntegrationsData()
 
     const { data: shopifyPermissionsData } = useShopifyPermissionsData({
@@ -158,7 +166,8 @@ export const usePendingTasksRuleEngine = ({
         chatIntegrationsStatusDataIsLoading ||
         ticketViewDataIsLoading ||
         pageInteractionsDataIsLoading ||
-        publicResourcesDataIsLoading
+        publicResourcesDataIsLoading ||
+        storeDomainIngestionLogsDataIsLoading
 
     const isFetched =
         aiAgentStoreConfigurationIsFetched &&
@@ -220,6 +229,7 @@ export const usePendingTasksRuleEngine = ({
                         hasConversationStarters,
                         publicResources: publicResourcesData,
                         selfServiceChatChannels,
+                        storeDomainIngestionLogs: storeDomainIngestionLogsData,
                     },
                     {
                         aiAgentRoutes: routes,
@@ -246,6 +256,7 @@ export const usePendingTasksRuleEngine = ({
         isAiSalesAgentHelpOnSearchTemplateQueryEnabled,
         publicResourcesData,
         selfServiceChatChannels,
+        storeDomainIngestionLogsData,
     ]) /* eslint-enable react-hooks/exhaustive-deps */
 
     if (shouldFakeTasks) {

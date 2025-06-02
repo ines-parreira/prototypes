@@ -26,6 +26,7 @@ export class EnableAskAnythingInputTask extends Task {
             selfServiceChatChannels: data.selfServiceChatChannels,
             helpCentersFaq: data.faqHelpCenters,
             publicResources: data.publicResources,
+            storeDomainIngestionLogs: data.storeDomainIngestionLogs,
         })
 
         return (

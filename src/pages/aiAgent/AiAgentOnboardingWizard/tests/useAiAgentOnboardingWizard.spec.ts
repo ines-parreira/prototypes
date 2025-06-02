@@ -99,6 +99,13 @@ const mockNavigateWizardSteps = {
     goToPreviousStep: jest.fn(),
 }
 
+jest.mock('pages/aiAgent/hooks/useStoresDomainIngestionLogs', () => ({
+    useStoresDomainIngestionLogs: () => ({
+        isLoading: false,
+        data: undefined,
+    }),
+}))
+
 const mockHelpCenterListData = {
     data: axiosSuccessResponse({
         data: [

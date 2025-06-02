@@ -20,6 +20,7 @@ import { useActivateStore } from 'pages/aiAgent/Activation/hooks/useActivateStor
 import { usePublicResourcesList } from 'pages/aiAgent/hooks/usePublicResourcesList'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
+import { useStoresDomainIngestionLogs } from 'pages/aiAgent/hooks/useStoresDomainIngestionLogs'
 import { useFetchChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
 import { useSelfServiceChatChannelsMultiStore } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
@@ -95,11 +96,13 @@ export const useStoreActivations = ({
     // TODO: Remove pageName to use window.location.pathname instead
     pageName,
     withPublicResources = false,
+    withStoresDomainIngestionLogs = false,
     withChatIntegrationsStatus = false,
     storeName,
 }: {
     pageName: string
     withPublicResources?: boolean
+    withStoresDomainIngestionLogs?: boolean
     withChatIntegrationsStatus?: boolean
     storeName?: string
 }): {
@@ -192,6 +195,14 @@ export const useStoreActivations = ({
     )
 
     const {
+        isLoading: isStoresDomainLatestIngestionLogsLoading,
+        data: storesDomainIngestionLogs,
+    } = useStoresDomainIngestionLogs({
+        storeNames,
+        enabled: withStoresDomainIngestionLogs,
+    })
+
+    const {
         isLoading: isPublicResourcesListLoading,
         sourceItems: publicResources,
     } = usePublicResourcesList({
@@ -220,6 +231,7 @@ export const useStoreActivations = ({
             ldFlags: flagsRef.current,
             chatIntegrationStatus,
             publicResources,
+            storesDomainIngestionLogs,
             hasNewAutomatePlan,
             flags: {
                 hasAiAgentNewActivationXp,
@@ -235,6 +247,7 @@ export const useStoreActivations = ({
         helpCenterListData,
         chatIntegrationStatus,
         publicResources,
+        storesDomainIngestionLogs,
         hasAiAgentNewActivationXp,
         hasNewAutomatePlan,
         isAiSalesBetaUser,
@@ -302,7 +315,8 @@ export const useStoreActivations = ({
         isStoreConfigurationLoading ||
         isHelpCenterListLoading ||
         isChatIntegrationsStatusLoading ||
-        isPublicResourcesListLoading
+        isPublicResourcesListLoading ||
+        isStoresDomainLatestIngestionLogsLoading
 
     const activateStore = useActivateStore({
         isLoading: isFetchLoading,

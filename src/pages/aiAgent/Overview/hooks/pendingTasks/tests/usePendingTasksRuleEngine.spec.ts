@@ -16,6 +16,7 @@ import { useFetchFileIngestionData } from '../useFetchFileIngestionData'
 import { useFetchGuidancesData } from '../useFetchGuidancesData'
 import { useFetchPageInteractionsData } from '../useFetchPageInteractionsData'
 import { useFetchPublicResourcesData } from '../useFetchPublicResourcesData'
+import { useFetchStoreDomainIngestionLogsData } from '../useFetchStoreDomainIngestionLogsData'
 import { usePendingTasksRuleEngine } from '../usePendingTasksRuleEngine'
 import { useShopifyPermissionsData } from '../useShopifyPermissionsData'
 import { useTicketViewData } from '../useTicketViewData'
@@ -40,6 +41,12 @@ jest.mock('../useFetchPublicResourcesData', () => ({
     useFetchPublicResourcesData: jest.fn(),
 }))
 const useFetchPublicResourcesDataMock = assumeMock(useFetchPublicResourcesData)
+jest.mock('../useFetchStoreDomainIngestionLogsData', () => ({
+    useFetchStoreDomainIngestionLogsData: jest.fn(),
+}))
+const useFetchStoreDomainIngestionLogsDataMock = assumeMock(
+    useFetchStoreDomainIngestionLogsData,
+)
 jest.mock('../useFetchAiAgentStoreConfigurationData', () => ({
     useFetchAiAgentStoreConfigurationData: jest.fn(),
 }))
@@ -106,6 +113,11 @@ describe('usePendingTasksRuleEngine', () => {
     })
 
     useFetchPublicResourcesDataMock.mockReturnValue({
+        isLoading: false,
+        data: [],
+    })
+
+    useFetchStoreDomainIngestionLogsDataMock.mockReturnValue({
         isLoading: false,
         data: [],
     })

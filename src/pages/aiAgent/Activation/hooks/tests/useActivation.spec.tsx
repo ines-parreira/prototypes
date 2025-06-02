@@ -19,6 +19,7 @@ import { StoreConfiguration } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { AiAgentActivationModal } from 'pages/aiAgent/Activation/components/AiAgentActivationModal/AiAgentActivationModal'
 import { usePublicResourcesList } from 'pages/aiAgent/hooks/usePublicResourcesList'
+import { useStoresDomainIngestionLogs } from 'pages/aiAgent/hooks/useStoresDomainIngestionLogs'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
@@ -37,6 +38,11 @@ const useGetHelpCenterListMock = assumeMock(useGetHelpCenterList)
 
 jest.mock('pages/aiAgent/hooks/usePublicResourcesList')
 const usePublicResourcesListMock = assumeMock(usePublicResourcesList)
+
+jest.mock('pages/aiAgent/hooks/useStoresDomainIngestionLogs')
+const useStoresDomainIngestionLogsMock = assumeMock(
+    useStoresDomainIngestionLogs,
+)
 
 jest.mock('state/billing/selectors', () => ({
     ...jest.requireActual('state/billing/selectors'),
@@ -307,6 +313,9 @@ describe('useActivation', () => {
         })
         useGetHelpCenterListMock.mockReturnValue({ data: undefined } as any)
         usePublicResourcesListMock.mockReturnValue({ data: undefined } as any)
+        useStoresDomainIngestionLogsMock.mockReturnValue({
+            data: undefined,
+        } as any)
     })
 
     describe.each([

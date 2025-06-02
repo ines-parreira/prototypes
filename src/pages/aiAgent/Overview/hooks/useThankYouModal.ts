@@ -26,6 +26,7 @@ export const useThankYouModal = () => {
         pageName: window.location.pathname,
         withPublicResources: true,
         withChatIntegrationsStatus: true,
+        withStoresDomainIngestionLogs: true,
         storeName: shopName ?? undefined,
     })
     const activateShop = activation({ shopName })

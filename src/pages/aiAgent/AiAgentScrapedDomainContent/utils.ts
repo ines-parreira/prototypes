@@ -76,3 +76,11 @@ export const getTheLatestIngestionLog = (ingestionLogs?: IngestionLog[]) => {
 
     return latestIngestionLog
 }
+
+export const hasSuccessfullySyncedOnce = (ingestionLogs?: IngestionLog[]) => {
+    return (
+        ingestionLogs?.some(
+            (log) => !!log.latest_sync && log.status === 'SUCCESSFUL',
+        ) ?? false
+    )
+}

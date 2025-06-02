@@ -28,11 +28,13 @@ import { NotificationStatus } from 'state/notifications/types'
 import { reportError } from 'utils/errors'
 
 import SyncIngestionDomainBanner from './AiAgentScrapedDomainContent/SyncIngestionDomainBanner'
+import { hasSuccessfullySyncedOnce } from './AiAgentScrapedDomainContent/utils'
 import { ConfigurationSection } from './components/ConfigurationSection/ConfigurationSection'
 import { ScrapeStoreDomainSection } from './components/Knowledge/ScrapeStoreDomainSection'
 import { CreatePublicSourcesSection } from './components/StoreConfigForm/StoreConfigForm'
 import { INITIAL_FORM_VALUES, KNOWLEDGE } from './constants'
 import { useGetOrCreateSnippetHelpCenter } from './hooks/useGetOrCreateSnippetHelpCenter'
+import { useStoresDomainIngestionLogs } from './hooks/useStoresDomainIngestionLogs'
 import { getFormValuesFromStoreConfiguration } from './hooks/utils/configurationForm.utils'
 
 import css from './AiAgentKnowledgeContainer.less'
@@ -104,6 +106,10 @@ export const AiAgentKnowledgeContainer = () => {
     const { helpCenter: snippetHelpCenter } = useGetOrCreateSnippetHelpCenter({
         accountDomain,
         shopName,
+    })
+
+    const { data: storesDomainIngestionLogs } = useStoresDomainIngestionLogs({
+        storeNames: [shopName],
     })
 
     const selectedHelpCenter = faqHelpCenters.find((helpCenter) => {
@@ -178,7 +184,8 @@ export const AiAgentKnowledgeContainer = () => {
             publicUrls.length === 0 &&
             storeConfiguration?.helpCenterId === null &&
             (storeConfiguration?.emailChannelDeactivatedDatetime === null ||
-                storeConfiguration?.chatChannelDeactivatedDatetime === null)
+                storeConfiguration?.chatChannelDeactivatedDatetime === null) &&
+            !hasSuccessfullySyncedOnce(storesDomainIngestionLogs?.[shopName])
         ) {
             void deactivateAiAgent()
         }
@@ -189,6 +196,8 @@ export const AiAgentKnowledgeContainer = () => {
         storeConfiguration?.emailChannelDeactivatedDatetime,
         storeConfiguration?.chatChannelDeactivatedDatetime,
         storeConfiguration?.helpCenterId,
+        storesDomainIngestionLogs,
+        shopName,
     ])
 
     if (isStoreConfigLoading || isLoadingHelpCenters) {

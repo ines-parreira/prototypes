@@ -60,10 +60,41 @@ describe('store-configuration-validation', () => {
                 [],
                 false,
                 false,
+                undefined,
                 DEFAULT_OPTIONS,
             )
 
             expect(result).toEqual(VALID_FORM_VALUES)
+        })
+
+        it('should consider store scraping as a knowledge source', () => {
+            const formValues: FormValues = {
+                ...VALID_FORM_VALUES,
+                helpCenterId: null,
+                chatChannelDeactivatedDatetime: null,
+            }
+            const result = getValidStoreConfigurationFormValues(
+                formValues,
+                [],
+                false,
+                false,
+                [
+                    {
+                        latest_sync: '2021-01-01T00:00:00',
+                        status: 'SUCCESSFUL',
+                    },
+                ] as any,
+                {
+                    ...DEFAULT_OPTIONS,
+                    configurationPage: ConfigurationPage.SettingsChannels,
+                },
+            )
+
+            expect(result).toEqual({
+                ...VALID_FORM_VALUES,
+                chatChannelDeactivatedDatetime: null,
+                helpCenterId: null,
+            })
         })
 
         it('should rerun default values when no email and chat integrations and both channels disabled', () => {
@@ -86,6 +117,7 @@ describe('store-configuration-validation', () => {
                     [],
                     false,
                     false,
+                    undefined,
                     DEFAULT_OPTIONS,
                 ),
             ).toEqual(expected)
@@ -115,6 +147,7 @@ describe('store-configuration-validation', () => {
                     [],
                     false,
                     false,
+                    undefined,
                     DEFAULT_OPTIONS,
                 ),
             ).toEqual(expected)
@@ -132,6 +165,7 @@ describe('store-configuration-validation', () => {
                     [],
                     false,
                     false,
+                    undefined,
                     DEFAULT_OPTIONS,
                 ),
             ).toThrow(StoreConfigurationValidationMessage.SignatureLength)
@@ -150,6 +184,7 @@ describe('store-configuration-validation', () => {
                     [],
                     false,
                     false,
+                    undefined,
                     DEFAULT_OPTIONS,
                 ),
             ).toThrow(StoreConfigurationValidationMessage.SignatureEmpty)
@@ -171,6 +206,7 @@ describe('store-configuration-validation', () => {
                     [],
                     false,
                     false,
+                    undefined,
                     DEFAULT_OPTIONS,
                 ),
             ).toThrow(StoreConfigurationValidationMessage.FieldsMissing)
@@ -187,6 +223,7 @@ describe('store-configuration-validation', () => {
                     [],
                     false,
                     false,
+                    undefined,
                     DEFAULT_OPTIONS,
                 ),
             ).toThrow(StoreConfigurationValidationMessage.TagsEmpty)
@@ -204,6 +241,7 @@ describe('store-configuration-validation', () => {
                     [],
                     false,
                     false,
+                    undefined,
                     DEFAULT_OPTIONS,
                 ),
             ).toThrow(
@@ -225,6 +263,7 @@ describe('store-configuration-validation', () => {
                     [],
                     false,
                     false,
+                    undefined,
                     DEFAULT_OPTIONS,
                 ),
             ).toThrow(
@@ -247,6 +286,7 @@ describe('store-configuration-validation', () => {
                     [],
                     false,
                     false,
+                    undefined,
                     {
                         ...DEFAULT_OPTIONS,
                         configurationPage: ConfigurationPage.OnboardingWizard,
@@ -272,6 +312,7 @@ describe('store-configuration-validation', () => {
                     [],
                     false,
                     false,
+                    undefined,
                     {
                         ...DEFAULT_OPTIONS,
                         configurationPage: ConfigurationPage.SettingsChannels,
@@ -298,6 +339,7 @@ describe('store-configuration-validation', () => {
                     [],
                     false,
                     false,
+                    undefined,
                     {
                         ...DEFAULT_OPTIONS,
                         configurationPage: ConfigurationPage.SettingsChannels,
@@ -319,6 +361,7 @@ describe('store-configuration-validation', () => {
                     [],
                     false,
                     false,
+                    undefined,
                     {
                         ...DEFAULT_OPTIONS,
                     },
@@ -344,6 +387,7 @@ describe('store-configuration-validation', () => {
                         [],
                         false,
                         false,
+                        undefined,
                         {
                             ...DEFAULT_OPTIONS,
                             configurationPage:
@@ -369,6 +413,7 @@ describe('store-configuration-validation', () => {
                         [],
                         false,
                         false,
+                        undefined,
                         {
                             ...DEFAULT_OPTIONS,
                             configurationPage:
@@ -393,6 +438,7 @@ describe('store-configuration-validation', () => {
                         [],
                         false,
                         false,
+                        undefined,
                         {
                             ...DEFAULT_OPTIONS,
                             configurationPage:
@@ -416,6 +462,7 @@ describe('store-configuration-validation', () => {
                         [],
                         false,
                         false,
+                        undefined,
                         {
                             ...DEFAULT_OPTIONS,
                         },
@@ -435,6 +482,7 @@ describe('store-configuration-validation', () => {
                         [],
                         false,
                         false,
+                        undefined,
                         {
                             ...DEFAULT_OPTIONS,
                         },
@@ -454,6 +502,7 @@ describe('store-configuration-validation', () => {
                         [],
                         false,
                         false,
+                        undefined,
                         {
                             ...DEFAULT_OPTIONS,
                         },
@@ -476,6 +525,7 @@ describe('store-configuration-validation', () => {
                         [],
                         false,
                         true,
+                        undefined,
                         {
                             ...DEFAULT_OPTIONS,
                             isAiAgentChatEnabled: true,
@@ -502,6 +552,7 @@ describe('store-configuration-validation', () => {
                         [],
                         false,
                         false,
+                        undefined,
                         {
                             ...DEFAULT_OPTIONS,
                             isAiAgentChatEnabled: true,

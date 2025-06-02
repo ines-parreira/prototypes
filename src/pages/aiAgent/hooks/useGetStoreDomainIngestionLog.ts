@@ -1,7 +1,10 @@
 import { useEffect, useMemo } from 'react'
 
+import { UseQueryOptions } from '@tanstack/react-query'
+
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useGetIngestionLogs } from 'models/helpCenter/queries'
+import { getIngestionLogs } from 'models/helpCenter/resources'
 import { reportError } from 'utils/errors'
 
 import {
@@ -14,10 +17,12 @@ export const useGetStoreDomainIngestionLog = ({
     helpCenterId,
     storeUrl,
     shouldPoll = false,
+    overrides,
 }: {
     helpCenterId: number
     storeUrl: string | null
     shouldPoll?: boolean
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof getIngestionLogs>>>
 }) => {
     const {
         data: ingestionLogs,
@@ -41,6 +46,7 @@ export const useGetStoreDomainIngestionLog = ({
                     ? POLLING_INTERVAL
                     : false
             },
+            ...overrides,
         },
     )
 

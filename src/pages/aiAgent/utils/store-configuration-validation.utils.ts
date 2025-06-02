@@ -1,5 +1,7 @@
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 
+import { IngestionLog } from '../AiAgentScrapedDomainContent/types'
+import { hasSuccessfullySyncedOnce } from '../AiAgentScrapedDomainContent/utils'
 import {
     AiAgentChannel,
     CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
@@ -67,6 +69,7 @@ export const getValidStoreConfigurationFormValues = (
     publicUrls: string[] | null | undefined,
     hasExternalFiles: boolean,
     hasUninstalledChatIntegration: boolean,
+    storeDomainIngestionLogs: IngestionLog[] | undefined,
     opts: {
         configurationPage?: ConfigurationPage
         isAiAgentChatEnabled: boolean | undefined
@@ -209,7 +212,8 @@ export const getValidStoreConfigurationFormValues = (
     const isKnowledgeMissing =
         formValues.helpCenterId === null &&
         !hasExternalFiles &&
-        (!publicUrls || publicUrls.length === 0)
+        (!publicUrls || publicUrls.length === 0) &&
+        !hasSuccessfullySyncedOnce(storeDomainIngestionLogs)
 
     if (
         isKnowledgeMissing &&
