@@ -360,6 +360,88 @@ export const supportedLanguages = [
 ] as const
 export type LanguageCode = (typeof supportedLanguages)[number]['code']
 
+export type LlmPromptTrigger = {
+    kind: 'llm-prompt'
+    settings: {
+        custom_inputs: {
+            id: string
+            name: string
+            instructions: string
+            data_type: 'string' | 'number' | 'date' | 'boolean'
+        }[]
+        object_inputs: (
+            | {
+                  kind: 'customer'
+                  integration_id: number | string
+              }
+            | {
+                  kind: 'order'
+                  integration_id: number | string
+              }
+            | {
+                  kind: 'order-shipmonk'
+                  integration_id: number | string
+              }
+            | {
+                  kind: 'product'
+                  integration_id: number | string
+                  name: string
+                  instructions: string
+                  id: string
+              }
+            | { kind: 'order-shipmonk'; integration_id: number }
+            | { kind: 'order-3pl'; integration_id: number }
+        )[]
+        conditions?: ConditionsSchema | null
+        outputs: {
+            id: string
+            description: string
+            path: string
+        }[]
+    }
+}
+
+export type ReusableLLMPromptTrigger = {
+    kind: 'reusable-llm-prompt'
+    settings: {
+        custom_inputs: {
+            id: string
+            name: string
+            instructions: string
+            data_type: 'string' | 'number' | 'date' | 'boolean'
+        }[]
+        object_inputs: (
+            | {
+                  kind: 'customer'
+              }
+            | {
+                  kind: 'order'
+              }
+            | {
+                  kind: 'product'
+                  name: string
+                  instructions: string
+                  id: string
+              }
+            | {
+                  kind: 'order_shipmonk'
+                  integration_id: number
+              }
+            | {
+                  kind: 'order-3pl'
+                  integration_id: number
+              }
+        )[]
+        outputs: {
+            id: string
+            name: string
+            description: string
+            path: string
+            data_type?: 'string' | 'number' | 'date' | 'boolean' | null
+        }[]
+    }
+}
+
 export type WorkflowConfiguration = {
     id: string
     internal_id: string
@@ -373,91 +455,8 @@ export type WorkflowConfiguration = {
         label_tkey: string
     } | null
     triggers?: (
-        | {
-              kind: 'llm-prompt'
-              settings: {
-                  custom_inputs: {
-                      id: string
-                      name: string
-                      instructions: string
-                      data_type: 'string' | 'number' | 'date' | 'boolean'
-                  }[]
-                  object_inputs: (
-                      | {
-                            kind: 'customer'
-                            integration_id: number | string
-                        }
-                      | {
-                            kind: 'order'
-                            integration_id: number | string
-                        }
-                      | {
-                            kind: 'order-shipmonk'
-                            integration_id: number | string
-                        }
-                      | {
-                            kind: 'product'
-                            integration_id: number | string
-                            name: string
-                            instructions: string
-                            id: string
-                        }
-                      | { kind: 'order-shipmonk'; integration_id: number }
-                      | { kind: 'order-3pl'; integration_id: number }
-                  )[]
-                  conditions?: ConditionsSchema | null
-                  outputs: {
-                      id: string
-                      description: string
-                      path: string
-                  }[]
-              }
-          }
-        | {
-              kind: 'reusable-llm-prompt'
-              settings: {
-                  custom_inputs: {
-                      id: string
-                      name: string
-                      instructions: string
-                      data_type: 'string' | 'number' | 'date' | 'boolean'
-                  }[]
-                  object_inputs: (
-                      | {
-                            kind: 'customer'
-                        }
-                      | {
-                            kind: 'order'
-                        }
-                      | {
-                            kind: 'product'
-                            name: string
-                            instructions: string
-                            id: string
-                        }
-                      | {
-                            kind: 'order_shipmonk'
-                            integration_id: number
-                        }
-                      | {
-                            kind: 'order-3pl'
-                            integration_id: number
-                        }
-                  )[]
-                  outputs: {
-                      id: string
-                      name: string
-                      description: string
-                      path: string
-                      data_type?:
-                          | 'string'
-                          | 'number'
-                          | 'date'
-                          | 'boolean'
-                          | null
-                  }[]
-              }
-          }
+        | LlmPromptTrigger
+        | ReusableLLMPromptTrigger
         | {
               kind: 'channel'
               settings: Record<string, unknown>

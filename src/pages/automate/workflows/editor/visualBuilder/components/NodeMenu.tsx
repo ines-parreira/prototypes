@@ -5,21 +5,16 @@ import React, {
     Ref,
     RefObject,
     SetStateAction,
+    useCallback,
     useEffect,
     useMemo,
     useState,
 } from 'react'
 
-import _ from 'lodash'
 import _isNil from 'lodash/isNil'
-import _keyBy from 'lodash/keyBy'
+import { DropdownItem } from 'reactstrap'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
-import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
-import { useStoreAppsContext } from 'pages/aiAgent/actions/providers/StoreAppsContext'
 import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useEnabledActionStepsByApp from 'pages/automate/actionsPlatform/hooks/useEnabledActionStepsByApp'
 import { useSelfServiceStoreIntegrationContext } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import VisualBuilderActionIcon from 'pages/automate/workflows/components/VisualBuilderActionIcon'
@@ -33,14 +28,18 @@ import {
     hasParentNodeInPath,
     isNodeUniquePerPath,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import {
+    ReusableLLMPromptTrigger,
+    WorkflowConfiguration,
+} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 
+import { Components } from '../../../../../../rest_api/workflows_api/client.generated'
+import { App } from '../../../../actionsPlatform/types'
 import MenuCategoryItem from './MenuCategoryItem'
 import MenuItem from './MenuItem'
-import MenuSkeletonItem from './MenuSkeletonItem'
 
 import css from './NodeMenu.less'
 
@@ -975,6 +974,62 @@ const ReusableLLMPromptCallMenuItem = ({
     )
 }
 
+const AppCategoryItem = ({
+    app,
+    steps,
+    setMenuItems,
+    nodeId,
+}: {
+    app: App
+    steps: Components.Schemas.ListWfConfigurationTemplatesResponseDto
+    setMenuItems: Dispatch<SetStateAction<ReactNode>>
+    nodeId: string
+}) => {
+    const handleClick = useCallback(() => {
+        setMenuItems((prevState) => (
+            <>
+                <DropdownHeader
+                    prefix={<i className="material-icons">arrow_back</i>}
+                    onClick={() => {
+                        setMenuItems(prevState)
+                    }}
+                    className={css.header}
+                >
+                    {app.name}
+                </DropdownHeader>
+                <DropdownBody>
+                    {steps.map((step) => (
+                        <ReusableLLMPromptCallMenuItem
+                            key={step.id}
+                            nodeId={nodeId}
+                            label={step.name}
+                            icon={<AppIcon icon={app.icon} name={app.name} />}
+                            configurationId={step.id}
+                            configurationInternalId={step.internal_id}
+                            trigger={
+                                step.triggers[0]
+                                    .settings as ReusableLLMPromptTrigger['settings']
+                            }
+                            entrypoint={step.entrypoints[0].settings}
+                            app={step.apps[0]}
+                            values={step.values}
+                        />
+                    ))}
+                </DropdownBody>
+            </>
+        ))
+    }, [app, nodeId, setMenuItems, steps])
+
+    return (
+        <MenuCategoryItem
+            key={app.id}
+            icon={<AppIcon icon={app.icon} name={app.name} />}
+            label={app.name}
+            onClick={handleClick}
+        />
+    )
+}
+
 const AppMenuCategoryItems = ({
     nodeId,
     setMenuItems,
@@ -983,124 +1038,40 @@ const AppMenuCategoryItems = ({
     setMenuItems: Dispatch<SetStateAction<ReactNode>>
 }) => {
     const { visualBuilderGraph } = useVisualBuilderContext()
-    const { data: steps = [] } = useGetWorkflowConfigurationTemplates({
-        triggers: ['reusable-llm-prompt'],
-    })
 
-    const { apps } = useApps()
-    const { recharge: rechargeIntegration } = useStoreAppsContext()
-
-    const appsById = _keyBy(apps, 'id')
-
-    const stepsByApp = useEnabledActionStepsByApp(steps)
-
+    const { stepsByUsefulness, appsById } = useEnabledActionStepsByApp(
+        visualBuilderGraph.isTemplate,
+    )
     return (
         <>
-            {Object.entries(stepsByApp).map(([appId, steps]) => {
-                const app = appsById[appId]
-
-                if (
-                    visualBuilderGraph.isTemplate &&
-                    _isNil(visualBuilderGraph.category) &&
-                    !visualBuilderGraph.apps?.some((templateApp) => {
-                        switch (templateApp.type) {
-                            case 'shopify':
-                            case 'recharge':
-                                return templateApp.type === app.type
-                            case 'app':
-                                return (
-                                    templateApp.type === app.type &&
-                                    templateApp.app_id === app.id
-                                )
-                        }
-                    })
-                ) {
-                    return null
-                }
-
-                if (!app) {
-                    return <MenuSkeletonItem key={appId} />
-                }
-
-                if (
-                    app.type === 'recharge' &&
-                    !visualBuilderGraph.isTemplate &&
-                    !rechargeIntegration
-                ) {
-                    return null
-                }
-
-                return (
-                    <MenuCategoryItem
-                        key={appId}
-                        icon={<AppIcon icon={app.icon} name={app.name} />}
-                        label={app.name}
-                        onClick={() => {
-                            setMenuItems((prevState) => (
-                                <>
-                                    <DropdownHeader
-                                        prefix={
-                                            <i className="material-icons">
-                                                arrow_back
-                                            </i>
-                                        }
-                                        onClick={() => {
-                                            setMenuItems(prevState)
-                                        }}
-                                        className={css.header}
-                                    >
-                                        {app.name}
-                                    </DropdownHeader>
-                                    <DropdownBody>
-                                        {steps
-                                            .map((step) =>
-                                                _.isEmpty(
-                                                    step.triggers[0].settings,
-                                                ) ? null : (
-                                                    <ReusableLLMPromptCallMenuItem
-                                                        key={step.id}
-                                                        nodeId={nodeId}
-                                                        label={step.name}
-                                                        icon={
-                                                            <AppIcon
-                                                                icon={app.icon}
-                                                                name={app.name}
-                                                            />
-                                                        }
-                                                        configurationId={
-                                                            step.id
-                                                        }
-                                                        configurationInternalId={
-                                                            step.internal_id
-                                                        }
-                                                        trigger={
-                                                            step.triggers[0]
-                                                                .settings as Extract<
-                                                                NonNullable<
-                                                                    WorkflowConfiguration['triggers']
-                                                                >[number],
-                                                                {
-                                                                    kind: 'reusable-llm-prompt'
-                                                                }
-                                                            >['settings']
-                                                        }
-                                                        entrypoint={
-                                                            step.entrypoints[0]
-                                                                .settings
-                                                        }
-                                                        app={step.apps[0]}
-                                                        values={step.values}
-                                                    />
-                                                ),
-                                            )
-                                            .filter(Boolean)}
-                                    </DropdownBody>
-                                </>
-                            ))
-                        }}
-                    />
-                )
-            })}
+            {stepsByUsefulness.used.length > 0 && (
+                <DropdownItem header className="text-uppercase">
+                    Relevant for you
+                </DropdownItem>
+            )}
+            {stepsByUsefulness.used.map(([appId, steps]) => (
+                <AppCategoryItem
+                    key={appId}
+                    nodeId={nodeId}
+                    setMenuItems={setMenuItems}
+                    app={appsById[appId]}
+                    steps={steps}
+                />
+            ))}
+            {stepsByUsefulness.unused.length > 0 && (
+                <DropdownItem header className="text-uppercase">
+                    Other Apps
+                </DropdownItem>
+            )}
+            {stepsByUsefulness.unused.map(([appId, steps]) => (
+                <AppCategoryItem
+                    key={appId}
+                    nodeId={nodeId}
+                    setMenuItems={setMenuItems}
+                    app={appsById[appId]}
+                    steps={steps}
+                />
+            ))}
         </>
     )
 }
@@ -1111,10 +1082,6 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
     const triggerNode = visualBuilderGraph.nodes[0]
 
     const [menuItems, setMenuItems] = useState<ReactNode>(null)
-
-    const isSimplifiedStepBuilderEnabled = useFlag(
-        FeatureFlagKey.SimplifiedStepBuilder,
-    )
 
     const initialMenuItems = useMemo<ReactNode>(() => {
         switch (triggerNode.type) {
@@ -1186,9 +1153,11 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
             case 'llm_prompt_trigger':
                 return (
                     <DropdownBody>
-                        {(!!visualBuilderGraph.advanced_datetime ||
-                            !isSimplifiedStepBuilderEnabled) && (
+                        {!!visualBuilderGraph.advanced_datetime && (
                             <>
+                                <DropdownItem header className="text-uppercase">
+                                    Custom
+                                </DropdownItem>
                                 <HttpRequestMenuItem
                                     nodeId={nodeId}
                                     floatingRef={floatingRef}
@@ -1226,7 +1195,6 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
         triggerNode.type,
         visualBuilderGraph.advanced_datetime,
         visualBuilderGraph.category,
-        isSimplifiedStepBuilderEnabled,
     ])
 
     useEffect(() => {

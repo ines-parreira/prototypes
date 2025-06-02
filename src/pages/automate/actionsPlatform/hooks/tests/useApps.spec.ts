@@ -51,6 +51,7 @@ describe('useApps()', () => {
                     id: 'someid',
                     name: 'My test app',
                     type: 'app',
+                    installed: false,
                 },
             ],
             actionsApps: [],
@@ -104,6 +105,7 @@ describe('useApps()', () => {
                     id: 'someid',
                     name: 'My test app',
                     type: 'app',
+                    installed: false,
                 },
             ],
             actionsApps: [
@@ -139,6 +141,7 @@ describe('useApps()', () => {
                     id: 'someid',
                     name: 'My test app',
                     type: 'app',
+                    installed: false,
                 },
             ],
             actionsApps: [],

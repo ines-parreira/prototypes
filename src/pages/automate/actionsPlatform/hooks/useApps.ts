@@ -59,7 +59,9 @@ const useApps = <T extends App['type'] = App['type']>(
 
     const appQueries = useGetAppsByIds(missingApps)
 
-    const apps = useMemo<Extract<App, { type: T }>[]>(
+    const apps = useMemo<
+        Array<Extract<App & { installed?: boolean }, { type: T }>>
+    >(
         () =>
             [
                 ...NATIVE_APPS,
@@ -68,6 +70,7 @@ const useApps = <T extends App['type'] = App['type']>(
                     type: IntegrationType.App as const,
                     name: actionsAppsById[item.id]?.name || item.name,
                     icon: item.app_icon,
+                    installed: item.is_installed,
                 })),
                 ...appQueries
                     .filter(
@@ -79,6 +82,7 @@ const useApps = <T extends App['type'] = App['type']>(
                         type: IntegrationType.App as const,
                         name: actionsAppsById[data.id]?.name || data.name,
                         icon: data.app_icon,
+                        installed: data.is_installed,
                     })),
             ].filter((app): app is Extract<App, { type: T }> =>
                 types.includes(app.type as T),
