@@ -7,9 +7,11 @@ import { Label } from '@gorgias/merchant-ui-kit'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { OBJECT_TYPES } from 'custom-fields/constants'
+import { useCustomFieldConditions } from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { CustomField } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
+import { populateConditionalFieldIds } from 'pages/aiAgent/hooks/utils/add-conditional-custom-field-ids-based-on-conditions.util'
 import { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import { Value } from 'pages/common/forms/SelectField/types'
 import SelectFilter from 'pages/stats/common/SelectFilter'
@@ -38,6 +40,12 @@ export const CustomFieldsFormComponent = ({
     } = useCustomFieldDefinitions({
         archived: false,
         object_type: OBJECT_TYPES.TICKET,
+    })
+
+    const { customFieldConditions = [] } = useCustomFieldConditions({
+        objectType: OBJECT_TYPES.TICKET,
+        includeDeactivated: false,
+        enabled: true,
     })
 
     const {
@@ -76,9 +84,13 @@ export const CustomFieldsFormComponent = ({
     // Update selected custom fields via custom hook
     const handleCustomFieldSelectionUpdate = useCallback(
         (newValues: Value[]) => {
-            setSelectedFields(newValues)
+            const conditionalFields = populateConditionalFieldIds(
+                customFieldConditions ?? [],
+                newValues as number[],
+            )
+            setSelectedFields([...newValues, ...conditionalFields])
         },
-        [setSelectedFields],
+        [setSelectedFields, customFieldConditions],
     )
 
     // When closing the SelectFilter, update the parent state and clear the local selection
@@ -98,12 +110,33 @@ export const CustomFieldsFormComponent = ({
     // Remove a custom field from store configuration
     const handleCustomFieldRemovalFromStoreConfiguration = useCallback(
         (id: number) => {
-            updateValue('customFieldIds', [
-                ...(customFieldIds?.filter((fieldId) => id !== fieldId) ?? []),
-            ])
+            const dependantConditionalCustomFields: CustomField['id'][] = []
+
+            customFieldConditions
+                .filter((condition) =>
+                    condition.expression.some(
+                        (expression) => expression.field === id,
+                    ),
+                )
+                .forEach((condition) =>
+                    condition.requirements.forEach((requirement) =>
+                        dependantConditionalCustomFields.push(
+                            requirement.field_id,
+                        ),
+                    ),
+                )
+
+            const newCustomFieldIds =
+                customFieldIds?.filter(
+                    (fieldId) =>
+                        fieldId !== id &&
+                        !dependantConditionalCustomFields.includes(fieldId),
+                ) ?? []
+
+            updateValue('customFieldIds', newCustomFieldIds)
             removeField(id)
         },
-        [customFieldIds, updateValue, removeField],
+        [customFieldIds, updateValue, removeField, customFieldConditions],
     )
 
     // Enable or disable the SelectFilter based on available options

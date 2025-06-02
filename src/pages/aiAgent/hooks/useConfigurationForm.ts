@@ -135,6 +135,7 @@ export const useConfigurationForm = ({
         onSuccess?: () => void
     }) => {
         const isUpdate = !!storeConfiguration
+
         const enrichedFormValues = {
             ...formValues,
             ...payload,

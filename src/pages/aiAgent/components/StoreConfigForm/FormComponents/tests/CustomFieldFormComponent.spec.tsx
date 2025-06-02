@@ -1,22 +1,32 @@
+import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, within } from '@testing-library/react'
 
-import { RequirementType } from '@gorgias/helpdesk-queries'
+import {
+    CustomFieldCondition,
+    RequirementType,
+} from '@gorgias/helpdesk-queries'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
+import { useCustomFieldConditions } from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { CustomField } from 'custom-fields/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { CustomFieldsFormComponent, Props } from '../CustomFieldsFormComponent'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
+jest.mock('custom-fields/hooks/queries/useCustomFieldConditions')
 
 jest.mock('utils/errors')
 jest.mock('state/notifications/actions')
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 
+const queryClient = mockQueryClient()
+
 describe('CustomFieldsFormComponent', () => {
     const updateValueMock = jest.fn()
     const useCustomFieldDefinitionsMock = jest.mocked(useCustomFieldDefinitions)
+    const useCustomFieldConditionsMock = jest.mocked(useCustomFieldConditions)
     const mockProps = {
         isStoreCreated: true,
         customFieldIds: [1],
@@ -59,12 +69,21 @@ describe('CustomFieldsFormComponent', () => {
                 ] as CustomField[],
             },
         })
+
+        useCustomFieldConditionsMock.mockReturnValue({
+            customFieldConditions: [] as CustomFieldCondition[],
+            isLoading: false,
+            isError: false,
+        })
+
         test('Should automatically render store configuration stored custom fields', () => {
             const { container } = render(
-                <CustomFieldsFormComponent {...mockProps} />,
+                <QueryClientProvider client={queryClient}>
+                    <CustomFieldsFormComponent {...mockProps} />,
+                </QueryClientProvider>,
             )
 
-            const inputs = within(container).getAllByLabelText(
+            const inputs = within(container).getAllByTestId(
                 'custom-field-disabled-input',
             )
 
@@ -73,10 +92,12 @@ describe('CustomFieldsFormComponent', () => {
         })
         test('Each store configuration custom field can be delete through the delete button next to it', () => {
             const { container, queryByTestId, rerender } = render(
-                <CustomFieldsFormComponent {...mockProps} />,
+                <QueryClientProvider client={queryClient}>
+                    <CustomFieldsFormComponent {...mockProps} />,
+                </QueryClientProvider>,
             )
 
-            const deleteButton = within(container).getByLabelText(
+            const deleteButton = within(container).getByTestId(
                 'custom-field-disabled-input-delete-button',
             )
             fireEvent.click(deleteButton)
@@ -88,10 +109,13 @@ describe('CustomFieldsFormComponent', () => {
             )
 
             rerender(
-                <CustomFieldsFormComponent
-                    {...mockProps}
-                    customFieldIds={[]}
-                />,
+                <QueryClientProvider client={queryClient}>
+                    <CustomFieldsFormComponent
+                        {...mockProps}
+                        customFieldIds={[]}
+                    />
+                    ,
+                </QueryClientProvider>,
             )
 
             expect(
@@ -100,10 +124,13 @@ describe('CustomFieldsFormComponent', () => {
         })
         test('Non currently stored custom fields but that are required should be auto selected on store creation', () => {
             render(
-                <CustomFieldsFormComponent
-                    {...mockProps}
-                    isStoreCreated={false}
-                />,
+                <QueryClientProvider client={queryClient}>
+                    <CustomFieldsFormComponent
+                        {...mockProps}
+                        isStoreCreated={false}
+                    />
+                    ,
+                </QueryClientProvider>,
             )
 
             expect(updateValueMock).toHaveBeenNthCalledWith(
@@ -116,7 +143,9 @@ describe('CustomFieldsFormComponent', () => {
     describe('Select filter', () => {
         test('The select filter component is rendered with "Add Ticket Fields" as its title"', () => {
             const { container } = render(
-                <CustomFieldsFormComponent {...mockProps} />,
+                <QueryClientProvider client={queryClient}>
+                    <CustomFieldsFormComponent {...mockProps} />,
+                </QueryClientProvider>,
             )
 
             expect(
@@ -125,7 +154,9 @@ describe('CustomFieldsFormComponent', () => {
         })
         test('The search placeholder should be "Search Ticket Fields"', () => {
             const { container } = render(
-                <CustomFieldsFormComponent {...mockProps} />,
+                <QueryClientProvider client={queryClient}>
+                    <CustomFieldsFormComponent {...mockProps} />,
+                </QueryClientProvider>,
             )
 
             const dropDownButton =
@@ -143,7 +174,9 @@ describe('CustomFieldsFormComponent', () => {
         describe('On close', () => {
             test('Selected fields should be appended to the store configuration custom fields', () => {
                 const { container } = render(
-                    <CustomFieldsFormComponent {...mockProps} />,
+                    <QueryClientProvider client={queryClient}>
+                        <CustomFieldsFormComponent {...mockProps} />,
+                    </QueryClientProvider>,
                 )
 
                 const toggleButton =
@@ -165,7 +198,9 @@ describe('CustomFieldsFormComponent', () => {
             })
             test('Selected fields should not re-appear in available selectable custom fields', () => {
                 const { container } = render(
-                    <CustomFieldsFormComponent {...mockProps} />,
+                    <QueryClientProvider client={queryClient}>
+                        <CustomFieldsFormComponent {...mockProps} />,
+                    </QueryClientProvider>,
                 )
 
                 expect(within(container).queryByLabelText('Returns')).toBeNull()
@@ -174,10 +209,13 @@ describe('CustomFieldsFormComponent', () => {
         describe('All selectable custom fields have been checked', () => {
             test('The add button should be disabled', () => {
                 const { container } = render(
-                    <CustomFieldsFormComponent
-                        {...mockProps}
-                        customFieldIds={[1, 2, 3]}
-                    />,
+                    <QueryClientProvider client={queryClient}>
+                        <CustomFieldsFormComponent
+                            {...mockProps}
+                            customFieldIds={[1, 2, 3]}
+                        />
+                        ,
+                    </QueryClientProvider>,
                 )
 
                 expect(
@@ -185,6 +223,82 @@ describe('CustomFieldsFormComponent', () => {
                         name: 'Add Ticket Field',
                     }),
                 ).toBeDisabled()
+            })
+        })
+        describe('Custom field removal with conditions', () => {
+            test('If a conditional custom field depends on another one that is removed, all should be removed', () => {
+                useCustomFieldDefinitionsMock.mockReturnValue({
+                    // @ts-expect-error We do not care about other properties for those tests
+                    data: {
+                        data: [
+                            {
+                                id: 1,
+                                label: 'Returns',
+                                required: false,
+                                managed_type: null,
+                                requirement_type: RequirementType.Visible,
+                                object_type: OBJECT_TYPES.TICKET,
+                            },
+                            {
+                                id: 2,
+                                label: 'WISMO',
+                                required: true,
+                                managed_type: null,
+                                requirement_type: RequirementType.Conditional,
+                                object_type: OBJECT_TYPES.TICKET,
+                            },
+                        ] as CustomField[],
+                    },
+                })
+                useCustomFieldConditionsMock.mockReturnValue({
+                    customFieldConditions: [
+                        {
+                            id: 1,
+                            expression: [
+                                {
+                                    field: 1,
+                                    field_source: 'Ticket',
+                                    operator: 'is',
+                                    values: ['test'],
+                                },
+                            ],
+                            requirements: [
+                                {
+                                    field_id: 2,
+                                    type: 'visible',
+                                },
+                            ],
+                        },
+                    ] as CustomFieldCondition[],
+                    isLoading: false,
+                    isError: false,
+                })
+                const { queryAllByTestId, getByTestId } = render(
+                    <QueryClientProvider client={queryClient}>
+                        <CustomFieldsFormComponent
+                            {...mockProps}
+                            customFieldIds={[1, 2]}
+                        />
+                        ,
+                    </QueryClientProvider>,
+                )
+
+                const selectedCustomFields = queryAllByTestId(
+                    'custom-fields-disabled-input-container',
+                )
+
+                // Only one selected custom field disabled input should be displayed as the second custom field is a conditional one
+                expect(selectedCustomFields.length).toBe(1)
+
+                fireEvent.click(
+                    getByTestId('custom-field-disabled-input-delete-button'),
+                )
+
+                expect(updateValueMock).toHaveBeenNthCalledWith(
+                    1,
+                    'customFieldIds',
+                    [],
+                )
             })
         })
     })
@@ -195,10 +309,12 @@ describe('CustomFieldsFormComponent', () => {
                 error: 'Something bad happened',
             })
             const { container } = render(
-                <CustomFieldsFormComponent
-                    {...mockProps}
-                    customFieldIds={[1, 2, 3]}
-                />,
+                <QueryClientProvider client={queryClient}>
+                    <CustomFieldsFormComponent
+                        {...mockProps}
+                        customFieldIds={[1, 2, 3]}
+                    />
+                </QueryClientProvider>,
             )
 
             expect(container.innerHTML).toEqual('')

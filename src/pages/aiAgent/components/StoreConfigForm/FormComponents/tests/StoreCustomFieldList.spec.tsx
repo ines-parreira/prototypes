@@ -30,7 +30,7 @@ describe('StoreCustomFieldComponent', () => {
                 onDelete={mockOnDelete}
             />,
         )
-        const input = screen.getByLabelText(
+        const input = screen.getByTestId(
             'custom-field-disabled-input',
         ) as HTMLInputElement
         expect(input).toBeInTheDocument()
@@ -44,7 +44,7 @@ describe('StoreCustomFieldComponent', () => {
                 onDelete={mockOnDelete}
             />,
         )
-        const deleteButton = screen.getByLabelText(
+        const deleteButton = screen.getByTestId(
             'custom-field-disabled-input-delete-button',
         )
         fireEvent.click(deleteButton)
@@ -97,7 +97,7 @@ describe('StoreCustomFieldsList', () => {
                 onDelete={mockOnDelete}
             />,
         )
-        const deleteButton = screen.getByLabelText(
+        const deleteButton = screen.getByTestId(
             'custom-field-disabled-input-delete-button',
         )
         fireEvent.click(deleteButton)

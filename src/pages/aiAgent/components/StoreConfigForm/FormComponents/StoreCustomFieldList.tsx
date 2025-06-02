@@ -19,20 +19,20 @@ export const StoreCustomFieldComponent = ({
         <div
             className={css.ticketFieldRowContainer}
             key={id}
-            aria-label="custom-fields-disabled-input-container"
+            data-testid="custom-fields-disabled-input-container"
         >
             <InputField
                 className={css.ticketFieldInput}
                 value={label}
                 isDisabled={true}
-                aria-label="custom-field-disabled-input"
+                data-testid="custom-field-disabled-input"
             />
             <IconButton
                 icon="close"
                 intent="destructive"
                 fillStyle="ghost"
                 onClick={onDelete}
-                aria-label="custom-field-disabled-input-delete-button"
+                data-testid="custom-field-disabled-input-delete-button"
             />
         </div>
     )
