@@ -38,6 +38,7 @@ const IconLink = ({
                     <i
                         className={classnames(
                             'material-icons mr-2',
+
                             iconClassNames,
                         )}
                     >

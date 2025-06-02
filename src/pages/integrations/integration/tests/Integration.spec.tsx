@@ -52,9 +52,10 @@ jest.mock(
     '../components/email/EmailIntegrationCreate/EmailIntegrationCreate',
     () => () => <div>EmailIntegrationCreate</div>,
 )
-jest.mock('../components/email/EmailIntegrationOnboarding', () => () => (
-    <div>EmailIntegrationOnboarding</div>
-))
+jest.mock(
+    '../components/email/CustomerOnboarding/EmailIntegrationOnboarding',
+    () => () => <div>EmailIntegrationOnboarding</div>,
+)
 jest.mock(
     '../components/email/EmailIntegrationCreateForwarding/EmailIntegrationCreateForwarding',
     () => () => <div>EmailIntegrationCreateForwarding</div>,
@@ -68,7 +69,8 @@ jest.mock(
     () =>
         ({ children }: any) => (
             <div>
-                EmailIntegrationUpdateLayout<div>{children}</div>
+                EmailIntegrationUpdateLayout
+                <div>{children}</div>
             </div>
         ),
 )

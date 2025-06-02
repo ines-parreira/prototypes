@@ -48,14 +48,14 @@ describe('<EmailIntegrationCreate/>', () => {
     })
 
     it('should render Email integrations documentation link with correct URL', () => {
-        const docsLink = screen.getByText('Email integrations')
+        const docsLink = screen.getByText('Email Forwarding')
 
         expect(docsLink).toBeInTheDocument()
 
         const linkElement = docsLink.closest('a')
         expect(linkElement).toHaveAttribute(
             'href',
-            'https://docs.gorgias.com/en-US/email-integrations-81753#find-out-who-your-provider-is',
+            'https://link.gorgias.com/121af4',
         )
 
         expect(linkElement).toHaveAttribute('target', '_blank')

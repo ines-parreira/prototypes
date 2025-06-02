@@ -2,6 +2,7 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
@@ -11,32 +12,37 @@ import thunk from 'redux-thunk'
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { FeatureFlagKey } from 'config/featureFlags'
-import { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
-
-import DomainVerificationProvider from '../EmailDomainVerification/DomainVerificationProvider'
-import EmailDomainVerificationSupportContentSidebar from '../EmailDomainVerification/EmailDomainVerificationSupportContentSidebar'
-import EmailIntegrationOnboarding from '../EmailIntegrationOnboarding'
-import EmailIntegrationOnboardingDomainVerification from '../EmailIntegrationOnboardingDomainVerification'
-import { getDomainFromEmailAddress } from '../helpers'
+import EmailIntegrationOnboarding from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboarding'
+import EmailIntegrationOnboardingDomainVerification from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingDomainVerification'
+import DomainVerificationProvider from 'pages/integrations/integration/components/email/EmailDomainVerification/DomainVerificationProvider'
+import EmailDomainVerificationSupportContentSidebar from 'pages/integrations/integration/components/email/EmailDomainVerification/EmailDomainVerificationSupportContentSidebar'
+import { getDomainFromEmailAddress } from 'pages/integrations/integration/components/email/helpers'
 import {
     EmailIntegrationOnboardingStep,
     useEmailOnboarding,
     UseEmailOnboardingHookResult,
-} from '../hooks/useEmailOnboarding'
+} from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
-jest.mock('../EmailDomainVerification/DomainVerificationProvider')
-jest.mock('../hooks/useEmailOnboarding')
 jest.mock(
-    '../BaseEmailIntegrationInputField',
+    'pages/integrations/integration/components/email/EmailDomainVerification/DomainVerificationProvider',
+)
+jest.mock(
+    'pages/integrations/integration/components/email/hooks/useEmailOnboarding',
+)
+jest.mock(
+    'pages/integrations/integration/components/email/BaseEmailIntegrationInputField',
     () => () => '<BaseEmailIntegrationInputField />',
 )
-jest.mock('../helpers')
+jest.mock('pages/integrations/integration/components/email/helpers')
 jest.mock(
-    '../EmailDomainVerification/EmailDomainVerificationSupportContentSidebar',
+    'pages/integrations/integration/components/email/EmailDomainVerification/EmailDomainVerificationSupportContentSidebar',
 )
-jest.mock('../EmailIntegrationOnboardingDomainVerification')
+jest.mock(
+    'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingDomainVerification',
+)
 
 const mockStore = createMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const queryClient = mockQueryClient()
@@ -51,7 +57,27 @@ const EmailIntegrationOnboardingDomainVerificationMock = assumeMock(
     EmailIntegrationOnboardingDomainVerification,
 )
 
-const store = mockStore({})
+const store = mockStore({
+    currentAccount: fromJS({
+        current_subscription: {
+            products: {},
+        },
+    }),
+    billing: fromJS({
+        products: [
+            {
+                type: 'helpdesk',
+                prices: [
+                    {
+                        name: 'enterprise',
+                        plan_id: 'enterprise',
+                        price_id: 'enterprise_price',
+                    },
+                ],
+            },
+        ],
+    }),
+})
 
 const renderComponent = () =>
     render(
@@ -91,11 +117,11 @@ describe('<EmailIntegrationOnboarding />', () => {
         )
         getDomainFromEmailAddressMock.mockReturnValue('gorgias.com')
         mockFlags({
-            [FeatureFlagKey.NewDomainVerification]: true,
+            [FeatureFlagKey.ForceEmailOnboarding]: false,
         })
     })
 
-    it('should the wizard breadcrumbs', () => {
+    it('should show the wizard breadcrumbs', () => {
         useEmailOnboardingMock.mockReturnValue({
             currentStep: EmailIntegrationOnboardingStep.ConnectIntegration,
         } as UseEmailOnboardingHookResult)
@@ -103,9 +129,8 @@ describe('<EmailIntegrationOnboarding />', () => {
         renderComponent()
 
         expect(screen.getByText('Connect email')).toBeInTheDocument()
-        expect(screen.getByText('Receive emails')).toBeInTheDocument()
-        expect(screen.getByText('Verify integration')).toBeInTheDocument()
-        expect(screen.getByText('Send emails')).toBeInTheDocument()
+        expect(screen.getByText('Set up forwarding')).toBeInTheDocument()
+        expect(screen.getByText('Verify domain')).toBeInTheDocument()
     })
 
     it('should render the connect form as step 1', () => {
@@ -115,34 +140,22 @@ describe('<EmailIntegrationOnboarding />', () => {
 
         renderComponent()
 
-        expect(
-            screen.getByText('Connect your support email'),
-        ).toBeInTheDocument()
+        expect(screen.getByText('Add your support email')).toBeInTheDocument()
     })
 
     it('should render the forwarding setup form as step 2', () => {
         useEmailOnboardingMock.mockReturnValue({
-            currentStep: EmailIntegrationOnboardingStep.ForwardingSetup,
+            currentStep: EmailIntegrationOnboardingStep.SetupForwarding,
         } as UseEmailOnboardingHookResult)
 
         renderComponent()
 
         expect(
-            screen.getByText('Forward your support emails to Gorgias'),
+            screen.getByText('Forward customer emails to Gorgias'),
         ).toBeInTheDocument()
     })
 
-    it('should render the verification page as step 3', () => {
-        useEmailOnboardingMock.mockReturnValue({
-            currentStep: EmailIntegrationOnboardingStep.Verification,
-        } as UseEmailOnboardingHookResult)
-
-        renderComponent()
-
-        // TODO
-    })
-
-    it('should render the domain verification page as step 4', () => {
+    it('should render the domain verification page as step 3', () => {
         useEmailOnboardingMock.mockReturnValue({
             currentStep: EmailIntegrationOnboardingStep.DomainVerification,
         } as UseEmailOnboardingHookResult)
@@ -166,17 +179,49 @@ describe('<EmailIntegrationOnboarding />', () => {
         )
     })
 
-    it('should not display the domain verification step if the feature flag is disabled', () => {
-        mockFlags({
-            [FeatureFlagKey.NewDomainVerification]: false,
-        })
-
+    it('should show EmailPreview sidebar on connect integration step', () => {
         useEmailOnboardingMock.mockReturnValue({
             currentStep: EmailIntegrationOnboardingStep.ConnectIntegration,
         } as UseEmailOnboardingHookResult)
 
         renderComponent()
 
-        expect(screen.queryByText('Send emails')).not.toBeInTheDocument()
+        expect(screen.getByText('Add your support email')).toBeInTheDocument()
+        expect(screen.getByText('Email preview')).toBeInTheDocument()
+    })
+
+    it('should show domain verification sidebar on domain verification step', () => {
+        useEmailOnboardingMock.mockReturnValue({
+            currentStep: EmailIntegrationOnboardingStep.DomainVerification,
+        } as UseEmailOnboardingHookResult)
+
+        renderComponent()
+
+        expect(
+            screen.getByText('DomainVerificationSidebar'),
+        ).toBeInTheDocument()
+    })
+
+    it('should not render domain verification step content if no integration', () => {
+        useEmailOnboardingMock.mockReturnValue({
+            currentStep: EmailIntegrationOnboardingStep.DomainVerification,
+        } as UseEmailOnboardingHookResult)
+
+        render(
+            <MemoryRouter>
+                <Provider store={store}>
+                    <QueryClientProvider client={queryClient}>
+                        <EmailIntegrationOnboarding integration={undefined} />
+                    </QueryClientProvider>
+                </Provider>
+            </MemoryRouter>,
+        )
+
+        expect(
+            screen.queryByText('DomainVerificationProvider'),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByText('DomainVerificationOnboarding'),
+        ).not.toBeInTheDocument()
     })
 })

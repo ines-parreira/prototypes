@@ -6,6 +6,7 @@
         margin-top: @layout-spacing-s;
         margin-bottom: @layout-spacing-s;
         background-color: var(--neutral-grey-3);
+        width: 100%;
     }
 
     .wizardProgressHeader {
@@ -18,7 +19,8 @@
 
     .formPreview {
         flex: 1;
-        max-width: 550px;
+        max-width: 800px;
+        margin-top: 60px;
 
         .emailPreviewTagWrapper {
             align-items: flex-start;
@@ -40,6 +42,7 @@
             flex: 1 0 0;
             min-height: 160px;
             padding: @layout-spacing-s;
+            width: 500px;
         }
 
         .emailIcon {
@@ -48,8 +51,10 @@
         }
     }
 
-    .formPreviewTitle {
-        color: var(--neutral-grey-4);
-        text-align: center;
+    .sidebar {
+        background: var(--neutral-grey-1);
+        min-height: 100vh;
+        display: flex;
+        width: 600px;
     }
 }

@@ -1,0 +1,96 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .confirmCheckbox {
+        margin-bottom: @layout-spacing-s;
+    }
+
+    .checkIcon {
+        color: var(--feedback-success);
+    }
+
+    .errorIcon {
+        color: var(--feedback-error-3);
+        font-size: 20px;
+    }
+
+    .loadingWrapper {
+        align-items: flex-end;
+        border: 1px solid var(--neutral-grey-2);
+        border-radius: @layout-spacing-xxs;
+        display: flex;
+        flex-direction: row;
+        gap: @layout-spacing-xs;
+        padding: @layout-spacing-s;
+        margin-bottom: @layout-spacing-m;
+    }
+
+    .frowardingFlowText {
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 600;
+        letter-spacing: -0.14px;
+        margin: 0;
+    }
+
+    .linkBtn {
+        font-weight: 500;
+    }
+
+    .forwardInstructionsWrapper {
+        background: var(--neutral-grey-1);
+        border-radius: 4px;
+        border: 1px solid var(--neutral-grey-2);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        align-self: stretch;
+        margin-bottom: @layout-spacing-s;
+        margin-top: -@layout-spacing-m;
+
+        .bolds {
+            font-weight: 600;
+            background: var(--accessory-blue-1);
+            color: var(--accessory-blue-3);
+            padding: 6px 12px;
+            border-radius: 40px;
+            margin-right: 2px;
+        }
+
+        ol {
+            margin-bottom: 0;
+            padding-left: @layout-spacing-s;
+            padding-right: @layout-spacing-s;
+            padding-top: @layout-spacing-s;
+            list-style: none;
+            counter-reset: step-counter;
+
+            li {
+                .body-regular();
+                padding-bottom: @layout-spacing-s;
+                color: var(--neutral-grey-6);
+                counter-increment: step-counter;
+                position: relative;
+                padding-left: @layout-spacing-l;
+
+                &::before {
+                    content: counter(step-counter);
+                    position: absolute;
+                    left: 0;
+                    top: 2px;
+                    width: 24px;
+                    height: 20px;
+                    border-radius: 100px;
+                    background: var(--accessory-blue-1);
+                    color: var(--accessory-blue-3);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-weight: 600;
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+}

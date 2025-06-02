@@ -6,25 +6,68 @@ import { BrowserRouter } from 'react-router-dom'
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { IntegrationType } from 'models/integration/types'
-import EmailIntegrationOnboardingBreadcrumbs from 'pages/integrations/integration/components/email/EmailIntegrationOnboardingBreadcrumbs'
+import EmailIntegrationOnboardingBreadcrumbs from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingBreadcrumbs'
 
 describe('EmailIntegrationOnboardingBreadcrumbs', () => {
-    it('renders the breadcrumb items correctly without integration', () => {
+    it('renders the breadcrumb items correctly without integration and not forced onboarding', () => {
         render(
             <BrowserRouter>
-                <EmailIntegrationOnboardingBreadcrumbs integration={null} />
+                <EmailIntegrationOnboardingBreadcrumbs
+                    integration={null}
+                    isForcedEmailOnboarding={false}
+                />
             </BrowserRouter>,
         )
 
-        // Check for static breadcrumb items
         expect(screen.getByText('Email')).toBeInTheDocument()
         expect(screen.getByText('Add email address')).toBeInTheDocument()
+        expect(screen.getByText('Add new email')).toBeInTheDocument()
+
+        expect(screen.getByText('Email').closest('a')).toHaveAttribute(
+            'to',
+            '/app/settings/channels/email',
+        )
         expect(
-            screen.getByText('Connect other email provider'),
-        ).toBeInTheDocument()
+            screen.getByText('Add email address').closest('a'),
+        ).toHaveAttribute('to', '/app/settings/channels/email/new')
     })
 
-    it('renders the breadcrumb items correctly with integration', () => {
+    it('renders the breadcrumb items correctly without integration and forced onboarding', () => {
+        render(
+            <BrowserRouter>
+                <EmailIntegrationOnboardingBreadcrumbs
+                    integration={null}
+                    isForcedEmailOnboarding={true}
+                />
+            </BrowserRouter>,
+        )
+
+        expect(screen.getByText('Email')).toBeInTheDocument()
+        expect(screen.queryByText('Add email address')).not.toBeInTheDocument()
+        expect(screen.getByText('Add new email')).toBeInTheDocument()
+
+        expect(screen.getByText('Email').closest('a')).toHaveAttribute(
+            'to',
+            '/app/settings/channels/email',
+        )
+    })
+
+    it('renders the breadcrumb items correctly with undefined integration', () => {
+        render(
+            <BrowserRouter>
+                <EmailIntegrationOnboardingBreadcrumbs
+                    integration={undefined}
+                    isForcedEmailOnboarding={false}
+                />
+            </BrowserRouter>,
+        )
+
+        expect(screen.getByText('Email')).toBeInTheDocument()
+        expect(screen.getByText('Add email address')).toBeInTheDocument()
+        expect(screen.getByText('Add new email')).toBeInTheDocument()
+    })
+
+    it('renders the breadcrumb items correctly with integration and not forced onboarding', () => {
         const integration = {
             name: 'New email',
             type: IntegrationType.Email,
@@ -36,19 +79,57 @@ describe('EmailIntegrationOnboardingBreadcrumbs', () => {
             <BrowserRouter>
                 <EmailIntegrationOnboardingBreadcrumbs
                     integration={integration}
+                    isForcedEmailOnboarding={false}
                 />
             </BrowserRouter>,
         )
 
-        // Check for static breadcrumb items
         expect(screen.getByText('Email')).toBeInTheDocument()
         expect(screen.getByText('Add email address')).toBeInTheDocument()
 
-        // Check if integration-specific items are rendered
         expect(screen.getByText(integration.name)).toBeInTheDocument()
         expect(screen.getByText(integration.meta.address)).toBeInTheDocument()
         expect(screen.getByText(integration.meta.address)).toHaveClass(
             'emailAddress',
         )
+
+        const breadcrumbInfoDiv = screen
+            .getByText(integration.name)
+            .closest('.breadcrumbInfo')
+        expect(breadcrumbInfoDiv).toBeInTheDocument()
+        expect(breadcrumbInfoDiv).toHaveClass('breadcrumbInfo')
+    })
+
+    it('renders the breadcrumb items correctly with integration and forced onboarding', () => {
+        const integration = {
+            name: 'New email',
+            type: IntegrationType.Email,
+            meta: {
+                address: 'user@email.com',
+            },
+        } as EmailIntegration
+        render(
+            <BrowserRouter>
+                <EmailIntegrationOnboardingBreadcrumbs
+                    integration={integration}
+                    isForcedEmailOnboarding={true}
+                />
+            </BrowserRouter>,
+        )
+
+        expect(screen.getByText('Email')).toBeInTheDocument()
+        expect(screen.queryByText('Add email address')).not.toBeInTheDocument()
+
+        expect(screen.getByText(integration.name)).toBeInTheDocument()
+        expect(screen.getByText(integration.meta.address)).toBeInTheDocument()
+        expect(screen.getByText(integration.meta.address)).toHaveClass(
+            'emailAddress',
+        )
+
+        const breadcrumbInfoDiv = screen
+            .getByText(integration.name)
+            .closest('.breadcrumbInfo')
+        expect(breadcrumbInfoDiv).toBeInTheDocument()
+        expect(breadcrumbInfoDiv).toHaveClass('breadcrumbInfo')
     })
 })

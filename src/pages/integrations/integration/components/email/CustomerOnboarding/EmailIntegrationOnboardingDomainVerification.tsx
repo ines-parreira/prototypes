@@ -2,13 +2,12 @@ import React, { useEffect } from 'react'
 
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
 
+import EmailIntegrationOnboardingButtons from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingButtons'
+import OnboardingDomainVerificationPrompt from 'pages/integrations/integration/components/email/CustomerOnboarding/OnboardingDomainVerificationPrompt'
+import EmailDomainVerificationContent from 'pages/integrations/integration/components/email/EmailDomainVerification/EmailDomainVerificationContent'
+import useDomainVerification from 'pages/integrations/integration/components/email/EmailDomainVerification/useDomainVerification'
 import { isCommonDomainEmail } from 'pages/integrations/integration/components/email/helpers'
-
-import EmailDomainVerificationContent from './EmailDomainVerification/EmailDomainVerificationContent'
-import useDomainVerification from './EmailDomainVerification/useDomainVerification'
-import EmailIntegrationOnboardingButtons from './EmailIntegrationOnboardingButtons'
-import { useEmailOnboardingCompleteCheck } from './hooks/useEmailOnboarding'
-import OnboardingDomainVerificationPrompt from './OnboardingDomainVerificationPrompt'
+import { useEmailOnboardingCompleteCheck } from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
 
 type Props = {
     integration: EmailIntegration

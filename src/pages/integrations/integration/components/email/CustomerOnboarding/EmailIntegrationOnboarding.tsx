@@ -1,28 +1,30 @@
-import React from 'react'
-
-import { useFlags } from 'launchdarkly-react-client-sdk'
+import React, { useState } from 'react'
 
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import useAppSelector from 'hooks/useAppSelector'
+import { isEnterprise } from 'models/billing/utils'
 import PageHeader from 'pages/common/components/PageHeader'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
-import EmailIntegrationOnboardingBreadcrumbs from 'pages/integrations/integration/components/email/EmailIntegrationOnboardingBreadcrumbs'
+import EmailIntegrationConnectForm from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailForwarding/EmailIntegrationConnectForm'
+import DomainVerificationProvider from 'pages/integrations/integration/components/email/EmailDomainVerification/DomainVerificationProvider'
+import EmailDomainVerificationSupportContentSidebar from 'pages/integrations/integration/components/email/EmailDomainVerification/EmailDomainVerificationSupportContentSidebar'
+import { getDomainFromEmailAddress } from 'pages/integrations/integration/components/email/helpers'
 import SettingsContent from 'pages/settings/SettingsContent'
+import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 
-import DomainVerificationProvider from './EmailDomainVerification/DomainVerificationProvider'
-import EmailDomainVerificationSupportContentSidebar from './EmailDomainVerification/EmailDomainVerificationSupportContentSidebar'
-import EmailIntegrationConnectForm from './EmailIntegrationConnectForm'
-import EmailIntegrationForwardingSetupForm from './EmailIntegrationForwardingSetupForm'
-import EmailIntegrationOnboardingDomainVerification from './EmailIntegrationOnboardingDomainVerification'
-import EmailIntegrationVerificationForm from './EmailIntegrationVerificationForm'
-import { getDomainFromEmailAddress } from './helpers'
 import {
     EmailIntegrationOnboardingStep,
     useEmailOnboarding,
-} from './hooks/useEmailOnboarding'
+} from '../hooks/useEmailOnboarding'
+import EmailIntegrationForwardingSetupForm from './EmailForwarding/EmailIntegrationForwardingSetupForm'
+import EmailPreview from './EmailForwarding/EmailPreview'
+import EmailIntegrationOnboardingBreadcrumbs from './EmailIntegrationOnboardingBreadcrumbs'
+import EmailIntegrationOnboardingDomainVerification from './EmailIntegrationOnboardingDomainVerification'
 
 import css from './EmailIntegrationOnboarding.less'
 
@@ -32,8 +34,18 @@ type Props = {
 
 export default function EmailIntegrationOnboarding({ integration }: Props) {
     const { currentStep } = useEmailOnboarding({ integration })
-    const isNewDomainVerificationEnabled =
-        useFlags()[FeatureFlagKey.NewDomainVerification] ?? false
+    const forceEmailForwardingFlag: boolean = useFlag(
+        FeatureFlagKey.ForceEmailOnboarding,
+        false,
+    )
+
+    const [emailAddress, setEmailAddress] = useState('')
+    const [displayName, setDisplayName] = useState('')
+
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
+    const isEnterpriseCustomer = isEnterprise(currentHelpdeskPlan)
+    const isForcedEmailOnboarding =
+        forceEmailForwardingFlag && isEnterpriseCustomer
 
     return (
         <div className="full-width">
@@ -41,48 +53,29 @@ export default function EmailIntegrationOnboarding({ integration }: Props) {
                 title={
                     <EmailIntegrationOnboardingBreadcrumbs
                         integration={integration}
+                        isForcedEmailOnboarding={isForcedEmailOnboarding}
                     />
                 }
             />
 
             <div className="full-width flex">
-                <SettingsContent
-                    fullWidth={
-                        currentStep ===
-                        EmailIntegrationOnboardingStep.ConnectIntegration
-                    }
-                >
+                <SettingsContent>
                     <Wizard
                         startAt={currentStep}
-                        steps={
-                            isNewDomainVerificationEnabled
-                                ? Object.values(EmailIntegrationOnboardingStep)
-                                : Object.values(
-                                      EmailIntegrationOnboardingStep,
-                                  ).filter(
-                                      (step) =>
-                                          step !==
-                                          EmailIntegrationOnboardingStep.DomainVerification,
-                                  )
-                        }
+                        steps={Object.values(EmailIntegrationOnboardingStep)}
                     >
                         <WizardProgressHeader
                             labels={{
                                 [EmailIntegrationOnboardingStep.ConnectIntegration]:
                                     'Connect email',
-                                [EmailIntegrationOnboardingStep.ForwardingSetup]:
-                                    'Receive emails',
-                                [EmailIntegrationOnboardingStep.Verification]:
-                                    'Verify integration',
-                                ...(isNewDomainVerificationEnabled
-                                    ? {
-                                          [EmailIntegrationOnboardingStep.DomainVerification]:
-                                              'Send emails',
-                                      }
-                                    : {}),
+                                [EmailIntegrationOnboardingStep.SetupForwarding]:
+                                    'Set up forwarding',
+                                [EmailIntegrationOnboardingStep.DomainVerification]:
+                                    'Verify domain',
                             }}
                             className={css.wizardProgressHeader}
                         />
+
                         <WizardStep
                             name={
                                 EmailIntegrationOnboardingStep.ConnectIntegration
@@ -90,35 +83,28 @@ export default function EmailIntegrationOnboarding({ integration }: Props) {
                         />
                         <WizardStep
                             name={
-                                EmailIntegrationOnboardingStep.ForwardingSetup
+                                EmailIntegrationOnboardingStep.SetupForwarding
                             }
                         />
                         <WizardStep
-                            name={EmailIntegrationOnboardingStep.Verification}
+                            name={
+                                EmailIntegrationOnboardingStep.DomainVerification
+                            }
                         />
-                        {isNewDomainVerificationEnabled && (
-                            <WizardStep
-                                name={
-                                    EmailIntegrationOnboardingStep.DomainVerification
-                                }
-                            />
-                        )}
-
                         {currentStep ===
                             EmailIntegrationOnboardingStep.ConnectIntegration && (
                             <EmailIntegrationConnectForm
                                 integration={integration}
+                                emailAddress={emailAddress}
+                                displayName={displayName}
+                                handleEmailChange={setEmailAddress}
+                                handleDisplayChange={setDisplayName}
                             />
                         )}
+
                         {currentStep ===
-                            EmailIntegrationOnboardingStep.ForwardingSetup && (
+                            EmailIntegrationOnboardingStep.SetupForwarding && (
                             <EmailIntegrationForwardingSetupForm
-                                integration={integration}
-                            />
-                        )}
-                        {currentStep ===
-                            EmailIntegrationOnboardingStep.Verification && (
-                            <EmailIntegrationVerificationForm
                                 integration={integration}
                             />
                         )}
@@ -137,6 +123,13 @@ export default function EmailIntegrationOnboarding({ integration }: Props) {
                             )}
                     </Wizard>
                 </SettingsContent>
+                {currentStep ===
+                    EmailIntegrationOnboardingStep.ConnectIntegration && (
+                    <EmailPreview
+                        emailAddress={emailAddress}
+                        displayName={displayName}
+                    />
+                )}
                 {currentStep ===
                     EmailIntegrationOnboardingStep.DomainVerification && (
                     <EmailDomainVerificationSupportContentSidebar />

@@ -7,16 +7,16 @@ import { EmailIntegration } from '@gorgias/helpdesk-queries'
 import PromptModal from 'pages/common/components/PromptModal'
 import { assumeMock } from 'utils/testing'
 
+import EmailIntegrationOnboardingButtons from '../CustomerOnboarding/EmailIntegrationOnboardingButtons'
+import EmailIntegrationOnboardingDomainVerification from '../CustomerOnboarding/EmailIntegrationOnboardingDomainVerification'
 import EmailDomainVerificationContent from '../EmailDomainVerification/EmailDomainVerificationContent'
 import useDomainVerification from '../EmailDomainVerification/useDomainVerification'
-import EmailIntegrationOnboardingButtons from '../EmailIntegrationOnboardingButtons'
-import EmailIntegrationOnboardingDomainVerification from '../EmailIntegrationOnboardingDomainVerification'
 import { useEmailOnboardingCompleteCheck } from '../hooks/useEmailOnboarding'
 
 jest.mock('pages/common/components/PromptModal')
 jest.mock('../EmailDomainVerification/EmailDomainVerificationContent')
 jest.mock('../EmailDomainVerification/useDomainVerification')
-jest.mock('../EmailIntegrationOnboardingButtons')
+jest.mock('../CustomerOnboarding/EmailIntegrationOnboardingButtons')
 jest.mock('../hooks/useEmailOnboarding')
 
 const EmailDomainVerificationContentMock = assumeMock(

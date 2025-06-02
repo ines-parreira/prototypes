@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import isObject from 'lodash/isObject'
 import kebabCase from 'lodash/kebabCase'
 import { useHistory, useRouteMatch } from 'react-router-dom'
@@ -17,7 +16,6 @@ import {
     useUpdateIntegration,
 } from '@gorgias/helpdesk-queries'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { FormErrors } from 'core/forms'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useInterval from 'hooks/useInterval'
@@ -37,8 +35,7 @@ import { NotificationStatus } from 'state/notifications/types'
 
 export enum EmailIntegrationOnboardingStep {
     ConnectIntegration = 'ConnectIntegration',
-    ForwardingSetup = 'ForwardingSetup',
-    Verification = 'Verification',
+    SetupForwarding = 'SetupForwarding',
     DomainVerification = 'DomainVerification',
 }
 
@@ -312,38 +309,28 @@ function useGetCurrentStep(
         exact: false,
     })
 
-    const { isRequested } = useVerificationRequestStatus(integration)
-
     if (!integration) {
         return EmailIntegrationOnboardingStep.ConnectIntegration
     }
 
     const step = match?.params?.step
+
     const isVerified = integration?.meta?.verified
 
     switch (step) {
         case kebabCase(EmailIntegrationOnboardingStep.ConnectIntegration):
             return EmailIntegrationOnboardingStep.ConnectIntegration
 
-        case kebabCase(EmailIntegrationOnboardingStep.ForwardingSetup):
-            return EmailIntegrationOnboardingStep.ForwardingSetup
-
-        case kebabCase(EmailIntegrationOnboardingStep.Verification):
-            return isRequested || isVerified
-                ? EmailIntegrationOnboardingStep.Verification
-                : EmailIntegrationOnboardingStep.ForwardingSetup
+        case kebabCase(EmailIntegrationOnboardingStep.SetupForwarding):
+            return EmailIntegrationOnboardingStep.SetupForwarding
 
         case kebabCase(EmailIntegrationOnboardingStep.DomainVerification):
             if (isVerified) {
                 return EmailIntegrationOnboardingStep.DomainVerification
             }
-            return isRequested
-                ? EmailIntegrationOnboardingStep.Verification
-                : EmailIntegrationOnboardingStep.ForwardingSetup
+            return EmailIntegrationOnboardingStep.SetupForwarding
         default:
-            return isVerified || isRequested
-                ? EmailIntegrationOnboardingStep.Verification
-                : EmailIntegrationOnboardingStep.ForwardingSetup
+            return EmailIntegrationOnboardingStep.SetupForwarding
     }
 }
 
@@ -398,9 +385,6 @@ function useStepNavigation(integration: EmailIntegration | undefined) {
     const history = useHistory()
     const currentStep = useGetCurrentStep(integration)
 
-    const isNewDomainVerificationEnabled =
-        useFlags()[FeatureFlagKey.NewDomainVerification] ?? false
-
     const goBack = useCallback(() => {
         if (!integration) {
             history.push(listUrl())
@@ -413,7 +397,7 @@ function useStepNavigation(integration: EmailIntegration | undefined) {
                 return
             }
 
-            case EmailIntegrationOnboardingStep.ForwardingSetup: {
+            case EmailIntegrationOnboardingStep.SetupForwarding: {
                 history.push(
                     stepUrl(
                         EmailIntegrationOnboardingStep.ConnectIntegration,
@@ -423,20 +407,10 @@ function useStepNavigation(integration: EmailIntegration | undefined) {
                 return
             }
 
-            case EmailIntegrationOnboardingStep.Verification: {
-                history.push(
-                    stepUrl(
-                        EmailIntegrationOnboardingStep.ForwardingSetup,
-                        integration,
-                    ),
-                )
-                return
-            }
-
             case EmailIntegrationOnboardingStep.DomainVerification: {
                 history.push(
                     stepUrl(
-                        EmailIntegrationOnboardingStep.Verification,
+                        EmailIntegrationOnboardingStep.SetupForwarding,
                         integration,
                     ),
                 )
@@ -454,35 +428,20 @@ function useStepNavigation(integration: EmailIntegration | undefined) {
             case EmailIntegrationOnboardingStep.ConnectIntegration: {
                 history.push(
                     stepUrl(
-                        EmailIntegrationOnboardingStep.ForwardingSetup,
+                        EmailIntegrationOnboardingStep.SetupForwarding,
                         integration,
                     ),
                 )
                 return
             }
 
-            case EmailIntegrationOnboardingStep.ForwardingSetup: {
+            case EmailIntegrationOnboardingStep.SetupForwarding: {
                 history.push(
                     stepUrl(
-                        EmailIntegrationOnboardingStep.Verification,
+                        EmailIntegrationOnboardingStep.DomainVerification,
                         integration,
                     ),
                 )
-                return
-            }
-
-            case EmailIntegrationOnboardingStep.Verification: {
-                if (isNewDomainVerificationEnabled) {
-                    history.push(
-                        stepUrl(
-                            EmailIntegrationOnboardingStep.DomainVerification,
-                            integration,
-                        ),
-                    )
-                    return
-                }
-
-                history.push(listUrl())
                 return
             }
 
@@ -491,7 +450,7 @@ function useStepNavigation(integration: EmailIntegration | undefined) {
                 return
             }
         }
-    }, [history, currentStep, integration, isNewDomainVerificationEnabled])
+    }, [history, currentStep, integration])
 
     return {
         goBack,

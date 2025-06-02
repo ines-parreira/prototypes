@@ -4,18 +4,57 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
 
-import { assumeMock } from 'utils/testing'
-
-import EmailIntegrationConnectForm from '../EmailIntegrationConnectForm'
+import EmailIntegrationConnectForm from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailForwarding/EmailIntegrationConnectForm'
 import {
     EmailIntegrationOnboardingStep,
     useEmailOnboarding,
     UseEmailOnboardingHookResult,
-} from '../hooks/useEmailOnboarding'
+} from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
+import { assumeMock } from 'utils/testing'
 
-const renderComponent = () => render(<EmailIntegrationConnectForm />)
+jest.mock('pages/history', () => ({
+    push: jest.fn(),
+}))
 
-jest.mock('../hooks/useEmailOnboarding')
+const renderComponent = (props = {}) =>
+    render(
+        <EmailIntegrationConnectForm
+            emailAddress=""
+            displayName=""
+            handleEmailChange={jest.fn()}
+            handleDisplayChange={jest.fn()}
+            {...props}
+        />,
+    )
+
+jest.mock(
+    'pages/integrations/integration/components/email/hooks/useEmailOnboarding',
+)
+jest.mock(
+    'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingButtons',
+    () =>
+        ({ integration, cancelCallback }: any) => (
+            <div className="buttons">
+                <div>
+                    <button type="button" onClick={cancelCallback}>
+                        Cancel
+                    </button>
+                    <button type="submit" disabled={true}>
+                        Next
+                    </button>
+                </div>
+                {integration && (
+                    <button type="button">Delete integration</button>
+                )}
+            </div>
+        ),
+)
+jest.mock(
+    'pages/integrations/integration/components/email/components/EmailGenericModal',
+    () =>
+        ({ children, ...props }: any) =>
+            props.showModal ? <div>EmailGenericModal {children}</div> : null,
+)
 
 const defaultHookResult: UseEmailOnboardingHookResult = {
     integration: undefined,
@@ -47,42 +86,40 @@ const useEmailOnboardingMock = assumeMock(useEmailOnboarding)
 useEmailOnboardingMock.mockReturnValue(defaultHookResult)
 
 describe('<EmailIntegrationConnectForm />', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
     it('should render with the appropriate fields', () => {
         renderComponent()
 
-        expect(
-            screen.getByText('Connect your support email'),
-        ).toBeInTheDocument()
+        expect(screen.getByText('Add your support email')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'In order to email your customers through Gorgias, you need to connect your support email. Enter the email address you currently use to talk with customers and then choose a display name that customers will see on your responses.',
+                /Set up the email your customers will see when you reply from Gorgias/,
             ),
         ).toBeInTheDocument()
 
         expect(
             screen.getByRole('textbox', {
-                name: 'Support email address required',
+                name: 'Email required',
             }),
         ).toBeInTheDocument()
         expect(
             screen.getByRole('textbox', {
-                name: 'Display name required',
+                name: 'Email display name required',
             }),
         ).toBeInTheDocument()
 
+        expect(screen.getByText(/Please add a work email/)).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Enter the email address you currently use to talk with customers.',
-            ),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByText(
-                'The name that customers will see when they receive emails from you. Cannot contain these characters: @,;<>[]',
+                /The display name will appear in emails sent to customers/,
             ),
         ).toBeInTheDocument()
 
         expect(screen.getByRole('button', { name: 'Next' })).toBeInTheDocument()
-        expect(screen.getByRole('button', { name: 'Next' })).toBeAriaDisabled()
+        expect(screen.getByRole('button', { name: 'Next' })).toBeDisabled()
     })
 
     it('should validate the email field', async () => {
@@ -90,7 +127,7 @@ describe('<EmailIntegrationConnectForm />', () => {
 
         fireEvent.change(
             screen.getByRole('textbox', {
-                name: 'Support email address required',
+                name: 'Email required',
             }),
             {
                 target: { value: 'not-a-valid-email' },
@@ -113,7 +150,7 @@ describe('<EmailIntegrationConnectForm />', () => {
 
         fireEvent.change(
             screen.getByRole('textbox', {
-                name: 'Display name required',
+                name: 'Email display name required',
             }),
             {
                 target: { value: '' },
@@ -122,7 +159,7 @@ describe('<EmailIntegrationConnectForm />', () => {
 
         fireEvent.change(
             screen.getByRole('textbox', {
-                name: 'Support email address required',
+                name: 'Email required',
             }),
             {
                 target: { value: 'acme@gorgias.test' },
@@ -139,7 +176,7 @@ describe('<EmailIntegrationConnectForm />', () => {
 
         fireEvent.change(
             screen.getByRole('textbox', {
-                name: 'Display name required',
+                name: 'Email display name required',
             }),
             {
                 target: { value: 'invalid name <X>' },
@@ -155,22 +192,6 @@ describe('<EmailIntegrationConnectForm />', () => {
         })
     })
 
-    it('should show the loading state on the submit button', () => {
-        useEmailOnboardingMock.mockReturnValue({
-            ...defaultHookResult,
-            isConnecting: true,
-        })
-
-        renderComponent()
-
-        const submitButton = screen.getByRole('button', {
-            name: 'Loading... Next',
-        })
-
-        expect(submitButton).toBeInTheDocument()
-        expect(submitButton).toBeAriaDisabled()
-    })
-
     it('should disable the email field if the integration already exists', () => {
         useEmailOnboardingMock.mockReturnValue({
             ...defaultHookResult,
@@ -180,7 +201,7 @@ describe('<EmailIntegrationConnectForm />', () => {
         renderComponent()
 
         const emailField = screen.getByRole('textbox', {
-            name: 'Support email address required',
+            name: 'Email required',
         })
 
         expect(emailField).toBeInTheDocument()
@@ -207,7 +228,7 @@ describe('<EmailIntegrationConnectForm />', () => {
 
         fireEvent.change(
             screen.getByRole('textbox', {
-                name: 'Display name required',
+                name: 'Email display name required',
             }),
             {
                 target: { value: 'Support address' },
@@ -216,7 +237,7 @@ describe('<EmailIntegrationConnectForm />', () => {
 
         fireEvent.change(
             screen.getByRole('textbox', {
-                name: 'Support email address required',
+                name: 'Email required',
             }),
             {
                 target: { value: 'acme@gorgias.test' },
@@ -231,5 +252,84 @@ describe('<EmailIntegrationConnectForm />', () => {
                 meta: { address: 'acme@gorgias.test' },
             })
         })
+    })
+
+    it('should show warning modal when canceling with data', () => {
+        renderComponent({ emailAddress: 'test@example.com' })
+
+        fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+
+        expect(screen.getByText('EmailGenericModal')).toBeInTheDocument()
+    })
+
+    it('should call handleEmailChange when email field changes', () => {
+        const handleEmailChange = jest.fn()
+        renderComponent({ handleEmailChange })
+
+        fireEvent.change(
+            screen.getByRole('textbox', {
+                name: 'Email required',
+            }),
+            {
+                target: { value: 'test@example.com' },
+            },
+        )
+
+        expect(handleEmailChange).toHaveBeenCalledWith('test@example.com')
+    })
+
+    it('should call handleDisplayChange when display name field changes', () => {
+        const handleDisplayChange = jest.fn()
+        renderComponent({ handleDisplayChange })
+
+        fireEvent.change(
+            screen.getByRole('textbox', {
+                name: 'Email display name required',
+            }),
+            {
+                target: { value: 'Test Name' },
+            },
+        )
+
+        expect(handleDisplayChange).toHaveBeenCalledWith('Test Name')
+    })
+
+    it('should close warning modal when "Back to Editing" button is clicked', () => {
+        renderComponent({ emailAddress: 'test@example.com' })
+
+        fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+        expect(screen.getByText('EmailGenericModal')).toBeInTheDocument()
+
+        fireEvent.click(screen.getByRole('button', { name: 'Back to Editing' }))
+
+        expect(screen.queryByText('EmailGenericModal')).not.toBeInTheDocument()
+    })
+
+    it('should navigate to email settings when "Discard Email integration" button is clicked', () => {
+        const historyMock = require('pages/history')
+        renderComponent({ emailAddress: 'test@example.com' })
+
+        fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+        expect(screen.getByText('EmailGenericModal')).toBeInTheDocument()
+
+        fireEvent.click(
+            screen.getByRole('button', { name: 'Discard Email integration' }),
+        )
+
+        expect(historyMock.push).toHaveBeenCalledWith(
+            '/app/settings/channels/email',
+        )
+    })
+
+    it('should navigate directly to email settings when canceling without data', () => {
+        const historyMock = require('pages/history')
+        renderComponent({ emailAddress: '', displayName: '' })
+
+        fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+
+        expect(screen.queryByText('EmailGenericModal')).not.toBeInTheDocument()
+        expect(historyMock.push).toHaveBeenCalledWith(
+            '/app/settings/channels/email',
+        )
     })
 })

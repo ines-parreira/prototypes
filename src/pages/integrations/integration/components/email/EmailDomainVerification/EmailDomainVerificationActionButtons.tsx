@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 
 import { EmailIntegration, GmailIntegration } from '@gorgias/helpdesk-queries'
+import { Button } from '@gorgias/merchant-ui-kit'
 
 import { OutlookIntegration } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import LinkButton from 'pages/common/components/button/LinkButton'
 

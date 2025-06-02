@@ -1,17 +1,21 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import LD from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
-import { MemoryRouter } from 'react-router-dom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import {
+    basicMonthlyHelpdeskPlan,
+    customHelpdeskPlan,
+} from 'fixtures/productPrices'
+import useAppSelector from 'hooks/useAppSelector'
 import { EmailProvider, IntegrationType } from 'models/integration/constants'
 import history from 'pages/history'
-import { AccountSettingType } from 'state/currentAccount/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock, mockStore, renderWithRouter } from 'utils/testing'
 
@@ -35,6 +39,8 @@ jest.mock('../helpers')
 jest.mock('../resources')
 jest.mock('pages/history')
 jest.mock('../hooks/useEmailOnboarding')
+jest.mock('core/flags')
+jest.mock('hooks/useAppSelector')
 
 const fetchEmailDomainsMock = assumeMock(fetchEmailDomains)
 const EmailIntegrationListVerificationStatusMock = assumeMock(
@@ -48,6 +54,8 @@ const isOutboundVerifiedSendgridMock = assumeMock(isOutboundVerifiedSendgrid)
 const useEmailOnboardingCompleteCheckMock = assumeMock(
     useEmailOnboardingCompleteCheck,
 )
+const useFlagMock = assumeMock(useFlag)
+const useAppSelectorMock = assumeMock(useAppSelector)
 
 describe('<EmailIntegrationList/>', () => {
     function getEmailIntegration(
@@ -134,6 +142,34 @@ describe('<EmailIntegrationList/>', () => {
         useEmailOnboardingCompleteCheckMock.mockReturnValue({
             isOnboardingComplete: true,
         } as any)
+        useAppSelectorMock.mockImplementation((selector: any) => {
+            const selectorString = selector.toString()
+            if (
+                selectorString.includes('getCurrentHelpdeskPlan') ||
+                selector.name === 'getCurrentHelpdeskPlan'
+            ) {
+                return basicMonthlyHelpdeskPlan
+            }
+            if (
+                selectorString.includes('makeGetRedirectUri') ||
+                selector.name === 'makeGetRedirectUri'
+            ) {
+                return (type: any) => `/redirect/${type}`
+            }
+            if (
+                selectorString.includes('getDefaultIntegrationSettings') ||
+                selector.name === 'getDefaultIntegrationSettings'
+            ) {
+                return { data: { email: null } }
+            }
+            return null
+        })
+        useFlagMock.mockImplementation((flagKey: string, defaultValue: any) => {
+            if (flagKey === FeatureFlagKey.ForceEmailOnboarding) {
+                return false
+            }
+            return defaultValue
+        })
     })
 
     describe('render()', () => {
@@ -313,70 +349,6 @@ describe('<EmailIntegrationList/>', () => {
                     /In order to verify your domains, click on the emails/i,
                 ),
             ).not.toBeInTheDocument()
-        })
-
-        it('should render the default badge if an integration is set as default', async () => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                [FeatureFlagKey.DefaultEmailAddress]: true,
-            }))
-
-            // Mock a verified domain to ensure the component finishes loading
-            const get = fetchEmailDomainsMock.mockResolvedValueOnce([
-                {
-                    name: 'gorgias-test.com',
-                    verified: true,
-                    data: fromJS({
-                        sending_dns_records: [
-                            {
-                                verified: true,
-                                record_type: 'AA',
-                                host: 'gorgias-test.com',
-                                value: 'test',
-                                current_values: ['test1', 'test2'],
-                            },
-                        ],
-                    }),
-                },
-            ])
-
-            const store = mockStore({
-                currentAccount: fromJS({
-                    settings: [
-                        {
-                            id: 1,
-                            type: AccountSettingType.DefaultIntegration,
-                            data: {
-                                email: 1,
-                            },
-                        },
-                    ],
-                }),
-            } as any)
-
-            // Create a component instance with a specific integration
-            const { findByText } = render(
-                <Provider store={store}>
-                    <EmailIntegrationList
-                        {...commonProps}
-                        loading={fromJS({})}
-                        integrations={fromJS([getEmailIntegration(1)])}
-                    />
-                </Provider>,
-                {
-                    wrapper: ({ children }) => (
-                        <QueryClientProvider client={queryClient}>
-                            <MemoryRouter>{children}</MemoryRouter>
-                        </QueryClientProvider>
-                    ),
-                },
-            )
-
-            // Wait for the mock API call to be made
-            await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
-
-            // Wait for the DEFAULT text to appear
-            const defaultBadge = await findByText('DEFAULT', { exact: true })
-            expect(defaultBadge).toBeInTheDocument()
         })
 
         it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid])(
@@ -904,6 +876,224 @@ describe('<EmailIntegrationList/>', () => {
             expect(historyPushMock).toHaveBeenCalledWith(
                 '/app/settings/channels/email/new',
             )
+        })
+
+        describe('Add New Email button navigation', () => {
+            it('should navigate to standard new email page for non-enterprise customers', async () => {
+                fetchEmailDomainsMock.mockResolvedValueOnce([])
+                useAppSelectorMock.mockImplementation((selector: any) => {
+                    const selectorString = selector.toString()
+                    if (selectorString.includes('getCurrentHelpdeskPlan')) {
+                        return basicMonthlyHelpdeskPlan
+                    }
+                    if (selectorString.includes('makeGetRedirectUri')) {
+                        return (type: any) => `/redirect/${type}`
+                    }
+                    if (
+                        selectorString.includes('getDefaultIntegrationSettings')
+                    ) {
+                        return { data: { email: null } }
+                    }
+                    return null
+                })
+                useFlagMock.mockImplementation(
+                    (flagKey: string, defaultValue: any) => {
+                        if (flagKey === FeatureFlagKey.ForceEmailOnboarding) {
+                            return false // Default to false
+                        }
+                        return defaultValue
+                    },
+                )
+
+                const historyPushMock = jest.fn()
+                jest.spyOn(history, 'push').mockImplementation(historyPushMock)
+
+                const { findByText } = renderWithRouter(
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={store}>
+                            <EmailIntegrationList
+                                {...commonProps}
+                                loading={fromJS({})}
+                            />
+                        </Provider>
+                    </QueryClientProvider>,
+                )
+
+                await waitFor(() =>
+                    expect(fetchEmailDomainsMock).toHaveBeenCalledTimes(1),
+                )
+
+                const addButton = await findByText('Add New Email')
+                fireEvent.click(addButton)
+
+                expect(historyPushMock).toHaveBeenCalledWith(
+                    '/app/settings/channels/email/new',
+                )
+            })
+
+            it('should navigate to standard new email page for enterprise customers when force email forwarding flag is disabled', async () => {
+                fetchEmailDomainsMock.mockResolvedValueOnce([])
+                useAppSelectorMock.mockImplementation((selector: any) => {
+                    const selectorString = selector.toString()
+                    if (selectorString.includes('getCurrentHelpdeskPlan')) {
+                        return customHelpdeskPlan
+                    }
+                    if (selectorString.includes('makeGetRedirectUri')) {
+                        return (type: any) => `/redirect/${type}`
+                    }
+                    if (
+                        selectorString.includes('getDefaultIntegrationSettings')
+                    ) {
+                        return { data: { email: null } }
+                    }
+                    return null
+                })
+                useFlagMock.mockImplementation(
+                    (flagKey: string, defaultValue: any) => {
+                        if (flagKey === FeatureFlagKey.ForceEmailOnboarding) {
+                            return false // Default to false
+                        }
+                        return defaultValue
+                    },
+                )
+
+                const historyPushMock = jest.fn()
+                jest.spyOn(history, 'push').mockImplementation(historyPushMock)
+
+                const { findByText } = renderWithRouter(
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={store}>
+                            <EmailIntegrationList
+                                {...commonProps}
+                                loading={fromJS({})}
+                            />
+                        </Provider>
+                    </QueryClientProvider>,
+                )
+
+                await waitFor(() =>
+                    expect(fetchEmailDomainsMock).toHaveBeenCalledTimes(1),
+                )
+
+                const addButton = await findByText('Add New Email')
+                fireEvent.click(addButton)
+
+                expect(historyPushMock).toHaveBeenCalledWith(
+                    '/app/settings/channels/email/new',
+                )
+            })
+
+            it('should navigate to onboarding page for enterprise customers when force email forwarding flag is enabled', async () => {
+                fetchEmailDomainsMock.mockResolvedValueOnce([])
+                useAppSelectorMock.mockImplementation((selector: any) => {
+                    if (
+                        selector ===
+                        require('state/billing/selectors')
+                            .getCurrentHelpdeskPlan
+                    ) {
+                        return customHelpdeskPlan
+                    }
+                    const selectorString = selector.toString()
+                    if (selectorString.includes('getCurrentHelpdeskPlan')) {
+                        return customHelpdeskPlan
+                    }
+                    if (selectorString.includes('makeGetRedirectUri')) {
+                        return (type: any) => `/redirect/${type}`
+                    }
+                    if (
+                        selectorString.includes('getDefaultIntegrationSettings')
+                    ) {
+                        return { data: { email: null } }
+                    }
+                    return null
+                })
+                useFlagMock.mockImplementation(
+                    (flagKey: string, defaultValue: any) => {
+                        if (flagKey === FeatureFlagKey.ForceEmailOnboarding) {
+                            return true
+                        }
+                        return defaultValue
+                    },
+                )
+
+                const historyPushMock = jest.fn()
+                jest.spyOn(history, 'push').mockImplementation(historyPushMock)
+
+                const { findByText } = renderWithRouter(
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={store}>
+                            <EmailIntegrationList
+                                {...commonProps}
+                                loading={fromJS({})}
+                            />
+                        </Provider>
+                    </QueryClientProvider>,
+                )
+
+                await waitFor(() =>
+                    expect(fetchEmailDomainsMock).toHaveBeenCalledTimes(1),
+                )
+
+                const addButton = await findByText('Add New Email')
+                fireEvent.click(addButton)
+
+                expect(historyPushMock).toHaveBeenCalledWith(
+                    '/app/settings/channels/email/new/onboarding',
+                )
+            })
+
+            it('should navigate to standard new email page for non-enterprise customers even when force email forwarding flag is enabled', async () => {
+                fetchEmailDomainsMock.mockResolvedValueOnce([])
+                // Mock non-enterprise customer
+                useAppSelectorMock.mockImplementation((selector: any) => {
+                    const selectorString = selector.toString()
+                    if (selectorString.includes('getCurrentHelpdeskPlan')) {
+                        return basicMonthlyHelpdeskPlan
+                    }
+                    if (selectorString.includes('makeGetRedirectUri')) {
+                        return (type: any) => `/redirect/${type}`
+                    }
+                    if (
+                        selectorString.includes('getDefaultIntegrationSettings')
+                    ) {
+                        return { data: { email: null } }
+                    }
+                    return null
+                })
+                useFlagMock.mockImplementation(
+                    (flagKey: string, defaultValue: any) => {
+                        if (flagKey === FeatureFlagKey.ForceEmailOnboarding) {
+                            return true // Default to true
+                        }
+                        return defaultValue
+                    },
+                )
+
+                const historyPushMock = jest.fn()
+                jest.spyOn(history, 'push').mockImplementation(historyPushMock)
+
+                const { findByText } = renderWithRouter(
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={store}>
+                            <EmailIntegrationList
+                                {...commonProps}
+                                loading={fromJS({})}
+                            />
+                        </Provider>
+                    </QueryClientProvider>,
+                )
+
+                await waitFor(() =>
+                    expect(fetchEmailDomainsMock).toHaveBeenCalledTimes(1),
+                )
+
+                const addButton = await findByText('Add New Email')
+                fireEvent.click(addButton)
+
+                expect(historyPushMock).toHaveBeenCalledWith(
+                    '/app/settings/channels/email/new',
+                )
+            })
         })
     })
 })

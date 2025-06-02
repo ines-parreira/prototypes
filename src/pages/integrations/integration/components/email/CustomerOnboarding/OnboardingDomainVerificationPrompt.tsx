@@ -1,12 +1,12 @@
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/merchant-ui-kit'
+
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import PromptModal, {
     PromptModalContext,
 } from 'pages/common/components/PromptModal'
-
-import css from './OnboardingDomainVerificationPrompt.less'
+import css from 'pages/integrations/integration/components/email/CustomerOnboarding/OnboardingDomainVerificationPrompt.less'
 
 type Props = {
     when: boolean

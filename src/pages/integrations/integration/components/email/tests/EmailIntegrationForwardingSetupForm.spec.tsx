@@ -2,22 +2,32 @@ import React from 'react'
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import { EmailIntegration } from 'models/integration/types'
-import { assumeMock } from 'utils/testing'
+import { EmailIntegration } from '@gorgias/helpdesk-queries'
 
-import EmailIntegrationForwardingSetupForm from '../EmailIntegrationForwardingSetupForm'
+import EmailIntegrationForwardingSetupForm from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailForwarding/EmailIntegrationForwardingSetupForm'
 import {
     EmailIntegrationOnboardingStep,
     useEmailOnboarding,
     UseEmailOnboardingHookResult,
-} from '../hooks/useEmailOnboarding'
+} from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
+import { assumeMock } from 'utils/testing'
 
 const renderComponent = () => render(<EmailIntegrationForwardingSetupForm />)
 
-jest.mock('../hooks/useEmailOnboarding')
 jest.mock(
-    '../BaseEmailIntegrationInputField',
+    'pages/integrations/integration/components/email/hooks/useEmailOnboarding',
+)
+jest.mock(
+    'pages/integrations/integration/components/email/BaseEmailIntegrationInputField',
     () => () => '<BaseEmailIntegrationInputField />',
+)
+jest.mock(
+    'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingButtons',
+    () => () => <div>EmailIntegrationOnboardingButtons</div>,
+)
+jest.mock(
+    'pages/integrations/integration/components/email/CustomerOnboarding/EmailForwarding/EmailForwardingInstructions',
+    () => () => <div>EmailForwardingInstructions</div>,
 )
 
 const existingIntegration = {
@@ -29,32 +39,33 @@ const existingIntegration = {
 } as EmailIntegration
 
 const defaultHookResult = {
-    currentStep: EmailIntegrationOnboardingStep.ForwardingSetup,
+    currentStep: EmailIntegrationOnboardingStep.SetupForwarding,
     integration: existingIntegration,
     sendVerification: jest.fn(),
     goToNext: jest.fn(),
+    isRequested: false,
+    isVerified: false,
+    isPending: false,
 } as unknown as UseEmailOnboardingHookResult
 
 const useEmailOnboardingMock = assumeMock(useEmailOnboarding)
 useEmailOnboardingMock.mockReturnValue(defaultHookResult)
 
 describe('<EmailIntegrationForwardingSetupForm />', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
     it('should render with the appropriate fields', () => {
         renderComponent()
 
         expect(
-            screen.getByText('Forward your support emails to Gorgias'),
+            screen.getByText('Forward customer emails to Gorgias'),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'In this step, you will go to your email provider to set up forwarding rules that will forward a copy of incoming customer emails to Gorgias, where they will appear as tickets.',
+                'Route all of your incoming customer emails from your email provider to your Gorgias inbox. Configuring email forwarding improves the deliverability and trustworthiness of your emails.',
             ),
-        ).toBeInTheDocument()
-
-        expect(
-            screen.getByRole('checkbox', {
-                name: /Yes, I’ve set up email forwarding/,
-            }),
         ).toBeInTheDocument()
 
         expect(
@@ -62,55 +73,111 @@ describe('<EmailIntegrationForwardingSetupForm />', () => {
         ).toBeInTheDocument()
 
         expect(
-            screen.getByRole('button', { name: 'Begin Verification' }),
+            screen.getByText('EmailForwardingInstructions'),
+        ).toBeInTheDocument()
+
+        expect(
+            screen.getByText('EmailIntegrationOnboardingButtons'),
         ).toBeInTheDocument()
     })
 
-    it('should validate the checkbox field as required', async () => {
+    it('should show checkbox when not requested, not pending, and not verified', () => {
         renderComponent()
 
-        fireEvent.submit(screen.getByRole('form'))
-
-        await waitFor(() => {
-            expect(
-                screen.getByText('This field is required'),
-            ).toBeInTheDocument()
-        })
-    })
-
-    it('should call sendVerification onSubmit', async () => {
-        renderComponent()
-
-        fireEvent.click(
+        expect(
             screen.getByRole('checkbox', {
-                name: /Yes, I’ve set up email forwarding/,
+                name: /I confirm that I have set up email forwarding/,
             }),
-        )
-
-        fireEvent.submit(screen.getByRole('form'))
-
-        await waitFor(() => {
-            expect(defaultHookResult.sendVerification).toHaveBeenCalled()
-        })
+        ).toBeInTheDocument()
     })
 
-    it('should render as checked if the request has been made', () => {
+    it('should call sendVerification when checkbox is clicked', () => {
+        renderComponent()
+
+        const checkbox = screen.getByRole('checkbox', {
+            name: /I confirm that I have set up email forwarding/,
+        })
+
+        fireEvent.click(checkbox)
+
+        expect(defaultHookResult.sendVerification).toHaveBeenCalled()
+    })
+
+    it('should show loading state when requested and pending', () => {
         useEmailOnboardingMock.mockReturnValue({
             ...defaultHookResult,
             isRequested: true,
+            isPending: true,
+            isVerified: false,
+        })
+
+        renderComponent()
+
+        expect(screen.getByRole('status')).toBeInTheDocument()
+        expect(
+            screen.queryByRole('checkbox', {
+                name: /I confirm that I have set up email forwarding/,
+            }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should show success state when verified', () => {
+        useEmailOnboardingMock.mockReturnValue({
+            ...defaultHookResult,
+            isRequested: true,
+            isPending: false,
+            isVerified: true,
+        })
+
+        renderComponent()
+
+        expect(screen.getByText('check')).toBeInTheDocument()
+        expect(
+            screen.queryByRole('checkbox', {
+                name: /I confirm that I have set up email forwarding/,
+            }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should show error state when requested but not pending and not verified', () => {
+        useEmailOnboardingMock.mockReturnValue({
+            ...defaultHookResult,
+            isRequested: true,
+            isPending: false,
+            isVerified: false,
+        })
+
+        renderComponent()
+
+        expect(screen.getByText('error_outline')).toBeInTheDocument()
+        expect(
+            screen.queryByRole('checkbox', {
+                name: /I confirm that I have set up email forwarding/,
+            }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should call sendVerification on form submit when not requested', () => {
+        useEmailOnboardingMock.mockReturnValue({
+            ...defaultHookResult,
+            isRequested: false,
+            isPending: false,
+            isVerified: false,
         })
 
         renderComponent()
 
         const checkbox = screen.getByRole('checkbox', {
-            name: /Yes, I’ve set up email forwarding/,
+            name: /I confirm that I have set up email forwarding/,
         })
 
-        expect(checkbox).toBeChecked()
-        expect(checkbox).toBeDisabled()
+        fireEvent.click(checkbox)
+
+        expect(defaultHookResult.sendVerification).toHaveBeenCalled()
+        expect(defaultHookResult.goToNext).not.toHaveBeenCalled()
     })
 
-    it('should advance to next step is already requested', async () => {
+    it('should call goToNext on form submit when already requested', async () => {
         useEmailOnboardingMock.mockReturnValue({
             ...defaultHookResult,
             isRequested: true,

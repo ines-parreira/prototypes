@@ -2,14 +2,19 @@ import React, { useEffect, useState } from 'react'
 
 import { List, Map } from 'immutable'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
+import { useFlag } from 'core/flags'
 import IconLink from 'core/ui/components/IconLink'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
+import { isEnterprise } from 'models/billing/utils'
 import { EmailDomain, IntegrationType } from 'models/integration/types'
 import { useListStoreMappings } from 'models/storeMapping/queries'
 import Loader from 'pages/common/components/Loader/Loader'
 import history from 'pages/history'
+import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import { fetchIntegrations } from 'state/integrations/actions'
 import { getIntegrationsByTypes } from 'state/integrations/helpers'
 
@@ -24,11 +29,20 @@ type Props = {
 
 export default function EmailIntegrationList(props: Props): JSX.Element {
     const { integrations, loading } = props
+    const dispatch = useAppDispatch()
 
     const [isLoadingDomains, setIsLoadingDomains] = useState(false)
     const [emailDomains, setEmailDomains] = useState<EmailDomain[]>([])
+    const forceEmailForwardingFlag: boolean = useFlag(
+        FeatureFlagKey.ForceEmailOnboarding,
+        false,
+    )
 
-    const dispatch = useAppDispatch()
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
+    const isEnterpriseCustomer = isEnterprise(currentHelpdeskPlan)
+
+    const isForcedEmailOnboarding =
+        forceEmailForwardingFlag && isEnterpriseCustomer
 
     const { data: storeMappings, isFetching: isLoadingStoreMappings } =
         useListStoreMappings(
@@ -74,15 +88,15 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
             <p>View and manage the support emails you use with Gorgias.</p>
             <IconLink
                 className="mr-4"
-                href="https://docs.gorgias.com/en-US/email-integration-faqs-413454"
+                href="https://link.gorgias.com/121af4"
                 icon="menu_book"
-                content="Email integrations FAQs"
+                content="Email Forwarding"
             />
             <IconLink
                 className="mr-4"
                 href="https://docs.gorgias.com/en-US/email-domain-verification-101-81757"
                 icon="menu_book"
-                content="Domain verification"
+                content="Domain Verification"
             />
         </>
     )
@@ -104,9 +118,13 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
     return (
         <IntegrationList
             createIntegrationButtonLabel="Add New Email"
-            createIntegration={() =>
-                history.push('/app/settings/channels/email/new')
-            }
+            createIntegration={() => {
+                if (isForcedEmailOnboarding) {
+                    history.push('/app/settings/channels/email/new/onboarding')
+                } else {
+                    history.push('/app/settings/channels/email/new')
+                }
+            }}
             integrationType={IntegrationType.Email}
             integrations={getIntegrationsByTypes(
                 integrations,

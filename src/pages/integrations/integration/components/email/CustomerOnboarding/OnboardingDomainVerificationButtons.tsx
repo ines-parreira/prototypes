@@ -1,9 +1,8 @@
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import LinkButton from 'pages/common/components/button/LinkButton'
-
-import { SUPPORT_EMAIL } from './EmailDomainVerification/constants'
-import useDomainVerification from './EmailDomainVerification/useDomainVerification'
+import { SUPPORT_EMAIL } from 'pages/integrations/integration/components/email/EmailDomainVerification/constants'
+import useDomainVerification from 'pages/integrations/integration/components/email/EmailDomainVerification/useDomainVerification'
 
 export default function OnboardingDomainVerificationButtons() {
     const {

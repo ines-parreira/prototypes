@@ -6,6 +6,7 @@ import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import gmailLogo from 'assets/img/integrations/gmail.svg'
 import officeLogo from 'assets/img/integrations/office.svg'
+import IconLink from 'core/ui/components/IconLink'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -16,8 +17,7 @@ import { getRedirectUri } from 'state/integrations/selectors'
 import css from './EmailIntegrationCreate.less'
 
 const EMAIL_FORWARDING_LINK = '/app/settings/channels/email/new/onboarding'
-const HELP_DOC_LINK =
-    'https://docs.gorgias.com/en-US/email-integrations-81753#find-out-who-your-provider-is'
+const HELP_DOC_LINK = 'https://link.gorgias.com/121af4'
 
 export default function EmailIntegrationCreate() {
     const gmailRedirectUri = useAppSelector(
@@ -57,14 +57,12 @@ export default function EmailIntegrationCreate() {
                         domain settings to complete the email and domain setup.
                     </p>
 
-                    <a
+                    <IconLink
+                        className="mr-4"
                         href={HELP_DOC_LINK}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                    >
-                        <i className="material-icons mr-2">menu_book</i>
-                        Email integrations
-                    </a>
+                        icon="menu_book"
+                        content="Email Forwarding"
+                    />
 
                     <div className={css.connectCards}>
                         <Link to={EMAIL_FORWARDING_LINK}>

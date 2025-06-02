@@ -5,17 +5,13 @@
     .container {
         color: var(--neutral-grey-6);
         max-width: 680px;
-        width: 70%;
-        padding: @layout-spacing-m;
+        width: 100%;
+        padding: @layout-spacing-m 0 @layout-spacing-m @layout-spacing-m;
+        margin-right: @layout-spacing-m;
 
         @media @mobiles, @tablets {
             max-width: inherit;
             width: 100%;
         }
-    }
-
-    .fullWidth {
-        max-width: 100%;
-        width: 100%;
     }
 }
