@@ -8,7 +8,7 @@ import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFil
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import GmvInfluencedOverTimeChart, {
-    percentLabel,
+    formatLabelValue,
     renderTooltipLabel,
 } from 'pages/stats/automate/aiSalesAgent/charts/GmvInfluencedOverTimeChart'
 import { useGmvInfluenceOverTimeSeries } from 'pages/stats/automate/aiSalesAgent/metrics/useGmvInfluenceOverTimeSeries'
@@ -49,7 +49,7 @@ describe('renderTooltipLabel', () => {
             raw: 0.1,
             dataset: { label: 'Dataset Label' },
         } as TooltipItem<'line'>
-        const expectedLabel = 'Dataset Label:  10%'
+        const expectedLabel = 'Dataset Label:  0.1'
 
         const result = renderTooltipLabel(true)(tooltipItem)
 
@@ -61,7 +61,7 @@ describe('renderTooltipLabel', () => {
             raw: 0.1,
             dataset: { label: undefined },
         } as TooltipItem<'line'>
-        const expectedLabel = ':  10%'
+        const expectedLabel = ':  0.1'
 
         const result = renderTooltipLabel(true)(tooltipItem)
 
@@ -69,24 +69,24 @@ describe('renderTooltipLabel', () => {
     })
 })
 
-describe('percentLabel', () => {
+describe('formatLabelValue', () => {
     it('should correctly format numbers as percentages', () => {
         const input = 0.1234
-        const expectedOutput = '12.34%'
-        const result = percentLabel(input)
+        const expectedOutput = '0.12'
+        const result = formatLabelValue(input)
         expect(result).toBe(expectedOutput)
     })
 
     it('should round percentages to two decimal places', () => {
         const input = 0.129
-        const expectedOutput = '12.9%'
-        const result = percentLabel(input)
+        const expectedOutput = '0.13'
+        const result = formatLabelValue(input)
         expect(result).toBe(expectedOutput)
     })
 
     it('should leave strings unchanged', () => {
         const input = 'Not a number'
-        const result = percentLabel(input)
+        const result = formatLabelValue(input)
         expect(result).toBe(input)
     })
 })
@@ -120,8 +120,6 @@ describe('<GmvInfluencedOverTimeChart />', () => {
     it('renders', () => {
         render(<GmvInfluencedOverTimeChart />)
 
-        expect(
-            screen.getByText('GMV influence rate (%) over time'),
-        ).toBeInTheDocument()
+        expect(screen.getByText('GMV influenced over time')).toBeInTheDocument()
     })
 })

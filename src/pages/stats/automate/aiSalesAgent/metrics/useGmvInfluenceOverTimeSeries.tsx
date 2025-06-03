@@ -6,38 +6,10 @@ import {
     useTimeSeries,
 } from 'hooks/reporting/useTimeSeries'
 import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
-import {
-    gmvTimeSeriesQueryFactory,
-    influencedGmvTimeSeriesQueryFactory,
-} from 'models/reporting/queryFactories/ai-sales-agent/timeseries'
+import { influencedGmvTimeSeriesQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/timeseries'
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
-import { GMV_OVERTIME_LABEL } from 'pages/stats/automate/aiSalesAgent/constants'
-import {
-    calculateRate,
-    getStatsByMeasure,
-} from 'pages/stats/automate/aiSalesAgent/metrics/utils'
-
-const calculateRates = (
-    influencedGmvData: TimeSeriesDataItem[],
-    gmvData: TimeSeriesDataItem[],
-): TimeSeriesDataItem[] => {
-    const rates: TimeSeriesDataItem[] = []
-
-    influencedGmvData.forEach((timeSeries, index) => {
-        const influencedGmv = influencedGmvData[index]?.value
-        const gmv = gmvData[index]?.value
-        const rate = calculateRate(influencedGmv, gmv)
-
-        rates.push({
-            dateTime: timeSeries.dateTime,
-            value: rate,
-            label: GMV_OVERTIME_LABEL,
-        })
-    })
-
-    return rates
-}
+import { getStatsByMeasure } from 'pages/stats/automate/aiSalesAgent/metrics/utils'
 
 const useGmvInfluenceOverTimeSeries = (
     filters: StatsFilters,
@@ -51,9 +23,6 @@ const useGmvInfluenceOverTimeSeries = (
     const influencedGmvTimeSeries = useTimeSeries(
         influencedGmvTimeSeriesQueryFactory(filters, timezone, granularity),
     )
-    const gmvTimeSeries = useTimeSeries(
-        gmvTimeSeriesQueryFactory(filters, timezone, granularity),
-    )
 
     const influencedGmvTimeSeriesData = useMemo(
         () =>
@@ -64,76 +33,32 @@ const useGmvInfluenceOverTimeSeries = (
         [influencedGmvTimeSeries.data],
     )
 
-    const gmvTimeSeriesData = useMemo(
-        () =>
-            getStatsByMeasure(
-                AiSalesAgentOrdersMeasure.Gmv,
-                gmvTimeSeries.data,
-            ),
-        [gmvTimeSeries.data],
-    )
-
-    const influencedGmvRates: TimeSeriesDataItem[] = useMemo(() => {
-        if (influencedGmvTimeSeries.isFetched && gmvTimeSeries.isFetched) {
-            return calculateRates(
-                influencedGmvTimeSeriesData,
-                gmvTimeSeriesData,
-            )
-        }
-        return []
-    }, [
-        influencedGmvTimeSeries,
-        gmvTimeSeries,
-        influencedGmvTimeSeriesData,
-        gmvTimeSeriesData,
-    ])
-
-    const isFetching: boolean =
-        influencedGmvTimeSeries.isFetching || gmvTimeSeries.isFetching
-    const isError: boolean =
-        influencedGmvTimeSeries.isError || gmvTimeSeries.isError
+    const isFetching: boolean = influencedGmvTimeSeries.isFetching
+    const isError: boolean = influencedGmvTimeSeries.isError
 
     return useMemo(
         () => ({
-            data: [influencedGmvRates],
+            data: [influencedGmvTimeSeriesData],
             isFetching,
             isError,
         }),
-        [influencedGmvRates, isError, isFetching],
+        [influencedGmvTimeSeriesData, isError, isFetching],
     )
 }
 
-const fetchGmvInflueceOverTimeSeries = (
+const fetchGmvInflueceOverTimeSeries = async (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
 ): Promise<TimeSeriesDataItem[][]> => {
-    return Promise.all([
-        fetchTimeSeries(
-            influencedGmvTimeSeriesQueryFactory(filters, timezone, granularity),
-        ),
-        fetchTimeSeries(
-            gmvTimeSeriesQueryFactory(filters, timezone, granularity),
-        ),
-    ]).then(([influencedGmvTimeSeries, gmvTimeSeries]) => {
-        const influencedGmvTimeSeriesData = getStatsByMeasure(
-            AiSalesAgentOrdersMeasure.Gmv,
-            influencedGmvTimeSeries,
-        )
-        const gmvTimeSeriesData = getStatsByMeasure(
-            AiSalesAgentOrdersMeasure.Gmv,
-            gmvTimeSeries,
-        )
-        const rates = calculateRates(
-            influencedGmvTimeSeriesData,
-            gmvTimeSeriesData,
-        )
-        return [rates]
-    })
+    const influencedGmvTimeSeries = await fetchTimeSeries(
+        influencedGmvTimeSeriesQueryFactory(filters, timezone, granularity),
+    )
+    const influencedGmvTimeSeriesData = getStatsByMeasure(
+        AiSalesAgentOrdersMeasure.Gmv,
+        influencedGmvTimeSeries,
+    )
+    return [influencedGmvTimeSeriesData]
 }
 
-export {
-    calculateRates,
-    useGmvInfluenceOverTimeSeries,
-    fetchGmvInflueceOverTimeSeries,
-}
+export { useGmvInfluenceOverTimeSeries, fetchGmvInflueceOverTimeSeries }

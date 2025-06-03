@@ -2,21 +2,15 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
 import moment from 'moment'
 
-import {
-    fetchTimeSeries,
-    TimeSeriesDataItem,
-    useTimeSeries,
-} from 'hooks/reporting/useTimeSeries'
+import { fetchTimeSeries, useTimeSeries } from 'hooks/reporting/useTimeSeries'
 import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
-import { GMV_OVERTIME_LABEL } from 'pages/stats/automate/aiSalesAgent/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
 import {
-    calculateRates,
     fetchGmvInflueceOverTimeSeries,
     useGmvInfluenceOverTimeSeries,
 } from '../useGmvInfluenceOverTimeSeries'
@@ -63,31 +57,10 @@ describe('gmvInfluenceOverTimeSeries', () => {
         ],
     } as ReturnType<typeof useTimeSeries>
 
-    const defaultGmvData = {
-        ...defaultData,
-        data: [
-            [
-                {
-                    dateTime: '2025-02-26T00:00:00.000',
-                    value: 50,
-                    label: AiSalesAgentOrdersMeasure.Gmv,
-                },
-                {
-                    dateTime: '2025-09-28T00:00:00.000',
-                    value: 10,
-                    label: AiSalesAgentOrdersMeasure.Gmv,
-                },
-            ],
-        ],
-    } as ReturnType<typeof useTimeSeries>
-
     describe('useGmvInfluenceOverTimeSeries', () => {
         it('should return correct metric data when the query resolves', async () => {
             // influenced GMV
             useTimeSeriesMock.mockReturnValueOnce(defaultData)
-
-            // total GMV
-            useTimeSeriesMock.mockReturnValueOnce(defaultGmvData)
 
             act(() => jest.runAllTimers())
             const { result } = renderHook(
@@ -112,13 +85,13 @@ describe('gmvInfluenceOverTimeSeries', () => {
                         [
                             {
                                 dateTime: '2025-02-26T00:00:00.000',
-                                label: GMV_OVERTIME_LABEL,
-                                value: 0.2,
+                                label: AiSalesAgentOrdersMeasure.Gmv,
+                                value: 10,
                             },
                             {
                                 dateTime: '2025-09-28T00:00:00.000',
-                                label: GMV_OVERTIME_LABEL,
-                                value: 0.5,
+                                label: AiSalesAgentOrdersMeasure.Gmv,
+                                value: 5,
                             },
                         ],
                     ],
@@ -138,13 +111,6 @@ describe('gmvInfluenceOverTimeSeries', () => {
                 >,
             )
 
-            // total GMV
-            fetchTimeSeriesMock.mockReturnValueOnce(
-                defaultGmvData.data as unknown as ReturnType<
-                    typeof fetchTimeSeries
-                >,
-            )
-
             const result = await fetchGmvInflueceOverTimeSeries(
                 filters,
                 timezone,
@@ -155,39 +121,16 @@ describe('gmvInfluenceOverTimeSeries', () => {
                 [
                     {
                         dateTime: '2025-02-26T00:00:00.000',
-                        label: GMV_OVERTIME_LABEL,
-                        value: 0.2,
+                        label: AiSalesAgentOrdersMeasure.Gmv,
+                        value: 10,
                     },
                     {
                         dateTime: '2025-09-28T00:00:00.000',
-                        label: GMV_OVERTIME_LABEL,
-                        value: 0.5,
+                        label: AiSalesAgentOrdersMeasure.Gmv,
+                        value: 5,
                     },
                 ],
             ])
         })
-    })
-})
-
-describe('calculateRates', () => {
-    it('should return 0 when no matching values in source data', () => {
-        const influencedGmvData: TimeSeriesDataItem[] = [
-            {
-                dateTime: '2025-02-26T00:00:00.000',
-                value: 10,
-                label: AiSalesAgentOrdersMeasure.Gmv,
-            },
-        ]
-        const gmvData: TimeSeriesDataItem[] = []
-
-        const data = calculateRates(influencedGmvData, gmvData)
-
-        expect(data).toEqual([
-            {
-                dateTime: '2025-02-26T00:00:00.000',
-                value: 0,
-                label: GMV_OVERTIME_LABEL,
-            },
-        ])
     })
 })

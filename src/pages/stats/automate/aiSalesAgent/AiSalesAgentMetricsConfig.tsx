@@ -380,9 +380,9 @@ export const AiSalesAgentChartConfig: Record<
     }
 > = {
     [AiSalesAgentChart.AiSalesAgentGmvInfluencedOverTime]: {
-        title: 'GMV influence rate (%) over time',
+        title: 'GMV influenced over time',
         hint: {
-            title: 'The percentage of your store’s total GMV influenced by Shopping Assistant, shown over time.',
+            title: 'The value of your store’s total GMV influenced by Shopping Assistant, shown over time.',
         },
         useTimeSeries: useGmvInfluenceOverTimeSeries,
         fetchTimeSeries: fetchGmvInflueceOverTimeSeries,

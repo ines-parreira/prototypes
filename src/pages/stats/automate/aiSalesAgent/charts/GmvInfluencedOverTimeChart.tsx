@@ -12,16 +12,14 @@ import { formatTimeSeriesData } from 'pages/stats/common/utils'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { TooltipData } from 'pages/stats/types'
 
-export const percentLabel = (value: number | string) => {
-    return typeof value === 'number'
-        ? `${parseFloat((value * 100).toFixed(2))}%`
-        : value
+export const formatLabelValue = (value: number | string) => {
+    return typeof value === 'number' ? `${parseFloat(value.toFixed(2))}` : value
 }
 
 export const renderTooltipLabel = (isPercentage = false) => {
     return ({ raw, dataset }: TooltipItem<'line'>) => {
         return `${dataset?.label || ''}:  ${
-            isPercentage ? percentLabel(raw as number) : (raw as number)
+            isPercentage ? formatLabelValue(raw as number) : (raw as number)
         }`
     }
 }
@@ -55,7 +53,7 @@ const Chart = ({
             <LineChart
                 isLoading={!timeSeries.data}
                 data={formatTimeSeriesData(timeSeries.data, title, granularity)}
-                renderYTickLabel={percentLabel}
+                renderYTickLabel={formatLabelValue}
                 _renderLegacyTooltipLabel={renderTooltipLabel(true)}
                 _displayLegacyTooltip
             />
