@@ -4,7 +4,10 @@ import {
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
 import { OrderDirection } from 'models/api/types'
-import { ticketCountPerIntentQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent'
+import {
+    ticketCountPerIntentForProductQueryFactory,
+    ticketCountPerIntentQueryFactory,
+} from 'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent'
 import { StatsFilters } from 'models/stat/types'
 
 export const useTicketCountPerIntent = (
@@ -41,3 +44,23 @@ export const fetchTicketCountPerIntent = (
         ),
         productId,
     )
+
+export const useTicketCountPerIntentForProduct = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    intentsCustomFieldId: string,
+    productId: string,
+    sorting?: OrderDirection,
+    intentsCustomFieldValueString?: string,
+) => {
+    return useMetricPerDimension(
+        ticketCountPerIntentForProductQueryFactory(
+            statsFilters,
+            timezone,
+            intentsCustomFieldId,
+            productId,
+            sorting,
+        ),
+        intentsCustomFieldValueString,
+    )
+}

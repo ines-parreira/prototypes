@@ -6,13 +6,18 @@ import {
 import {
     fetchTicketCountPerIntent,
     useTicketCountPerIntent,
+    useTicketCountPerIntentForProduct,
 } from 'hooks/reporting/voice-of-customer/metricsPerProductAndIntent'
 import { OrderDirection } from 'models/api/types'
-import { ticketCountPerIntentQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent'
+import {
+    ticketCountPerIntentForProductQueryFactory,
+    ticketCountPerIntentQueryFactory,
+} from 'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent'
 import { StatsFilters } from 'models/stat/types'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
+jest.mock('hooks/reporting/useMetric')
 jest.mock('hooks/reporting/useMetricPerDimension')
 jest.mock(
     'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent',
@@ -167,6 +172,54 @@ describe('metricsPerProductAndIntent', () => {
             )
 
             expect(result).toEqual(mockResult)
+        })
+    })
+
+    describe('useTicketCountPerIntentForProduct', () => {
+        it('calls `useMetricPerDimension` with correct arguments', () => {
+            renderHook(() =>
+                useTicketCountPerIntentForProduct(
+                    statsFilters,
+                    timezone,
+                    intentsCustomFieldId,
+                    productId,
+                ),
+            )
+
+            expect(useMetricPerDimension).toHaveBeenCalledWith(
+                ticketCountPerIntentForProductQueryFactory(
+                    statsFilters,
+                    timezone,
+                    intentsCustomFieldId,
+                    productId,
+                ),
+                undefined,
+            )
+        })
+
+        it('should call `useMetricPerDimension` with `intent` if provided', () => {
+            const intent = 'my::intent'
+
+            renderHook(() =>
+                useTicketCountPerIntentForProduct(
+                    statsFilters,
+                    timezone,
+                    intentsCustomFieldId,
+                    productId,
+                    OrderDirection.Asc,
+                    intent,
+                ),
+            )
+
+            expect(useMetricPerDimension).toHaveBeenCalledWith(
+                ticketCountPerIntentForProductQueryFactory(
+                    statsFilters,
+                    timezone,
+                    intentsCustomFieldId,
+                    productId,
+                ),
+                intent,
+            )
         })
     })
 })

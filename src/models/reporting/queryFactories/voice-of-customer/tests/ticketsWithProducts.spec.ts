@@ -1,231 +1,188 @@
-import moment from 'moment/moment'
-
-import { TicketChannel } from 'business/types/ticket'
 import { OrderDirection } from 'models/api/types'
-import {
-    TicketProductsEnrichedDimension,
-    TicketProductsEnrichedMeasure,
-} from 'models/reporting/cubes/core/TicketProductsEnrichedCube'
-import {
-    TicketDimension,
-    TicketMember,
-} from 'models/reporting/cubes/TicketCube'
-import { TicketMessagesMember } from 'models/reporting/cubes/TicketMessagesCube'
-import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import {
     ticketCountPerProductQueryFactory,
     ticketsWithProductsDrillDownQueryFactory,
     ticketsWithProductsQueryFactory,
 } from 'models/reporting/queryFactories/voice-of-customer/ticketsWithProducts'
-import { ReportingFilterOperator } from 'models/reporting/types'
-import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
-import {
-    DRILLDOWN_QUERY_LIMIT,
-    formatReportingQueryDate,
-    NotSpamNorTrashedTicketsFilter,
-} from 'utils/reporting'
+import { StatsFilters } from 'models/stat/types'
 
 describe('ticketsWithProducts', () => {
-    const periodStart = moment()
-    const periodEnd = periodStart.add(7, 'days')
+    const periodStart = '2025-06-02T12:00:00.000'
+    const periodEnd = '2025-06-09T12:00:00.000'
     const statsFilters: StatsFilters = {
         period: {
-            end_datetime: periodEnd.toISOString(),
-            start_datetime: periodStart.toISOString(),
+            end_datetime: periodEnd,
+            start_datetime: periodStart,
         },
-        channels: withDefaultLogicalOperator([
-            TicketChannel.Email,
-            TicketChannel.Chat,
-        ]),
-        integrations: withDefaultLogicalOperator([1]),
-        tags: [
-            {
-                ...withDefaultLogicalOperator([1, 2]),
-                filterInstanceId: TagFilterInstanceId.First,
-            },
-        ],
     }
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Asc
 
     describe('ticketsWithProductsQueryFactory', () => {
         it('should make ticketsWithProductsCount query', () => {
-            expect(
-                ticketsWithProductsQueryFactory(
-                    statsFilters,
-                    timezone,
-                    sorting,
-                ),
-            ).toEqual({
+            const actual = ticketsWithProductsQueryFactory(
+                statsFilters,
+                timezone,
+                sorting,
+            )
+
+            const expected = {
+                measures: ['TicketProductsEnriched.ticketCount'],
                 dimensions: [],
+                timezone: 'someTimeZone',
+                segments: [],
                 filters: [
-                    ...NotSpamNorTrashedTicketsFilter,
                     {
-                        member: TicketMember.PeriodStart,
-                        operator: ReportingFilterOperator.AfterDate,
-                        values: [formatReportingQueryDate(periodStart)],
+                        member: 'TicketEnriched.isTrashed',
+                        operator: 'equals',
+                        values: ['0'],
                     },
                     {
-                        member: TicketMember.PeriodEnd,
-                        operator: ReportingFilterOperator.BeforeDate,
-                        values: [formatReportingQueryDate(periodEnd)],
+                        member: 'TicketEnriched.isSpam',
+                        operator: 'equals',
+                        values: ['0'],
                     },
                     {
-                        member: TicketMessagesMember.Integration,
-                        operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.integrations?.values.map(String),
+                        member: 'TicketEnriched.periodStart',
+                        operator: 'afterDate',
+                        values: [periodStart],
                     },
                     {
-                        member: TicketMember.Channel,
-                        operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.channels?.values.map(String),
-                    },
-                    {
-                        member: TicketMember.Tags,
-                        operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.tags?.[0]?.values.map(String),
+                        member: 'TicketEnriched.periodEnd',
+                        operator: 'beforeDate',
+                        values: [periodEnd],
                     },
                 ],
-                measures: [TicketProductsEnrichedMeasure.TicketCount],
-                order: [[TicketProductsEnrichedMeasure.TicketCount, sorting]],
-                segments: [],
-                timezone: timezone,
-            })
+                order: [['TicketProductsEnriched.ticketCount', 'asc']],
+            }
+
+            expect(actual).toEqual(expected)
         })
 
         it('should make ticketsWithProductsCount query without sorting', () => {
-            expect(
-                ticketsWithProductsQueryFactory(statsFilters, timezone),
-            ).toEqual({
+            const actual = ticketsWithProductsQueryFactory(
+                statsFilters,
+                timezone,
+            )
+
+            const expected = {
+                measures: ['TicketProductsEnriched.ticketCount'],
                 dimensions: [],
+                timezone: 'someTimeZone',
+                segments: [],
                 filters: [
-                    ...NotSpamNorTrashedTicketsFilter,
                     {
-                        member: TicketMember.PeriodStart,
-                        operator: ReportingFilterOperator.AfterDate,
-                        values: [formatReportingQueryDate(periodStart)],
+                        member: 'TicketEnriched.isTrashed',
+                        operator: 'equals',
+                        values: ['0'],
                     },
                     {
-                        member: TicketMember.PeriodEnd,
-                        operator: ReportingFilterOperator.BeforeDate,
-                        values: [formatReportingQueryDate(periodEnd)],
+                        member: 'TicketEnriched.isSpam',
+                        operator: 'equals',
+                        values: ['0'],
                     },
                     {
-                        member: TicketMessagesMember.Integration,
-                        operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.integrations?.values.map(String),
+                        member: 'TicketEnriched.periodStart',
+                        operator: 'afterDate',
+                        values: [periodStart],
                     },
                     {
-                        member: TicketMember.Channel,
-                        operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.channels?.values.map(String),
-                    },
-                    {
-                        member: TicketMember.Tags,
-                        operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.tags?.[0]?.values.map(String),
+                        member: 'TicketEnriched.periodEnd',
+                        operator: 'beforeDate',
+                        values: [periodEnd],
                     },
                 ],
-                measures: [TicketProductsEnrichedMeasure.TicketCount],
-                segments: [],
-                timezone: timezone,
-            })
+            }
+
+            expect(actual).toEqual(expected)
         })
     })
 
     describe('ticketCountPerProductQueryFactory', () => {
         it('should make ticketCountPerProduct query', () => {
-            expect(
-                ticketCountPerProductQueryFactory(
-                    statsFilters,
-                    timezone,
-                    sorting,
-                ),
-            ).toEqual({
+            const actual = ticketCountPerProductQueryFactory(
+                statsFilters,
+                timezone,
+                sorting,
+            )
+
+            const expected = {
+                measures: ['TicketProductsEnriched.ticketCount'],
+                dimensions: ['TicketProductsEnriched.productId'],
+                timezone: 'someTimeZone',
+                segments: [],
                 filters: [
-                    ...NotSpamNorTrashedTicketsFilter,
                     {
-                        member: TicketMember.PeriodStart,
-                        operator: ReportingFilterOperator.AfterDate,
-                        values: [formatReportingQueryDate(periodStart)],
+                        member: 'TicketEnriched.isTrashed',
+                        operator: 'equals',
+                        values: ['0'],
                     },
                     {
-                        member: TicketMember.PeriodEnd,
-                        operator: ReportingFilterOperator.BeforeDate,
-                        values: [formatReportingQueryDate(periodEnd)],
+                        member: 'TicketEnriched.isSpam',
+                        operator: 'equals',
+                        values: ['0'],
                     },
                     {
-                        member: TicketMessagesMember.Integration,
-                        operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.integrations?.values.map(String),
+                        member: 'TicketEnriched.periodStart',
+                        operator: 'afterDate',
+                        values: [periodStart],
                     },
                     {
-                        member: TicketMember.Channel,
-                        operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.channels?.values.map(String),
-                    },
-                    {
-                        member: TicketMember.Tags,
-                        operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.tags?.[0]?.values.map(String),
+                        member: 'TicketEnriched.periodEnd',
+                        operator: 'beforeDate',
+                        values: [periodEnd],
                     },
                 ],
-                measures: [TicketProductsEnrichedMeasure.TicketCount],
-                order: [[TicketProductsEnrichedMeasure.TicketCount, sorting]],
-                segments: [],
-                timezone: timezone,
-                dimensions: [TicketProductsEnrichedDimension.ProductId],
-            })
+                order: [['TicketProductsEnriched.ticketCount', 'asc']],
+            }
+
+            expect(actual).toEqual(expected)
         })
     })
 
     describe('ticketsWithProductsDrillDownQueryFactory', () => {
         it('should make ticketsWithProductsDrillDown Query', () => {
-            expect(
-                ticketsWithProductsDrillDownQueryFactory(
-                    statsFilters,
-                    timezone,
-                    sorting,
-                ),
-            ).toEqual({
-                filters: [
-                    ...NotSpamNorTrashedTicketsFilter,
-                    {
-                        member: TicketMember.PeriodStart,
-                        operator: ReportingFilterOperator.AfterDate,
-                        values: [formatReportingQueryDate(periodStart)],
-                    },
-                    {
-                        member: TicketMember.PeriodEnd,
-                        operator: ReportingFilterOperator.BeforeDate,
-                        values: [formatReportingQueryDate(periodEnd)],
-                    },
-                    {
-                        member: TicketMessagesMember.Integration,
-                        operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.integrations?.values.map(String),
-                    },
-                    {
-                        member: TicketMember.Channel,
-                        operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.channels?.values.map(String),
-                    },
-                    {
-                        member: TicketMember.Tags,
-                        operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.tags?.[0]?.values.map(String),
-                    },
-                ],
-                limit: DRILLDOWN_QUERY_LIMIT,
-                measures: [TicketProductsEnrichedMeasure.TicketCount],
-                order: [[TicketDimension.CreatedDatetime, sorting]],
-                segments: [],
-                timezone: timezone,
+            const actual = ticketsWithProductsDrillDownQueryFactory(
+                statsFilters,
+                timezone,
+                sorting,
+            )
+
+            const expected = {
+                measures: ['TicketProductsEnriched.ticketCount'],
                 dimensions: [
-                    TicketDimension.TicketId,
-                    TicketDimension.CreatedDatetime,
+                    'TicketEnriched.ticketId',
+                    'TicketEnriched.createdDatetime',
                 ],
-            })
+                timezone: 'someTimeZone',
+                segments: [],
+                filters: [
+                    {
+                        member: 'TicketEnriched.isTrashed',
+                        operator: 'equals',
+                        values: ['0'],
+                    },
+                    {
+                        member: 'TicketEnriched.isSpam',
+                        operator: 'equals',
+                        values: ['0'],
+                    },
+                    {
+                        member: 'TicketEnriched.periodStart',
+                        operator: 'afterDate',
+                        values: [periodStart],
+                    },
+                    {
+                        member: 'TicketEnriched.periodEnd',
+                        operator: 'beforeDate',
+                        values: [periodEnd],
+                    },
+                ],
+                order: [['TicketEnriched.createdDatetime', 'asc']],
+                limit: 100,
+            }
+
+            expect(actual).toEqual(expected)
         })
     })
 })

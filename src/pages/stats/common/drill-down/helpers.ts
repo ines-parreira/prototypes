@@ -48,6 +48,10 @@ import {
     ProductInsightsColumnConfig,
     ProductInsightsColumnWithDrillDownConfig,
 } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableConfig'
+import {
+    VoiceOfCustomerMetricWithDrillDown,
+    VoiceOfCustomerMetricWithDrillDownConfig,
+} from 'pages/stats/voice-of-customer/VoiceOfCustomerMetricConfig'
 import { VoiceAgentsMetricsConfig } from 'pages/stats/voice/VoiceConfigs/VoiceAgentMetricsConfig'
 import { VoiceMetricsConfig } from 'pages/stats/voice/VoiceConfigs/VoiceMetricsConfig'
 import {
@@ -304,6 +308,26 @@ export const getDrillDownQuery = (
             return AiSalesAgentMetricsWithDrillDownConfig[
                 AiSalesAgentChart.AiSalesAgentTotalProductRecommendations
             ].drillDownQuery
+        case VoiceOfCustomerMetricWithDrillDown.IntentPerProduct: {
+            const { drillDownQuery } =
+                VoiceOfCustomerMetricWithDrillDownConfig[
+                    VoiceOfCustomerMetricWithDrillDown.IntentPerProduct
+                ]
+
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection,
+            ) =>
+                drillDownQuery(
+                    statsFilters,
+                    timezone,
+                    metricName.intentCustomFieldId,
+                    metricName.intentCustomFieldValueString,
+                    metricName.productId,
+                    sorting,
+                )
+        }
     }
 }
 const queryBuilderWithAgentFilter =
@@ -508,6 +532,19 @@ export const getDrillDownMetricColumn = (
         metricValueFormat =
             AiSalesAgentMetricsWithDrillDownConfig[metricData.metricName]
                 .metricFormat
+    } else if (
+        metricData.metricName ===
+        VoiceOfCustomerMetricWithDrillDown.IntentPerProduct
+    ) {
+        metricTitle =
+            metricData.title ||
+            VoiceOfCustomerMetricWithDrillDownConfig[
+                VoiceOfCustomerMetricWithDrillDown.IntentPerProduct
+            ].title
+        metricValueFormat =
+            VoiceOfCustomerMetricWithDrillDownConfig[
+                VoiceOfCustomerMetricWithDrillDown.IntentPerProduct
+            ].metricFormat
     } else if ('perAgentId' in metricData) {
         metricTitle = TableLabels[metricData.metricName]
         metricValueFormat = AgentsColumnConfig[metricData.metricName].format

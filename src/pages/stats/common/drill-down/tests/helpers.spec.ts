@@ -15,6 +15,7 @@ import {
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import { tagsTicketCountDrillDownByReferenceQueryFactory } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { ticketCountPerIntentForProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent'
 import {
     connectedCallsListQueryFactory,
     liveDashboardConnectedCallsListQueryFactory,
@@ -52,6 +53,7 @@ import {
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { ProductInsightsColumnWithDrillDownConfig } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableConfig'
+import { VoiceOfCustomerMetricWithDrillDown } from 'pages/stats/voice-of-customer/VoiceOfCustomerMetricConfig'
 import { MEDIAN_RESOLUTION_TIME_LABEL } from 'services/reporting/constants'
 import {
     AgentsMetrics,
@@ -81,6 +83,12 @@ import {
     VoiceMetric,
 } from 'state/ui/stats/types'
 import { assumeMock } from 'utils/testing'
+
+jest.mock(
+    'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent',
+)
+const ticketCountPerIntentForProductDrillDownQueryFactoryMock =
+    ticketCountPerIntentForProductDrillDownQueryFactory
 
 jest.mock('models/reporting/queryFactories/voice/voiceCall')
 jest.mock(
@@ -423,6 +431,15 @@ describe('getDrillDownQuery', () => {
         },
     ]
 
+    const voiceOfCustomerMetrics: DrillDownMetric[] = [
+        {
+            metricName: VoiceOfCustomerMetricWithDrillDown.IntentPerProduct,
+            intentCustomFieldId: '123',
+            intentCustomFieldValueString: 'product::return',
+            productId: '456',
+        },
+    ]
+
     it.each([
         ...supportedMetrics,
         ...agentsMetrics,
@@ -436,6 +453,7 @@ describe('getDrillDownQuery', () => {
         ...tagsMetrics,
         ...aiInsightsMetrics,
         ...productInsightsMetrics,
+        ...voiceOfCustomerMetrics,
     ])(
         'should return a query for every DrillDown metric: $metricName',
         (metricName: DrillDownMetric) => {
@@ -824,6 +842,38 @@ describe('getDrillDownQuery', () => {
         )
     })
 
+    it('should be populated with intentCustomFieldId, intentCustomFieldValueString and productId', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+
+        const customFieldMetric: DrillDownMetric = {
+            metricName: VoiceOfCustomerMetricWithDrillDown.IntentPerProduct,
+            intentCustomFieldId: '123',
+            intentCustomFieldValueString: 'product::return',
+            productId: '456',
+        }
+
+        getDrillDownQuery(customFieldMetric)(statsFilters, timezone)
+
+        expect(
+            ticketCountPerIntentForProductDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(
+            statsFilters,
+            timezone,
+            customFieldMetric.intentCustomFieldId,
+            customFieldMetric.intentCustomFieldValueString,
+            customFieldMetric.productId,
+            undefined,
+        )
+    })
+
     it('should be populated with ticketTimeReference', () => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
@@ -1037,6 +1087,19 @@ describe('getDrillDownMetric', () => {
                     ProductInsightsColumnWithDrillDownConfig[
                         ProductInsightsTableColumns.TicketsVolume
                     ].format,
+            },
+        },
+        {
+            metricData: {
+                metricName: VoiceOfCustomerMetricWithDrillDown.IntentPerProduct,
+                intentCustomFieldId: '123',
+                intentCustomFieldValueString: 'product::return',
+                productId: '456',
+            },
+            expectedValues: {
+                metricTitle: 'Intent per product',
+                metricValueFormat: 'decimal',
+                showMetric: false,
             },
         },
         {

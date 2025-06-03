@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, useCallback } from 'react'
 
 import classNames from 'classnames'
 
@@ -28,6 +28,28 @@ const getTooltipText = (metricData: DrillDownMetric) =>
     DomainsConfig[MetricsConfig[metricData.metricName].domain]
         .modalTriggerTooltipText
 
+const useDrillDownModalOpener = ({
+    metricData,
+    segmentEventName,
+}: {
+    metricData: DrillDownMetric
+    segmentEventName: SegmentEvent
+}) => {
+    const dispatch = useAppDispatch()
+
+    return useCallback(() => {
+        dispatch(setMetricData(metricData))
+        logEvent(segmentEventName, { metric: metricData.metricName })
+    }, [dispatch, metricData, segmentEventName])
+}
+
+export const useOpenDrillDownModal = (metricData: DrillDownMetric) => {
+    return useDrillDownModalOpener({
+        segmentEventName: SegmentEvent.StatClicked,
+        metricData,
+    })
+}
+
 export const DrillDownModalTrigger = ({
     children,
     metricData,
@@ -35,12 +57,10 @@ export const DrillDownModalTrigger = ({
     highlighted = false,
     segmentEventName = SegmentEvent.StatClicked,
 }: PropsWithChildren<Props>) => {
-    const dispatch = useAppDispatch()
-
-    const handleClick = () => {
-        dispatch(setMetricData(metricData))
-        logEvent(segmentEventName, { metric: metricData.metricName })
-    }
+    const openDrillDownModal = useDrillDownModalOpener({
+        metricData,
+        segmentEventName,
+    })
 
     const targetId = `${TRIGGER_ID}-${useId()}`
     const tooltipText = getTooltipText(metricData)
@@ -53,7 +73,7 @@ export const DrillDownModalTrigger = ({
             className={classNames(css.text, {
                 [css.highlighted]: highlighted,
             })}
-            onClick={handleClick}
+            onClick={openDrillDownModal}
         >
             <Tooltip delay={hintTooltipDelay} target={targetId}>
                 {tooltipText}

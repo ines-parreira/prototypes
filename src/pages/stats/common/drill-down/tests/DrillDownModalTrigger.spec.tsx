@@ -1,16 +1,18 @@
-import React from 'react'
-
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
+import {
+    DrillDownModalTrigger,
+    useOpenDrillDownModal,
+} from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { RootState, StoreDispatch } from 'state/types'
 import { DrillDownMetric, setMetricData } from 'state/ui/stats/drillDownSlice'
 import { VoiceAgentsMetric, VoiceMetric } from 'state/ui/stats/types'
+import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 import { assumeMock } from 'utils/testing'
 import { userEvent } from 'utils/testing/userEvent'
 
@@ -114,4 +116,45 @@ describe('<DrillDownModalTrigger />', () => {
             })
         },
     )
+})
+
+describe('useOpenDrillDownModal', () => {
+    const metricData: DrillDownMetric = {
+        metricName: OverviewMetric.OpenTickets,
+    }
+
+    it('returns a function', () => {
+        const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+            useOpenDrillDownModal(metricData),
+        )
+
+        expect(typeof result.current).toBe('function')
+    })
+
+    it('sets metric data', async () => {
+        const { result, store } = renderHookWithStoreAndQueryClientProvider(
+            () => useOpenDrillDownModal(metricData),
+        )
+
+        result.current()
+
+        await waitFor(() => {
+            expect(store.getActions()).toContainEqual(setMetricData(metricData))
+        })
+    })
+
+    it('logs segment event', async () => {
+        const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+            useOpenDrillDownModal(metricData),
+        )
+
+        result.current()
+
+        await waitFor(() => {
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.StatClicked,
+                { metric: metricData.metricName },
+            )
+        })
+    })
 })

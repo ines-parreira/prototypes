@@ -37,6 +37,10 @@ import {
 import { TagsMetricConfig } from 'pages/stats/ticket-insights/tags/TagsMetricConfig'
 import { TicketFieldsMetricConfig } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
 import { ProductInsightsColumnWithDrillDownConfig } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableConfig'
+import {
+    VoiceOfCustomerMetricWithDrillDown,
+    VoiceOfCustomerMetricWithDrillDownConfig,
+} from 'pages/stats/voice-of-customer/VoiceOfCustomerMetricConfig'
 import { VoiceDrillDownConfig } from 'pages/stats/voice/VoiceConfigs/VoiceDrillDownConfig'
 import {
     AgentMetricColumn,
@@ -99,6 +103,7 @@ const TicketDrillDownConfig: DomainConfig<
     | TicketFieldsMetric
     | AIInsightsMetric
     | ProductMetricColumn
+    | VoiceOfCustomerMetricWithDrillDown
 > = {
     drillDownHook: useTicketDrillDownHook,
     tableComponent: TicketDrillDownTableContent,
@@ -118,6 +123,7 @@ const TicketDrillDownConfig: DomainConfig<
         ...TicketFieldsMetricConfig,
         ...AiInsightsMetricConfig,
         ...ProductInsightsColumnWithDrillDownConfig,
+        ...VoiceOfCustomerMetricWithDrillDownConfig,
     },
 }
 

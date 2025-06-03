@@ -16,6 +16,7 @@ import { AiSalesAgentDrillDownMetrics } from 'pages/stats/automate/aiSalesAgent/
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import { VoiceOfCustomerMetricWithDrillDown } from 'pages/stats/voice-of-customer/VoiceOfCustomerMetricConfig'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -87,6 +88,13 @@ export type ProductMetricColumn =
 export type ProductMetrics = {
     metricName: ProductMetricColumn
     productId: string
+} & CommonMetrics
+
+export type VoiceOfCustomerMetrics = {
+    metricName: VoiceOfCustomerMetricWithDrillDown.IntentPerProduct
+    productId: string
+    intentCustomFieldId: string
+    intentCustomFieldValueString: string
 } & CommonMetrics
 
 export type AiSalesAgentMetrics = {
@@ -229,6 +237,7 @@ export type DrillDownMetric =
     | TagsFieldsMetrics
     | AiSalesAgentMetrics
     | ProductMetrics
+    | VoiceOfCustomerMetrics
 
 export type DrillDownState = {
     isOpen: boolean
