@@ -25,21 +25,10 @@ export default function ChannelsFilter({
     assignedChannelIds,
     setAssignedChannelIds,
 }: ChannelsFilterProps) {
-    const [selectedFilterItems, setSelectedFilterItems] = useState<number[]>([])
-
-    const handleFilterClose = () => {
-        setAssignedChannelIds((prev) => [...prev, ...selectedFilterItems])
-        setSelectedFilterItems([])
-    }
-
     const buttonRef = useRef<HTMLButtonElement>(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
     const onToggle = () => {
-        if (isDropdownOpen) {
-            handleFilterClose()
-        }
-
         setIsDropdownOpen(!isDropdownOpen)
     }
 
@@ -53,10 +42,7 @@ export default function ChannelsFilter({
     ].filter((channel) => !assignedChannelIds.includes(channel.id))
 
     const handleItemClick = (value: number) => {
-        const newSelectedItems = selectedFilterItems.includes(value)
-            ? selectedFilterItems.filter((item) => item !== value)
-            : [...selectedFilterItems, value]
-        setSelectedFilterItems(newSelectedItems)
+        setAssignedChannelIds((prev) => [...prev, value])
     }
 
     return (
@@ -77,7 +63,7 @@ export default function ChannelsFilter({
                 isOpen={isDropdownOpen}
                 onToggle={onToggle}
                 target={buttonRef}
-                value={selectedFilterItems}
+                value={assignedChannelIds}
             >
                 <DropdownSearch autoFocus />
                 <DropdownBody>

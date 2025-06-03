@@ -214,11 +214,6 @@ describe('ChannelsTab', () => {
             })
             fireEvent.click(assignEmailButton)
 
-            const emailToAssign = screen.getByText('test@test-4.com')
-            fireEvent.click(emailToAssign)
-            fireEvent.click(emailToAssign)
-            fireEvent.click(assignEmailButton)
-
             expect(
                 screen.queryByText(
                     /Choose which support emails should be assigned to this store.*/,
