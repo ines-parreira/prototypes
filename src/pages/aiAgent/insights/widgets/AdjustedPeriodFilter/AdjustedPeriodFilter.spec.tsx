@@ -93,11 +93,15 @@ describe('subtractsPeriodWithoutData', () => {
 
 describe('subtractsPeriodWithoutDataIfNeeded', () => {
     it('should subtract appropriate number of hours if the date is within the last 72 hours', () => {
-        const recentDate = moment().subtract(48, 'hours')
+        const fixedNow = moment('2025-01-01T12:00:00.000Z')
+        jest.spyOn(moment, 'now').mockImplementation(() => fixedNow.valueOf())
+        const recentDate = moment(fixedNow).subtract(48, 'hours')
         const result = subtractsPeriodWithoutDataIfNeeded(recentDate.clone())
-        expect(result.toISOString()).toBe(
-            recentDate.subtract(24, 'hours').toISOString(),
+        const expected = moment(recentDate).subtract(24, 'hours')
+        expect(result.format('YYYY-MM-DD HH:mm:ss')).toBe(
+            expected.format('YYYY-MM-DD HH:mm:ss'),
         )
+        jest.restoreAllMocks()
     })
 
     it('should not subtract if the date is beyond the last 72 hours', () => {
