@@ -23,6 +23,16 @@ import { Components } from 'rest_api/knowledge_service_api/client.generated'
 
 const DEFAULT_STALE_TIME = 10 * 60 * 1000
 
+const knowledgeResourceOrder = [
+    AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+    AiAgentKnowledgeResourceTypeEnum.ACTION,
+    AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+    AiAgentKnowledgeResourceTypeEnum.MACRO,
+    AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
+    AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
+    AiAgentKnowledgeResourceTypeEnum.ORDER,
+]
+
 /**
  * Extracts distinct help center IDs from resources
  */
@@ -403,6 +413,32 @@ const useProcessResources = (
                     }
                 }
             })
+        })
+
+        // Sort knowledgeResources based on knowledgeResourceOrder
+        output.knowledgeResources.sort((a, b) => {
+            const aIndex = knowledgeResourceOrder.indexOf(
+                a.resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
+            )
+            const bIndex = knowledgeResourceOrder.indexOf(
+                b.resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
+            )
+
+            return aIndex - bIndex
+        })
+
+        // Sort suggestedResources based on knowledgeResourceOrder
+        output.suggestedResources.sort((a, b) => {
+            const aIndex = knowledgeResourceOrder.indexOf(
+                a.parsedResource
+                    .resourceType as AiAgentKnowledgeResourceTypeEnum,
+            )
+            const bIndex = knowledgeResourceOrder.indexOf(
+                b.parsedResource
+                    .resourceType as AiAgentKnowledgeResourceTypeEnum,
+            )
+
+            return aIndex - bIndex
         })
 
         return output

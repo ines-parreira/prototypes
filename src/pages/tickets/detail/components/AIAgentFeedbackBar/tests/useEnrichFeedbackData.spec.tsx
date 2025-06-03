@@ -588,12 +588,12 @@ describe('useEnrichFeedbackData', () => {
             )
 
         expect(knowledgeResourceTypes).toEqual([
-            'ARTICLE',
             'GUIDANCE',
+            'ACTION',
+            'ARTICLE',
+            'MACRO',
             'EXTERNAL_SNIPPET',
             'FILE_EXTERNAL_SNIPPET',
-            'MACRO',
-            'ACTION',
             'ORDER',
         ])
 
@@ -604,13 +604,13 @@ describe('useEnrichFeedbackData', () => {
             )
 
         expect(suggestedResourceTypes).toEqual([
-            'ARTICLE',
             'GUIDANCE',
-            'EXTERNAL_SNIPPET',
-            'FILE_EXTERNAL_SNIPPET',
-            'MACRO',
             'ACTION',
             'ARTICLE',
+            'ARTICLE',
+            'MACRO',
+            'EXTERNAL_SNIPPET',
+            'FILE_EXTERNAL_SNIPPET',
         ])
         // Check for the freeForm feedback
         expect(result.current.enrichedData.freeForm).not.toBeNull()

@@ -133,6 +133,7 @@ const SimplifiedAIAgentBanner = ({
                     intent="secondary"
                     size="small"
                     fillStyle="fill"
+                    isDisabled={activeTab === TicketAIAgentFeedbackTab.AIAgent}
                     onClick={handleClick}
                     className={classNames({
                         [css.activeButton]:
