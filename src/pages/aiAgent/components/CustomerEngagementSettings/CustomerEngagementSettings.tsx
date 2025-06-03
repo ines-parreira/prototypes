@@ -121,7 +121,7 @@ export const CustomerEngagementSettings = () => {
                             ...storeConfiguration?.floatingChatInputConfiguration,
                             isEnabled: data.isFloatingInputEnabled,
                             isDesktopOnly: data.isFloatingInputDesktopOnly,
-                            needHelpText: data.needHelpText,
+                            needHelpText: data.needHelpText || undefined,
                         },
                         isSalesHelpOnSearchEnabled:
                             data.isSalesHelpOnSearchEnabled,
@@ -136,7 +136,7 @@ export const CustomerEngagementSettings = () => {
                             ...primaryLanguageTexts,
                             sspTexts: {
                                 ...primaryLanguageTexts.sspTexts,
-                                needHelp: data.needHelpText,
+                                needHelp: data.needHelpText || undefined,
                             },
                         },
                     }

@@ -94,7 +94,9 @@ jest.mock(
             texts: {
                 'en-US': {
                     texts: {},
-                    sspTexts: {},
+                    sspTexts: {
+                        needHelp: 'Need help? Ask us anything!',
+                    },
                     meta: {},
                 },
             },
@@ -141,6 +143,9 @@ const getFloatingInputSwitch = (container: HTMLElement) => {
     return within(label.closest('.cardContentWrapper')!).getByRole('switch')
 }
 
+const getUpdateButton = (result: RenderComponentReturn) =>
+    result.getByRole('button', { name: 'Update' })
+
 const getSaveButton = (result: RenderComponentReturn) =>
     result.getByRole('button', { name: 'Save Changes' })
 
@@ -178,7 +183,10 @@ describe('CustomerEngagementSettings', () => {
         })
 
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
-            storeConfiguration: { ...storeConfiguration },
+            storeConfiguration: {
+                ...storeConfiguration,
+                monitoredChatIntegrations: [1],
+            },
             isLoading: false,
             updateStoreConfiguration: mockUpdateStoreConfiguration,
             createStoreConfiguration: jest.fn(),
@@ -235,10 +243,11 @@ describe('CustomerEngagementSettings', () => {
                 expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith({
                     ...storeConfiguration,
                     isConversationStartersEnabled: true,
+                    monitoredChatIntegrations: [1],
                     floatingChatInputConfiguration: {
                         isEnabled: false,
                         isDesktopOnly: false,
-                        needHelpText: '',
+                        needHelpText: 'Need help? Ask us anything!',
                     },
                 })
             })
@@ -294,6 +303,39 @@ describe('CustomerEngagementSettings', () => {
 
             await waitFor(() => {
                 expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
+            })
+        })
+
+        it('should send needHelp text as undefined when value is empty', async () => {
+            const result = renderComponent()
+
+            const switchElement = getFloatingInputSwitch(result.container)
+            click(switchElement)
+
+            const advancedSettingsLabel = result.getByText('Advanced settings')
+            click(advancedSettingsLabel)
+
+            expect(
+                result.getByText('Enable on Desktop only'),
+            ).toBeInTheDocument()
+
+            result.getByText('Need help? Ask us anything!')
+
+            const textarea = result.getByPlaceholderText('Enter custom value')
+            fireEvent.change(textarea, { target: { value: '' } })
+            fireEvent.click(getUpdateButton(result))
+            click(getSaveButton(result))
+
+            await waitFor(() => {
+                expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith({
+                    ...storeConfiguration,
+                    monitoredChatIntegrations: [1],
+                    floatingChatInputConfiguration: {
+                        isEnabled: true,
+                        isDesktopOnly: false,
+                        needHelpText: undefined,
+                    },
+                })
             })
         })
     })
