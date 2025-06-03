@@ -22,6 +22,7 @@ ignore:
   - src/pages/tickets/navbar/v2/TicketNavbarSectionV2.tsx
   - src/pages/tickets/navbar/v2/TicketNavbarViewLinkV2.tsx
   - src/routes/Routes.tsx
+  - src/utils/launchDarkly.ts
 
 coverage:
   status:

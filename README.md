@@ -16,6 +16,10 @@ It's built using ReactJS + Redux + many other smaller tools.
             - [Story Guidelines](#story-guidelines)
             - [Storybook Folder Structure](#storybook-folder-structure)
         - [Design tokens](#design-tokens)
+        - [Environment Configuration](#environment-configuration)
+            - [Initial Setup](#initial-setup)
+            - [Available Environment Variables](#available-environment-variables)
+        - [Running the Development Server](#running-the-development-server)
     - [Testing](#testing)
         - [General testing](#general-testing)
     - [Linting](#linting)
@@ -70,6 +74,27 @@ This helps maintain unique versions, signal that some dependencies should be cha
 To update a package whose version is specified in a catalog, you need to update the catalog itself in the `pnpm-workspace.yaml` file manually. The `pnpm update` command [doesn't yet support the catalogs for now](https://pnpm.io/catalogs#caveats).
 
 ## Development
+
+### Environment Configuration
+
+This project uses environment variables for development configuration. Follow these steps to set up your local environment:
+
+#### Initial Setup
+
+1. **Copy the environment template:**
+
+    ```bash
+    cp .env.example .env
+    ```
+
+2. **Edit `.env` with your personal settings:**
+    ```bash
+    DEVELOPER_NAME=your-actual-name
+    ```
+
+**Note:** Environment variables in `.env` are only used in development builds and do not affect production.
+
+### Running the Development Server
 
 1. If you don't want run the backend on your machine, start the development server with:
 

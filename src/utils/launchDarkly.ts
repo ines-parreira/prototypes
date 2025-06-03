@@ -3,6 +3,8 @@ import * as LDClient from 'launchdarkly-js-client-sdk'
 import { User } from 'config/types/user'
 import { Account } from 'state/currentAccount/types'
 
+import { isDevelopment } from './environment'
+
 let client: LDClient.LDClient
 export let LDContext: LDClient.LDContext = {}
 
@@ -25,7 +27,13 @@ export function initLaunchDarkly(
             ? { automationPriceId: currentAutomationProductId }
             : ({} as Record<string, never>)
 
-        LDContext = {
+        const developerContext = {
+            developer: {
+                key: process.env.DEVELOPER_NAME ?? window.DEVELOPER_NAME ?? '',
+            },
+        }
+
+        const userContext = {
             kind: 'user',
             key: account.id.toString(),
             ...helpdeskMap,
@@ -34,6 +42,12 @@ export function initLaunchDarkly(
             domain: account.domain,
             cluster: window.GORGIAS_CLUSTER,
             userImpersonated: window.USER_IMPERSONATED || false,
+        }
+
+        LDContext = {
+            kind: 'multi',
+            user: userContext,
+            ...(isDevelopment() && developerContext),
         }
     }
 

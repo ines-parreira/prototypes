@@ -4,9 +4,12 @@ import { fileURLToPath } from 'node:url'
 import { codecovWebpackPlugin } from '@codecov/webpack-plugin'
 import { rspack } from '@rspack/core'
 import ReactRefreshPlugin from '@rspack/plugin-react-refresh'
+import dotenv from 'dotenv'
 import NodePolyfillPlugin from 'node-polyfill-webpack-plugin'
 import { RspackManifestPlugin } from 'rspack-manifest-plugin'
 import { TsCheckerRspackPlugin } from 'ts-checker-rspack-plugin'
+
+dotenv.config()
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -17,6 +20,7 @@ const {
     WEB_APP_RELEASE,
     DEV_ENV = 'local',
     NO_CONTENT_HASH = false,
+    DEVELOPER_NAME,
 } = process.env
 
 const isProd = NODE_ENV === 'production'
@@ -146,6 +150,7 @@ const config = {
                 GORGIAS_ASSETS_URL || 'http://localhost:8080/',
             ),
             'process.env.WEB_APP_RELEASE': JSON.stringify(WEB_APP_RELEASE),
+            'process.env.DEVELOPER_NAME': JSON.stringify(DEVELOPER_NAME),
         }),
         isProd && new RspackManifestPlugin({}),
         isProd &&

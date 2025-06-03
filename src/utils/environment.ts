@@ -47,6 +47,7 @@ export interface EnvVars {
     TZ?: string
     GORGIAS_ASSETS_URL?: string
     WEB_APP_RELEASE?: string
+    DEVELOPER_NAME?: string
 }
 
 export const getEnvVars = ({
@@ -54,10 +55,12 @@ export const getEnvVars = ({
     NODE_ENV,
     TZ,
     WEB_APP_RELEASE,
+    DEVELOPER_NAME,
 }: NodeJS.ProcessEnv): EnvVars => ({
     TZ,
     GORGIAS_ASSETS_URL,
     WEB_APP_RELEASE,
+    DEVELOPER_NAME,
     NODE_ENV:
         NODE_ENV && isValueOfStringEnum(NodeEnv, NODE_ENV)
             ? NODE_ENV
@@ -71,6 +74,7 @@ export const envVars = Object.freeze(
     getEnvVars({
         NODE_ENV: process.env.NODE_ENV,
         TZ: process.env.TZ,
+        DEVELOPER_NAME: process.env.DEVELOPER_NAME,
         GORGIAS_ASSETS_URL: process.env.GORGIAS_ASSETS_URL,
         WEB_APP_RELEASE: process.env.WEB_APP_RELEASE,
     }),
