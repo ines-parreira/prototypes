@@ -1,5 +1,47 @@
 :local {
     .container {
-        padding: var(--layout-spacing-xs) var(--layout-spacing-s);
+        margin-top: var(--layout-spacing-xs);
+        padding: var(--layout-spacing-xs) var(--layout-spacing-m);
+
+        &:hover {
+            background-color: var(--neutral-grey-1);
+        }
+        &:first-of-type {
+            margin-top: 0;
+        }
+    }
+
+    .minimal {
+        margin-top: calc(-1 * var(--layout-spacing-xxs));
+        &:hover {
+            :global {
+                .ticket-detail-metadata {
+                    display: block;
+                }
+            }
+        }
+    }
+
+    .ai {
+        background: var(--accessory-magenta-1);
+    }
+
+    .internal {
+        background: hsla(
+            var(--accessory-orange-1-h),
+            var(--accessory-orange-1-s),
+            var(--accessory-orange-1-l),
+            0.6
+        );
+        box-shadow: inset 5px 0 0 0 var(--accessory-orange-2);
+
+        &:hover {
+            background: hsla(
+                var(--accessory-orange-1-h),
+                var(--accessory-orange-1-s),
+                var(--accessory-orange-1-l),
+                0.85
+            );
+        }
     }
 }

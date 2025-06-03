@@ -76,6 +76,7 @@ const TicketSummarySection = ({
             className={cn(
                 css.container,
                 isPopup ? css.popup : css.hasBackground,
+                { [css.notRequested]: !hasRequested },
             )}
         >
             <div className={css.title}>

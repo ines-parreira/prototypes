@@ -96,6 +96,12 @@
                 background:
                     @gradient-dark padding-box,
                     @gradient-light border-box;
+
+                &.hasBackground {
+                    background:
+                        @gradient-dark padding-box,
+                        @gradient-light border-box;
+                }
             }
 
             .title {
@@ -153,7 +159,7 @@
     .container {
         width: 100%;
         min-width: 380px;
-        padding: 16px;
+        padding: var(--layout-spacing-s);
         padding-bottom: 12px;
         border-radius: 12px;
         border: 1px solid transparent;
@@ -167,6 +173,10 @@
 
         &.popup {
             max-width: 380px;
+        }
+
+        &.notRequested {
+            padding-bottom: var(--layout-spacing-s);
         }
 
         &.hasBackground {

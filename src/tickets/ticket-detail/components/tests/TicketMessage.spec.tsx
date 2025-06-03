@@ -5,10 +5,13 @@ import { MessageBody } from '../MessageBody'
 import { MessageContent } from '../MessageContent'
 import { MessageError } from '../MessageError'
 import { MessageHeader } from '../MessageHeader'
+import { MessageMetadata } from '../MessageMetadata'
 import { TicketMessage } from '../TicketMessage'
 
 jest.mock('../MessageContent', () => ({
-    MessageContent: jest.fn(() => <div>MessageContent</div>),
+    MessageContent: jest.fn(({ metadata }) => (
+        <div>MessageContent {metadata}</div>
+    )),
 }))
 jest.mock('../MessageBody', () => ({
     MessageBody: jest.fn(({ children }) => <div>body {children}</div>),
@@ -19,6 +22,11 @@ jest.mock('../MessageHeader', () => ({
 jest.mock('../MessageError', () => ({
     MessageError: jest.fn(() => <div>MessageError</div>),
 }))
+jest.mock('tickets/ticket-detail/components/MessageMetadata', () => {
+    return {
+        MessageMetadata: jest.fn(() => <div>Message Metadata</div>),
+    }
+})
 
 describe('TicketMessage', () => {
     const mockedElement = {
@@ -103,6 +111,7 @@ describe('TicketMessage', () => {
                 {
                     message: mockedElement.data,
                     isFailed: false,
+                    metadata: false,
                 },
                 expect.anything(),
             )
@@ -115,8 +124,33 @@ describe('TicketMessage', () => {
                 {
                     message: mockedElement.data,
                     isFailed: false,
+                    metadata: false,
                 },
                 expect.anything(),
+            )
+        })
+
+        it('should call MessageContent with the correct props when minimal is true', () => {
+            render(
+                <TicketMessage
+                    element={{ ...mockedElement, flags: ['minimal'] }}
+                />,
+            )
+
+            expect(MessageContent).toHaveBeenCalledWith(
+                {
+                    message: mockedElement.data,
+                    isFailed: false,
+                    metadata: expect.anything(),
+                },
+                expect.anything(),
+            )
+
+            expect(MessageMetadata).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message: mockedElement.data,
+                }),
+                expect.any(Object),
             )
         })
     })

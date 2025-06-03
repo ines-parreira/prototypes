@@ -4,6 +4,8 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import TicketSummarySection from 'pages/tickets/detail/components/TicketSummary'
 
+import css from './TicketSummary.less'
+
 type Props = {
     ticket: Ticket
 }
@@ -13,6 +15,11 @@ export function TicketSummary({ ticket }: Props) {
     if (!enableAITicketSummary) return null
 
     return (
-        <TicketSummarySection summary={ticket.summary} ticketId={ticket.id} />
+        <div className={css.container}>
+            <TicketSummarySection
+                summary={ticket.summary}
+                ticketId={ticket.id}
+            />
+        </div>
     )
 }

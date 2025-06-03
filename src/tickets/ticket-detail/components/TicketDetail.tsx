@@ -40,10 +40,12 @@ export function TicketDetail({
                         <p>Loading ticket...</p>
                     </div>
                 ) : (
-                    <div className={css.body}>
+                    <>
                         <TicketSummary ticket={ticket} />
-                        <TicketBody elements={body} />
-                    </div>
+                        <div className={css.body}>
+                            <TicketBody elements={body} />
+                        </div>
+                    </>
                 )}
             </div>
         </div>

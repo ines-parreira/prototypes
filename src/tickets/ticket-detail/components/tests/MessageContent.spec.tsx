@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import ReactPlayer from 'react-player'
 
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 
@@ -8,11 +9,7 @@ import { assumeMock } from 'utils/testing'
 import { processContent } from '../../helpers/processContent'
 import { MessageContent } from '../MessageContent'
 
-// Mock external dependencies
-jest.mock('react-player', () => ({
-    __esModule: true,
-    default: jest.fn(() => <div data-testid="mock-react-player" />),
-}))
+jest.mock('react-player', () => jest.fn(() => <div>React Player</div>))
 
 jest.mock('utils/html', () => ({
     parseHtml: jest.fn(),
@@ -49,13 +46,13 @@ describe('MessageContent', () => {
         })
     })
 
-    it('renders HTML content when available', () => {
+    it('should render HTML content when available', () => {
         render(<MessageContent message={mockMessage} isFailed={false} />)
 
         expect(screen.getByText('Processed content')).toBeInTheDocument()
     })
 
-    it('renders text content when HTML is not available', () => {
+    it('should render text content when HTML is not available', () => {
         const textOnlyMessage = {
             ...mockMessage,
             body_html: null,
@@ -71,13 +68,28 @@ describe('MessageContent', () => {
         expect(screen.getByText('Plain text content')).toBeInTheDocument()
     })
 
-    it('applies failed class when isFailed is true', () => {
-        render(<MessageContent message={mockMessage} isFailed={true} />)
-        const content = screen.getByText('Processed content')
-        expect(content.parentElement).toHaveClass('failed')
+    it('should render metadata when available', () => {
+        render(
+            <MessageContent
+                message={mockMessage}
+                isFailed={false}
+                metadata={<div>Metadata</div>}
+            />,
+        )
+
+        expect(screen.getByText('Metadata')).toBeInTheDocument()
+        expect(
+            document.querySelector('.ticket-detail-metadata'),
+        ).toBeInTheDocument()
     })
 
-    it('shows truncated message disclaimer when content is truncated', () => {
+    it('should apply failed class when isFailed is true', () => {
+        render(<MessageContent message={mockMessage} isFailed={true} />)
+
+        expect(document.querySelector('.container')).toHaveClass('failed')
+    })
+
+    it('should show truncated message disclaimer when content is truncated', () => {
         const truncatedMessage = {
             ...mockMessage,
             meta: {
@@ -92,7 +104,7 @@ describe('MessageContent', () => {
         ).toBeInTheDocument()
     })
 
-    it('renders video player when video URLs are present', () => {
+    it('should call ReactPlayer when video URLs are present', () => {
         const videoUrls = ['https://example.com/video.mp4']
         mockedProcessContent.mockReturnValue({
             processedContent: '<p>Content with video</p>',
@@ -101,21 +113,29 @@ describe('MessageContent', () => {
 
         render(<MessageContent message={mockMessage} isFailed={false} />)
 
-        expect(screen.getByTestId('mock-react-player')).toBeInTheDocument()
+        expect(ReactPlayer).toHaveBeenCalledWith(
+            {
+                url: videoUrls[0],
+                controls: true,
+                light: true,
+                width: 400,
+                height: (400 * 9) / 16,
+            },
+            expect.anything(),
+        )
     })
 
-    it('applies light theme when HTML contains color styles', () => {
+    it('should apply light theme when HTML contains color styles', () => {
         mockedParseHtml.mockReturnValue(
             createMockDocument([{ style: { color: 'red' } }]),
         )
 
         render(<MessageContent message={mockMessage} isFailed={false} />)
 
-        const content = screen.getByText('Processed content')
-        expect(content.parentElement).toHaveClass('light')
+        expect(document.querySelector('.container')).toHaveClass('light')
     })
 
-    it('returns null when no content is available', () => {
+    it('should return null when no content is available', () => {
         mockedProcessContent.mockReturnValue({
             processedContent: '',
             videoUrls: [],

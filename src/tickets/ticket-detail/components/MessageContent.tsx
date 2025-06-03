@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import classNames from 'classnames'
+import cn from 'classnames'
 import ReactPlayer from 'react-player'
 
 import type { TicketMessage } from '@gorgias/helpdesk-types'
@@ -14,9 +14,14 @@ import css from './MessageContent.less'
 type MessageContentProps = {
     message: TicketMessage
     isFailed: boolean
+    metadata?: React.ReactNode
 }
 
-export function MessageContent({ message, isFailed }: MessageContentProps) {
+export function MessageContent({
+    message,
+    isFailed,
+    metadata,
+}: MessageContentProps) {
     const {
         body_html: rawHtml,
         body_text: rawText,
@@ -51,13 +56,23 @@ export function MessageContent({ message, isFailed }: MessageContentProps) {
     return (
         <>
             <div
-                className={classNames('message-content', css.content, {
+                className={cn(css.container, {
                     [css.whiteSpace]: !isHtml,
                     [css.failed]: isFailed,
                     light: forceDefaultTheme,
                 })}
-                dangerouslySetInnerHTML={{ __html: processedContent }}
-            />
+            >
+                <div
+                    className={css.content}
+                    dangerouslySetInnerHTML={{ __html: processedContent }}
+                />
+                {!!metadata && (
+                    // Global class used by the TicketMessage component
+                    <div className={cn('ticket-detail-metadata', css.metadata)}>
+                        {metadata}
+                    </div>
+                )}
+            </div>
             {isTruncated && (
                 <span className={css['disclaimerTruncatedMessage']}>
                     <i className="material-icons">info_outlined</i>
