@@ -17,6 +17,7 @@ exports[`<TagPreviewContainer/> should render tags 1`] = `
     >
       <span
         class="text"
+        style="--tag-dot-color: #6a6a6a;"
       >
         refund
       </span>
@@ -26,6 +27,7 @@ exports[`<TagPreviewContainer/> should render tags 1`] = `
     >
       <span
         class="text"
+        style="--tag-dot-color: #6a6a6a;"
       >
         billing
       </span>

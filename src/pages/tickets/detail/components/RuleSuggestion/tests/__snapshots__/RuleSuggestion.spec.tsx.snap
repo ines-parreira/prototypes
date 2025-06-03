@@ -170,6 +170,7 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
                           >
                             <span
                               class="text"
+                              style="--tag-dot-color: #6a6a6a;"
                             >
                               auto-close
                             </span>
@@ -383,6 +384,7 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
                           >
                             <span
                               class="text"
+                              style="--tag-dot-color: #6a6a6a;"
                             >
                               auto-close
                             </span>

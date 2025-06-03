@@ -1370,6 +1370,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
       >
         <span
           class="text"
+          style="--tag-dot-color: #6a6a6a;"
         >
           tag-1
         </span>
@@ -1431,6 +1432,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
       >
         <span
           class="text"
+          style="--tag-dot-color: #6a6a6a;"
         >
           tag-1
         </span>
@@ -1440,6 +1442,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
       >
         <span
           class="text"
+          style="--tag-dot-color: #6a6a6a;"
         >
           tag-2
         </span>
@@ -1501,6 +1504,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
       >
         <span
           class="text"
+          style="--tag-dot-color: #6a6a6a;"
         >
           tag-1
         </span>
@@ -1562,6 +1566,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
       >
         <span
           class="text"
+          style="--tag-dot-color: #6a6a6a;"
         >
           tag-1
         </span>
@@ -1571,6 +1576,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
       >
         <span
           class="text"
+          style="--tag-dot-color: #6a6a6a;"
         >
           tag-2
         </span>

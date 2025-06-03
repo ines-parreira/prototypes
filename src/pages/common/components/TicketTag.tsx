@@ -15,7 +15,8 @@ type Props = {
 const TicketTag = ({ text, className, decoration, title, ...props }: Props) => {
     const tagColor = decoration?.color
 
-    const color = tagColor && isValidColor(tagColor) ? tagColor.trim() : null
+    const color =
+        tagColor && isValidColor(tagColor) ? tagColor.trim() : undefined
 
     return (
         <Tag

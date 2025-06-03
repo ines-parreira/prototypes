@@ -5,10 +5,15 @@ import {
     HTMLAttributes,
     ReactNode,
     useImperativeHandle,
+    useMemo,
     useRef,
 } from 'react'
 
 import classNames from 'classnames'
+
+import colors from '@gorgias/design-tokens/tokens/colors'
+
+import { useTheme } from 'core/theme'
 
 import css from './Tag.less'
 
@@ -30,7 +35,7 @@ type Props = {
 export const Tag = forwardRef(function Tag(
     {
         className,
-        color = 'black',
+        color,
         onTrailIconClick,
         text,
         textClassName,
@@ -41,6 +46,14 @@ export const Tag = forwardRef(function Tag(
 ) {
     const ref = useRef<HTMLInputElement>(null)
     useImperativeHandle(forwardedRef, () => ref.current!)
+    const theme = useTheme()
+
+    const defaultColor = useMemo(() => {
+        if (theme.name === 'system') {
+            return colors.classic.neutral.grey_5.value
+        }
+        return colors[theme.name as keyof typeof colors].neutral.grey_5.value
+    }, [theme])
 
     return (
         <div
@@ -54,11 +67,11 @@ export const Tag = forwardRef(function Tag(
                 <span
                     ref={ref}
                     className={classNames(css.text, textClassName)}
-                    {...(!!color && {
-                        style: {
-                            '--tag-dot-color': color,
-                        } as CSSProperties,
-                    })}
+                    style={
+                        {
+                            '--tag-dot-color': color ?? defaultColor,
+                        } as CSSProperties
+                    }
                 >
                     {text}
                 </span>

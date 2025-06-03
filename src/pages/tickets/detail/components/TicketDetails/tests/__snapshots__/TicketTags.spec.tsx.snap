@@ -19,6 +19,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
       >
         <span
           class="text"
+          style="--tag-dot-color: #6a6a6a;"
         >
           angry
         </span>
@@ -54,6 +55,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
       >
         <span
           class="text"
+          style="--tag-dot-color: #6a6a6a;"
         >
           customer
         </span>
@@ -72,6 +74,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
       >
         <span
           class="text"
+          style="--tag-dot-color: #6a6a6a;"
         >
           refund
         </span>
@@ -90,6 +93,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
       >
         <span
           class="text"
+          style="--tag-dot-color: #6a6a6a;"
         >
           return
         </span>

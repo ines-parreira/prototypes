@@ -28,7 +28,9 @@ const selectMock = assumeMock(select)
 
 const mockDefaultColor = '#ddd'
 jest.mock('@gorgias/design-tokens/tokens/colors', () => ({
-    ['light']: { neutral: { grey_3: { value: '#ddd' } } },
+    ['light']: {
+        neutral: { grey_3: { value: '#ddd' }, grey_5: { value: '#ddd' } },
+    },
 }))
 
 describe('<Row />', () => {
