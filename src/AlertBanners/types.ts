@@ -59,6 +59,8 @@ export const BannerCategories = {
     STATUS_PAGE_INCIDENT: 'status_page_incident',
     STATUS_PAGE_MAINTENANCE: 'status_page_maintenance',
     TMP_AI_AGENT_MOVED: 'ai_agent_moved',
+    TRACKING_BUNDLE_INSTALLATION_WARNING:
+        'tracking_bundle_installation_warning',
     TWO_FA_REQUIRED_NOTIFICATION_ID: 'two_fa_required_notification_id',
     SCRIPT_TAG_MIGRATION: 'script_tag_migration',
     SUBSCRIPTION: 'subscription',

@@ -24,7 +24,9 @@ import { envVars, NodeEnv } from 'utils/environment'
 import { getLDClient, LDContext } from 'utils/launchDarkly'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
+import { RevenueAddonApiClientProvider } from './convert/common/hooks/useConvertApi'
 import history from './history'
+import { HelpCenterApiClientProvider } from './settings/helpCenter/hooks/useHelpCenterApi'
 
 type Props = { store: Store<RootState> }
 
@@ -70,13 +72,17 @@ const Root = ({ store }: Props) => {
                         context={LDContext}
                     >
                         <RealtimeAppProvider>
-                            <Router history={history}>
-                                <CompatRouter>
-                                    <Main>
-                                        <RoutesWrapper />
-                                    </Main>
-                                </CompatRouter>
-                            </Router>
+                            <RevenueAddonApiClientProvider>
+                                <HelpCenterApiClientProvider>
+                                    <Router history={history}>
+                                        <CompatRouter>
+                                            <Main>
+                                                <RoutesWrapper />
+                                            </Main>
+                                        </CompatRouter>
+                                    </Router>
+                                </HelpCenterApiClientProvider>
+                            </RevenueAddonApiClientProvider>
                         </RealtimeAppProvider>
                     </LDProvider>
                 </DndProvider>
