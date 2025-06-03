@@ -67,11 +67,9 @@ export default function EmailDomainVerificationContent({ integration }: Props) {
                       description: `Your domain has been successfully verified. You can now add any email address ending in @${domainName} and use it to send emails from Gorgias.`,
                   }
                 : {
-                      title: 'Verify your domain to send emails from Gorgias',
-                      description: `Domain verification allows Gorgias to send emails to your
-                    customers on your behalf. Add the records below to the DNS
-                    settings for ${domainName} – copy and paste the information
-                    to prevent entry errors.`,
+                      title: 'Authenticate your domain for better deliverability',
+                      description:
+                          'Verifying your domain builds trust and improves email deliverability. It helps your emails land in inboxes, not spam, and reduces bounce rates.',
                   })}
         >
             <RecordsTable
