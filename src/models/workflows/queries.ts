@@ -101,7 +101,6 @@ export const executionsDefinitionKeys = {
         from: string
         to: string
         orderBy: string
-        success: boolean | undefined
         status?: string[]
     }) => [...executionsDefinitionKeys.all(), params] as const,
 }
@@ -597,7 +596,6 @@ export const useGetConfigurationExecutions = (
         orderBy,
         page,
         to,
-        success,
         status,
     }: {
         configurationInternalId: string
@@ -605,7 +603,6 @@ export const useGetConfigurationExecutions = (
         to: Date
         orderBy: 'ASC' | 'DESC'
         page: number
-        success?: boolean
         status?: ('error' | 'success' | 'partial_success')[]
     },
     overrides?: UseQueryOptions<
@@ -619,17 +616,10 @@ export const useGetConfigurationExecutions = (
             from: from.toString(),
             to: to.toString(),
             orderBy,
-            success,
             status,
         }),
         queryFn: async () => {
             const client = await getGorgiasWfApiClient()
-            const successQueryParam =
-                success === true
-                    ? 'true'
-                    : success === false
-                      ? 'false'
-                      : undefined
             const response =
                 await client.WfConfigurationController_getExecutions(
                     {
@@ -638,7 +628,6 @@ export const useGetConfigurationExecutions = (
                         start_date: from.toISOString(),
                         order_by: orderBy,
                         page,
-                        success: successQueryParam,
                         status,
                     },
                     {},

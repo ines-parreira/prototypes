@@ -153,7 +153,7 @@ describe('queries', () => {
                     orderBy: 'ASC',
                     page: 1,
                     to: new Date(),
-                    success: true,
+                    status: ['success'],
                 }),
             )
 
