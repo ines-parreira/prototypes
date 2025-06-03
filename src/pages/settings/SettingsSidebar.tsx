@@ -7,13 +7,19 @@ import css from './SettingsSidebar.less'
 export default function SettingsSidebar({
     children,
     className,
+    contentTakeFullWidth = true,
 }: {
     children: ReactNode
     className?: string
+    contentTakeFullWidth?: boolean
 }): JSX.Element {
     return (
         <div className={classnames(css.container, className)}>
-            <div className={css.content}>{children}</div>
+            <div
+                className={classnames({ [css.content]: contentTakeFullWidth })}
+            >
+                {children}
+            </div>
         </div>
     )
 }

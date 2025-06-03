@@ -9,7 +9,7 @@ import SettingsSidebar from 'pages/settings/SettingsSidebar'
 
 const EmailPreview = ({ displayName = '', emailAddress = '' }) => {
     return (
-        <SettingsSidebar className={css.sidebar}>
+        <SettingsSidebar className={css.sidebar} contentTakeFullWidth={false}>
             <div className={cn('full-width p-4 mt-12', css.formPreview)}>
                 <h4 className="text-secondary text-center">Email preview</h4>
 
