@@ -60,6 +60,7 @@ const shop_integration = {
     shop_name: SHOP_INTEGRATION.name,
     shop_type: SHOP_INTEGRATION.type,
     integration_id: SHOP_INTEGRATION.id,
+    account_id: account.id,
 }
 describe('ContactFormPublish', () => {
     const defaultState: Partial<RootState> = {

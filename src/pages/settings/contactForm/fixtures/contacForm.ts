@@ -75,6 +75,7 @@ export const ContactFormListFixtures: Components.Schemas.ContactFormsListPageDto
                     shop_name: 'test-shop.myshopify.com',
                     shop_type: 'shopify',
                     integration_id: 1,
+                    account_id: 1,
                 },
             },
             {

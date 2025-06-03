@@ -8,7 +8,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { account as accountFixture } from 'fixtures/account'
+import { account, account as accountFixture } from 'fixtures/account'
 import { integrationsState } from 'fixtures/integrations'
 import { user as userFixture } from 'fixtures/users'
 import { ContactFormPageEmbedment } from 'models/contactForm/types'
@@ -64,6 +64,7 @@ const contactForm = {
         shop_name: 'shop-name',
         shop_type: 'shopify' as const,
         integration_id: 1,
+        account_id: account.id,
     },
 }
 

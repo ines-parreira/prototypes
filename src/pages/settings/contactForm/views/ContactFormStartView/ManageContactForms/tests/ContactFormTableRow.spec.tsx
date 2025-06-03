@@ -56,6 +56,7 @@ describe('<ContactFormTableRow />', () => {
                 shop_name: 'shopify-store',
                 shop_type: 'shopify' as const,
                 integration_id: 1,
+                account_id: account.id,
             },
         }
 

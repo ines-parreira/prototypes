@@ -10,6 +10,7 @@ import thunk from 'redux-thunk'
 
 import { IntegrationType } from '@gorgias/helpdesk-queries'
 
+import { account } from 'fixtures/account'
 import { useListWorkflowEntryPoints } from 'models/workflows/queries'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS } from 'pages/settings/contactForm/constants'
@@ -116,6 +117,7 @@ const shop_integration = {
     shop_name: CONTACT_FORM_SHOP_NAME,
     shop_type: 'shopify' as const,
     integration_id: 1,
+    account_id: account.id,
 }
 
 describe('<ContactFormEntrypointPreview />', () => {
