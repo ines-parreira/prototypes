@@ -7,6 +7,7 @@ import {
     isFacebookChannel,
     isHelpCenterChannel,
     isSmsChannel,
+    isTikTokChannel,
     isVoiceChannel,
     isWhatsAppChannel,
 } from './isIntegration'
@@ -21,7 +22,8 @@ export default function getEligibleChannels(integrations: Integration[]) {
             isFacebookChannel(integration) ||
             isWhatsAppChannel(integration) ||
             isHelpCenterChannel(integration) ||
-            isContactFormChannel(integration)
+            isContactFormChannel(integration) ||
+            isTikTokChannel(integration)
         )
     })
 }

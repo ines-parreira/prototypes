@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
+import { BrowserRouter } from 'react-router-dom'
 
-import { Integration } from 'models/integration/types'
+import { Integration, IntegrationType } from 'models/integration/types'
 
 import ChannelsList from '../ChannelsList'
 
@@ -8,7 +9,7 @@ const mockChannels = [
     {
         id: 1,
         name: 'First Email',
-        type: 'email',
+        type: IntegrationType.Email,
         meta: {
             address: 'test@example.com',
         },
@@ -16,7 +17,7 @@ const mockChannels = [
     {
         id: 2,
         name: 'Second Email',
-        type: 'email',
+        type: IntegrationType.Email,
         meta: {
             address: 'another@example.com',
         },
@@ -27,15 +28,41 @@ const mockChannelsWithoutAddress = [
     {
         id: 3,
         name: 'Facebook',
-        type: 'facebook',
+        type: IntegrationType.Facebook,
         meta: {},
     },
 ] as Integration[]
 
-describe('AssignedChannelsList', () => {
+const mockHelpCenterChannel = [
+    {
+        id: 4,
+        name: 'Help Center 1',
+        type: IntegrationType.App,
+        meta: {
+            address: 'help-center-something',
+        },
+    },
+] as Integration[]
+
+const mockContactFormChannel = [
+    {
+        id: 5,
+        name: 'Contact Form 1',
+        type: IntegrationType.App,
+        meta: {
+            address: 'contact-form-something',
+        },
+    },
+] as Integration[]
+
+const renderWithRouter = (component: React.ReactElement) => {
+    return render(<BrowserRouter>{component}</BrowserRouter>)
+}
+
+describe('ChannelsList', () => {
     it('renders channels list correctly', () => {
         const onDelete = jest.fn()
-        render(
+        renderWithRouter(
             <ChannelsList
                 listLabel="Assigned Email"
                 channels={mockChannels}
@@ -48,11 +75,12 @@ describe('AssignedChannelsList', () => {
         expect(screen.getByText('test@example.com')).toBeInTheDocument()
         expect(screen.getByText('Second Email')).toBeInTheDocument()
         expect(screen.getByText('another@example.com')).toBeInTheDocument()
+        expect(screen.getAllByText('open_in_new')).toHaveLength(2)
     })
 
     it('returns null when no channels are provided', () => {
         const onDelete = jest.fn()
-        const { container } = render(
+        const { container } = renderWithRouter(
             <ChannelsList
                 listLabel="Assigned Email"
                 channels={[]}
@@ -64,7 +92,7 @@ describe('AssignedChannelsList', () => {
 
     it('calls onDelete when delete button is clicked', () => {
         const onDelete = jest.fn()
-        render(
+        renderWithRouter(
             <ChannelsList
                 listLabel="Assigned Email"
                 channels={mockChannels}
@@ -73,7 +101,6 @@ describe('AssignedChannelsList', () => {
         )
 
         const deleteButtons = screen.getAllByText('delete')
-
         fireEvent.click(deleteButtons[0])
 
         expect(onDelete).toHaveBeenCalledWith(1)
@@ -81,7 +108,7 @@ describe('AssignedChannelsList', () => {
 
     it('renders empty when channel meta does not have address', () => {
         const onDelete = jest.fn()
-        render(
+        renderWithRouter(
             <ChannelsList
                 listLabel="Assigned Facebook"
                 channels={mockChannelsWithoutAddress}
@@ -90,5 +117,35 @@ describe('AssignedChannelsList', () => {
         )
 
         expect(screen.getByText('Facebook')).toBeInTheDocument()
+    })
+
+    it('does not render open in new icon for help center channel', () => {
+        const onDelete = jest.fn()
+        renderWithRouter(
+            <ChannelsList
+                listLabel="Help Center"
+                channels={mockHelpCenterChannel}
+                onDelete={onDelete}
+            />,
+        )
+
+        expect(screen.queryByText('open_in_new')).not.toBeInTheDocument()
+        expect(screen.getByText('delete')).toBeInTheDocument()
+        expect(screen.getByText('Help Center 1')).toBeInTheDocument()
+    })
+
+    it('does not render open in new icon for contact form channel', () => {
+        const onDelete = jest.fn()
+        renderWithRouter(
+            <ChannelsList
+                listLabel="Contact Form"
+                channels={mockContactFormChannel}
+                onDelete={onDelete}
+            />,
+        )
+
+        expect(screen.queryByText('open_in_new')).not.toBeInTheDocument()
+        expect(screen.getByText('delete')).toBeInTheDocument()
+        expect(screen.getByText('Contact Form 1')).toBeInTheDocument()
     })
 })

@@ -1,6 +1,14 @@
+import { Link } from 'react-router-dom'
+
 import { IconButton } from '@gorgias/merchant-ui-kit'
 
 import { Integration } from 'models/integration/types'
+
+import {
+    isContactFormChannel,
+    isHelpCenterChannel,
+} from '../../../helpers/isIntegration'
+import determineChannelLink from '../helpers/determineChannelLink'
 
 import css from '../ChannelsDrawer/ChannelsDrawer.less'
 
@@ -32,14 +40,19 @@ export default function ChannelsList({
                                 : ''}
                         </span>
                     </div>
-                    {/*TODO links for open new*/}
                     <div className={css.actions}>
-                        <IconButton
-                            size="small"
-                            icon="open_in_new"
-                            intent="secondary"
-                            fillStyle="ghost"
-                        />
+                        {!isHelpCenterChannel(channel) &&
+                            !isContactFormChannel(channel) && (
+                                <Link to={determineChannelLink(channel)}>
+                                    <IconButton
+                                        size="small"
+                                        icon="open_in_new"
+                                        intent="secondary"
+                                        fillStyle="ghost"
+                                    />
+                                </Link>
+                            )}
+
                         <IconButton
                             size="small"
                             icon="delete"
