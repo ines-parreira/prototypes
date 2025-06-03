@@ -1,268 +1,214 @@
-import React from 'react'
-
-import { screen } from '@testing-library/react'
-import type { Location } from 'history'
+import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import { useLocation } from 'react-router-dom'
+import configureStore from 'redux-mock-store'
 
+import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
 import { logEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
-import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
-import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { getCurrentUser } from 'state/currentUser/selectors'
-import { closePanels } from 'state/layout/actions'
-import { hasRole } from 'utils'
+import { ProductType } from 'models/billing/types'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
-import * as config from '../config'
 import SettingsNavbar from '../SettingsNavbar'
 
-const mockedDispatch = jest.fn()
-jest.mock('utils')
-jest.mock('common/navigation', () => ({
-    ActiveContent: { Settings: 'settings' },
-    Navbar: ({ children }: { children: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
+window.scrollTo = jest.fn()
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useLocation: jest.fn(),
 }))
 jest.mock('common/segment', () => ({
+    ...jest.requireActual('common/segment'),
     logEvent: jest.fn(),
-    SegmentEvent: { SettingsNavigationClicked: 'navEvent' },
 }))
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
-jest.mock('state/billing/selectors', () => ({
-    getHasAutomate: jest.fn(() => false),
-}))
-jest.mock('state/currentUser/selectors', () => ({
-    getCurrentUser: jest.fn(),
-}))
-jest.mock('state/currentAccount/selectors', () => ({
-    getCurrentAccountState: jest.fn(),
-}))
-
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
     __esModule: true,
     default: jest.fn(() => [
         {
-            id: '1',
+            id: 1,
             name: 'Integration 1',
-            type: 'integration',
+            type: 'shopify',
         },
     ]),
 }))
 
-jest.mock('core/flags', () => ({
-    useFlag: jest.fn(),
-}))
-jest.mock('../NewUI', () => () => <div>New UI</div>)
-const mockUseFlag = useFlag as jest.Mock
+jest.mock('core/flags')
 
-const mockedHasRole = assumeMock(hasRole)
-const mockedLogEvent = assumeMock(logEvent)
-const mockedGetCurrentUser = assumeMock(getCurrentUser)
-const mockedGetCurrentAccountState = assumeMock(getCurrentAccountState)
+const mockUseFlag = assumeMock(useFlag)
+const mockStore = configureStore([])
+const scrollToMock = jest.fn()
 
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
-    useLocation: jest.fn(),
-}))
-const useLocationMock = assumeMock(useLocation)
+describe('SettingsNavbar', () => {
+    const mockCurrentUser = fromJS({
+        has_password: true,
+        role: { name: 'admin' },
+    })
 
-describe('<SettingsNavbar />', () => {
+    const mockAccount = fromJS({
+        current_subscription: {
+            products: {
+                product_111: '111',
+            },
+        },
+        domain: 'test-domain',
+    })
+
+    const mockLocation = {
+        pathname: '/app/settings/profile',
+    }
+
     beforeEach(() => {
-        useLocationMock.mockReturnValue({ pathname: '/' } as Location)
-        mockUseFlag.mockReturnValue(false)
-        jest.replaceProperty(config, 'NavbarConfig', [
-            {
-                name: 'Category',
-                icon: 'speed',
-                links: [
-                    {
-                        to: 'whatever',
-                        text: 'Link',
-                        requiredRole: 'toto' as UserRole,
-                    },
-                ],
-            },
-        ])
-        mockedHasRole.mockReturnValue(true)
+        HTMLElement.prototype.scrollTo = jest.fn(scrollToMock)
+        jest.clearAllMocks()
+        ;(useLocation as jest.Mock).mockReturnValue(mockLocation)
+        ;(logEvent as jest.Mock).mockImplementation(() => {})
     })
 
-    it('should render a category if the `shouldRender` function returns true', () => {
-        jest.replaceProperty(config, 'NavbarConfig', [
-            {
-                name: 'Category',
-                icon: 'speed',
-                shouldRender: () => true,
-                links: [
+    const renderComponent = (
+        store = mockStore({
+            currentAccount: mockAccount,
+            currentUser: mockCurrentUser,
+            billing: fromJS({
+                products: [
                     {
-                        to: 'whatever',
-                        text: 'Link',
-                        requiredRole: 'toto' as UserRole,
-                    },
-                ],
-            },
-        ])
-        useLocationMock.mockReturnValue({
-            pathname: '/app/settings/whatever',
-        } as Location)
-        renderWithRouter(<SettingsNavbar />)
-
-        expect(screen.getByText('Link')).toBeInTheDocument()
-        expect(screen.getByText('Link')).toHaveClass('active')
-    })
-
-    it('should not render a category if the `shouldRender` function returns false', () => {
-        jest.replaceProperty(config, 'NavbarConfig', [
-            {
-                name: 'Category',
-                icon: 'speed',
-                shouldRender: () => false,
-                links: [
-                    {
-                        to: 'whatever',
-                        text: 'Link',
-                        requiredRole: 'toto' as UserRole,
-                    },
-                ],
-            },
-        ])
-        renderWithRouter(<SettingsNavbar />)
-
-        expect(screen.queryByText('Link')).not.toBeInTheDocument()
-    })
-
-    it('should dispatch `closePanels` action when a link is clicked and call logEvent', () => {
-        mockedGetCurrentAccountState.mockReturnValue(fromJS({}))
-        renderWithRouter(<SettingsNavbar />)
-
-        screen.getByText('Link').click()
-
-        expect(mockedDispatch).toHaveBeenCalledWith(closePanels())
-        expect(mockedDispatch).toHaveBeenCalledTimes(1)
-        expect(mockedLogEvent).toHaveBeenCalledWith('navEvent', {
-            title: 'Link',
-            account_domain: undefined,
-        })
-        expect(mockedLogEvent).toHaveBeenCalledTimes(1)
-    })
-
-    it("should render links when their `requiredRole` key does match the user's role", () => {
-        mockedGetCurrentUser.mockReturnValue(
-            'toto' as unknown as ReturnType<typeof getCurrentUser>,
-        )
-        mockedHasRole.mockReturnValue(false)
-
-        const { rerenderComponent } = renderWithRouter(<SettingsNavbar />)
-
-        expect(mockedHasRole).toHaveBeenNthCalledWith(1, 'toto', 'toto')
-        expect(screen.queryByText('Link')).not.toBeInTheDocument()
-
-        mockedHasRole.mockReturnValue(true)
-        rerenderComponent(<SettingsNavbar />)
-
-        expect(screen.getByText('Link')).toBeInTheDocument()
-    })
-
-    it('should render links when their `requiredFeatureFlags` key does match a feature flag which returns true', () => {
-        jest.replaceProperty(config, 'NavbarConfig', [
-            {
-                name: 'Category',
-                icon: 'speed',
-                links: [
-                    {
-                        to: 'whatever',
-                        text: 'True',
-                        requiredFeatureFlags: ['matchesTrue' as FeatureFlagKey],
-                    },
-                    {
-                        to: 'whatever',
-                        text: 'False',
-                        requiredFeatureFlags: [
-                            'matchesFalse' as FeatureFlagKey,
+                        id: '111',
+                        type: ProductType.Automation,
+                        prices: [
+                            {
+                                product_id: 'product_111',
+                                price_id: '111',
+                            },
                         ],
                     },
                 ],
-            },
-        ])
-        mockFlags({
-            ['matchesTrue']: true,
-            ['matchesFalse']: false,
+            }),
+        }),
+    ) =>
+        renderWithRouter(
+            <Provider store={store}>
+                <NavBarProvider>
+                    <SettingsNavbar />
+                </NavBarProvider>
+            </Provider>,
+        )
+
+    it('renders navigation categories', () => {
+        renderComponent()
+
+        expect(screen.getByText('Productivity')).toBeInTheDocument()
+        expect(screen.getByText('Apps')).toBeInTheDocument()
+        expect(screen.getByText('Profile')).toBeInTheDocument()
+        expect(screen.queryByText('Automate')).not.toBeInTheDocument()
+    })
+
+    it('handles category collapse/expand', async () => {
+        renderComponent()
+
+        const categoryTrigger = screen.getByText('Productivity')
+
+        // Click to collapse
+        fireEvent.click(categoryTrigger)
+
+        expect(categoryTrigger.parentElement).toHaveAttribute(
+            'aria-expanded',
+            'false',
+        )
+
+        // Click to expand
+        fireEvent.click(categoryTrigger)
+
+        expect(categoryTrigger.parentElement).toHaveAttribute(
+            'aria-expanded',
+            'true',
+        )
+    })
+
+    it('tracks navigation events when clicking links', () => {
+        renderComponent()
+
+        const firstLink = screen.getByText('Macros')
+        fireEvent.click(firstLink)
+
+        expect(logEvent).toHaveBeenCalledWith(
+            expect.any(String),
+            expect.objectContaining({
+                title: 'Macros',
+                account_domain: 'test-domain',
+            }),
+        )
+    })
+
+    it('correctly highlights active navigation items', () => {
+        renderComponent()
+
+        const activeLink = screen.getByText('Your profile')
+        expect(activeLink.closest('a')).toHaveAttribute('data-selected', 'true')
+    })
+
+    it('respects user roles for navigation items', () => {
+        // Set user to non-admin
+        const nonAdminStore = mockStore({
+            currentAccount: mockAccount,
+            currentUser: fromJS({
+                has_password: true,
+                role: { name: 'agent' },
+            }),
+            billing: fromJS({
+                products: [
+                    {
+                        id: '111',
+                        type: ProductType.Automation,
+                        prices: [
+                            {
+                                product_id: 'product_111',
+                                price_id: '111',
+                            },
+                        ],
+                    },
+                ],
+            }),
         })
 
-        renderWithRouter(<SettingsNavbar />)
+        renderComponent(nonAdminStore)
 
-        expect(screen.getByText('True')).toBeInTheDocument()
-        expect(screen.queryByText('False')).not.toBeInTheDocument()
+        // Admin-only items should not be visible
+        expect(screen.queryByText('Users')).not.toBeInTheDocument()
     })
 
-    it('should render new UI when flag is enabled', () => {
+    it('renders Automate upgrade item when account does not have Automate', () => {
+        renderComponent(
+            mockStore({
+                currentAccount: fromJS({
+                    current_subscription: {
+                        products: {
+                            product_111: '111',
+                        },
+                    },
+                    domain: 'test-domain',
+                }),
+                currentUser: mockCurrentUser,
+                billing: fromJS({
+                    products: [],
+                }),
+            }),
+        )
+
+        expect(screen.getByText('AI Agent')).toBeInTheDocument()
+        expect(screen.getByText('UPGRADE')).toBeInTheDocument()
+    })
+
+    it('renders store management item when MultiStore flag is enabled', () => {
         mockUseFlag.mockReturnValue(true)
+        renderComponent()
 
-        renderWithRouter(<SettingsNavbar />)
-
-        expect(screen.getByText('New UI')).toBeInTheDocument()
-        expect(screen.queryByText('Link')).not.toBeInTheDocument()
+        expect(screen.getByText('Store Management')).toBeInTheDocument()
     })
 
-    it('should handle alternate text if user does not have a password', () => {
-        jest.replaceProperty(config, 'NavbarConfig', [
-            {
-                name: 'Category',
-                links: [
-                    {
-                        to: 'password-2fa',
-                        text: 'Link',
-                    },
-                ],
-            },
-        ])
-        mockedGetCurrentUser.mockReturnValue(fromJS({}))
-        renderWithRouter(<SettingsNavbar />)
+    it('does not render store management item when MultiStore flag is disabled', () => {
+        mockUseFlag.mockReturnValue(false)
+        renderComponent()
 
-        expect(screen.queryByText('2FA')).toBeInTheDocument()
-    })
-
-    it('should not set `integrations` as active when on `integrations/mine`', () => {
-        useLocationMock.mockReturnValue({
-            pathname: '/app/settings/integrations/mine',
-        } as Location)
-        jest.replaceProperty(config, 'NavbarConfig', [
-            {
-                name: 'Category',
-                links: [
-                    {
-                        to: 'integrations',
-                        text: 'Link',
-                    },
-                ],
-            },
-        ])
-        renderWithRouter(<SettingsNavbar />)
-
-        expect(screen.getByText('Link')).not.toHaveClass('active')
-    })
-
-    it('should not set `integrations` as active when on `integrations/http`', () => {
-        useLocationMock.mockReturnValue({
-            pathname: '/app/settings/integrations/http',
-        } as Location)
-        jest.replaceProperty(config, 'NavbarConfig', [
-            {
-                name: 'Category',
-                links: [
-                    {
-                        to: 'integrations',
-                        text: 'Link',
-                    },
-                ],
-            },
-        ])
-        renderWithRouter(<SettingsNavbar />)
-
-        expect(screen.getByText('Link')).not.toHaveClass('active')
+        expect(screen.queryByText('Store Management')).not.toBeInTheDocument()
     })
 })
