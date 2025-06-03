@@ -27,6 +27,7 @@ import {
     useGetHelpCenterCategoryTree,
     useGetHelpCenterList,
     useGetHelpCenterListMulti,
+    useGetIngestedResource,
     useGetIngestionLogs,
     useGetIngestionLogsList,
     useGetMultipleFileIngestion,
@@ -52,6 +53,7 @@ const startArticleIngestion = jest.spyOn(resources, 'startArticleIngestion')
 const getIngestionLogs = jest.spyOn(resources, 'getIngestionLogs')
 const startIngestion = jest.spyOn(resources, 'startIngestion')
 const listIngestedResources = jest.spyOn(resources, 'listIngestedResources')
+const getIngestedResource = jest.spyOn(resources, 'getIngestedResource')
 const updateIngestedResource = jest.spyOn(resources, 'updateIngestedResource')
 const createFileIngestion = jest.spyOn(resources, 'createFileIngestion')
 const getFileIngestion = jest.spyOn(resources, 'getFileIngestion')
@@ -888,6 +890,72 @@ describe('queries', () => {
                             article_ingestion_log_id: 1,
                         },
                         {},
+                        {},
+                    ),
+                {
+                    wrapper,
+                },
+            )
+
+            expect(listIngestedResources).toHaveBeenCalledTimes(0)
+        })
+    })
+
+    describe('useGetIngestedResource', () => {
+        it('should return correct data on success', async () => {
+            getIngestedResource.mockReturnValue(Promise.resolve(null))
+            mockUseHelpCenterApi.mockReturnValue({
+                client: {} as HelpCenterClient,
+                isReady: true,
+            })
+            const { result } = renderHook(
+                () =>
+                    useGetIngestedResource(
+                        {
+                            help_center_id: helpCenterId,
+                            id: 1,
+                        },
+                        {},
+                    ),
+                {
+                    wrapper,
+                },
+            )
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+            expect(result.current.data).toStrictEqual(null)
+        })
+
+        it('should not call the api function when enabled false', () => {
+            getIngestedResource.mockReturnValue(Promise.resolve(null))
+            renderHook(
+                () =>
+                    useGetIngestedResource(
+                        {
+                            help_center_id: helpCenterId,
+                            id: 1,
+                        },
+                        { enabled: false },
+                    ),
+                {
+                    wrapper,
+                },
+            )
+            expect(listIngestedResources).toHaveBeenCalledTimes(0)
+        })
+
+        it('should not call the api function when client is not set', () => {
+            getIngestedResource.mockReturnValue(Promise.resolve(null))
+            mockUseHelpCenterApi.mockReturnValue({
+                client: undefined,
+                isReady: false,
+            })
+            renderHook(
+                () =>
+                    useGetIngestedResource(
+                        {
+                            help_center_id: helpCenterId,
+                            id: 1,
+                        },
                         {},
                     ),
                 {

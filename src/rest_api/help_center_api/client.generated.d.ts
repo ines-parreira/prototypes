@@ -1,4 +1,4 @@
-import {
+import type {
     AxiosRequestConfig,
     OpenAPIClient,
     OperationResponse,
@@ -945,6 +945,7 @@ declare namespace Components {
                 shop_name: string
                 shop_type: 'bigcommerce' | 'magento2' | 'shopify'
                 integration_id: number
+                account_id: number
             } | null
         }
         export interface ContactFormPageDto {
@@ -1198,7 +1199,9 @@ declare namespace Components {
              * example:
              * "{"ip_address": "89.912.12.11", "user_agent": "Chrome"}"
              */
-            context: {}
+            context: {
+                [key: string]: any
+            }
         }
         export interface CreateArticleTranslationSeoMetaDto {
             /**
@@ -1863,7 +1866,7 @@ declare namespace Components {
             name: string
             subdomain: string
             deactivated_datetime: string | null // date-time
-            readonly default_locale:
+            default_locale:
                 | 'cs-CZ'
                 | 'da-DK'
                 | 'nl-NL'
@@ -1909,6 +1912,12 @@ declare namespace Components {
             theme: string
             shop_name: string | null
             shop_integration_id: number | null
+            shop_integration?: {
+                shop_name: string
+                shop_type: 'bigcommerce' | 'magento2' | 'shopify'
+                integration_id: number
+                account_id: number
+            } | null
             self_service_deactivated_datetime: string | null // date-time
             hotswap_session_token: string | null
             source: 'automation' | 'manual'
@@ -1955,7 +1964,6 @@ declare namespace Components {
             account_id: number
             translations?: HelpCenterTranslationDto[]
             redirects?: RedirectDto[]
-            shop_integration?: ShopIntegrationDto
         }
         export interface HelpCenterDto {
             /**
@@ -1980,7 +1988,7 @@ declare namespace Components {
             name: string
             subdomain: string
             deactivated_datetime: string | null // date-time
-            readonly default_locale:
+            default_locale:
                 | 'cs-CZ'
                 | 'da-DK'
                 | 'nl-NL'
@@ -2026,6 +2034,12 @@ declare namespace Components {
             theme: string
             shop_name: string | null
             shop_integration_id: number | null
+            shop_integration?: {
+                shop_name: string
+                shop_type: 'bigcommerce' | 'magento2' | 'shopify'
+                integration_id: number
+                account_id: number
+            } | null
             self_service_deactivated_datetime: string | null // date-time
             hotswap_session_token: string | null
             source: 'automation' | 'manual'
@@ -2526,8 +2540,14 @@ declare namespace Components {
              *   "num_imported_rows": 100
              * }
              */
-            report:
-                | ProcessCsvResponseSuccessDto
+            report: /**
+             * example:
+             * {
+             *   "status": "SUCCESS",
+             *   "num_imported_rows": 100
+             * }
+             */
+            | ProcessCsvResponseSuccessDto
                 | ProcessCsvResponsePartialDto
                 | ProcessCsvResponseFailedDto
         }
@@ -2603,9 +2623,15 @@ declare namespace Components {
             status: string
             statusMessage: string
             isStatusMessageTerminal: boolean
-            meta: {}
-            stats: {}
-            options: {}
+            meta: {
+                [key: string]: any
+            }
+            stats: {
+                [key: string]: any
+            }
+            options: {
+                [key: string]: any
+            }
             buildId: string
             exitCode: number
             defaultKeyValueStoreId: string
@@ -2613,9 +2639,13 @@ declare namespace Components {
             defaultRequestQueueId: string
             buildNumber: string
             containerUrl: string
-            usage: {}
+            usage: {
+                [key: string]: any
+            }
             usageTotalUsd: number
-            usageUsd: {}
+            usageUsd: {
+                [key: string]: any
+            }
         }
         export interface RetrieveFileIngestionLogDto {
             id: number
@@ -2630,10 +2660,39 @@ declare namespace Components {
             shop_name: string
             shop_type: 'bigcommerce' | 'magento2' | 'shopify'
             integration_id: number
+            account_id: number
+        }
+        export interface ShopIntegrationMappingsDto {
+            /**
+             * The name of the channel (help-center or contact-form)
+             */
+            channel_name: string
+            /**
+             * The integration ID of the channel
+             */
+            channel_integration_id: number
+            /**
+             * The integration_id from shop_integration
+             */
+            shop_integration_id: number
+            /**
+             * The name of the shop
+             */
+            shop_name: string
+            /**
+             * The type of the shop
+             */
+            shop_type: string
+            /**
+             * The id of the channel (help-center or contact-form)
+             */
+            channel_id: number
         }
         export interface SignedPostPolicyDto {
             url: string
-            fields: {}
+            fields: {
+                [key: string]: any
+            }
         }
         export interface StartIngestionResponseDto {
             scraping_id: string
@@ -2722,7 +2781,9 @@ declare namespace Components {
              * example:
              * "{"ip_address": "89.912.12.11", "user_agent": "Chrome"}"
              */
-            context: {}
+            context: {
+                [key: string]: any
+            }
         }
         export interface UpdateCategoryTranslationDto {
             /**
@@ -3205,6 +3266,9 @@ declare namespace Paths {
         export interface PathParameters {
             input_name: Parameters.InputName
         }
+        namespace Responses {
+            export interface $204 {}
+        }
     }
     namespace CheckCustomDomainStatus {
         namespace Parameters {
@@ -3226,6 +3290,9 @@ declare namespace Paths {
         export interface PathParameters {
             subdomain: Parameters.Subdomain
         }
+        namespace Responses {
+            export interface $204 {}
+        }
     }
     namespace Complete {
         namespace Parameters {
@@ -3235,9 +3302,15 @@ declare namespace Paths {
             help_center_id: Parameters.HelpCenterId
         }
         export type RequestBody = Components.Schemas.HotswapWebhookDto
+        namespace Responses {
+            export interface $201 {}
+        }
     }
     namespace ContactFormPurgeCache {
         export type RequestBody = Components.Schemas.PurgeCacheContactFormDto
+        namespace Responses {
+            export interface $201 {}
+        }
     }
     namespace CopyArticle {
         namespace Parameters {
@@ -3441,6 +3514,9 @@ declare namespace Paths {
     }
     namespace DeleteAccountHelpCenters {
         export type RequestBody = Components.Schemas.DeleteAccountDto
+        namespace Responses {
+            export interface $201 {}
+        }
     }
     namespace DeleteArticle {
         namespace Parameters {
@@ -3451,6 +3527,9 @@ declare namespace Paths {
             id: Parameters.Id
             help_center_id: Parameters.HelpCenterId
         }
+        namespace Responses {
+            export interface $200 {}
+        }
     }
     namespace DeleteArticleIngestionLog {
         namespace Parameters {
@@ -3460,6 +3539,9 @@ declare namespace Paths {
         export interface PathParameters {
             help_center_id: Parameters.HelpCenterId
             article_ingestion_log_id: Parameters.ArticleIngestionLogId
+        }
+        namespace Responses {
+            export interface $204 {}
         }
     }
     namespace DeleteArticleTranslation {
@@ -3473,6 +3555,9 @@ declare namespace Paths {
             article_id: Parameters.ArticleId
             locale: Parameters.Locale
         }
+        namespace Responses {
+            export interface $200 {}
+        }
     }
     namespace DeleteArticleTranslationRating {
         namespace Parameters {
@@ -3482,6 +3567,9 @@ declare namespace Paths {
         export interface PathParameters {
             help_center_id: Parameters.HelpCenterId
             ratingId: Parameters.RatingId
+        }
+        namespace Responses {
+            export interface $200 {}
         }
     }
     namespace DeleteCategory {
@@ -3493,6 +3581,9 @@ declare namespace Paths {
             id: Parameters.Id
             help_center_id: Parameters.HelpCenterId
         }
+        namespace Responses {
+            export interface $200 {}
+        }
     }
     namespace DeleteCategoryArticles {
         namespace Parameters {
@@ -3502,6 +3593,9 @@ declare namespace Paths {
         export interface PathParameters {
             help_center_id: Parameters.HelpCenterId
             category_id: Parameters.CategoryId
+        }
+        namespace Responses {
+            export interface $200 {}
         }
     }
     namespace DeleteCategoryTranslation {
@@ -3515,6 +3609,9 @@ declare namespace Paths {
             category_id: Parameters.CategoryId
             locale: Parameters.Locale
         }
+        namespace Responses {
+            export interface $200 {}
+        }
     }
     namespace DeleteContactForm {
         namespace Parameters {
@@ -3522,6 +3619,9 @@ declare namespace Paths {
         }
         export interface PathParameters {
             id: Parameters.Id
+        }
+        namespace Responses {
+            export interface $204 {}
         }
     }
     namespace DeleteContactFormShopifyPageEmbedment {
@@ -3533,6 +3633,9 @@ declare namespace Paths {
             embedment_id: Parameters.EmbedmentId
             contact_form_id: Parameters.ContactFormId
         }
+        namespace Responses {
+            export interface $204 {}
+        }
     }
     namespace DeleteCustomDomain {
         namespace Parameters {
@@ -3542,6 +3645,9 @@ declare namespace Paths {
         export interface PathParameters {
             help_center_id: Parameters.HelpCenterId
             hostname: Parameters.Hostname
+        }
+        namespace Responses {
+            export interface $200 {}
         }
     }
     namespace DeleteFileIngestion {
@@ -3564,6 +3670,9 @@ declare namespace Paths {
         export interface PathParameters {
             help_center_id: Parameters.HelpCenterId
         }
+        namespace Responses {
+            export interface $200 {}
+        }
     }
     namespace DeleteHelpCenterShopifyPageEmbedment {
         namespace Parameters {
@@ -3573,6 +3682,9 @@ declare namespace Paths {
         export interface PathParameters {
             embedment_id: Parameters.EmbedmentId
             help_center_id: Parameters.HelpCenterId
+        }
+        namespace Responses {
+            export interface $204 {}
         }
     }
     namespace DeleteHelpCenterTranslation {
@@ -3584,6 +3696,9 @@ declare namespace Paths {
             help_center_id: Parameters.HelpCenterId
             locale: Parameters.Locale
         }
+        namespace Responses {
+            export interface $200 {}
+        }
     }
     namespace DeleteNavigationLink {
         namespace Parameters {
@@ -3593,6 +3708,9 @@ declare namespace Paths {
         export interface PathParameters {
             id: Parameters.Id
             help_center_id: Parameters.HelpCenterId
+        }
+        namespace Responses {
+            export interface $200 {}
         }
     }
     namespace DeleteRedirect {
@@ -3605,6 +3723,9 @@ declare namespace Paths {
         }
         export interface QueryParameters {
             from: Parameters.From
+        }
+        namespace Responses {
+            export interface $200 {}
         }
     }
     namespace DuplicateHelpCenter {
@@ -4057,6 +4178,19 @@ declare namespace Paths {
             export type $200 = Components.Schemas.HotswapProgressDto
         }
     }
+    namespace GetIngestedResource {
+        namespace Parameters {
+            export type HelpCenterId = number
+            export type Id = number
+        }
+        export interface PathParameters {
+            id: Parameters.Id
+            help_center_id: Parameters.HelpCenterId
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.IngestedResourceListDataDto
+        }
+    }
     namespace GetIngestionLogs {
         namespace Parameters {
             export type AccountId = string
@@ -4139,12 +4273,21 @@ declare namespace Paths {
     }
     namespace HandleArticleIngestionDone {
         export type RequestBody = Components.Schemas.ApifyWebhookDto
+        namespace Responses {
+            export interface $201 {}
+        }
     }
     namespace HandleIngestionFail {
         export type RequestBody = Components.Schemas.ApifyFailedIngestionDto
+        namespace Responses {
+            export interface $204 {}
+        }
     }
     namespace HandoverWorkflowExecution {
         export type RequestBody = Components.Schemas.WorkflowHandoverDto
+        namespace Responses {
+            export interface $204 {}
+        }
     }
     namespace ImportCsv {
         namespace Parameters {
@@ -4160,6 +4303,20 @@ declare namespace Paths {
     }
     namespace IngestEvent {
         export type RequestBody = Components.Schemas.ProductPageIngestedDto
+        namespace Responses {
+            export interface $201 {}
+        }
+    }
+    namespace List {
+        namespace Parameters {
+            export type AccountId = number
+        }
+        export interface QueryParameters {
+            account_id: Parameters.AccountId
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.ShopIntegrationMappingsDto[]
+        }
     }
     namespace ListAIArticleTemplates {
         namespace Responses {
@@ -4252,6 +4409,7 @@ declare namespace Paths {
     }
     namespace ListArticles {
         namespace Parameters {
+            export type Content = string
             export type HasCategory = boolean
             export type HelpCenterId = number
             export type Ids = number[]
@@ -4282,6 +4440,7 @@ declare namespace Paths {
         }
         export interface QueryParameters {
             has_category?: Parameters.HasCategory
+            content?: Parameters.Content
             locale?: Parameters.Locale
             version_status?: Parameters.VersionStatus
             ids?: Parameters.Ids
@@ -4450,6 +4609,11 @@ declare namespace Paths {
             export type $200 = Components.Schemas.CustomDomainsListPageDto
         }
     }
+    namespace ListGoogleFonts {
+        namespace Responses {
+            export interface $200 {}
+        }
+    }
     namespace ListHelpCenterShopifyPageEmbedments {
         namespace Parameters {
             export type HelpCenterId = number
@@ -4496,6 +4660,7 @@ declare namespace Paths {
             export type Active = boolean
             export type CustomDomain = string
             export type Fields = string[]
+            export type Name = string
             export type Page = any
             export type PerPage = any
             export type ShopIntegrationId = number
@@ -4512,6 +4677,7 @@ declare namespace Paths {
             shop_integration_id?: Parameters.ShopIntegrationId
             account_id?: Parameters.AccountId
             with_wizard?: Parameters.WithWizard
+            name?: Parameters.Name
             type?: Parameters.Type
             active?: Parameters.Active
             fields?: Parameters.Fields
@@ -4611,6 +4777,9 @@ declare namespace Paths {
         export interface PathParameters {
             shop_name: Parameters.ShopName
         }
+        namespace Responses {
+            export interface $201 {}
+        }
     }
     namespace SetArticlesPositionsInCategory {
         namespace Parameters {
@@ -4703,6 +4872,9 @@ declare namespace Paths {
             help_center_id: Parameters.HelpCenterId
         }
         export type RequestBody = Components.Schemas.ApifyInputDto
+        namespace Responses {
+            export interface $201 {}
+        }
     }
     namespace StartIngestion {
         namespace Parameters {
@@ -4724,6 +4896,9 @@ declare namespace Paths {
             uid: Parameters.Uid
         }
         export type RequestBody = Components.Schemas.ContactFormSubmissionDto
+        namespace Responses {
+            export interface $204 {}
+        }
     }
     namespace UpdateArticle {
         namespace Parameters {
@@ -4819,6 +4994,9 @@ declare namespace Paths {
     }
     namespace UpdateEmailIntegration {
         export type RequestBody = Components.Schemas.UpdateEmailIntegrationDto
+        namespace Responses {
+            export interface $204 {}
+        }
     }
     namespace UpdateExtraHTML {
         namespace Parameters {
@@ -4912,6 +5090,9 @@ declare namespace Paths {
         }
         export type RequestBody =
             Components.Schemas.UpsertArticleTemplateReviewDto
+        namespace Responses {
+            export interface $204 {}
+        }
     }
     namespace UpsertContactFormAutomationSettings {
         namespace Parameters {
@@ -4957,18 +5138,18 @@ export interface OperationMethods {
      * deleteArticleIngestionLog - Delete article ingestion log
      */
     'deleteArticleIngestionLog'(
-        parameters?: Parameters<Paths.DeleteArticleIngestionLog.PathParameters> | null,
+        parameters: Parameters<Paths.DeleteArticleIngestionLog.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.DeleteArticleIngestionLog.Responses.$204>
     /**
      * getArticleIngestionLogs - Get article ingestion logs
      */
     'getArticleIngestionLogs'(
-        parameters?: Parameters<
-            Paths.GetArticleIngestionLogs.PathParameters &
-                Paths.GetArticleIngestionLogs.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.GetArticleIngestionLogs.QueryParameters &
+                Paths.GetArticleIngestionLogs.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetArticleIngestionLogs.Responses.$200>
@@ -4976,10 +5157,10 @@ export interface OperationMethods {
      * startArticleIngestion - Trigger external content ingestion
      */
     'startArticleIngestion'(
-        parameters?: Parameters<Paths.StartArticleIngestion.PathParameters> | null,
+        parameters: Parameters<Paths.StartArticleIngestion.PathParameters>,
         data?: Paths.StartArticleIngestion.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.StartArticleIngestion.Responses.$201>
     /**
      * handleArticleIngestionDone - Webhook integration with Apify
      */
@@ -4987,15 +5168,15 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.HandleArticleIngestionDone.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.HandleArticleIngestionDone.Responses.$201>
     /**
      * listCategoryArticles - List category's articles
      */
     'listCategoryArticles'(
-        parameters?: Parameters<
-            Paths.ListCategoryArticles.PathParameters &
-                Paths.ListCategoryArticles.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.ListCategoryArticles.QueryParameters &
+                Paths.ListCategoryArticles.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ListCategoryArticles.Responses.$200>
@@ -5003,15 +5184,15 @@ export interface OperationMethods {
      * deleteCategoryArticles - Delete category's articles
      */
     'deleteCategoryArticles'(
-        parameters?: Parameters<Paths.DeleteCategoryArticles.PathParameters> | null,
+        parameters: Parameters<Paths.DeleteCategoryArticles.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.DeleteCategoryArticles.Responses.$200>
     /**
      * getCategoryArticlesPositions - Retrieve articles' positions in category
      */
     'getCategoryArticlesPositions'(
-        parameters?: Parameters<Paths.GetCategoryArticlesPositions.PathParameters> | null,
+        parameters: Parameters<Paths.GetCategoryArticlesPositions.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetCategoryArticlesPositions.Responses.$200>
@@ -5021,7 +5202,7 @@ export interface OperationMethods {
      * If the provided `id`s is missing an item, this item will be sorted last.
      */
     'setArticlesPositionsInCategory'(
-        parameters?: Parameters<Paths.SetArticlesPositionsInCategory.PathParameters> | null,
+        parameters: Parameters<Paths.SetArticlesPositionsInCategory.PathParameters>,
         data?: Paths.SetArticlesPositionsInCategory.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.SetArticlesPositionsInCategory.Responses.$200>
@@ -5032,10 +5213,10 @@ export interface OperationMethods {
      * `/categories/:category_id/articles`.
      */
     'listArticles'(
-        parameters?: Parameters<
-            Paths.ListArticles.PathParameters &
-                Paths.ListArticles.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.ListArticles.QueryParameters &
+                Paths.ListArticles.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ListArticles.Responses.$200>
@@ -5047,7 +5228,7 @@ export interface OperationMethods {
      * A translation should be provided when creating an article.
      */
     'createArticle'(
-        parameters?: Parameters<Paths.CreateArticle.PathParameters> | null,
+        parameters: Parameters<Paths.CreateArticle.PathParameters>,
         data?: Paths.CreateArticle.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CreateArticle.Responses.$201>
@@ -5055,7 +5236,7 @@ export interface OperationMethods {
      * getUncategorizedArticlesPositions - Retrieve uncategorized articles' positions
      */
     'getUncategorizedArticlesPositions'(
-        parameters?: Parameters<Paths.GetUncategorizedArticlesPositions.PathParameters> | null,
+        parameters: Parameters<Paths.GetUncategorizedArticlesPositions.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetUncategorizedArticlesPositions.Responses.$200>
@@ -5065,7 +5246,7 @@ export interface OperationMethods {
      * If the provided `id`s is missing an item, this item will be sorted last.
      */
     'setUncategorizedArticlesPositions'(
-        parameters?: Parameters<Paths.SetUncategorizedArticlesPositions.PathParameters> | null,
+        parameters: Parameters<Paths.SetUncategorizedArticlesPositions.PathParameters>,
         data?: Paths.SetUncategorizedArticlesPositions.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.SetUncategorizedArticlesPositions.Responses.$200>
@@ -5073,9 +5254,9 @@ export interface OperationMethods {
      * getArticle - Retrieve an article
      */
     'getArticle'(
-        parameters?: Parameters<
-            Paths.GetArticle.PathParameters & Paths.GetArticle.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.GetArticle.QueryParameters & Paths.GetArticle.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetArticle.Responses.$200>
@@ -5083,7 +5264,7 @@ export interface OperationMethods {
      * updateArticle - Update an article
      */
     'updateArticle'(
-        parameters?: Parameters<Paths.UpdateArticle.PathParameters> | null,
+        parameters: Parameters<Paths.UpdateArticle.PathParameters>,
         data?: Paths.UpdateArticle.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UpdateArticle.Responses.$200>
@@ -5091,17 +5272,17 @@ export interface OperationMethods {
      * deleteArticle - Delete an article
      */
     'deleteArticle'(
-        parameters?: Parameters<Paths.DeleteArticle.PathParameters> | null,
+        parameters: Parameters<Paths.DeleteArticle.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.DeleteArticle.Responses.$200>
     /**
      * copyArticle - Copy an article to another help center
      *
      * Copy an article from one help center to another.
      */
     'copyArticle'(
-        parameters?: Parameters<Paths.CopyArticle.PathParameters> | null,
+        parameters: Parameters<Paths.CopyArticle.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CopyArticle.Responses.$201>
@@ -5109,10 +5290,10 @@ export interface OperationMethods {
      * listArticleTranslations - List article's translations
      */
     'listArticleTranslations'(
-        parameters?: Parameters<
-            Paths.ListArticleTranslations.PathParameters &
-                Paths.ListArticleTranslations.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.ListArticleTranslations.QueryParameters &
+                Paths.ListArticleTranslations.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ListArticleTranslations.Responses.$200>
@@ -5120,7 +5301,7 @@ export interface OperationMethods {
      * createArticleTranslation - Create an article translation
      */
     'createArticleTranslation'(
-        parameters?: Parameters<Paths.CreateArticleTranslation.PathParameters> | null,
+        parameters: Parameters<Paths.CreateArticleTranslation.PathParameters>,
         data?: Paths.CreateArticleTranslation.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CreateArticleTranslation.Responses.$201>
@@ -5128,7 +5309,7 @@ export interface OperationMethods {
      * updateArticleTranslation - Update an article translation
      */
     'updateArticleTranslation'(
-        parameters?: Parameters<Paths.UpdateArticleTranslation.PathParameters> | null,
+        parameters: Parameters<Paths.UpdateArticleTranslation.PathParameters>,
         data?: Paths.UpdateArticleTranslation.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UpdateArticleTranslation.Responses.$200>
@@ -5140,15 +5321,15 @@ export interface OperationMethods {
      *     non-deleted translation.
      */
     'deleteArticleTranslation'(
-        parameters?: Parameters<Paths.DeleteArticleTranslation.PathParameters> | null,
+        parameters: Parameters<Paths.DeleteArticleTranslation.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.DeleteArticleTranslation.Responses.$200>
     /**
      * createArticleTranslationRating - Create an article translation rating
      */
     'createArticleTranslationRating'(
-        parameters?: Parameters<Paths.CreateArticleTranslationRating.PathParameters> | null,
+        parameters: Parameters<Paths.CreateArticleTranslationRating.PathParameters>,
         data?: Paths.CreateArticleTranslationRating.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CreateArticleTranslationRating.Responses.$201>
@@ -5156,7 +5337,7 @@ export interface OperationMethods {
      * updateArticleTranslationRating - Update an article translation rating
      */
     'updateArticleTranslationRating'(
-        parameters?: Parameters<Paths.UpdateArticleTranslationRating.PathParameters> | null,
+        parameters: Parameters<Paths.UpdateArticleTranslationRating.PathParameters>,
         data?: Paths.UpdateArticleTranslationRating.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UpdateArticleTranslationRating.Responses.$200>
@@ -5164,10 +5345,10 @@ export interface OperationMethods {
      * deleteArticleTranslationRating - Removes an article translation rating
      */
     'deleteArticleTranslationRating'(
-        parameters?: Parameters<Paths.DeleteArticleTranslationRating.PathParameters> | null,
+        parameters: Parameters<Paths.DeleteArticleTranslationRating.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.DeleteArticleTranslationRating.Responses.$200>
     /**
      * listHelpCenters - List help centers
      *
@@ -5203,18 +5384,18 @@ export interface OperationMethods {
      * checkHelpCenterWithSubdomainExists - Check that a help center with this subdomain exists
      */
     'checkHelpCenterWithSubdomainExists'(
-        parameters?: Parameters<Paths.CheckHelpCenterWithSubdomainExists.PathParameters> | null,
+        parameters: Parameters<Paths.CheckHelpCenterWithSubdomainExists.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.CheckHelpCenterWithSubdomainExists.Responses.$204>
     /**
      * getHelpCenter - Retrieve a help center
      */
     'getHelpCenter'(
-        parameters?: Parameters<
-            Paths.GetHelpCenter.PathParameters &
-                Paths.GetHelpCenter.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.GetHelpCenter.QueryParameters &
+                Paths.GetHelpCenter.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetHelpCenter.Responses.$200>
@@ -5222,7 +5403,7 @@ export interface OperationMethods {
      * updateHelpCenter - Update a help center
      */
     'updateHelpCenter'(
-        parameters?: Parameters<Paths.UpdateHelpCenter.PathParameters> | null,
+        parameters: Parameters<Paths.UpdateHelpCenter.PathParameters>,
         data?: Paths.UpdateHelpCenter.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UpdateHelpCenter.Responses.$200>
@@ -5230,18 +5411,18 @@ export interface OperationMethods {
      * deleteHelpCenter - Delete a help center
      */
     'deleteHelpCenter'(
-        parameters?: Parameters<Paths.DeleteHelpCenter.PathParameters> | null,
+        parameters: Parameters<Paths.DeleteHelpCenter.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.DeleteHelpCenter.Responses.$200>
     /**
      * getHelpCenterByUid - Retrieve a Help Center by uid
      */
     'getHelpCenterByUid'(
-        parameters?: Parameters<
-            Paths.GetHelpCenterByUid.PathParameters &
-                Paths.GetHelpCenterByUid.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.GetHelpCenterByUid.QueryParameters &
+                Paths.GetHelpCenterByUid.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetHelpCenterByUid.Responses.$200>
@@ -5252,22 +5433,22 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.DeleteAccountHelpCenters.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.DeleteAccountHelpCenters.Responses.$201>
     /**
      * purgeCache - Purge CDN cache
      */
     'purgeCache'(
-        parameters?: Parameters<Paths.PurgeCache.PathParameters> | null,
+        parameters: Parameters<Paths.PurgeCache.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.PurgeCache.Responses.$201>
     /**
      * duplicateHelpCenter - Duplicate a help center
      *
      * Duplicate a help center with all its translations, categories, articles, navigation links and redirects.
      */
     'duplicateHelpCenter'(
-        parameters?: Parameters<Paths.DuplicateHelpCenter.PathParameters> | null,
+        parameters: Parameters<Paths.DuplicateHelpCenter.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.DuplicateHelpCenter.Responses.$201>
@@ -5275,7 +5456,7 @@ export interface OperationMethods {
      * getHelpCenterAutomationSettings - Get a Help center automation settings
      */
     'getHelpCenterAutomationSettings'(
-        parameters?: Parameters<Paths.GetHelpCenterAutomationSettings.PathParameters> | null,
+        parameters: Parameters<Paths.GetHelpCenterAutomationSettings.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetHelpCenterAutomationSettings.Responses.$200>
@@ -5283,7 +5464,7 @@ export interface OperationMethods {
      * upsertHelpCenterAutomationSettings - Update a Help center automation settings
      */
     'upsertHelpCenterAutomationSettings'(
-        parameters?: Parameters<Paths.UpsertHelpCenterAutomationSettings.PathParameters> | null,
+        parameters: Parameters<Paths.UpsertHelpCenterAutomationSettings.PathParameters>,
         data?: Paths.UpsertHelpCenterAutomationSettings.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UpsertHelpCenterAutomationSettings.Responses.$200>
@@ -5291,10 +5472,10 @@ export interface OperationMethods {
      * getHelpCenterEmailIntegrationByIntegrationId - Retrieve a Help Center email integration by integration_id
      */
     'getHelpCenterEmailIntegrationByIntegrationId'(
-        parameters?: Parameters<
-            Paths.GetHelpCenterEmailIntegrationByIntegrationId.PathParameters &
-                Paths.GetHelpCenterEmailIntegrationByIntegrationId.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.GetHelpCenterEmailIntegrationByIntegrationId.QueryParameters &
+                Paths.GetHelpCenterEmailIntegrationByIntegrationId.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetHelpCenterEmailIntegrationByIntegrationId.Responses.$200>
@@ -5302,7 +5483,7 @@ export interface OperationMethods {
      * getHelpCenterSiteMapUrls - Get all the site map urls for the help center with the given id
      */
     'getHelpCenterSiteMapUrls'(
-        parameters?: Parameters<Paths.GetHelpCenterSiteMapUrls.PathParameters> | null,
+        parameters: Parameters<Paths.GetHelpCenterSiteMapUrls.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetHelpCenterSiteMapUrls.Responses.$200>
@@ -5310,10 +5491,10 @@ export interface OperationMethods {
      * listHelpCenterTranslations - List help center's translations
      */
     'listHelpCenterTranslations'(
-        parameters?: Parameters<
-            Paths.ListHelpCenterTranslations.PathParameters &
-                Paths.ListHelpCenterTranslations.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.ListHelpCenterTranslations.QueryParameters &
+                Paths.ListHelpCenterTranslations.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ListHelpCenterTranslations.Responses.$200>
@@ -5321,7 +5502,7 @@ export interface OperationMethods {
      * createHelpCenterTranslation - Create a help center translation
      */
     'createHelpCenterTranslation'(
-        parameters?: Parameters<Paths.CreateHelpCenterTranslation.PathParameters> | null,
+        parameters: Parameters<Paths.CreateHelpCenterTranslation.PathParameters>,
         data?: Paths.CreateHelpCenterTranslation.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CreateHelpCenterTranslation.Responses.$201>
@@ -5329,7 +5510,7 @@ export interface OperationMethods {
      * updateHelpCenterTranslation - Update a help center translation
      */
     'updateHelpCenterTranslation'(
-        parameters?: Parameters<Paths.UpdateHelpCenterTranslation.PathParameters> | null,
+        parameters: Parameters<Paths.UpdateHelpCenterTranslation.PathParameters>,
         data?: Paths.UpdateHelpCenterTranslation.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UpdateHelpCenterTranslation.Responses.$200>
@@ -5337,18 +5518,18 @@ export interface OperationMethods {
      * deleteHelpCenterTranslation - Delete a help center translation
      */
     'deleteHelpCenterTranslation'(
-        parameters?: Parameters<Paths.DeleteHelpCenterTranslation.PathParameters> | null,
+        parameters: Parameters<Paths.DeleteHelpCenterTranslation.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.DeleteHelpCenterTranslation.Responses.$200>
     /**
      * listCustomDomains - List custom domains
      */
     'listCustomDomains'(
-        parameters?: Parameters<
-            Paths.ListCustomDomains.PathParameters &
-                Paths.ListCustomDomains.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.ListCustomDomains.QueryParameters &
+                Paths.ListCustomDomains.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ListCustomDomains.Responses.$200>
@@ -5356,7 +5537,7 @@ export interface OperationMethods {
      * createCustomDomain - Create a custom domain
      */
     'createCustomDomain'(
-        parameters?: Parameters<Paths.CreateCustomDomain.PathParameters> | null,
+        parameters: Parameters<Paths.CreateCustomDomain.PathParameters>,
         data?: Paths.CreateCustomDomain.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CreateCustomDomain.Responses.$201>
@@ -5364,7 +5545,7 @@ export interface OperationMethods {
      * getCustomDomain - Retrieve a custom domain
      */
     'getCustomDomain'(
-        parameters?: Parameters<Paths.GetCustomDomain.PathParameters> | null,
+        parameters: Parameters<Paths.GetCustomDomain.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetCustomDomain.Responses.$200>
@@ -5372,15 +5553,15 @@ export interface OperationMethods {
      * deleteCustomDomain - Delete a custom domain
      */
     'deleteCustomDomain'(
-        parameters?: Parameters<Paths.DeleteCustomDomain.PathParameters> | null,
+        parameters: Parameters<Paths.DeleteCustomDomain.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.DeleteCustomDomain.Responses.$200>
     /**
      * checkCustomDomainStatus - Check the status of a custom domain
      */
     'checkCustomDomainStatus'(
-        parameters?: Parameters<Paths.CheckCustomDomainStatus.PathParameters> | null,
+        parameters: Parameters<Paths.CheckCustomDomainStatus.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CheckCustomDomainStatus.Responses.$200>
@@ -5388,10 +5569,10 @@ export interface OperationMethods {
      * getExtraHTML - Get a help center's extra HTML
      */
     'getExtraHTML'(
-        parameters?: Parameters<
-            Paths.GetExtraHTML.PathParameters &
-                Paths.GetExtraHTML.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.GetExtraHTML.QueryParameters &
+                Paths.GetExtraHTML.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetExtraHTML.Responses.$200>
@@ -5399,7 +5580,7 @@ export interface OperationMethods {
      * updateExtraHTML - Update a help center's extra HTML
      */
     'updateExtraHTML'(
-        parameters?: Parameters<Paths.UpdateExtraHTML.PathParameters> | null,
+        parameters: Parameters<Paths.UpdateExtraHTML.PathParameters>,
         data?: Paths.UpdateExtraHTML.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UpdateExtraHTML.Responses.$200>
@@ -5415,7 +5596,7 @@ export interface OperationMethods {
      * getLocale - Retrieve a locale
      */
     'getLocale'(
-        parameters?: Parameters<Paths.GetLocale.PathParameters> | null,
+        parameters: Parameters<Paths.GetLocale.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetLocale.Responses.$200>
@@ -5425,10 +5606,10 @@ export interface OperationMethods {
      * TODO: pagination
      */
     'listRedirects'(
-        parameters?: Parameters<
-            Paths.ListRedirects.PathParameters &
-                Paths.ListRedirects.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.ListRedirects.QueryParameters &
+                Paths.ListRedirects.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ListRedirects.Responses.$200>
@@ -5436,7 +5617,7 @@ export interface OperationMethods {
      * createRedirect - Create a new redirect
      */
     'createRedirect'(
-        parameters?: Parameters<Paths.CreateRedirect.PathParameters> | null,
+        parameters: Parameters<Paths.CreateRedirect.PathParameters>,
         data?: Paths.CreateRedirect.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CreateRedirect.Responses.$201>
@@ -5444,23 +5625,23 @@ export interface OperationMethods {
      * deleteRedirect - Delete a redirect
      */
     'deleteRedirect'(
-        parameters?: Parameters<
-            Paths.DeleteRedirect.PathParameters &
-                Paths.DeleteRedirect.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.DeleteRedirect.QueryParameters &
+                Paths.DeleteRedirect.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.DeleteRedirect.Responses.$200>
     /**
      * listCategories - List categories
      *
      * List the top level categories with pagination metadata.
      */
     'listCategories'(
-        parameters?: Parameters<
-            Paths.ListCategories.PathParameters &
-                Paths.ListCategories.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.ListCategories.QueryParameters &
+                Paths.ListCategories.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ListCategories.Responses.$200>
@@ -5470,7 +5651,7 @@ export interface OperationMethods {
      * Create a category in a given help center. If the provided `parent_category_id` field is `null` or is not provided, the category will be created at the root category level.
      */
     'createCategory'(
-        parameters?: Parameters<Paths.CreateCategory.PathParameters> | null,
+        parameters: Parameters<Paths.CreateCategory.PathParameters>,
         data?: Paths.CreateCategory.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CreateCategory.Responses.$201>
@@ -5478,7 +5659,7 @@ export interface OperationMethods {
      * getCategoriesPositions - Retrieve categories' positions
      */
     'getCategoriesPositions'(
-        parameters?: Parameters<Paths.GetCategoriesPositions.PathParameters> | null,
+        parameters: Parameters<Paths.GetCategoriesPositions.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetCategoriesPositions.Responses.$200>
@@ -5488,7 +5669,7 @@ export interface OperationMethods {
      * If the provided `id`s is missing an item, this item will be sorted last.
      */
     'setCategoriesPositions'(
-        parameters?: Parameters<Paths.SetCategoriesPositions.PathParameters> | null,
+        parameters: Parameters<Paths.SetCategoriesPositions.PathParameters>,
         data?: Paths.SetCategoriesPositions.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.SetCategoriesPositions.Responses.$200>
@@ -5496,9 +5677,9 @@ export interface OperationMethods {
      * getCategory - Retrieve a category
      */
     'getCategory'(
-        parameters?: Parameters<
-            Paths.GetCategory.PathParameters & Paths.GetCategory.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.GetCategory.QueryParameters & Paths.GetCategory.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetCategory.Responses.$200>
@@ -5506,18 +5687,18 @@ export interface OperationMethods {
      * deleteCategory - Delete a category. Deletion is allowed for categories that have no articles or sub-categories.
      */
     'deleteCategory'(
-        parameters?: Parameters<Paths.DeleteCategory.PathParameters> | null,
+        parameters: Parameters<Paths.DeleteCategory.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.DeleteCategory.Responses.$200>
     /**
      * listCategoryTranslations - List category's translations
      */
     'listCategoryTranslations'(
-        parameters?: Parameters<
-            Paths.ListCategoryTranslations.PathParameters &
-                Paths.ListCategoryTranslations.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.ListCategoryTranslations.QueryParameters &
+                Paths.ListCategoryTranslations.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ListCategoryTranslations.Responses.$200>
@@ -5527,7 +5708,7 @@ export interface OperationMethods {
      * Create a category translation in a given help center. If the provided `parent_category_id` field is `null` or is not provided, the category will be moved to the root level.
      */
     'createCategoryTranslation'(
-        parameters?: Parameters<Paths.CreateCategoryTranslation.PathParameters> | null,
+        parameters: Parameters<Paths.CreateCategoryTranslation.PathParameters>,
         data?: Paths.CreateCategoryTranslation.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CreateCategoryTranslation.Responses.$201>
@@ -5537,7 +5718,7 @@ export interface OperationMethods {
      * Update a category translation in a given help center. If the provided `parent_category_id` field is `null` or is not provided, the category will be moved to the root level.
      */
     'updateCategoryTranslation'(
-        parameters?: Parameters<Paths.UpdateCategoryTranslation.PathParameters> | null,
+        parameters: Parameters<Paths.UpdateCategoryTranslation.PathParameters>,
         data?: Paths.UpdateCategoryTranslation.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UpdateCategoryTranslation.Responses.$200>
@@ -5549,18 +5730,18 @@ export interface OperationMethods {
      *     non-deleted translation.
      */
     'deleteCategoryTranslation'(
-        parameters?: Parameters<Paths.DeleteCategoryTranslation.PathParameters> | null,
+        parameters: Parameters<Paths.DeleteCategoryTranslation.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.DeleteCategoryTranslation.Responses.$200>
     /**
      * getCategoryTree - Retrieve the category, its subcategories and subarticles in a tree structure
      */
     'getCategoryTree'(
-        parameters?: Parameters<
-            Paths.GetCategoryTree.PathParameters &
-                Paths.GetCategoryTree.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.GetCategoryTree.QueryParameters &
+                Paths.GetCategoryTree.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetCategoryTree.Responses.$200>
@@ -5570,7 +5751,7 @@ export interface OperationMethods {
      * The category id that will be used as the root node of the tree. If `0` is provided, the children ids of the top level categories of the help center will be returned
      */
     'getSubCategoriesPositions'(
-        parameters?: Parameters<Paths.GetSubCategoriesPositions.PathParameters> | null,
+        parameters: Parameters<Paths.GetSubCategoriesPositions.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetSubCategoriesPositions.Responses.$200>
@@ -5580,23 +5761,31 @@ export interface OperationMethods {
      * The category id that will be used as the root node of the tree. If `0` is provided, the children ids of the top level categories of the help center will be returned
      */
     'setSubCategoriesPositions'(
-        parameters?: Parameters<Paths.SetSubCategoriesPositions.PathParameters> | null,
+        parameters: Parameters<Paths.SetSubCategoriesPositions.PathParameters>,
         data?: Paths.SetSubCategoriesPositions.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.SetSubCategoriesPositions.Responses.$200>
     /**
+     * list - List all shop-mappings
+     */
+    'list'(
+        parameters?: Parameters<Paths.List.QueryParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.List.Responses.$200>
+    /**
      * upsertArticleTemplateReview - Review an AI article template
      */
     'upsertArticleTemplateReview'(
-        parameters?: Parameters<Paths.UpsertArticleTemplateReview.PathParameters> | null,
+        parameters: Parameters<Paths.UpsertArticleTemplateReview.PathParameters>,
         data?: Paths.UpsertArticleTemplateReview.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.UpsertArticleTemplateReview.Responses.$204>
     /**
      * listAIArticleTemplatesByHelpCenter - Retrieve AI article templates by help center
      */
     'listAIArticleTemplatesByHelpCenter'(
-        parameters?: Parameters<Paths.ListAIArticleTemplatesByHelpCenter.PathParameters> | null,
+        parameters: Parameters<Paths.ListAIArticleTemplatesByHelpCenter.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ListAIArticleTemplatesByHelpCenter.Responses.$200>
@@ -5604,7 +5793,7 @@ export interface OperationMethods {
      * listAIArticleTemplatesByHelpCenterAndStore - Retrieve AI article templates by help center
      */
     'listAIArticleTemplatesByHelpCenterAndStore'(
-        parameters?: Parameters<Paths.ListAIArticleTemplatesByHelpCenterAndStore.PathParameters> | null,
+        parameters: Parameters<Paths.ListAIArticleTemplatesByHelpCenterAndStore.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ListAIArticleTemplatesByHelpCenterAndStore.Responses.$200>
@@ -5628,10 +5817,10 @@ export interface OperationMethods {
      * getArticleTemplate - Retrieve article template
      */
     'getArticleTemplate'(
-        parameters?: Parameters<
-            Paths.GetArticleTemplate.PathParameters &
-                Paths.GetArticleTemplate.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.GetArticleTemplate.QueryParameters &
+                Paths.GetArticleTemplate.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetArticleTemplate.Responses.$200>
@@ -5647,10 +5836,10 @@ export interface OperationMethods {
      * checkContactFormNameExists - Check that a contact form with the provided name exists
      */
     'checkContactFormNameExists'(
-        parameters?: Parameters<Paths.CheckContactFormNameExists.PathParameters> | null,
+        parameters: Parameters<Paths.CheckContactFormNameExists.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.CheckContactFormNameExists.Responses.$204>
     /**
      * listContactForms - List the contact forms
      */
@@ -5671,7 +5860,7 @@ export interface OperationMethods {
      * getContactForm - Retrieve a Contact form
      */
     'getContactForm'(
-        parameters?: Parameters<Paths.GetContactForm.PathParameters> | null,
+        parameters: Parameters<Paths.GetContactForm.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetContactForm.Responses.$200>
@@ -5679,7 +5868,7 @@ export interface OperationMethods {
      * updateContactForm - Update a Contact Form
      */
     'updateContactForm'(
-        parameters?: Parameters<Paths.UpdateContactForm.PathParameters> | null,
+        parameters: Parameters<Paths.UpdateContactForm.PathParameters>,
         data?: Paths.UpdateContactForm.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UpdateContactForm.Responses.$200>
@@ -5687,15 +5876,15 @@ export interface OperationMethods {
      * deleteContactForm - Delete a Contact Form
      */
     'deleteContactForm'(
-        parameters?: Parameters<Paths.DeleteContactForm.PathParameters> | null,
+        parameters: Parameters<Paths.DeleteContactForm.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.DeleteContactForm.Responses.$204>
     /**
      * getContactFormByUid - Retrieve a Contact form by uid
      */
     'getContactFormByUid'(
-        parameters?: Parameters<Paths.GetContactFormByUid.PathParameters> | null,
+        parameters: Parameters<Paths.GetContactFormByUid.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetContactFormByUid.Responses.$200>
@@ -5703,15 +5892,15 @@ export interface OperationMethods {
      * submitContactFormByUid - Submit a Contact Form by uid
      */
     'submitContactFormByUid'(
-        parameters?: Parameters<Paths.SubmitContactFormByUid.PathParameters> | null,
+        parameters: Parameters<Paths.SubmitContactFormByUid.PathParameters>,
         data?: Paths.SubmitContactFormByUid.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.SubmitContactFormByUid.Responses.$204>
     /**
      * getContactFormAutomationSettings - Get a Contact Form automation settings
      */
     'getContactFormAutomationSettings'(
-        parameters?: Parameters<Paths.GetContactFormAutomationSettings.PathParameters> | null,
+        parameters: Parameters<Paths.GetContactFormAutomationSettings.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetContactFormAutomationSettings.Responses.$200>
@@ -5719,7 +5908,7 @@ export interface OperationMethods {
      * upsertContactFormAutomationSettings - Update a Contact Form automation settings
      */
     'upsertContactFormAutomationSettings'(
-        parameters?: Parameters<Paths.UpsertContactFormAutomationSettings.PathParameters> | null,
+        parameters: Parameters<Paths.UpsertContactFormAutomationSettings.PathParameters>,
         data?: Paths.UpsertContactFormAutomationSettings.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UpsertContactFormAutomationSettings.Responses.$200>
@@ -5730,7 +5919,7 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.ContactFormPurgeCache.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.ContactFormPurgeCache.Responses.$201>
     /**
      * updateEmailIntegration - Update the contact form email integration values
      *
@@ -5740,15 +5929,15 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.UpdateEmailIntegration.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.UpdateEmailIntegration.Responses.$204>
     /**
      * getContactFormEmailIntegrationByIntegrationId - Retrieve a Contact Form email integration by integration id
      */
     'getContactFormEmailIntegrationByIntegrationId'(
-        parameters?: Parameters<
-            Paths.GetContactFormEmailIntegrationByIntegrationId.PathParameters &
-                Paths.GetContactFormEmailIntegrationByIntegrationId.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.GetContactFormEmailIntegrationByIntegrationId.QueryParameters &
+                Paths.GetContactFormEmailIntegrationByIntegrationId.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetContactFormEmailIntegrationByIntegrationId.Responses.$200>
@@ -5756,7 +5945,7 @@ export interface OperationMethods {
      * listContactFormShopifyPageEmbedments - List the Contact Form Shopify Page Embedments
      */
     'listContactFormShopifyPageEmbedments'(
-        parameters?: Parameters<Paths.ListContactFormShopifyPageEmbedments.PathParameters> | null,
+        parameters: Parameters<Paths.ListContactFormShopifyPageEmbedments.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ListContactFormShopifyPageEmbedments.Responses.$200>
@@ -5768,7 +5957,7 @@ export interface OperationMethods {
      *     - {position: PageEmbedmentPosition, pageExternalId: string} - embed in an existing page
      */
     'createContactFormShopifyPageEmbedment'(
-        parameters?: Parameters<Paths.CreateContactFormShopifyPageEmbedment.PathParameters> | null,
+        parameters: Parameters<Paths.CreateContactFormShopifyPageEmbedment.PathParameters>,
         data?: Paths.CreateContactFormShopifyPageEmbedment.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CreateContactFormShopifyPageEmbedment.Responses.$201>
@@ -5776,7 +5965,7 @@ export interface OperationMethods {
      * updateContactFormShopifyPageEmbedment - Update a Contact Form Shopify Page Embedment
      */
     'updateContactFormShopifyPageEmbedment'(
-        parameters?: Parameters<Paths.UpdateContactFormShopifyPageEmbedment.PathParameters> | null,
+        parameters: Parameters<Paths.UpdateContactFormShopifyPageEmbedment.PathParameters>,
         data?: Paths.UpdateContactFormShopifyPageEmbedment.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UpdateContactFormShopifyPageEmbedment.Responses.$200>
@@ -5784,15 +5973,15 @@ export interface OperationMethods {
      * deleteContactFormShopifyPageEmbedment - Delete a Contact Form Shopify Page Embedment
      */
     'deleteContactFormShopifyPageEmbedment'(
-        parameters?: Parameters<Paths.DeleteContactFormShopifyPageEmbedment.PathParameters> | null,
+        parameters: Parameters<Paths.DeleteContactFormShopifyPageEmbedment.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.DeleteContactFormShopifyPageEmbedment.Responses.$204>
     /**
      * listContactFormShopifyPages - List the Contact Form Shopify Pages available for a Contact Form Embedment
      */
     'listContactFormShopifyPages'(
-        parameters?: Parameters<Paths.ListContactFormShopifyPages.PathParameters> | null,
+        parameters: Parameters<Paths.ListContactFormShopifyPages.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ListContactFormShopifyPages.Responses.$200>
@@ -5800,7 +5989,7 @@ export interface OperationMethods {
      * listHelpCenterShopifyPageEmbedments - List the Help Center Shopify Page Embedments
      */
     'listHelpCenterShopifyPageEmbedments'(
-        parameters?: Parameters<Paths.ListHelpCenterShopifyPageEmbedments.PathParameters> | null,
+        parameters: Parameters<Paths.ListHelpCenterShopifyPageEmbedments.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ListHelpCenterShopifyPageEmbedments.Responses.$200>
@@ -5812,7 +6001,7 @@ export interface OperationMethods {
      *     - {position: PageEmbedmentPosition, pageExternalId: string} - embed in an existing page
      */
     'createHelpCenterShopifyPageEmbedment'(
-        parameters?: Parameters<Paths.CreateHelpCenterShopifyPageEmbedment.PathParameters> | null,
+        parameters: Parameters<Paths.CreateHelpCenterShopifyPageEmbedment.PathParameters>,
         data?: Paths.CreateHelpCenterShopifyPageEmbedment.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CreateHelpCenterShopifyPageEmbedment.Responses.$201>
@@ -5820,7 +6009,7 @@ export interface OperationMethods {
      * updateHelpCenterShopifyPageEmbedment - Update a Help Center Shopify Page Embedment
      */
     'updateHelpCenterShopifyPageEmbedment'(
-        parameters?: Parameters<Paths.UpdateHelpCenterShopifyPageEmbedment.PathParameters> | null,
+        parameters: Parameters<Paths.UpdateHelpCenterShopifyPageEmbedment.PathParameters>,
         data?: Paths.UpdateHelpCenterShopifyPageEmbedment.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UpdateHelpCenterShopifyPageEmbedment.Responses.$200>
@@ -5828,15 +6017,15 @@ export interface OperationMethods {
      * deleteHelpCenterShopifyPageEmbedment - Delete a Help Center Shopify Page Embedment
      */
     'deleteHelpCenterShopifyPageEmbedment'(
-        parameters?: Parameters<Paths.DeleteHelpCenterShopifyPageEmbedment.PathParameters> | null,
+        parameters: Parameters<Paths.DeleteHelpCenterShopifyPageEmbedment.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.DeleteHelpCenterShopifyPageEmbedment.Responses.$204>
     /**
      * listHelpCenterShopifyPages - List the Help Center Shopify Pages available for a Help Center Embedment
      */
     'listHelpCenterShopifyPages'(
-        parameters?: Parameters<Paths.ListHelpCenterShopifyPages.PathParameters> | null,
+        parameters: Parameters<Paths.ListHelpCenterShopifyPages.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ListHelpCenterShopifyPages.Responses.$200>
@@ -5852,10 +6041,10 @@ export interface OperationMethods {
      * getFileIngestion - List file ingestion logs
      */
     'getFileIngestion'(
-        parameters?: Parameters<
-            Paths.GetFileIngestion.PathParameters &
-                Paths.GetFileIngestion.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.GetFileIngestion.QueryParameters &
+                Paths.GetFileIngestion.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetFileIngestion.Responses.$200>
@@ -5863,7 +6052,7 @@ export interface OperationMethods {
      * createFileIngestion - Create and start file ingestion
      */
     'createFileIngestion'(
-        parameters?: Parameters<Paths.CreateFileIngestion.PathParameters> | null,
+        parameters: Parameters<Paths.CreateFileIngestion.PathParameters>,
         data?: Paths.CreateFileIngestion.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CreateFileIngestion.Responses.$201>
@@ -5871,7 +6060,7 @@ export interface OperationMethods {
      * deleteFileIngestion - Delete file ingestion
      */
     'deleteFileIngestion'(
-        parameters?: Parameters<Paths.DeleteFileIngestion.PathParameters> | null,
+        parameters: Parameters<Paths.DeleteFileIngestion.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.DeleteFileIngestion.Responses.$200>
@@ -5882,12 +6071,12 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.ListGoogleFonts.Responses.$200>
     /**
      * listAIGuidancesByHelpCenterAndStore - Retrieve AI guidances by help center
      */
     'listAIGuidancesByHelpCenterAndStore'(
-        parameters?: Parameters<Paths.ListAIGuidancesByHelpCenterAndStore.PathParameters> | null,
+        parameters: Parameters<Paths.ListAIGuidancesByHelpCenterAndStore.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ListAIGuidancesByHelpCenterAndStore.Responses.$200>
@@ -5895,7 +6084,7 @@ export interface OperationMethods {
      * importCsv - Import a CSV file
      */
     'importCsv'(
-        parameters?: Parameters<Paths.ImportCsv.PathParameters> | null,
+        parameters: Parameters<Paths.ImportCsv.PathParameters>,
         data?: Paths.ImportCsv.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ImportCsv.Responses.$201>
@@ -5903,7 +6092,7 @@ export interface OperationMethods {
      * analyseCsv - Provide information on a CSV file with a preview of its rows
      */
     'analyseCsv'(
-        parameters?: Parameters<Paths.AnalyseCsv.PathParameters> | null,
+        parameters: Parameters<Paths.AnalyseCsv.PathParameters>,
         data?: Paths.AnalyseCsv.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.AnalyseCsv.Responses.$200>
@@ -5911,7 +6100,7 @@ export interface OperationMethods {
      * generateCsvTemplate - Generate a template CSV based on the help-center's languages
      */
     'generateCsvTemplate'(
-        parameters?: Parameters<Paths.GenerateCsvTemplate.PathParameters> | null,
+        parameters: Parameters<Paths.GenerateCsvTemplate.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GenerateCsvTemplate.Responses.$200>
@@ -5919,7 +6108,7 @@ export interface OperationMethods {
      * createHotswapSessionToken - Generate hotswap session token
      */
     'createHotswapSessionToken'(
-        parameters?: Parameters<Paths.CreateHotswapSessionToken.PathParameters> | null,
+        parameters: Parameters<Paths.CreateHotswapSessionToken.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CreateHotswapSessionToken.Responses.$201>
@@ -5927,15 +6116,15 @@ export interface OperationMethods {
      * complete - Webhook called by hotswap when import is completed
      */
     'complete'(
-        parameters?: Parameters<Paths.Complete.PathParameters> | null,
+        parameters: Parameters<Paths.Complete.PathParameters>,
         data?: Paths.Complete.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.Complete.Responses.$201>
     /**
      * getHotswapStatus - Get hotswap import status
      */
     'getHotswapStatus'(
-        parameters?: Parameters<Paths.GetHotswapStatus.PathParameters> | null,
+        parameters: Parameters<Paths.GetHotswapStatus.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetHotswapStatus.Responses.$200>
@@ -5943,18 +6132,26 @@ export interface OperationMethods {
      * listIngestedResources - List ingested resources by ingestion log id
      */
     'listIngestedResources'(
-        parameters?: Parameters<
-            Paths.ListIngestedResources.PathParameters &
-                Paths.ListIngestedResources.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.ListIngestedResources.QueryParameters &
+                Paths.ListIngestedResources.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ListIngestedResources.Responses.$200>
     /**
+     * getIngestedResource - Get an ingested resource by id
+     */
+    'getIngestedResource'(
+        parameters: Parameters<Paths.GetIngestedResource.PathParameters>,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.GetIngestedResource.Responses.$200>
+    /**
      * updateIngestedResource - Update ingested resource
      */
     'updateIngestedResource'(
-        parameters?: Parameters<Paths.UpdateIngestedResource.PathParameters> | null,
+        parameters: Parameters<Paths.UpdateIngestedResource.PathParameters>,
         data?: Paths.UpdateIngestedResource.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UpdateIngestedResource.Responses.$200>
@@ -5962,10 +6159,10 @@ export interface OperationMethods {
      * getIngestionLogs - Get ingestion logs
      */
     'getIngestionLogs'(
-        parameters?: Parameters<
-            Paths.GetIngestionLogs.PathParameters &
-                Paths.GetIngestionLogs.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.GetIngestionLogs.QueryParameters &
+                Paths.GetIngestionLogs.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetIngestionLogs.Responses.$200>
@@ -5973,7 +6170,7 @@ export interface OperationMethods {
      * startIngestion - Trigger external content ingestion
      */
     'startIngestion'(
-        parameters?: Parameters<Paths.StartIngestion.PathParameters> | null,
+        parameters: Parameters<Paths.StartIngestion.PathParameters>,
         data?: Paths.StartIngestion.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.StartIngestion.Responses.$201>
@@ -5984,7 +6181,7 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.IngestEvent.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.IngestEvent.Responses.$201>
     /**
      * handleIngestionFail - Webhook integration with Apify to update status
      */
@@ -5992,12 +6189,12 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.HandleIngestionFail.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.HandleIngestionFail.Responses.$204>
     /**
      * getContactFormMailtoReplacementConfig - Get a Contact Form Mailto Replacement Config
      */
     'getContactFormMailtoReplacementConfig'(
-        parameters?: Parameters<Paths.GetContactFormMailtoReplacementConfig.PathParameters> | null,
+        parameters: Parameters<Paths.GetContactFormMailtoReplacementConfig.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetContactFormMailtoReplacementConfig.Responses.$200>
@@ -6007,7 +6204,7 @@ export interface OperationMethods {
      * If the emails array is empty, the config will be deleted
      */
     'upsertContactFormShopifyMailtoReplacement'(
-        parameters?: Parameters<Paths.UpsertContactFormShopifyMailtoReplacement.PathParameters> | null,
+        parameters: Parameters<Paths.UpsertContactFormShopifyMailtoReplacement.PathParameters>,
         data?: Paths.UpsertContactFormShopifyMailtoReplacement.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UpsertContactFormShopifyMailtoReplacement.Responses.$200>
@@ -6015,7 +6212,7 @@ export interface OperationMethods {
      * getContactFormShopifyMailtoReplacementConfig
      */
     'getContactFormShopifyMailtoReplacementConfig'(
-        parameters?: Parameters<Paths.GetContactFormShopifyMailtoReplacementConfig.PathParameters> | null,
+        parameters: Parameters<Paths.GetContactFormShopifyMailtoReplacementConfig.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetContactFormShopifyMailtoReplacementConfig.Responses.$200>
@@ -6023,10 +6220,10 @@ export interface OperationMethods {
      * listNavigationLinks - List navigation links
      */
     'listNavigationLinks'(
-        parameters?: Parameters<
-            Paths.ListNavigationLinks.PathParameters &
-                Paths.ListNavigationLinks.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.ListNavigationLinks.QueryParameters &
+                Paths.ListNavigationLinks.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ListNavigationLinks.Responses.$200>
@@ -6034,7 +6231,7 @@ export interface OperationMethods {
      * createNavigationLink - Create a navigation link
      */
     'createNavigationLink'(
-        parameters?: Parameters<Paths.CreateNavigationLink.PathParameters> | null,
+        parameters: Parameters<Paths.CreateNavigationLink.PathParameters>,
         data?: Paths.CreateNavigationLink.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CreateNavigationLink.Responses.$201>
@@ -6042,7 +6239,7 @@ export interface OperationMethods {
      * updateNavigationLink - Update a navigation link
      */
     'updateNavigationLink'(
-        parameters?: Parameters<Paths.UpdateNavigationLink.PathParameters> | null,
+        parameters: Parameters<Paths.UpdateNavigationLink.PathParameters>,
         data?: Paths.UpdateNavigationLink.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UpdateNavigationLink.Responses.$200>
@@ -6050,15 +6247,15 @@ export interface OperationMethods {
      * deleteNavigationLink - Delete a navigation link
      */
     'deleteNavigationLink'(
-        parameters?: Parameters<Paths.DeleteNavigationLink.PathParameters> | null,
+        parameters: Parameters<Paths.DeleteNavigationLink.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.DeleteNavigationLink.Responses.$200>
     /**
      * getNavigationLinksPositions - Retrieve navigation links' positions
      */
     'getNavigationLinksPositions'(
-        parameters?: Parameters<Paths.GetNavigationLinksPositions.PathParameters> | null,
+        parameters: Parameters<Paths.GetNavigationLinksPositions.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetNavigationLinksPositions.Responses.$200>
@@ -6068,7 +6265,7 @@ export interface OperationMethods {
      * If the provided `id`s is missing an item, this item will be sorted last.
      */
     'setNavigationLinksPositions'(
-        parameters?: Parameters<Paths.SetNavigationLinksPositions.PathParameters> | null,
+        parameters: Parameters<Paths.SetNavigationLinksPositions.PathParameters>,
         data?: Paths.SetNavigationLinksPositions.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.SetNavigationLinksPositions.Responses.$200>
@@ -6079,7 +6276,7 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.HandoverWorkflowExecution.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.HandoverWorkflowExecution.Responses.$204>
 }
 
 export interface PathsDictionary {
@@ -6088,20 +6285,20 @@ export interface PathsDictionary {
          * deleteArticleIngestionLog - Delete article ingestion log
          */
         'delete'(
-            parameters?: Parameters<Paths.DeleteArticleIngestionLog.PathParameters> | null,
+            parameters: Parameters<Paths.DeleteArticleIngestionLog.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.DeleteArticleIngestionLog.Responses.$204>
     }
     ['/api/help-center/help-centers/{help_center_id}/article-ingestion-log']: {
         /**
          * getArticleIngestionLogs - Get article ingestion logs
          */
         'get'(
-            parameters?: Parameters<
-                Paths.GetArticleIngestionLogs.PathParameters &
-                    Paths.GetArticleIngestionLogs.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.GetArticleIngestionLogs.QueryParameters &
+                    Paths.GetArticleIngestionLogs.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetArticleIngestionLogs.Responses.$200>
@@ -6111,10 +6308,10 @@ export interface PathsDictionary {
          * startArticleIngestion - Trigger external content ingestion
          */
         'post'(
-            parameters?: Parameters<Paths.StartArticleIngestion.PathParameters> | null,
+            parameters: Parameters<Paths.StartArticleIngestion.PathParameters>,
             data?: Paths.StartArticleIngestion.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.StartArticleIngestion.Responses.$201>
     }
     ['/api/help-center/article-ingestion/done']: {
         /**
@@ -6124,17 +6321,17 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.HandleArticleIngestionDone.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.HandleArticleIngestionDone.Responses.$201>
     }
     ['/api/help-center/help-centers/{help_center_id}/categories/{category_id}/articles']: {
         /**
          * listCategoryArticles - List category's articles
          */
         'get'(
-            parameters?: Parameters<
-                Paths.ListCategoryArticles.PathParameters &
-                    Paths.ListCategoryArticles.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.ListCategoryArticles.QueryParameters &
+                    Paths.ListCategoryArticles.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.ListCategoryArticles.Responses.$200>
@@ -6142,17 +6339,17 @@ export interface PathsDictionary {
          * deleteCategoryArticles - Delete category's articles
          */
         'delete'(
-            parameters?: Parameters<Paths.DeleteCategoryArticles.PathParameters> | null,
+            parameters: Parameters<Paths.DeleteCategoryArticles.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.DeleteCategoryArticles.Responses.$200>
     }
     ['/api/help-center/help-centers/{help_center_id}/categories/{category_id}/articles/positions']: {
         /**
          * getCategoryArticlesPositions - Retrieve articles' positions in category
          */
         'get'(
-            parameters?: Parameters<Paths.GetCategoryArticlesPositions.PathParameters> | null,
+            parameters: Parameters<Paths.GetCategoryArticlesPositions.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetCategoryArticlesPositions.Responses.$200>
@@ -6162,7 +6359,7 @@ export interface PathsDictionary {
          * If the provided `id`s is missing an item, this item will be sorted last.
          */
         'put'(
-            parameters?: Parameters<Paths.SetArticlesPositionsInCategory.PathParameters> | null,
+            parameters: Parameters<Paths.SetArticlesPositionsInCategory.PathParameters>,
             data?: Paths.SetArticlesPositionsInCategory.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.SetArticlesPositionsInCategory.Responses.$200>
@@ -6175,10 +6372,10 @@ export interface PathsDictionary {
          * `/categories/:category_id/articles`.
          */
         'get'(
-            parameters?: Parameters<
-                Paths.ListArticles.PathParameters &
-                    Paths.ListArticles.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.ListArticles.QueryParameters &
+                    Paths.ListArticles.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.ListArticles.Responses.$200>
@@ -6190,7 +6387,7 @@ export interface PathsDictionary {
          * A translation should be provided when creating an article.
          */
         'post'(
-            parameters?: Parameters<Paths.CreateArticle.PathParameters> | null,
+            parameters: Parameters<Paths.CreateArticle.PathParameters>,
             data?: Paths.CreateArticle.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.CreateArticle.Responses.$201>
@@ -6200,7 +6397,7 @@ export interface PathsDictionary {
          * getUncategorizedArticlesPositions - Retrieve uncategorized articles' positions
          */
         'get'(
-            parameters?: Parameters<Paths.GetUncategorizedArticlesPositions.PathParameters> | null,
+            parameters: Parameters<Paths.GetUncategorizedArticlesPositions.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetUncategorizedArticlesPositions.Responses.$200>
@@ -6210,7 +6407,7 @@ export interface PathsDictionary {
          * If the provided `id`s is missing an item, this item will be sorted last.
          */
         'put'(
-            parameters?: Parameters<Paths.SetUncategorizedArticlesPositions.PathParameters> | null,
+            parameters: Parameters<Paths.SetUncategorizedArticlesPositions.PathParameters>,
             data?: Paths.SetUncategorizedArticlesPositions.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.SetUncategorizedArticlesPositions.Responses.$200>
@@ -6220,10 +6417,10 @@ export interface PathsDictionary {
          * getArticle - Retrieve an article
          */
         'get'(
-            parameters?: Parameters<
-                Paths.GetArticle.PathParameters &
-                    Paths.GetArticle.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.GetArticle.QueryParameters &
+                    Paths.GetArticle.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetArticle.Responses.$200>
@@ -6231,7 +6428,7 @@ export interface PathsDictionary {
          * updateArticle - Update an article
          */
         'put'(
-            parameters?: Parameters<Paths.UpdateArticle.PathParameters> | null,
+            parameters: Parameters<Paths.UpdateArticle.PathParameters>,
             data?: Paths.UpdateArticle.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.UpdateArticle.Responses.$200>
@@ -6239,10 +6436,10 @@ export interface PathsDictionary {
          * deleteArticle - Delete an article
          */
         'delete'(
-            parameters?: Parameters<Paths.DeleteArticle.PathParameters> | null,
+            parameters: Parameters<Paths.DeleteArticle.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.DeleteArticle.Responses.$200>
     }
     ['/api/help-center/help-centers/{help_center_id}/articles/{id}/copy']: {
         /**
@@ -6251,7 +6448,7 @@ export interface PathsDictionary {
          * Copy an article from one help center to another.
          */
         'post'(
-            parameters?: Parameters<Paths.CopyArticle.PathParameters> | null,
+            parameters: Parameters<Paths.CopyArticle.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.CopyArticle.Responses.$201>
@@ -6261,10 +6458,10 @@ export interface PathsDictionary {
          * listArticleTranslations - List article's translations
          */
         'get'(
-            parameters?: Parameters<
-                Paths.ListArticleTranslations.PathParameters &
-                    Paths.ListArticleTranslations.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.ListArticleTranslations.QueryParameters &
+                    Paths.ListArticleTranslations.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.ListArticleTranslations.Responses.$200>
@@ -6272,7 +6469,7 @@ export interface PathsDictionary {
          * createArticleTranslation - Create an article translation
          */
         'post'(
-            parameters?: Parameters<Paths.CreateArticleTranslation.PathParameters> | null,
+            parameters: Parameters<Paths.CreateArticleTranslation.PathParameters>,
             data?: Paths.CreateArticleTranslation.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.CreateArticleTranslation.Responses.$201>
@@ -6282,7 +6479,7 @@ export interface PathsDictionary {
          * updateArticleTranslation - Update an article translation
          */
         'put'(
-            parameters?: Parameters<Paths.UpdateArticleTranslation.PathParameters> | null,
+            parameters: Parameters<Paths.UpdateArticleTranslation.PathParameters>,
             data?: Paths.UpdateArticleTranslation.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.UpdateArticleTranslation.Responses.$200>
@@ -6294,17 +6491,17 @@ export interface PathsDictionary {
          *     non-deleted translation.
          */
         'delete'(
-            parameters?: Parameters<Paths.DeleteArticleTranslation.PathParameters> | null,
+            parameters: Parameters<Paths.DeleteArticleTranslation.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.DeleteArticleTranslation.Responses.$200>
     }
     ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/ratings']: {
         /**
          * createArticleTranslationRating - Create an article translation rating
          */
         'post'(
-            parameters?: Parameters<Paths.CreateArticleTranslationRating.PathParameters> | null,
+            parameters: Parameters<Paths.CreateArticleTranslationRating.PathParameters>,
             data?: Paths.CreateArticleTranslationRating.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.CreateArticleTranslationRating.Responses.$201>
@@ -6314,7 +6511,7 @@ export interface PathsDictionary {
          * updateArticleTranslationRating - Update an article translation rating
          */
         'put'(
-            parameters?: Parameters<Paths.UpdateArticleTranslationRating.PathParameters> | null,
+            parameters: Parameters<Paths.UpdateArticleTranslationRating.PathParameters>,
             data?: Paths.UpdateArticleTranslationRating.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.UpdateArticleTranslationRating.Responses.$200>
@@ -6322,10 +6519,10 @@ export interface PathsDictionary {
          * deleteArticleTranslationRating - Removes an article translation rating
          */
         'delete'(
-            parameters?: Parameters<Paths.DeleteArticleTranslationRating.PathParameters> | null,
+            parameters: Parameters<Paths.DeleteArticleTranslationRating.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.DeleteArticleTranslationRating.Responses.$200>
     }
     ['/api/help-center/help-centers']: {
         /**
@@ -6367,20 +6564,20 @@ export interface PathsDictionary {
          * checkHelpCenterWithSubdomainExists - Check that a help center with this subdomain exists
          */
         'head'(
-            parameters?: Parameters<Paths.CheckHelpCenterWithSubdomainExists.PathParameters> | null,
+            parameters: Parameters<Paths.CheckHelpCenterWithSubdomainExists.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.CheckHelpCenterWithSubdomainExists.Responses.$204>
     }
     ['/api/help-center/help-centers/{help_center_id}']: {
         /**
          * getHelpCenter - Retrieve a help center
          */
         'get'(
-            parameters?: Parameters<
-                Paths.GetHelpCenter.PathParameters &
-                    Paths.GetHelpCenter.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.GetHelpCenter.QueryParameters &
+                    Paths.GetHelpCenter.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetHelpCenter.Responses.$200>
@@ -6388,7 +6585,7 @@ export interface PathsDictionary {
          * updateHelpCenter - Update a help center
          */
         'put'(
-            parameters?: Parameters<Paths.UpdateHelpCenter.PathParameters> | null,
+            parameters: Parameters<Paths.UpdateHelpCenter.PathParameters>,
             data?: Paths.UpdateHelpCenter.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.UpdateHelpCenter.Responses.$200>
@@ -6396,20 +6593,20 @@ export interface PathsDictionary {
          * deleteHelpCenter - Delete a help center
          */
         'delete'(
-            parameters?: Parameters<Paths.DeleteHelpCenter.PathParameters> | null,
+            parameters: Parameters<Paths.DeleteHelpCenter.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.DeleteHelpCenter.Responses.$200>
     }
     ['/api/help-center/help-centers/uid/{uid}']: {
         /**
          * getHelpCenterByUid - Retrieve a Help Center by uid
          */
         'get'(
-            parameters?: Parameters<
-                Paths.GetHelpCenterByUid.PathParameters &
-                    Paths.GetHelpCenterByUid.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.GetHelpCenterByUid.QueryParameters &
+                    Paths.GetHelpCenterByUid.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetHelpCenterByUid.Responses.$200>
@@ -6422,17 +6619,17 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.DeleteAccountHelpCenters.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.DeleteAccountHelpCenters.Responses.$201>
     }
     ['/api/help-center/help-centers/shop-name/{shop_name}/purge-cache']: {
         /**
          * purgeCache - Purge CDN cache
          */
         'post'(
-            parameters?: Parameters<Paths.PurgeCache.PathParameters> | null,
+            parameters: Parameters<Paths.PurgeCache.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.PurgeCache.Responses.$201>
     }
     ['/api/help-center/help-centers/{help_center_id}/duplicate']: {
         /**
@@ -6441,7 +6638,7 @@ export interface PathsDictionary {
          * Duplicate a help center with all its translations, categories, articles, navigation links and redirects.
          */
         'post'(
-            parameters?: Parameters<Paths.DuplicateHelpCenter.PathParameters> | null,
+            parameters: Parameters<Paths.DuplicateHelpCenter.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.DuplicateHelpCenter.Responses.$201>
@@ -6451,7 +6648,7 @@ export interface PathsDictionary {
          * getHelpCenterAutomationSettings - Get a Help center automation settings
          */
         'get'(
-            parameters?: Parameters<Paths.GetHelpCenterAutomationSettings.PathParameters> | null,
+            parameters: Parameters<Paths.GetHelpCenterAutomationSettings.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetHelpCenterAutomationSettings.Responses.$200>
@@ -6459,7 +6656,7 @@ export interface PathsDictionary {
          * upsertHelpCenterAutomationSettings - Update a Help center automation settings
          */
         'put'(
-            parameters?: Parameters<Paths.UpsertHelpCenterAutomationSettings.PathParameters> | null,
+            parameters: Parameters<Paths.UpsertHelpCenterAutomationSettings.PathParameters>,
             data?: Paths.UpsertHelpCenterAutomationSettings.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.UpsertHelpCenterAutomationSettings.Responses.$200>
@@ -6469,10 +6666,10 @@ export interface PathsDictionary {
          * getHelpCenterEmailIntegrationByIntegrationId - Retrieve a Help Center email integration by integration_id
          */
         'get'(
-            parameters?: Parameters<
-                Paths.GetHelpCenterEmailIntegrationByIntegrationId.PathParameters &
-                    Paths.GetHelpCenterEmailIntegrationByIntegrationId.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.GetHelpCenterEmailIntegrationByIntegrationId.QueryParameters &
+                    Paths.GetHelpCenterEmailIntegrationByIntegrationId.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetHelpCenterEmailIntegrationByIntegrationId.Responses.$200>
@@ -6482,7 +6679,7 @@ export interface PathsDictionary {
          * getHelpCenterSiteMapUrls - Get all the site map urls for the help center with the given id
          */
         'get'(
-            parameters?: Parameters<Paths.GetHelpCenterSiteMapUrls.PathParameters> | null,
+            parameters: Parameters<Paths.GetHelpCenterSiteMapUrls.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetHelpCenterSiteMapUrls.Responses.$200>
@@ -6492,10 +6689,10 @@ export interface PathsDictionary {
          * listHelpCenterTranslations - List help center's translations
          */
         'get'(
-            parameters?: Parameters<
-                Paths.ListHelpCenterTranslations.PathParameters &
-                    Paths.ListHelpCenterTranslations.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.ListHelpCenterTranslations.QueryParameters &
+                    Paths.ListHelpCenterTranslations.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.ListHelpCenterTranslations.Responses.$200>
@@ -6503,7 +6700,7 @@ export interface PathsDictionary {
          * createHelpCenterTranslation - Create a help center translation
          */
         'post'(
-            parameters?: Parameters<Paths.CreateHelpCenterTranslation.PathParameters> | null,
+            parameters: Parameters<Paths.CreateHelpCenterTranslation.PathParameters>,
             data?: Paths.CreateHelpCenterTranslation.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.CreateHelpCenterTranslation.Responses.$201>
@@ -6513,7 +6710,7 @@ export interface PathsDictionary {
          * updateHelpCenterTranslation - Update a help center translation
          */
         'put'(
-            parameters?: Parameters<Paths.UpdateHelpCenterTranslation.PathParameters> | null,
+            parameters: Parameters<Paths.UpdateHelpCenterTranslation.PathParameters>,
             data?: Paths.UpdateHelpCenterTranslation.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.UpdateHelpCenterTranslation.Responses.$200>
@@ -6521,20 +6718,20 @@ export interface PathsDictionary {
          * deleteHelpCenterTranslation - Delete a help center translation
          */
         'delete'(
-            parameters?: Parameters<Paths.DeleteHelpCenterTranslation.PathParameters> | null,
+            parameters: Parameters<Paths.DeleteHelpCenterTranslation.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.DeleteHelpCenterTranslation.Responses.$200>
     }
     ['/api/help-center/help-centers/{help_center_id}/custom-domains']: {
         /**
          * listCustomDomains - List custom domains
          */
         'get'(
-            parameters?: Parameters<
-                Paths.ListCustomDomains.PathParameters &
-                    Paths.ListCustomDomains.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.ListCustomDomains.QueryParameters &
+                    Paths.ListCustomDomains.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.ListCustomDomains.Responses.$200>
@@ -6542,7 +6739,7 @@ export interface PathsDictionary {
          * createCustomDomain - Create a custom domain
          */
         'post'(
-            parameters?: Parameters<Paths.CreateCustomDomain.PathParameters> | null,
+            parameters: Parameters<Paths.CreateCustomDomain.PathParameters>,
             data?: Paths.CreateCustomDomain.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.CreateCustomDomain.Responses.$201>
@@ -6552,7 +6749,7 @@ export interface PathsDictionary {
          * getCustomDomain - Retrieve a custom domain
          */
         'get'(
-            parameters?: Parameters<Paths.GetCustomDomain.PathParameters> | null,
+            parameters: Parameters<Paths.GetCustomDomain.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetCustomDomain.Responses.$200>
@@ -6560,17 +6757,17 @@ export interface PathsDictionary {
          * deleteCustomDomain - Delete a custom domain
          */
         'delete'(
-            parameters?: Parameters<Paths.DeleteCustomDomain.PathParameters> | null,
+            parameters: Parameters<Paths.DeleteCustomDomain.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.DeleteCustomDomain.Responses.$200>
     }
     ['/api/help-center/help-centers/{help_center_id}/custom-domains/{hostname}/check-status']: {
         /**
          * checkCustomDomainStatus - Check the status of a custom domain
          */
         'post'(
-            parameters?: Parameters<Paths.CheckCustomDomainStatus.PathParameters> | null,
+            parameters: Parameters<Paths.CheckCustomDomainStatus.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.CheckCustomDomainStatus.Responses.$200>
@@ -6580,10 +6777,10 @@ export interface PathsDictionary {
          * getExtraHTML - Get a help center's extra HTML
          */
         'get'(
-            parameters?: Parameters<
-                Paths.GetExtraHTML.PathParameters &
-                    Paths.GetExtraHTML.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.GetExtraHTML.QueryParameters &
+                    Paths.GetExtraHTML.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetExtraHTML.Responses.$200>
@@ -6593,7 +6790,7 @@ export interface PathsDictionary {
          * updateExtraHTML - Update a help center's extra HTML
          */
         'put'(
-            parameters?: Parameters<Paths.UpdateExtraHTML.PathParameters> | null,
+            parameters: Parameters<Paths.UpdateExtraHTML.PathParameters>,
             data?: Paths.UpdateExtraHTML.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.UpdateExtraHTML.Responses.$200>
@@ -6613,7 +6810,7 @@ export interface PathsDictionary {
          * getLocale - Retrieve a locale
          */
         'get'(
-            parameters?: Parameters<Paths.GetLocale.PathParameters> | null,
+            parameters: Parameters<Paths.GetLocale.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetLocale.Responses.$200>
@@ -6623,7 +6820,7 @@ export interface PathsDictionary {
          * createRedirect - Create a new redirect
          */
         'post'(
-            parameters?: Parameters<Paths.CreateRedirect.PathParameters> | null,
+            parameters: Parameters<Paths.CreateRedirect.PathParameters>,
             data?: Paths.CreateRedirect.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.CreateRedirect.Responses.$201>
@@ -6633,10 +6830,10 @@ export interface PathsDictionary {
          * TODO: pagination
          */
         'get'(
-            parameters?: Parameters<
-                Paths.ListRedirects.PathParameters &
-                    Paths.ListRedirects.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.ListRedirects.QueryParameters &
+                    Paths.ListRedirects.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.ListRedirects.Responses.$200>
@@ -6644,13 +6841,13 @@ export interface PathsDictionary {
          * deleteRedirect - Delete a redirect
          */
         'delete'(
-            parameters?: Parameters<
-                Paths.DeleteRedirect.PathParameters &
-                    Paths.DeleteRedirect.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.DeleteRedirect.QueryParameters &
+                    Paths.DeleteRedirect.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.DeleteRedirect.Responses.$200>
     }
     ['/api/help-center/help-centers/{help_center_id}/categories']: {
         /**
@@ -6659,7 +6856,7 @@ export interface PathsDictionary {
          * Create a category in a given help center. If the provided `parent_category_id` field is `null` or is not provided, the category will be created at the root category level.
          */
         'post'(
-            parameters?: Parameters<Paths.CreateCategory.PathParameters> | null,
+            parameters: Parameters<Paths.CreateCategory.PathParameters>,
             data?: Paths.CreateCategory.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.CreateCategory.Responses.$201>
@@ -6669,10 +6866,10 @@ export interface PathsDictionary {
          * List the top level categories with pagination metadata.
          */
         'get'(
-            parameters?: Parameters<
-                Paths.ListCategories.PathParameters &
-                    Paths.ListCategories.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.ListCategories.QueryParameters &
+                    Paths.ListCategories.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.ListCategories.Responses.$200>
@@ -6682,7 +6879,7 @@ export interface PathsDictionary {
          * getCategoriesPositions - Retrieve categories' positions
          */
         'get'(
-            parameters?: Parameters<Paths.GetCategoriesPositions.PathParameters> | null,
+            parameters: Parameters<Paths.GetCategoriesPositions.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetCategoriesPositions.Responses.$200>
@@ -6692,7 +6889,7 @@ export interface PathsDictionary {
          * If the provided `id`s is missing an item, this item will be sorted last.
          */
         'put'(
-            parameters?: Parameters<Paths.SetCategoriesPositions.PathParameters> | null,
+            parameters: Parameters<Paths.SetCategoriesPositions.PathParameters>,
             data?: Paths.SetCategoriesPositions.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.SetCategoriesPositions.Responses.$200>
@@ -6702,10 +6899,10 @@ export interface PathsDictionary {
          * getCategory - Retrieve a category
          */
         'get'(
-            parameters?: Parameters<
-                Paths.GetCategory.PathParameters &
-                    Paths.GetCategory.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.GetCategory.QueryParameters &
+                    Paths.GetCategory.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetCategory.Responses.$200>
@@ -6713,20 +6910,20 @@ export interface PathsDictionary {
          * deleteCategory - Delete a category. Deletion is allowed for categories that have no articles or sub-categories.
          */
         'delete'(
-            parameters?: Parameters<Paths.DeleteCategory.PathParameters> | null,
+            parameters: Parameters<Paths.DeleteCategory.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.DeleteCategory.Responses.$200>
     }
     ['/api/help-center/help-centers/{help_center_id}/categories/{category_id}/translations']: {
         /**
          * listCategoryTranslations - List category's translations
          */
         'get'(
-            parameters?: Parameters<
-                Paths.ListCategoryTranslations.PathParameters &
-                    Paths.ListCategoryTranslations.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.ListCategoryTranslations.QueryParameters &
+                    Paths.ListCategoryTranslations.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.ListCategoryTranslations.Responses.$200>
@@ -6736,7 +6933,7 @@ export interface PathsDictionary {
          * Create a category translation in a given help center. If the provided `parent_category_id` field is `null` or is not provided, the category will be moved to the root level.
          */
         'post'(
-            parameters?: Parameters<Paths.CreateCategoryTranslation.PathParameters> | null,
+            parameters: Parameters<Paths.CreateCategoryTranslation.PathParameters>,
             data?: Paths.CreateCategoryTranslation.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.CreateCategoryTranslation.Responses.$201>
@@ -6748,7 +6945,7 @@ export interface PathsDictionary {
          * Update a category translation in a given help center. If the provided `parent_category_id` field is `null` or is not provided, the category will be moved to the root level.
          */
         'put'(
-            parameters?: Parameters<Paths.UpdateCategoryTranslation.PathParameters> | null,
+            parameters: Parameters<Paths.UpdateCategoryTranslation.PathParameters>,
             data?: Paths.UpdateCategoryTranslation.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.UpdateCategoryTranslation.Responses.$200>
@@ -6760,20 +6957,20 @@ export interface PathsDictionary {
          *     non-deleted translation.
          */
         'delete'(
-            parameters?: Parameters<Paths.DeleteCategoryTranslation.PathParameters> | null,
+            parameters: Parameters<Paths.DeleteCategoryTranslation.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.DeleteCategoryTranslation.Responses.$200>
     }
     ['/api/help-center/help-centers/{help_center_id}/categories/{parent_category_id}/tree']: {
         /**
          * getCategoryTree - Retrieve the category, its subcategories and subarticles in a tree structure
          */
         'get'(
-            parameters?: Parameters<
-                Paths.GetCategoryTree.PathParameters &
-                    Paths.GetCategoryTree.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.GetCategoryTree.QueryParameters &
+                    Paths.GetCategoryTree.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetCategoryTree.Responses.$200>
@@ -6785,7 +6982,7 @@ export interface PathsDictionary {
          * The category id that will be used as the root node of the tree. If `0` is provided, the children ids of the top level categories of the help center will be returned
          */
         'get'(
-            parameters?: Parameters<Paths.GetSubCategoriesPositions.PathParameters> | null,
+            parameters: Parameters<Paths.GetSubCategoriesPositions.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetSubCategoriesPositions.Responses.$200>
@@ -6795,27 +6992,37 @@ export interface PathsDictionary {
          * The category id that will be used as the root node of the tree. If `0` is provided, the children ids of the top level categories of the help center will be returned
          */
         'put'(
-            parameters?: Parameters<Paths.SetSubCategoriesPositions.PathParameters> | null,
+            parameters: Parameters<Paths.SetSubCategoriesPositions.PathParameters>,
             data?: Paths.SetSubCategoriesPositions.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.SetSubCategoriesPositions.Responses.$200>
+    }
+    ['/api/help-center/shop-integration-mappings']: {
+        /**
+         * list - List all shop-mappings
+         */
+        'get'(
+            parameters?: Parameters<Paths.List.QueryParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.List.Responses.$200>
     }
     ['/api/help-center/help-centers/{help_center_id}/article-templates/review']: {
         /**
          * upsertArticleTemplateReview - Review an AI article template
          */
         'put'(
-            parameters?: Parameters<Paths.UpsertArticleTemplateReview.PathParameters> | null,
+            parameters: Parameters<Paths.UpsertArticleTemplateReview.PathParameters>,
             data?: Paths.UpsertArticleTemplateReview.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.UpsertArticleTemplateReview.Responses.$204>
     }
     ['/api/help-center/help-centers/{help_center_id}/article-templates/ai']: {
         /**
          * listAIArticleTemplatesByHelpCenter - Retrieve AI article templates by help center
          */
         'get'(
-            parameters?: Parameters<Paths.ListAIArticleTemplatesByHelpCenter.PathParameters> | null,
+            parameters: Parameters<Paths.ListAIArticleTemplatesByHelpCenter.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.ListAIArticleTemplatesByHelpCenter.Responses.$200>
@@ -6825,7 +7032,7 @@ export interface PathsDictionary {
          * listAIArticleTemplatesByHelpCenterAndStore - Retrieve AI article templates by help center
          */
         'get'(
-            parameters?: Parameters<Paths.ListAIArticleTemplatesByHelpCenterAndStore.PathParameters> | null,
+            parameters: Parameters<Paths.ListAIArticleTemplatesByHelpCenterAndStore.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.ListAIArticleTemplatesByHelpCenterAndStore.Responses.$200>
@@ -6855,10 +7062,10 @@ export interface PathsDictionary {
          * getArticleTemplate - Retrieve article template
          */
         'get'(
-            parameters?: Parameters<
-                Paths.GetArticleTemplate.PathParameters &
-                    Paths.GetArticleTemplate.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.GetArticleTemplate.QueryParameters &
+                    Paths.GetArticleTemplate.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetArticleTemplate.Responses.$200>
@@ -6878,10 +7085,10 @@ export interface PathsDictionary {
          * checkContactFormNameExists - Check that a contact form with the provided name exists
          */
         'head'(
-            parameters?: Parameters<Paths.CheckContactFormNameExists.PathParameters> | null,
+            parameters: Parameters<Paths.CheckContactFormNameExists.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.CheckContactFormNameExists.Responses.$204>
     }
     ['/api/help-center/contact-forms']: {
         /**
@@ -6906,7 +7113,7 @@ export interface PathsDictionary {
          * getContactForm - Retrieve a Contact form
          */
         'get'(
-            parameters?: Parameters<Paths.GetContactForm.PathParameters> | null,
+            parameters: Parameters<Paths.GetContactForm.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetContactForm.Responses.$200>
@@ -6914,7 +7121,7 @@ export interface PathsDictionary {
          * updateContactForm - Update a Contact Form
          */
         'put'(
-            parameters?: Parameters<Paths.UpdateContactForm.PathParameters> | null,
+            parameters: Parameters<Paths.UpdateContactForm.PathParameters>,
             data?: Paths.UpdateContactForm.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.UpdateContactForm.Responses.$200>
@@ -6922,17 +7129,17 @@ export interface PathsDictionary {
          * deleteContactForm - Delete a Contact Form
          */
         'delete'(
-            parameters?: Parameters<Paths.DeleteContactForm.PathParameters> | null,
+            parameters: Parameters<Paths.DeleteContactForm.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.DeleteContactForm.Responses.$204>
     }
     ['/api/help-center/contact-forms/uid/{uid}']: {
         /**
          * getContactFormByUid - Retrieve a Contact form by uid
          */
         'get'(
-            parameters?: Parameters<Paths.GetContactFormByUid.PathParameters> | null,
+            parameters: Parameters<Paths.GetContactFormByUid.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetContactFormByUid.Responses.$200>
@@ -6942,17 +7149,17 @@ export interface PathsDictionary {
          * submitContactFormByUid - Submit a Contact Form by uid
          */
         'post'(
-            parameters?: Parameters<Paths.SubmitContactFormByUid.PathParameters> | null,
+            parameters: Parameters<Paths.SubmitContactFormByUid.PathParameters>,
             data?: Paths.SubmitContactFormByUid.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.SubmitContactFormByUid.Responses.$204>
     }
     ['/api/help-center/contact-forms/{id}/automation-settings']: {
         /**
          * getContactFormAutomationSettings - Get a Contact Form automation settings
          */
         'get'(
-            parameters?: Parameters<Paths.GetContactFormAutomationSettings.PathParameters> | null,
+            parameters: Parameters<Paths.GetContactFormAutomationSettings.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetContactFormAutomationSettings.Responses.$200>
@@ -6960,7 +7167,7 @@ export interface PathsDictionary {
          * upsertContactFormAutomationSettings - Update a Contact Form automation settings
          */
         'put'(
-            parameters?: Parameters<Paths.UpsertContactFormAutomationSettings.PathParameters> | null,
+            parameters: Parameters<Paths.UpsertContactFormAutomationSettings.PathParameters>,
             data?: Paths.UpsertContactFormAutomationSettings.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.UpsertContactFormAutomationSettings.Responses.$200>
@@ -6973,7 +7180,7 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.ContactFormPurgeCache.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.ContactFormPurgeCache.Responses.$201>
     }
     ['/api/help-center/contact-forms/update-email-integration']: {
         /**
@@ -6985,17 +7192,17 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.UpdateEmailIntegration.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.UpdateEmailIntegration.Responses.$204>
     }
     ['/api/help-center/contact-forms/integrations/{integration_id}/email-integration']: {
         /**
          * getContactFormEmailIntegrationByIntegrationId - Retrieve a Contact Form email integration by integration id
          */
         'get'(
-            parameters?: Parameters<
-                Paths.GetContactFormEmailIntegrationByIntegrationId.PathParameters &
-                    Paths.GetContactFormEmailIntegrationByIntegrationId.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.GetContactFormEmailIntegrationByIntegrationId.QueryParameters &
+                    Paths.GetContactFormEmailIntegrationByIntegrationId.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetContactFormEmailIntegrationByIntegrationId.Responses.$200>
@@ -7009,7 +7216,7 @@ export interface PathsDictionary {
          *     - {position: PageEmbedmentPosition, pageExternalId: string} - embed in an existing page
          */
         'post'(
-            parameters?: Parameters<Paths.CreateContactFormShopifyPageEmbedment.PathParameters> | null,
+            parameters: Parameters<Paths.CreateContactFormShopifyPageEmbedment.PathParameters>,
             data?: Paths.CreateContactFormShopifyPageEmbedment.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.CreateContactFormShopifyPageEmbedment.Responses.$201>
@@ -7017,7 +7224,7 @@ export interface PathsDictionary {
          * listContactFormShopifyPageEmbedments - List the Contact Form Shopify Page Embedments
          */
         'get'(
-            parameters?: Parameters<Paths.ListContactFormShopifyPageEmbedments.PathParameters> | null,
+            parameters: Parameters<Paths.ListContactFormShopifyPageEmbedments.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.ListContactFormShopifyPageEmbedments.Responses.$200>
@@ -7027,7 +7234,7 @@ export interface PathsDictionary {
          * updateContactFormShopifyPageEmbedment - Update a Contact Form Shopify Page Embedment
          */
         'put'(
-            parameters?: Parameters<Paths.UpdateContactFormShopifyPageEmbedment.PathParameters> | null,
+            parameters: Parameters<Paths.UpdateContactFormShopifyPageEmbedment.PathParameters>,
             data?: Paths.UpdateContactFormShopifyPageEmbedment.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.UpdateContactFormShopifyPageEmbedment.Responses.$200>
@@ -7035,17 +7242,17 @@ export interface PathsDictionary {
          * deleteContactFormShopifyPageEmbedment - Delete a Contact Form Shopify Page Embedment
          */
         'delete'(
-            parameters?: Parameters<Paths.DeleteContactFormShopifyPageEmbedment.PathParameters> | null,
+            parameters: Parameters<Paths.DeleteContactFormShopifyPageEmbedment.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.DeleteContactFormShopifyPageEmbedment.Responses.$204>
     }
     ['/api/help-center/contact-forms/{contact_form_id}/shopify-pages']: {
         /**
          * listContactFormShopifyPages - List the Contact Form Shopify Pages available for a Contact Form Embedment
          */
         'get'(
-            parameters?: Parameters<Paths.ListContactFormShopifyPages.PathParameters> | null,
+            parameters: Parameters<Paths.ListContactFormShopifyPages.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.ListContactFormShopifyPages.Responses.$200>
@@ -7059,7 +7266,7 @@ export interface PathsDictionary {
          *     - {position: PageEmbedmentPosition, pageExternalId: string} - embed in an existing page
          */
         'post'(
-            parameters?: Parameters<Paths.CreateHelpCenterShopifyPageEmbedment.PathParameters> | null,
+            parameters: Parameters<Paths.CreateHelpCenterShopifyPageEmbedment.PathParameters>,
             data?: Paths.CreateHelpCenterShopifyPageEmbedment.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.CreateHelpCenterShopifyPageEmbedment.Responses.$201>
@@ -7067,7 +7274,7 @@ export interface PathsDictionary {
          * listHelpCenterShopifyPageEmbedments - List the Help Center Shopify Page Embedments
          */
         'get'(
-            parameters?: Parameters<Paths.ListHelpCenterShopifyPageEmbedments.PathParameters> | null,
+            parameters: Parameters<Paths.ListHelpCenterShopifyPageEmbedments.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.ListHelpCenterShopifyPageEmbedments.Responses.$200>
@@ -7077,7 +7284,7 @@ export interface PathsDictionary {
          * updateHelpCenterShopifyPageEmbedment - Update a Help Center Shopify Page Embedment
          */
         'put'(
-            parameters?: Parameters<Paths.UpdateHelpCenterShopifyPageEmbedment.PathParameters> | null,
+            parameters: Parameters<Paths.UpdateHelpCenterShopifyPageEmbedment.PathParameters>,
             data?: Paths.UpdateHelpCenterShopifyPageEmbedment.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.UpdateHelpCenterShopifyPageEmbedment.Responses.$200>
@@ -7085,17 +7292,17 @@ export interface PathsDictionary {
          * deleteHelpCenterShopifyPageEmbedment - Delete a Help Center Shopify Page Embedment
          */
         'delete'(
-            parameters?: Parameters<Paths.DeleteHelpCenterShopifyPageEmbedment.PathParameters> | null,
+            parameters: Parameters<Paths.DeleteHelpCenterShopifyPageEmbedment.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.DeleteHelpCenterShopifyPageEmbedment.Responses.$204>
     }
     ['/api/help-center/help-centers/{help_center_id}/shopify-pages']: {
         /**
          * listHelpCenterShopifyPages - List the Help Center Shopify Pages available for a Help Center Embedment
          */
         'get'(
-            parameters?: Parameters<Paths.ListHelpCenterShopifyPages.PathParameters> | null,
+            parameters: Parameters<Paths.ListHelpCenterShopifyPages.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.ListHelpCenterShopifyPages.Responses.$200>
@@ -7115,7 +7322,7 @@ export interface PathsDictionary {
          * createFileIngestion - Create and start file ingestion
          */
         'post'(
-            parameters?: Parameters<Paths.CreateFileIngestion.PathParameters> | null,
+            parameters: Parameters<Paths.CreateFileIngestion.PathParameters>,
             data?: Paths.CreateFileIngestion.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.CreateFileIngestion.Responses.$201>
@@ -7123,10 +7330,10 @@ export interface PathsDictionary {
          * getFileIngestion - List file ingestion logs
          */
         'get'(
-            parameters?: Parameters<
-                Paths.GetFileIngestion.PathParameters &
-                    Paths.GetFileIngestion.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.GetFileIngestion.QueryParameters &
+                    Paths.GetFileIngestion.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetFileIngestion.Responses.$200>
@@ -7136,7 +7343,7 @@ export interface PathsDictionary {
          * deleteFileIngestion - Delete file ingestion
          */
         'delete'(
-            parameters?: Parameters<Paths.DeleteFileIngestion.PathParameters> | null,
+            parameters: Parameters<Paths.DeleteFileIngestion.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.DeleteFileIngestion.Responses.$200>
@@ -7149,14 +7356,14 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.ListGoogleFonts.Responses.$200>
     }
     ['/api/help-center/help-centers/{help_center_id}/guidances/ai/{store_integration_id}']: {
         /**
          * listAIGuidancesByHelpCenterAndStore - Retrieve AI guidances by help center
          */
         'get'(
-            parameters?: Parameters<Paths.ListAIGuidancesByHelpCenterAndStore.PathParameters> | null,
+            parameters: Parameters<Paths.ListAIGuidancesByHelpCenterAndStore.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.ListAIGuidancesByHelpCenterAndStore.Responses.$200>
@@ -7166,7 +7373,7 @@ export interface PathsDictionary {
          * importCsv - Import a CSV file
          */
         'post'(
-            parameters?: Parameters<Paths.ImportCsv.PathParameters> | null,
+            parameters: Parameters<Paths.ImportCsv.PathParameters>,
             data?: Paths.ImportCsv.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.ImportCsv.Responses.$201>
@@ -7176,7 +7383,7 @@ export interface PathsDictionary {
          * analyseCsv - Provide information on a CSV file with a preview of its rows
          */
         'post'(
-            parameters?: Parameters<Paths.AnalyseCsv.PathParameters> | null,
+            parameters: Parameters<Paths.AnalyseCsv.PathParameters>,
             data?: Paths.AnalyseCsv.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.AnalyseCsv.Responses.$200>
@@ -7186,7 +7393,7 @@ export interface PathsDictionary {
          * generateCsvTemplate - Generate a template CSV based on the help-center's languages
          */
         'post'(
-            parameters?: Parameters<Paths.GenerateCsvTemplate.PathParameters> | null,
+            parameters: Parameters<Paths.GenerateCsvTemplate.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GenerateCsvTemplate.Responses.$200>
@@ -7196,7 +7403,7 @@ export interface PathsDictionary {
          * createHotswapSessionToken - Generate hotswap session token
          */
         'post'(
-            parameters?: Parameters<Paths.CreateHotswapSessionToken.PathParameters> | null,
+            parameters: Parameters<Paths.CreateHotswapSessionToken.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.CreateHotswapSessionToken.Responses.$201>
@@ -7206,17 +7413,17 @@ export interface PathsDictionary {
          * complete - Webhook called by hotswap when import is completed
          */
         'post'(
-            parameters?: Parameters<Paths.Complete.PathParameters> | null,
+            parameters: Parameters<Paths.Complete.PathParameters>,
             data?: Paths.Complete.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.Complete.Responses.$201>
     }
     ['/api/help-center/help-centers/{help_center_id}/import/hotswap/status']: {
         /**
          * getHotswapStatus - Get hotswap import status
          */
         'get'(
-            parameters?: Parameters<Paths.GetHotswapStatus.PathParameters> | null,
+            parameters: Parameters<Paths.GetHotswapStatus.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetHotswapStatus.Responses.$200>
@@ -7226,20 +7433,30 @@ export interface PathsDictionary {
          * listIngestedResources - List ingested resources by ingestion log id
          */
         'get'(
-            parameters?: Parameters<
-                Paths.ListIngestedResources.PathParameters &
-                    Paths.ListIngestedResources.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.ListIngestedResources.QueryParameters &
+                    Paths.ListIngestedResources.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.ListIngestedResources.Responses.$200>
+    }
+    ['/api/help-center/help-centers/{help_center_id}/ingested-resource/{id}']: {
+        /**
+         * getIngestedResource - Get an ingested resource by id
+         */
+        'get'(
+            parameters: Parameters<Paths.GetIngestedResource.PathParameters>,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.GetIngestedResource.Responses.$200>
     }
     ['/api/help-center/help-centers/{help_center_id}/ingested-resource/{ingested_resource_id}']: {
         /**
          * updateIngestedResource - Update ingested resource
          */
         'put'(
-            parameters?: Parameters<Paths.UpdateIngestedResource.PathParameters> | null,
+            parameters: Parameters<Paths.UpdateIngestedResource.PathParameters>,
             data?: Paths.UpdateIngestedResource.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.UpdateIngestedResource.Responses.$200>
@@ -7249,10 +7466,10 @@ export interface PathsDictionary {
          * getIngestionLogs - Get ingestion logs
          */
         'get'(
-            parameters?: Parameters<
-                Paths.GetIngestionLogs.PathParameters &
-                    Paths.GetIngestionLogs.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.GetIngestionLogs.QueryParameters &
+                    Paths.GetIngestionLogs.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetIngestionLogs.Responses.$200>
@@ -7262,7 +7479,7 @@ export interface PathsDictionary {
          * startIngestion - Trigger external content ingestion
          */
         'post'(
-            parameters?: Parameters<Paths.StartIngestion.PathParameters> | null,
+            parameters: Parameters<Paths.StartIngestion.PathParameters>,
             data?: Paths.StartIngestion.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.StartIngestion.Responses.$201>
@@ -7275,7 +7492,7 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.IngestEvent.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.IngestEvent.Responses.$201>
     }
     ['/api/help-center/ingestions/fail']: {
         /**
@@ -7285,14 +7502,14 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.HandleIngestionFail.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.HandleIngestionFail.Responses.$204>
     }
     ['/api/help-center/contact-forms/{contact_form_id}/mailto-replacement-config']: {
         /**
          * getContactFormMailtoReplacementConfig - Get a Contact Form Mailto Replacement Config
          */
         'get'(
-            parameters?: Parameters<Paths.GetContactFormMailtoReplacementConfig.PathParameters> | null,
+            parameters: Parameters<Paths.GetContactFormMailtoReplacementConfig.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetContactFormMailtoReplacementConfig.Responses.$200>
@@ -7302,7 +7519,7 @@ export interface PathsDictionary {
          * If the emails array is empty, the config will be deleted
          */
         'put'(
-            parameters?: Parameters<Paths.UpsertContactFormShopifyMailtoReplacement.PathParameters> | null,
+            parameters: Parameters<Paths.UpsertContactFormShopifyMailtoReplacement.PathParameters>,
             data?: Paths.UpsertContactFormShopifyMailtoReplacement.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.UpsertContactFormShopifyMailtoReplacement.Responses.$200>
@@ -7312,7 +7529,7 @@ export interface PathsDictionary {
          * getContactFormShopifyMailtoReplacementConfig
          */
         'get'(
-            parameters?: Parameters<Paths.GetContactFormShopifyMailtoReplacementConfig.PathParameters> | null,
+            parameters: Parameters<Paths.GetContactFormShopifyMailtoReplacementConfig.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetContactFormShopifyMailtoReplacementConfig.Responses.$200>
@@ -7322,7 +7539,7 @@ export interface PathsDictionary {
          * createNavigationLink - Create a navigation link
          */
         'post'(
-            parameters?: Parameters<Paths.CreateNavigationLink.PathParameters> | null,
+            parameters: Parameters<Paths.CreateNavigationLink.PathParameters>,
             data?: Paths.CreateNavigationLink.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.CreateNavigationLink.Responses.$201>
@@ -7330,10 +7547,10 @@ export interface PathsDictionary {
          * listNavigationLinks - List navigation links
          */
         'get'(
-            parameters?: Parameters<
-                Paths.ListNavigationLinks.PathParameters &
-                    Paths.ListNavigationLinks.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.ListNavigationLinks.QueryParameters &
+                    Paths.ListNavigationLinks.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.ListNavigationLinks.Responses.$200>
@@ -7343,7 +7560,7 @@ export interface PathsDictionary {
          * updateNavigationLink - Update a navigation link
          */
         'put'(
-            parameters?: Parameters<Paths.UpdateNavigationLink.PathParameters> | null,
+            parameters: Parameters<Paths.UpdateNavigationLink.PathParameters>,
             data?: Paths.UpdateNavigationLink.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.UpdateNavigationLink.Responses.$200>
@@ -7351,17 +7568,17 @@ export interface PathsDictionary {
          * deleteNavigationLink - Delete a navigation link
          */
         'delete'(
-            parameters?: Parameters<Paths.DeleteNavigationLink.PathParameters> | null,
+            parameters: Parameters<Paths.DeleteNavigationLink.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.DeleteNavigationLink.Responses.$200>
     }
     ['/api/help-center/help-centers/{help_center_id}/navigation-links/{locale}/{group}/positions']: {
         /**
          * getNavigationLinksPositions - Retrieve navigation links' positions
          */
         'get'(
-            parameters?: Parameters<Paths.GetNavigationLinksPositions.PathParameters> | null,
+            parameters: Parameters<Paths.GetNavigationLinksPositions.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetNavigationLinksPositions.Responses.$200>
@@ -7371,7 +7588,7 @@ export interface PathsDictionary {
          * If the provided `id`s is missing an item, this item will be sorted last.
          */
         'put'(
-            parameters?: Parameters<Paths.SetNavigationLinksPositions.PathParameters> | null,
+            parameters: Parameters<Paths.SetNavigationLinksPositions.PathParameters>,
             data?: Paths.SetNavigationLinksPositions.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.SetNavigationLinksPositions.Responses.$200>
@@ -7384,7 +7601,7 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.HandoverWorkflowExecution.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.HandoverWorkflowExecution.Responses.$204>
     }
 }
 

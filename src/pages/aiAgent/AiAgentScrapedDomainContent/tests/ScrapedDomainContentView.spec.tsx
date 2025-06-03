@@ -70,7 +70,7 @@ describe('ScrapedDomainContentView', () => {
         setup()
         const row = screen.getByText(mockContent[0].title)
         fireEvent.click(row)
-        expect(mockOnSelect).toHaveBeenCalledWith(mockContent[0])
+        expect(mockOnSelect).toHaveBeenCalledWith(mockContent[0].id)
     })
 
     it('calls onUpdateStatus when toggle is changed', () => {

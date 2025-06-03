@@ -31,7 +31,7 @@ const DEFAULT_COLUMN_WIDTH = 188
 type Props<T> = {
     isLoading: boolean
     contents: T[]
-    onSelect: (content: T) => void
+    onSelect: (id: number) => void
     pageType: string
     hasNextItems: boolean
     hasPrevItems: boolean
@@ -227,7 +227,7 @@ function ScrapedDomainContentView<
                                 <TableBodyRow
                                     key={content.id}
                                     className={css.tableBodyRow}
-                                    onClick={() => onSelect(content)}
+                                    onClick={() => onSelect(content.id)}
                                 >
                                     <BodyCell
                                         className={classnames({

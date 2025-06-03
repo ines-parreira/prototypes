@@ -2,7 +2,7 @@
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, screen } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -10,13 +10,18 @@ import thunk from 'redux-thunk'
 
 import { toImmutable } from 'common/utils'
 import { FeatureFlagKey } from 'config/featureFlags'
-import { getIngestedResourcesListResponse } from 'pages/aiAgent/fixtures/ingestedResource.fixture'
+import { useGetIngestedResource } from 'models/helpCenter/queries'
+import {
+    getIngestedResourceFixture,
+    getIngestedResourcesListResponse,
+} from 'pages/aiAgent/fixtures/ingestedResource.fixture'
 import { getIngestionLogFixture } from 'pages/aiAgent/fixtures/ingestionLog.fixture'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
 import { usePollStoreDomainIngestionLog } from 'pages/aiAgent/hooks/usePollStoreDomainIngestionLog'
 import { useSyncStoreDomain } from 'pages/aiAgent/hooks/useSyncStoreDomain'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import history from 'pages/history'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock, renderWithRouter } from 'utils/testing'
@@ -29,7 +34,6 @@ import { usePaginatedIngestedResources } from '../hooks/usePaginatedIngestedReso
 jest.mock('../../providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),
 }))
-
 const mockedUseAiAgentStoreConfigurationContext = assumeMock(
     useAiAgentStoreConfigurationContext,
 )
@@ -55,6 +59,12 @@ const mockUsePaginatedIngestedResources = assumeMock(
 jest.mock('../hooks/useIngestedResourceMutation')
 const mockUseIngestedResourceMutation = assumeMock(useIngestedResourceMutation)
 
+jest.mock('models/helpCenter/queries', () => ({
+    ...jest.requireActual('models/helpCenter/queries'),
+    useGetIngestedResource: jest.fn(),
+}))
+const mockUseGetIngestedResource = assumeMock(useGetIngestedResource)
+
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore([thunk])
 
@@ -67,16 +77,18 @@ const defaultState = {
     }),
 }
 
-const renderComponent = () => {
-    renderWithRouter(
+const renderComponent = (id?: string) => {
+    const path = `/app/ai-agent/:shopType/:shopName/knowledge/sources/pages-content${id ? '/:id' : ''}`
+    const route = `/app/ai-agent/shopify/test-shop/knowledge/sources/pages-content${id ? `/${id}` : ''}`
+    return renderWithRouter(
         <Provider store={mockStore(defaultState)}>
             <QueryClientProvider client={queryClient}>
                 <AiAgentScrapedDomainQuestionsContainer />
             </QueryClientProvider>
         </Provider>,
         {
-            path: `/:shopType/:shopName/knowledge/store-content`,
-            route: '/shopify/test-shop/knowledge/store-content',
+            path,
+            route,
         },
     )
 }
@@ -88,6 +100,9 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
     const mockedStoreDomainIngestionLog = getIngestionLogFixture({
         domain: mockedStoreDomain,
         url: mockedStoreUrl,
+    })
+    const mockedIngestedResource = getIngestedResourceFixture({
+        article_ingestion_log_id: mockedStoreDomainIngestionLog.id,
     })
     const mockedUpdateIngestedResource = jest.fn().mockResolvedValue(undefined)
 
@@ -141,6 +156,11 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
         mockFlags({
             [FeatureFlagKey.AiAgentScrapeStoreDomain]: true,
         })
+        mockUseGetIngestedResource.mockReturnValue({
+            isLoading: false,
+            isError: false,
+            data: null,
+        } as unknown as ReturnType<typeof useGetIngestedResource>)
     })
 
     it('should render the component', () => {
@@ -278,12 +298,14 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
             )!
         fireEvent.click(toggleButton)
 
-        expect(mockedUpdateIngestedResource).toHaveBeenCalledWith(
-            mockedListIngestedResources.data[0].id,
-            {
-                status: IngestedResourceStatus.Disabled,
-            },
-        )
+        waitFor(() => {
+            expect(mockedUpdateIngestedResource).toHaveBeenCalledWith(
+                mockedListIngestedResources.data[0].id,
+                {
+                    status: IngestedResourceStatus.Disabled,
+                },
+            )
+        })
     })
 
     it('should display source URLs when button is clicked', () => {
@@ -303,6 +325,12 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
             hasPrevPage: false,
         })
 
+        mockUseGetIngestedResource.mockReturnValue({
+            isLoading: false,
+            isError: false,
+            data: mockedIngestedResource,
+        } as unknown as ReturnType<typeof useGetIngestedResource>)
+
         renderComponent()
 
         const questionRow = screen.getByText(
@@ -314,5 +342,38 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
         fireEvent.click(viewSourceButton)
 
         expect(screen.getByText('https://example.com')).toBeInTheDocument()
+    })
+
+    it('should open side panel and display selected content when selectedId in param is not null', () => {
+        mockUseGetIngestedResource.mockReturnValue({
+            isLoading: false,
+            isError: false,
+            data: mockedIngestedResource,
+        } as unknown as ReturnType<typeof useGetIngestedResource>)
+
+        renderComponent(mockedIngestedResource.id.toString())
+
+        expect(screen.getByText('Question details')).toBeInTheDocument()
+        const hideIcon = screen.getByAltText('hide-view-icon')
+        expect(hideIcon).toBeInTheDocument()
+        expect(screen.getByText('Available for AI Agent')).toBeInTheDocument()
+        expect(screen.getByText('View source URLs')).toBeInTheDocument()
+    })
+
+    it('should redirect to pagesContent path without id when hide side panel button is clicked', () => {
+        mockUseGetIngestedResource.mockReturnValue({
+            isLoading: false,
+            isError: false,
+            data: mockedIngestedResource,
+        } as unknown as ReturnType<typeof useGetIngestedResource>)
+        renderComponent(mockedIngestedResource.id.toString())
+
+        expect(screen.getByText('Question details')).toBeInTheDocument()
+        const hideIcon = screen.getByAltText('hide-view-icon')
+        fireEvent.click(hideIcon)
+
+        expect(history.push).toHaveBeenCalledWith(
+            '/app/ai-agent/shopify/test-shop/knowledge/sources/pages-content',
+        )
     })
 })

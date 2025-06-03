@@ -250,6 +250,15 @@ export const listIngestedResources = async (
     return response.data
 }
 
+export const getIngestedResource = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.GetIngestedResource.PathParameters,
+) => {
+    if (!client) return null
+    const response = await client.getIngestedResource(pathParams)
+    return response.data
+}
+
 export const updateIngestedResource = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.UpdateIngestedResource.PathParameters,

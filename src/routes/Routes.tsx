@@ -624,13 +624,27 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                                             }
                                         />
                                         <Route
+                                            exact
                                             path={`${path}/knowledge/sources/pages-content`}
                                             component={
                                                 AiAgentScrapedDomainQuestionsContainer
                                             }
                                         />
                                         <Route
+                                            path={`${path}/knowledge/sources/pages-content/:id`}
+                                            component={
+                                                AiAgentScrapedDomainQuestionsContainer
+                                            }
+                                        />
+                                        <Route
+                                            exact
                                             path={`${path}/knowledge/sources/products-content`}
+                                            component={
+                                                AiAgentScrapedDomainProductsContainer
+                                            }
+                                        />
+                                        <Route
+                                            path={`${path}/knowledge/sources/products-content/:id`}
                                             component={
                                                 AiAgentScrapedDomainProductsContainer
                                             }

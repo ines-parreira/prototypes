@@ -79,7 +79,7 @@ const AiAgentScrapedDomainContentLayout = ({
                 <div>
                     <SecondaryNavbar>
                         {headerNavbarItems.map(({ route, title }) => (
-                            <NavLink key={route} to={route} exact={true}>
+                            <NavLink key={route} to={route}>
                                 {title}
                             </NavLink>
                         ))}

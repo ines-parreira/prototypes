@@ -82,15 +82,27 @@ export const usePaginatedIngestedResources = ({
         [ingestedResources],
     )
 
-    return {
-        contents: transformedResources,
+    return useMemo(() => {
+        return {
+            contents: transformedResources,
+            isLoading,
+            isError,
+            searchTerm,
+            setSearchTerm: handleSearch,
+            fetchNext: handleFetchNext,
+            fetchPrev: handleFetchPrev,
+            hasNextPage: !!pageMeta?.next_page,
+            hasPrevPage: currentPage > 1,
+        }
+    }, [
+        transformedResources,
         isLoading,
         isError,
         searchTerm,
-        setSearchTerm: handleSearch,
-        fetchNext: handleFetchNext,
-        fetchPrev: handleFetchPrev,
-        hasNextPage: !!pageMeta?.next_page,
-        hasPrevPage: currentPage > 1,
-    }
+        handleSearch,
+        handleFetchNext,
+        handleFetchPrev,
+        pageMeta?.next_page,
+        currentPage,
+    ])
 }

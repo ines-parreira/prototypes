@@ -341,6 +341,13 @@
                         "schema": { "type": "boolean" }
                     },
                     {
+                        "name": "content",
+                        "required": false,
+                        "in": "query",
+                        "description": "This query parameter filters articles by their content",
+                        "schema": { "type": "string" }
+                    },
+                    {
                         "name": "locale",
                         "required": false,
                         "in": "query",
@@ -1076,6 +1083,12 @@
                         "in": "query",
                         "description": "Include the wizard in the response",
                         "schema": { "type": "boolean" }
+                    },
+                    {
+                        "name": "name",
+                        "required": false,
+                        "in": "query",
+                        "schema": { "type": "string" }
                     },
                     {
                         "name": "type",
@@ -2639,6 +2652,36 @@
                 "tags": ["categories"]
             }
         },
+        "/api/help-center/shop-integration-mappings": {
+            "get": {
+                "operationId": "list",
+                "summary": "List all shop-mappings",
+                "parameters": [
+                    {
+                        "name": "account_id",
+                        "required": true,
+                        "in": "query",
+                        "schema": { "type": "number" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of shop mappings",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ShopIntegrationMappingsDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["shop-integration-mappings"]
+            }
+        },
         "/api/help-center/help-centers/{help_center_id}/article-templates/review": {
             "put": {
                 "operationId": "upsertArticleTemplateReview",
@@ -3987,6 +4030,39 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/IngestedResourceListPageDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["ingested-resources"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/ingested-resource/{id}": {
+            "get": {
+                "operationId": "getIngestedResource",
+                "summary": "Get an ingested resource by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IngestedResourceListDataDto"
                                 }
                             }
                         }
@@ -5797,6 +5873,24 @@
                 },
                 "required": ["name", "default_locale"]
             },
+            "ShopIntegrationDto": {
+                "type": "object",
+                "properties": {
+                    "shop_name": { "type": "string" },
+                    "shop_type": {
+                        "enum": ["bigcommerce", "magento2", "shopify"],
+                        "type": "string"
+                    },
+                    "integration_id": { "type": "number" },
+                    "account_id": { "type": "number" }
+                },
+                "required": [
+                    "shop_name",
+                    "shop_type",
+                    "integration_id",
+                    "account_id"
+                ]
+            },
             "HelpCenterDto": {
                 "type": "object",
                 "properties": {
@@ -5902,6 +5996,14 @@
                     "shop_integration_id": {
                         "type": "number",
                         "nullable": true
+                    },
+                    "shop_integration": {
+                        "nullable": true,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ShopIntegrationDto"
+                            }
+                        ]
                     },
                     "self_service_deactivated_datetime": {
                         "format": "date-time",
@@ -6224,18 +6326,6 @@
                     "help_center_id"
                 ]
             },
-            "ShopIntegrationDto": {
-                "type": "object",
-                "properties": {
-                    "shop_name": { "type": "string" },
-                    "shop_type": {
-                        "enum": ["bigcommerce", "magento2", "shopify"],
-                        "type": "string"
-                    },
-                    "integration_id": { "type": "number" }
-                },
-                "required": ["shop_name", "shop_type", "integration_id"]
-            },
             "GetHelpCenterDto": {
                 "type": "object",
                 "properties": {
@@ -6342,6 +6432,14 @@
                         "type": "number",
                         "nullable": true
                     },
+                    "shop_integration": {
+                        "nullable": true,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ShopIntegrationDto"
+                            }
+                        ]
+                    },
                     "self_service_deactivated_datetime": {
                         "format": "date-time",
                         "type": "string",
@@ -6409,9 +6507,6 @@
                     "redirects": {
                         "type": "array",
                         "items": { "$ref": "#/components/schemas/RedirectDto" }
-                    },
-                    "shop_integration": {
-                        "$ref": "#/components/schemas/ShopIntegrationDto"
                     }
                 },
                 "required": [
@@ -7611,6 +7706,43 @@
                     "translation",
                     "children",
                     "id"
+                ]
+            },
+            "ShopIntegrationMappingsDto": {
+                "type": "object",
+                "properties": {
+                    "channel_name": {
+                        "type": "string",
+                        "description": "The name of the channel (help-center or contact-form)"
+                    },
+                    "channel_integration_id": {
+                        "type": "number",
+                        "description": "The integration ID of the channel"
+                    },
+                    "shop_integration_id": {
+                        "type": "number",
+                        "description": "The integration_id from shop_integration "
+                    },
+                    "shop_name": {
+                        "type": "string",
+                        "description": "The name of the shop"
+                    },
+                    "shop_type": {
+                        "type": "string",
+                        "description": "The type of the shop"
+                    },
+                    "channel_id": {
+                        "type": "number",
+                        "description": "The id of the channel (help-center or contact-form)"
+                    }
+                },
+                "required": [
+                    "channel_name",
+                    "channel_integration_id",
+                    "shop_integration_id",
+                    "shop_name",
+                    "shop_type",
+                    "channel_id"
                 ]
             },
             "UpsertArticleTemplateReviewDto": {

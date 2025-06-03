@@ -99,18 +99,30 @@ export const usePaginatedProductIntegration = ({
         }))
     }, [products])
 
-    return {
-        items: products || [],
+    return useMemo(() => {
+        return {
+            items: products || [],
+            itemsData,
+            isLoading,
+            isError,
+            searchTerm,
+            setSearchTerm: handleSearch,
+            fetchNext,
+            fetchPrev,
+            hasNextPage: !!nextCursor,
+            hasPrevPage: !!prevCursor,
+        }
+    }, [
+        products,
         itemsData,
         isLoading,
         isError,
         searchTerm,
-        setSearchTerm: handleSearch,
         fetchNext,
         fetchPrev,
-        hasNextPage: !!nextCursor,
-        hasPrevPage: !!prevCursor,
-    }
+        nextCursor,
+        prevCursor,
+    ])
 }
 
 export default usePaginatedProductIntegration

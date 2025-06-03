@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react'
 
-import { useGetHelpCenterArticle } from 'models/helpCenter/queries'
-import { LocaleCode } from 'models/helpCenter/types'
+import { useParams } from 'react-router'
 
+import { LocaleCode } from 'models/helpCenter/types'
+import history from 'pages/history'
+
+import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import { usePollStoreDomainIngestionLog } from '../hooks/usePollStoreDomainIngestionLog'
 import { useSyncStoreDomain } from '../hooks/useSyncStoreDomain'
 import AiAgentScrapedDomainContentLayout from './AiAgentScrapedDomainContentLayout'
 import { CONTENT_TYPE, IngestionLogStatus } from './constant'
 import { useIngestedResourceMutation } from './hooks/useIngestedResourceMutation'
 import { usePaginatedIngestedResources } from './hooks/usePaginatedIngestedResources'
+import { useSelectedQuestionAndDetail } from './hooks/useSelectedQuestionAndDetail'
 import ScrapedDomainContentView from './ScrapedDomainContentView'
 import ScrapedDomainSelectedContent from './ScrapedDomainSelectedContent'
 import { IngestedResourceWithArticleId } from './types'
@@ -24,12 +28,12 @@ const AiAgentScrapedDomainQuestionsView = ({
     helpCenterId,
     defaultLocale,
 }: Props) => {
+    const { routes } = useAiAgentNavigation({ shopName })
+    const { id: selectedId } = useParams<{ id?: string }>()
     const [syncStoreDomainStatus, setSyncStoreDomainStatus] = useState<
         string | null
     >(null)
     const [isOpened, setIsOpened] = useState(false)
-    const [selectedQuestion, setSelectedQuestion] =
-        useState<IngestedResourceWithArticleId | null>(null)
 
     const {
         storeDomain,
@@ -59,15 +63,10 @@ const AiAgentScrapedDomainQuestionsView = ({
         }
     }, [syncIsPending, setSyncStoreDomainStatus])
 
-    const handleOnSelect = (content: IngestedResourceWithArticleId) => {
-        setSelectedQuestion(content)
-        setIsOpened(true)
-    }
+    const handleOnSelect = (id: number) =>
+        history.push(routes.pagesContentDetail(id))
 
-    const handleOnClose = () => {
-        setSelectedQuestion(null)
-        setIsOpened(false)
-    }
+    const handleOnClose = () => history.push(routes.pagesContent)
 
     const {
         contents: paginatedQuestions,
@@ -95,13 +94,25 @@ const AiAgentScrapedDomainQuestionsView = ({
     const isSyncPending =
         syncIsPending || syncStoreDomainStatus === IngestionLogStatus.Pending
 
-    const { data: articleData, isInitialLoading: isFetchingArticleLoading } =
-        useGetHelpCenterArticle(
-            selectedQuestion?.article_id ?? 0,
-            helpCenterId,
-            defaultLocale,
-            { enabled: !!selectedQuestion },
-        )
+    const {
+        selectedQuestion,
+        questionDetail,
+        isLoading: isFetchingQuestionAndDetail,
+    } = useSelectedQuestionAndDetail({
+        shopName,
+        helpCenterId,
+        defaultLocale,
+        selectedId: selectedId ? Number(selectedId) : null,
+        storeDomainIngestionLogId: storeDomainIngestionLog?.id ?? null,
+    })
+
+    useEffect(() => {
+        if (selectedId && selectedQuestion) {
+            setIsOpened(true)
+        } else {
+            setIsOpened(false)
+        }
+    }, [selectedId, selectedQuestion])
 
     return (
         <AiAgentScrapedDomainContentLayout
@@ -134,10 +145,12 @@ const AiAgentScrapedDomainQuestionsView = ({
                 contentType={CONTENT_TYPE.QUESTION}
                 isOpened={isOpened}
                 isLoading={
-                    isDataLoading || syncIsPending || isFetchingArticleLoading
+                    isDataLoading ||
+                    syncIsPending ||
+                    isFetchingQuestionAndDetail
                 }
                 onClose={handleOnClose}
-                detail={articleData}
+                detail={questionDetail}
                 onUpdateStatus={updateIngestedResource}
             />
         </AiAgentScrapedDomainContentLayout>

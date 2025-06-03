@@ -1,0 +1,99 @@
+import { useEffect, useMemo } from 'react'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import { useGetEcommerceItemByExternalId } from 'models/ecommerce/queries'
+import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import history from 'pages/history'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+
+import { ECOMMERCE_SOURCE, ECOMMERCE_TYPE } from '../constant'
+import { isProductExcludedFromAiAgent } from './usePaginatedProductIntegration'
+
+export const useSelectedProductAndDetail = ({
+    shopName,
+    integrationId,
+    selectedId,
+}: {
+    shopName: string
+    integrationId: number | null
+    selectedId: string | null
+}) => {
+    const dispatch = useAppDispatch()
+    const { routes } = useAiAgentNavigation({ shopName })
+
+    const selectedProductData = useGetProductsByIdsFromIntegration(
+        integrationId || 0,
+        [selectedId ? Number(selectedId) : 0],
+        !!selectedId,
+        false,
+    )
+
+    const { data: ecommerceProduct, isLoading: isLoadingEcommerceProduct } =
+        useGetEcommerceItemByExternalId(
+            ECOMMERCE_TYPE,
+            ECOMMERCE_SOURCE,
+            integrationId || 0,
+            selectedId ?? '',
+            { enabled: !!selectedId },
+        )
+
+    const selectedProduct = useMemo(
+        () =>
+            selectedProductData?.data?.[0]
+                ? {
+                      ...selectedProductData.data[0],
+                      is_used_by_ai_agent: !isProductExcludedFromAiAgent(
+                          selectedProductData.data[0],
+                      ),
+                  }
+                : null,
+        [selectedProductData],
+    )
+
+    const ingestedProduct = useMemo(() => {
+        if (!ecommerceProduct?.additional_info?.scraped_data?.data) {
+            return null
+        }
+        return ecommerceProduct.additional_info.scraped_data.data
+    }, [ecommerceProduct])
+
+    useEffect(() => {
+        if (
+            selectedProductData.isError ||
+            (!!selectedId && !selectedProductData.isLoading && !selectedProduct)
+        ) {
+            void dispatch(
+                notify({
+                    message:
+                        'Content no longer exists. It may have been deleted or moved.',
+                    status: NotificationStatus.Error,
+                }),
+            )
+
+            history.push(routes.productsContent)
+        }
+    }, [
+        selectedProductData,
+        selectedId,
+        selectedProduct,
+        dispatch,
+        routes.productsContent,
+    ])
+
+    return useMemo(() => {
+        return {
+            selectedProduct,
+            productDetail: ingestedProduct,
+            isError: selectedProductData.isError,
+            isLoading:
+                selectedProductData.isLoading || isLoadingEcommerceProduct,
+        }
+    }, [
+        selectedProduct,
+        ingestedProduct,
+        selectedProductData,
+        isLoadingEcommerceProduct,
+    ])
+}

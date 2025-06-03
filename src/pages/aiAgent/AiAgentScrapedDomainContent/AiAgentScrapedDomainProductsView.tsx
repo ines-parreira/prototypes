@@ -1,20 +1,22 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
+
+import { useParams } from 'react-router'
 
 import { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
-import { useGetEcommerceItemByExternalId } from 'models/ecommerce/queries'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import history from 'pages/history'
 
+import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import { usePollStoreDomainIngestionLog } from '../hooks/usePollStoreDomainIngestionLog'
 import { useSyncStoreDomain } from '../hooks/useSyncStoreDomain'
 import AiAgentScrapedDomainContentLayout from './AiAgentScrapedDomainContentLayout'
 import {
     CONTENT_TYPE,
-    ECOMMERCE_SOURCE,
-    ECOMMERCE_TYPE,
     IngestionLogStatus,
     PAGINATED_ITEMS_PER_PAGE,
 } from './constant'
 import { usePaginatedProductIntegration } from './hooks/usePaginatedProductIntegration'
+import { useSelectedProductAndDetail } from './hooks/useSelectedProductAndDetail'
 import ScrapedDomainContentView from './ScrapedDomainContentView'
 import ScrapedDomainSelectedContent from './ScrapedDomainSelectedContent'
 
@@ -27,12 +29,12 @@ const AiAgentScrapedDomainProductsView = ({
     shopName,
     helpCenterId,
 }: Props) => {
+    const { routes } = useAiAgentNavigation({ shopName })
+    const { id: selectedId } = useParams<{ id?: string }>()
     const [syncStoreDomainStatus, setSyncStoreDomainStatus] = useState<
         string | null
     >(null)
     const [isOpened, setIsOpened] = useState(false)
-    const [selectedProduct, setSelectedProduct] =
-        useState<ProductWithAiAgentStatus | null>(null)
 
     const {
         storeDomain,
@@ -62,15 +64,10 @@ const AiAgentScrapedDomainProductsView = ({
         }
     }, [syncIsPending, setSyncStoreDomainStatus])
 
-    const handleOnSelect = (content: ProductWithAiAgentStatus) => {
-        setSelectedProduct(content)
-        setIsOpened(true)
-    }
+    const handleOnSelect = (id: number) =>
+        history.push(routes.productsContentDetail(id))
 
-    const handleOnClose = () => {
-        setSelectedProduct(null)
-        setIsOpened(false)
-    }
+    const handleOnClose = () => history.push(routes.productsContent)
 
     const { integrationId } = useShopifyIntegrationAndScope(shopName)
 
@@ -93,21 +90,23 @@ const AiAgentScrapedDomainProductsView = ({
     const isSyncPending =
         syncIsPending || syncStoreDomainStatus === IngestionLogStatus.Pending
 
-    const { data: ecommerceProduct, isLoading: isLoadingEcommerceProduct } =
-        useGetEcommerceItemByExternalId(
-            ECOMMERCE_TYPE,
-            ECOMMERCE_SOURCE,
-            integrationId || 0,
-            String(selectedProduct?.id || 0),
-            { enabled: !!selectedProduct },
-        )
+    const {
+        selectedProduct,
+        productDetail,
+        isLoading: isFetchingProductAndDetail,
+    } = useSelectedProductAndDetail({
+        shopName,
+        integrationId,
+        selectedId: selectedId ?? null,
+    })
 
-    const ingestedProduct = useMemo(() => {
-        if (!ecommerceProduct?.additional_info?.scraped_data?.data) {
-            return null
+    useEffect(() => {
+        if (selectedId && selectedProduct) {
+            setIsOpened(true)
+        } else {
+            setIsOpened(false)
         }
-        return ecommerceProduct.additional_info.scraped_data.data
-    }, [ecommerceProduct])
+    }, [selectedId, selectedProduct])
 
     return (
         <AiAgentScrapedDomainContentLayout
@@ -138,9 +137,9 @@ const AiAgentScrapedDomainProductsView = ({
                 selectedContent={selectedProduct}
                 contentType={CONTENT_TYPE.PRODUCT}
                 isOpened={isOpened}
-                isLoading={syncIsPending || isLoadingEcommerceProduct}
+                isLoading={syncIsPending || isFetchingProductAndDetail}
                 onClose={handleOnClose}
-                detail={ingestedProduct}
+                detail={productDetail}
             />
         </AiAgentScrapedDomainContentLayout>
     )

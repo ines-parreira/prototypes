@@ -9,6 +9,7 @@ import {
     getFileIngestion,
     getHelpCenterArticles,
     getHelpCenterList,
+    getIngestedResource,
     getIngestionLogs,
     listIngestedResources,
     startArticleIngestion,
@@ -244,6 +245,32 @@ describe('resources', () => {
             )
 
             expect(result).toEqual([])
+        })
+    })
+
+    describe('getIngestedResource', () => {
+        it('should return null when client is not set', async () => {
+            const result = await getIngestedResource(undefined, {
+                help_center_id,
+                id: 1,
+            })
+            expect(result).toBeNull()
+        })
+
+        it('should return correct result from API', async () => {
+            const client = {
+                getIngestedResource: jest
+                    .fn()
+                    .mockReturnValue(Promise.resolve({ data: {} })),
+            }
+            const result = await getIngestedResource(
+                client as unknown as HelpCenterClient,
+                {
+                    help_center_id,
+                    id: 1,
+                },
+            )
+            expect(result).toEqual({})
         })
     })
 

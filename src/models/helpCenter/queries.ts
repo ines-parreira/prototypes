@@ -31,6 +31,7 @@ import {
     getHelpCenterArticle,
     getHelpCenterArticles,
     getHelpCenterList,
+    getIngestedResource,
     getIngestionLogs,
     listIngestedResources,
     startArticleIngestion,
@@ -131,6 +132,12 @@ export const helpCenterKeys = {
             'ingested-resources',
             ingestionLogId,
             queryParams,
+        ].filter(Boolean),
+    ingestedResource: (helpCenterId: number, id: number) =>
+        [
+            ...helpCenterKeys.detail(helpCenterId),
+            'ingested-resource',
+            id,
         ].filter(Boolean),
 }
 
@@ -638,6 +645,26 @@ export const useListIngestedResources = (
         ),
         queryFn: async () =>
             listIngestedResources(helpCenterClient, pathParams, queryParams),
+        ...overrides,
+        enabled:
+            !!helpCenterClient &&
+            (overrides === undefined || overrides.enabled),
+    })
+}
+
+export const useGetIngestedResource = (
+    pathParams: Paths.GetIngestedResource.PathParameters,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getIngestedResource>>
+    >,
+) => {
+    const { client: helpCenterClient } = useHelpCenterApi()
+    return useQuery({
+        queryKey: helpCenterKeys.ingestedResource(
+            pathParams.help_center_id,
+            pathParams.id,
+        ),
+        queryFn: async () => getIngestedResource(helpCenterClient, pathParams),
         ...overrides,
         enabled:
             !!helpCenterClient &&

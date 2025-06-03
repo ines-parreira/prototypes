@@ -99,6 +99,7 @@ export const useGetProductsByIdsFromIntegration = (
     integrationId: number,
     productsIds: number[],
     enabled = true,
+    keepPreviousData = true,
 ) => {
     return useQuery({
         queryKey: [
@@ -116,7 +117,7 @@ export const useGetProductsByIdsFromIntegration = (
 
             return results.map((r) => r.toJS()) as Product[]
         },
-        keepPreviousData: true,
+        keepPreviousData,
         staleTime: Infinity,
         onError: () => {
             reportError(
