@@ -18,6 +18,7 @@ import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import GuidanceVariableTag from 'pages/common/draftjs/plugins/guidance-variables/GuidanceVariableTag'
+import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import InputField from 'pages/common/forms/input/InputField'
 import history from 'pages/history'
@@ -38,6 +39,7 @@ const FORM_INITIAL_STATE = {
 }
 
 type Props = {
+    availableActions: GuidanceAction[]
     shopName: string
     isLoading: boolean
     actionType: 'update' | 'create'
@@ -57,9 +59,14 @@ export const GuidanceForm = ({
     actionType,
     sourceType,
     helpCenterId,
+    availableActions,
 }: Props) => {
     const isGuidanceTaggingSystemEnabled = useFlag(
         FeatureFlagKey.AIAgentGuidanceTaggingSystem,
+        false,
+    )
+    const areActionsInGuidanceEnabled = useFlag<boolean>(
+        FeatureFlagKey.AiAgentVariablesAndActionsInGuidance,
         false,
     )
     const dispatch = useAppDispatch()
@@ -202,7 +209,24 @@ export const GuidanceForm = ({
 
             <div>
                 <div className={css.content}>
-                    <BackLink path={routes.guidance} label="Back to Guidance" />
+                    <div className={css.header}>
+                        <BackLink
+                            path={routes.guidance}
+                            label="Back to Guidance"
+                        />
+                        {areActionsInGuidanceEnabled && (
+                            <div>
+                                <a
+                                    href="https://link.gorgias.com/19d8b1"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    <i className="material-icons">menu_book</i>{' '}
+                                    Optimize Guidance for AI Agent
+                                </a>
+                            </div>
+                        )}
+                    </div>
 
                     <InputField
                         label="Guidance name"
@@ -219,6 +243,8 @@ export const GuidanceForm = ({
                                 content={formState.content}
                                 handleUpdateContent={onContentChange}
                                 label="Instructions"
+                                shopName={shopName}
+                                availableActions={availableActions}
                             />
                             <Caption isValid>
                                 Provide instructions on how AI Agent should

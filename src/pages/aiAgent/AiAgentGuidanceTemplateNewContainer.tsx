@@ -2,6 +2,8 @@ import { Redirect, useParams } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
+import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
+
 import { AiAgentGuidanceTemplateNewView } from './AiAgentGuidanceTemplateNewView'
 import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
 import { GuidanceBreadcrumbs } from './components/GuidanceBreadcrumbs/GuidanceBreadcrumbs'
@@ -12,7 +14,8 @@ import { useGuidanceTemplate } from './hooks/useGuidanceTemplate'
 import css from './AiAgentMainViewContainer.less'
 
 export const AiAgentGuidanceTemplateNewContainer = () => {
-    const { shopName, templateId } = useParams<{
+    const { shopType, shopName, templateId } = useParams<{
+        shopType: string
         shopName: string
         templateId: string
     }>()
@@ -23,11 +26,14 @@ export const AiAgentGuidanceTemplateNewContainer = () => {
     })
     const { guidanceTemplate } = useGuidanceTemplate(templateId)
 
+    const { guidanceActions, isLoading: isLoadingActions } =
+        useGetGuidancesAvailableActions(shopName, shopType)
+
     if (!guidanceTemplate) {
         return <Redirect to={routes.guidanceTemplates} />
     }
 
-    if (!guidanceHelpCenter) {
+    if (!guidanceHelpCenter || isLoadingActions) {
         return (
             <div className={css.spinner}>
                 <LoadingSpinner size="big" />
@@ -47,6 +53,7 @@ export const AiAgentGuidanceTemplateNewContainer = () => {
                 locale={guidanceHelpCenter.default_locale}
                 shopName={shopName}
                 guidanceTemplate={guidanceTemplate}
+                availableActions={guidanceActions}
             />
         </AiAgentLayout>
     )

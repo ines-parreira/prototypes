@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom'
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { LocaleCode } from 'models/helpCenter/types'
+import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 
 import { GuidanceForm } from './components/GuidanceForm/GuidanceForm'
 import { useAiAgentNavigation } from './hooks/useAiAgentNavigation'
@@ -20,6 +21,7 @@ type Props = {
     aiGuidanceId: string
     guidanceHelpCenterId: number
     locale: LocaleCode
+    shopType: string
 }
 
 export const AiAgentGuidanceAiSuggestionNewView = ({
@@ -27,9 +29,13 @@ export const AiAgentGuidanceAiSuggestionNewView = ({
     aiGuidanceId,
     guidanceHelpCenterId,
     locale,
+    shopType,
 }: Props) => {
     const { routes } = useAiAgentNavigation({ shopName })
     const [onSubmitLoading, setOnSubmitLoading] = useState(false)
+
+    const { guidanceActions, isLoading: isLoadingActions } =
+        useGetGuidancesAvailableActions(shopName, shopType)
 
     const {
         guidanceAISuggestions,
@@ -77,7 +83,7 @@ export const AiAgentGuidanceAiSuggestionNewView = ({
         }
     }, [aiGuidanceSuggestion])
 
-    if (isLoadingAiGuidances) {
+    if (isLoadingAiGuidances || isLoadingActions) {
         return (
             <div className={css.spinner}>
                 <LoadingSpinner size="big" />
@@ -91,8 +97,9 @@ export const AiAgentGuidanceAiSuggestionNewView = ({
 
     return (
         <GuidanceForm
-            actionType="create"
             shopName={shopName}
+            actionType="create"
+            availableActions={guidanceActions}
             initialFields={initialFields}
             onSubmit={onSubmit}
             isLoading={isGuidanceArticleUpdating || onSubmitLoading}

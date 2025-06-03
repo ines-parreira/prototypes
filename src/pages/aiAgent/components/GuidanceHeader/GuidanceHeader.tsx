@@ -47,8 +47,9 @@ export const GuidanceHeader = ({
                     className={css.textGroup}
                     data-candu-id="ai-agent-guidance-has-guidance-articles"
                 >
-                    Add Guidance to tell AI Agent how to handle specific topics
-                    or inquiries, and when to escalate tickets to your team.
+                    Create internal Guidance to instruct AI Agent how to handle
+                    customer inquiries and follow end-to-end processes in line
+                    with your company policies.
                 </p>
 
                 <div className={css.btnGroup}>

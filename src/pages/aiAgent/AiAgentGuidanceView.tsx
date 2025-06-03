@@ -209,6 +209,8 @@ export const AiAgentGuidanceView = ({
                 onDuplicate={onDuplicate}
                 onRowClick={onGuidanceArticleClick}
                 onChangeVisibility={onChangeVisibility}
+                shopName={shopName}
+                shopType={shopType}
             />
         </div>
     )

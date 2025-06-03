@@ -8,6 +8,7 @@ import { screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import { toImmutable } from 'common/utils'
+import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -51,6 +52,12 @@ jest.mock('pages/aiAgent/hooks/useAccountStoreConfiguration', () => ({
 jest.mock('../hooks/useAiAgentOnboardingNotification', () => ({
     useAiAgentOnboardingNotification: jest.fn(),
 }))
+jest.mock(
+    'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions',
+    () => ({
+        useGetGuidancesAvailableActions: jest.fn(),
+    }),
+)
 
 const mockedUseAiAgentHelpCenter = jest.mocked(useAiAgentHelpCenter)
 const mockedUseGuidanceArticles = jest.mocked(useGuidanceArticles)
@@ -59,6 +66,9 @@ const mockedUseGuidanceAiSuggestions = jest.mocked(useGuidanceAiSuggestions)
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 const mockUseAiAgentOnboardingNotification = jest.mocked(
     useAiAgentOnboardingNotification,
+)
+const mockedUseGetGuidancesAvailableActions = jest.mocked(
+    useGetGuidancesAvailableActions,
 )
 
 const helpCenter = getHelpCentersResponseFixture.data[0]
@@ -132,6 +142,10 @@ describe('<AiAgentNewGuidance />', () => {
         mockUseAiAgentOnboardingNotification.mockReturnValue(
             defaultUseAiAgentOnboardingNotification,
         )
+        mockedUseGetGuidancesAvailableActions.mockReturnValue({
+            guidanceActions: [],
+            isLoading: false,
+        })
     })
 
     it('should render loader when no help center', () => {

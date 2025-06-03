@@ -3,6 +3,7 @@ import React, { useMemo } from 'react'
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { LocaleCode } from 'models/helpCenter/types'
+import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 
 import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
 import { GuidanceBreadcrumbs } from './components/GuidanceBreadcrumbs/GuidanceBreadcrumbs'
@@ -19,6 +20,7 @@ type Props = {
     guidanceArticleId: number
     locale: LocaleCode
     shopName: string
+    shopType: string
 }
 
 export const AiAgentGuidanceDetailView = ({
@@ -26,12 +28,17 @@ export const AiAgentGuidanceDetailView = ({
     guidanceArticleId,
     shopName,
     locale,
+    shopType,
 }: Props) => {
     const { guidanceArticle, isGuidanceArticleLoading } = useGuidanceArticle({
         guidanceHelpCenterId,
         guidanceArticleId,
         locale,
     })
+
+    const { guidanceActions, isLoading: isLoadingActions } =
+        useGetGuidancesAvailableActions(shopName, shopType)
+
     const {
         updateGuidanceArticle,
         deleteGuidanceArticle,
@@ -72,7 +79,7 @@ export const AiAgentGuidanceDetailView = ({
         return 'scratch'
     }, [guidanceArticle])
 
-    if (!guidanceArticle) {
+    if (!guidanceArticle || isLoadingActions) {
         return (
             <div className={css.spinner}>
                 <LoadingSpinner size="big" />
@@ -92,6 +99,7 @@ export const AiAgentGuidanceDetailView = ({
         >
             <GuidanceForm
                 actionType="update"
+                availableActions={guidanceActions}
                 shopName={shopName}
                 initialFields={initialFields}
                 onSubmit={onSubmit}

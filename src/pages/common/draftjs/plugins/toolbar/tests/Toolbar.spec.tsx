@@ -1,12 +1,14 @@
 import React, { ComponentProps } from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { ContentState, EditorState } from 'draft-js'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 
+import { useFlag } from 'core/flags'
 import { RichFieldEditor } from 'pages/common/forms/RichField/RichFieldEditor'
+import * as utils from 'utils'
 import { convertFromHTML } from 'utils/editor'
 import { mockStore } from 'utils/testing'
 
@@ -14,6 +16,12 @@ import toolbarPlugin from '../index'
 import Toolbar from '../Toolbar'
 import ToolbarProvider from '../ToolbarProvider'
 import { ActionName } from '../types'
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+
+const insertTextSpy = jest.spyOn(utils, 'insertText')
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
@@ -28,6 +36,8 @@ jest.mock('../components', () => {
         )),
     }
 })
+
+const mockUseFlag = useFlag as jest.Mock
 
 describe('Toolbar', () => {
     const defaultProps: ComponentProps<typeof RichFieldEditor> &
@@ -63,7 +73,7 @@ describe('Toolbar', () => {
         quickReply: null,
         attachFiles: _noop,
         displayedActions: [] as ActionName[],
-        setEditorState: _noop,
+        setEditorState: jest.fn(),
     }
     let contentState: ContentState
     let editorState: EditorState
@@ -71,6 +81,7 @@ describe('Toolbar', () => {
     beforeEach(() => {
         contentState = convertFromHTML('<p>foo</p>')
         editorState = EditorState.createWithContent(contentState)
+        mockUseFlag.mockReturnValue(false)
     })
 
     it('should render character count if max length is specified', () => {
@@ -184,6 +195,87 @@ describe('Toolbar', () => {
             )
             fireEvent.click(screen.getByText('Click me'))
             expect(getWorkflowVariablesMock).toHaveBeenCalled()
+        })
+
+        it('should display guidance action picker when GuidanceAction is passed', () => {
+            const mockGuidanceActions = [
+                {
+                    name: 'TOTO action',
+                    value: '00AAAAA7AAA0AAA1A50AAAA00A',
+                },
+            ]
+
+            mockUseFlag.mockReturnValue(true)
+
+            render(
+                <Provider store={mockStore({})}>
+                    <ToolbarProvider
+                        canAddProductCard={true}
+                        onAddProductCardAttachment={jest.fn()}
+                        canAddDiscountCodeLink={true}
+                        canAddVideoPlayer={false}
+                        guidanceActions={mockGuidanceActions}
+                        shopifyIntegrations={fromJS([{}])}
+                    >
+                        <Toolbar
+                            maxLength={100}
+                            {...editorProps}
+                            editorState={editorState}
+                            getEditorState={() => editorState}
+                            displayedActions={[ActionName.GuidanceAction]}
+                            linkIsOpen={true}
+                            linkUrl={'https://help.domain.com/article'}
+                        />
+                    </ToolbarProvider>
+                </Provider>,
+            )
+
+            fireEvent.click(screen.getByText('Actions'))
+            fireEvent.click(screen.getByText('TOTO action'))
+
+            expect(insertTextSpy).toHaveBeenLastCalledWith(
+                editorState,
+                '$$$00AAAAA7AAA0AAA1A50AAAA00A$$$',
+            )
+        })
+
+        it('should display guidance action picker disabled with a tooltip when there is no action', async () => {
+            mockUseFlag.mockReturnValue(true)
+
+            render(
+                <Provider store={mockStore({})}>
+                    <ToolbarProvider
+                        canAddProductCard={true}
+                        onAddProductCardAttachment={jest.fn()}
+                        canAddDiscountCodeLink={true}
+                        canAddVideoPlayer={false}
+                        guidanceActions={[]}
+                        shopifyIntegrations={fromJS([{}])}
+                        shopName="myshop"
+                    >
+                        <Toolbar
+                            maxLength={100}
+                            {...editorProps}
+                            editorState={editorState}
+                            getEditorState={() => editorState}
+                            displayedActions={[ActionName.GuidanceAction]}
+                            linkIsOpen={true}
+                            linkUrl={'https://help.domain.com/article'}
+                        />
+                    </ToolbarProvider>
+                </Provider>,
+            )
+
+            fireEvent.mouseOver(screen.getByText('Actions'))
+
+            await waitFor(() =>
+                expect(
+                    screen.getByText(
+                        'enable at least one Action for AI Agent.',
+                        { exact: false },
+                    ),
+                ).toBeInTheDocument(),
+            )
         })
     })
 })

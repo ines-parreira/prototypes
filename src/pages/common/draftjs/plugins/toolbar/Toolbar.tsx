@@ -4,6 +4,8 @@ import classnames from 'classnames'
 import { EditorState } from 'draft-js'
 
 import { UploadType } from 'common/types'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import {
     GuidanceVariable,
     GuidanceVariableList,
@@ -14,6 +16,9 @@ import {
     WorkflowVariableList,
 } from 'pages/automate/workflows/models/variables.types'
 import Button from 'pages/common/components/button/Button'
+import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
+import { encodeAction } from 'pages/common/draftjs/plugins/guidanceActions/utils'
+import GuidanceActionPicker from 'pages/common/draftjs/plugins/toolbar/components/GuidanceActionPicker'
 import { ContactFormCaptureFormIconButton } from 'pages/convert/campaigns/components/ContactCaptureForm/ContactCaptureFormIconButton'
 import { insertText } from 'utils'
 
@@ -96,6 +101,11 @@ const Toolbar = ({
 }: Props) => {
     const [isHovered, setIsHovered] = useState(false)
 
+    const areActionsInGuidanceEnabled: boolean = useFlag(
+        FeatureFlagKey.AiAgentVariablesAndActionsInGuidance,
+        false,
+    )
+
     const {
         shopifyIntegrations,
         onContactFormOpenChange,
@@ -139,6 +149,19 @@ const Toolbar = ({
         const editorState = getEditorState()
 
         const newEditorState = insertText(editorState, variable.value)
+
+        // restore focus after insertText
+        setEditorState(
+            EditorState.forceSelection(
+                newEditorState,
+                newEditorState.getSelection(),
+            ),
+        )
+    }
+    const handleGuidanceActionSelection = (action: GuidanceAction) => {
+        const editorState = getEditorState()
+
+        const newEditorState = insertText(editorState, encodeAction(action))
 
         // restore focus after insertText
         setEditorState(
@@ -259,6 +282,14 @@ const Toolbar = ({
                             displayedActions && (
                                 <WorkflowVariablePicker
                                     onSelect={handleVariableSelection}
+                                />
+                            )}
+
+                        {isActionDisplayed(ActionName.GuidanceAction) &&
+                            areActionsInGuidanceEnabled &&
+                            displayedActions && (
+                                <GuidanceActionPicker
+                                    onSelect={handleGuidanceActionSelection}
                                 />
                             )}
 

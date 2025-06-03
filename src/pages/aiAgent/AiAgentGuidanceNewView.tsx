@@ -1,4 +1,5 @@
 import { HelpCenter } from 'models/helpCenter/types'
+import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
 import { GuidanceForm } from './components/GuidanceForm/GuidanceForm'
 import { useGuidanceArticleMutation } from './hooks/useGuidanceArticleMutation'
@@ -6,11 +7,16 @@ import { GuidanceFormFields } from './types'
 import { mapGuidanceFormFieldsToGuidanceArticle } from './utils/guidance.utils'
 
 type Props = {
-    shopName: string
     helpCenter: HelpCenter
+    availableActions: GuidanceAction[]
+    shopName: string
 }
 
-export const AiAgentGuidanceNewView = ({ shopName, helpCenter }: Props) => {
+export const AiAgentGuidanceNewView = ({
+    helpCenter,
+    availableActions,
+    shopName,
+}: Props) => {
     const { createGuidanceArticle, isGuidanceArticleUpdating } =
         useGuidanceArticleMutation({ guidanceHelpCenterId: helpCenter.id })
 
@@ -25,8 +31,9 @@ export const AiAgentGuidanceNewView = ({ shopName, helpCenter }: Props) => {
 
     return (
         <GuidanceForm
-            actionType="create"
             shopName={shopName}
+            actionType="create"
+            availableActions={availableActions}
             isLoading={isGuidanceArticleUpdating}
             onSubmit={onSubmit}
             sourceType="scratch"

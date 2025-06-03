@@ -1,25 +1,15 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
 
-import { IconButton, ToggleField } from '@gorgias/merchant-ui-kit'
-
-import { DateAndTimeFormatting } from 'constants/datetime'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { OrderDirection } from 'models/api/types'
 import { StoreIntegration } from 'models/integration/types'
+import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
+import { GuidanceListRow } from 'pages/aiAgent/components/GuidanceList/GuidanceListRow'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import { formatDatetime } from 'utils'
 
 import { GuidanceArticle } from '../../types'
 
@@ -43,6 +33,8 @@ const compareDates = (a: string, b: string, direction: OrderDirection) => {
 
 type Props = {
     guidanceArticles: GuidanceArticle[]
+    shopName: string
+    shopType: string
     currentStoreIntegrationId: number | undefined
     onDelete: (articleId: number) => void
     onDuplicate: (articleId: number, storeIntegration: StoreIntegration) => void
@@ -52,6 +44,8 @@ type Props = {
 
 export const GuidanceList = ({
     guidanceArticles,
+    shopName,
+    shopType,
     currentStoreIntegrationId,
     onDelete,
     onDuplicate,
@@ -59,12 +53,10 @@ export const GuidanceList = ({
     onChangeVisibility,
 }: Props) => {
     const [sortState, setSortState] = useState<SortState>(initialSortState)
-    const [openDropdownId, setOpenDropdownId] = useState<number | null>(null)
-    const anchorElsRef = useRef<Record<number, HTMLButtonElement | null>>({})
     const storeIntegrations = useStoreIntegrations()
-    const datetimeFormat = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.CompactDate,
-    )
+
+    const { guidanceActions: availableActions } =
+        useGetGuidancesAvailableActions(shopName, shopType)
 
     const onSortClick = (column: SortState['column']) => {
         const initialDirection =
@@ -106,11 +98,7 @@ export const GuidanceList = ({
         [guidanceArticles, sortState.column, sortState.direction],
     )
 
-    const handleToggleDropdown = (articleId: number) => {
-        setOpenDropdownId(openDropdownId === articleId ? null : articleId)
-    }
-
-    const currentFirstSorted = useMemo(() => {
+    const storesSortedCurrentFirst = useMemo(() => {
         return [...storeIntegrations].sort(
             ({ id: integrationIdA }, { id: integrationIdB }) => {
                 if (integrationIdA === currentStoreIntegrationId) return -1
@@ -120,17 +108,11 @@ export const GuidanceList = ({
         )
     }, [currentStoreIntegrationId, storeIntegrations])
 
-    const isCurrentStore = useCallback(
-        (storeIntegration: StoreIntegration) =>
-            storeIntegration.id === currentStoreIntegrationId,
-        [currentStoreIntegrationId],
-    )
-
     return (
         <TableWrapper>
             <TableHead>
                 <HeaderCellProperty
-                    title="My Guidances"
+                    title="Guidance name"
                     titleClassName={css.titleCell}
                     onClick={() => onSortClick('title')}
                     isOrderedBy={sortState.column === 'title'}
@@ -149,130 +131,17 @@ export const GuidanceList = ({
             </TableHead>
             <TableBody>
                 {sortedGuidanceArticles.map((article) => (
-                    <TableBodyRow
+                    <GuidanceListRow
                         key={article.id}
-                        onClick={() => onRowClick(article.id)}
-                    >
-                        <BodyCell innerClassName={css.itemTitle}>
-                            <ToggleField
-                                value={article.visibility === 'PUBLIC'}
-                                aria-label="Toggle guidance visibility"
-                                onChange={(val, event) => {
-                                    event.stopPropagation()
-                                    onToggle(article.id, val)
-                                }}
-                            />
-                            {article.title}
-                        </BodyCell>
-                        <BodyCell>
-                            {formatDatetime(
-                                article.lastUpdated,
-                                datetimeFormat,
-                            )}
-                        </BodyCell>
-                        <BodyCell>
-                            <ConfirmationPopover
-                                placement="bottom"
-                                buttonProps={{
-                                    intent: 'destructive',
-                                }}
-                                confirmLabel="Delete"
-                                title="Delete Guidance?"
-                                content={
-                                    <p>
-                                        Are you sure you want to delete{' '}
-                                        <b>{article.title}</b> Guidance?
-                                    </p>
-                                }
-                                onConfirm={() => {
-                                    onDelete(article.id)
-                                }}
-                            >
-                                {({
-                                    uid,
-                                    elementRef,
-                                    onDisplayConfirmation,
-                                }) => (
-                                    <IconButton
-                                        onClick={onDisplayConfirmation}
-                                        id={uid}
-                                        className={css.deleteButton}
-                                        fillStyle="ghost"
-                                        intent="secondary"
-                                        aria-label="Delete guidance"
-                                        ref={elementRef}
-                                        icon="delete"
-                                    />
-                                )}
-                            </ConfirmationPopover>
-                        </BodyCell>
-                        <BodyCell
-                            size="smallest"
-                            onClick={(event) => {
-                                event.stopPropagation()
-                            }}
-                        >
-                            <IconButton
-                                icon="file_copy"
-                                intent="secondary"
-                                fillStyle="ghost"
-                                ref={(el) => {
-                                    anchorElsRef.current[article.id] =
-                                        el as HTMLButtonElement
-                                }}
-                                aria-label="Duplicate guidance"
-                                onClick={() => {
-                                    handleToggleDropdown(article.id)
-                                }}
-                            />
-                            {openDropdownId === article.id && (
-                                <Dropdown
-                                    isOpen={true}
-                                    target={{
-                                        current:
-                                            anchorElsRef.current[article.id],
-                                    }}
-                                    placement="bottom-end"
-                                    onToggle={() =>
-                                        handleToggleDropdown(article.id)
-                                    }
-                                    safeDistance={0}
-                                >
-                                    <DropdownBody>
-                                        <DropdownSection title="DUPLICATE TO">
-                                            {currentFirstSorted.map(
-                                                (storeIntegration) => (
-                                                    <DropdownItem
-                                                        option={{
-                                                            value: storeIntegration.id,
-                                                            label: `${storeIntegration.name}
-                                ${
-                                    isCurrentStore(storeIntegration)
-                                        ? ' (current store)'
-                                        : ''
-                                }`,
-                                                        }}
-                                                        key={
-                                                            storeIntegration.id
-                                                        }
-                                                        onClick={() => {
-                                                            setOpenDropdownId(
-                                                                null,
-                                                            )
-                                                            onDuplicate(
-                                                                article.id,
-                                                                storeIntegration,
-                                                            )
-                                                        }}
-                                                    />
-                                                ),
-                                            )}
-                                        </DropdownSection>
-                                    </DropdownBody>
-                                </Dropdown>
-                            )}
-                        </BodyCell>
-                    </TableBodyRow>
+                        article={article}
+                        currentStoreIntegrationId={currentStoreIntegrationId}
+                        onToggle={onToggle}
+                        onDelete={onDelete}
+                        sortedStoreIntegrations={storesSortedCurrentFirst}
+                        onDuplicate={onDuplicate}
+                        onRowClick={onRowClick}
+                        availableActions={availableActions}
+                    />
                 ))}
             </TableBody>
         </TableWrapper>

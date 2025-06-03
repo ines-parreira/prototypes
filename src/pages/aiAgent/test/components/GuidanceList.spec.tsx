@@ -1,11 +1,19 @@
 import React from 'react'
 
-import { render, screen, within } from '@testing-library/react'
+import {
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+    within,
+} from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useFlag } from 'core/flags'
 import { IntegrationType } from 'models/integration/constants'
+import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { getGuidanceArticleFixture } from 'pages/aiAgent/fixtures/guidanceArticle.fixture'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { userEvent } from 'utils/testing/userEvent'
@@ -13,8 +21,22 @@ import { userEvent } from 'utils/testing/userEvent'
 import { GuidanceList } from '../../components/GuidanceList/GuidanceList'
 
 jest.mock('pages/automate/common/hooks/useStoreIntegrations')
+jest.mock(
+    'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions',
+    () => ({
+        useGetGuidancesAvailableActions: jest.fn(),
+    }),
+)
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+
+const mockUseFlag = useFlag as jest.Mock
 
 const mockedUseStoreIntegrations = jest.mocked(useStoreIntegrations)
+const mockedUseGetGuidancesAvailableActions = jest.mocked(
+    useGetGuidancesAvailableActions,
+)
 const mockStore = configureMockStore([thunk])
 
 describe('<GuidanceList />', () => {
@@ -49,24 +71,94 @@ describe('<GuidanceList />', () => {
         mockedUseStoreIntegrations.mockReturnValue(
             defaultStoreIntegrations as any,
         )
+        mockedUseGetGuidancesAvailableActions.mockReturnValue({
+            guidanceActions: [
+                {
+                    name: 'Action 1',
+                    value: 'action-1',
+                },
+                {
+                    name: 'Action 2',
+                    value: 'action-2',
+                },
+            ],
+            isLoading: false,
+        })
+
+        mockUseFlag.mockReturnValue(false)
     })
 
     it('should render guidance articles list', () => {
         const guidanceArticles = [
             getGuidanceArticleFixture(1, { title: 'First guidance' }),
-            getGuidanceArticleFixture(2, { title: 'Second guidance' }),
+            getGuidanceArticleFixture(2, {
+                title: 'Second guidance',
+                content:
+                    'Content 2 with action $$$action-1$$$ and $$$action-2$$$',
+            }),
         ]
 
         renderWithRedux(
             <GuidanceList
                 guidanceArticles={guidanceArticles}
                 currentStoreIntegrationId={1}
+                shopName="test-shop"
+                shopType="shopify"
                 {...mockHandlers}
             />,
         )
 
         expect(screen.getByText('First guidance')).toBeInTheDocument()
         expect(screen.getByText('Second guidance')).toBeInTheDocument()
+
+        expect(
+            screen.queryByText('2 Actions used: Action 1, Action 2'),
+        ).not.toBeInTheDocument()
+
+        fireEvent.click(screen.getByText('First guidance'))
+
+        expect(mockHandlers.onRowClick).toHaveBeenCalledWith(
+            guidanceArticles[0].id,
+        )
+    })
+
+    it('should render guidance actions badge', async () => {
+        const consoleErrorSpy = jest.spyOn(console, 'error')
+        mockUseFlag.mockReturnValue(true)
+
+        const guidanceArticles = [
+            getGuidanceArticleFixture(1, { title: 'First guidance' }),
+            getGuidanceArticleFixture(2, {
+                title: 'Second guidance',
+                content:
+                    'Content 2 with action $$$action-1$$$ and $$$action-2$$$ and non-existing $$$noaction$$$',
+            }),
+        ]
+
+        const { container } = renderWithRedux(
+            <GuidanceList
+                guidanceArticles={guidanceArticles}
+                currentStoreIntegrationId={1}
+                shopName="test-shop"
+                shopType="shopify"
+                {...mockHandlers}
+            />,
+        )
+
+        fireEvent.mouseOver(
+            container.querySelector('img[alt="action logo"]') as HTMLElement,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Action 1, Action 2')).toBeInTheDocument()
+        })
+
+        expect(screen.getByText('First guidance')).toBeInTheDocument()
+        expect(screen.getByText('Second guidance')).toBeInTheDocument()
+
+        expect(consoleErrorSpy).toHaveBeenCalledWith(
+            'No action found for id noaction',
+        )
     })
 
     describe('duplicate functionality', () => {
@@ -80,6 +172,8 @@ describe('<GuidanceList />', () => {
                 <GuidanceList
                     guidanceArticles={guidanceArticles}
                     currentStoreIntegrationId={1}
+                    shopName="test-shop"
+                    shopType="shopify"
                     {...mockHandlers}
                 />,
             )
@@ -97,6 +191,8 @@ describe('<GuidanceList />', () => {
                 <GuidanceList
                     guidanceArticles={guidanceArticles}
                     currentStoreIntegrationId={1}
+                    shopName="test-shop"
+                    shopType="shopify"
                     {...mockHandlers}
                 />,
             )
@@ -117,6 +213,8 @@ describe('<GuidanceList />', () => {
                 <GuidanceList
                     guidanceArticles={guidanceArticles}
                     currentStoreIntegrationId={1}
+                    shopName="test-shop"
+                    shopType="shopify"
                     {...mockHandlers}
                 />,
             )
@@ -140,6 +238,8 @@ describe('<GuidanceList />', () => {
                 <GuidanceList
                     guidanceArticles={guidanceArticles}
                     currentStoreIntegrationId={1}
+                    shopName="test-shop"
+                    shopType="shopify"
                     {...mockHandlers}
                 />,
             )
@@ -162,6 +262,8 @@ describe('<GuidanceList />', () => {
                 <GuidanceList
                     guidanceArticles={guidanceArticles}
                     currentStoreIntegrationId={1}
+                    shopName="test-shop"
+                    shopType="shopify"
                     {...mockHandlers}
                 />,
             )
@@ -183,6 +285,8 @@ describe('<GuidanceList />', () => {
                 <GuidanceList
                     guidanceArticles={guidanceArticles}
                     currentStoreIntegrationId={2}
+                    shopName="test-shop"
+                    shopType="shopify"
                     {...mockHandlers}
                 />,
             )

@@ -1,0 +1,71 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .icon {
+        margin-right: 4px;
+    }
+
+    .tooltipDisabled {
+        width: 158px;
+        .caption-regular();
+    }
+
+    .dropdown {
+        min-width: 384px !important;
+        max-width: 400px;
+    }
+
+    .backButton {
+        max-width: 100%;
+        height: auto;
+        padding: 0 !important;
+        font-weight: 600;
+        text-transform: none;
+    }
+
+    .backButtonIconLabel {
+        overflow: hidden;
+    }
+
+    .searchHeader {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow-x: hidden;
+    }
+
+    .search {
+        padding: @layout-spacing-s @layout-spacing-xs;
+        width: 100%;
+        max-width: unset;
+    }
+
+    .noActions {
+        padding-left: @layout-spacing-xxs;
+        display: block;
+        color: var(--neutral-grey-4);
+    }
+
+    .noActionsSearch {
+        padding-top: @layout-spacing-xs;
+    }
+
+    .item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .itemContent {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        overflow: hidden;
+    }
+
+    .itemName {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}

@@ -9,7 +9,8 @@ import { useAiAgentNavigation } from './hooks/useAiAgentNavigation'
 import css from './AiAgentGuidanceContainer.less'
 
 export const AiAgentGuidanceDetailContainer = () => {
-    const { shopName, articleId } = useParams<{
+    const { shopType, shopName, articleId } = useParams<{
+        shopType: string
         shopName: string
         articleId: string
     }>()
@@ -36,6 +37,7 @@ export const AiAgentGuidanceDetailContainer = () => {
     return (
         <AiAgentGuidanceDetailView
             shopName={shopName}
+            shopType={shopType}
             locale={guidanceHelpCenter.default_locale}
             guidanceArticleId={guidanceArticleId}
             guidanceHelpCenterId={guidanceHelpCenter.id}

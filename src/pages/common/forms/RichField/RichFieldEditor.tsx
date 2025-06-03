@@ -33,6 +33,7 @@ import { GuidanceVariableList } from 'pages/aiAgent/components/GuidanceEditor/va
 import createWorkflowVariablesPlugin from 'pages/automate/workflows/draftjs/plugins/variables'
 import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 import createGuidanceVariablesPlugin from 'pages/common/draftjs/plugins/guidance-variables'
+import createGuidanceActionsPlugin from 'pages/common/draftjs/plugins/guidanceActions'
 import { addVideo } from 'pages/common/draftjs/plugins/utils'
 import shortcutManager from 'services/shortcutManager'
 import { extractUrlsFromString } from 'utils'
@@ -162,6 +163,7 @@ export class RichFieldEditor extends Component<Props, State> {
     predictionPlugin?: ReturnType<typeof createPredictionPlugin>
     workflowVariablesPlugin?: ReturnType<typeof createWorkflowVariablesPlugin>
     guidanceVariablesPlugin?: ReturnType<typeof createGuidanceVariablesPlugin>
+    guidanceActionsPlugin?: ReturnType<typeof createGuidanceActionsPlugin>
 
     state: State = {
         isDragging: false,
@@ -222,6 +224,12 @@ export class RichFieldEditor extends Component<Props, State> {
                 getVariables: this.props.getWorkflowVariables,
             })
             plugins.push(this.workflowVariablesPlugin)
+        }
+
+        if (props.displayedActions?.includes(ActionName.GuidanceAction)) {
+            this.guidanceActionsPlugin = createGuidanceActionsPlugin()
+
+            plugins.push(this.guidanceActionsPlugin)
         }
 
         if (props.displayedActions?.includes(ActionName.GuidanceVariable)) {

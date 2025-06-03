@@ -34,10 +34,12 @@ const ToolbarProvider = ({
     workflowVariables,
     workflowVariablesDataTypes,
     guidanceVariables,
+    guidanceActions,
     canAddUniqueDiscountOffer = false,
     supportsUniqueDiscountOffer = false,
     onAddUniqueDiscountOfferAttachment = _noop,
     placementType = undefined,
+    shopName,
 }: Props) => {
     const toolbarContext: ToolbarContextType = useMemo(
         () => ({
@@ -64,10 +66,12 @@ const ToolbarProvider = ({
             workflowVariables,
             workflowVariablesDataTypes,
             guidanceVariables,
+            guidanceActions,
             canAddUniqueDiscountOffer,
             supportsUniqueDiscountOffer,
             onAddUniqueDiscountOfferAttachment,
             placementType,
+            shopName,
         }),
         [
             canAddVideoPlayer,
@@ -93,10 +97,12 @@ const ToolbarProvider = ({
             shopifyIntegrations,
             workflowVariables,
             workflowVariablesDataTypes,
+            guidanceActions,
             canAddUniqueDiscountOffer,
             supportsUniqueDiscountOffer,
             onAddUniqueDiscountOfferAttachment,
             placementType,
+            shopName,
         ],
     )
 

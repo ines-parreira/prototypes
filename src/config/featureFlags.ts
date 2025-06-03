@@ -27,6 +27,7 @@ export enum FeatureFlagKey {
     AiAgentTrialMode = 'ai-agent-trial-mode-allowed',
     AiAgentUseNewAgenticArchitecture = 'ai-agent-use-new-agentic-architecture',
     AiAgentUsesStoreConfigurationCustomFields = 'ai-agent-uses-store-configuration-custom-fields',
+    AiAgentVariablesAndActionsInGuidance = 'ai-agent-variables-and-actions-in-guidance',
     AIAgentWelcomePage = 'ai-agent-welcome-page',
     AiJourneyEnabled = 'ai-journey-enabled',
     AiSalesAgentActivationEmailSettings = 'linear.project_ai-sales-agent-email-settings',

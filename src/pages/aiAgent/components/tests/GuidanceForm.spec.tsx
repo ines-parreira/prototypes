@@ -48,6 +48,7 @@ const mockUseFlag = jest.requireMock('core/flags').useFlag as jest.Mock<boolean>
 describe('GuidanceForm', () => {
     const defaultProps = {
         shopName: 'test-shop',
+        availableActions: [],
         isLoading: false,
         actionType: 'create' as const,
         onSubmit: jest.fn(),

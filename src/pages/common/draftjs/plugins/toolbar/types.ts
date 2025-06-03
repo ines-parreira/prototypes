@@ -15,6 +15,7 @@ export enum ActionName {
     WorkflowVariable = 'WORKFLOWVARIABLE',
     ContactCaptureForm = 'CONTACT_CAPTURE_FORM',
     GuidanceVariable = 'GUIDANCEVARIABLE',
+    GuidanceAction = 'GUIDANCEACTION',
     BulletedList = 'BULLETEDLIST',
     OrderedList = 'ORDEREDLIST',
 }

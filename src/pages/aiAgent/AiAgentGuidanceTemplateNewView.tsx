@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 
 import { LocaleCode } from 'models/helpCenter/types'
+import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
 import { GuidanceForm } from './components/GuidanceForm/GuidanceForm'
 import { useGuidanceArticleMutation } from './hooks/useGuidanceArticleMutation'
@@ -12,6 +13,7 @@ type Props = {
     guidanceTemplate: GuidanceTemplate
     guidanceHelpCenterId: number
     locale: LocaleCode
+    availableActions: GuidanceAction[]
 }
 
 export const AiAgentGuidanceTemplateNewView = ({
@@ -19,6 +21,7 @@ export const AiAgentGuidanceTemplateNewView = ({
     guidanceTemplate,
     guidanceHelpCenterId,
     locale,
+    availableActions,
 }: Props) => {
     const { createGuidanceArticle, isGuidanceArticleUpdating } =
         useGuidanceArticleMutation({
@@ -48,6 +51,7 @@ export const AiAgentGuidanceTemplateNewView = ({
         <GuidanceForm
             actionType="create"
             shopName={shopName}
+            availableActions={availableActions}
             initialFields={initialFields}
             onSubmit={onSubmit}
             isLoading={isGuidanceArticleUpdating}

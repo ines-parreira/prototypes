@@ -5,6 +5,7 @@ import { EditorState } from 'draft-js'
 import { Label } from '@gorgias/merchant-ui-kit'
 
 import { UploadType } from 'common/types'
+import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import RichField from 'pages/common/forms/RichField/RichField'
@@ -16,6 +17,8 @@ import css from './GuidanceEditor.less'
 
 type GuidanceEditorProps = {
     content: string
+    shopName: string
+    availableActions: GuidanceAction[]
     handleUpdateContent: (content: string) => void
     onBlur?: () => void
     label?: string
@@ -29,12 +32,15 @@ const toolbarActions = [
     ActionName.Link,
     ActionName.Emoji,
     ActionName.GuidanceVariable,
+    ActionName.GuidanceAction,
     ActionName.BulletedList,
     ActionName.OrderedList,
 ]
 
 export function NewGuidanceEditor({
     content,
+    shopName,
+    availableActions,
     handleUpdateContent,
     onBlur,
     label,
@@ -46,6 +52,7 @@ export function NewGuidanceEditor({
         }),
         [content],
     )
+
     const handleChange = (editorState: EditorState) => {
         const currentContent = editorState.getCurrentContent()
         const text = currentContent.getPlainText()
@@ -75,6 +82,8 @@ export function NewGuidanceEditor({
                 canAddDiscountCodeLink={false}
                 canAddVideoPlayer={false}
                 guidanceVariables={guidanceVariables}
+                guidanceActions={availableActions}
+                shopName={shopName}
             >
                 <RichField
                     minHeight={320}

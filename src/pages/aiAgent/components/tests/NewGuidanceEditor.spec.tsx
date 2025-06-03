@@ -3,14 +3,22 @@ import React from 'react'
 import { fireEvent, render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { mockStore } from 'utils/testing'
 
 import { NewGuidanceEditor } from '../GuidanceEditor/NewGuidanceEditor'
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = useFlag as jest.Mock
 
 describe('NewGuidanceEditor', () => {
     const defaultProps = {
+        shopName: 'test-shop',
+        availableActions: [],
         content: '',
         handleUpdateContent: jest.fn(),
         onBlur: jest.fn(),
@@ -20,6 +28,14 @@ describe('NewGuidanceEditor', () => {
     const renderWithProvider = (ui: React.ReactElement) => {
         return render(<Provider store={mockStore({})}>{ui}</Provider>)
     }
+
+    beforeEach(() => {
+        mockUseFlag.mockImplementation((flag) =>
+            flag === FeatureFlagKey.AiAgentVariablesAndActionsInGuidance
+                ? false
+                : true,
+        )
+    })
 
     it('renders correctly with default props', () => {
         const { getByText } = renderWithProvider(
@@ -87,5 +103,19 @@ describe('NewGuidanceEditor', () => {
         }
 
         expect(onBlur).toHaveBeenCalled()
+    })
+
+    it('has guidance variable button and action button', () => {
+        mockUseFlag.mockReturnValue(true)
+
+        const { container } = renderWithProvider(
+            <NewGuidanceEditor {...defaultProps} />,
+        )
+
+        const toolbar = container.querySelector('.editor-toolbar')
+        expect(toolbar).toBeInTheDocument()
+
+        const buttons = toolbar?.querySelectorAll('button')
+        expect(buttons).toHaveLength(9)
     })
 })

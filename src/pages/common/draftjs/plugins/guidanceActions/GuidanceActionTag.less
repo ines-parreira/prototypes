@@ -1,0 +1,53 @@
+@import (reference) '~css/typography.less';
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .wrapper {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .container {
+        position: relative;
+        display: inline-flex;
+        vertical-align: top;
+        padding: @layout-spacing-xxs @layout-spacing-xs;
+        border-radius: @layout-spacing-xs;
+        background: var(--neutral-grey-3);
+        .caption-semibold();
+        color: var(--neutral-grey-6);
+        margin: 1px;
+    }
+
+    .invalid {
+        background: var(--accessory-red-1);
+        .caption-semibold();
+        color: var(--feedback-variations-error-4);
+    }
+
+    .actionLogo {
+        vertical-align: initial;
+        margin-right: @layout-spacing-xxs;
+    }
+
+    .content {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 50ch;
+        font-weight: normal;
+
+        &::before {
+            content: 'Use action: ';
+            font-weight: bold;
+        }
+    }
+
+    .children {
+        display: none;
+    }
+
+    .link {
+        cursor: pointer;
+    }
+}

@@ -13,6 +13,7 @@ import {
     WorkflowVariableList,
     WorkflowVariableType,
 } from 'pages/automate/workflows/models/variables.types'
+import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import { RichFieldEditorPlacement } from 'pages/common/forms/RichField/enums'
 import {
     AttachmentType,
@@ -59,8 +60,10 @@ export type ToolbarContextType = {
     workflowVariables?: WorkflowVariableList
     workflowVariablesDataTypes?: WorkflowVariableType[]
     guidanceVariables?: GuidanceVariableList
+    guidanceActions?: GuidanceAction[]
     onContactFormOpenChange?: (value: boolean) => void
     contactFormButtonEnabled?: boolean
+    shopName?: string
 }
 
 export const ToolbarContext = createContext<ToolbarContextType>({

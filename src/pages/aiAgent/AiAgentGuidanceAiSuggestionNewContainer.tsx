@@ -10,7 +10,8 @@ import { useAiAgentHelpCenter } from './hooks/useAiAgentHelpCenter'
 import css from './AiAgentGuidanceContainer.less'
 
 export const AiAgentGuidanceAiSuggestionNewContainer = () => {
-    const { shopName, aiGuidanceId } = useParams<{
+    const { shopType, shopName, aiGuidanceId } = useParams<{
+        shopType: string
         shopName: string
         aiGuidanceId: string
     }>()
@@ -38,6 +39,7 @@ export const AiAgentGuidanceAiSuggestionNewContainer = () => {
                 guidanceHelpCenterId={guidanceHelpCenter.id}
                 locale={guidanceHelpCenter.default_locale}
                 shopName={shopName}
+                shopType={shopType}
                 aiGuidanceId={aiGuidanceId}
             />
         </AiAgentLayout>
