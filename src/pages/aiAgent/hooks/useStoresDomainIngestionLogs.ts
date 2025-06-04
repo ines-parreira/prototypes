@@ -28,7 +28,10 @@ export const useStoresDomainIngestionLogs = ({
                 type: 'snippet',
                 per_page: 1,
             })),
-            { enabled: enabled && storeNames.length > 0 },
+            {
+                enabled: enabled && storeNames.length > 0,
+                refetchOnWindowFocus: false,
+            },
         )
 
     const getIngestionLogsListParams = useMemo(() => {

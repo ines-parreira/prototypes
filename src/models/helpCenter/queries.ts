@@ -93,11 +93,7 @@ export const helpCenterKeys = {
             helpCenterId: number
             queryParams?: Paths.GetArticleIngestionLogs.QueryParameters
         }[],
-    ) => [
-        ...helpCenterKeys.articleIngestionLogsListRoot(),
-        'article-ingestion-logs',
-        params,
-    ],
+    ) => [...helpCenterKeys.articleIngestionLogsListRoot(), params],
     ingestionLogs: (
         helpCenterId: number,
         queryParams?: Paths.GetIngestionLogs.QueryParameters,

@@ -26,6 +26,7 @@ export const usePublicResourcesList = ({
                 per_page: 1,
             })),
             {
+                refetchOnWindowFocus: false,
                 enabled: enabled,
             },
         )
