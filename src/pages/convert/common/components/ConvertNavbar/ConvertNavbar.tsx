@@ -1,23 +1,33 @@
-import classNames from 'classnames'
+import { NavLink } from 'react-router-dom'
 
-import navbarCss from 'assets/css/navbar.less'
 import { ActiveContent, Navbar } from 'common/navigation'
-import NavbarLink from 'pages/common/components/navbar/NavbarLink'
+import { Navigation } from 'components/Navigation/Navigation'
 
-import ConvertNavbarView from './ConvertNavbarView'
+import { ConvertNavbarView } from './ConvertNavbarView'
+import { useConvertNavbarSections } from './useConvertNavbarSections'
 
 import css from './ConvertNavbar.less'
 
-const ConvertNavbar = () => (
-    <Navbar activeContent={ActiveContent.Convert} title="Convert">
-        <div className={classNames(navbarCss['link-wrapper'], css.navbarItem)}>
-            <NavbarLink to="/app/convert/overview" exact>
-                <span>Overview</span>
-            </NavbarLink>
-        </div>
+export const ConvertNavbar = () => {
+    const { sections, handleNavigationStateChange } = useConvertNavbarSections()
 
-        <ConvertNavbarView />
-    </Navbar>
-)
+    return (
+        <Navbar activeContent={ActiveContent.Convert} title="Convert">
+            <Navigation.Root
+                className={css.navigation}
+                value={sections}
+                onValueChange={handleNavigationStateChange}
+            >
+                <Navigation.SectionItem
+                    as={NavLink}
+                    to="/app/convert/overview"
+                    exact
+                >
+                    Overview
+                </Navigation.SectionItem>
 
-export default ConvertNavbar
+                <ConvertNavbarView />
+            </Navigation.Root>
+        </Navbar>
+    )
+}

@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react'
-import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
@@ -22,11 +21,10 @@ import useContactFormFlag from 'pages/convert/common/hooks/useContactFormFlag'
 import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
-import ConvertNavbar from '../ConvertNavbar'
-
-const MOCK_SKELETON_TEST_ID = 'skeleton'
+import { ConvertNavbar } from '../ConvertNavbar'
 
 jest.mock('pages/common/hooks/useIsConvertSubscriber')
 
@@ -36,15 +34,6 @@ jest.mock('common/notifications/components/Button', () => ({
     __esModule: true,
     default: () => <div>NotificationsButton</div>,
 }))
-
-jest.mock(
-    '@gorgias/merchant-ui-kit',
-    () =>
-        ({
-            ...jest.requireActual('@gorgias/merchant-ui-kit'),
-            Skeleton: () => <div data-testid={MOCK_SKELETON_TEST_ID} />,
-        }) as typeof import('@gorgias/merchant-ui-kit'),
-)
 
 jest.mock('pages/convert/common/hooks/useContactFormFlag')
 
@@ -58,7 +47,7 @@ const mockStore = configureMockStore()
 
 const queryClient = mockQueryClient()
 
-const wrapper = ({ children }: { children?: ReactNode }) => (
+const wrapper = ({ children }: { children: ReactNode }) => (
     <StaticRouter location="/app">
         <NavBarProvider>{children}</NavBarProvider>
     </StaticRouter>
@@ -125,7 +114,6 @@ describe('<ConvertNavbar />', () => {
                 { wrapper },
             )
 
-            expect(queryByText('forum')).not.toBeInTheDocument()
             expect(queryByText('Performance')).not.toBeInTheDocument()
             expect(queryByText('Campaigns')).not.toBeInTheDocument()
             expect(queryByText('Click tracking')).not.toBeInTheDocument()
@@ -133,7 +121,7 @@ describe('<ConvertNavbar />', () => {
         })
 
         it('should render convert navbar with integrations', () => {
-            const { getAllByText, getByText } = render(
+            const { getAllByText, getByRole, getByText } = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -151,7 +139,10 @@ describe('<ConvertNavbar />', () => {
                 { wrapper },
             )
 
-            expect(getAllByText('forum').length).toBe(2)
+            userEvent.click(
+                getByRole('button', { name: /convertgorgiastestchat/ }),
+            )
+            userEvent.click(getByRole('button', { name: /Chitty chatty/ }))
 
             expect(getAllByText('Performance').length).toBe(1)
             expect(getAllByText('Campaigns').length).toBe(1)
@@ -168,7 +159,7 @@ describe('<ConvertNavbar />', () => {
         it('should render convert navbar with integrations without paywalls', () => {
             isConvertSubscriberMock.mockReturnValue(true)
 
-            const { getAllByText, getByText, queryByText } = render(
+            const { getAllByText, getByText, getByRole, queryByText } = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -186,7 +177,10 @@ describe('<ConvertNavbar />', () => {
                 { wrapper },
             )
 
-            expect(getAllByText('forum').length).toBe(2)
+            userEvent.click(
+                getByRole('button', { name: /convertgorgiastestchat/ }),
+            )
+            userEvent.click(getByRole('button', { name: /Chitty chatty/ }))
 
             expect(getAllByText('Performance').length).toBe(1)
             expect(getAllByText('Campaigns').length).toBe(1)
@@ -217,7 +211,7 @@ describe('<ConvertNavbar />', () => {
                 ],
             )
 
-            const { getAllByText, queryAllByText } = render(
+            const { getAllByText, queryAllByText, getByRole } = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -235,10 +229,14 @@ describe('<ConvertNavbar />', () => {
                 { wrapper },
             )
 
+            userEvent.click(
+                getByRole('button', { name: /convertgorgiastestchat/ }),
+            )
+            userEvent.click(getByRole('button', { name: /Chitty chatty/ }))
+
             expect(queryAllByText('Set up').length).toBe(1)
             expect(queryAllByText('Performance').length).toBe(0)
 
-            expect(getAllByText('forum').length).toBe(2)
             expect(getAllByText('Campaigns').length).toBe(1)
             expect(getAllByText('Click tracking').length).toBe(1)
             expect(getAllByText('Installation').length).toBe(1)
@@ -251,7 +249,7 @@ describe('<ConvertNavbar />', () => {
                 isError: false,
             })
 
-            const { queryByText, queryAllByTestId } = render(
+            const { getByRole } = render(
                 <Provider store={mockStore(defaultState)}>
                     <QueryClientProvider client={queryClient}>
                         <DndProvider backend={HTML5Backend}>
@@ -264,8 +262,7 @@ describe('<ConvertNavbar />', () => {
                 { wrapper },
             )
 
-            expect(queryByText('forum')).not.toBeInTheDocument()
-            expect(queryAllByTestId(MOCK_SKELETON_TEST_ID).length).toBe(2)
+            expect(getByRole('status')).toBeInTheDocument()
         })
     })
 })

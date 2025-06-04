@@ -1,175 +1,138 @@
-import classNames from 'classnames'
+import { NavLink } from 'react-router-dom'
 
-import cssNavbar from 'assets/css/navbar.less'
-import NavbarLink from 'pages/common/components/navbar/NavbarLink'
-import NavbarSectionBlock from 'pages/common/components/navbar/NavbarSectionBlock'
+import { Navigation } from 'components/Navigation/Navigation'
+import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import useCanAddContactFormFlag from 'pages/convert/common/hooks/useContactFormFlag'
 
-import ConvertNavbarPaywallNavbarLink from './ConvertNavbarPaywallNavbarLink'
-
 import css from './ConvertNavbarSectionBlock.less'
 
-type Props = {
+type ConvertNavbarSectionBlockV2Props = {
     chatIntegrationId: number
-    onToggle: () => void
     name: string
-    isExpanded: boolean
     isOnboarded: boolean
     hasStore: boolean
 }
 const FROM_LOCATION = 'convert-left-menu'
-const ConvertNavbarSectionBlock = ({
+
+export const ConvertNavbarSectionBlock = ({
     chatIntegrationId,
     isOnboarded,
     hasStore,
-    ...props
-}: Props) => {
+    name,
+}: ConvertNavbarSectionBlockV2Props) => {
     const isConvertSubscriber = useIsConvertSubscriber()
     const settingsEnabled = useCanAddContactFormFlag()
 
-    return (
-        <NavbarSectionBlock
-            icon={<i className={'material-icons'}>forum</i>}
-            className={css.section}
-            {...props}
-        >
-            {isOnboarded ? (
-                <>
-                    {hasStore &&
-                        (isConvertSubscriber ? (
-                            <div
-                                className={classNames(
-                                    cssNavbar['link-wrapper'],
-                                    cssNavbar.isNested,
-                                )}
-                            >
-                                <NavbarLink
-                                    to={{
-                                        pathname: `/app/convert/${chatIntegrationId}/performance`,
-                                        state: { from: FROM_LOCATION },
-                                    }}
-                                >
-                                    <span className={cssNavbar['item-name']}>
-                                        Performance
-                                    </span>
-                                </NavbarLink>
-                            </div>
-                        ) : (
-                            <ConvertNavbarPaywallNavbarLink
-                                to={`/app/convert/${chatIntegrationId}/performance/subscribe`}
-                                isNested
-                            >
-                                <span className={cssNavbar['item-name']}>
-                                    Performance
-                                </span>
-                            </ConvertNavbarPaywallNavbarLink>
-                        ))}
-
-                    <div
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested,
-                        )}
-                    >
-                        <NavbarLink
-                            to={{
-                                pathname: `/app/convert/${chatIntegrationId}/campaigns`,
-                                state: { from: FROM_LOCATION },
-                            }}
-                        >
-                            <span className={cssNavbar['item-name']}>
-                                Campaigns
-                            </span>
-                        </NavbarLink>
-                    </div>
-
-                    {isConvertSubscriber ? (
-                        <div
-                            className={classNames(
-                                cssNavbar['link-wrapper'],
-                                cssNavbar.isNested,
-                            )}
-                        >
-                            <NavbarLink
-                                to={{
-                                    pathname: `/app/convert/${chatIntegrationId}/click-tracking`,
-                                    state: { from: FROM_LOCATION },
-                                }}
-                            >
-                                <span className={cssNavbar['item-name']}>
-                                    Click tracking
-                                </span>
-                            </NavbarLink>
-                        </div>
-                    ) : (
-                        <ConvertNavbarPaywallNavbarLink
-                            to={`/app/convert/${chatIntegrationId}/click-tracking/subscribe`}
-                            isNested
-                        >
-                            <span className={cssNavbar['item-name']}>
-                                Click tracking
-                            </span>
-                        </ConvertNavbarPaywallNavbarLink>
-                    )}
-
-                    {settingsEnabled ? (
-                        <div
-                            className={classNames(
-                                cssNavbar['link-wrapper'],
-                                cssNavbar.isNested,
-                            )}
-                        >
-                            <NavbarLink
-                                to={{
-                                    pathname: `/app/convert/${chatIntegrationId}/settings`,
-                                    state: { from: FROM_LOCATION },
-                                }}
-                            >
-                                <span className={cssNavbar['item-name']}>
-                                    Settings
-                                </span>
-                            </NavbarLink>
-                        </div>
-                    ) : (
-                        <div
-                            className={classNames(
-                                cssNavbar['link-wrapper'],
-                                cssNavbar.isNested,
-                            )}
-                        >
-                            <NavbarLink
-                                to={{
-                                    pathname: `/app/convert/${chatIntegrationId}/installation`,
-                                    state: { from: FROM_LOCATION },
-                                }}
-                            >
-                                <span className={cssNavbar['item-name']}>
-                                    Installation
-                                </span>
-                            </NavbarLink>
-                        </div>
-                    )}
-                </>
-            ) : (
-                <div
-                    className={classNames(
-                        cssNavbar['link-wrapper'],
-                        cssNavbar.isNested,
-                    )}
-                >
-                    <NavbarLink
+    if (!isOnboarded) {
+        return (
+            <Navigation.Section value={chatIntegrationId}>
+                <Navigation.SectionTrigger>
+                    <span className={css.name}>{name}</span>
+                    <Navigation.SectionIndicator />
+                </Navigation.SectionTrigger>
+                <Navigation.SectionContent>
+                    <Navigation.SectionItem
+                        as={NavLink}
+                        displayType="indent"
                         to={{
                             pathname: `/app/convert/${chatIntegrationId}/setup`,
                             state: { from: FROM_LOCATION },
                         }}
                     >
-                        <span className={cssNavbar['item-name']}>Set up</span>
-                    </NavbarLink>
-                </div>
-            )}
-        </NavbarSectionBlock>
+                        Set up
+                    </Navigation.SectionItem>
+                </Navigation.SectionContent>
+            </Navigation.Section>
+        )
+    }
+
+    return (
+        <Navigation.Section value={chatIntegrationId}>
+            <Navigation.SectionTrigger>
+                <span className={css.name}>{name}</span>
+                <Navigation.SectionIndicator />
+            </Navigation.SectionTrigger>
+            <Navigation.SectionContent>
+                {hasStore &&
+                    (isConvertSubscriber ? (
+                        <Navigation.SectionItem
+                            as={NavLink}
+                            displayType="indent"
+                            to={{
+                                pathname: `/app/convert/${chatIntegrationId}/performance`,
+                                state: { from: FROM_LOCATION },
+                            }}
+                        >
+                            Performance
+                        </Navigation.SectionItem>
+                    ) : (
+                        <Navigation.SectionItem
+                            displayType="indent"
+                            as={NavLink}
+                            to={`/app/convert/${chatIntegrationId}/performance/subscribe`}
+                            className={css.item}
+                        >
+                            Performance
+                            <UpgradeIcon />
+                        </Navigation.SectionItem>
+                    ))}
+                <Navigation.SectionItem
+                    displayType="indent"
+                    as={NavLink}
+                    to={{
+                        pathname: `/app/convert/${chatIntegrationId}/campaigns`,
+                        state: { from: FROM_LOCATION },
+                    }}
+                >
+                    Campaigns
+                </Navigation.SectionItem>
+                {isConvertSubscriber ? (
+                    <Navigation.SectionItem
+                        displayType="indent"
+                        as={NavLink}
+                        to={{
+                            pathname: `/app/convert/${chatIntegrationId}/click-tracking`,
+                            state: { from: FROM_LOCATION },
+                        }}
+                    >
+                        Click tracking
+                    </Navigation.SectionItem>
+                ) : (
+                    <Navigation.SectionItem
+                        displayType="indent"
+                        as={NavLink}
+                        to={`/app/convert/${chatIntegrationId}/click-tracking/subscribe`}
+                        className={css.item}
+                    >
+                        Click tracking
+                        <UpgradeIcon />
+                    </Navigation.SectionItem>
+                )}
+                {settingsEnabled ? (
+                    <Navigation.SectionItem
+                        displayType="indent"
+                        as={NavLink}
+                        to={{
+                            pathname: `/app/convert/${chatIntegrationId}/settings`,
+                            state: { from: FROM_LOCATION },
+                        }}
+                    >
+                        Settings
+                    </Navigation.SectionItem>
+                ) : (
+                    <Navigation.SectionItem
+                        displayType="indent"
+                        as={NavLink}
+                        to={{
+                            pathname: `/app/convert/${chatIntegrationId}/installation`,
+                            state: { from: FROM_LOCATION },
+                        }}
+                    >
+                        Installation
+                    </Navigation.SectionItem>
+                )}
+            </Navigation.SectionContent>
+        </Navigation.Section>
     )
 }
-
-export default ConvertNavbarSectionBlock
