@@ -211,15 +211,15 @@ export const CustomFieldsFormComponent = ({
                     </Link>
                     . Manage fields in{' '}
                     <Link to={'/app/settings/ticket-fields/active'}>
-                        Ticket Field
-                    </Link>{' '}
-                    settings.
+                        Ticket Field settings
+                    </Link>
+                    .
                 </div>
             </div>
             <div className={css.formGroup}>
                 <SelectFilter
                     isDisabled={state.isSelectDisabled}
-                    disabledTooltipText="All ticket fields added"
+                    disabledTooltipText="All ticket fields added."
                     onChange={handleCustomFieldSelectionUpdate}
                     onClose={handleCustomFieldSelectFilterClose}
                     value={state.selectedCustomFields}

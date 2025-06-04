@@ -1,15 +1,15 @@
 {
   "summary": {
     "totalEntries": 40,
-    "totalUsages": 1191,
-    "reportGeneratedAt": "2025-06-02T09:21:17.519Z"
+    "totalUsages": 1185,
+    "reportGeneratedAt": "2025-06-03T09:52:35.391Z"
   },
   "entries": [
     {
       "type": "feature-component",
       "entries": [
         {
-          "usageCount": 14,
+          "usageCount": 15,
           "name": "SelectFilter",
           "nodeType": "VariableDeclaration",
           "deprecationDate": "2025-06-02",
@@ -19,6 +19,7 @@
             "named": [],
             "default": [
               "src/pages/aiAgent/components/StoreConfigForm/FormComponents/CustomFieldsFormComponent.tsx",
+              "src/pages/aiAgent/components/StoreConfigForm/FormComponents/TicketTagsFormComponent.tsx",
               "src/pages/common/components/MacroFilters/MacroFilters.tsx",
               "src/pages/settings/audit/UserAuditList.tsx",
               "src/pages/settings/common/FontSelectField/components/FontCatalogueModal/FontCatalogueModal.tsx",
@@ -282,7 +283,7 @@
       "type": "feature-flag cleanup initiative",
       "entries": [
         {
-          "usageCount": 176,
+          "usageCount": 173,
           "name": "launchdarkly-react-client-sdk.useFlags",
           "nodeType": "Identifier",
           "deprecationDate": "2025-02-10",
@@ -349,7 +350,7 @@
               "src/pages/aiAgent/insights/IntentTableWidget/IntentTableCells.tsx",
               "src/pages/aiAgent/providers/AiAgentAccountConfigurationProvider.tsx",
               "src/pages/aiAgent/test/AIAgentPaywallView.spec.tsx",
-              "src/pages/automate/actionsPlatform/hooks/tests/useEnabledActionStepsByApp.spec.ts",
+              "src/pages/automate/actionsPlatform/hooks/tests/useEnabledActionStepsByApp.spec.tsx",
               "src/pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled.ts",
               "src/pages/automate/articleRecommendation/ArticleRecommendationView.tsx",
               "src/pages/automate/common/components/AutomateNavbar.tsx",
@@ -386,10 +387,8 @@
               "src/pages/convert/onboarding/components/ConvertSimplifiedEditorModal/ConvertSimplifiedEditorModal.tsx",
               "src/pages/integrations/integration/Integration.tsx",
               "src/pages/integrations/integration/components/email/EmailIntegrationListItem.tsx",
-              "src/pages/integrations/integration/components/email/EmailIntegrationOnboarding.tsx",
               "src/pages/integrations/integration/components/email/EmailIntegrationUpdateLayout/EmailIntegrationUpdateLayout.tsx",
               "src/pages/integrations/integration/components/email/EmailMigration/MigrationDomainList.tsx",
-              "src/pages/integrations/integration/components/email/hooks/useEmailOnboarding.ts",
               "src/pages/integrations/integration/components/email/tests/EmailIntegrationListItem.spec.tsx",
               "src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/GorgiasChatCreationWizard.tsx",
               "src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/components/steps/GorgiasChatCreationWizardStepBasics.tsx",
@@ -413,7 +412,6 @@
               "src/pages/integrations/integration/components/gorgias_chat/hooks/useChatMigrationBanner.ts",
               "src/pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation.ts",
               "src/pages/integrations/integration/components/whatsapp/WhatsAppIntegrationMigration.tsx",
-              "src/pages/settings/common/SettingsNavbar/SettingsNavbar.tsx",
               "src/pages/settings/contactForm/components/ContactFormAutoEmbedPublishSection/ContactFormAutoEmbedPublishSection.tsx",
               "src/pages/settings/contactForm/components/ContactFormManualEmbedCard/useContactFormManualEmbedTabs.tsx",
               "src/pages/settings/contactForm/views/ContactFormCreateView/ContactFormCreateView.tsx",
@@ -754,7 +752,7 @@
       "type": "ui-kit-migration",
       "entries": [
         {
-          "usageCount": 556,
+          "usageCount": 553,
           "name": "Button",
           "nodeType": "VariableDeclaration",
           "deprecationDate": "2024-03-04",
@@ -809,7 +807,6 @@
               "src/pages/aiAgent/components/SeeAllSuggestionsCard/SeeAllSuggestionsCard.tsx",
               "src/pages/aiAgent/components/StoreConfigForm/FormComponents/SettingsBanner.tsx",
               "src/pages/automate/actionsPlatform/ActionsPlatformAppsView.tsx",
-              "src/pages/automate/actionsPlatform/ActionsPlatformCreateStepView.tsx",
               "src/pages/automate/actionsPlatform/ActionsPlatformCreateUseCaseTemplateView.tsx",
               "src/pages/automate/actionsPlatform/ActionsPlatformEditStepView.tsx",
               "src/pages/automate/actionsPlatform/ActionsPlatformEditUseCaseTemplateView.tsx",
@@ -957,6 +954,7 @@
               "src/pages/common/draftjs/plugins/toolbar/components/AddImage.tsx",
               "src/pages/common/draftjs/plugins/toolbar/components/AddLink.tsx",
               "src/pages/common/draftjs/plugins/toolbar/components/AddVideo.tsx",
+              "src/pages/common/draftjs/plugins/toolbar/components/GuidanceActionDropdown.tsx",
               "src/pages/common/draftjs/plugins/toolbar/components/GuidanceVariableDropdown.tsx",
               "src/pages/common/draftjs/plugins/toolbar/components/GuidanceVariablePicker.tsx",
               "src/pages/common/draftjs/plugins/toolbar/components/WorkflowVariableDropdown.tsx",
@@ -1032,12 +1030,10 @@
               "src/pages/integrations/integration/components/email/BaseEmailIntegrationInputField.tsx",
               "src/pages/integrations/integration/components/email/DeleteVerificationModal.tsx",
               "src/pages/integrations/integration/components/email/EmailDomainVerification/DEPRECATED_EmailDomainVerification.tsx",
-              "src/pages/integrations/integration/components/email/EmailDomainVerification/EmailDomainVerificationActionButtons.tsx",
               "src/pages/integrations/integration/components/email/EmailDomainVerification/VerifyDomainModal.tsx",
               "src/pages/integrations/integration/components/email/EmailDomainVerification/components/EmailDomainVerificationForm.tsx",
               "src/pages/integrations/integration/components/email/EmailIntegrationCreateForwarding/EmailIntegrationCreateForwarding.tsx",
               "src/pages/integrations/integration/components/email/EmailIntegrationCreateVerification/EmailIntegrationCreateVerification.tsx",
-              "src/pages/integrations/integration/components/email/EmailIntegrationOnboardingButtons.tsx",
               "src/pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationAddressField.tsx",
               "src/pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationUpdate.tsx",
               "src/pages/integrations/integration/components/email/EmailMigration/DomainVerificationAccordionItem.tsx",
@@ -1054,7 +1050,6 @@
               "src/pages/integrations/integration/components/email/EmailOutboundVerification/SingleSenderVerification/VerificationEmailSent.tsx",
               "src/pages/integrations/integration/components/email/EmailOutboundVerification/VerificationForm/VerificationForm.tsx",
               "src/pages/integrations/integration/components/email/EmailToStoreMapping/EmailIntegrationConnectStore.tsx",
-              "src/pages/integrations/integration/components/email/OnboardingDomainVerificationPrompt.tsx",
               "src/pages/integrations/integration/components/facebook/FacebookIntegrationDetail.tsx",
               "src/pages/integrations/integration/components/facebook/FacebookIntegrationPreferences.tsx",
               "src/pages/integrations/integration/components/facebook/FacebookIntegrationSetup/FacebookIntegrationSetup.tsx",
@@ -1672,7 +1667,7 @@
           ]
         },
         {
-          "usageCount": 20,
+          "usageCount": 19,
           "name": "AlertBanner",
           "nodeType": "FunctionDeclaration",
           "deprecationDate": "2024-03-05",
@@ -1684,7 +1679,6 @@
               "src/AlertBanners/components/AlertBanners.tsx",
               "src/AlertBanners/components/ImpersonationBanner.tsx",
               "src/AlertBanners/components/tests/AlertBanner.spec.tsx",
-              "src/pages/automate/common/components/AiAgentMovedBanner.tsx",
               "src/pages/automate/workflows/editor/visualBuilder/editors/TestFlowEditor.tsx",
               "src/pages/common/components/EmailDisconnectedBanner/index.tsx",
               "src/pages/common/components/EmailDomainVerificationBanner/EmailDomainVerificationBanner.tsx",

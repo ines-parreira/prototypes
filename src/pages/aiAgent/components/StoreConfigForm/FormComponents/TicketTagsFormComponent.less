@@ -1,0 +1,38 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .formGroup {
+        margin-bottom: @layout-spacing-l;
+
+        .formGroupDescription {
+            margin-bottom: @layout-spacing-s;
+        }
+    }
+
+    .label {
+        margin-bottom: @layout-spacing-xs;
+    }
+    .ticketTagRowContainer {
+        display: flex;
+
+        .ticketTagNameInput,
+        .ticketTagNameHeader {
+            width: 200px;
+            margin-bottom: @layout-spacing-xs;
+            margin-right: @layout-spacing-xs;
+        }
+
+        .ticketTagDescriptionInput,
+        .ticketTagDescriptionHeader {
+            flex-grow: 1;
+            margin-bottom: @layout-spacing-xs;
+        }
+    }
+
+    .ticketTagNameHeader,
+    .ticketTagDescriptionHeader {
+        .body-semibold();
+        display: flex;
+    }
+}

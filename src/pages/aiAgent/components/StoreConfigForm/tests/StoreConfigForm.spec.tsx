@@ -1184,10 +1184,7 @@ describe('<StoreConfigForm />', () => {
             expect(getDrawer()).toBeVisible()
         })
 
-        userEvent.click(screen.getByRole('button', { name: /add tag/i }))
-        await screen.findByText(/choose tag/i)
-        userEvent.click(screen.getByText(/choose tag/i))
-        await userEvent.type(screen.getByRole('textbox'), 'Test')
+        userEvent.click(screen.getByRole('button', { name: /add ticket tag/i }))
 
         // Save changes
         const saveButton = within(getDrawer()).getByRole('button', {
@@ -1196,13 +1193,9 @@ describe('<StoreConfigForm />', () => {
         userEvent.click(saveButton)
 
         await waitFor(() => {
-            expect(updateValueMocked).toHaveBeenCalledWith('tags', [
-                {
-                    name: '',
-                    description: 'Test',
-                },
-            ])
+            expect(updateValueMocked).toHaveBeenCalledWith('tags', [])
         })
+        expect(updateValueMocked).toHaveBeenCalledWith('tags', [])
     })
 
     it('should update form values when saving drawer content with new ticket fields', async () => {
@@ -1287,11 +1280,8 @@ describe('<StoreConfigForm />', () => {
             expect(getDrawer()).toBeVisible()
         })
 
-        // Find and click the add tag button
-        const addTagButton = within(getDrawer()).getByRole('button', {
-            name: /add tag/i,
-        })
-        userEvent.click(addTagButton)
+        // Add tags
+        userEvent.click(screen.getByRole('button', { name: 'Add Ticket Tag' }))
 
         // Cancel changes
         const cancelButton = within(getDrawer()).getByRole('button', {
@@ -1344,7 +1334,7 @@ describe('<StoreConfigForm />', () => {
             ...defaultUseConfigurationFormValues,
             formValues: {
                 ...initialFormValues,
-                tags: [{ name: 'tag1', description: 'tag1' }],
+                tags: [{ name: 'tag1', description: 'tag1 description' }],
             },
         })
 
@@ -1352,16 +1342,16 @@ describe('<StoreConfigForm />', () => {
 
         await userEvent.click(screen.getAllByText('Tags')[0])
 
-        expect(screen.getByText('tag1')).toBeInTheDocument()
-        expect(screen.queryByText('tag2')).not.toBeInTheDocument()
+        expect(screen.getByDisplayValue('tag1')).toBeInTheDocument()
+        expect(screen.queryByDisplayValue('tag2')).not.toBeInTheDocument()
 
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
             formValues: {
                 ...initialFormValues,
                 tags: [
-                    { name: 'tag1', description: 'tag1' },
-                    { name: 'tag2', description: 'tag2' },
+                    { name: 'tag1', description: 'tag1 description' },
+                    { name: 'tag2', description: 'tag2 description' },
                 ],
             },
         })
@@ -1394,7 +1384,7 @@ describe('<StoreConfigForm />', () => {
             </Provider>,
         )
 
-        expect(screen.getByText('tag2')).toBeInTheDocument()
+        expect(screen.getByDisplayValue('tag2')).toBeInTheDocument()
     })
 
     it('should update activeDrawerValues when tags in formValues change with an undefined value', async () => {
@@ -1402,7 +1392,7 @@ describe('<StoreConfigForm />', () => {
             ...defaultUseConfigurationFormValues,
             formValues: {
                 ...initialFormValues,
-                tags: [{ name: 'tag1', description: 'tag1' }],
+                tags: [{ name: 'tag1', description: 'tag1 description' }],
             },
         })
 
@@ -1410,7 +1400,7 @@ describe('<StoreConfigForm />', () => {
 
         await userEvent.click(screen.getAllByText('Tags')[0])
 
-        expect(screen.getByText('tag1')).toBeInTheDocument()
+        expect(screen.getByDisplayValue('tag1')).toBeInTheDocument()
 
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,

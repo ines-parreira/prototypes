@@ -165,9 +165,7 @@ describe('CustomFieldsFormComponent', () => {
             fireEvent.click(dropDownButton)
 
             expect(
-                within(container).getByPlaceholderText(
-                    'Search Ticket Fields...',
-                ),
+                within(container).getByPlaceholderText('Search Ticket Fields'),
             ).toBeInTheDocument()
         })
 

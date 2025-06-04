@@ -459,7 +459,7 @@ const SelectFilter = ({
                             <Input
                                 autoFocus
                                 onChange={(e) => setSearch(e.target.value)}
-                                placeholder={`Search ${searchPlaceholder ?? plural}...`}
+                                placeholder={`Search ${searchPlaceholder ?? `${plural}...`}`}
                                 value={search}
                             />
                         </DropdownItem>

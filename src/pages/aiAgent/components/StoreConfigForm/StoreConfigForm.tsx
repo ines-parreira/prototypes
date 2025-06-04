@@ -31,7 +31,6 @@ import { AiAgentConfigurationModal } from 'pages/aiAgent/AiAgentConfigurationVie
 import PostCompletionWizardModal from 'pages/aiAgent/AiAgentOnboardingWizard/PostCompletionWizardModal'
 import { TicketPreview } from 'pages/aiAgent/AiAgentOnboardingWizard/TicketPreview'
 import { PublicSourcesSection } from 'pages/aiAgent/components//PublicSourcesSection/PublicSourcesSection'
-import TagList from 'pages/aiAgent/components//TicketTag/TagList'
 import { ChannelsFormComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/ChannelsFormComponent'
 import { CustomFieldsFormComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/CustomFieldsFormComponent'
 import { StoreConfigDrawer } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/StoreConfigDrawer'
@@ -75,6 +74,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { reportError } from 'utils/errors'
 
+import { TicketTagsFormComponent } from './FormComponents/TicketTagsFormComponent'
 import { useVerifyChannelsActivation } from './hooks/useVerifyChannelsActivation'
 
 import css from './StoreConfigForm.less'
@@ -623,10 +623,13 @@ export const StoreConfigForm = ({
     const drawerContent = {
         tags: {
             content: (
-                <TagList
+                <TicketTagsFormComponent
                     tags={activeDrawerValues.tags ?? []}
-                    onTagsUpdate={(tags: Tag[]) => {
-                        setActiveDrawerValues({ ...activeDrawerValues, tags })
+                    updateValue={(key, value) => {
+                        setActiveDrawerValues({
+                            ...activeDrawerValues,
+                            [key]: value,
+                        })
                         setIsFormDirty(
                             StoreConfigFormSection.generalSettings,
                             true,
