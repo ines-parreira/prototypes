@@ -187,4 +187,17 @@ describe('GlobalNavigation', () => {
         const { queryByText } = renderWithContext()
         expect(queryByText('auto_awesome')).toBeInTheDocument()
     })
+
+    it('should render AI Journey icon if isAiJourneyEnabled feature flag is enabled', () => {
+        mockUseFlag.mockImplementation((flag) =>
+            flag === FeatureFlagKey.AiJourneyEnabled ? true : false,
+        )
+        const { queryByText } = renderWithContext()
+        expect(queryByText('moving')).toBeInTheDocument()
+    })
+
+    it('should not render AI Journey icon if isAiJourneyEnabled feature flag is disabled', () => {
+        const { queryByText } = renderWithContext()
+        expect(queryByText('moving')).not.toBeInTheDocument()
+    })
 })

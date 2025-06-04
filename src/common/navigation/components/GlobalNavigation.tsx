@@ -29,6 +29,7 @@ export default function GlobalNavigation() {
     const isAutomateRevampEnabled = useFlag(
         FeatureFlagKey.AutomateSettingsRevamp,
     )
+    const isAiJourneyEnabled = useFlag(FeatureFlagKey.AiJourneyEnabled)
 
     const { isModuleRestrictedToCurrentUser } = useReportChartRestrictions()
     const isAccessRestrictedToStatistics =
@@ -96,7 +97,7 @@ export default function GlobalNavigation() {
                             as={Link}
                             icon="auto_awesome"
                             label="AI Agent"
-                            isActive={activeItem === 'ai-agent'}
+                            isActive={activeItem === MenuItemName.AiAgent}
                             tooltip={<span>AI Agent</span>}
                             to="/app/ai-agent"
                             data-candu-id="global-navigation-menu-ai-agent-page"
@@ -144,6 +145,17 @@ export default function GlobalNavigation() {
                             tooltip={<span>Voice of Customer</span>}
                             to={BASE_VOICE_OF_CUSTOMER_PATH}
                             data-candu-id="global-navigation-menu-voice-of-customer-page"
+                        />
+                    )}
+                    {isAiJourneyEnabled && (
+                        <GlobalNavigationItem
+                            as={Link}
+                            icon="moving"
+                            label="AI Journey"
+                            isActive={activeItem === MenuItemName.AiJourney}
+                            tooltip={<span>AI Journey</span>}
+                            to="/app/ai-journey"
+                            data-candu-id="global-navigation-menu-ai-journey-page"
                         />
                     )}
                 </div>

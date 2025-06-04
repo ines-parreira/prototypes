@@ -19,6 +19,7 @@ export enum MenuItemName {
     Statistics = 'statistics',
     Tickets = 'tickets',
     VoiceOfCustomer = 'voice-of-customer',
+    AiJourney = 'ai-journey',
 }
 
 export type MenuItem = {

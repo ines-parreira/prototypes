@@ -705,4 +705,36 @@ describe('<Routes/>', () => {
             expect(screen.getByText(/Shopify account/)).toBeInTheDocument()
         })
     })
+
+    describe('AiJourneyRoutes', () => {
+        it('should render AI Journeu landing page when feature flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <MemoryRouter initialEntries={['/app/ai-journey']}>
+                        <Routes />
+                    </MemoryRouter>
+                </Provider>,
+            )
+
+            expect(
+                screen.getByText('AI Journey Performance'),
+            ).toBeInTheDocument()
+        })
+
+        it('should redirect to /app when feature flag is disabled', () => {
+            mockFlags({
+                [FeatureFlagKey.AiJourneyEnabled]: false,
+            })
+
+            render(
+                <MemoryRouter initialEntries={['/app/ai-journey']}>
+                    <Routes />
+                </MemoryRouter>,
+            )
+
+            expect(mockHistory.location.pathname).toBe('/app')
+        })
+    })
 })

@@ -13,6 +13,7 @@ import {
 } from 'react-router-dom'
 import { CompatRoute } from 'react-router-dom-v5-compat'
 
+import { AiJourneyRoutes } from 'AIJourney/routes'
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { logPageChange } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -165,6 +166,7 @@ export function AppRoutes() {
                 component={RedirectToAiAgentRoutes}
             />
             <Route path={`${path}/ai-agent`} render={AiAgentBaseRoutes} />
+            <Route path={`${path}/ai-journey`} component={AiJourneyRoutes} />
             <Route path={`${path}/convert`}>
                 <ConvertRoutes />
             </Route>

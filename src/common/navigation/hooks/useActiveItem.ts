@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom'
 const pathItemMap: Record<string, string> = {
     '/app/automation': 'automate',
     '/app/ai-agent': 'ai-agent',
+    '/app/ai-journey': 'ai-journey',
     '/app/convert': 'convert',
     '/app/customer': 'customers',
     '/app/customers': 'customers',
