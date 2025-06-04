@@ -42,6 +42,10 @@ describe('useAllVoiceCalls', () => {
         expect(useExhaustEndpointMock).toHaveBeenCalledWith(
             ['all-voice-calls', 123],
             expect.any(Function),
+            {
+                refetchOnWindowFocus: false,
+                staleTime: expect.any(Number),
+            },
         )
         expect(result.current).toEqual({
             voiceCalls: mockData,

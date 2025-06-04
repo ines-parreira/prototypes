@@ -4,7 +4,13 @@ import classnames from 'classnames'
 import classNamesBind from 'classnames/bind'
 import { fromJS, Map } from 'immutable'
 
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from '@gorgias/helpdesk-types'
+
+import {
+    Meta as MetaType,
+    Source as SourceType,
+    TicketMessage as TicketMessage_DEPRECATED,
+} from 'models/ticket/types'
 import { AgentLabel, CustomerLabel } from 'pages/common/utils/labels'
 import { isForwardedMessage } from 'tickets/common/utils'
 
@@ -17,7 +23,7 @@ const classNames = classNamesBind.bind(css)
 
 type Props = {
     id: string
-    message: TicketMessage
+    message: TicketMessage_DEPRECATED | TicketMessage
     hasError?: boolean
     isMessageHidden?: boolean
     isMessageDeleted?: boolean
@@ -40,19 +46,22 @@ export default function Header({
     const isForwarded = isForwardedMessage(message)
     let metaContent = (
         <Meta
-            messageId={message.message_id}
+            messageId={message.message_id ?? undefined}
             externalId={message.external_id}
-            meta={message.meta}
+            meta={message.meta as MetaType}
             via={message.via}
-            source={message.source}
+            source={message.source as SourceType}
             integrationId={message.integration_id}
-            ruleId={message.rule_id}
+            ruleId={message.rule_id?.toString()}
             messageCreatedDatetime={message.created_datetime}
         />
     )
 
     let isDuplicated = false
-    if (message.meta && message.meta.is_duplicated) {
+    if (
+        message.meta &&
+        (message.meta as Record<string, unknown>).is_duplicated
+    ) {
         isDuplicated = true
     }
 
@@ -103,7 +112,7 @@ export default function Header({
                         isForwarded={isForwarded}
                         createdDatetime={message.created_datetime}
                         channel={message.channel}
-                        source={message.source}
+                        source={message.source as SourceType}
                         containerRef={containerRef}
                     />
                 )}

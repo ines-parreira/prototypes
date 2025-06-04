@@ -1,9 +1,6 @@
-@import (reference) '~@gorgias/design-tokens/dist/css/layout';
-@import '~css/new/mixins';
-
 :local {
     .component {
-        margin-top: @layout-spacing-s;
+        margin-top: var(--layout-spacing-s);
     }
 
     .message {
@@ -11,7 +8,7 @@
     }
 
     .failedActionsToggle {
-        margin-left: @layout-spacing-s;
+        margin-left: var(--layout-spacing-s);
     }
 
     .failedActions {
@@ -24,13 +21,13 @@
     }
 
     .showFailedActions .failedActions {
-        padding-top: @layout-spacing-s;
+        padding-top: var(--layout-spacing-s);
         height: auto;
         opacity: 1;
     }
 
     .failedActionError {
-        margin-left: @layout-spacing-s;
+        margin-left: var(--layout-spacing-s);
         &:not(:last-of-type) {
             margin-bottom: 10px;
         }

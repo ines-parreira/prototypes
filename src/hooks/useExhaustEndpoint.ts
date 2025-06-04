@@ -1,23 +1,25 @@
 import { useEffect, useMemo } from 'react'
 
 import { useInfiniteQuery } from '@tanstack/react-query'
-import type { QueryKey } from '@tanstack/react-query'
+import type { QueryKey, UseInfiniteQueryOptions } from '@tanstack/react-query'
 
-type InferItem<T> = T extends { data: { data: (infer R)[] } } ? R : never
+import { HttpResponse, PaginationMeta } from '@gorgias/helpdesk-client'
 
-export function useExhaustEndpoint<TPage>(
+type ListResponse<ListItemType> = {
+    meta: PaginationMeta
+    data: ListItemType[]
+}
+
+type Response<ListItemType> = HttpResponse<ListResponse<ListItemType>>
+
+export function useExhaustEndpoint<ListItemType>(
     queryKey: QueryKey,
-    fetchPage: (cursor?: string) => Promise<
-        TPage & {
-            data: {
-                data: InferItem<TPage>[]
-                meta: { next_cursor: string | null }
-            }
-        }
-    >,
+    fetchPage: (cursor?: string) => Promise<Response<ListItemType>>,
+    options?: UseInfiniteQueryOptions<Response<ListItemType>>,
 ) {
     const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
         useInfiniteQuery(queryKey, ({ pageParam }) => fetchPage(pageParam), {
+            ...options,
             getNextPageParam: ({ data }) => data.meta.next_cursor ?? undefined,
         })
 

@@ -4,6 +4,7 @@ import cn from 'classnames'
 
 import { isErrorFlag } from '../helpers/isErrorFlag'
 import { TicketMessageElement } from '../types'
+import { MessageAvatar } from './MessageAvatar'
 import { MessageBody } from './MessageBody'
 import { MessageContent } from './MessageContent'
 import { MessageError } from './MessageError'
@@ -24,6 +25,17 @@ export function TicketMessage({ element }: Props) {
 
     const messageMetadata = <MessageMetadata message={element.data} />
 
+    const messageBody = (
+        <MessageBody message={element.data} isAI={isAI}>
+            <MessageContent
+                message={element.data}
+                isFailed={Boolean(error)}
+                metadata={isMinimal && messageMetadata}
+            />
+            {error && <MessageError error={error} />}
+        </MessageBody>
+    )
+
     return (
         <div
             className={cn(css.container, {
@@ -33,23 +45,23 @@ export function TicketMessage({ element }: Props) {
             })}
             ref={containerRef}
         >
-            {!isMinimal && (
-                <MessageHeader
-                    isAI={element.flags?.includes('ai') ?? false}
-                    isFailed={Boolean(error)}
-                    message={element.data}
-                    containerRef={containerRef}
-                    messageMetadata={messageMetadata}
-                />
+            {isMinimal ? (
+                messageBody
+            ) : (
+                <>
+                    <MessageAvatar message={element.data} isAI={isAI} />
+                    <div>
+                        <MessageHeader
+                            isAI={element.flags?.includes('ai') ?? false}
+                            isFailed={Boolean(error)}
+                            message={element.data}
+                            containerRef={containerRef}
+                            messageMetadata={messageMetadata}
+                        />
+                        {messageBody}
+                    </div>
+                </>
             )}
-            <MessageBody message={element.data} isAI={isAI}>
-                <MessageContent
-                    message={element.data}
-                    isFailed={Boolean(error)}
-                    metadata={isMinimal && messageMetadata}
-                />
-                {error && <MessageError error={error} />}
-            </MessageBody>
         </div>
     )
 }

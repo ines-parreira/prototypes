@@ -43,10 +43,10 @@ describe('getMessageStatus', () => {
             const messageWithoutId = {
                 ...message,
                 id: undefined,
-                sent_datetime: sent ? new Date().toISOString() : undefined,
+                sent_datetime: sent ? new Date().toISOString() : null,
                 opened_datetime: opened ? new Date().toISOString() : null,
                 failed_datetime: failed ? new Date().toISOString() : null,
-            }
+            } as unknown as TicketMessage
 
             expect(getMessageStatus(messageWithoutId)).toBe(
                 MessageStatus.Transient,
@@ -77,7 +77,7 @@ describe('getMessageStatus', () => {
             sent_datetime: new Date().toISOString(),
             opened_datetime: new Date().toISOString(),
             failed_datetime: null,
-        }
+        } as TicketMessage
 
         expect(getMessageStatus(openedMessage)).toBe(MessageStatus.Opened)
     })
@@ -88,7 +88,7 @@ describe('getMessageStatus', () => {
             sent_datetime: new Date().toISOString(),
             opened_datetime: null,
             failed_datetime: null,
-        }
+        } as TicketMessage
 
         expect(getMessageStatus(sentMessage)).toBe(MessageStatus.Sent)
     })
@@ -96,10 +96,10 @@ describe('getMessageStatus', () => {
     it('should return Pending if the message has no datetime fields', () => {
         const pendingMessage = {
             ...message,
-            sent_datetime: undefined,
+            sent_datetime: null,
             opened_datetime: null,
             failed_datetime: null,
-        }
+        } as TicketMessage
 
         expect(getMessageStatus(pendingMessage)).toBe(MessageStatus.Pending)
     })

@@ -5,10 +5,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { TicketMessage } from '@gorgias/helpdesk-types'
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import {
-    SourceType,
-    TicketMessage as TicketMessage_DEPRECATED,
-} from 'models/ticket/types'
+import { SourceType } from 'models/ticket/types'
 import { isInternalNote } from 'tickets/common/utils'
 
 import css from './MessageStatusIndicator.less'
@@ -21,9 +18,7 @@ export enum MessageStatus {
     Opened = 'opened',
 }
 
-export const getMessageStatus = (
-    message: TicketMessage | TicketMessage_DEPRECATED,
-): MessageStatus => {
+export const getMessageStatus = (message: TicketMessage): MessageStatus => {
     if (!message.id) {
         return MessageStatus.Transient
     } else if (!!message.failed_datetime) {

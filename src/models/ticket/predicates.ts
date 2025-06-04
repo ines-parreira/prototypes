@@ -102,20 +102,23 @@ export const isGorgiasContactFormTicketMeta = (
 }
 
 export const isTicketMessageHidden = (
-    message: TicketMessage_DEPRECATED,
+    message: TicketMessage_DEPRECATED | TicketMessage,
 ): boolean => {
     if (message && message.source && message.source.type) {
         const isInstagramComment = [
             TicketMessageSourceType.InstagramComment,
             TicketMessageSourceType.InstagramAdComment,
-        ].includes(message.source.type)
+        ].includes(message.source.type as TicketMessageSourceType)
         const isFacebookComment =
             message.source &&
             (message.source.type === TicketMessageSourceType.FacebookComment ||
                 message.source.type ===
                     TicketMessageSourceType.FacebookReviewComment)
         if (isInstagramComment || isFacebookComment) {
-            if (message.meta && message.meta.hidden_datetime) {
+            if (
+                message.meta &&
+                (message.meta as Record<string, unknown>).hidden_datetime
+            ) {
                 return true
             }
         }
@@ -124,7 +127,7 @@ export const isTicketMessageHidden = (
 }
 
 export const isTicketMessageDeleted = (
-    message: TicketMessage_DEPRECATED,
+    message: TicketMessage_DEPRECATED | TicketMessage,
 ): boolean => {
     if (message && message.source && message.source.type) {
         if (
@@ -132,7 +135,10 @@ export const isTicketMessageDeleted = (
             message.source.type ===
                 TicketMessageSourceType.FacebookReviewComment
         ) {
-            if (message.meta && message.meta.deleted_datetime) {
+            if (
+                message.meta &&
+                (message.meta as Record<string, unknown>).deleted_datetime
+            ) {
                 return true
             }
         }

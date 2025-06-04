@@ -8,7 +8,16 @@ import { useAllEvents } from './useAllEvents'
 import { useAllVoiceCalls } from './useAllVoiceCalls'
 
 export function useTicket(ticketId: number) {
-    const { data, isLoading: isLoadingTicket } = useGetTicket(ticketId)
+    const { data, isLoading: isLoadingTicket } = useGetTicket(
+        ticketId,
+        undefined,
+        {
+            query: {
+                refetchOnWindowFocus: false,
+                staleTime: 1000 * 60 * 5, // 5 minutes
+            },
+        },
+    )
     const { events, isLoading: isLoadingEvents } = useAllEvents(ticketId)
     const { voiceCalls, isLoading: isLoadingVoiceCalls } =
         useAllVoiceCalls(ticketId)

@@ -9,6 +9,10 @@
         &:first-of-type {
             margin-top: 0;
         }
+        &:not(.minimal) {
+            display: flex;
+            column-gap: var(--layout-spacing-s);
+        }
     }
 
     .minimal {
@@ -23,7 +27,9 @@
     }
 
     .ai {
-        background: var(--accessory-magenta-1);
+        &:hover {
+            background: var(--accessory-magenta-1);
+        }
     }
 
     .internal {

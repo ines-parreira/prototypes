@@ -42,6 +42,10 @@ describe('useAllEvents', () => {
         expect(useExhaustEndpointMock).toHaveBeenCalledWith(
             ['all-events', 123],
             expect.any(Function),
+            {
+                refetchOnWindowFocus: false,
+                staleTime: expect.any(Number),
+            },
         )
         expect(result.current).toEqual({ events: mockData, isLoading: false })
     })

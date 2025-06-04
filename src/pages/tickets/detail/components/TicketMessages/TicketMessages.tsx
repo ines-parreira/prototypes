@@ -4,6 +4,8 @@ import { fromJS, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Moment } from 'moment'
 
+import type { TicketMessage } from '@gorgias/helpdesk-types'
+
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
@@ -13,7 +15,7 @@ import {
     isTicketMessageDeleted,
     isTicketMessageHidden,
 } from 'models/ticket/predicates'
-import { TicketMessage } from 'models/ticket/types'
+import { TicketMessage as TicketMessage_DEPRECATED } from 'models/ticket/types'
 import { HighlightedElements } from 'pages/tickets/detail/components/AuditLogEvent'
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
@@ -34,7 +36,7 @@ import Message from './Message'
 
 type Props = {
     id: string
-    messages: TicketMessage[]
+    messages: TicketMessage_DEPRECATED[]
     ticketId: number
     timezone: string
     hasCursor: boolean
@@ -126,7 +128,7 @@ export default function TicketMessages({
     // if all messages have the same status, we want to display it only on the first
     // message of the group
     const showMessageStatusIndicator = messages
-        .map(getMessageStatus)
+        .map((message) => getMessageStatus(message as TicketMessage))
         .some(
             (messageStatus, _, messageStatuses) =>
                 messageStatus !== messageStatuses[0],
@@ -201,20 +203,24 @@ export default function TicketMessages({
                 'sent_datetime',
             )}
         >
-            {messages?.map((message: TicketMessage, index: number) => {
-                return (
-                    <Message
-                        key={message.id || `${id}-${index}`}
-                        message={message}
-                        ticketId={ticketId}
-                        setStatus={setStatus}
-                        showSourceDetails={!!index}
-                        showMessageStatusIndicator={showMessageStatusIndicator}
-                        isAIAgentMessage={isAIAgentMessage}
-                        messagePosition={messagePosition}
-                    />
-                )
-            })}
+            {messages?.map(
+                (message: TicketMessage_DEPRECATED, index: number) => {
+                    return (
+                        <Message
+                            key={message.id || `${id}-${index}`}
+                            message={message}
+                            ticketId={ticketId}
+                            setStatus={setStatus}
+                            showSourceDetails={!!index}
+                            showMessageStatusIndicator={
+                                showMessageStatusIndicator
+                            }
+                            isAIAgentMessage={isAIAgentMessage}
+                            messagePosition={messagePosition}
+                        />
+                    )
+                },
+            )}
         </Container>
     )
 }

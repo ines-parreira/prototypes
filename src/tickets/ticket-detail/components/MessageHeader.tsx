@@ -5,7 +5,6 @@ import {
     isTicketMessageDeleted,
     isTicketMessageHidden,
 } from 'models/ticket/predicates'
-import type { TicketMessage as TicketMessage_DEPRECATED } from 'models/ticket/types'
 import Header from 'pages/tickets/detail/components/TicketMessages/Header'
 
 type Props = {
@@ -24,14 +23,13 @@ export function MessageHeader({
     messageMetadata,
 }: Props) {
     const id = useId()
-    const castMessage = message as TicketMessage_DEPRECATED
     return (
         <Header
             id={`message-${id}`}
-            message={castMessage}
+            message={message}
             hasError={isFailed}
-            isMessageDeleted={isTicketMessageDeleted(castMessage)}
-            isMessageHidden={isTicketMessageHidden(castMessage)}
+            isMessageDeleted={isTicketMessageDeleted(message)}
+            isMessageHidden={isTicketMessageHidden(message)}
             isMessageFromAIAgent={isAI}
             sourceDetails={messageMetadata}
             containerRef={containerRef}

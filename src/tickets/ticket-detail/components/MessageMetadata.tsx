@@ -4,7 +4,6 @@ import classnames from 'classnames'
 
 import { TicketMessage } from '@gorgias/helpdesk-types'
 
-import { TicketMessage as TicketMessage_DEPRECATED } from 'models/ticket/types'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
 import { MessageStatusIndicator } from './MessageStatusIndicator'
@@ -16,12 +15,19 @@ type Props = {
 }
 
 export function MessageMetadata({ message }: Props) {
-    const meta = message.meta as TicketMessage_DEPRECATED['meta']
+    const meta = message.meta as {
+        is_duplicated?: boolean
+        private_reply?: {
+            original_ticket_id?: Maybe<string>
+        }
+    } | null
     const infoWidget = useMemo(() => {
         if (meta?.is_duplicated) {
             return (
                 <GoToOriginalTicket
-                    originalTicketIdURL={meta.private_reply!.original_ticket_id}
+                    originalTicketIdURL={
+                        meta.private_reply?.original_ticket_id ?? undefined
+                    }
                 />
             )
         }

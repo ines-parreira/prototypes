@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
 import type { FailedFlag, TicketMessageElement } from '../../types'
+import { MessageAvatar } from '../MessageAvatar'
 import { MessageBody } from '../MessageBody'
 import { MessageContent } from '../MessageContent'
 import { MessageError } from '../MessageError'
@@ -15,6 +16,9 @@ jest.mock('../MessageContent', () => ({
 }))
 jest.mock('../MessageBody', () => ({
     MessageBody: jest.fn(({ children }) => <div>body {children}</div>),
+}))
+jest.mock('../MessageAvatar', () => ({
+    MessageAvatar: jest.fn(() => <div>MessageAvatar</div>),
 }))
 jest.mock('../MessageHeader', () => ({
     MessageHeader: jest.fn(() => <div>MessageHeader</div>),
@@ -63,6 +67,13 @@ describe('TicketMessage', () => {
     it('should set isAI to true when flags include ai', () => {
         render(<TicketMessage element={{ ...mockedElement, flags: ['ai'] }} />)
 
+        expect(MessageAvatar).toHaveBeenCalledWith(
+            expect.objectContaining({
+                isAI: true,
+            }),
+            expect.anything(),
+        )
+
         expect(MessageHeader).toHaveBeenCalledWith(
             expect.objectContaining({
                 isAI: true,
@@ -76,6 +87,27 @@ describe('TicketMessage', () => {
             }),
             expect.anything(),
         )
+    })
+
+    describe('MessageAvatar', () => {
+        it('should render the message avatar for non-minimal messages', () => {
+            render(<TicketMessage element={mockedElement} />)
+            expect(MessageAvatar).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message: mockedElement.data,
+                }),
+                expect.anything(),
+            )
+        })
+
+        it('should not render the message avatar for minimal messages', () => {
+            render(
+                <TicketMessage
+                    element={{ ...mockedElement, flags: ['minimal'] }}
+                />,
+            )
+            expect(MessageAvatar).not.toHaveBeenCalled()
+        })
     })
 
     describe('MessageHeader', () => {
