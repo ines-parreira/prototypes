@@ -1,5 +1,9 @@
-import { Button, Label, Tooltip } from '@gorgias/merchant-ui-kit'
+import React from 'react'
 
+import { Button, IconButton, Label, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useId from 'hooks/useId'
 import { IngestionLogStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import SyncDomainConfirmationModal from 'pages/aiAgent/AiAgentScrapedDomainContent/SyncDomainConfirmationModal'
@@ -33,6 +37,9 @@ export const ScrapeStoreDomainSection = ({
     const id = useId()
     const syncDateId = `syncDate-${id}`
     const syncButtonId = `syncButton-${id}`
+    const isAiAgentFilesAndUrlsKnowledgeVisible = useFlag(
+        FeatureFlagKey.AiAgentFilesAndUrlsKnowledgeVisibilityButton,
+    )
 
     const { routes } = useAiAgentNavigation({ shopName })
     const onManage = () => {
@@ -101,7 +108,7 @@ export const ScrapeStoreDomainSection = ({
                             tooltip={syncDateTimeString}
                         />
                     )}
-                    <div>
+                    <div className={css.actionsButtons}>
                         <Button
                             id={syncButtonId}
                             intent="secondary"
@@ -122,13 +129,24 @@ export const ScrapeStoreDomainSection = ({
                                 {`Your store website was synced less than 24h ago. You can sync again on ${nextSyncDate}.`}
                             </Tooltip>
                         )}
-                        <Button
-                            intent="primary"
-                            fillStyle="ghost"
-                            onClick={onManage}
-                        >
-                            Manage
-                        </Button>
+                        {isAiAgentFilesAndUrlsKnowledgeVisible ? (
+                            <IconButton
+                                size="small"
+                                fillStyle="ghost"
+                                intent="secondary"
+                                aria-label="Open articles"
+                                onClick={onManage}
+                                icon="keyboard_arrow_right"
+                            />
+                        ) : (
+                            <Button
+                                intent="primary"
+                                fillStyle="ghost"
+                                onClick={onManage}
+                            >
+                                Manage
+                            </Button>
+                        )}
                     </div>
                 </div>
             </div>

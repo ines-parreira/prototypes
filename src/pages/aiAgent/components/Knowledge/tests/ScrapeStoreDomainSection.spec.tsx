@@ -4,6 +4,7 @@ import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
+import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useGetStoreDomainIngestionLog } from 'pages/aiAgent/hooks/useGetStoreDomainIngestionLog'
@@ -16,12 +17,14 @@ import { ScrapeStoreDomainSection } from '../ScrapeStoreDomainSection'
 jest.mock('pages/aiAgent/hooks/useGetStoreDomainIngestionLog')
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 jest.mock('pages/aiAgent/hooks/useIngestionLogMutation')
+jest.mock('core/flags')
 
 const mockUseGetStoreDomainIngestionLog = assumeMock(
     useGetStoreDomainIngestionLog,
 )
 const mockUseIngestionLogMutation = assumeMock(useIngestionLogMutation)
 const mockUseAiAgentNavigation = assumeMock(useAiAgentNavigation)
+const useFlagMock = assumeMock(useFlag)
 
 const mockedShopName = 'test-shop'
 const mockedShopDomain = 'test-shop.example.com'
@@ -126,5 +129,31 @@ describe('ScrapeStoreDomainSection', () => {
 
         fireEvent.click(screen.getByText('Manage'))
         expect(history.push).toHaveBeenCalledWith('/pages-content')
+    })
+
+    describe('Articles button visibility', () => {
+        useFlagMock.mockReturnValue(false)
+        it('should show Manage button when feature flag is disabled', () => {
+            renderComponent()
+
+            expect(
+                screen.getByRole('button', { name: 'Manage' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: 'Open articles' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show articles button when feature flag is enabled', () => {
+            useFlagMock.mockReturnValue(true)
+            renderComponent()
+
+            expect(
+                screen.getByRole('button', { name: 'Open articles' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: 'Manage' }),
+            ).not.toBeInTheDocument()
+        })
     })
 })

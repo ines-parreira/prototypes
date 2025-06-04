@@ -2,13 +2,13 @@ import React, { createRef, useEffect, useState } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
+import { IconButton, Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
 import Button from 'pages/common/components/button/Button'
-import IconButton from 'pages/common/components/button/IconButton'
 import { ConfirmNavigationPrompt } from 'pages/common/components/ConfirmNavigationPrompt'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
@@ -56,6 +56,9 @@ export const ExternalFilesSection = ({
 
     const isAiAgentScrapeStoreDomainEnabled =
         useFlags()[FeatureFlagKey.AiAgentScrapeStoreDomain]
+    const isAiAgentFilesAndUrlsKnowledgeVisible = useFlag(
+        FeatureFlagKey.AiAgentFilesAndUrlsKnowledgeVisibilityButton,
+    )
 
     const { ingestFile, ingestedFiles, deleteIngestedFile, isIngesting } =
         useFileIngestion({
@@ -210,9 +213,8 @@ export const ExternalFilesSection = ({
                                                 'noopener noreferrer',
                                             )
                                         }
-                                    >
-                                        download
-                                    </IconButton>
+                                        icon="download"
+                                    />
                                 </div>
                                 <div>
                                     <ConfirmationPopover
@@ -264,12 +266,25 @@ export const ExternalFilesSection = ({
                                                 id={uid}
                                                 ref={elementRef}
                                                 aria-label="Delete external document"
-                                            >
-                                                close
-                                            </IconButton>
+                                                icon="close"
+                                            />
                                         )}
                                     </ConfirmationPopover>
                                 </div>
+                                {isAiAgentFilesAndUrlsKnowledgeVisible && (
+                                    <div className={css.articlesIcons}>
+                                        <IconButton
+                                            size="small"
+                                            fillStyle="ghost"
+                                            intent="secondary"
+                                            aria-label="Open articles"
+                                            onClick={() => {
+                                                // TODO implement this
+                                            }}
+                                            icon="keyboard_arrow_right"
+                                        />
+                                    </div>
+                                )}
                             </li>
                         ))}
                     </ul>

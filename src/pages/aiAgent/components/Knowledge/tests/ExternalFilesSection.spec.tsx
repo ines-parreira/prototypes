@@ -2,6 +2,7 @@ import React from 'react'
 
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
 import { Components } from 'rest_api/help_center_api/client.generated'
@@ -16,6 +17,8 @@ jest.mock('state/notifications/actions')
 jest.mock('hooks/useAppDispatch')
 jest.mock('pages/aiAgent/hooks/useFileIngestion')
 jest.mock('rest_api/help_center_api/uploadAttachments')
+jest.mock('launchdarkly-react-client-sdk')
+jest.mock('core/flags')
 
 const mockDispatch = jest.fn()
 const mockIngestFile = jest.fn()
@@ -26,6 +29,7 @@ const useFileIngestionMock = assumeMock(useFileIngestion)
 const useAppDispatchMock = assumeMock(useAppDispatch)
 const uploadAttachmentsMock = assumeMock(uploadAttachments)
 const notifyMock = assumeMock(notify)
+const useFlagMock = assumeMock(useFlag)
 
 useAppDispatchMock.mockReturnValue(mockDispatch)
 
@@ -303,5 +307,61 @@ describe('ExternalFilesSection', () => {
         expect(screen.getByText('Upload File').closest('button')).toHaveClass(
             'isDisabled',
         )
+    })
+
+    it('should not show articles button when feature flag is disabled', () => {
+        useFlagMock.mockReturnValue(false)
+        renderComponent({
+            ingestedFiles: [
+                {
+                    id: 1,
+                    help_center_id: 1,
+                    filename: 'test.pdf',
+                    status: 'SUCCESSFUL',
+                    google_storage_url:
+                        'https://storage.googleapis.com/test.pdf',
+                    uploaded_datetime: '2024-11-04T19:24:08Z',
+                    snippets_article_ids: [],
+                },
+            ],
+        })
+
+        expect(
+            screen.queryByRole('button', { name: 'Open articles' }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should show articles button when feature flag is enabled', () => {
+        useFlagMock.mockReturnValue(true)
+        renderComponent({
+            ingestedFiles: [
+                {
+                    id: 1,
+                    help_center_id: 1,
+                    filename: 'test.pdf',
+                    status: 'SUCCESSFUL',
+                    google_storage_url:
+                        'https://storage.googleapis.com/test.pdf',
+                    uploaded_datetime: '2024-11-04T19:24:08Z',
+                    snippets_article_ids: [],
+                },
+            ],
+        })
+
+        expect(
+            screen.getByRole('button', { name: 'Open articles' }),
+        ).toBeInTheDocument()
+    })
+
+    it('should not show articles button when there are no files', () => {
+        useFlagMock.mockReturnValue(true)
+
+        renderComponent({
+            ingestedFiles: [],
+        })
+
+        expect(
+            screen.queryByRole('button', { name: 'Open articles' }),
+        ).not.toBeInTheDocument()
     })
 })

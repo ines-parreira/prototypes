@@ -1,7 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
+import { IconButton } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import Button from 'pages/common/components/button/Button'
-import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import InputField from 'pages/common/forms/input/InputField'
 
@@ -120,6 +123,10 @@ export const PublicSourcesItem = ({
     const [value, setValue] = useState(source.url ?? '')
     const [isCurrentUrlPristine, setIsCurrentUrlPristine] = useState(true)
 
+    const isAiAgentFilesAndUrlsKnowledgeVisible = useFlag(
+        FeatureFlagKey.AiAgentFilesAndUrlsKnowledgeVisibilityButton,
+    )
+
     const handleChange = (value: string) => {
         if (setIsPristine) setIsPristine(false)
         setIsCurrentUrlPristine(false)
@@ -227,9 +234,8 @@ export const PublicSourcesItem = ({
                     isDisabled={!isValid}
                     aria-label="Open public URL"
                     onClick={handleOpen}
-                >
-                    open_in_new
-                </IconButton>
+                    icon="open_in_new"
+                />
 
                 {source.status !== 'idle' ? (
                     <ConfirmationPopover
@@ -257,9 +263,8 @@ export const PublicSourcesItem = ({
                                 id={uid}
                                 ref={elementRef}
                                 aria-label="Delete public URL"
-                            >
-                                close
-                            </IconButton>
+                                icon="close"
+                            />
                         )}
                     </ConfirmationPopover>
                 ) : (
@@ -269,9 +274,21 @@ export const PublicSourcesItem = ({
                         className={css.closeIcon}
                         onClick={handleDelete}
                         aria-label="Delete public URL"
-                    >
-                        close
-                    </IconButton>
+                        icon="close"
+                    />
+                )}
+                {isAiAgentFilesAndUrlsKnowledgeVisible && (
+                    <IconButton
+                        size="small"
+                        fillStyle="ghost"
+                        intent="secondary"
+                        aria-label="Open articles"
+                        onClick={() => {
+                            //     TODO implement this
+                        }}
+                        className={css.arrowIcon}
+                        icon="keyboard_arrow_right"
+                    />
                 )}
             </div>
         </div>
