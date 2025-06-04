@@ -29,6 +29,7 @@ export const getValidator = (
         case FilterKey.Accuracy:
         case FilterKey.Agents:
         case FilterKey.BrandVoice:
+        case FilterKey.IsDuringBusinessHours:
         case FilterKey.Campaigns:
         case FilterKey.CampaignStatuses:
         case FilterKey.Channels:

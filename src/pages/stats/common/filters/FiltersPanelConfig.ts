@@ -33,6 +33,10 @@ import {
     CustomFieldsFilterWithState,
 } from 'pages/stats/common/filters/CustomFieldsFilter'
 import {
+    DuringBusinessHoursFilterWithSavedState,
+    DuringBusinessHoursFilterWithState,
+} from 'pages/stats/common/filters/DuringBusinessHoursFilter'
+import {
     EfficiencyFilterWithSavedState,
     EfficiencyFilterWithState,
 } from 'pages/stats/common/filters/EfficiencyFilter'
@@ -87,6 +91,7 @@ export const FilterComponentMap: Record<
     [FilterKey.Agents]: AgentsFiltersWithState,
     [FilterKey.AggregationWindow]: AggregationWindowFilterWithState,
     [FilterKey.BrandVoice]: BrandVoiceFilterWithState,
+    [FilterKey.IsDuringBusinessHours]: DuringBusinessHoursFilterWithState,
     [FilterKey.Campaigns]: CampaignsFilterFromContext,
     [FilterKey.CampaignStatuses]: CampaignStatusesFilterFromContext,
     [FilterKey.Channels]: ChannelsFilterWithState,
@@ -123,6 +128,7 @@ export const SavedFilterComponentMap: Record<
     [FilterKey.Efficiency]: EfficiencyFilterWithSavedState,
     [FilterKey.InternalCompliance]: InternalComplianceFilterWithSavedState,
     [FilterKey.BrandVoice]: BrandVoiceFilterWithSavedState,
+    [FilterKey.IsDuringBusinessHours]: DuringBusinessHoursFilterWithSavedState,
     [FilterKey.ResolutionCompleteness]:
         ResolutionCompletenessFilterWithSavedState,
     [FilterKey.Score]: ScoreFiltersWithSavedState,

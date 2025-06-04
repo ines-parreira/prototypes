@@ -20,6 +20,7 @@ export const agentsFilterLogicalOperators = [
 export const FilterLabels: Record<FilterKey | FilterComponentKey, string> = {
     [FilterKey.Period]: 'Date',
     [FilterKey.AggregationWindow]: 'Aggregation',
+    [FilterKey.IsDuringBusinessHours]: 'Business Hours',
     [FilterKey.Integrations]: 'Integration',
     [FilterKey.Tags]: 'Tag',
     [FilterKey.Agents]: 'Agent',
@@ -129,6 +130,7 @@ export const SAVEABLE_FILTERS: Exclude<FilterKey, FilterKey.Period>[] = [
     FilterKey.Agents,
     FilterKey.Tags,
     FilterKey.Score,
+    FilterKey.IsDuringBusinessHours,
     FilterKey.VoiceQueues,
     ...AUTO_QA_FILTER_KEYS,
 ]

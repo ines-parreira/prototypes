@@ -151,5 +151,6 @@ export enum FeatureFlagKey {
     TimelineTicketModal = 'timeline-ticket-modal',
     VoiceCallbackEnabled1 = 'voice-callback-enabled',
     VoiceCallbackEnabled2 = 'voice-callback-enabled-MILESTONE-2-FEATURE-RELEASE',
+    VoiceCallDuringBusinessHours = 'voice-call-during-business-hours',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
 }

@@ -9,6 +9,7 @@ export enum FilterKey {
     Agents = 'agents',
     AggregationWindow = 'aggregationWindow',
     BrandVoice = 'brandVoice',
+    IsDuringBusinessHours = 'isDuringBusinessHours',
     Campaigns = 'campaigns',
     CampaignStatuses = 'campaignStatuses',
     Channels = 'channels',
@@ -48,6 +49,7 @@ export enum FilterComponentKey {
 export type StaticFilter =
     | FilterKey.AggregationWindow
     | FilterKey.Agents
+    | FilterKey.IsDuringBusinessHours
     | FilterKey.Campaigns
     | FilterKey.CampaignStatuses
     | FilterKey.Channels
@@ -103,6 +105,7 @@ export type LegacyStatsFilters = {
     [FilterKey.Agents]?: number[]
     [FilterKey.AggregationWindow]?: AggregationWindow
     [FilterKey.BrandVoice]?: string[]
+    [FilterKey.IsDuringBusinessHours]?: string[]
     [FilterKey.Campaigns]?: string[]
     [FilterKey.CampaignStatuses]?: string[]
     [FilterKey.Channels]?: string[]
@@ -146,6 +149,7 @@ export type SavedFilterWithLogicalOperator = {
         | FilterKey.Accuracy
         | FilterKey.Agents
         | FilterKey.BrandVoice
+        | FilterKey.IsDuringBusinessHours
         | FilterKey.Campaigns
         | FilterKey.CampaignStatuses
         | FilterKey.Channels
@@ -211,6 +215,7 @@ export type StatsFiltersWithLogicalOperator = {
     [FilterKey.Agents]?: WithLogicalOperator<number>
     [FilterKey.AggregationWindow]?: AggregationWindow
     [FilterKey.BrandVoice]?: WithLogicalOperator<string>
+    [FilterKey.IsDuringBusinessHours]?: WithLogicalOperator<string>
     [FilterKey.Campaigns]?: WithLogicalOperator<string>
     [FilterKey.CampaignStatuses]?: WithLogicalOperator<string>
     [FilterKey.Channels]?: WithLogicalOperator<string>

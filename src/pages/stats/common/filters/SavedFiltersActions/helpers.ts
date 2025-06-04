@@ -16,6 +16,7 @@ export const isFilterFilled = (
         case FilterKey.AggregationWindow:
             return !_isEmpty(filters?.[filterKey])
         case FilterKey.Agents:
+        case FilterKey.IsDuringBusinessHours:
         case FilterKey.CampaignStatuses:
         case FilterKey.Campaigns:
         case FilterKey.Channels:

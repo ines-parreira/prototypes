@@ -263,9 +263,11 @@ describe('getValidator', () => {
         FilterKey.Channels,
         FilterKey.HelpCenters,
         FilterKey.Integrations,
+        FilterKey.IsDuringBusinessHours,
         FilterKey.LocaleCodes,
         FilterKey.Score,
         FilterKey.SlaPolicies,
+        FilterKey.VoiceQueues,
     ]
 
     it.each(similarKeyTypes)(

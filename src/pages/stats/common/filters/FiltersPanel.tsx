@@ -11,6 +11,8 @@ import React, {
 import _isEqual from 'lodash/isEqual'
 import { connect } from 'react-redux'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppSelector from 'hooks/useAppSelector'
 import usePrevious from 'hooks/usePrevious'
@@ -232,6 +234,10 @@ export const FiltersPanelComponent = ({
     const previousCleanStatsFilters = usePrevious(cleanStatsFilters)
     const customFieldFilters = useCustomFieldFilters(cleanStatsFilters)
 
+    const isDuringBusinessHoursEnabled = useFlag(
+        FeatureFlagKey.VoiceCallDuringBusinessHours,
+    )
+
     useEffect(() => {
         if (!optionalFilters.length && activeFilters.length) {
             setActiveFilters(
@@ -425,8 +431,16 @@ export const FiltersPanelComponent = ({
     )
 
     const options = useMemo(
-        () => activeFiltersToOptions(activeFilters),
-        [activeFilters],
+        () =>
+            activeFiltersToOptions(
+                isDuringBusinessHoursEnabled
+                    ? activeFilters
+                    : activeFilters.filter(
+                          (filter) =>
+                              filter.type !== FilterKey.IsDuringBusinessHours,
+                      ),
+            ),
+        [activeFilters, isDuringBusinessHoursEnabled],
     )
 
     return (

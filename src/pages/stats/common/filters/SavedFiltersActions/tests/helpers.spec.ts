@@ -21,6 +21,7 @@ export const filterKeysMock: OptionalFilter[] = [
     FilterKey.Channels,
     FilterKey.Agents,
     FilterKey.Integrations,
+    FilterKey.IsDuringBusinessHours,
     FilterKey.Tags,
     FilterKey.CustomFields,
     FilterKey.AggregationWindow,
@@ -89,6 +90,10 @@ export const filtersMock = {
     integrations: {
         operator: LogicalOperatorEnum.ONE_OF,
         values: [212],
+    },
+    isDuringBusinessHours: {
+        operator: LogicalOperatorEnum.ONE_OF,
+        values: ['test'],
     },
     tags: [
         {

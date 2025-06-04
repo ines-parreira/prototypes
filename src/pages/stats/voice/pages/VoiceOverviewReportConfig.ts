@@ -56,6 +56,7 @@ export const VOICE_OVERVIEW_OPTIONAL_FILTERS: OptionalFilter[] = [
     FilterKey.Tags,
     FilterKey.Agents,
     FilterKey.VoiceQueues,
+    FilterKey.IsDuringBusinessHours,
 ]
 
 export enum VoiceOverviewChart {

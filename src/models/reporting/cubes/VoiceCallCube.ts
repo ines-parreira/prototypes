@@ -1,4 +1,5 @@
 import { Cube } from 'models/reporting/types'
+import { FilterKey } from 'models/stat/types'
 import { StatsFiltersMembers } from 'utils/reporting'
 
 import { TicketMember } from './TicketCube'
@@ -10,6 +11,7 @@ export enum VoiceCallMeasure {
 }
 
 export enum VoiceCallDimension {
+    IsDuringBusinessHours = 'VoiceCall.isDuringBusinessHours',
     CreatedAt = 'VoiceCall.createdAt',
     PeriodStart = 'VoiceCall.periodStart',
     PeriodEnd = 'VoiceCall.periodEnd',
@@ -35,6 +37,7 @@ export enum VoiceCallDimension {
 }
 
 export enum VoiceCallMember {
+    IsDuringBusinessHours = 'VoiceCall.isDuringBusinessHours',
     PeriodStart = 'VoiceCall.periodStart',
     PeriodEnd = 'VoiceCall.periodEnd',
     IntegrationId = 'VoiceCall.integrationId',
@@ -63,6 +66,7 @@ export const VoiceCallFiltersMembers: StatsFiltersMembers = {
     periodEnd: VoiceCallMember.PeriodEnd,
     integrations: VoiceCallMember.IntegrationId,
     agents: VoiceCallMember.AgentId,
+    [FilterKey.IsDuringBusinessHours]: VoiceCallMember.IsDuringBusinessHours,
     tags: TicketMember.Tags,
     customFields: TicketMember.CustomField,
     score: TicketMember.SurveyScore,

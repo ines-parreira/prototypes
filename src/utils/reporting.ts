@@ -205,6 +205,7 @@ export const statsFiltersToReportingFilters = (
         brandVoice,
         storeIntegrations,
         voiceQueues,
+        isDuringBusinessHours,
     } = statsFilters
     let filters: ReportingFilter[] = [
         {
@@ -323,6 +324,12 @@ export const statsFiltersToReportingFilters = (
     if (hasFilter(voiceQueues) && members.voiceQueues) {
         filters = addOptionalFilter(filters, voiceQueues, {
             member: members.voiceQueues,
+            operator: ReportingFilterOperator.Equals,
+        })
+    }
+    if (hasFilter(isDuringBusinessHours) && members.isDuringBusinessHours) {
+        filters = addOptionalFilter(filters, isDuringBusinessHours, {
+            member: members.isDuringBusinessHours,
             operator: ReportingFilterOperator.Equals,
         })
     }
