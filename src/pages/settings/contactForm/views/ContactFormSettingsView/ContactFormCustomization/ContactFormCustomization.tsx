@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import classNames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 // eslint-disable-next-line no-restricted-imports
 import { useDispatch } from 'react-redux'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     ContactForm,
     UpdateContactFormDto,
@@ -56,8 +54,6 @@ const ContactFormCustomization = (): JSX.Element => {
         contactForm.form_display_mode ===
             ContactFormDisplayMode.SHOW_AFTER_BUTTON_CLICK,
     )
-    const isContactFormNewEntrypointViewEnabled =
-        useFlags()[FeatureFlagKey.ContactFormNewEntrypointView] || false
 
     useEffect(() => {
         setUpdateContactFormDto((prevState) => ({
@@ -156,21 +152,19 @@ const ContactFormCustomization = (): JSX.Element => {
                         setIsDirty={setIsDirty}
                     />
                 </section>
-                {isContactFormNewEntrypointViewEnabled && (
-                    <section className={contactFormCss.mbL}>
-                        <ContactFormDisplayModeToggle
-                            title="Expand Contact Form"
-                            description="Make your Contact Form visible when customers land
+                <section className={contactFormCss.mbL}>
+                    <ContactFormDisplayModeToggle
+                        title="Expand Contact Form"
+                        description="Make your Contact Form visible when customers land
                             on the page or require them to click a button to see the form.
                             Toggling OFF encourages customers to explore self-service
                             options like Flows and Order Management before submitting a ticket
                             to your team."
-                            toggleLabel="Expand Contact Form"
-                            isToggled={!isFormHidden}
-                            handleToggleClick={onToggleClick}
-                        />
-                    </section>
-                )}
+                        toggleLabel="Expand Contact Form"
+                        isToggled={!isFormHidden}
+                        handleToggleClick={onToggleClick}
+                    />
+                </section>
                 <div className={contactFormCss.mtXl}>
                     <Button isDisabled={!isSaveChangesEnabled} onClick={onSave}>
                         Save Changes
@@ -192,16 +186,14 @@ const ContactFormCustomization = (): JSX.Element => {
                     )}
                 </section>
             </div>
-            {isContactFormNewEntrypointViewEnabled && (
-                <div className={css.preview}>
-                    <div className={css.previewCenter}>
-                        <ContactFormEntrypointPreview
-                            contactForm={contactForm}
-                            isFormHidden={isFormHidden}
-                        />
-                    </div>
+            <div className={css.preview}>
+                <div className={css.previewCenter}>
+                    <ContactFormEntrypointPreview
+                        contactForm={contactForm}
+                        isFormHidden={isFormHidden}
+                    />
                 </div>
-            )}
+            </div>
         </div>
     )
 }

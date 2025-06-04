@@ -1,13 +1,11 @@
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 import classnames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { connect, ConnectedProps } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { CreateContactFormDto } from 'models/contactForm/types'
 import { LocaleCode } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
@@ -39,8 +37,7 @@ const ContactFormCreateView = ({
     const { defaultIntegration, emailIntegrations } = useEmailIntegrations()
     const { checkContactFormName, isReady } = useContactFormApi()
     const [isNameInvalid, setIsNameInvalid] = useState(false)
-    const isContactFormNewEntrypointViewEnabled =
-        useFlags()[FeatureFlagKey.ContactFormNewEntrypointView] || false
+
     const [createContactFormDto, setCreateContactFormDto] =
         useState<CreateContactFormDto>(() => {
             const integration = defaultIntegration ?? emailIntegrations[0]
@@ -51,9 +48,7 @@ const ContactFormCreateView = ({
                     id: integration.id,
                     email: integration.meta.address,
                 },
-                form_display_mode: isContactFormNewEntrypointViewEnabled
-                    ? CONTACT_FORM_DEFAULT_FORM_DISPLAY_MODE
-                    : undefined,
+                form_display_mode: CONTACT_FORM_DEFAULT_FORM_DISPLAY_MODE,
             }
         })
 

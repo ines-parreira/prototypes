@@ -160,7 +160,7 @@ describe('<ContactFormCreateView />', () => {
                             "email": "unverified@gorgias.io",
                             "id": 13,
                           },
-                          "form_display_mode": undefined,
+                          "form_display_mode": "show_after_button_click",
                           "name": "Test name",
                         },
                       ],
