@@ -66,6 +66,7 @@ export const TicketVoiceCallInboundStatus = ({ voiceCall }: Props) => {
         case VoiceCallDisplayStatus.Missed:
         case VoiceCallDisplayStatus.Abandoned:
         case VoiceCallDisplayStatus.Cancelled:
+        case VoiceCallDisplayStatus.CallbackRequested:
             return (
                 <CollapsibleDetails
                     title={
@@ -78,20 +79,37 @@ export const TicketVoiceCallInboundStatus = ({ voiceCall }: Props) => {
                                 css.missedCallStatus,
                             )}
                         >
-                            <i
-                                className={classNames(
-                                    'material-icons',
-                                    css.missedCallIcon,
-                                )}
-                            >
-                                call_missed
-                            </i>
-                            <div>
-                                {getPrettyVoiceCallDisplayStatusName(
-                                    displayStatus,
-                                )}{' '}
-                                call
-                            </div>
+                            {displayStatus ===
+                            VoiceCallDisplayStatus.CallbackRequested ? (
+                                <>
+                                    <i
+                                        className={classNames(
+                                            'material-icons',
+                                            css.missedCallIcon,
+                                        )}
+                                    >
+                                        phone_callback
+                                    </i>
+                                    <div>Callback requested</div>
+                                </>
+                            ) : (
+                                <>
+                                    <i
+                                        className={classNames(
+                                            'material-icons',
+                                            css.missedCallIcon,
+                                        )}
+                                    >
+                                        call_missed
+                                    </i>
+                                    <div>
+                                        {getPrettyVoiceCallDisplayStatusName(
+                                            displayStatus,
+                                        )}{' '}
+                                        call
+                                    </div>
+                                </>
+                            )}
                         </div>
                     }
                 >

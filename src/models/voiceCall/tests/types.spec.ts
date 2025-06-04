@@ -150,6 +150,11 @@ describe('getInboundDisplayStatus', () => {
                     terminationStatus: VoiceCallTerminationStatus.Cancelled,
                     displayStatus: VoiceCallDisplayStatus.Cancelled,
                 },
+                {
+                    terminationStatus:
+                        VoiceCallTerminationStatus.CallbackRequested,
+                    displayStatus: VoiceCallDisplayStatus.CallbackRequested,
+                },
             ],
         ),
     )(
@@ -231,6 +236,7 @@ describe('getPrettyVoiceCallDisplayStatusName', () => {
         [VoiceCallDisplayStatus.Cancelled, 'Cancelled'],
         [VoiceCallDisplayStatus.Failed, 'Failed'],
         [VoiceCallDisplayStatus.Unanswered, 'Unanswered'],
+        [VoiceCallDisplayStatus.CallbackRequested, 'Callback Requested'],
     ])(
         'should return the correct display name for each status',
         (displayStatus, prettyName) => {

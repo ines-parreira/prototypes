@@ -36,6 +36,7 @@ export enum VoiceCallDisplayStatus {
     Answered = 'answered',
     Missed = 'missed',
     Abandoned = 'abandoned',
+    CallbackRequested = 'callback-requested',
     Cancelled = 'cancelled',
     Failed = 'failed',
     Unanswered = 'unanswered',
@@ -167,6 +168,8 @@ const getFinalDisplayStatus = (
             return VoiceCallDisplayStatus.Missed
         case VoiceCallTerminationStatus.Abandoned:
             return VoiceCallDisplayStatus.Abandoned
+        case VoiceCallTerminationStatus.CallbackRequested:
+            return VoiceCallDisplayStatus.CallbackRequested
         case VoiceCallTerminationStatus.Cancelled:
             return VoiceCallDisplayStatus.Cancelled
     }
@@ -236,7 +239,7 @@ export const getOutboundDisplayStatus = (
 
 export const getPrettyVoiceCallDisplayStatusName = (
     status: VoiceCallDisplayStatus,
-) => {
+): string => {
     switch (status) {
         case VoiceCallDisplayStatus.Ringing:
             return 'Ringing'
@@ -254,5 +257,7 @@ export const getPrettyVoiceCallDisplayStatusName = (
             return 'Failed'
         case VoiceCallDisplayStatus.Unanswered:
             return 'Unanswered'
+        case VoiceCallDisplayStatus.CallbackRequested:
+            return 'Callback Requested'
     }
 }

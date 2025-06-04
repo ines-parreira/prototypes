@@ -73,27 +73,36 @@ describe('TicketVoiceCallInboundStatus', () => {
             displayStatus: VoiceCallDisplayStatus.Missed,
             colorClass: 'errorStatus',
             textToDisplay: 'Missed call',
+            iconToDisplay: 'call_missed',
         },
         {
             displayStatus: VoiceCallDisplayStatus.Abandoned,
             colorClass: 'errorStatus',
             textToDisplay: 'Abandoned call',
+            iconToDisplay: 'call_missed',
         },
         {
             displayStatus: VoiceCallDisplayStatus.Cancelled,
             colorClass: 'greyStatus',
             textToDisplay: 'Cancelled call',
+            iconToDisplay: 'call_missed',
+        },
+        {
+            displayStatus: VoiceCallDisplayStatus.CallbackRequested,
+            colorClass: 'errorStatus',
+            textToDisplay: 'Callback requested',
+            iconToDisplay: 'phone_callback',
         },
     ])(
         'should render "$textToDisplay" when display status is $displayStatus',
-        ({ displayStatus, colorClass, textToDisplay }) => {
+        ({ displayStatus, colorClass, textToDisplay, iconToDisplay }) => {
             getInboundDisplayStatusMock.mockReturnValue(displayStatus)
             const { getByText, getByTestId } = renderComponent({
                 last_answered_by_agent_id: null,
                 phone_number_destination: '1234567890',
             } as VoiceCall)
             expect(getByText(textToDisplay)).toBeInTheDocument()
-            expect(getByText('call_missed')).toBeInTheDocument()
+            expect(getByText(iconToDisplay)).toBeInTheDocument()
             expect(getByTestId('collapsible-details')).toBeInTheDocument()
             expect(
                 getByTestId('collapsible-details').querySelector(
