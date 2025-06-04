@@ -119,17 +119,17 @@
             margin: 0;
             display: grid;
             grid-template-columns: 200px auto 260px;
-            gap: @layout-spacing-xs;
+            gap: var(--layout-spacing-xs);
         }
 
         .innerContent {
             display: flex;
             flex-direction: column;
-            gap: @layout-spacing-xs;
+            gap: var(--layout-spacing-xs);
         }
 
         .badge {
-            margin-left: @layout-spacing-xs;
+            margin-left: var(--layout-spacing-xs);
         }
 
         .skill {
@@ -138,7 +138,7 @@
         }
 
         .skillStatus {
-            margin-right: @layout-spacing-xs;
+            margin-right: var(--layout-spacing-xs);
             color: var(--local-green);
 
             &.skillStatusDisabled {
@@ -193,7 +193,7 @@
 
                 li {
                     list-style: none;
-                    margin-top: @layout-spacing-xs;
+                    margin-top: var(--layout-spacing-xs);
 
                     i {
                         margin-right: 12px;

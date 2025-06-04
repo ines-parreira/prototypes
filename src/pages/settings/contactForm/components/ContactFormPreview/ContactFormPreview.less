@@ -45,7 +45,7 @@
         padding: 12px; // custom spacing
         align-items: center;
         justify-content: space-between;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
         border-radius: @layout-spacing-xxs;
         border: 1px solid var(--neutral-grey-3);
         background: var(--neutral-grey-0);
@@ -70,13 +70,13 @@
     .attachmentsWrapper {
         display: flex;
         flex-direction: column;
-        row-gap: @layout-spacing-xs;
+        row-gap: var(--layout-spacing-xs);
     }
 
     .attachments {
         display: flex;
         flex-direction: row;
-        column-gap: @layout-spacing-xs;
+        column-gap: var(--layout-spacing-xs);
         background-color: var(--neutral-grey-1);
         border-radius: @layout-spacing-xxs;
         border: 1px dashed var(--neutral-grey-3);

@@ -13,7 +13,7 @@
     .labelWrapper {
         display: flex;
         align-items: center;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
     }
 
     .icon {
@@ -57,10 +57,10 @@
     .workflowListItem {
         display: flex;
         align-items: center;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
         &:not(:last-child) {
-            padding-bottom: @layout-spacing-xs;
-            margin-bottom: @layout-spacing-xs;
+            padding-bottom: var(--layout-spacing-xs);
+            margin-bottom: var(--layout-spacing-xs);
             border-bottom: 1px solid var(--neutral-grey-2);
         }
     }
@@ -68,8 +68,8 @@
     .workflowDropdownItem {
         flex-direction: column;
         align-items: unset;
-        padding-top: @layout-spacing-xs;
-        padding-bottom: @layout-spacing-xs;
+        padding-top: var(--layout-spacing-xs);
+        padding-bottom: var(--layout-spacing-xs);
         .body-regular();
     }
 

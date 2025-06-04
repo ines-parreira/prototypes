@@ -5,7 +5,7 @@
     .container {
         display: flex;
         flex-wrap: wrap;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
         width: 100%;
     }
 
@@ -21,7 +21,7 @@
 
     .childrenWrapper {
         display: flex;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
         flex: 1;
     }
 
@@ -38,7 +38,7 @@
         text-align: center;
 
         &:not(:only-child) {
-            margin-left: @layout-spacing-xs;
+            margin-left: var(--layout-spacing-xs);
         }
     }
 

@@ -8,7 +8,7 @@
         justify-content: center;
         align-items: center;
         gap: @layout-spacing-xxs;
-        padding: 2px @layout-spacing-xs;
+        padding: 2px var(--layout-spacing-xs);
         height: @layout-spacing-m;
         border-radius: @layout-spacing-xxs;
         border: 1px solid var(--neutral-grey-3);
@@ -32,9 +32,10 @@
     }
 
     .dropdownMenu {
-        @bottomPadding: @layout-spacing-xl + @layout-spacing-xs;
+        @bottomPadding: calc(@layout-spacing-xl + var(--layout-spacing-xs));
         position: relative;
-        padding: @layout-spacing-xs @layout-spacing-xs @bottomPadding;
+        padding: var(--layout-spacing-xs) var(--layout-spacing-xs)
+            @bottomPadding;
 
         .dropdownFooter {
             display: flex;
@@ -45,7 +46,7 @@
         display: flex !important;
         align-items: center;
         transition: all 0.2s linear;
-        padding: @layout-spacing-xs;
+        padding: var(--layout-spacing-xs);
         cursor: pointer;
 
         &:hover {
@@ -72,7 +73,7 @@
         left: 0;
         width: 100%;
         height: @layout-spacing-xl;
-        padding: @layout-spacing-xs @layout-spacing-s;
+        padding: var(--layout-spacing-xs) @layout-spacing-s;
         justify-content: space-between;
         align-items: center;
         border-top: 1px solid var(--neutral-grey-3);
@@ -82,7 +83,7 @@
     .dropdownFooterSave {
         display: flex;
         align-items: center;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
     }
 
     .drag {
@@ -98,19 +99,19 @@
         transition: opacity 0.2s linear;
         margin-right: 0;
         margin-left: auto;
-        padding-left: @layout-spacing-xs;
+        padding-left: var(--layout-spacing-xs);
     }
 
     .sectionTitle {
         .caption-allcaps();
 
         color: var(--main-primary);
-        padding: @layout-spacing-xs @layout-spacing-xs @layout-spacing-xxs
-            @layout-spacing-xs;
+        padding: var(--layout-spacing-xs) var(--layout-spacing-xs)
+            @layout-spacing-xxs var(--layout-spacing-xs);
     }
 
     .separator {
-        margin: @layout-spacing-xxs @layout-spacing-xs 0;
+        margin: @layout-spacing-xxs var(--layout-spacing-xs);
         border-top: 1px solid var(--neutral-grey-3);
     }
 }

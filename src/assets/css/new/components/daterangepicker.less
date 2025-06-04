@@ -372,12 +372,12 @@
         &.apply-v2-styles {
             &.show-ranges.ltr .drp-calendar.right {
                 padding: @layout-spacing-s @layout-spacing-s @layout-spacing-s
-                    @layout-spacing-xs;
+                    var(--layout-spacing-xs);
             }
 
             &.show-ranges.ltr .drp-calendar.left {
-                padding: @layout-spacing-s @layout-spacing-xs @layout-spacing-s
-                    @layout-spacing-s;
+                padding: @layout-spacing-s var(--layout-spacing-xs)
+                    @layout-spacing-s @layout-spacing-s;
 
                 &.single {
                     padding: 16px;
@@ -394,7 +394,7 @@
                 ul {
                     min-width: 120px;
                     max-width: 250px;
-                    padding: @layout-spacing-xs;
+                    padding: var(--layout-spacing-xs);
                     display: flex;
                     flex-direction: column;
                     max-height: 265px;
@@ -405,7 +405,7 @@
                         background-color: inherit;
                         display: flex;
                         width: 100%;
-                        padding: @layout-spacing-xs;
+                        padding: var(--layout-spacing-xs);
                         align-items: center;
                         align-self: stretch;
                         border-radius: 0;
@@ -425,7 +425,7 @@
                                 content: '\e876';
                                 font-size: 20px;
                                 color: var(--neutral-grey-4);
-                                margin-left: @layout-spacing-xs;
+                                margin-left: var(--layout-spacing-xs);
                                 font-variation-settings:
                                     'FILL' 0,
                                     'wght' 400,

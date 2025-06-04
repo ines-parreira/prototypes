@@ -4,15 +4,15 @@
 :local {
     .header {
         display: flex;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
         .body-semibold();
-        margin-bottom: @layout-spacing-xs;
+        margin-bottom: var(--layout-spacing-xs);
     }
 
     .body {
         display: flex;
-        gap: @layout-spacing-xs;
-        margin-bottom: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
+        margin-bottom: var(--layout-spacing-xs);
         align-items: center;
     }
 
@@ -41,6 +41,6 @@
     }
 
     .addButton {
-        margin: @layout-spacing-xs 0 @layout-spacing-xs;
+        margin: var(--layout-spacing-xs) 0 var(--layout-spacing-xs);
     }
 }

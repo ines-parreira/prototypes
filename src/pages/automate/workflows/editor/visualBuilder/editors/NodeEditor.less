@@ -37,14 +37,14 @@
     .llmPromptVariables {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
         align-self: stretch;
     }
 
     .formField {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
     }
 
     .urlMethodFormFieldGroup {
@@ -56,14 +56,14 @@
     .keyValueContainer {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
         align-items: flex-start;
     }
 
     .keyValueRow {
         align-self: stretch;
         display: grid;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
         grid-template-columns: 188px minmax(calc(100% - 224px), 1fr) 20px;
     }
 
@@ -82,7 +82,7 @@
 
     .formItem {
         & > label {
-            margin-bottom: @layout-spacing-xs;
+            margin-bottom: var(--layout-spacing-xs);
         }
     }
 

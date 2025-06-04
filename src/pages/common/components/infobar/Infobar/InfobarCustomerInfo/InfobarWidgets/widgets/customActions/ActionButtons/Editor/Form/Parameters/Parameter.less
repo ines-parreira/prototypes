@@ -3,7 +3,7 @@
 :local {
     .formParamRow {
         display: flex;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
         align-items: stretch;
         margin-bottom: 28px;
 
@@ -37,11 +37,11 @@
     }
 
     .dropdownFormParamRow {
-        margin-bottom: @layout-spacing-xs;
+        margin-bottom: var(--layout-spacing-xs);
     }
 
     .label {
-        margin-bottom: @layout-spacing-xs;
+        margin-bottom: var(--layout-spacing-xs);
     }
 
     .checkboxWrapper {
@@ -49,10 +49,10 @@
         flex-direction: column;
         align-items: center;
         flex: 0 1 auto;
-        margin-left: @layout-spacing-xs;
+        margin-left: var(--layout-spacing-xs);
 
         & input {
-            margin-top: @layout-spacing-xs !important;
+            margin-top: var(--layout-spacing-xs) !important;
             margin-right: 0 !important;
         }
     }

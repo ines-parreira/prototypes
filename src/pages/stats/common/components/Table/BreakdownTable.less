@@ -7,17 +7,22 @@
 @table-header: 130px;
 @table-header-row: 47px;
 @pagination: 40px;
-@table-margin-bottom: @layout-spacing-xs;
+@table-margin-bottom: var(--layout-spacing-xs);
 
 @tags-table-row-height: 43px;
 @tags-table-max-rows-height: 15 * @tags-table-row-height;
-@tags-table-max-height: @table-header + @table-header-row +
-    @tags-table-max-rows-height + @table-margin-bottom;
-@tags-table-max-height-with-pagination: @tags-table-max-height + @pagination;
+@tags-table-max-height: calc(
+    @table-header + @table-header-row + @tags-table-max-rows-height +
+        @table-margin-bottom
+);
+@tags-table-max-height-with-pagination: calc(
+    @tags-table-max-height + @pagination
+);
 
 @responsive-table-header: 168px;
-@responsive-tags-table-max-height: @responsive-table-header +
-    @table-header-row + @tags-table-max-rows-height;
+@responsive-tags-table-max-height: calc(
+    @responsive-table-header + @table-header-row + @tags-table-max-rows-height
+);
 
 :local {
     .wrapper {
@@ -204,7 +209,7 @@
     .small,
     .BodyCellContent {
         color: inherit;
-        padding: @layout-spacing-xs @layout-spacing-s;
+        padding: var(--layout-spacing-xs) @layout-spacing-s;
 
         @media @mobiles {
             overflow: hidden;
@@ -232,7 +237,7 @@
 
     .switches {
         display: flex;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
     }
 
     .emptyValue {
@@ -245,7 +250,7 @@
 
     .pagination {
         flex-shrink: 0;
-        padding-left: @layout-spacing-xs;
-        padding-bottom: @layout-spacing-xs;
+        padding-left: var(--layout-spacing-xs);
+        padding-bottom: var(--layout-spacing-xs);
     }
 }

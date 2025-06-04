@@ -10,7 +10,7 @@
         min-height: @layout-spacing-m;
         border: 1px solid var(--Neutral-Grey_3, #ddd);
         background: var(--Neutral-Grey_1, #f9f9f9);
-        padding: calc(@layout-spacing-xs - 2px) @layout-spacing-xs;
+        padding: calc(var(--layout-spacing-xs) - 2px) var(--layout-spacing-xs);
     }
 
     .variableCollapsable {
@@ -33,19 +33,19 @@
     .actionStepsContainer {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
         & > p {
             margin: 0;
             .body-semibold();
         }
         & > div {
-            gap: @layout-spacing-xs;
+            gap: var(--layout-spacing-xs);
         }
     }
 
     .closeButtonTooltip {
         align-items: baseline;
         display: flex;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
     }
 }

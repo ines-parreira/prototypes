@@ -19,7 +19,7 @@
         display: flex;
         align-items: center;
         padding: @layout-spacing-m;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
         border-bottom: 1px dashed var(--neutral-grey-3);
     }
 
@@ -42,7 +42,7 @@
     .etaContainer {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
     }
 
     .etaCaption {
@@ -60,7 +60,7 @@
 
     .etaIcon {
         color: var(--neutral-grey-5);
-        margin-left: @layout-spacing-xs;
+        margin-left: var(--layout-spacing-xs);
         font-size: 16px;
         width: 16px;
     }
@@ -93,7 +93,7 @@
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        margin: @layout-spacing-xs 6px 6px;
+        margin: var(--layout-spacing-xs) 6px 6px;
         background-color: var(--main-primary);
         z-index: 1;
 
@@ -114,7 +114,7 @@
         width: 1px;
         position: absolute;
         height: 100%;
-        margin-top: @layout-spacing-xs;
+        margin-top: var(--layout-spacing-xs);
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
@@ -147,7 +147,7 @@
     .timelineItemTimestamp {
         .body-regular();
         color: var(--neutral-grey-4);
-        margin-top: @layout-spacing-xs;
+        margin-top: var(--layout-spacing-xs);
     }
 
     .timelineItemDescription {
@@ -205,7 +205,7 @@
     .shippingCarrierSubtitle {
         color: var(--neutral-grey-5);
         display: flex;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
     }
 
     .shippingCarrierTrackingNumber {
@@ -251,7 +251,7 @@
 
     .lineItemPrice {
         color: var(--neutral-grey-5);
-        margin-right: @layout-spacing-xs;
+        margin-right: var(--layout-spacing-xs);
     }
 
     .lineItemQuantity {

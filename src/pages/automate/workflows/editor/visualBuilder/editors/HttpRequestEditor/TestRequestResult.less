@@ -17,7 +17,7 @@
     .field {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
     }
 
     .textarea {
@@ -32,7 +32,7 @@
     .variable {
         display: grid;
         grid-template-columns: 188px 1fr 188px 110px 20px;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
     }
 
     .addVariableButton {
@@ -47,7 +47,7 @@
         .caption-regular();
         display: grid;
         grid-template-columns: 1fr 216px;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
         color: var(--neutral-grey-5);
     }
 }

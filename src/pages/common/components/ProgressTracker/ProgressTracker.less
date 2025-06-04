@@ -20,7 +20,7 @@
     .progressTracker {
         display: flex;
         align-items: center;
-        gap: var(--spacing-xs, @layout-spacing-xs);
+        gap: var(--spacing-xs, var(--layout-spacing-xs));
 
         .label {
             .body-semibold();
@@ -31,6 +31,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
     }
 }

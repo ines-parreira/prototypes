@@ -13,7 +13,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
         padding: @layout-spacing-s;
     }
 
@@ -26,7 +26,7 @@
         font-weight: 600;
         border: 0;
         background-color: var(--neutral-grey-0);
-        padding: 6px @layout-spacing-xs;
+        padding: 6px var(--layout-spacing-xs);
         outline-color: var(--main-primary);
     }
 
@@ -61,7 +61,7 @@
 
         & > div {
             flex: 1;
-            padding: @layout-spacing-xs 0 @layout-spacing-s;
+            padding: var(--layout-spacing-xs) 0 @layout-spacing-s;
         }
     }
 

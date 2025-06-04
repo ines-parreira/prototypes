@@ -56,19 +56,19 @@
     .contentActions {
         display: flex;
         align-items: center;
-        gap: @layout-spacing-xs;
-        padding-top: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
+        padding-top: var(--layout-spacing-xs);
     }
 
     // Override Alert banner to fit onboarding design
     .info {
         border-color: var(--neutral-grey-3) !important;
-        border-radius: @layout-spacing-xs;
+        border-radius: var(--layout-spacing-xs);
         background-color: var(--main-primary-0);
         padding: @layout-spacing-s;
 
         & > :first-child {
-            margin-right: @layout-spacing-xs;
+            margin-right: var(--layout-spacing-xs);
         }
     }
 

@@ -18,7 +18,7 @@
     .dropdownItem {
         display: flex;
         align-items: center;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
         border-radius: 0;
     }
 
@@ -46,7 +46,7 @@
         border: 1px solid var(--neutral-grey-3);
         color: var(--main-primary);
         height: 40px;
-        padding: 0 @layout-spacing-xs;
+        padding: 0 var(--layout-spacing-xs);
         > i {
             color: var(--main-primary);
         }
@@ -77,12 +77,12 @@
     }
 
     .itemsWrapper {
-        padding: @layout-spacing-xs;
+        padding: var(--layout-spacing-xs);
     }
 
     .noDashboards {
         .body-regular();
         color: var(--neutral-grey-4);
-        padding: @layout-spacing-xs;
+        padding: var(--layout-spacing-xs);
     }
 }

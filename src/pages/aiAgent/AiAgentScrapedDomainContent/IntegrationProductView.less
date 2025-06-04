@@ -2,7 +2,7 @@
 
 :local {
     .productField {
-        margin-bottom: @layout-spacing-xs;
+        margin-bottom: var(--layout-spacing-xs);
 
         &:last-of-type {
             margin-bottom: 0;
@@ -12,7 +12,7 @@
     .imageGrid {
         display: grid;
         grid-template-columns: repeat(auto-fill, 95px);
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
         margin-top: @layout-spacing-xxs;
     }
 
@@ -43,7 +43,7 @@
     }
 
     .variantItem {
-        padding: @layout-spacing-xs 0;
+        padding: var(--layout-spacing-xs) 0;
         border-bottom: 1px solid var(--neutral-grey-4);
 
         &:last-child {

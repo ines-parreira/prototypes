@@ -18,7 +18,7 @@
 
     .title {
         display: flex;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
         font-size: 15px;
         font-weight: 600;
         color: var(--neutral-grey-6);
@@ -38,7 +38,7 @@
         align-items: center;
         gap: @layout-spacing-xxs;
         border-radius: @layout-spacing-xxs;
-        padding: @layout-spacing-xxs @layout-spacing-xs;
+        padding: @layout-spacing-xxs var(--layout-spacing-xs);
         background-color: var(--accessory-magenta-1);
         color: var(--accessory-magenta-3);
         font-size: 12px;

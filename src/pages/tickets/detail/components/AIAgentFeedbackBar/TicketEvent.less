@@ -13,13 +13,13 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            padding-top: @layout-spacing-xs;
+            padding-top: var(--layout-spacing-xs);
             align-items: center;
 
             .badgeTopLine {
                 z-index: 1;
                 position: absolute;
-                height: @layout-spacing-xs;
+                height: var(--layout-spacing-xs);
                 top: 0;
                 left: 50%;
                 transform: translateX(-50%);
@@ -29,7 +29,7 @@
             .badgeBottomLine {
                 z-index: 1;
                 position: absolute;
-                height: calc(100% - @layout-spacing-xs);
+                height: calc(100% - var(--layout-spacing-xs));
                 bottom: -@layout-spacing-s;
                 left: 50%;
                 transform: translateX(-50%);
@@ -64,7 +64,7 @@
             display: flex;
             gap: @layout-spacing-xxs;
             flex-wrap: wrap;
-            padding: @layout-spacing-xs 0;
+            padding: var(--layout-spacing-xs) 0;
             padding-left: @layout-spacing-s;
         }
 

@@ -69,7 +69,7 @@
     .container {
         width: 300px;
         border-radius: 4px;
-        padding: @layout-spacing-s @layout-spacing-s @layout-spacing-xs;
+        padding: @layout-spacing-s @layout-spacing-s var(--layout-spacing-xs);
 
         box-shadow: @layout-spacing-xxs @layout-spacing-xxs @layout-spacing-s
             0px rgba(22, 22, 22, 0.1);
@@ -78,7 +78,7 @@
     .title {
         .caption-allcaps();
 
-        margin-bottom: @layout-spacing-xs;
+        margin-bottom: var(--layout-spacing-xs);
 
         color: var(--neutral-grey-4);
     }
@@ -119,9 +119,9 @@
         .caption-semibold();
 
         border-radius: 4px;
-        padding: @layout-spacing-xxs @layout-spacing-xs;
-        margin-right: @layout-spacing-xs;
-        margin-bottom: @layout-spacing-xs;
+        padding: @layout-spacing-xxs var(--layout-spacing-xs);
+        margin-right: var(--layout-spacing-xs);
+        margin-bottom: var(--layout-spacing-xs);
 
         background-color: var(--neutral-grey-2);
         color: var(--neutral-grey-6);

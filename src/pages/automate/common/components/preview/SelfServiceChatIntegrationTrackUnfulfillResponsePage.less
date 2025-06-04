@@ -29,7 +29,7 @@
     .titleContainer {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
         flex: 1;
     }
 
@@ -53,8 +53,8 @@
     .etaContainer {
         display: flex;
         flex-direction: column;
-        padding: 0 @layout-spacing-s @layout-spacing-xs;
-        gap: @layout-spacing-xs;
+        padding: 0 @layout-spacing-s var(--layout-spacing-xs);
+        gap: var(--layout-spacing-xs);
     }
 
     .etaCaption {
@@ -70,7 +70,7 @@
 
     .etaIcon {
         color: var(--neutral-grey-4);
-        margin-left: @layout-spacing-xs;
+        margin-left: var(--layout-spacing-xs);
         font-size: 16px;
         width: 16px;
     }
@@ -140,7 +140,7 @@
     .timelineItemContent {
         display: flex;
         flex-direction: column;
-        padding: 0 0 @layout-spacing-xs;
+        padding: 0 0 var(--layout-spacing-xs);
         gap: 12px;
     }
 
@@ -192,7 +192,7 @@
     }
 
     .shippingCarrier {
-        padding-block: @layout-spacing-xxs @layout-spacing-xs;
+        padding-block: @layout-spacing-xxs var(--layout-spacing-xs);
         padding-inline: @layout-spacing-s;
     }
 

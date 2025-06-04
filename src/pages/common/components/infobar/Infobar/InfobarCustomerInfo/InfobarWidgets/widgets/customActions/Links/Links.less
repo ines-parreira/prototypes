@@ -12,7 +12,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: @layout-spacing-xs;
+        margin-bottom: var(--layout-spacing-xs);
         &:hover .editIcons {
             display: block;
         }
@@ -50,12 +50,12 @@
     .collapseGroup {
         margin: 0;
         & > li:first-child {
-            margin-top: @layout-spacing-xs;
+            margin-top: var(--layout-spacing-xs);
         }
     }
 
     .showMore {
-        margin-top: @layout-spacing-xs;
+        margin-top: var(--layout-spacing-xs);
         .caption-allcaps();
     }
 
@@ -69,6 +69,6 @@
     }
 
     .buttonSpacing {
-        margin-right: @layout-spacing-xs;
+        margin-right: var(--layout-spacing-xs);
     }
 }

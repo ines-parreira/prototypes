@@ -4,7 +4,7 @@
 :local .container {
     display: flex;
     justify-content: space-between;
-    padding-bottom: @layout-spacing-xs;
+    padding-bottom: var(--layout-spacing-xs);
     z-index: 1;
     flex-wrap: wrap;
 
@@ -22,7 +22,7 @@
                 font-weight: @body-semibold-font-weight;
                 font-size: @body-link-font-size;
                 line-height: @body-link-line-height;
-                margin-right: @layout-spacing-xs;
+                margin-right: var(--layout-spacing-xs);
             }
 
             span:last-child {

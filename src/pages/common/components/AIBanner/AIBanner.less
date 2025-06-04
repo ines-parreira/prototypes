@@ -5,7 +5,7 @@
     .container {
         padding: 12px;
         display: flex;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
         border: 1px solid var(--accessory-magenta-3);
         border-radius: @layout-spacing-xxs;
         background-color: var(--neutral-grey-0);
@@ -27,7 +27,7 @@
         &.fill {
             padding: @layout-spacing-s;
             border-color: transparent;
-            border-radius: @layout-spacing-xs;
+            border-radius: var(--layout-spacing-xs);
 
             &.hasError {
                 background-color: var(--accessory-red-1);
@@ -59,7 +59,7 @@
         display: flex;
         flex-direction: column;
         overflow: auto;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
 
         :global {
             .message-content {

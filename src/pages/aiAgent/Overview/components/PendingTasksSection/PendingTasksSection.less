@@ -36,7 +36,7 @@
         display: grid;
         grid-template-columns: 1fr;
         gap: 16px;
-        margin-top: @layout-spacing-xs;
+        margin-top: var(--layout-spacing-xs);
 
         @media @large-desktops {
             grid-template-columns: 1fr 1fr;
@@ -50,7 +50,7 @@
     .expanderContainer {
         text-align: center;
         width: 100%;
-        margin: @layout-spacing-xs 0;
+        margin: var(--layout-spacing-xs) 0;
     }
 
     .expander {

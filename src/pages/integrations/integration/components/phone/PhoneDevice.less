@@ -26,12 +26,12 @@
     }
 
     .results {
-        margin-top: @layout-spacing-xs;
+        margin-top: var(--layout-spacing-xs);
         height: 222px;
         overflow-y: scroll;
 
         &.noResults {
-            padding: @layout-spacing-xs;
+            padding: var(--layout-spacing-xs);
             color: var(--neutral-grey-5);
             text-align: center;
         }
@@ -45,9 +45,9 @@
 
     .result {
         display: flex;
-        padding: @layout-spacing-xs;
+        padding: var(--layout-spacing-xs);
         cursor: pointer;
-        column-gap: @layout-spacing-xs;
+        column-gap: var(--layout-spacing-xs);
 
         &:hover,
         &.highlighted {
@@ -87,6 +87,6 @@
 
     .integrationSelectorItem {
         display: flex;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
     }
 }

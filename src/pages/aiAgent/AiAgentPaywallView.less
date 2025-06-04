@@ -53,7 +53,7 @@
         margin: 0;
         padding: 0;
         margin: @layout-spacing-m 0;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
 
         & > li {
             display: grid;
@@ -67,13 +67,13 @@
 
     .icon {
         color: var(--feedback-success-3);
-        margin-right: @layout-spacing-xs;
+        margin-right: var(--layout-spacing-xs);
         font-size: 24px !important;
     }
 
     .previewTitle {
         .caption-regular();
-        margin-bottom: @layout-spacing-xs;
+        margin-bottom: var(--layout-spacing-xs);
     }
 
     .toggleButtons {
@@ -88,11 +88,11 @@
 
     .actionButtons {
         display: flex;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
     }
 
     .roiButton {
-        margin-top: @layout-spacing-xs;
+        margin-top: var(--layout-spacing-xs);
         padding: 0 @layout-spacing-xxs !important;
     }
 }
