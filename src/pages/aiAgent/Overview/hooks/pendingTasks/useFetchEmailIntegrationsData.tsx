@@ -2,8 +2,14 @@ import { useMemo } from 'react'
 
 import { type Map } from 'immutable'
 
+import { EmailIntegration, GmailIntegration } from '@gorgias/helpdesk-queries'
+
 import useAppSelector from 'hooks/useAppSelector'
-import { type EmailIntegration } from 'models/integration/types'
+import { OutlookIntegration } from 'models/integration/types'
+import {
+    EmailVerificationStatus,
+    getEmailVerificationStatus,
+} from 'pages/integrations/integration/components/email/getEmailVerificationStatus'
 import { getEmailIntegrations } from 'state/integrations/selectors'
 
 export const useFetchEmailIntegrationsData = () => {
@@ -11,14 +17,22 @@ export const useFetchEmailIntegrationsData = () => {
 
     const mappedEmails = useMemo(() => {
         return rawEmails
-            .map((email: Map<string, any>) => email.toJS() as EmailIntegration)
-            .filter((i): i is EmailIntegration => !!i)
-            .map((email) => ({
-                id: email!.id,
-                isDefault: email!.meta?.preferred,
-                address: email!.meta?.address,
-                isVerified: !!email!.meta?.verified,
-            }))
+            .map((emailIntegrationMap: Map<string, any>) => {
+                const email = emailIntegrationMap.toJS() as
+                    | EmailIntegration
+                    | GmailIntegration
+                    | OutlookIntegration
+
+                const verificationStatus = getEmailVerificationStatus(email)
+
+                return {
+                    id: email.id,
+                    isDefault: email.meta?.preferred,
+                    address: email.meta?.address,
+                    isVerified:
+                        verificationStatus === EmailVerificationStatus.Verified,
+                }
+            })
             .toArray()
     }, [rawEmails])
 

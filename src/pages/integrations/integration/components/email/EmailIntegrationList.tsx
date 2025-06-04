@@ -101,13 +101,10 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
         </>
     )
 
-    const isSubmitting = loading.get('updateIntegration')
-
     const integrationToItemDisplay = (integration: Map<any, any>) => {
         return (
             <EmailIntegrationListItem
                 integration={integration.toJS?.()}
-                isRowSubmitting={isSubmitting}
                 verifiedDomains={verifiedDomains}
                 storeMappings={storeMappings}
                 integrations={integrations.toJS?.()}

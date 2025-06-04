@@ -35,7 +35,6 @@ import css from './EmailIntegrationList.less'
 
 type Props = {
     integration: EmailIntegration | GmailIntegration | OutlookIntegration
-    isRowSubmitting: boolean
     verifiedDomains: string[]
     integrations: (EmailIntegration | GmailIntegration | OutlookIntegration)[]
     storeMappings?: Record<string, number>
@@ -43,7 +42,6 @@ type Props = {
 
 export default function EmailIntegrationListItem({
     integration,
-    isRowSubmitting,
     verifiedDomains,
     integrations,
     storeMappings,
@@ -191,15 +189,10 @@ export default function EmailIntegrationListItem({
             </td>
             <td className="smallest align-middle text-left p-0">
                 <EmailIntegrationListVerificationStatus
-                    active={active}
-                    isForwardEmail={isForwardEmail}
-                    isVerified={isVerified}
-                    isRowSubmitting={isRowSubmitting}
-                    redirectURI={adapter.uri}
+                    integration={integration}
                     isDomainVerificationWarningVisible={
                         shouldDisplayDomainVerificationWarning
                     }
-                    integration={integration}
                 />
             </td>
             <td className="smallest align-middle">
