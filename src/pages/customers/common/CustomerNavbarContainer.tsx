@@ -1,15 +1,16 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 import { connect, ConnectedProps } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import { ActiveContent, Navbar } from 'common/navigation'
 import { UserSettingType } from 'config/types/user'
+import { ViewType } from 'models/view/types'
 
 import useSearch from '../../../hooks/useSearch'
 import { RootState } from '../../../state/types'
 import { fetchViews } from '../../../state/views/actions'
-import CustomersNavbarView from './components/CustomersNavbarView'
+import { CustomersNavbarView } from './components/CustomersNavbarView'
 
 type OwnProps = {
     isLoading: boolean
@@ -30,6 +31,7 @@ export const CustomerNavbarContainer = ({
     return (
         <Navbar activeContent={ActiveContent.Customers} title="Customers">
             <CustomersNavbarView
+                viewType={ViewType.CustomerList}
                 settingType={UserSettingType.CutomerViews}
                 isLoading={isLoading}
             />

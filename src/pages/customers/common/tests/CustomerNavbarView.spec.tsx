@@ -6,15 +6,9 @@ import configureStore from 'redux-mock-store'
 
 import { ViewType } from 'models/view/types'
 
-// Mock the CSS modules
-jest.mock('../components/CustomersNavbarViewV2.less', () => ({}))
-jest.mock('pages/common/components/ViewCount/ViewCount.less', () => ({}))
-jest.mock('pages/common/components/ViewName/ViewName.less', () => ({}))
-jest.mock('components/Navigation/Navigation.less', () => ({}))
-
 const mockStore = configureStore([])
 
-describe('CustomersNavbarViewV2', () => {
+describe('CustomersNavbarView', () => {
     let store: ReturnType<typeof mockStore>
     const viewType = ViewType.CustomerList // Use CustomerList
     const settingType = 'customerViewPreferences' // Update setting type
@@ -31,10 +25,7 @@ describe('CustomersNavbarViewV2', () => {
     }
 
     beforeEach(() => {
-        store = mockStore({
-            // Mock relevant parts of the state if selectors needed it directly
-            // For now, mocking the selector result is handled by mocking connect
-        })
+        store = mockStore({})
 
         // Mock the selectors used by connect
         jest.mock('state/views/selectors', () => ({
@@ -44,11 +35,10 @@ describe('CustomersNavbarViewV2', () => {
     })
 
     const renderComponent = (isLoading = false) => {
-        // Must import *after* mocks are set up
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const {
-            CustomersNavbarViewV2: ComponentToTest,
-        } = require('../components/CustomersNavbarViewV2')
+            CustomersNavbarView: ComponentToTest,
+        } = require('../components/CustomersNavbarView')
 
         return render(
             <Provider store={store}>
@@ -71,8 +61,8 @@ describe('CustomersNavbarViewV2', () => {
     it('should render view items with names and counts', () => {
         renderComponent()
         expect(screen.getByText('View One')).toBeInTheDocument()
-        expect(screen.getByText('5')).toBeInTheDocument() // Count for View One
+        expect(screen.getByText('5')).toBeInTheDocument()
         expect(screen.getByText('View Two')).toBeInTheDocument()
-        expect(screen.getByText('10')).toBeInTheDocument() // Count for View Two
+        expect(screen.getByText('10')).toBeInTheDocument()
     })
 })
