@@ -21,7 +21,7 @@ export const useFileIngestion = ({
 }: {
     helpCenterId: number
     ingestedFileIds?: number[]
-    onSuccess?: () => void
+    onSuccess?: (dto: Components.Schemas.RetrieveFileIngestionLogDto) => void
     onFailure?: (dto: Components.Schemas.RetrieveFileIngestionLogDto) => void
     queryOptionsOverrides?: Parameters<typeof useGetFileIngestion>[1]
 }): {
@@ -34,7 +34,9 @@ export const useFileIngestion = ({
     isLoading: boolean
 } => {
     const queryClient = useQueryClient()
-    const [ingestingFileId, setIngestingFileId] = useState<number | null>(null)
+    const [ingestingFilesId, setIngestingFilesId] = useState<number[] | null>(
+        [],
+    )
 
     const invalidateQueries = useCallback(
         () =>
@@ -58,7 +60,7 @@ export const useFileIngestion = ({
             enabled: !!helpCenterId,
             refetchOnWindowFocus: false,
             refetchInterval:
-                ingestingFileId === null ? false : UPDATE_STATUS_INTERVAL_MS,
+                ingestingFilesId === null ? false : UPDATE_STATUS_INTERVAL_MS,
         },
     )
 
@@ -75,7 +77,12 @@ export const useFileIngestion = ({
             createFileIngestionLogDto,
         ])
 
-        setIngestingFileId(resp?.data.id ?? null)
+        setIngestingFilesId((prev) => {
+            const id = resp?.data.id
+            if (!id) return prev
+            if (prev === null) return [id]
+            return [...prev, id]
+        })
     }
 
     const deleteIngestedFile = async (ingestedFileId: number) => {
@@ -86,27 +93,38 @@ export const useFileIngestion = ({
     }
 
     useEffect(() => {
-        if (ingestingFileId === null || !ingestedFiles) return
+        function checkIfFileIngestionIsFinished(
+            ingestingFileId: number | null,
+        ) {
+            if (ingestingFileId === null || !ingestedFiles) return
 
-        const ingestingFile = ingestedFiles.data.find(
-            (x) => x.id === ingestingFileId,
-        )
+            const ingestingFile = ingestedFiles.data.find(
+                (x) => x.id === ingestingFileId,
+            )
 
-        if (!ingestingFile || ingestingFile.status === 'PENDING') return
+            if (!ingestingFile || ingestingFile.status === 'PENDING') return
 
-        if (ingestingFile.status === 'FAILED') {
-            onFailure && onFailure(ingestingFile)
+            if (ingestingFile.status === 'FAILED') {
+                onFailure && onFailure(ingestingFile)
+            }
+
+            if (ingestingFile.status === 'SUCCESSFUL') {
+                onSuccess && onSuccess(ingestingFile)
+            }
+
+            setIngestingFilesId((prev) => {
+                if (!prev) return null
+                return prev.filter((id) => id !== ingestingFileId)
+            })
+            void invalidateQueries()
         }
 
-        if (ingestingFile.status === 'SUCCESSFUL') {
-            onSuccess && onSuccess()
+        for (const id of ingestingFilesId ?? []) {
+            checkIfFileIngestionIsFinished(id)
         }
-
-        setIngestingFileId(null)
-        void invalidateQueries()
     }, [
         ingestedFiles,
-        ingestingFileId,
+        ingestingFilesId,
         invalidateQueries,
         onFailure,
         onSuccess,
@@ -116,7 +134,7 @@ export const useFileIngestion = ({
         ingestFile,
         ingestedFiles: ingestedFiles ? ingestedFiles.data : null,
         deleteIngestedFile,
-        isIngesting: ingestingFileId !== null,
+        isIngesting: ingestingFilesId !== null && ingestingFilesId.length > 0,
         isLoading,
     }
 }

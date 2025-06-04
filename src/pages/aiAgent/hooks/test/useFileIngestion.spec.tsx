@@ -31,6 +31,7 @@ const mockCreateFileIngestion = jest.fn().mockResolvedValue({
 })
 
 const mockDeleteFileIngestion = jest.fn().mockResolvedValue(null)
+const mockGetFileIngestion = jest.mocked(useGetFileIngestion)
 
 const renderUseFileIngestion = (isLoading = false) => {
     ;(useCreateFileIngestion as jest.Mock).mockReturnValue({
@@ -154,5 +155,90 @@ describe('useFileIngestion', () => {
             undefined,
             { help_center_id: 1, file_ingestion_id: 5 },
         ])
+    })
+
+    it('should handle successful file ingestion and update state correctly', async () => {
+        const { result, rerender } = renderUseFileIngestion()
+
+        await act(async () => {
+            await result.current.ingestFile({
+                filename: 'test.pdf',
+                type: 'pdf',
+                size_bytes: 1000,
+                google_storage_url: 'https://test.com/test.pdf',
+            })
+        })
+
+        // First update with PENDING status
+        mockGetFileIngestion.mockReturnValue({
+            data: {
+                data: [{ id: 5, status: 'PENDING' }],
+            },
+        } as unknown as ReturnType<typeof useGetFileIngestion>)
+        rerender()
+
+        // Then update with SUCCESSFUL status
+        mockGetFileIngestion.mockReturnValue({
+            data: {
+                data: [{ id: 5, status: 'SUCCESSFUL' }],
+            },
+        } as unknown as ReturnType<typeof useGetFileIngestion>)
+        rerender()
+
+        expect(mockOnSuccess).toHaveBeenCalledWith(
+            expect.objectContaining({ id: 5, status: 'SUCCESSFUL' }),
+        )
+        expect(result.current.isIngesting).toBe(false)
+    })
+
+    it('should not check file ingestion if ingestedFiles is null', () => {
+        // Arrange: ingestedFiles is null, ingestingFilesId has an id
+        mockGetFileIngestion.mockReturnValue({
+            data: null,
+            isLoading: false,
+        } as unknown as ReturnType<typeof useGetFileIngestion>)
+        const { result, rerender } = renderUseFileIngestion()
+        // Simulate ingesting file
+        act(() => {
+            result.current.ingestFile({
+                filename: 'file.pdf',
+                type: 'pdf',
+                size_bytes: 123,
+                google_storage_url: 'https://test.com/file.pdf',
+            })
+        })
+        // Set ingestedFiles to null and rerender
+        mockGetFileIngestion.mockReturnValue({
+            data: null,
+            isLoading: false,
+        } as unknown as ReturnType<typeof useGetFileIngestion>)
+        rerender()
+        // No onSuccess or onFailure should be called
+        expect(mockOnSuccess).not.toHaveBeenCalled()
+        expect(mockOnFailure).not.toHaveBeenCalled()
+    })
+
+    it('should not check file ingestion if ingestingFileId is null', () => {
+        // Arrange: ingestedFiles has data, but ingestingFilesId is null
+        mockGetFileIngestion.mockReturnValue({
+            data: {
+                data: [{ id: 5, status: 'SUCCESSFUL' }],
+            },
+            isLoading: false,
+        } as unknown as ReturnType<typeof useGetFileIngestion>)
+
+        // Mock the useState to return null for ingestingFilesId
+        const mockSetState = jest.fn()
+        jest.spyOn(React, 'useState').mockImplementationOnce(() => [
+            null,
+            mockSetState,
+        ])
+
+        renderUseFileIngestion()
+
+        // Verify that no callbacks are triggered even with successful file data
+        expect(mockOnSuccess).not.toHaveBeenCalled()
+        expect(mockOnFailure).not.toHaveBeenCalled()
+        expect(mockSetState).not.toHaveBeenCalled()
     })
 })

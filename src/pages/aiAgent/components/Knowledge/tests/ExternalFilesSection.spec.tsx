@@ -33,7 +33,9 @@ const useFlagMock = assumeMock(useFlag)
 
 useAppDispatchMock.mockReturnValue(mockDispatch)
 
-let onSuccess: (() => void) | undefined
+let onSuccess:
+    | ((file: Components.Schemas.RetrieveFileIngestionLogDto) => void)
+    | undefined
 let onFailure:
     | ((file: Components.Schemas.RetrieveFileIngestionLogDto) => void)
     | undefined
@@ -176,7 +178,7 @@ describe('ExternalFilesSection', () => {
         })
         fireEvent.change(fileInput)
 
-        expect(screen.getByText('Upload File')).toBeInTheDocument()
+        expect(screen.getByText('Upload Files')).toBeInTheDocument()
 
         expect(notifyMock).toHaveBeenCalledWith({
             status: NotificationStatus.Error,
@@ -210,12 +212,11 @@ describe('ExternalFilesSection', () => {
         })
         fireEvent.change(fileInput)
 
-        expect(screen.getByText('Upload File')).toBeInTheDocument()
+        expect(screen.getByText('Upload Files')).toBeInTheDocument()
 
         expect(notifyMock).toHaveBeenCalledWith({
             status: NotificationStatus.Error,
-            message:
-                'Failed to upload: A file with this name already exists. Remove or select a different file.',
+            message: `Failed to upload: A file with ${file.name} name already exists. Remove or select a different file.`,
         })
     })
 
@@ -268,26 +269,24 @@ describe('ExternalFilesSection', () => {
     })
 
     it('should show a success message when ingestion succeeds', () => {
+        const file = {
+            id: 1,
+            help_center_id: 1,
+            filename: 'test.pdf',
+            status: 'SUCCESSFUL' as const,
+            google_storage_url: 'https://storage.googleapis.com/test.pdf',
+            uploaded_datetime: '2024-11-04T19:24:08Z',
+            snippets_article_ids: [],
+        }
         renderComponent({
-            ingestedFiles: [
-                {
-                    id: 1,
-                    help_center_id: 1,
-                    filename: 'test.pdf',
-                    status: 'SUCCESSFUL',
-                    google_storage_url:
-                        'https://storage.googleapis.com/test.pdf',
-                    uploaded_datetime: '2024-11-04T19:24:08Z',
-                    snippets_article_ids: [],
-                },
-            ],
+            ingestedFiles: [file],
         })
 
-        onSuccess && onSuccess()
+        onSuccess && onSuccess(file)
 
         expect(notifyMock).toHaveBeenCalledWith({
             status: NotificationStatus.Success,
-            message: 'File uploaded successfully',
+            message: `File ${file.filename} uploaded successfully`,
         })
     })
 
@@ -304,8 +303,8 @@ describe('ExternalFilesSection', () => {
             })),
         })
 
-        expect(screen.getByText('Upload File').closest('button')).toHaveClass(
-            'isDisabled',
+        expect(screen.getByText('Upload Files').closest('button')).toHaveClass(
+            'ui-button-isdisabled-a432',
         )
     })
 
@@ -363,5 +362,69 @@ describe('ExternalFilesSection', () => {
         expect(
             screen.queryByRole('button', { name: 'Open articles' }),
         ).not.toBeInTheDocument()
+    })
+
+    it('should handle multiple file uploads', async () => {
+        renderComponent()
+
+        uploadAttachmentsMock.mockResolvedValueOnce([
+            {
+                name: 'test1.txt',
+                type: 'text/plain',
+                content_type: 'text/plain',
+                size: 1000,
+                url: 'https://attachments.gorgias.rehab/test1.txt',
+                google_storage_key: 'test1.txt',
+            },
+            {
+                name: 'test2.txt',
+                type: 'text/plain',
+                content_type: 'text/plain',
+                size: 1000,
+                url: 'https://attachments.gorgias.rehab/test2.txt',
+                google_storage_key: 'test2.txt',
+            },
+        ])
+
+        const fileInput = screen.getByDisplayValue('')
+        const files = [
+            new File(['content1'], 'test1.txt', { type: 'text/plain' }),
+            new File(['content2'], 'test2.txt', { type: 'text/plain' }),
+        ]
+
+        Object.defineProperty(fileInput, 'files', { value: files })
+        fireEvent.change(fileInput)
+
+        await waitFor(() => {
+            expect(mockIngestFile).toHaveBeenCalledTimes(2)
+        })
+    })
+
+    it('should show error when trying to upload more than max files', async () => {
+        renderComponent({
+            ingestedFiles: Array.from({ length: 10 }, (_, i) => ({
+                id: i + 1,
+                help_center_id: 1,
+                filename: `existing-${i + 1}.txt`,
+                status: 'SUCCESSFUL',
+                google_storage_url: `https://storage.googleapis.com/existing-${i + 1}.txt`,
+                uploaded_datetime: '2024-01-01T00:00:00Z',
+                snippets_article_ids: [],
+            })),
+        })
+
+        const fileInput = screen.getByDisplayValue('')
+        const file = new File(['content'], 'new.txt', {
+            type: 'text/plain',
+        })
+
+        Object.defineProperty(fileInput, 'files', { value: [file] })
+        fireEvent.change(fileInput)
+
+        expect(notifyMock).toHaveBeenCalledWith({
+            status: NotificationStatus.Error,
+            message: 'You can only upload a maximum of 10 files.',
+        })
+        expect(uploadAttachmentsMock).not.toHaveBeenCalled()
     })
 })

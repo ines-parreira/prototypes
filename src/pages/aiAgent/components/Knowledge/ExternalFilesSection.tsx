@@ -2,13 +2,12 @@ import React, { createRef, useEffect, useState } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { IconButton, Label, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Button, IconButton, Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
-import Button from 'pages/common/components/button/Button'
 import { ConfirmNavigationPrompt } from 'pages/common/components/ConfirmNavigationPrompt'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
@@ -63,11 +62,11 @@ export const ExternalFilesSection = ({
     const { ingestFile, ingestedFiles, deleteIngestedFile, isIngesting } =
         useFileIngestion({
             helpCenterId,
-            onSuccess: () => {
+            onSuccess: (file) => {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Success,
-                        message: 'File uploaded successfully',
+                        message: `File ${file.filename} uploaded successfully`,
                     }),
                 )
             },
@@ -104,6 +103,27 @@ export const ExternalFilesSection = ({
     const maxFilesReached =
         successfullyIngestedFiles.length >= MAX_EXTERNAL_FILES
 
+    const uploadFiles = async (files: File[]) => {
+        if (files.length === 0) return
+
+        if (
+            files.length + successfullyIngestedFiles.length >
+            MAX_EXTERNAL_FILES
+        ) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: `You can only upload a maximum of ${MAX_EXTERNAL_FILES} files.`,
+                }),
+            )
+            return
+        }
+
+        for (const file of files) {
+            await uploadFile(file)
+        }
+    }
+
     const uploadFile = async (file: File) => {
         if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
             void dispatch(
@@ -124,7 +144,7 @@ export const ExternalFilesSection = ({
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
-                    message: `Failed to upload: A file with this name already exists. Remove or select a different file.`,
+                    message: `Failed to upload: A file with ${file.name} name already exists. Remove or select a different file.`,
                 }),
             )
 
@@ -145,12 +165,10 @@ export const ExternalFilesSection = ({
                 google_storage_url: uploadedFile.google_storage_key,
             })
         } catch {
-            setIsLoading(false)
-
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
-                    message: `An unknown error occurred`,
+                    message: `An unknown error occurred while uploading file ${file.name}.`,
                 }),
             )
         }
@@ -297,19 +315,22 @@ export const ExternalFilesSection = ({
                             (supportedType) => supportedType.type,
                         ).join(',')}
                         type="file"
+                        multiple
                         style={{ display: 'none' }}
                         onChange={(
                             event: React.ChangeEvent<HTMLInputElement>,
                         ) => {
-                            if (!event.target.files) return
-                            void uploadFile(event.target.files[0])
+                            if (!event.target.files?.length) return
+                            const files = Array.from(event.target.files)
+                            void uploadFiles(files)
                             event.target.value = ''
                         }}
                     />
 
                     {maxFilesReached && (
                         <Tooltip target="upload-button">
-                            You have reached the maximum number of uploads.
+                            You have reached the maximum number of uploads (
+                            {MAX_EXTERNAL_FILES} files).
                         </Tooltip>
                     )}
 
@@ -321,7 +342,7 @@ export const ExternalFilesSection = ({
                         isDisabled={isLoading || maxFilesReached}
                         leadingIcon="cloud_upload"
                     >
-                        {!isLoading ? 'Upload File' : 'Uploading..'}
+                        {!isLoading ? 'Upload Files' : 'Uploading...'}
                     </Button>
 
                     <div className={css.buttonInfo}>
