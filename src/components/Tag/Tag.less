@@ -6,18 +6,18 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: @layout-spacing-xxs;
-        padding: @layout-spacing-xxs var(--layout-spacing-xs);
+        gap: var(--layout-spacing-xxs);
+        padding: var(--layout-spacing-xxs) var(--layout-spacing-xs);
         border-radius: 4px;
         transition: all 0.2s linear;
 
         &.withIconOnly {
-            padding-left: @layout-spacing-xxs;
+            padding-left: var(--layout-spacing-xxs);
         }
 
         &.withIconOnly,
         &.withTrailIcon {
-            padding-right: @layout-spacing-xxs;
+            padding-right: var(--layout-spacing-xxs);
         }
 
         background-color: var(--neutral-grey-0);
@@ -28,7 +28,7 @@
         text-wrap: nowrap;
         display: inline-flex;
         align-items: center;
-        gap: @layout-spacing-xxs;
+        gap: var(--layout-spacing-xxs);
         .caption-regular();
         line-height: 14px;
 

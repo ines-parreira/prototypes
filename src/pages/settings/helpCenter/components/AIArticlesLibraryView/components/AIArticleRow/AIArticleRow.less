@@ -6,9 +6,9 @@
         align-items: center;
         padding: @layout-spacing-s @layout-spacing-s @layout-spacing-s 12px;
         justify-content: space-between;
-        border-radius: @layout-spacing-xxs;
+        border-radius: var(--layout-spacing-xxs);
         cursor: pointer;
-        border-left: @layout-spacing-xxs solid var(--neutral-grey-0);
+        border-left: var(--layout-spacing-xxs) solid var(--neutral-grey-0);
 
         &:not(.active):hover {
             background-color: var(--neutral-grey-1);
@@ -25,10 +25,10 @@
 
         i {
             font-size: 16px;
-            padding: @layout-spacing-xxs;
+            padding: var(--layout-spacing-xxs);
             background-color: var(--neutral-grey-1);
             color: var(--neutral-grey-4);
-            border-radius: @layout-spacing-xxs;
+            border-radius: var(--layout-spacing-xxs);
         }
     }
 

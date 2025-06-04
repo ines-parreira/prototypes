@@ -83,7 +83,7 @@
     .order {
         .body-semibold();
         display: flex;
-        gap: @layout-spacing-xxs;
+        gap: var(--layout-spacing-xxs);
         align-items: center;
         color: var(--main-primary);
 
@@ -117,7 +117,7 @@
     .sectionContainer {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-xxs;
+        gap: var(--layout-spacing-xxs);
 
         .subtitle {
             padding: 0 @layout-spacing-s;
@@ -129,7 +129,7 @@
         gap: var(--layout-spacing-xs);
         justify-content: space-between;
         align-items: center;
-        padding: @layout-spacing-xxs @layout-spacing-s;
+        padding: var(--layout-spacing-xxs) @layout-spacing-s;
 
         &,
         &:hover {
@@ -159,13 +159,13 @@
     .sectionText {
         .body-regular();
         display: flex;
-        gap: @layout-spacing-xxs;
+        gap: var(--layout-spacing-xxs);
         align-items: center;
         color: var(--neutral-grey-6);
 
         .leadIcon {
             font-size: 20px !important;
-            margin-right: @layout-spacing-xxs;
+            margin-right: var(--layout-spacing-xxs);
         }
 
         .text {
@@ -229,7 +229,7 @@
         font-size: 8px;
         padding: 0 @layout-spacing-s;
         display: flex;
-        gap: @layout-spacing-xxs;
+        gap: var(--layout-spacing-xxs);
         flex-direction: column;
     }
 

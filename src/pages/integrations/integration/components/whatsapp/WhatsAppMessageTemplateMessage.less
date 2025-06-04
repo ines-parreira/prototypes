@@ -12,15 +12,15 @@
         display: flex;
         align-items: center;
         flex-wrap: wrap;
-        row-gap: @layout-spacing-xxs;
+        row-gap: var(--layout-spacing-xxs);
     }
 
     .variable {
         &:not(:first-child) {
-            margin-left: @layout-spacing-xxs;
+            margin-left: var(--layout-spacing-xxs);
         }
         &:not(:last-child) {
-            margin-right: @layout-spacing-xxs;
+            margin-right: var(--layout-spacing-xxs);
         }
     }
 

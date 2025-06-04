@@ -5,14 +5,14 @@
     .container {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-xxs;
+        gap: var(--layout-spacing-xxs);
     }
 
     .labelWithTooltip {
         display: flex;
         align-items: center;
         width: fit-content;
-        margin-bottom: @layout-spacing-xxs;
+        margin-bottom: var(--layout-spacing-xxs);
     }
 
     .error {
@@ -45,7 +45,7 @@
         .description {
             display: flex;
             flex-direction: column;
-            gap: @layout-spacing-xxs;
+            gap: var(--layout-spacing-xxs);
 
             .title {
                 .body-semibold();

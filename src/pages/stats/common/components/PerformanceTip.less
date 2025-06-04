@@ -10,11 +10,11 @@
     }
     .sentiment {
         > div:not(:last-child) {
-            margin-bottom: @layout-spacing-xxs;
+            margin-bottom: var(--layout-spacing-xxs);
         }
 
         .label {
-            margin-right: @layout-spacing-xxs;
+            margin-right: var(--layout-spacing-xxs);
         }
         .value {
             .body-semibold();
@@ -26,7 +26,7 @@
         margin-bottom: var(--layout-spacing-xs);
         .icon {
             font-size: @heading-sub-section-regular-font-size;
-            margin-right: @layout-spacing-xxs;
+            margin-right: var(--layout-spacing-xxs);
             &.success {
                 color: var(--feedback-success-3);
             }

@@ -10,7 +10,7 @@
 
     .label {
         display: inline-block;
-        margin-right: @layout-spacing-xxs;
+        margin-right: var(--layout-spacing-xxs);
         .body-regular();
         overflow: hidden;
         text-overflow: ellipsis;
@@ -19,7 +19,7 @@
 
     .asterisk {
         display: inline-block;
-        margin-right: @layout-spacing-xxs;
+        margin-right: var(--layout-spacing-xxs);
         color: var(--feedback-error);
         font-weight: @body-semibold-font-weight;
         // revert bootstrap shitty styles

@@ -28,7 +28,7 @@
     .resources {
         display: flex;
         flex-wrap: wrap;
-        gap: @layout-spacing-xxs;
+        gap: var(--layout-spacing-xxs);
         justify-content: flex-end;
         min-width: 0;
     }
@@ -36,9 +36,9 @@
     .resource {
         display: flex;
         align-items: center;
-        gap: @layout-spacing-xxs;
-        border-radius: @layout-spacing-xxs;
-        padding: @layout-spacing-xxs var(--layout-spacing-xs);
+        gap: var(--layout-spacing-xxs);
+        border-radius: var(--layout-spacing-xxs);
+        padding: var(--layout-spacing-xxs) var(--layout-spacing-xs);
         background-color: var(--accessory-magenta-1);
         color: var(--accessory-magenta-3);
         font-size: 12px;

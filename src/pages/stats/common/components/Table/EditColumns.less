@@ -7,10 +7,10 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: @layout-spacing-xxs;
+        gap: var(--layout-spacing-xxs);
         padding: 2px var(--layout-spacing-xs);
         height: @layout-spacing-m;
-        border-radius: @layout-spacing-xxs;
+        border-radius: var(--layout-spacing-xxs);
         border: 1px solid var(--neutral-grey-3);
         background-color: var(--neutral-grey-2);
         transition: all 0.2s linear;
@@ -107,11 +107,11 @@
 
         color: var(--main-primary);
         padding: var(--layout-spacing-xs) var(--layout-spacing-xs)
-            @layout-spacing-xxs var(--layout-spacing-xs);
+            var(--layout-spacing-xxs) var(--layout-spacing-xs);
     }
 
     .separator {
-        margin: @layout-spacing-xxs var(--layout-spacing-xs);
+        margin: var(--layout-spacing-xxs) var(--layout-spacing-xs) 0;
         border-top: 1px solid var(--neutral-grey-3);
     }
 }

@@ -128,7 +128,7 @@
 
             .body {
                 color: @white;
-                margin-top: @layout-spacing-xxs;
+                margin-top: var(--layout-spacing-xxs);
             }
 
             .skeletonLine {
@@ -165,7 +165,7 @@
         border: 1px solid transparent;
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-xxs;
+        gap: var(--layout-spacing-xxs);
         background:
             linear-gradient(var(--neutral-grey-0), var(--neutral-grey-0))
                 padding-box,
@@ -218,7 +218,7 @@
         }
     }
     .popoverButton {
-        margin-right: @layout-spacing-xxs;
+        margin-right: var(--layout-spacing-xxs);
     }
 
     .initButton {
@@ -231,7 +231,7 @@
 
     .body {
         .body-regular();
-        margin-top: @layout-spacing-xxs;
+        margin-top: var(--layout-spacing-xxs);
         .bodyError {
             color: var(--neutral-grey-5);
         }
@@ -247,7 +247,7 @@
 
     .summaryBodySkeleton {
         margin-top: var(--layout-spacing-xs);
-        margin-bottom: @layout-spacing-xxs;
+        margin-bottom: var(--layout-spacing-xxs);
     }
 
     .skeletonLineContainer {
@@ -303,7 +303,7 @@
 
     .footer {
         display: flex;
-        gap: @layout-spacing-xxs;
+        gap: var(--layout-spacing-xxs);
         align-items: center;
 
         .updateButton {

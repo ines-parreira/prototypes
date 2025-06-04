@@ -17,7 +17,7 @@
     .container {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-xxs;
+        gap: var(--layout-spacing-xxs);
         &:not(:last-child) {
             padding-bottom: var(--layout-spacing-xs);
             margin-bottom: var(--layout-spacing-xs);
@@ -35,13 +35,13 @@
         flex: 1;
         display: flex;
         justify-content: flex-end;
-        gap: @layout-spacing-xxs;
+        gap: var(--layout-spacing-xxs);
     }
 
     .workflowListItemContent {
         display: flex;
         align-items: center;
-        gap: @layout-spacing-xxs;
+        gap: var(--layout-spacing-xxs);
     }
 
     .warningIcon {
