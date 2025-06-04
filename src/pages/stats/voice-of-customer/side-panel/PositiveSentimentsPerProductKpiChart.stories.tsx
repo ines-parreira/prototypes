@@ -34,7 +34,7 @@ const statsFilters: StatsFilters = {
     },
 }
 const productId = 123
-const sentimentCustomFieldId = 4979
+const sentimentCustomFieldId = '4979'
 const state = {
     stats: { filters: statsFilters },
     ui: {
@@ -45,8 +45,8 @@ const state = {
             },
             sidePanel: {
                 isOpen: true,
-                productId,
-                activeTab: SidePanelTab.trendOverview,
+                product: { id: productId, name: 'Product 1' },
+                activeTab: SidePanelTab.TrendOverview,
             },
         },
     },
@@ -100,6 +100,11 @@ appQueryClient.setQueryData(
                 {
                     [PRODUCT_ID_DIMENSION]: productId,
                     [TICKET_COUNT_MEASURE]: 33,
+                    [INTENT_DIMENSION]: Sentiment.Negative,
+                },
+                {
+                    [PRODUCT_ID_DIMENSION]: productId,
+                    [TICKET_COUNT_MEASURE]: 24,
                     [INTENT_DIMENSION]: Sentiment.Positive,
                 },
             ],
@@ -123,6 +128,11 @@ appQueryClient.setQueryData(
                 {
                     [PRODUCT_ID_DIMENSION]: productId,
                     [TICKET_COUNT_MEASURE]: 15,
+                    [INTENT_DIMENSION]: Sentiment.Negative,
+                },
+                {
+                    [PRODUCT_ID_DIMENSION]: productId,
+                    [TICKET_COUNT_MEASURE]: 10,
                     [INTENT_DIMENSION]: Sentiment.Positive,
                 },
             ],

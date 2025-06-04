@@ -24,6 +24,7 @@ import {
     deduplicateCustomFields,
     injectDrillDownCustomFieldId,
 } from 'models/reporting/queryFactories/utils'
+import { PRODUCT_ID_DIMENSION } from 'models/reporting/queryFactories/voice-of-customer/sentimentPerProduct'
 import {
     ReportingFilter,
     ReportingFilterOperator,
@@ -118,6 +119,37 @@ export const customFieldsTicketCountOnCreatedDatetimeQueryFactory = (
     return {
         ...baseQuery,
         filters: [...baseQueryFilters, createdTicketFilter(filters)],
+    }
+}
+
+export const customFieldsTicketCountForProductOnCreatedDatetimeQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    customFieldId: string,
+    productId: string,
+    sorting?: OrderDirection,
+    additionalFilters?: ReportingFilter[],
+): ReportingQuery<TicketCustomFieldsCube> => {
+    const { filters: baseQueryFilters, ...baseQuery } =
+        customFieldsTicketCountQueryFactory(
+            filters,
+            timezone,
+            customFieldId,
+            sorting,
+            additionalFilters,
+        )
+
+    return {
+        ...baseQuery,
+        filters: [
+            ...baseQueryFilters,
+            createdTicketFilter(filters),
+            {
+                member: PRODUCT_ID_DIMENSION,
+                operator: ReportingFilterOperator.Equals,
+                values: [productId],
+            },
+        ],
     }
 }
 
@@ -504,6 +536,36 @@ export const customFieldsTicketCountOnCreatedDatetimeTimeSeriesQueryFactory = (
         filters: [...baseQuery.filters, createdTicketFilter(filters)],
     }
 }
+export const customFieldsTicketCountForProductOnCreatedDatetimeTimeSeriesQueryFactory =
+    (
+        filters: StatsFilters,
+        timezone: string,
+        granularity: ReportingGranularity,
+        customFieldId: string,
+        productId: string,
+        sorting?: OrderDirection,
+    ): TimeSeriesQuery<HelpdeskMessageCubeWithJoins> => {
+        const baseQuery = customFieldsTicketCountTimeSeriesQueryFactory(
+            filters,
+            timezone,
+            granularity,
+            customFieldId,
+            sorting,
+        )
+
+        return {
+            ...baseQuery,
+            filters: [
+                ...baseQuery.filters,
+                createdTicketFilter(filters),
+                {
+                    member: PRODUCT_ID_DIMENSION,
+                    operator: ReportingFilterOperator.Equals,
+                    values: [productId],
+                },
+            ],
+        }
+    }
 
 export const customFieldsTicketTotalCountQueryFactory = ({
     filters,

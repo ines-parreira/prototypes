@@ -72,13 +72,15 @@ export const renderTickLabelAsNumber = (value: string | number) => {
     return value
 }
 
+export const isUsLanguage = () => window.navigator.language === 'en-US'
+
 export const formatDates = (
     granularity: ReportingGranularity,
     dateTime: string,
 ) => {
     const date = moment(dateTime)
     let format = getFormat(granularity)
-    const isUsFormat = window.navigator.language === 'en-US'
+    const isUsFormat = isUsLanguage()
 
     switch (granularity) {
         case ReportingGranularity.Day:

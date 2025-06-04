@@ -22,10 +22,6 @@ const moreIsBetter: InterpretAs = 'more-is-better'
 
 export const VoiceOfCustomerMetricConfig = {
     [VoiceOfCustomerMetric.NegativeSentimentsPerProduct]: {
-        title: 'Negative sentiments',
-        hint: {
-            title: 'AI classified negative sentiment including threatening, negative, and offensive categorizations.',
-        },
         useTrend: useNegativeSentimentsPerProductMetricTrend,
         interpretAs: lessIsBetter,
         metricFormat: integer,
@@ -33,10 +29,6 @@ export const VoiceOfCustomerMetricConfig = {
         domain: Domain.Ticket,
     },
     [VoiceOfCustomerMetric.PositiveSentimentsPerProduct]: {
-        title: 'Positive sentiments',
-        hint: {
-            title: 'AI classified positive sentiment including Positive and Promoter categorizations.',
-        },
         useTrend: usePositiveSentimentsPerProductMetricTrend,
         interpretAs: moreIsBetter,
         metricFormat: integer,

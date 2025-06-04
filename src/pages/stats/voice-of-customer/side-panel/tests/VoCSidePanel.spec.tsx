@@ -7,10 +7,13 @@ import thunk from 'redux-thunk'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import { DrillDownModal } from 'pages/stats/common/drill-down/DrillDownModal'
+import { TREND_OVERVIEW_LABEL } from 'pages/stats/voice-of-customer/side-panel/constants'
 import {
     VoCSidePanel,
     VoCSidePanelTabs,
 } from 'pages/stats/voice-of-customer/side-panel/VoCSidePanel'
+import { TrendOverviewReport } from 'pages/stats/voice-of-customer/TrendOverview/TrendOverviewReport'
 import {
     getSidePanelActiveTab,
     getSidePanelIsOpen,
@@ -25,6 +28,11 @@ jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = assumeMock(useAppDispatch)
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = assumeMock(useAppSelector)
+jest.mock('pages/stats/common/drill-down/DrillDownModal')
+const DrillDownModalMock = assumeMock(DrillDownModal)
+
+jest.mock('pages/stats/voice-of-customer/TrendOverview/TrendOverviewReport')
+const TrendOverviewReportMock = assumeMock(TrendOverviewReport)
 
 describe('VoCSidePanel', () => {
     const mockStore = configureMockStore([thunk])({
@@ -32,20 +40,22 @@ describe('VoCSidePanel', () => {
             stats: {
                 sidePanel: {
                     isOpen: true,
-                    activeTab: SidePanelTab.insights,
+                    activeTab: SidePanelTab.Insights,
                 },
             },
         },
     })
 
     beforeEach(() => {
+        DrillDownModalMock.mockImplementation(() => <div />)
+        TrendOverviewReportMock.mockImplementation(() => <div />)
         useAppDispatchMock.mockReturnValue(dispatchMock)
         useAppSelectorMock.mockImplementation((selector) => {
             if (selector === getSidePanelIsOpen) {
                 return true
             }
             if (selector === getSidePanelActiveTab) {
-                return SidePanelTab.insights
+                return SidePanelTab.Insights
             }
             return null
         })
@@ -53,7 +63,7 @@ describe('VoCSidePanel', () => {
 
     it('renders with default props', () => {
         useAppSelectorMock.mockReturnValueOnce(false)
-        useAppSelectorMock.mockReturnValueOnce(SidePanelTab.insights)
+        useAppSelectorMock.mockReturnValueOnce(SidePanelTab.Insights)
 
         render(
             <Provider store={mockStore}>
@@ -62,21 +72,21 @@ describe('VoCSidePanel', () => {
         )
 
         expect(
-            screen.getByText(VoCSidePanelTabs.insights.label),
+            screen.getByText(VoCSidePanelTabs.Insights.label),
         ).toBeInTheDocument()
         expect(
-            screen.getByText(VoCSidePanelTabs.trendOverview.label),
+            screen.getByText(VoCSidePanelTabs.TrendOverview.label),
         ).toBeInTheDocument()
         expect(screen.getByText('Insights_Content')).toBeInTheDocument()
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     })
 
     it('renders with custom active tab', () => {
-        useAppSelectorMock.mockReturnValue(SidePanelTab.trendOverview)
+        useAppSelectorMock.mockReturnValue(SidePanelTab.TrendOverview)
 
         render(<VoCSidePanel />)
 
-        expect(screen.getByText('Trend_Overview_Content')).toBeInTheDocument()
+        expect(TrendOverviewReportMock).toHaveBeenCalled()
     })
 
     it('handles close button click', () => {
@@ -102,11 +112,11 @@ describe('VoCSidePanel', () => {
     it('dispatches setSidePanelActiveTab when tab is changed', () => {
         render(<VoCSidePanel />)
 
-        const trendOverviewTab = screen.getByText('Trend Overview')
+        const trendOverviewTab = screen.getByText(TREND_OVERVIEW_LABEL)
         fireEvent.focus(trendOverviewTab)
 
         expect(dispatchMock).toHaveBeenCalledWith(
-            setSidePanelActiveTab(SidePanelTab.trendOverview),
+            setSidePanelActiveTab(SidePanelTab.TrendOverview),
         )
     })
 })

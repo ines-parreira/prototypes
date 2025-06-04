@@ -6,6 +6,7 @@ import {
 } from 'hooks/reporting/useMetricPerDimension'
 import { OrderDirection } from 'models/api/types'
 import {
+    customFieldsTicketCountForProductOnCreatedDatetimeQueryFactory,
     customFieldsTicketCountOnCreatedDatetimeQueryFactory,
     customFieldsTicketCountQueryFactory,
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
@@ -25,6 +26,24 @@ export const useCustomFieldsTicketCount = (
 
     return useMetricPerDimension(
         queryFactory(statsFilters, timezone, customFieldId, sorting),
+    )
+}
+
+export const useCustomFieldsForProductTicketCount = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    customFieldId: string,
+    productId: string,
+    sorting?: OrderDirection,
+): MetricWithDecile => {
+    return useMetricPerDimension(
+        customFieldsTicketCountForProductOnCreatedDatetimeQueryFactory(
+            statsFilters,
+            timezone,
+            customFieldId,
+            productId,
+            sorting,
+        ),
     )
 }
 

@@ -15,7 +15,7 @@ const store = mockStore({
             sidePanel: {
                 isOpen: true,
                 productId: null,
-                activeTab: SidePanelTab.trendOverview,
+                activeTab: SidePanelTab.Insights,
             },
         },
     },

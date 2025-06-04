@@ -9,14 +9,17 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useId from 'hooks/useId'
 import { hintTooltipDelay } from 'pages/stats/common/constants'
 import css from 'pages/stats/voice-of-customer/side-panel/VoCSidePanelTrigger.less'
-import { setSidePanelData } from 'state/ui/stats/sidePanelSlice'
+import {
+    setSidePanelData,
+    SidePanelProduct,
+} from 'state/ui/stats/sidePanelSlice'
 
 type Props = {
     children: React.ReactNode
     tooltipText?: string
     enabled?: boolean
     highlighted?: boolean
-    productId: string
+    product: SidePanelProduct
     segmentEventName?: SegmentEvent
 }
 
@@ -27,7 +30,7 @@ export const VoCSidePanelTrigger = ({
     tooltipText,
     enabled = true,
     highlighted = false,
-    productId,
+    product,
     segmentEventName = SegmentEvent.StatClicked,
 }: PropsWithChildren<Props>) => {
     const dispatch = useAppDispatch()
@@ -35,8 +38,8 @@ export const VoCSidePanelTrigger = ({
     const targetId = `${TRIGGER_ID}-${useId()}`
 
     const handleClick = () => {
-        dispatch(setSidePanelData(productId))
-        logEvent(segmentEventName, { product: productId })
+        dispatch(setSidePanelData(product))
+        logEvent(segmentEventName, { product: product.id })
     }
 
     return (

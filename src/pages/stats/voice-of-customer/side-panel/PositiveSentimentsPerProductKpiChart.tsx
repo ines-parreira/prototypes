@@ -1,18 +1,18 @@
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { PositiveSentimentsPerProductKpi } from 'pages/stats/voice-of-customer/side-panel/PositiveSentimentsPerProductKpi'
-import { getSidePanelProductId } from 'state/ui/stats/sidePanelSlice'
+import { getSidePanelProduct } from 'state/ui/stats/sidePanelSlice'
 
 export const PositiveSentimentsPerProductKpiChart = () => {
-    const productId = useAppSelector(getSidePanelProductId)
+    const product = useAppSelector(getSidePanelProduct)
     const { sentimentCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
 
     return (
         <>
-            {sentimentCustomFieldId && productId ? (
+            {sentimentCustomFieldId && product ? (
                 <PositiveSentimentsPerProductKpi
                     sentimentCustomFieldId={sentimentCustomFieldId}
-                    productId={productId}
+                    productId={product.id}
                 />
             ) : null}
         </>

@@ -10,6 +10,10 @@ import {
 } from 'pages/stats/common/utils'
 import { getBadgeTooltipForPreviousPeriod } from 'pages/stats/utils'
 import {
+    TrendOverviewChart,
+    TrendOverviewChartConfig,
+} from 'pages/stats/voice-of-customer/TrendOverview/TrendOverviewChartConfig'
+import {
     VoiceOfCustomerMetric,
     VoiceOfCustomerMetricConfig,
 } from 'pages/stats/voice-of-customer/VoiceOfCustomerMetricConfig'
@@ -19,9 +23,14 @@ type Props = {
     productId: string
 }
 
-const { hint, title, useTrend, interpretAs, metricFormat } =
+const { useTrend, interpretAs, metricFormat } =
     VoiceOfCustomerMetricConfig[
         VoiceOfCustomerMetric.PositiveSentimentsPerProduct
+    ]
+
+const { hint, title } =
+    TrendOverviewChartConfig[
+        TrendOverviewChart.PositiveSentimentsPerProductKpiChart
     ]
 
 export const PositiveSentimentsPerProductKpi = ({

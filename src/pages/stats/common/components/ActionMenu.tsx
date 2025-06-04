@@ -1,4 +1,4 @@
-import { createContext, useContext, useRef, useState } from 'react'
+import { createContext, ReactNode, useContext, useRef, useState } from 'react'
 
 import { IconButton } from '@gorgias/merchant-ui-kit'
 
@@ -13,7 +13,7 @@ export const ACTION_MENU_LABEL = 'Actions'
 type ActionMenuItemProps = {
     label: string
     description?: string
-    prefix?: React.ReactNode
+    prefix?: ReactNode
     onClick: () => void
     isDisabled?: boolean
 }
@@ -44,11 +44,7 @@ export const ActionMenuItem = ({
     )
 }
 
-export const ActionMenuLabel = ({
-    children,
-}: {
-    children: React.ReactNode
-}) => {
+export const ActionMenuLabel = ({ children }: { children: ReactNode }) => {
     return <div className={css.category}>{children}</div>
 }
 
@@ -72,7 +68,7 @@ export const ActionMenuSelectGroup = <T extends any>({
     value,
     onValueChange,
 }: {
-    children: React.ReactNode
+    children: ReactNode
     value: T
     onValueChange: (value: T) => void
 }) => {
@@ -94,7 +90,7 @@ export const ActionMenuSelectItem = <T extends string>({
     description?: string
     value: T
     isDisabled?: boolean
-    prefix?: React.ReactNode
+    prefix?: ReactNode
 }) => {
     const context = useActionMenuSelectGroup()
     const isSelected = context.value === value
@@ -129,7 +125,7 @@ export const ActionMenu = ({
     children,
     canduId,
 }: {
-    children: React.ReactNode
+    children: ReactNode
     canduId?: string
 }) => {
     const triggerRef = useRef<HTMLButtonElement>(null)

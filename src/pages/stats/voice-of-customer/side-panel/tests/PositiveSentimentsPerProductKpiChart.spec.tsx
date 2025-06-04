@@ -21,11 +21,16 @@ const PositiveSentimentsPerProductKpiMock = assumeMock(
 
 describe('PositiveSentimentsPerProductKpiChart', () => {
     const productId = 'productId'
+    const product = {
+        id: productId,
+        name: 'some name',
+        thumbnail_url: 'someThumbnailUrl',
+    }
     const sentimentCustomFieldId = 123
     const defaultState = {
         ui: {
             stats: {
-                [sidePanelSlice.name]: { ...initialState, productId },
+                [sidePanelSlice.name]: { ...initialState, product },
             },
         },
     } as RootState

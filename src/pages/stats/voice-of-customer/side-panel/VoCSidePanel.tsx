@@ -10,6 +10,7 @@ import {
     TREND_OVERVIEW_LABEL,
 } from 'pages/stats/voice-of-customer/side-panel/constants'
 import css from 'pages/stats/voice-of-customer/side-panel/VoCSidePanel.less'
+import { TrendOverviewReport } from 'pages/stats/voice-of-customer/TrendOverview/TrendOverviewReport'
 import {
     closeSidePanel,
     getSidePanelActiveTab,
@@ -29,17 +30,17 @@ type VoCSidePanelTabsType = Record<
 >
 
 export const VoCSidePanelTabs: VoCSidePanelTabsType = {
-    insights: {
-        value: SidePanelTab.insights,
+    Insights: {
+        value: SidePanelTab.Insights,
         label: INSIGHTS_LABEL,
         icon: 'psychology',
         content: () => <div>Insights_Content</div>,
     },
-    trendOverview: {
-        value: SidePanelTab.trendOverview,
+    TrendOverview: {
+        value: SidePanelTab.TrendOverview,
         label: TREND_OVERVIEW_LABEL,
         icon: 'show_chart',
-        content: () => <div>Trend_Overview_Content</div>,
+        content: () => <TrendOverviewReport />,
     },
 }
 
@@ -52,6 +53,8 @@ export const VoCSidePanel = () => {
     const closePanel = () => dispatch(closeSidePanel())
     const setActiveTab = (tab: SidePanelTab) =>
         dispatch(setSidePanelActiveTab(tab))
+
+    const TabContent = VoCSidePanelTabs[activeTab].content
 
     return (
         <Drawer
@@ -77,7 +80,9 @@ export const VoCSidePanel = () => {
                 />
             </Drawer.Header>
             <Drawer.Content className={css.content}>
-                {VoCSidePanelTabs[activeTab].content()}
+                <div className="full-width">
+                    <TabContent />
+                </div>
             </Drawer.Content>
         </Drawer>
     )

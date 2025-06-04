@@ -47,7 +47,7 @@ describe('ProductInsightsCellContent', () => {
     const product = {
         id: '1',
         name: 'Product 1',
-        thumbnailUrl: 'https://via.placeholder.com/150',
+        thumbnail_url: 'https://via.placeholder.com/150',
         intent: 'Intent 1',
     }
 
@@ -91,14 +91,14 @@ describe('ProductInsightsCellContent', () => {
 
             const img = screen.getByAltText(product.name) as HTMLImageElement
             expect(img).toBeInTheDocument()
-            expect(img.src).toBe(product.thumbnailUrl)
+            expect(img.src).toBe(product.thumbnail_url)
             expect(screen.getByAltText(product.name)).toBeInTheDocument()
         })
 
         it('renders placeholder image is missing', () => {
             const productWithoutThumbnail = {
                 ...product,
-                thumbnailUrl: undefined,
+                thumbnail_url: undefined,
             }
 
             render(
@@ -115,7 +115,7 @@ describe('ProductInsightsCellContent', () => {
         it('renders placeholder image if product image cannot load', () => {
             const productWithInvalidThumbnail = {
                 ...product,
-                thumbnailUrl: 'missing.png',
+                thumbnail_url: 'missing.png',
             }
 
             render(
@@ -126,7 +126,7 @@ describe('ProductInsightsCellContent', () => {
             )
 
             const img = screen.getByAltText(product.name) as HTMLImageElement
-            expect(img.src).toContain(productWithInvalidThumbnail.thumbnailUrl)
+            expect(img.src).toContain(productWithInvalidThumbnail.thumbnail_url)
 
             fireEvent.error(img)
 
@@ -170,7 +170,7 @@ describe('ProductInsightsCellContent', () => {
             expect(DrillDownModalTriggerMock).toHaveBeenCalled()
         })
 
-        it("doesn't wrap content in drill-down trigger if it's not supported", () => {
+        it("does not wrap content in drill-down trigger if it's not supported", () => {
             render(
                 <ProductInsightsCellContent
                     column={ProductInsightsTableColumns.ReturnMentions}

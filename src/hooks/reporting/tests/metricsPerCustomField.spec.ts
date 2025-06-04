@@ -2,6 +2,7 @@ import moment from 'moment/moment'
 
 import { TicketChannel } from 'business/types/ticket'
 import {
+    useCustomFieldsForProductTicketCount,
     useCustomFieldsTicketCount,
     useCustomTicketFieldWithBreakdown,
 } from 'hooks/reporting/metricsPerCustomField'
@@ -11,6 +12,7 @@ import {
 } from 'hooks/reporting/useMetricPerDimension'
 import { OrderDirection } from 'models/api/types'
 import {
+    customFieldsTicketCountForProductOnCreatedDatetimeQueryFactory,
     customFieldsTicketCountOnCreatedDatetimeQueryFactory,
     customFieldsTicketCountQueryFactory,
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
@@ -30,7 +32,7 @@ const useCustomTicketFieldWithBreakdownMock = assumeMock(
     useMetricPerDimensionWithBreakdown,
 )
 
-describe('metricsPerAgent', () => {
+describe('metricsPerCustomField', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
     const statsFilters: StatsFilters = {
@@ -72,6 +74,56 @@ describe('metricsPerAgent', () => {
                     statsFilters,
                     timezone,
                     customFieldId,
+                    sorting,
+                ),
+            )
+        })
+        it('should pass the query to useMetricPerDimension hook when time reference is created at', () => {
+            renderHook(
+                () =>
+                    useCustomFieldsTicketCount(
+                        statsFilters,
+                        timezone,
+                        customFieldId,
+                        sorting,
+                        TicketTimeReference.CreatedAt,
+                    ),
+                {},
+            )
+
+            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                customFieldsTicketCountOnCreatedDatetimeQueryFactory(
+                    statsFilters,
+                    timezone,
+                    customFieldId,
+                    sorting,
+                ),
+            )
+        })
+    })
+
+    describe('useCustomFieldsForProductTicketCount', () => {
+        const productId = 'some-product-id'
+
+        it('should pass the query to useMetricPerDimension hook', () => {
+            renderHook(
+                () =>
+                    useCustomFieldsForProductTicketCount(
+                        statsFilters,
+                        timezone,
+                        customFieldId,
+                        productId,
+                        sorting,
+                    ),
+                {},
+            )
+
+            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                customFieldsTicketCountForProductOnCreatedDatetimeQueryFactory(
+                    statsFilters,
+                    timezone,
+                    customFieldId,
+                    productId,
                     sorting,
                 ),
             )

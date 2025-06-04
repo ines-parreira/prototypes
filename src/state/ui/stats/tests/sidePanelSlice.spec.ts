@@ -3,7 +3,7 @@ import {
     closeSidePanel,
     getSidePanelActiveTab,
     getSidePanelIsOpen,
-    getSidePanelProductId,
+    getSidePanelProduct,
     initialState,
     setSidePanelActiveTab,
     setSidePanelData,
@@ -13,34 +13,38 @@ import {
 
 describe('sidePanelSlice', () => {
     it('should set the side panel data', () => {
+        const product = { id: '123', name: 'some name', thumbnail_url: '' }
+
         const state = sidePanelSlice.reducer(
             initialState,
-            setSidePanelData('123'),
+            setSidePanelData(product),
         )
 
-        expect(state.productId).toEqual('123')
+        expect(state.product).toEqual(product)
     })
 
     it('should close the side panel', () => {
         const state = sidePanelSlice.reducer(initialState, closeSidePanel())
 
-        expect(state.productId).toEqual(null)
+        expect(state.product).toEqual(null)
     })
 
     it('should set the side panel active tab', () => {
         const state = sidePanelSlice.reducer(
             initialState,
-            setSidePanelActiveTab(SidePanelTab.trendOverview),
+            setSidePanelActiveTab(SidePanelTab.TrendOverview),
         )
 
-        expect(state.activeTab).toEqual(SidePanelTab.trendOverview)
+        expect(state.activeTab).toEqual(SidePanelTab.TrendOverview)
     })
 
     describe('selectors', () => {
+        const product = { id: '123', name: 'some name', thumbnail_url: '' }
+
         it('should get the side panel is open state', () => {
             const state = {
                 ui: {
-                    stats: { sidePanel: { ...initialState, productId: '123' } },
+                    stats: { sidePanel: { ...initialState, product } },
                 },
             } as RootState
 
@@ -50,7 +54,7 @@ describe('sidePanelSlice', () => {
         it('should get the side panel is closed state', () => {
             const state = {
                 ui: {
-                    stats: { sidePanel: { ...initialState, productId: null } },
+                    stats: { sidePanel: { ...initialState, product: null } },
                 },
             } as RootState
 
@@ -63,31 +67,30 @@ describe('sidePanelSlice', () => {
                     stats: {
                         sidePanel: {
                             ...initialState,
-                            activeTab: SidePanelTab.trendOverview,
+                            activeTab: SidePanelTab.TrendOverview,
                         },
                     },
                 },
             } as RootState
 
             expect(getSidePanelActiveTab(state)).toBe(
-                SidePanelTab.trendOverview,
+                SidePanelTab.TrendOverview,
             )
         })
 
         it('should get the side panel productId', () => {
-            const productId = '123'
             const state = {
                 ui: {
                     stats: {
                         sidePanel: {
                             ...initialState,
-                            productId,
+                            product,
                         },
                     },
                 },
             } as RootState
 
-            expect(getSidePanelProductId(state)).toBe(productId)
+            expect(getSidePanelProduct(state)).toBe(product)
         })
     })
 })

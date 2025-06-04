@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 
 import fallbackImage from 'assets/img/stats/no-product.png'
 import { SegmentEvent } from 'common/segment'
@@ -31,7 +31,7 @@ const CellWrapper = ({
     column,
 }: {
     column: ProductInsightsTableColumns
-    children: React.ReactNode
+    children: ReactNode
     isLoading?: boolean
 }) => (
     <ProductTableBodyCell
@@ -154,11 +154,11 @@ const ProductCell = ({ product }: ProductTableCellProps) => {
     return (
         <CellWrapper column={ProductInsightsTableColumns.Product}>
             <div className={css.product}>
-                <ProductImage src={product.thumbnailUrl} alt={product.name} />
+                <ProductImage src={product.thumbnail_url} alt={product.name} />
                 <div className={css.productName}>
                     <VoCSidePanelTrigger
                         highlighted
-                        productId={product.id}
+                        product={product}
                         segmentEventName={
                             SegmentEvent.StatVoCSidePanelIntentClick
                         }

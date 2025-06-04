@@ -1,47 +1,52 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import isEmpty from 'lodash/isEmpty'
 
 import { RootState } from 'state/types'
 
 export enum SidePanelTab {
-    insights = 'insights',
-    trendOverview = 'trendOverview',
+    Insights = 'Insights',
+    TrendOverview = 'TrendOverview',
+}
+
+export type SidePanelProduct = {
+    id: string
+    name: string
+    thumbnail_url?: string
 }
 
 export type SidePanelState = {
-    productId: string | null
+    product: SidePanelProduct | null
     activeTab: SidePanelTab
 }
 
 export const initialState: SidePanelState = {
-    productId: null,
-    activeTab: SidePanelTab.insights,
+    product: null,
+    activeTab: SidePanelTab.Insights,
 }
 
 export const sidePanelSlice = createSlice({
     name: 'sidePanel',
     initialState,
     reducers: {
-        setSidePanelData(state, action: PayloadAction<string>) {
-            state.productId = action.payload
+        setSidePanelData(state, action: PayloadAction<SidePanelProduct>) {
+            state.product = action.payload
         },
         setSidePanelActiveTab(state, action: PayloadAction<SidePanelTab>) {
             state.activeTab = action.payload
         },
         closeSidePanel(state) {
-            state.productId = null
+            state.product = null
         },
     },
 })
 
 export const getSidePanelIsOpen = (state: RootState) =>
-    !isEmpty(state.ui.stats[sidePanelSlice.name].productId)
+    state.ui.stats[sidePanelSlice.name].product !== null
 
 export const getSidePanelActiveTab = (state: RootState) =>
     state.ui.stats[sidePanelSlice.name].activeTab
 
-export const getSidePanelProductId = (state: RootState) =>
-    state.ui.stats[sidePanelSlice.name].productId
+export const getSidePanelProduct = (state: RootState) =>
+    state.ui.stats[sidePanelSlice.name].product
 
 export const { setSidePanelData, closeSidePanel, setSidePanelActiveTab } =
     sidePanelSlice.actions

@@ -26,8 +26,15 @@ describe('VoCSidePanelTrigger', () => {
 
     const store = mockStore(defaultState)
 
+    const productName = 'Some Product Name'
+    const productId = 'product-id'
+    const product = {
+        id: productId,
+        name: productName,
+        thumbnail_url: 'someThumbnailUrl',
+    }
     const defaultProps = {
-        productId: 'product-id',
+        product,
         children: <span>Test Content</span>,
     }
 
@@ -63,12 +70,10 @@ describe('VoCSidePanelTrigger', () => {
         fireEvent.click(screen.getByText('Test Content'))
 
         await waitFor(() => {
-            expect(store.getActions()).toContainEqual(
-                setSidePanelData(defaultProps.productId),
-            )
+            expect(store.getActions()).toContainEqual(setSidePanelData(product))
             expect(logEventMock).toHaveBeenCalledWith(
                 SegmentEvent.StatClicked,
-                { product: defaultProps.productId },
+                { product: defaultProps.product.id },
             )
         })
     })
@@ -88,7 +93,7 @@ describe('VoCSidePanelTrigger', () => {
         await waitFor(() => {
             expect(logEventMock).toHaveBeenCalledWith(
                 SegmentEvent.StatVoCSidePanelIntentClick,
-                { product: defaultProps.productId },
+                { product: defaultProps.product.id },
             )
         })
     })

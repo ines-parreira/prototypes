@@ -7,6 +7,7 @@ import {
     fetchTicketsCreatedTimeSeries,
     fetchTicketsRepliedTimeSeries,
     fetchTotalTaggedTicketCountTimeSeries,
+    useCustomFieldsTicketCountForProductTimeSeries,
     useCustomFieldsTicketCountTimeSeries,
     useMessagesSentTimeSeries,
     useTagsTicketCountTimeSeries,
@@ -26,6 +27,7 @@ import { messagesSentTimeSeriesQueryFactory } from 'models/reporting/queryFactor
 import { ticketsCreatedTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import { ticketsRepliedTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {
+    customFieldsTicketCountForProductOnCreatedDatetimeTimeSeriesQueryFactory,
     customFieldsTicketCountOnCreatedDatetimeTimeSeriesQueryFactory,
     customFieldsTicketCountTimeSeriesQueryFactory,
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
@@ -403,22 +405,41 @@ describe('time series', () => {
         })
     })
 
+    describe('useCustomFieldsTicketCountForProductTimeSeries', () => {
+        const productId = 'some-product-id'
+        it('should render expected query', () => {
+            const customFieldId = '1'
+            renderHook(() =>
+                useCustomFieldsTicketCountForProductTimeSeries(
+                    statsFilters,
+                    timezone,
+                    granularity,
+                    customFieldId,
+                    productId,
+                ),
+            )
+
+            expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
+                customFieldsTicketCountForProductOnCreatedDatetimeTimeSeriesQueryFactory(
+                    statsFilters,
+                    timezone,
+                    granularity,
+                    customFieldId,
+                    productId,
+                ),
+                true,
+            )
+        })
+    })
+
     describe('useTotalTaggedTicketCountTimeSeries', () => {
         it('should render expected query', () => {
-            renderHook(
-                ({ statsFilters, timezone, granularity }) =>
-                    useTotalTaggedTicketCountTimeSeries(
-                        statsFilters,
-                        timezone,
-                        granularity,
-                    ),
-                {
-                    initialProps: {
-                        statsFilters,
-                        timezone,
-                        granularity,
-                    },
-                },
+            renderHook(() =>
+                useTotalTaggedTicketCountTimeSeries(
+                    statsFilters,
+                    timezone,
+                    granularity,
+                ),
             )
 
             expect(useTimeSeriesMock).toHaveBeenCalledWith(
@@ -431,22 +452,14 @@ describe('time series', () => {
         })
 
         it('should render expected query when time reference is created at', () => {
-            renderHook(
-                ({ statsFilters, timezone, granularity }) =>
-                    useTotalTaggedTicketCountTimeSeries(
-                        statsFilters,
-                        timezone,
-                        granularity,
-                        undefined,
-                        TicketTimeReference.CreatedAt,
-                    ),
-                {
-                    initialProps: {
-                        statsFilters,
-                        timezone,
-                        granularity,
-                    },
-                },
+            renderHook(() =>
+                useTotalTaggedTicketCountTimeSeries(
+                    statsFilters,
+                    timezone,
+                    granularity,
+                    undefined,
+                    TicketTimeReference.CreatedAt,
+                ),
             )
 
             expect(useTimeSeriesMock).toHaveBeenCalledWith(
@@ -459,20 +472,12 @@ describe('time series', () => {
         })
 
         it('should fetch expected query', () => {
-            renderHook(
-                ({ statsFilters, timezone, granularity }) =>
-                    fetchTotalTaggedTicketCountTimeSeries(
-                        statsFilters,
-                        timezone,
-                        granularity,
-                    ),
-                {
-                    initialProps: {
-                        statsFilters,
-                        timezone,
-                        granularity,
-                    },
-                },
+            renderHook(() =>
+                fetchTotalTaggedTicketCountTimeSeries(
+                    statsFilters,
+                    timezone,
+                    granularity,
+                ),
             )
 
             expect(fetchTimeSeriesMock).toHaveBeenCalledWith(
@@ -485,22 +490,14 @@ describe('time series', () => {
         })
 
         it('should fetch expected query when time reference is created at', () => {
-            renderHook(
-                ({ statsFilters, timezone, granularity }) =>
-                    fetchTotalTaggedTicketCountTimeSeries(
-                        statsFilters,
-                        timezone,
-                        granularity,
-                        undefined,
-                        TicketTimeReference.CreatedAt,
-                    ),
-                {
-                    initialProps: {
-                        statsFilters,
-                        timezone,
-                        granularity,
-                    },
-                },
+            renderHook(() =>
+                fetchTotalTaggedTicketCountTimeSeries(
+                    statsFilters,
+                    timezone,
+                    granularity,
+                    undefined,
+                    TicketTimeReference.CreatedAt,
+                ),
             )
 
             expect(fetchTimeSeriesMock).toHaveBeenCalledWith(

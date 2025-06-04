@@ -14,6 +14,7 @@ import { ticketsCreatedTimeSeriesQueryFactory } from 'models/reporting/queryFact
 import { ticketsRepliedTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
 import {
+    customFieldsTicketCountForProductOnCreatedDatetimeTimeSeriesQueryFactory,
     customFieldsTicketCountOnCreatedDatetimeTimeSeriesQueryFactory,
     customFieldsTicketCountTimeSeriesQueryFactory,
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
@@ -121,6 +122,28 @@ export const useCustomFieldsTicketCountTimeSeries = (
 
     return useTimeSeriesPerDimension(
         queryFactory(filters, timezone, granularity, customFieldId, sorting),
+        enabled,
+    )
+}
+
+export const useCustomFieldsTicketCountForProductTimeSeries = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    customFieldId: string,
+    productId: string,
+    sorting?: OrderDirection,
+    enabled = true,
+) => {
+    return useTimeSeriesPerDimension(
+        customFieldsTicketCountForProductOnCreatedDatetimeTimeSeriesQueryFactory(
+            filters,
+            timezone,
+            granularity,
+            customFieldId,
+            productId,
+            sorting,
+        ),
         enabled,
     )
 }

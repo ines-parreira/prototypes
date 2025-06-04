@@ -302,7 +302,7 @@ const useDummyProductData = (
     return {
         productId,
         thumbnailUrl:
-            product?.thumbnailUrl ??
+            product?.thumbnail_url ??
             assetsUrl('/img/stats/voc-preview/product_01.png'),
         name: product?.name ?? `Product id: ${productId}`,
     }
