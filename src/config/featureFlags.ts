@@ -147,6 +147,7 @@ export enum FeatureFlagKey {
     SwitchToShopifyThemeAppExtension = 'switch-to-shopify-theme-app-extension',
     TicketAllowPriorityUsage = 'ticket-allow-priority-usage',
     TicketDemoSuggestion = 'ticket-demo-suggestion',
+    TicketThreadRevamp = 'linear.project_ticket-thread-revamp.access',
     TimelineTicketModal = 'timeline-ticket-modal',
     VoiceCallbackEnabled1 = 'voice-callback-enabled',
     VoiceCallbackEnabled2 = 'voice-callback-enabled-MILESTONE-2-FEATURE-RELEASE',

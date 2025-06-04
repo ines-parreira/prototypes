@@ -4,6 +4,8 @@ import classnames from 'classnames'
 
 import { IconButton } from '@gorgias/merchant-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import TicketBody from 'pages/tickets/detail/components/TicketBody'
 import { getBody, getTicketState } from 'state/ticket/selectors'
@@ -34,6 +36,7 @@ export const TicketView = ({
     onGoToNextTicket,
     onToggleUnread,
 }: Props) => {
+    const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
     const pageRef = useRef<HTMLDivElement>(null)
     const ticketContentRef = useRef<HTMLDivElement>(null)
 
@@ -71,6 +74,7 @@ export const TicketView = ({
     return (
         <div
             className={classnames(css.page, {
+                'ticket-thread-revamp': hasTicketThreadRevamp,
                 'transition out fade right': isTicketHidden,
             })}
             ref={pageRef}
