@@ -20,9 +20,12 @@ import {
     TicketTagsEnrichedCube,
     TicketTagsEnrichedDimension,
 } from 'models/reporting/cubes/TicketTagsEnrichedCube'
+import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'models/reporting/queryFactories/utils'
 import { ReportingQuery } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
+import { TICKET_CUSTOM_FIELDS_NEW_SEPARATOR } from 'pages/stats/utils'
 
 export const calculateTotalCapacity = (
     allAgentsMetricData:
@@ -122,3 +125,18 @@ export const createMetricPerDimensionHook =
             query(statsFilters, timezone, sorting),
             dimensionId,
         )
+
+export const transformCategorySeparator = (category?: string | null): string =>
+    category
+        ?.split(TICKET_CUSTOM_FIELDS_API_SEPARATOR)
+        .join(TICKET_CUSTOM_FIELDS_NEW_SEPARATOR) || NOT_AVAILABLE_PLACEHOLDER
+
+export const transformCategorySeparatorBack = (
+    category?: string | null,
+): string =>
+    category
+        ?.split(TICKET_CUSTOM_FIELDS_NEW_SEPARATOR)
+        .join(TICKET_CUSTOM_FIELDS_API_SEPARATOR) || NOT_AVAILABLE_PLACEHOLDER
+
+export const transformCategoriesSeparator = (allData?: (string | null)[]) =>
+    allData?.map(transformCategorySeparator) || []

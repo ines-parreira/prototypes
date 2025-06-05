@@ -1,9 +1,11 @@
 import { useMemo } from 'react'
 
+import { Dictionary } from 'lodash'
 import _flatten from 'lodash/flatten'
 import _fromPairs from 'lodash/fromPairs'
 import _sortBy from 'lodash/sortBy'
 
+import { transformCategoriesSeparator } from 'hooks/reporting/helpers'
 import {
     useCustomFieldsForProductTicketCount,
     useCustomFieldsTicketCount,
@@ -13,6 +15,7 @@ import {
     useCustomFieldsTicketCountForProductTimeSeries,
     useCustomFieldsTicketCountTimeSeries,
 } from 'hooks/reporting/timeSeries'
+import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
 import { OrderDirection } from 'models/api/types'
 import { TicketCustomFieldsDimension } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'models/reporting/queryFactories/utils'
@@ -53,7 +56,7 @@ export const useCustomFieldsTimeSeries = ({
         ticketFieldsTicketTimeReference,
     )
 
-    const sortedData = _fromPairs(
+    const sortedData: Dictionary<TimeSeriesDataItem[][]> = _fromPairs(
         _sortBy(Object.entries(data), ([key]) =>
             customFieldsTicketCount.data?.allData
                 .map(
@@ -86,11 +89,7 @@ export const useCustomFieldsTimeSeries = ({
                         return subcategories[subcategories.length - 1]
                     })
                     .slice(0, topAmount),
-                tooltips: Object.keys(sortedData).map((category) =>
-                    category
-                        ?.split(TICKET_CUSTOM_FIELDS_API_SEPARATOR)
-                        .join(TICKET_CUSTOM_FIELDS_NEW_SEPARATOR),
-                ),
+                tooltips: transformCategoriesSeparator(Object.keys(sortedData)),
             },
             legendDatasetVisibility: _fromPairs(
                 topData.map((_, index) => [

@@ -1,3 +1,4 @@
+import { TICKET_FIELDS_LIST_LIMIT } from 'hooks/reporting/voice-of-customer/constants'
 import { BREAKDOWN_FIELD, VALUE_FIELD } from 'hooks/reporting/withBreakdown'
 import { OrderDirection } from 'models/api/types'
 import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
@@ -88,6 +89,7 @@ export const customFieldsTicketCountQueryFactory = (
         },
         ...(additionalFilters ? additionalFilters : []),
     ],
+    limit: TICKET_FIELDS_LIST_LIMIT,
     ...(sorting
         ? {
               order: [
@@ -98,6 +100,26 @@ export const customFieldsTicketCountQueryFactory = (
               ],
           }
         : {}),
+})
+
+export const customFieldsTicketCountWithSortQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    customFieldId: string,
+    sortingDirection: OrderDirection,
+    sortingValue:
+        | TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
+        | TicketCustomFieldsDimension.TicketCustomFieldsValue,
+    additionalFilters?: ReportingFilter[],
+): CustomFieldsReportingQuery => ({
+    ...customFieldsTicketCountQueryFactory(
+        filters,
+        timezone,
+        customFieldId,
+        sortingDirection,
+        additionalFilters,
+    ),
+    order: [[sortingValue, sortingDirection]],
 })
 
 export const customFieldsTicketCountOnCreatedDatetimeQueryFactory = (

@@ -13,14 +13,14 @@ import {
 } from 'pages/stats/voice-of-customer/product-insights/constants'
 import { TicketVolumeChart } from 'pages/stats/voice-of-customer/product-insights/placeholder/TicketVolumeChart'
 import {
-    TOP_PRODUCTS_PER_INTENT_HINT,
-    TOP_PRODUCTS_PER_INTENT_TITLE,
-    TopProductsPerIntentChart,
-} from 'pages/stats/voice-of-customer/product-insights/placeholder/TopProductsPerIntentChart'
-import {
     ProductInsightsChart,
     ProductInsightsChartConfig,
 } from 'pages/stats/voice-of-customer/product-insights/ProductInsightsChartConfig'
+import {
+    TOP_PRODUCTS_PER_INTENT_HINT,
+    TOP_PRODUCTS_PER_INTENT_TITLE,
+    TopProductsPerIntentChart,
+} from 'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentChart'
 import { VOICE_OF_CUSTOMER_ROUTES } from 'routes/constants'
 
 export const PRODUCT_INSIGHTS_PERSISTENT_FILTERS: StaticFilter[] = [

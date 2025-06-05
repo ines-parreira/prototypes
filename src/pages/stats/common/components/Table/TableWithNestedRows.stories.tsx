@@ -51,26 +51,86 @@ enum SomeColumn {
 const exampleRowData = [
     {
         entityId: '1',
+        value: 100,
+        prevValue: 90,
         children: [
-            { entityId: '1', level2EntityId: 'X', children: [] },
-            { entityId: '1', level2EntityId: 'Y', children: [] },
-            { entityId: '1', level2EntityId: 'Z', children: [] },
+            {
+                entityId: '1',
+                level2EntityId: 'X',
+                value: 30,
+                prevValue: 25,
+                children: [],
+            },
+            {
+                entityId: '1',
+                level2EntityId: 'Y',
+                value: 40,
+                prevValue: 35,
+                children: [],
+            },
+            {
+                entityId: '1',
+                level2EntityId: 'Z',
+                value: 30,
+                prevValue: 30,
+                children: [],
+            },
         ],
     },
     {
         entityId: '2',
+        value: 80,
+        prevValue: 70,
         children: [
-            { entityId: '2', level2EntityId: 'A', children: [] },
-            { entityId: '2', level2EntityId: 'B', children: [] },
-            { entityId: '2', level2EntityId: 'C', children: [] },
+            {
+                entityId: '2',
+                level2EntityId: 'A',
+                value: 25,
+                prevValue: 20,
+                children: [],
+            },
+            {
+                entityId: '2',
+                level2EntityId: 'B',
+                value: 30,
+                prevValue: 25,
+                children: [],
+            },
+            {
+                entityId: '2',
+                level2EntityId: 'C',
+                value: 25,
+                prevValue: 25,
+                children: [],
+            },
         ],
     },
     {
         entityId: '3',
+        value: 60,
+        prevValue: 50,
         children: [
-            { entityId: '3', level2EntityId: 'Q', children: [] },
-            { entityId: '3', level2EntityId: 'W', children: [] },
-            { entityId: '3', level2EntityId: 'E', children: [] },
+            {
+                entityId: '3',
+                level2EntityId: 'Q',
+                value: 20,
+                prevValue: 15,
+                children: [],
+            },
+            {
+                entityId: '3',
+                level2EntityId: 'W',
+                value: 20,
+                prevValue: 20,
+                children: [],
+            },
+            {
+                entityId: '3',
+                level2EntityId: 'E',
+                value: 20,
+                prevValue: 15,
+                children: [],
+            },
         ],
     },
 ]
@@ -80,11 +140,13 @@ const exampleColumnConfig = {
         title: 'A title',
         tooltip: { title: 'A tooltip' },
         useData: () => ({ value: 'someValue' }),
+        isSortable: true,
     },
     [SomeColumn.B]: {
         title: 'B title',
         tooltip: { title: 'B tooltip' },
         useData: () => ({ value: 'someValue' }),
+        isSortable: true,
     },
 }
 
@@ -97,9 +159,11 @@ const defaultProps: Partial<ComponentProps<typeof TableWithNestedRows>> = {
         column: SomeColumn.B,
         direction: OrderDirection.Asc,
     },
-    getSetOrderHandler: (column: string) => () => {
-        alert(`Setting order for ${column}`)
-    },
+    getSetOrderHandler:
+        ({ column, direction }) =>
+        () => {
+            alert(`Setting order for ${column} and ${direction}`)
+        },
     columnConfig: exampleColumnConfig,
 }
 

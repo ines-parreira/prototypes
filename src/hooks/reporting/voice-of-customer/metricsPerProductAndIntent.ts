@@ -28,7 +28,7 @@ export const useTicketCountPerIntent = (
     )
 }
 
-export const fetchTicketCountPerIntent = (
+export const fetchTicketCountPerIntentForProduct = (
     statsFilters: StatsFilters,
     timezone: string,
     intentsCustomFieldId: string,

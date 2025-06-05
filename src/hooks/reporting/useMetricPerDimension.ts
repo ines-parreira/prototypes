@@ -35,12 +35,14 @@ export type ReportingMetricItem<TCube extends Cubes = Cubes> = Record<
     string | null
 >
 
+export type MetricWithDecileData<TCube extends Cubes = Cubes> = {
+    value: number | null
+    decile: number | null
+    allData: ReportingMetricItem<TCube>[]
+} | null
+
 export type MetricWithDecile<TCube extends Cubes = Cubes> = RequestedData & {
-    data: {
-        value: number | null
-        decile: number | null
-        allData: QueryReturnType<TCube>
-    } | null
+    data: MetricWithDecileData<TCube>
 }
 
 export type MetricWithDecileFetch = (

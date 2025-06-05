@@ -18,6 +18,7 @@ export const TableWithNestedRowsCell = ({
     level,
     hasChildren,
     onClick,
+    innerStyle = {},
 }: PropsWithChildren<{
     className?: string
     isLeadColumn: boolean
@@ -25,12 +26,15 @@ export const TableWithNestedRowsCell = ({
     level: number
     hasChildren: boolean
     onClick?: (event: MouseEvent<HTMLTableCellElement>) => void
+    innerStyle?: React.CSSProperties
 }>) => {
     const isMobile = useScreenSize() === SCREEN_SIZE.SMALL
 
     return (
         <BodyCell
-            innerClassName={css.small}
+            innerClassName={classNames(css.small, {
+                [css.columnCell]: !isLeadColumn,
+            })}
             className={classNames(
                 {
                     [css.withShadow]: isLeadColumn && isTableScrolled,
@@ -49,6 +53,7 @@ export const TableWithNestedRowsCell = ({
                             : EXPAND_COLUMN_WIDTH) +
                     (!hasChildren ? DEFAULT_MARGIN : DEFAULT_MARGIN * 2)
                 }px`,
+                ...innerStyle,
             }}
             onClick={onClick}
         >

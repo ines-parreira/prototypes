@@ -4,7 +4,7 @@ import {
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
 import {
-    fetchTicketCountPerIntent,
+    fetchTicketCountPerIntentForProduct,
     useTicketCountPerIntent,
     useTicketCountPerIntentForProduct,
 } from 'hooks/reporting/voice-of-customer/metricsPerProductAndIntent'
@@ -124,7 +124,7 @@ describe('metricsPerProductAndIntent', () => {
 
     describe('fetchTicketCountPerIntent', () => {
         it('should call fetchMetricPerDimension with correct parameters', async () => {
-            await fetchTicketCountPerIntent(
+            await fetchTicketCountPerIntentForProduct(
                 statsFilters,
                 timezone,
                 intentsCustomFieldId,
@@ -145,7 +145,7 @@ describe('metricsPerProductAndIntent', () => {
         })
 
         it('should work without optional parameters', async () => {
-            await fetchTicketCountPerIntent(
+            await fetchTicketCountPerIntentForProduct(
                 statsFilters,
                 timezone,
                 intentsCustomFieldId,
@@ -164,7 +164,7 @@ describe('metricsPerProductAndIntent', () => {
         })
 
         it('should return the result from fetchMetricPerDimension', async () => {
-            const result = await fetchTicketCountPerIntent(
+            const result = await fetchTicketCountPerIntentForProduct(
                 statsFilters,
                 timezone,
                 intentsCustomFieldId,

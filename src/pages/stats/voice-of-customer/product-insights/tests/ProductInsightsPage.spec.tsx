@@ -14,11 +14,11 @@ import { TicketVolumeTable } from 'pages/stats/voice-of-customer/product-insight
 import { TopAIIntentsOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/charts/TopAIIntentsOverTimeChart'
 import { ProductInsightsEditColumns } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsEditColumns'
 import { TotalProductSentimentOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TotalProductSentimentOverTimeChart'
-import { TopProductsPerIntentChart } from 'pages/stats/voice-of-customer/product-insights/placeholder/TopProductsPerIntentChart'
 import {
     PRODUCT_INSIGHTS_PAGE_TITLE,
     ProductInsightsPage,
 } from 'pages/stats/voice-of-customer/product-insights/ProductInsightsPage'
+import { TopProductsPerIntentChart } from 'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentChart'
 import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('hooks/reporting/useCleanStatsFilters')
@@ -42,7 +42,7 @@ const ProductInsightsEditColumnsMock = assumeMock(ProductInsightsEditColumns)
 jest.mock('pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu')
 const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
 jest.mock(
-    'pages/stats/voice-of-customer/product-insights/placeholder/TopProductsPerIntentChart',
+    'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentChart',
 )
 const TopProductsPerIntentChartMock = assumeMock(TopProductsPerIntentChart)
 jest.mock(

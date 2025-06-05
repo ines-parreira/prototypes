@@ -1,5 +1,4 @@
 import colors from '@gorgias/design-tokens/tokens/colors'
-import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { useTicketsDistribution } from 'hooks/reporting/ticket-insights/useTicketsDistribution'
 import {
@@ -25,6 +24,7 @@ import {
     DistributionCategoryCell,
     formatCategory,
 } from 'pages/stats/ticket-insights/components/DistributionCategoryCell'
+import { TableLoadingFallback } from 'pages/stats/ticket-insights/ticket-fields/TableLoadingFallback'
 import css from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable.less'
 import {
     TicketInsightsFieldsMetric,
@@ -36,39 +36,6 @@ import { TicketFieldsMetric } from 'state/ui/stats/types'
 export const OUTSIDE_TOP_DATA = {
     title: 'Outside of Top used',
     color: colors.classic.accessory.purple_bg.value,
-}
-
-const LoadingFallback = () => {
-    return (
-        <TableWrapper className={css.table}>
-            <TableBody>
-                {new Array(10).fill(null).map((_, rowIndex) => (
-                    <TableBodyRow key={rowIndex}>
-                        <BodyCell>
-                            <Skeleton inline width={260} />
-                        </BodyCell>
-                        <BodyCell justifyContent="right">
-                            <Skeleton inline width={65} />
-                        </BodyCell>
-                        <BodyCell justifyContent="right">
-                            <Skeleton inline width={40} />
-                        </BodyCell>
-                    </TableBodyRow>
-                ))}
-                <TableBodyRow className={css.lastRow}>
-                    <BodyCell>
-                        <Skeleton width={260} />
-                    </BodyCell>
-                    <BodyCell justifyContent="right">
-                        <Skeleton width={65} />
-                    </BodyCell>
-                    <BodyCell justifyContent="right">
-                        <Skeleton width={40} />
-                    </BodyCell>
-                </TableBodyRow>
-            </TableBody>
-        </TableWrapper>
-    )
 }
 
 const NoDataFallback = () => {
@@ -101,7 +68,7 @@ const TicketDistributionTable = ({
     const getWidth = useWidthBasedOnScreen()
 
     if (isFetching) {
-        return <LoadingFallback />
+        return <TableLoadingFallback />
     }
 
     if (topData.length === 0) {

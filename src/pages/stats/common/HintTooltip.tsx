@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactElement, ReactNode } from 'react'
 
 import classnames from 'classnames'
 
@@ -9,7 +9,7 @@ import { TooltipData } from 'pages/stats/types'
 import { DOCUMENTATION_LINK_TEXT } from 'services/reporting/constants'
 
 type Props = Omit<TooltipData, 'title'> & {
-    title: string | ReactNode
+    title: string | ReactNode | ReactElement
 }
 
 export const HintTooltipContent = ({

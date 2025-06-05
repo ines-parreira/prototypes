@@ -1,3 +1,4 @@
+import { TICKET_FIELDS_LIST_LIMIT } from 'hooks/reporting/voice-of-customer/constants'
 import { BREAKDOWN_FIELD, VALUE_FIELD } from 'hooks/reporting/withBreakdown'
 import { OrderDirection } from 'models/api/types'
 import {
@@ -11,6 +12,7 @@ import {
     TicketCustomFieldsMember,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { TicketMessagesMember } from 'models/reporting/cubes/TicketMessagesCube'
+import { aiAgentTicketsFromTicketCustomFieldsDefaultFilters } from 'models/reporting/queryFactories/automate_v2/filters'
 import {
     aiAgentTicketsFromTicketCustomFieldsPerIntentCountQueryFactory,
     aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory,
@@ -20,10 +22,12 @@ import {
     customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory,
     customFieldsTicketCountPerTicketDrillDownQueryFactory,
     customFieldsTicketCountQueryFactory,
+    customFieldsTicketCountWithSortQueryFactory,
     customFieldsTicketTotalCountQueryFactory,
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import { injectDrillDownCustomFieldId } from 'models/reporting/queryFactories/utils'
 import {
+    ReportingFilter,
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'models/reporting/types'
@@ -37,8 +41,6 @@ import {
     TicketDrillDownFilter,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
-
-import { aiAgentTicketsFromTicketCustomFieldsDefaultFilters } from '../../automate_v2/filters'
 
 describe('customFieldsTicketCountQueryFactory', () => {
     const periodStart = '2021-05-29T00:00:00.000'
@@ -72,6 +74,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 dimensions: [BREAKDOWN_FIELD],
                 timezone,
                 segments: [],
+                limit: TICKET_FIELDS_LIST_LIMIT,
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
                     ...statsFiltersToReportingFilters(
@@ -112,6 +115,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 dimensions: [BREAKDOWN_FIELD],
                 timezone,
                 segments: [],
+                limit: TICKET_FIELDS_LIST_LIMIT,
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
                     ...statsFiltersToReportingFilters(
@@ -154,6 +158,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 dimensions: [BREAKDOWN_FIELD],
                 timezone,
                 segments: [],
+                limit: TICKET_FIELDS_LIST_LIMIT,
                 filters: [
                     {
                         member: TicketMember.IsTrashed,
@@ -212,6 +217,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 dimensions: [BREAKDOWN_FIELD],
                 timezone,
                 segments: [],
+                limit: TICKET_FIELDS_LIST_LIMIT,
                 filters: [
                     {
                         member: TicketMember.IsTrashed,
@@ -1061,5 +1067,171 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 }),
             )
         })
+    })
+})
+
+describe('customFieldsTicketCountWithSortQueryFactory', () => {
+    const periodStart = '2021-05-29T00:00:00.000'
+    const periodEnd = '2021-06-04T23:59:59.000'
+    const statsFilters = {
+        period: {
+            start_datetime: periodStart,
+            end_datetime: periodEnd,
+        },
+    }
+    const timezone = 'UTC'
+    const customFieldId = '123'
+    const sortingDirection = OrderDirection.Desc
+    const sortingValue = TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
+
+    it('should create a query with correct base structure', () => {
+        const query = customFieldsTicketCountWithSortQueryFactory(
+            statsFilters,
+            timezone,
+            customFieldId,
+            sortingDirection,
+            sortingValue,
+        )
+
+        expect(query.measures).toEqual([
+            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+        ])
+        expect(query.dimensions).toEqual([BREAKDOWN_FIELD])
+        expect(query.timezone).toBe(timezone)
+        expect(query.segments).toEqual([])
+        expect(query.limit).toBe(100)
+    })
+
+    it('should include correct filters', () => {
+        const query = customFieldsTicketCountWithSortQueryFactory(
+            statsFilters,
+            timezone,
+            customFieldId,
+            sortingDirection,
+            sortingValue,
+        )
+
+        const customFieldIdFilter = query.filters.find(
+            (filter: ReportingFilter) =>
+                filter.member ===
+                    TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId &&
+                filter.operator === ReportingFilterOperator.Equals,
+        )
+        expect(customFieldIdFilter?.values).toEqual([customFieldId])
+    })
+
+    it('should apply sorting correctly', () => {
+        const query = customFieldsTicketCountWithSortQueryFactory(
+            statsFilters,
+            timezone,
+            customFieldId,
+            sortingDirection,
+            sortingValue,
+        )
+
+        expect(query.order).toEqual([[sortingValue, sortingDirection]])
+    })
+
+    it('should handle additional filters', () => {
+        const additionalFilters = [
+            {
+                member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+                operator: ReportingFilterOperator.Equals,
+                values: ['test-value'],
+            },
+        ]
+
+        const query = customFieldsTicketCountWithSortQueryFactory(
+            statsFilters,
+            timezone,
+            customFieldId,
+            sortingDirection,
+            sortingValue,
+            additionalFilters,
+        )
+
+        const additionalFilter = query.filters.find(
+            (filter: ReportingFilter) =>
+                filter.member ===
+                    TicketCustomFieldsMember.TicketCustomFieldsValueString &&
+                filter.operator === ReportingFilterOperator.Equals,
+        )
+        expect(additionalFilter?.values).toEqual(['test-value'])
+    })
+
+    it('should handle different sorting directions and values', () => {
+        const ascendingQuery = customFieldsTicketCountWithSortQueryFactory(
+            statsFilters,
+            timezone,
+            customFieldId,
+            OrderDirection.Asc,
+            TicketCustomFieldsDimension.TicketCustomFieldsValue,
+        )
+
+        expect(ascendingQuery.order).toEqual([
+            [
+                TicketCustomFieldsDimension.TicketCustomFieldsValue,
+                OrderDirection.Asc,
+            ],
+        ])
+
+        const descendingQuery = customFieldsTicketCountWithSortQueryFactory(
+            statsFilters,
+            timezone,
+            customFieldId,
+            OrderDirection.Desc,
+            TicketCustomFieldsDimension.TicketCustomFieldsValue,
+        )
+
+        expect(descendingQuery.order).toEqual([
+            [
+                TicketCustomFieldsDimension.TicketCustomFieldsValue,
+                OrderDirection.Desc,
+            ],
+        ])
+    })
+
+    it('should handle multiple additional filters', () => {
+        const additionalFilters = [
+            {
+                member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+                operator: ReportingFilterOperator.Equals,
+                values: ['test-value'],
+            },
+            {
+                member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
+                operator: ReportingFilterOperator.Gt,
+                values: ['2024-01-15T00:00:00Z'],
+            },
+        ]
+
+        const query = customFieldsTicketCountWithSortQueryFactory(
+            statsFilters,
+            timezone,
+            customFieldId,
+            sortingDirection,
+            sortingValue,
+            additionalFilters,
+        )
+
+        expect(query.order).toEqual([[sortingValue, sortingDirection]])
+        expect(query.filters).toEqual(expect.arrayContaining(additionalFilters))
+    })
+
+    it('should build query with sorting value', () => {
+        const query = customFieldsTicketCountWithSortQueryFactory(
+            statsFilters,
+            timezone,
+            customFieldId,
+            OrderDirection.Asc,
+            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+        )
+
+        expect(query.order).toEqual([
+            [
+                TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                OrderDirection.Asc,
+            ],
+        ])
     })
 })

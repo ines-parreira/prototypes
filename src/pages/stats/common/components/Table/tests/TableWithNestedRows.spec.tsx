@@ -14,6 +14,8 @@ enum Column {
 
 interface RowProps {
     entityId: string
+    value: number
+    prevValue: number
 }
 
 describe('TableWithNestedRows', () => {
@@ -28,30 +30,40 @@ describe('TableWithNestedRows', () => {
             title: 'Name',
             tooltip: { title: 'Name tooltip' },
             useData: () => ({ value: 'test' }),
+            isSortable: true,
         },
         [Column.Value]: {
             title: 'Value',
             tooltip: { title: 'Value tooltip' },
             useData: () => ({ value: 'test' }),
+            isSortable: true,
         },
     }
 
     const exampleRows: WithChildren<RowProps>[] = [
         {
             entityId: '1',
+            value: 100,
+            prevValue: 90,
             children: [
                 {
                     entityId: '1.1',
+                    value: 30,
+                    prevValue: 25,
                     children: [],
                 },
                 {
                     entityId: '1.2',
+                    value: 40,
+                    prevValue: 35,
                     children: [],
                 },
             ],
         },
         {
             entityId: '2',
+            value: 80,
+            prevValue: 70,
             children: [],
         },
     ]
@@ -70,6 +82,7 @@ describe('TableWithNestedRows', () => {
         },
         getSetOrderHandler: jest.fn(),
         columnConfig: exampleColumnConfig,
+        intentsCustomFieldId: 1,
     }
 
     it('renders header cells with correct titles', () => {
@@ -137,13 +150,16 @@ describe('TableWithNestedRows', () => {
         const mockHandler = jest.fn()
         const props = {
             ...defaultProps,
-            getSetOrderHandler: () => mockHandler,
+            getSetOrderHandler: mockHandler,
         }
 
         render(<TableWithNestedRows {...props} />)
         const headerCell = screen.getAllByRole('columnheader')[0]
         fireEvent.click(headerCell)
 
-        expect(mockHandler).toHaveBeenCalled()
+        expect(mockHandler).toHaveBeenNthCalledWith(1, {
+            column: Column.Name,
+            direction: OrderDirection.Desc,
+        })
     })
 })

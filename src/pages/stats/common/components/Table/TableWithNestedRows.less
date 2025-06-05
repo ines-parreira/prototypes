@@ -1,0 +1,131 @@
+@import (reference) '~css/typography.less';
+@import (reference) '~css/new/mixins.less';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+@table-max-height: 744px;
+@table-header: 70px;
+@table-header-row: 47px;
+@pagination: 32px;
+@table-margin-bottom: @layout-spacing-xs;
+
+:local {
+    .container {
+        width: 100%;
+        max-height: calc(756px);
+        @media (min-height: @table-max-height) {
+            max-height: calc(@table-max-height - 300px);
+            margin-bottom: 0;
+        }
+        overflow: auto;
+
+        &.withPagination {
+            max-height: calc(
+                100vh - @table-header-row - @table-header - @pagination
+            );
+            @media (min-height: @table-max-height) {
+                max-height: calc(@table-max-height - 289px);
+            }
+        }
+    }
+
+    .table {
+        box-sizing: border-box;
+        margin-bottom: @table-margin-bottom;
+
+        .header,
+        thead {
+            .sticky,
+            th,
+            td {
+                position: sticky;
+                top: 0;
+                height: 40px;
+                z-index: 3;
+                background-color: var(--neutral-grey-0);
+            }
+
+            &:first-child {
+                th:first-child {
+                    z-index: 4;
+                }
+            }
+        }
+
+        tr {
+            height: 40px;
+
+            th,
+            td {
+                &.withShadow {
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        bottom: -1px;
+                        width: 30px;
+                        box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.15);
+                        transform: translateX(100%);
+                        pointer-events: none;
+                    }
+                }
+
+                &.headerCell {
+                    padding: 16px 0;
+                    justify-items: center;
+                    min-width: 120px;
+                    height: 40px;
+                }
+
+                &.sticky,
+                &:first-child {
+                    position: sticky;
+                    left: 0;
+                    z-index: 2;
+                    background-color: var(--neutral-grey-0);
+                    transition: background-color 0.3s;
+                }
+
+                &:first-child {
+                    z-index: 3;
+                }
+
+                &.highlight {
+                    &:first-child {
+                        background-color: var(--neutral-grey-1);
+                        font-weight: @body-medium-font-weight;
+                    }
+                }
+            }
+        }
+
+        tbody tr {
+            transition: background-color 0.3s;
+
+            &:hover {
+                background-color: var(--neutral-grey-1);
+
+                & > td.sticky,
+                & > td:first-child {
+                    background-color: var(--neutral-grey-1);
+                }
+            }
+
+            td {
+                &.sticky {
+                    .small,
+                    .BodyCellContent {
+                        @media @mobiles {
+                            display: block;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .pagination {
+        flex-shrink: 0;
+        padding: @layout-spacing-m @layout-spacing-xs @layout-spacing-xs;
+    }
+}

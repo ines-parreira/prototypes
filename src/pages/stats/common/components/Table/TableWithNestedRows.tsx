@@ -1,10 +1,15 @@
-import React, { FC, UIEventHandler, useCallback, useState } from 'react'
+import React, {
+    FC,
+    UIEventHandler,
+    useCallback,
+    useMemo,
+    useState,
+} from 'react'
 
 import classNames from 'classnames'
 
 import useMeasure from 'hooks/useMeasure'
 import { opposite, OrderDirection } from 'models/api/types'
-import { StatsFilters } from 'models/stat/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -14,10 +19,12 @@ import {
 } from 'pages/common/components/table/TableBodyRowExpandable'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import css from 'pages/stats/common/components/Table/BreakdownTable.less'
+import css from 'pages/stats/common/components/Table/TableWithNestedRows.less'
+import { HintTooltipContent } from 'pages/stats/common/HintTooltip'
 import { TooltipData } from 'pages/stats/types'
 
 type NestedRowProps<Columns extends string> = {
+    intentsCustomFieldId?: number
     level?: number
     isTableScrolled?: boolean
     columnOrder?: Columns[]
@@ -26,42 +33,41 @@ type NestedRowProps<Columns extends string> = {
 type Props<
     RowProps extends {
         entityId: string
+        value: number
+        prevValue: number
     },
     Columns extends string,
 > = {
-    RowComponent: FC<RowProps & NestedRowProps<Columns>>
+    RowComponent: FC<RowProps> & NestedRowProps<Columns>
     rows: WithChildren<RowProps>[]
     perPage: number
     columnOrder: Columns[]
     leadColumn: Columns
-    currentPage: number
-    setCurrentPage: (page: number) => void
     sortingOrder: {
         column: Columns
         direction: OrderDirection
     }
-    getSetOrderHandler: (column: Columns) => () => void
+    getSetOrderHandler: (order: {
+        column: Columns
+        direction: OrderDirection
+    }) => void
     columnConfig: Record<
         Columns,
         {
             title: string
             tooltip: TooltipData
-            useData: (
-                statsFilters: StatsFilters,
-                userTimeZone: string,
-                customFieldValueString: string,
-                productId?: string,
-            ) => {
-                value: string
-            }
+            isSortable: boolean
         }
     >
     isScrollable?: boolean
+    intentsCustomFieldId?: number
 }
 
 export const TableWithNestedRows = <
     RowProps extends {
         entityId: string
+        value: number
+        prevValue: number
     },
     Columns extends string,
 >({
@@ -73,10 +79,10 @@ export const TableWithNestedRows = <
     sortingOrder,
     columnConfig,
     getSetOrderHandler,
-    currentPage,
-    setCurrentPage,
     isScrollable = true,
+    intentsCustomFieldId,
 }: Props<RowProps, Columns>) => {
+    const [currentPage, setCurrentPage] = useState(1)
     const [ref, { width }] = useMeasure<HTMLDivElement>()
     const [isTableScrolled, setIsTableScrolled] = useState(false)
     const handleScroll: UIEventHandler<HTMLDivElement> = useCallback(
@@ -89,6 +95,12 @@ export const TableWithNestedRows = <
         },
         [isScrollable],
     )
+
+    const paginatedRows = useMemo(() => {
+        const startingItem = (currentPage - 1) * perPage
+        const lastItem = Math.min(startingItem + perPage, rows.length)
+        return rows.slice(startingItem, lastItem)
+    }, [currentPage, perPage, rows])
 
     const hasPagination = rows.length > perPage
 
@@ -110,18 +122,33 @@ export const TableWithNestedRows = <
                                     [css.withShadow]:
                                         column === leadColumn &&
                                         isTableScrolled,
+                                    [css.headerCell]: column !== leadColumn,
                                 })}
                                 colSpan={column === leadColumn ? 2 : 1}
                                 title={columnConfig[column].title}
-                                tooltip={columnConfig[column].tooltip.title}
+                                tooltip={
+                                    <HintTooltipContent
+                                        {...columnConfig[column].tooltip}
+                                    />
+                                }
                                 isOrderedBy={sortingOrder.column === column}
                                 direction={opposite(sortingOrder.direction)}
-                                onClick={getSetOrderHandler(column)}
+                                onClick={
+                                    columnConfig[column].isSortable
+                                        ? () =>
+                                              getSetOrderHandler({
+                                                  column,
+                                                  direction: opposite(
+                                                      sortingOrder.direction,
+                                                  ),
+                                              })
+                                        : undefined
+                                }
                             />
                         ))}
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
+                        {paginatedRows.map((row) => (
                             <TableBodyRowExpandable<RowProps>
                                 key={row.entityId}
                                 RowContentComponent={RowComponent}
@@ -129,6 +156,7 @@ export const TableWithNestedRows = <
                                     ...row,
                                     columnOrder,
                                     isTableScrolled,
+                                    intentsCustomFieldId,
                                     children: row.children.map((child) => ({
                                         ...child,
                                         isTableScrolled,
@@ -141,16 +169,15 @@ export const TableWithNestedRows = <
                     </TableBody>
                 </TableWrapper>
             </div>
-            <div>
-                {hasPagination && (
-                    <NumberedPagination
-                        count={Math.ceil(rows.length / perPage)}
-                        page={currentPage}
-                        onChange={setCurrentPage}
-                        className={css.pagination}
-                    />
-                )}
-            </div>
+
+            {hasPagination && (
+                <NumberedPagination
+                    count={Math.ceil(rows.length / perPage)}
+                    page={currentPage}
+                    onChange={setCurrentPage}
+                    className={css.pagination}
+                />
+            )}
         </>
     )
 }

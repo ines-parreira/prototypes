@@ -1,7 +1,6 @@
-import { StatsFilters } from 'models/stat/types'
 import { TooltipData } from 'pages/stats/types'
 
-export const INTENTS_PER_PAGE = 5
+export const TOP_INTENTS_PER_PAGE = 10
 
 const INTENT_TOPIC_COLUMN_LABEL = 'Intent Topic'
 const TICKET_VOLUME_COLUMN_LABEL = 'Ticket Volume'
@@ -20,47 +19,38 @@ export const columnOrder: TopProductsPerIntentColumn[] = [
 ]
 
 export const LeadColumn = TopProductsPerIntentColumn.Intent
+export type TopProductsPerIntentColumnConfig = {
+    title: string
+    tooltip: TooltipData
+    isSortable: boolean
+}
 
 export const TopProductsPerIntentColumnConfig: Record<
     TopProductsPerIntentColumn,
-    {
-        title: string
-        tooltip: TooltipData
-        useData: (
-            statsFilters: StatsFilters,
-            userTimeZone: string,
-            customFieldValueString: string,
-            productId?: string,
-        ) => {
-            value: string
-        }
-    }
+    TopProductsPerIntentColumnConfig
 > = {
     [TopProductsPerIntentColumn.Intent]: {
         title: INTENT_TOPIC_COLUMN_LABEL,
         tooltip: {
-            title: INTENT_TOPIC_COLUMN_LABEL,
+            title: 'AI classified intent topics. Sort by specific AI Intents using filters. Read more about intents',
+            linkText: ' here.',
+            link: 'https://docs.gorgias.com/en-US/customer-intents-81924',
         },
-        useData: (
-            _: StatsFilters,
-            __: string,
-            intentId: string,
-            productId?: string,
-        ) => ({ value: productId ?? intentId }),
+        isSortable: true,
     },
     [TopProductsPerIntentColumn.Volume]: {
         title: TICKET_VOLUME_COLUMN_LABEL,
         tooltip: {
-            title: TICKET_VOLUME_COLUMN_LABEL,
+            title: 'Number of tickets in relation to intent topic or product over time.',
         },
-        useData: () => ({ value: '123' }),
+        isSortable: true,
     },
     [TopProductsPerIntentColumn.Delta]: {
         title: DELTA_COLUMN_LABEL,
         tooltip: {
-            title: DELTA_COLUMN_LABEL,
+            title: 'Percentage change in ticket volume over time.',
         },
-        useData: () => ({ value: '34' }),
+        isSortable: false,
     },
 }
 
