@@ -242,19 +242,21 @@ export default function Integration({
                                 </Button>
                             )}
 
-                            <Button
-                                type="submit"
-                                className="mr-2"
-                                isDisabled={
-                                    isSubmitting || !areIntegrationOptionsDirty
-                                }
-                                isLoading={
-                                    isSubmitting || isAuthenticationPending
-                                }
-                            >
-                                Update Connection
-                            </Button>
-                            {!isAuthenticationPending && !isActive && (
+                            {!isAuthenticationPending && (
+                                <Button
+                                    type="submit"
+                                    className="mr-2"
+                                    isDisabled={
+                                        isSubmitting ||
+                                        !areIntegrationOptionsDirty
+                                    }
+                                    isLoading={isSubmitting}
+                                >
+                                    Update Connection
+                                </Button>
+                            )}
+
+                            {!isActive && (
                                 <Button
                                     isLoading={isSubmitting}
                                     onClick={retriggerOAuthFlow}
