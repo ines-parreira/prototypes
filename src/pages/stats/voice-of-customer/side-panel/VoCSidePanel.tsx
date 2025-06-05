@@ -30,13 +30,13 @@ type VoCSidePanelTabsType = Record<
 >
 
 export const VoCSidePanelTabs: VoCSidePanelTabsType = {
-    Insights: {
+    [SidePanelTab.Insights]: {
         value: SidePanelTab.Insights,
         label: INSIGHTS_LABEL,
         icon: 'psychology',
         content: () => <div>Insights_Content</div>,
     },
-    TrendOverview: {
+    [SidePanelTab.TrendOverview]: {
         value: SidePanelTab.TrendOverview,
         label: TREND_OVERVIEW_LABEL,
         icon: 'show_chart',

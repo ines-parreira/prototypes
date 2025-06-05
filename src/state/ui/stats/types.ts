@@ -1,3 +1,4 @@
+import { OrderDirection } from 'models/api/types'
 import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import { CampaignTableKeys } from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
 import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
@@ -6,10 +7,12 @@ import {
     AGENT_PERFORMANCE_SLICE_NAME,
     AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME,
     INTENT_SLICE_NAME,
+    PRODUCTS_PER_TICKET_SLICE_NAME,
     VOICE_AGENTS_PERFORMANCE_SLICE_NAME,
 } from 'state/ui/stats/constants'
 import { createTableSlice } from 'state/ui/stats/createTableSlice'
 import { IntentState } from 'state/ui/stats/insightsSlice'
+import { ProductsPerTicketState } from 'state/ui/stats/productsPerTicketSlice'
 
 export enum AgentsTableColumn {
     AgentName = 'agent_name',
@@ -186,6 +189,7 @@ export type StatsTablesState = {
     [AGENT_PERFORMANCE_SLICE_NAME]: AgentPerformanceState<AgentsTableColumn>
     [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: AgentPerformanceState<AutoQAAgentsTableColumn>
     [INTENT_SLICE_NAME]: IntentState<IntentTableColumn>
+    [PRODUCTS_PER_TICKET_SLICE_NAME]: ProductsPerTicketState
     [VOICE_AGENTS_PERFORMANCE_SLICE_NAME]: AgentPerformanceState<VoiceAgentsTableColumn>
 }
 
@@ -201,4 +205,9 @@ export enum ValueMode {
 export enum CsatSentiment {
     Positive = 'positive',
     Negative = 'negative',
+}
+
+export type ColumnSorting<Column> = {
+    field: Column
+    direction: OrderDirection
 }

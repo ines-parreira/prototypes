@@ -4,12 +4,16 @@ import { TicketChannel } from 'business/types/ticket'
 import {
     fetchMetricPerDimension,
     useMetricPerDimension,
+    useMetricPerDimensionWithEnrichment,
 } from 'hooks/reporting/useMetricPerDimension'
 import {
     fetchReturnMentionsPerProduct,
     fetchTicketCountPerProduct,
+    PRODUCT_ENRICHMENT_ENTITY_ID,
+    PRODUCT_ENRICHMENT_FIELDS,
     useReturnMentionsPerProduct,
     useTicketCountPerProduct,
+    useTicketCountPerProductWithEnrichment,
 } from 'hooks/reporting/voice-of-customer/metricsPerProduct'
 import { OrderDirection } from 'models/api/types'
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
@@ -22,6 +26,9 @@ import { renderHook } from 'utils/testing/renderHook'
 jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
 const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
+const useMetricPerDimensionWithEnrichmentMock = assumeMock(
+    useMetricPerDimensionWithEnrichment,
+)
 
 describe('metricsPerProduct', () => {
     const periodStart = moment()
@@ -86,6 +93,30 @@ describe('metricsPerProduct', () => {
                 )
             },
         )
+    })
+
+    describe('useTicketCountPerProductWithEnrichment', () => {
+        it('should use metric per dimension with Product enrichment', () => {
+            renderHook(() =>
+                useTicketCountPerProductWithEnrichment(
+                    statsFilters,
+                    timezone,
+                    sorting,
+                ),
+            )
+
+            expect(
+                useMetricPerDimensionWithEnrichmentMock,
+            ).toHaveBeenCalledWith(
+                ticketCountPerProductQueryFactory(
+                    statsFilters,
+                    timezone,
+                    sorting,
+                ),
+                PRODUCT_ENRICHMENT_FIELDS,
+                PRODUCT_ENRICHMENT_ENTITY_ID,
+            )
+        })
     })
 
     describe('metricsPerProductAndIntent', () => {

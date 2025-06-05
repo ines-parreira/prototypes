@@ -1,10 +1,23 @@
 import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { OrderDirection } from 'models/api/types'
 import {
+    TicketProductsEnrichedDimension,
+    TicketProductsEnrichedMember,
+} from 'models/reporting/cubes/core/TicketProductsEnrichedCube'
+import {
+    TicketDimension,
+    TicketMember,
+} from 'models/reporting/cubes/TicketCube'
+import {
+    TicketCustomFieldsDimension,
+    TicketCustomFieldsMember,
+} from 'models/reporting/cubes/TicketCustomFieldsCube'
+import {
     sentimentsTicketCountPerProductDrillDownQueryFactory,
     sentimentsTicketCountPerProductQueryFactory,
     TICKET_COUNT_MEASURE,
 } from 'models/reporting/queryFactories/voice-of-customer/sentimentPerProduct'
+import { ReportingFilterOperator } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 
 describe('sentimentsTicketCountPerProduct', () => {
@@ -35,44 +48,44 @@ describe('sentimentsTicketCountPerProduct', () => {
             const expected = {
                 measures: [TICKET_COUNT_MEASURE],
                 dimensions: [
-                    'TicketProductsEnriched.productId',
-                    'TicketCustomFieldsEnriched.valueString',
+                    TicketProductsEnrichedDimension.ProductId,
+                    TicketCustomFieldsDimension.TicketCustomFieldsValueString,
                 ],
                 timezone,
                 filters: [
                     {
-                        member: 'TicketEnriched.isTrashed',
-                        operator: 'equals',
+                        member: TicketMember.IsTrashed,
+                        operator: ReportingFilterOperator.Equals,
                         values: ['0'],
                     },
                     {
-                        member: 'TicketEnriched.isSpam',
-                        operator: 'equals',
+                        member: TicketMember.IsSpam,
+                        operator: ReportingFilterOperator.Equals,
                         values: ['0'],
                     },
                     {
-                        member: 'TicketEnriched.periodStart',
-                        operator: 'afterDate',
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
                         values: [periodStart],
                     },
                     {
-                        member: 'TicketEnriched.periodEnd',
-                        operator: 'beforeDate',
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
                         values: [periodEnd],
                     },
                     {
-                        member: 'TicketCustomFieldsEnriched.customFieldUpdatedDatetime',
-                        operator: 'inDateRange',
+                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
+                        operator: ReportingFilterOperator.InDateRange,
                         values: [periodStart, periodEnd],
                     },
                     {
-                        member: 'TicketCustomFieldsEnriched.customFieldId',
-                        operator: 'equals',
+                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                        operator: ReportingFilterOperator.Equals,
                         values: [customFieldId],
                     },
                     {
-                        member: 'TicketProductsEnriched.deleted_datetime',
-                        operator: 'equals',
+                        member: TicketProductsEnrichedMember.DeletedDatetime,
+                        operator: ReportingFilterOperator.Equals,
                         values: [null],
                     },
                 ],
@@ -92,8 +105,8 @@ describe('sentimentsTicketCountPerProduct', () => {
             expect(actual.filters).toEqual(
                 expect.arrayContaining([
                     {
-                        member: 'TicketProductsEnriched.productId',
-                        operator: 'equals',
+                        member: TicketProductsEnrichedMember.ProductId,
+                        operator: ReportingFilterOperator.Equals,
                         values: [productId],
                     },
                 ]),
@@ -125,56 +138,56 @@ describe('sentimentsTicketCountPerProduct', () => {
 
             const expected = {
                 measures: [TICKET_COUNT_MEASURE],
-                dimensions: ['TicketEnriched.ticketId'],
+                dimensions: [TicketDimension.TicketId],
                 timezone,
                 filters: [
                     {
-                        member: 'TicketEnriched.isTrashed',
-                        operator: 'equals',
+                        member: TicketMember.IsTrashed,
+                        operator: ReportingFilterOperator.Equals,
                         values: ['0'],
                     },
                     {
-                        member: 'TicketEnriched.isSpam',
-                        operator: 'equals',
+                        member: TicketMember.IsSpam,
+                        operator: ReportingFilterOperator.Equals,
                         values: ['0'],
                     },
                     {
-                        member: 'TicketEnriched.periodStart',
-                        operator: 'afterDate',
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
                         values: [periodStart],
                     },
                     {
-                        member: 'TicketEnriched.periodEnd',
-                        operator: 'beforeDate',
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
                         values: [periodEnd],
                     },
                     {
-                        member: 'TicketEnriched.customField',
+                        member: TicketMember.CustomField,
                         values: ['123::Negative'],
-                        operator: 'equals',
+                        operator: ReportingFilterOperator.Equals,
                     },
                     {
-                        member: 'TicketCustomFieldsEnriched.customFieldUpdatedDatetime',
-                        operator: 'inDateRange',
+                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
+                        operator: ReportingFilterOperator.InDateRange,
                         values: [periodStart, periodEnd],
                     },
                     {
-                        member: 'TicketCustomFieldsEnriched.customFieldId',
-                        operator: 'equals',
+                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                        operator: ReportingFilterOperator.Equals,
                         values: [customFieldId],
                     },
                     {
-                        member: 'TicketProductsEnriched.deleted_datetime',
-                        operator: 'equals',
+                        member: TicketProductsEnrichedMember.DeletedDatetime,
+                        operator: ReportingFilterOperator.Equals,
                         values: [null],
                     },
                     {
-                        member: 'TicketProductsEnriched.productId',
-                        operator: 'equals',
+                        member: TicketProductsEnrichedMember.ProductId,
+                        operator: ReportingFilterOperator.Equals,
                         values: [productId],
                     },
                 ],
-                order: [['TicketEnriched.createdDatetime', 'desc']],
+                order: [[TicketMember.CreatedDatetime, OrderDirection.Desc]],
                 limit: 100,
             }
 

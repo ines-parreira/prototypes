@@ -1,10 +1,20 @@
 import { OrderDirection } from 'models/api/types'
 import {
+    TicketProductsEnrichedDimension,
+    TicketProductsEnrichedMeasure,
+} from 'models/reporting/cubes/core/TicketProductsEnrichedCube'
+import {
+    TicketDimension,
+    TicketMember,
+} from 'models/reporting/cubes/TicketCube'
+import {
     ticketCountPerProductQueryFactory,
     ticketsWithProductsDrillDownQueryFactory,
     ticketsWithProductsQueryFactory,
 } from 'models/reporting/queryFactories/voice-of-customer/ticketsWithProducts'
+import { ReportingFilterOperator } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
+import { DRILLDOWN_QUERY_LIMIT } from 'utils/reporting'
 
 describe('ticketsWithProducts', () => {
     const periodStart = '2025-06-02T12:00:00.000'
@@ -33,23 +43,23 @@ describe('ticketsWithProducts', () => {
                 segments: [],
                 filters: [
                     {
-                        member: 'TicketEnriched.isTrashed',
-                        operator: 'equals',
+                        member: TicketMember.IsTrashed,
+                        operator: ReportingFilterOperator.Equals,
                         values: ['0'],
                     },
                     {
-                        member: 'TicketEnriched.isSpam',
-                        operator: 'equals',
+                        member: TicketMember.IsSpam,
+                        operator: ReportingFilterOperator.Equals,
                         values: ['0'],
                     },
                     {
-                        member: 'TicketEnriched.periodStart',
-                        operator: 'afterDate',
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
                         values: [periodStart],
                     },
                     {
-                        member: 'TicketEnriched.periodEnd',
-                        operator: 'beforeDate',
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
                         values: [periodEnd],
                     },
                 ],
@@ -72,23 +82,23 @@ describe('ticketsWithProducts', () => {
                 segments: [],
                 filters: [
                     {
-                        member: 'TicketEnriched.isTrashed',
-                        operator: 'equals',
+                        member: TicketMember.IsTrashed,
+                        operator: ReportingFilterOperator.Equals,
                         values: ['0'],
                     },
                     {
-                        member: 'TicketEnriched.isSpam',
-                        operator: 'equals',
+                        member: TicketMember.IsSpam,
+                        operator: ReportingFilterOperator.Equals,
                         values: ['0'],
                     },
                     {
-                        member: 'TicketEnriched.periodStart',
-                        operator: 'afterDate',
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
                         values: [periodStart],
                     },
                     {
-                        member: 'TicketEnriched.periodEnd',
-                        operator: 'beforeDate',
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
                         values: [periodEnd],
                     },
                 ],
@@ -107,29 +117,32 @@ describe('ticketsWithProducts', () => {
             )
 
             const expected = {
-                measures: ['TicketProductsEnriched.ticketCount'],
-                dimensions: ['TicketProductsEnriched.productId'],
-                timezone: 'someTimeZone',
+                measures: [TicketProductsEnrichedMeasure.TicketCount],
+                dimensions: [
+                    TicketProductsEnrichedDimension.ProductId,
+                    TicketProductsEnrichedDimension.StoreId,
+                ],
+                timezone,
                 segments: [],
                 filters: [
                     {
-                        member: 'TicketEnriched.isTrashed',
-                        operator: 'equals',
+                        member: TicketMember.IsTrashed,
+                        operator: ReportingFilterOperator.Equals,
                         values: ['0'],
                     },
                     {
-                        member: 'TicketEnriched.isSpam',
-                        operator: 'equals',
+                        member: TicketMember.IsSpam,
+                        operator: ReportingFilterOperator.Equals,
                         values: ['0'],
                     },
                     {
-                        member: 'TicketEnriched.periodStart',
-                        operator: 'afterDate',
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
                         values: [periodStart],
                     },
                     {
-                        member: 'TicketEnriched.periodEnd',
-                        operator: 'beforeDate',
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
                         values: [periodEnd],
                     },
                 ],
@@ -149,37 +162,37 @@ describe('ticketsWithProducts', () => {
             )
 
             const expected = {
-                measures: ['TicketProductsEnriched.ticketCount'],
+                measures: [TicketProductsEnrichedMeasure.TicketCount],
                 dimensions: [
                     'TicketEnriched.ticketId',
                     'TicketEnriched.createdDatetime',
                 ],
-                timezone: 'someTimeZone',
+                timezone,
+                limit: DRILLDOWN_QUERY_LIMIT,
+                order: [[TicketDimension.CreatedDatetime, OrderDirection.Desc]],
                 segments: [],
                 filters: [
                     {
-                        member: 'TicketEnriched.isTrashed',
-                        operator: 'equals',
+                        member: TicketMember.IsTrashed,
+                        operator: ReportingFilterOperator.Equals,
                         values: ['0'],
                     },
                     {
-                        member: 'TicketEnriched.isSpam',
-                        operator: 'equals',
+                        member: TicketMember.IsSpam,
+                        operator: ReportingFilterOperator.Equals,
                         values: ['0'],
                     },
                     {
-                        member: 'TicketEnriched.periodStart',
-                        operator: 'afterDate',
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
                         values: [periodStart],
                     },
                     {
-                        member: 'TicketEnriched.periodEnd',
-                        operator: 'beforeDate',
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
                         values: [periodEnd],
                     },
                 ],
-                order: [['TicketEnriched.createdDatetime', 'asc']],
-                limit: 100,
             }
 
             expect(actual).toEqual(expected)

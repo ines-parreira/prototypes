@@ -3,10 +3,14 @@ import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import { ReportsIDs } from 'pages/stats/dashboards/constants'
 import { ChartType, ReportConfig } from 'pages/stats/dashboards/types'
 import { AGENT_PERFORMANCE_SECTION_TITLE } from 'pages/stats/support-performance/agents/AgentsTableChart'
+import { ChangeInTicketVolumeChart } from 'pages/stats/voice-of-customer/product-insights/charts/ChangeInTicketVolumeChart'
+import { TopAIIntentsOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/charts/TopAIIntentsOverTimeChart'
 import { ProductInsightsTableChart } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableChart'
-import { TopAIIntentsOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TopAIIntentsOverTimeChart'
 import { TotalProductSentimentOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TotalProductSentimentOverTimeChart'
-import { TICKET_VOLUME_CHART_LABEL } from 'pages/stats/voice-of-customer/product-insights/constants'
+import {
+    TICKET_VOLUME_CHART_LABEL,
+    TICKET_VOLUME_CHART_TOOLTIP,
+} from 'pages/stats/voice-of-customer/product-insights/constants'
 import { TicketVolumeChart } from 'pages/stats/voice-of-customer/product-insights/placeholder/TicketVolumeChart'
 import {
     TOP_PRODUCTS_PER_INTENT_HINT,
@@ -52,12 +56,19 @@ export const ProductInsightsPlaceholderReportConfig: ReportConfig<ProductInsight
                 csvProducer: null,
                 chartType: ChartType.Graph,
             },
-            [ProductInsightsChart.TicketVolumeChart]: {
+            [ProductInsightsChart.TicketVolumeChartPlaceholder]: {
                 chartComponent: TicketVolumeChart,
+                label: TICKET_VOLUME_CHART_LABEL,
+                description: TICKET_VOLUME_CHART_TOOLTIP,
+                csvProducer: null,
+                chartType: ChartType.Graph,
+            },
+            [ProductInsightsChart.TicketVolumeChart]: {
+                chartComponent: ChangeInTicketVolumeChart,
                 label: 'Change in ticket volume',
                 description: 'Change in ticket volume ',
                 csvProducer: null,
-                chartType: ChartType.Table,
+                chartType: ChartType.Graph,
             },
             [ProductInsightsChart.TopAIIntentsOverTimeChart]: {
                 chartComponent: TopAIIntentsOverTimeChart,

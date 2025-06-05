@@ -10,12 +10,10 @@ import { agentIdFields } from 'pages/stats/support-performance/agents/AgentsTabl
 import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'
 import { RootState } from 'state/types'
-import {
-    AgentPerformanceSorting,
-    AgentPerformanceState,
-} from 'state/ui/stats/agentPerformanceSlice'
+import { AgentPerformanceState } from 'state/ui/stats/agentPerformanceSlice'
 import { AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
 import { getCleanStatsFilters } from 'state/ui/stats/selectors'
+import { ColumnSorting } from 'state/ui/stats/types'
 import { getSortByName } from 'utils/getSortByName'
 
 export const initialState: AgentPerformanceState<AutoQAAgentsTableColumn> = {
@@ -38,9 +36,7 @@ export const autoQAAgentPerformanceSlice = createSlice({
     reducers: {
         sortingSet(
             state,
-            action: PayloadAction<
-                AgentPerformanceSorting<AutoQAAgentsTableColumn>
-            >,
+            action: PayloadAction<ColumnSorting<AutoQAAgentsTableColumn>>,
         ) {
             state.sorting.field = action.payload.field
             state.sorting.direction = action.payload.direction

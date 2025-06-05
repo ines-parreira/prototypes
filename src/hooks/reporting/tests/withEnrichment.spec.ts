@@ -28,7 +28,8 @@ describe('withEnrichment', () => {
         const responseWithEnrichment = withEnrichment<
             'metric',
             'fieldA' | 'fieldB' | EnrichmentFields.TicketId,
-            EnrichmentFields
+            EnrichmentFields.TicketId,
+            EnrichmentFields.TicketId
         >(
             response as any,
             EnrichmentFields.TicketId,

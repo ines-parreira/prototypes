@@ -6,7 +6,7 @@ import ChartCard from 'pages/stats/common/components/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { formatLabeledTimeSeriesData } from 'pages/stats/common/utils'
 import { LINES_COLORS } from 'pages/stats/constants'
-import { TopAIIntentsOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TopAIIntentsOverTimeChart'
+import { TopAIIntentsOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/charts/TopAIIntentsOverTimeChart'
 import {
     ProductInsightsChart,
     ProductInsightsChartConfig,

@@ -1,14 +1,12 @@
 import ChartCard from 'pages/stats/common/components/ChartCard'
 import css from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable.less'
+import { TicketVolumeTable } from 'pages/stats/voice-of-customer/product-insights/charts/TicketVolumeTable'
 import {
     TICKET_VOLUME_CHART_LABEL,
     TICKET_VOLUME_CHART_TOOLTIP,
 } from 'pages/stats/voice-of-customer/product-insights/constants'
-import { TicketVolumeTable } from 'pages/stats/voice-of-customer/product-insights/placeholder/TicketVolumeTable'
 
-const selectedCustomFieldId: number | null = 123
-
-export const TicketVolumeChart = () => {
+export const ChangeInTicketVolumeChart = () => {
     return (
         <ChartCard
             title={TICKET_VOLUME_CHART_LABEL}
@@ -16,7 +14,7 @@ export const TicketVolumeChart = () => {
             className={css.card}
             noPadding={true}
         >
-            <TicketVolumeTable selectedCustomFieldId={selectedCustomFieldId} />
+            <TicketVolumeTable />
         </ChartCard>
     )
 }

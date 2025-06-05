@@ -32,6 +32,39 @@ import {
 import css from 'pages/stats/ticket-insights/tags/TopUsedTagsChart.less'
 import { TagsMetric } from 'state/ui/stats/types'
 
+export const LoadingTable = () => {
+    return (
+        <TableWrapper className={css.table}>
+            <TableBody>
+                {new Array(10).fill(null).map((_, rowIndex) => (
+                    <TableBodyRow key={rowIndex}>
+                        <BodyCell>
+                            <Skeleton inline width={260} />
+                        </BodyCell>
+                        <BodyCell justifyContent="right">
+                            <Skeleton inline width={65} />
+                        </BodyCell>
+                        <BodyCell justifyContent="right">
+                            <Skeleton inline width={40} />
+                        </BodyCell>
+                    </TableBodyRow>
+                ))}
+                <TableBodyRow>
+                    <BodyCell>
+                        <Skeleton width={260} />
+                    </BodyCell>
+                    <BodyCell justifyContent="right">
+                        <Skeleton width={65} />
+                    </BodyCell>
+                    <BodyCell justifyContent="right">
+                        <Skeleton width={40} />
+                    </BodyCell>
+                </TableBodyRow>
+            </TableBody>
+        </TableWrapper>
+    )
+}
+
 export const TopUsedTagsChart = ({
     chartId,
     dashboard,
@@ -57,35 +90,10 @@ export const TopUsedTagsChart = ({
             noPadding={true}
         >
             {isFetching ? (
-                <TableWrapper className={css.table}>
-                    <TableBody>
-                        {new Array(10).fill(null).map((_, rowIndex) => (
-                            <TableBodyRow key={rowIndex}>
-                                <BodyCell>
-                                    <Skeleton inline width={260} />
-                                </BodyCell>
-                                <BodyCell justifyContent="right">
-                                    <Skeleton inline width={65} />
-                                </BodyCell>
-                                <BodyCell justifyContent="right">
-                                    <Skeleton inline width={40} />
-                                </BodyCell>
-                            </TableBodyRow>
-                        ))}
-                        <TableBodyRow>
-                            <BodyCell>
-                                <Skeleton width={260} />
-                            </BodyCell>
-                            <BodyCell justifyContent="right">
-                                <Skeleton width={65} />
-                            </BodyCell>
-                            <BodyCell justifyContent="right">
-                                <Skeleton width={40} />
-                            </BodyCell>
-                        </TableBodyRow>
-                    </TableBody>
-                </TableWrapper>
-            ) : data.length > 0 ? (
+                <LoadingTable />
+            ) : data.length === 0 ? (
+                <NoDataAvailable style={{ minHeight: 300 }} />
+            ) : (
                 <TableWrapper className={css.table}>
                     <TableBody>
                         <TableBodyRow>
@@ -164,8 +172,6 @@ export const TopUsedTagsChart = ({
                         })}
                     </TableBody>
                 </TableWrapper>
-            ) : (
-                <NoDataAvailable style={{ minHeight: 300 }} />
             )}
         </ChartCard>
     )

@@ -10,8 +10,9 @@ import { DrillDownModal } from 'pages/stats/common/drill-down/DrillDownModal'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import { ChartsActionMenu } from 'pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import { TicketVolumeTable } from 'pages/stats/voice-of-customer/product-insights/charts/TicketVolumeTable'
+import { TopAIIntentsOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/charts/TopAIIntentsOverTimeChart'
 import { ProductInsightsEditColumns } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsEditColumns'
-import { TopAIIntentsOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TopAIIntentsOverTimeChart'
 import { TotalProductSentimentOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TotalProductSentimentOverTimeChart'
 import { TopProductsPerIntentChart } from 'pages/stats/voice-of-customer/product-insights/placeholder/TopProductsPerIntentChart'
 import {
@@ -30,7 +31,7 @@ const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 jest.mock('hooks/reporting/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)
 jest.mock(
-    'pages/stats/voice-of-customer/product-insights/components/TopAIIntentsOverTimeChart',
+    'pages/stats/voice-of-customer/product-insights/charts/TopAIIntentsOverTimeChart',
 )
 const TopAIIntentsOverTimeChartMock = assumeMock(TopAIIntentsOverTimeChart)
 
@@ -50,6 +51,10 @@ jest.mock(
 const TotalProductSentimentOverTimeChartMock = assumeMock(
     TotalProductSentimentOverTimeChart,
 )
+jest.mock(
+    'pages/stats/voice-of-customer/product-insights/charts/TicketVolumeTable',
+)
+const TicketVolumeTableMock = assumeMock(TicketVolumeTable)
 
 describe('ProductInsightsPage', () => {
     const statsFilters = {
@@ -70,6 +75,7 @@ describe('ProductInsightsPage', () => {
         ChartsActionMenuMock.mockImplementation(() => <div />)
         FiltersPanelWrapperMock.mockImplementation(() => <div />)
         TopAIIntentsOverTimeChartMock.mockImplementation(() => <div />)
+        TicketVolumeTableMock.mockImplementation(() => <div />)
         useStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: statsFilters,
             userTimezone: 'UTC',

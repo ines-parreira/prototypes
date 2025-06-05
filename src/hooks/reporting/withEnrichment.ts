@@ -1,5 +1,4 @@
 import { UseEnrichedPostReportingQueryData } from 'models/reporting/queries'
-import { EnrichmentFields } from 'models/reporting/types'
 
 export type IDRecord<IDKey extends string> = { [K in IDKey]: any }
 
@@ -18,21 +17,22 @@ export const withEnrichment = <
     T extends string,
     K extends string,
     ID extends string,
+    EID extends string,
 >(
     res: UseEnrichedPostReportingQueryData<{
         data: (KeyedRecord<T> & IDRecord<ID>)[]
-        enrichment: (KeyedRecord<K | EnrichmentFields> & IDRecord<ID>)[]
+        enrichment: (KeyedRecord<K> & IDRecord<EID>)[]
     }>,
     idField: ID,
     enrichmentFields: K[],
-    enrichmentIdField: K,
+    enrichmentIdField: EID,
 ): UseEnrichedPostReportingQueryData<{
-    data: (MergedRecord<T, K | EnrichmentFields> & IDRecord<ID>)[]
+    data: (MergedRecord<T, K> & IDRecord<ID>)[]
 }> => {
     return {
         ...res,
         data: {
-            data: selectWithEnrichment<T, K, ID>(
+            data: selectWithEnrichment<T, K, ID, EID>(
                 res.data,
                 idField,
                 enrichmentFields,
@@ -46,18 +46,19 @@ const selectWithEnrichment = <
     T extends string,
     K extends string,
     ID extends string,
+    EID extends string,
 >(
     data: {
         data: (KeyedRecord<T> & IDRecord<ID>)[]
-        enrichment: (KeyedRecord<K | EnrichmentFields> & IDRecord<ID>)[]
+        enrichment: (KeyedRecord<K> & IDRecord<EID>)[]
     },
     idField: ID,
     enrichmentFields: K[],
-    enrichmentIdField: K,
-): (MergedRecord<T, K | EnrichmentFields> & IDRecord<ID>)[] => {
+    enrichmentIdField: EID,
+): (MergedRecord<T, K> & IDRecord<ID>)[] => {
     return data.data.map((result) => ({
         ...result,
-        ...merge<T, K | EnrichmentFields, ID>(
+        ...merge<T, K, ID>(
             result,
             enrichmentFields,
             data.enrichment.find(
@@ -73,7 +74,7 @@ const merge = <T extends string, K extends string, ID extends string>(
     result: KeyedRecord<T> & IDRecord<ID>,
     fields: K[],
     enrichment?: KeyedRecord<K>,
-): MergedRecord<T, K | EnrichmentFields> & IDRecord<ID> => {
+): MergedRecord<T, K> & IDRecord<ID> => {
     return fields.reduce(
         (obj, field) => {
             return {
@@ -81,6 +82,6 @@ const merge = <T extends string, K extends string, ID extends string>(
                 [field]: enrichment?.[field] || obj[field] || null,
             }
         },
-        result as MergedRecord<T, K | EnrichmentFields> & IDRecord<ID>,
+        result as MergedRecord<T, K> & IDRecord<ID>,
     )
 }

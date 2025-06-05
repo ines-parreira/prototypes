@@ -1,10 +1,8 @@
 import { useEffect } from 'react'
 
-// eslint-disable-next-line no-restricted-imports
-import { useDispatch } from 'react-redux'
-
 import { MetricPerChannelQueryHook } from 'hooks/reporting/support-performance/channels/metricsPerChannel'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { opposite, OrderDirection } from 'models/api/types'
 import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
@@ -21,7 +19,7 @@ export const useChannelsSortingQuery = (
     column: ChannelsTableColumns,
     useQuery: MetricPerChannelQueryHook,
 ) => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
     const sorting = useAppSelector(getChannelsSorting)

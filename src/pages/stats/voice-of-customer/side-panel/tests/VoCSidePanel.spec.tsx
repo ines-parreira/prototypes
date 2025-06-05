@@ -72,10 +72,12 @@ describe('VoCSidePanel', () => {
         )
 
         expect(
-            screen.getByText(VoCSidePanelTabs.Insights.label),
+            screen.getByText(VoCSidePanelTabs[SidePanelTab.Insights].label),
         ).toBeInTheDocument()
         expect(
-            screen.getByText(VoCSidePanelTabs.TrendOverview.label),
+            screen.getByText(
+                VoCSidePanelTabs[SidePanelTab.TrendOverview].label,
+            ),
         ).toBeInTheDocument()
         expect(screen.getByText('Insights_Content')).toBeInTheDocument()
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument()

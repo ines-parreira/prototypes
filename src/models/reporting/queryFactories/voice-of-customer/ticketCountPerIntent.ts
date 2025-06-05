@@ -116,7 +116,7 @@ export const ticketCountPerIntentForProductDrillDownQueryFactory = (
         )
 
     filters.push({
-        member: [TicketCustomFieldsMember.TicketCustomFieldsValueString],
+        member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
         operator: ReportingFilterOperator.Equals,
         values: [intentsCustomFieldValueString],
     })

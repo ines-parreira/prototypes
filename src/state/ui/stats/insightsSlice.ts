@@ -7,14 +7,10 @@ import {
 } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import { RootState } from 'state/types'
 import { INTENT_SLICE_NAME } from 'state/ui/stats/constants'
-
-export type IntentSorting<T> = {
-    field: T
-    direction: OrderDirection
-}
+import { ColumnSorting } from 'state/ui/stats/types'
 
 export type IntentState<T> = {
-    sorting: IntentSorting<T> & {
+    sorting: ColumnSorting<T> & {
         isLoading: boolean
     }
     pagination: {
@@ -47,7 +43,7 @@ export const intentSlice = createSlice({
     reducers: {
         sortingSet(
             state,
-            action: PayloadAction<IntentSorting<IntentTableColumn>>,
+            action: PayloadAction<ColumnSorting<IntentTableColumn>>,
         ) {
             state.sorting.field = action.payload.field
             state.sorting.direction = action.payload.direction

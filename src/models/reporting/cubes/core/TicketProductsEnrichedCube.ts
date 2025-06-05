@@ -18,6 +18,7 @@ export enum TicketProductsEnrichedMember {
     AccountId = 'TicketProductsEnriched.accountId',
     ProductId = 'TicketProductsEnriched.productId',
     PeriodStart = 'TicketProductsEnriched.periodStart',
+    DeletedDatetime = 'TicketProductsEnriched.deleted_datetime',
 }
 
 export type TicketProductsEnrichedCube = Cube<
