@@ -2,6 +2,7 @@ import React, { useEffect, useMemo } from 'react'
 
 import classnames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
+import { useParams } from 'react-router'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
@@ -9,7 +10,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { EmailIntegrationListSelection } from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'
 import { INITIAL_FORM_VALUES } from 'pages/aiAgent/constants'
-import { useGetAlreadyUsedEmailIntegrations } from 'pages/aiAgent/hooks/useGetAlreadyUsedEmailIntegrations'
+import { useGetAlreadyUsedEmailIntegrationIds } from 'pages/aiAgent/hooks/useGetAlreadyUsedEmailIntegrationIds'
 import { emailSortingCallback } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep'
 import { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import {
@@ -53,15 +54,17 @@ export const EmailFormComponent = ({
         [],
     )
     const emailIntegrations = useAppSelector(selector)
-    const alreadyUsedEmailIntegrations = useGetAlreadyUsedEmailIntegrations()
+    const { shopName } = useParams<{ shopName: string }>()
+    const alreadyUsedEmailIntegrationIds =
+        useGetAlreadyUsedEmailIntegrationIds(shopName)
     const emailItems = useMemo(() => {
         return emailIntegrations.map((integration) => ({
             email: integration.meta.address,
             id: integration.id,
             isDefault: integration.meta.preferred,
-            isDisabled: alreadyUsedEmailIntegrations.includes(integration.id),
+            isDisabled: alreadyUsedEmailIntegrationIds.includes(integration.id),
         }))
-    }, [emailIntegrations, alreadyUsedEmailIntegrations])
+    }, [emailIntegrations, alreadyUsedEmailIntegrationIds])
 
     useEffect(() => {
         if (

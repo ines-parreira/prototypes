@@ -16,9 +16,7 @@ export const useStoreConfigurationForAccount = ({
         data,
         error,
     } = useGetStoresConfigurationForAccount(
-        {
-            accountDomain,
-        },
+        { accountDomain },
         { retry: 1, refetchOnWindowFocus: false, enabled: enabled ?? true },
     )
 

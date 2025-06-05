@@ -464,14 +464,27 @@ describe('ChannelsStep', () => {
                 data: [
                     {
                         ...defaultOnboardingData,
-                        shopName: "Another shop's name",
+                        shopName: 'another-shop-name',
                         emailIntegrationIds: [1, 15],
                     },
                 ],
                 isLoading: false,
             } as any)
 
-            renderWithProvider()
+            const customState = {
+                ...defaultState,
+                integrations: (
+                    fromJS(integrationsState) as Map<any, any>
+                ).mergeDeep({
+                    integrations: [
+                        shopifyIntegration,
+                        ...chatIntegrationFixtures,
+                        { ...shopifyIntegration, name: 'another-shop-name' },
+                    ],
+                }),
+            }
+
+            renderWithProvider(customState)
 
             userEvent.click(screen.getByText('Email'))
 

@@ -4,6 +4,6 @@
         "source.fixAll.oxc": "explicit",
         "source.fixAll.stylelint": "explicit"
     },
-    "jest.jestCommandLine": "npx jest",
+    "jest.jestCommandLine": "npm run jest --",
     "oxc.enable": true
 }

@@ -41,8 +41,8 @@ jest.mock('hooks/useAppSelector', () => ({
     ],
 }))
 
-jest.mock('pages/aiAgent/hooks/useGetAlreadyUsedEmailIntegrations', () => ({
-    useGetAlreadyUsedEmailIntegrations: () => [3],
+jest.mock('pages/aiAgent/hooks/useGetAlreadyUsedEmailIntegrationIds', () => ({
+    useGetAlreadyUsedEmailIntegrationIds: () => [3],
 }))
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
     __esModule: true,

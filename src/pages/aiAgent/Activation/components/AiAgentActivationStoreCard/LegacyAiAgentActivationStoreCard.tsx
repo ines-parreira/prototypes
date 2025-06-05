@@ -13,7 +13,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentActivationStoreCardAlert } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCardAlert'
 import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { useGetAlreadyUsedEmailIntegrations } from 'pages/aiAgent/hooks/useGetAlreadyUsedEmailIntegrations'
+import { useGetAlreadyUsedEmailIntegrationIds } from 'pages/aiAgent/hooks/useGetAlreadyUsedEmailIntegrationIds'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import CheckBox from 'pages/common/forms/CheckBox'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
@@ -68,7 +68,7 @@ export const LegacyAiAgentActivationStoreCard = ({
         [],
     )
     const emailIntegrations = useAppSelector(getIntegrationsByEmail)
-    const alreadyUsedEmailIntegrations = useGetAlreadyUsedEmailIntegrations(
+    const alreadyUsedEmailIntegrationIds = useGetAlreadyUsedEmailIntegrationIds(
         configuration.storeName,
     )
     const emailItems = useMemo(() => {
@@ -77,12 +77,12 @@ export const LegacyAiAgentActivationStoreCard = ({
                 email: integration.meta.address,
                 id: integration.id,
                 isDefault: integration.meta.preferred,
-                isDisabled: alreadyUsedEmailIntegrations.includes(
+                isDisabled: alreadyUsedEmailIntegrationIds.includes(
                     integration.id,
                 ),
             }))
             .filter((item) => item.isDisabled === false)
-    }, [emailIntegrations, alreadyUsedEmailIntegrations])
+    }, [emailIntegrations, alreadyUsedEmailIntegrationIds])
     const selectedEmails = useMemo(() => {
         return emailItems.filter((emailItem) =>
             configuration.monitoredEmailIntegrations.some(
