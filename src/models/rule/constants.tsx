@@ -219,6 +219,11 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
             value: 'ticket.last_received_message_datetime',
         },
         {
+            label: 'Priority',
+            text: 'ticket priority',
+            value: 'ticket.priority',
+        },
+        {
             label: 'Reopened date',
             text: 'ticket reopened date',
             value: 'ticket.opened_datetime',

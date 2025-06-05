@@ -4,6 +4,8 @@ import classnames from 'classnames'
 import { fromJS, List } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { IntegrationType } from 'models/integration/types'
 import {
     IDENTIFIER_CATEGORIES,
@@ -128,6 +130,11 @@ export function MemberExpressionContainer({
         )
     }, [displayedValue])
 
+    const isPriorityUsageEnabled = useFlag(
+        FeatureFlagKey.TicketAllowPriorityUsage,
+        false,
+    )
+
     return (
         <RuleSelect
             className="IdentifierDropdown"
@@ -188,6 +195,13 @@ export function MemberExpressionContainer({
                     <div className={css.subOptions}>
                         {IDENTIFIER_VARIABLES_BY_CATEGORY[selectedCategory].map(
                             (subcategory) => {
+                                if (
+                                    subcategory.value === 'ticket.priority' &&
+                                    !isPriorityUsageEnabled
+                                ) {
+                                    return null
+                                }
+
                                 return subcategory.children ? (
                                     <Fragment key={subcategory.label}>
                                         <div className={css.subcategoryLabel}>

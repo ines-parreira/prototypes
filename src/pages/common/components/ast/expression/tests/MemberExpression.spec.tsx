@@ -3,12 +3,22 @@ import React, { ComponentProps } from 'react'
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 
+import { useFlag } from 'core/flags'
 import { rule } from 'fixtures/rule'
 import { IDENTIFIER_VARIABLES_BY_CATEGORY } from 'models/rule/constants'
 
 import { MemberExpressionContainer } from '../MemberExpression'
 
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = useFlag as jest.Mock
+
 describe('<MemberExpression/>', () => {
+    beforeEach(() => {
+        mockUseFlag.mockReturnValue(false)
+    })
+
     const minProps = {
         object: {
             loc: {
@@ -164,5 +174,25 @@ describe('<MemberExpression/>', () => {
         expect(queryByText('Quick Responses')).not.toBeInTheDocument()
         fireEvent.click(getByText('Self Service'))
         expect(queryByText('Quick Responses')).not.toBeInTheDocument()
+    })
+
+    it('should not show the priority option when the flag is not enabled', () => {
+        mockUseFlag.mockReturnValue(false)
+        const { getByText, queryByText } = render(
+            <MemberExpressionContainer {...minProps} />,
+        )
+
+        fireEvent.click(getByText('Ticket'))
+        expect(queryByText('Priority')).not.toBeInTheDocument()
+    })
+
+    it('should show the priority option when the flag is enabled', () => {
+        mockUseFlag.mockReturnValue(true)
+        const { getByText, queryByText } = render(
+            <MemberExpressionContainer {...minProps} />,
+        )
+
+        fireEvent.click(getByText('Ticket'))
+        expect(queryByText('Priority')).toBeInTheDocument()
     })
 })
