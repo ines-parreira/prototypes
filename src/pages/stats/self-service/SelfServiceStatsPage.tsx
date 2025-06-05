@@ -308,7 +308,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                 articles recommended during the selected time
                                 period are displayed below.{' '}
                                 <a
-                                    href="https://docs.gorgias.com/en-US/help-center-article-recommendation-in-chat-89341"
+                                    href="https://link.gorgias.com/be894d"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >

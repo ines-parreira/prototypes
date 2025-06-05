@@ -1,7 +1,7 @@
 export const AUTOMATION_SELF_SERVICE_STAT_NAME = 'automation-self-service'
 
 export const HELP_URL =
-    'https://docs.gorgias.com/statistics/self-service-statistics'
+    'https://docs.gorgias.com/en-US/articles/automations-279714'
 
 export const PAGE_TITLE_PERFORMANCE_BY_FEATURES = 'Performance by feature'
 export const PAGE_TITLE_OVERVIEW = 'Overview'
