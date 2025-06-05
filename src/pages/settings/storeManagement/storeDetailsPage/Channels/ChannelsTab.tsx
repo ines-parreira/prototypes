@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useMemo, useRef } from 'react'
 
 import {
     useCreateStoreMapping,
@@ -27,17 +27,23 @@ interface ChannelsTabProps {
 
 export default function ChannelsTab({ storeId }: ChannelsTabProps) {
     const allChannels = useChannels()
-    const channels = allChannels.filter(
-        (channel) =>
-            !['contactForm', 'helpCenter', 'chat'].includes(channel.type),
+    const channels = useMemo(
+        () =>
+            allChannels.filter(
+                (channel) =>
+                    !['contactForm', 'helpCenter', 'chat'].includes(
+                        channel.type,
+                    ),
+            ),
+        [allChannels],
     )
     const { refetchMapping } = useStoreManagementState()
     const { mutateAsync: createMapping } = useCreateStoreMapping()
     const { mutateAsync: deleteMapping } = useDeleteStoreMapping()
     const { handleMappingResults } = useNotifications(channels)
 
-    const { activeChannel, setActiveChannel, reset, changes, setChanges } =
-        useActiveChannel()
+    const { activeChannel, setActiveChannelType, reset, changes, setChanges } =
+        useActiveChannel(channels)
 
     const promptRef = useRef<{ onLeaveContext: () => void }>(null)
 
@@ -91,7 +97,7 @@ export default function ChannelsTab({ storeId }: ChannelsTabProps) {
                             badgeText={`${channel.count || 'None'} Assigned`}
                             nbFeatures={channel.count}
                             onClick={() => {
-                                setActiveChannel(channel)
+                                setActiveChannelType(channel.type)
                             }}
                         />
                     ))}

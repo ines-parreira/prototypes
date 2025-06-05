@@ -1,20 +1,24 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { ChannelChange, ChannelWithMetadata } from '../../../types'
 
-export default function UseActiveChannel() {
-    const [activeChannel, setActiveChannel] =
-        useState<ChannelWithMetadata | null>(null)
+export default function useActiveChannel(channels: ChannelWithMetadata[]) {
+    const [activeChannelType, setActiveChannelType] = useState<string | null>(
+        null,
+    )
     const [changes, setChanges] = useState<ChannelChange[]>([])
 
     const reset = () => {
-        setActiveChannel(null)
+        setActiveChannelType(null)
         setChanges([])
     }
 
+    const activeChannel = useMemo(() => {
+        return channels.find((channel) => channel.type === activeChannelType)
+    }, [channels, activeChannelType])
     return {
         activeChannel,
-        setActiveChannel,
+        setActiveChannelType,
         changes,
         setChanges,
         reset,

@@ -22,35 +22,86 @@ export const useChannels = (): ChannelWithMetadata[] => {
     const { stores, unassignedChannels } = useStoreManagementState()
     const store = stores.find((store) => store.store.id === toNumber(id))
 
-    const assignedEmails = store?.assignedChannels.filter(isEmailChannel)
-    const unassignedEmails = unassignedChannels.filter(isEmailChannel)
+    const assignedEmails = useMemo(
+        () => store?.assignedChannels.filter(isEmailChannel),
+        [store?.assignedChannels],
+    )
+    const unassignedEmails = useMemo(
+        () => unassignedChannels.filter(isEmailChannel),
+        [unassignedChannels],
+    )
 
-    const assignedChats = store?.assignedChannels.filter(isChatChannel)
-    const unnasignedChats = unassignedChannels.filter(isChatChannel)
+    const assignedChats = useMemo(
+        () => store?.assignedChannels.filter(isChatChannel),
+        [store?.assignedChannels],
+    )
+    const unnasignedChats = useMemo(
+        () => unassignedChannels.filter(isChatChannel),
+        [unassignedChannels],
+    )
 
-    const assignedHelpCenters =
-        store?.assignedChannels.filter(isHelpCenterChannel)
-    const unassignedHelpCenters = unassignedChannels.filter(isHelpCenterChannel)
+    const assignedHelpCenters = useMemo(
+        () => store?.assignedChannels.filter(isHelpCenterChannel),
+        [store?.assignedChannels],
+    )
+    const unassignedHelpCenters = useMemo(
+        () => unassignedChannels.filter(isHelpCenterChannel),
+        [unassignedChannels],
+    )
 
-    const assignedContactForms =
-        store?.assignedChannels.filter(isContactFormChannel)
-    const unassignedContactForms =
-        unassignedChannels.filter(isContactFormChannel)
+    const assignedContactForms = useMemo(
+        () => store?.assignedChannels.filter(isContactFormChannel),
+        [store?.assignedChannels],
+    )
+    const unassignedContactForms = useMemo(
+        () => unassignedChannels.filter(isContactFormChannel),
+        [unassignedChannels],
+    )
 
-    const assignedVoice = store?.assignedChannels.filter(isVoiceChannel)
-    const unnasignedVoice = unassignedChannels.filter(isVoiceChannel)
+    const assignedVoice = useMemo(
+        () => store?.assignedChannels.filter(isVoiceChannel),
+        [store?.assignedChannels],
+    )
+    const unnasignedVoice = useMemo(
+        () => unassignedChannels.filter(isVoiceChannel),
+        [unassignedChannels],
+    )
 
-    const assignedSms = store?.assignedChannels.filter(isSmsChannel)
-    const unnasignedSms = unassignedChannels.filter(isSmsChannel)
+    const assignedSms = useMemo(
+        () => store?.assignedChannels.filter(isSmsChannel),
+        [store?.assignedChannels],
+    )
+    const unnasignedSms = useMemo(
+        () => unassignedChannels.filter(isSmsChannel),
+        [unassignedChannels],
+    )
 
-    const assignedWhatsApp = store?.assignedChannels.filter(isWhatsAppChannel)
-    const unnasignedWhatsApp = unassignedChannels.filter(isWhatsAppChannel)
+    const assignedWhatsApp = useMemo(
+        () => store?.assignedChannels.filter(isWhatsAppChannel),
+        [store?.assignedChannels],
+    )
+    const unnasignedWhatsApp = useMemo(
+        () => unassignedChannels.filter(isWhatsAppChannel),
+        [unassignedChannels],
+    )
 
-    const assignedFacebook = store?.assignedChannels.filter(isFacebookChannel)
-    const unassignedFacebook = unassignedChannels.filter(isFacebookChannel)
+    const assignedFacebook = useMemo(
+        () => store?.assignedChannels.filter(isFacebookChannel),
+        [store?.assignedChannels],
+    )
+    const unassignedFacebook = useMemo(
+        () => unassignedChannels.filter(isFacebookChannel),
+        [unassignedChannels],
+    )
 
-    const assignedTikTokShop = store?.assignedChannels.filter(isTikTokChannel)
-    const unassignedTikTokShop = unassignedChannels.filter(isTikTokChannel)
+    const assignedTikTokShop = useMemo(
+        () => store?.assignedChannels.filter(isTikTokChannel),
+        [store?.assignedChannels],
+    )
+    const unassignedTikTokShop = useMemo(
+        () => unassignedChannels.filter(isTikTokChannel),
+        [unassignedChannels],
+    )
 
     return useMemo(
         () => [
