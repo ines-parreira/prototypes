@@ -159,10 +159,12 @@ module.exports = {
     // snapshotSerializers: [],
 
     // The test environment that will be used for testing
-    testEnvironment: 'jsdom',
+    testEnvironment: 'jest-fixed-jsdom',
 
     // Options that will be passed to the testEnvironment
-    // testEnvironmentOptions: {},
+    testEnvironmentOptions: {
+        customExportConditions: ['msw'],
+    },
 
     // Adds a location field to test results
     // testLocationInResults: false,
