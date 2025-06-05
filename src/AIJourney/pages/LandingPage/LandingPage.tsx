@@ -11,13 +11,15 @@ export const LandingPage = () => {
                     <span>AI Journey Performance</span>
                 </div>
             </div>
-            <span>
-                AI Journey automatically creates and sends personalized SMS
-                messages to shoppers who abandon their cart. No need for
-                templates — Gorgias handles everything, from syncing opted-in
-                subscribers from your platforms to personalizing and delivering
-                each message.
-            </span>
+            <div className={css.content}>
+                <span>
+                    AI Journey automatically creates and sends personalized SMS
+                    messages to shoppers who abandon their cart. No need for
+                    templates — Gorgias handles everything, from syncing
+                    opted-in subscribers from your platforms to personalizing
+                    and delivering each message.
+                </span>
+            </div>
         </div>
     )
 }
