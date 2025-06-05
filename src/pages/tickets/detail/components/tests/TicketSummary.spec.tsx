@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import useTicketSummary from 'pages/tickets/detail/hooks/useTicketSummary'
 
 import TicketSummarySection, {
@@ -21,8 +22,13 @@ jest.mock('pages/tickets/detail/hooks/useTicketSummary', () => ({
     default: jest.fn(),
 }))
 
-const useTicketSummaryMock = useTicketSummary as jest.Mock
+jest.mock('hooks/useGetDateAndTimeFormat', () => ({
+    __esModule: true,
+    default: jest.fn(),
+}))
 
+const useTicketSummaryMock = useTicketSummary as jest.Mock
+const useGetDateAndTimeFormatMock = useGetDateAndTimeFormat as jest.Mock
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.Mock
 
@@ -36,6 +42,7 @@ const baseSummary = {
 describe('TicketSummarySection', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        useGetDateAndTimeFormatMock.mockReturnValue(jest.fn(() => 'MM/DD/YYYY'))
     })
 
     it('renders summarize button if not requested', () => {

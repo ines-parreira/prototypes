@@ -6,7 +6,8 @@ import { TicketSummaryProperty } from '@gorgias/helpdesk-types'
 import { Badge, Button, IconButton } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
+import { DateAndTimeFormatting } from 'constants/datetime'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import css from 'pages/tickets/detail/components/TicketSummary.less'
 import useTicketSummary from 'pages/tickets/detail/hooks/useTicketSummary'
 import { formatDatetime } from 'utils'
@@ -34,6 +35,10 @@ const TicketSummarySection = ({
         generateOnMountIfMissing: isPopup,
     })
 
+    const datetimeFormat = useGetDateAndTimeFormat(
+        DateAndTimeFormatting.CompactDate,
+    )
+
     const latestUpdateDatetime = useMemo(() => {
         if (!localSummary) {
             return null
@@ -56,12 +61,18 @@ const TicketSummarySection = ({
         if (hasContent && latestUpdateDatetime) {
             const formattedDate = formatDatetime(
                 latestUpdateDatetime,
-                DateTimeFormatMapper[DateTimeFormatType.COMPACT_DATE_EN_US],
+                datetimeFormat,
             )
             return `Updated ${formattedDate}`
         }
         return null
-    }, [isLoading, errorMessage, hasContent, latestUpdateDatetime])
+    }, [
+        isLoading,
+        errorMessage,
+        hasContent,
+        latestUpdateDatetime,
+        datetimeFormat,
+    ])
 
     const manuallyRequestInitialSummary = useCallback(() => {
         logEvent(SegmentEvent.AiTicketSummaryInitManuallyRequested, {
