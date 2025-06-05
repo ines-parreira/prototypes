@@ -10,10 +10,10 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
-import { ConvertStatsNavbarV2 } from 'pages/convert/common/components/ConvertStatsNavbar/ConvertStatsNavbarV2'
+import { ConvertStatsNavbar } from 'pages/convert/common/components/ConvertStatsNavbar/ConvertStatsNavbar'
 import { STATS_ROUTE_PREFIX } from 'pages/stats/common/components/constants'
-import { DashboardsNavbarBlockV2 } from 'pages/stats/dashboards/DashboardsNavbarBlock/DashboardsNavbarBlockV2'
-import { AutomateStatsNavbarV2 } from 'pages/stats/self-service/AutomateStatsNavbarV2'
+import { DashboardsNavbarBlock } from 'pages/stats/dashboards/DashboardsNavbarBlock/DashboardsNavbarBlock'
+import { AutomateStatsNavbar } from 'pages/stats/self-service/AutomateStatsNavbar'
 import { STATS_ROUTES } from 'routes/constants'
 import {
     currentAccountHasProduct,
@@ -26,14 +26,14 @@ import { StatsNavbarViewSections } from './constants'
 import { StatsNavSectionItem } from './StatsNavSectionItem'
 import { useStatsNavbarSections } from './useStatsNavbarSections'
 
-import css from './StatsNavbarViewV2.less'
+import css from './StatsNavbarView.less'
 
 type FeatureFlag = boolean | undefined
 type AutoQANavBarLinkProps = {
     isAvailable: boolean
 }
 
-export function StatsNavbarViewV2() {
+export function StatsNavbarView() {
     const { sections, handleNavigationStateChange } = useStatsNavbarSections()
     const user = useAppSelector(getCurrentUser)
     const hasVoiceFeature = useAppSelector(
@@ -80,7 +80,7 @@ export function StatsNavbarViewV2() {
                     </StatsNavSectionItem>
                 </Navigation.SectionContent>
             </Navigation.Section>
-            <DashboardsNavbarBlockV2 />
+            <DashboardsNavbarBlock />
             <Navigation.Section
                 value={StatsNavbarViewSections.SupportPerformance}
             >
@@ -198,9 +198,9 @@ export function StatsNavbarViewV2() {
                 </Navigation.Section>
             )}
 
-            <AutomateStatsNavbarV2 />
+            <AutomateStatsNavbar />
 
-            <ConvertStatsNavbarV2 />
+            <ConvertStatsNavbar />
 
             <Navigation.Section value={StatsNavbarViewSections.Voice}>
                 <Navigation.SectionTrigger data-candu-id="navbar-block-voice">

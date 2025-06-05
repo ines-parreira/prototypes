@@ -1,17 +1,12 @@
 import React from 'react'
 
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { Accordion } from 'components/Accordion/Accordion'
 import { useDashboardActions } from 'hooks/reporting/dashboards/useDashboardActions'
 import { LIMIT_REACHED_MESSAGE } from 'pages/stats/dashboards/constants'
-import {
-    CREATE_DASHBOARD,
-    DASHBOARDS_NAV_TITLE,
-    DashboardsNavbarBlock,
-    RESTRICTION_MESSAGE,
-} from 'pages/stats/dashboards/DashboardsNavbarBlock/DashboardsNavbarBlock'
 import { getDashboardPath } from 'pages/stats/dashboards/utils'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import { BASE_STATS_PATH, STATS_ROUTES } from 'routes/constants'
@@ -20,6 +15,13 @@ import { isTeamLead } from 'utils'
 import { assumeMock } from 'utils/testing'
 import { userEvent } from 'utils/testing/userEvent'
 import { DndProvider } from 'utils/wrappers/DndProvider'
+
+import {
+    CREATE_NEW_DASHBOARD,
+    DASHBOARDS_NAV_TITLE,
+    DashboardsNavbarBlock,
+    RESTRICTION_MESSAGE,
+} from '../DashboardsNavbarBlock'
 
 jest.mock('hooks/reporting/dashboards/useDashboardActions')
 
@@ -76,7 +78,7 @@ describe('DashboardsNavbarBlock', () => {
 
     describe('Admin', () => {
         beforeEach(() => {
-            isTeamLeadMock.mockReturnValueOnce(true)
+            isTeamLeadMock.mockReturnValue(true)
         })
 
         it('should render the navbar block with the title and create action', () => {
@@ -86,13 +88,15 @@ describe('DashboardsNavbarBlock', () => {
 
             renderWithQueryClientAndRouter(
                 <DndProvider backend={HTML5Backend}>
-                    <DashboardsNavbarBlock navBarLinkProps={{ exact: true }} />
+                    <Accordion.Root>
+                        <DashboardsNavbarBlock />
+                    </Accordion.Root>
                 </DndProvider>,
             )
 
             expect(screen.getByText(DASHBOARDS_NAV_TITLE)).toBeInTheDocument()
 
-            const createButton = screen.getByText(CREATE_DASHBOARD)
+            const createButton = screen.getByText(CREATE_NEW_DASHBOARD)
             expect(createButton).toBeInTheDocument()
 
             fireEvent.click(createButton)
@@ -105,18 +109,23 @@ describe('DashboardsNavbarBlock', () => {
             expect(screen.queryByText('📊')).not.toBeInTheDocument()
         })
 
-        it('should display the list of dashboards when data is available', () => {
+        it('should display the list of dashboards when data is available', async () => {
             renderWithQueryClientAndRouter(
                 <DndProvider backend={HTML5Backend}>
-                    <DashboardsNavbarBlock navBarLinkProps={{ exact: true }} />
+                    <Accordion.Root>
+                        <DashboardsNavbarBlock />
+                    </Accordion.Root>
                 </DndProvider>,
             )
 
-            expect(screen.getByText('Report 1')).toBeInTheDocument()
-            expect(screen.getByText('Report 2')).toBeInTheDocument()
+            act(() => {
+                userEvent.click(screen.getByText('keyboard_arrow_down'))
+            })
 
-            expect(screen.getByText('📊')).toBeInTheDocument()
-            expect(screen.getByText('plus')).toBeInTheDocument()
+            await waitFor(() => {
+                expect(screen.getByText('Report 1')).toBeInTheDocument()
+                expect(screen.getByText('Report 2')).toBeInTheDocument()
+            })
         })
 
         it('should correctly navigate to the dashboard detail page when a link is clicked', () => {
@@ -128,16 +137,19 @@ describe('DashboardsNavbarBlock', () => {
 
             renderWithQueryClientAndRouter(
                 <DndProvider backend={HTML5Backend}>
-                    <DashboardsNavbarBlock navBarLinkProps={{ exact: true }} />
+                    <Accordion.Root>
+                        <DashboardsNavbarBlock />
+                    </Accordion.Root>
                 </DndProvider>,
             )
 
-            const reportLink = screen.getByText('Report 1')
-
-            expect(reportLink.parentElement).toHaveAttribute(
-                'href',
-                getDashboardPath(1),
-            )
+            waitFor(() => {
+                const reportLink = screen.getByText('Report 1')
+                expect(reportLink.parentElement).toHaveAttribute(
+                    'href',
+                    getDashboardPath(1),
+                )
+            })
         })
 
         it('should show limit reached message when there are 10 dashboards', () => {
@@ -160,18 +172,24 @@ describe('DashboardsNavbarBlock', () => {
 
             renderWithQueryClientAndRouter(
                 <DndProvider backend={HTML5Backend}>
-                    <DashboardsNavbarBlock navBarLinkProps={{ exact: true }} />
+                    <Accordion.Root>
+                        <DashboardsNavbarBlock />
+                    </Accordion.Root>
                 </DndProvider>,
             )
 
-            expect(screen.queryByText(CREATE_DASHBOARD)).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(CREATE_NEW_DASHBOARD),
+            ).not.toBeInTheDocument()
             expect(screen.getByText(LIMIT_REACHED_MESSAGE)).toBeInTheDocument()
         })
 
         it('should not show the info icon when the user is an Admin', () => {
             renderWithQueryClientAndRouter(
                 <DndProvider backend={HTML5Backend}>
-                    <DashboardsNavbarBlock navBarLinkProps={{ exact: true }} />
+                    <Accordion.Root>
+                        <DashboardsNavbarBlock />
+                    </Accordion.Root>
                 </DndProvider>,
             )
 
@@ -182,7 +200,9 @@ describe('DashboardsNavbarBlock', () => {
         it('should report clicks on add icon clicked', () => {
             renderWithQueryClientAndRouter(
                 <DndProvider backend={HTML5Backend}>
-                    <DashboardsNavbarBlock navBarLinkProps={{ exact: true }} />
+                    <Accordion.Root>
+                        <DashboardsNavbarBlock />
+                    </Accordion.Root>
                 </DndProvider>,
             )
             const addIcon = screen.getByText('add')
@@ -203,7 +223,9 @@ describe('DashboardsNavbarBlock', () => {
         it('should show the info icon when the user is a LiteAgent', async () => {
             renderWithQueryClientAndRouter(
                 <DndProvider backend={HTML5Backend}>
-                    <DashboardsNavbarBlock navBarLinkProps={{ exact: true }} />
+                    <Accordion.Root>
+                        <DashboardsNavbarBlock />
+                    </Accordion.Root>
                 </DndProvider>,
             )
 

@@ -1,96 +1,45 @@
-import React, { ReactNode, useCallback, useMemo, useState } from 'react'
+import { useState } from 'react'
 
-import classNames from 'classnames'
+import { NavLink } from 'react-router-dom'
 
-import cssNavbar from 'assets/css/navbar.less'
-import NavbarLink, {
-    NavbarLinkProps,
-} from 'pages/common/components/navbar/NavbarLink'
+import { Navigation } from 'components/Navigation/Navigation'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
+import { StatsNavbarViewSections } from 'pages/stats/common/components/StatsNavbarView/constants'
 import { ReportsIDs } from 'pages/stats/dashboards/constants'
 import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
 
-export type ConvertNavbarLink = {
-    label: ReactNode
-    to: string
-    isPaywalled: boolean
-    hasModal: boolean
-    requiresSubscriptionToBeSeen: boolean
-    extra?: ReactNode
-    reportId: ReportsIDs
-}
+import css from './ConvertStatsNavbar.less'
 
-type Props = {
-    commonNavLinkProps: Partial<NavbarLinkProps>
-}
-
-const ConvertStatsNavbar = ({ commonNavLinkProps }: Props) => {
+export const ConvertStatsNavbar = () => {
     const [isSubscriptionModalOpen, setISubscriptionModalOpen] = useState(false)
 
     const isConvertSubscriber = useIsConvertSubscriber()
 
-    const convertLinks: ConvertNavbarLink[] = useMemo(() => {
-        return [
-            {
-                label: 'Campaigns',
-                to: '/app/stats/convert/campaigns',
-                isPaywalled: !isConvertSubscriber,
-                hasModal: !isConvertSubscriber,
-                requiresSubscriptionToBeSeen: false,
-                reportId: ReportsIDs.CampaignsReportConfig,
-            },
-        ]
-    }, [isConvertSubscriber])
-
-    const isModalNeeded = useMemo(() => {
-        return (
-            !isConvertSubscriber &&
-            convertLinks.some((convertLink) => convertLink.hasModal)
-        )
-    }, [isConvertSubscriber, convertLinks])
-
     const closeModal = () => setISubscriptionModalOpen(false)
 
-    const displayLink = useCallback(
-        (convertLink: ConvertNavbarLink) => {
-            return (
-                isConvertSubscriber || !convertLink.requiresSubscriptionToBeSeen
-            )
-        },
-        [isConvertSubscriber],
-    )
-
-    //TODO after Convert reports refactoring is done
     return (
-        <>
-            {convertLinks.map((convertLink) => (
-                <div key={convertLink.to}>
-                    {displayLink(convertLink) && (
-                        <div
-                            className={classNames(
-                                cssNavbar['link-wrapper'],
-                                cssNavbar.isNested,
-                            )}
-                        >
-                            <ProtectedRoute path={convertLink.reportId}>
-                                <NavbarLink
-                                    {...commonNavLinkProps}
-                                    to={convertLink.to}
-                                >
-                                    {convertLink.label}
-                                    {convertLink.isPaywalled && <UpgradeIcon />}
-                                    {!convertLink.isPaywalled &&
-                                        convertLink.extra}
-                                </NavbarLink>
-                            </ProtectedRoute>
-                        </div>
-                    )}
-                </div>
-            ))}
+        <Navigation.Section value={StatsNavbarViewSections.Convert}>
+            <Navigation.SectionTrigger data-candu-id="navbar-block-convert">
+                <span className={css.sectionTriggerTitle}>Convert</span>
+                <Navigation.SectionIndicator />
+            </Navigation.SectionTrigger>
+            <Navigation.SectionContent className={css.sectionContent}>
+                <ProtectedRoute path={ReportsIDs.CampaignsReportConfig}>
+                    <Navigation.SectionItem
+                        className={css.navigationSectionItem}
+                        as={NavLink}
+                        to="/app/stats/convert/campaigns"
+                        displayType="indent"
+                    >
+                        Campaigns
+                        {!isConvertSubscriber && <UpgradeIcon />}
+                    </Navigation.SectionItem>
+                </ProtectedRoute>
+            </Navigation.SectionContent>
 
-            {isModalNeeded && (
+            {!isConvertSubscriber && (
                 <ConvertSubscriptionModal
                     canduId={'campaign-list-convert-modal-body'}
                     isOpen={isSubscriptionModalOpen}
@@ -98,8 +47,6 @@ const ConvertStatsNavbar = ({ commonNavLinkProps }: Props) => {
                     onSubscribe={closeModal}
                 />
             )}
-        </>
+        </Navigation.Section>
     )
 }
-
-export default ConvertStatsNavbar

@@ -2,15 +2,69 @@
 @import (reference) '~css/typography';
 
 :local {
-    .navbar h4 {
-        padding-right: 14px;
-    }
-
-    .wrapper {
+    .navbarLink {
         display: flex;
-        justify-content: left;
+        justify-content: flex-start;
         align-items: center;
         gap: var(--layout-spacing-xs);
+    }
+
+    .sectionTriggerTitle {
+        width: 90%;
+        text-align: left;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .sectionContent {
+        &[data-state='open'] {
+            margin-bottom: var(--layout-spacing-s);
+        }
+    }
+
+    .actionsContainer {
+        position: relative;
+        &:hover {
+            border-radius: 8px;
+            background: var(--navigation-background-accent);
+            box-shadow: 0px 1px 2px 0px rgba(22, 22, 22, 0.16);
+        }
+
+        .toggle {
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--navigation-text-item) !important;
+            font-size: 16px;
+            line-height: 20px;
+            padding: 3px;
+            transform: translateY(-1px);
+            position: absolute;
+            right: 30px;
+            bottom: 4px;
+            z-index: 10;
+
+            > i {
+                font-size: 16px !important;
+                color: var(--navigation-text-item);
+            }
+
+            &:hover,
+            &:focus {
+                background-color: var(--navbar-link-hover-background-color);
+                color: var(--navbar-block-toggle-hover-color) !important;
+                box-shadow: unset;
+            }
+
+            &:active {
+                background-color: var(
+                    --navbar-block-toggle-active-background-color
+                ) !important;
+                color: var(--navbar-block-toggle-active-color);
+            }
+        }
     }
 
     .name {
@@ -20,15 +74,12 @@
     }
 
     .action {
-        color: var(--neutral-grey-4);
         .body-regular();
-        width: 210px;
-        height: 90px;
+        width: 207px;
         text-overflow: inherit;
         white-space: pre-line;
         text-align: center;
         &:hover {
-            color: var(--neutral-grey-4);
             background: var(--white);
         }
     }

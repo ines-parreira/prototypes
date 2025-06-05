@@ -1,4 +1,3 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
@@ -17,17 +16,14 @@ import {
 import { useDashboardActions } from 'hooks/reporting/dashboards/useDashboardActions'
 import { IntegrationType } from 'models/integration/constants'
 import { STATS_ROUTE_PREFIX } from 'pages/stats/common/components/constants'
-import StatsNavbarView from 'pages/stats/common/components/StatsNav/StatsNavbarView'
 import { getDashboardPath } from 'pages/stats/dashboards/utils'
 import { SERVICE_LEVEL_AGREEMENT_PAGE_TITLE } from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
 import { AUTO_QA_PAGE_TITLE } from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
 import { STATS_ROUTES } from 'routes/constants'
-import type { RootState, StoreDispatch } from 'state/types'
-import { assumeMock, renderWithRouterAndDnD } from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
-import { BUSIEST_TIMES_OF_DAYS_NAV_LABEL } from '../StatsNav/StatsNav.utils'
-
-const queryClient = new QueryClient()
+import { StatsNavbarView } from '../StatsNavbarView/StatsNavbarView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -52,7 +48,7 @@ function getIntegration(id: number, type: IntegrationType) {
     }
 }
 
-describe('StatsNavbarView', () => {
+describe('StatsNavbarViewV2', () => {
     const defaultState: Partial<RootState> = {
         currentAccount: fromJS(account),
         billing: fromJS(billingState),
@@ -75,30 +71,19 @@ describe('StatsNavbarView', () => {
         } as any)
     })
 
-    it('should render', () => {
-        const { container } = renderWithRouterAndDnD(
-            <Provider store={mockStore(defaultState)}>
-                <StatsNavbarView />
-            </Provider>,
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
     it('should render the link to new busiest times of days', () => {
-        renderWithRouterAndDnD(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />
             </Provider>,
         )
 
-        expect(
-            screen.getByText(BUSIEST_TIMES_OF_DAYS_NAV_LABEL),
-        ).toBeInTheDocument()
+        expect(screen.getByText('Busiest Times')).toBeInTheDocument()
     })
 
     describe('New Agents Performance', () => {
         it('should render the link to new agents page when having flag enabled', () => {
-            renderWithRouterAndDnD(
+            renderWithRouter(
                 <Provider store={mockStore(defaultState)}>
                     <StatsNavbarView />
                 </Provider>,
@@ -117,7 +102,7 @@ describe('StatsNavbarView', () => {
     })
 
     it('should render the link to the Convert Campaigns', () => {
-        renderWithRouterAndDnD(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />
             </Provider>,
@@ -130,7 +115,7 @@ describe('StatsNavbarView', () => {
         mockFlags({
             [FeatureFlagKey.HelpCenterAnalytics]: true,
         })
-        renderWithRouterAndDnD(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />
             </Provider>,
@@ -140,7 +125,7 @@ describe('StatsNavbarView', () => {
     })
 
     it('should render the link to the Voice Overview', () => {
-        renderWithRouterAndDnD(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />
             </Provider>,
@@ -151,7 +136,7 @@ describe('StatsNavbarView', () => {
     })
 
     it('should render the link to the Service Level Agreements', () => {
-        renderWithRouterAndDnD(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />
             </Provider>,
@@ -180,12 +165,10 @@ describe('StatsNavbarView', () => {
                 }),
             }
 
-            renderWithRouterAndDnD(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore(state)}>
-                        <StatsNavbarView />
-                    </Provider>
-                </QueryClientProvider>,
+            renderWithRouter(
+                <Provider store={mockStore(state)}>
+                    <StatsNavbarView />
+                </Provider>,
             )
 
             expect(screen.getByText(AUTO_QA_PAGE_TITLE)).toBeInTheDocument()
@@ -193,7 +176,7 @@ describe('StatsNavbarView', () => {
     )
 
     it('should render the link to the New Tags Report page', () => {
-        const { container } = renderWithRouterAndDnD(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />
             </Provider>,
@@ -207,7 +190,7 @@ describe('StatsNavbarView', () => {
     })
 
     it('should render the link to the New Channels Reports', () => {
-        const { container } = renderWithRouterAndDnD(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />
             </Provider>,
@@ -223,7 +206,7 @@ describe('StatsNavbarView', () => {
             [FeatureFlagKey.NewSatisfactionReport]: true,
         })
 
-        const { container } = renderWithRouterAndDnD(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />
             </Provider>,
@@ -242,7 +225,7 @@ describe('StatsNavbarView', () => {
             [FeatureFlagKey.NewSatisfactionReport]: true,
         })
 
-        const { getAllByText } = renderWithRouterAndDnD(
+        const { getAllByText } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />
             </Provider>,
@@ -254,7 +237,7 @@ describe('StatsNavbarView', () => {
     })
 
     it('should render the link to the Live Voice', () => {
-        const { container } = renderWithRouterAndDnD(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />
             </Provider>,
@@ -267,7 +250,7 @@ describe('StatsNavbarView', () => {
     })
 
     it('should render the link to the Dashboards', () => {
-        const { container } = renderWithRouterAndDnD(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />
             </Provider>,
@@ -304,15 +287,13 @@ describe('StatsNavbarView', () => {
             [FeatureFlagKey.NewSatisfactionReport]: true,
         })
 
-        const { container } = renderWithRouterAndDnD(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(state)}>
-                    <StatsNavbarView />
-                </Provider>
-            </QueryClientProvider>,
+        const { container } = renderWithRouter(
+            <Provider store={mockStore(state)}>
+                <StatsNavbarView />
+            </Provider>,
         )
         const qualityManagementNavBarBlock = container.querySelector(
-            'div[data-candu-id="navbar-block-quality-management"]',
+            '[data-candu-id="navbar-block-quality-management"]',
         )?.parentElement?.parentElement
 
         const autoQANavbarLinks = screen
@@ -346,15 +327,13 @@ describe('StatsNavbarView', () => {
             [FeatureFlagKey.NewSatisfactionReport]: false,
         })
 
-        const { container } = renderWithRouterAndDnD(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(state)}>
-                    <StatsNavbarView />
-                </Provider>
-            </QueryClientProvider>,
+        const { container } = renderWithRouter(
+            <Provider store={mockStore(state)}>
+                <StatsNavbarView />
+            </Provider>,
         )
         const supportPerformanceNavBarBlock = container.querySelector(
-            'div[data-candu-id="navbar-block-support-performance"]',
+            '[data-candu-id="navbar-block-support-performance"]',
         )?.parentElement?.parentElement
 
         const autoQANavbarLinks = screen

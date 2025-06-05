@@ -1,6 +1,6 @@
 import { AccordionValues } from 'components/Accordion/utils/types'
 import useLocalStorage from 'hooks/useLocalStorage'
-import { useStatsNavbarSections } from 'pages/stats/common/components/StatsNavbarViewV2/useStatsNavbarSections'
+import { useStatsNavbarSections } from 'pages/stats/common/components/StatsNavbarView/useStatsNavbarSections'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 

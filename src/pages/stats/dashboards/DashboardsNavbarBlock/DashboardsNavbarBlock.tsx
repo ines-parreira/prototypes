@@ -1,16 +1,22 @@
-import React, { useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
-import classnames from 'classnames'
-import { useHistory } from 'react-router-dom'
+import classNames from 'classnames'
+import { NavLink, useHistory } from 'react-router-dom'
+import {
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+} from 'reactstrap'
 
-import cssNavbar from 'assets/css/navbar.less'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
 import { logEvent, SegmentEvent } from 'common/segment'
+import { Navigation } from 'components/Navigation/Navigation'
 import { useDashboardActions } from 'hooks/reporting/dashboards/useDashboardActions'
 import useAppSelector from 'hooks/useAppSelector'
-import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
-import NavbarLink, {
-    NavbarLinkProps,
-} from 'pages/common/components/navbar/NavbarLink'
+import IconInput from 'pages/common/forms/input/IconInput'
+import { StatsNavbarViewSections } from 'pages/stats/common/components/StatsNavbarView/constants'
 import {
     LIMIT_REACHED_MESSAGE,
     MAX_DASHBOARDS_ALLOWED,
@@ -21,27 +27,24 @@ import { BASE_STATS_PATH, STATS_ROUTES } from 'routes/constants'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
 
-type Props = {
-    navBarLinkProps: Partial<NavbarLinkProps>
-}
-
-export const DASHBOARDS_NAV_TITLE = 'DASHBOARDS'
-export const CREATE_DASHBOARD = 'Create new dashboard'
+export const CREATE_NEW_DASHBOARD = 'Create new dashboard'
+export const DASHBOARDS_NAV_TITLE = 'Dashboards'
 export const RESTRICTION_MESSAGE = 'Reach out to your admin for dashboard setup'
 
 const logStatDashboardNavCreateChartClicked = () => {
     logEvent(SegmentEvent.StatDashboardNavCreateChartClicked)
 }
 
+const actionsIconId = 'actions-icon'
+
 const CREATE_DASHBOARD_PATH = `${BASE_STATS_PATH}/${STATS_ROUTES.DASHBOARDS_NEW}`
 
-export const DashboardsNavbarBlock = ({ navBarLinkProps }: Props) => {
-    const history = useHistory()
+export const DashboardsNavbarBlock = () => {
+    const [isOpen, setOpen] = useState(false)
     const { getDashboardsHandler } = useDashboardActions()
-
-    const dashboards = getDashboardsHandler()
-
     const currentUser = useAppSelector(getCurrentUser)
+    const history = useHistory()
+    const dashboards = getDashboardsHandler()
     const isCurrentUserTeamLead = isTeamLead(currentUser)
 
     const limitReached = dashboards.length >= MAX_DASHBOARDS_ALLOWED
@@ -54,7 +57,7 @@ export const DashboardsNavbarBlock = ({ navBarLinkProps }: Props) => {
                       onClick: () => {},
                   }
                 : {
-                      label: CREATE_DASHBOARD,
+                      label: CREATE_NEW_DASHBOARD,
                       onClick: () => {
                           history.push(CREATE_DASHBOARD_PATH)
                           logEvent(
@@ -66,41 +69,73 @@ export const DashboardsNavbarBlock = ({ navBarLinkProps }: Props) => {
         [history, limitReached],
     )
 
-    const actionsIcon = {
-        name: isCurrentUserTeamLead ? 'add' : 'info',
-        isOutlined: !isCurrentUserTeamLead,
-        isDisabled: !isCurrentUserTeamLead,
-        tooltip: isCurrentUserTeamLead ? undefined : RESTRICTION_MESSAGE,
-        callback: logStatDashboardNavCreateChartClicked,
-    }
+    const handleActionsClick = useCallback(() => {
+        setOpen(!isOpen)
+        logStatDashboardNavCreateChartClicked()
+    }, [isOpen, setOpen])
 
     return (
-        <NavbarBlock
-            icon="insert_chart"
-            actionsIcon={actionsIcon}
-            title={DASHBOARDS_NAV_TITLE}
-            dropdownClassName={limitReached ? css.action : ''}
-            actions={actions}
-            className={css.navbar}
-        >
-            {dashboards.map(({ name, id, emoji }) => (
-                <div
-                    key={id}
-                    className={classnames(
-                        cssNavbar['link-wrapper'],
-                        cssNavbar.isNested,
-                    )}
+        <Navigation.Section value={StatsNavbarViewSections.Dashboards}>
+            <div className={css.actionsContainer}>
+                <Navigation.SectionTrigger data-candu-id="navbar-block-dashboards">
+                    <span className={css.sectionTriggerTitle}>
+                        {DASHBOARDS_NAV_TITLE}
+                    </span>
+                    <Navigation.SectionIndicator />
+                </Navigation.SectionTrigger>
+                <Dropdown
+                    isOpen={isOpen}
+                    disabled={!isCurrentUserTeamLead}
+                    toggle={handleActionsClick}
                 >
-                    <NavbarLink
-                        {...navBarLinkProps}
+                    <DropdownToggle
+                        className={classNames(css.toggle, 'btn-transparent')}
+                        color="ghost"
+                        type="button"
+                    >
+                        <IconInput
+                            id={actionsIconId}
+                            icon={isCurrentUserTeamLead ? 'add' : 'info'}
+                            isOutlined={!isCurrentUserTeamLead}
+                        />
+                        {!isCurrentUserTeamLead && (
+                            <Tooltip
+                                target={actionsIconId}
+                                placement="bottom-end"
+                            >
+                                {RESTRICTION_MESSAGE}
+                            </Tooltip>
+                        )}
+                    </DropdownToggle>
+                    <DropdownMenu right>
+                        {actions.map((action) => (
+                            <DropdownItem
+                                className={classNames(css.action)}
+                                key={action.label}
+                                onClick={action.onClick}
+                            >
+                                {action.label}
+                            </DropdownItem>
+                        ))}
+                    </DropdownMenu>
+                </Dropdown>
+            </div>
+
+            <Navigation.SectionContent className={css.sectionContent}>
+                {dashboards.map(({ name, id, emoji }) => (
+                    <Navigation.SectionItem
+                        key={id}
+                        as={NavLink}
+                        exact
                         to={getDashboardPath(id)}
-                        className={css.wrapper}
+                        className={css.navbarLink}
+                        displayType="indent"
                     >
                         {emoji && <span>{emoji}</span>}
                         <div className={css.name}>{name}</div>
-                    </NavbarLink>
-                </div>
-            ))}
-        </NavbarBlock>
+                    </Navigation.SectionItem>
+                ))}
+            </Navigation.SectionContent>
+        </Navigation.Section>
     )
 }

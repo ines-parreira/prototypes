@@ -1,16 +1,11 @@
 import { ActiveContent, Navbar } from 'common/navigation'
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 
-import StatsNavbarView from './components/StatsNav/StatsNavbarView'
-import { StatsNavbarViewV2 } from './components/StatsNavbarViewV2/StatsNavbarViewV2'
+import { StatsNavbarView } from './components/StatsNavbarView/StatsNavbarView'
 
 export default function StatsNavbarContainer() {
-    const showStatsNavbarV2 = useFlag(FeatureFlagKey.RevampNavBarUi)
-
     return (
         <Navbar activeContent={ActiveContent.Statistics} title="Statistics">
-            {showStatsNavbarV2 ? <StatsNavbarViewV2 /> : <StatsNavbarView />}
+            <StatsNavbarView />
         </Navbar>
     )
 }
