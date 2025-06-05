@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { hasRole } from 'utils'
 import { assumeMock } from 'utils/testing'
@@ -179,6 +179,45 @@ describe('<MultiLevelSelect />', () => {
         userEvent.click(screen.getByText('s2'))
 
         expect(initialProps.onChange).toHaveBeenCalledWith([])
+    })
+
+    it('should reset path and update active state when toggled', () => {
+        render(
+            <>
+                <MultiLevelSelect
+                    {...initialProps}
+                    allowMultiValues
+                    value={[]}
+                />
+            </>,
+        )
+
+        const textbox = screen.getByRole('textbox')
+
+        // Focus to simulate dropdown open behavior
+        fireEvent.focus(textbox)
+
+        // Confirm overlay appears
+        expect(screen.queryByTestId('floating-overlay')).toBeInTheDocument()
+
+        fireEvent.click(screen.getByText('s1'))
+
+        expect(screen.queryByText('a1')).toBeInTheDocument()
+        // Click outside to close
+        const outside = screen.queryByTestId('floating-overlay')
+        fireEvent.mouseDown(outside!)
+        fireEvent.click(outside!)
+
+        // Dropdown should be closed
+        expect(screen.queryByTestId('floating-overlay')).toBeNull()
+
+        // Reopen the dropdown
+        fireEvent.focus(textbox)
+
+        // Confirm overlay appears
+        expect(screen.queryByTestId('floating-overlay')).toBeInTheDocument()
+        // Value should be reset
+        expect(screen.queryByText('a1')).not.toBeInTheDocument()
     })
 
     describe('Empty helper', () => {

@@ -90,11 +90,12 @@ jest.mock('../constants', () => {
     const actual = jest.requireActual('../constants')
     return {
         ...actual,
-        LEGACY_TO_SIMPLIFIED_KNOWLEDGE_SOURCE_ICON_MAP: {
+        SIMPLIFIED_TO_DEFAULT_KNOWLEDGE_SOURCE_ICON_MAP: {
             // Only include specific mappings to test both branches of the condition
             MACRO: 'macro',
             ARTICLE: 'article',
             ACTION: 'action',
+            GUIDANCE: 'guidance',
             // NOT_MAPPED_TYPE is intentionally missing to test line 318
         },
         SIMPLIFIED_RESOURCE_LABELS: {
@@ -102,6 +103,7 @@ jest.mock('../constants', () => {
             article: 'Articles::',
             action: 'Actions::',
             custom: 'Custom::',
+            guidance: 'Guidance::',
         },
     }
 })
@@ -130,9 +132,10 @@ describe('MissingKnowledgeSelect', () => {
 
         expect(onSubmit).toHaveBeenCalledWith([
             expect.objectContaining({
-                label: 'Actions::Action Test',
-                type: 'ACTION',
-                value: '3',
+                hide: false,
+                label: 'Guidance::Guidance Test',
+                type: 'GUIDANCE',
+                value: '2',
             }),
         ])
     })

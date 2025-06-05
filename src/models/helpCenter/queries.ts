@@ -299,6 +299,44 @@ export const useGetHelpCenter = (
     })
 }
 
+export const useGetMultipleHelpCenter = (
+    helpCenterIds: Paths.GetHelpCenter.Parameters.HelpCenterId[],
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof getHelpCenter>>>,
+    queryParameters: Paths.GetHelpCenter.QueryParameters = {},
+) => {
+    const { client: helpCenterClient } = useHelpCenterApi()
+
+    const queries = useQueries({
+        queries: helpCenterIds.map((helpCenterId) => ({
+            queryKey: [...helpCenterKeys.detail(helpCenterId), queryParameters],
+            queryFn: async () =>
+                getHelpCenter(
+                    helpCenterClient,
+                    { help_center_id: helpCenterId },
+                    queryParameters,
+                ),
+            ...overrides,
+            enabled:
+                !!helpCenterClient &&
+                helpCenterId > 0 &&
+                (overrides === undefined || overrides.enabled),
+            refetchOnWindowFocus: false,
+        })),
+    })
+
+    const isLoading = useMemo(
+        () => queries.some((query) => query.isLoading),
+        [queries],
+    )
+
+    const helpCenters = queries.map((query) => query.data)
+
+    return {
+        helpCenters,
+        isLoading,
+    }
+}
+
 export const useCreateHelpCenter = (
     overrides?: MutationOverrides<typeof createHelpCenter>,
 ) => {

@@ -83,6 +83,8 @@ export type MultiLevelSelectProps<
     ) => string
     CustomInput?: ComponentType<CustomInputProps>
     placement?: Placement
+    dropdownMatchTriggerWidth?: boolean
+    hideClearButton?: boolean
 }
 
 export default function MultiLevelSelect<
@@ -106,6 +108,8 @@ export default function MultiLevelSelect<
     isDisabled = false,
     allowMultiValues = false,
     placement,
+    dropdownMatchTriggerWidth = false,
+    hideClearButton = false,
 }: MultiLevelSelectProps<AllowMultiValues>) {
     const containerRef = useRef<HTMLSpanElement>(null)
     const modalRef = useRef<HTMLDivElement>(null)
@@ -285,11 +289,15 @@ export default function MultiLevelSelect<
             )}
             <Dropdown
                 isOpen={isActive}
-                onToggle={setActive}
+                onToggle={(state) => {
+                    setCurrentPath([])
+                    setActive(state)
+                }}
                 target={containerRef}
                 ref={modalRef}
                 className={dropdownAutoWidth ? undefined : css.dropdown}
                 placement={placement}
+                matchTriggerWidth={dropdownMatchTriggerWidth}
             >
                 {currentPath.length > 0 && !isSearching && (
                     <DropdownHeader>
@@ -415,18 +423,19 @@ export default function MultiLevelSelect<
                         </>
                     )}
                 </DropdownBody>
-                {((!isValueEmpty && !isSearching) ||
-                    valueIsInSearchResults) && (
-                    <DropdownFooter className={css.modalFooter}>
-                        <Button
-                            onClick={() => handleChange('')}
-                            fillStyle="ghost"
-                            className={css.clearButton}
-                        >
-                            Clear Selection
-                        </Button>
-                    </DropdownFooter>
-                )}
+                {!hideClearButton &&
+                    ((!isValueEmpty && !isSearching) ||
+                        valueIsInSearchResults) && (
+                        <DropdownFooter className={css.modalFooter}>
+                            <Button
+                                onClick={() => handleChange('')}
+                                fillStyle="ghost"
+                                className={css.clearButton}
+                            >
+                                Clear Selection
+                            </Button>
+                        </DropdownFooter>
+                    )}
             </Dropdown>
         </>
     )

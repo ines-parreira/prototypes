@@ -1,6 +1,6 @@
 import React, { ComponentProps, useRef } from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -24,6 +24,24 @@ function MockedImplementation(props: Partial<ComponentProps<typeof Dropdown>>) {
 }
 
 describe('<Dropdown />', () => {
+    beforeAll(() => {
+        Object.defineProperty(HTMLElement.prototype, 'getBoundingClientRect', {
+            configurable: true,
+            value: function () {
+                return {
+                    width: parseFloat(this.style.width) || 200,
+                    height: 40,
+                    top: 0,
+                    left: 0,
+                    bottom: 40,
+                    right: 200,
+                    x: 0,
+                    y: 0,
+                    toJSON: () => {},
+                }
+            },
+        })
+    })
     it('should render a dropdown', () => {
         const { container } = render(
             <MockedImplementation>Baz</MockedImplementation>,
@@ -82,5 +100,59 @@ describe('<Dropdown />', () => {
         expect(screen.getByText(/value/)).toBeTruthy()
         fireEvent.click(screen.getByText(/value/))
         expect(mockedOnToggle).toHaveBeenNthCalledWith(1, false)
+    })
+
+    it('should apply matchTriggerWidth style', async () => {
+        const targetRef = React.createRef<HTMLDivElement>()
+
+        render(
+            <>
+                <div ref={targetRef} style={{ width: '123px' }}>
+                    Target
+                </div>
+                <Dropdown
+                    isOpen
+                    onToggle={jest.fn()}
+                    target={targetRef}
+                    matchTriggerWidth
+                >
+                    <div data-testid="floating-content">Content</div>
+                </Dropdown>
+            </>,
+        )
+
+        const floatingElement = await screen.findByTestId('floating-content')
+
+        await waitFor(() => {
+            expect(floatingElement.parentElement).toHaveStyle('width: 123px')
+        })
+    })
+
+    it('should apply minWidth or width based on contained', async () => {
+        const targetRef = React.createRef<HTMLDivElement>()
+
+        render(
+            <>
+                <div ref={targetRef} style={{ width: '200px' }}>
+                    Target
+                </div>
+                <Dropdown
+                    isOpen
+                    onToggle={jest.fn()}
+                    target={targetRef}
+                    contained={false}
+                >
+                    <div data-testid="floating-content">Content</div>
+                </Dropdown>
+            </>,
+        )
+
+        const floatingElement = await screen.findByTestId('floating-content')
+
+        await waitFor(() => {
+            expect(floatingElement.parentElement).toHaveStyle(
+                'min-width: 200px',
+            )
+        })
     })
 })

@@ -31,6 +31,7 @@ import {
     useGetIngestionLogs,
     useGetIngestionLogsList,
     useGetMultipleFileIngestion,
+    useGetMultipleHelpCenter,
     useGetMultipleHelpCenterArticleLists,
     useListIngestedResources,
     useStartArticleIngestion,
@@ -571,6 +572,128 @@ describe('queries', () => {
             })
 
             expect(getHelpCenterArticles).toHaveBeenCalledTimes(0)
+        })
+    })
+
+    describe('useGetMultiHelpCenter', () => {
+        const helpCenterIds = [1, 2, 3]
+        const queryParams: any = { locale: 'en-US' as const }
+
+        const mockHelpCenters: any = [
+            {
+                ...getSingleHelpCenterResponseFixture,
+                id: 1,
+                subdomain: 'hc1',
+            },
+            {
+                ...getSingleHelpCenterResponseFixture,
+                id: 2,
+                subdomain: 'hc2',
+            },
+            {
+                ...getSingleHelpCenterResponseFixture,
+                id: 3,
+                subdomain: 'hc3',
+            },
+        ]
+
+        beforeEach(() => {
+            jest.clearAllMocks()
+            getHelpCenter.mockClear()
+            mockUseHelpCenterApi.mockReturnValue({
+                client: {} as HelpCenterClient,
+                isReady: true,
+            })
+        })
+
+        it('should fetch multiple help centers', async () => {
+            getHelpCenter
+                .mockResolvedValueOnce(mockHelpCenters[0])
+                .mockResolvedValueOnce(mockHelpCenters[1])
+                .mockResolvedValueOnce(mockHelpCenters[2])
+
+            const { result } = renderHook(
+                () => useGetMultipleHelpCenter(helpCenterIds, {}, queryParams),
+                { wrapper },
+            )
+
+            expect(result.current.isLoading).toBe(true)
+
+            await waitFor(() => expect(result.current.isLoading).toBe(false))
+
+            expect(result.current.helpCenters).toHaveLength(3)
+            expect(result.current.helpCenters[0]).toEqual(mockHelpCenters[0])
+            expect(result.current.helpCenters[1]).toEqual(mockHelpCenters[1])
+            expect(result.current.helpCenters[2]).toEqual(mockHelpCenters[2])
+
+            expect(getHelpCenter).toHaveBeenCalledTimes(3)
+            expect(getHelpCenter).toHaveBeenNthCalledWith(
+                1,
+                expect.anything(),
+                { help_center_id: helpCenterIds[0] },
+                queryParams,
+            )
+            expect(getHelpCenter).toHaveBeenNthCalledWith(
+                2,
+                expect.anything(),
+                { help_center_id: helpCenterIds[1] },
+                queryParams,
+            )
+            expect(getHelpCenter).toHaveBeenNthCalledWith(
+                3,
+                expect.anything(),
+                { help_center_id: helpCenterIds[2] },
+                queryParams,
+            )
+        })
+
+        it('should not call the api function when client is not set', () => {
+            mockUseHelpCenterApi.mockReturnValue({
+                client: undefined,
+                isReady: false,
+            })
+
+            renderHook(
+                () => useGetMultipleHelpCenter(helpCenterIds, {}, queryParams),
+                { wrapper },
+            )
+
+            expect(getHelpCenter).not.toHaveBeenCalled()
+        })
+
+        it('should not call the api function when override disabled', () => {
+            renderHook(
+                () =>
+                    useGetMultipleHelpCenter(
+                        helpCenterIds,
+                        { enabled: false },
+                        queryParams,
+                    ),
+                { wrapper },
+            )
+
+            expect(getHelpCenter).not.toHaveBeenCalled()
+        })
+
+        it('should not call the api function for invalid helpCenterIds', async () => {
+            getHelpCenter.mockResolvedValueOnce(mockHelpCenters[0])
+
+            renderHook(
+                () =>
+                    useGetMultipleHelpCenter(
+                        [0, undefined as unknown as number, 3],
+                        {},
+                        queryParams,
+                    ),
+                { wrapper },
+            )
+
+            expect(getHelpCenter).toHaveBeenCalledTimes(1)
+            expect(getHelpCenter).toHaveBeenCalledWith(
+                expect.anything(),
+                { help_center_id: 3 },
+                queryParams,
+            )
         })
     })
 

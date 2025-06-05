@@ -8,8 +8,8 @@ import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
 import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import {
-    LEGACY_TO_SIMPLIFIED_KNOWLEDGE_SOURCE_ICON_MAP,
     SIMPLIFIED_RESOURCE_LABELS,
+    SIMPLIFIED_TO_DEFAULT_KNOWLEDGE_SOURCE_ICON_MAP,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
 import KnowledgeSourceIcon from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceIcon'
 import {
@@ -57,21 +57,8 @@ const MissingKnowledgeSelect = ({
     const choices = useMemo(
         () =>
             [
-                ...enrichedData.actions
-                    .filter((action) => {
-                        return !knowledgeResources?.find(
-                            (resource) =>
-                                resource.resource.resourceId ===
-                                    action.id.toString() &&
-                                resource.resource.resourceType === 'ACTION',
-                        )
-                    })
-                    .map((action) => ({
-                        label: `${SIMPLIFIED_RESOURCE_LABELS.action}${action.name}`,
-                        value: action.id.toString(),
-                        type: 'ACTION',
-                        hide: action?.entrypoints?.[0]?.deactivated_datetime,
-                    })),
+                // Order is important here, as it determines the order of the options in the select dropdown
+                // GUIDANCES
                 ...enrichedData.guidanceArticles
                     .filter((guidance) => {
                         return !knowledgeResources?.find(
@@ -89,6 +76,23 @@ const MissingKnowledgeSelect = ({
                             guidance.helpCenterId !== guidanceHelpCenterId ||
                             guidance.visibility === 'UNLISTED',
                     })),
+                // ACTIONS
+                ...enrichedData.actions
+                    .filter((action) => {
+                        return !knowledgeResources?.find(
+                            (resource) =>
+                                resource.resource.resourceId ===
+                                    action.id.toString() &&
+                                resource.resource.resourceType === 'ACTION',
+                        )
+                    })
+                    .map((action) => ({
+                        label: `${SIMPLIFIED_RESOURCE_LABELS.action}${action.name}`,
+                        value: action.id.toString(),
+                        type: 'ACTION',
+                        hide: action?.entrypoints?.[0]?.deactivated_datetime,
+                    })),
+                // HELP CENTER ARTICLES
                 ...enrichedData.articles
                     .filter((article) => {
                         return !knowledgeResources?.find(
@@ -106,6 +110,22 @@ const MissingKnowledgeSelect = ({
                             article.helpCenterId !== helpCenterId ||
                             !article.translation.is_current,
                     })),
+                //MACROS
+                ...enrichedData.macros
+                    .filter((macro) => {
+                        return !knowledgeResources?.find(
+                            (resource) =>
+                                resource.resource.resourceId ===
+                                    macro.id?.toString() &&
+                                resource.resource.resourceType === 'MACRO',
+                        )
+                    })
+                    .map((macro) => ({
+                        label: `${SIMPLIFIED_RESOURCE_LABELS.macro}${macro.name}`,
+                        value: macro.id?.toString(),
+                        type: 'MACRO',
+                    })),
+                // EXTERNAL WEBSITE LINKS
                 ...enrichedData.sourceItems
                     .filter((snippet) => {
                         return !knowledgeResources?.find(
@@ -124,6 +144,7 @@ const MissingKnowledgeSelect = ({
                             snippet.helpCenterId !== snippetHelpCenterId ||
                             snippet.status !== 'done',
                     })),
+                //EXTERNAL FILES
                 ...enrichedData.ingestedFiles
                     .filter((file) => {
                         return !knowledgeResources?.find(
@@ -141,20 +162,6 @@ const MissingKnowledgeSelect = ({
                         hide:
                             snippet.helpCenterId !== snippetHelpCenterId ||
                             snippet.status !== 'SUCCESSFUL',
-                    })),
-                ...enrichedData.macros
-                    .filter((macro) => {
-                        return !knowledgeResources?.find(
-                            (resource) =>
-                                resource.resource.resourceId ===
-                                    macro.id?.toString() &&
-                                resource.resource.resourceType === 'MACRO',
-                        )
-                    })
-                    .map((macro) => ({
-                        label: `${SIMPLIFIED_RESOURCE_LABELS.macro}${macro.name}`,
-                        value: macro.id?.toString(),
-                        type: 'MACRO',
                     })),
             ] as ChoiceOption[],
         [
@@ -245,7 +252,6 @@ const MissingKnowledgeSelect = ({
     const handleRemove = useCallback(
         async (valueToRemove: string) => {
             const resource = choices.find((c) => c.value === valueToRemove)
-
             const newValues = values.filter((v) => v !== valueToRemove)
             setValues(newValues)
 
@@ -269,7 +275,9 @@ const MissingKnowledgeSelect = ({
                 value={values}
                 allowMultiValues
                 placement="bottom"
-                dropdownAutoWidth={false}
+                dropdownAutoWidth={true}
+                dropdownMatchTriggerWidth={true}
+                hideClearButton
                 autoWidth={false}
                 onFocus={onToggle}
                 isDisabled={disabled}
@@ -294,15 +302,17 @@ const MissingKnowledgeSelect = ({
             />
             {values.length > 0 && (
                 <div className={css.tags}>
-                    {values.map((option) => (
-                        <KnowledgeTag
-                            key={option}
-                            choice={choices.find(
-                                (choice) => choice.label === option,
-                            )}
-                            handleRemove={handleRemove}
-                        />
-                    ))}
+                    {values.map((option) => {
+                        return (
+                            <KnowledgeTag
+                                key={option}
+                                choice={choices.find(
+                                    (choice) => choice.label === option,
+                                )}
+                                handleRemove={handleRemove}
+                            />
+                        )
+                    })}
                 </div>
             )}
         </div>
@@ -337,12 +347,12 @@ export const KnowledgeTag = ({ choice, handleRemove }: KnowledgeTagProps) => {
                 upperCase={false}
                 corner="square"
             >
-                {!!LEGACY_TO_SIMPLIFIED_KNOWLEDGE_SOURCE_ICON_MAP[
+                {!!SIMPLIFIED_TO_DEFAULT_KNOWLEDGE_SOURCE_ICON_MAP[
                     choice.type
                 ] && (
                     <KnowledgeSourceIcon
                         type={
-                            LEGACY_TO_SIMPLIFIED_KNOWLEDGE_SOURCE_ICON_MAP[
+                            SIMPLIFIED_TO_DEFAULT_KNOWLEDGE_SOURCE_ICON_MAP[
                                 choice.type
                             ]
                         }

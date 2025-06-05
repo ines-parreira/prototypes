@@ -35,8 +35,16 @@
         gap: var(--layout-spacing-xxs);
 
         .badge {
-            background-color: var(--neutral-grey-2);
+            background-color: transparent;
+            font-size: 14px;
             color: var(--neutral-grey-5);
+            padding: var(--layout-spacing-xxs);
+        }
+
+        .shopifyLogo {
+            width: 22px;
+            height: 22px;
+            border-radius: 100px;
             padding: var(--layout-spacing-xxs);
         }
 
@@ -48,14 +56,21 @@
 
         &:hover {
             .sourceName {
-                background-color: var(--neutral-grey-2);
-                span {
-                    color: var(--main-primary);
+                &.hasLink {
+                    cursor: pointer;
+                    background-color: var(--neutral-grey-2);
+                    span {
+                        color: var(--main-primary);
+                    }
+
+                    .openInNewTabIcon {
+                        opacity: 1;
+                        color: var(--main-primary);
+                    }
                 }
-                .openInNewTabIcon {
-                    opacity: 1;
-                    color: var(--main-primary);
-                }
+
+                color: var(--neutral-grey-6);
+                cursor: default;
 
                 &.deleted {
                     background-color: var(--neutral-grey-0);
@@ -117,14 +132,6 @@
         }
     }
 
-    .shopifyLogo {
-        width: 20px;
-        height: 20px;
-        background-color: var(--neutral-grey-2);
-        border-radius: 100px;
-        padding: var(--layout-spacing-xxs);
-    }
-
     .info {
         .caption-regular();
         color: var(--neutral-grey-5);
@@ -147,7 +154,7 @@
 
         textarea {
             background-color: var(--neutral-grey-0);
-            border-color: var(--neutral-grey-4);
+            border-color: var(--neutral-grey-3);
             color: var(--neutral-grey-6);
         }
     }
@@ -180,10 +187,9 @@
                 font-size: 12px;
             }
 
-            &:hover {
-                .tagText {
-                    color: var(--main-primary);
-                }
+            .shopifyLogo {
+                width: 12px;
+                height: 12px;
             }
         }
 

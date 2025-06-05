@@ -6,13 +6,20 @@ import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import {
     useGetMultipleFileIngestion,
+    useGetMultipleHelpCenter,
     useGetMultipleHelpCenterArticleLists,
 } from 'models/helpCenter/queries'
 import { useGetAICompatibleMacros } from 'models/macro/queries'
 import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
+import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useMultipleGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 import { useMultiplePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
 import {
+    getArticleUrl,
+    getHelpCenterDomain,
+} from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import {
+    AiAgentFeedbackTypeEnum,
     AiAgentKnowledgeResourceTypeEnum,
     FreeForm,
     KnowledgeResource,
@@ -20,6 +27,7 @@ import {
     suggestedResourceValueSchema,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { Components } from 'rest_api/knowledge_service_api/client.generated'
+import { getLDClient } from 'utils/launchDarkly'
 
 const DEFAULT_STALE_TIME = 10 * 60 * 1000
 
@@ -57,28 +65,31 @@ const useExtractDistinctHelpCenterFromResources = (
 
         for (const execution of executions ?? []) {
             for (const feedback of execution.feedback) {
-                if (feedback.feedbackType === 'SUGGESTED_RESOURCE') {
+                if (
+                    feedback.feedbackType ===
+                    AiAgentFeedbackTypeEnum.SUGGESTED_RESOURCE
+                ) {
                     try {
                         const resource = suggestedResourceValueSchema.parse(
                             JSON.parse(feedback.feedbackValue ?? '{}'),
                         )
                         switch (resource.resourceType) {
-                            case 'ARTICLE':
+                            case AiAgentKnowledgeResourceTypeEnum.ARTICLE:
                                 output.faqHelpCenterIds.push(
                                     Number(resource.resourceSetId),
                                 )
                                 break
-                            case 'GUIDANCE':
+                            case AiAgentKnowledgeResourceTypeEnum.GUIDANCE:
                                 output.guidanceHelpCenterIds.push(
                                     Number(resource.resourceSetId),
                                 )
                                 break
-                            case 'EXTERNAL_SNIPPET':
+                            case AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET:
                                 output.snippetHelpCenterIds.push(
                                     Number(resource.resourceSetId),
                                 )
                                 break
-                            case 'FILE_EXTERNAL_SNIPPET':
+                            case AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET:
                                 output.snippetHelpCenterIds.push(
                                     Number(resource.resourceSetId),
                                 )
@@ -93,22 +104,22 @@ const useExtractDistinctHelpCenterFromResources = (
             }
             for (const resource of execution.resources ?? []) {
                 switch (resource.resourceType) {
-                    case 'ARTICLE':
+                    case AiAgentKnowledgeResourceTypeEnum.ARTICLE:
                         output.faqHelpCenterIds.push(
                             Number(resource.resourceSetId),
                         )
                         break
-                    case 'GUIDANCE':
+                    case AiAgentKnowledgeResourceTypeEnum.GUIDANCE:
                         output.guidanceHelpCenterIds.push(
                             Number(resource.resourceSetId),
                         )
                         break
-                    case 'EXTERNAL_SNIPPET':
+                    case AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET:
                         output.snippetHelpCenterIds.push(
                             Number(resource.resourceSetId),
                         )
                         break
-                    case 'FILE_EXTERNAL_SNIPPET':
+                    case AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET:
                         output.snippetHelpCenterIds.push(
                             Number(resource.resourceSetId),
                         )
@@ -187,6 +198,12 @@ const useActionResources = (
     }
 }
 
+const emptyMetadata = {
+    title: '',
+    content: '',
+    isDeleted: true,
+}
+
 const getResourceMetadata = (
     resource: Components.Schemas.FeedbackDto['executions'][number]['resources'][number],
     shopName: string,
@@ -197,6 +214,7 @@ const getResourceMetadata = (
         ingestedFiles,
         macros,
         actions,
+        helpCenters,
     }: {
         articles: NonNullable<
             ReturnType<typeof useGetMultipleHelpCenterArticleLists>['articles']
@@ -212,19 +230,45 @@ const getResourceMetadata = (
         >
         macros: NonNullable<ReturnType<typeof useMacroResources>['macros']>
         actions: NonNullable<ReturnType<typeof useActionResources>['actions']>
+        helpCenters: NonNullable<
+            ReturnType<typeof useGetMultipleHelpCenter>['helpCenters']
+        >
     },
 ) => {
+    const flags = getLDClient().allFlags()
+    const aiAgentRoutes = shopName
+        ? getAiAgentNavigationRoutes(shopName, flags)
+        : undefined
+
     switch (resource.resourceType) {
         case AiAgentKnowledgeResourceTypeEnum.ARTICLE: {
             const article = articles.find(
                 (article) => article.id === Number(resource.resourceId),
             )
+            const helpCenter = helpCenters.find(
+                (hc) => hc?.id === article?.helpCenterId,
+            )
+
+            const articleUrl =
+                helpCenter &&
+                article &&
+                getArticleUrl({
+                    domain: getHelpCenterDomain(helpCenter),
+                    locale: article.translation.locale,
+                    slug: article.translation.slug,
+                    articleId: article.id,
+                    unlistedId: article.translation.article_unlisted_id,
+                    isUnlisted:
+                        article.translation.visibility_status === 'UNLISTED',
+                })
+
             return article
                 ? {
                       title: article.translation.title ?? '',
                       content: article.translation.content ?? '',
+                      url: articleUrl ?? '',
                   }
-                : { title: '', content: '', isDeleted: true }
+                : emptyMetadata
         }
         case AiAgentKnowledgeResourceTypeEnum.GUIDANCE: {
             const guidance = guidanceArticles.find(
@@ -234,8 +278,11 @@ const getResourceMetadata = (
                 ? {
                       title: guidance.title ?? '',
                       content: guidance.content ?? '',
+                      url: aiAgentRoutes?.guidanceArticleEdit(
+                          parseInt(resource.resourceId) ?? '',
+                      ),
                   }
-                : { title: '', content: '', isDeleted: true }
+                : emptyMetadata
         }
         case AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET: {
             const snippet = sourceItems.find(
@@ -247,7 +294,7 @@ const getResourceMetadata = (
                       content: snippet.url ?? '',
                       url: snippet.url ?? '',
                   }
-                : { title: '', content: '', isDeleted: true }
+                : emptyMetadata
         }
         case AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET: {
             const fileSnippet = ingestedFiles
@@ -260,9 +307,12 @@ const getResourceMetadata = (
                 ? {
                       title: 'External file',
                       content: fileSnippet.filename ?? '',
-                      url: fileSnippet.google_storage_url ?? '',
+                      url:
+                          fileSnippet.google_storage_url ||
+                          aiAgentRoutes?.knowledge ||
+                          '',
                   }
-                : { title: '', content: '', isDeleted: true }
+                : emptyMetadata
         }
         case AiAgentKnowledgeResourceTypeEnum.MACRO: {
             const macro = macros.find(
@@ -272,8 +322,9 @@ const getResourceMetadata = (
                 ? {
                       title: macro.name ?? '',
                       content: macro.intent ?? '',
+                      url: `/app/settings/macros/${resource.resourceId}`,
                   }
-                : { title: '', content: '', isDeleted: true }
+                : emptyMetadata
         }
         case AiAgentKnowledgeResourceTypeEnum.ACTION: {
             const action = actions.find(
@@ -283,8 +334,9 @@ const getResourceMetadata = (
                 ? {
                       title: action.name ?? '',
                       content: action.name ?? '',
+                      url: aiAgentRoutes?.editAction(resource.resourceId) ?? '',
                   }
-                : { title: '', content: '', isDeleted: true }
+                : emptyMetadata
         }
         case AiAgentKnowledgeResourceTypeEnum.ORDER: {
             return {
@@ -296,7 +348,7 @@ const getResourceMetadata = (
             }
         }
         default: {
-            return { title: '', content: '', isDeleted: true }
+            return emptyMetadata
         }
     }
 }
@@ -314,6 +366,7 @@ const useProcessResources = (
         ingestedFiles,
         macros,
         actions,
+        helpCenters,
     }: {
         articles: NonNullable<
             ReturnType<typeof useGetMultipleHelpCenterArticleLists>['articles']
@@ -329,6 +382,9 @@ const useProcessResources = (
         >
         macros: NonNullable<ReturnType<typeof useMacroResources>['macros']>
         actions: NonNullable<ReturnType<typeof useActionResources>['actions']>
+        helpCenters: NonNullable<
+            ReturnType<typeof useGetMultipleHelpCenter>['helpCenters']
+        >
     },
 ) => {
     return useMemo(() => {
@@ -351,6 +407,7 @@ const useProcessResources = (
                     ingestedFiles,
                     macros,
                     actions,
+                    helpCenters,
                 })
 
                 if (!metadata) {
@@ -393,6 +450,7 @@ const useProcessResources = (
                                     ingestedFiles,
                                     macros,
                                     actions,
+                                    helpCenters,
                                 },
                             )
                             if (!metadata) {
@@ -451,6 +509,7 @@ const useProcessResources = (
         macros,
         actions,
         shopName,
+        helpCenters,
     ])
 }
 
@@ -485,6 +544,13 @@ export const useGetResourceData = ({
                 staleTime: DEFAULT_STALE_TIME,
             },
         )
+
+    const { helpCenters, isLoading: isHelpCentersLoading } =
+        useGetMultipleHelpCenter(faqHelpCenterIds, {
+            enabled: queriesEnabled && faqHelpCenterIds.length > 0,
+            refetchOnWindowFocus: false,
+            staleTime: DEFAULT_STALE_TIME,
+        })
 
     // Fetch guidance articles
     const { guidanceArticles, isGuidanceArticleListLoading } =
@@ -534,7 +600,8 @@ export const useGetResourceData = ({
         isGuidanceArticleListLoading ||
         isSourceItemsListLoading ||
         isActionsLoading ||
-        isIngesting
+        isIngesting ||
+        isHelpCentersLoading
 
     return {
         isLoading,
@@ -544,6 +611,7 @@ export const useGetResourceData = ({
         ingestedFiles,
         macros,
         actions,
+        helpCenters,
     }
 }
 
@@ -576,6 +644,7 @@ export const useEnrichFeedbackData = ({
         ingestedFiles,
         macros,
         actions,
+        helpCenters,
         isLoading,
     } = useGetResourceData({
         queriesEnabled,
@@ -598,6 +667,7 @@ export const useEnrichFeedbackData = ({
             ingestedFiles: ingestedFiles ?? [],
             macros,
             actions,
+            helpCenters,
         },
     )
 
@@ -610,5 +680,6 @@ export const useEnrichFeedbackData = ({
         guidanceArticles,
         sourceItems,
         ingestedFiles,
+        helpCenters,
     }
 }

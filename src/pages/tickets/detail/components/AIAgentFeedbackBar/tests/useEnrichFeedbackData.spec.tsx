@@ -1,10 +1,10 @@
-import React from 'react'
-
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ldClientMock } from 'jest-launchdarkly-mock'
 
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import {
     useGetMultipleFileIngestion,
+    useGetMultipleHelpCenter,
     useGetMultipleHelpCenterArticleLists,
 } from 'models/helpCenter/queries'
 import { useGetAICompatibleMacros } from 'models/macro/queries'
@@ -24,6 +24,7 @@ import {
 jest.mock('models/helpCenter/queries', () => ({
     useGetMultipleHelpCenterArticleLists: jest.fn(),
     useGetMultipleFileIngestion: jest.fn(),
+    useGetMultipleHelpCenter: jest.fn(),
 }))
 
 jest.mock('models/macro/queries', () => ({
@@ -100,10 +101,15 @@ describe('useGetResourceData', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
+        ldClientMock.allFlags.mockReturnValue({})
 
         // Setup default mock returns
         ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
             articles: [],
+            isLoading: false,
+        })
+        ;(useGetMultipleHelpCenter as jest.Mock).mockReturnValue({
+            helpCenters: [],
             isLoading: false,
         })
         ;(useGetMultipleFileIngestion as jest.Mock).mockReturnValue({
@@ -141,6 +147,7 @@ describe('useGetResourceData', () => {
             shopType: 'shopify',
         }
 
+        const mockHelpCenters = [{ id: 1, subdomain: 'test' }]
         const mockArticles = [
             {
                 id: 1,
@@ -164,6 +171,10 @@ describe('useGetResourceData', () => {
 
         ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
             articles: mockArticles,
+            isLoading: false,
+        })
+        ;(useGetMultipleHelpCenter as jest.Mock).mockReturnValue({
+            helpCenters: mockHelpCenters,
             isLoading: false,
         })
         ;(useGetMultipleFileIngestion as jest.Mock).mockReturnValue({
@@ -201,6 +212,7 @@ describe('useGetResourceData', () => {
             ingestedFiles: mockIngestedFiles,
             macros: mockMacros,
             actions: mockActions,
+            helpCenters: mockHelpCenters,
         })
 
         // Verify the hooks were called with correct parameters
@@ -212,6 +224,11 @@ describe('useGetResourceData', () => {
 
         expect(useMultipleGuidanceArticles).toHaveBeenCalledWith(
             [200],
+            expect.objectContaining({ enabled: true }),
+        )
+
+        expect(useGetMultipleHelpCenter).toHaveBeenCalledWith(
+            [100],
             expect.objectContaining({ enabled: true }),
         )
 
@@ -245,6 +262,10 @@ describe('useGetResourceData', () => {
             articles: [],
             isLoading: true,
         })
+        ;(useGetMultipleHelpCenter as jest.Mock).mockReturnValue({
+            helpCenters: [],
+            isLoading: true,
+        })
 
         const { result } = renderHook(() => useGetResourceData(params), {
             wrapper,
@@ -264,10 +285,14 @@ describe('useEnrichFeedbackData', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
-
+        ldClientMock.allFlags.mockReturnValue({})
         // Setup default mock returns
         ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
             articles: [],
+            isLoading: false,
+        })
+        ;(useGetMultipleHelpCenter as jest.Mock).mockReturnValue({
+            helpCenters: [],
             isLoading: false,
         })
         ;(useGetMultipleFileIngestion as jest.Mock).mockReturnValue({
@@ -541,9 +566,14 @@ describe('useEnrichFeedbackData', () => {
         ]
         const mockMacros = [{ id: 5, name: 'Macro 1', intent: 'Macro Intent' }]
         const mockActions = [{ id: '6', name: 'Action 1' }]
+        const mockHelpCenters = [{ id: 1, subdomain: 'test' }]
 
         ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
             articles: mockArticles,
+            isLoading: false,
+        })
+        ;(useGetMultipleHelpCenter as jest.Mock).mockReturnValue({
+            helpCenters: mockHelpCenters,
             isLoading: false,
         })
         ;(useMultipleGuidanceArticles as jest.Mock).mockReturnValue({

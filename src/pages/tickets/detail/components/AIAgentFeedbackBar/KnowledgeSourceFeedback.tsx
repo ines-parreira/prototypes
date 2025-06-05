@@ -67,6 +67,7 @@ const KnowledgeSourceFeedback = ({
     onIconClick,
 }: KnowledgeSourceProps) => {
     const href = resource.metadata?.url
+
     const isDeleted = resource.metadata?.isDeleted || false
 
     const isPositive = !isDeleted
@@ -82,7 +83,10 @@ const KnowledgeSourceFeedback = ({
                 href={isDeleted || !href ? undefined : href}
                 target="_blank"
                 rel="noreferrer noopener"
-                className={cn(css.sourceName, { [css.deleted]: isDeleted })}
+                className={cn(css.sourceName, {
+                    [css.deleted]: isDeleted,
+                    [css.hasLink]: !!href,
+                })}
                 id={`knowledge-source-${resource.resource.id}`}
             >
                 <KnowledgeSourceIcon
@@ -94,7 +98,7 @@ const KnowledgeSourceFeedback = ({
                     {resource.metadata?.title ||
                         resource.resource?.resourceTitle}
                 </span>
-                {href && (
+                {!!href && (
                     <i className={cn(css.openInNewTabIcon, 'material-icons')}>
                         {OPEN_IN_NEW_TAB_ICON}
                     </i>

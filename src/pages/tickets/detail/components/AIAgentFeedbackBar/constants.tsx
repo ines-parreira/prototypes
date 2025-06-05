@@ -1,3 +1,5 @@
+import { AiAgentKnowledgeResourceTypeEnum } from './types'
+
 export const RESOURCE_ICONS: Record<string, JSX.Element> = {
     'Soft action': <i className="material-icons">play_circle</i>,
     'Hard action': <i className="material-icons">play_circle</i>,
@@ -46,7 +48,7 @@ export const SIMPLIFIED_RESOURCE_LABELS: Record<string, string> = {
     hard_action: 'Actions::Hard action::',
     guidance: 'Guidance::',
     article: 'Help Center articles::',
-    external_snippet: 'External websites::',
+    external_snippet: 'Public URLs::',
     macro: 'Macros::',
     file_external_snippet: 'External files::',
 }
@@ -82,16 +84,15 @@ export const KNOWLEDGE_SOURCE_TYPE = {
 
 export type KnowledgeSourceType = keyof typeof KNOWLEDGE_SOURCE_TYPE
 
-export const LEGACY_TO_SIMPLIFIED_KNOWLEDGE_SOURCE_ICON_MAP: Record<
+export const SIMPLIFIED_TO_DEFAULT_KNOWLEDGE_SOURCE_ICON_MAP: Record<
     string,
     KnowledgeSourceType
 > = {
-    'Soft action': 'action',
-    'Hard action': 'action',
-    'Help Center articles': 'article',
-    Actions: 'action',
-    Macros: 'macro',
-    'External websites': 'website',
-    'External files': 'external_snippet',
-    Guidance: 'guidance',
+    [AiAgentKnowledgeResourceTypeEnum.ACTION]: 'action',
+    [AiAgentKnowledgeResourceTypeEnum.ARTICLE]: 'article',
+    [AiAgentKnowledgeResourceTypeEnum.MACRO]: 'macro',
+    [AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET]: 'link',
+    [AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET]:
+        'external_snippet',
+    [AiAgentKnowledgeResourceTypeEnum.GUIDANCE]: 'guidance',
 }

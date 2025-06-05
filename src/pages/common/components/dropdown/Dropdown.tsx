@@ -54,6 +54,7 @@ type Props = {
     contained?: boolean
     shouldFlip?: boolean
     fallbackPlacements?: Placement[]
+    matchTriggerWidth?: boolean
 } & Pick<HTMLAttributes<HTMLDivElement>, 'id'>
 
 type DropdownContextState = Pick<Props, 'isMultiple' | 'onToggle' | 'value'> & {
@@ -83,6 +84,7 @@ const Dropdown = forwardRef(
             contained = false,
             shouldFlip = true,
             fallbackPlacements,
+            matchTriggerWidth = false,
             ...props
         }: Props,
         ref: Ref<HTMLElement> | null | undefined,
@@ -103,12 +105,18 @@ const Dropdown = forwardRef(
                         padding: safeDistance,
                     }),
                 size({
-                    apply({ elements }) {
-                        Object.assign(elements.floating.style ?? {}, {
-                            [contained ? 'width' : 'minWidth']: `${
-                                elements.reference.getBoundingClientRect().width
-                            }px`,
-                        })
+                    apply({ rects, elements }) {
+                        const width = `${rects.reference.width}px`
+                        if (matchTriggerWidth) {
+                            elements.floating.style.width = width
+                        } else {
+                            Object.assign(elements.floating.style ?? {}, {
+                                [contained ? 'width' : 'minWidth']: `${
+                                    elements.reference.getBoundingClientRect()
+                                        .width
+                                }px`,
+                            })
+                        }
                     },
                     padding: safeDistance,
                 }),
