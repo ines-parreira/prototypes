@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
@@ -14,40 +16,45 @@ export const NUMBER_OF_MONTHS_TO_SKIP_NEW_FEEDBACK_COLLECTION = 3
 
 export const useTicketIsAfterFeedbackCollectionPeriod = () => {
     const ticket = useAppSelector(getTicketState)
-    const ticketDate = !!ticket.get('created_datetime')
-        ? new Date(ticket.get('created_datetime'))
-        : null
-    let targetDate = new Date(FIRST_CONSUMED_ORCH_EVENT_DATETIME)
+    const createdDatetime = ticket.get('created_datetime')
     const isNewAgenticArchitectureEnabled = useFlag(
         FeatureFlagKey.AiAgentUseNewAgenticArchitecture,
     )
 
-    const { data: aiAgentFeedback, isLoading } = useGetAiAgentFeedback({
+    const { data: aiAgentFeedback } = useGetAiAgentFeedback({
         refetchOnWindowFocus: false,
         enabled: isNewAgenticArchitectureEnabled,
     })
 
-    if (!isNewAgenticArchitectureEnabled) return false
+    return useMemo(() => {
+        if (!isNewAgenticArchitectureEnabled) return false
 
-    if (!ticketDate || isLoading) return true
+        const ticketDate = createdDatetime ? new Date(createdDatetime) : null
+        if (!ticketDate) return true
 
-    const hasOldFeedback =
-        (aiAgentFeedback?.data?.messages?.reduce(
-            (acc, message) =>
-                acc +
-                message.feedbackOnMessage.length +
-                message.feedbackOnResource.length,
-            0,
-        ) ?? 0) > 0
+        const hasOldFeedback =
+            (aiAgentFeedback?.data?.messages?.reduce(
+                (acc, message) =>
+                    acc +
+                    message.feedbackOnMessage.length +
+                    message.feedbackOnResource.length,
+                0,
+            ) ?? 0) > 0
 
-    // if a ticket already received feedback prior to the new feedback collection we should show the old feedback
-    // for a given period of time to not upset customers
-    if (hasOldFeedback) {
-        targetDate.setMonth(
-            targetDate.getMonth() +
-                NUMBER_OF_MONTHS_TO_SKIP_NEW_FEEDBACK_COLLECTION,
-        )
-    }
+        const targetDate = new Date(FIRST_CONSUMED_ORCH_EVENT_DATETIME)
+        // if a ticket already received feedback prior to the new feedback collection we should show the old feedback
+        // for a given period of time to not upset customers
+        if (hasOldFeedback) {
+            targetDate.setMonth(
+                targetDate.getMonth() +
+                    NUMBER_OF_MONTHS_TO_SKIP_NEW_FEEDBACK_COLLECTION,
+            )
+        }
 
-    return ticketDate > targetDate
+        return ticketDate > targetDate
+    }, [
+        createdDatetime,
+        aiAgentFeedback?.data?.messages,
+        isNewAgenticArchitectureEnabled,
+    ])
 }
