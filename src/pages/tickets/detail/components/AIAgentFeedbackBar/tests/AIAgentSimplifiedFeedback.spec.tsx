@@ -59,6 +59,7 @@ const initialFeedbackData = {
     guidanceArticles: [],
     sourceItems: [],
     ingestedFiles: [],
+    storeWebsiteQuestions: [],
 }
 
 describe('AIAgentSimplifiedFeedback', () => {

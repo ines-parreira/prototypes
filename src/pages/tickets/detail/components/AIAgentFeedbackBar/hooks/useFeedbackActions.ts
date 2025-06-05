@@ -24,6 +24,9 @@ interface UseFeedbackActionsParams {
     sourceItems: ReturnType<typeof useEnrichFeedbackData>['sourceItems']
     macros: ReturnType<typeof useEnrichFeedbackData>['macros']
     ingestedFiles: ReturnType<typeof useEnrichFeedbackData>['ingestedFiles']
+    storeWebsiteQuestions: ReturnType<
+        typeof useEnrichFeedbackData
+    >['storeWebsiteQuestions']
     enrichedData: ReturnType<typeof useEnrichFeedbackData>['enrichedData']
     setLoadingMutations: React.Dispatch<
         React.SetStateAction<string[] | undefined>
@@ -40,6 +43,7 @@ export const useFeedbackActions = ({
     sourceItems,
     macros,
     ingestedFiles,
+    storeWebsiteQuestions,
     enrichedData,
     upsertFeedback,
     setLoadingMutations,
@@ -85,9 +89,10 @@ export const useFeedbackActions = ({
                     }
                 }
                 case AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET: {
-                    const sourceItem = sourceItems?.find(
-                        (a) => a.id.toString() === choice.value,
-                    )
+                    const sourceItem = [
+                        ...sourceItems,
+                        ...storeWebsiteQuestions,
+                    ]?.find((a) => a.id.toString() === choice.value)
                     if (!sourceItem) return null
                     return {
                         resourceType:
@@ -137,6 +142,7 @@ export const useFeedbackActions = ({
             sourceItems,
             macros,
             ingestedFiles,
+            storeWebsiteQuestions,
         ],
     )
 

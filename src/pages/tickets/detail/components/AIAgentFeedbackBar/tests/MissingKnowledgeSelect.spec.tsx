@@ -62,6 +62,10 @@ const enrichedDataMock = {
         { id: 1, name: 'Macro Test' },
         { id: 12, name: 'Macro Test 2' },
     ],
+    storeWebsiteQuestions: [
+        { id: 8, title: 'Store Website Question Test', helpCenterId: 3 },
+        { id: 9, title: 'Store Website Question Test 2', helpCenterId: 3 },
+    ],
 } as any
 
 // Create a knowledge resource matching the required type
@@ -104,6 +108,7 @@ jest.mock('../constants', () => {
             action: 'Actions::',
             custom: 'Custom::',
             guidance: 'Guidance::',
+            store_website: 'Store website questions::',
         },
     }
 })
@@ -163,43 +168,27 @@ describe('MissingKnowledgeSelect', () => {
     })
 
     it('handles onRemove correctly', () => {
-        const onSubmit = jest.fn()
-        const onRemove = jest.fn()
+        const handleRemove = jest.fn()
 
         render(
-            <MissingKnowledgeSelect
-                helpCenterId={1}
-                guidanceHelpCenterId={2}
-                snippetHelpCenterId={3}
-                accountId={123}
-                initialValues={
-                    [
-                        {
-                            parsedResource: {
-                                resourceId: '1',
-                                resourceType:
-                                    AiAgentKnowledgeResourceTypeEnum.MACRO,
-                            },
-                        },
-                    ] as SuggestedResource[]
-                }
-                enrichedData={enrichedDataMock}
-                onSubmit={onSubmit}
-                onRemove={onRemove}
+            <KnowledgeTag
+                choice={{
+                    displayLabel: 'Macros::Macro Test',
+                    label: 'Macros::Macro Test',
+                    value: '1',
+                    type: 'MACRO' as AiAgentKnowledgeResourceTypeEnum,
+                }}
+                handleRemove={handleRemove}
             />,
         )
 
         expect(screen.getByText('Macro Test')).toBeInTheDocument()
 
-        fireEvent.click(screen.getByText('close'))
+        // Find the close button by its material icon
+        const closeButton = screen.getByText('close')
+        fireEvent.click(closeButton)
 
-        expect(onRemove).toHaveBeenCalledWith([
-            expect.objectContaining({
-                value: '1',
-                type: 'MACRO',
-                isDeleted: true,
-            }),
-        ])
+        expect(handleRemove).toHaveBeenCalledWith('1')
     })
 
     it('disables selection when disabled prop is true', () => {
@@ -514,6 +503,7 @@ describe('MissingKnowledgeSelect', () => {
         render(
             <KnowledgeTag
                 choice={{
+                    displayLabel: 'Test::No Icon Mapping',
                     label: 'Test::No Icon Mapping',
                     value: 'test2',
                     type: 'UNKNOWN_TYPE' as AiAgentKnowledgeResourceTypeEnum,
@@ -529,6 +519,8 @@ describe('MissingKnowledgeSelect', () => {
         render(
             <KnowledgeTag
                 choice={{
+                    displayLabel:
+                        'Test::This is an extremely long text that would normally overflow in a constrained container and trigger the overflow condition in line 268',
                     label: 'Test::This is an extremely long text that would normally overflow in a constrained container and trigger the overflow condition in line 268',
                     value: 'test-long',
                     type: 'MACRO' as AiAgentKnowledgeResourceTypeEnum,
@@ -548,5 +540,156 @@ describe('MissingKnowledgeSelect', () => {
         expect(
             screen.queryByText('Test::No Icon Mapping'),
         ).not.toBeInTheDocument()
+    })
+
+    it('handles duplicate labels by making them unique with ID suffixes', () => {
+        const onSubmit = jest.fn()
+        const onRemove = jest.fn()
+
+        const enrichedDataWithDuplicates = {
+            ...enrichedDataMock,
+            actions: [
+                { id: 100, name: 'Duplicate Action' }, // Same name
+                { id: 200, name: 'Duplicate Action' }, // Same name, different ID
+                { id: 300, name: 'Unique Action' },
+            ],
+            guidanceArticles: [],
+            articles: [],
+            sourceItems: [],
+            ingestedFiles: [],
+            macros: [],
+            storeWebsiteQuestions: [],
+        }
+
+        const { container } = render(
+            <MissingKnowledgeSelect
+                helpCenterId={1}
+                guidanceHelpCenterId={2}
+                snippetHelpCenterId={3}
+                accountId={123}
+                initialValues={[]}
+                enrichedData={enrichedDataWithDuplicates}
+                onSubmit={onSubmit}
+                onRemove={onRemove}
+            />,
+        )
+
+        // Select multiple items including the duplicates
+        fireEvent.click(screen.getByTestId('select-multiple'))
+
+        // Verify that onSubmit was called with the original choice objects
+        // The makeLabelsUnique function is used for display, but onSubmit gets original objects
+        expect(onSubmit).toHaveBeenCalledWith(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    label: 'Actions::Duplicate Action', // Original label
+                    value: '100',
+                    type: 'ACTION',
+                }),
+                expect.objectContaining({
+                    label: 'Actions::Duplicate Action', // Original label
+                    value: '200',
+                    type: 'ACTION',
+                }),
+            ]),
+        )
+
+        onSubmit.mockClear()
+
+        render(
+            <MissingKnowledgeSelect
+                helpCenterId={1}
+                guidanceHelpCenterId={2}
+                snippetHelpCenterId={3}
+                accountId={123}
+                initialValues={
+                    [
+                        {
+                            parsedResource: {
+                                resourceId: '100',
+                                resourceType:
+                                    'ACTION' as AiAgentKnowledgeResourceTypeEnum,
+                            },
+                        },
+                        {
+                            parsedResource: {
+                                resourceId: '200',
+                                resourceType:
+                                    'ACTION' as AiAgentKnowledgeResourceTypeEnum,
+                            },
+                        },
+                    ] as SuggestedResource[]
+                }
+                enrichedData={enrichedDataWithDuplicates}
+                onSubmit={onSubmit}
+                onRemove={onRemove}
+            />,
+            { container },
+        )
+
+        const duplicateActionTags = screen.getAllByText(/Duplicate Action/)
+        expect(duplicateActionTags).toHaveLength(2)
+    })
+
+    it('handles complex duplicate label collisions with multiple identical labels', () => {
+        const onSubmit = jest.fn()
+        const onRemove = jest.fn()
+
+        const enrichedDataWithComplexDuplicates = {
+            ...enrichedDataMock,
+            actions: [
+                { id: 100, name: 'Same Name' },
+                { id: 200, name: 'Same Name' },
+                { id: 300, name: 'Same Name' },
+            ],
+            macros: [
+                { id: 'Same Name (ID: 100)', name: 'Different Macro' }, // This ID would collide with the action unique label
+            ],
+            guidanceArticles: [],
+            articles: [],
+            sourceItems: [],
+            ingestedFiles: [],
+            storeWebsiteQuestions: [],
+        }
+
+        render(
+            <MissingKnowledgeSelect
+                helpCenterId={1}
+                guidanceHelpCenterId={2}
+                snippetHelpCenterId={3}
+                accountId={123}
+                initialValues={
+                    [
+                        {
+                            parsedResource: {
+                                resourceId: '100',
+                                resourceType:
+                                    'ACTION' as AiAgentKnowledgeResourceTypeEnum,
+                            },
+                        },
+                        {
+                            parsedResource: {
+                                resourceId: '200',
+                                resourceType:
+                                    'ACTION' as AiAgentKnowledgeResourceTypeEnum,
+                            },
+                        },
+                        {
+                            parsedResource: {
+                                resourceId: '300',
+                                resourceType:
+                                    'ACTION' as AiAgentKnowledgeResourceTypeEnum,
+                            },
+                        },
+                    ] as SuggestedResource[]
+                }
+                enrichedData={enrichedDataWithComplexDuplicates}
+                onSubmit={onSubmit}
+                onRemove={onRemove}
+            />,
+        )
+
+        const duplicateActionTags = screen.getAllByText(/Same Name/)
+        expect(duplicateActionTags.length).toBeGreaterThanOrEqual(3)
     })
 })

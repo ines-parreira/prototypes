@@ -51,6 +51,7 @@ export const SIMPLIFIED_RESOURCE_LABELS: Record<string, string> = {
     external_snippet: 'Public URLs::',
     macro: 'Macros::',
     file_external_snippet: 'External files::',
+    store_website: 'Store website questions::',
 }
 
 export enum KnowledgeSourceTypeIcon {

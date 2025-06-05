@@ -24,7 +24,7 @@ const AutoSaveBadge = ({ state, updatedAt }: AutoSaveBadgeProps) => {
     const [setTimeout, clearTimeout] = useTimeout()
 
     const datetimeFormat = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.RelativeDateAndTime,
+        DateAndTimeFormatting.CompactDateWithTime,
     )
 
     useEffect(() => {

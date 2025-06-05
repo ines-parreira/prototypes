@@ -11,6 +11,7 @@ import { useGetAICompatibleMacros } from 'models/macro/queries'
 import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
 import { useMultipleGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
+import { useMultipleStoreWebsiteQuestions } from 'pages/aiAgent/hooks/useMultipleStoreWebsiteQuestions'
 import { useMultiplePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
 import { Components } from 'rest_api/knowledge_service_api/client.generated'
 import { renderHook } from 'utils/testing/renderHook'
@@ -41,6 +42,10 @@ jest.mock('pages/aiAgent/hooks/useGuidanceArticles', () => ({
 
 jest.mock('pages/aiAgent/hooks/usePublicResources', () => ({
     useMultiplePublicResources: jest.fn(),
+}))
+
+jest.mock('pages/aiAgent/hooks/useMultipleStoreWebsiteQuestions', () => ({
+    useMultipleStoreWebsiteQuestions: jest.fn(),
 }))
 
 const queryClient = new QueryClient({
@@ -168,6 +173,10 @@ describe('useGetResourceData', () => {
         ]
         const mockMacros = [{ id: 5, name: 'Macro 1', intent: 'Macro Intent' }]
         const mockActions = [{ id: '6', name: 'Action 1' }]
+        const mockStoreWebsiteQuestions = [
+            { id: 8, title: 'Store Website Question 1', helpCenterId: 300 },
+            { id: 9, title: 'Store Website Question 2', helpCenterId: 300 },
+        ]
 
         ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
             articles: mockArticles,
@@ -199,6 +208,10 @@ describe('useGetResourceData', () => {
             data: mockActions,
             isLoading: false,
         })
+        ;(useMultipleStoreWebsiteQuestions as jest.Mock).mockReturnValue({
+            storeWebsiteQuestions: mockStoreWebsiteQuestions,
+            isLoading: false,
+        })
 
         const { result } = renderHook(() => useGetResourceData(params), {
             wrapper,
@@ -213,6 +226,7 @@ describe('useGetResourceData', () => {
             macros: mockMacros,
             actions: mockActions,
             helpCenters: mockHelpCenters,
+            storeWebsiteQuestions: mockStoreWebsiteQuestions,
         })
 
         // Verify the hooks were called with correct parameters
@@ -245,6 +259,12 @@ describe('useGetResourceData', () => {
             },
             expect.objectContaining({ enabled: true }),
         )
+
+        expect(useMultipleStoreWebsiteQuestions).toHaveBeenCalledWith({
+            snippetHelpCenterIds: [300],
+            shopName: 'test-store',
+            queryOptionsOverrides: expect.objectContaining({ enabled: true }),
+        })
     })
 
     it('should handle loading states correctly', () => {
@@ -315,6 +335,10 @@ describe('useEnrichFeedbackData', () => {
         })
         ;(useGetStoreWorkflowsConfigurations as jest.Mock).mockReturnValue({
             data: [],
+            isLoading: false,
+        })
+        ;(useMultipleStoreWebsiteQuestions as jest.Mock).mockReturnValue({
+            storeWebsiteQuestions: [],
             isLoading: false,
         })
     })
@@ -567,6 +591,10 @@ describe('useEnrichFeedbackData', () => {
         const mockMacros = [{ id: 5, name: 'Macro 1', intent: 'Macro Intent' }]
         const mockActions = [{ id: '6', name: 'Action 1' }]
         const mockHelpCenters = [{ id: 1, subdomain: 'test' }]
+        const mockStoreWebsiteQuestions = [
+            { id: 8, title: 'Store Website Question 1', helpCenterId: 300 },
+            { id: 9, title: 'Store Website Question 2', helpCenterId: 300 },
+        ]
 
         ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
             articles: mockArticles,
@@ -596,6 +624,10 @@ describe('useEnrichFeedbackData', () => {
         })
         ;(useGetStoreWorkflowsConfigurations as jest.Mock).mockReturnValue({
             data: mockActions,
+            isLoading: false,
+        })
+        ;(useMultipleStoreWebsiteQuestions as jest.Mock).mockReturnValue({
+            storeWebsiteQuestions: mockStoreWebsiteQuestions,
             isLoading: false,
         })
 

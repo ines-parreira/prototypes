@@ -163,6 +163,22 @@ const MissingKnowledgeSelect = ({
                             snippet.helpCenterId !== snippetHelpCenterId ||
                             snippet.status !== 'SUCCESSFUL',
                     })),
+                ...enrichedData.storeWebsiteQuestions
+                    .filter((question) => {
+                        return !knowledgeResources?.find(
+                            (resource) =>
+                                resource.resource.resourceId ===
+                                    question.id.toString() &&
+                                resource.resource.resourceType ===
+                                    'EXTERNAL_SNIPPET',
+                        )
+                    })
+                    .map((question) => ({
+                        label: `${SIMPLIFIED_RESOURCE_LABELS.store_website}${question.title}`,
+                        value: question.id.toString(),
+                        type: 'EXTERNAL_SNIPPET',
+                        hide: question.helpCenterId !== snippetHelpCenterId,
+                    })),
             ] as ChoiceOption[],
         [
             enrichedData,
@@ -173,21 +189,65 @@ const MissingKnowledgeSelect = ({
         ],
     )
 
-    useEffect(() => {
-        const values = choices
-            .filter((choice) => {
-                return initialValues.find(
-                    (initialValue) =>
-                        initialValue.parsedResource.resourceId ===
-                            choice.value &&
-                        initialValue.parsedResource.resourceType ===
-                            choice.type,
-                )
-            })
-            .map((v) => v.label)
+    const makeLabelsUnique = useCallback((choices: ChoiceOption[]) => {
+        const labelCounts = new Map<string, number>()
+        const seenLabels = new Set<string>()
 
-        setValues(values)
-    }, [enrichedData, initialValues, choices])
+        choices.forEach((choice) => {
+            const count = labelCounts.get(choice.label) || 0
+            labelCounts.set(choice.label, count + 1)
+        })
+
+        return choices.map((choice) => {
+            if (labelCounts.get(choice.label)! > 1) {
+                const baseLabel = choice.label
+                const uniqueLabel = `${baseLabel} (id:${choice.value})`
+
+                let finalLabel = uniqueLabel
+                let counter = 1
+                while (seenLabels.has(finalLabel)) {
+                    finalLabel = `${uniqueLabel}_${counter}`
+                    counter++
+                }
+                seenLabels.add(finalLabel)
+                return finalLabel
+            }
+            seenLabels.add(choice.label)
+            return choice.label
+        })
+    }, [])
+
+    const findChoiceFromDisplayLabel = useCallback(
+        (displayLabel: string) => {
+            const visibleChoices = choices.filter((c) => !c.hide)
+            const uniqueLabels = makeLabelsUnique(visibleChoices)
+            const index = uniqueLabels.indexOf(displayLabel)
+            return index >= 0 ? visibleChoices[index] : null
+        },
+        [choices, makeLabelsUnique],
+    )
+
+    useEffect(() => {
+        const matchingChoices = choices.filter((choice) => {
+            return initialValues.find(
+                (initialValue) =>
+                    initialValue.parsedResource.resourceId === choice.value &&
+                    initialValue.parsedResource.resourceType === choice.type,
+            )
+        })
+
+        const visibleChoices = choices.filter((c) => !c.hide)
+        const uniqueLabels = makeLabelsUnique(visibleChoices)
+
+        const displayLabels = matchingChoices
+            .map((choice) => {
+                const index = visibleChoices.indexOf(choice)
+                return index >= 0 ? uniqueLabels[index] : null
+            })
+            .filter((label): label is string => label !== null)
+
+        setValues(displayLabels)
+    }, [enrichedData, initialValues, choices, makeLabelsUnique])
 
     const onToggle = useCallback(() => {
         logEventWithSampling(
@@ -202,8 +262,10 @@ const MissingKnowledgeSelect = ({
         (value) => {
             const newValues = Array.isArray(value) ? value : [...values, value]
 
-            const choicesToSubmit = choices
-                .filter((v) => newValues.includes(v.label))
+            const choicesToSubmit = newValues
+                .filter((v) => !values.includes(v))
+                .map((displayLabel) => findChoiceFromDisplayLabel(displayLabel))
+                .filter((choice): choice is ChoiceOption => choice !== null)
                 .filter((choice) => {
                     return !initialValues.find((initialValue) => {
                         return (
@@ -217,8 +279,8 @@ const MissingKnowledgeSelect = ({
 
             const choicesToRemove = initialValues
                 .filter((initialValue) => {
-                    const deletedRecord = newValues.find((value) => {
-                        const choice = choices.find((c) => c.label === value)
+                    const stillSelected = newValues.find((displayLabel) => {
+                        const choice = findChoiceFromDisplayLabel(displayLabel)
                         if (!choice) return false
                         return (
                             initialValue.parsedResource.resourceId ===
@@ -227,7 +289,7 @@ const MissingKnowledgeSelect = ({
                                 choice.type
                         )
                     })
-                    return !deletedRecord
+                    return !stillSelected
                 })
                 .map((initialValue) => {
                     const choice = choices.find(
@@ -243,10 +305,9 @@ const MissingKnowledgeSelect = ({
                     }
                 })
                 .filter((value) => !!value) as ChoiceOption[]
-
             onSubmit([...choicesToSubmit, ...choicesToRemove])
         },
-        [choices, initialValues, values, onSubmit],
+        [choices, initialValues, values, onSubmit, findChoiceFromDisplayLabel],
     )
 
     const handleRemove = useCallback(
@@ -263,13 +324,14 @@ const MissingKnowledgeSelect = ({
     )
 
     const choicesToShow = useMemo(() => {
-        return choices.filter((c) => !c.hide).map((c) => c.label)
-    }, [choices])
+        const visibleChoices = choices.filter((c) => !c.hide)
+        return makeLabelsUnique(visibleChoices)
+    }, [choices, makeLabelsUnique])
 
     return (
         <div className={css.missingKnowledgeSelect}>
             <MultiLevelSelect
-                inputId="test-input-id"
+                inputId="missing-knowledge-select"
                 onChange={handleChange}
                 choices={choicesToShow}
                 value={values}
@@ -303,12 +365,17 @@ const MissingKnowledgeSelect = ({
             {values.length > 0 && (
                 <div className={css.tags}>
                     {values.map((option) => {
+                        const choice = findChoiceFromDisplayLabel(option)
+                        if (!choice) return null
+
+                        const choiceWithDisplayLabel = {
+                            ...choice,
+                            displayLabel: option,
+                        }
                         return (
                             <KnowledgeTag
                                 key={option}
-                                choice={choices.find(
-                                    (choice) => choice.label === option,
-                                )}
+                                choice={choiceWithDisplayLabel}
                                 handleRemove={handleRemove}
                             />
                         )
@@ -322,7 +389,7 @@ const MissingKnowledgeSelect = ({
 export default MissingKnowledgeSelect
 
 type KnowledgeTagProps = {
-    choice?: ChoiceOption
+    choice?: ChoiceOption & { displayLabel: string }
     handleRemove: (option: string) => void
 }
 
@@ -337,7 +404,7 @@ export const KnowledgeTag = ({ choice, handleRemove }: KnowledgeTagProps) => {
         return null
     }
 
-    const label = choice.label.split('::').pop()
+    const label = choice.displayLabel.split('::').pop()
 
     return (
         <>

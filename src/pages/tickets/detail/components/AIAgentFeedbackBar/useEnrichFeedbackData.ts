@@ -13,6 +13,7 @@ import { useGetAICompatibleMacros } from 'models/macro/queries'
 import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useMultipleGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
+import { useMultipleStoreWebsiteQuestions } from 'pages/aiAgent/hooks/useMultipleStoreWebsiteQuestions'
 import { useMultiplePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
 import {
     getArticleUrl,
@@ -580,6 +581,16 @@ export const useGetResourceData = ({
             },
         )
 
+    const { storeWebsiteQuestions, isLoading: isStoreWebsiteQuestionsLoading } =
+        useMultipleStoreWebsiteQuestions({
+            snippetHelpCenterIds,
+            shopName,
+            queryOptionsOverrides: {
+                enabled: queriesEnabled && snippetHelpCenterIds.length > 0,
+                staleTime: DEFAULT_STALE_TIME,
+            },
+        })
+
     // Fetch macros
     const { macros, isLoading: isMacrosLoading } = useMacroResources(
         ticketId,
@@ -601,7 +612,8 @@ export const useGetResourceData = ({
         isSourceItemsListLoading ||
         isActionsLoading ||
         isIngesting ||
-        isHelpCentersLoading
+        isHelpCentersLoading ||
+        isStoreWebsiteQuestionsLoading
 
     return {
         isLoading,
@@ -612,6 +624,7 @@ export const useGetResourceData = ({
         macros,
         actions,
         helpCenters,
+        storeWebsiteQuestions,
     }
 }
 
@@ -645,6 +658,7 @@ export const useEnrichFeedbackData = ({
         macros,
         actions,
         helpCenters,
+        storeWebsiteQuestions,
         isLoading,
     } = useGetResourceData({
         queriesEnabled,
@@ -681,5 +695,6 @@ export const useEnrichFeedbackData = ({
         sourceItems,
         ingestedFiles,
         helpCenters,
+        storeWebsiteQuestions,
     }
 }

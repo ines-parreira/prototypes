@@ -99,6 +99,7 @@ const AIAgentSimplifiedFeedback = () => {
         sourceItems,
         ingestedFiles,
         helpCenters,
+        storeWebsiteQuestions,
     } = useEnrichFeedbackData({
         ticketId,
         storeConfiguration,
@@ -220,6 +221,7 @@ const AIAgentSimplifiedFeedback = () => {
         sourceItems,
         macros,
         ingestedFiles,
+        storeWebsiteQuestions,
         enrichedData,
         setLoadingMutations,
     })
@@ -297,6 +299,7 @@ const AIAgentSimplifiedFeedback = () => {
                                 sourceItems,
                                 ingestedFiles,
                                 helpCenters,
+                                storeWebsiteQuestions,
                             }}
                             onSubmit={onSubmitMissingKnowledge}
                             onRemove={onSubmitMissingKnowledge}
