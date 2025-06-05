@@ -8,7 +8,6 @@ import {
 import { useAccountNotVerifiedBanner } from './useAccountNotVerifiedBanner'
 import { useAiShoppingAssistantTrialBanner } from './useAiShoppingAssistantTrialBanner'
 import { useStatusPageManager } from './useStatusPageManager'
-import { useTrackingBundleInstallationWarningBanner } from './useTrackingBundleInstallationWarningBanner'
 import { useUsageBanner } from './useUsageBanner'
 
 export function useSetBanners() {
@@ -21,5 +20,4 @@ export function useSetBanners() {
     useEmailMigrationBanner()
     useZendeskImportFailedBanner()
     useAiShoppingAssistantTrialBanner()
-    useTrackingBundleInstallationWarningBanner()
 }
