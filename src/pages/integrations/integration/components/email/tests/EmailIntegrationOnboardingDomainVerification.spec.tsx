@@ -39,10 +39,13 @@ const integration = {
 } as EmailIntegration
 
 describe('EmailIntegrationOnboardingDomainVerification', () => {
+    const handleCancel = jest.fn()
+
     const renderComponent = () =>
         render(
             <EmailIntegrationOnboardingDomainVerification
                 integration={integration}
+                handleCancel={handleCancel}
             />,
         )
 
@@ -83,6 +86,7 @@ describe('EmailIntegrationOnboardingDomainVerification', () => {
         expect(EmailIntegrationOnboardingButtonsMock).toHaveBeenCalledWith(
             {
                 integration,
+                cancelCallback: handleCancel,
             },
             {},
         )

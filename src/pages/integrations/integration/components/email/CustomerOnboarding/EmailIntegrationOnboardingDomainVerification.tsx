@@ -11,10 +11,12 @@ import { useEmailOnboardingCompleteCheck } from 'pages/integrations/integration/
 
 type Props = {
     integration: EmailIntegration
+    handleCancel: () => void
 }
 
 export default function EmailIntegrationOnboardingDomainVerification({
     integration,
+    handleCancel,
 }: Props) {
     const { completeOnboarding } = useEmailOnboardingCompleteCheck(integration)
     const { domain } = useDomainVerification()
@@ -29,7 +31,10 @@ export default function EmailIntegrationOnboardingDomainVerification({
     return (
         <>
             <EmailDomainVerificationContent integration={integration} />
-            <EmailIntegrationOnboardingButtons integration={integration} />
+            <EmailIntegrationOnboardingButtons
+                integration={integration}
+                cancelCallback={handleCancel}
+            />
             <OnboardingDomainVerificationPrompt
                 when={!domain?.verified && !isCommonDomainAddress}
             />

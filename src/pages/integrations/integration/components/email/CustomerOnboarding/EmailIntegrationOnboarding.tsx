@@ -1,15 +1,18 @@
 import React, { useState } from 'react'
 
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
+import { Button } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
+import useLocalStorage from 'hooks/useLocalStorage'
 import { isEnterprise } from 'models/billing/utils'
 import PageHeader from 'pages/common/components/PageHeader'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
+import history from 'pages/history'
 import EmailIntegrationConnectForm from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailForwarding/EmailIntegrationConnectForm'
 import DomainVerificationProvider from 'pages/integrations/integration/components/email/EmailDomainVerification/DomainVerificationProvider'
 import EmailDomainVerificationSupportContentSidebar from 'pages/integrations/integration/components/email/EmailDomainVerification/EmailDomainVerificationSupportContentSidebar'
@@ -17,8 +20,10 @@ import { getDomainFromEmailAddress } from 'pages/integrations/integration/compon
 import SettingsContent from 'pages/settings/SettingsContent'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 
+import EmailGenericModal from '../components/EmailGenericModal'
 import {
     EmailIntegrationOnboardingStep,
+    forwardingVerificationStorageKey,
     useEmailOnboarding,
 } from '../hooks/useEmailOnboarding'
 import EmailIntegrationForwardingSetupForm from './EmailForwarding/EmailIntegrationForwardingSetupForm'
@@ -33,7 +38,9 @@ type Props = {
 }
 
 export default function EmailIntegrationOnboarding({ integration }: Props) {
-    const { currentStep } = useEmailOnboarding({ integration })
+    const { currentStep, deleteIntegration } = useEmailOnboarding({
+        integration,
+    })
     const forceEmailForwardingFlag: boolean = useFlag(
         FeatureFlagKey.ForceEmailOnboarding,
         false,
@@ -41,12 +48,24 @@ export default function EmailIntegrationOnboarding({ integration }: Props) {
 
     const [emailAddress, setEmailAddress] = useState('')
     const [displayName, setDisplayName] = useState('')
+    const [showWarningModal, setShowWarningModal] = useState(false)
 
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const isEnterpriseCustomer = isEnterprise(currentHelpdeskPlan)
     const isForcedEmailOnboarding =
         forceEmailForwardingFlag && isEnterpriseCustomer
 
+    const [, , removeVerification] = useLocalStorage<Date | null>(
+        forwardingVerificationStorageKey(integration?.id ?? 0),
+        null,
+    )
+
+    const handleEmailOnboardingCancel = () => {
+        setShowWarningModal(false)
+        removeVerification()
+        deleteIntegration()
+        history.push('/app/settings/channels/email')
+    }
     return (
         <div className="full-width">
             <PageHeader
@@ -57,6 +76,27 @@ export default function EmailIntegrationOnboarding({ integration }: Props) {
                     />
                 }
             />
+
+            <EmailGenericModal
+                showModal={showWarningModal}
+                title="Leave email setup?"
+                description="If you leave now, you’ll lose your progress and the email integration won’t be created."
+            >
+                <Button
+                    intent="secondary"
+                    onClick={() => {
+                        setShowWarningModal(false)
+                    }}
+                >
+                    Back to Editing
+                </Button>
+                <Button
+                    intent="destructive"
+                    onClick={handleEmailOnboardingCancel}
+                >
+                    Discard Email integration
+                </Button>
+            </EmailGenericModal>
 
             <div className="full-width flex">
                 <SettingsContent>
@@ -99,6 +139,7 @@ export default function EmailIntegrationOnboarding({ integration }: Props) {
                                 displayName={displayName}
                                 handleEmailChange={setEmailAddress}
                                 handleDisplayChange={setDisplayName}
+                                handleCancel={() => setShowWarningModal(true)}
                             />
                         )}
 
@@ -106,6 +147,7 @@ export default function EmailIntegrationOnboarding({ integration }: Props) {
                             EmailIntegrationOnboardingStep.SetupForwarding && (
                             <EmailIntegrationForwardingSetupForm
                                 integration={integration}
+                                handleCancel={() => setShowWarningModal(true)}
                             />
                         )}
                         {currentStep ===
@@ -118,6 +160,9 @@ export default function EmailIntegrationOnboarding({ integration }: Props) {
                                 >
                                     <EmailIntegrationOnboardingDomainVerification
                                         integration={integration}
+                                        handleCancel={() =>
+                                            setShowWarningModal(true)
+                                        }
                                     />
                                 </DomainVerificationProvider>
                             )}

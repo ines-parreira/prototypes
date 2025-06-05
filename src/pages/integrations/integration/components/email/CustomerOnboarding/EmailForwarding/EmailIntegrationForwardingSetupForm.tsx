@@ -17,6 +17,7 @@ type Values = Partial<{ checked: boolean }>
 
 type Props = {
     integration?: EmailIntegration | undefined
+    handleCancel?: () => void
 }
 
 export default function EmailIntegrationForwardingSetupForm(props: Props) {
@@ -107,7 +108,10 @@ export default function EmailIntegrationForwardingSetupForm(props: Props) {
                         </>
                     )}
                 </div>
-                <EmailIntegrationOnboardingButtons integration={integration} />
+                <EmailIntegrationOnboardingButtons
+                    integration={integration}
+                    cancelCallback={props.handleCancel}
+                />
             </Form>
         </>
     )

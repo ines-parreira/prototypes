@@ -16,16 +16,59 @@ jest.mock('pages/history', () => ({
     push: jest.fn(),
 }))
 
-const renderComponent = (props = {}) =>
-    render(
-        <EmailIntegrationConnectForm
-            emailAddress=""
-            displayName=""
-            handleEmailChange={jest.fn()}
-            handleDisplayChange={jest.fn()}
-            {...props}
-        />,
+const TestWrapper = ({
+    emailAddress = '',
+    displayName = '',
+    handleEmailChange = jest.fn(),
+    handleDisplayChange = jest.fn(),
+    ...otherProps
+}) => {
+    const [showModal, setShowModal] = React.useState(false)
+
+    const handleCancel = () => {
+        if (emailAddress || displayName) {
+            setShowModal(true)
+        } else {
+            const historyMock = require('pages/history')
+            historyMock.push('/app/settings/channels/email')
+        }
+    }
+
+    const handleBackToEditing = () => {
+        setShowModal(false)
+    }
+
+    const handleDiscardIntegration = () => {
+        const historyMock = require('pages/history')
+        historyMock.push('/app/settings/channels/email')
+    }
+
+    return (
+        <>
+            <EmailIntegrationConnectForm
+                emailAddress={emailAddress}
+                displayName={displayName}
+                handleEmailChange={handleEmailChange}
+                handleDisplayChange={handleDisplayChange}
+                handleCancel={handleCancel}
+                {...otherProps}
+            />
+            {showModal && (
+                <div>
+                    EmailGenericModal
+                    <button onClick={handleBackToEditing}>
+                        Back to Editing
+                    </button>
+                    <button onClick={handleDiscardIntegration}>
+                        Discard Email integration
+                    </button>
+                </div>
+            )}
+        </>
     )
+}
+
+const renderComponent = (props = {}) => render(<TestWrapper {...props} />)
 
 jest.mock(
     'pages/integrations/integration/components/email/hooks/useEmailOnboarding',

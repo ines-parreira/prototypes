@@ -1,14 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import pick from 'lodash/pick'
 
 import type { EmailIntegration } from '@gorgias/helpdesk-queries'
-import { Button } from '@gorgias/merchant-ui-kit'
 
 import { Form, FormField } from 'core/forms'
 import FormRow from 'pages/common/forms/FormRow'
-import history from 'pages/history'
-import EmailGenericModal from 'pages/integrations/integration/components/email/components/EmailGenericModal'
 import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
 import { isEmail } from 'utils'
 
@@ -28,13 +25,12 @@ type Props = {
     displayName?: string
     handleEmailChange: (val: string) => void
     handleDisplayChange: (val: string) => void
+    handleCancel: () => void
 }
 
 export default function EmailIntegrationConnectForm(props: Props) {
     const { integration, errors, connectIntegration } =
         useEmailOnboarding(props)
-
-    const [showWarningModal, setShowWarningModal] = useState(false)
 
     const defaultValues: Values = integration
         ? pick(integration, ['name', 'meta.address'])
@@ -51,24 +47,6 @@ export default function EmailIntegrationConnectForm(props: Props) {
 
     return (
         <div className="flex">
-            <EmailGenericModal
-                showModal={showWarningModal}
-                title="Leave email setup?"
-                description="If you leave now, you’ll lose your progress and the email integration won’t be created."
-            >
-                <Button
-                    intent="secondary"
-                    onClick={() => setShowWarningModal(false)}
-                >
-                    Back to Editing
-                </Button>
-                <Button
-                    intent="destructive"
-                    onClick={() => history.push('/app/settings/channels/email')}
-                >
-                    Discard Email integration
-                </Button>
-            </EmailGenericModal>
             <Form<Values>
                 className={css.form}
                 defaultValues={defaultValues}
@@ -121,16 +99,7 @@ export default function EmailIntegrationConnectForm(props: Props) {
                 </FormSection>
                 <EmailIntegrationOnboardingButtons
                     integration={integration}
-                    {...{
-                        cancelCallback: () => {
-                            if (props.emailAddress || props.displayName) {
-                                setShowWarningModal(true)
-                            } else {
-                                setShowWarningModal(false)
-                                history.push('/app/settings/channels/email')
-                            }
-                        },
-                    }}
+                    cancelCallback={props.handleCancel}
                 />
             </Form>
         </div>

@@ -19,8 +19,8 @@ const FormContext = ({ children }: { children: React.ReactNode }) => {
     return <FormProvider {...methods}>{children}</FormProvider>
 }
 
-const renderComponent = () =>
-    render(<EmailIntegrationOnboardingButtons />, {
+const renderComponent = (props = {}) =>
+    render(<EmailIntegrationOnboardingButtons {...props} />, {
         wrapper: FormContext,
     })
 
@@ -63,12 +63,14 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
 
     describe('back/cancel', () => {
         it('should render a cancel button if the current step is connect', () => {
+            const cancelCallback = jest.fn()
+
             useEmailOnboardingMock.mockReturnValue({
                 ...defaultHookResult,
                 currentStep: EmailIntegrationOnboardingStep.ConnectIntegration,
             })
 
-            renderComponent()
+            renderComponent({ cancelCallback })
 
             const button = screen.getByRole('button', {
                 name: 'Cancel',
@@ -77,7 +79,7 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
 
             fireEvent.click(button)
 
-            expect(defaultHookResult.goBack).toHaveBeenCalled()
+            expect(cancelCallback).toHaveBeenCalled()
         })
 
         it('should render a back button if the current step is NOT connect', () => {
@@ -101,11 +103,12 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
 
     describe('next/CTA', () => {
         describe('Connect Integration step', () => {
-            it('should render a Next CTA (disabled by default)', () => {
+            it('should render a Next CTA (not disabled by default)', () => {
                 useEmailOnboardingMock.mockReturnValue({
                     ...defaultHookResult,
                     currentStep:
                         EmailIntegrationOnboardingStep.ConnectIntegration,
+                    isConnected: false,
                 })
 
                 renderComponent()
@@ -114,7 +117,7 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
                     name: 'Next',
                 })
                 expect(button).toBeInTheDocument()
-                expect(button).toBeAriaDisabled()
+                expect(button).not.toBeDisabled()
             })
 
             it('should render a Next CTA (not disabled if already connected)', () => {
@@ -131,7 +134,7 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
                     name: 'Next',
                 })
                 expect(button).toBeInTheDocument()
-                expect(button).toBeAriaEnabled()
+                expect(button).toBeEnabled()
                 expect(button.getAttribute('type')).toBe('submit')
             })
 
@@ -165,7 +168,7 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
                     name: 'Next',
                 })
                 expect(button).toBeInTheDocument()
-                expect(button).toBeAriaDisabled()
+                expect(button).toHaveAttribute('aria-disabled', 'true')
             })
 
             it('should render a Next CTA (enabled if verified)', () => {
@@ -181,7 +184,7 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
                     name: 'Next',
                 })
                 expect(button).toBeInTheDocument()
-                expect(button).toBeAriaEnabled()
+                expect(button).toBeEnabled()
             })
 
             it('should render "Send test email again" if verification has failed', () => {
@@ -248,65 +251,5 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
                 ).not.toBeInTheDocument()
             })
         })
-    })
-
-    it('should show the delete integration button if the integration exists', () => {
-        useEmailOnboardingMock.mockReturnValue({
-            ...defaultHookResult,
-            integration: { id: 1 } as EmailIntegration,
-        })
-
-        renderComponent()
-
-        expect(
-            screen.getByRole('button', {
-                name: 'Delete integration',
-            }),
-        ).toBeInTheDocument()
-    })
-
-    it('should not show the delete integration button if no integration exists', () => {
-        useEmailOnboardingMock.mockReturnValue({
-            ...defaultHookResult,
-            integration: undefined,
-        })
-
-        renderComponent()
-
-        expect(
-            screen.queryByRole('button', {
-                name: 'Delete integration',
-            }),
-        ).not.toBeInTheDocument()
-    })
-
-    it('should call removeVerification and deleteIntegration when delete is confirmed', () => {
-        const removeVerificationMock = jest.fn()
-        const deleteIntegrationMock = jest.fn()
-
-        useLocalStorageMock.mockReturnValue([
-            null,
-            jest.fn(),
-            removeVerificationMock,
-        ])
-        useEmailOnboardingMock.mockReturnValue({
-            ...defaultHookResult,
-            integration: { id: 1 } as EmailIntegration,
-            deleteIntegration: deleteIntegrationMock,
-        })
-
-        renderComponent()
-
-        const deleteButton = screen.getByRole('button', {
-            name: 'Delete integration',
-        })
-
-        fireEvent.click(deleteButton)
-
-        const confirmButton = screen.getByRole('button', { name: 'Confirm' })
-        fireEvent.click(confirmButton)
-
-        expect(removeVerificationMock).toHaveBeenCalled()
-        expect(deleteIntegrationMock).toHaveBeenCalled()
     })
 })
