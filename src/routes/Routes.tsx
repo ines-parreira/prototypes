@@ -47,7 +47,7 @@ import { AiAgentSales } from 'pages/aiAgent/AiAgentSales'
 import { AiAgentSalesStrategy } from 'pages/aiAgent/AiAgentSalesStrategy'
 import AiAgentScrapedDomainProductsContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainProductsContainer'
 import AiAgentScrapedDomainQuestionsContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainQuestionsContainer'
-import { AiAgentNavbarWrapper } from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbarWrapper'
+import { AiAgentNavbar } from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbar'
 import { AiAgentRedirect } from 'pages/aiAgent/components/AiAgentRedirect/AiAgentRedirect'
 import { aiAgentRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { Level2IntentsContainer } from 'pages/aiAgent/insights/Level2IntentsContainer/Level2IntentsContainer'
@@ -840,10 +840,7 @@ export function AiAgentBaseRoutes({ match: { path } }: RouteComponentProps) {
 
                 <Route
                     render={() => (
-                        <App
-                            content={AiAgentContent}
-                            navbar={AiAgentNavbarWrapper}
-                        />
+                        <App content={AiAgentContent} navbar={AiAgentNavbar} />
                     )}
                 />
             </Switch>

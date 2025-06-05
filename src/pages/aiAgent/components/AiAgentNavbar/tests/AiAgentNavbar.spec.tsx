@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
@@ -40,7 +40,7 @@ jest.mock('common/notifications/components/Button', () => ({
 jest.mock('core/flags')
 const mockUseFlag = jest.mocked(useFlag)
 
-const wrapper = ({ children }: { children?: ReactNode }) => (
+const wrapper = ({ children }: { children: ReactNode }) => (
     <StaticRouter location="/app/ai-agent/shopify/teststore1/optimize">
         <NavBarProvider>{children}</NavBarProvider>
     </StaticRouter>
@@ -130,7 +130,7 @@ describe('<AiAgentNavbar />', () => {
     })
 
     describe('render()', () => {
-        it('should render ai agent navbar with all options', () => {
+        it('should render ai agent navbar with all options', async () => {
             renderNavbar({
                 store: {
                     currentAccount: fromJS({
@@ -143,31 +143,15 @@ describe('<AiAgentNavbar />', () => {
                 },
             })
 
-            const navbar = within(screen.getByTestId('ai-agent-navbar'))
+            expect(screen.getByText('teststore1')).toBeInTheDocument()
+            expect(screen.getByText('teststore2')).toBeInTheDocument()
+            expect(screen.getByText('teststore3')).toBeInTheDocument()
+            expect(screen.getByText('teststore4')).toBeInTheDocument()
 
-            expect(navbar.getByText('teststore1')).toBeInTheDocument()
-            expect(navbar.getByText('teststore2')).toBeInTheDocument()
-            expect(navbar.getByText('teststore3')).toBeInTheDocument()
-            expect(navbar.getByText('teststore4')).toBeInTheDocument()
-
-            expect(navbar.getAllByText('Optimize').length).toBe(1)
-            expect(navbar.getAllByText('Knowledge').length).toBe(1)
-            expect(navbar.getAllByText('Settings').length).toBe(1)
-            expect(navbar.getAllByText('Test').length).toBe(1)
-
-            fireEvent.click(navbar.getByText('teststore4'))
-
-            expect(navbar.getAllByText('Optimize').length).toBe(2)
-            expect(navbar.getAllByText('Knowledge').length).toBe(2)
-            expect(navbar.getAllByText('Settings').length).toBe(2)
-            expect(navbar.getAllByText('Test').length).toBe(2)
-
-            fireEvent.click(navbar.getByText('teststore4'))
-
-            expect(navbar.getAllByText('Optimize').length).toBe(1)
-            expect(navbar.getAllByText('Knowledge').length).toBe(1)
-            expect(navbar.getAllByText('Settings').length).toBe(1)
-            expect(navbar.getAllByText('Test').length).toBe(1)
+            expect(screen.getByText('Optimize')).toBeInTheDocument()
+            expect(screen.getByText('Knowledge')).toBeInTheDocument()
+            expect(screen.getByText('Settings')).toBeInTheDocument()
+            expect(screen.getByText('Test')).toBeInTheDocument()
         })
 
         it('should not render ai agent navbar without automate', () => {

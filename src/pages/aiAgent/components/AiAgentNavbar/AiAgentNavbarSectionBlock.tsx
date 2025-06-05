@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
 
-import classNames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
+import { NavLink } from 'react-router-dom'
 
 import { Badge } from '@gorgias/merchant-ui-kit'
 
-import cssNavbar from 'assets/css/navbar.less'
+import { Navigation } from 'components/Navigation/Navigation'
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { ShopType } from 'models/selfServiceConfiguration/types'
@@ -23,32 +23,29 @@ import {
     getAiSalesAgentTrialState,
     TrialState,
 } from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
-import NavbarLink from 'pages/common/components/navbar/NavbarLink'
-import NavbarSectionBlock from 'pages/common/components/navbar/NavbarSectionBlock'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getIconFromType } from 'state/integrations/helpers'
 
 import { isPreviewModeActivated } from '../StoreConfigForm/StoreConfigForm.utils'
+import { SectionKey } from './utils'
 
 import css from './AiAgentNavbarSectionBlock.less'
 
-type Props = {
+type AiAgentNavbarSectionBlockV2Props = {
     shopType: ShopType
     shopName: string
-    onToggle: () => void
+    shopKey: SectionKey
     name: string
-    isExpanded: boolean
-    index?: number
+    index: number
 }
 export const AiAgentNavbarSectionBlock = ({
     shopType,
     shopName,
-    index,
+    shopKey,
     name,
-    onToggle,
-    isExpanded,
-}: Props) => {
+    index,
+}: AiAgentNavbarSectionBlockV2Props) => {
     const { navigationItems, routes } = useAiAgentNavigation({ shopName })
     const onboardingState = useAiAgentOnboardingState(shopName)
     const currentAccount = useAppSelector(getCurrentAccountState)
@@ -93,7 +90,6 @@ export const AiAgentNavbarSectionBlock = ({
                 return 'pending'
         }
     }, [onboardingState])
-
     let trialState: TrialState | undefined
     if (storeConfiguration) {
         trialState = getAiSalesAgentTrialState(storeConfiguration)
@@ -133,56 +129,46 @@ export const AiAgentNavbarSectionBlock = ({
     }
 
     return (
-        <NavbarSectionBlock
-            icon={
-                <img
-                    alt={`${shopType} logo`}
-                    role="presentation"
-                    src={getIconFromType(shopType)}
-                />
-            }
-            className={css.section}
-            onToggle={onToggle}
-            name={name}
-            isExpanded={onboardingStatus === 'loading' ? false : isExpanded}
-        >
-            {onboardingStatus === 'complete' &&
-                navigationItems?.map((item) => (
-                    <div
-                        key={item.route}
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested,
-                        )}
-                        {...(item.dataCanduId && {
-                            ['data-candu-id']:
+        <Navigation.Section value={shopKey}>
+            <Navigation.SectionTrigger>
+                <div className={css.navigationTrigger}>
+                    <img
+                        alt={`${shopType} logo`}
+                        role="presentation"
+                        src={getIconFromType(shopType)}
+                    />
+                    {name}
+                </div>
+
+                <Navigation.SectionIndicator />
+            </Navigation.SectionTrigger>
+            <Navigation.SectionContent className={css.sectionContent}>
+                {onboardingStatus === 'complete' &&
+                    navigationItems?.map((item) => (
+                        <Navigation.SectionItem
+                            as={NavLink}
+                            key={item.route}
+                            to={item.route}
+                            displayType="indent"
+                            data-candu-id={
                                 index === 0
                                     ? `${item.dataCanduId}-first-store`
-                                    : item.dataCanduId,
-                        })}
+                                    : item.dataCanduId
+                            }
+                        >
+                            {itemName(item)}
+                        </Navigation.SectionItem>
+                    ))}
+                {onboardingStatus === 'pending' && (
+                    <Navigation.SectionItem
+                        displayType="indent"
+                        as={NavLink}
+                        to={routes.main}
                     >
-                        <NavbarLink to={item.route}>
-                            <span className={cssNavbar['item-name']}>
-                                {itemName(item)}
-                            </span>
-                        </NavbarLink>
-                    </div>
-                ))}
-            {onboardingStatus === 'pending' && (
-                <div
-                    key={routes.main}
-                    className={classNames(
-                        cssNavbar['link-wrapper'],
-                        cssNavbar.isNested,
-                    )}
-                >
-                    <NavbarLink to={routes.main}>
-                        <span className={cssNavbar['item-name']}>
-                            Get Started
-                        </span>
-                    </NavbarLink>
-                </div>
-            )}
-        </NavbarSectionBlock>
+                        Get Started
+                    </Navigation.SectionItem>
+                )}
+            </Navigation.SectionContent>
+        </Navigation.Section>
     )
 }
