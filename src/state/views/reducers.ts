@@ -2,12 +2,10 @@ import { fromJS, List, Map } from 'immutable'
 import _isNumber from 'lodash/isNumber'
 import moment from 'moment'
 
-import { isImmutable } from 'common/utils'
 import { MAX_RECENT_VIEWS } from 'config/views'
 import { View } from 'models/view/types'
 import { tryLocalStorage } from 'services/common/utils'
 import { getCode } from 'utils'
-import { reportError } from 'utils/errors'
 
 import { GorgiasAction, RootState } from '../types'
 import * as constants from './constants'
@@ -387,17 +385,7 @@ export default function reducer(
                     ['_internal', 'navigation', 'total_resources'],
                     null,
                 )
-            } catch {
-                const error = new Error('Failed to reset total resources count')
-                const isStateImmutable = isImmutable(newState)
-
-                reportError(error, {
-                    extra: {
-                        state: isStateImmutable ? newState.toJS() : newState,
-                        isImmutable: isStateImmutable,
-                    },
-                })
-            }
+            } catch {}
 
             return newState
         }

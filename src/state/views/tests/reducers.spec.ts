@@ -1,8 +1,6 @@
 import { fromJS, Map } from 'immutable'
 import moment from 'moment'
 
-import { reportError } from 'utils/errors'
-
 import * as fixtures from '../../../fixtures/views'
 import { ViewType } from '../../../models/view/types'
 import { RootState } from '../../types'
@@ -11,10 +9,6 @@ import { SEARCH_VIEW_FIELD_CONFIG_STORAGE_KEY } from '../constants'
 import reducers, { initialState } from '../reducers'
 import * as selectors from '../selectors'
 import * as utils from '../utils'
-
-const mockReportError = reportError as jest.Mock
-
-jest.mock('utils/errors')
 
 describe('reducers', () => {
     describe('views', () => {
@@ -682,26 +676,6 @@ describe('reducers', () => {
                         },
                     }),
                 })
-            })
-
-            it('should catch total_resources setting error', () => {
-                const state = fromJS({})
-
-                // Mock the setIn method to throw an error
-                const setInMock = jest.fn().mockImplementation(() => {
-                    throw new Error()
-                })
-                const newState = state
-                newState.setIn = setInMock
-
-                reducers(newState, {
-                    type: types.FETCH_LIST_VIEW_START,
-                }).toJS()
-
-                expect(mockReportError).toHaveBeenCalledWith(
-                    new Error('Failed to reset total resources count'),
-                    { extra: { state: {}, isImmutable: true } },
-                )
             })
         })
     })
