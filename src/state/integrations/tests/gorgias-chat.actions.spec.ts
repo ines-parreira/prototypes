@@ -11,6 +11,7 @@ import { getGorgiasChatProtectedApiClient } from '../../../rest_api/gorgias_chat
 import { Client } from '../../../rest_api/gorgias_chat_protected_api/client.generated'
 import {
     InstallationStatus,
+    InstallationStatuses,
     Texts,
     Translations,
 } from '../../../rest_api/gorgias_chat_protected_api/types'
@@ -19,6 +20,7 @@ import {
     getApplicationTexts,
     getInstallationSnippet,
     getInstallationStatus,
+    getInstallationStatuses,
     getTranslations,
     updateApplicationTexts,
 } from '../actions/gorgias-chat.actions'
@@ -274,6 +276,60 @@ describe('gorgias-chat.actions', () => {
                 await expect(
                     getInstallationStatus(applicationId),
                 ).rejects.toThrow()
+            })
+        })
+    })
+
+    describe('"getInstallationStatuses"', () => {
+        describe('when it works', () => {
+            const okApiResponse: InstallationStatuses = {
+                installationStatuses: [
+                    {
+                        applicationId: 1,
+                        hasBeenRequestedOnce: false,
+                        installed: false,
+                        installedOnShopifyCheckout: false,
+                        minimumSnippetVersion: null,
+                    },
+                ],
+            }
+            let mockServer: MockAdapter
+
+            beforeAll(() => {
+                mockServer = new MockAdapter(chatClient)
+
+                mockServer
+                    .onGet(`/applications/installation-statuses`)
+                    .reply(200, okApiResponse)
+            })
+            afterAll(() => {
+                mockServer.reset()
+            })
+
+            it('it should return correct data', async () => {
+                const response = await getInstallationStatuses()
+                expect(JSON.stringify(response)).toBe(
+                    JSON.stringify(okApiResponse),
+                )
+            })
+        })
+
+        describe('when it fails', () => {
+            let mockServer: MockAdapter
+
+            beforeAll(() => {
+                mockServer = new MockAdapter(chatClient)
+
+                mockServer
+                    .onGet(`/applications/installation-statuses`)
+                    .reply(500, { error: 'Error' })
+            })
+            afterAll(() => {
+                mockServer.reset()
+            })
+
+            it('it should throw error', async () => {
+                await expect(getInstallationStatuses()).rejects.toThrow()
             })
         })
     })

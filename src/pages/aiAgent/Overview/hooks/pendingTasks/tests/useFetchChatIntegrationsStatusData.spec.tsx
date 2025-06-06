@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { AiAgentOverviewRootStateFixture } from 'pages/aiAgent/Overview/tests/AiAgentOverviewRootState.fixture'
-import { getInstallationStatus } from 'state/integrations/actions'
+import { getInstallationStatuses } from 'state/integrations/actions'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
@@ -16,9 +16,9 @@ import { useFetchChatIntegrationsStatusData } from '../useFetchChatIntegrationsS
 const queryClient = mockQueryClient()
 
 jest.mock('state/integrations/actions', () => ({
-    getInstallationStatus: jest.fn(),
+    getInstallationStatuses: jest.fn(),
 }))
-const getInstallationStatusMock = assumeMock(getInstallationStatus)
+const getInstallationStatusesMock = assumeMock(getInstallationStatuses)
 
 describe('useFetchChatIntegrationsStatusData', () => {
     it('should do nothing if no chatIds given', () => {
@@ -49,17 +49,35 @@ describe('useFetchChatIntegrationsStatusData', () => {
 
     it('should return chat integration with status and filter out non existing ones', async () => {
         const rootState = AiAgentOverviewRootStateFixture.start()
-            .withChatIntegration()
-            .withChatIntegration()
-            .withChatIntegration()
+            .withChatIntegration({ appId: '123' })
+            .withChatIntegration({ appId: '124' })
+            .withChatIntegration({ appId: '125' })
             .build()
 
-        getInstallationStatusMock.mockResolvedValue({
-            applicationId: 1,
-            hasBeenRequestedOnce: true,
-            installed: true,
-            installedOnShopifyCheckout: false,
-            minimumSnippetVersion: 'v3' as any,
+        getInstallationStatusesMock.mockResolvedValue({
+            installationStatuses: [
+                {
+                    applicationId: 123,
+                    hasBeenRequestedOnce: true,
+                    installed: true,
+                    installedOnShopifyCheckout: false,
+                    minimumSnippetVersion: 'v3' as any,
+                },
+                {
+                    applicationId: 124,
+                    hasBeenRequestedOnce: true,
+                    installed: true,
+                    installedOnShopifyCheckout: false,
+                    minimumSnippetVersion: 'v3' as any,
+                },
+                {
+                    applicationId: 126,
+                    hasBeenRequestedOnce: true,
+                    installed: true,
+                    installedOnShopifyCheckout: false,
+                    minimumSnippetVersion: 'v3' as any,
+                },
+            ],
         })
 
         const hook = renderHook(
@@ -84,7 +102,7 @@ describe('useFetchChatIntegrationsStatusData', () => {
         expect(hook.result.current).toEqual({
             data: [
                 {
-                    applicationId: 1,
+                    applicationId: 123,
                     chatId: 1,
                     hasBeenRequestedOnce: true,
                     installed: true,
@@ -92,7 +110,7 @@ describe('useFetchChatIntegrationsStatusData', () => {
                     minimumSnippetVersion: 'v3',
                 },
                 {
-                    applicationId: 1,
+                    applicationId: 124,
                     chatId: 2,
                     hasBeenRequestedOnce: true,
                     installed: true,
@@ -107,17 +125,44 @@ describe('useFetchChatIntegrationsStatusData', () => {
 
     it('should return chat integration ordered by updated date, older first', async () => {
         const rootState = AiAgentOverviewRootStateFixture.start()
-            .withChatIntegration({ updatedAt: '2021-01-05T00:00:00Z' })
-            .withChatIntegration({ updatedAt: '2021-01-01T00:00:00Z' })
-            .withChatIntegration({ updatedAt: '2021-01-06T00:00:00Z' })
+            .withChatIntegration({
+                updatedAt: '2021-01-05T00:00:00Z',
+                appId: '123',
+            })
+            .withChatIntegration({
+                updatedAt: '2021-01-01T00:00:00Z',
+                appId: '124',
+            })
+            .withChatIntegration({
+                updatedAt: '2021-01-06T00:00:00Z',
+                appId: '125',
+            })
             .build()
 
-        getInstallationStatusMock.mockResolvedValue({
-            applicationId: 1,
-            hasBeenRequestedOnce: true,
-            installed: true,
-            installedOnShopifyCheckout: false,
-            minimumSnippetVersion: 'v3' as any,
+        getInstallationStatusesMock.mockResolvedValue({
+            installationStatuses: [
+                {
+                    applicationId: 123,
+                    hasBeenRequestedOnce: true,
+                    installed: true,
+                    installedOnShopifyCheckout: false,
+                    minimumSnippetVersion: 'v3' as any,
+                },
+                {
+                    applicationId: 124,
+                    hasBeenRequestedOnce: true,
+                    installed: true,
+                    installedOnShopifyCheckout: false,
+                    minimumSnippetVersion: 'v3' as any,
+                },
+                {
+                    applicationId: 125,
+                    hasBeenRequestedOnce: true,
+                    installed: true,
+                    installedOnShopifyCheckout: false,
+                    minimumSnippetVersion: 'v3' as any,
+                },
+            ],
         })
 
         const hook = renderHook(
@@ -142,7 +187,7 @@ describe('useFetchChatIntegrationsStatusData', () => {
         expect(hook.result.current).toEqual({
             data: [
                 {
-                    applicationId: 1,
+                    applicationId: 124,
                     chatId: 2,
                     hasBeenRequestedOnce: true,
                     installed: true,
@@ -150,7 +195,7 @@ describe('useFetchChatIntegrationsStatusData', () => {
                     minimumSnippetVersion: 'v3',
                 },
                 {
-                    applicationId: 1,
+                    applicationId: 123,
                     chatId: 1,
                     hasBeenRequestedOnce: true,
                     installed: true,
@@ -158,7 +203,7 @@ describe('useFetchChatIntegrationsStatusData', () => {
                     minimumSnippetVersion: 'v3',
                 },
                 {
-                    applicationId: 1,
+                    applicationId: 125,
                     chatId: 3,
                     hasBeenRequestedOnce: true,
                     installed: true,

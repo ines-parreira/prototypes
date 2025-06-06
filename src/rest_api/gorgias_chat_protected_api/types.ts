@@ -43,6 +43,10 @@ export type InstallationStatus = {
     minimumSnippetVersion: GorgiasChatMinimumSnippetVersion | null
 }
 
+export type InstallationStatuses = {
+    installationStatuses: InstallationStatus[]
+}
+
 export type Agent = {
     avatarUrl: string | null
     name: string

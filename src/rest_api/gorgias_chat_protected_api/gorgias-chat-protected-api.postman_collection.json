@@ -181,6 +181,31 @@
             "response": []
         },
         {
+            "name": "GET installation statuses",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "name": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseURL}}/applications/installation-statuses",
+                    "host": ["{{baseURL}}"],
+                    "path": ["applications", "installation-statuses"]
+                }
+            },
+            "response": []
+        },
+        {
             "name": "Get translations",
             "request": {
                 "method": "GET",

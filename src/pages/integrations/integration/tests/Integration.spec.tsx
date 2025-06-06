@@ -211,6 +211,7 @@ describe('<IntegrationDetail />', () => {
             getApplicationTexts: jest.fn(),
             updateApplicationTexts: jest.fn(),
             getInstallationStatus: jest.fn(),
+            getInstallationStatuses: jest.fn(),
             fetchEmailMigrationStatus: jest.fn(),
             hideShopifyCheckoutChatBanner: jest.fn(),
         },

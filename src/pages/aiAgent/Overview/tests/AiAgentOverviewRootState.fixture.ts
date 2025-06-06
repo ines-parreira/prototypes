@@ -24,6 +24,7 @@ type InternalData = {
 type ChatIntegrationArgs = {
     updatedAt?: string
     isDraft?: boolean
+    appId?: string
 }
 
 export class AiAgentOverviewRootStateFixture {
@@ -119,6 +120,7 @@ export class AiAgentOverviewRootStateFixture {
     withChatIntegration({
         updatedAt,
         isDraft = false,
+        appId,
     }: ChatIntegrationArgs = {}) {
         const id = this.internalData.integrationId++
         const _updatedAt = new Date(
@@ -130,7 +132,7 @@ export class AiAgentOverviewRootStateFixture {
 
         this.integrations.push(
             IntegrationFixture.start()
-                .asChat({ updatedAt: _updatedAt.toISOString() })
+                .asChat({ updatedAt: _updatedAt.toISOString(), appId })
                 .withDetails({
                     id,
                     name: `Chat ${id}`,

@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
 
@@ -7,14 +7,34 @@ import {
     GorgiasChatIntegration,
     IntegrationType,
 } from 'models/integration/types'
-import { getInstallationStatus } from 'state/integrations/actions'
+import { InstallationStatus } from 'rest_api/gorgias_chat_protected_api/types'
+import { getInstallationStatuses } from 'state/integrations/actions'
 import { getIntegrationsByType } from 'state/integrations/selectors'
+
+const sortByUpdatedAt = <T extends { updatedAt?: string }>(items: T[]): T[] => {
+    return items.sort((a, b) => {
+        if (!a.updatedAt) return 1
+        if (!b.updatedAt) return -1
+        return new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime()
+    })
+}
 
 type Args = {
     chatIds: number[]
     enabled: boolean
     refetchOnWindowFocus?: boolean
 }
+
+type ChatInstallationStatus = InstallationStatus & {
+    chatId?: number
+}
+
+type MappedChat = {
+    chatId: number
+    appId: string
+    updatedAt: string
+}
+
 export const useFetchChatIntegrationsStatusData = ({
     enabled,
     chatIds,
@@ -29,56 +49,56 @@ export const useFetchChatIntegrationsStatusData = ({
     )
     const chatIntegrations = useAppSelector(getChatIntegrations)
 
-    const { isLoading, isFetched, data } = useQuery(
-        ['aiAgentChatInstallationStatus', `ids:${chatIds.sort().join(',')}`],
-        {
-            queryFn: () => {
-                const mappedChats = chatIds
-                    .map((chatId) => {
-                        const chat = chatIntegrations.find(
-                            (i) => i.id === chatId,
-                        )
-                        return {
-                            chatId,
-                            updatedAt: chat?.updated_datetime,
-                            appId: chat?.meta.app_id,
-                        }
-                    })
-                    .sort((a, b) => {
-                        if (!a.updatedAt) {
-                            return 1
-                        }
-                        if (!b.updatedAt) {
-                            return -1
-                        }
+    const mappedChats = useMemo(() => {
+        const chatsWithData = chatIds
+            .map((chatId) => {
+                const chat = chatIntegrations.find((i) => i.id === chatId)
+                return {
+                    chatId,
+                    updatedAt: chat?.updated_datetime,
+                    appId: chat?.meta.app_id,
+                }
+            })
+            .filter((chat): chat is MappedChat => !!chat.appId)
 
-                        return new Date(b.updatedAt).getTime() >
-                            new Date(a.updatedAt).getTime()
-                            ? -1
-                            : 1
-                    })
-                    .filter(
-                        (
-                            chat,
-                        ): chat is {
-                            chatId: number
-                            appId: string
-                            updatedAt: string
-                        } => !!chat.appId,
-                    )
+        return sortByUpdatedAt(chatsWithData)
+    }, [chatIds, chatIntegrations])
 
-                const promises = mappedChats.map(({ chatId, appId }) =>
-                    getInstallationStatus(appId).then((status) => ({
-                        ...status,
-                        chatId,
-                    })),
-                )
-                return Promise.all(promises)
-            },
-            enabled,
-            refetchOnWindowFocus,
-        },
-    )
+    const appIdToChat = useMemo(() => {
+        return new Map(mappedChats.map((chat) => [+chat.appId, chat]))
+    }, [mappedChats])
+
+    const queryFn = useCallback(async (): Promise<ChatInstallationStatus[]> => {
+        if (mappedChats.length === 0) return []
+
+        const { installationStatuses } = await getInstallationStatuses()
+        if (!installationStatuses?.length) return []
+
+        const statusByAppId = new Map(
+            installationStatuses.map((status) => [
+                status.applicationId,
+                status,
+            ]),
+        )
+
+        return mappedChats
+            .map((chat) => statusByAppId.get(+chat.appId))
+            .filter((status): status is InstallationStatus => !!status)
+            .map((status) => ({
+                ...status,
+                chatId: appIdToChat.get(status.applicationId)?.chatId,
+            }))
+    }, [mappedChats, appIdToChat])
+
+    const { isLoading, isFetched, data } = useQuery({
+        queryKey: [
+            'aiAgentChatInstallationStatuses',
+            { chatIds: chatIds.sort() },
+        ],
+        queryFn,
+        enabled,
+        refetchOnWindowFocus,
+    })
 
     return {
         data,

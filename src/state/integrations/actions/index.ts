@@ -36,6 +36,7 @@ import { isWellKnownEcomIntegrationIdMisMatch } from '../helpers'
 import {
     getApplicationTexts as getApplicationTextsAction,
     getInstallationStatus as getInstallationStatusAction,
+    getInstallationStatuses as getInstallationStatusesAction,
     getTranslations as getTranslationsAction,
     updateApplicationTexts as updateApplicationTextsAction,
 } from './gorgias-chat.actions'
@@ -1095,6 +1096,7 @@ export const getTranslations = getTranslationsAction
 export const getApplicationTexts = getApplicationTextsAction
 export const updateApplicationTexts = updateApplicationTextsAction
 export const getInstallationStatus = getInstallationStatusAction
+export const getInstallationStatuses = getInstallationStatusesAction
 
 export const hideShopifyCheckoutChatBanner = () => {
     return (dispatch: StoreDispatch): ReturnType<StoreDispatch> => {

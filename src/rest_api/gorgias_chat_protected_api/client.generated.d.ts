@@ -196,6 +196,17 @@ export interface OperationMethods {
         config?: AxiosRequestConfig,
     ): OperationResponse<any>
     /**
+     * getInstallationStatuses - GET installation statuses
+     */
+    'getInstallationStatuses'(
+        parameters: Parameters<
+            Paths.GetInstallationStatuses.HeaderParameters &
+                Paths.GetInstallationStatuses.PathParameters
+        >,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<any>
+    /**
      * getTranslations - Get translations
      */
     'getTranslations'(
@@ -299,6 +310,19 @@ export interface PathsDictionary {
             parameters: Parameters<
                 Paths.GetInstallationStatus.HeaderParameters &
                     Paths.GetInstallationStatus.PathParameters
+            >,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<any>
+    }
+    ['/applications/installation-statuses']: {
+        /**
+         * getInstallationStatuses - GET installation statuses
+         */
+        'get'(
+            parameters: Parameters<
+                Paths.GetInstallationStatuses.HeaderParameters &
+                    Paths.GetInstallationStatuses.PathParameters
             >,
             data?: any,
             config?: AxiosRequestConfig,

@@ -4,12 +4,12 @@ import {
     GetInstallationSnippetResponse,
 } from 'models/integration/types'
 import { getGorgiasChatProtectedApiClient } from 'rest_api/gorgias_chat_protected_api/client'
-
 import {
     InstallationStatus,
+    InstallationStatuses,
     Texts,
     Translations,
-} from '../../../rest_api/gorgias_chat_protected_api/types'
+} from 'rest_api/gorgias_chat_protected_api/types'
 
 export async function getTranslations(lang: string) {
     const client = await getGorgiasChatProtectedApiClient()
@@ -47,6 +47,13 @@ export async function getInstallationStatus(applicationId: string) {
         await client.getInstallationStatus({
             applicationId,
         })
+    return data
+}
+
+export async function getInstallationStatuses() {
+    const client = await getGorgiasChatProtectedApiClient()
+    const { data }: { data: InstallationStatuses } =
+        await client.getInstallationStatuses({})
     return data
 }
 
