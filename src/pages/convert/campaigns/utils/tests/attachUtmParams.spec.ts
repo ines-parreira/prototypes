@@ -4,6 +4,7 @@ import { getLDClient } from 'utils/launchDarkly'
 import { CampaignProduct } from '../../types/CampaignProduct'
 import {
     attachUtmToCampaignProduct,
+    attachUtmToUrl,
     removeRevenueUtmFromUrl,
     shouldAppendUtmParam,
 } from '../attachUtmParams'
@@ -88,5 +89,61 @@ describe('removeRevenueUtmFromUrl', () => {
                 'https://jest-store.myshopify.com/?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=JestCampaign&anotherParam=someValue',
             ),
         ).toEqual('https://jest-store.myshopify.com/?anotherParam=someValue')
+    })
+})
+
+describe('attachUtmToUrl', () => {
+    const MOCK_IS_CONVERT_SUBSCRIBER = true
+
+    it('returns the original URL if UTM params should not be appended', () => {
+        allFlagsMock.mockReturnValue({
+            [FeatureFlagKey.RevenueDisableUtmParams]: true,
+        })
+        expect(
+            attachUtmToUrl(
+                MOCK_PRODUCT.url,
+                MOCK_CAMPAIGN_NAME,
+                MOCK_IS_CONVERT_SUBSCRIBER,
+                MOCK_UTM_ENABLED,
+                MOCK_UTM_QUERY_STRING,
+            ),
+        ).toEqual(MOCK_PRODUCT.url)
+    })
+
+    it('attaches UTM parameters to the URL', () => {
+        allFlagsMock.mockReturnValue({
+            [FeatureFlagKey.RevenueDisableUtmParams]: false,
+        })
+
+        const campaignNameConcat = MOCK_CAMPAIGN_NAME.replace(' ', '%20')
+        const expectedFullUrl = `${MOCK_PRODUCT.url}?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=${campaignNameConcat}`
+
+        expect(
+            attachUtmToUrl(
+                MOCK_PRODUCT.url,
+                MOCK_CAMPAIGN_NAME,
+                MOCK_IS_CONVERT_SUBSCRIBER,
+                MOCK_UTM_ENABLED,
+                MOCK_UTM_QUERY_STRING,
+            ),
+        ).toEqual(expectedFullUrl)
+    })
+
+    it('allow custom utm parameters if UTM is disabled', () => {
+        allFlagsMock.mockReturnValue({
+            [FeatureFlagKey.RevenueDisableUtmParams]: false,
+        })
+
+        const stringWithCustomUTM = `${MOCK_PRODUCT.url}?utm_source=FilledByMerchant`
+
+        expect(
+            attachUtmToUrl(
+                stringWithCustomUTM,
+                MOCK_CAMPAIGN_NAME,
+                MOCK_IS_CONVERT_SUBSCRIBER,
+                false, // UTM disabled
+                '', // param usage skipped
+            ),
+        ).toEqual(stringWithCustomUTM)
     })
 })

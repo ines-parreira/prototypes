@@ -54,7 +54,7 @@ export function attachUtmToUrl(
         })
     }
 
-    return removeRevenueUtmFromUrl(url)
+    return url
 }
 
 export function attachUtmToCampaignProduct(
