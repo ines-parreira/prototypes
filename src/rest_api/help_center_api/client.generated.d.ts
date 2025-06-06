@@ -947,6 +947,11 @@ declare namespace Components {
                 integration_id: number
                 account_id: number
             } | null
+            extra_html?: ContactFormExtraHTMLDto
+        }
+        export interface ContactFormExtraHTMLDto {
+            extra_head: string
+            extra_head_deactivated_datetime: string | null // date-time
         }
         export interface ContactFormPageDto {
             external_id: string
@@ -2911,6 +2916,10 @@ declare namespace Components {
             shop_integration_id?: number | null
             form_display_mode?: 'show_after_button_click' | 'show_immediately'
             deactivated_datetime?: string | null // date-time
+            extra_html?: {
+                extra_head: string
+                extra_head_deactivated_datetime: string | null // date-time
+            } | null
         }
         export interface UpdateEmailIntegrationDto {
             /**
@@ -4098,6 +4107,23 @@ declare namespace Paths {
             export type $200 = Components.Schemas.RetrieveFileIngestionLogDto[]
         }
     }
+    namespace GetFileIngestionArticleTitles {
+        namespace Parameters {
+            export type AccountId = string
+            export type FileIngestionId = number
+            export type HelpCenterId = number
+        }
+        export interface PathParameters {
+            help_center_id: Parameters.HelpCenterId
+            file_ingestion_id: Parameters.FileIngestionId
+        }
+        export interface QueryParameters {
+            account_id?: Parameters.AccountId
+        }
+        namespace Responses {
+            export interface $200 {}
+        }
+    }
     namespace GetHelpCenter {
         namespace Parameters {
             export type Fields = string[]
@@ -4433,6 +4459,7 @@ declare namespace Paths {
             export type OrderDir = 'asc' | 'desc'
             export type Page = any
             export type PerPage = any
+            export type Title = string
             export type VersionStatus = 'current' | 'latest_draft'
         }
         export interface PathParameters {
@@ -4441,6 +4468,7 @@ declare namespace Paths {
         export interface QueryParameters {
             has_category?: Parameters.HasCategory
             content?: Parameters.Content
+            title?: Parameters.Title
             locale?: Parameters.Locale
             version_status?: Parameters.VersionStatus
             ids?: Parameters.Ids
@@ -6065,6 +6093,17 @@ export interface OperationMethods {
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.DeleteFileIngestion.Responses.$200>
     /**
+     * getFileIngestionArticleTitles - Get article titles for a file ingestion log
+     */
+    'getFileIngestionArticleTitles'(
+        parameters: Parameters<
+            Paths.GetFileIngestionArticleTitles.QueryParameters &
+                Paths.GetFileIngestionArticleTitles.PathParameters
+        >,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.GetFileIngestionArticleTitles.Responses.$200>
+    /**
      * listGoogleFonts - List google fonts
      */
     'listGoogleFonts'(
@@ -7347,6 +7386,19 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.DeleteFileIngestion.Responses.$200>
+    }
+    ['/api/help-center/help-centers/{help_center_id}/file-ingestion/{file_ingestion_id}/articles']: {
+        /**
+         * getFileIngestionArticleTitles - Get article titles for a file ingestion log
+         */
+        'get'(
+            parameters: Parameters<
+                Paths.GetFileIngestionArticleTitles.QueryParameters &
+                    Paths.GetFileIngestionArticleTitles.PathParameters
+            >,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.GetFileIngestionArticleTitles.Responses.$200>
     }
     ['/api/help-center/google-fonts']: {
         /**

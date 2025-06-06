@@ -24,6 +24,7 @@ import { getViewLanguage } from 'state/ui/helpCenter'
 import { reportError } from 'utils/errors'
 
 import CodeEditor from '../../../common/components/CodeEditor/CodeEditor'
+import { ExtraHtmlSection } from '../../../common/components/ExtraHtmlSection/ExtraHtmlSection'
 import ToggleInput from '../../../common/forms/ToggleInput'
 import { SocialNavigationLinks } from '../components/SocialNavigationLinks'
 import {
@@ -585,59 +586,12 @@ export const HelpCenterCustomizationView = () => {
                     />
                 )}
             </section>
-            <section>
-                <div className={css.heading}>
-                    <h3>Extra HTML</h3>
-                    <p>
-                        Add extra HTML in the{' '}
-                        <a
-                            href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML"
-                            rel="noreferrer"
-                            target="_blank"
-                        >
-                            head section
-                        </a>
-                        .
-                    </p>
-                </div>
-                <div>
-                    <ToggleInput
-                        isToggled={isExtraHtmlToggled}
-                        onClick={(value) => {
-                            setIsDirty(true)
-                            setExtraHTML(
-                                (extraHTML) =>
-                                    extraHTML && {
-                                        ...extraHTML,
-                                        extra_head_deactivated: !value,
-                                    },
-                            )
-                        }}
-                        className={css.toggle}
-                    >
-                        Add extra HTML
-                    </ToggleInput>
-                </div>
-                {isExtraHtmlToggled && (
-                    <CodeEditor
-                        value={extraHTML?.extra_head}
-                        onChange={(value) => {
-                            setIsDirty(value !== extraHTML?.extra_head)
-                            setExtraHTML(
-                                (extraHTML) =>
-                                    extraHTML && {
-                                        ...extraHTML,
-                                        extra_head: value,
-                                    },
-                            )
-                        }}
-                        mode="html"
-                        highlightActiveLine={true}
-                        width="auto"
-                        height="200px"
-                    />
-                )}
-            </section>
+            <ExtraHtmlSection
+                extraHTML={extraHTML}
+                isExtraHtmlToggled={isExtraHtmlToggled}
+                setIsDirty={setIsDirty}
+                setExtraHTML={setExtraHTML}
+            />
             <FormGroup>
                 <Button
                     className="mr-2"

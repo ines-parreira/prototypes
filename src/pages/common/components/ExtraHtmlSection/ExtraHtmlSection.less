@@ -1,0 +1,28 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .heading {
+        margin-bottom: @layout-spacing-m;
+        h3 {
+            margin-bottom: var(--layout-spacing-xxs);
+            font-weight: 600;
+        }
+        p {
+            margin-bottom: 0;
+        }
+    }
+
+    .toggle {
+        margin-bottom: @layout-spacing-s;
+        .toggleLabel {
+            display: flex;
+            align-items: center;
+            .tooltipIcon {
+                margin-left: 5px;
+                margin-top: 2px;
+                font-size: 16px;
+                color: var(--neutral-grey-4);
+            }
+        }
+    }
+}

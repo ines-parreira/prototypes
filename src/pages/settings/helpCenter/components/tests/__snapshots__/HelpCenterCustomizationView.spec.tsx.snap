@@ -550,21 +550,20 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             >
               <label
                 aria-checked="false"
-                class="ui-label-label-3864 label"
-                for="toggle-button-4"
+                class="ui-label-label-3864 ui-togglefield-label-52f1"
                 role="switch"
               >
                 <input
-                  class="input"
+                  class="ui-togglefield-input-52f1"
                   disabled=""
-                  id="toggle-button-4"
-                  name="toggle-button-4"
                   type="checkbox"
                 />
                 <div
-                  class="slider"
+                  class="ui-togglefield-slider-52f1"
                 />
-                Add extra HTML
+                <div>
+                  Add extra HTML
+                </div>
               </label>
             </div>
           </div>

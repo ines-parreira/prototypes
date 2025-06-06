@@ -1,15 +1,21 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 // eslint-disable-next-line no-restricted-imports
 import { useDispatch } from 'react-redux'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import {
     ContactForm,
     UpdateContactFormDto,
     UpdateSubjectLinesProps,
 } from 'models/contactForm/types'
 import Button from 'pages/common/components/button/Button'
+import {
+    ContactFormExtraHTML,
+    ExtraHtmlSection,
+} from 'pages/common/components/ExtraHtmlSection/ExtraHtmlSection'
 import ContactFormDisplayModeToggle from 'pages/settings/contactForm/components/ContactFormDisplayModeToggle'
 import ContactFormEntrypointPreview from 'pages/settings/contactForm/components/ContactFormEntrypointPreview'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
@@ -29,13 +35,18 @@ import css from './ContactFormCustomization.less'
 const initUpdateDto = (
     subject_lines: ContactForm['subject_lines'],
     form_display_mode: ContactForm['form_display_mode'],
-): Pick<UpdateContactFormDto, 'subject_lines' | 'form_display_mode'> => {
+    extra_html: ContactForm['extra_html'],
+): Pick<
+    UpdateContactFormDto,
+    'subject_lines' | 'form_display_mode' | 'extra_html'
+> => {
     return {
         subject_lines: {
             allow_other: !!subject_lines?.allow_other,
             options: subject_lines?.options || [],
         },
         form_display_mode: form_display_mode,
+        extra_html: extra_html || null,
     }
 }
 
@@ -43,17 +54,43 @@ const ContactFormCustomization = (): JSX.Element => {
     const dispatch = useDispatch()
     const { updateContactForm, isLoading } = useContactFormApi()
     const contactForm = useCurrentContactForm()
+    const isContactFormExtraHtmlEnabled = useFlag(
+        FeatureFlagKey.ContactFormExtraHtml,
+    )
     const [isChangesModalShown, setIsChangesModalShown] = useState(false)
     const [isDirty, setIsDirty] = useState(false)
+    const [extraHTML, setExtraHTML] = useState<ContactFormExtraHTML | null>(
+        null,
+    )
     const [updateContactFormDto, setUpdateContactFormDto] = useState<
-        Pick<UpdateContactFormDto, 'subject_lines' | 'form_display_mode'>
+        Pick<
+            UpdateContactFormDto,
+            'subject_lines' | 'form_display_mode' | 'extra_html'
+        >
     >(() =>
-        initUpdateDto(contactForm.subject_lines, contactForm.form_display_mode),
+        initUpdateDto(
+            contactForm.subject_lines,
+            contactForm.form_display_mode,
+            contactForm.extra_html,
+        ),
     )
     const [isFormHidden, setIsFormHidden] = useState(
         contactForm.form_display_mode ===
             ContactFormDisplayMode.SHOW_AFTER_BUTTON_CLICK,
     )
+
+    useEffect(() => {
+        setExtraHTML({
+            extra_head: contactForm?.extra_html?.extra_head ?? '',
+            extra_head_deactivated:
+                contactForm?.extra_html?.extra_head_deactivated_datetime !==
+                null,
+        })
+        setUpdateContactFormDto((prevState) => ({
+            ...prevState,
+            extra_html: contactForm?.extra_html || null,
+        }))
+    }, [contactForm])
 
     useEffect(() => {
         setUpdateContactFormDto((prevState) => ({
@@ -73,8 +110,15 @@ const ContactFormCustomization = (): JSX.Element => {
             initUpdateDto(
                 contactForm.subject_lines,
                 contactForm.form_display_mode,
+                contactForm.extra_html,
             ),
         )
+        setExtraHTML({
+            extra_head: contactForm?.extra_html?.extra_head ?? '',
+            extra_head_deactivated:
+                contactForm?.extra_html?.extra_head_deactivated_datetime !==
+                null,
+        })
         setIsChangesModalShown(false)
         setIsDirty(false)
     }
@@ -87,7 +131,8 @@ const ContactFormCustomization = (): JSX.Element => {
     const onSave = async () => {
         if (
             !updateContactFormDto.subject_lines &&
-            !updateContactFormDto.form_display_mode
+            !updateContactFormDto.form_display_mode &&
+            !updateContactFormDto.extra_html
         )
             return
 
@@ -112,6 +157,14 @@ const ContactFormCustomization = (): JSX.Element => {
             setIsChangesModalShown(false)
         }
     }
+
+    const isExtraHtmlToggled = useMemo(() => {
+        if (!extraHTML) {
+            return false
+        }
+
+        return !extraHTML.extra_head_deactivated
+    }, [extraHTML])
 
     const isValid = (updateContactFormDto.subject_lines?.options || []).every(
         (option) => option.trim().length > 1,
@@ -165,6 +218,29 @@ const ContactFormCustomization = (): JSX.Element => {
                         handleToggleClick={onToggleClick}
                     />
                 </section>
+                {isContactFormExtraHtmlEnabled && (
+                    <ExtraHtmlSection
+                        extraHTML={extraHTML}
+                        isExtraHtmlToggled={isExtraHtmlToggled}
+                        setIsDirty={setIsDirty}
+                        setExtraHTML={(updater) => {
+                            setExtraHTML(updater)
+                            const updatedExtraHTML = updater(extraHTML)
+                            if (updatedExtraHTML) {
+                                setUpdateContactFormDto((prevState) => ({
+                                    ...prevState,
+                                    extra_html: {
+                                        extra_head: updatedExtraHTML.extra_head,
+                                        extra_head_deactivated_datetime:
+                                            updatedExtraHTML.extra_head_deactivated
+                                                ? new Date().toISOString()
+                                                : null,
+                                    },
+                                }))
+                            }
+                        }}
+                    />
+                )}
                 <div className={contactFormCss.mtXl}>
                     <Button isDisabled={!isSaveChangesEnabled} onClick={onSave}>
                         Save Changes

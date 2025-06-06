@@ -34,3 +34,5 @@ export type CreateShopifyPageEmbedmentDto =
 
 export type UpdateShopifyPageEmbedmentDto =
     Components.Schemas.UpdatePageEmbedmentDto
+
+export type ContactFormExtraHTMLDto = Components.Schemas.ContactFormExtraHTMLDto
