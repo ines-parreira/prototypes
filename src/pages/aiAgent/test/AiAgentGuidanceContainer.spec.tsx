@@ -121,6 +121,7 @@ const defaultGuidanceAiSuggestionsProps: ReturnType<
     typeof useGuidanceAiSuggestions
 > = {
     guidanceArticles: [],
+    guidanceUsed: [],
     guidanceAISuggestions: [],
     isLoadingAiGuidances: false,
     isLoadingGuidanceArticleList: false,

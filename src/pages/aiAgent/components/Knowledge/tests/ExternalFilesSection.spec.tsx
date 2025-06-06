@@ -70,13 +70,13 @@ const renderComponent = ({
 describe('ExternalFilesSection', () => {
     it('should render correctly', () => {
         renderComponent()
-        expect(screen.getByText('External documents')).toBeInTheDocument()
+        expect(screen.getByText('Documents')).toBeInTheDocument()
         expect(mockOnEmptyStateChange).toHaveBeenCalledWith(true)
     })
 
     it('should render correctly when still loading', () => {
         renderComponent({ ingestedFiles: null })
-        expect(screen.getByText('External documents')).toBeInTheDocument()
+        expect(screen.getByText('Documents')).toBeInTheDocument()
         expect(mockOnEmptyStateChange).not.toHaveBeenCalled()
     })
 

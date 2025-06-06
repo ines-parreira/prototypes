@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
 import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useSearchParam } from 'hooks/useSearchParam'
 import Button from 'pages/common/components/button/Button'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -58,8 +54,6 @@ export const PublicSourcesSection = ({
 }: Props) => {
     const dispatch = useAppDispatch()
     const [wizardQueryParam] = useSearchParam(WIZARD_POST_COMPLETION_QUERY_KEY)
-    const isAiAgentScrapeStoreDomainEnabled =
-        useFlags()[FeatureFlagKey.AiAgentScrapeStoreDomain]
 
     const { articleIngestionLogsStatus } = usePublicResourcesPooling({
         helpCenterId,
@@ -195,25 +189,12 @@ export const PublicSourcesSection = ({
     return (
         <div className={css.container}>
             <div>
-                <Label className={css.title}>
-                    Public URL sources
-                    <IconTooltip
-                        className={css.icon}
-                        tooltipProps={{
-                            placement: 'top-start',
-                        }}
-                    >
-                        {`Example sources: "`}
-                        <u>https://yourstore.com/faqs</u>
-                        {`" or "`}
-                        <u>https://yourstore.com/return-policy</u>
-                        {`". Please note that image, tables and video content will be ignored.`}
-                    </IconTooltip>
-                </Label>
-                <div>
-                    {isAiAgentScrapeStoreDomainEnabled
-                        ? 'Allow AI Agent to use up to 10 external URLs sources. Links to your Gorgias Help Center or store domain are not accepted.'
-                        : 'Add external URLs for AI Agent to reference. Links to your Gorgias Help Center or main domain are not accepted, as AI Agent needs specific pages to provide accurate answers.'}
+                <Label className={css.title}>Single page URLs</Label>
+                <div className={css.description}>
+                    Add up to 10 URLs for AI Agent to use as knowledge. Only
+                    content from each page is used—subpages and media are
+                    excluded. Gorgias Help Center and store website links are
+                    not supported.
                 </div>
             </div>
 
@@ -239,7 +220,7 @@ export const PublicSourcesSection = ({
             <div>
                 {isLimitReached && (
                     <Tooltip target="add-button">
-                        You have reached the maximum number of URLs.
+                        You have reached the maximum number of URLs allowed
                     </Tooltip>
                 )}
 

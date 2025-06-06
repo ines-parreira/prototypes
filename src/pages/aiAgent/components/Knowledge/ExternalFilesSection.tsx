@@ -1,7 +1,5 @@
 import React, { createRef, useEffect, useState } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
 import { Button, IconButton, Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -52,9 +50,6 @@ export const ExternalFilesSection = ({
     const [isLoading, setIsLoading] = useState(false)
     const inputRef = createRef<HTMLInputElement>()
     const dispatch = useAppDispatch()
-
-    const isAiAgentScrapeStoreDomainEnabled =
-        useFlags()[FeatureFlagKey.AiAgentScrapeStoreDomain]
     const isAiAgentFilesAndUrlsKnowledgeVisible = useFlag(
         FeatureFlagKey.AiAgentFilesAndUrlsKnowledgeVisibilityButton,
     )
@@ -199,12 +194,13 @@ export const ExternalFilesSection = ({
 
             <div className={css.container}>
                 <div>
-                    <Label className={css.title}>External documents</Label>
+                    <Label className={css.title}>Documents</Label>
 
-                    <div>
-                        {isAiAgentScrapeStoreDomainEnabled
-                            ? 'Allow AI Agent to use up to 10 external documents. Do not upload files that may contain sensitive or personal information. Images will be ignored.'
-                            : 'Upload knowledge and process documents for AI Agent to reference. Do not upload files that may contain any sensitive or personal information. Images will be ignored.'}
+                    <div className={css.description}>
+                        Upload up to 10 documents for AI Agent to use as
+                        knowledge. Avoid including personal or sensitive
+                        information. Images within documents will not be
+                        processed.
                     </div>
                 </div>
 
@@ -329,8 +325,8 @@ export const ExternalFilesSection = ({
 
                     {maxFilesReached && (
                         <Tooltip target="upload-button">
-                            You have reached the maximum number of uploads (
-                            {MAX_EXTERNAL_FILES} files).
+                            You have reached the maximum number of documents
+                            allowed
                         </Tooltip>
                     )}
 

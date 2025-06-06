@@ -82,7 +82,7 @@ export const ScrapeStoreDomainSection = ({
             />
             <div className={css.label}>
                 <Label>Store website</Label>
-                <span>
+                <span className={css.description}>
                     Use your website’s content and product pages as knowledge
                     for AI Agent. Re-sync when your site is updated to ensure
                     accurate responses.

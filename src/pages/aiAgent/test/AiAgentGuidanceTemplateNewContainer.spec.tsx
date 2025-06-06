@@ -112,6 +112,7 @@ const defaultUseGuidanceAiSuggestions = {
         getGuidanceArticleFixture(1),
         getGuidanceArticleFixture(2),
     ],
+    guidanceUsed: [getGuidanceArticleFixture(1), getGuidanceArticleFixture(2)],
     isLoadingGuidanceArticleList: false,
     isAllAIGuidancesUsed: undefined,
     isEmptyStateNoAIGuidances: false,

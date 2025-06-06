@@ -14,6 +14,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { billingState } from 'fixtures/billing'
@@ -30,7 +31,10 @@ import { AiAgentKnowledgeContainer } from 'pages/aiAgent/AiAgentKnowledgeContain
 import { usePublicResourcesPooling } from 'pages/aiAgent/hooks/usePublicResourcesPooling'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
-import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {
+    getHelpCentersResponseFixture,
+    getSingleHelpCenterResponseFixture,
+} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock, renderWithRouter } from 'utils/testing'
@@ -42,9 +46,12 @@ import {
 import { IngestionLogStatus } from '../AiAgentScrapedDomainContent/constant'
 import { INITIAL_FORM_VALUES } from '../constants'
 import { applicationsAutomationSettingsAiAgentEnabledFixture } from '../fixtures/applicationAutomationSettings.fixture'
+import { getGuidanceArticleFixture } from '../fixtures/guidanceArticle.fixture'
 import { getIngestionLogFixture } from '../fixtures/ingestionLog.fixture'
 import { getStoreConfigurationFixture } from '../fixtures/storeConfiguration.fixtures'
+import { useAiAgentHelpCenter } from '../hooks/useAiAgentHelpCenter'
 import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
+import { useGuidanceAiSuggestions } from '../hooks/useGuidanceAiSuggestions'
 import { usePollStoreDomainIngestionLog } from '../hooks/usePollStoreDomainIngestionLog'
 import { useSyncStoreDomain } from '../hooks/useSyncStoreDomain'
 
@@ -84,6 +91,15 @@ jest.mock('pages/aiAgent/hooks/usePollStoreDomainIngestionLog')
 const mockUsePollStoreDomainIngestionLog = assumeMock(
     usePollStoreDomainIngestionLog,
 )
+
+jest.mock('pages/aiAgent/hooks/useAiAgentHelpCenter')
+const mockUseAiAgentHelpCenter = assumeMock(useAiAgentHelpCenter)
+
+jest.mock('pages/aiAgent/hooks/useGuidanceAiSuggestions')
+const mockUseGuidanceAiSuggestions = assumeMock(useGuidanceAiSuggestions)
+
+jest.mock('core/flags')
+const mockUseFlag = assumeMock(useFlag)
 
 jest.mock('models/helpCenter/queries')
 
@@ -164,12 +180,14 @@ const renderComponent = ({
     isLoadingHelpCenters = false,
     noStoreConfiguration = false,
     isAiAgentScrapeStoreDomainEnabled = false,
+    isAiAgentFilesAndUrlsKnowledgeVisibilityButton = false,
     helpCenterId = 1,
 }: {
     isStoreConfigLoading?: boolean
     isLoadingHelpCenters?: boolean
     noStoreConfiguration?: boolean
     isAiAgentScrapeStoreDomainEnabled?: boolean
+    isAiAgentFilesAndUrlsKnowledgeVisibilityButton?: boolean
     helpCenterId?: number | null
 } = {}) => {
     mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -190,6 +208,8 @@ const renderComponent = ({
                     name: 'help center 1',
                     type: 'faq',
                     shop_name: 'test-store',
+                    subdomain: 'acme',
+                    default_locale: 'en-US',
                 },
                 {
                     id: 2,
@@ -201,6 +221,17 @@ const renderComponent = ({
         }),
         isLoading: isLoadingHelpCenters,
     } as unknown as ReturnType<typeof useGetHelpCenterList>)
+
+    mockUseAiAgentHelpCenter.mockReturnValue(
+        getHelpCentersResponseFixture.data[0],
+    )
+
+    mockUseGuidanceAiSuggestions.mockReturnValue({
+        guidanceUsed: [
+            getGuidanceArticleFixture(1),
+            getGuidanceArticleFixture(2),
+        ],
+    } as unknown as ReturnType<typeof useGuidanceAiSuggestions>)
 
     mockUseGetArticleIngestionLogs.mockReturnValue({
         data: [
@@ -258,6 +289,8 @@ const renderComponent = ({
             isAiAgentScrapeStoreDomainEnabled,
     })
 
+    mockUseFlag.mockReturnValue(isAiAgentFilesAndUrlsKnowledgeVisibilityButton)
+
     return renderWithRouter(
         <Provider store={mockStore(defaultState)}>
             <QueryClientProvider client={queryClient}>
@@ -284,13 +317,13 @@ describe('AiAgentKnowledgeContainer', () => {
 
         expect(
             screen.getByText(
-                'Add external URLs for AI Agent to reference. Links to your Gorgias Help Center or main domain are not accepted, as AI Agent needs specific pages to provide accurate answers.',
+                'Add up to 10 URLs for AI Agent to use as knowledge. Only content from each page is used—subpages and media are excluded. Gorgias Help Center and store website links are not supported.',
             ),
         ).toBeInTheDocument()
 
         expect(
             screen.getByText(
-                'Upload knowledge and process documents for AI Agent to reference. Do not upload files that may contain any sensitive or personal information. Images will be ignored.',
+                'Upload up to 10 documents for AI Agent to use as knowledge. Avoid including personal or sensitive information. Images within documents will not be processed.',
             ),
         ).toBeInTheDocument()
 
@@ -423,5 +456,33 @@ describe('AiAgentKnowledgeContainer', () => {
         ).toBeInTheDocument()
         expect(screen.getByText('Sync')).toBeInTheDocument()
         expect(screen.getByText('Manage')).toBeInTheDocument()
+    })
+
+    it('should show guidance section if feature flag is enabled', () => {
+        renderComponent({
+            isAiAgentScrapeStoreDomainEnabled: true,
+            isAiAgentFilesAndUrlsKnowledgeVisibilityButton: true,
+        })
+
+        expect(screen.getByText('Guidance')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Instruct AI Agent using internal-facing Guidance to handle customer inquiries and follow end-to-end processes in line with your company policies.',
+            ),
+        ).toBeInTheDocument()
+        expect(screen.getByText(/Guidance in use/)).toBeInTheDocument()
+    })
+
+    it('should open a new tab and redirect to the selected help center when open help center button is clicked', () => {
+        renderComponent({ isAiAgentScrapeStoreDomainEnabled: true })
+
+        const openHelpCenterButton = screen.getByLabelText('Open help center')
+        fireEvent.click(openHelpCenterButton)
+
+        expect(window.open).toHaveBeenCalledWith(
+            'http://acme.gorgias.docker:4000/en-US/',
+            '_blank',
+            'noopener noreferrer',
+        )
     })
 })

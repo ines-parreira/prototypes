@@ -4,10 +4,11 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useParams } from 'react-router-dom'
 
 import { Card } from '@gorgias/analytics-ui-kit'
-import { Button, Label } from '@gorgias/merchant-ui-kit'
+import { Button, IconButton, Label } from '@gorgias/merchant-ui-kit'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
@@ -22,6 +23,10 @@ import HelpCenterSelect, {
 import Loader from 'pages/common/components/Loader/Loader'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
+import {
+    getAbsoluteUrl,
+    getHelpCenterDomain,
+} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -30,9 +35,11 @@ import { reportError } from 'utils/errors'
 import SyncIngestionDomainBanner from './AiAgentScrapedDomainContent/SyncIngestionDomainBanner'
 import { hasSuccessfullySyncedOnce } from './AiAgentScrapedDomainContent/utils'
 import { ConfigurationSection } from './components/ConfigurationSection/ConfigurationSection'
+import { GuidanceSection } from './components/Knowledge/GuidanceSection'
 import { ScrapeStoreDomainSection } from './components/Knowledge/ScrapeStoreDomainSection'
 import { CreatePublicSourcesSection } from './components/StoreConfigForm/StoreConfigForm'
 import { INITIAL_FORM_VALUES, KNOWLEDGE } from './constants'
+import { useAiAgentHelpCenter } from './hooks/useAiAgentHelpCenter'
 import { useGetOrCreateSnippetHelpCenter } from './hooks/useGetOrCreateSnippetHelpCenter'
 import { useStoresDomainIngestionLogs } from './hooks/useStoresDomainIngestionLogs'
 import { getFormValuesFromStoreConfiguration } from './hooks/utils/configurationForm.utils'
@@ -42,6 +49,9 @@ import css from './AiAgentKnowledgeContainer.less'
 export const AiAgentKnowledgeContainer = () => {
     const isAiAgentScrapeStoreDomainEnabled =
         useFlags()[FeatureFlagKey.AiAgentScrapeStoreDomain]
+    const isAiAgentFilesAndUrlsKnowledgeVisible = useFlag(
+        FeatureFlagKey.AiAgentFilesAndUrlsKnowledgeVisibilityButton,
+    )
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
@@ -106,6 +116,11 @@ export const AiAgentKnowledgeContainer = () => {
     const { helpCenter: snippetHelpCenter } = useGetOrCreateSnippetHelpCenter({
         accountDomain,
         shopName,
+    })
+
+    const guidanceHelpCenter = useAiAgentHelpCenter({
+        shopName,
+        helpCenterType: 'guidance',
     })
 
     const { data: storesDomainIngestionLogs } = useStoresDomainIngestionLogs({
@@ -200,6 +215,18 @@ export const AiAgentKnowledgeContainer = () => {
         shopName,
     ])
 
+    const handleOpenHelpCenter = () => {
+        if (!selectedHelpCenter) return
+
+        const domain = getHelpCenterDomain(selectedHelpCenter)
+        const helpCenterUrl = getAbsoluteUrl({
+            domain,
+            locale: selectedHelpCenter.default_locale,
+        })
+
+        window.open(helpCenterUrl, '_blank', 'noopener noreferrer')
+    }
+
     if (isStoreConfigLoading || isLoadingHelpCenters) {
         return <Loader data-testid="loader" />
     }
@@ -228,6 +255,18 @@ export const AiAgentKnowledgeContainer = () => {
                                 data-candu-id="ai-agent-configuration-knowledge-copy"
                             >
                                 <div className={css.cardsContainer}>
+                                    {isAiAgentFilesAndUrlsKnowledgeVisible &&
+                                        guidanceHelpCenter && (
+                                            <Card className={css.cardSection}>
+                                                <GuidanceSection
+                                                    helpCenterId={
+                                                        guidanceHelpCenter.id
+                                                    }
+                                                    shopName={shopName}
+                                                />
+                                            </Card>
+                                        )}
+
                                     {snippetHelpCenter && (
                                         <Card className={css.cardSection}>
                                             <ScrapeStoreDomainSection
@@ -248,23 +287,33 @@ export const AiAgentKnowledgeContainer = () => {
                                     <Card className={css.cardSection}>
                                         <div className={css.labelSection}>
                                             <Label>Help Center</Label>
-                                            <span>
-                                                Allow AI Agent to use articles
-                                                from your Help Center.
+                                            <span className={css.description}>
+                                                Let AI Agent access and use
+                                                articles from your Help Center
+                                                to answer customer questions.
                                             </span>
                                         </div>
-                                        <HelpCenterSelect
-                                            helpCenter={selectedHelpCenter}
-                                            setHelpCenterId={setHelpCenterId}
-                                            helpCenters={faqHelpCenters}
-                                            withEmptyItemSelection
-                                            className={css.helpCenterSelect}
-                                        />
-                                        <div
-                                            className={css.formInputFooterInfo}
-                                        >
-                                            Select a Help Center to connect to
-                                            AI Agent.
+                                        <div className={css.helpCenterSelect}>
+                                            <HelpCenterSelect
+                                                helpCenter={selectedHelpCenter}
+                                                setHelpCenterId={
+                                                    setHelpCenterId
+                                                }
+                                                helpCenters={faqHelpCenters}
+                                                withEmptyItemSelection
+                                            />
+                                            <IconButton
+                                                size="small"
+                                                fillStyle="ghost"
+                                                intent="secondary"
+                                                isDisabled={!selectedHelpCenter}
+                                                aria-label="Open help center"
+                                                onClick={handleOpenHelpCenter}
+                                                icon="open_in_new"
+                                                className={
+                                                    css.openHelpCenterButton
+                                                }
+                                            />
                                         </div>
                                     </Card>
 

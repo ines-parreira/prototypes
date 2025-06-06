@@ -57,6 +57,12 @@ export const useGuidanceAiSuggestions = ({ helpCenterId, shopName }: Props) => {
             .sort((a, b) => a.name.localeCompare(b.name))
     }, [data, storeIntegrationId])
 
+    const guidanceUsed = useMemo(() => {
+        return guidanceArticles.filter(
+            (article) => article.visibility === 'PUBLIC',
+        )
+    }, [guidanceArticles])
+
     const isAllAIGuidancesUsed =
         data && data.length > 0 && aiGuidances.length === 0
 
@@ -64,6 +70,7 @@ export const useGuidanceAiSuggestions = ({ helpCenterId, shopName }: Props) => {
 
     return {
         guidanceArticles,
+        guidanceUsed,
         isLoadingAiGuidances,
         isLoadingGuidanceArticleList,
         guidanceAISuggestions: aiGuidances,

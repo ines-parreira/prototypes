@@ -1,11 +1,10 @@
-@import (reference) '~@gorgias/design-tokens/dist/css/layout';
 @import (reference) '~css/typography';
 
 :local {
     .container {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-s;
+        gap: var(--layout-spacing-m);
     }
 
     .title {
@@ -13,6 +12,10 @@
         flex-direction: row;
         align-items: center;
         margin-bottom: var(--layout-spacing-xxs);
+    }
+
+    .description {
+        color: var(--neutral-grey-5);
     }
 
     .list {

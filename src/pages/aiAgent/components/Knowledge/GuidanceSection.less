@@ -1,4 +1,4 @@
-@import (reference) '~css/typography';
+@import '~css/typography';
 
 :local {
     .label {
@@ -12,7 +12,7 @@
         color: var(--neutral-grey-5);
     }
 
-    .domain {
+    .contentLabel {
         .body-regular();
         display: flex;
         align-items: center;
@@ -24,7 +24,7 @@
         margin-right: var(--layout-spacing-xs);
     }
 
-    .storeDomain {
+    .content {
         background-color: var(--neutral-grey-1);
         border-radius: var(--layout-spacing-xxs);
         padding: var(--layout-spacing-xs);
@@ -32,19 +32,5 @@
         align-items: center;
         justify-content: space-between;
         margin-top: var(--layout-spacing-s);
-    }
-
-    .actions {
-        .caption-regular();
-        color: var(--neutral-grey-5);
-        display: flex;
-        align-items: center;
-        gap: var(--layout-spacing-s);
-    }
-
-    .actionsButtons {
-        display: flex;
-        align-items: center;
-        gap: var(--layout-spacing-s);
     }
 }
