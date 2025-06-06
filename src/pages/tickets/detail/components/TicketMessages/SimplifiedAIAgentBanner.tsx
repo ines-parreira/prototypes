@@ -117,7 +117,9 @@ const SimplifiedAIAgentBanner = ({
                             />
                         ) : (
                             <>
-                                {messageToDisplay}
+                                <div className={css.boldMessage}>
+                                    {messageToDisplay}
+                                </div>
                                 {isImpersonated &&
                                     lastMessageWithFeedback?.feedback
                                         .executionId && (

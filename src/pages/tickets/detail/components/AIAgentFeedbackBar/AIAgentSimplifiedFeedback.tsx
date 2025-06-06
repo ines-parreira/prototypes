@@ -19,6 +19,7 @@ import { KnowledgeSourceFeedbackSkeleton } from 'pages/tickets/detail/components
 import MissingKnowledgeSelect from 'pages/tickets/detail/components/AIAgentFeedbackBar/MissingKnowledgeSelect'
 import {
     AiAgentBinaryFeedbackEnum,
+    AiAgentFeedbackTypeEnum,
     AutoSaveState,
     KnowledgeResource,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
@@ -69,15 +70,21 @@ const AIAgentSimplifiedFeedback = () => {
                         ? new Date(resource.feedback.updatedDatetime).getTime()
                         : 0,
                 ) ?? []),
-                ...(execution.feedback?.map((feedback) =>
-                    feedback.updatedDatetime
-                        ? new Date(feedback.updatedDatetime).getTime()
-                        : 0,
-                ) ?? []),
+                ...(execution.feedback
+                    ?.filter(
+                        (feedback) =>
+                            feedback.feedbackType ===
+                            AiAgentFeedbackTypeEnum.SUGGESTED_RESOURCE,
+                    )
+                    ?.map((feedback) =>
+                        feedback.updatedDatetime
+                            ? new Date(feedback.updatedDatetime).getTime()
+                            : 0,
+                    ) ?? []),
             )
         }, 0)
 
-        return maxDate ? new Date(maxDate) : new Date()
+        return maxDate ? new Date(maxDate) : undefined
     }, [feedback])
 
     const shopName =
@@ -126,16 +133,20 @@ const AIAgentSimplifiedFeedback = () => {
 
             setLoadingMutations((oldValue) => [...(oldValue ?? []), upsertId])
 
+            const executionId =
+                resource.executionId ?? feedback?.executions?.[0]?.executionId
+
+            // should never happen, since we're showing that we're still processing the details of this conversation
+            // if there are no executions
+            if (!executionId) return
+
             await upsertFeedback({
                 feedbackToUpsert: [
                     {
                         id: resource.feedback?.id,
                         objectId: ticketId.toString(),
                         objectType: 'TICKET',
-                        executionId:
-                            resource.executionId ??
-                            enrichedData.knowledgeResources?.[0]?.executionId ??
-                            ticketId,
+                        executionId,
                         targetType: 'KNOWLEDGE_RESOURCE',
                         targetId: resource.resource.id,
                         feedbackValue: value,
@@ -183,16 +194,21 @@ const AIAgentSimplifiedFeedback = () => {
 
         setLoadingFreeFormMutation(true)
 
+        const executionId =
+            enrichedData.freeForm?.executionId ??
+            feedback?.executions?.[0]?.executionId
+
+        // should never happen, since we're showing that we're still processing the details of this conversation
+        // if there are no executions
+        if (!executionId) return
+
         await upsertFeedback({
             feedbackToUpsert: [
                 {
                     id: enrichedData.freeForm?.feedback?.id,
                     objectId: ticketId.toString(),
                     objectType: 'TICKET',
-                    executionId:
-                        enrichedData.freeForm?.executionId ??
-                        enrichedData.knowledgeResources?.[0]?.executionId ??
-                        ticketId,
+                    executionId: executionId,
                     targetType: 'TICKET',
                     targetId: ticketId.toString(),
                     feedbackValue: freeFormFeedback,
@@ -202,13 +218,9 @@ const AIAgentSimplifiedFeedback = () => {
         })
 
         setLoadingFreeFormMutation(false)
-    }, [freeFormFeedback, ticketId, upsertFeedback, enrichedData])
+    }, [freeFormFeedback, ticketId, upsertFeedback, enrichedData, feedback])
 
-    useDebouncedEffect(
-        handleFreeFormFeedbackChange,
-        [handleFreeFormFeedbackChange],
-        1500,
-    )
+    useDebouncedEffect(handleFreeFormFeedbackChange, [freeFormFeedback], 1500)
 
     const { onSubmitMissingKnowledge } = useFeedbackActions({
         upsertFeedback,

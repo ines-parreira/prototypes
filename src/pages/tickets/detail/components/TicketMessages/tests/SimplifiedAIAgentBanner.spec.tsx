@@ -159,38 +159,7 @@ describe('SimplifiedSimplifiedAIAgentBanner', () => {
         const message = screen.getByText('summary')
 
         expect(message).toBeInTheDocument()
-        expect(message.parentElement).toHaveClass('boldMessage')
-    })
-
-    it('should not render message in bold', () => {
-        useGetAiAgentFeedbackMock.mockReturnValue({
-            data: {
-                data: {
-                    messages: [
-                        {
-                            messageId: '1',
-                            summary: 'summary',
-                        },
-                    ],
-                    shopName: 'shopName',
-                    shopType: 'shopify',
-                },
-            },
-            isLoading: false,
-            isError: false,
-        } as any)
-
-        const { getByText } = render(
-            <SimplifiedAIAgentBanner
-                message={{ ...mockMessage, public: false }}
-                messages={[mockMessage]}
-            />,
-        )
-
-        const message = getByText('summary')
-
-        expect(message).toBeInTheDocument()
-        expect(message.parentElement).not.toHaveClass('boldMessage')
+        expect(message.parentElement?.parentElement).toHaveClass('boldMessage')
     })
 
     it('should fall back to body_html if no summary was provided', () => {

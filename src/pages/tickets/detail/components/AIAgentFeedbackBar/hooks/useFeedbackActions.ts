@@ -211,14 +211,19 @@ export const useFeedbackActions = ({
                     const feedbackValue =
                         getSuggestedResourceFeedbackValue(choice)
 
+                    const executionId =
+                        suggestedResource?.feedback?.executionId ??
+                        feedback?.executions?.[0]?.executionId
+
+                    // should never happen, since we're showing that we're still processing the details of this conversation
+                    // if there are no executions
+                    if (!executionId) return
+
                     return {
                         id: suggestedResource?.feedback?.id,
                         objectId: ticketId.toString(),
                         objectType: 'TICKET',
-                        executionId:
-                            suggestedResource?.feedback?.executionId ??
-                            feedback?.executions?.[0]?.executionId ??
-                            ticketId,
+                        executionId,
                         targetType: 'TICKET',
                         targetId: ticketId.toString(),
                         feedbackValue: !feedbackValue

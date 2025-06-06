@@ -23,12 +23,14 @@ const AutoSaveBadge = ({ state, updatedAt }: AutoSaveBadgeProps) => {
     const [isStaleSaved, setIsStaleSaved] = useState(false)
     const [setTimeout, clearTimeout] = useTimeout()
 
+    const stringUpdatedAt = updatedAt?.toISOString()
+
     const datetimeFormat = useGetDateAndTimeFormat(
         DateAndTimeFormatting.CompactDateWithTime,
     )
 
     useEffect(() => {
-        if (state === AutoSaveState.INITIAL && updatedAt) {
+        if (state === AutoSaveState.INITIAL && stringUpdatedAt) {
             setIsStaleSaved(true)
             return
         }
@@ -39,7 +41,7 @@ const AutoSaveBadge = ({ state, updatedAt }: AutoSaveBadgeProps) => {
         }
 
         setIsStaleSaved(false)
-    }, [state, setTimeout, clearTimeout, updatedAt])
+    }, [state, setTimeout, clearTimeout, stringUpdatedAt])
 
     if (state === AutoSaveState.INITIAL && !updatedAt) {
         return null

@@ -70,7 +70,6 @@ export const useMultipleStoreWebsiteQuestions = ({
                 ...queryOptionsOverrides,
                 enabled:
                     !!helpCenterId &&
-                    !!ingestionLogId &&
                     !!helpCenterClient &&
                     !isIngestionLogsLoading &&
                     (queryOptionsOverrides?.enabled ?? true),

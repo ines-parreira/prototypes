@@ -110,7 +110,11 @@ describe('AIAgentSimplifiedFeedback', () => {
         const mutateAsyncMock = jest.fn()
 
         useGetFeedbackMock.mockReturnValue({
-            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+            data: {
+                executions: [
+                    { executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5' },
+                ],
+            },
         })
 
         useUpsertFeedbackMock.mockReturnValue({ mutateAsync: mutateAsyncMock })
@@ -127,7 +131,7 @@ describe('AIAgentSimplifiedFeedback', () => {
         expect(mutateAsyncMock).toHaveBeenCalledWith({
             feedbackToUpsert: [
                 {
-                    executionId: 123,
+                    executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
                     feedbackType: 'TICKET_FREEFORM',
                     feedbackValue: 'Great answer!',
                     id: undefined,
@@ -166,7 +170,11 @@ describe('AIAgentSimplifiedFeedback', () => {
         useUpsertFeedbackMock.mockReturnValue({ mutateAsync: mutateAsyncMock })
 
         useGetFeedbackMock.mockReturnValue({
-            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+            data: {
+                executions: [
+                    { executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5' },
+                ],
+            },
         })
         useEnrichFeedbackDataMock.mockReturnValue({
             ...initialFeedbackData,
@@ -195,7 +203,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                             id: 1,
                             objectType: 'TICKET',
                             objectId: '123',
-                            executionId: '123',
+                            executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
                             targetType: 'KNOWLEDGE_RESOURCE',
                             targetId: '123',
                             feedbackValue: 'DOWN',
@@ -221,7 +229,7 @@ describe('AIAgentSimplifiedFeedback', () => {
         expect(mutateAsyncMock).toHaveBeenCalledWith({
             feedbackToUpsert: [
                 {
-                    executionId: 123,
+                    executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
                     feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
                     feedbackValue: 'UP',
                     id: 1,
@@ -238,7 +246,11 @@ describe('AIAgentSimplifiedFeedback', () => {
         useUpsertFeedbackMock.mockReturnValue({ mutateAsync: mutateAsyncMock })
 
         useGetFeedbackMock.mockReturnValue({
-            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+            data: {
+                executions: [
+                    { executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5' },
+                ],
+            },
         })
         useEnrichFeedbackDataMock.mockReturnValue({
             ...initialFeedbackData,
@@ -267,7 +279,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                             id: 1,
                             objectType: 'TICKET',
                             objectId: '123',
-                            executionId: '123',
+                            executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
                             targetType: 'KNOWLEDGE_RESOURCE',
                             targetId: '123',
                             feedbackValue: 'UP',
@@ -293,7 +305,7 @@ describe('AIAgentSimplifiedFeedback', () => {
         expect(mutateAsyncMock).toHaveBeenCalledWith({
             feedbackToUpsert: [
                 {
-                    executionId: 123,
+                    executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
                     feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
                     feedbackValue: 'DOWN',
                     id: 1,
@@ -383,7 +395,11 @@ describe('AIAgentSimplifiedFeedback', () => {
 
         // Set up test data
         useGetFeedbackMock.mockReturnValue({
-            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+            data: {
+                executions: [
+                    { executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5' },
+                ],
+            },
         })
 
         useEnrichFeedbackDataMock.mockReturnValue({
@@ -1089,159 +1105,30 @@ describe('AIAgentSimplifiedFeedback', () => {
     })
 
     it('should handle different execution structures in lastUpdatedMutations calculation', () => {
-        // Test case 1: Empty executions array
-        useGetFeedbackMock.mockReturnValue({
-            data: {
-                executions: [],
-            },
-        })
+        const maxDate = new Date('2023-10-02T00:00:00Z')
 
-        useEnrichFeedbackDataMock.mockReturnValue({
-            ...initialFeedbackData,
-            isLoading: false,
-        })
-
-        const { unmount } = render(<AIAgentSimplifiedFeedback />)
-
-        // Component should render the processing message when executions array is empty
-        expect(
-            screen.getByText(
-                "We're still processing the details of this conversation. You'll be able to review shortly.",
-            ),
-        ).toBeInTheDocument()
-
-        unmount()
-
-        // Test case 2: Executions with resources that have feedback with updatedDatetime
+        // Create feedback with multiple executions and resources
         useGetFeedbackMock.mockReturnValue({
             data: {
                 executions: [
                     {
-                        id: 123,
-                        storeConfiguration: 'test',
-                        feedback: [],
+                        executionId: 'exec1',
                         resources: [
                             {
-                                id: 'resource-1',
                                 feedback: {
-                                    id: 1,
-                                    feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
-                                    feedbackValue: 'UP',
-                                    updatedDatetime: '2023-02-01T00:00:00.000Z',
+                                    updatedDatetime: '2023-10-01T00:00:00Z',
+                                },
+                            },
+                            {
+                                feedback: {
+                                    updatedDatetime: maxDate.toISOString(), // This should be the max
                                 },
                             },
                         ],
-                    },
-                ],
-            },
-        })
-
-        // Mock the enriched data to avoid "No knowledge used" message
-        useEnrichFeedbackDataMock.mockReturnValue({
-            ...initialFeedbackData,
-            enrichedData: {
-                knowledgeResources: [
-                    {
-                        resource: {
-                            id: 'resource-1',
-                            title: 'Test Resource',
-                            resourceType: 'ARTICLE',
-                        },
-                        feedback: {
-                            feedbackValue: 'UP',
-                        },
-                    },
-                ],
-                freeForm: {},
-            },
-            isLoading: false,
-        })
-
-        const { unmount: unmount2 } = render(<AIAgentSimplifiedFeedback />)
-
-        // Now the heading should be visible since we have executions
-        expect(screen.getByText('Review knowledge used')).toBeInTheDocument()
-
-        unmount2()
-
-        // Test case 3: Executions with multiple feedback items with different updatedDatetime
-        useGetFeedbackMock.mockReturnValue({
-            data: {
-                executions: [
-                    {
-                        id: 123,
-                        storeConfiguration: 'test',
                         feedback: [
                             {
-                                id: 1,
-                                feedbackType: 'TICKET_FREEFORM',
-                                feedbackValue: 'Older feedback',
-                                updatedDatetime: '2023-01-01T00:00:00.000Z',
-                            },
-                            {
-                                id: 2,
                                 feedbackType: 'SUGGESTED_RESOURCE',
-                                feedbackValue: 'Newer feedback',
-                                updatedDatetime: '2023-03-01T00:00:00.000Z', // This is the most recent
-                            },
-                        ],
-                        resources: [],
-                    },
-                ],
-            },
-        })
-
-        // Keep the same enriched data
-        const { unmount: unmount3 } = render(<AIAgentSimplifiedFeedback />)
-
-        // Component should render correctly with multiple feedback items
-        expect(screen.getByText('Review knowledge used')).toBeInTheDocument()
-
-        unmount3()
-
-        // Test case 4: Executions with resources with no feedback and empty feedback array
-        useGetFeedbackMock.mockReturnValue({
-            data: {
-                executions: [
-                    {
-                        id: 123,
-                        storeConfiguration: 'test',
-                        feedback: [],
-                        resources: [
-                            {
-                                id: 'resource-1',
-                                // No feedback property
-                            },
-                        ],
-                    },
-                ],
-            },
-        })
-
-        const { unmount: unmount4 } = render(<AIAgentSimplifiedFeedback />)
-
-        // Component should render correctly with resources with no feedback
-        expect(screen.getByText('Review knowledge used')).toBeInTheDocument()
-
-        unmount4()
-
-        // Test case 5: Executions with resources that have feedback with no updatedDatetime
-        useGetFeedbackMock.mockReturnValue({
-            data: {
-                executions: [
-                    {
-                        id: 123,
-                        storeConfiguration: 'test',
-                        feedback: [],
-                        resources: [
-                            {
-                                id: 'resource-1',
-                                feedback: {
-                                    id: 1,
-                                    feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
-                                    feedbackValue: 'UP',
-                                    // No updatedDatetime
-                                },
+                                updatedDatetime: '2023-09-30T00:00:00Z',
                             },
                         ],
                     },
@@ -1251,7 +1138,150 @@ describe('AIAgentSimplifiedFeedback', () => {
 
         render(<AIAgentSimplifiedFeedback />)
 
-        // Component should render correctly with resources that have feedback with no updatedDatetime
+        // The maxDate should be calculated correctly from the executions
         expect(screen.getByText('Review knowledge used')).toBeInTheDocument()
+    })
+
+    it('should handle feedback resources without updatedDatetime', () => {
+        // Test case to cover line 80: feedback.updatedDatetime ternary condition
+        useGetFeedbackMock.mockReturnValue({
+            data: {
+                executions: [
+                    {
+                        executionId: 'exec1',
+                        resources: [
+                            {
+                                feedback: {
+                                    // Missing updatedDatetime - should use 0
+                                },
+                            },
+                        ],
+                        feedback: [
+                            {
+                                feedbackType: 'SUGGESTED_RESOURCE',
+                                // Missing updatedDatetime - should use 0
+                            },
+                        ],
+                    },
+                ],
+            },
+        })
+
+        render(<AIAgentSimplifiedFeedback />)
+
+        expect(screen.getByText('Review knowledge used')).toBeInTheDocument()
+    })
+
+    it('should handle icon click when executionId is missing', async () => {
+        const mutateAsyncMock = jest.fn()
+        useUpsertFeedbackMock.mockReturnValue({ mutateAsync: mutateAsyncMock })
+
+        // Set up feedback with executions but no executionId in resource
+        useGetFeedbackMock.mockReturnValue({
+            data: {
+                executions: [
+                    {
+                        // executionId missing from main execution
+                        resources: [],
+                    },
+                ],
+            },
+        })
+
+        useEnrichFeedbackDataMock.mockReturnValue({
+            ...initialFeedbackData,
+            enrichedData: {
+                knowledgeResources: [
+                    {
+                        resource: {
+                            id: '123',
+                            title: 'Test Article',
+                            resourceType: 'ARTICLE',
+                            resourceSetId: 'set1',
+                            resourceLocale: null,
+                            metadata: {
+                                title: 'Test Article',
+                                url: 'https://example.com',
+                                isDeleted: false,
+                            },
+                        },
+                        id: '123',
+                        resourceId: '123',
+                        resourceType: 'ARTICLE',
+                        resourceSetId: 'set1',
+                        resourceLocale: null,
+                        resourceTitle: 'Test Article',
+                        // No executionId provided in resource
+                        feedback: {
+                            id: 1,
+                            objectType: 'TICKET',
+                            objectId: '123',
+                            targetType: 'KNOWLEDGE_RESOURCE',
+                            targetId: '123',
+                            feedbackValue: null,
+                            submittedBy: 1,
+                            createdDatetime: '2023-10-01T00:00:00Z',
+                            updatedDatetime: '2023-10-01T00:00:00Z',
+                            feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
+                        },
+                    },
+                ],
+            },
+            isLoading: false,
+        })
+
+        render(<AIAgentSimplifiedFeedback />)
+
+        const thumbsUpButton = screen.getByText('thumb_up')
+        await act(async () => {
+            fireEvent.click(thumbsUpButton)
+            jest.runAllTimers()
+        })
+
+        // Should not call mutateAsync when executionId is missing
+        expect(mutateAsyncMock).not.toHaveBeenCalled()
+    })
+
+    it('should handle free form feedback change when executionId is missing', async () => {
+        const mutateAsyncMock = jest.fn()
+        useUpsertFeedbackMock.mockReturnValue({ mutateAsync: mutateAsyncMock })
+
+        // Set up feedback with executions but no executionId
+        useGetFeedbackMock.mockReturnValue({
+            data: {
+                executions: [
+                    {
+                        // executionId missing from main execution
+                        resources: [],
+                    },
+                ],
+            },
+        })
+
+        useEnrichFeedbackDataMock.mockReturnValue({
+            ...initialFeedbackData,
+            enrichedData: {
+                knowledgeResources: [],
+                freeForm: {
+                    // No executionId in freeForm
+                    feedback: {
+                        feedbackValue: '',
+                    },
+                },
+            },
+            isLoading: false,
+        })
+
+        render(<AIAgentSimplifiedFeedback />)
+
+        const input = screen.getByRole('textbox')
+        fireEvent.change(input, { target: { value: 'Great answer!' } })
+
+        await act(async () => {
+            jest.runAllTimers()
+        })
+
+        // Should not call mutateAsync when executionId is missing
+        expect(mutateAsyncMock).not.toHaveBeenCalled()
     })
 })
