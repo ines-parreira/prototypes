@@ -109,7 +109,7 @@ export const useTicketsPerProductDistribution = (topAmount = 10) => {
                 (ptd) => ptd[PRODUCT_ID_FIELD] === item[PRODUCT_ID_FIELD],
             )
             return {
-                productId: item[PRODUCT_ID_FIELD],
+                productId: String(item[PRODUCT_ID_FIELD]),
                 value: getTicketCount(item),
                 prevValue: getTicketCount(previousItem),
                 valueInPercentage: calculatePercentage(
@@ -127,7 +127,7 @@ export const useTicketsPerProductDistribution = (topAmount = 10) => {
                 name: getProductName(
                     item[PRODUCT_ID_FIELD],
                     item[PRODUCT_NAME_FIELD],
-                ), // TODO
+                ),
             }
         })
     }, [

@@ -21,6 +21,7 @@ import { getCurrentUser } from 'state/currentUser/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { RootState, StoreDispatch } from 'state/types'
+import { ProductsPerTicketColumn } from 'state/ui/stats/productsPerTicketSlice'
 import {
     AgentsTableColumn,
     AIInsightsMetric,
@@ -86,7 +87,7 @@ export type ProductMetricColumn =
     | ProductInsightsTableColumns.TicketsVolume
 
 export type ProductMetrics = {
-    metricName: ProductMetricColumn
+    metricName: ProductMetricColumn | ProductsPerTicketColumn.TicketVolume
     productId: string
 } & CommonMetrics
 

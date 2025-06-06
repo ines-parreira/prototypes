@@ -67,6 +67,7 @@ import {
     TagsFieldsMetrics,
     TicketFieldsMetrics,
 } from 'state/ui/stats/drillDownSlice'
+import { ProductsPerTicketColumn } from 'state/ui/stats/productsPerTicketSlice'
 import {
     AgentsTableColumn,
     AIInsightsMetric,
@@ -436,6 +437,10 @@ describe('getDrillDownQuery', () => {
             metricName: VoiceOfCustomerMetricWithDrillDown.IntentPerProduct,
             intentCustomFieldId: '123',
             intentCustomFieldValueString: 'product::return',
+            productId: '456',
+        },
+        {
+            metricName: ProductsPerTicketColumn.TicketVolume,
             productId: '456',
         },
     ]
@@ -1087,6 +1092,29 @@ describe('getDrillDownMetric', () => {
                     ProductInsightsColumnWithDrillDownConfig[
                         ProductInsightsTableColumns.TicketsVolume
                     ].format,
+            },
+        },
+        {
+            metricData: {
+                metricName: ProductsPerTicketColumn.TicketVolume,
+                productId: '456',
+            },
+            expectedValues: {
+                metricTitle: '',
+                metricValueFormat: 'integer',
+                showMetric: false,
+            },
+        },
+        {
+            metricData: {
+                metricName: ProductsPerTicketColumn.TicketVolume,
+                productId: '456',
+                title: 'some title',
+            },
+            expectedValues: {
+                metricTitle: 'some title',
+                metricValueFormat: 'integer',
+                showMetric: false,
             },
         },
         {

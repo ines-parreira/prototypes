@@ -46,14 +46,6 @@ export const ProductInsightsPlaceholderReport = () => {
                 </DashboardGridCell>
                 <DashboardGridCell size={getGridCellSize(6)}>
                     <DashboardComponent
-                        chart={
-                            ProductInsightsChart.TicketVolumeChartPlaceholder
-                        }
-                        config={ProductInsightsPlaceholderReportConfig}
-                    />
-                </DashboardGridCell>
-                <DashboardGridCell size={getGridCellSize(6)}>
-                    <DashboardComponent
                         chart={ProductInsightsChart.TicketVolumeChart}
                         config={ProductInsightsPlaceholderReportConfig}
                     />

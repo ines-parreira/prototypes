@@ -16,6 +16,7 @@ import {
     TREND_BADGE_FORMAT,
 } from 'pages/stats/common/components/TrendBadge'
 import { TrendIcon } from 'pages/stats/common/components/TrendIcon'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import { HintTooltip } from 'pages/stats/common/HintTooltip'
 import {
     formatMetricTrend,
@@ -125,6 +126,11 @@ export const TicketVolumeTable = () => {
                                     item.previousValueInPercentage,
                                     TREND_BADGE_FORMAT,
                                 )
+                            const formattedMetricValue = formatMetricValue(
+                                item.value,
+                                'decimal',
+                                NOT_AVAILABLE_PLACEHOLDER,
+                            )
                             return (
                                 <TableBodyRow key={index}>
                                     <DistributionCategoryCell
@@ -140,12 +146,20 @@ export const TicketVolumeTable = () => {
                                         justifyContent="center"
                                         width={65}
                                     >
-                                        {item.productId &&
-                                            formatMetricValue(
-                                                item.value,
-                                                'decimal',
-                                                NOT_AVAILABLE_PLACEHOLDER,
-                                            )}
+                                        {
+                                            <DrillDownModalTrigger
+                                                enabled={!!item.value}
+                                                highlighted
+                                                metricData={{
+                                                    metricName:
+                                                        ProductsPerTicketColumn.TicketVolume,
+                                                    productId: item.productId,
+                                                    title: item.name,
+                                                }}
+                                            >
+                                                {formattedMetricValue}
+                                            </DrillDownModalTrigger>
+                                        }
                                     </BodyCell>
                                     <BodyCell
                                         justifyContent="center"

@@ -1,6 +1,7 @@
 import { useTicketCountPerProductWithEnrichment } from 'hooks/reporting/voice-of-customer/metricsPerProduct'
 import { useTicketsPerProductTrend } from 'hooks/reporting/voice-of-customer/useTicketsPerProductTrend'
 import { OrderDirection } from 'models/api/types'
+import { EnrichmentFields } from 'models/reporting/types'
 import {
     PRODUCT_ID_FIELD,
     PRODUCT_NAME_FIELD,
@@ -28,8 +29,10 @@ describe('useTicketsPerProductTrend', () => {
             allData: [
                 {
                     [PRODUCT_ID_FIELD]: '1',
-                    [PRODUCT_NAME_FIELD]: 'Product name',
                     [TICKET_COUNT_FIELD]: '10',
+                    [PRODUCT_NAME_FIELD]: 'Product name',
+                    [EnrichmentFields.ProductThumbnailUrl]: '',
+                    [EnrichmentFields.ProductExternalProductId]: '1',
                 },
             ],
             decile: 4,
@@ -43,8 +46,10 @@ describe('useTicketsPerProductTrend', () => {
             allData: [
                 {
                     [PRODUCT_ID_FIELD]: '1',
-                    [PRODUCT_NAME_FIELD]: 'Product name',
                     [TICKET_COUNT_FIELD]: '5',
+                    [PRODUCT_NAME_FIELD]: 'Product name',
+                    [EnrichmentFields.ProductThumbnailUrl]: '',
+                    [EnrichmentFields.ProductExternalProductId]: '1',
                 },
             ],
             decile: 4,
@@ -55,10 +60,10 @@ describe('useTicketsPerProductTrend', () => {
 
     it('should return data for current and previous period', () => {
         useTicketCountPerProductWithEnrichmentMock.mockReturnValueOnce(
-            currentPeriodData as any, // TODO
+            currentPeriodData as any,
         )
         useTicketCountPerProductWithEnrichmentMock.mockReturnValueOnce(
-            previousPeriodData as any, // TODO
+            previousPeriodData as any,
         )
 
         const { result } = renderHook(() =>

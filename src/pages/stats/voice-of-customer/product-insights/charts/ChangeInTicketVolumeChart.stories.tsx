@@ -95,12 +95,12 @@ appQueryClient.setQueryData(
                 enrichment: [
                     {
                         [PRODUCT_ENRICHMENT_ENTITY_ID]: productId,
-                        [EnrichmentFields.ProductTitle]: 'Some name',
+                        [PRODUCT_NAME_FIELD]: 'Some name',
                         [EnrichmentFields.ProductThumbnailUrl]: 'undefined',
                     },
                     {
                         [PRODUCT_ENRICHMENT_ENTITY_ID]: anotherProductId,
-                        [EnrichmentFields.ProductTitle]: 'Some other name',
+                        [PRODUCT_NAME_FIELD]: 'Some other name',
                         [EnrichmentFields.ProductThumbnailUrl]: 'undefined',
                     },
                 ],
@@ -129,14 +129,14 @@ appQueryClient.setQueryData(
             data: {
                 data: [
                     {
-                        [TicketProductsEnrichedMeasure.TicketCount]: 20,
-                        [PRODUCT_ID_DIMENSION]: productId,
-                        [TicketProductsEnrichedDimension.StoreId]: 33,
+                        [TicketProductsEnrichedMeasure.TicketCount]: String(20),
+                        [PRODUCT_ID_DIMENSION]: String(productId),
+                        [TicketProductsEnrichedDimension.StoreId]: String(33),
                     },
                     {
-                        [TicketProductsEnrichedMeasure.TicketCount]: 40,
-                        [PRODUCT_ID_DIMENSION]: anotherProductId,
-                        [TicketProductsEnrichedDimension.StoreId]: 24,
+                        [TicketProductsEnrichedMeasure.TicketCount]: String(40),
+                        [PRODUCT_ID_DIMENSION]: String(anotherProductId),
+                        [TicketProductsEnrichedDimension.StoreId]: String(24),
                     },
                 ],
                 enrichment: [

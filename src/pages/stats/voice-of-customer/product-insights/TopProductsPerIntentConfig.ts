@@ -3,18 +3,18 @@ import { TooltipData } from 'pages/stats/types'
 export const TOP_INTENTS_PER_PAGE = 10
 
 const INTENT_TOPIC_COLUMN_LABEL = 'Intent Topic'
-const TICKET_VOLUME_COLUMN_LABEL = 'Ticket Volume'
+export const TICKET_VOLUME_COLUMN_LABEL = 'Ticket Volume'
 const DELTA_COLUMN_LABEL = 'Delta'
 
 export enum TopProductsPerIntentColumn {
     Intent = 'top-products-intent',
-    Volume = 'top-products-volume',
+    TicketVolume = 'top-products-volume',
     Delta = 'top-products-delta',
 }
 
 export const columnOrder: TopProductsPerIntentColumn[] = [
     TopProductsPerIntentColumn.Intent,
-    TopProductsPerIntentColumn.Volume,
+    TopProductsPerIntentColumn.TicketVolume,
     TopProductsPerIntentColumn.Delta,
 ]
 
@@ -38,7 +38,7 @@ export const TopProductsPerIntentColumnConfig: Record<
         },
         isSortable: true,
     },
-    [TopProductsPerIntentColumn.Volume]: {
+    [TopProductsPerIntentColumn.TicketVolume]: {
         title: TICKET_VOLUME_COLUMN_LABEL,
         tooltip: {
             title: 'Number of tickets in relation to intent topic or product over time.',
@@ -51,15 +51,5 @@ export const TopProductsPerIntentColumnConfig: Record<
             title: 'Percentage change in ticket volume over time.',
         },
         isSortable: false,
-    },
-}
-
-export const IntentsOverTimeMetricConfig: {
-    title: string
-    hint: TooltipData
-} = {
-    title: 'Intents over time',
-    hint: {
-        title: 'Intents over time',
     },
 }

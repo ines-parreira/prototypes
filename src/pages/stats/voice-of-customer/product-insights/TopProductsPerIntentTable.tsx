@@ -163,7 +163,7 @@ const TopProductsCell = ({
                     {entityId}
                 </TableWithNestedRowsCell>
             )
-        case TopProductsPerIntentColumn.Volume:
+        case TopProductsPerIntentColumn.TicketVolume:
             return (
                 <TableWithNestedRowsCell
                     isLeadColumn={isLeadColumn}

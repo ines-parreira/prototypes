@@ -4,6 +4,7 @@ import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { VoiceOfCustomerMetricWithDrillDown } from 'pages/stats/voice-of-customer/VoiceOfCustomerMetricConfig'
 import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
+import { ProductsPerTicketColumn } from 'state/ui/stats/productsPerTicketSlice'
 import {
     AgentsTableColumn,
     AIInsightsMetric,
@@ -73,6 +74,7 @@ export const hiddenMetrics: DrillDownMetric['metricName'][] = [
     ProductInsightsTableColumns.PositiveSentiment,
     ProductInsightsTableColumns.TicketsVolume,
     VoiceOfCustomerMetricWithDrillDown.IntentPerProduct,
+    ProductsPerTicketColumn.TicketVolume,
 ]
 
 describe('MetricsConfig', () => {

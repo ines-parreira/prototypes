@@ -36,7 +36,7 @@ export const getColumnsSortingValue = (column: TopProductsPerIntentColumn) => {
     switch (column) {
         case TopProductsPerIntentColumn.Intent:
             return TicketCustomFieldsDimension.TicketCustomFieldsValue
-        case TopProductsPerIntentColumn.Volume:
+        case TopProductsPerIntentColumn.TicketVolume:
             return TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
         default:
             return DEFAULT_SORTING_VALUE

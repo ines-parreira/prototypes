@@ -44,6 +44,7 @@ import {
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { TagsMetricConfig } from 'pages/stats/ticket-insights/tags/TagsMetricConfig'
 import { TicketFieldsMetricConfig } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
+import { TicketVolumeConfig } from 'pages/stats/voice-of-customer/product-insights/charts/TicketVolumeConfig'
 import {
     ProductInsightsColumnConfig,
     ProductInsightsColumnWithDrillDownConfig,
@@ -58,6 +59,7 @@ import {
     AiSalesAgentMetrics,
     DrillDownMetric,
 } from 'state/ui/stats/drillDownSlice'
+import { ProductsPerTicketColumn } from 'state/ui/stats/productsPerTicketSlice'
 import {
     AgentsTableColumn,
     AIInsightsMetric,
@@ -308,6 +310,9 @@ export const getDrillDownQuery = (
             return AiSalesAgentMetricsWithDrillDownConfig[
                 AiSalesAgentChart.AiSalesAgentTotalProductRecommendations
             ].drillDownQuery
+        case ProductsPerTicketColumn.TicketVolume:
+            return TicketVolumeConfig[ProductsPerTicketColumn.TicketVolume]
+                .drillDownQuery
         case VoiceOfCustomerMetricWithDrillDown.IntentPerProduct: {
             const { drillDownQuery } =
                 VoiceOfCustomerMetricWithDrillDownConfig[
@@ -545,6 +550,11 @@ export const getDrillDownMetricColumn = (
             VoiceOfCustomerMetricWithDrillDownConfig[
                 VoiceOfCustomerMetricWithDrillDown.IntentPerProduct
             ].metricFormat
+    } else if (metricData.metricName === ProductsPerTicketColumn.TicketVolume) {
+        metricTitle = metricData.title || ''
+        metricValueFormat =
+            TicketVolumeConfig[ProductsPerTicketColumn.TicketVolume]
+                .metricFormat
     } else if ('perAgentId' in metricData) {
         metricTitle = TableLabels[metricData.metricName]
         metricValueFormat = AgentsColumnConfig[metricData.metricName].format

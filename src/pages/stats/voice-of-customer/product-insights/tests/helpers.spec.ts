@@ -106,7 +106,9 @@ describe('getColumnsSortingValue', () => {
     })
 
     it('should return TicketCustomFieldsTicketCount for Volume column', () => {
-        const result = getColumnsSortingValue(TopProductsPerIntentColumn.Volume)
+        const result = getColumnsSortingValue(
+            TopProductsPerIntentColumn.TicketVolume,
+        )
         expect(result).toBe(
             TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
         )

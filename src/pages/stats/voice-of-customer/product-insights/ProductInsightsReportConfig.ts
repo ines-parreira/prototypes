@@ -11,7 +11,6 @@ import {
     TICKET_VOLUME_CHART_LABEL,
     TICKET_VOLUME_CHART_TOOLTIP,
 } from 'pages/stats/voice-of-customer/product-insights/constants'
-import { TicketVolumeChart } from 'pages/stats/voice-of-customer/product-insights/placeholder/TicketVolumeChart'
 import {
     ProductInsightsChart,
     ProductInsightsChartConfig,
@@ -56,17 +55,10 @@ export const ProductInsightsPlaceholderReportConfig: ReportConfig<ProductInsight
                 csvProducer: null,
                 chartType: ChartType.Graph,
             },
-            [ProductInsightsChart.TicketVolumeChartPlaceholder]: {
-                chartComponent: TicketVolumeChart,
-                label: TICKET_VOLUME_CHART_LABEL,
-                description: TICKET_VOLUME_CHART_TOOLTIP,
-                csvProducer: null,
-                chartType: ChartType.Graph,
-            },
             [ProductInsightsChart.TicketVolumeChart]: {
                 chartComponent: ChangeInTicketVolumeChart,
-                label: 'Change in ticket volume',
-                description: 'Change in ticket volume ',
+                label: TICKET_VOLUME_CHART_LABEL,
+                description: TICKET_VOLUME_CHART_TOOLTIP,
                 csvProducer: null,
                 chartType: ChartType.Graph,
             },
