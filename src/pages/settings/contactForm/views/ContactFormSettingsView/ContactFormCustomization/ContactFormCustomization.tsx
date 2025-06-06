@@ -46,7 +46,7 @@ const initUpdateDto = (
             options: subject_lines?.options || [],
         },
         form_display_mode: form_display_mode,
-        extra_html: extra_html || null,
+        extra_html: extra_html,
     }
 }
 
@@ -88,7 +88,7 @@ const ContactFormCustomization = (): JSX.Element => {
         })
         setUpdateContactFormDto((prevState) => ({
             ...prevState,
-            extra_html: contactForm?.extra_html || null,
+            extra_html: contactForm?.extra_html,
         }))
     }, [contactForm])
 
