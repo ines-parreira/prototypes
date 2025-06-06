@@ -1,0 +1,52 @@
+@import '~css/typography';
+
+:local {
+    .step {
+        display: flex;
+    }
+
+    .step:not(:first-child) {
+        margin-left: var(--layout-spacing-l);
+    }
+
+    .stepIndicatorMargin {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(
+            180deg,
+            var(--neutral-grey-1) 0%,
+            var(--neutral-grey-4) 50%
+        );
+    }
+
+    .stepIndicator {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: var(--neutral-grey-4);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &--active {
+            background-color: var(--neutral-grey-6);
+        }
+    }
+
+    .stepName {
+        margin-left: var(--layout-spacing-xs);
+        font-weight: 500;
+        width: max-content;
+        align-self: center;
+        color: var(--neutral-grey-4);
+
+        &--active {
+            color: var(--neutral-grey-6);
+        }
+    }
+}

@@ -1,8 +1,14 @@
 import Icon from 'AIJourney/assets/AI-intro-icon.svg'
+import { OnboardingStepSelector } from 'AIJourney/components'
 
 import css from './LandingPage.less'
 
 export const LandingPage = () => {
+    const steps = [
+        { stepName: 'Conversation setup', stepIndicator: 1, isActive: true },
+        { stepName: 'Activation', stepIndicator: 2, isActive: false },
+    ]
+
     return (
         <div className={css.container}>
             <div className={css.title}>
@@ -19,6 +25,9 @@ export const LandingPage = () => {
                     opted-in subscribers from your platforms to personalizing
                     and delivering each message.
                 </span>
+                <div style={{ marginTop: '32px' }}>
+                    <OnboardingStepSelector steps={steps} />
+                </div>
             </div>
         </div>
     )
