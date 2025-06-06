@@ -182,6 +182,21 @@ export const ExternalFilesSection = ({
         onEmptyStateChange && onEmptyStateChange(isEmpty)
     }, [isEmpty, onEmptyStateChange])
 
+    const handleOpenArticles = (ingestedFile: any) => {
+        const filename = ingestedFile.filename.toLowerCase()
+        const isExcelFile = filename.endsWith('.xlsx')
+
+        if (isExcelFile) {
+            window.open(
+                ingestedFile.google_storage_url,
+                '_blank',
+                'noopener noreferrer',
+            )
+        }
+
+        // TODO: Implement logic to open articles for other file types
+    }
+
     return (
         <>
             <ConfirmNavigationPrompt
@@ -219,7 +234,7 @@ export const ExternalFilesSection = ({
                                         size="small"
                                         fillStyle="ghost"
                                         intent="secondary"
-                                        aria-label="Open public URL"
+                                        aria-label="Download ingested file"
                                         onClick={() =>
                                             window.open(
                                                 ingestedFile.google_storage_url,
@@ -292,9 +307,9 @@ export const ExternalFilesSection = ({
                                             fillStyle="ghost"
                                             intent="secondary"
                                             aria-label="Open articles"
-                                            onClick={() => {
-                                                // TODO implement this
-                                            }}
+                                            onClick={() =>
+                                                handleOpenArticles(ingestedFile)
+                                            }
                                             icon="keyboard_arrow_right"
                                         />
                                     </div>

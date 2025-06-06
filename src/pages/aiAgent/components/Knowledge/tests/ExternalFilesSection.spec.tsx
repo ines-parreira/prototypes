@@ -427,4 +427,31 @@ describe('ExternalFilesSection', () => {
         })
         expect(uploadAttachmentsMock).not.toHaveBeenCalled()
     })
+
+    it('should open a new tab and download the file when clicking on the open articles button and the file is .xlsx', () => {
+        useFlagMock.mockReturnValue(true)
+        renderComponent({
+            ingestedFiles: [
+                {
+                    id: 1,
+                    help_center_id: 1,
+                    filename: 'test.xlsx',
+                    status: 'SUCCESSFUL',
+                    google_storage_url:
+                        'https://storage.googleapis.com/test.xlsx',
+                    uploaded_datetime: '2024-11-04T19:24:08Z',
+                    snippets_article_ids: [],
+                },
+            ],
+        })
+
+        const openArticlesButton = screen.getByLabelText('Open articles')
+        fireEvent.click(openArticlesButton)
+
+        expect(window.open).toHaveBeenCalledWith(
+            'https://storage.googleapis.com/test.xlsx',
+            '_blank',
+            'noopener noreferrer',
+        )
+    })
 })
