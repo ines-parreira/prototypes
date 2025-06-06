@@ -50,7 +50,10 @@ describe('<AutomateStatsNavbar />', () => {
     beforeEach(() => {
         useReportChartRestrictionsMock.mockReturnValue({
             isReportRestrictedToCurrentUser: () => false,
-        } as any)
+            isRouteRestrictedToCurrentUser: () => false,
+            isChartRestrictedToCurrentUser: () => false,
+            isModuleRestrictedToCurrentUser: () => false,
+        })
         mockUseFlag.mockImplementation(() => false)
         mockUseAtleastOneStoreHasActiveTrial.mockReturnValue(false)
         mockUseCanUseAiSalesAgent.mockReturnValue(true)

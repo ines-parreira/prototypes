@@ -5,7 +5,6 @@ import { useHistory } from 'react-router-dom'
 
 import { useDashboardActions } from 'hooks/reporting/dashboards/useDashboardActions'
 import { useDashboardNameValidation } from 'hooks/reporting/dashboards/useDashboardNameValidation'
-import { useReportRestrictions } from 'hooks/reporting/dashboards/useReportRestrictions'
 import { useNotify } from 'hooks/useNotify'
 import { CreateDashboard } from 'pages/stats/dashboards/CreateDashboard/CreateDashboard'
 import {
@@ -14,6 +13,7 @@ import {
     Dashboards,
 } from 'pages/stats/dashboards/Dashboards'
 import { MODAL_TITLE } from 'pages/stats/dashboards/DashboardsModal/DashboardsModal'
+import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import { OverviewChart } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import { assumeMock } from 'utils/testing'
 
@@ -42,8 +42,8 @@ const CreateDashboardMock = assumeMock(CreateDashboard)
 jest.mock('hooks/reporting/dashboards/useDashboardActions')
 const useDashboardActionsMock = assumeMock(useDashboardActions)
 
-jest.mock('hooks/reporting/dashboards/useReportRestrictions')
-const useReportRestrictionsMock = assumeMock(useReportRestrictions)
+jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
+const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
 describe('Dashboards', () => {
     const createDashboardHandlerMock = jest.fn()
@@ -74,10 +74,11 @@ describe('Dashboards', () => {
         } as any)
 
         useNotifyMock.mockReturnValue({ error: notifyMock } as any)
-        useReportRestrictionsMock.mockReturnValue({
-            reportRestrictionsMap: {},
-            chartRestrictionsMap: {},
-            moduleRestrictionsMap: {},
+        useReportChartRestrictionsMock.mockReturnValue({
+            isReportRestrictedToCurrentUser: () => false,
+            isRouteRestrictedToCurrentUser: () => false,
+            isChartRestrictedToCurrentUser: () => false,
+            isModuleRestrictedToCurrentUser: () => false,
         })
     })
 

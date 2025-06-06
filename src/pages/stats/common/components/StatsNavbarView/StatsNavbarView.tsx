@@ -12,6 +12,10 @@ import { ProductType } from 'models/billing/types'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import { ConvertStatsNavbar } from 'pages/convert/common/components/ConvertStatsNavbar/ConvertStatsNavbar'
 import { STATS_ROUTE_PREFIX } from 'pages/stats/common/components/constants'
+import { StatsNavbarViewSections } from 'pages/stats/common/components/StatsNavbarView/constants'
+import css from 'pages/stats/common/components/StatsNavbarView/StatsNavbarView.less'
+import { StatsNavSectionItem } from 'pages/stats/common/components/StatsNavbarView/StatsNavSectionItem'
+import { useStatsNavbarSections } from 'pages/stats/common/components/StatsNavbarView/useStatsNavbarSections'
 import { DashboardsNavbarBlock } from 'pages/stats/dashboards/DashboardsNavbarBlock/DashboardsNavbarBlock'
 import { AutomateStatsNavbar } from 'pages/stats/self-service/AutomateStatsNavbar'
 import { STATS_ROUTES } from 'routes/constants'
@@ -21,12 +25,6 @@ import {
 } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
-
-import { StatsNavbarViewSections } from './constants'
-import { StatsNavSectionItem } from './StatsNavSectionItem'
-import { useStatsNavbarSections } from './useStatsNavbarSections'
-
-import css from './StatsNavbarView.less'
 
 type FeatureFlag = boolean | undefined
 type AutoQANavBarLinkProps = {

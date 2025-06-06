@@ -116,6 +116,7 @@ describe('<SupportPerformanceOverview />', () => {
         useReportChartRestrictionsMock.mockReturnValue({
             isChartRestrictedToCurrentUser: () => false,
             isRouteRestrictedToCurrentUser: () => false,
+            isReportRestrictedToCurrentUser: () => false,
             isModuleRestrictedToCurrentUser: () => false,
         })
         trendCardMock.mockImplementation(({ tip }) => (

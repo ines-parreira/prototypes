@@ -37,6 +37,7 @@ describe('CampaignPerformanceCharts', () => {
     beforeAll(() => {
         useReportChartRestrictionsMock.mockReturnValue({
             isRouteRestrictedToCurrentUser: () => false,
+            isReportRestrictedToCurrentUser: () => false,
             isChartRestrictedToCurrentUser: () => false,
             isModuleRestrictedToCurrentUser: () => false,
         })

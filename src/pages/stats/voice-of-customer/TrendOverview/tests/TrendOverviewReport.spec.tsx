@@ -71,6 +71,7 @@ describe('TrendOverviewReport', () => {
     beforeEach(() => {
         useReportChartRestrictionsMock.mockImplementation(() => ({
             isRouteRestrictedToCurrentUser: () => false,
+            isReportRestrictedToCurrentUser: () => true,
             isChartRestrictedToCurrentUser: () => false,
             isModuleRestrictedToCurrentUser: () => false,
         }))

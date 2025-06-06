@@ -1,15 +1,15 @@
-import { useReportRestrictions } from 'hooks/reporting/dashboards/useReportRestrictions'
 import { REPORTS_CONFIG } from 'pages/stats/dashboards/config'
 import { ChartConfig } from 'pages/stats/dashboards/types'
+import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 
 export const useRestrictedReportsConfig = () => {
-    const { reportRestrictionsMap, chartRestrictionsMap } =
-        useReportRestrictions()
+    const { isChartRestrictedToCurrentUser, isReportRestrictedToCurrentUser } =
+        useReportChartRestrictions()
     return REPORTS_CONFIG.map((section) => ({
         ...section,
         children: section.children
             .filter(
-                (report) => !Boolean(reportRestrictionsMap[report.config.id]),
+                (report) => !isReportRestrictedToCurrentUser(report.config.id),
             )
             .map((config) => {
                 return {
@@ -19,7 +19,7 @@ export const useRestrictedReportsConfig = () => {
                         charts: Object.entries(config.config.charts).reduce<
                             Record<string, ChartConfig>
                         >((acc, [key, value]) => {
-                            if (!Boolean(chartRestrictionsMap[key])) {
+                            if (!isChartRestrictedToCurrentUser(key)) {
                                 acc[key] = value
                             }
                             return acc

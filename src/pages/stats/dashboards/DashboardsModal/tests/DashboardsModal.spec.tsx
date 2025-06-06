@@ -5,7 +5,6 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useDashboardActions } from 'hooks/reporting/dashboards/useDashboardActions'
-import { useReportRestrictions } from 'hooks/reporting/dashboards/useReportRestrictions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import * as constants from 'pages/stats/dashboards/config'
 import { CHARTS_MODAL_ICONS } from 'pages/stats/dashboards/DashboardsModal/ChartIcon'
@@ -22,6 +21,7 @@ import {
     DashboardSchema,
     ReportsModalConfig,
 } from 'pages/stats/dashboards/types'
+import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import {
     OverviewMetric,
     OverviewMetricConfig,
@@ -45,8 +45,8 @@ const useQueryClientMock = assumeMock(useQueryClient)
 jest.mock('hooks/reporting/dashboards/useDashboardActions')
 const useDashboardActionsMock = assumeMock(useDashboardActions)
 
-jest.mock('hooks/reporting/dashboards/useReportRestrictions')
-const useReportRestrictionsMock = assumeMock(useReportRestrictions)
+jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
+const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
@@ -108,10 +108,11 @@ describe('AddChartsModal', () => {
         useDashboardActionsMock.mockReturnValue({
             updateDashboardHandler: mutateUpdateReportMock,
         } as any)
-        useReportRestrictionsMock.mockReturnValue({
-            reportRestrictionsMap: {},
-            chartRestrictionsMap: {},
-            moduleRestrictionsMap: {},
+        useReportChartRestrictionsMock.mockReturnValue({
+            isReportRestrictedToCurrentUser: () => false,
+            isRouteRestrictedToCurrentUser: () => false,
+            isChartRestrictedToCurrentUser: () => false,
+            isModuleRestrictedToCurrentUser: () => false,
         })
     })
 

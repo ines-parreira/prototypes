@@ -5,8 +5,10 @@ import useAppSelector from 'hooks/useAppSelector'
 import { STATS_ROUTE_PREFIX } from 'pages/stats/common/components/constants'
 import {
     getComponentConfig,
+    getReportConfig,
     getReportConfigFromPath,
 } from 'pages/stats/dashboards/config'
+import { ReportsIDs } from 'pages/stats/dashboards/constants'
 import {
     ChartRestriction,
     ModuleRestriction,
@@ -130,6 +132,24 @@ export const useReportChartRestrictions = () => {
         [reportRestrictionsMap, userReportRestrictions],
     )
 
+    const isReportRestrictedToCurrentUser = useCallback(
+        (reportId: ReportsIDs): boolean => {
+            const config = getReportConfig(reportId)
+            if (!config) {
+                return false
+            }
+            const isReportRestricted = !!reportRestrictionsMap[config.id]
+
+            return (
+                isReportRestricted ||
+                !!userReportRestrictions.find((restriction) =>
+                    restriction.ids.find((id) => id === config.id),
+                )
+            )
+        },
+        [reportRestrictionsMap, userReportRestrictions],
+    )
+
     const isChartRestrictedToCurrentUser = useCallback(
         (chartId: string): boolean => {
             const isChartStrictlyRestricted = !!userChartRestrictions.find(
@@ -164,6 +184,7 @@ export const useReportChartRestrictions = () => {
 
     return {
         isRouteRestrictedToCurrentUser,
+        isReportRestrictedToCurrentUser,
         isChartRestrictedToCurrentUser,
         isModuleRestrictedToCurrentUser,
     }

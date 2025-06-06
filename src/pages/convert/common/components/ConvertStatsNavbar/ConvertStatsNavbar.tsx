@@ -5,12 +5,13 @@ import { NavLink } from 'react-router-dom'
 import { Navigation } from 'components/Navigation/Navigation'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
+import css from 'pages/convert/common/components/ConvertStatsNavbar/ConvertStatsNavbar.less'
 import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
 import { StatsNavbarViewSections } from 'pages/stats/common/components/StatsNavbarView/constants'
-import { ReportsIDs } from 'pages/stats/dashboards/constants'
 import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
+import { STATS_ROUTES } from 'routes/constants'
 
-import css from './ConvertStatsNavbar.less'
+const CAMPAIGNS_PATH = `/app/stats/${STATS_ROUTES.CONVERT_CAMPAIGNS}`
 
 export const ConvertStatsNavbar = () => {
     const [isSubscriptionModalOpen, setISubscriptionModalOpen] = useState(false)
@@ -26,11 +27,11 @@ export const ConvertStatsNavbar = () => {
                 <Navigation.SectionIndicator />
             </Navigation.SectionTrigger>
             <Navigation.SectionContent className={css.sectionContent}>
-                <ProtectedRoute path={ReportsIDs.CampaignsReportConfig}>
+                <ProtectedRoute path={CAMPAIGNS_PATH}>
                     <Navigation.SectionItem
                         className={css.navigationSectionItem}
                         as={NavLink}
-                        to="/app/stats/convert/campaigns"
+                        to={CAMPAIGNS_PATH}
                         displayType="indent"
                     >
                         Campaigns

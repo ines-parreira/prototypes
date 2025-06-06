@@ -7,6 +7,8 @@ import {
     DashboardSectionSchema,
 } from 'pages/stats/dashboards/types'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import { OverviewChart } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
+import { TicketFieldsChart } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -24,13 +26,14 @@ describe('useSanitizedDashboard', () => {
             children: [
                 {
                     type: DashboardChildType.Chart,
-                    config_id: 'customer_satisfaction_trend_card',
+                    config_id: OverviewChart.CustomerSatisfactionTrendCard,
                 },
             ],
         }
 
         useReportChartRestrictionsMock.mockImplementation(() => ({
             isChartRestrictedToCurrentUser: () => false,
+            isReportRestrictedToCurrentUser: () => true,
             isRouteRestrictedToCurrentUser: () => false,
             isModuleRestrictedToCurrentUser: () => false,
         }))
@@ -48,18 +51,19 @@ describe('useSanitizedDashboard', () => {
             children: [
                 {
                     type: DashboardChildType.Chart,
-                    config_id: 'customer_satisfaction_trend_card',
+                    config_id: OverviewChart.CustomerSatisfactionTrendCard,
                 },
                 {
                     type: DashboardChildType.Chart,
-                    config_id: 'ticket-distribution-table',
+                    config_id: TicketFieldsChart.TicketDistributionTable,
                 },
             ],
         }
 
         useReportChartRestrictionsMock.mockImplementation(() => ({
             isChartRestrictedToCurrentUser: (chartId) =>
-                chartId === 'customer_satisfaction_trend_card',
+                chartId === OverviewChart.CustomerSatisfactionTrendCard,
+            isReportRestrictedToCurrentUser: () => true,
             isRouteRestrictedToCurrentUser: () => true,
             isModuleRestrictedToCurrentUser: () => false,
         }))
@@ -68,7 +72,9 @@ describe('useSanitizedDashboard', () => {
 
         const charts = result.current.children as DashboardChartSchema[]
         expect(charts).toHaveLength(1)
-        expect(charts[0].config_id).toBe('ticket-distribution-table')
+        expect(charts[0].config_id).toBe(
+            TicketFieldsChart.TicketDistributionTable,
+        )
     })
 
     it('should handle nested structures and remove restricted charts', () => {
@@ -87,11 +93,12 @@ describe('useSanitizedDashboard', () => {
                                 {
                                     type: DashboardChildType.Chart,
                                     config_id:
-                                        'customer_satisfaction_trend_card',
+                                        OverviewChart.CustomerSatisfactionTrendCard,
                                 },
                                 {
                                     type: DashboardChildType.Chart,
-                                    config_id: 'ticket-distribution-table',
+                                    config_id:
+                                        TicketFieldsChart.TicketDistributionTable,
                                 },
                             ],
                         },
@@ -102,7 +109,8 @@ describe('useSanitizedDashboard', () => {
 
         useReportChartRestrictionsMock.mockImplementation(() => ({
             isChartRestrictedToCurrentUser: (chartId) =>
-                chartId === 'customer_satisfaction_trend_card',
+                chartId === OverviewChart.CustomerSatisfactionTrendCard,
+            isReportRestrictedToCurrentUser: () => false,
             isRouteRestrictedToCurrentUser: () => true,
             isModuleRestrictedToCurrentUser: () => false,
         }))
@@ -119,7 +127,9 @@ describe('useSanitizedDashboard', () => {
 
         expect(charts).toHaveLength(1)
 
-        expect(charts[0].config_id).toBe('ticket-distribution-table')
+        expect(charts[0].config_id).toBe(
+            TicketFieldsChart.TicketDistributionTable,
+        )
     })
 
     it('should preserve non-chart elements', () => {
@@ -142,6 +152,7 @@ describe('useSanitizedDashboard', () => {
 
         useReportChartRestrictionsMock.mockImplementation(() => ({
             isChartRestrictedToCurrentUser: () => false,
+            isReportRestrictedToCurrentUser: () => false,
             isRouteRestrictedToCurrentUser: () => false,
             isModuleRestrictedToCurrentUser: () => false,
         }))

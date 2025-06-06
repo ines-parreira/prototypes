@@ -312,6 +312,64 @@ describe('useReportChartRestrictions', () => {
         })
     })
 
+    describe('isReportRestrictedToCurrentUser', () => {
+        beforeEach(() => {
+            mockUseAppSelector
+                .mockReturnValueOnce(restrictedAccountId)
+                .mockReturnValueOnce(restrictedUser)
+        })
+
+        it('should return true for a restricted report', () => {
+            const { result } = renderHook(() => useReportChartRestrictions())
+
+            expect(
+                result.current.isReportRestrictedToCurrentUser(
+                    ReportsIDs.SupportPerformanceAgentsReportConfig,
+                ),
+            ).toEqual(true)
+        })
+
+        it('should return false for other reports', () => {
+            const { result } = renderHook(() => useReportChartRestrictions())
+
+            expect(
+                result.current.isReportRestrictedToCurrentUser(
+                    ReportsIDs.CampaignsReportConfig,
+                ),
+            ).toEqual(false)
+
+            expect(
+                result.current.isReportRestrictedToCurrentUser(
+                    ReportsIDs.AutoQAReportConfig,
+                ),
+            ).toEqual(false)
+        })
+
+        it('should return false if report id is not found', () => {
+            mockUseAppSelector
+                .mockReturnValueOnce(restrictedAccountId)
+                .mockReturnValueOnce(restrictedUser)
+
+            jest.replaceProperty(constants, 'RBAC_RESTRICTIONS', {
+                [restrictedAccountId]: [
+                    {
+                        ids: ['non-existent-report'],
+                        type: RestrictedComponentType.Report,
+                        role: UserRole.Agent,
+                    },
+                ],
+            } as any)
+
+            const { result } = renderHook(() => useReportChartRestrictions())
+
+            expect(
+                result.current.isReportRestrictedToCurrentUser(
+                    ReportsIDs.CampaignsLegacyReportConfig,
+                ),
+            ).toEqual(false)
+        })
+    })
+
     describe('isChartRestrictedToCurrentUser', () => {
         const nonExistentChartId = 'test-chart-id'
         const partOfRestrictedReportOnly =

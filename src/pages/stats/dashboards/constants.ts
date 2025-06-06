@@ -7,6 +7,7 @@ export enum ReportsIDs {
     AiSalesAgentReportConfig = 'AiSalesAgentReportConfig',
     AutomateAiAgentsReportConfig = 'AutomateAiAgentsReportConfig',
     AutomateOverviewReportConfig = 'AutomateOverviewReportConfig',
+    AutomatePerformanceByFeatureReportConfig = 'PerformanceByFeatureReportConfig',
     AutoQAReportConfig = 'AutoQAReportConfig',
     BusiestTimesReportConfig = 'BusiestTimesReportConfig',
     CampaignsLegacyReportConfig = 'CampaignsLegacyReportConfig',

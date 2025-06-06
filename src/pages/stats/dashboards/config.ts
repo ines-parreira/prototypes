@@ -28,6 +28,7 @@ import {
     SatisfactionChart,
     SatisfactionReportConfig,
 } from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
+import { PerformanceByFeatureReportConfig } from 'pages/stats/self-service/AIAgentPerformanceByFeatureReportConfig'
 import {
     ServiceLevelAgreementsChart,
     ServiceLevelAgreementsReportConfig,
@@ -186,6 +187,10 @@ export const LEGACY_REPORTS_CONFIG: ReportsModalConfig = [
             {
                 type: AutomateAiAgentsChart,
                 config: AutomateAiAgentsReportConfig,
+            },
+            {
+                type: AutomateAiAgentsChart,
+                config: PerformanceByFeatureReportConfig,
             },
         ],
     },

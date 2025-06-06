@@ -7,6 +7,9 @@ import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import { LINK_AI_SALES_AGENT_TEXT } from 'pages/stats/automate/aiSalesAgent/constants'
+import { StatsNavbarViewSections } from 'pages/stats/common/components/StatsNavbarView/constants'
+import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
+import css from 'pages/stats/self-service/AutomateStatsNavbar.less'
 import {
     PAGE_TITLE_AI_AGENT,
     PAGE_TITLE_OVERVIEW,
@@ -15,10 +18,6 @@ import {
 } from 'pages/stats/self-service/constants'
 import { STATS_ROUTES } from 'routes/constants'
 import { getHasAutomate } from 'state/billing/selectors'
-
-import { StatsNavbarViewSections } from '../common/components/StatsNavbarView/constants'
-
-import css from './AutomateStatsNavbar.less'
 
 const OVERVIEW_PATH = `/app/stats/${STATS_ROUTES.AUTOMATE_OVERVIEW}`
 const AI_AGENT_PATH = `/app/stats/${STATS_ROUTES.AUTOMATE_AI_AGENTS}`
@@ -43,62 +42,72 @@ export function AutomateStatsNavbar() {
             </Navigation.SectionTrigger>
             <Navigation.SectionContent className={css.sectionContent}>
                 {!hasAutomate ? (
-                    <Navigation.SectionItem
-                        as={NavLink}
-                        to={OVERVIEW_PATH}
-                        displayType="indent"
-                        className={css.item}
-                    >
-                        {PAGE_TITLE_OVERVIEW}
-                        <UpgradeIcon />
-                    </Navigation.SectionItem>
-                ) : (
-                    <>
+                    <ProtectedRoute path={OVERVIEW_PATH}>
                         <Navigation.SectionItem
                             as={NavLink}
                             to={OVERVIEW_PATH}
-                            exact
                             displayType="indent"
-                            data-candu-id="statistics-automate-link-overview"
+                            className={css.item}
                         >
                             {PAGE_TITLE_OVERVIEW}
+                            <UpgradeIcon />
                         </Navigation.SectionItem>
-
-                        {isAiAgentStatsPageEnabled && (
+                    </ProtectedRoute>
+                ) : (
+                    <>
+                        <ProtectedRoute path={OVERVIEW_PATH}>
                             <Navigation.SectionItem
                                 as={NavLink}
-                                to={AI_AGENT_PATH}
+                                to={OVERVIEW_PATH}
                                 exact
                                 displayType="indent"
-                                data-candu-id="statistics-automate-ai-agent"
+                                data-candu-id="statistics-automate-link-overview"
                             >
-                                {PAGE_TITLE_AI_AGENT}
+                                {PAGE_TITLE_OVERVIEW}
                             </Navigation.SectionItem>
+                        </ProtectedRoute>
+
+                        {isAiAgentStatsPageEnabled && (
+                            <ProtectedRoute path={AI_AGENT_PATH}>
+                                <Navigation.SectionItem
+                                    as={NavLink}
+                                    to={AI_AGENT_PATH}
+                                    exact
+                                    displayType="indent"
+                                    data-candu-id="statistics-automate-ai-agent"
+                                >
+                                    {PAGE_TITLE_AI_AGENT}
+                                </Navigation.SectionItem>
+                            </ProtectedRoute>
                         )}
 
                         {isAiSalesAgentAnalyticsEnabled && (
-                            <Navigation.SectionItem
-                                as={NavLink}
-                                to={AI_SALES_AGENT_PATH}
-                                exact
-                                displayType="indent"
-                                data-candu-id="statistics-ai-sales-agent"
-                                className={css.item}
-                            >
-                                {LINK_AI_SALES_AGENT_TEXT}
-                                {!canUseAiSalesAgent && <UpgradeIcon />}
-                            </Navigation.SectionItem>
+                            <ProtectedRoute path={AI_SALES_AGENT_PATH}>
+                                <Navigation.SectionItem
+                                    as={NavLink}
+                                    to={AI_SALES_AGENT_PATH}
+                                    exact
+                                    displayType="indent"
+                                    data-candu-id="statistics-ai-sales-agent"
+                                    className={css.item}
+                                >
+                                    {LINK_AI_SALES_AGENT_TEXT}
+                                    {!canUseAiSalesAgent && <UpgradeIcon />}
+                                </Navigation.SectionItem>
+                            </ProtectedRoute>
                         )}
 
-                        <Navigation.SectionItem
-                            as={NavLink}
-                            to={PERFORMANCE_BY_FEATURE_PATH}
-                            exact
-                            displayType="indent"
-                            data-candu-id="statistics-automate-performance-by-feature"
-                        >
-                            {PAGE_TITLE_PERFORMANCE_BY_FEATURES}
-                        </Navigation.SectionItem>
+                        <ProtectedRoute path={PERFORMANCE_BY_FEATURE_PATH}>
+                            <Navigation.SectionItem
+                                as={NavLink}
+                                to={PERFORMANCE_BY_FEATURE_PATH}
+                                exact
+                                displayType="indent"
+                                data-candu-id="statistics-automate-performance-by-feature"
+                            >
+                                {PAGE_TITLE_PERFORMANCE_BY_FEATURES}
+                            </Navigation.SectionItem>
+                        </ProtectedRoute>
                     </>
                 )}
             </Navigation.SectionContent>

@@ -1,7 +1,9 @@
 import { UserRole } from 'config/types/user'
 import { ReportsIDs } from 'pages/stats/dashboards/constants'
+import { BASE_STATS_PATH } from 'routes/constants'
 
 const LOOPY_CASES_ACCOUNT_ID = 141994
+const JAXXON_ACCOUNT_ID = 14516
 
 export enum RestrictedComponentType {
     Module = 'module',
@@ -44,6 +46,26 @@ export const RBAC_RESTRICTIONS: RestrictionsPerCustomer = {
             ],
             type: RestrictedComponentType.Report,
             role: UserRole.Agent,
+        },
+    ],
+    [JAXXON_ACCOUNT_ID]: [
+        {
+            ids: [BASE_STATS_PATH],
+            type: RestrictedComponentType.Module,
+            role: UserRole.Agent,
+        },
+        {
+            ids: [
+                ReportsIDs.CampaignsLegacyReportConfig,
+                ReportsIDs.CampaignsReportConfig,
+                ReportsIDs.SupportPerformanceRevenueReportConfig,
+                ReportsIDs.AutomateOverviewReportConfig,
+                ReportsIDs.AiSalesAgentReportConfig,
+                ReportsIDs.AutomateAiAgentsReportConfig,
+                ReportsIDs.AutomatePerformanceByFeatureReportConfig,
+            ],
+            type: RestrictedComponentType.Report,
+            role: UserRole.Admin,
         },
     ],
 }

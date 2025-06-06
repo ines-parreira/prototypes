@@ -83,6 +83,7 @@ describe('ProductInsightsPage', () => {
         })
         useReportChartRestrictionsMock.mockImplementation(() => ({
             isRouteRestrictedToCurrentUser: () => false,
+            isReportRestrictedToCurrentUser: () => false,
             isChartRestrictedToCurrentUser: () => false,
             isModuleRestrictedToCurrentUser: () => false,
         }))
