@@ -1,6 +1,5 @@
-import { ReactNode, useState } from 'react'
+import { ReactNode } from 'react'
 
-import fallbackImage from 'assets/img/stats/no-product.png'
 import { SegmentEvent } from 'common/segment'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { OrderDirection } from 'models/api/types'
@@ -10,6 +9,7 @@ import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
+import { ProductImage } from 'pages/stats/voice-of-customer/components/ProductImage'
 import css from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsCellContent.less'
 import {
     getColumnAlignment,
@@ -168,28 +168,6 @@ const ProductCell = ({ product }: ProductTableCellProps) => {
                 </div>
             </div>
         </CellWrapper>
-    )
-}
-
-enum ImageSize {
-    md = 48,
-}
-
-const ProductImage = ({
-    src = fallbackImage,
-    alt,
-    size = ImageSize.md,
-}: {
-    src?: string
-    alt: string
-    size?: ImageSize
-}) => {
-    const [isError, setIsError] = useState(false)
-    const imageSource = isError ? fallbackImage : src
-    return (
-        <div style={{ width: size, height: size }} className={css.productImage}>
-            <img src={imageSource} alt={alt} onError={() => setIsError(true)} />
-        </div>
     )
 }
 

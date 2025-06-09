@@ -1,4 +1,4 @@
-import React, { forwardRef, HTMLProps } from 'react'
+import { forwardRef, HTMLProps } from 'react'
 
 import classNames from 'classnames'
 

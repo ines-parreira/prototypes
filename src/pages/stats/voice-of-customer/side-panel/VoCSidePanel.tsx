@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 
 import { TabNavigation } from '@gorgias/merchant-ui-kit'
 
@@ -9,12 +9,15 @@ import {
     INSIGHTS_LABEL,
     TREND_OVERVIEW_LABEL,
 } from 'pages/stats/voice-of-customer/side-panel/constants'
+import { InsightsTab } from 'pages/stats/voice-of-customer/side-panel/InsightsTab'
 import css from 'pages/stats/voice-of-customer/side-panel/VoCSidePanel.less'
+import { ProductHeader } from 'pages/stats/voice-of-customer/TrendOverview/ProductHeader'
 import { TrendOverviewReport } from 'pages/stats/voice-of-customer/TrendOverview/TrendOverviewReport'
 import {
     closeSidePanel,
     getSidePanelActiveTab,
     getSidePanelIsOpen,
+    getSidePanelProduct,
     setSidePanelActiveTab,
     SidePanelTab,
 } from 'state/ui/stats/sidePanelSlice'
@@ -25,7 +28,7 @@ type VoCSidePanelTabsType = Record<
         value: SidePanelTab
         label: string
         icon: string
-        content: () => JSX.Element
+        content: FC
     }
 >
 
@@ -34,13 +37,13 @@ export const VoCSidePanelTabs: VoCSidePanelTabsType = {
         value: SidePanelTab.Insights,
         label: INSIGHTS_LABEL,
         icon: 'psychology',
-        content: () => <div>Insights_Content</div>,
+        content: InsightsTab,
     },
     [SidePanelTab.TrendOverview]: {
         value: SidePanelTab.TrendOverview,
         label: TREND_OVERVIEW_LABEL,
         icon: 'show_chart',
-        content: () => <TrendOverviewReport />,
+        content: TrendOverviewReport,
     },
 }
 
@@ -49,6 +52,7 @@ export const VoCSidePanel = () => {
 
     const isOpen = useAppSelector(getSidePanelIsOpen)
     const activeTab = useAppSelector(getSidePanelActiveTab)
+    const product = useAppSelector(getSidePanelProduct)
 
     const closePanel = () => dispatch(closeSidePanel())
     const setActiveTab = (tab: SidePanelTab) =>
@@ -80,9 +84,14 @@ export const VoCSidePanel = () => {
                 />
             </Drawer.Header>
             <Drawer.Content className={css.content}>
-                <div className="full-width">
-                    <TabContent />
-                </div>
+                {product && (
+                    <>
+                        <ProductHeader product={product} />
+                        <div className={css.tabContent}>
+                            <TabContent />
+                        </div>
+                    </>
+                )}
             </Drawer.Content>
         </Drawer>
     )

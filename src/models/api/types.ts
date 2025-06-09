@@ -50,6 +50,8 @@ export enum OrderDirection {
     Desc = 'desc',
 }
 
+export type OrderField<T extends object> = T[keyof T]
+
 export const opposite = (direction: OrderDirection) =>
     direction === OrderDirection.Asc ? OrderDirection.Desc : OrderDirection.Asc
 

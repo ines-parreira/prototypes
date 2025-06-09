@@ -2,14 +2,7 @@
 @import (reference) '~css/backdrop';
 
 :local {
-    .drawer {
-        grid-template-areas: 'header' 'main';
-        grid-template-rows: 64px auto 0;
-    }
-
     .rootDrawer {
-        backdrop-filter: blur(2px);
-
         > div:first-child {
             background-color: transparent;
         }
@@ -22,7 +15,15 @@
     }
 
     .content {
+        display: flex;
+        flex-direction: column;
         background-color: var(--neutral-grey-1);
         padding: 0;
+        overflow: hidden;
+    }
+
+    .tabContent {
+        width: 100%;
+        overflow: auto;
     }
 }

@@ -5,7 +5,6 @@ import { useReportChartRestrictions } from 'pages/stats/report-chart-restriction
 import { TopAIIntentsForProductOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TopAIIntentsOverTimeForProductChart'
 import { NegativeSentimentsPerProductKpiChart } from 'pages/stats/voice-of-customer/side-panel/NegativeSentimentsPerProductKpiChart'
 import { PositiveSentimentsPerProductKpiChart } from 'pages/stats/voice-of-customer/side-panel/PositiveSentimentsPerProductKpiChart'
-import { ProductHeader } from 'pages/stats/voice-of-customer/TrendOverview/ProductHeader'
 import { TrendOverviewReport } from 'pages/stats/voice-of-customer/TrendOverview/TrendOverviewReport'
 import { defaultStatsFilters } from 'state/stats/statsSlice'
 import { RootState } from 'state/types'
@@ -40,8 +39,6 @@ jest.mock(
 const NegativeSentimentsPerProductKpiChartMock = assumeMock(
     NegativeSentimentsPerProductKpiChart,
 )
-jest.mock('pages/stats/voice-of-customer/TrendOverview/ProductHeader')
-const ProductTrendHeaderMock = assumeMock(ProductHeader)
 
 describe('TrendOverviewReport', () => {
     const productId = 'productId'
@@ -75,7 +72,6 @@ describe('TrendOverviewReport', () => {
             isChartRestrictedToCurrentUser: () => false,
             isModuleRestrictedToCurrentUser: () => false,
         }))
-        ProductTrendHeaderMock.mockImplementation(() => <div />)
         TopAIIntentsForProductOverTimeChartMock.mockImplementation(() => (
             <div />
         ))
@@ -85,12 +81,6 @@ describe('TrendOverviewReport', () => {
         NegativeSentimentsPerProductKpiChartMock.mockImplementation(() => (
             <div />
         ))
-    })
-
-    it('should render the Product Header', () => {
-        renderWithStore(<TrendOverviewReport />, defaultState)
-
-        expect(ProductTrendHeaderMock).toHaveBeenCalled()
     })
 
     it('should render Charts', () => {

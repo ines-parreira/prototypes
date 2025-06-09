@@ -1,4 +1,4 @@
-import { OrderDirection } from 'models/api/types'
+import { OrderDirection, OrderField } from 'models/api/types'
 import {
     TicketProductsEnrichedDimension,
     TicketProductsEnrichedMeasure,
@@ -20,6 +20,9 @@ import {
     TicketMessagesEnrichedFirstResponseTimesMembers,
 } from 'utils/reporting'
 
+export const PRODUCT_ID_DIMENSION = TicketProductsEnrichedDimension.ProductId
+export const INTENT_DIMENSION =
+    TicketCustomFieldsDimension.TicketCustomFieldsValueString
 export const TICKET_COUNT_MEASURE = TicketProductsEnrichedMeasure.TicketCount
 
 const NotDeletedTicketProductsFilter = [
@@ -30,11 +33,22 @@ const NotDeletedTicketProductsFilter = [
     },
 ]
 
+export const TicketPerIntentSortingField = Object.freeze({
+    TicketCount: TicketProductsEnrichedMeasure.TicketCount as const,
+    CustomFieldValueString:
+        TicketCustomFieldsDimension.TicketCustomFieldsValueString as const,
+})
+
+export type TicketsPerIntentOrderField = OrderField<
+    typeof TicketPerIntentSortingField
+>
+
 export const ticketCountPerIntentQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
     intentsCustomFieldId: string,
     sorting?: OrderDirection,
+    sortingField: TicketsPerIntentOrderField = TicketPerIntentSortingField.TicketCount,
 ): ReportingQuery<TicketCubeWithJoins> => ({
     measures: [TICKET_COUNT_MEASURE],
     dimensions: [
@@ -56,9 +70,7 @@ export const ticketCountPerIntentQueryFactory = (
             values: [intentsCustomFieldId],
         },
     ],
-    order: sorting
-        ? [[TicketProductsEnrichedMeasure.TicketCount, sorting]]
-        : undefined,
+    order: sorting ? [[sortingField, sorting]] : undefined,
 })
 
 export const ticketCountPerIntentDrillDownQueryFactory = (
@@ -82,12 +94,14 @@ export const ticketCountPerIntentForProductQueryFactory = (
     intentsCustomFieldId: string,
     productId: string,
     sorting?: OrderDirection,
+    sortingField?: TicketsPerIntentOrderField,
 ): ReportingQuery<TicketCubeWithJoins> => {
     const baseQuery = ticketCountPerIntentQueryFactory(
         statsFilters,
         timezone,
         intentsCustomFieldId,
         sorting,
+        sortingField,
     )
 
     baseQuery.filters.push({

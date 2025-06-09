@@ -12,11 +12,6 @@
         box-shadow: 0 3px 20px 0 #0000000a;
     }
 
-    .thumbnail {
-        width: 64px;
-        height: 64px;
-    }
-
     .title {
         display: flex;
         flex-direction: column;
@@ -25,11 +20,13 @@
         h2 {
             color: var(--neutral-grey-6);
             .heading-subsection-semibold();
+            margin-bottom: var(--layout-spacing-xs);
         }
 
-        .subtitle {
+        p {
             color: var(--neutral-grey-5);
             .caption-regular();
+            margin: 0;
         }
     }
 }

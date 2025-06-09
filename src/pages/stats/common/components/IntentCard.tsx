@@ -24,7 +24,7 @@ function CardFooter({ children }: { children: ReactNode }) {
     return <div className={css.footer}>{children}</div>
 }
 
-const loadingSkeleton = (
+export const LoadingSkeleton = () => (
     <Card className={css.content}>
         <CardBody>
             <CardHeader>
@@ -66,7 +66,7 @@ export function IntentCard({
     onViewTickets,
     isLoading,
 }: OptionalWhileLoading<IntentCardProps>) {
-    if (isLoading) return loadingSkeleton
+    if (isLoading) return <LoadingSkeleton />
 
     const [L1, L2, L3] = intent.split(TICKET_CUSTOM_FIELDS_API_SEPARATOR)
 

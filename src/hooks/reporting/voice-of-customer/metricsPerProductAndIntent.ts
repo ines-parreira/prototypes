@@ -7,6 +7,7 @@ import { OrderDirection } from 'models/api/types'
 import {
     ticketCountPerIntentForProductQueryFactory,
     ticketCountPerIntentQueryFactory,
+    TicketsPerIntentOrderField,
 } from 'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent'
 import { StatsFilters } from 'models/stat/types'
 
@@ -52,6 +53,7 @@ export const useTicketCountPerIntentForProduct = (
     productId: string,
     sorting?: OrderDirection,
     intentsCustomFieldValueString?: string,
+    sortingField?: TicketsPerIntentOrderField,
 ) => {
     return useMetricPerDimension(
         ticketCountPerIntentForProductQueryFactory(
@@ -60,6 +62,7 @@ export const useTicketCountPerIntentForProduct = (
             intentsCustomFieldId,
             productId,
             sorting,
+            sortingField,
         ),
         intentsCustomFieldValueString,
     )
