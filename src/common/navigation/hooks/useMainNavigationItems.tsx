@@ -4,7 +4,9 @@ import { Map } from 'immutable'
 
 import { Badge } from '@gorgias/merchant-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
 import { hasRole } from 'utils'
 
@@ -37,6 +39,7 @@ export const useMainNavigationItems = (
     currentUser: Map<any, any>,
 ): MenuItem[] => {
     const hasAiAgentMenu = useHasAiAgentMenu()
+    const isAiJourneyEnabled = useFlag(FeatureFlagKey.AiJourneyEnabled)
 
     return useMemo(() => {
         const menuItems: Array<MenuItem & { onlyIf?: boolean }> = [
@@ -60,6 +63,14 @@ export const useMainNavigationItems = (
                 segmentProp: { link: 'ai-agent' },
                 requiredRole: UserRole.Agent,
                 onlyIf: hasAiAgentMenu,
+            },
+            {
+                url: '/app/ai-journey',
+                label: 'AI Journey',
+                icon: 'sms',
+                name: MenuItemName.AiJourney,
+                segmentProp: { link: 'ai-journey' },
+                onlyIf: isAiJourneyEnabled,
             },
             {
                 url: '/app/convert',
@@ -100,5 +111,5 @@ export const useMainNavigationItems = (
                     hasRole(currentUser, item.requiredRole),
             )
             .filter((item) => item.onlyIf !== false)
-    }, [currentUser, hasAiAgentMenu])
+    }, [currentUser, hasAiAgentMenu, isAiJourneyEnabled])
 }

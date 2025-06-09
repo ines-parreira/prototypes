@@ -103,6 +103,17 @@ export default function GlobalNavigation() {
                             data-candu-id="global-navigation-menu-ai-agent-page"
                         />
                     )}
+                    {isAiJourneyEnabled && (
+                        <GlobalNavigationItem
+                            as={Link}
+                            icon="chat"
+                            label="AI Journey"
+                            isActive={activeItem === MenuItemName.AiJourney}
+                            tooltip={<span>AI Journey</span>}
+                            to="/app/ai-journey"
+                            data-candu-id="global-navigation-menu-ai-journey-page"
+                        />
+                    )}
                     {hasRole(currentUser, UserRole.Admin) && (
                         <GlobalNavigationItem
                             as={Link}
@@ -145,17 +156,6 @@ export default function GlobalNavigation() {
                             tooltip={<span>Voice of Customer</span>}
                             to={BASE_VOICE_OF_CUSTOMER_PATH}
                             data-candu-id="global-navigation-menu-voice-of-customer-page"
-                        />
-                    )}
-                    {isAiJourneyEnabled && (
-                        <GlobalNavigationItem
-                            as={Link}
-                            icon="moving"
-                            label="AI Journey"
-                            isActive={activeItem === MenuItemName.AiJourney}
-                            tooltip={<span>AI Journey</span>}
-                            to="/app/ai-journey"
-                            data-candu-id="global-navigation-menu-ai-journey-page"
                         />
                     )}
                 </div>
