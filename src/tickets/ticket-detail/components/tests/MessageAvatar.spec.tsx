@@ -1,11 +1,12 @@
-import { render } from '@testing-library/react'
+import { render, waitFor } from '@testing-library/react'
 
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 import { Avatar } from '@gorgias/merchant-ui-kit'
 
 import * as predicates from 'models/ticket/predicates'
+import { getAvatar } from 'pages/common/components/Avatar/utils'
 
-import { MessageAvatar } from '../MessageAvatar'
+import { AVATAR_SIZE, MessageAvatar } from '../MessageAvatar'
 
 jest.mock('@gorgias/merchant-ui-kit', () => ({
     Avatar: jest.fn(() => null),
@@ -16,32 +17,37 @@ jest.mock('models/ticket/predicates', () => ({
     isTicketMessageHidden: jest.fn(),
 }))
 
+jest.mock('pages/common/components/Avatar/utils', () => ({
+    getAvatar: jest.fn(),
+    getAvatarFromCache: jest.fn(),
+}))
+
 const isTicketMessageDeletedMock = jest.mocked(
     predicates.isTicketMessageDeleted,
 )
 const isTicketMessageHiddenMock = jest.mocked(predicates.isTicketMessageHidden)
+const getAvatarMock = jest.mocked(getAvatar)
 
 describe('MessageAvatar', () => {
     const mockMessage = {
         sender: {
             name: 'Test User',
-        },
-        meta: {
-            profile_picture_url: 'https://example.com/avatar.jpg',
-            is_duplicated: false,
+            meta: { profile_picture_url: 'https://example.com/avatar.jpg' },
         },
     } as TicketMessage
 
     beforeEach(() => {
+        getAvatarMock.mockResolvedValue('ok')
         isTicketMessageDeletedMock.mockReturnValue(false)
         isTicketMessageHiddenMock.mockReturnValue(false)
     })
 
     it('renders avatar with correct props for regular message', () => {
-        render(<MessageAvatar message={mockMessage} isAI={false} />)
+        render(<MessageAvatar message={mockMessage} />)
 
         expect(Avatar).toHaveBeenCalledWith(
             expect.objectContaining({
+                className: expect.any(String),
                 name: 'Test User',
                 url: 'https://example.com/avatar.jpg',
                 size: 'md',
@@ -52,7 +58,7 @@ describe('MessageAvatar', () => {
     })
 
     it('renders avatar with AI icon when isAI is true', () => {
-        render(<MessageAvatar message={mockMessage} isAI={true} />)
+        render(<MessageAvatar message={mockMessage} isAI />)
 
         expect(Avatar).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -65,7 +71,7 @@ describe('MessageAvatar', () => {
     it('does not render avatar when message is deleted', () => {
         isTicketMessageDeletedMock.mockReturnValue(true)
 
-        render(<MessageAvatar message={mockMessage} isAI={false} />)
+        render(<MessageAvatar message={mockMessage} />)
 
         expect(Avatar).not.toHaveBeenCalled()
     })
@@ -73,7 +79,7 @@ describe('MessageAvatar', () => {
     it('does not render avatar when message is hidden and not duplicated', () => {
         isTicketMessageHiddenMock.mockReturnValue(true)
 
-        render(<MessageAvatar message={mockMessage} isAI={false} />)
+        render(<MessageAvatar message={mockMessage} />)
 
         expect(Avatar).not.toHaveBeenCalled()
     })
@@ -84,12 +90,11 @@ describe('MessageAvatar', () => {
         const duplicatedMessage: TicketMessage = {
             ...mockMessage,
             meta: {
-                ...(mockMessage.meta as Record<string, unknown>),
                 is_duplicated: true,
             },
         }
 
-        render(<MessageAvatar message={duplicatedMessage} isAI={false} />)
+        render(<MessageAvatar message={duplicatedMessage} />)
 
         expect(Avatar).toHaveBeenCalled()
     })
@@ -97,15 +102,18 @@ describe('MessageAvatar', () => {
     it('handles missing meta data gracefully', () => {
         const messageWithoutMeta: TicketMessage = {
             ...mockMessage,
-            meta: undefined,
+            sender: {
+                ...mockMessage.sender,
+                meta: undefined,
+            },
         }
 
-        render(<MessageAvatar message={messageWithoutMeta} isAI={false} />)
+        render(<MessageAvatar message={messageWithoutMeta} />)
 
         expect(Avatar).toHaveBeenCalledWith(
             expect.objectContaining({
                 name: 'Test User',
-                url: '',
+                url: undefined,
             }),
             expect.anything(),
         )
@@ -120,15 +128,41 @@ describe('MessageAvatar', () => {
             },
         }
 
-        render(
-            <MessageAvatar message={messageWithoutSenderName} isAI={false} />,
-        )
+        render(<MessageAvatar message={messageWithoutSenderName} />)
 
         expect(Avatar).toHaveBeenCalledWith(
             expect.objectContaining({
                 name: '',
             }),
             expect.anything(),
+        )
+    })
+
+    it('generates avatar url from email when agent profile picture is not defined', async () => {
+        const messageWithoutProfilePicture: TicketMessage = {
+            ...mockMessage,
+            from_agent: false,
+            sender: {
+                ...mockMessage.sender,
+                email: 'test@example.com',
+                meta: { profile_picture_url: undefined },
+            },
+        }
+
+        render(<MessageAvatar message={messageWithoutProfilePicture} />)
+
+        expect(getAvatarMock).toHaveBeenCalledWith({
+            email: 'test@example.com',
+            size: AVATAR_SIZE,
+        })
+
+        await waitFor(() =>
+            expect(Avatar).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    url: 'ok',
+                }),
+                expect.anything(),
+            ),
         )
     })
 })

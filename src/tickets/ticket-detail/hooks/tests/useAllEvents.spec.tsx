@@ -63,6 +63,7 @@ describe('useAllEvents', () => {
             cursor: undefined,
             object_id: 123,
             object_type: 'Ticket',
+            limit: 100,
         })
     })
 

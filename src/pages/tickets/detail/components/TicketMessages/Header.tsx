@@ -13,6 +13,7 @@ import {
 } from 'models/ticket/types'
 import { AgentLabel, CustomerLabel } from 'pages/common/utils/labels'
 import { isForwardedMessage } from 'tickets/common/utils'
+import { useTicketModalContext } from 'timeline/ticket-modal/hooks/useTicketModalContext'
 
 import Meta from './Meta'
 import Source from './Source'
@@ -29,7 +30,7 @@ type Props = {
     isMessageDeleted?: boolean
     isMessageFromAIAgent?: boolean
     sourceDetails?: ReactNode
-    containerRef?: React.RefObject<HTMLDivElement>
+    containerRef?: React.RefObject<HTMLElement>
 }
 
 export default function Header({
@@ -40,8 +41,8 @@ export default function Header({
     isMessageDeleted,
     isMessageFromAIAgent = false,
     sourceDetails = null,
-    containerRef,
 }: Props) {
+    const { containerRef } = useTicketModalContext()
     const sender = fromJS(message.sender || {}) as Map<any, any>
     const isForwarded = isForwardedMessage(message)
     let metaContent = (
@@ -113,7 +114,7 @@ export default function Header({
                         createdDatetime={message.created_datetime}
                         channel={message.channel}
                         source={message.source as SourceType}
-                        containerRef={containerRef}
+                        containerRef={containerRef ?? undefined}
                     />
                 )}
                 {metaContent}

@@ -45,7 +45,10 @@ function cleanEmail(email: Maybe<string>): string {
     return (email || '').toLowerCase().trim()
 }
 
-export function getAvatarFromCache(email: string, size: number): Maybe<string> {
+export function getAvatarFromCache(
+    email: string | null,
+    size: number,
+): Maybe<string> {
     const url = avatarCache[cleanEmail(email)]
     return url ? `${url}&s=${size}` : url
 }

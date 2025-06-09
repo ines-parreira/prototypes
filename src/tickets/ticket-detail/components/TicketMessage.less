@@ -1,3 +1,5 @@
+@avatarSize: 36px;
+
 :local {
     .container {
         margin-top: var(--layout-spacing-xs);
@@ -26,6 +28,10 @@
         }
     }
 
+    .minimalBodyContainer {
+        padding-left: calc(@avatarSize + var(--layout-spacing-s));
+    }
+
     .ai {
         &:hover {
             background: var(--accessory-magenta-1);
@@ -49,5 +55,9 @@
                 0.85
             );
         }
+    }
+
+    .headerContainer {
+        width: 100%;
     }
 }

@@ -6,6 +6,8 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import { TicketDetail } from 'tickets/ticket-detail/components/TicketDetail'
 
+import { TicketModalProvider } from './TicketModalProvider'
+
 import css from './TicketModal.less'
 
 type Props = {
@@ -30,20 +32,22 @@ export function TicketModal({
             isOpen
             onClose={onClose}
         >
-            <ModalBody className={css.body}>
-                <TicketDetail
-                    summary={summary}
-                    ticketId={ticketId}
-                    additionalHeaderActions={
-                        <IconButton
-                            fillStyle="ghost"
-                            icon="close"
-                            intent="secondary"
-                            onClick={onClose}
-                        />
-                    }
-                />
-            </ModalBody>
+            <TicketModalProvider>
+                <ModalBody className={css.body}>
+                    <TicketDetail
+                        summary={summary}
+                        ticketId={ticketId}
+                        additionalHeaderActions={
+                            <IconButton
+                                fillStyle="ghost"
+                                icon="close"
+                                intent="secondary"
+                                onClick={onClose}
+                            />
+                        }
+                    />
+                </ModalBody>
+            </TicketModalProvider>
             <ModalFooter className={css.footer}>
                 <Button
                     as="a"

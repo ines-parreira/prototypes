@@ -13,12 +13,10 @@ jest.mock('pages/tickets/detail/components/TicketMessages/Header', () =>
 describe('MessageHeader', () => {
     it('should call Header with the correct props', () => {
         const message = {} as TicketMessage
-        const containerRef = { current: document.createElement('div') }
         const messageMetadata = <div>Message Metadata</div>
         render(
             <MessageHeader
                 message={message}
-                containerRef={containerRef}
                 isFailed
                 isAI
                 messageMetadata={messageMetadata}
@@ -32,7 +30,6 @@ describe('MessageHeader', () => {
                 isMessageHidden: false,
                 isMessageFromAIAgent: true,
                 message,
-                containerRef,
                 sourceDetails: messageMetadata,
             }),
             expect.any(Object),

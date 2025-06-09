@@ -65,6 +65,7 @@ describe('useAllVoiceCalls', () => {
         expect(listVoiceCallsMock).toHaveBeenCalledWith({
             cursor: undefined,
             ticket_id: 123,
+            limit: 100,
         })
     })
 

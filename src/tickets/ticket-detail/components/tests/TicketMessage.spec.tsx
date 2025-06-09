@@ -119,7 +119,6 @@ describe('TicketMessage', () => {
                     message: mockedElement.data,
                     isAI: false,
                     isFailed: false,
-                    containerRef: expect.any(Object),
                 }),
                 expect.any(Object),
             )

@@ -1,5 +1,3 @@
-import { useRef } from 'react'
-
 import cn from 'classnames'
 
 import { isErrorFlag } from '../helpers/isErrorFlag'
@@ -18,7 +16,6 @@ type Props = {
 }
 
 export function TicketMessage({ element }: Props) {
-    const containerRef = useRef<HTMLDivElement>(null)
     const isAI = element.flags?.includes('ai') ?? false
     const isMinimal = element.flags?.includes('minimal') ?? false
     const error = element.flags?.find(isErrorFlag)?.[1]
@@ -43,19 +40,21 @@ export function TicketMessage({ element }: Props) {
                 [css.internal]: !isAI && !element.data.public,
                 [css.ai]: isAI,
             })}
-            ref={containerRef}
         >
             {isMinimal ? (
-                messageBody
+                <div className={css.minimalBodyContainer}>{messageBody}</div>
             ) : (
                 <>
-                    <MessageAvatar message={element.data} isAI={isAI} />
-                    <div>
+                    <MessageAvatar
+                        message={element.data}
+                        isAI={isAI}
+                        isFailed={Boolean(error)}
+                    />
+                    <div className={css.headerContainer}>
                         <MessageHeader
                             isAI={element.flags?.includes('ai') ?? false}
                             isFailed={Boolean(error)}
                             message={element.data}
-                            containerRef={containerRef}
                             messageMetadata={messageMetadata}
                         />
                         {messageBody}

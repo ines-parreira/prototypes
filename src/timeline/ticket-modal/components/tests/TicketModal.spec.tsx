@@ -9,6 +9,7 @@ import { assumeMock } from 'utils/testing'
 import { userEvent } from 'utils/testing/userEvent'
 
 import { TicketModal } from '../TicketModal'
+import { TicketModalProvider } from '../TicketModalProvider'
 
 jest.mock('tickets/ticket-detail/components/TicketDetail', () => ({
     TicketDetail: jest.fn(
@@ -24,12 +25,17 @@ jest.mock('tickets/ticket-detail/components/TicketDetail', () => ({
         ),
     ),
 }))
+
+jest.mock('../TicketModalProvider', () => ({
+    TicketModalProvider: jest.fn(({ children }) => children),
+}))
 jest.mock('@gorgias/merchant-ui-kit', () => ({
     ...jest.requireActual('@gorgias/merchant-ui-kit'),
     IconButton: jest.fn(() => <div>IconButton</div>),
 }))
 
 const TicketDetailMock = assumeMock(TicketDetail)
+const TicketModalProviderMock = assumeMock(TicketModalProvider)
 
 describe('TicketModal', () => {
     it('should call the TicketDetail component with the right props', () => {
@@ -95,5 +101,11 @@ describe('TicketModal', () => {
         userEvent.click(el)
 
         expect(onPrevious).toHaveBeenCalled()
+    })
+
+    it('should wrap TicketDetail with TicketModalProvider', () => {
+        render(<TicketModal ticketId={1} onClose={jest.fn()} />)
+
+        expect(TicketModalProviderMock).toHaveBeenCalled()
     })
 })

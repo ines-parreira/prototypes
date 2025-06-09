@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import { Emoji } from 'emoji-mart'
 
 import { TicketAssigneeTeam, TicketAssigneeUser } from '@gorgias/helpdesk-types'
@@ -20,7 +21,7 @@ export function TicketAssignee({
     return (
         <div className={css.container}>
             {!assignedAgent && emoji ? (
-                <span className={css.avatar}>
+                <span className={cn(css.avatar, css.emoji)}>
                     <Emoji emoji={emoji} size={20} />
                 </span>
             ) : (

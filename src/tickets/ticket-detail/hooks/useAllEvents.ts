@@ -8,7 +8,12 @@ export function useAllEvents(ticketId: number) {
     const { data, isLoading } = useExhaustEndpoint(
         ['all-events', ticketId],
         (cursor) =>
-            listEvents({ cursor, object_id: ticketId, object_type: 'Ticket' }),
+            listEvents({
+                cursor,
+                object_id: ticketId,
+                object_type: 'Ticket',
+                limit: 100,
+            }),
         {
             refetchOnWindowFocus: false,
             staleTime: 1000 * 60 * 5, // 5 minutes

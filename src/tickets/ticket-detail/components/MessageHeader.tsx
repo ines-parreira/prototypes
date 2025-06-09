@@ -12,14 +12,12 @@ type Props = {
     isFailed?: boolean
     message: TicketMessage
     messageMetadata: React.ReactNode
-    containerRef?: React.RefObject<HTMLDivElement>
 }
 
 export function MessageHeader({
     isAI = false,
     message,
     isFailed,
-    containerRef,
     messageMetadata,
 }: Props) {
     const id = useId()
@@ -32,7 +30,6 @@ export function MessageHeader({
             isMessageHidden={isTicketMessageHidden(message)}
             isMessageFromAIAgent={isAI}
             sourceDetails={messageMetadata}
-            containerRef={containerRef}
         />
     )
 }

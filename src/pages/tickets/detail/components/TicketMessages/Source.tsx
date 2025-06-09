@@ -21,7 +21,7 @@ type Props = {
     createdDatetime: string
     source: SourceType
     channel?: TicketChannel | string
-    containerRef?: React.RefObject<HTMLDivElement>
+    containerRef?: React.RefObject<HTMLElement>
 }
 
 export default function Source({
