@@ -2,24 +2,35 @@ import { TooltipItem } from 'chart.js'
 
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { TimeSeriesHook } from 'hooks/reporting/useTimeSeries'
+import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 import {
     AiSalesAgentChart,
     AiSalesAgentChartConfig,
 } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import ChartCard from 'pages/stats/common/components/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
-import { formatTimeSeriesData } from 'pages/stats/common/utils'
+import { formatCurrency, formatTimeSeriesData } from 'pages/stats/common/utils'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { TooltipData } from 'pages/stats/types'
 
-export const formatLabelValue = (value: number | string) => {
-    return typeof value === 'number' ? `${parseFloat(value.toFixed(2))}` : value
+export const formatLabelValue = (
+    value: number | string,
+    currency: string = 'USD',
+) => {
+    return typeof value === 'number'
+        ? `${formatCurrency(value, currency)}`
+        : value
 }
 
-export const renderTooltipLabel = (isPercentage = false) => {
+export const renderTooltipLabel = (
+    isPercentage = false,
+    currency: string = 'USD',
+) => {
     return ({ raw, dataset }: TooltipItem<'line'>) => {
         return `${dataset?.label || ''}:  ${
-            isPercentage ? formatLabelValue(raw as number) : (raw as number)
+            isPercentage
+                ? formatLabelValue(raw as number, currency)
+                : (raw as number)
         }`
     }
 }
@@ -36,6 +47,7 @@ const Chart = ({
     useTimeSeries: TimeSeriesHook
 } & DashboardChartProps) => {
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
+    const { currency } = useCurrency()
 
     const timeSeries = useTimeSeries(
         cleanStatsFilters,
@@ -53,8 +65,8 @@ const Chart = ({
             <LineChart
                 isLoading={!timeSeries.data}
                 data={formatTimeSeriesData(timeSeries.data, title, granularity)}
-                renderYTickLabel={formatLabelValue}
-                _renderLegacyTooltipLabel={renderTooltipLabel(true)}
+                renderYTickLabel={(value) => formatLabelValue(value, currency)}
+                _renderLegacyTooltipLabel={renderTooltipLabel(true, currency)}
                 _displayLegacyTooltip
             />
         </ChartCard>

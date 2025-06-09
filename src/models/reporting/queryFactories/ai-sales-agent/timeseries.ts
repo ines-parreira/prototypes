@@ -24,6 +24,7 @@ const createGmvTimeSeriesQuery = (
     measure:
         | AiSalesAgentOrdersMeasure.Gmv
         | AiSalesAgentOrdersMeasure.GmvUsd = AiSalesAgentOrdersMeasure.Gmv,
+    dimensions: AiSalesAgentOrdersDimension[] = [],
 ): TimeSeriesQuery<AiSalesAgentOrdersCube> => {
     const baseFilters = statsFiltersToReportingFilters(
         aiSalesAgentOrdersDefaultFiltersMembers,
@@ -32,7 +33,7 @@ const createGmvTimeSeriesQuery = (
 
     return {
         measures: [measure],
-        dimensions: [],
+        dimensions,
         timeDimensions: [
             {
                 dimension: AiSalesAgentOrdersDimension.PeriodStart,
@@ -87,6 +88,7 @@ export const influencedGmvTimeSeriesQueryFactory = (
             },
         ],
         AiSalesAgentOrdersMeasure.Gmv,
+        [AiSalesAgentOrdersDimension.Currency],
     )
 
 export const gmvTimeSeriesQueryFactory = (

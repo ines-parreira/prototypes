@@ -1,8 +1,9 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
 import { TooltipItem } from 'chart.js'
+import { fromJS } from 'immutable'
 import moment from 'moment/moment'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
 
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'models/reporting/types'
@@ -13,6 +14,7 @@ import GmvInfluencedOverTimeChart, {
 } from 'pages/stats/automate/aiSalesAgent/charts/GmvInfluencedOverTimeChart'
 import { useGmvInfluenceOverTimeSeries } from 'pages/stats/automate/aiSalesAgent/metrics/useGmvInfluenceOverTimeSeries'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
+import { RootState } from 'state/types'
 import { formatReportingQueryDate } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
 
@@ -30,6 +32,12 @@ jest.mock(
 const useGmvInfluenceOverTimeSeriesMock = assumeMock(
     useGmvInfluenceOverTimeSeries,
 )
+
+const store = createStore((state) => state as RootState, {
+    integrations: fromJS({
+        integrations: [],
+    }),
+})
 
 describe('renderTooltipLabel', () => {
     test('renders tooltip label without percentage', () => {
@@ -49,7 +57,7 @@ describe('renderTooltipLabel', () => {
             raw: 0.1,
             dataset: { label: 'Dataset Label' },
         } as TooltipItem<'line'>
-        const expectedLabel = 'Dataset Label:  0.1'
+        const expectedLabel = 'Dataset Label:  $0.1'
 
         const result = renderTooltipLabel(true)(tooltipItem)
 
@@ -61,7 +69,7 @@ describe('renderTooltipLabel', () => {
             raw: 0.1,
             dataset: { label: undefined },
         } as TooltipItem<'line'>
-        const expectedLabel = ':  0.1'
+        const expectedLabel = ':  $0.1'
 
         const result = renderTooltipLabel(true)(tooltipItem)
 
@@ -70,16 +78,16 @@ describe('renderTooltipLabel', () => {
 })
 
 describe('formatLabelValue', () => {
-    it('should correctly format numbers as percentages', () => {
+    it('should correctly format numbers as float', () => {
         const input = 0.1234
-        const expectedOutput = '0.12'
+        const expectedOutput = '$0.12'
         const result = formatLabelValue(input)
         expect(result).toBe(expectedOutput)
     })
 
-    it('should round percentages to two decimal places', () => {
+    it('should round numbers to two decimal places', () => {
         const input = 0.129
-        const expectedOutput = '0.13'
+        const expectedOutput = '$0.13'
         const result = formatLabelValue(input)
         expect(result).toBe(expectedOutput)
     })
@@ -88,6 +96,16 @@ describe('formatLabelValue', () => {
         const input = 'Not a number'
         const result = formatLabelValue(input)
         expect(result).toBe(input)
+    })
+
+    describe('when currency is not USD', () => {
+        it('should correctly format numbers as float', () => {
+            const currency = 'EUR'
+            const input = 0.1234
+            const expectedOutput = '€0.12'
+            const result = formatLabelValue(input, currency)
+            expect(result).toBe(expectedOutput)
+        })
     })
 })
 
@@ -118,7 +136,11 @@ describe('<GmvInfluencedOverTimeChart />', () => {
     })
 
     it('renders', () => {
-        render(<GmvInfluencedOverTimeChart />)
+        render(
+            <Provider store={store}>
+                <GmvInfluencedOverTimeChart />
+            </Provider>,
+        )
 
         expect(screen.getByText('GMV influenced over time')).toBeInTheDocument()
     })
