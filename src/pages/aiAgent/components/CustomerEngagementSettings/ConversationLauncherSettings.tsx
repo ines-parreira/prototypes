@@ -123,8 +123,8 @@ export const ConversationLauncherAdvancedSettings = ({
                             <div className={css.desktopSwitch}>
                                 Customize placeholder
                                 <p className={css.desktopSwitchDescription}>
-                                    You can also custome the placeholder of the
-                                    Ask anything input for your other chat
+                                    You can also customize the placeholder of
+                                    the Ask anything input for your other chat
                                     language in the{' '}
                                     <Link
                                         to={`/app/settings/channels/gorgias_chat/${gorgiasChatIntegrations?.id}/languages/${primaryLanguage}`}
