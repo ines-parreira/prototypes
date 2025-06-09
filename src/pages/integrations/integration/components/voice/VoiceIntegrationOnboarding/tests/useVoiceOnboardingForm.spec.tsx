@@ -10,7 +10,9 @@ import {
     PhoneIntegration,
 } from '@gorgias/helpdesk-queries'
 
+import useAppDispatch from 'hooks/useAppDispatch'
 import { DEFAULT_IVR_SETTINGS } from 'models/integration/constants'
+import { fetchIntegrations } from 'state/integrations/actions'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
@@ -34,6 +36,15 @@ const mockNotify = {
 jest.mock('hooks/useNotify', () => ({
     useNotify: () => mockNotify,
 }))
+
+jest.mock('hooks/useAppDispatch')
+const mockDispatch = jest.fn()
+const useAppDispatchMock = assumeMock(useAppDispatch)
+useAppDispatchMock.mockReturnValue(mockDispatch)
+
+jest.mock('state/integrations/actions')
+const fetchIntegrationsMock = assumeMock(fetchIntegrations)
+fetchIntegrationsMock.mockReturnValue('mockFetchIntegrations' as any)
 
 describe('validateOnboardingForm', () => {
     it('should return errors when name is empty', () => {
@@ -125,6 +136,7 @@ describe('useOnboardingForm', () => {
         expect(mockNotify.success).toHaveBeenCalledWith(
             'Test Integration successfully created.',
         )
+        expect(mockDispatch).toHaveBeenCalledWith('mockFetchIntegrations')
         expect(history.location.pathname).toBe(PHONE_INTEGRATION_BASE_URL)
         expect(createIntegrationMock).toHaveBeenCalledWith(
             data as CreateIntegrationBody,

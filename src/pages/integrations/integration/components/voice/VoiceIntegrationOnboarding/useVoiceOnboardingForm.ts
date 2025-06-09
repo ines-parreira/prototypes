@@ -9,8 +9,10 @@ import {
 import { validatePhoneIntegrationMeta } from '@gorgias/helpdesk-validators'
 
 import { toFormErrors } from 'core/forms'
+import useAppDispatch from 'hooks/useAppDispatch'
 import { useNotify } from 'hooks/useNotify'
 import { DEFAULT_IVR_SETTINGS } from 'models/integration/constants'
+import { fetchIntegrations } from 'state/integrations/actions'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 
@@ -49,11 +51,14 @@ function getSubmittableValues(values: PhoneIntegration) {
 export const useOnboardingForm = () => {
     const notify = useNotify()
     const history = useHistory()
+    const dispatch = useAppDispatch()
+
     const { mutate: createIntegration } = useCreateIntegration({
         mutation: {
             onSuccess: (response) => {
                 notify.success(`${response.data.name} successfully created.`)
 
+                dispatch(fetchIntegrations())
                 history.push(PHONE_INTEGRATION_BASE_URL)
             },
             onError: () => {
