@@ -12,8 +12,8 @@
 
         .message {
             display: flex;
-            gap: @layout-spacing-s;
-            margin-bottom: @layout-spacing-s;
+            gap: var(--layout-spacing-s);
+            margin-bottom: var(--layout-spacing-s);
         }
 
         .content {
@@ -56,7 +56,7 @@
     }
 
     .footer {
-        margin-top: @layout-spacing-s;
+        margin-top: var(--layout-spacing-s);
     }
 
     .messageSkeleton {
@@ -81,7 +81,7 @@
 
     .tovPreview {
         .body-regular();
-        margin-top: @layout-spacing-s;
+        margin-top: var(--layout-spacing-s);
         padding: @layout-spacing-m;
         width: 428px;
         gap: @layout-spacing-m;
@@ -96,7 +96,7 @@
         .message,
         .aiMessage {
             display: flex;
-            gap: @layout-spacing-s;
+            gap: var(--layout-spacing-s);
             margin-bottom: var(--layout-spacing-xs);
             padding: 16px 24px;
             max-width: 90%;

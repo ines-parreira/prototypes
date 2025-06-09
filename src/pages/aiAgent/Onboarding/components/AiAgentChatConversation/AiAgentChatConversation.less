@@ -5,7 +5,7 @@
     .content {
         overflow-y: auto;
         overflow-x: hidden;
-        padding: @layout-spacing-s;
+        padding: var(--layout-spacing-s);
         flex: 1;
         pointer-events: initial;
         display: flex;
@@ -15,12 +15,12 @@
         & > .messages {
             display: flex;
             flex-direction: column;
-            gap: @layout-spacing-s;
+            gap: var(--layout-spacing-s);
         }
 
         [class*='ChatIntegrationPreview--bubble--'] {
             margin: 0;
-            padding: @layout-spacing-s;
+            padding: var(--layout-spacing-s);
             border-radius: var(--layout-spacing-xs);
             width: fit-content;
             align-self: flex-end;

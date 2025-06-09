@@ -3,14 +3,14 @@
 
 :local {
     .container {
-        padding: @layout-spacing-s @layout-spacing-m;
+        padding: var(--layout-spacing-s) @layout-spacing-m;
         display: flex;
         align-items: flex-start;
         position: relative;
         margin: 0;
         word-break: break-word;
         overflow-y: visible;
-        gap: @layout-spacing-s;
+        gap: var(--layout-spacing-s);
 
         @media @mobiles {
             padding: 0.8em 16px;
@@ -104,7 +104,7 @@
     .recording {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-s;
+        gap: var(--layout-spacing-s);
     }
 
     .audio {

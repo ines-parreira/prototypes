@@ -4,7 +4,7 @@
 
 :local {
     .card {
-        margin-top: @layout-spacing-s;
+        margin-top: var(--layout-spacing-s);
         cursor: default;
     }
 
@@ -14,7 +14,7 @@
         gap: @layout-spacing-m;
 
         & > *:not(:last-child) {
-            padding-bottom: @layout-spacing-s;
+            padding-bottom: var(--layout-spacing-s);
             border-bottom: 1px solid var(--neutral-grey-2);
         }
     }

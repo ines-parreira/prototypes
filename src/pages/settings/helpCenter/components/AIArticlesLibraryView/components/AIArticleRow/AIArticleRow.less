@@ -4,7 +4,8 @@
     .container {
         display: flex;
         align-items: center;
-        padding: @layout-spacing-s @layout-spacing-s @layout-spacing-s 12px;
+        padding: var(--layout-spacing-s) var(--layout-spacing-s)
+            var(--layout-spacing-s) 12px;
         justify-content: space-between;
         border-radius: var(--layout-spacing-xxs);
         cursor: pointer;
@@ -14,13 +15,13 @@
             background-color: var(--neutral-grey-1);
             border-left-color: var(--neutral-grey-1);
         }
-        gap: @layout-spacing-s;
+        gap: var(--layout-spacing-s);
     }
 
     .titleContainer {
         display: flex;
         align-items: center;
-        gap: @layout-spacing-s;
+        gap: var(--layout-spacing-s);
         color: var(--neutral-grey-6);
 
         i {

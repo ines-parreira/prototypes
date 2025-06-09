@@ -21,7 +21,7 @@
     .modeSelectionGroup {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        column-gap: @layout-spacing-s;
+        column-gap: var(--layout-spacing-s);
     }
 
     .tab {
@@ -29,14 +29,14 @@
     }
 
     .tabActive {
-        margin-top: @layout-spacing-s;
+        margin-top: var(--layout-spacing-s);
         display: grid;
         grid-template-columns: 1fr;
         row-gap: var(--layout-spacing-xs);
     }
 
     .inputField {
-        margin-top: @layout-spacing-s;
+        margin-top: var(--layout-spacing-s);
     }
 
     .inputField,
@@ -63,6 +63,6 @@
     .pagePositionSelectionGroup {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        column-gap: @layout-spacing-s;
+        column-gap: var(--layout-spacing-s);
     }
 }

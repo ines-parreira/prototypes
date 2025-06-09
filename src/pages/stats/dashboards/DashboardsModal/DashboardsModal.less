@@ -5,14 +5,14 @@
 :local {
     .body {
         display: flex;
-        padding: 0 @layout-spacing-s;
+        padding: 0 var(--layout-spacing-s);
         height: 450px;
 
         .left {
             width: 45%;
             overflow-y: auto;
             border-right: 1px solid var(--neutral-grey-3);
-            padding-right: @layout-spacing-s;
+            padding-right: var(--layout-spacing-s);
 
             .separator {
                 width: 95%;
@@ -23,7 +23,7 @@
 
             .title {
                 .body-semibold();
-                margin: @layout-spacing-s 0;
+                margin: var(--layout-spacing-s) 0;
             }
         }
 
@@ -48,7 +48,7 @@
                     display: flex;
                     flex-direction: column;
                     text-align: center;
-                    margin-top: @layout-spacing-s;
+                    margin-top: var(--layout-spacing-s);
                     .caption-regular();
                     .description {
                         color: var(--neutral-grey-5);

@@ -3,7 +3,7 @@
 
 :local {
     .confirmCheckbox {
-        margin-bottom: @layout-spacing-s;
+        margin-bottom: var(--layout-spacing-s);
     }
 
     .checkIcon {
@@ -22,7 +22,7 @@
         display: flex;
         flex-direction: row;
         gap: var(--layout-spacing-xs);
-        padding: @layout-spacing-s;
+        padding: var(--layout-spacing-s);
         margin-bottom: @layout-spacing-m;
     }
 
@@ -46,7 +46,7 @@
         flex-direction: column;
         align-items: flex-start;
         align-self: stretch;
-        margin-bottom: @layout-spacing-s;
+        margin-bottom: var(--layout-spacing-s);
         margin-top: -@layout-spacing-m;
 
         .bolds {
@@ -60,15 +60,15 @@
 
         ol {
             margin-bottom: 0;
-            padding-left: @layout-spacing-s;
-            padding-right: @layout-spacing-s;
-            padding-top: @layout-spacing-s;
+            padding-left: var(--layout-spacing-s);
+            padding-right: var(--layout-spacing-s);
+            padding-top: var(--layout-spacing-s);
             list-style: none;
             counter-reset: step-counter;
 
             li {
                 .body-regular();
-                padding-bottom: @layout-spacing-s;
+                padding-bottom: var(--layout-spacing-s);
                 color: var(--neutral-grey-6);
                 counter-increment: step-counter;
                 position: relative;

@@ -26,7 +26,7 @@
         &::after {
             content: '';
             display: block;
-            margin: @layout-spacing-s 0;
+            margin: var(--layout-spacing-s) 0;
             border-top: 1px dashed var(--neutral-grey-3);
             @media @mobiles {
                 display: none;
@@ -51,8 +51,8 @@
     }
 
     .aside {
-        margin-top: @layout-spacing-s;
-        padding-top: @layout-spacing-s;
+        margin-top: var(--layout-spacing-s);
+        padding-top: var(--layout-spacing-s);
         border-top: 1px dashed var(--neutral-grey-3);
         @media @mobiles {
             display: none;

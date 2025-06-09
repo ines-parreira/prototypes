@@ -7,7 +7,7 @@
         flex: none;
         flex-grow: 0;
         align-items: center;
-        padding: @layout-spacing-s;
+        padding: var(--layout-spacing-s);
         background-color: var(--main-latte);
         border-radius: 8px;
     }
@@ -19,7 +19,7 @@
     }
 
     .wrapper {
-        padding: var(--layout-spacing-xs) @layout-spacing-s;
+        padding: var(--layout-spacing-xs) var(--layout-spacing-s);
         .actions {
             width: 100%;
             display: flex;
@@ -29,6 +29,6 @@
 
     .incentive {
         color: var(--neutral-grey-6);
-        margin-bottom: @layout-spacing-s;
+        margin-bottom: var(--layout-spacing-s);
     }
 }

@@ -16,7 +16,7 @@
 
     .heroIcon {
         margin-right: @layout-spacing-m;
-        padding: @layout-spacing-s;
+        padding: var(--layout-spacing-s);
         font-size: 3.714rem !important; // ~52px
         color: var(--neutral-grey-0);
         background-color: var(--main-primary);
@@ -54,7 +54,7 @@
             flex-direction: row;
         }
         align-items: flex-start;
-        padding: @layout-spacing-s @layout-spacing-m @layout-spacing-l;
+        padding: var(--layout-spacing-s) @layout-spacing-m @layout-spacing-l;
     }
 
     .longDescription {
@@ -65,13 +65,13 @@
             font-size: 1.143rem; // ~16px
         }
         h2 ~ h2 {
-            margin-top: @layout-spacing-s;
+            margin-top: var(--layout-spacing-s);
         }
         ul {
             padding-left: @layout-spacing-m;
         }
         & > ul > li {
-            margin-bottom: @layout-spacing-s;
+            margin-bottom: var(--layout-spacing-s);
         }
     }
 

@@ -14,7 +14,7 @@
 
     .title {
         .heading-subsection-semibold();
-        padding: 0 @layout-spacing-s;
+        padding: 0 var(--layout-spacing-s);
     }
 
     .subtitle {
@@ -24,19 +24,19 @@
 
     .subsectionTitle {
         .heading-subsection-semibold();
-        padding: 0 @layout-spacing-s;
+        padding: 0 var(--layout-spacing-s);
     }
 
     .feedbackSection {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-s;
+        gap: var(--layout-spacing-s);
     }
 
     .metadataContainer {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-s;
+        gap: var(--layout-spacing-s);
     }
     .metadataSection {
         display: flex;
@@ -50,10 +50,10 @@
         align-items: center;
         gap: 4px;
         align-self: stretch;
-        padding: 0 @layout-spacing-s;
+        padding: 0 var(--layout-spacing-s);
 
         &:first-of-type {
-            margin-top: calc(@layout-spacing-s - @layout-spacing-m);
+            margin-top: calc(var(--layout-spacing-s) - @layout-spacing-m);
         }
     }
 
@@ -77,7 +77,7 @@
 
     .summary {
         .body-regular();
-        padding: 0 @layout-spacing-s;
+        padding: 0 var(--layout-spacing-s);
     }
 
     .order {
@@ -120,7 +120,7 @@
         gap: var(--layout-spacing-xxs);
 
         .subtitle {
-            padding: 0 @layout-spacing-s;
+            padding: 0 var(--layout-spacing-s);
         }
     }
 
@@ -129,7 +129,7 @@
         gap: var(--layout-spacing-xs);
         justify-content: space-between;
         align-items: center;
-        padding: var(--layout-spacing-xxs) @layout-spacing-s;
+        padding: var(--layout-spacing-xxs) var(--layout-spacing-s);
 
         &,
         &:hover {
@@ -197,11 +197,11 @@
     }
 
     .otherResources {
-        padding: 0 @layout-spacing-s;
+        padding: 0 var(--layout-spacing-s);
     }
 
     .ticketEventsContainer {
-        padding: 0 @layout-spacing-s;
+        padding: 0 var(--layout-spacing-s);
 
         .title {
             padding: 0;
@@ -210,7 +210,7 @@
 
     .ticketImproveInfo {
         margin-top: var(--layout-spacing-xs);
-        margin-bottom: @layout-spacing-s;
+        margin-bottom: var(--layout-spacing-s);
         font-size: 12px;
         color: var(--neutral-grey-5);
 
@@ -222,19 +222,19 @@
 
     .eventTypeContainer {
         display: flex;
-        gap: @layout-spacing-s;
+        gap: var(--layout-spacing-s);
     }
 
     .executionId {
         font-size: 8px;
-        padding: 0 @layout-spacing-s;
+        padding: 0 var(--layout-spacing-s);
         display: flex;
         gap: var(--layout-spacing-xxs);
         flex-direction: column;
     }
 
     .selectFirstMessageWrapper {
-        padding: 0 @layout-spacing-s;
+        padding: 0 var(--layout-spacing-s);
     }
 
     .tooltip {

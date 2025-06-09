@@ -12,7 +12,7 @@
     .header {
         display: flex;
         flex-direction: column;
-        padding: @layout-spacing-m @layout-spacing-s;
+        padding: @layout-spacing-m var(--layout-spacing-s);
         gap: var(--layout-spacing-xs);
         border-bottom: 1px solid var(--neutral-grey-3);
     }
@@ -30,8 +30,8 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: @layout-spacing-s;
-        gap: @layout-spacing-s;
+        padding: var(--layout-spacing-s);
+        gap: var(--layout-spacing-s);
         border-bottom: 1px solid var(--neutral-grey-3);
 
         &.isPlaceholder {

@@ -4,7 +4,7 @@
     .container {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-        gap: @layout-spacing-s;
+        gap: var(--layout-spacing-s);
     }
 
     .libraryHeader {
@@ -32,7 +32,7 @@
         }
 
         &.ruleTemplates {
-            margin-top: @layout-spacing-s;
+            margin-top: var(--layout-spacing-s);
         }
     }
 }

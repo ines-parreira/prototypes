@@ -18,8 +18,8 @@
     .header {
         display: flex;
         align-items: center;
-        gap: @layout-spacing-s;
-        padding: 0 @layout-spacing-s;
+        gap: var(--layout-spacing-s);
+        padding: 0 var(--layout-spacing-s);
     }
 
     .thumbnail {
@@ -53,7 +53,7 @@
     .etaContainer {
         display: flex;
         flex-direction: column;
-        padding: 0 @layout-spacing-s var(--layout-spacing-xs);
+        padding: 0 var(--layout-spacing-s) var(--layout-spacing-xs);
         gap: var(--layout-spacing-xs);
     }
 
@@ -78,8 +78,8 @@
     .timelineContainer {
         display: flex;
         flex-direction: column;
-        padding: 0 @layout-spacing-s;
-        gap: @layout-spacing-s;
+        padding: 0 var(--layout-spacing-s);
+        gap: var(--layout-spacing-s);
         margin-top: @layout-spacing-m;
     }
 
@@ -91,7 +91,7 @@
     .timelineItem {
         display: flex;
         align-items: stretch;
-        gap: @layout-spacing-s;
+        gap: var(--layout-spacing-s);
     }
 
     .timeline {
@@ -174,8 +174,8 @@
     .shippingContainer {
         display: flex;
         flex-direction: column;
-        padding: 0 @layout-spacing-s;
-        gap: @layout-spacing-s;
+        padding: 0 var(--layout-spacing-s);
+        gap: var(--layout-spacing-s);
     }
 
     .shippingHeader {
@@ -191,12 +191,12 @@
 
     .shippingCarrier {
         padding-block: var(--layout-spacing-xxs) var(--layout-spacing-xs);
-        padding-inline: @layout-spacing-s;
+        padding-inline: var(--layout-spacing-s);
     }
 
     .shippingCarrierLogo {
         border-radius: 4px;
-        margin-right: @layout-spacing-s;
+        margin-right: var(--layout-spacing-s);
         float: left;
     }
 

@@ -5,14 +5,14 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: @layout-spacing-s;
-        margin-bottom: @layout-spacing-s;
+        gap: var(--layout-spacing-s);
+        margin-bottom: var(--layout-spacing-s);
     }
 
     .filters {
         display: flex;
         align-items: center;
-        gap: @layout-spacing-s;
+        gap: var(--layout-spacing-s);
         flex-wrap: wrap;
     }
 
@@ -22,7 +22,7 @@
         margin: 0;
         list-style-type: none;
         & > li + li {
-            margin-top: @layout-spacing-s;
+            margin-top: var(--layout-spacing-s);
         }
 
         &:before {

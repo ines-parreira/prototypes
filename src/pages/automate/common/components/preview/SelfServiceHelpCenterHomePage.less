@@ -23,7 +23,7 @@
     .orderManagementItemsContainer {
         display: flex;
         flex-direction: column;
-        row-gap: @layout-spacing-s;
+        row-gap: var(--layout-spacing-s);
     }
 
     .orderManagementItem {
@@ -31,10 +31,10 @@
         display: flex;
         align-items: center;
         background-color: var(--neutral-grey-0);
-        column-gap: @layout-spacing-s;
+        column-gap: var(--layout-spacing-s);
         border: 1px solid var(--neutral-grey-3);
         border-radius: 8px;
-        padding: @layout-spacing-s;
+        padding: var(--layout-spacing-s);
         text-transform: capitalize;
 
         &.isHighlighted {
@@ -46,11 +46,11 @@
         .heading-subsection-semibold();
         display: flex;
         align-items: center;
-        column-gap: @layout-spacing-s;
+        column-gap: var(--layout-spacing-s);
         background-color: var(--neutral-grey-0);
         border: 1px solid var(--neutral-grey-3);
         border-radius: 8px;
-        padding: @layout-spacing-m @layout-spacing-s;
+        padding: @layout-spacing-m var(--layout-spacing-s);
         text-transform: capitalize;
     }
 
@@ -82,7 +82,7 @@
         display: flex;
         align-items: center;
         margin: 13px 0;
-        padding: @layout-spacing-s;
+        padding: var(--layout-spacing-s);
         gap: var(--layout-spacing-xs);
         filter: drop-shadow(0px 2px 4px rgba(22, 22, 22, 0.16));
         border-radius: 4px;
@@ -120,7 +120,7 @@
     .articlesContainer {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-s;
+        gap: var(--layout-spacing-s);
         margin-top: @layout-spacing-m;
     }
 
@@ -151,7 +151,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: @layout-spacing-m @layout-spacing-s;
+        padding: @layout-spacing-m var(--layout-spacing-s);
         font-weight: 400;
         font-size: 14px;
         line-height: 20px;

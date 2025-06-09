@@ -14,12 +14,12 @@
     }
 
     .group {
-        margin-bottom: @layout-spacing-s;
+        margin-bottom: var(--layout-spacing-s);
     }
 
     .colorPickersWrapper {
         display: flex;
-        gap: @layout-spacing-s;
+        gap: var(--layout-spacing-s);
     }
 
     .colorPicker {
@@ -34,7 +34,7 @@
     .launcherTypes {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        column-gap: @layout-spacing-s;
+        column-gap: var(--layout-spacing-s);
         margin-bottom: @layout-spacing-l;
     }
 
@@ -51,8 +51,8 @@
     .launcherSettingsGrid {
         display: grid;
         grid-template-columns: 2fr 2fr;
-        column-gap: @layout-spacing-s;
-        row-gap: @layout-spacing-s;
+        column-gap: var(--layout-spacing-s);
+        row-gap: var(--layout-spacing-s);
 
         @media @medium {
             grid-template-columns: 1fr;
@@ -63,7 +63,7 @@
         }
 
         .launcherLabelInput {
-            margin-bottom: @layout-spacing-s;
+            margin-bottom: var(--layout-spacing-s);
         }
     }
 
@@ -73,7 +73,7 @@
     .positionInputsWrapper {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        column-gap: @layout-spacing-s;
+        column-gap: var(--layout-spacing-s);
         row-gap: @layout-spacing-l;
 
         .tooltipIcon {
@@ -88,7 +88,7 @@
     .platformTypeContainer {
         display: grid;
         grid-auto-flow: column;
-        column-gap: @layout-spacing-s;
+        column-gap: var(--layout-spacing-s);
         margin-bottom: @layout-spacing-l;
     }
 
@@ -102,7 +102,7 @@
     }
 
     .toggleButtonWrapper {
-        margin-bottom: @layout-spacing-s;
+        margin-bottom: var(--layout-spacing-s);
     }
 
     .introMessageHeader {

@@ -3,7 +3,7 @@
 
 :local {
     .articleSection {
-        margin-bottom: @layout-spacing-s;
+        margin-bottom: var(--layout-spacing-s);
     }
 
     .articleCategory {
@@ -21,7 +21,7 @@
 
     .article {
         .body-semibold();
-        padding: @layout-spacing-s @layout-spacing-m;
+        padding: var(--layout-spacing-s) @layout-spacing-m;
         display: flex;
         flex: 1;
         gap: var(--layout-spacing-xs);
@@ -40,7 +40,7 @@
         display: flex;
         flex: 1;
         align-items: center;
-        gap: @layout-spacing-s;
+        gap: var(--layout-spacing-s);
     }
 
     .articleTitle {
@@ -78,7 +78,7 @@
     .loadingContainer {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-s;
+        gap: var(--layout-spacing-s);
     }
 
     .shopMoreIcon {
@@ -90,6 +90,6 @@
     }
 
     .showMoreContainer {
-        margin-top: @layout-spacing-s;
+        margin-top: var(--layout-spacing-s);
     }
 }

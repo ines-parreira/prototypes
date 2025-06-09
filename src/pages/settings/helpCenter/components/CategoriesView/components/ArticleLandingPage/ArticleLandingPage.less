@@ -11,7 +11,7 @@
         padding: @layout-spacing-m;
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-s;
+        gap: var(--layout-spacing-s);
     }
 
     .topNav {
@@ -61,6 +61,6 @@
     .templatesContainer {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: @layout-spacing-s;
+        gap: var(--layout-spacing-s);
     }
 }

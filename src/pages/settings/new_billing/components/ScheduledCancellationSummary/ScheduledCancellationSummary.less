@@ -3,7 +3,7 @@
 
 :local {
     .container {
-        padding: @layout-spacing-m @layout-spacing-s;
+        padding: @layout-spacing-m var(--layout-spacing-s);
         color: var(--neutral-grey-5);
     }
 
@@ -11,7 +11,7 @@
         padding: @layout-spacing-m var(--layout-spacing-xs);
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-s;
+        gap: var(--layout-spacing-s);
         .body-regular();
     }
 

@@ -371,13 +371,13 @@
         }
         &.apply-v2-styles {
             &.show-ranges.ltr .drp-calendar.right {
-                padding: @layout-spacing-s @layout-spacing-s @layout-spacing-s
-                    var(--layout-spacing-xs);
+                padding: var(--layout-spacing-s) var(--layout-spacing-s)
+                    var(--layout-spacing-s) var(--layout-spacing-xs);
             }
 
             &.show-ranges.ltr .drp-calendar.left {
-                padding: @layout-spacing-s var(--layout-spacing-xs)
-                    @layout-spacing-s @layout-spacing-s;
+                padding: var(--layout-spacing-s) var(--layout-spacing-xs)
+                    var(--layout-spacing-s) var(--layout-spacing-s);
 
                 &.single {
                     padding: 16px;
@@ -451,7 +451,7 @@
 
             &.add-calendar-spacing {
                 &:not(.show-ranges) .drp-calendar.left.single {
-                    padding: @layout-spacing-s;
+                    padding: var(--layout-spacing-s);
                 }
             }
         }

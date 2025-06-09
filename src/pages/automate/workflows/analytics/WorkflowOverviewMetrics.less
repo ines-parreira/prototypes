@@ -6,22 +6,22 @@
     .metricsContainer {
         position: absolute;
         z-index: 4;
-        right: @layout-spacing-s;
+        right: var(--layout-spacing-s);
         top: 64px;
 
         height: 156px;
-        padding: @layout-spacing-s;
+        padding: var(--layout-spacing-s);
         border-radius: var(--layout-spacing-xxs);
         background: var(--neutral-grey-0);
         border: 1px solid var(--neutral-grey-3);
 
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-s;
+        gap: var(--layout-spacing-s);
     }
 
     .firstMetrics {
-        padding: var(--layout-spacing-xs) @layout-spacing-s;
+        padding: var(--layout-spacing-xs) var(--layout-spacing-s);
         background: var(--neutral-grey-1);
 
         display: flex;

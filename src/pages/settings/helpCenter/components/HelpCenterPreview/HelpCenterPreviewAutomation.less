@@ -8,15 +8,15 @@
 
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-s;
-        padding: @layout-spacing-m @layout-spacing-s;
+        gap: var(--layout-spacing-s);
+        padding: @layout-spacing-m var(--layout-spacing-s);
         overflow-y: auto;
     }
 
     .flowItem {
         background: var(--neutral-grey-0);
         display: flex;
-        padding: @layout-spacing-s;
+        padding: var(--layout-spacing-s);
         align-items: center;
         border-radius: var(--layout-spacing-xs);
         border: 1px solid var(--neutral-grey-2);
@@ -32,7 +32,7 @@
     }
 
     .flowImg {
-        padding-right: @layout-spacing-s;
+        padding-right: var(--layout-spacing-s);
     }
 
     .flowName {

@@ -12,7 +12,7 @@
         padding: @layout-spacing-m;
 
         &:first-child {
-            padding-block: @layout-spacing-s;
+            padding-block: var(--layout-spacing-s);
         }
 
         &:not(:last-child) {
@@ -32,7 +32,7 @@
     }
 
     .alert {
-        margin-top: @layout-spacing-s;
+        margin-top: var(--layout-spacing-s);
     }
 
     .alertCta {
@@ -58,9 +58,9 @@
     }
 
     .channelsList {
-        margin-top: @layout-spacing-s;
+        margin-top: var(--layout-spacing-s);
         display: flex;
-        gap: @layout-spacing-s;
+        gap: var(--layout-spacing-s);
 
         & > div {
             flex: 1;
@@ -113,7 +113,7 @@
     }
 
     .skillSales {
-        padding: @layout-spacing-s;
+        padding: var(--layout-spacing-s);
         border-radius: var(--layout-spacing-xs);
         background: var(--main-latte);
 

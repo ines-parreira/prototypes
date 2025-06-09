@@ -23,11 +23,11 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        padding: @layout-spacing-s 0;
+        padding: var(--layout-spacing-s) 0;
         width: 100%;
         top: 0;
         background-color: var(--neutral-grey-1);
-        padding: @layout-spacing-s @layout-spacing-m;
+        padding: var(--layout-spacing-s) @layout-spacing-m;
 
         @media @tablets-up {
             margin-left: -8vw;
@@ -51,10 +51,10 @@
     }
 
     .onboardingContentContainer {
-        padding: 0 0 @layout-spacing-s;
+        padding: 0 0 var(--layout-spacing-s);
 
         & > :nth-child(2) {
-            padding: @layout-spacing-m @layout-spacing-m @layout-spacing-s;
+            padding: @layout-spacing-m @layout-spacing-m var(--layout-spacing-s);
         }
 
         @media @tablets-up {

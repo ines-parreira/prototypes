@@ -33,7 +33,7 @@
     .magicBox {
         margin-bottom: @layout-spacing-xl;
         img {
-            padding: @layout-spacing-s;
+            padding: var(--layout-spacing-s);
             margin: 0 var(--layout-spacing-xxs);
             max-height: 82px;
             background-color: var(--neutral-grey-0);
@@ -81,7 +81,8 @@
     }
     100% {
         opacity: 1;
-        transform: rotate(-20deg) translateX(0) translateY(@layout-spacing-s);
+        transform: rotate(-20deg) translateX(0)
+            translateY(var(--layout-spacing-s));
     }
 }
 
@@ -117,6 +118,7 @@
     }
     100% {
         opacity: 1;
-        transform: rotate(20deg) translateX(0) translateY(@layout-spacing-s);
+        transform: rotate(20deg) translateX(0)
+            translateY(var(--layout-spacing-s));
     }
 }

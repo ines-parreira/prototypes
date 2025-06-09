@@ -25,7 +25,7 @@
     .container {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-s;
+        gap: var(--layout-spacing-s);
     }
 
     .llmPromptContainer {
@@ -50,7 +50,7 @@
     .urlMethodFormFieldGroup {
         display: inline-grid;
         grid-template-columns: 444px 120px;
-        gap: @layout-spacing-s;
+        gap: var(--layout-spacing-s);
     }
 
     .keyValueContainer {
@@ -77,7 +77,7 @@
 
     .testRequestButton {
         align-self: flex-start;
-        margin-bottom: @layout-spacing-s;
+        margin-bottom: var(--layout-spacing-s);
     }
 
     .formItem {
@@ -105,13 +105,13 @@
     .reusableLLMPromptCallStepInputs {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-s;
+        gap: var(--layout-spacing-s);
     }
 
     .separator {
         height: 1px;
         background: var(--neutral-grey-3);
-        margin-top: @layout-spacing-s;
-        margin-bottom: @layout-spacing-s;
+        margin-top: var(--layout-spacing-s);
+        margin-bottom: var(--layout-spacing-s);
     }
 }
