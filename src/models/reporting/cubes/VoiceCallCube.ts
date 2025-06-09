@@ -56,6 +56,7 @@ export enum VoiceCallSegment {
     inboundMissedCalls = 'VoiceCall.inboundMissedCalls',
     inboundAbandonedCalls = 'VoiceCall.inboundAbandonedCalls',
     inboundCancelledCalls = 'VoiceCall.inboundCancelledCalls',
+    inboundCallbackRequestedCalls = 'VoiceCall.inboundCallbackRequestedCalls',
     inboundUnansweredCallsByAgent = 'VoiceCall.inboundUnansweredCallsByAgent',
     inboundAnsweredCallsByAgent = 'VoiceCall.inboundAnsweredCallsByAgent',
     callsInFinalStatus = 'VoiceCall.callsInFinalStatus',

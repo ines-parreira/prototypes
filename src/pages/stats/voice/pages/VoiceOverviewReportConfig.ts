@@ -22,6 +22,8 @@ import {
     AVERAGE_WAIT_TIME_METRIC_TITLE,
     CALL_LIST_HINT,
     CALL_LIST_TITLE,
+    CALLBACK_REQUESTED_CALLS_METRIC_HINT,
+    CALLBACK_REQUESTED_CALLS_METRIC_TITLE,
     CANCELLED_CALLS_METRIC_HINT,
     CANCELLED_CALLS_METRIC_TITLE,
     INBOUND_CALLS_METRIC_HINT,
@@ -69,6 +71,7 @@ export enum VoiceOverviewChart {
     VoiceCallVolumeMetricMissedCallsCountTrendChart = 'VoiceCallVolumeMetricMissedCallsCountTrendChart',
     VoiceCallVolumeMetricAbandonedCallsCountTrendChart = 'VoiceCallVolumeMetricAbandonedCallsCountTrendChart',
     VoiceCallVolumeMetricCancelledCallsCountTrendChart = 'VoiceCallVolumeMetricCancelledCallsCountTrendChart',
+    VoiceCallVolumeMetricCallbackRequestedCallsCountTrendChart = 'VoiceCallVolumeMetricCallbackRequestedCallsCountTrendChart',
     VoiceCallTableChart = 'VoiceCallTableChart',
 }
 
@@ -246,6 +249,34 @@ export const VoiceOverviewReportConfig: ReportConfig<VoiceOverviewChart> = {
                                 filters,
                                 timezone,
                                 VoiceCallSegment.inboundCancelledCalls,
+                            ),
+                        metricFormat: 'integer',
+                    },
+                ],
+            },
+        [VoiceOverviewChart.VoiceCallVolumeMetricCallbackRequestedCallsCountTrendChart]:
+            {
+                chartComponent: ({ chartId, dashboard }) =>
+                    VoiceCallVolumeMetricCallsCountTrendChart({
+                        chartId,
+                        dashboard,
+                        title: CALLBACK_REQUESTED_CALLS_METRIC_TITLE,
+                        hint: CALLBACK_REQUESTED_CALLS_METRIC_HINT,
+                        segment: VoiceCallSegment.inboundCallbackRequestedCalls,
+                        hideWithAgentsFilter: true,
+                        multiFormat: true,
+                    }),
+                label: CALLBACK_REQUESTED_CALLS_METRIC_TITLE,
+                description: CALLBACK_REQUESTED_CALLS_METRIC_HINT,
+                chartType: ChartType.Card,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: (filters, timezone) =>
+                            fetchVoiceCallCountTrend(
+                                filters,
+                                timezone,
+                                VoiceCallSegment.inboundCallbackRequestedCalls,
                             ),
                         metricFormat: 'integer',
                     },

@@ -12,6 +12,7 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownQuickSelect from 'pages/common/components/dropdown/DropdownQuickSelect'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
+import useIsCallbackRequestsEnabled from 'pages/integrations/integration/components/voice/useIsCallbackRequestsEnabled'
 import {
     VoiceCallFilterDirection,
     VoiceCallFilterOptions,
@@ -26,6 +27,8 @@ export default function VoiceCallFilter({
 }: {
     onFilterSelect: (value: VoiceCallFilterOptions) => void
 }) {
+    const isCallbackRequestsEnabled = useIsCallbackRequestsEnabled()
+
     const divRef = useRef<HTMLDivElement>(null)
 
     const {
@@ -37,7 +40,7 @@ export default function VoiceCallFilter({
         toggleStatusFromFilter,
         removeAllStatusFilter,
         selectAllStatusFilter,
-    } = useVoiceCallFilterOptions(onFilterSelect)
+    } = useVoiceCallFilterOptions(onFilterSelect, isCallbackRequestsEnabled)
 
     const [dropdownOpen, setDropdownOpen] = useState(false)
 

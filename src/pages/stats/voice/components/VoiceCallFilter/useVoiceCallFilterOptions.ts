@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 
@@ -7,12 +7,6 @@ import {
     VoiceCallFilterOptions,
 } from '../../models/types'
 
-const FULL_INBOUND_STATUS_FILTER = [
-    VoiceCallDisplayStatus.Answered,
-    VoiceCallDisplayStatus.Missed,
-    VoiceCallDisplayStatus.Cancelled,
-    VoiceCallDisplayStatus.Abandoned,
-]
 const FULL_OUTBOUND_STATUS_FILTER = [
     VoiceCallDisplayStatus.Answered,
     VoiceCallDisplayStatus.Unanswered,
@@ -21,7 +15,27 @@ const FULL_OUTBOUND_STATUS_FILTER = [
 
 export default function useVoiceCallFilterOptions(
     onFilterSelect: (value: VoiceCallFilterOptions) => void,
+    shouldDisplayCallbackRequests: boolean = false,
 ) {
+    const FULL_INBOUND_STATUS_FILTER = useMemo(
+        () =>
+            shouldDisplayCallbackRequests
+                ? [
+                      VoiceCallDisplayStatus.Answered,
+                      VoiceCallDisplayStatus.Missed,
+                      VoiceCallDisplayStatus.Cancelled,
+                      VoiceCallDisplayStatus.Abandoned,
+                      VoiceCallDisplayStatus.CallbackRequested,
+                  ]
+                : [
+                      VoiceCallDisplayStatus.Answered,
+                      VoiceCallDisplayStatus.Missed,
+                      VoiceCallDisplayStatus.Cancelled,
+                      VoiceCallDisplayStatus.Abandoned,
+                  ],
+        [shouldDisplayCallbackRequests],
+    )
+
     const [selectedDirection, setSelectedDirection] = useState(
         VoiceCallFilterDirection.All,
     )
@@ -32,6 +46,11 @@ export default function useVoiceCallFilterOptions(
     const [outboundStatusFilter, setOutboundStatusFilter] = useState(
         FULL_OUTBOUND_STATUS_FILTER,
     )
+
+    useEffect(() => {
+        // TODO: remove after removing shouldDisplayCallbackRequests
+        setInboundStatusFilter(FULL_INBOUND_STATUS_FILTER)
+    }, [FULL_INBOUND_STATUS_FILTER])
 
     const getStatusFilter = (direction: VoiceCallFilterDirection) => {
         switch (direction) {
@@ -53,7 +72,7 @@ export default function useVoiceCallFilterOptions(
             default:
                 return undefined
         }
-    }, [selectedDirection])
+    }, [selectedDirection, FULL_INBOUND_STATUS_FILTER])
 
     const updateFilter = () => {
         onFilterSelect({ direction: selectedDirection, statuses: statusFilter })

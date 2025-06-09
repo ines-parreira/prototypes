@@ -24,6 +24,9 @@ export const ABANDONED_CALLS_METRIC_HINT =
 export const CANCELLED_CALLS_METRIC_TITLE = 'Cancelled calls'
 export const CANCELLED_CALLS_METRIC_HINT =
     'The total number of inbound calls that were ended within 5 seconds of dialing.'
+export const CALLBACK_REQUESTED_CALLS_METRIC_TITLE = 'Callback requests'
+export const CALLBACK_REQUESTED_CALLS_METRIC_HINT =
+    'The total number of callback requests placed.'
 
 export const AVERAGE_TALK_TIME_METRIC_TITLE = 'Average talk time'
 export const AVERAGE_TALK_TIME_METRIC_HINT =

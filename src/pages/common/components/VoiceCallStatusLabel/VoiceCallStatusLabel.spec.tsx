@@ -14,6 +14,11 @@ describe('VoiceCallStatusLabel', () => {
         [VoiceCallDisplayStatus.Missed, 'Missed', 'redStatus'],
         [VoiceCallDisplayStatus.Abandoned, 'Abandoned', 'redStatus'],
         [VoiceCallDisplayStatus.Cancelled, 'Cancelled', 'greyStatus'],
+        [
+            VoiceCallDisplayStatus.CallbackRequested,
+            'Callback Requested',
+            'redStatus',
+        ],
         [VoiceCallDisplayStatus.Failed, 'Failed', 'redStatus'],
         [VoiceCallDisplayStatus.Unanswered, 'Unanswered', 'redStatus'],
     ])(

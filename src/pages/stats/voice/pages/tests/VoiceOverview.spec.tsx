@@ -36,6 +36,7 @@ import {
     AVERAGE_TALK_TIME_METRIC_TITLE,
     AVERAGE_WAIT_TIME_METRIC_TITLE,
     CALL_LIST_TITLE,
+    CALLBACK_REQUESTED_CALLS_METRIC_TITLE,
     CANCELLED_CALLS_METRIC_TITLE,
     INBOUND_CALLS_METRIC_TITLE,
     MISSED_CALLS_METRIC_TITLE,
@@ -167,7 +168,16 @@ describe('VoiceOverview', () => {
         )
     }
 
-    it('should render page', () => {
+    it('should render page with callback requests FF off', () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (
+                flag === FeatureFlagKey.VoiceCallbackEnabled1 ||
+                flag === FeatureFlagKey.VoiceCallbackEnabled2
+            ) {
+                return false
+            }
+        })
+
         const { queryByText } = renderVoiceOverview()
 
         // header elements
@@ -184,6 +194,56 @@ describe('VoiceOverview', () => {
         expect(queryByText(MISSED_CALLS_METRIC_TITLE)).toBeInTheDocument()
         expect(queryByText(CANCELLED_CALLS_METRIC_TITLE)).toBeInTheDocument()
         expect(queryByText(ABANDONED_CALLS_METRIC_TITLE)).toBeInTheDocument()
+        expect(
+            queryByText(CALLBACK_REQUESTED_CALLS_METRIC_TITLE),
+        ).not.toBeInTheDocument()
+
+        expect(queryByText(AVERAGE_TALK_TIME_METRIC_TITLE)).toBeInTheDocument()
+        expect(queryByText(AVERAGE_WAIT_TIME_METRIC_TITLE)).toBeInTheDocument()
+
+        // list of calls section
+        expect(queryByText(CALL_LIST_TITLE)).toBeInTheDocument()
+
+        // filters by direction
+        expect(queryByText('All')).toBeInTheDocument()
+        expect(queryByText('Inbound')).toBeInTheDocument()
+        expect(queryByText('Outbound')).toBeInTheDocument()
+
+        // footer
+        expect(
+            queryByText('Analytics are using EST timezone'),
+        ).toBeInTheDocument()
+    })
+
+    it('should render page with callback requests FF on', () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (
+                flag === FeatureFlagKey.VoiceCallbackEnabled1 ||
+                flag === FeatureFlagKey.VoiceCallbackEnabled2
+            ) {
+                return true
+            }
+        })
+
+        const { queryByText } = renderVoiceOverview()
+
+        // header elements
+        expect(queryByText(VOICE_OVERVIEW_PAGE_TITLE)).toBeInTheDocument()
+        expect(queryByText('Voice add-on features')).toBeNull()
+
+        expect(VoiceOverviewDownloadDataButtonMock).toHaveBeenCalled()
+
+        expect(queryByText(TOTAL_CALLS_METRIC_TITLE)).toBeInTheDocument()
+        expect(queryByText(OUTBOUND_CALLS_METRIC_TITLE)).toBeInTheDocument()
+        expect(queryByText(INBOUND_CALLS_METRIC_TITLE)).toBeInTheDocument()
+        expect(queryByText(UNANSWERED_CALLS_METRIC_TITLE)).toBeInTheDocument()
+
+        expect(queryByText(MISSED_CALLS_METRIC_TITLE)).toBeInTheDocument()
+        expect(queryByText(CANCELLED_CALLS_METRIC_TITLE)).toBeInTheDocument()
+        expect(queryByText(ABANDONED_CALLS_METRIC_TITLE)).toBeInTheDocument()
+        expect(
+            queryByText(CALLBACK_REQUESTED_CALLS_METRIC_TITLE),
+        ).toBeInTheDocument()
 
         expect(queryByText(AVERAGE_TALK_TIME_METRIC_TITLE)).toBeInTheDocument()
         expect(queryByText(AVERAGE_WAIT_TIME_METRIC_TITLE)).toBeInTheDocument()

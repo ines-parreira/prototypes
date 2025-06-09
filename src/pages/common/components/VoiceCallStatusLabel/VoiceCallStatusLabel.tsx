@@ -20,6 +20,7 @@ const getColorClass = (status: VoiceCallDisplayStatus) => {
         case VoiceCallDisplayStatus.Failed:
         case VoiceCallDisplayStatus.Unanswered:
         case VoiceCallDisplayStatus.Abandoned:
+        case VoiceCallDisplayStatus.CallbackRequested:
             return css.redStatus
         case VoiceCallDisplayStatus.Ringing:
         case VoiceCallDisplayStatus.Cancelled:
