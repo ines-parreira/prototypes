@@ -1,5 +1,7 @@
 import React, { useCallback } from 'react'
 
+import classNames from 'classnames'
+
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
 import { CheckBoxField, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
@@ -69,7 +71,7 @@ export default function EmailIntegrationForwardingSetupForm(props: Props) {
                     {isRequested && isPending && !isVerified && (
                         <>
                             <LoadingSpinner size="small" />
-                            <p className={css.frowardingFlowText}>
+                            <p className={css.forwardingFlowText}>
                                 We’re sending you a test email to verify your
                                 connection to Gorgias
                             </p>
@@ -84,7 +86,7 @@ export default function EmailIntegrationForwardingSetupForm(props: Props) {
                                     </span>
                                 </i>
                             </span>
-                            <p className={css.frowardingFlowText}>
+                            <p className={css.forwardingFlowText}>
                                 You’re all set! Customer conversations will
                                 appear as tickets in your Gorgias inbox.
                             </p>
@@ -92,16 +94,17 @@ export default function EmailIntegrationForwardingSetupForm(props: Props) {
                     )}
                     {!isPending && isRequested && !isVerified && (
                         <>
-                            <span className={css.errorIcon}>
-                                <i className="material-icons">
-                                    <span className="material-icons-outlined">
-                                        <span className="material-icons-outlined">
-                                            error_outline
-                                        </span>
-                                    </span>
-                                </i>
-                            </span>
-                            <p className={css.frowardingFlowText}>
+                            <i
+                                className={classNames(
+                                    css.errorIcon,
+                                    'material-icons',
+                                )}
+                            >
+                                <span className="material-icons-outlined">
+                                    error_outline
+                                </span>
+                            </i>
+                            <p className={css.forwardingFlowText}>
                                 We couldn’t verify email forwarding. Please
                                 check your forwarding settings and try again.
                             </p>

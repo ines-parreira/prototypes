@@ -78,7 +78,7 @@ describe('EmailIntegrationListVerificationStatus', () => {
             isDomainVerificationWarningVisible: false,
         })
 
-        expect(screen.getByText('error')).toBeInTheDocument()
+        expect(screen.getByText('error_outline')).toBeInTheDocument()
         expect(screen.getByText('Verify Email')).toBeInTheDocument()
     })
 

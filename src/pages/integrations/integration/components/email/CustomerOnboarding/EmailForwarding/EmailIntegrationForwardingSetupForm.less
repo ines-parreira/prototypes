@@ -23,10 +23,10 @@
         flex-direction: row;
         gap: var(--layout-spacing-xs);
         padding: var(--layout-spacing-s);
-        margin-bottom: @layout-spacing-m;
+        margin-bottom: var(--layout-spacing-xl);
     }
 
-    .frowardingFlowText {
+    .forwardingFlowText {
         font-size: 14px;
         line-height: 20px;
         font-weight: 600;
@@ -46,8 +46,8 @@
         flex-direction: column;
         align-items: flex-start;
         align-self: stretch;
-        margin-bottom: var(--layout-spacing-s);
-        margin-top: -@layout-spacing-m;
+        margin-bottom: var(--layout-spacing-m);
+        margin-top: calc(var(--layout-spacing-l) * -1);
 
         .bolds {
             font-weight: 600;

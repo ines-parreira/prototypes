@@ -26,21 +26,21 @@ export default function EmailIntegrationListVerificationStatus({
         case EmailVerificationStatus.UnverifiedEmail:
             return (
                 <Badge corner="round" type="light-error">
-                    <i className="material-icons-outlined">error</i>
+                    <i className="material-icons-outlined">error_outline</i>
                     Verify Email
                 </Badge>
             )
         case EmailVerificationStatus.UnconnectedEmail:
             return (
                 <Badge corner="round" type="light-error">
-                    <i className="material-icons-outlined">error</i>
+                    <i className="material-icons-outlined">error_outline</i>
                     Reconnect Email
                 </Badge>
             )
         case EmailVerificationStatus.UnverifiedDomain:
             return (
                 <Badge corner="round" type="light-error">
-                    <i className="material-icons-outlined">error</i>
+                    <i className="material-icons-outlined">error_outline</i>
                     Verify Domain
                 </Badge>
             )
