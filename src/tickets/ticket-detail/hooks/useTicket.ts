@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 
 import { useGetTicket } from '@gorgias/helpdesk-queries'
 
+import { TICKET_QUERIES_DEFAULT_CONFIG } from '../constants'
 import { transformers } from '../transformers'
 import type { TicketElement } from '../types'
 import { useAllEvents } from './useAllEvents'
@@ -12,10 +13,7 @@ export function useTicket(ticketId: number) {
         ticketId,
         undefined,
         {
-            query: {
-                refetchOnWindowFocus: false,
-                staleTime: 1000 * 60 * 5, // 5 minutes
-            },
+            query: TICKET_QUERIES_DEFAULT_CONFIG,
         },
     )
     const { events, isLoading: isLoadingEvents } = useAllEvents(ticketId)

@@ -1,5 +1,6 @@
 import { useGetTicket } from '@gorgias/helpdesk-queries'
 
+import { TICKET_QUERIES_DEFAULT_CONFIG } from 'tickets/ticket-detail/constants'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { useAllEvents } from '../useAllEvents'
@@ -30,6 +31,13 @@ describe('useTicket', () => {
             body: [],
             isLoading: true,
             ticket: undefined,
+        })
+    })
+
+    it('should call getTicket with the correct params', () => {
+        renderHook(() => useTicket(1))
+        expect(useGetTicket).toHaveBeenCalledWith(1, undefined, {
+            query: TICKET_QUERIES_DEFAULT_CONFIG,
         })
     })
 

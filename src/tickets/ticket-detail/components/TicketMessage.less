@@ -1,5 +1,3 @@
-@avatarSize: 36px;
-
 :local {
     .container {
         margin-top: var(--layout-spacing-xs);
@@ -29,7 +27,8 @@
     }
 
     .minimalBodyContainer {
-        padding-left: calc(@avatarSize + var(--layout-spacing-s));
+        --avatar-size: 36px;
+        padding-left: calc(var(--avatar-size) + var(--layout-spacing-s));
     }
 
     .ai {

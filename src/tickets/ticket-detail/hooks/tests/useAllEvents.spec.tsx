@@ -1,9 +1,11 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { listEvents } from '@gorgias/helpdesk-client'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 import type { Event } from '@gorgias/helpdesk-types'
 
 import { useExhaustEndpoint } from 'hooks/useExhaustEndpoint'
+import { TICKET_QUERIES_DEFAULT_CONFIG } from 'tickets/ticket-detail/constants'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { useAllEvents } from '../useAllEvents'
@@ -40,12 +42,13 @@ describe('useAllEvents', () => {
         })
 
         expect(useExhaustEndpointMock).toHaveBeenCalledWith(
-            ['all-events', 123],
+            queryKeys.events.listEvents({
+                object_id: 123,
+                object_type: 'Ticket',
+                limit: 100,
+            }),
             expect.any(Function),
-            {
-                refetchOnWindowFocus: false,
-                staleTime: expect.any(Number),
-            },
+            TICKET_QUERIES_DEFAULT_CONFIG,
         )
         expect(result.current).toEqual({ events: mockData, isLoading: false })
     })
