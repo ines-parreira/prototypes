@@ -111,6 +111,7 @@ export function CustomerTimelineWidget({ isEditing, shopperId }: Props) {
                               ? 'close'
                               : 'forum'
                     }
+                    data-candu-trigger-timeline={!hasNoHistory}
                     isDisabled={hasNoHistory}
                 >
                     {isAnotherTimelineOpen

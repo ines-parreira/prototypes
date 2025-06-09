@@ -275,4 +275,30 @@ describe('CustomerTimelineButton', () => {
             expect(screen.getByText(/forum/i)).toBeInTheDocument()
         })
     })
+
+    describe('Candu target attribute', () => {
+        it('should be set to true when there is history', () => {
+            render(<CustomerTimelineWidget {...defaultProps} />)
+            expect(Button).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    'data-candu-trigger-timeline': true,
+                }),
+                {},
+            )
+        })
+
+        it('should be set to false when there is no history', () => {
+            useTimelineDataMock.mockReturnValue({
+                ...defaultTimelineDataReturnValue,
+                tickets: [],
+            })
+            render(<CustomerTimelineWidget {...defaultProps} />)
+            expect(Button).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    'data-candu-trigger-timeline': false,
+                }),
+                {},
+            )
+        })
+    })
 })

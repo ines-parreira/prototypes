@@ -175,6 +175,7 @@ export const TicketSummaryButton = forwardRef<
             onClick={onClick}
             ref={ref}
             className={className}
+            data-candu-trigger-summary
         >
             {children}
         </Button>

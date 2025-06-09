@@ -184,6 +184,14 @@ describe('TicketSummaryButton', () => {
         fireEvent.click(screen.getByText('Click Me'))
         expect(handleClick).toHaveBeenCalledTimes(1)
     })
+
+    it('should set a candu target attribute', () => {
+        render(<TicketSummaryButton onClick={() => {}} />)
+        expect(screen.getByRole('button')).toHaveAttribute(
+            'data-candu-trigger-summary',
+            'true',
+        )
+    })
 })
 
 describe('AISummaryIcon', () => {
