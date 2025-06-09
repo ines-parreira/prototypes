@@ -1,0 +1,49 @@
+@import '~css/typography';
+@import './GradientBackground.less';
+
+:local {
+    .gradientBackground {
+        position: relative;
+        background-image: url(@gradient-background-svg);
+        background-repeat: no-repeat;
+        background-position: top center;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 250px;
+
+        // Overlay to create smooth transition in the gradient background
+        &::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 1) 100%
+            );
+            z-index: 0;
+            pointer-events: none;
+        }
+    }
+
+    .onboardingCard {
+        margin-top: 32px;
+
+        display: grid;
+        grid-row: 2;
+        grid-column: 2;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 32px;
+        border: 1px solid var(--neutral-grey-2);
+        box-shadow: 0px 4px 50px 0px rgba(218, 44, 252, 0.1);
+        overflow: hidden;
+    }
+}

@@ -1,13 +1,13 @@
+import { useHistory } from 'react-router-dom'
+
+import { Button } from '@gorgias/merchant-ui-kit'
+
 import Icon from 'AIJourney/assets/AI-intro-icon.svg'
-import { OnboardingStepSelector } from 'AIJourney/components'
 
 import css from './LandingPage.less'
 
 export const LandingPage = () => {
-    const steps = [
-        { stepName: 'Conversation setup', stepIndicator: 1, isActive: true },
-        { stepName: 'Activation', stepIndicator: 2, isActive: false },
-    ]
+    const history = useHistory()
 
     return (
         <div className={css.container}>
@@ -25,8 +25,14 @@ export const LandingPage = () => {
                     opted-in subscribers from your platforms to personalizing
                     and delivering each message.
                 </span>
-                <div style={{ marginTop: '32px' }}>
-                    <OnboardingStepSelector steps={steps} />
+                <div style={{ marginTop: '32px', alignSelf: 'center' }}>
+                    <Button
+                        onClick={() =>
+                            history.push('/app/ai-journey/conversation-setup')
+                        }
+                    >
+                        This is a placeholder button
+                    </Button>
                 </div>
             </div>
         </div>

@@ -706,8 +706,8 @@ describe('<Routes/>', () => {
         })
     })
 
-    describe('AiJourneyRoutes', () => {
-        it('should render AI Journeu landing page when feature flag is enabled', () => {
+    describe.only('AiJourneyRoutes', () => {
+        it('should render AI Journey landing page when feature flag is enabled', () => {
             mockUseFlag.mockReturnValue(true)
 
             render(
@@ -735,6 +735,40 @@ describe('<Routes/>', () => {
             )
 
             expect(mockHistory.location.pathname).toBe('/app')
+        })
+
+        it('should render conversation setup page when feature flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <MemoryRouter
+                        initialEntries={['/app/ai-journey/conversation-setup']}
+                    >
+                        <Routes />
+                    </MemoryRouter>
+                </Provider>,
+            )
+
+            expect(
+                screen.getByText('Conversation Setup step'),
+            ).toBeInTheDocument()
+        })
+
+        it('should render activation page when feature flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <MemoryRouter
+                        initialEntries={['/app/ai-journey/activation']}
+                    >
+                        <Routes />
+                    </MemoryRouter>
+                </Provider>,
+            )
+
+            expect(screen.getByText('Activation step')).toBeInTheDocument()
         })
     })
 })

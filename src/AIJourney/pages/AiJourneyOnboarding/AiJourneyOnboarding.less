@@ -1,0 +1,11 @@
+@import '~css/typography';
+
+:local {
+    .container {
+        display: grid;
+        padding: var(--layout-spacing-l);
+        grid-template-columns: 1fr [col-start] 400px [col-start] 1fr [col-start];
+        grid-template-rows: auto 1fr;
+        width: 100vw;
+    }
+}
