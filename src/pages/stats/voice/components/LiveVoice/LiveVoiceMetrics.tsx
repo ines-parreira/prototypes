@@ -4,6 +4,7 @@ import { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { StatsFiltersWithLogicalOperator } from 'models/stat/types'
+import useIsCallbackRequestsEnabled from 'pages/integrations/integration/components/voice/useIsCallbackRequestsEnabled'
 import DashboardGridCell from 'pages/stats/common/layout/DashboardGridCell'
 import DashboardSection from 'pages/stats/common/layout/DashboardSection'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
@@ -23,6 +24,8 @@ export default function LiveVoiceMetrics({
     isLoadingVoiceCalls,
     cleanStatsFilters,
 }: Props) {
+    const isCallbackRequestsEnabled = useIsCallbackRequestsEnabled()
+
     const {
         data: { timezone },
     } = useAppSelector(getBusinessHoursSettings) ?? {
@@ -45,8 +48,15 @@ export default function LiveVoiceMetrics({
                 isLoadingVoiceCalls,
                 filters,
                 timezone,
+                isCallbackRequestsEnabled,
             ),
-        [liveVoiceCalls, isLoadingVoiceCalls, filters, timezone],
+        [
+            liveVoiceCalls,
+            isLoadingVoiceCalls,
+            filters,
+            timezone,
+            isCallbackRequestsEnabled,
+        ],
     )
 
     return (

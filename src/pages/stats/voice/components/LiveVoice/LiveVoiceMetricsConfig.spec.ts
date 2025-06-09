@@ -196,7 +196,7 @@ describe('LiveVoiceMetricsConfig', () => {
             ),
         },
     ])(
-        'should return correct voice call count metric',
+        'should return correct voice call count metric with callback requests FF off',
         ({ index, title, hint, metricName, size, filteringSegment }) => {
             const { result } = renderHook(() =>
                 getLiveVoiceMetricCards([], true, filters, timezone),
@@ -220,6 +220,120 @@ describe('LiveVoiceMetricsConfig', () => {
 
     it.each([
         {
+            index: 3,
+            title: constants.INBOUND_CALLS_METRIC_TITLE,
+            hint: constants.INBOUND_CALLS_METRIC_HINT,
+            metricName: VoiceMetric.QueueInboundCalls,
+            size: 4,
+            filteringSegment: VoiceCallSegment.inboundCalls,
+        },
+        {
+            index: 4,
+            title: constants.OUTBOUND_CALLS_METRIC_TITLE,
+            hint: constants.OUTBOUND_CALLS_METRIC_HINT,
+            metricName: VoiceMetric.QueueOutboundCalls,
+            size: 4,
+            filteringSegment: VoiceCallSegment.outboundCalls,
+        },
+        {
+            index: 5,
+            title: constants.UNANSWERED_INBOUND_CALLS_METRIC_TITLE,
+            hint: constants.UNANSWERED_INBOUND_CALLS_METRIC_HINT,
+            metricName: VoiceMetric.QueueInboundUnansweredCalls,
+            size: 4,
+            filteringSegment: VoiceCallSegment.inboundUnansweredCalls,
+        },
+        {
+            index: 6,
+            title: constants.INBOUND_MISSED_CALLS_METRIC_TITLE,
+            hint: constants.INBOUND_MISSED_CALLS_METRIC_HINT,
+            metricName: VoiceMetric.QueueInboundMissedCalls,
+            size: 3,
+            filteringSegment: VoiceCallSegment.inboundMissedCalls,
+            totalCallsQueryFactory: voiceCallCountQueryFactory(
+                filters,
+                timezone,
+                VoiceCallSegment.inboundCalls,
+            ),
+        },
+        {
+            index: 7,
+            title: constants.INBOUND_CANCELLED_CALLS_METRIC_TITLE,
+            hint: constants.INBOUND_CANCELLED_CALLS_METRIC_HINT,
+            metricName: VoiceMetric.QueueInboundCancelledCalls,
+            size: 3,
+            filteringSegment: VoiceCallSegment.inboundCancelledCalls,
+            totalCallsQueryFactory: voiceCallCountQueryFactory(
+                filters,
+                timezone,
+                VoiceCallSegment.inboundCancelledCalls,
+            ),
+        },
+        {
+            index: 8,
+            title: constants.INBOUND_ABANDONED_CALLS_METRIC_TITLE,
+            hint: constants.INBOUND_ABANDONED_CALLS_METRIC_HINT,
+            metricName: VoiceMetric.QueueInboundAbandonedCalls,
+            size: 3,
+            filteringSegment: VoiceCallSegment.inboundAbandonedCalls,
+            totalCallsQueryFactory: voiceCallCountQueryFactory(
+                filters,
+                timezone,
+                VoiceCallSegment.inboundCalls,
+            ),
+        },
+        {
+            index: 9,
+            title: constants.INBOUND_CALLBACK_REQUESTED_CALLS_METRIC_TITLE,
+            hint: constants.INBOUND_CALLBACK_REQUESTED_CALLS_METRIC_HINT,
+            metricName: VoiceMetric.QueueInboundCallbackRequestedCalls,
+            size: 3,
+            filteringSegment: VoiceCallSegment.inboundCallbackRequestedCalls,
+            totalCallsQueryFactory: voiceCallCountQueryFactory(
+                filters,
+                timezone,
+                VoiceCallSegment.inboundCallbackRequestedCalls,
+            ),
+        },
+    ])(
+        'should return correct voice call count metric',
+        ({ index, title, hint, metricName, size, filteringSegment }) => {
+            const { result } = renderHook(() =>
+                getLiveVoiceMetricCards([], true, filters, timezone, true),
+            )
+
+            expect(result.current[index]).toMatchObject({
+                title: title,
+                hint: hint,
+                metricName: metricName,
+                size: size,
+            })
+            result.current[index].fetchData()
+            expect(useVoiceCallCountMetricMock).toHaveBeenCalledWith(
+                filters,
+                timezone,
+                filteringSegment,
+                true,
+            )
+        },
+    )
+
+    const statusesHiddenOnAgentFiltering = [
+        {
+            index: 7,
+            title: constants.INBOUND_CANCELLED_CALLS_METRIC_TITLE,
+        },
+        {
+            index: 8,
+            title: constants.INBOUND_ABANDONED_CALLS_METRIC_TITLE,
+        },
+        {
+            index: 9,
+            title: constants.INBOUND_CALLBACK_REQUESTED_CALLS_METRIC_TITLE,
+        },
+    ]
+    const filteringConfigurations = [
+        {
             additionalFilters: {},
             shouldHide: false,
         },
@@ -232,9 +346,22 @@ describe('LiveVoiceMetricsConfig', () => {
             },
             shouldHide: true,
         },
-    ])(
-        'should hide abandoned calls when filtering by agent',
-        ({ additionalFilters, shouldHide }) => {
+    ]
+
+    it.each(
+        statusesHiddenOnAgentFiltering.flatMap((status) =>
+            filteringConfigurations.map((config) => {
+                return {
+                    index: status.index,
+                    title: status.title,
+                    additionalFilters: config.additionalFilters,
+                    shouldHide: config.shouldHide,
+                }
+            }),
+        ),
+    )(
+        'should hide $title when filtering by agent',
+        ({ index, title, additionalFilters, shouldHide }) => {
             const { result } = renderHook(() =>
                 getLiveVoiceMetricCards(
                     [],
@@ -242,11 +369,12 @@ describe('LiveVoiceMetricsConfig', () => {
                     // @ts-ignore: Filters are not accepted but actually valid
                     { ...filters, ...additionalFilters },
                     timezone,
+                    true,
                 ),
             )
 
-            expect(result.current[7]).toMatchObject({
-                title: constants.INBOUND_ABANDONED_CALLS_METRIC_TITLE,
+            expect(result.current[index]).toMatchObject({
+                title: title,
                 shouldHide: shouldHide,
             })
         },

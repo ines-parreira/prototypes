@@ -101,6 +101,8 @@ export enum VoiceMetric {
     QueueInboundUnansweredCalls = 'queue_inbound_unanswered_calls',
     QueueInboundMissedCalls = 'queue_inbound_missed_calls',
     QueueInboundAbandonedCalls = 'queue_inbound_abandoned_calls',
+    QueueInboundCancelledCalls = 'queue_inbound_cancelled_calls',
+    QueueInboundCallbackRequestedCalls = 'queue_inbound_callback_requested_calls',
 }
 
 export enum VoiceAgentsMetric {

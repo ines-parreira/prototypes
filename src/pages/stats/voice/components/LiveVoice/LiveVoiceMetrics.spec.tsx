@@ -5,6 +5,8 @@ import { Moment } from 'moment'
 
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-queries'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 import { formatReportingQueryDate } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
@@ -48,6 +50,9 @@ const getBusinessHoursSettingsMock = assumeMock(getBusinessHoursSettings)
 const getLiveVoicePeriodFilterMock = assumeMock(getLiveVoicePeriodFilter)
 const getLiveVoiceMetricCardsMock = assumeMock(getLiveVoiceMetricCards)
 
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+const useFlagMock = assumeMock(useFlag)
+
 const defaultPeriodFilter = {
     start_datetime: '2024-01-01T00:00:00+01:00',
     end_datetime: '2024-01-01T23:59:59+01:00',
@@ -86,6 +91,15 @@ describe('LiveVoiceMetrics', () => {
         getLiveVoicePeriodFilterMock.mockReturnValue(defaultPeriodFilter)
 
         LiveVoiceMetricCardMock.mockReturnValue(<div />)
+
+        useFlagMock.mockImplementation((flag) => {
+            if (
+                flag === FeatureFlagKey.VoiceCallbackEnabled1 ||
+                flag === FeatureFlagKey.VoiceCallbackEnabled2
+            ) {
+                return true
+            }
+        })
     })
 
     it.each([
@@ -141,6 +155,7 @@ describe('LiveVoiceMetrics', () => {
                 isLoadingVoiceCalls,
                 filters,
                 expectedTimezone,
+                true,
             )
 
             expect(LiveVoiceMetricCardMock).toHaveBeenCalledWith(
@@ -154,4 +169,55 @@ describe('LiveVoiceMetrics', () => {
             )
         },
     )
+
+    it('should call config function with old layout when callback requests FF is off', () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (
+                flag === FeatureFlagKey.VoiceCallbackEnabled1 ||
+                flag === FeatureFlagKey.VoiceCallbackEnabled2
+            ) {
+                return false
+            }
+        })
+
+        getLiveVoiceMetricCardsMock.mockReturnValue([
+            {
+                title: 'Metric title',
+                hint: 'Metric hint',
+                fetchData: () => ({
+                    data: { value: 1 },
+                    isFetching: false,
+                    isError: false,
+                }),
+                size: 4,
+            },
+        ])
+
+        const filters = {
+            period: defaultPeriodFilter,
+        }
+
+        renderComponent({
+            liveVoiceCalls: liveVoiceCalls,
+            isLoadingVoiceCalls: false,
+        })
+
+        expect(getLiveVoiceMetricCardsMock).toHaveBeenCalledWith(
+            liveVoiceCalls,
+            false,
+            filters,
+            'Europe/Paris',
+            false,
+        )
+
+        expect(LiveVoiceMetricCardMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                title: 'Metric title',
+                hint: 'Metric hint',
+                fetchData: expect.any(Function),
+                size: 4,
+            }),
+            {},
+        )
+    })
 })

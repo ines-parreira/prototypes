@@ -107,4 +107,24 @@ export const VoiceMetricsConfig: Record<
             ),
         title: '',
     },
+    [VoiceMetric.QueueInboundCancelledCalls]: {
+        showMetric: false,
+        domain: Domain.Voice,
+        drillDownQuery: (statsFilters: StatsFilters) =>
+            liveDashBoardVoiceCallListQueryFactory(
+                statsFilters,
+                VoiceCallSegment.inboundCancelledCalls,
+            ),
+        title: '',
+    },
+    [VoiceMetric.QueueInboundCallbackRequestedCalls]: {
+        showMetric: false,
+        domain: Domain.Voice,
+        drillDownQuery: (statsFilters: StatsFilters) =>
+            liveDashBoardVoiceCallListQueryFactory(
+                statsFilters,
+                VoiceCallSegment.inboundCallbackRequestedCalls,
+            ),
+        title: '',
+    },
 }

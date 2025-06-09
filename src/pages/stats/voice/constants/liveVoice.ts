@@ -30,6 +30,13 @@ export const INBOUND_MISSED_CALLS_METRIC_HINT =
 export const INBOUND_ABANDONED_CALLS_METRIC_TITLE = 'Abandoned calls'
 export const INBOUND_ABANDONED_CALLS_METRIC_HINT =
     'The total number of inbound calls that were ended by the caller before connecting to an agent.'
+export const INBOUND_CANCELLED_CALLS_METRIC_TITLE = 'Cancelled calls'
+export const INBOUND_CANCELLED_CALLS_METRIC_HINT =
+    'The total number of inbound calls that were ended within 5 seconds of dialing.'
+export const INBOUND_CALLBACK_REQUESTED_CALLS_METRIC_TITLE = 'Callback requests'
+export const INBOUND_CALLBACK_REQUESTED_CALLS_METRIC_HINT =
+    'The total number of callback requests placed.'
+
 export const OUTBOUND_CALLS_METRIC_TITLE = 'Outbound calls'
 export const OUTBOUND_CALLS_METRIC_HINT =
     'Total number of outbound calls placed.'
