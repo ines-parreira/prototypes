@@ -80,6 +80,7 @@ describe('useScheduledDowngrades', () => {
                     {
                         current_plan_id: advancedMonthlyHelpdeskPlan.plan_id,
                         scheduled_plan_id: basicMonthlyHelpdeskPlan.plan_id,
+                        scheduled_plan: basicMonthlyHelpdeskPlan,
                     },
                 ],
             })
@@ -107,6 +108,7 @@ describe('useScheduledDowngrades', () => {
                     {
                         current_plan_id: advancedMonthlyHelpdeskPlan.plan_id,
                         scheduled_plan_id: null,
+                        scheduled_plan: null,
                     },
                 ],
             })

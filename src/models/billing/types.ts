@@ -109,6 +109,7 @@ export type SubscriptionCycle = {
     downgrades?: {
         current_plan_id: PlanId
         scheduled_plan_id: PlanId | null
+        scheduled_plan: Plan | null
     }[]
 }
 

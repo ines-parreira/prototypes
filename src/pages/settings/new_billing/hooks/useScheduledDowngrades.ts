@@ -27,9 +27,7 @@ export default function useScheduledDowngrades() {
                 return {
                     datetime: sub.current_billing_cycle_end_datetime,
                     currentPlan: currentPlan,
-                    targetPlan: downgrade.scheduled_plan_id
-                        ? plansMap[downgrade.scheduled_plan_id]
-                        : null,
+                    targetPlan: downgrade.scheduled_plan,
                 }
             })
 
