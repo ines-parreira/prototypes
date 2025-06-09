@@ -26,6 +26,7 @@ describe('useFetchInfluencedOrdersForCurrentTicket', () => {
             customers: [
                 { id: 456, created_at: '2021-01-01T00:00:00.000Z' },
                 { id: 789, created_at: '2021-01-02T00:00:00.000Z' },
+                { id: 789, created_at: undefined as unknown as string },
             ],
             ticketId: 999,
             orders: [

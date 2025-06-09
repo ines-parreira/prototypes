@@ -33,9 +33,13 @@ const getFirstCustomerCreatedAt = (
     ticketContext.customers.length
         ? new Date(
               Math.min(
-                  ...ticketContext.customers.map((c) =>
-                      new Date(c.created_at).getTime(),
-                  ),
+                  ...ticketContext.customers
+                      .map((c) =>
+                          c.created_at
+                              ? new Date(c.created_at).getTime()
+                              : undefined,
+                      )
+                      .filter((x): x is number => x !== undefined),
               ),
           ).toISOString()
         : undefined
