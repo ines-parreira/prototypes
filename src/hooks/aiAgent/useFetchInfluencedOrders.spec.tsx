@@ -70,7 +70,9 @@ describe('useFetchInfluencedOrders', () => {
     it('should properly query influenced orders', () => {
         const params = {
             accountId: 1,
-            customerIds: [3],
+            integrationIds: [2],
+            orderIds: [3],
+            periodStart: '2025-06-06T12:00:00.000Z',
         }
 
         renderUseFetchInfluencedOrders(params)
@@ -91,7 +93,17 @@ describe('useFetchInfluencedOrders', () => {
                         values: ['1'],
                     },
                     {
-                        member: AiSalesAgentOrdersDimension.CustomerId,
+                        member: AiSalesAgentOrdersDimension.PeriodStart,
+                        operator: ReportingFilterOperator.AfterOrOnDate,
+                        values: ['2025-06-06T12:00:00.000'],
+                    },
+                    {
+                        member: AiSalesAgentOrdersDimension.IntegrationId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['2'],
+                    },
+                    {
+                        member: AiSalesAgentOrdersDimension.OrderId,
                         operator: ReportingFilterOperator.Equals,
                         values: ['3'],
                     },
@@ -109,7 +121,9 @@ describe('useFetchInfluencedOrders', () => {
     it('should transform the data correctly', async () => {
         const params = {
             accountId: 1,
-            customerIds: [3],
+            integrationIds: [2],
+            orderIds: [3],
+            periodStart: '2025-06-06T12:00:00.000Z',
         }
 
         const { result } = renderUseFetchInfluencedOrders(params)
@@ -131,7 +145,8 @@ describe('useFetchInfluencedOrders', () => {
 
         renderUseFetchInfluencedOrders({
             accountId: 1,
-            customerIds: [3],
+            integrationIds: [2],
+            orderIds: [3],
         })
 
         expect(mockPostReporting).not.toHaveBeenCalled()
@@ -142,7 +157,8 @@ describe('useFetchInfluencedOrders', () => {
 
         renderUseFetchInfluencedOrders({
             accountId: 1,
-            customerIds: [3],
+            integrationIds: [2],
+            orderIds: [3],
         })
 
         expect(mockPostReporting).not.toHaveBeenCalled()

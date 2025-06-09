@@ -41,9 +41,10 @@ describe('useGetTicketContext', () => {
 
         expect(result.current).toEqual({
             accountId: 123,
-            customerIds: [],
+            customers: [],
             orders: [],
             shopifyIntegrations: [],
+            ticketId: undefined,
         })
     })
 
@@ -62,12 +63,18 @@ describe('useGetTicketContext', () => {
                     integrations: {
                         '1': {
                             __integration_type__: IntegrationType.Shopify,
-                            customer: { id: 456 },
+                            customer: {
+                                id: 456,
+                                created_at: '2025-01-01T00:00:00Z',
+                            },
                             orders: [{ id: 'order1' }],
                         },
                         '2': {
                             __integration_type__: IntegrationType.Shopify,
-                            customer: { id: 789 },
+                            customer: {
+                                id: 789,
+                                created_at: '2025-01-01T00:00:00Z',
+                            },
                             orders: [{ id: 'order2' }],
                         },
                     },
@@ -79,7 +86,10 @@ describe('useGetTicketContext', () => {
 
         expect(result.current).toEqual({
             accountId: 123,
-            customerIds: [456, 789],
+            customers: [
+                { id: 456, created_at: '2025-01-01T00:00:00Z' },
+                { id: 789, created_at: '2025-01-01T00:00:00Z' },
+            ],
             orders: [{ id: 'order1' }, { id: 'order2' }],
             shopifyIntegrations: mockShopifyIntegrations,
         })
@@ -99,12 +109,18 @@ describe('useGetTicketContext', () => {
                     integrations: {
                         '1': {
                             __integration_type__: IntegrationType.Shopify,
-                            customer: { id: 456 },
+                            customer: {
+                                id: 456,
+                                created_at: '2025-01-01T00:00:00Z',
+                            },
                             orders: [{ id: 'order1' }],
                         },
                         '2': {
                             __integration_type__: 'other',
-                            customer: { id: 789 },
+                            customer: {
+                                id: 789,
+                                created_at: '2025-01-01T00:00:00Z',
+                            },
                             orders: [{ id: 'order2' }],
                         },
                     },
@@ -116,7 +132,7 @@ describe('useGetTicketContext', () => {
 
         expect(result.current).toEqual({
             accountId: 123,
-            customerIds: [456],
+            customers: [{ id: 456, created_at: '2025-01-01T00:00:00Z' }],
             orders: [{ id: 'order1' }],
             shopifyIntegrations: mockShopifyIntegrations,
         })
@@ -135,7 +151,7 @@ describe('useGetTicketContext', () => {
 
             expect(result.current).toEqual({
                 accountId: 123,
-                customerIds: [],
+                customers: [],
                 orders: [],
                 shopifyIntegrations: [],
             })

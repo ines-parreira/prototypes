@@ -26,13 +26,12 @@ export const useInsertShoppingAssistantEventElements = (
 ) => {
     const {
         influencedOrders: { data: influencedOrders },
-        ticketContext: { customerIds, shopifyIntegrations, ticketId, orders },
+        ticketContext: { shopifyIntegrations, ticketId, orders },
     } = useFetchInfluencedOrdersForCurrentTicket()
 
     return useMemo(() => {
         // Defensive programming to avoid type errors because the ticket state is not typed
         if (
-            !customerIds?.length ||
             !shopifyIntegrations?.length ||
             !orders.length ||
             !influencedOrders?.length ||
@@ -79,14 +78,7 @@ export const useInsertShoppingAssistantEventElements = (
         })
 
         return sortedElements
-    }, [
-        bodyElements,
-        influencedOrders,
-        orders,
-        customerIds,
-        shopifyIntegrations,
-        ticketId,
-    ])
+    }, [bodyElements, influencedOrders, orders, shopifyIntegrations, ticketId])
 }
 
 const buildInfluencedOrderEvent = (

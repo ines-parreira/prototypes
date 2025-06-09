@@ -48,7 +48,7 @@ describe('<TitleWrapper/>', () => {
 
     const mockTicketContext = {
         accountId,
-        customerIds: [456],
+        customers: [{ id: 456, created_at: '2024-01-01T00:00:00Z' }],
         ticketId: 999,
         orders: [],
         shopifyIntegrations: [],

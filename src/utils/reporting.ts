@@ -40,7 +40,7 @@ import {
     StatsFilters,
 } from 'models/stat/types'
 
-export const formatReportingQueryDate = (date: string | Moment) =>
+export const formatReportingQueryDate = (date: string | Date | Moment) =>
     moment.parseZone(date).utcOffset(0, true).format('YYYY-MM-DDTHH:mm:ss.SSS')
 
 export const getFilterDateRange = (period: Period) => [

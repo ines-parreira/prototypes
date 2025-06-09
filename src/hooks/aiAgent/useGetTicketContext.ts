@@ -6,13 +6,14 @@ import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 import { getTicketState } from 'state/ticket/selectors'
 
-type Customer = {
+type IntegrationCustomer = {
     id: number
+    created_at: string
 }
 
 type IntegrationData = {
     [key: string]: unknown
-    customer?: Customer
+    customer?: IntegrationCustomer
     __integration_type__: IntegrationType
 }
 
@@ -30,21 +31,12 @@ export const useGetTicketContext = () => {
             __integration_type__ === IntegrationType.Shopify,
     )
 
-    const customerIds = ticketCustomerShopifyIntegrations.reduce(
-        (ids, [, integrationData]) => {
-            if (!integrationData?.customer) {
-                return ids
-            }
-
-            ids.push(Number(integrationData.customer.id))
-
-            return ids
-        },
-        [] as number[],
-    )
+    const customers = ticketCustomerShopifyIntegrations
+        .map(([, integrationData]) => integrationData.customer)
+        .filter(Boolean) as IntegrationCustomer[]
 
     const orders = ticketCustomerShopifyIntegrations.reduce<
-        Record<string, unknown>[]
+        Array<{ id: number; order_number: number }>
     >((acc, [, integrationData]) => {
         if (!Array.isArray(integrationData?.orders)) {
             return acc
@@ -66,7 +58,7 @@ export const useGetTicketContext = () => {
 
     return {
         accountId,
-        customerIds,
+        customers,
         ticketId: ticket?.id as number | undefined,
         orders,
         shopifyIntegrations: customerShopifyIntegrations,

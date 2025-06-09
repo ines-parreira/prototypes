@@ -9,12 +9,16 @@ import {
 } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { usePostReporting } from 'models/reporting/queries'
 import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
+import { formatReportingQueryDate } from 'utils/reporting'
 
 import { useCanUseAiSalesAgent } from './useCanUseAiSalesAgent'
 
 export type InfluencedOrdersParams = {
     accountId: number | string
-    customerIds?: number[]
+    integrationIds: (number | string)[]
+    orderIds: (number | string)[]
+    periodStart?: string | Date
+    periodEnd?: string | Date
 }
 
 export type InfluencedOrderDataFromCube = {
@@ -33,7 +37,10 @@ export type InfluencedOrderData = {
 
 export const useFetchInfluencedOrders = ({
     accountId,
-    customerIds,
+    integrationIds,
+    periodStart,
+    periodEnd,
+    orderIds,
 }: InfluencedOrdersParams): UseQueryResult<InfluencedOrderData[]> => {
     const canUseSalesAgent = useCanUseAiSalesAgent()
     const isShoppingAssistantEnbaled = useFlag(
@@ -43,7 +50,10 @@ export const useFetchInfluencedOrders = ({
         canUseSalesAgent && isShoppingAssistantEnbaled
 
     const isQueryEnabled =
-        isInfluencedByAiEnabled && !!accountId && !!customerIds?.length
+        isInfluencedByAiEnabled &&
+        !!periodStart &&
+        !!integrationIds.length &&
+        !!orderIds.length
 
     const query: ReportingQuery<AiSalesAgentOrdersCube> = isQueryEnabled
         ? {
@@ -60,17 +70,36 @@ export const useFetchInfluencedOrders = ({
                       operator: ReportingFilterOperator.Equals,
                       values: [accountId.toString()],
                   },
+                  periodStart
+                      ? {
+                            member: AiSalesAgentOrdersFilterMember.PeriodStart,
+                            operator: ReportingFilterOperator.AfterOrOnDate,
+                            values: [formatReportingQueryDate(periodStart)],
+                        }
+                      : undefined,
+                  periodEnd
+                      ? {
+                            member: AiSalesAgentOrdersFilterMember.PeriodEnd,
+                            operator: ReportingFilterOperator.BeforeOrOnDate,
+                            values: [formatReportingQueryDate(periodEnd)],
+                        }
+                      : undefined,
                   {
-                      member: AiSalesAgentOrdersDimension.CustomerId,
+                      member: AiSalesAgentOrdersFilterMember.IntegrationId,
                       operator: ReportingFilterOperator.Equals,
-                      values: customerIds.map((id) => id.toString()),
+                      values: integrationIds.map((id) => String(id)),
                   },
                   {
-                      member: AiSalesAgentOrdersDimension.IsInfluenced,
+                      member: AiSalesAgentOrdersFilterMember.OrderId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: orderIds.map((id) => String(id)),
+                  },
+                  {
+                      member: AiSalesAgentOrdersFilterMember.IsInfluenced,
                       operator: ReportingFilterOperator.Equals,
                       values: [Number(true).toString()],
                   },
-              ].filter((x) => x !== undefined),
+              ].filter((value): value is NonNullable<typeof value> => !!value),
               limit: 100,
           }
         : { measures: [], dimensions: [], filters: [] }

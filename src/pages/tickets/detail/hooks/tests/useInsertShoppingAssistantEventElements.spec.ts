@@ -1,5 +1,10 @@
+import { UseQueryResult } from '@tanstack/react-query'
+
 import { TicketChannel, TicketVia } from 'business/types/ticket'
-import { useFetchInfluencedOrders } from 'hooks/aiAgent/useFetchInfluencedOrders'
+import {
+    InfluencedOrderData,
+    useFetchInfluencedOrders,
+} from 'hooks/aiAgent/useFetchInfluencedOrders'
 import { useGetTicketContext } from 'hooks/aiAgent/useGetTicketContext'
 import { ShopifyIntegration } from 'models/integration/types'
 import { TicketMessage } from 'models/ticket/types'
@@ -15,12 +20,12 @@ const mockUseFetchInfluencedOrders = jest.mocked(useFetchInfluencedOrders)
 describe('useInsertShoppingAssistantEventElements', () => {
     const mockTicketContext = {
         accountId: 123,
-        customerIds: [456],
+        customers: [{ id: 456, created_at: '2021-01-01T00:00:00.000Z' }],
         ticketId: 999,
         shopifyIntegrations: [{ name: 'Test Shop' }] as ShopifyIntegration[],
         orders: [
-            { id: '789', order_number: 1001 },
-            { id: '790', order_number: 1002 },
+            { id: 789, order_number: 1001 },
+            { id: 790, order_number: 1002 },
         ],
     }
 
@@ -91,7 +96,7 @@ describe('useInsertShoppingAssistantEventElements', () => {
 
         const influencedOrders = [
             {
-                id: '789',
+                id: 789,
                 ticketId: 999,
                 createdDatetime: '2024-01-01T11:00:00Z',
             },
@@ -99,7 +104,7 @@ describe('useInsertShoppingAssistantEventElements', () => {
 
         mockUseFetchInfluencedOrders.mockReturnValue({
             data: influencedOrders,
-        } as any)
+        } as UseQueryResult<InfluencedOrderData[]>)
 
         const { result } = renderHook(() =>
             useInsertShoppingAssistantEventElements(bodyElements),
@@ -123,12 +128,12 @@ describe('useInsertShoppingAssistantEventElements', () => {
 
         const influencedOrders = [
             {
-                id: '789',
+                id: 789,
                 ticketId: 999,
                 createdDatetime: '2024-01-01T11:00:00Z',
             },
             {
-                id: '145',
+                id: 145,
                 ticketId: 111,
                 createdDatetime: '2024-01-01T11:30:00Z',
             },
@@ -136,7 +141,7 @@ describe('useInsertShoppingAssistantEventElements', () => {
 
         mockUseFetchInfluencedOrders.mockReturnValue({
             data: influencedOrders,
-        } as any)
+        } as UseQueryResult<InfluencedOrderData[]>)
 
         const { result } = renderHook(() =>
             useInsertShoppingAssistantEventElements(bodyElements),
@@ -160,7 +165,7 @@ describe('useInsertShoppingAssistantEventElements', () => {
         mockUseGetTicketContext.mockReturnValue({
             accountId: null as any,
             ticketId: undefined,
-            customerIds: [],
+            customers: [],
             shopifyIntegrations: [],
             orders: [],
         })

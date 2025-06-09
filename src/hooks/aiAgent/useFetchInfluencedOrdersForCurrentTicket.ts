@@ -13,10 +13,29 @@ export const useFetchInfluencedOrdersForCurrentTicket = (): {
 } => {
     const ticketContext = useGetTicketContext()
 
+    const periodStart = getFirstCustomerCreatedAt(ticketContext)
+
     const influencedOrders = useFetchInfluencedOrders({
         accountId: ticketContext.accountId,
-        customerIds: ticketContext.customerIds,
+        integrationIds: ticketContext.shopifyIntegrations.map(
+            (integration) => integration.id,
+        ),
+        orderIds: ticketContext.orders.map((order) => order.id),
+        periodStart,
     })
 
     return { influencedOrders, ticketContext }
 }
+
+const getFirstCustomerCreatedAt = (
+    ticketContext: ReturnType<typeof useGetTicketContext>,
+) =>
+    ticketContext.customers.length
+        ? new Date(
+              Math.min(
+                  ...ticketContext.customers.map((c) =>
+                      new Date(c.created_at).getTime(),
+                  ),
+              ),
+          ).toISOString()
+        : undefined

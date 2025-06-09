@@ -21,11 +21,17 @@ describe('useFetchInfluencedOrdersForCurrentTicket', () => {
     })
 
     it('should fetch influenced orders with ticket context data', () => {
-        const mockTicketContext = {
+        const mockTicketContext: ReturnType<typeof useGetTicketContext> = {
             accountId: 123,
-            customerIds: [456, 789],
+            customers: [
+                { id: 456, created_at: '2021-01-01T00:00:00.000Z' },
+                { id: 789, created_at: '2021-01-02T00:00:00.000Z' },
+            ],
             ticketId: 999,
-            orders: [],
+            orders: [
+                { id: 111, order_number: 1110 },
+                { id: 222, order_number: 2220 },
+            ],
             shopifyIntegrations: [],
         }
 
@@ -42,7 +48,9 @@ describe('useFetchInfluencedOrdersForCurrentTicket', () => {
 
         expect(mockUseFetchInfluencedOrders).toHaveBeenCalledWith({
             accountId: mockTicketContext.accountId,
-            customerIds: mockTicketContext.customerIds,
+            integrationIds: [],
+            periodStart: '2021-01-01T00:00:00.000Z',
+            orderIds: [111, 222],
         })
 
         expect(result.current).toEqual({
