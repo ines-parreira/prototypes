@@ -19,7 +19,7 @@ import { isDesktopDevice, isDeviceReady } from 'utils/device'
 import * as platform from 'utils/platform'
 import { assumeMock } from 'utils/testing'
 
-import { PlaceCallNavbarButtonV2 } from '../v2/PlaceCallNavbarButtonV2'
+import { PlaceCallNavbarButton } from '../PlaceCallNavbarButton'
 
 jest.mock('hooks/useConditionalShortcuts')
 jest.mock('utils/device')
@@ -43,8 +43,8 @@ const isDeviceReadyMock = assumeMock(isDeviceReady)
 const useConditionalShortcutsMock = assumeMock(useConditionalShortcuts)
 const useMicrophonePermissionsMock = assumeMock(useMicrophonePermissions)
 
-describe('<PlaceCallNavbarButtonV2 />', () => {
-    const renderComponent = () => render(<PlaceCallNavbarButtonV2 />)
+describe('<PlaceCallNavbarButton />', () => {
+    const renderComponent = () => render(<PlaceCallNavbarButton />)
 
     beforeEach(() => {
         isDesktopDeviceMock.mockReturnValue(true)
@@ -155,7 +155,7 @@ describe('<PlaceCallNavbarButtonV2 />', () => {
         expect(screen.getByTestId('phone-device')).toHaveTextContent('visible')
 
         useVoiceDeviceMock.mockReturnValue({ device: null } as any)
-        rerender(<PlaceCallNavbarButtonV2 />)
+        rerender(<PlaceCallNavbarButton />)
 
         expect(screen.getByTestId('phone-device')).toHaveTextContent('hidden')
     })

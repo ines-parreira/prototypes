@@ -1,10 +1,10 @@
 import { NavbarPanel } from 'core/navigation'
-import { TicketNavBarRevampWrapper } from 'pages/tickets/navbar/v2/TicketNavBarRevampWrapper'
+import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
 
 export default function TicketsNavbarPanel() {
     return (
         <NavbarPanel>
-            <TicketNavBarRevampWrapper disableResize />
+            <TicketNavbar disableResize />
         </NavbarPanel>
     )
 }

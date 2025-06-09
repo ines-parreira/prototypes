@@ -4,7 +4,7 @@ import { MemoryRouter, Route } from 'react-router-dom'
 import { useCreateTicketButton } from 'pages/common/components/CreateTicket/useCreateTicketButton'
 import { userEvent } from 'utils/testing/userEvent'
 
-import { CreateTicketNavbarButtonV2 } from '../v2/CreateTicketNavbarButtonV2'
+import { CreateTicketNavbarButton } from '../CreateTicketNavbarButton'
 
 jest.mock('react-router-dom', () => {
     const actual = jest.requireActual('react-router-dom')
@@ -23,12 +23,12 @@ const mockedUseCreateTicketButton = jest.mocked(useCreateTicketButton)
 const renderComponent = (initialPath = '/') => {
     return render(
         <MemoryRouter initialEntries={[initialPath]}>
-            <Route path="*" component={CreateTicketNavbarButtonV2} />
+            <Route path="*" component={CreateTicketNavbarButton} />
         </MemoryRouter>,
     )
 }
 
-describe('<CreateTicketNavbarButtonV2 />', () => {
+describe('<CreateTicketNavbarButton />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         // Default mock return values

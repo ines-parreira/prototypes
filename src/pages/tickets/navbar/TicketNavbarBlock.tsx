@@ -18,7 +18,9 @@ import IconInput from 'pages/common/forms/input/IconInput'
 import TicketNavbarDropTarget from 'pages/tickets/navbar/TicketNavbarDropTarget'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 
-import css from './TicketNavbarBlockV2.less'
+import { TicketNavbarElement } from './TicketNavbarContent'
+
+import css from './TicketNavbarBlock.less'
 
 type Props = {
     actions?: {
@@ -31,6 +33,7 @@ type Props = {
     title: string
     className?: string
     value?: ViewCategoryNavbar
+    elements: TicketNavbarElement[]
     dropdownClassName?: string
     actionsIcon?: {
         name: string
@@ -44,12 +47,13 @@ type Props = {
 
 const actionsIconId = 'actions-icon'
 
-export function TicketNavbarBlockV2({
+export function TicketNavbarBlock({
     actions,
     children,
     icon,
     title,
     value,
+    elements,
     dropdownClassName,
     actionsIcon = {
         name: 'add',
@@ -113,7 +117,9 @@ export function TicketNavbarBlockV2({
                             {title}
                         </div>
 
-                        <Navigation.SectionIndicator />
+                        {elements?.length > 0 && (
+                            <Navigation.SectionIndicator />
+                        )}
                     </Navigation.SectionTrigger>
                     {!!actions && (
                         <Dropdown
@@ -162,9 +168,11 @@ export function TicketNavbarBlockV2({
                         </Dropdown>
                     )}
                 </div>
-                <Navigation.SectionContent>
-                    {children}
-                </Navigation.SectionContent>
+                {elements?.length > 0 && (
+                    <Navigation.SectionContent>
+                        {children}
+                    </Navigation.SectionContent>
+                )}
             </Navigation.Section>
         </TicketNavbarDropTarget>
     )

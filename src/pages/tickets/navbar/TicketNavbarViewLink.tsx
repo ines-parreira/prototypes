@@ -10,6 +10,7 @@ import classnames from 'classnames'
 import { Link, useLocation } from 'react-router-dom'
 
 import navbarCss from 'assets/css/navbar.less'
+import { Navigation } from 'components/Navigation/Navigation'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -23,15 +24,18 @@ import { activeViewIdSet } from 'state/ui/views/actions'
 import { isTicketPath } from 'utils'
 import { addCanduLinkForValidViewOrSection } from 'utils/views'
 
+import css from './TicketNavbarViewLink.less'
+
 type Props = {
     className?: string
     icon?: string
     view: View
     viewCount?: number
+    isNested?: boolean
 }
 
 const TicketNavbarViewLink = (
-    { className, icon, view, viewCount }: Props,
+    { className, icon, view, viewCount, isNested }: Props,
     forwardedRef: ForwardedRef<HTMLDivElement>,
 ) => {
     const shouldRedirectDeprecatedTicketRoutes = useFlag<boolean>(
@@ -56,34 +60,29 @@ const TicketNavbarViewLink = (
 
     useScrollActiveItemIntoView(ref, isActiveView, true)
 
+    const linkTo = useMemo(
+        () =>
+            shouldRedirectDeprecatedTicketRoutes
+                ? `/app/tickets/${view.id}`
+                : splitTicketViewEnabled
+                  ? `/app/views/${view.id}`
+                  : `/app/tickets/${view.id}/${encodeURIComponent(view.slug)}`,
+        [shouldRedirectDeprecatedTicketRoutes, splitTicketViewEnabled, view],
+    )
+
     return (
         <div
-            {...(canduId ? { 'data-candu-id': canduId } : {})}
             id={ticketNavbarId}
             ref={ref}
-            className={classnames(navbarCss['link-wrapper'], {
-                [navbarCss.isNested]: view.section_id != null,
-            })}
+            {...(canduId ? { 'data-candu-id': canduId } : {})}
         >
-            <Link
-                className={classnames(
-                    navbarCss.link,
-                    {
-                        [navbarCss.isNested]: view.section_id != null,
-                        active: isActiveView,
-                    },
-                    className,
-                )}
-                to={
-                    shouldRedirectDeprecatedTicketRoutes
-                        ? `/app/tickets/${view.id}`
-                        : splitTicketViewEnabled
-                          ? `/app/views/${view.id}`
-                          : `/app/tickets/${view.id}/${encodeURIComponent(
-                                view.slug,
-                            )}`
-                }
+            <Navigation.SectionItem
+                as={Link}
+                displayType={isNested ? 'indent' : 'default'}
+                isSelected={isActiveView}
                 onClick={() => dispatch(activeViewIdSet(view.id))}
+                className={classnames(css.viewLink, className)}
+                to={linkTo}
             >
                 <span className={navbarCss['item-name']}>
                     {icon && (
@@ -108,7 +107,7 @@ const TicketNavbarViewLink = (
                         isDeactivated={!!view.deactivated_datetime}
                     />
                 </span>
-            </Link>
+            </Navigation.SectionItem>
         </div>
     )
 }

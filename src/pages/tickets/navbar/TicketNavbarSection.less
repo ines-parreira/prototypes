@@ -1,4 +1,16 @@
 :local {
+    .navbarSectionTriggerContainer {
+        margin-left: var(--layout-spacing-xs);
+        width: calc(100% - var(--layout-spacing-xs));
+        position: relative;
+        overflow: visible;
+    }
+
+    .navBarSectionContentContainer {
+        margin-left: var(--layout-spacing-xs);
+        width: calc(100% - var(--layout-spacing-xs));
+    }
+
     .nameWrapper {
         display: flex;
         align-items: center;
@@ -15,6 +27,13 @@
         }
     }
 
+    .navbarSectiondropdown {
+        position: absolute;
+        right: 28px;
+        bottom: 3px;
+        z-index: 10;
+    }
+
     .editSectionIcon {
         border: none;
         color: var(--navigation-text-item) !important;
@@ -24,7 +43,6 @@
         opacity: 0;
         transition: opacity 0.3s ease-in;
         width: 26px;
-        margin-right: 6px;
 
         &:hover,
         &:focus {
@@ -67,6 +85,7 @@
         min-width: unset;
         width: fit-content;
         width: -moz-fit-content;
+        z-index: 10;
     }
 
     .isDragged {

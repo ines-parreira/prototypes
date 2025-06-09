@@ -13,7 +13,7 @@ import { setViewActive } from 'state/views/actions'
 import { assumeMock } from 'utils/testing'
 import { userEvent } from 'utils/testing/userEvent'
 
-import { RecentChatsV2 } from '../v2/RecentChatsV2'
+import { RecentChats } from '../RecentChats'
 
 jest.mock(
     'common/segment',
@@ -67,7 +67,7 @@ describe('RecentChats', () => {
     })
 
     it('should log an event and dispatch some actions on click', () => {
-        render(<RecentChatsV2 />, { wrapper })
+        render(<RecentChats />, { wrapper })
         userEvent.click(screen.getByText('John Doe'))
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.RecentActivityClicked,

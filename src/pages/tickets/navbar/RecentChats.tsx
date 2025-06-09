@@ -17,7 +17,7 @@ import { activeViewIdSet } from 'state/ui/views/actions'
 import { setViewActive } from 'state/views/actions'
 import { isCurrentlyOnTicket } from 'utils'
 
-import css from './RecentChatsV2.less'
+import css from './RecentChats.less'
 
 type ItemProps = {
     recentTicket: Map<any, any>
@@ -63,7 +63,7 @@ const RecentChatsItem = ({ recentTicket, position }: ItemProps) => {
     )
 }
 
-export const RecentChatsV2 = () => {
+export const RecentChats = () => {
     const location = useLocation()
     const previousPathname = usePrevious(location.pathname)
     const chats = useAppSelector((state) => state.chats)

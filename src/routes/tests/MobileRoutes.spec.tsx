@@ -7,7 +7,7 @@ import App from 'pages/App'
 import TicketDetailContainer from 'pages/tickets/detail/TicketDetailContainer'
 import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
 import TicketList from 'pages/tickets/list/TicketList'
-import { TicketNavBarRevampWrapper } from 'pages/tickets/navbar/v2/TicketNavBarRevampWrapper'
+import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
 
 import { MobileRoutes } from '../MobileRoutes'
 
@@ -15,30 +15,26 @@ jest.mock('pages/App', () => jest.fn(() => <div>App</div>))
 
 describe('MobileRoutes', () => {
     it.each([
-        [
-            '/app',
-            '/app',
-            { content: TicketList, navbar: TicketNavBarRevampWrapper },
-        ],
+        ['/app', '/app', { content: TicketList, navbar: TicketNavbar }],
         [
             '/app/tickets',
             '/app/tickets',
-            { content: TicketList, navbar: TicketNavBarRevampWrapper },
+            { content: TicketList, navbar: TicketNavbar },
         ],
         [
             '/app/tickets/new/:visibility?',
             '/app/tickets/new',
-            { content: TicketList, navbar: TicketNavBarRevampWrapper },
+            { content: TicketList, navbar: TicketNavbar },
         ],
         [
             '/app/tickets/search',
             '/app/tickets/search',
-            { content: TicketList, navbar: TicketNavBarRevampWrapper },
+            { content: TicketList, navbar: TicketNavbar },
         ],
         [
             '/app/tickets/:viewId/:viewSlug?',
             '/app/tickets/123456',
-            { content: TicketList, navbar: TicketNavBarRevampWrapper },
+            { content: TicketList, navbar: TicketNavbar },
         ],
 
         [
@@ -46,7 +42,7 @@ describe('MobileRoutes', () => {
             '/app/ticket/123456',
             {
                 content: TicketDetailContainer,
-                navbar: TicketNavBarRevampWrapper,
+                navbar: TicketNavbar,
                 infobar: TicketInfobarContainer,
                 infobarOnMobile: true,
             },
@@ -54,14 +50,14 @@ describe('MobileRoutes', () => {
         [
             '/app/views/:viewId?',
             '/app/views',
-            { content: TicketList, navbar: TicketNavBarRevampWrapper },
+            { content: TicketList, navbar: TicketNavbar },
         ],
         [
             '/app/views/:viewId/:ticketId',
             '/app/views/123/456',
             {
                 content: TicketDetailContainer,
-                navbar: TicketNavBarRevampWrapper,
+                navbar: TicketNavbar,
                 infobar: TicketInfobarContainer,
                 infobarOnMobile: true,
             },

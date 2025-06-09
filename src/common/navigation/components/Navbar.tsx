@@ -26,7 +26,6 @@ type Props = {
     headerContent?: ReactNode
     navbarContentRef?: RefObject<HTMLDivElement>
     splitTicketViewToggle?: ReactNode
-    navbarRevampId?: string
 }
 
 export default function Navbar({
@@ -37,7 +36,6 @@ export default function Navbar({
     navbarContentRef,
     splitTicketViewToggle,
     title,
-    navbarRevampId,
 }: Props) {
     const isOpenedPanel = useAppSelector(getIsOpenedPanel('navbar'))
 
@@ -66,7 +64,6 @@ export default function Navbar({
             ref={navbarRef}
             className={cn(css.sidebar, { [css.isResizing]: isResizing })}
             {...(enableResize && { style: { width: `${width}px` } })}
-            data-revamp-id={navbarRevampId}
         >
             <div
                 className={cn(css['nav-primary'], {

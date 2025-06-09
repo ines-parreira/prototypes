@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 
 import classnames from 'classnames'
 import { DropTargetMonitor, useDrag } from 'react-dnd'
@@ -10,26 +10,25 @@ import {
     DropdownToggle,
 } from 'reactstrap'
 
+import { Navigation } from 'components/Navigation/Navigation'
 import { UserRole } from 'config/types/user'
 import { ViewVisibility } from 'models/view/types'
 import navbarSectionCss from 'pages/common/components/navbar/NavbarSectionBlock.less'
+import TicketNavbarDropTarget, {
+    TicketNavbarDragObject,
+    TicketNavbarDropDirection,
+} from 'pages/tickets/navbar/TicketNavbarDropTarget'
 import { RootState } from 'state/types'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 import { hasRole } from 'utils'
 import { addCanduLinkForValidViewOrSection } from 'utils/views'
 
 import { TicketNavbarSectionElement } from './TicketNavbarContent'
-import TicketNavbarDropTarget, {
-    TicketNavbarDragObject,
-    TicketNavbarDropDirection,
-} from './TicketNavbarDropTarget'
-import TicketNavbarView from './TicketNavbarView'
+import { TicketNavbarView } from './TicketNavbarView'
 
 import css from './TicketNavbarSection.less'
 
 type OwnProps = {
-    isExpanded: boolean
-    onSectionClick: (sectionId: number) => void
     onSectionDeleteClick?: (sectionId: number) => void
     onSectionRenameClick?: (sectionId: number) => void
     sectionElement: TicketNavbarSectionElement
@@ -38,8 +37,6 @@ type OwnProps = {
 
 export function TicketNavbarSectionContainer({
     currentUser,
-    isExpanded,
-    onSectionClick,
     onSectionDeleteClick,
     onSectionRenameClick,
     sectionElement: { data: section, children },
@@ -74,11 +71,9 @@ export function TicketNavbarSectionContainer({
             sectionId: section.id,
             direction,
         }),
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [],
+        [section.id],
     )
     const canduId = addCanduLinkForValidViewOrSection('section', section)
-    const handleClick = () => onSectionClick(section.id)
 
     drag(nameRef)
     return (
@@ -91,104 +86,101 @@ export function TicketNavbarSectionContainer({
             onDrop={handleDrop}
             shallow={false}
         >
-            <TicketNavbarDropTarget
-                accept={TicketNavbarElementType.View}
-                canDrop={(item) => {
-                    return section.private
-                        ? views[item.id].visibility === ViewVisibility.Private
-                        : views[item.id].visibility !== ViewVisibility.Private
-                }}
-                onDrop={handleDrop}
-                bottomIndicatorClassName={css.viewIntoSectionIndicator}
-            >
-                <div
-                    className={navbarSectionCss.nameWrapper}
-                    id={ticketNavbarSectionId}
-                    ref={nameRef}
+            <Navigation.Section value={section.id}>
+                <TicketNavbarDropTarget
+                    accept={TicketNavbarElementType.View}
+                    bottomIndicatorClassName={css.viewIntoSectionIndicator}
+                    onDrop={handleDrop}
+                    canDrop={(item) =>
+                        section.private
+                            ? views[item.id].visibility ===
+                              ViewVisibility.Private
+                            : views[item.id].visibility !==
+                              ViewVisibility.Private
+                    }
                 >
-                    <div className={css.nameWrapper}>
-                        <div
-                            className={
-                                navbarSectionCss.toggleSectionIconWrapper
-                            }
-                        >
-                            <i
-                                onClick={handleClick}
+                    <div
+                        ref={nameRef}
+                        className={css.navbarSectionTriggerContainer}
+                    >
+                        <Navigation.SectionTrigger id={ticketNavbarSectionId}>
+                            <div
+                                {...(canduId
+                                    ? { 'data-candu-id': canduId }
+                                    : {})}
                                 className={classnames(
-                                    navbarSectionCss.toggleSectionIcon,
-                                    'material-icons',
+                                    navbarSectionCss.name,
+                                    css.name,
                                 )}
+                                title={section.name}
                             >
-                                {isExpanded ? 'arrow_drop_down' : 'arrow_right'}
-                            </i>
-                        </div>
-                        <div
-                            {...(canduId ? { 'data-candu-id': canduId } : {})}
-                            onClick={handleClick}
-                            className={classnames(
-                                navbarSectionCss.name,
-                                css.name,
+                                {!!emoji && (
+                                    <span className={css.emoji}>{emoji}</span>
+                                )}
+                                {section.name}
+                            </div>
+                            {children?.length > 0 && (
+                                <Navigation.SectionIndicator />
                             )}
-                            title={section.name}
-                        >
-                            {!!emoji && (
-                                <span className={css.emoji}>{emoji}</span>
-                            )}
-                            {section.name}
-                        </div>
+                        </Navigation.SectionTrigger>
+                        {(onSectionDeleteClick || onSectionRenameClick) && (
+                            <Dropdown
+                                isOpen={isOpen}
+                                toggle={() => setOpen(!isOpen)}
+                                className={css.navbarSectiondropdown}
+                            >
+                                <DropdownToggle
+                                    className={classnames(
+                                        css.editSectionIcon,
+                                        'btn-transparent',
+                                    )}
+                                    color="secondary"
+                                    type="button"
+                                >
+                                    <i className="material-icons">...</i>
+                                </DropdownToggle>
+                                <DropdownMenu className={css.menu} right>
+                                    {onSectionRenameClick && (
+                                        <DropdownItem
+                                            className={css.action}
+                                            onClick={() =>
+                                                onSectionRenameClick(section.id)
+                                            }
+                                        >
+                                            Rename
+                                        </DropdownItem>
+                                    )}
+                                    {onSectionDeleteClick && (
+                                        <DropdownItem
+                                            className={classnames(
+                                                css.action,
+                                                css.red,
+                                            )}
+                                            onClick={() =>
+                                                onSectionDeleteClick(section.id)
+                                            }
+                                        >
+                                            Delete
+                                        </DropdownItem>
+                                    )}
+                                </DropdownMenu>
+                            </Dropdown>
+                        )}
                     </div>
-                    {(onSectionDeleteClick || onSectionRenameClick) && (
-                        <Dropdown
-                            isOpen={isOpen}
-                            toggle={() => setOpen(!isOpen)}
-                        >
-                            <DropdownToggle
-                                className={classnames(
-                                    css.editSectionIcon,
-                                    'btn-transparent',
-                                )}
-                                color="secondary"
-                                type="button"
-                            >
-                                <i className="material-icons">...</i>
-                            </DropdownToggle>
-                            <DropdownMenu className={css.menu} right>
-                                {onSectionRenameClick && (
-                                    <DropdownItem
-                                        className={css.action}
-                                        onClick={() =>
-                                            onSectionRenameClick(section.id)
-                                        }
-                                    >
-                                        Rename
-                                    </DropdownItem>
-                                )}
-                                {onSectionDeleteClick && (
-                                    <DropdownItem
-                                        className={classnames(
-                                            css.action,
-                                            css.red,
-                                        )}
-                                        onClick={() =>
-                                            onSectionDeleteClick(section.id)
-                                        }
-                                    >
-                                        Delete
-                                    </DropdownItem>
-                                )}
-                            </DropdownMenu>
-                        </Dropdown>
-                    )}
-                </div>
-            </TicketNavbarDropTarget>
-            {isExpanded &&
-                children.map((view) => (
-                    <TicketNavbarView
-                        key={view.id}
-                        view={view}
-                        viewCount={viewsCount[view.id]}
-                    />
-                ))}
+                </TicketNavbarDropTarget>
+                <Navigation.SectionContent
+                    className={css.navBarSectionContentContainer}
+                >
+                    {children.map((view) => (
+                        <TicketNavbarView
+                            key={view.id}
+                            view={view}
+                            viewCount={viewsCount[view.id]}
+                            isNested={true}
+                        />
+                    ))}
+                </Navigation.SectionContent>
+            </Navigation.Section>
         </TicketNavbarDropTarget>
     )
 }

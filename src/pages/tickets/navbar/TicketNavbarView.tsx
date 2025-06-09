@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react'
+import { useMemo, useRef } from 'react'
 
 import classnames from 'classnames'
 import { useDrag } from 'react-dnd'
@@ -7,21 +7,27 @@ import navbarCss from 'assets/css/navbar.less'
 import { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import { View, ViewVisibility } from 'models/view/types'
+import TicketNavbarDropTarget from 'pages/tickets/navbar/TicketNavbarDropTarget'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 import { hasRole } from 'utils'
 
-import TicketNavbarDropTarget from './TicketNavbarDropTarget'
 import TicketNavbarViewLink from './TicketNavbarViewLink'
 
 import css from './TicketNavbarView.less'
 
 type Props = {
     className?: string
+    isNested?: boolean
     view: View
     viewCount: number | undefined
 }
 
-const TicketNavbarView = ({ className, view, viewCount }: Props) => {
+export const TicketNavbarView = ({
+    className,
+    isNested,
+    view,
+    viewCount,
+}: Props) => {
     const wrapperRef = useRef<HTMLDivElement>(null)
     const currentUser = useAppSelector((state) => state.currentUser)
     const sections = useAppSelector((state) => state.entities.sections)
@@ -76,27 +82,22 @@ const TicketNavbarView = ({ className, view, viewCount }: Props) => {
                 viewId: view.id,
                 direction,
             })}
-            topIndicatorClassName={
-                view.section_id != null ? css.nestedViewIndicator : undefined
-            }
-            bottomIndicatorClassName={
-                view.section_id != null ? css.nestedViewIndicator : undefined
-            }
+            {...(view.section_id != null
+                ? {
+                      topIndicatorClassName: css.nestedViewIndicator,
+                      bottomIndicatorClassName: css.nestedViewIndicator,
+                  }
+                : {})}
         >
-            {() => {
-                return (
-                    <TicketNavbarViewLink
-                        ref={wrapperRef}
-                        view={view}
-                        viewCount={viewCount}
-                        className={classnames({
-                            [navbarCss.isDragged]: isDragging,
-                        })}
-                    />
-                )
-            }}
+            <TicketNavbarViewLink
+                ref={wrapperRef}
+                view={view}
+                isNested={isNested}
+                viewCount={viewCount}
+                className={classnames({
+                    [navbarCss.isDragged]: isDragging,
+                })}
+            />
         </TicketNavbarDropTarget>
     )
 }
-
-export default TicketNavbarView

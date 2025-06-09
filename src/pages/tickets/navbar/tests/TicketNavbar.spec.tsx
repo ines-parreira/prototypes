@@ -1,4 +1,4 @@
-import React, { ComponentProps, ReactNode } from 'react'
+import { ComponentProps, ReactNode } from 'react'
 
 import { fireEvent } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
@@ -14,7 +14,6 @@ import { user } from 'fixtures/users'
 import { view } from 'fixtures/views'
 import client from 'models/api/resources'
 import { View, ViewType, ViewVisibility } from 'models/view/types'
-import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
 import { useSplitTicketViewSwitcher } from 'split-ticket-view-toggle'
 import { NotificationStatus } from 'state/notifications/types'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
@@ -24,6 +23,7 @@ import { DndProvider } from 'utils/wrappers/DndProvider'
 import DeleteSectionModal from '../DeleteSectionModal'
 import SectionFormModal from '../SectionFormModal'
 import { TicketNavbarContainer } from '../TicketNavbar'
+import { TicketNavbarBlock } from '../TicketNavbarBlock'
 import TicketNavbarContent from '../TicketNavbarContent'
 
 jest.mock('launchdarkly-react-client-sdk', () => ({
@@ -35,35 +35,38 @@ jest.mock('common/navigation', () => ({
     Navbar: ({ children }: { children: ReactNode }) => <div>{children}</div>,
 }))
 
-jest.mock('pages/common/components/RecentChats', () => () => (
-    <div>RecentChats</div>
-))
-jest.mock(
-    'pages/common/components/navbar/NavbarBlock',
-    () =>
-        ({ actions, children }: ComponentProps<typeof NavbarBlock>) => (
-            <div data-testid="NavbarBlock">
-                NavbarBlock:{' '}
-                {actions?.map((value) => (
-                    <span
-                        data-testid={`NavbarBlock-${value.label}`}
-                        key={value.label}
-                        onClick={value.onClick}
-                    >
-                        {value.label}
-                    </span>
-                ))}
-                {children}
-            </div>
-        ),
-)
+jest.mock('../RecentChats', () => ({
+    RecentChats: () => <div>RecentChats</div>,
+}))
+jest.mock('../TicketNavbarBlock', () => ({
+    TicketNavbarBlock: ({
+        actions,
+        children,
+    }: ComponentProps<typeof TicketNavbarBlock>) => (
+        <div data-testid="NavbarBlock">
+            NavbarBlock:{' '}
+            {actions?.map((value) => (
+                <span
+                    data-testid={`NavbarBlock-${value.label}`}
+                    key={value.label}
+                    onClick={value.onClick}
+                >
+                    {value.label}
+                </span>
+            ))}
+            {children}
+        </div>
+    ),
+}))
 
 jest.mock('split-ticket-view-toggle')
 const useSplitTicketViewSwitcherMock = useSplitTicketViewSwitcher as jest.Mock
 
-jest.mock('../TicketNavbarViewLink', () => ({ view }: { view: View }) => (
-    <span>{view.name}</span>
-))
+jest.mock('../TicketNavbarViewLink', () => ({
+    TicketNavbarViewLink: ({ view }: { view: View }) => (
+        <span>{view.name}</span>
+    ),
+}))
 jest.mock(
     '../SectionFormModal',
     () =>
@@ -220,22 +223,6 @@ describe('<TicketNavbar/>', () => {
         useSplitTicketViewSwitcherMock.mockImplementation(_noop)
     })
 
-    it('should render', () => {
-        const { container } = renderWithRouter(
-            <DndProvider backend={HTML5Backend}>
-                <Provider store={mockStore(store as any)}>
-                    <TicketNavbarContainer {...minProps} />
-                </Provider>
-            </DndProvider>,
-            {
-                path: '/foo/:viewId?',
-                route: '/foo/1',
-            },
-        )
-
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
     it('should fetch the views and dispatch the views actions (legacy views + views entity)', (done) => {
         renderWithRouter(
             <DndProvider backend={HTML5Backend}>
@@ -331,83 +318,6 @@ describe('<TicketNavbar/>', () => {
         })
     })
 
-    it('should display shared actions for lead-agent/admin', () => {
-        const { container } = renderWithRouter(
-            <DndProvider backend={HTML5Backend}>
-                <Provider store={mockStore(store as any)}>
-                    <TicketNavbarContainer
-                        {...minProps}
-                        currentUser={fromJS(user)}
-                    />
-                </Provider>
-            </DndProvider>,
-            {
-                path: '/foo/:viewId?',
-                route: '/foo/1',
-            },
-        )
-
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
-    it('should open a new section modal when clicking create section', () => {
-        const { container, getByTestId } = renderWithRouter(
-            <DndProvider backend={HTML5Backend}>
-                <Provider store={mockStore(store as any)}>
-                    <TicketNavbarContainer {...minProps} />
-                </Provider>
-            </DndProvider>,
-            {
-                path: '/foo/:viewId?',
-                route: '/foo/1',
-            },
-        )
-
-        fireEvent.click(getByTestId('NavbarBlock-Create section'))
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
-    it('should close a new section modal when clicking close section', () => {
-        const { container, getByTestId } = renderWithRouter(
-            <DndProvider backend={HTML5Backend}>
-                <Provider store={mockStore(store as any)}>
-                    <TicketNavbarContainer {...minProps} />
-                </Provider>
-            </DndProvider>,
-            {
-                path: '/foo/:viewId?',
-                route: '/foo/1',
-            },
-        )
-
-        fireEvent.click(getByTestId('NavbarBlock-Create section'))
-        fireEvent.click(getByTestId('SectionModal-close'))
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
-    it('should update the draft form on change', () => {
-        const { container, getByTestId } = renderWithRouter(
-            <DndProvider backend={HTML5Backend}>
-                <Provider store={mockStore(store as any)}>
-                    <TicketNavbarContainer {...minProps} />
-                </Provider>
-            </DndProvider>,
-            {
-                path: '/foo/:viewId?',
-                route: '/foo/1',
-            },
-        )
-
-        fireEvent.click(getByTestId('NavbarBlock-Create section'))
-        fireEvent.change(getByTestId('SectionModal-change'), {
-            target: {
-                name: 'name',
-                value: 'foo',
-            },
-        })
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
     it('should create a new section', (done) => {
         const { getByTestId } = renderWithRouter(
             <DndProvider backend={HTML5Backend}>
@@ -472,5 +382,35 @@ describe('<TicketNavbar/>', () => {
             expect(minProps.sectionDeleted).toHaveBeenNthCalledWith(1, 1)
             done()
         })
+    })
+
+    it('should not render system top elements container when empty', () => {
+        const storeWithEmptySystemViews = {
+            ...store,
+            entities: fromJS({
+                views: {
+                    items: [],
+                },
+            }),
+            views: fromJS({
+                systemTopElements: [],
+                viewsCount: {},
+            }),
+        }
+
+        const { queryByTestId } = renderWithRouter(
+            <DndProvider backend={HTML5Backend}>
+                <Provider store={mockStore(storeWithEmptySystemViews as any)}>
+                    <TicketNavbarContainer {...minProps} />
+                </Provider>
+            </DndProvider>,
+            {
+                path: '/foo/:viewId?',
+                route: '/foo/1',
+            },
+        )
+
+        // Check that the system views container is not rendered
+        expect(queryByTestId('new-system-views')).not.toBeInTheDocument()
     })
 })

@@ -11,9 +11,9 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
 
-import css from './CreateTicketNavbarButtonV2.less'
+import css from './CreateTicketNavbarButton.less'
 
-export function CreateTicketNavbarButtonV2() {
+export function CreateTicketNavbarButton() {
     const { pathname } = useLocation()
     const isDisabled = pathname.includes('/ticket/new')
     const dropdownTargetRef = useRef<HTMLButtonElement>(null)

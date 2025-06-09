@@ -1,13 +1,16 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 
-import { produce } from 'immer'
 import { DropTargetMonitor } from 'react-dnd'
 import { connect, ConnectedProps } from 'react-redux'
 
 import { UserViewsOrderingSettingData } from 'config/types/user'
-import useLocalStorage from 'hooks/useLocalStorage'
 import { Section } from 'models/section/types'
 import { View, ViewVisibility } from 'models/view/types'
+import TicketNavbarDropTarget, {
+    TicketNavbarDragObject,
+    TicketNavbarDropDirection,
+    TicketNavbarDropResult,
+} from 'pages/tickets/navbar/TicketNavbarDropTarget'
 import { AccountViewsOrderingSettingData } from 'state/currentAccount/types'
 import { SectionsState } from 'state/entities/sections/types'
 import { viewUpdated } from 'state/entities/views/actions'
@@ -20,13 +23,8 @@ import {
 } from 'state/ui/ticketNavbar/actions'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 
-import TicketNavbarDropTarget, {
-    TicketNavbarDragObject,
-    TicketNavbarDropDirection,
-    TicketNavbarDropResult,
-} from './TicketNavbarDropTarget'
 import TicketNavbarSection from './TicketNavbarSection'
-import TicketNavbarView from './TicketNavbarView'
+import { TicketNavbarView } from './TicketNavbarView'
 
 import css from './TicketNavbarContent.less'
 
@@ -72,10 +70,6 @@ export function TicketNavbarContentContainer({
     viewUpdated,
     viewsCount,
 }: OwnProps & ConnectedProps<typeof connector>) {
-    const [collapsedSections, setCollapsedSections] = useLocalStorage<number[]>(
-        'collapsed-view-sections',
-        [],
-    )
     const handleDrop = useCallback(
         (
             item: TicketNavbarDragObject,
@@ -149,17 +143,6 @@ export function TicketNavbarContentContainer({
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [views, sections, isPrivate, viewUpdated, notify, elements],
     )
-    const handleClickOnSection = (sectionId: number) => {
-        if (collapsedSections) {
-            setCollapsedSections(
-                collapsedSections.includes(sectionId)
-                    ? produce(collapsedSections, (sections) => {
-                          sections.splice(sections.indexOf(sectionId), 1)
-                      })
-                    : [...collapsedSections, sectionId],
-            )
-        }
-    }
 
     return (
         <TicketNavbarDropTarget
@@ -186,17 +169,13 @@ export function TicketNavbarContentContainer({
                 element.type === TicketNavbarElementType.View ? (
                     <TicketNavbarView
                         key={`view-${element.data.id}`}
+                        isNested={true}
                         view={element.data}
                         viewCount={viewsCount[element.data.id]}
                     />
                 ) : (
                     <TicketNavbarSection
                         key={`section-${element.data.id}`}
-                        isExpanded={
-                            !!collapsedSections &&
-                            !collapsedSections.includes(element.data.id)
-                        }
-                        onSectionClick={handleClickOnSection}
                         onSectionDeleteClick={onSectionDeleteClick}
                         onSectionRenameClick={onSectionRenameClick}
                         sectionElement={element}

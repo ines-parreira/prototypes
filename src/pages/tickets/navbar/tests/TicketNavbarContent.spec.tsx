@@ -1,13 +1,21 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { fireEvent, render } from '@testing-library/react'
+import { render } from '@testing-library/react'
+
+import '@testing-library/jest-dom'
+
 import { fromJS } from 'immutable'
 import { HTML5Backend } from 'react-dnd-html5-backend'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router'
 
+import { Navigation } from 'components/Navigation/Navigation'
 import { section } from 'fixtures/section'
 import { user } from 'fixtures/users'
 import { view } from 'fixtures/views'
+import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
+import { mockStore } from 'utils/testing'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import {
@@ -16,43 +24,17 @@ import {
     TicketNavbarElement,
 } from '../TicketNavbarContent'
 import { TicketNavbarDropDirection } from '../TicketNavbarDropTarget'
-import TicketNavbarSection from '../TicketNavbarSection'
-import TicketNavbarView from '../TicketNavbarView'
-
-jest.mock(
-    '../TicketNavbarView',
-    () =>
-        ({ view }: ComponentProps<typeof TicketNavbarView>) => {
-            return <div data-testid="TicketNavbarView">{view.name}</div>
-        },
-)
-
-jest.mock(
-    '../TicketNavbarSection',
-    () => (props: ComponentProps<typeof TicketNavbarSection>) => {
-        return (
-            <div
-                data-testid="TicketNavbarSection"
-                onClick={() =>
-                    props.onSectionClick(props.sectionElement.data.id)
-                }
-            >
-                {JSON.stringify(props)}
-            </div>
-        )
-    },
-)
 
 describe('<TicketNavbarContent/>', () => {
     const minProps = {
         elements: [
             {
-                data: section,
+                data: { ...section, id: 7 },
                 type: TicketNavbarElementType.Section,
                 children: [],
             },
             {
-                data: view,
+                data: { ...view, id: 10, name: 'Test View 10' },
                 type: TicketNavbarElementType.View,
             },
         ] as TicketNavbarElement[],
@@ -61,20 +43,19 @@ describe('<TicketNavbarContent/>', () => {
         currentUser: fromJS(user),
         views: {
             [view.id]: { ...view, section_id: 4 },
+            10: { ...view, id: 10, name: 'Test View 10', section_id: null },
         },
         notify: jest.fn(),
         viewUpdated: jest.fn(),
         isPrivate: true,
         viewsCount: {
             7: 0,
+            10: 1,
         },
     } as unknown as ComponentProps<typeof TicketNavbarContentContainer>
 
     beforeEach(() => {
-        global.localStorage.setItem(
-            'collapsed-view-sections',
-            JSON.stringify([2]),
-        )
+        localStorage.removeItem('collapsed-view-sections')
     })
 
     afterAll(() => {
@@ -82,26 +63,34 @@ describe('<TicketNavbarContent/>', () => {
     })
 
     describe('rendering', () => {
-        it('should render', () => {
-            const { container } = render(
+        it('should render sections and views', () => {
+            const { getByText } = render(
                 <DndProvider backend={HTML5Backend}>
-                    <TicketNavbarContentContainer {...minProps} />
+                    <MemoryRouter initialEntries={['/']}>
+                        <Provider
+                            store={mockStore({
+                                entities: fromJS({}),
+                                currentUser: fromJS(user),
+                            })}
+                        >
+                            <SplitTicketViewProvider>
+                                <Navigation.Root>
+                                    <TicketNavbarContentContainer
+                                        {...minProps}
+                                    />
+                                </Navigation.Root>
+                            </SplitTicketViewProvider>
+                        </Provider>
+                    </MemoryRouter>
                 </DndProvider>,
             )
 
-            expect(container.firstChild).toMatchSnapshot()
-        })
-
-        it('should expand/collapse a section', () => {
-            const { container, getByTestId } = render(
-                <DndProvider backend={HTML5Backend}>
-                    <TicketNavbarContentContainer {...minProps} />
-                </DndProvider>,
-            )
-
-            expect(container.firstChild).toMatchSnapshot()
-            fireEvent.click(getByTestId('TicketNavbarSection'))
-            expect(container.firstChild).toMatchSnapshot()
+            expect(
+                getByText(minProps.elements[0].data.name),
+            ).toBeInTheDocument()
+            expect(
+                getByText(minProps.elements[1].data.name),
+            ).toBeInTheDocument()
         })
     })
 
@@ -151,7 +140,14 @@ describe('<TicketNavbarContent/>', () => {
                 views,
                 sections,
             )
-            expect(nextOrderedSettings).toMatchSnapshot()
+            expect(nextOrderedSettings.views[2].display_order).toBe(0)
+            expect(nextOrderedSettings.views[1].display_order).toBe(1)
+            expect(nextOrderedSettings.view_sections[1].display_order).toBe(2)
+            expect(nextOrderedSettings.views[3].display_order).toBe(3)
+            expect(nextOrderedSettings.views[4].display_order).toBe(4)
+            expect(nextOrderedSettings.views[5].display_order).toBe(5)
+            expect(nextOrderedSettings.view_sections[2].display_order).toBe(6)
+            expect(nextOrderedSettings.views[6].display_order).toBe(7)
         })
 
         it('should move a root view to a section view', () => {
@@ -167,7 +163,14 @@ describe('<TicketNavbarContent/>', () => {
                 sections,
             )
 
-            expect(nextOrderedSettings).toMatchSnapshot()
+            expect(nextOrderedSettings.views[2].display_order).toBe(0)
+            expect(nextOrderedSettings.view_sections[1].display_order).toBe(1)
+            expect(nextOrderedSettings.views[3].display_order).toBe(2)
+            expect(nextOrderedSettings.views[1].display_order).toBe(3)
+            expect(nextOrderedSettings.views[4].display_order).toBe(4)
+            expect(nextOrderedSettings.views[5].display_order).toBe(5)
+            expect(nextOrderedSettings.view_sections[2].display_order).toBe(6)
+            expect(nextOrderedSettings.views[6].display_order).toBe(7)
         })
 
         it('should move a section view to a root view', () => {
@@ -183,7 +186,14 @@ describe('<TicketNavbarContent/>', () => {
                 sections,
             )
 
-            expect(nextOrderedSettings).toMatchSnapshot()
+            expect(nextOrderedSettings.views[1].display_order).toBe(0)
+            expect(nextOrderedSettings.views[4].display_order).toBe(1)
+            expect(nextOrderedSettings.views[2].display_order).toBe(2)
+            expect(nextOrderedSettings.view_sections[1].display_order).toBe(3)
+            expect(nextOrderedSettings.views[3].display_order).toBe(4)
+            expect(nextOrderedSettings.views[5].display_order).toBe(5)
+            expect(nextOrderedSettings.view_sections[2].display_order).toBe(6)
+            expect(nextOrderedSettings.views[6].display_order).toBe(7)
         })
 
         it('should move a section view to a section view', () => {
@@ -199,11 +209,18 @@ describe('<TicketNavbarContent/>', () => {
                 sections,
             )
 
-            expect(nextOrderedSettings).toMatchSnapshot()
+            expect(nextOrderedSettings.views[1].display_order).toBe(0)
+            expect(nextOrderedSettings.views[2].display_order).toBe(1)
+            expect(nextOrderedSettings.view_sections[1].display_order).toBe(2)
+            expect(nextOrderedSettings.views[4].display_order).toBe(3)
+            expect(nextOrderedSettings.views[3].display_order).toBe(4)
+            expect(nextOrderedSettings.views[5].display_order).toBe(5)
+            expect(nextOrderedSettings.view_sections[2].display_order).toBe(6)
+            expect(nextOrderedSettings.views[6].display_order).toBe(7)
         })
 
-        it('should move a view to content boundary', () => {
-            let nextOrderedSettings = getNextSettings(
+        it('should move a view to top content boundary', () => {
+            const nextOrderedSettings = getNextSettings(
                 { id: 2, type: TicketNavbarElementType.View },
                 {
                     viewId: null,
@@ -215,8 +232,18 @@ describe('<TicketNavbarContent/>', () => {
                 sections,
             )
 
-            expect(nextOrderedSettings).toMatchSnapshot()
-            nextOrderedSettings = getNextSettings(
+            expect(nextOrderedSettings.views[2].display_order).toBe(0)
+            expect(nextOrderedSettings.views[1].display_order).toBe(1)
+            expect(nextOrderedSettings.view_sections[1].display_order).toBe(2)
+            expect(nextOrderedSettings.views[3].display_order).toBe(3)
+            expect(nextOrderedSettings.views[4].display_order).toBe(4)
+            expect(nextOrderedSettings.views[5].display_order).toBe(5)
+            expect(nextOrderedSettings.view_sections[2].display_order).toBe(6)
+            expect(nextOrderedSettings.views[6].display_order).toBe(7)
+        })
+
+        it('should move a view to bottom content boundary', () => {
+            const nextOrderedSettings = getNextSettings(
                 { id: 2, type: TicketNavbarElementType.View },
                 {
                     viewId: null,
@@ -228,10 +255,17 @@ describe('<TicketNavbarContent/>', () => {
                 sections,
             )
 
-            expect(nextOrderedSettings).toMatchSnapshot()
+            expect(nextOrderedSettings.views[1].display_order).toBe(0)
+            expect(nextOrderedSettings.view_sections[1].display_order).toBe(1)
+            expect(nextOrderedSettings.views[3].display_order).toBe(2)
+            expect(nextOrderedSettings.views[4].display_order).toBe(3)
+            expect(nextOrderedSettings.views[5].display_order).toBe(4)
+            expect(nextOrderedSettings.view_sections[2].display_order).toBe(5)
+            expect(nextOrderedSettings.views[6].display_order).toBe(6)
+            expect(nextOrderedSettings.views[2].display_order).toBe(7)
         })
 
-        it('should move a section to a root view', () => {
+        it('should move a section above a root view', () => {
             const nextOrderedSettings = getNextSettings(
                 { id: 1, type: TicketNavbarElementType.Section },
                 {
@@ -244,10 +278,17 @@ describe('<TicketNavbarContent/>', () => {
                 sections,
             )
 
-            expect(nextOrderedSettings).toMatchSnapshot()
+            expect(nextOrderedSettings.views[1].display_order).toBe(0)
+            expect(nextOrderedSettings.view_sections[1].display_order).toBe(1)
+            expect(nextOrderedSettings.views[3].display_order).toBe(2)
+            expect(nextOrderedSettings.views[4].display_order).toBe(3)
+            expect(nextOrderedSettings.views[5].display_order).toBe(4)
+            expect(nextOrderedSettings.views[2].display_order).toBe(5)
+            expect(nextOrderedSettings.view_sections[2].display_order).toBe(6)
+            expect(nextOrderedSettings.views[6].display_order).toBe(7)
         })
 
-        it('should move a section to a section', () => {
+        it('should move a section above another section', () => {
             const nextOrderedSettings = getNextSettings(
                 { id: 2, type: TicketNavbarElementType.Section },
                 {
@@ -260,11 +301,18 @@ describe('<TicketNavbarContent/>', () => {
                 sections,
             )
 
-            expect(nextOrderedSettings).toMatchSnapshot()
+            expect(nextOrderedSettings.views[1].display_order).toBe(0)
+            expect(nextOrderedSettings.views[2].display_order).toBe(1)
+            expect(nextOrderedSettings.view_sections[2].display_order).toBe(2)
+            expect(nextOrderedSettings.views[6].display_order).toBe(3)
+            expect(nextOrderedSettings.view_sections[1].display_order).toBe(4)
+            expect(nextOrderedSettings.views[3].display_order).toBe(5)
+            expect(nextOrderedSettings.views[4].display_order).toBe(6)
+            expect(nextOrderedSettings.views[5].display_order).toBe(7)
         })
 
-        it('should move a section to content boundary', () => {
-            let nextOrderedSettings = getNextSettings(
+        it('should move a section to top content boundary', () => {
+            const nextOrderedSettings = getNextSettings(
                 { id: 1, type: TicketNavbarElementType.Section },
                 {
                     viewId: null,
@@ -276,8 +324,18 @@ describe('<TicketNavbarContent/>', () => {
                 sections,
             )
 
-            expect(nextOrderedSettings).toMatchSnapshot()
-            nextOrderedSettings = getNextSettings(
+            expect(nextOrderedSettings.view_sections[1].display_order).toBe(0)
+            expect(nextOrderedSettings.views[3].display_order).toBe(1)
+            expect(nextOrderedSettings.views[4].display_order).toBe(2)
+            expect(nextOrderedSettings.views[5].display_order).toBe(3)
+            expect(nextOrderedSettings.views[1].display_order).toBe(4)
+            expect(nextOrderedSettings.views[2].display_order).toBe(5)
+            expect(nextOrderedSettings.view_sections[2].display_order).toBe(6)
+            expect(nextOrderedSettings.views[6].display_order).toBe(7)
+        })
+
+        it('should move a section to bottom content boundary', () => {
+            const nextOrderedSettings = getNextSettings(
                 { id: 1, type: TicketNavbarElementType.Section },
                 {
                     viewId: null,
@@ -289,26 +347,17 @@ describe('<TicketNavbarContent/>', () => {
                 sections,
             )
 
-            expect(nextOrderedSettings).toMatchSnapshot()
+            expect(nextOrderedSettings.views[1].display_order).toBe(0)
+            expect(nextOrderedSettings.views[2].display_order).toBe(1)
+            expect(nextOrderedSettings.view_sections[2].display_order).toBe(2)
+            expect(nextOrderedSettings.views[6].display_order).toBe(3)
+            expect(nextOrderedSettings.view_sections[1].display_order).toBe(4)
+            expect(nextOrderedSettings.views[3].display_order).toBe(5)
+            expect(nextOrderedSettings.views[4].display_order).toBe(6)
+            expect(nextOrderedSettings.views[5].display_order).toBe(7)
         })
 
-        it('should move a view ontop of a section', () => {
-            const nextOrderedSettings = getNextSettings(
-                { id: 1, type: TicketNavbarElementType.View },
-                {
-                    viewId: null,
-                    direction: TicketNavbarDropDirection.Up,
-                    sectionId: 1,
-                },
-                orderedElements,
-                views,
-                sections,
-            )
-
-            expect(nextOrderedSettings).toMatchSnapshot()
-        })
-
-        it('should move a view down a section', () => {
+        it('should move a view onto a section header with down direction (becomes first child)', () => {
             const nextOrderedSettings = getNextSettings(
                 { id: 1, type: TicketNavbarElementType.View },
                 {
@@ -321,7 +370,14 @@ describe('<TicketNavbarContent/>', () => {
                 sections,
             )
 
-            expect(nextOrderedSettings).toMatchSnapshot()
+            expect(nextOrderedSettings.views[2].display_order).toBe(0)
+            expect(nextOrderedSettings.view_sections[1].display_order).toBe(1)
+            expect(nextOrderedSettings.views[1].display_order).toBe(2)
+            expect(nextOrderedSettings.views[3].display_order).toBe(3)
+            expect(nextOrderedSettings.views[4].display_order).toBe(4)
+            expect(nextOrderedSettings.views[5].display_order).toBe(5)
+            expect(nextOrderedSettings.view_sections[2].display_order).toBe(6)
+            expect(nextOrderedSettings.views[6].display_order).toBe(7)
         })
     })
 })

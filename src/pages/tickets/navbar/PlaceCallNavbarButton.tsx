@@ -18,11 +18,11 @@ import useMicrophonePermissions from 'pages/integrations/integration/components/
 import { isDesktopDevice, isDeviceReady } from 'utils/device'
 import { isMacOs } from 'utils/platform'
 
-import css from './PlaceCallNavbarButtonV2.less'
+import css from './PlaceCallNavbarButton.less'
 
 const BUTTON_ID = 'open-dialer-button'
 
-export function PlaceCallNavbarButtonV2() {
+export function PlaceCallNavbarButton() {
     const [isDeviceVisible, setIsDeviceVisible] = React.useState(false)
     const { device } = useVoiceDevice()
     const hasPhone = useHasPhone()

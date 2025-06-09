@@ -5,8 +5,8 @@ import type { ViewCategoryNavbar } from 'models/view/types'
 import { ViewVisibility } from 'models/view/types'
 import { renderHook } from 'utils/testing/renderHook'
 
-import { ViewCategories } from '../v2/constants'
-import { useStoredNavigationSections } from '../v2/useStoredNavigationSections'
+import { ViewCategories } from '../constants'
+import { useStoredNavigationSections } from '../useStoredNavigationSections'
 
 // Mock useLocalStorage
 const mockStorage: Record<string, any> = {}
