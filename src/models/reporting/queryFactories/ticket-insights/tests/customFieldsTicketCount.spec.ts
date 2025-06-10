@@ -74,7 +74,6 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 dimensions: [BREAKDOWN_FIELD],
                 timezone,
                 segments: [],
-                limit: TICKET_FIELDS_LIST_LIMIT,
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
                     ...statsFiltersToReportingFilters(
@@ -115,7 +114,6 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 dimensions: [BREAKDOWN_FIELD],
                 timezone,
                 segments: [],
-                limit: TICKET_FIELDS_LIST_LIMIT,
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
                     ...statsFiltersToReportingFilters(
@@ -158,7 +156,6 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 dimensions: [BREAKDOWN_FIELD],
                 timezone,
                 segments: [],
-                limit: TICKET_FIELDS_LIST_LIMIT,
                 filters: [
                     {
                         member: TicketMember.IsTrashed,
@@ -217,7 +214,6 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 dimensions: [BREAKDOWN_FIELD],
                 timezone,
                 segments: [],
-                limit: TICKET_FIELDS_LIST_LIMIT,
                 filters: [
                     {
                         member: TicketMember.IsTrashed,
@@ -1189,6 +1185,7 @@ describe('customFieldsTicketCountWithSortQueryFactory', () => {
                 OrderDirection.Desc,
             ],
         ])
+        expect(descendingQuery.limit).toBe(TICKET_FIELDS_LIST_LIMIT)
     })
 
     it('should handle multiple additional filters', () => {

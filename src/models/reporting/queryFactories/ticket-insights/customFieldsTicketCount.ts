@@ -89,7 +89,6 @@ export const customFieldsTicketCountQueryFactory = (
         },
         ...(additionalFilters ? additionalFilters : []),
     ],
-    limit: TICKET_FIELDS_LIST_LIMIT,
     ...(sorting
         ? {
               order: [
@@ -120,6 +119,7 @@ export const customFieldsTicketCountWithSortQueryFactory = (
         additionalFilters,
     ),
     order: [[sortingValue, sortingDirection]],
+    limit: TICKET_FIELDS_LIST_LIMIT,
 })
 
 export const customFieldsTicketCountOnCreatedDatetimeQueryFactory = (
