@@ -84,6 +84,7 @@ export function MessageAvatar({
             className={cn(css.avatar, {
                 [css.ai]: isAI,
                 [css.failed]: isFailed,
+                [css.image]: imageUrl,
             })}
         />
     )
