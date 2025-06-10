@@ -11,11 +11,8 @@ export function TicketBody({ elements }: Props) {
     return (
         <Virtuoso<TicketElementType>
             data={elements}
-            itemContent={(index: number, element: TicketElementType) => (
-                <TicketElement
-                    key={`${index}-${element.datetime}`}
-                    element={element}
-                />
+            itemContent={(__index: number, element: TicketElementType) => (
+                <TicketElement element={element} />
             )}
         />
     )

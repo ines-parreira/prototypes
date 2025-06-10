@@ -9,10 +9,6 @@ export function aiInternalMessageTransformer(
             return true
         }
 
-        if (!element.data.public) {
-            return false
-        }
-
-        return true
+        return Boolean(element.data.public)
     })
 }
