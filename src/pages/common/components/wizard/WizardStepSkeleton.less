@@ -13,16 +13,18 @@
 
     .content {
         flex-grow: 1;
-        padding: 0 @layout-spacing-m @layout-spacing-m @layout-spacing-m;
+        padding: 0 var(--layout-spacing-m) var(--layout-spacing-m)
+            var(--layout-spacing-m);
     }
 
     .preview {
         flex-grow: 1;
         background: var(--neutral-grey-1);
-        padding: @layout-spacing-m @layout-spacing-m 0 @layout-spacing-m;
+        padding: var(--layout-spacing-m) var(--layout-spacing-m) 0
+            var(--layout-spacing-m);
 
         @media (min-width: 1280px) {
-            padding: @layout-spacing-m 46px 0 46px;
+            padding: var(--layout-spacing-m) 46px 0 46px;
         }
     }
 
@@ -38,8 +40,8 @@
     .wizardProgressHeader {
         top: 0;
         position: sticky;
-        padding: @layout-spacing-m 0;
-        margin-bottom: @layout-spacing-m;
+        padding: var(--layout-spacing-m) 0;
+        margin-bottom: var(--layout-spacing-m);
         z-index: 2;
         background: var(--neutral-grey-0);
 
@@ -81,7 +83,7 @@
         position: relative;
         z-index: 3;
         background: var(--neutral-grey-0);
-        padding: @layout-spacing-m;
+        padding: var(--layout-spacing-m);
     }
 
     .previewPlaceholder {

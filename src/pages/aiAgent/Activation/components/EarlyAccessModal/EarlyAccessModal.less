@@ -14,8 +14,8 @@
     }
 
     .modalContent {
-        gap: @layout-spacing-m;
-        padding: @layout-spacing-m;
+        gap: var(--layout-spacing-m);
+        padding: var(--layout-spacing-m);
         border-radius: 12px;
     }
 
@@ -53,7 +53,7 @@
         background: none;
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-m;
+        gap: var(--layout-spacing-m);
 
         .legalCard {
             background-color: var(--neutral-grey-1);
@@ -82,7 +82,7 @@
     }
 
     .card {
-        padding: @layout-spacing-m;
+        padding: var(--layout-spacing-m);
         cursor: initial;
     }
 
@@ -187,7 +187,7 @@
 
             ul {
                 font-size: 14px;
-                margin-left: @layout-spacing-m;
+                margin-left: var(--layout-spacing-m);
                 margin-bottom: 0;
                 padding: 0;
 
@@ -205,6 +205,6 @@
     }
 
     .alert {
-        margin-bottom: @layout-spacing-m;
+        margin-bottom: var(--layout-spacing-m);
     }
 }

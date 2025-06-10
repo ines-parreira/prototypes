@@ -5,12 +5,12 @@
 :local {
     .httpRequestContainer {
         .separator {
-            margin-block: @layout-spacing-m;
+            margin-block: var(--layout-spacing-m);
             height: 2px;
         }
         .codeBlock {
             border-radius: 4px;
-            min-height: @layout-spacing-m;
+            min-height: var(--layout-spacing-m);
             border: 1px solid var(--Neutral-Grey_3, #ddd);
             background: var(--Neutral-Grey_1, #f9f9f9);
             padding: calc(var(--layout-spacing-xs) - 2px)
@@ -29,7 +29,7 @@
             ol {
                 list-style-type: disc;
                 margin: 0;
-                padding-inline-start: @layout-spacing-m;
+                padding-inline-start: var(--layout-spacing-m);
             }
             .body {
                 display: flex;

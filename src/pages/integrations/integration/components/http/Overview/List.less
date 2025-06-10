@@ -18,7 +18,7 @@
     .toggle {
         display: flex;
         align-items: center;
-        padding-left: @layout-spacing-m;
+        padding-left: var(--layout-spacing-m);
     }
 
     .link {
@@ -26,7 +26,7 @@
         justify-content: space-between;
         align-items: center;
         flex: 1 0 auto;
-        padding: var(--layout-spacing-s) @layout-spacing-m
+        padding: var(--layout-spacing-s) var(--layout-spacing-m)
             var(--layout-spacing-s) var(--layout-spacing-s); // ~16px ~24px
         color: var(--neutral-grey-6);
         font-weight: 600;
@@ -39,6 +39,6 @@
 
     .wrapper {
         display: flex;
-        margin: @layout-spacing-m; // ~24px
+        margin: var(--layout-spacing-m); // ~24px
     }
 }

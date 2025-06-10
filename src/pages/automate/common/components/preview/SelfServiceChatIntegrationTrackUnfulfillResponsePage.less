@@ -5,7 +5,7 @@
 :local {
     .container {
         .body-regular();
-        padding: @layout-spacing-m 0;
+        padding: var(--layout-spacing-m) 0;
         overflow: auto;
         pointer-events: initial;
         color: var(--neutral-grey-6);
@@ -35,7 +35,7 @@
 
     .separator {
         border-top: 1px solid var(--neutral-grey-3);
-        margin: @layout-spacing-m 0;
+        margin: var(--layout-spacing-m) 0;
     }
 
     .title {
@@ -80,7 +80,7 @@
         flex-direction: column;
         padding: 0 var(--layout-spacing-s);
         gap: var(--layout-spacing-s);
-        margin-top: @layout-spacing-m;
+        margin-top: var(--layout-spacing-m);
     }
 
     .timelineItems {

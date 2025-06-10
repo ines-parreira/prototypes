@@ -4,7 +4,7 @@
 :local {
     .ticketPreview {
         .body-regular();
-        padding: @layout-spacing-m;
+        padding: var(--layout-spacing-m);
         background-color: var(--neutral-grey-0);
         border-radius: 0 0 4px 4px;
         box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
@@ -68,7 +68,7 @@
     .generatePreviewButton {
         display: flex;
         margin: auto;
-        margin-top: @layout-spacing-m;
+        margin-top: var(--layout-spacing-m);
     }
 
     .icon {
@@ -82,9 +82,9 @@
     .tovPreview {
         .body-regular();
         margin-top: var(--layout-spacing-s);
-        padding: @layout-spacing-m;
+        padding: var(--layout-spacing-m);
         width: 428px;
-        gap: @layout-spacing-m;
+        gap: var(--layout-spacing-m);
         display: flex;
         flex-direction: column;
         border: 1px solid #ececec;

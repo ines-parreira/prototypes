@@ -20,7 +20,7 @@
             display: flex;
             justify-content: space-between;
             flex-direction: column;
-            padding: @layout-spacing-m;
+            padding: var(--layout-spacing-m);
             gap: var(--layout-spacing-s);
 
             @media @desktops {
@@ -39,7 +39,7 @@
     .templateCards {
         display: flex;
         flex-direction: column;
-        padding: @layout-spacing-m;
+        padding: var(--layout-spacing-m);
         gap: var(--layout-spacing-s);
 
         .templateHeader {
@@ -61,7 +61,8 @@
     }
 
     .actionsFormContainer {
-        padding: @layout-spacing-m @layout-spacing-m 0 @layout-spacing-m;
+        padding: var(--layout-spacing-m) var(--layout-spacing-m) 0
+            var(--layout-spacing-m);
         grid-template-columns: minmax(480px, 680px) 1fr !important;
     }
 }

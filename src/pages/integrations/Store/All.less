@@ -4,8 +4,8 @@
 :local {
     .container {
         display: flex;
-        gap: @layout-spacing-m;
-        padding: @layout-spacing-m;
+        gap: var(--layout-spacing-m);
+        padding: var(--layout-spacing-m);
         @media @mobiles {
             flex-direction: column;
         }
@@ -28,7 +28,7 @@
     }
 
     .noApps {
-        margin: @layout-spacing-m 0 @layout-spacing-l 0;
+        margin: var(--layout-spacing-m) 0 @layout-spacing-l 0;
         font-size: 18px;
     }
 

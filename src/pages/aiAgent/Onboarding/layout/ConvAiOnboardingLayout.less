@@ -27,11 +27,11 @@
         width: 100%;
         top: 0;
         background-color: var(--neutral-grey-1);
-        padding: var(--layout-spacing-s) @layout-spacing-m;
+        padding: var(--layout-spacing-s) var(--layout-spacing-m);
 
         @media @tablets-up {
             margin-left: -8vw;
-            padding: @layout-spacing-m 0 0 @layout-spacing-m;
+            padding: var(--layout-spacing-m) 0 0 var(--layout-spacing-m);
         }
     }
 
@@ -54,7 +54,8 @@
         padding: 0 0 var(--layout-spacing-s);
 
         & > :nth-child(2) {
-            padding: @layout-spacing-m @layout-spacing-m var(--layout-spacing-s);
+            padding: var(--layout-spacing-m) var(--layout-spacing-m)
+                var(--layout-spacing-s);
         }
 
         @media @tablets-up {
@@ -62,15 +63,15 @@
             flex-direction: column;
             justify-content: flex-start;
             min-width: 400px;
-            padding: 0 8vw @layout-spacing-m;
-            gap: @layout-spacing-m;
+            padding: 0 8vw var(--layout-spacing-m);
+            gap: var(--layout-spacing-m);
             max-width: 100%;
             overflow: auto;
         }
     }
 
     .onboardingPreviewContainerWrapper {
-        padding: 0 @layout-spacing-m;
+        padding: 0 var(--layout-spacing-m);
         @media @tablets-up {
             display: flex;
             padding: 0;
@@ -155,7 +156,7 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        padding: @layout-spacing-m 0;
+        padding: var(--layout-spacing-m) 0;
 
         @media @mobiles {
             position: fixed;

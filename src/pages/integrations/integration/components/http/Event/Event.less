@@ -3,13 +3,13 @@
 
 :local {
     .wrapper {
-        padding: @layout-spacing-m;
+        padding: var(--layout-spacing-m);
     }
 
     .responsiveFlex {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-m;
+        gap: var(--layout-spacing-m);
         @media @desktops {
             flex-direction: row;
         }
@@ -20,7 +20,7 @@
         @media @desktops {
             border-bottom: none;
             border-right: 1px solid var(--neutral-grey-3);
-            padding-right: @layout-spacing-m;
+            padding-right: var(--layout-spacing-m);
         }
     }
 

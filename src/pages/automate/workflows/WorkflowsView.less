@@ -33,22 +33,22 @@
 
     .descriptionContainer {
         display: flex;
-        gap: @layout-spacing-m;
+        gap: var(--layout-spacing-m);
     }
     .descriptionContainerColumn {
         @media @tablets {
             flex-direction: column;
             align-items: flex-start;
-            margin-bottom: @layout-spacing-m;
+            margin-bottom: var(--layout-spacing-m);
         }
 
         @media @mobiles {
             flex-direction: column;
             align-items: flex-start;
-            margin-bottom: @layout-spacing-m;
+            margin-bottom: var(--layout-spacing-m);
         }
         @media @desktops {
-            gap: @layout-spacing-m;
+            gap: var(--layout-spacing-m);
         }
     }
 
@@ -61,13 +61,13 @@
         @media @tablets {
             flex-direction: column;
             align-items: flex-start;
-            gap: @layout-spacing-m;
+            gap: var(--layout-spacing-m);
         }
 
         @media @mobiles {
             flex-direction: column;
             align-items: flex-start;
-            gap: @layout-spacing-m;
+            gap: var(--layout-spacing-m);
         }
     }
 

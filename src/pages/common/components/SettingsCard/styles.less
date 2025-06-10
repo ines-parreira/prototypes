@@ -19,7 +19,7 @@
         color: var(--neutral-grey-5);
         flex-direction: column;
         background-color: var(--neutral-grey-1);
-        padding: @layout-spacing-m;
+        padding: var(--layout-spacing-m);
         border-radius: var(--vorder-radius-xl, 12px)
             var(--border-radius-xl, 12px) 0px 0px;
         gap: 4px;
@@ -36,11 +36,11 @@
     .cardContent {
         display: flex;
         flex-direction: column;
-        padding: @layout-spacing-m;
-        gap: @layout-spacing-m;
+        padding: var(--layout-spacing-m);
+        gap: var(--layout-spacing-m);
 
         & > *:not(:last-child) {
-            padding-bottom: @layout-spacing-m;
+            padding-bottom: var(--layout-spacing-m);
             border-bottom: 1px solid var(--neutral-grey-2);
         }
     }

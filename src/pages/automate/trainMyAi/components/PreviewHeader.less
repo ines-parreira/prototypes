@@ -6,7 +6,8 @@
         display: flex;
         flex-direction: column;
         background-color: var(--neutral-grey-0);
-        padding: @layout-spacing-m @layout-spacing-m 0 @layout-spacing-m;
+        padding: var(--layout-spacing-m) var(--layout-spacing-m) 0
+            var(--layout-spacing-m);
         position: sticky;
         top: 0;
         z-index: 1;
@@ -16,7 +17,7 @@
             color: var(--neutral-grey-6);
             .heading-section-semibold();
             gap: var(--layout-spacing-xs);
-            padding-bottom: @layout-spacing-m;
+            padding-bottom: var(--layout-spacing-m);
 
             i {
                 color: var(--neutral-grey-4);
@@ -28,7 +29,7 @@
             display: flex;
             flex-direction: column;
             gap: var(--layout-spacing-s);
-            padding-bottom: @layout-spacing-m;
+            padding-bottom: var(--layout-spacing-m);
 
             .aiBanner {
                 background-color: var(--accessory-magenta-1, #faeaff);
@@ -112,7 +113,7 @@
         }
     }
     .divider {
-        margin-top: @layout-spacing-m;
+        margin-top: var(--layout-spacing-m);
         width: 100%;
         height: 1px;
         background-color: var(--neutral-grey-3);

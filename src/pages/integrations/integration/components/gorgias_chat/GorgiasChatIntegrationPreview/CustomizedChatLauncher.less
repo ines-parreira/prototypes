@@ -103,7 +103,7 @@
         &.editing {
             &.top-right,
             &.top-left {
-                padding-top: @layout-spacing-m;
+                padding-top: var(--layout-spacing-m);
 
                 .axisCenter {
                     top: -@launcher-height;
@@ -116,8 +116,8 @@
 
             &.bottom-right,
             &.bottom-left {
-                padding-bottom: @layout-spacing-m;
-                margin-top: -@layout-spacing-m;
+                padding-bottom: var(--layout-spacing-m);
+                margin-top: -var(--layout-spacing-m);
 
                 .axisY {
                     top: 0;
@@ -126,24 +126,24 @@
 
             &.top-left,
             &.bottom-left {
-                padding-left: @layout-spacing-m;
+                padding-left: var(--layout-spacing-m);
             }
 
             &.top-right,
             &.bottom-right {
-                padding-right: @layout-spacing-m;
+                padding-right: var(--layout-spacing-m);
             }
         }
 
         @launcher-height: 52px;
         @launcher-size: (@launcher-height / 2);
-        @launcher-spacing: @layout-spacing-m + @launcher-size;
+        @launcher-spacing: calc(var(--layout-spacing-m) + @launcher-size);
 
         &.top-right {
             margin-bottom: 1em;
             .axisX  {
                 top: @launcher-spacing;
-                right: -@layout-spacing-m;
+                right: -var(--layout-spacing-m);
             }
         }
 
@@ -153,11 +153,11 @@
 
             .axisX  {
                 top: @launcher-spacing;
-                left: -@layout-spacing-m;
+                left: -var(--layout-spacing-m);
             }
 
             .axisY {
-                top: -@layout-spacing-m;
+                top: -var(--layout-spacing-m);
             }
         }
 
@@ -165,7 +165,7 @@
             justify-content: flex-start;
             margin-top: 1em;
             .axisX  {
-                left: -@layout-spacing-m;
+                left: -var(--layout-spacing-m);
                 bottom: @launcher-spacing;
             }
         }
@@ -174,7 +174,7 @@
             margin-top: 1em;
             .axisX {
                 bottom: @launcher-spacing;
-                right: -@layout-spacing-m;
+                right: -var(--layout-spacing-m);
             }
         }
     }

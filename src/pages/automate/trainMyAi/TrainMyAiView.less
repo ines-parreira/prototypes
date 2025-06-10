@@ -51,12 +51,12 @@
         background-color: var(--neutral-grey-1);
         justify-content: center;
         text-align: center;
-        padding: @layout-spacing-m;
+        padding: var(--layout-spacing-m);
     }
 
     .rightCol.empty .container {
         display: flex;
-        gap: @layout-spacing-m;
+        gap: var(--layout-spacing-m);
         flex-direction: column;
         align-items: center;
         max-width: 500px;
@@ -84,7 +84,7 @@
     }
 
     .content {
-        padding: var(--layout-spacing-s) @layout-spacing-m;
+        padding: var(--layout-spacing-s) var(--layout-spacing-m);
         display: flex;
         flex-direction: column;
         gap: var(--layout-spacing-xs);
@@ -93,7 +93,7 @@
     .headerContent {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-m;
+        gap: var(--layout-spacing-m);
     }
 
     .content.empty {

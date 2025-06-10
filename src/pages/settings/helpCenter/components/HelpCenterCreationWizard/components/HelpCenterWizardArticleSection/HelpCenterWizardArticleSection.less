@@ -9,7 +9,7 @@
     .articleCategory {
         .caption-allcaps();
         color: var(--neutral-grey-5);
-        padding: 20px @layout-spacing-m;
+        padding: 20px var(--layout-spacing-m);
         display: flex;
         align-items: center;
         gap: var(--layout-spacing-xs);
@@ -21,7 +21,7 @@
 
     .article {
         .body-semibold();
-        padding: var(--layout-spacing-s) @layout-spacing-m;
+        padding: var(--layout-spacing-s) var(--layout-spacing-m);
         display: flex;
         flex: 1;
         gap: var(--layout-spacing-xs);
@@ -54,7 +54,7 @@
     }
 
     .articleEditButton {
-        width: @layout-spacing-m;
+        width: var(--layout-spacing-m);
         font-size: 16px !important;
 
         i {

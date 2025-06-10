@@ -4,7 +4,7 @@
 
 :local {
     .card {
-        padding: @layout-spacing-m;
+        padding: var(--layout-spacing-m);
         min-width: 0;
 
         &.noPadding {
@@ -16,7 +16,7 @@
         align-items: center;
         display: flex;
         justify-content: space-between;
-        margin-bottom: @layout-spacing-m;
+        margin-bottom: var(--layout-spacing-m);
 
         @media @mobiles {
             flex-direction: column;
@@ -38,7 +38,7 @@
     }
 
     .noPadding .titleWrapper {
-        padding: @layout-spacing-m;
+        padding: var(--layout-spacing-m);
         margin-bottom: 0;
     }
 

@@ -11,11 +11,11 @@
 
     .heroImage {
         max-height: 5.7rem; // ~80px
-        padding-right: @layout-spacing-m;
+        padding-right: var(--layout-spacing-m);
     }
 
     .heroIcon {
-        margin-right: @layout-spacing-m;
+        margin-right: var(--layout-spacing-m);
         padding: var(--layout-spacing-s);
         font-size: 3.714rem !important; // ~52px
         color: var(--neutral-grey-0);
@@ -54,7 +54,8 @@
             flex-direction: row;
         }
         align-items: flex-start;
-        padding: var(--layout-spacing-s) @layout-spacing-m @layout-spacing-l;
+        padding: var(--layout-spacing-s) var(--layout-spacing-m)
+            @layout-spacing-l;
     }
 
     .longDescription {
@@ -68,7 +69,7 @@
             margin-top: var(--layout-spacing-s);
         }
         ul {
-            padding-left: @layout-spacing-m;
+            padding-left: var(--layout-spacing-m);
         }
         & > ul > li {
             margin-bottom: var(--layout-spacing-s);
@@ -101,7 +102,7 @@
     }
 
     .infoCard {
-        margin-bottom: @layout-spacing-m;
+        margin-bottom: var(--layout-spacing-m);
         width: 440px;
         max-width: 100%;
         @media @large-desktops {
@@ -113,7 +114,7 @@
     }
 
     .cardTitle {
-        margin-top: @layout-spacing-m;
+        margin-top: var(--layout-spacing-m);
     }
 
     .cardList {
@@ -168,8 +169,8 @@
 
     .closeModalButton {
         position: fixed;
-        top: @layout-spacing-m;
-        right: @layout-spacing-m;
+        top: var(--layout-spacing-m);
+        right: var(--layout-spacing-m);
     }
 
     .pictureContainer {

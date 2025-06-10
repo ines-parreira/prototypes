@@ -2,7 +2,7 @@
 
 :local {
     .container {
-        padding: @layout-spacing-m;
+        padding: var(--layout-spacing-m);
         background-color: var(--neutral-grey-1);
 
         ul {
@@ -12,7 +12,7 @@
             margin-bottom: 0;
             display: flex;
             flex-direction: column;
-            gap: @layout-spacing-m;
+            gap: var(--layout-spacing-m);
         }
     }
 
@@ -25,14 +25,14 @@
     }
 
     .tutorialDescription {
-        margin-bottom: @layout-spacing-m;
+        margin-bottom: var(--layout-spacing-m);
     }
 
     .helpDocLink {
         display: flex;
         gap: var(--layout-spacing-xxs);
         align-items: center;
-        margin-top: @layout-spacing-m;
+        margin-top: var(--layout-spacing-m);
     }
 
     .instruction {
