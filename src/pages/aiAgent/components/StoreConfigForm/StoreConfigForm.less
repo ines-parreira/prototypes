@@ -8,10 +8,10 @@
     }
 
     .automateView {
-        padding: @layout-spacing-l;
+        padding: var(--layout-spacing-l);
 
         .section {
-            margin-bottom: @layout-spacing-l;
+            margin-bottom: var(--layout-spacing-l);
         }
 
         section {
@@ -40,7 +40,7 @@
 
         .subsectionHeader {
             margin-bottom: var(--layout-spacing-xs);
-            margin-top: @layout-spacing-l;
+            margin-top: var(--layout-spacing-l);
         }
 
         .generalSettingsWrapper {
@@ -65,7 +65,7 @@
         }
 
         .formGroup {
-            margin-bottom: @layout-spacing-l;
+            margin-bottom: var(--layout-spacing-l);
             .formGroupDescription {
                 margin-bottom: var(--layout-spacing-s);
             }
@@ -135,7 +135,7 @@
     }
 
     .settingsSectionBlock {
-        margin-bottom: @layout-spacing-l;
+        margin-bottom: var(--layout-spacing-l);
     }
 
     .handoverTopicsLink {
@@ -145,11 +145,11 @@
     }
 
     .ticketPreviewContainer {
-        padding: @layout-spacing-l;
+        padding: var(--layout-spacing-l);
         background-color: var(--neutral-grey-1);
         border-left: 1px solid var(--neutral-grey-2);
         min-width: calc(
-            428px + @layout-spacing-l + @layout-spacing-l
-        ); // 428px is the width of the ticket preview, 2x @layout-spacing-l is for the padding
+            428px + var(--layout-spacing-l) + var(--layout-spacing-l)
+        ); // 428px is the width of the ticket preview, 2x var(--layout-spacing-l) is for the padding
     }
 }

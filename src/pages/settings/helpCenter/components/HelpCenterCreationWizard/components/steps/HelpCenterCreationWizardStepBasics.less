@@ -5,7 +5,7 @@
     .basicStepContainer {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-l;
+        gap: var(--layout-spacing-l);
     }
 
     .brandContainer {
@@ -50,7 +50,7 @@
         grid-template-columns: 1fr;
         row-gap: var(--layout-spacing-s);
         column-gap: var(--layout-spacing-s);
-        margin-bottom: @layout-spacing-l;
+        margin-bottom: var(--layout-spacing-l);
 
         @media (min-width: 1280px) {
             grid-template-columns: 1fr 1fr;

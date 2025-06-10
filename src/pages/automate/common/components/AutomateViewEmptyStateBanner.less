@@ -6,7 +6,7 @@
     .container {
         display: flex;
         align-items: center;
-        gap: @layout-spacing-l;
+        gap: var(--layout-spacing-l);
         min-height: 342px;
         background: var(--main-latte);
 
@@ -15,11 +15,11 @@
         }
 
         @media @tablets {
-            padding: 0 @layout-spacing-l;
+            padding: 0 var(--layout-spacing-l);
         }
 
         @media @desktops {
-            padding: 0 @layout-spacing-l;
+            padding: 0 var(--layout-spacing-l);
         }
 
         @media @large-desktops {
@@ -35,7 +35,7 @@
         gap: var(--layout-spacing-s);
         flex: 1 0 0;
         align-self: stretch;
-        padding: @layout-spacing-l 0;
+        padding: var(--layout-spacing-l) 0;
         max-width: 500px;
         min-width: 328px;
     }
