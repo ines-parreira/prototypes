@@ -1,0 +1,37 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .container {
+        border-radius: 4px;
+        position: relative;
+    }
+
+    .dropdownContainer {
+        border: 1px solid var(--neutral-grey-3);
+        position: absolute;
+        z-index: 10;
+        width: 100%;
+        background-color: white;
+        padding: var(--layout-spacing-xs);
+    }
+    .dropdown {
+        max-height: 190px;
+        overflow-y: auto;
+    }
+    .dropdownItem {
+        padding: var(--layout-spacing-xs);
+        cursor: pointer;
+    }
+    .dropdownItem:hover {
+        background-color: var(--neutral-grey-1);
+    }
+    .focusedDropdownItem {
+        background-color: var(--neutral-grey-1);
+    }
+    .dropdownSkeleton {
+        margin-bottom: var(--layout-spacing-xxs);
+    }
+    .noResults {
+        color: var(--neutral-grey-5);
+    }
+}

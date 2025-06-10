@@ -20,8 +20,14 @@ import {
     upsertStoreConfiguration,
     upsertStoresConfiguration,
 } from 'models/aiAgent/resources/configuration'
-import { searchCustomer } from 'models/aiAgentPlayground/resources'
-import { SearchCustomerRequest } from 'models/aiAgentPlayground/types'
+import {
+    searchCustomer,
+    searchEmailTickets,
+} from 'models/aiAgentPlayground/resources'
+import {
+    SearchCustomerRequest,
+    SearchTicketsRequest,
+} from 'models/aiAgentPlayground/types'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { Paths } from 'rest_api/help_center_api/client.generated'
 import { MutationOverrides } from 'types/query'
@@ -185,6 +191,10 @@ export const searchCustomerKeys = {
     search: (customerEmail: string) => ['search', customerEmail] as const,
 }
 
+export const searchTicketKeys = {
+    search: (query: string) => ['searchTickets', query] as const,
+}
+
 export const useSubmitPlaygroundTicket = (
     overrides?: MutationOverrides<
         typeof createContextAndSubmitPlaygroundTicket
@@ -202,6 +212,20 @@ export const useSearchCustomer = (
     return useQuery({
         queryKey: searchCustomerKeys.search(params.email),
         queryFn: () => searchCustomer(params),
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+        enabled: false,
+        ...overrides,
+    })
+}
+
+export const useSearchEmailTickets = (
+    params: SearchTicketsRequest,
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof searchEmailTickets>>>,
+) => {
+    return useQuery({
+        queryKey: searchTicketKeys.search(params.query),
+        queryFn: () => searchEmailTickets(params.query),
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
         ...overrides,

@@ -1,9 +1,21 @@
 import MockAdapter from 'axios-mock-adapter'
 
+import { searchTickets as helpdeskSearchTickets } from '@gorgias/helpdesk-client'
+
+import { TicketChannel } from 'business/types/ticket'
 import client from 'models/api/resources'
 import { SearchType } from 'models/search/types'
 
-import { getAiAgentCustomer, searchCustomer } from '../resources'
+import {
+    getAiAgentCustomer,
+    searchCustomer,
+    searchEmailTickets,
+} from '../resources'
+
+jest.mock('@gorgias/helpdesk-client', () => ({
+    searchTickets: jest.fn(),
+}))
+const mockHelpdeskSearchTickets = jest.mocked(helpdeskSearchTickets)
 
 describe('aiAgentPlayground resources', () => {
     let mockClient: MockAdapter
@@ -18,6 +30,7 @@ describe('aiAgentPlayground resources', () => {
 
     afterEach(() => {
         mockClient.resetHistory()
+        jest.clearAllMocks()
     })
 
     describe('searchCustomer', () => {
@@ -61,6 +74,21 @@ describe('aiAgentPlayground resources', () => {
                 requestBody,
             )
             expect(response.data).toEqual(expectedResponse)
+        })
+    })
+
+    describe('searchEmailTickets', () => {
+        it('should call helpdeskSearchTickets with email channel filter', async () => {
+            const query = 'test search query'
+            await searchEmailTickets(query)
+
+            expect(mockHelpdeskSearchTickets).toHaveBeenCalledWith(
+                {
+                    search: query,
+                    filters: `eq(ticket.channel, "${TicketChannel.Email}")`,
+                },
+                { limit: 10 },
+            )
         })
     })
 })

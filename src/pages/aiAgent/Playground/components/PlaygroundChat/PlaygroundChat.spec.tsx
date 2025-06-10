@@ -206,7 +206,7 @@ describe('PlaygroundChat', () => {
         renderComponent()
         userEvent.click(screen.getByText('Existing customer'))
         await userEvent.type(
-            screen.getByPlaceholderText('Search'),
+            screen.getByPlaceholderText('Search customer email'),
             customer.address,
         )
         userEvent.click(await screen.findByText(customer.address))

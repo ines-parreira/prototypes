@@ -72,6 +72,10 @@ export type SearchCustomerRequest = {
     email: string
 }
 
+export type SearchTicketsRequest = {
+    query: string
+}
+
 // All ids are strings here as the jinja templating system is transforming from a dict to a json string
 export type AiAgentInput = {
     // Property for AI Agent to identify actions
@@ -213,7 +217,7 @@ export type AiAgentResponse = {
 export type AiAgentAttachment = {
     name: string
     content_type: string
-    public: Boolean
+    public: boolean
     size: number
     url: string
     extra: {

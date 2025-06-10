@@ -21,7 +21,10 @@ import {
     PlaygroundChannels,
     PlaygroundFormValues,
 } from '../PlaygroundChat/PlaygroundChat.types'
-import { PlaygroundCustomerSelection } from '../PlaygroundCustomerSelection/PlaygroundCustomerSelection'
+import {
+    PlaygroundCustomerSelection,
+    TicketData,
+} from '../PlaygroundCustomerSelection/PlaygroundCustomerSelection'
 import { PlaygroundEditor } from '../PlaygroundEditor/PlaygroundEditor'
 import { PlaygroundSegmentControl } from '../PlaygroundSegmentControl/PlaygroundSegmentControl'
 
@@ -132,9 +135,18 @@ export const PlaygroundInputSection = ({
           ]
         : undefined
 
-    const handleCustomerEmailChange = useCallback(
+    const handleCustomerChange = useCallback(
         (customer: PlaygroundCustomer) => {
             onFormValuesChange('customer', customer)
+        },
+        [onFormValuesChange],
+    )
+
+    const handleTicketChange = useCallback(
+        (ticketData: TicketData) => {
+            onFormValuesChange('customer', ticketData.customer)
+            onFormValuesChange('subject', ticketData.subject)
+            onFormValuesChange('message', ticketData.message)
         },
         [onFormValuesChange],
     )
@@ -178,7 +190,8 @@ export const PlaygroundInputSection = ({
                     {channel === 'email' && (
                         <PlaygroundCustomerSelection
                             customer={formValues.customer}
-                            onCustomerEmailChange={handleCustomerEmailChange}
+                            onCustomerChange={handleCustomerChange}
+                            onTicketChange={handleTicketChange}
                             isDisabled={!isInitialMessage}
                         />
                     )}

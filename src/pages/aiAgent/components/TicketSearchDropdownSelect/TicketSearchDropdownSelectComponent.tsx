@@ -1,37 +1,46 @@
-import React, { useCallback, useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 
 import classnames from 'classnames'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
-import { CustomerList } from 'models/aiAgentPlayground/types'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
-import { Value } from 'pages/common/forms/SelectField/types'
 
-import css from './CustomerSearchDropdownSelectComponent.less'
+import css from './TicketSearchDropdownSelectComponent.less'
+
+// Type for the search result item - based on the actual API response structure
+type SearchTicketItem = {
+    id: number
+    subject: string
+    customer?: {
+        id: number
+        name?: string
+        email?: string
+    }
+}
 
 type Props = {
-    customerList: CustomerList
-    onSearch: (value: Value) => void
-    onSelect: (value: string) => void
+    ticketList: SearchTicketItem[]
+    onSearch: (value: string) => void
+    onSelect: (ticketId: number) => void
     searchTerm: string
     isDropdownVisible: boolean
     isDropdownLoading: boolean
-    isCustomerListAvailable: boolean
+    isTicketListAvailable: boolean
     focusedIndex: number
     setFocusedIndex: (value: number) => void
     className?: string
     isDisabled?: boolean
 }
 
-export const CustomerSearchDropdownSelectComponent = ({
-    customerList,
+export const TicketSearchDropdownSelectComponent = ({
+    ticketList,
     onSearch,
     onSelect,
     isDropdownVisible,
     isDropdownLoading,
-    isCustomerListAvailable,
+    isTicketListAvailable,
     searchTerm,
     focusedIndex,
     setFocusedIndex,
@@ -40,12 +49,12 @@ export const CustomerSearchDropdownSelectComponent = ({
 }: Props) => {
     const handleKeyDown = useCallback(
         (event: KeyboardEvent) => {
-            if (!isDropdownVisible || !customerList) return
+            if (!isDropdownVisible || !ticketList) return
 
             switch (event.key) {
                 case 'ArrowDown':
                     setFocusedIndex(
-                        focusedIndex < customerList.length - 1
+                        focusedIndex < ticketList.length - 1
                             ? focusedIndex + 1
                             : focusedIndex,
                     )
@@ -56,11 +65,8 @@ export const CustomerSearchDropdownSelectComponent = ({
                     )
                     break
                 case 'Enter':
-                    if (
-                        focusedIndex >= 0 &&
-                        focusedIndex < customerList.length
-                    ) {
-                        onSelect(customerList[focusedIndex].address)
+                    if (focusedIndex >= 0 && focusedIndex < ticketList.length) {
+                        onSelect(ticketList[focusedIndex].id)
                     }
                     break
                 default:
@@ -68,7 +74,7 @@ export const CustomerSearchDropdownSelectComponent = ({
             }
         },
         [
-            customerList,
+            ticketList,
             focusedIndex,
             setFocusedIndex,
             onSelect,
@@ -85,6 +91,18 @@ export const CustomerSearchDropdownSelectComponent = ({
         }
     }, [isDropdownVisible, handleKeyDown])
 
+    const formatTicketDisplay = (ticket: SearchTicketItem) => {
+        const customerName = ticket.customer
+            ? ticket.customer.name ||
+              ticket.customer.email ||
+              `Customer #${ticket.customer.id}`
+            : undefined
+
+        return [ticket.subject, customerName, ticket.id]
+            .filter(Boolean)
+            .join(' - ')
+    }
+
     return (
         <div className={classnames(css.container, className)}>
             <div className={css.inputContainer}>
@@ -92,7 +110,7 @@ export const CustomerSearchDropdownSelectComponent = ({
                     onChange={onSearch}
                     prefix={<IconInput icon="search" />}
                     value={searchTerm}
-                    placeholder="Search customer email"
+                    placeholder="Search by ticket id or email subject"
                     isDisabled={isDisabled}
                 />
             </div>
@@ -121,24 +139,23 @@ export const CustomerSearchDropdownSelectComponent = ({
                                 />
                             </div>
                         )}
-                        {isCustomerListAvailable &&
-                            customerList.length === 0 && (
-                                <div className={css.noResults}>
-                                    No results found
-                                </div>
-                            )}
-                        {isCustomerListAvailable &&
-                            customerList.length > 0 &&
-                            customerList.map((customer, index) => (
+                        {isTicketListAvailable && ticketList.length === 0 && (
+                            <div className={css.noResults}>
+                                No results found
+                            </div>
+                        )}
+                        {isTicketListAvailable &&
+                            ticketList.length > 0 &&
+                            ticketList.map((ticket, index) => (
                                 <div
-                                    key={customer.id}
+                                    key={ticket.id}
                                     className={classnames(css.dropdownItem, {
                                         [css.focusedDropdownItem]:
                                             focusedIndex === index,
                                     })}
-                                    onClick={() => onSelect(customer.address)}
+                                    onClick={() => onSelect(ticket.id)}
                                 >
-                                    {customer.address}
+                                    {formatTicketDisplay(ticket)}
                                 </div>
                             ))}
                     </div>

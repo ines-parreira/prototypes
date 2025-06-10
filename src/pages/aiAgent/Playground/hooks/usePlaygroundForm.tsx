@@ -10,6 +10,7 @@ import { PlaygroundFormValues } from '../components/PlaygroundChat/PlaygroundCha
 
 const INITIAL_FORM_VALUES: PlaygroundFormValues = {
     message: '',
+    subject: '',
     customer: DEFAULT_PLAYGROUND_CUSTOMER,
 }
 
