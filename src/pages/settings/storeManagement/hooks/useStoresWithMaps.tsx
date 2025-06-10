@@ -8,10 +8,17 @@ import getUnassignedChannels from '../helpers/getUnassignedChannels'
 import { StoreMappingResponse } from '../types'
 
 export default function useStoresWithMaps() {
-    const { data: storeMappings, refetch } =
-        useGetStoreMappingsByAccountId<StoreMappingResponse>()
+    const {
+        data: storeMappings,
+        refetch,
+        isLoading: isLoadingStoreMappings,
+    } = useGetStoreMappingsByAccountId<StoreMappingResponse>()
 
-    const { integrations: allIntegrations } = useAllIntegrations()
+    const {
+        integrations: allIntegrations,
+        isLoading: isLoadingAllIntegrations,
+        refetch: refetchIntegrations,
+    } = useAllIntegrations()
 
     const enrichedStores = enrichStores(
         storeMappings?.data?.data || [],
@@ -27,5 +34,9 @@ export default function useStoresWithMaps() {
         enrichedStores,
         unassignedChannels,
         refetchMapping: refetch,
+        refetchIntegrations,
+        isLoading:
+            (!storeMappings || !allIntegrations?.length) &&
+            (isLoadingStoreMappings || isLoadingAllIntegrations),
     }
 }

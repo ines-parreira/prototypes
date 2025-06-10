@@ -1,5 +1,6 @@
 import { IntegrationType } from '../constants'
 import type { IntegrationBase } from './base'
+import { Integration } from './index'
 import type { OAuth2 } from './misc'
 
 export type BigCommerceIntegration = IntegrationBase & {
@@ -748,3 +749,8 @@ export type BigCommerceRefundOrderState = {
     refundReason: string
     newOrderStatus: Maybe<string>
 }
+
+export const isBigCommerceIntegration = (
+    integration: Maybe<Integration>,
+): integration is BigCommerceIntegration =>
+    integration?.type === IntegrationType.BigCommerce

@@ -17,11 +17,17 @@ export function useExhaustEndpoint<ListItemType>(
     fetchPage: (cursor?: string) => Promise<Response<ListItemType>>,
     options?: UseInfiniteQueryOptions<Response<ListItemType>>,
 ) {
-    const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
-        useInfiniteQuery(queryKey, ({ pageParam }) => fetchPage(pageParam), {
-            ...options,
-            getNextPageParam: ({ data }) => data.meta.next_cursor ?? undefined,
-        })
+    const {
+        data,
+        fetchNextPage,
+        hasNextPage,
+        isFetching,
+        isFetchingNextPage,
+        refetch,
+    } = useInfiniteQuery(queryKey, ({ pageParam }) => fetchPage(pageParam), {
+        ...options,
+        getNextPageParam: ({ data }) => data.meta.next_cursor ?? undefined,
+    })
 
     useEffect(() => {
         if (!isFetchingNextPage && hasNextPage) {
@@ -36,5 +42,8 @@ export function useExhaustEndpoint<ListItemType>(
         return data.pages.flatMap((page) => page.data.data)
     }, [data, isLoading])
 
-    return useMemo(() => ({ data: allData, isLoading }), [allData, isLoading])
+    return useMemo(
+        () => ({ data: allData, isLoading, refetch }),
+        [allData, isLoading, refetch],
+    )
 }

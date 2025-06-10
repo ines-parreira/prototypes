@@ -8,7 +8,7 @@ import { useExhaustEndpoint } from './useExhaustEndpoint'
 export default function useAllIntegrations() {
     const [allIntegrations, setAllIntegrations] = useState<Integration[]>([])
 
-    const { data, isLoading } = useExhaustEndpoint(
+    const { data, isLoading, refetch } = useExhaustEndpoint(
         queryKeys.integrations.listIntegrations(),
         (cursor) => listIntegrations({ cursor, limit: 100 }),
     )
@@ -23,6 +23,7 @@ export default function useAllIntegrations() {
 
     return {
         integrations: allIntegrations,
+        refetch,
         isLoading,
     }
 }

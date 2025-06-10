@@ -25,6 +25,7 @@ export type ShopifyIntegrationMeta = {
     need_scope_update?: boolean
     is_used_for_billing?: boolean
     sync_customer_notes?: boolean
+    default_address_phone_matching_enabled?: boolean
     currency?: string
     webhooks: string[]
 }

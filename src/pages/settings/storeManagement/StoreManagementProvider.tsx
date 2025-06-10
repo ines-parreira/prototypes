@@ -17,10 +17,12 @@ type StoreManagementContextType = {
     stores: StoreWithAssignedChannels[]
     unassignedChannels: Integration[]
     refetchMapping: () => void
+    refetchIntegrations: () => void
     paginatedStores: StoreWithAssignedChannels[]
     currentPage: number
     setCurrentPage: Dispatch<SetStateAction<number>>
     totalPages: number
+    isLoading: boolean
 }
 
 const StoreManagementContext = createContext<
@@ -35,6 +37,8 @@ export function StoreManagementProvider({ children }: { children: ReactNode }) {
         enrichedStores: stores,
         unassignedChannels,
         refetchMapping,
+        refetchIntegrations,
+        isLoading,
     } = useStoresWithMaps()
 
     const [currentPage, setCurrentPage] = useState(1)
@@ -55,6 +59,8 @@ export function StoreManagementProvider({ children }: { children: ReactNode }) {
                 totalPages,
                 unassignedChannels,
                 refetchMapping,
+                refetchIntegrations,
+                isLoading,
             }}
         >
             {children}
