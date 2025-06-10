@@ -6,7 +6,7 @@
 @table-header: 70px;
 @table-header-row: 47px;
 @pagination: 32px;
-@table-margin-bottom: @layout-spacing-xs;
+@table-margin-bottom: var(--layout-spacing-xs);
 
 :local {
     .container {
@@ -126,6 +126,7 @@
 
     .pagination {
         flex-shrink: 0;
-        padding: var(--layout-spacing-m) @layout-spacing-xs @layout-spacing-xs;
+        padding: var(--layout-spacing-m) var(--layout-spacing-xs)
+            var(--layout-spacing-xs);
     }
 }

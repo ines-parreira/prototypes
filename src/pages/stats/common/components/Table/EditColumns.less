@@ -32,7 +32,9 @@
     }
 
     .dropdownMenu {
-        @bottomPadding: calc(@layout-spacing-xl + var(--layout-spacing-xs));
+        @bottomPadding: calc(
+            var(--layout-spacing-xl) + var(--layout-spacing-xs)
+        );
         position: relative;
         padding: var(--layout-spacing-xs) var(--layout-spacing-xs)
             @bottomPadding;
@@ -72,7 +74,7 @@
         bottom: 0;
         left: 0;
         width: 100%;
-        height: @layout-spacing-xl;
+        height: var(--layout-spacing-xl);
         padding: var(--layout-spacing-xs) var(--layout-spacing-s);
         justify-content: space-between;
         align-items: center;
