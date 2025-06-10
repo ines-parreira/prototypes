@@ -33,7 +33,7 @@ import css from './CustomerEngagementSettings.less'
 
 const customerEngagementSchema = z.object({
     isConversationStartersEnabled: z.boolean(),
-    isFloatingInputEnabled: z.boolean(),
+    isAskAnythingInputEnabled: z.boolean(),
     isFloatingInputDesktopOnly: z.boolean(),
     isSalesHelpOnSearchEnabled: z.boolean(),
     needHelpText: z.string(),
@@ -89,7 +89,7 @@ export const CustomerEngagementSettings = () => {
         values: {
             isConversationStartersEnabled:
                 storeConfiguration?.isConversationStartersEnabled ?? false,
-            isFloatingInputEnabled:
+            isAskAnythingInputEnabled:
                 storeConfiguration?.floatingChatInputConfiguration?.isEnabled ??
                 false,
             isFloatingInputDesktopOnly:
@@ -119,7 +119,7 @@ export const CustomerEngagementSettings = () => {
                             data.isConversationStartersEnabled,
                         floatingChatInputConfiguration: {
                             ...storeConfiguration?.floatingChatInputConfiguration,
-                            isEnabled: data.isFloatingInputEnabled,
+                            isEnabled: data.isAskAnythingInputEnabled,
                             isDesktopOnly: data.isFloatingInputDesktopOnly,
                             needHelpText: data.needHelpText || undefined,
                         },

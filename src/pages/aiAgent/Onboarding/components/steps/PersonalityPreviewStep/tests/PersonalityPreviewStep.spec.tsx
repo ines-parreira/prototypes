@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, fireEvent, screen } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -19,7 +20,6 @@ import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnb
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock, renderWithRouter } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { conversationExamples } from '../conversationsExamples'
 
@@ -92,6 +92,7 @@ describe('<PersonalityPreviewStep />', () => {
             currentStep: 2,
             totalSteps: 3,
             previousStep: WizardStepEnum.CHANNELS,
+            nextStep: WizardStepEnum.KNOWLEDGE,
         },
         {
             description: 'support + sales',
@@ -99,10 +100,11 @@ describe('<PersonalityPreviewStep />', () => {
             currentStep: 3,
             totalSteps: 4,
             previousStep: WizardStepEnum.SALES_PERSONALITY,
+            nextStep: WizardStepEnum.ENGAGEMENT,
         },
     ])(
         'with scope defined as $description',
-        ({ scopes, currentStep, totalSteps, previousStep }) => {
+        ({ scopes, currentStep, totalSteps, previousStep, nextStep }) => {
             beforeEach(() => {
                 useAiAgentScopesForAutomationPlanMock.mockReturnValue(scopes)
                 useGetOnboardingDataMock.mockReturnValue({
@@ -181,15 +183,27 @@ describe('<PersonalityPreviewStep />', () => {
             })
 
             it('navigates to the previous step when Back is clicked', async () => {
-                userEvent.click(screen.getByRole('button', { name: 'Back' }))
+                act(() => {
+                    userEvent.click(
+                        screen.getByRole('button', { name: 'Back' }),
+                    )
+                })
 
-                expect(goToStep).toHaveBeenCalledWith(previousStep)
+                await waitFor(() => {
+                    expect(goToStep).toHaveBeenCalledWith(previousStep)
+                })
             })
 
             it('navigates to the next step when Next is clicked', async () => {
-                userEvent.click(screen.getByRole('button', { name: 'Next' }))
+                act(() => {
+                    userEvent.click(
+                        screen.getByRole('button', { name: 'Next' }),
+                    )
+                })
 
-                expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.KNOWLEDGE)
+                await waitFor(() => {
+                    expect(goToStep).toHaveBeenCalledWith(nextStep)
+                })
             })
         },
     )

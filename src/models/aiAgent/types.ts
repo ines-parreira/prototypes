@@ -264,6 +264,9 @@ export type OnboardingData = {
     toneOfVoice?: string
     customToneOfVoiceGuidance?: string
     preview?: string
+    isConversationStartersEnabled?: boolean
+    isSalesHelpOnSearchEnabled?: boolean
+    isAskAnythingInputEnabled?: boolean
 }
 
 export type SalesSettingsData = {

@@ -40,6 +40,10 @@ export const useSteps = ({
                 condition: true,
             },
             {
+                step: WizardStepEnum.ENGAGEMENT,
+                condition: scopes.includes(AiAgentScopes.SALES),
+            },
+            {
                 step: WizardStepEnum.HANDOVER,
                 condition: false, // TODO: Put it to true when ready to show
             },

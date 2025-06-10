@@ -47,7 +47,7 @@ const mockStore = configureStore([thunk])
 const store = mockStore({ integrations: fromJS(integrationsState) })
 
 type FormValues = {
-    isFloatingInputEnabled?: boolean
+    isAskAnythingInputEnabled?: boolean
     isFloatingInputDesktopOnly?: boolean
     needHelpText?: string
 }
@@ -55,7 +55,7 @@ type FormValues = {
 const Wrapper = ({
     children,
     defaultValues = {
-        isFloatingInputEnabled: false,
+        isAskAnythingInputEnabled: false,
         isFloatingInputDesktopOnly: false,
         needHelpText: '',
     },
@@ -136,7 +136,7 @@ describe('ConversationLauncherSettings', () => {
 
     it('opens Advanced settings when toggle is on', () => {
         render(
-            <Wrapper defaultValues={{ isFloatingInputEnabled: true }}>
+            <Wrapper defaultValues={{ isAskAnythingInputEnabled: true }}>
                 <ConversationLauncherSettings
                     isGmvLoading={false}
                     gmv={[]}

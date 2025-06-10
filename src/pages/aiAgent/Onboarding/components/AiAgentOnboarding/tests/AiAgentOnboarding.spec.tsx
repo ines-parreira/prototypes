@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS, Map } from 'immutable'
+import { ldClientMock } from 'jest-launchdarkly-mock'
 import LD from 'launchdarkly-react-client-sdk'
 
 import '@testing-library/jest-dom/extend-expect'
@@ -19,12 +20,13 @@ import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import { AiAgentOnboarding } from 'pages/aiAgent/Onboarding/components/AiAgentOnboarding/AiAgentOnboarding'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
-import useTopProducts from 'pages/aiAgent/Onboarding/components/TopProductsCard/hooks'
+import { useTopProducts } from 'pages/aiAgent/Onboarding/components/TopProductsCard/hooks'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 import { RootState, StoreDispatch } from 'state/types'
+import { getLDClient } from 'utils/__mocks__/launchDarkly'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 import { userEvent } from 'utils/testing/userEvent'
 
@@ -98,6 +100,11 @@ const renderComponent = (
 
 describe('AiAgentOnboarding', () => {
     beforeEach(() => {
+        ldClientMock.allFlags.mockReturnValue({})
+        let client = getLDClient()
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        client = ldClientMock
+
         // Populate the return values of the mocked hooks
         mockUseShopifyIntegrationAndScope.mockReturnValue({
             integration: null,
@@ -198,7 +205,7 @@ describe('AiAgentOnboarding', () => {
 
         await waitFor(() => {
             expect(history.location.pathname).toContain(
-                WizardStepEnum.PERSONALITY_PREVIEW,
+                WizardStepEnum.ENGAGEMENT,
             )
         })
     })

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import classNames from 'classnames'
 import { get } from 'lodash'
 import { useFormContext } from 'react-hook-form'
 import { useParams } from 'react-router'
@@ -49,7 +50,7 @@ export const ConversationLauncherAdvancedSettings = ({
     onClose: () => void
     storeConfiguration?: StoreConfiguration
     primaryLanguage: string
-    translations: Translations
+    translations?: Translations
 }) => {
     const { watch, setValue } = useFormContext()
     const isFloatingInputDesktopOnly = watch('isFloatingInputDesktopOnly')
@@ -200,32 +201,79 @@ export const ConversationLauncherAdvancedSettings = ({
     )
 }
 
-const ESTIMATED_INFLUENCED_GMV = 0.03
+export const CONV_LAUNCHER_ESTIMATED_INFLUENCED_GMV = 0.03
+
+type Props = {
+    description?: string
+    gmv: TimeSeriesDataItem[][] | undefined
+    isGmvLoading: boolean
+    primaryLanguage: string
+    translations?: any
+    isOnboarding?: boolean
+}
 
 export const ConversationLauncherSettings = ({
+    description = 'Drive more sales by adding an always-on input field that encourages shoppers to start a conversation.',
     gmv,
     isGmvLoading,
     primaryLanguage,
     translations,
-}: {
-    gmv: TimeSeriesDataItem[][] | undefined
-    isGmvLoading: boolean
-    primaryLanguage: string
-    translations: Translations
-}) => {
+    isOnboarding = false,
+}: Props) => {
     const [isSidebarOpen, setSidebarOpen] = useState(false)
 
     const { watch, setValue } = useFormContext()
-    const isFloatingInputEnabled = watch('isFloatingInputEnabled')
-
-    const { storeConfiguration } = useAiAgentStoreConfigurationContext()
-
+    const isAskAnythingInputEnabled = watch('isAskAnythingInputEnabled')
     const { shopName } = useParams<{ shopName: string }>()
 
     const flags = getLDClient().allFlags()
     const routes = getAiAgentNavigationRoutes(shopName, flags)
 
-    const potentialImpact = usePotentialImpact(ESTIMATED_INFLUENCED_GMV, gmv)
+    const { storeConfiguration } = useAiAgentStoreConfigurationContext()
+    const potentialImpact = usePotentialImpact(
+        CONV_LAUNCHER_ESTIMATED_INFLUENCED_GMV,
+        gmv,
+    )
+
+    const handleToggle = () =>
+        setValue('isAskAnythingInputEnabled', !isAskAnythingInputEnabled, {
+            shouldDirty: true,
+        })
+
+    const renderLinkOrImpact = (hideImpact?: boolean) => {
+        if (hideImpact) {
+            return null
+        }
+
+        if (isOnboarding) {
+            return (
+                <EngagementSettingsCardImpact
+                    icon="lock"
+                    impact={potentialImpact}
+                    isLoading={isGmvLoading}
+                    isChecked={isAskAnythingInputEnabled}
+                />
+            )
+        }
+
+        if (storeConfiguration?.floatingChatInputConfiguration?.isEnabled) {
+            return (
+                <EngagementSettingsCardLinkButton
+                    href={routes.analytics}
+                    text="Track Performance"
+                />
+            )
+        }
+
+        return (
+            <EngagementSettingsCardImpact
+                icon="lock"
+                impact={potentialImpact}
+                isLoading={isGmvLoading}
+                isChecked
+            />
+        )
+    }
 
     return (
         <>
@@ -247,55 +295,53 @@ export const ConversationLauncherSettings = ({
                     />
 
                     <EngagementSettingsCardContent>
-                        <EngagementSettingsCardTitle>
-                            Ask anything input
-                        </EngagementSettingsCardTitle>
+                        <div
+                            className={classNames(
+                                css.cardHeader,
+                                isOnboarding
+                                    ? css['cardHeader--spaceBetween']
+                                    : css['cardHeader--flexStart'],
+                            )}
+                        >
+                            <EngagementSettingsCardTitle>
+                                Ask anything input
+                            </EngagementSettingsCardTitle>
 
+                            {isOnboarding && (
+                                <EngagementSettingsCardToggle
+                                    isChecked={isAskAnythingInputEnabled}
+                                    onChange={handleToggle}
+                                />
+                            )}
+                        </div>
+                        {renderLinkOrImpact(!isOnboarding)}
                         <EngagementSettingsCardDescription>
-                            Drive more sales by adding an always-on input field
-                            that encourages shoppers to start a conversation.
+                            {description}
                         </EngagementSettingsCardDescription>
-
-                        {storeConfiguration?.floatingChatInputConfiguration
-                            ?.isEnabled ? (
-                            <EngagementSettingsCardLinkButton
-                                href={routes.analytics}
-                                text="Track Performance"
-                            />
-                        ) : (
-                            <EngagementSettingsCardImpact
-                                icon="lock"
-                                impact={potentialImpact}
-                                isLoading={isGmvLoading}
-                            />
-                        )}
+                        {renderLinkOrImpact(isOnboarding)}
                     </EngagementSettingsCardContent>
 
-                    <EngagementSettingsCardToggle
-                        isChecked={isFloatingInputEnabled}
-                        onChange={() =>
-                            setValue(
-                                'isFloatingInputEnabled',
-                                !isFloatingInputEnabled,
-                                {
-                                    shouldDirty: true,
-                                },
-                            )
-                        }
-                    />
+                    {!isOnboarding && (
+                        <EngagementSettingsCardToggle
+                            isChecked={isAskAnythingInputEnabled}
+                            onChange={handleToggle}
+                        />
+                    )}
                 </EngagementSettingsCardContentWrapper>
 
-                <EngagementSettingsCardFooter>
-                    <SettingsFeatureRow
-                        title="Advanced settings"
-                        isDisabled={!isFloatingInputEnabled}
-                        onClick={
-                            isFloatingInputEnabled
-                                ? () => setSidebarOpen(true)
-                                : undefined
-                        }
-                    />
-                </EngagementSettingsCardFooter>
+                {!isOnboarding && (
+                    <EngagementSettingsCardFooter>
+                        <SettingsFeatureRow
+                            title="Advanced settings"
+                            isDisabled={!isAskAnythingInputEnabled}
+                            onClick={
+                                isAskAnythingInputEnabled
+                                    ? () => setSidebarOpen(true)
+                                    : undefined
+                            }
+                        />
+                    </EngagementSettingsCardFooter>
+                )}
             </EngagementSettingsCard>
         </>
     )

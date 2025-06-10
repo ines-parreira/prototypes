@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import { useFormContext } from 'react-hook-form'
 import { useParams } from 'react-router'
 
@@ -20,28 +21,81 @@ import { EngagementSettingsCardLinkButton } from './card/EngagementSettingsCardL
 import { EngagementSettingsCardToggle } from './card/EngagementSettingsCardToggle'
 import { usePotentialImpact } from './hooks/usePotentialImpact'
 
-const ESTIMATED_INFLUENCED_GMV = 0.03
+import css from './ConversationStartersSettings.less'
 
-export const ConversationStartersSettings = ({
-    isEnabled,
-    gmv,
-    isGmvLoading,
-}: {
+export const CONV_STARTERS_ESTIMATED_INFLUENCED_GMV = 0.03
+
+type Props = {
+    description?: string
     isEnabled: boolean
     gmv: TimeSeriesDataItem[][] | undefined
     isGmvLoading: boolean
-}) => {
+    isOnboarding?: boolean
+}
+
+export const ConversationStartersSettings = ({
+    description = 'Show up to 3 dynamic, AI-generated questions on product pages, based on what shoppers are most likely to ask—automatically generated from your product content—to resolve doubts quickly and drive more conversions.',
+    isEnabled,
+    gmv,
+    isGmvLoading,
+    isOnboarding = false,
+}: Props) => {
     const { watch, setValue } = useFormContext()
     const isConversationStartersEnabled = watch('isConversationStartersEnabled')
-
     const { shopName } = useParams<{ shopName: string }>()
 
     const flags = getLDClient().allFlags()
     const routes = getAiAgentNavigationRoutes(shopName, flags)
 
     const { storeConfiguration } = useAiAgentStoreConfigurationContext()
+    const potentialImpact = usePotentialImpact(
+        CONV_STARTERS_ESTIMATED_INFLUENCED_GMV,
+        gmv,
+    )
 
-    const potentialImpact = usePotentialImpact(ESTIMATED_INFLUENCED_GMV, gmv)
+    const handleToggle = () =>
+        setValue(
+            'isConversationStartersEnabled',
+            !isConversationStartersEnabled,
+            {
+                shouldDirty: true,
+            },
+        )
+
+    const renderLinkOrImpact = (hideImpact?: boolean) => {
+        if (hideImpact) {
+            return null
+        }
+
+        if (isOnboarding) {
+            return (
+                <EngagementSettingsCardImpact
+                    icon="lock"
+                    impact={potentialImpact}
+                    isLoading={isGmvLoading}
+                    isChecked={isConversationStartersEnabled}
+                />
+            )
+        }
+
+        if (storeConfiguration?.isConversationStartersEnabled) {
+            return (
+                <EngagementSettingsCardLinkButton
+                    href={routes.analytics}
+                    text="Track Performance"
+                />
+            )
+        }
+
+        return (
+            <EngagementSettingsCardImpact
+                icon="lock"
+                impact={potentialImpact}
+                isLoading={isGmvLoading}
+                isChecked
+            />
+        )
+    }
 
     return (
         <EngagementSettingsCard>
@@ -54,44 +108,40 @@ export const ConversationStartersSettings = ({
                 />
 
                 <EngagementSettingsCardContent>
-                    <EngagementSettingsCardTitle>
-                        Suggested product questions
-                    </EngagementSettingsCardTitle>
+                    <div
+                        className={classNames(
+                            css.cardHeader,
+                            isOnboarding
+                                ? css['cardHeader--spaceBetween']
+                                : css['cardHeader--flexStart'],
+                        )}
+                    >
+                        <EngagementSettingsCardTitle>
+                            Suggested product questions
+                        </EngagementSettingsCardTitle>
 
+                        {isOnboarding && (
+                            <EngagementSettingsCardToggle
+                                isChecked={isConversationStartersEnabled}
+                                isDisabled={!isEnabled}
+                                onChange={handleToggle}
+                            />
+                        )}
+                    </div>
+                    {renderLinkOrImpact(!isOnboarding)}
                     <EngagementSettingsCardDescription>
-                        Show up to 3 dynamic, AI-generated questions on product
-                        pages, based on what shoppers are most likely to
-                        ask—automatically generated from your product content—to
-                        resolve doubts quickly and drive more conversions.
+                        {description}
                     </EngagementSettingsCardDescription>
-
-                    {storeConfiguration?.isConversationStartersEnabled ? (
-                        <EngagementSettingsCardLinkButton
-                            href={routes.analytics}
-                            text="Track Performance"
-                        />
-                    ) : (
-                        <EngagementSettingsCardImpact
-                            icon="lock"
-                            impact={potentialImpact}
-                            isLoading={isGmvLoading}
-                        />
-                    )}
+                    {renderLinkOrImpact(isOnboarding)}
                 </EngagementSettingsCardContent>
 
-                <EngagementSettingsCardToggle
-                    isDisabled={!isEnabled}
-                    isChecked={isConversationStartersEnabled}
-                    onChange={() =>
-                        setValue(
-                            'isConversationStartersEnabled',
-                            !isConversationStartersEnabled,
-                            {
-                                shouldDirty: true,
-                            },
-                        )
-                    }
-                />
+                {!isOnboarding && (
+                    <EngagementSettingsCardToggle
+                        isChecked={isConversationStartersEnabled}
+                        isDisabled={!isEnabled}
+                        onChange={handleToggle}
+                    />
+                )}
             </EngagementSettingsCardContentWrapper>
         </EngagementSettingsCard>
     )

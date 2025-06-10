@@ -5,5 +5,6 @@ export const STEPS_INDEX = {
     [WizardStepEnum.CHANNELS]: 1,
     [WizardStepEnum.SALES_PERSONALITY]: 2,
     [WizardStepEnum.PERSONALITY_PREVIEW]: 3,
-    [WizardStepEnum.KNOWLEDGE]: 4,
+    [WizardStepEnum.ENGAGEMENT]: 4,
+    [WizardStepEnum.KNOWLEDGE]: 5,
 }

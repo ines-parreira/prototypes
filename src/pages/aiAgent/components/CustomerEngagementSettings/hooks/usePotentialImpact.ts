@@ -4,11 +4,11 @@ import moment from 'moment'
 
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
 
-const lowerImpactMultiplier = 0.8
-const upperImpactMultiplier = 1.2
-const roundTo = 10
+export const lowerImpactMultiplier = 0.8
+export const upperImpactMultiplier = 1.2
+export const roundTo = 10
 
-const getCurrencyFormatter = () =>
+export const getCurrencyFormatter = () =>
     Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
@@ -62,15 +62,14 @@ export const usePotentialImpact = (
             gmv,
         )
 
-        if (!potentialImpact?.lowerImpact || !potentialImpact?.upperImpact) {
+        if (!potentialImpact?.lowerImpact) {
             return null
         }
 
-        const { lowerImpact, upperImpact } = potentialImpact
-
         const formatter = getCurrencyFormatter()
+        const lower = formatter.format(potentialImpact.lowerImpact)
 
-        return `Unlock between ${formatter.format(lowerImpact)} and ${formatter.format(upperImpact)} of additional GMV.`
+        return `Unlock up to ${lower} of additional GMV.`
     }, [estimatedInfluencedGMV, gmv])
 
     return formattedImpact

@@ -13,6 +13,7 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { ChannelsStep } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep'
+import { EngagementStep } from 'pages/aiAgent/Onboarding/components/steps/EngagementStep/EngagementStep'
 import { HandoverStep } from 'pages/aiAgent/Onboarding/components/steps/HandoverStep/HandoverStep'
 import { KnowledgeStep } from 'pages/aiAgent/Onboarding/components/steps/KnowledgeStep/KnowledgeStep'
 import { PersonalityPreviewStep } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/PersonalityPreviewStep'
@@ -110,6 +111,8 @@ export const AiAgentOnboarding = () => {
                 return <PersonalityPreviewStep {...stepProps} />
             case WizardStepEnum.SALES_PERSONALITY:
                 return <PersonalityStep {...stepProps} />
+            case WizardStepEnum.ENGAGEMENT:
+                return <EngagementStep {...stepProps} />
             default:
                 return <ChannelsStep {...stepProps} />
         }
