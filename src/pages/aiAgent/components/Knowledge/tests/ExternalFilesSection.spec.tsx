@@ -428,7 +428,7 @@ describe('ExternalFilesSection', () => {
         expect(uploadAttachmentsMock).not.toHaveBeenCalled()
     })
 
-    it('should open a new tab and download the file when clicking on the open articles button and the file is .xlsx', () => {
+    it('the open articles button should be disable if the file is .xlsx', () => {
         useFlagMock.mockReturnValue(true)
         renderComponent({
             ingestedFiles: [
@@ -446,12 +446,13 @@ describe('ExternalFilesSection', () => {
         })
 
         const openArticlesButton = screen.getByLabelText('Open articles')
-        fireEvent.click(openArticlesButton)
+        expect(openArticlesButton).toBeAriaDisabled()
 
-        expect(window.open).toHaveBeenCalledWith(
-            'https://storage.googleapis.com/test.xlsx',
-            '_blank',
-            'noopener noreferrer',
-        )
+        fireEvent.focus(openArticlesButton)
+        expect(
+            screen.getByText(
+                'Viewing content from .xlsx files is not supported. Download to view its content.',
+            ),
+        ).toBeInTheDocument()
     })
 })

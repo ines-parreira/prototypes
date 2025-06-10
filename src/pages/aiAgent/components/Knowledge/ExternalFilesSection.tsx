@@ -182,20 +182,12 @@ export const ExternalFilesSection = ({
         onEmptyStateChange && onEmptyStateChange(isEmpty)
     }, [isEmpty, onEmptyStateChange])
 
-    const handleOpenArticles = (ingestedFile: any) => {
-        const filename = ingestedFile.filename.toLowerCase()
-        const isExcelFile = filename.endsWith('.xlsx')
-
-        if (isExcelFile) {
-            window.open(
-                ingestedFile.google_storage_url,
-                '_blank',
-                'noopener noreferrer',
-            )
-        }
-
+    const handleOpenArticles = () => {
         // TODO: Implement logic to open articles for other file types
     }
+
+    const isExcelFile = (filename: string) =>
+        filename.toLowerCase().endsWith('.xlsx')
 
     return (
         <>
@@ -303,15 +295,27 @@ export const ExternalFilesSection = ({
                                 {isAiAgentFilesAndUrlsKnowledgeVisible && (
                                     <div className={css.articlesIcons}>
                                         <IconButton
+                                            id={`open-articles-${ingestedFile.id}`}
                                             size="small"
                                             fillStyle="ghost"
                                             intent="secondary"
                                             aria-label="Open articles"
-                                            onClick={() =>
-                                                handleOpenArticles(ingestedFile)
-                                            }
+                                            onClick={handleOpenArticles}
                                             icon="keyboard_arrow_right"
+                                            isDisabled={isExcelFile(
+                                                ingestedFile.filename,
+                                            )}
                                         />
+                                        {isExcelFile(ingestedFile.filename) && (
+                                            <Tooltip
+                                                target={`open-articles-${ingestedFile.id}`}
+                                                placement="top-start"
+                                            >
+                                                Viewing content from .xlsx files
+                                                is not supported. Download to
+                                                view its content.
+                                            </Tooltip>
+                                        )}
                                     </div>
                                 )}
                             </li>
