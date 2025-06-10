@@ -1,3 +1,4 @@
+import { aiInternalMessageTransformer } from '../aiInternalMessageTransformer'
 import { aiMessageEventsTransformer } from '../aiMessageEventsTransformer'
 import { aiMessageTransformer } from '../aiMessageTransformer'
 import { eventTransformer } from '../eventTransformer'
@@ -17,14 +18,11 @@ describe('transformers', () => {
             minimalMessageTransformer,
             aiMessageTransformer,
             aiMessageEventsTransformer,
+            aiInternalMessageTransformer,
             signalMessagesTransformer,
             failedMessageTransformer,
         ]
 
         expect(transformers).toEqual(expectedTransformers)
-    })
-
-    it('should have the correct number of transformers', () => {
-        expect(transformers).toHaveLength(8)
     })
 })
