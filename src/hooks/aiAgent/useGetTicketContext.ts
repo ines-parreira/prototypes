@@ -8,7 +8,7 @@ import { getTicketState } from 'state/ticket/selectors'
 
 type IntegrationCustomer = {
     id: number
-    created_at: string
+    created_at?: string
 }
 
 type IntegrationData = {

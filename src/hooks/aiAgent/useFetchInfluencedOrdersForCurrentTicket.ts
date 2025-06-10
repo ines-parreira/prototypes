@@ -29,17 +29,16 @@ export const useFetchInfluencedOrdersForCurrentTicket = (): {
 
 const getFirstCustomerCreatedAt = (
     ticketContext: ReturnType<typeof useGetTicketContext>,
-) =>
-    ticketContext.customers.length
-        ? new Date(
-              Math.min(
-                  ...ticketContext.customers
-                      .map((c) =>
-                          c.created_at
-                              ? new Date(c.created_at).getTime()
-                              : undefined,
-                      )
-                      .filter((x): x is number => x !== undefined),
-              ),
-          ).toISOString()
-        : undefined
+) => {
+    if (!ticketContext.customers.length) return undefined
+
+    const allCreatedAt = ticketContext.customers
+        .map((c) =>
+            c.created_at ? new Date(c.created_at).getTime() : undefined,
+        )
+        .filter((x): x is number => x !== undefined && !isNaN(x))
+
+    if (!allCreatedAt.length) return undefined
+
+    return new Date(Math.min(...allCreatedAt)).toISOString()
+}
