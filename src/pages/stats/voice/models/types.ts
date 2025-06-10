@@ -1,10 +1,11 @@
 import { VoiceCallDirection } from '@gorgias/helpdesk-queries'
+import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import {
     VoiceCallDimension,
     VoiceCallMeasure,
 } from 'models/reporting/cubes/VoiceCallCube'
-import { VoiceCallDisplayStatus, VoiceCallStatus } from 'models/voiceCall/types'
+import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 
 export type VoiceCallStatListItem = {
     [VoiceCallDimension.AgentId]: string | null

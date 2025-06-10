@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 
-import { VoiceCallStatus } from 'models/voiceCall/types'
+import { VoiceCallStatus } from '@gorgias/helpdesk-types'
+
 import { isFinalVoiceCallStatus } from 'models/voiceCall/utils'
 import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
 import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'

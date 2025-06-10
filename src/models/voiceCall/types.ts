@@ -1,36 +1,14 @@
-import { VoiceCallTerminationStatus } from '@gorgias/helpdesk-queries'
+import {
+    VoiceCallStatus,
+    VoiceCallTerminationStatus,
+} from '@gorgias/helpdesk-queries'
 
 import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
 
 export type VoiceCallDirection = 'inbound' | 'outbound'
 
-export enum VoiceCallStatus {
-    Answered = 'answered',
-    Connected = 'connected',
-    InProgress = 'in-progress',
-    Initiated = 'initiated',
-    Queued = 'queued',
-    Ringing = 'ringing',
-    Ending = 'ending',
-
-    // Final statuses:
-    Busy = 'busy',
-    Canceled = 'canceled',
-    Completed = 'completed',
-    Failed = 'failed',
-    NoAnswer = 'no-answer',
-    Missed = 'missed',
-}
-
-export enum DEPRECATED_VoiceCallDisplayStatus {
-    Answered = 'Answered',
-    InProgress = 'In progress',
-    Ringing = 'Ringing',
-    Missed = 'Missed',
-    Failed = 'Failed',
-}
-
 export enum VoiceCallDisplayStatus {
+    Routing = 'routing',
     Ringing = 'ringing',
     InProgress = 'in-progress',
     Answered = 'answered',
@@ -40,6 +18,8 @@ export enum VoiceCallDisplayStatus {
     Cancelled = 'cancelled',
     Failed = 'failed',
     Unanswered = 'unanswered',
+    Queued = 'queued',
+    Calling = 'calling',
 }
 
 export type VoiceCallSummary = {
@@ -52,8 +32,8 @@ export type VoiceCallSummary = {
 export type VoiceCall = {
     id: number
     integration_id: number
-    ticket_id: number
-    phone_number_id: number
+    ticket_id?: number
+    phone_number_id?: number
     external_id: string
     provider: string
     status: VoiceCallStatus
@@ -68,10 +48,13 @@ export type VoiceCall = {
     updated_datetime: string
     last_answered_by_agent_id: number | null
     initiated_by_agent_id?: number | null
+    last_rang_agent_id?: number
     customer_id: number
     has_call_recording: boolean
     has_voicemail: boolean
     summaries?: VoiceCallSummary[]
+    status_in_queue?: string
+    queue_id?: number
     termination_status?: VoiceCallTerminationStatus
 }
 
@@ -186,13 +169,18 @@ export const getInboundDisplayStatus = (
     status: VoiceCallStatus,
     termination_status?: VoiceCallTerminationStatus,
     lastAnsweredByAgentId?: number | null,
+    status_in_queue?: string,
 ): VoiceCallDisplayStatus | null => {
     switch (status) {
         case VoiceCallStatus.Ringing:
         case VoiceCallStatus.Initiated:
-        case VoiceCallStatus.Queued:
         case VoiceCallStatus.InProgress:
-            return VoiceCallDisplayStatus.Ringing
+            return VoiceCallDisplayStatus.Routing
+        case VoiceCallStatus.Queued:
+            if (status_in_queue === 'distributing') {
+                return VoiceCallDisplayStatus.Calling
+            }
+            return VoiceCallDisplayStatus.Queued
         case VoiceCallStatus.Answered:
         case VoiceCallStatus.Connected: // should not be possible
             return VoiceCallDisplayStatus.InProgress
@@ -243,6 +231,8 @@ export const getPrettyVoiceCallDisplayStatusName = (
     switch (status) {
         case VoiceCallDisplayStatus.Ringing:
             return 'Ringing'
+        case VoiceCallDisplayStatus.Routing:
+            return 'Routing'
         case VoiceCallDisplayStatus.InProgress:
             return 'In Progress'
         case VoiceCallDisplayStatus.Answered:
@@ -259,5 +249,9 @@ export const getPrettyVoiceCallDisplayStatusName = (
             return 'Unanswered'
         case VoiceCallDisplayStatus.CallbackRequested:
             return 'Callback Requested'
+        case VoiceCallDisplayStatus.Queued:
+            return 'Queued'
+        default:
+            return ''
     }
 }

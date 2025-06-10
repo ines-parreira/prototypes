@@ -1,10 +1,13 @@
-import { render } from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
+
+import { getVoiceQueue, PhoneRingingBehaviour } from '@gorgias/helpdesk-client'
 
 import {
     getInboundDisplayStatus,
     VoiceCall,
     VoiceCallDisplayStatus,
 } from 'models/voiceCall/types'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
 import { TicketVoiceCallInboundStatus } from '../TicketVoiceCallInboundStatus'
@@ -37,16 +40,21 @@ jest.mock('models/voiceCall/types', () => {
 })
 const getInboundDisplayStatusMock = assumeMock(getInboundDisplayStatus)
 
+jest.mock('@gorgias/helpdesk-client')
+const getVoiceQueueMock = assumeMock(getVoiceQueue)
+
 const renderComponent = (voiceCall: VoiceCall) => {
-    return render(<TicketVoiceCallInboundStatus voiceCall={voiceCall} />)
+    return renderWithQueryClientProvider(
+        <TicketVoiceCallInboundStatus voiceCall={voiceCall} />,
+    )
 }
 describe('TicketVoiceCallInboundStatus', () => {
-    it('should render "Ringing"', () => {
+    it('should render "Routing"', () => {
         getInboundDisplayStatusMock.mockReturnValue(
-            VoiceCallDisplayStatus.Ringing,
+            VoiceCallDisplayStatus.Routing,
         )
         const { getByText } = renderComponent({} as VoiceCall)
-        expect(getByText('Ringing')).toBeInTheDocument()
+        expect(getByText('Routing')).toBeInTheDocument()
     })
 
     it.each([
@@ -67,6 +75,62 @@ describe('TicketVoiceCallInboundStatus', () => {
             expect(getByTestId('collapsible-details')).toBeInTheDocument()
         },
     )
+
+    it('should render "Queued" when display status is "Queued"', () => {
+        getInboundDisplayStatusMock.mockReturnValue(
+            VoiceCallDisplayStatus.Queued,
+        )
+        const { getByText } = renderComponent({} as VoiceCall)
+        expect(getByText('Queued')).toBeInTheDocument()
+    })
+
+    describe('Calling', () => {
+        it('should render "Calling agents" when display status is "Calling" and distribution mode is "Broadcast"', async () => {
+            getVoiceQueueMock.mockResolvedValue({
+                data: {
+                    distribution_mode: PhoneRingingBehaviour.Broadcast,
+                },
+            } as any)
+            getInboundDisplayStatusMock.mockReturnValue(
+                VoiceCallDisplayStatus.Calling,
+            )
+
+            const { getByText } = renderComponent({
+                queue_id: 1,
+            } as VoiceCall)
+
+            await waitFor(() => {
+                expect(getVoiceQueueMock).toHaveBeenCalledWith(
+                    1,
+                    undefined,
+                    expect.any(Object),
+                )
+            })
+            await waitFor(() => {
+                expect(getByText('Calling agents')).toBeInTheDocument()
+            })
+        })
+
+        it('should render "Calling <agent> when display status is "Calling" and distribution mode is "Round Robin"', async () => {
+            getVoiceQueueMock.mockResolvedValue({
+                data: {
+                    distribution_mode: PhoneRingingBehaviour.RoundRobin,
+                },
+            } as any)
+            getInboundDisplayStatusMock.mockReturnValue(
+                VoiceCallDisplayStatus.Calling,
+            )
+            const { getByText } = renderComponent({
+                queue_id: 1,
+                last_rang_agent_id: 3,
+                phone_number_destination: '1234567890',
+            } as VoiceCall)
+            await waitFor(() => {
+                expect(getByText('Calling')).toBeInTheDocument()
+                expect(getByText('VoiceCallAgentLabel 3')).toBeInTheDocument()
+            })
+        })
+    })
 
     it.each([
         {

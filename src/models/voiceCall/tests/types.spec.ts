@@ -1,4 +1,7 @@
-import { VoiceCallTerminationStatus } from '@gorgias/helpdesk-queries'
+import {
+    VoiceCallStatus,
+    VoiceCallTerminationStatus,
+} from '@gorgias/helpdesk-queries'
 
 import { voiceCall } from 'fixtures/voiceCalls'
 import { getCombinations } from 'utils/testing'
@@ -10,7 +13,6 @@ import {
     isOutboundVoiceCall,
     isVoiceCall,
     VoiceCallDisplayStatus,
-    VoiceCallStatus,
 } from '../types'
 
 describe('type guards', () => {
@@ -54,19 +56,25 @@ describe('getInboundDisplayStatus', () => {
     it.each([
         {
             status: VoiceCallStatus.Ringing,
-            displayStatus: VoiceCallDisplayStatus.Ringing,
+            displayStatus: VoiceCallDisplayStatus.Routing,
         },
         {
             status: VoiceCallStatus.Initiated,
-            displayStatus: VoiceCallDisplayStatus.Ringing,
-        },
-        {
-            status: VoiceCallStatus.Queued,
-            displayStatus: VoiceCallDisplayStatus.Ringing,
+            displayStatus: VoiceCallDisplayStatus.Routing,
         },
         {
             status: VoiceCallStatus.InProgress,
-            displayStatus: VoiceCallDisplayStatus.Ringing,
+            displayStatus: VoiceCallDisplayStatus.Routing,
+        },
+        {
+            status: VoiceCallStatus.Queued,
+            displayStatus: VoiceCallDisplayStatus.Queued,
+            status_in_queue: 'waiting',
+        },
+        {
+            status: VoiceCallStatus.Queued,
+            displayStatus: VoiceCallDisplayStatus.Calling,
+            status_in_queue: 'distributing',
         },
         {
             status: VoiceCallStatus.Answered,
@@ -81,9 +89,16 @@ describe('getInboundDisplayStatus', () => {
             displayStatus: null,
         },
     ])(
-        'should return the correct non-final display status for inbound calls',
-        ({ status, displayStatus }) => {
-            expect(getInboundDisplayStatus(status)).toBe(displayStatus)
+        'should return the correct non-final display status for inbound calls ($status, $status_in_queue)',
+        ({ status, status_in_queue, displayStatus }) => {
+            expect(
+                getInboundDisplayStatus(
+                    status,
+                    undefined,
+                    undefined,
+                    status_in_queue,
+                ),
+            ).toBe(displayStatus)
         },
     )
 
@@ -237,6 +252,7 @@ describe('getPrettyVoiceCallDisplayStatusName', () => {
         [VoiceCallDisplayStatus.Failed, 'Failed'],
         [VoiceCallDisplayStatus.Unanswered, 'Unanswered'],
         [VoiceCallDisplayStatus.CallbackRequested, 'Callback Requested'],
+        [VoiceCallDisplayStatus.Queued, 'Queued'],
     ])(
         'should return the correct display name for each status',
         (displayStatus, prettyName) => {

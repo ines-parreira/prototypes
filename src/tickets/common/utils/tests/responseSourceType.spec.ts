@@ -1,3 +1,5 @@
+import { VoiceCallStatus } from '@gorgias/helpdesk-types'
+
 import { appQueryClient } from 'api/queryClient'
 import { TicketMessageSourceType, TicketVia } from 'business/types/ticket'
 import { TicketMessage } from 'models/ticket/types'
@@ -62,7 +64,7 @@ describe('responseSourceType()', () => {
         const messages: TicketMessage[] = [message]
         const voiceCall = {
             created_datetime: '2022-06-22T18:42:00',
-            status: voiceCallUtils.VoiceCallStatus.Completed,
+            status: VoiceCallStatus.Completed,
             direction: 'inbound',
         } as voiceCallUtils.VoiceCall
 
@@ -86,7 +88,7 @@ describe('responseSourceType()', () => {
         const messages: TicketMessage[] = [message]
         const voiceCall = {
             created_datetime: '2022-06-20T13:23:00',
-            status: voiceCallUtils.VoiceCallStatus.Completed,
+            status: VoiceCallStatus.Completed,
             direction: 'inbound',
         } as voiceCallUtils.VoiceCall
 
@@ -110,7 +112,7 @@ describe('responseSourceType()', () => {
         const messages: TicketMessage[] = [message]
         const voiceCall = {
             created_datetime: '2022-06-20T13:23:00',
-            status: voiceCallUtils.VoiceCallStatus.Completed,
+            status: VoiceCallStatus.Completed,
             direction: 'inbound',
         } as voiceCallUtils.VoiceCall
 

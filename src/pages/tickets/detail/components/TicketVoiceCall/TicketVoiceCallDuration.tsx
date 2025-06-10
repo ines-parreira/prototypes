@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
+import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 import { Badge } from '@gorgias/merchant-ui-kit'
 
 import useInterval from 'hooks/useInterval'
-import { VoiceCall, VoiceCallStatus } from 'models/voiceCall/types'
+import { VoiceCall } from 'models/voiceCall/types'
 import {
     getFormattedDurationEndedCall,
     getFormattedDurationOngoingCall,
@@ -34,25 +35,10 @@ export default function TicketVoiceCallDuration({
 
     const isMissedInboundCall =
         voiceCall.direction === 'inbound' &&
-        [
-            VoiceCallStatus.Canceled,
-            VoiceCallStatus.Completed,
-            VoiceCallStatus.Ending,
-        ].includes(voiceCall.status) &&
+        missedInboundCallStatuses.includes(voiceCall.status) &&
         !voiceCall.last_answered_by_agent_id
 
-    if (
-        isMissedInboundCall ||
-        [
-            VoiceCallStatus.InProgress,
-            VoiceCallStatus.Initiated,
-            VoiceCallStatus.Queued,
-            VoiceCallStatus.Ringing,
-            VoiceCallStatus.Failed,
-            VoiceCallStatus.Busy,
-            VoiceCallStatus.NoAnswer,
-        ].includes(voiceCall.status)
-    ) {
+    if (isMissedInboundCall || noDurationStatuses.includes(voiceCall.status)) {
         return null
     }
 
@@ -69,3 +55,19 @@ export default function TicketVoiceCallDuration({
         </Badge>
     )
 }
+
+const missedInboundCallStatuses: VoiceCallStatus[] = [
+    VoiceCallStatus.Canceled,
+    VoiceCallStatus.Completed,
+    VoiceCallStatus.Ending,
+]
+
+const noDurationStatuses: VoiceCallStatus[] = [
+    VoiceCallStatus.InProgress,
+    VoiceCallStatus.Initiated,
+    VoiceCallStatus.Queued,
+    VoiceCallStatus.Ringing,
+    VoiceCallStatus.Failed,
+    VoiceCallStatus.Busy,
+    VoiceCallStatus.NoAnswer,
+]

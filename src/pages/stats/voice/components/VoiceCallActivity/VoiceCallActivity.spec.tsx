@@ -2,7 +2,8 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 
-import { VoiceCallStatus } from 'models/voiceCall/types'
+import { VoiceCallStatus } from '@gorgias/helpdesk-types'
+
 import { isFinalVoiceCallStatus } from 'models/voiceCall/utils'
 import * as voiceCallHooks from 'pages/tickets/detail/components/TicketVoiceCall/hooks'
 import { assumeMock } from 'utils/testing'

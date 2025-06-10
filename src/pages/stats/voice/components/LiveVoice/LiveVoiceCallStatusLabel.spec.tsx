@@ -3,8 +3,8 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 
 import { VoiceCallDirection } from '@gorgias/helpdesk-queries'
+import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
-import { VoiceCallStatus } from 'models/voiceCall/types'
 import { assumeMock } from 'utils/testing'
 
 import { VoiceCallSummary } from '../../models/types'

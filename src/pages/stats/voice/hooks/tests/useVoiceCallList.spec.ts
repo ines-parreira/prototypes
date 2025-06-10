@@ -1,5 +1,7 @@
 import moment from 'moment/moment'
 
+import { VoiceCallStatus } from '@gorgias/helpdesk-types'
+
 import { OrderDirection } from 'models/api/types'
 import {
     VoiceCallDimension,
@@ -11,7 +13,7 @@ import {
 } from 'models/reporting/queries'
 import { voiceCallListQueryFactory } from 'models/reporting/queryFactories/voice/voiceCall'
 import { StatsFilters } from 'models/stat/types'
-import { VoiceCallDisplayStatus, VoiceCallStatus } from 'models/voiceCall/types'
+import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 import { formatReportingQueryDate } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'

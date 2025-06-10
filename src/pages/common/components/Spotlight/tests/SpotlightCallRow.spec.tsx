@@ -142,6 +142,7 @@ describe('<SpotlightCallRow/>', () => {
             voiceCall.status,
             VoiceCallTerminationStatus.Abandoned,
             1,
+            undefined,
         )
         expect(getOutboundDisplayStatusMock).not.toHaveBeenCalled()
     })

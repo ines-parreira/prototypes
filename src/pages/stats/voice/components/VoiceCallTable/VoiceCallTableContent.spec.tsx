@@ -5,9 +5,9 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { VoiceCallDirection } from '@gorgias/helpdesk-queries'
+import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-queries'
 
-import { VoiceCallDisplayStatus, VoiceCallStatus } from 'models/voiceCall/types'
+import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 import { CALL_LIST_PAGE_SIZE } from 'pages/stats/voice/constants/voiceOverview'
 import { useVoiceCallCount } from 'pages/stats/voice/hooks/useVoiceCallCount'
 import { RootState, StoreDispatch } from 'state/types'

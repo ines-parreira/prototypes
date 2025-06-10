@@ -1,12 +1,14 @@
 import moment from 'moment'
 
+import { VoiceCallStatus } from '@gorgias/helpdesk-types'
+
 import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
 import { getMoment, stringToDatetime } from 'utils/date'
 
-import { VoiceCall, VoiceCallEvent, VoiceCallStatus } from './types'
+import { VoiceCall, VoiceCallEvent } from './types'
 
 export const isFinalVoiceCallStatus = (status: VoiceCallStatus) => {
-    return [
+    const finalStatuses: VoiceCallStatus[] = [
         VoiceCallStatus.Busy,
         VoiceCallStatus.Canceled,
         VoiceCallStatus.Completed,
@@ -14,7 +16,9 @@ export const isFinalVoiceCallStatus = (status: VoiceCallStatus) => {
         VoiceCallStatus.NoAnswer,
         VoiceCallStatus.Ending,
         VoiceCallStatus.Missed,
-    ].includes(status)
+    ]
+
+    return finalStatuses.includes(status)
 }
 
 export const getFormattedDurationEndedCall = (
@@ -180,11 +184,14 @@ export const processEvents = (events: VoiceCallEvent[]): ProcessedEvent[] => {
 }
 
 export const isMissedInboundVoiceCall = (voiceCall: VoiceCall) => {
+    const finalInboundCallStatuses: VoiceCallStatus[] = [
+        VoiceCallStatus.Completed,
+        VoiceCallStatus.Ending,
+    ]
+
     return (
         voiceCall.direction === 'inbound' &&
-        [VoiceCallStatus.Completed, VoiceCallStatus.Ending].includes(
-            voiceCall.status,
-        ) &&
+        finalInboundCallStatuses.includes(voiceCall.status) &&
         !voiceCall.last_answered_by_agent_id
     )
 }

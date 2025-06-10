@@ -117,6 +117,7 @@ const SpotlightCallInfo = ({
                                   voiceCall.status,
                                   voiceCall.termination_status,
                                   voiceCall.last_answered_by_agent_id,
+                                  voiceCall.status_in_queue,
                               )
                             : getOutboundDisplayStatus(voiceCall.status)
                     }

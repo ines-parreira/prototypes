@@ -10,7 +10,6 @@ import { OrderDirection } from 'models/api/types'
 import {
     getInboundDisplayStatus,
     getOutboundDisplayStatus,
-    VoiceCallStatus as LegacyVoiceCallStatus,
 } from 'models/voiceCall/types'
 import { getMoment } from 'utils/date'
 import { formatReportingQueryDate } from 'utils/reporting'
@@ -80,10 +79,15 @@ export const formatVoiceCallsData = (
         const agentId =
             voiceCall.last_answered_by_agent_id ??
             voiceCall.initiated_by_agent_id
-        const status = voiceCall.status as LegacyVoiceCallStatus
+        const status = voiceCall.status
         const displayStatus =
             voiceCall.direction === VoiceCallDirection.Inbound
-                ? getInboundDisplayStatus(status, voiceCall.termination_status)
+                ? getInboundDisplayStatus(
+                      voiceCall.status,
+                      voiceCall.termination_status,
+                      voiceCall.last_answered_by_agent_id,
+                      voiceCall.status_in_queue,
+                  )
                 : getOutboundDisplayStatus(status)
 
         return {

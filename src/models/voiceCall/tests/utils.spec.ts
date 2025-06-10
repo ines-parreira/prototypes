@@ -1,7 +1,9 @@
+import { VoiceCallStatus } from '@gorgias/helpdesk-types'
+
 import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
 import * as momentUtils from 'utils/date'
 
-import { VoiceCall, VoiceCallEvent, VoiceCallStatus } from '../types'
+import { VoiceCall, VoiceCallEvent } from '../types'
 import {
     getFormattedDurationEndedCall,
     getFormattedDurationOngoingCall,

@@ -110,9 +110,10 @@ export default function VoiceCallFilter({
                             <DropdownItem
                                 key={option}
                                 option={{
-                                    label: getPrettyVoiceCallDisplayStatusName(
-                                        option,
-                                    ),
+                                    label:
+                                        getPrettyVoiceCallDisplayStatusName(
+                                            option,
+                                        ) ?? '',
                                     value: option,
                                 }}
                                 onClick={toggleStatusFromFilter}

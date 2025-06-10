@@ -2,11 +2,9 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 
-import {
-    OutboundVoiceCall,
-    VoiceCall,
-    VoiceCallStatus,
-} from 'models/voiceCall/types'
+import { VoiceCallStatus } from '@gorgias/helpdesk-types'
+
+import { OutboundVoiceCall, VoiceCall } from 'models/voiceCall/types'
 import * as utils from 'models/voiceCall/utils'
 import { userEvent } from 'utils/testing/userEvent'
 
