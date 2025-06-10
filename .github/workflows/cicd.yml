@@ -188,3 +188,17 @@ jobs:
 
       - name: Upload Chromatic
         run: pnpm chromatic --zip --exit-once-uploaded --project-token=${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+
+  security-sast:
+    name: "Security: Static Code Analysis"
+    uses: gorgias/reusable-actions/.github/workflows/sast-scans.yml@main
+    # Skip any PR created by dependabot to avoid permission issues:
+    if: (github.actor != 'dependabot[bot]' )
+    secrets: inherit
+    with:
+        semgrep-fail-on-severity: CRITICAL
+        semgrep-fail-on-confidence: HIGH
+        exit-zero: false
+        pr-mode: ${{ github.ref_name != 'main' }}
+        current-ref: ${{ github.head_ref }}
+        base-ref: ${{ github.base_ref }}
