@@ -140,7 +140,7 @@ export const DEFAULT_CALLBACK_REQUESTS = {
     enabled: false,
     prompt_message: {
         voice_message_type: VoiceMessageType.TextToSpeech,
-        text_to_speech_content: `You can request a callback at any time. Just press star and we'll return your call as soon as we can.`,
+        text_to_speech_content: `You can request a callback at any time. Just press star and we'll return your call shortly.`,
     },
     confirmation_message: {
         voice_message_type: VoiceMessageType.TextToSpeech,
