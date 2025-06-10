@@ -205,7 +205,7 @@ describe('AiAgentOnboarding', () => {
 
         await waitFor(() => {
             expect(history.location.pathname).toContain(
-                WizardStepEnum.ENGAGEMENT,
+                WizardStepEnum.PERSONALITY_PREVIEW,
             )
         })
     })

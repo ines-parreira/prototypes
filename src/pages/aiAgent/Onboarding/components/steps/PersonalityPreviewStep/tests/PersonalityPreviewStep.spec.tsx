@@ -100,7 +100,7 @@ describe('<PersonalityPreviewStep />', () => {
             currentStep: 3,
             totalSteps: 4,
             previousStep: WizardStepEnum.SALES_PERSONALITY,
-            nextStep: WizardStepEnum.ENGAGEMENT,
+            nextStep: WizardStepEnum.PERSONALITY_PREVIEW,
         },
     ])(
         'with scope defined as $description',
