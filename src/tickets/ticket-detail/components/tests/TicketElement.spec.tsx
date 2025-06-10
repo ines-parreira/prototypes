@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
+import VoiceRecordingsProvider from 'pages/integrations/integration/components/voice/VoiceRecordingsProvider'
 import { TicketEventEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 
 import type { TicketElement as TicketElementType } from '../../types'
@@ -8,6 +9,11 @@ import { TicketElement } from '../TicketElement'
 jest.mock('pages/tickets/detail/components/PhoneEvent/PhoneEvent', () => () => (
     <div>PhoneEvent</div>
 ))
+
+jest.mock(
+    'pages/integrations/integration/components/voice/VoiceRecordingsProvider',
+    () => jest.fn(({ children }) => <div>{children}</div>),
+)
 
 jest.mock(
     'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCall',
@@ -56,6 +62,7 @@ describe('TicketElement', () => {
             data: { id: 1 },
         } as TicketElementType
         render(<TicketElement element={element} />)
+        expect(VoiceRecordingsProvider).toHaveBeenCalled()
         expect(screen.getByText('TicketVoiceCall')).toBeInTheDocument()
     })
 

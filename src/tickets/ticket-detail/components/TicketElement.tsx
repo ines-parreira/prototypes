@@ -1,6 +1,7 @@
 import { fromJS } from 'immutable'
 
 import type { VoiceCall } from 'models/voiceCall/types'
+import VoiceRecordingsProvider from 'pages/integrations/integration/components/voice/VoiceRecordingsProvider'
 import PhoneEvent from 'pages/tickets/detail/components/PhoneEvent/PhoneEvent'
 import TicketVoiceCall from 'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCall'
 
@@ -24,7 +25,11 @@ export function TicketElement({ element }: Props) {
             return <TicketAIEvent data={element.data} />
 
         case 'voice-call':
-            return <TicketVoiceCall voiceCall={element.data as VoiceCall} />
+            return (
+                <VoiceRecordingsProvider>
+                    <TicketVoiceCall voiceCall={element.data as VoiceCall} />
+                </VoiceRecordingsProvider>
+            )
 
         default:
             return null
