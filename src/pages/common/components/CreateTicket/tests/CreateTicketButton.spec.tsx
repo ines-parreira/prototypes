@@ -1,10 +1,6 @@
-import React, { forwardRef } from 'react'
-
-import { act } from '@testing-library/react'
-
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
-import { flushPromises, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 import { userEvent } from 'utils/testing/userEvent'
 
 import useHandleTicketDraft from '../useHandleTicketDraft'
@@ -52,28 +48,6 @@ describe('<CreateTicketButton />', () => {
         expect(
             queryByText('Discard and create new ticket'),
         ).not.toBeInTheDocument()
-    })
-
-    it('should allow passing a custom trigger', async () => {
-        const { getByText } = renderWithRouter(
-            <CreateTicketButton trigger={<button>Custom trigger</button>} />,
-        )
-        await act(flushPromises)
-
-        expect(getByText('Custom trigger')).toBeInTheDocument()
-    })
-
-    it('should allow passing a custom dropdown trigger', async () => {
-        const CustomTrigger = forwardRef((_, ref) => (
-            <button>{JSON.stringify(ref)}</button>
-        ))
-
-        const { getByText } = renderWithRouter(
-            <CreateTicketButton trigger={<CustomTrigger />} />,
-        )
-        await act(flushPromises)
-
-        expect(getByText('{"current":null}')).toBeInTheDocument()
     })
 
     it('should bind keyboard shortcuts', () => {
@@ -143,7 +117,6 @@ describe('<CreateTicketButton />', () => {
             const buttonClasses = getByRole('button', {
                 name: 'Create ticket',
             }).classList
-            expect(buttonClasses).toContain('secondary')
             expect(buttonClasses).not.toContain('primary')
         })
     })

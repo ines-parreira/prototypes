@@ -1,16 +1,13 @@
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import { NotificationsSettings } from 'common/notifications'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { PageSection } from 'config/pages'
 import {
     paywallConfigs as defaultPaywallConfigs,
     PaywallConfig,
 } from 'config/paywalls'
 import { ADMIN_ROLE, AGENT_ROLE } from 'config/user'
-import { useFlag } from 'core/flags'
 import { OBJECT_TYPES } from 'custom-fields/constants'
-import IntegrationDetail from 'pages/integrations/integration/Integration'
 import Access from 'pages/settings/access/Access'
 import APIView from 'pages/settings/api/APIView'
 import UserAuditList from 'pages/settings/audit/UserAuditList'
@@ -81,24 +78,15 @@ export const PaywalledOrderManagement = () => (
 
 export function SettingRoutes() {
     const { path } = useRouteMatch()
-    const hasNewNavbarUi = useFlag(FeatureFlagKey.RevampNavBarUi)
 
     return (
         <HelpCenterApiClientProvider>
             <Switch>
-                <Route path={`${path}/`} exact>
-                    {hasNewNavbarUi ? (
-                        <Redirect to={`${path}/macros`} />
-                    ) : (
-                        renderAppSettings(IntegrationDetail, {
-                            roleParams: [
-                                ADMIN_ROLE,
-                                PageSection.Channels,
-                                `${path}/help-center`,
-                            ],
-                        })
-                    )}
-                </Route>
+                <Route
+                    path={`${path}/`}
+                    exact
+                    component={() => <Redirect to={`${path}/macros`} />}
+                />
 
                 <Route path={`${path}/billing`}>
                     <Billing />

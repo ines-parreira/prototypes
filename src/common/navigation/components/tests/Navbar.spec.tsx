@@ -32,11 +32,10 @@ jest.mock('common/segment')
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const useAppSelectorMock = assumeMock(useAppSelector)
 
-jest.mock(
-    'pages/common/components/CreateTicket/CreateTicketNavbarButton',
-    () => () => <div>CreateTicketNavbarButton</div>,
-)
-jest.mock('pages/common/components/PlaceCallNavbarButton', () => () => (
+jest.mock('pages/tickets/navbar/CreateTicketNavbarButton', () => () => (
+    <div>CreateTicketNavbarButton</div>
+))
+jest.mock('pages/tickets/navbar/PlaceCallNavbarButton', () => () => (
     <div>PlaceCallNavbarButton</div>
 ))
 jest.mock(

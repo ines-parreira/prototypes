@@ -5,9 +5,6 @@ import { render, screen } from '@testing-library/react'
 import { Route, useRouteMatch } from 'react-router-dom'
 
 import { NotificationsSettings } from 'common/notifications'
-import { PageSection } from 'config/pages'
-import { ADMIN_ROLE } from 'config/user'
-import IntegrationDetail from 'pages/integrations/integration/Integration'
 import Access from 'pages/settings/access/Access'
 import APIView from 'pages/settings/api/APIView'
 import UserAuditList from 'pages/settings/audit/UserAuditList'
@@ -32,7 +29,6 @@ import { ContactForm } from '../ContactForm'
 import { Convert } from '../Convert'
 import { CustomFields } from '../CustomFields'
 import { HelpCenter } from '../HelpCenter'
-import { renderAppSettings } from '../helpers/settingsRenderer'
 import { Import } from '../Import'
 import { Integrations } from '../Integrations'
 import { Macros } from '../Macros'
@@ -88,25 +84,10 @@ jest.mock('../helpers/settingsRenderer', () => ({
 
 const mockedRoute = Route as jest.Mock
 const mockedUseRouteMatch = assumeMock(useRouteMatch)
-const mockedRenderAppSettings = assumeMock(renderAppSettings)
 
 const basePath = 'settings'
 
 const testingMap = [
-    {
-        callOrder: 0,
-        exact: true,
-        path: `${basePath}/`,
-        component: IntegrationDetail,
-        renderHelperProps: {
-            roleParams: [
-                ADMIN_ROLE,
-                PageSection.Channels,
-                `${basePath}/help-center`,
-            ],
-        },
-        renderHelperCallOrder: 0,
-    },
     {
         callOrder: 1,
         exact: undefined,
@@ -311,34 +292,18 @@ describe('Settings', () => {
     it('should call renderer and Route according to the testing map ', () => {
         render(<SettingRoutes />)
 
-        testingMap.forEach(
-            ({
-                callOrder,
-                exact,
-                path,
-                component,
-                renderHelperProps,
-                renderHelperCallOrder,
-            }) => {
-                expect(mockedRoute.mock.calls[callOrder]).toEqual([
-                    {
-                        children: expect.objectContaining({
-                            type: component,
-                        }),
-                        path,
-                        ...(exact ? { exact } : {}),
-                    },
-                    {},
-                ])
-                if (renderHelperProps) {
-                    expect(
-                        mockedRenderAppSettings.mock.calls[
-                            renderHelperCallOrder
-                        ],
-                    ).toEqual([component, renderHelperProps])
-                }
-            },
-        )
+        testingMap.forEach(({ callOrder, exact, path, component }) => {
+            expect(mockedRoute.mock.calls[callOrder]).toEqual([
+                {
+                    children: expect.objectContaining({
+                        type: component,
+                    }),
+                    path,
+                    ...(exact ? { exact } : {}),
+                },
+                {},
+            ])
+        })
     })
 
     it('should render the paywall around article recommendations', () => {

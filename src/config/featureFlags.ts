@@ -132,7 +132,6 @@ export enum FeatureFlagKey {
     ReportingFilteringAndCalculationsTagsReport = 'reporting-filtering-and-calculations-tags-report',
     ReportingTicketFieldsPivotTable = 'reporting-ticket-fields-pivot-table',
     ReportingVoiceOfCustomer = 'reporting-voice-of-customer',
-    RevampNavBarUi = 'linear.project_revamp-navbar-ia-and-components-to-establish-modern-and-scalable-ui.ui-update',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',

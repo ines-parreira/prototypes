@@ -1,19 +1,23 @@
-import React, { cloneElement, ReactElement, useMemo, useRef } from 'react'
+import { ReactElement, useRef } from 'react'
 
 import { LocationDescriptor } from 'history'
 import _noop from 'lodash/noop'
-import { Link, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+
+import { Button, type ButtonIntent } from '@gorgias/merchant-ui-kit'
 
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
-import Button, { type ButtonProps } from 'pages/common/components/button/Button'
 import DropdownButton from 'pages/common/components/button/DropdownButton'
-import useHandleTicketDraft from 'pages/common/components/CreateTicket/useHandleTicketDraft'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
 
+import { useCreateTicketButton } from './useCreateTicketButton'
+
 type CreateTicketButtonProps = {
-    buttonProps?: Omit<ButtonProps, 'children'>
+    buttonProps?: {
+        intent?: ButtonIntent
+    }
     isDisabled?: boolean
     to?: LocationDescriptor<{
         receiver: {
@@ -27,51 +31,45 @@ type CreateTicketButtonProps = {
 export default function CreateTicketButton({
     buttonProps,
     isDisabled,
-    to = '/app/ticket/new',
+    to,
     shouldBindKeys = false,
-    trigger,
 }: CreateTicketButtonProps) {
-    const history = useHistory()
-    const { hasDraft, onResumeDraft, onDiscardDraft } = useHandleTicketDraft()
     const dropdownTargetRef = useRef<HTMLDivElement>(null)
+    const {
+        hasDraft,
+        onResumeDraft,
+        onDiscardDraft,
+        createTicketActions,
+        createTicketPath,
+    } = useCreateTicketButton()
 
-    const actions = useMemo(
-        () => ({
-            CREATE_TICKET: {
-                action: (e: Event) => {
-                    e.preventDefault()
-                    history.push('/app/ticket/new')
-                },
-            },
-        }),
-        [history],
+    useConditionalShortcuts(
+        shouldBindKeys,
+        'CreateTicketButton',
+        createTicketActions,
     )
 
-    useConditionalShortcuts(shouldBindKeys, 'CreateTicketButton', actions)
-
-    return !hasDraft ? (
-        <Link className="d-inline-flex" to={to}>
-            {trigger || (
+    if (!hasDraft) {
+        return (
+            <Link className="d-inline-flex" to={to ?? createTicketPath}>
                 <Button {...buttonProps} isDisabled={isDisabled}>
                     Create ticket
                 </Button>
-            )}
-        </Link>
-    ) : (
+            </Link>
+        )
+    }
+
+    return (
         <>
-            {trigger ? (
-                cloneElement(trigger, { ref: dropdownTargetRef })
-            ) : (
-                <DropdownButton
-                    intent={buttonProps?.intent ?? 'primary'}
-                    fillStyle="fill"
-                    onToggleClick={_noop}
-                    size="medium"
-                    ref={dropdownTargetRef}
-                >
-                    Create ticket
-                </DropdownButton>
-            )}
+            <DropdownButton
+                intent={buttonProps?.intent ?? 'primary'}
+                fillStyle="fill"
+                onToggleClick={_noop}
+                size="medium"
+                ref={dropdownTargetRef}
+            >
+                Create ticket
+            </DropdownButton>
             <UncontrolledDropdown
                 target={dropdownTargetRef}
                 placement="bottom-end"
@@ -92,7 +90,7 @@ export default function CreateTicketButton({
                             label: 'Discard and create new ticket',
                             value: 'discard',
                         }}
-                        onClick={() => onDiscardDraft(to)}
+                        onClick={() => onDiscardDraft(to ?? createTicketPath)}
                         shouldCloseOnSelect
                     />
                 </DropdownBody>
