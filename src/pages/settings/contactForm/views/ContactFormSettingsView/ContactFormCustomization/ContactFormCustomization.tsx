@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
-// eslint-disable-next-line no-restricted-imports
-import { useDispatch } from 'react-redux'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     ContactForm,
     UpdateContactFormDto,
@@ -51,7 +50,7 @@ const initUpdateDto = (
 }
 
 const ContactFormCustomization = (): JSX.Element => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const { updateContactForm, isLoading } = useContactFormApi()
     const contactForm = useCurrentContactForm()
     const isContactFormExtraHtmlEnabled = useFlag(

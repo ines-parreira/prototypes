@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 
 import { fromJS } from 'immutable'
-// eslint-disable-next-line no-restricted-imports
-import { useDispatch } from 'react-redux'
 
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { loadIntegration } from 'models/integration/resources/alloy'
@@ -41,7 +40,7 @@ export default function AlloyConnectButton({
     appId,
     integrationId,
 }: Props) {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const [isInstalling, setIsInstalling] = useState(false)
 
     // Get the first matching Alloy integration with this ID

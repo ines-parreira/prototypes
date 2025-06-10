@@ -1,11 +1,9 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 
-// eslint-disable-next-line no-restricted-imports
-import { useDispatch } from 'react-redux'
-
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { SavedFilter, SavedFilterAPI } from 'models/stat/types'
 import Button from 'pages/common/components/button/Button'
@@ -66,7 +64,7 @@ const ApplySavedFilters = ({ savedFilters, canEdit, isDisabled }: Props) => {
     const savedFilterDraft = useAppSelector(getSavedFilterDraft)
     const [toggleDropdown, setToggleDropdown] = useState<boolean>(false)
     const buttonRef = useRef<HTMLDivElement>(null)
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const createSavedFilterHandler = () => {
         dispatch(initialiseSavedFilterDraft())
         setToggleDropdown(false)

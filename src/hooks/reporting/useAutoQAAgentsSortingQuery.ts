@@ -1,11 +1,10 @@
 import { useEffect } from 'react'
 
 import { PayloadAction } from '@reduxjs/toolkit'
-// eslint-disable-next-line no-restricted-imports
-import { useDispatch } from 'react-redux'
 
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { opposite, OrderDirection } from 'models/api/types'
 import { StatsFilters } from 'models/stat/types'
@@ -32,7 +31,7 @@ export const useAutoQAAgentsSortingQuery = (
         userTimezone: string
     },
 ) => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const { cleanStatsFilters, userTimezone } = statsFilters
     useResetPageOnQueryUpdate(pageSet)
 
@@ -84,7 +83,7 @@ export const useAutoQAAgentsSortingQuery = (
 const useResetPageOnQueryUpdate = (
     pageSet: (page: number) => PayloadAction<number>,
 ) => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const { cleanStatsFilters } = useStatsFilters()
 
     useEffect(() => {

@@ -9,9 +9,7 @@ import { CurrentProductsUsages, Invoice, PaymentMethod } from './types'
 /**
  * Update an invoice in the list of invoices.
  */
-export const updateInvoiceInList = (
-    invoice: Map<any, any>,
-): ReturnType<StoreDispatch> => {
+export const updateInvoiceInList = (invoice: Map<any, any>) => {
     return {
         type: constants.UPDATE_INVOICE_IN_LIST,
         invoice,

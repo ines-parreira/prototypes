@@ -4,11 +4,10 @@ import { AxiosError } from 'axios'
 import classNames from 'classnames'
 import { fromJS } from 'immutable'
 import moment from 'moment'
-// eslint-disable-next-line no-restricted-imports
-import { useDispatch } from 'react-redux'
 import { Table } from 'reactstrap'
 
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useCallbackRef from 'hooks/useCallbackRef'
 import Button from 'pages/common/components/button/Button'
@@ -24,7 +23,7 @@ import { NotificationStatus } from 'state/notifications/types'
 import css from './PaymentHistoryView.less'
 
 const PaymentsHistoryView = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const gorgiasApi = new GorgiasApi()
     const invoices = useAppSelector(getInvoices).toJS() as Invoice[]
 

@@ -1,13 +1,12 @@
 import React, { UIEventHandler, useState } from 'react'
 
 import classNames from 'classnames'
-// eslint-disable-next-line no-restricted-imports
-import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import { useAIAgentInsightsDataset } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
 import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
@@ -73,7 +72,7 @@ export const IntentTable = ({
     paginatedIntents: PaginatedIntents
     intentLevel?: number
 }) => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const [ref, { width }] = useMeasure<HTMLDivElement>()
     const [isTableScrolled, setIsTableScrolled] = useState(false)

@@ -1,9 +1,7 @@
 import { useEffect } from 'react'
 
-// eslint-disable-next-line no-restricted-imports
-import { useDispatch } from 'react-redux'
-
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import usePrevious from 'hooks/usePrevious'
 import { opposite, OrderDirection } from 'models/api/types'
@@ -154,7 +152,7 @@ export function useIntentSortingQuery(
     intentId?: string,
     intentLevel?: number,
 ) {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const sorting = useAppSelector(getIntentSorting)
 
     const { cleanStatsFilters, userTimezone } = useStatsFilters()

@@ -20,6 +20,8 @@
         },
         {
             "files": [
+                "src/hooks/useAppDispatch.ts",
+                "src/hooks/useAppSelector.ts",
                 "src/utils/testing/renderHook.tsx",
                 "src/utils/wrappers/DateRangePicker.tsx",
                 "src/utils/wrappers/DndProvider.tsx",

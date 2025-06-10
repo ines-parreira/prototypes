@@ -1,12 +1,11 @@
 import React, { FC, MouseEvent } from 'react'
 
 import { List, Map } from 'immutable'
-// eslint-disable-next-line no-restricted-imports
-import { useDispatch } from 'react-redux'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
 import { useAppNode } from 'appNode'
 import { AttachmentEnum } from 'common/types'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
 import { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
@@ -27,7 +26,7 @@ export const DeleteUniqueDiscountOfferModal: FC<Props> = (props) => {
     const newMessageAttachments: List<any> = useAppSelector(
         getNewMessageAttachments,
     )
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const deleteModalManager = useModalManager(DELETE_DISCOUNT_MODAL_NAME)
 

@@ -7,6 +7,7 @@ import { Provider } from 'react-redux'
 import configureMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import useAppDispatch from 'hooks/useAppDispatch'
 import { useModalManager, useModalManagerApi } from 'hooks/useModalManager'
 import { useDeleteDiscountOffer } from 'models/convert/discountOffer/queries'
 import { deleteAttachment } from 'state/newMessage/actions'
@@ -23,12 +24,14 @@ jest.mock('hooks/useAppDispatch')
 const useDeleteDiscountOfferMock = assumeMock(useDeleteDiscountOffer)
 const useModalManagerMock = assumeMock(useModalManager)
 const deleteAttachmentMock = assumeMock(deleteAttachment)
+const useAppDispatchMock = assumeMock(useAppDispatch)
 
 describe('<DeleteUniqueDiscountOfferModal />', () => {
     const middlewares = [thunk]
     const mockStore = configureMockStore(middlewares)
     const queryClient = mockQueryClient()
     let store: MockStore
+    const mockDispatch = jest.fn()
 
     const props = { isOpen: true, onClose: jest.fn() }
 
@@ -54,6 +57,8 @@ describe('<DeleteUniqueDiscountOfferModal />', () => {
         useDeleteDiscountOfferMock.mockReturnValue({
             mutateAsync: jest.fn(),
         } as any)
+
+        useAppDispatchMock.mockReturnValue(mockDispatch)
     })
 
     it('does not call mutation without params', async () => {

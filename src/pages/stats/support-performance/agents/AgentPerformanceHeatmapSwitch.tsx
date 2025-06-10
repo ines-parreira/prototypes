@@ -1,6 +1,4 @@
-// eslint-disable-next-line no-restricted-imports
-import { useDispatch } from 'react-redux'
-
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { TableHeatmapSwitch } from 'pages/stats/common/components/Table/TableHeatmapSwitch'
 import {
@@ -10,7 +8,7 @@ import {
 
 export const AgentPerformanceHeatmapSwitch = () => {
     const heatmapMode = useAppSelector(getHeatmapMode)
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const toggleHandler = () => dispatch(toggleHeatmapMode())
 
     return (

@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
-// eslint-disable-next-line no-restricted-imports
-import { useDispatch } from 'react-redux'
 
+import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import { Components } from 'rest_api/help_center_api/client.generated'
 import { notify } from 'state/notifications/actions'
@@ -35,7 +34,7 @@ export const useContactFormMailtoReplacementConfig = ({
 }: {
     contactFormId: number
 }) => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const { emailIntegrations } = useEmailIntegrations()
 
     const queryClient = useQueryClient()

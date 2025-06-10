@@ -1,11 +1,10 @@
 import React, { FunctionComponent, UIEventHandler, useState } from 'react'
 
 import classNames from 'classnames'
-// eslint-disable-next-line no-restricted-imports
-import { useDispatch } from 'react-redux'
 
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useAutoQAAgentsSortingQuery } from 'hooks/reporting/useAutoQAAgentsSortingQuery'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
 import { StatsFilters } from 'models/stat/types'
@@ -60,7 +59,7 @@ const getSortingQuery = (
 }
 
 export const AutoQAAgentsTable = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const {
         currentPage,
         perPage,

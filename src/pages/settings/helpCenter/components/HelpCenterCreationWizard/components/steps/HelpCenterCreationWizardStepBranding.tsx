@@ -1,10 +1,9 @@
 import { useFlags } from 'launchdarkly-react-client-sdk'
-// eslint-disable-next-line no-restricted-imports
-import { useDispatch } from 'react-redux'
 
 import { Label } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     HelpCenter,
     HelpCenterCreationWizardStep,
@@ -42,7 +41,7 @@ type Props = {
 const HelpCenterCreationWizardStepBranding: React.FC<Props> = ({
     helpCenter,
 }) => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const {
         helpCenter: newHelpCenter,
         handleFormUpdate,

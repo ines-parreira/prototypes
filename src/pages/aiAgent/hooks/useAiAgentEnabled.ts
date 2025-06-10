@@ -1,11 +1,10 @@
 import { useCallback, useMemo } from 'react'
 
-// eslint-disable-next-line no-restricted-imports
-import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import { RuleType } from '@gorgias/helpdesk-queries'
 
+import useAppDispatch from 'hooks/useAppDispatch'
 import { updateRule } from 'models/rule/resources'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
@@ -29,7 +28,7 @@ export const useAiAgentEnabled = ({
         shopName: string
     }>()
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     // Get chat channels for the shop
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)

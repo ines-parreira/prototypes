@@ -3,10 +3,9 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import classNames from 'classnames'
 import { get } from 'lodash'
-// eslint-disable-next-line no-restricted-imports
-import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     ContactFormIntegration,
@@ -47,7 +46,7 @@ const ContactFormPreferences = (): JSX.Element => {
         deleteContactForm,
     } = useContactFormApi()
     const history = useHistory()
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const contactForm = useCurrentContactForm()
     const [isNameInvalid, setIsNameInvalid] = useState(false)
     const [isDeletionModalShown, setIsDeletionModalShown] = useState(false)

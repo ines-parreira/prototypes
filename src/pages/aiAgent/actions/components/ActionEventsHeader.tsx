@@ -3,10 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import _noop from 'lodash/noop'
 import moment from 'moment'
-// eslint-disable-next-line no-restricted-imports
-import { useDispatch } from 'react-redux'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
 import Filter from 'pages/stats/common/components/Filter'
@@ -35,7 +34,7 @@ export default function ActionEventsHeader({
     initialEndDate,
     initialStartDate,
 }: Props) {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
     const isActionEventLogsWIthPartialSuccess =
         useFlags()[FeatureFlagKey.ActionEventLogsWIthPartialSuccess]

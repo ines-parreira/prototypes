@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-restricted-imports
 import { useSelector } from 'react-redux'
 
 import { RootState } from 'state/types'
