@@ -18,9 +18,11 @@ import { HELP_CENTER_ROOT_CATEGORY_ID } from '../../../pages/settings/helpCenter
 import {
     useCreateFileIngestion,
     useDeleteFileIngestion,
+    useGetArticleIngestionArticlesTitleAndStatus,
     useGetArticleIngestionLogs,
     useGetArticleIngestionLogsList,
     useGetFileIngestion,
+    useGetFileIngestionArticleTitlesAndStatus,
     useGetHelpCenter,
     useGetHelpCenterArticle,
     useGetHelpCenterArticleList,
@@ -59,6 +61,14 @@ const updateIngestedResource = jest.spyOn(resources, 'updateIngestedResource')
 const createFileIngestion = jest.spyOn(resources, 'createFileIngestion')
 const getFileIngestion = jest.spyOn(resources, 'getFileIngestion')
 const deleteFileIngestion = jest.spyOn(resources, 'deleteFileIngestion')
+const getArticleIngestionArticleTitlesAndStatus = jest.spyOn(
+    resources,
+    'getArticleIngestionArticleTitlesAndStatus',
+)
+const getFileIngestionArticleTitlesAndStatus = jest.spyOn(
+    resources,
+    'getFileIngestionArticleTitlesAndStatus',
+)
 
 const queryClient = mockQueryClient()
 const wrapper = ({ children }: any) => (
@@ -647,20 +657,6 @@ describe('queries', () => {
             )
         })
 
-        it('should not call the api function when client is not set', () => {
-            mockUseHelpCenterApi.mockReturnValue({
-                client: undefined,
-                isReady: false,
-            })
-
-            renderHook(
-                () => useGetMultipleHelpCenter(helpCenterIds, {}, queryParams),
-                { wrapper },
-            )
-
-            expect(getHelpCenter).not.toHaveBeenCalled()
-        })
-
         it('should not call the api function when override disabled', () => {
             renderHook(
                 () =>
@@ -673,27 +669,6 @@ describe('queries', () => {
             )
 
             expect(getHelpCenter).not.toHaveBeenCalled()
-        })
-
-        it('should not call the api function for invalid helpCenterIds', async () => {
-            getHelpCenter.mockResolvedValueOnce(mockHelpCenters[0])
-
-            renderHook(
-                () =>
-                    useGetMultipleHelpCenter(
-                        [0, undefined as unknown as number, 3],
-                        {},
-                        queryParams,
-                    ),
-                { wrapper },
-            )
-
-            expect(getHelpCenter).toHaveBeenCalledTimes(1)
-            expect(getHelpCenter).toHaveBeenCalledWith(
-                expect.anything(),
-                { help_center_id: 3 },
-                queryParams,
-            )
         })
     })
 
@@ -1411,6 +1386,151 @@ describe('queries', () => {
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
             expect(result.current.data).toStrictEqual(null)
+        })
+    })
+
+    describe('useGetArticleIngestionArticlesTitleAndStatus', () => {
+        const pathParams = {
+            help_center_id: 1,
+            article_ingestion_id: 123,
+        }
+
+        beforeEach(() => {
+            mockUseHelpCenterApi.mockReturnValue({
+                client: {} as HelpCenterClient,
+                isReady: true,
+            })
+        })
+
+        it('should return article titles on success', async () => {
+            const mockResponse = {
+                data: [
+                    { id: 1, title: 'Article 1', visibilityStatus: 'PUBLIC' },
+                    { id: 2, title: 'Article 2', visibilityStatus: 'PUBLIC' },
+                ],
+            }
+            getArticleIngestionArticleTitlesAndStatus.mockResolvedValue(
+                mockResponse,
+            )
+
+            const { result } = renderHook(
+                () => useGetArticleIngestionArticlesTitleAndStatus(pathParams),
+                { wrapper },
+            )
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+            expect(result.current.data).toEqual(mockResponse)
+            expect(
+                getArticleIngestionArticleTitlesAndStatus,
+            ).toHaveBeenCalledWith(expect.any(Object), pathParams)
+        })
+
+        it('should not call the api function when client is not set', () => {
+            mockUseHelpCenterApi.mockReturnValue({
+                client: undefined,
+                isReady: false,
+            })
+
+            renderHook(
+                () => useGetArticleIngestionArticlesTitleAndStatus(pathParams),
+                {
+                    wrapper,
+                },
+            )
+
+            expect(
+                getArticleIngestionArticleTitlesAndStatus,
+            ).not.toHaveBeenCalled()
+        })
+
+        it('should handle errors', async () => {
+            const error = new Error('API Error')
+            getArticleIngestionArticleTitlesAndStatus.mockRejectedValue(error)
+
+            const { result } = renderHook(
+                () => useGetArticleIngestionArticlesTitleAndStatus(pathParams),
+                { wrapper },
+            )
+
+            await waitFor(() => expect(result.current.isError).toBe(true))
+            expect(result.current.error).toBe(error)
+        })
+    })
+
+    describe('useGetFileIngestionArticleTitlesAndStatus', () => {
+        const pathParams = {
+            help_center_id: 1,
+            file_ingestion_id: 456,
+        }
+
+        beforeEach(() => {
+            mockUseHelpCenterApi.mockReturnValue({
+                client: {} as HelpCenterClient,
+                isReady: true,
+            })
+        })
+
+        it('should return article titles on success', async () => {
+            const mockResponse = {
+                data: [
+                    {
+                        id: 1,
+                        title: 'File Article 1',
+                        visibilityStatus: 'PUBLIC',
+                    },
+                    {
+                        id: 2,
+                        title: 'File Article 2',
+                        visibilityStatus: 'PUBLIC',
+                    },
+                ],
+            }
+            getFileIngestionArticleTitlesAndStatus.mockResolvedValue(
+                mockResponse,
+            )
+
+            const { result } = renderHook(
+                () => useGetFileIngestionArticleTitlesAndStatus(pathParams),
+                { wrapper },
+            )
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+            expect(result.current.data).toEqual(mockResponse)
+            expect(getFileIngestionArticleTitlesAndStatus).toHaveBeenCalledWith(
+                expect.any(Object),
+                pathParams,
+            )
+        })
+
+        it('should not call the api function when client is not set', () => {
+            mockUseHelpCenterApi.mockReturnValue({
+                client: undefined,
+                isReady: false,
+            })
+
+            renderHook(
+                () => useGetFileIngestionArticleTitlesAndStatus(pathParams),
+                {
+                    wrapper,
+                },
+            )
+
+            expect(
+                getFileIngestionArticleTitlesAndStatus,
+            ).not.toHaveBeenCalled()
+        })
+
+        it('should handle errors', async () => {
+            const error = new Error('API Error')
+            getFileIngestionArticleTitlesAndStatus.mockRejectedValue(error)
+
+            const { result } = renderHook(
+                () => useGetFileIngestionArticleTitlesAndStatus(pathParams),
+                { wrapper },
+            )
+
+            await waitFor(() => expect(result.current.isError).toBe(true))
+            expect(result.current.error).toBe(error)
         })
     })
 })

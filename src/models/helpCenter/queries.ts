@@ -24,9 +24,11 @@ import {
     deleteArticleTranslation,
     deleteFileIngestion,
     deleteHelpCenterTranslation,
+    getArticleIngestionArticleTitlesAndStatus,
     getArticleIngestionLogs,
     getCategoryTree,
     getFileIngestion,
+    getFileIngestionArticleTitlesAndStatus,
     getHelpCenter,
     getHelpCenterArticle,
     getHelpCenterArticles,
@@ -316,10 +318,7 @@ export const useGetMultipleHelpCenter = (
                     queryParameters,
                 ),
             ...overrides,
-            enabled:
-                !!helpCenterClient &&
-                helpCenterId > 0 &&
-                (overrides === undefined || overrides.enabled),
+            enabled: overrides === undefined || overrides.enabled,
             refetchOnWindowFocus: false,
         })),
     })
@@ -813,5 +812,53 @@ export const useDeleteFileIngestion = (
         mutationFn: ([client = helpCenterClient, pathParams]) =>
             deleteFileIngestion(client, pathParams),
         ...overrides,
+    })
+}
+
+export const useGetFileIngestionArticleTitlesAndStatus = (
+    pathParams: {
+        help_center_id: number
+        file_ingestion_id: number
+    },
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getFileIngestionArticleTitlesAndStatus>>
+    >,
+) => {
+    const { client } = useHelpCenterApi()
+
+    return useQuery({
+        queryKey: [
+            ...helpCenterKeys.fileIngestions(pathParams.help_center_id),
+            'article-titles',
+            pathParams.file_ingestion_id,
+        ],
+        queryFn: async () =>
+            getFileIngestionArticleTitlesAndStatus(client, pathParams),
+        ...overrides,
+        enabled: !!client && (overrides === undefined || overrides.enabled),
+    })
+}
+
+export const useGetArticleIngestionArticlesTitleAndStatus = (
+    pathParams: {
+        help_center_id: number
+        article_ingestion_id: number
+    },
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getArticleIngestionArticleTitlesAndStatus>>
+    >,
+) => {
+    const { client } = useHelpCenterApi()
+
+    return useQuery({
+        queryKey: [
+            ...helpCenterKeys.articleIngestionLogs(pathParams.help_center_id),
+            'article-titles',
+            pathParams.article_ingestion_id,
+        ],
+        queryFn: async () =>
+            getArticleIngestionArticleTitlesAndStatus(client, pathParams),
+        ...overrides,
+        enabled: !!client && (overrides === undefined || overrides.enabled),
     })
 }

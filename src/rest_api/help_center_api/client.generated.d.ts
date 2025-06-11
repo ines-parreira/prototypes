@@ -3808,6 +3808,23 @@ declare namespace Paths {
             export type $200 = Components.Schemas.ArticleWithLocalTranslation
         }
     }
+    namespace GetArticleIngestionArticleTitlesAndStatus {
+        namespace Parameters {
+            export type AccountId = string
+            export type ArticleIngestionId = number
+            export type HelpCenterId = number
+        }
+        export interface PathParameters {
+            help_center_id: Parameters.HelpCenterId
+            article_ingestion_id: Parameters.ArticleIngestionId
+        }
+        export interface QueryParameters {
+            account_id?: Parameters.AccountId
+        }
+        namespace Responses {
+            export interface $200 {}
+        }
+    }
     namespace GetArticleIngestionLogs {
         namespace Parameters {
             export type AccountId = string
@@ -4107,7 +4124,7 @@ declare namespace Paths {
             export type $200 = Components.Schemas.RetrieveFileIngestionLogDto[]
         }
     }
-    namespace GetFileIngestionArticleTitles {
+    namespace GetFileIngestionArticleTitlesAndStatus {
         namespace Parameters {
             export type AccountId = string
             export type FileIngestionId = number
@@ -5198,6 +5215,17 @@ export interface OperationMethods {
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.HandleArticleIngestionDone.Responses.$201>
     /**
+     * getArticleIngestionArticleTitlesAndStatus - Get article titles and visibility status for an article ingestion log
+     */
+    'getArticleIngestionArticleTitlesAndStatus'(
+        parameters: Parameters<
+            Paths.GetArticleIngestionArticleTitlesAndStatus.QueryParameters &
+                Paths.GetArticleIngestionArticleTitlesAndStatus.PathParameters
+        >,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.GetArticleIngestionArticleTitlesAndStatus.Responses.$200>
+    /**
      * listCategoryArticles - List category's articles
      */
     'listCategoryArticles'(
@@ -6093,16 +6121,16 @@ export interface OperationMethods {
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.DeleteFileIngestion.Responses.$200>
     /**
-     * getFileIngestionArticleTitles - Get article titles for a file ingestion log
+     * getFileIngestionArticleTitlesAndStatus - Get article titles and visibility status for a file ingestion log
      */
-    'getFileIngestionArticleTitles'(
+    'getFileIngestionArticleTitlesAndStatus'(
         parameters: Parameters<
-            Paths.GetFileIngestionArticleTitles.QueryParameters &
-                Paths.GetFileIngestionArticleTitles.PathParameters
+            Paths.GetFileIngestionArticleTitlesAndStatus.QueryParameters &
+                Paths.GetFileIngestionArticleTitlesAndStatus.PathParameters
         >,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.GetFileIngestionArticleTitles.Responses.$200>
+    ): OperationResponse<Paths.GetFileIngestionArticleTitlesAndStatus.Responses.$200>
     /**
      * listGoogleFonts - List google fonts
      */
@@ -6361,6 +6389,19 @@ export interface PathsDictionary {
             data?: Paths.HandleArticleIngestionDone.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.HandleArticleIngestionDone.Responses.$201>
+    }
+    ['/api/help-center/help-centers/{help_center_id}/article-ingestion-log/{article_ingestion_id}/articles']: {
+        /**
+         * getArticleIngestionArticleTitlesAndStatus - Get article titles and visibility status for an article ingestion log
+         */
+        'get'(
+            parameters: Parameters<
+                Paths.GetArticleIngestionArticleTitlesAndStatus.QueryParameters &
+                    Paths.GetArticleIngestionArticleTitlesAndStatus.PathParameters
+            >,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.GetArticleIngestionArticleTitlesAndStatus.Responses.$200>
     }
     ['/api/help-center/help-centers/{help_center_id}/categories/{category_id}/articles']: {
         /**
@@ -7389,16 +7430,16 @@ export interface PathsDictionary {
     }
     ['/api/help-center/help-centers/{help_center_id}/file-ingestion/{file_ingestion_id}/articles']: {
         /**
-         * getFileIngestionArticleTitles - Get article titles for a file ingestion log
+         * getFileIngestionArticleTitlesAndStatus - Get article titles and visibility status for a file ingestion log
          */
         'get'(
             parameters: Parameters<
-                Paths.GetFileIngestionArticleTitles.QueryParameters &
-                    Paths.GetFileIngestionArticleTitles.PathParameters
+                Paths.GetFileIngestionArticleTitlesAndStatus.QueryParameters &
+                    Paths.GetFileIngestionArticleTitlesAndStatus.PathParameters
             >,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<Paths.GetFileIngestionArticleTitles.Responses.$200>
+        ): OperationResponse<Paths.GetFileIngestionArticleTitlesAndStatus.Responses.$200>
     }
     ['/api/help-center/google-fonts']: {
         /**

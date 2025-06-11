@@ -195,6 +195,19 @@ export const getArticleIngestionLogs = async (
     return response.data
 }
 
+export const getArticleIngestionArticleTitlesAndStatus = async (
+    client: HelpCenterClient | undefined,
+    pathParams: {
+        help_center_id: number
+        article_ingestion_id: number
+    },
+) => {
+    if (!client) return null
+    const response =
+        await client.getArticleIngestionArticleTitlesAndStatus(pathParams)
+    return response.data
+}
+
 export const startArticleIngestion = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.StartArticleIngestion.PathParameters,
@@ -295,4 +308,17 @@ export const deleteFileIngestion = async (
     if (!client) return null
     const response = await client.deleteFileIngestion(pathParams)
     return response
+}
+
+export const getFileIngestionArticleTitlesAndStatus = async (
+    client: HelpCenterClient | undefined,
+    pathParams: {
+        help_center_id: number
+        file_ingestion_id: number
+    },
+) => {
+    if (!client) return null
+    const response =
+        await client.getFileIngestionArticleTitlesAndStatus(pathParams)
+    return response.data
 }

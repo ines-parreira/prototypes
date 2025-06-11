@@ -114,6 +114,34 @@
                 "tags": ["article-ingestion"]
             }
         },
+        "/api/help-center/help-centers/{help_center_id}/article-ingestion-log/{article_ingestion_id}/articles": {
+            "get": {
+                "operationId": "getArticleIngestionArticleTitlesAndStatus",
+                "summary": "Get article titles and visibility status for an article ingestion log",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "article_ingestion_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "account_id",
+                        "required": false,
+                        "in": "query",
+                        "schema": { "type": "string" }
+                    }
+                ],
+                "responses": { "200": { "description": "" } },
+                "tags": ["article-ingestion"]
+            }
+        },
         "/api/help-center/help-centers/{help_center_id}/categories/{category_id}/articles": {
             "get": {
                 "operationId": "listCategoryArticles",
@@ -3769,8 +3797,8 @@
         },
         "/api/help-center/help-centers/{help_center_id}/file-ingestion/{file_ingestion_id}/articles": {
             "get": {
-                "operationId": "getFileIngestionArticleTitles",
-                "summary": "Get article titles for a file ingestion log",
+                "operationId": "getFileIngestionArticleTitlesAndStatus",
+                "summary": "Get article titles and visibility status for a file ingestion log",
                 "parameters": [
                     {
                         "name": "help_center_id",

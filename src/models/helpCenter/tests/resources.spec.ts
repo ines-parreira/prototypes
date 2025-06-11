@@ -4,9 +4,11 @@ import { HelpCenterClient } from 'rest_api/help_center_api/client'
 import {
     createFileIngestion,
     deleteFileIngestion,
+    getArticleIngestionArticleTitlesAndStatus,
     getArticleIngestionLogs,
     getCategoryTree,
     getFileIngestion,
+    getFileIngestionArticleTitlesAndStatus,
     getHelpCenterArticles,
     getHelpCenterList,
     getIngestedResource,
@@ -386,6 +388,110 @@ describe('resources', () => {
                 { help_center_id, file_ingestion_id: 44 },
             )
             expect(result).toEqual({ data: null })
+        })
+    })
+
+    describe('getArticleIngestionArticleTitlesAndStatus', () => {
+        it('should return null when client is not set', async () => {
+            const result = await getArticleIngestionArticleTitlesAndStatus(
+                undefined,
+                {
+                    help_center_id,
+                    article_ingestion_id: 123,
+                },
+            )
+            expect(result).toBeNull()
+        })
+
+        it('should return correct result from API', async () => {
+            const mockApiResponse = [
+                {
+                    id: 1,
+                    title: 'Article 1',
+                    visibilityStatus: 'PUBLIC',
+                },
+                {
+                    id: 2,
+                    title: 'Article 2',
+                    visibilityStatus: 'UNLISTED',
+                },
+            ]
+
+            const client = {
+                getArticleIngestionArticleTitlesAndStatus: jest
+                    .fn()
+                    .mockReturnValue(
+                        Promise.resolve({ data: mockApiResponse }),
+                    ),
+            }
+
+            const result = await getArticleIngestionArticleTitlesAndStatus(
+                client as unknown as HelpCenterClient,
+                {
+                    help_center_id,
+                    article_ingestion_id: 123,
+                },
+            )
+
+            expect(
+                client.getArticleIngestionArticleTitlesAndStatus,
+            ).toHaveBeenCalledWith({
+                help_center_id,
+                article_ingestion_id: 123,
+            })
+            expect(result).toEqual(mockApiResponse)
+        })
+    })
+
+    describe('getFileIngestionArticleTitlesAndStatus', () => {
+        it('should return null when client is not set', async () => {
+            const result = await getFileIngestionArticleTitlesAndStatus(
+                undefined,
+                {
+                    help_center_id,
+                    file_ingestion_id: 456,
+                },
+            )
+            expect(result).toBeNull()
+        })
+
+        it('should return correct result from API', async () => {
+            const mockApiResponse = [
+                {
+                    id: 1,
+                    title: 'File Article 1',
+                    visibilityStatus: 'PUBLIC',
+                },
+                {
+                    id: 2,
+                    title: 'File Article 2',
+                    visibilityStatus: 'UNLISTED',
+                },
+            ]
+
+            const client = {
+                getFileIngestionArticleTitlesAndStatus: jest
+                    .fn()
+                    .mockReturnValue(
+                        Promise.resolve({ data: mockApiResponse }),
+                    ),
+            }
+
+            const result = await getFileIngestionArticleTitlesAndStatus(
+                client as unknown as HelpCenterClient,
+                {
+                    help_center_id,
+                    file_ingestion_id: 456,
+                },
+            )
+
+            expect(
+                client.getFileIngestionArticleTitlesAndStatus,
+            ).toHaveBeenCalledWith({
+                help_center_id,
+                file_ingestion_id: 456,
+            })
+            expect(result).toEqual(mockApiResponse)
         })
     })
 })
