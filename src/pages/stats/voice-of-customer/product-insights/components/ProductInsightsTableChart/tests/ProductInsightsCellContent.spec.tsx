@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
+import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import { ProductInsightsCellContent } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsCellContent'
@@ -28,6 +29,13 @@ jest.mock('hooks/reporting/support-performance/useStatsFilters', () => ({
         granularity: 'day',
     }),
 }))
+
+jest.mock(
+    'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
+)
+const useGetCustomTicketsFieldsDefinitionDataMock = assumeMock(
+    useGetCustomTicketsFieldsDefinitionData,
+)
 
 jest.mock('pages/stats/common/components/TrendBadge')
 const TrendBadgeMock = assumeMock(TrendBadge)
@@ -67,9 +75,28 @@ describe('ProductInsightsCellContent', () => {
         TrendBadgeMock.mockImplementation(({ children }: any) => (
             <span>{children}</span>
         ))
+
+        useGetCustomTicketsFieldsDefinitionDataMock.mockReturnValue({
+            sentimentCustomFieldId: 123,
+        } as any)
     })
 
     describe('ProductCell', () => {
+        it('returns `null` when `sentimentCustomFieldId` is missing', () => {
+            useGetCustomTicketsFieldsDefinitionDataMock.mockReturnValue({
+                sentimentCustomFieldId: null,
+            } as any)
+
+            const { container } = render(
+                <ProductInsightsCellContent
+                    column={ProductInsightsTableColumns.Product}
+                    product={product}
+                />,
+            )
+
+            expect(container.firstChild).toBeNull()
+        })
+
         it('wraps content in a side panel trigger', () => {
             render(
                 <ProductInsightsCellContent

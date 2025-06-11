@@ -1,11 +1,10 @@
+import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { OrderDirection } from 'models/api/types'
+import { sentimentsTicketCountPerProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/sentimentPerProduct'
+import { ticketCountForProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/ticketsWithProducts'
 import { StatsFilters } from 'models/stat/types'
 import { isMediumOrSmallScreen } from 'pages/common/utils/mobile'
-import {
-    Domain,
-    DrillDownQueryFactory,
-} from 'pages/stats/common/drill-down/types'
-import { MetricValueFormat } from 'pages/stats/common/utils'
+import { Domain } from 'pages/stats/common/drill-down/types'
 import {
     METRIC_COLUMN_WIDTH,
     MOBILE_METRIC_COLUMN_WIDTH,
@@ -123,20 +122,7 @@ export const getUseTrendQuery = (column: keyof typeof trendQueries) => {
     return trendQueries[column]
 }
 
-const placeholderDrillDownQueryFactory: DrillDownQueryFactory = () => {
-    return { measures: [], dimensions: [], filters: [] }
-}
-
-export const ProductInsightsColumnWithDrillDownConfig: Record<
-    ProductMetricColumn,
-    {
-        format: MetricValueFormat
-        hint: { title: string }
-        drillDownQuery: DrillDownQueryFactory
-        domain: Domain
-        showMetric: boolean
-    }
-> = {
+export const ProductInsightsColumnWithDrillDownConfig = {
     [ProductInsightsTableColumns.NegativeSentiment]: {
         format: 'integer',
         hint: {
@@ -144,7 +130,7 @@ export const ProductInsightsColumnWithDrillDownConfig: Record<
                 ProductInsightsTableColumns.NegativeSentiment
             ],
         },
-        drillDownQuery: placeholderDrillDownQueryFactory,
+        drillDownQuery: sentimentsTicketCountPerProductDrillDownQueryFactory,
         domain: Domain.Ticket,
         showMetric: false,
     },
@@ -155,7 +141,7 @@ export const ProductInsightsColumnWithDrillDownConfig: Record<
                 ProductInsightsTableColumns.PositiveSentiment
             ],
         },
-        drillDownQuery: placeholderDrillDownQueryFactory,
+        drillDownQuery: sentimentsTicketCountPerProductDrillDownQueryFactory,
         domain: Domain.Ticket,
         showMetric: false,
     },
@@ -166,11 +152,11 @@ export const ProductInsightsColumnWithDrillDownConfig: Record<
                 ProductInsightsTableColumns.TicketsVolume
             ],
         },
-        drillDownQuery: placeholderDrillDownQueryFactory,
+        drillDownQuery: ticketCountForProductDrillDownQueryFactory,
         domain: Domain.Ticket,
         showMetric: false,
     },
-}
+} as const
 
 export const ProductInsightsColumnWithoutDrillDownConfig = {
     [ProductInsightsTableColumns.Product]: {
@@ -297,14 +283,32 @@ const getDrillDownTitle = (
 export const getDrillDownMetricData = (
     column: ProductInsightsTableColumns,
     product: Product,
+    sentimentCustomFieldId: string,
 ) => {
-    if (supportsDrillDown(column)) {
+    if (!supportsDrillDown(column)) return
+
+    if (
+        column === ProductInsightsTableColumns.PositiveSentiment ||
+        column === ProductInsightsTableColumns.NegativeSentiment
+    ) {
+        const sentiment =
+            column === ProductInsightsTableColumns.PositiveSentiment
+                ? Sentiment.Positive
+                : Sentiment.Negative
+
         return {
             title: getDrillDownTitle(column, product),
             metricName: column,
             productId: product.id,
+            sentimentCustomFieldId,
+            sentiment,
         }
     }
 
-    return null
+    return {
+        title: getDrillDownTitle(column, product),
+        metricName: column,
+        productId: product.id,
+        sentimentCustomFieldId,
+    }
 }

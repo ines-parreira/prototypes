@@ -8,6 +8,7 @@ import {
     TicketMember,
 } from 'models/reporting/cubes/TicketCube'
 import {
+    ticketCountForProductDrillDownQueryFactory,
     ticketCountPerProductQueryFactory,
     ticketsWithProductsDrillDownQueryFactory,
     ticketsWithProductsQueryFactory,
@@ -37,9 +38,9 @@ describe('ticketsWithProducts', () => {
             )
 
             const expected = {
-                measures: ['TicketProductsEnriched.ticketCount'],
+                measures: [TicketProductsEnrichedMeasure.TicketCount],
                 dimensions: [],
-                timezone: 'someTimeZone',
+                timezone,
                 segments: [],
                 filters: [
                     {
@@ -63,7 +64,7 @@ describe('ticketsWithProducts', () => {
                         values: [periodEnd],
                     },
                 ],
-                order: [['TicketProductsEnriched.ticketCount', 'asc']],
+                order: [[TicketProductsEnrichedMeasure.TicketCount, 'asc']],
             }
 
             expect(actual).toEqual(expected)
@@ -76,9 +77,9 @@ describe('ticketsWithProducts', () => {
             )
 
             const expected = {
-                measures: ['TicketProductsEnriched.ticketCount'],
+                measures: [TicketProductsEnrichedMeasure.TicketCount],
                 dimensions: [],
-                timezone: 'someTimeZone',
+                timezone,
                 segments: [],
                 filters: [
                     {
@@ -146,7 +147,7 @@ describe('ticketsWithProducts', () => {
                         values: [periodEnd],
                     },
                 ],
-                order: [['TicketProductsEnriched.ticketCount', 'asc']],
+                order: [[TicketProductsEnrichedMeasure.TicketCount, 'asc']],
             }
 
             expect(actual).toEqual(expected)
@@ -164,8 +165,8 @@ describe('ticketsWithProducts', () => {
             const expected = {
                 measures: [TicketProductsEnrichedMeasure.TicketCount],
                 dimensions: [
-                    'TicketEnriched.ticketId',
-                    'TicketEnriched.createdDatetime',
+                    TicketDimension.TicketId,
+                    TicketDimension.CreatedDatetime,
                 ],
                 timezone,
                 limit: DRILLDOWN_QUERY_LIMIT,
@@ -191,6 +192,59 @@ describe('ticketsWithProducts', () => {
                         member: TicketMember.PeriodEnd,
                         operator: ReportingFilterOperator.BeforeDate,
                         values: [periodEnd],
+                    },
+                ],
+            }
+
+            expect(actual).toEqual(expected)
+        })
+    })
+
+    describe('ticketCountForProductDrillDownQueryFactory', () => {
+        const productId = '123'
+
+        it('should make ticketCountForProductDrillDownQueryFactory query', () => {
+            const actual = ticketCountForProductDrillDownQueryFactory(
+                statsFilters,
+                timezone,
+                productId,
+            )
+
+            const expected = {
+                measures: [TicketProductsEnrichedMeasure.TicketCount],
+                dimensions: [
+                    TicketDimension.TicketId,
+                    TicketDimension.CreatedDatetime,
+                ],
+                timezone,
+                limit: DRILLDOWN_QUERY_LIMIT,
+                order: [[TicketDimension.CreatedDatetime, OrderDirection.Desc]],
+                segments: [],
+                filters: [
+                    {
+                        member: TicketMember.IsTrashed,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    {
+                        member: TicketMember.IsSpam,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    {
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                    {
+                        member: TicketProductsEnrichedDimension.ProductId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [productId],
                     },
                 ],
             }

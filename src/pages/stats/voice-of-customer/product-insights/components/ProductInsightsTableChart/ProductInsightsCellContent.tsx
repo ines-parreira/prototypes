@@ -3,6 +3,7 @@ import { ReactNode } from 'react'
 import { SegmentEvent } from 'common/segment'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { OrderDirection } from 'models/api/types'
+import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import {
@@ -109,7 +110,10 @@ const createMetricCell = (
     const { format } = ProductInsightsColumnConfig[column]
     const useMetricQuery = getUseMetricQuery(column)
 
-    const MetricCell = ({ product }: ProductTableCellProps) => {
+    const MetricCell = ({
+        product,
+        sentimentCustomFieldId,
+    }: ProductTableCellProps & { sentimentCustomFieldId: string }) => {
         const statsFilters = useStatsFilters()
 
         const { data, isFetching } = useMetricQuery(
@@ -126,7 +130,11 @@ const createMetricCell = (
             NOT_AVAILABLE_PLACEHOLDER,
         )
 
-        const metricData = getDrillDownMetricData(column, product)
+        const metricData = getDrillDownMetricData(
+            column,
+            product,
+            sentimentCustomFieldId,
+        )
 
         return (
             <CellWrapper column={column} isLoading={isFetching}>
@@ -201,6 +209,16 @@ export const ProductInsightsCellContent = ({
     column: ProductInsightsTableColumns
     product: Product
 }) => {
+    const { sentimentCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
+
+    if (!sentimentCustomFieldId) return null
+
     const Component = componentMap[column]
-    return <Component product={product} />
+
+    return (
+        <Component
+            product={product}
+            sentimentCustomFieldId={String(sentimentCustomFieldId)}
+        />
+    )
 }

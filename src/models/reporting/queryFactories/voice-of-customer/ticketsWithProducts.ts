@@ -7,7 +7,7 @@ import {
     TicketCubeWithJoins,
     TicketDimension,
 } from 'models/reporting/cubes/TicketCube'
-import { ReportingQuery } from 'models/reporting/types'
+import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
@@ -61,3 +61,24 @@ export const ticketsWithProductsDrillDownQueryFactory = (
     limit: DRILLDOWN_QUERY_LIMIT,
     order: [[TicketDimension.CreatedDatetime, OrderDirection.Desc]],
 })
+
+export const ticketCountForProductDrillDownQueryFactory = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    productId: string,
+    sorting?: OrderDirection,
+): ReportingQuery<TicketCubeWithJoins> => {
+    const baseQuery = ticketsWithProductsDrillDownQueryFactory(
+        statsFilters,
+        timezone,
+        sorting,
+    )
+
+    baseQuery.filters.push({
+        member: TicketProductsEnrichedDimension.ProductId,
+        operator: ReportingFilterOperator.Equals,
+        values: [productId],
+    })
+
+    return baseQuery
+}

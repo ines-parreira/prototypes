@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { appQueryClient } from 'api/queryClient'
+import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { createJob } from 'models/job/resources'
 import {
     ConvertJobContext,
@@ -86,10 +87,27 @@ export type ProductMetricColumn =
     | ProductInsightsTableColumns.PositiveSentiment
     | ProductInsightsTableColumns.TicketsVolume
 
-export type ProductMetrics = {
-    metricName: ProductMetricColumn | ProductsPerTicketColumn.TicketVolume
+export type SentimentForProductMetrics = {
+    metricName:
+        | ProductInsightsTableColumns.NegativeSentiment
+        | ProductInsightsTableColumns.PositiveSentiment
     productId: string
-} & CommonMetrics
+    sentimentCustomFieldId: string
+    sentiment: Sentiment
+}
+
+export type TicketVolumeMetrics = {
+    metricName:
+        | ProductInsightsTableColumns.TicketsVolume
+        | ProductsPerTicketColumn.TicketVolume
+    productId: string
+}
+
+export type ProductMetrics = (
+    | TicketVolumeMetrics
+    | SentimentForProductMetrics
+) &
+    CommonMetrics
 
 export type VoiceOfCustomerMetrics = {
     metricName: VoiceOfCustomerMetricWithDrillDown.IntentPerProduct

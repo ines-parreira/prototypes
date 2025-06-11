@@ -77,14 +77,45 @@ import {
 } from 'state/ui/stats/types'
 
 export const getDrillDownQuery = (
-    metricName: DrillDownMetric,
+    metricData: DrillDownMetric,
 ): DrillDownQueryFactory => {
-    switch (metricName.metricName) {
+    switch (metricData.metricName) {
         case ProductInsightsTableColumns.NegativeSentiment:
-        case ProductInsightsTableColumns.PositiveSentiment:
-        case ProductInsightsTableColumns.TicketsVolume:
-            return ProductInsightsColumnConfig[metricName.metricName]
-                .drillDownQuery
+        case ProductInsightsTableColumns.PositiveSentiment: {
+            const { drillDownQuery } =
+                ProductInsightsColumnConfig[metricData.metricName]
+
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection,
+            ) =>
+                drillDownQuery(
+                    statsFilters,
+                    timezone,
+                    metricData.sentimentCustomFieldId,
+                    metricData.sentiment,
+                    metricData.productId,
+                    sorting,
+                )
+        }
+
+        case ProductInsightsTableColumns.TicketsVolume: {
+            const { drillDownQuery } =
+                ProductInsightsColumnConfig[metricData.metricName]
+
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection,
+            ) =>
+                drillDownQuery(
+                    statsFilters,
+                    timezone,
+                    metricData.productId,
+                    sorting,
+                )
+        }
 
         case OverviewMetric.CustomerSatisfaction:
         case OverviewMetric.MedianResponseTime:
@@ -100,7 +131,7 @@ export const getDrillDownQuery = (
         case OverviewMetric.OneTouchTickets:
         case OverviewMetric.ZeroTouchTickets:
         case OverviewMetric.TicketHandleTime:
-            return OverviewMetricConfig[metricName.metricName].drillDownQuery
+            return OverviewMetricConfig[metricData.metricName].drillDownQuery
         case AgentsTableColumn.CustomerSatisfaction:
         case AgentsTableColumn.MedianFirstResponseTime:
         case AgentsTableColumn.MedianResponseTime:
@@ -116,8 +147,8 @@ export const getDrillDownQuery = (
         case AgentsTableColumn.ZeroTouchTickets:
         case AgentsTableColumn.TicketHandleTime:
             return queryBuilderWithAgentFilter(
-                metricName.perAgentId,
-                AgentsColumnConfig[metricName.metricName].drillDownQuery,
+                metricData.perAgentId,
+                AgentsColumnConfig[metricData.metricName].drillDownQuery,
             )
         case AutoQAAgentsTableColumn.ResolutionCompleteness:
         case AutoQAAgentsTableColumn.CommunicationSkills:
@@ -128,8 +159,8 @@ export const getDrillDownQuery = (
         case AutoQAAgentsTableColumn.BrandVoice:
         case AutoQAAgentsTableColumn.ReviewedClosedTickets:
             return queryBuilderWithAgentFilter(
-                metricName.perAgentId,
-                AutoQAAgentsColumnConfig[metricName.metricName].drillDownQuery,
+                metricData.perAgentId,
+                AutoQAAgentsColumnConfig[metricData.metricName].drillDownQuery,
             )
         case AutoQAMetric.Accuracy:
         case AutoQAMetric.Efficiency:
@@ -139,14 +170,14 @@ export const getDrillDownQuery = (
         case AutoQAMetric.ResolutionCompleteness:
         case AutoQAMetric.CommunicationSkills:
         case AutoQAMetric.LanguageProficiency:
-            return TrendCardConfig[metricName.metricName].drillDownQuery
+            return TrendCardConfig[metricData.metricName].drillDownQuery
         case SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreOne:
         case SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreTwo:
         case SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreThree:
         case SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreFour:
         case SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreFive:
             return SatisfactionAverageSurveyScoreMetricConfig[
-                metricName.metricName
+                metricData.metricName
             ].drillDownQuery
         case SatisfactionMetric.AverageSurveyScore:
         case SatisfactionMetric.SatisfactionScore:
@@ -155,11 +186,11 @@ export const getDrillDownQuery = (
         case SatisfactionMetric.AverageCSATPerAssignee:
         case SatisfactionMetric.AverageCSATPerChannel:
         case SatisfactionMetric.AverageCSATPerIntegration:
-            return SatisfactionMetricConfig[metricName.metricName]
+            return SatisfactionMetricConfig[metricData.metricName]
                 .drillDownQuery
         case SlaMetric.AchievementRate:
         case SlaMetric.BreachedTicketsRate:
-            return SlaMetricConfig[metricName.metricName].drillDownQuery
+            return SlaMetricConfig[metricData.metricName].drillDownQuery
         case ChannelsTableColumns.TicketHandleTime:
         case ChannelsTableColumns.ClosedTickets:
         case ChannelsTableColumns.TicketsCreated:
@@ -172,8 +203,8 @@ export const getDrillDownQuery = (
         case ChannelsTableColumns.MessagesReceived:
         case ChannelsTableColumns.CustomerSatisfaction:
             return queryBuilderWithChannelFilter(
-                metricName.perChannel,
-                ChannelColumnConfig[metricName.metricName].drillDownQuery,
+                metricData.perChannel,
+                ChannelColumnConfig[metricData.metricName].drillDownQuery,
             )
         case TagsMetric.TicketCount:
             return (
@@ -181,17 +212,17 @@ export const getDrillDownQuery = (
                 timezone: string,
                 sorting?: OrderDirection,
             ) =>
-                TagsMetricConfig[metricName.metricName].drillDownQuery(
+                TagsMetricConfig[metricData.metricName].drillDownQuery(
                     statsFilters,
                     timezone,
-                    metricName.tagId,
-                    metricName.dateRange || statsFilters.period,
+                    metricData.tagId,
+                    metricData.dateRange || statsFilters.period,
                     sorting,
-                    metricName.ticketTimeReference,
+                    metricData.ticketTimeReference,
                 )
         case TicketFieldsMetric.TicketCustomFieldsTicketCount: {
             const queryFactory =
-                metricName.ticketTimeReference === TicketTimeReference.TaggedAt
+                metricData.ticketTimeReference === TicketTimeReference.TaggedAt
                     ? customFieldsTicketCountPerTicketDrillDownQueryFactory
                     : customFieldsTicketCountOnCreatedDatetimePerTicketDrillDownQueryFactory
 
@@ -203,9 +234,9 @@ export const getDrillDownQuery = (
                 queryFactory(
                     statsFilters,
                     timezone,
-                    String(metricName.customFieldId),
-                    metricName.customFieldValue,
-                    metricName.dateRange || statsFilters.period,
+                    String(metricData.customFieldId),
+                    metricData.customFieldValue,
+                    metricData.dateRange || statsFilters.period,
                     sorting,
                 )
         }
@@ -218,11 +249,11 @@ export const getDrillDownQuery = (
                 customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory(
                     statsFilters,
                     timezone,
-                    metricName.intentFieldId,
-                    metricName.intentFieldValues,
-                    metricName.outcomeFieldId,
+                    metricData.intentFieldId,
+                    metricData.intentFieldValues,
+                    metricData.outcomeFieldId,
                     sorting,
-                    metricName.integrationIds,
+                    metricData.integrationIds,
                 )
         case AIInsightsMetric.TicketDrillDownPerCoverageRate:
             return (
@@ -233,10 +264,10 @@ export const getDrillDownQuery = (
                 coverageRateTicketDrillDownQueryFactory(
                     statsFilters,
                     timezone,
-                    metricName.outcomeFieldId || -1,
-                    metricName.intentFieldId || -1,
+                    metricData.outcomeFieldId || -1,
+                    metricData.intentFieldId || -1,
                     sorting,
-                    metricName.integrationIds,
+                    metricData.integrationIds,
                 )
 
         case AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction:
@@ -248,12 +279,12 @@ export const getDrillDownQuery = (
                 aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory(
                     statsFilters,
                     timezone,
-                    metricName.perAgentId,
-                    metricName.intentFieldId,
-                    metricName.outcomeFieldId,
+                    metricData.perAgentId,
+                    metricData.intentFieldId,
+                    metricData.outcomeFieldId,
                     sorting,
-                    metricName.integrationIds,
-                    metricName.intentFieldValues,
+                    metricData.integrationIds,
+                    metricData.intentFieldValues,
                 )
 
         case ConvertMetric.CampaignSalesCount:
@@ -263,13 +294,13 @@ export const getDrillDownQuery = (
                 sorting?: OrderDirection,
             ) =>
                 campaignSalesDrillDownQueryFactory(
-                    metricName.shopName,
-                    metricName.selectedCampaignIds,
-                    metricName.campaignsOperator,
+                    metricData.shopName,
+                    metricData.selectedCampaignIds,
+                    metricData.campaignsOperator,
                     statsFilters,
                     timezone,
                     sorting,
-                    metricName.abVariant,
+                    metricData.abVariant,
                 )
         case VoiceMetric.AverageTalkTime:
         case VoiceMetric.AverageWaitTime:
@@ -282,15 +313,15 @@ export const getDrillDownQuery = (
         case VoiceMetric.QueueInboundCancelledCalls:
         case VoiceMetric.QueueInboundCallbackRequestedCalls:
         case VoiceMetric.QueueOutboundCalls:
-            return VoiceMetricsConfig[metricName.metricName].drillDownQuery
+            return VoiceMetricsConfig[metricData.metricName].drillDownQuery
         case VoiceAgentsMetric.AgentTotalCalls:
         case VoiceAgentsMetric.AgentInboundAnsweredCalls:
         case VoiceAgentsMetric.AgentInboundMissedCalls:
         case VoiceAgentsMetric.AgentOutboundCalls:
         case VoiceAgentsMetric.AgentAverageTalkTime:
             return queryBuilderWithAgentFilter(
-                metricName.perAgentId,
-                VoiceAgentsMetricsConfig[metricName.metricName].drillDownQuery,
+                metricData.perAgentId,
+                VoiceAgentsMetricsConfig[metricData.metricName].drillDownQuery,
             )
         case AiSalesAgentChart.AiSalesAgentTotalSalesConv:
             return AiSalesAgentMetricsWithDrillDownConfig[
@@ -329,9 +360,9 @@ export const getDrillDownQuery = (
                 drillDownQuery(
                     statsFilters,
                     timezone,
-                    metricName.intentCustomFieldId,
-                    metricName.intentCustomFieldValueString,
-                    metricName.productId,
+                    metricData.intentCustomFieldId,
+                    metricData.intentCustomFieldValueString,
+                    metricData.productId,
                     sorting,
                 )
         }

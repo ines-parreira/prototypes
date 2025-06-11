@@ -6,6 +6,7 @@ import { fromJS } from 'immutable'
 import { UserRole } from 'config/types/user'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'models/reporting/types'
+import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { DrillDownModal } from 'pages/stats/common/drill-down/DrillDownModal'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import { ChartsActionMenu } from 'pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu'
@@ -55,6 +56,12 @@ jest.mock(
     'pages/stats/voice-of-customer/product-insights/charts/TicketVolumeTable',
 )
 const TicketVolumeTableMock = assumeMock(TicketVolumeTable)
+jest.mock(
+    'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
+)
+const useGetCustomTicketsFieldsDefinitionDataMock = assumeMock(
+    useGetCustomTicketsFieldsDefinitionData,
+)
 
 describe('ProductInsightsPage', () => {
     const statsFilters = {
@@ -87,6 +94,9 @@ describe('ProductInsightsPage', () => {
             isChartRestrictedToCurrentUser: () => false,
             isModuleRestrictedToCurrentUser: () => false,
         }))
+        useGetCustomTicketsFieldsDefinitionDataMock.mockReturnValue({
+            sentimentCustomFieldId: 123,
+        } as any)
     })
 
     it('should render with a title', () => {
