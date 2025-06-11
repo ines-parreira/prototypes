@@ -199,7 +199,7 @@ export const StoreConfigForm = ({
         isPendingCreateOrUpdate,
         isChatChannelEnabled,
         isEmailChannelEnabled,
-    } = useStoreConfigurationForm(shopName, faqHelpCenters)
+    } = useStoreConfigurationForm(shopName, shopType, faqHelpCenters)
 
     const { data: { data: accountCustomFields = [] } = {} } =
         useCustomFieldDefinitions({

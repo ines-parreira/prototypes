@@ -138,6 +138,7 @@ export const useAiAgentOnboardingWizard = ({
     } = useConfigurationForm({
         initValues: DEFAULT_FORM_VALUES_WITH_WIZARD,
         shopName,
+        shopType,
     })
 
     useEffectOnce(() => {

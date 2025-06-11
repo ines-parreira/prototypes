@@ -9,6 +9,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { useConfigurationForm } from 'pages/aiAgent/hooks/useConfigurationForm'
+import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import { notify } from 'state/notifications/actions'
 import { StoreState } from 'state/types'
@@ -22,6 +23,7 @@ import { FormValues } from '../../types'
 import { useHasUninstalledChatIntegration } from '../useHasUninstalledChatIntegration'
 import { useStoreConfigurationMutation } from '../useStoreConfigurationMutation'
 import { useStoresDomainIngestionLogs } from '../useStoresDomainIngestionLogs'
+import { getFormValuesFromStoreConfiguration } from '../utils/configurationForm.utils'
 
 const INITIAL_FORM_VALUES: FormValues = {
     toneOfVoice: null,
@@ -50,6 +52,9 @@ jest.mock('react-router-dom', () => ({
 }))
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = assumeMock(useAppSelector)
+
+jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
+const mockUseSelfServiceChatChannels = jest.mocked(useSelfServiceChatChannels)
 
 jest.mock('../useStoreConfigurationMutation')
 const mockUseStoreConfigurationMutation = assumeMock(
@@ -98,6 +103,7 @@ const mockCreateStoreConfiguration = jest
     .mockImplementation((c: StoreConfiguration) => c)
 
 const shopName = 'test-shop'
+const shopType = 'shopify'
 
 const defaultStoreConfigurationContextMock = {
     storeConfiguration: undefined,
@@ -137,6 +143,8 @@ describe('useConfigurationForm', () => {
             } as unknown as StoreState)
         })
 
+        mockUseSelfServiceChatChannels.mockReturnValue([])
+
         mockUseStoreConfigurationMutation.mockReturnValue({
             isLoading: false,
             upsertStoreConfiguration: mockUpdateStoreConfiguration,
@@ -160,14 +168,22 @@ describe('useConfigurationForm', () => {
             ...defaultValues,
         }
         const { result } = renderHook(() =>
-            useConfigurationForm({ initValues: defaultValues, shopName }),
+            useConfigurationForm({
+                initValues: defaultValues,
+                shopName,
+                shopType,
+            }),
         )
         expect(result.current.formValues).toEqual(expectedValues)
     })
 
     it('should mark form is dirty when values changed', () => {
         const { result } = renderHook(() =>
-            useConfigurationForm({ initValues: INITIAL_FORM_VALUES, shopName }),
+            useConfigurationForm({
+                initValues: INITIAL_FORM_VALUES,
+                shopName,
+                shopType,
+            }),
         )
 
         act(() => {
@@ -181,7 +197,11 @@ describe('useConfigurationForm', () => {
 
     it('should return empty array if monitoredChatIntegrations is null', async () => {
         const { result } = renderHook(() =>
-            useConfigurationForm({ initValues: INITIAL_FORM_VALUES, shopName }),
+            useConfigurationForm({
+                initValues: INITIAL_FORM_VALUES,
+                shopName,
+                shopType,
+            }),
         )
         await act(async () => {
             await result.current.handleOnSave({
@@ -200,7 +220,11 @@ describe('useConfigurationForm', () => {
             signature: 'test signature',
         }
         const { result } = renderHook(() =>
-            useConfigurationForm({ initValues: defaultValues, shopName }),
+            useConfigurationForm({
+                initValues: defaultValues,
+                shopName,
+                shopType,
+            }),
         )
 
         act(() => {
@@ -224,6 +248,7 @@ describe('useConfigurationForm', () => {
                     signature: 'valid signature',
                 },
                 shopName,
+                shopType,
             }),
         )
         await act(async () => {
@@ -255,6 +280,7 @@ describe('useConfigurationForm', () => {
                     signature: 'valid signature',
                     helpCenterId: 1,
                 },
+                shopType,
             }),
         )
 
@@ -295,6 +321,7 @@ describe('useConfigurationForm', () => {
                     signature: 'valid signature',
                     helpCenterId: 1,
                 },
+                shopType,
             }),
         )
 
@@ -329,6 +356,7 @@ describe('useConfigurationForm', () => {
             {
                 initialProps: {
                     shopName,
+                    shopType,
                 },
             },
         )
@@ -379,6 +407,7 @@ describe('useConfigurationForm', () => {
             {
                 initialProps: {
                     shopName,
+                    shopType,
                     initValues: {
                         signature: 'initial signature',
                     },
@@ -434,6 +463,7 @@ describe('useConfigurationForm', () => {
             {
                 initialProps: {
                     shopName,
+                    shopType,
                 },
             },
         )
@@ -466,6 +496,7 @@ describe('useConfigurationForm', () => {
                         signature: 'test signature',
                     },
                     shopName,
+                    shopType,
                 },
             },
         )
@@ -478,10 +509,42 @@ describe('useConfigurationForm', () => {
                 signature: 'another test signature',
             },
             shopName,
+            shopType,
         })
         expect(result.current.formValues.signature).toBe(
             'another test signature',
         )
+        expect(result.current.isFormDirty).toBe(false)
+    })
+
+    it('should filter out unavailable chat channels', () => {
+        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+            ...defaultStoreConfigurationContextMock,
+            storeConfiguration: getStoreConfigurationFixture({
+                monitoredChatIntegrations: [1, 2, 3],
+            }),
+        })
+
+        mockUseSelfServiceChatChannels.mockReturnValue([
+            { value: { id: 1 } },
+            { value: { id: 3 } },
+        ] as any)
+
+        const { result } = renderHook((props) => useConfigurationForm(props), {
+            initialProps: {
+                shopName,
+                shopType,
+                initValues: getFormValuesFromStoreConfiguration(
+                    getStoreConfigurationFixture({
+                        monitoredChatIntegrations: [1, 2, 3],
+                    }),
+                ),
+            },
+        })
+
+        expect(result.current.formValues.monitoredChatIntegrations).toEqual([
+            1, 3,
+        ])
         expect(result.current.isFormDirty).toBe(false)
     })
 })

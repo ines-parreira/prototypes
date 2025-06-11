@@ -30,6 +30,7 @@ import {
 import { AiAgentKnowledgeContainer } from 'pages/aiAgent/AiAgentKnowledgeContainer'
 import { usePublicResourcesPooling } from 'pages/aiAgent/hooks/usePublicResourcesPooling'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import {
     getHelpCentersResponseFixture,
@@ -123,6 +124,9 @@ jest.mock('pages/aiAgent/hooks/useStoreConfigurationMutation', () => ({
     })),
 }))
 
+jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
+const mockUseSelfServiceChatChannels = jest.mocked(useSelfServiceChatChannels)
+
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore([thunk])
 const history = createMemoryHistory({
@@ -199,6 +203,12 @@ const renderComponent = ({
         createStoreConfiguration: jest.fn(),
         isPendingCreateOrUpdate: false,
     })
+
+    mockUseSelfServiceChatChannels.mockReturnValue([
+        { value: { id: 1 } },
+        { value: { id: 2 } },
+        { value: { id: 3 } },
+    ] as any)
 
     mockUseGetHelpCenterList.mockReturnValue({
         data: axiosSuccessResponse({

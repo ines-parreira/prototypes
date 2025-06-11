@@ -15,6 +15,7 @@ import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
 import { useStoreConfigurationMutation } from 'pages/aiAgent/hooks/useStoreConfigurationMutation'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import history from 'pages/history'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
@@ -66,6 +67,9 @@ jest.mock('pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter')
 const mockUseGetOrCreateSnippetHelpCenter = assumeMock(
     useGetOrCreateSnippetHelpCenter,
 )
+
+jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
+const mockUseSelfServiceChatChannels = assumeMock(useSelfServiceChatChannels)
 
 jest.mock('pages/aiAgent/hooks/useStoreConfigurationMutation')
 const mockUseStoreConfigurationMutation = assumeMock(
@@ -169,6 +173,8 @@ describe('useAiAgentOnboardingWizard', () => {
         mockUseStoreConfigurationMutation.mockReturnValue(
             defaultStoreConfigurationMutation,
         )
+
+        mockUseSelfServiceChatChannels.mockReturnValue([])
     })
 
     it('should initialize store configuration with default value', () => {

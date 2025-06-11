@@ -65,8 +65,9 @@ export const AiAgentKnowledgeContainer = () => {
         string | null
     >(null)
 
-    const { shopName } = useParams<{
+    const { shopName, shopType } = useParams<{
         shopName: string
+        shopType: string
     }>()
 
     const {
@@ -109,7 +110,11 @@ export const AiAgentKnowledgeContainer = () => {
         resetForm,
         updateValue,
         isPendingCreateOrUpdate,
-    } = useConfigurationForm({ initValues: defaultFormValues, shopName })
+    } = useConfigurationForm({
+        initValues: defaultFormValues,
+        shopName,
+        shopType,
+    })
 
     const [publicUrls, setPublicUrls] = useState<string[]>([])
 

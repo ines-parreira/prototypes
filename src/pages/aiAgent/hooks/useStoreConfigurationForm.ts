@@ -41,6 +41,7 @@ const areEmailListsEqual = (arr1: EmailItem[], arr2: EmailItem[]): boolean => {
  */
 export const useStoreConfigurationForm = (
     shopName: string,
+    shopType: string,
     faqHelpCenters: HelpCenter[],
 ) => {
     // because this selector is a function which return function we need to memoized it before send to reselect
@@ -80,6 +81,7 @@ export const useStoreConfigurationForm = (
     const configurationForm = useConfigurationForm({
         initValues: defaultFormValues,
         shopName,
+        shopType,
     })
 
     const isEmailChannelEnabled = isAiAgentEnabled(

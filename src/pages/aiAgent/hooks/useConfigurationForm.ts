@@ -11,6 +11,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -32,8 +33,10 @@ import { getFormValuesFromStoreConfiguration } from './utils/configurationForm.u
 export const useConfigurationForm = ({
     initValues,
     shopName,
+    shopType,
 }: {
     shopName: string
+    shopType: string
     initValues?: Partial<FormValues>
 }) => {
     const dispatch = useAppDispatch()
@@ -50,18 +53,30 @@ export const useConfigurationForm = ({
         storeNames: [shopName],
     })
 
+    const chatChannels = useSelfServiceChatChannels(shopType, shopName)
+
+    const chatChannelIds = useMemo(
+        () => new Set<number>(chatChannels.map((chat) => chat.value.id)),
+        [chatChannels],
+    )
+
     const isAiAgentChatEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentChat]
     const hasAiAgentNewActivationXp =
         !!useFlags()[FeatureFlagKey.AiAgentNewActivationXp]
 
-    const defaultValues = useMemo(
-        () => ({
+    const defaultValues = useMemo(() => {
+        const monitoredChatIntegrations =
+            initValues?.monitoredChatIntegrations?.filter((chat) =>
+                chatChannelIds.has(chat),
+            ) || null
+
+        return {
             ...DEFAULT_FORM_VALUES,
             ...initValues,
-        }),
-        [initValues],
-    )
+            monitoredChatIntegrations,
+        }
+    }, [chatChannelIds, initValues])
 
     // could have used a useReducer instead, but keeping it simple for now
     const [formValues, setFormValues] = useState<FormValues>(defaultValues)
@@ -85,8 +100,16 @@ export const useConfigurationForm = ({
     useEffect(() => {
         if (!isInitializedRef.current && !isStoreConfigurationLoading) {
             if (storeConfiguration) {
+                const monitoredChatIntegrations =
+                    storeConfiguration.monitoredChatIntegrations.filter(
+                        (chat) => chatChannelIds.has(chat),
+                    )
+
                 setFormValues(
-                    getFormValuesFromStoreConfiguration(storeConfiguration),
+                    getFormValuesFromStoreConfiguration({
+                        ...storeConfiguration,
+                        monitoredChatIntegrations,
+                    }),
                 )
             } else {
                 setFormValues(defaultValues)
@@ -94,7 +117,12 @@ export const useConfigurationForm = ({
 
             isInitializedRef.current = true
         }
-    }, [defaultValues, storeConfiguration, isStoreConfigurationLoading])
+    }, [
+        defaultValues,
+        storeConfiguration,
+        isStoreConfigurationLoading,
+        chatChannelIds,
+    ])
 
     const resetForm = useCallback(() => {
         setFormValues(defaultValues)
