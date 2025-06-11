@@ -22,6 +22,7 @@ describe('<OnboardingCard />', () => {
         render(<OnboardingCard currentStep={'Conversation Setup'} />)
 
         expect(screen.getByText('Conversation Setup step')).toBeInTheDocument()
+
         await screen.getByText('This is a placeholder button').click()
 
         expect(mockHistoryPush).toHaveBeenCalledTimes(1)

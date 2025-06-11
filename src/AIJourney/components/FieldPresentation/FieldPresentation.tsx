@@ -5,10 +5,10 @@ interface FieldPresentationProps {
     description: string
 }
 
-export const FieldPresentation: React.FC<FieldPresentationProps> = ({
+export const FieldPresentation = ({
     name,
     description,
-}) => {
+}: FieldPresentationProps) => {
     return (
         <div className={css.fieldPresentation}>
             <div className={css.fieldName}>

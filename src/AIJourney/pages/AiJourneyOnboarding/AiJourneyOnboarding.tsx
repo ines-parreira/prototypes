@@ -4,9 +4,13 @@ import { OnboardingCard } from '../../components/OnboardingCard/OnboardingCard'
 
 import css from './AiJourneyOnboarding.less'
 
-export const AiJourneyOnboarding: React.FC<{ step?: string }> = ({
+interface AiJourneyOnboardingProps {
+    step?: string
+}
+
+export const AiJourneyOnboarding = ({
     step = 'conversation-setup',
-}) => {
+}: AiJourneyOnboardingProps) => {
     const isActivationStep = step === 'activation'
 
     const steps = [

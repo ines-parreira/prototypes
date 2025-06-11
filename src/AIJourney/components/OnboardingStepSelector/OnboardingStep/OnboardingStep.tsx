@@ -8,11 +8,11 @@ interface OnboardingStepProps {
     isActive: boolean
 }
 
-export const OnboardingStep: React.FC<OnboardingStepProps> = ({
+export const OnboardingStep = ({
     stepName,
     stepIndicator,
     isActive,
-}) => {
+}: OnboardingStepProps) => {
     const stepIndicatorClass = classNames(css.stepIndicator, {
         [css['stepIndicator--active']]: isActive,
     })

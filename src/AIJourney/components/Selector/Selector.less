@@ -1,0 +1,40 @@
+:local {
+    .selector {
+        background-color: var(--neutral-grey-2);
+
+        width: 100%;
+        border-radius: var(--layout-spacing-s);
+
+        display: flex;
+        align-items: center;
+
+        gap: var(--layout-spacing-xxs);
+        padding: var(--layout-spacing-xxs);
+        margin-bottom: var(--layout-spacing-xs);
+    }
+
+    .selectorOption {
+        background-color: transparent;
+
+        border-radius: 12px;
+        border-width: 0px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 1;
+
+        cursor: pointer;
+
+        padding: var(--layout-spacing-xxs);
+
+        &--selected {
+            background-color: var(--neutral-grey-1);
+            cursor: default;
+        }
+
+        &:not(&--selected):hover {
+            background-color: var(--neutral-grey-3);
+        }
+    }
+}

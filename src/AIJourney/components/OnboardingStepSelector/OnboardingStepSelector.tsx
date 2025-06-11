@@ -10,9 +10,9 @@ interface OnboardingStepSelectorProps {
     }[]
 }
 
-export const OnboardingStepSelector: React.FC<OnboardingStepSelectorProps> = ({
+export const OnboardingStepSelector = ({
     steps,
-}) => {
+}: OnboardingStepSelectorProps) => {
     return (
         <div className={css.onboardingSteps}>
             {steps.map(({ stepName, stepIndicator, isActive }, index) => (

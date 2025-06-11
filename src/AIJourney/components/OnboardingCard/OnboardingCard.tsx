@@ -1,8 +1,10 @@
+import { useState } from 'react'
+
 import { useHistory } from 'react-router-dom'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
-import { FieldPresentation, Info } from '../'
+import { FollowUpField } from './fields'
 
 import css from './OnboardingCard.less'
 
@@ -10,12 +12,17 @@ const GradientBackground = () => {
     return <div className={css.gradientBackground} />
 }
 
-export const OnboardingCard: React.FC<{
+interface OnboardingCardProps {
     currentStep: string
-}> = ({ currentStep }) => {
+}
+
+export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
     const history = useHistory()
 
     const isActivationStep = currentStep === 'Activation'
+
+    const [followUpValue, setFollowUpValue] = useState<number>()
+    const followUpOptions = [1, 2, 3]
 
     return (
         <div className={css.onboardingCard}>
@@ -24,11 +31,11 @@ export const OnboardingCard: React.FC<{
                 <div style={{ marginBottom: '16px' }}>
                     <span>{currentStep} step</span>
                 </div>
-                <FieldPresentation
-                    name="Field Presentation name"
-                    description="Field Presentation description"
+                <FollowUpField
+                    options={followUpOptions}
+                    value={followUpValue}
+                    onChange={setFollowUpValue}
                 />
-                <Info content="I am the info content" />
                 <Button
                     onClick={() => history.push('/app/ai-journey/activation')}
                     isDisabled={isActivationStep}
