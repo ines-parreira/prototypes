@@ -42,7 +42,7 @@ const useEnabledActionStepsByApp = (internalPlatformGrouping = false) => {
 
         const sortedStepsByApp = Object.entries(stepsByApp).sort(
             ([id1], [id2]) =>
-                appsById[id1].name.localeCompare(appsById[id2].name),
+                appsById[id1]?.name.localeCompare(appsById[id2]?.name),
         )
         const stepsByUsefulness = sortedStepsByApp.reduce<{
             used: (typeof sortedStepsByApp)[number][]
@@ -54,7 +54,7 @@ const useEnabledActionStepsByApp = (internalPlatformGrouping = false) => {
                 } else if (
                     appId === 'shopify' ||
                     appId === 'recharge' ||
-                    appsById[appId].installed
+                    appsById[appId]?.installed
                 ) {
                     acc.used.push([appId, steps])
                 } else {

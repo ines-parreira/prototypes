@@ -1022,9 +1022,9 @@ const AppCategoryItem = ({
 
     return (
         <MenuCategoryItem
-            key={app.id}
-            icon={<AppIcon icon={app.icon} name={app.name} />}
-            label={app.name}
+            key={app?.id}
+            icon={<AppIcon icon={app?.icon} name={app?.name} />}
+            label={app?.name}
             onClick={handleClick}
         />
     )

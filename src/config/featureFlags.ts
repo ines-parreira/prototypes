@@ -143,7 +143,6 @@ export enum FeatureFlagKey {
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
     ShopifyInventoryItemScopeBanner = 'shopify-inventory-item-scope-banner',
     ShopifyOrderNotes = 'shopify-order-notes',
-    SimplifiedStepBuilder = 'simplified-step-builder',
     SimplifyAiAgentFeedbackCollection = 'linear.project_simplify-ai-agent-feedback-collection.enable_feedback_collection',
     StandaloneConvAiOverviewPageResourceSection = 'standalone-conv-ai_overview-page-resource-section',
     SwitchToShopifyThemeAppExtension = 'switch-to-shopify-theme-app-extension',

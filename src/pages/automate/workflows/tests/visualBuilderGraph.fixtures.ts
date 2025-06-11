@@ -425,7 +425,7 @@ export const visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture:
                 id: 'reusable_llm_prompt_call1',
                 type: 'reusable_llm_prompt_call',
                 data: {
-                    configuration_id: '',
+                    configuration_id: 'reusable_llm_prompt_call1',
                     configuration_internal_id: '',
                     values: {},
                 },
@@ -481,6 +481,7 @@ export const visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture:
         nodeEditingId: null,
         choiceEventIdEditing: null,
         branchIdsEditing: [],
+        advanced_datetime: new Date('2025-01-01'),
         apps: [
             {
                 type: 'app',

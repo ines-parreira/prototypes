@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { act, fireEvent, screen } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { produce } from 'immer'
 
 import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
@@ -501,6 +501,102 @@ describe('<ActionFormView />', () => {
         expect(mockDispatch).toHaveBeenNthCalledWith(2, {
             type: 'SET_LLM_PROMPT_TRIGGER_DEACTIVATED_DATETIME',
             deactivated_datetime: null,
+        })
+    })
+
+    it('should open the modal on requires confirmation change', async () => {
+        const mockDispatch = jest.fn()
+        const graph = {
+            ...visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
+        }
+        graph.nodes[0].data.requires_confirmation = true
+
+        renderWithQueryClientProvider(
+            <VisualBuilderContext.Provider
+                value={{
+                    visualBuilderGraph: graph,
+                    initialVisualBuilderGraph: graph,
+                    checkNodeHasVariablesUsedInChildren: () => false,
+                    dispatch: mockDispatch,
+                    getVariableListInChildren: () => [],
+                    checkNewVisualBuilderNode: () => false,
+                    getVariableListForNode: () => [],
+                    isNew: false,
+                }}
+            >
+                <ActionFormView
+                    onEditSteps={jest.fn()}
+                    steps={[
+                        {
+                            id: 'reusable_llm_prompt_call1',
+                            name: 'Step 1',
+                            internal_id: '',
+                            is_draft: false,
+                            initial_step_id: '',
+                            steps: [],
+                            transitions: [],
+                            available_languages: [],
+                            created_datetime: '',
+                            updated_datetime: '',
+                            triggers: [],
+                            entrypoints: [
+                                {
+                                    trigger: 'reusable-llm-prompt',
+                                    kind: 'reusable-llm-prompt-call-step',
+                                    settings: {
+                                        requires_confirmation: true,
+                                    },
+                                },
+                            ],
+                            apps: [],
+                        },
+                    ]}
+                />
+            </VisualBuilderContext.Provider>,
+        )
+
+        const confirmationCheckbox: HTMLInputElement = screen.getByLabelText(
+            'Require customer confirmation to perform Action',
+        )
+        expect(confirmationCheckbox.checked).toBe(true)
+        act(() => {
+            fireEvent.click(confirmationCheckbox)
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('Disable confirmation requirement?'),
+            ).toBeInTheDocument()
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Back To Editing'))
+        })
+
+        expect(confirmationCheckbox.checked).toBe(true)
+
+        act(() => {
+            fireEvent.click(confirmationCheckbox)
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('Disable confirmation requirement?'),
+            ).toBeInTheDocument()
+        })
+
+        act(() => {
+            const button = screen.getByRole('button', {
+                name: 'Disable Confirmation Requirement',
+            })
+            expect(button).toBeInTheDocument()
+            fireEvent.click(button)
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText('Disable confirmation requirement?'),
+            ).not.toBeInTheDocument()
         })
     })
 })
