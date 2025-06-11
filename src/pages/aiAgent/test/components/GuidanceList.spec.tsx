@@ -15,6 +15,7 @@ import { useFlag } from 'core/flags'
 import { IntegrationType } from 'models/integration/constants'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { getGuidanceArticleFixture } from 'pages/aiAgent/fixtures/guidanceArticle.fixture'
+import { GuidanceArticle } from 'pages/aiAgent/types'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { userEvent } from 'utils/testing/userEvent'
 
@@ -305,6 +306,44 @@ describe('<GuidanceList />', () => {
             expect(
                 within(dropdownItems[1]).getByText(/test-shop/),
             ).toBeInTheDocument()
+        })
+    })
+
+    describe('search functionality', () => {
+        it('should call onSearch when clicking reset search link', () => {
+            const onSearch = jest.fn()
+            const guidanceArticles: GuidanceArticle[] = []
+
+            renderWithRedux(
+                <GuidanceList
+                    guidanceArticles={guidanceArticles}
+                    currentStoreIntegrationId={1}
+                    shopName="test-shop"
+                    shopType="shopify"
+                    onSearch={onSearch}
+                    {...mockHandlers}
+                />,
+            )
+
+            fireEvent.click(screen.getByText('Reset Search'))
+            expect(onSearch).toHaveBeenCalledWith('')
+        })
+
+        it('should not call onSearch when prop is not provided', () => {
+            const guidanceArticles: GuidanceArticle[] = []
+
+            renderWithRedux(
+                <GuidanceList
+                    guidanceArticles={guidanceArticles}
+                    currentStoreIntegrationId={1}
+                    shopName="test-shop"
+                    shopType="shopify"
+                    {...mockHandlers}
+                />,
+            )
+
+            // Clicking the link should not throw any errors
+            fireEvent.click(screen.getByText('Reset Search'))
         })
     })
 })

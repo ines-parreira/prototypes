@@ -80,8 +80,10 @@ describe('queries', () => {
                 },
             )
 
-            await waitFor(() => expect(result.current.isSuccess).toBe(false))
-            expect(result.current.data).toBe(undefined)
+            await waitFor(() => {
+                expect(result.current.isSuccess).toBe(false)
+                expect(result.current.data).toBe(undefined)
+            })
         })
     })
 

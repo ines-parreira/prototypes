@@ -2,6 +2,7 @@ import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
+import { SearchBar } from 'pages/common/components/SearchBar/SearchBar'
 
 import {
     GUIDANCE_ARTICLE_LIMIT,
@@ -20,12 +21,16 @@ type Props = {
     guidanceArticlesLength: number
     hasAiGuidanceSuggestions: boolean
     isLoading: boolean
+    onSearch: (value: string) => void
+    searchQuery: string
 }
 
 export const GuidanceHeader = ({
     onCreateGuidanceClick,
     onCreateFromTemplate,
     onBrowseSuggestions,
+    onSearch,
+    searchQuery,
     guidanceArticlesLength,
     hasAiGuidanceSuggestions,
     isLoading,
@@ -47,9 +52,8 @@ export const GuidanceHeader = ({
                     className={css.textGroup}
                     data-candu-id="ai-agent-guidance-has-guidance-articles"
                 >
-                    Create internal Guidance to instruct AI Agent how to handle
-                    customer inquiries and follow end-to-end processes in line
-                    with your company policies.
+                    Create Guidance to tell AI Agent how to handle customer
+                    inquiries and end-to-end processes.
                 </p>
 
                 <div className={css.btnGroup}>
@@ -64,6 +68,11 @@ export const GuidanceHeader = ({
                         </Button>
                     ) : (
                         <>
+                            <SearchBar
+                                placeholder="Search guidance"
+                                onChange={(value) => onSearch(value)}
+                                value={searchQuery}
+                            />
                             <Button
                                 isDisabled={isGuidanceArticleLimitReached}
                                 onClick={onCreateGuidanceClick}
@@ -82,7 +91,7 @@ export const GuidanceHeader = ({
                                     isDisabled={isGuidanceArticleLimitReached}
                                     onClick={onCreateFromTemplate}
                                 >
-                                    Create From Template
+                                    Start From Template
                                 </Button>
                             )}
                         </>

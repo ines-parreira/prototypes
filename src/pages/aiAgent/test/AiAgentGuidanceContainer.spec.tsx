@@ -254,17 +254,6 @@ describe('<AiAgentGuidanceContainer />', () => {
         expect(reportError).toHaveBeenCalled()
     })
 
-    it('should render loader when guidance articles are loading', () => {
-        mockedUseGuidanceAiSuggestions.mockReturnValue({
-            ...defaultGuidanceAiSuggestionsProps,
-            isLoadingAiGuidances: true,
-        })
-
-        renderComponent()
-
-        expect(screen.getByText('Loading...')).toBeInTheDocument()
-    })
-
     it('should render empty state component', () => {
         mockedUseGuidanceAiSuggestions.mockReturnValue({
             ...defaultGuidanceAiSuggestionsProps,
@@ -520,7 +509,7 @@ describe('<AiAgentGuidanceContainer />', () => {
             renderComponent()
 
             expect(
-                screen.getByRole('button', { name: 'Create From Template' }),
+                screen.getByRole('button', { name: 'Start From Template' }),
             ).toBeAriaDisabled()
         })
 

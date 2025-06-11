@@ -12,4 +12,40 @@
     .titleCell {
         color: var(--neutral-grey-5);
     }
+
+    .spinner {
+        height: 600px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .centeredCell > div {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .noResultsContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: var(--neutral-grey-5);
+        margin-top: var(--layout-spacing-l);
+    }
+
+    .noResultsTitle {
+        .heading-subsection-semibold();
+        margin-bottom: var(--layout-spacing-xs);
+    }
+
+    .noResultsSubtitle {
+        .body-regular();
+        margin-bottom: var(--layout-spacing-xs);
+    }
+
+    .emptyTableBody {
+        border-bottom: 2px solid #fff;
+    }
 }

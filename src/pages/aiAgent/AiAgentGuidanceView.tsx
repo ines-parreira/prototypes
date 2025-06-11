@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react'
-
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import React, { useEffect, useState } from 'react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useDebouncedValue from 'hooks/useDebouncedValue'
 import { LocaleCode } from 'models/helpCenter/types'
 import { StoreIntegration } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
@@ -20,8 +19,6 @@ import { GuidanceTopRecommendations } from './components/GuidanceTopRecommendati
 import { useAiAgentNavigation } from './hooks/useAiAgentNavigation'
 import { useGuidanceAiSuggestions } from './hooks/useGuidanceAiSuggestions'
 import { useGuidanceArticleMutation } from './hooks/useGuidanceArticleMutation'
-
-import css from './AiAgentGuidanceView.less'
 
 type Props = {
     helpCenterId: number
@@ -44,6 +41,10 @@ export const AiAgentGuidanceView = ({
         guidanceHelpCenterId: helpCenterId,
     })
 
+    const [search, setSearch] = useState('')
+
+    const debouncedSearch = useDebouncedValue(search, 500)
+
     const {
         guidanceArticles,
         guidanceAISuggestions,
@@ -56,6 +57,7 @@ export const AiAgentGuidanceView = ({
     } = useGuidanceAiSuggestions({
         helpCenterId,
         shopName,
+        query: debouncedSearch,
     })
 
     const storeIntegration = useSelfServiceStoreIntegration(shopType, shopName)
@@ -163,22 +165,15 @@ export const AiAgentGuidanceView = ({
         history.push(routes.guidanceLibrary)
     }
 
-    if (
+    const isLoading =
         isLoadingGuidanceArticleList ||
         (!guidanceArticles.length && isLoadingAiGuidances)
-    ) {
-        return (
-            <div className={css.spinner}>
-                <LoadingSpinner size="big" />
-            </div>
-        )
-    }
 
-    if (isEmptyStateNoAIGuidances) {
+    if (isEmptyStateNoAIGuidances && !isLoading && !debouncedSearch) {
         return <GuidanceEmptyState shopName={shopName} />
     }
 
-    if (isEmptyStateAIGuidances) {
+    if (isEmptyStateAIGuidances && !isLoading && !debouncedSearch) {
         return (
             <AiGuidanceEmptyState
                 aiGuidances={guidanceAISuggestions}
@@ -196,6 +191,8 @@ export const AiAgentGuidanceView = ({
                 guidanceArticlesLength={guidanceArticles.length}
                 hasAiGuidanceSuggestions={isGuidancesAndAIGuidances}
                 isLoading={isLoadingAiGuidances}
+                onSearch={setSearch}
+                searchQuery={search}
             />
             <GuidanceTopRecommendations
                 isLoading={isLoadingAiGuidances}
@@ -204,6 +201,7 @@ export const AiAgentGuidanceView = ({
             />
             <GuidanceList
                 guidanceArticles={guidanceArticles}
+                isLoading={isLoading}
                 currentStoreIntegrationId={storeIntegration?.id}
                 onDelete={onDelete}
                 onDuplicate={onDuplicate}
@@ -211,6 +209,7 @@ export const AiAgentGuidanceView = ({
                 onChangeVisibility={onChangeVisibility}
                 shopName={shopName}
                 shopType={shopType}
+                onSearch={setSearch}
             />
         </div>
     )

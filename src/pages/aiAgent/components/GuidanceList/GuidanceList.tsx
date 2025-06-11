@@ -1,13 +1,17 @@
 import { useMemo, useState } from 'react'
 
+import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
 import { OrderDirection } from 'models/api/types'
 import { StoreIntegration } from 'models/integration/types'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { GuidanceListRow } from 'pages/aiAgent/components/GuidanceList/GuidanceListRow'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
@@ -40,6 +44,8 @@ type Props = {
     onDuplicate: (articleId: number, storeIntegration: StoreIntegration) => void
     onRowClick: (articleId: number) => void
     onChangeVisibility: (articleId: number, isVisible: boolean) => void
+    isLoading?: boolean
+    onSearch?: (value: string) => void
 }
 
 export const GuidanceList = ({
@@ -47,10 +53,14 @@ export const GuidanceList = ({
     shopName,
     shopType,
     currentStoreIntegrationId,
+    isLoading,
+
     onDelete,
     onDuplicate,
+
     onRowClick,
     onChangeVisibility,
+    onSearch,
 }: Props) => {
     const [sortState, setSortState] = useState<SortState>(initialSortState)
     const storeIntegrations = useStoreIntegrations()
@@ -129,21 +139,61 @@ export const GuidanceList = ({
                 <HeaderCell />
                 <HeaderCell />
             </TableHead>
-            <TableBody>
-                {sortedGuidanceArticles.map((article) => (
-                    <GuidanceListRow
-                        key={article.id}
-                        article={article}
-                        currentStoreIntegrationId={currentStoreIntegrationId}
-                        onToggle={onToggle}
-                        onDelete={onDelete}
-                        sortedStoreIntegrations={storesSortedCurrentFirst}
-                        onDuplicate={onDuplicate}
-                        onRowClick={onRowClick}
-                        availableActions={availableActions}
-                    />
-                ))}
-            </TableBody>
+            {isLoading ? (
+                <TableBody>
+                    <TableBodyRow cols={4}>
+                        <BodyCell className={css.centeredCell} colSpan={4}>
+                            <LoadingSpinner />
+                        </BodyCell>
+                    </TableBodyRow>
+                </TableBody>
+            ) : (
+                <TableBody className={css.emptyTableBody}>
+                    {guidanceArticles.length === 0 && (
+                        <TableBodyRow cols={4}>
+                            <BodyCell className={css.centeredCell} colSpan={4}>
+                                <div className={css.noResultsContainer}>
+                                    <div className={css.noResultsTitle}>
+                                        No results
+                                    </div>
+                                    <div className={css.noResultsSubtitle}>
+                                        There are no results that match your
+                                        search
+                                    </div>
+                                    <Button
+                                        fillStyle="ghost"
+                                        onClick={() => {
+                                            if (onSearch) {
+                                                onSearch('')
+                                            }
+                                        }}
+                                    >
+                                        Reset Search
+                                    </Button>
+                                </div>
+                            </BodyCell>
+                        </TableBodyRow>
+                    )}
+                    {!isLoading &&
+                        sortedGuidanceArticles.map((article) => (
+                            <GuidanceListRow
+                                key={article.id}
+                                article={article}
+                                currentStoreIntegrationId={
+                                    currentStoreIntegrationId
+                                }
+                                onToggle={onToggle}
+                                onDelete={onDelete}
+                                sortedStoreIntegrations={
+                                    storesSortedCurrentFirst
+                                }
+                                onDuplicate={onDuplicate}
+                                onRowClick={onRowClick}
+                                availableActions={availableActions}
+                            />
+                        ))}
+                </TableBody>
+            )}
         </TableWrapper>
     )
 }
