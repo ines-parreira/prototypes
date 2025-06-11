@@ -36,27 +36,33 @@ export default function ChannelListCell({
     return (
         <>
             <div className={css.container} id={tooltipId}>
-                {channelTypes.map((type) => {
-                    if (type === 'tiktok-shop') {
+                {channelTypes.length ? (
+                    channelTypes.map((type) => {
+                        if (type === 'tiktok-shop') {
+                            return (
+                                <img
+                                    alt="TikTok Shop"
+                                    key={`${storeId}-${type}`}
+                                    src={tiktokIcon}
+                                />
+                            )
+                        }
+
                         return (
-                            <img
-                                alt="TikTok Shop"
+                            <SourceIcon
+                                type={type}
                                 key={`${storeId}-${type}`}
-                                src={tiktokIcon}
+                                className={css.channelIcon}
                             />
                         )
-                    }
-
-                    return (
-                        <SourceIcon
-                            type={type}
-                            key={`${storeId}-${type}`}
-                            className={css.channelIcon}
-                        />
-                    )
-                })}
+                    })
+                ) : (
+                    <span className={css.noChannels}>-</span>
+                )}
             </div>
-            <Tooltip target={tooltipId}>{tooltipContent}</Tooltip>
+            {tooltipContent && (
+                <Tooltip target={tooltipId}>{tooltipContent}</Tooltip>
+            )}
         </>
     )
 }
