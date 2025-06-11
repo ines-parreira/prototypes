@@ -117,6 +117,23 @@ export const getDrillDownQuery = (
                 )
         }
 
+        case ProductsPerTicketColumn.TicketVolume: {
+            const { drillDownQuery } =
+                TicketVolumeConfig[ProductsPerTicketColumn.TicketVolume]
+
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection,
+            ) =>
+                drillDownQuery(
+                    statsFilters,
+                    timezone,
+                    metricData.productId,
+                    sorting,
+                )
+        }
+
         case OverviewMetric.CustomerSatisfaction:
         case OverviewMetric.MedianResponseTime:
         case OverviewMetric.MedianFirstResponseTime:
@@ -343,9 +360,6 @@ export const getDrillDownQuery = (
             return AiSalesAgentMetricsWithDrillDownConfig[
                 AiSalesAgentChart.AiSalesAgentTotalProductRecommendations
             ].drillDownQuery
-        case ProductsPerTicketColumn.TicketVolume:
-            return TicketVolumeConfig[ProductsPerTicketColumn.TicketVolume]
-                .drillDownQuery
         case VoiceOfCustomerMetricWithDrillDown.IntentPerProduct: {
             const { drillDownQuery } =
                 VoiceOfCustomerMetricWithDrillDownConfig[

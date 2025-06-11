@@ -51,24 +51,13 @@ export const ticketCountPerProductQueryFactory = (
     ],
 })
 
-export const ticketsWithProductsDrillDownQueryFactory = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection,
-): ReportingQuery<TicketCubeWithJoins> => ({
-    ...ticketsWithProductsQueryFactory(statsFilters, timezone, sorting),
-    dimensions: [TicketDimension.TicketId, TicketDimension.CreatedDatetime],
-    limit: DRILLDOWN_QUERY_LIMIT,
-    order: [[TicketDimension.CreatedDatetime, OrderDirection.Desc]],
-})
-
 export const ticketCountForProductDrillDownQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
     productId: string,
     sorting?: OrderDirection,
 ): ReportingQuery<TicketCubeWithJoins> => {
-    const baseQuery = ticketsWithProductsDrillDownQueryFactory(
+    const baseQuery = ticketsWithProductsQueryFactory(
         statsFilters,
         timezone,
         sorting,
@@ -80,5 +69,10 @@ export const ticketCountForProductDrillDownQueryFactory = (
         values: [productId],
     })
 
-    return baseQuery
+    return {
+        ...baseQuery,
+        dimensions: [TicketDimension.TicketId, TicketDimension.CreatedDatetime],
+        limit: DRILLDOWN_QUERY_LIMIT,
+        order: [[TicketDimension.CreatedDatetime, OrderDirection.Desc]],
+    }
 }

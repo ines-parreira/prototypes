@@ -10,7 +10,6 @@ import {
 import {
     ticketCountForProductDrillDownQueryFactory,
     ticketCountPerProductQueryFactory,
-    ticketsWithProductsDrillDownQueryFactory,
     ticketsWithProductsQueryFactory,
 } from 'models/reporting/queryFactories/voice-of-customer/ticketsWithProducts'
 import { ReportingFilterOperator } from 'models/reporting/types'
@@ -148,52 +147,6 @@ describe('ticketsWithProducts', () => {
                     },
                 ],
                 order: [[TicketProductsEnrichedMeasure.TicketCount, 'asc']],
-            }
-
-            expect(actual).toEqual(expected)
-        })
-    })
-
-    describe('ticketsWithProductsDrillDownQueryFactory', () => {
-        it('should make ticketsWithProductsDrillDown Query', () => {
-            const actual = ticketsWithProductsDrillDownQueryFactory(
-                statsFilters,
-                timezone,
-                sorting,
-            )
-
-            const expected = {
-                measures: [TicketProductsEnrichedMeasure.TicketCount],
-                dimensions: [
-                    TicketDimension.TicketId,
-                    TicketDimension.CreatedDatetime,
-                ],
-                timezone,
-                limit: DRILLDOWN_QUERY_LIMIT,
-                order: [[TicketDimension.CreatedDatetime, OrderDirection.Desc]],
-                segments: [],
-                filters: [
-                    {
-                        member: TicketMember.IsTrashed,
-                        operator: ReportingFilterOperator.Equals,
-                        values: ['0'],
-                    },
-                    {
-                        member: TicketMember.IsSpam,
-                        operator: ReportingFilterOperator.Equals,
-                        values: ['0'],
-                    },
-                    {
-                        member: TicketMember.PeriodStart,
-                        operator: ReportingFilterOperator.AfterDate,
-                        values: [periodStart],
-                    },
-                    {
-                        member: TicketMember.PeriodEnd,
-                        operator: ReportingFilterOperator.BeforeDate,
-                        values: [periodEnd],
-                    },
-                ],
             }
 
             expect(actual).toEqual(expected)

@@ -109,71 +109,58 @@ export const TicketVolumeTable = () => {
 
     const { data, isFetching } = useTicketsPerProductDistribution()
 
+    if (isFetching) return <LoadingTable />
+
+    if (data.length === 0) return <NoDataAvailable style={{ minHeight: 300 }} />
+
     return (
-        <>
-            {isFetching ? (
-                <LoadingTable />
-            ) : data.length === 0 ? (
-                <NoDataAvailable style={{ minHeight: 300 }} />
-            ) : (
-                <TableWrapper className={css.table}>
-                    <TableBody>
-                        <HeaderRow sorting={sorting} />
-                        {data.map((item, index) => {
-                            const { formattedTrend, sign = 0 } =
-                                formatMetricTrend(
-                                    item.valueInPercentage,
-                                    item.previousValueInPercentage,
-                                    TREND_BADGE_FORMAT,
-                                )
-                            const formattedMetricValue = formatMetricValue(
-                                item.value,
-                                'decimal',
-                                NOT_AVAILABLE_PLACEHOLDER,
-                            )
-                            return (
-                                <TableBodyRow key={index}>
-                                    <DistributionCategoryCell
-                                        key={item.productId}
-                                        progress={item.gaugePercentage}
-                                        width={getWidth(300, 140)}
-                                        category={item.name}
-                                        justifyContent="left"
-                                        innerStyle={{ paddingLeft: 0 }}
-                                        innerClassName={css.bodyCellContent}
-                                    />
-                                    <BodyCell
-                                        justifyContent="center"
-                                        width={65}
-                                    >
-                                        {
-                                            <DrillDownModalTrigger
-                                                enabled={!!item.value}
-                                                highlighted
-                                                metricData={{
-                                                    metricName:
-                                                        ProductsPerTicketColumn.TicketVolume,
-                                                    productId: item.productId,
-                                                    title: item.name,
-                                                }}
-                                            >
-                                                {formattedMetricValue}
-                                            </DrillDownModalTrigger>
-                                        }
-                                    </BodyCell>
-                                    <BodyCell
-                                        justifyContent="center"
-                                        width={65}
-                                    >
-                                        <TrendIcon sign={sign} />
-                                        {formattedTrend || DEFAULT_BADGE_TEXT}
-                                    </BodyCell>
-                                </TableBodyRow>
-                            )
-                        })}
-                    </TableBody>
-                </TableWrapper>
-            )}
-        </>
+        <TableWrapper className={css.table}>
+            <TableBody>
+                <HeaderRow sorting={sorting} />
+                {data.map((item, index) => {
+                    const { formattedTrend, sign = 0 } = formatMetricTrend(
+                        item.valueInPercentage,
+                        item.previousValueInPercentage,
+                        TREND_BADGE_FORMAT,
+                    )
+                    const formattedMetricValue = formatMetricValue(
+                        item.value,
+                        'decimal',
+                        NOT_AVAILABLE_PLACEHOLDER,
+                    )
+                    return (
+                        <TableBodyRow key={index}>
+                            <DistributionCategoryCell
+                                key={item.productId}
+                                progress={item.gaugePercentage}
+                                width={getWidth(300, 140)}
+                                category={item.name}
+                                justifyContent="left"
+                                innerStyle={{ paddingLeft: 0 }}
+                                innerClassName={css.bodyCellContent}
+                            />
+                            <BodyCell justifyContent="center" width={65}>
+                                <DrillDownModalTrigger
+                                    enabled={!!item.value}
+                                    highlighted
+                                    metricData={{
+                                        metricName:
+                                            ProductsPerTicketColumn.TicketVolume,
+                                        productId: item.productId,
+                                        title: item.name,
+                                    }}
+                                >
+                                    {formattedMetricValue}
+                                </DrillDownModalTrigger>
+                            </BodyCell>
+                            <BodyCell justifyContent="center" width={65}>
+                                <TrendIcon sign={sign} />
+                                {formattedTrend || DEFAULT_BADGE_TEXT}
+                            </BodyCell>
+                        </TableBodyRow>
+                    )
+                })}
+            </TableBody>
+        </TableWrapper>
     )
 }

@@ -1,4 +1,4 @@
-import { ticketsWithProductsDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/ticketsWithProducts'
+import { ticketCountForProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/ticketsWithProducts'
 import { Domain } from 'pages/stats/common/drill-down/types'
 import { MetricValueFormat } from 'pages/stats/common/utils'
 import {
@@ -25,6 +25,6 @@ export const TicketVolumeConfig = {
         metricFormat: integer,
         showMetric: false,
         domain: Domain.Ticket,
-        drillDownQuery: ticketsWithProductsDrillDownQueryFactory,
+        drillDownQuery: ticketCountForProductDrillDownQueryFactory,
     },
 }

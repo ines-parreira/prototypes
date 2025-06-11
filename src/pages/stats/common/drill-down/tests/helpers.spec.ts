@@ -937,7 +937,10 @@ describe('getDrillDownQuery', () => {
         )
     })
 
-    it('should be populated with sentimentCustomFieldId, sentiment, and productId', () => {
+    it.each([
+        [ProductInsightsTableColumns.TicketsVolume],
+        [ProductsPerTicketColumn.TicketVolume],
+    ])('should be populated with productId', (metricName: any) => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
         const statsFilters: StatsFilters = {
@@ -949,7 +952,7 @@ describe('getDrillDownQuery', () => {
         const timezone = 'someTimeZone'
 
         const metricData: DrillDownMetric = {
-            metricName: ProductInsightsTableColumns.TicketsVolume,
+            metricName,
             productId: '456',
         }
 
