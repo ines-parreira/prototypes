@@ -558,6 +558,33 @@ describe('useEnrichFeedbackData', () => {
                             resourceLocale: null,
                             feedback: null,
                         },
+                        {
+                            id: 'res-8',
+                            resourceId: '8',
+                            resourceType: 'EXTERNAL_SNIPPET',
+                            resourceSetId: '300',
+                            resourceTitle: 'External Snippet',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
+                        {
+                            id: 'res-9',
+                            resourceId: 'nonexistent',
+                            resourceType: 'EXTERNAL_SNIPPET',
+                            resourceSetId: '300',
+                            resourceTitle: 'External Snippet',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
+                        {
+                            id: 'res-10',
+                            resourceId: '10',
+                            resourceType: 'EXTERNAL_SNIPPET',
+                            resourceSetId: '300',
+                            resourceTitle: 'External Snippet',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
                     ],
                     storeConfiguration: {
                         shopName: 'test-store',
@@ -579,7 +606,10 @@ describe('useEnrichFeedbackData', () => {
         const mockGuidanceArticles = [
             { id: 2, title: 'Guidance Title', content: 'Guidance Content' },
         ]
-        const mockSourceItems = [{ id: 3, url: 'https://example.com' }]
+        const mockSourceItems = [
+            { id: 3, url: 'https://example.com' },
+            { id: 10 },
+        ]
         const mockIngestedFiles = [
             {
                 id: 4,
@@ -592,8 +622,18 @@ describe('useEnrichFeedbackData', () => {
         const mockActions = [{ id: '6', name: 'Action 1' }]
         const mockHelpCenters = [{ id: 1, subdomain: 'test' }]
         const mockStoreWebsiteQuestions = [
-            { id: 8, title: 'Store Website Question 1', helpCenterId: 300 },
-            { id: 9, title: 'Store Website Question 2', helpCenterId: 300 },
+            {
+                id: 8,
+                article_id: 8,
+                title: 'Store Website Question 1',
+                helpCenterId: 300,
+            },
+            {
+                id: 9,
+                article_id: 9,
+                title: 'Store Website Question 2',
+                helpCenterId: 300,
+            },
         ]
 
         ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
@@ -654,6 +694,9 @@ describe('useEnrichFeedbackData', () => {
             'ACTION',
             'ARTICLE',
             'MACRO',
+            'EXTERNAL_SNIPPET',
+            'EXTERNAL_SNIPPET',
+            'EXTERNAL_SNIPPET',
             'EXTERNAL_SNIPPET',
             'FILE_EXTERNAL_SNIPPET',
             'ORDER',

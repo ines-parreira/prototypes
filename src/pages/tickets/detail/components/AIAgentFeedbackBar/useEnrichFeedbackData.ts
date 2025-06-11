@@ -216,6 +216,7 @@ const getResourceMetadata = (
         macros,
         actions,
         helpCenters,
+        storeWebsiteQuestions,
     }: {
         articles: NonNullable<
             ReturnType<typeof useGetMultipleHelpCenterArticleLists>['articles']
@@ -233,6 +234,11 @@ const getResourceMetadata = (
         actions: NonNullable<ReturnType<typeof useActionResources>['actions']>
         helpCenters: NonNullable<
             ReturnType<typeof useGetMultipleHelpCenter>['helpCenters']
+        >
+        storeWebsiteQuestions: NonNullable<
+            ReturnType<
+                typeof useMultipleStoreWebsiteQuestions
+            >['storeWebsiteQuestions']
         >
     },
 ) => {
@@ -289,13 +295,28 @@ const getResourceMetadata = (
             const snippet = sourceItems.find(
                 (snippet) => snippet.id === Number(resource.resourceId),
             )
-            return snippet
-                ? {
-                      title: 'Public URL',
-                      content: snippet.url ?? '',
-                      url: snippet.url ?? '',
-                  }
-                : emptyMetadata
+            if (snippet) {
+                return {
+                    title: 'Public URL',
+                    content: snippet.url ?? '',
+                    url: snippet.url ?? '',
+                }
+            }
+            const storeWebsiteQuestion = storeWebsiteQuestions.find(
+                (question) =>
+                    question.article_id === Number(resource.resourceId),
+            )
+            if (storeWebsiteQuestion) {
+                return {
+                    title: storeWebsiteQuestion.title,
+                    content: storeWebsiteQuestion.title,
+                    url: aiAgentRoutes?.pagesContentDetail(
+                        storeWebsiteQuestion.id,
+                    ),
+                }
+            }
+
+            return emptyMetadata
         }
         case AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET: {
             const fileSnippet = ingestedFiles
@@ -368,6 +389,7 @@ const useProcessResources = (
         macros,
         actions,
         helpCenters,
+        storeWebsiteQuestions,
     }: {
         articles: NonNullable<
             ReturnType<typeof useGetMultipleHelpCenterArticleLists>['articles']
@@ -385,6 +407,11 @@ const useProcessResources = (
         actions: NonNullable<ReturnType<typeof useActionResources>['actions']>
         helpCenters: NonNullable<
             ReturnType<typeof useGetMultipleHelpCenter>['helpCenters']
+        >
+        storeWebsiteQuestions: NonNullable<
+            ReturnType<
+                typeof useMultipleStoreWebsiteQuestions
+            >['storeWebsiteQuestions']
         >
     },
 ) => {
@@ -409,6 +436,7 @@ const useProcessResources = (
                     macros,
                     actions,
                     helpCenters,
+                    storeWebsiteQuestions,
                 })
 
                 if (!metadata) {
@@ -452,6 +480,7 @@ const useProcessResources = (
                                     macros,
                                     actions,
                                     helpCenters,
+                                    storeWebsiteQuestions,
                                 },
                             )
                             if (!metadata) {
@@ -511,6 +540,7 @@ const useProcessResources = (
         actions,
         shopName,
         helpCenters,
+        storeWebsiteQuestions,
     ])
 }
 
@@ -678,6 +708,7 @@ export const useEnrichFeedbackData = ({
             articles,
             guidanceArticles,
             sourceItems: sourceItems ?? [],
+            storeWebsiteQuestions,
             ingestedFiles: ingestedFiles ?? [],
             macros,
             actions,
