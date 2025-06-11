@@ -13,16 +13,13 @@ describe('useActualTheme', () => {
     it('should return the theme from localstorage', () => {
         const setTheme = jest.fn()
         useLocalStorageMock.mockReturnValue([
-            THEME_NAME.Classic,
+            THEME_NAME.Light,
             setTheme,
             () => {},
         ])
         const { result } = renderHook(() => useActualTheme())
 
-        expect(result.current).toEqual([
-            THEME_NAME.Classic,
-            expect.any(Function),
-        ])
+        expect(result.current).toEqual([THEME_NAME.Light, expect.any(Function)])
         expect(setTheme).not.toHaveBeenCalled()
     })
 
@@ -31,10 +28,7 @@ describe('useActualTheme', () => {
         useLocalStorageMock.mockReturnValue(['modern', setTheme, () => {}])
         const { result } = renderHook(() => useActualTheme())
 
-        expect(result.current).toEqual([
-            THEME_NAME.Classic,
-            expect.any(Function),
-        ])
-        expect(setTheme).toHaveBeenCalledWith(THEME_NAME.Classic)
+        expect(result.current).toEqual([THEME_NAME.Light, expect.any(Function)])
+        expect(setTheme).toHaveBeenCalledWith(THEME_NAME.Light)
     })
 })

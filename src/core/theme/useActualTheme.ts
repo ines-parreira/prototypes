@@ -11,14 +11,12 @@ const themeValues = [...Object.values(THEME_NAME), 'system']
 export default function useActualTheme() {
     const [theme, setTheme] = useLocalStorage<HelpdeskThemeName>(
         'theme',
-        THEME_NAME.Classic,
+        THEME_NAME.Light,
     )
 
     // Properly sanitize the value from localstorage, since it can
-    // technically be anything as it's in the user's cintrol
-    const actualTheme = !themeValues.includes(theme)
-        ? THEME_NAME.Classic
-        : theme
+    // technically be anything as it's in the user's control
+    const actualTheme = !themeValues.includes(theme) ? THEME_NAME.Light : theme
 
     useEffect(() => {
         if (actualTheme !== theme) {

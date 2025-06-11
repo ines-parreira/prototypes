@@ -26,14 +26,14 @@ describe('ThemeProvider', () => {
 
         expect(getByText('Test component')).toBeInTheDocument()
         expect(UIKitTheme).toEqual({
-            name: THEME_NAME.Classic,
+            name: THEME_NAME.Light,
             tokens: expect.any(Object),
         })
         expect(AppTheme).toEqual({
             setTheme: expect.any(Function),
             theme: {
-                name: THEME_NAME.Classic,
-                resolvedName: THEME_NAME.Classic,
+                name: THEME_NAME.Light,
+                resolvedName: THEME_NAME.Light,
                 tokens: expect.any(Object),
             },
         })

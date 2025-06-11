@@ -22,9 +22,9 @@ describe('useTheme', () => {
         })
 
         expect(result.current).toEqual({
-            name: THEME_NAME.Classic,
-            resolvedName: THEME_NAME.Classic,
-            tokens: themeTokenMap[THEME_NAME.Classic],
+            name: THEME_NAME.Light,
+            resolvedName: THEME_NAME.Light,
+            tokens: themeTokenMap[THEME_NAME.Light],
         })
     })
 })
