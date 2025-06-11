@@ -6,8 +6,6 @@ import { AbilityRules, AppAbility, createAbility } from './ability'
 import { helpCenterAPI } from './client'
 import { Client } from './client.generated'
 
-let agentAbility: AppAbility | undefined
-
 function createAgentAbility(token: string | null) {
     if (!token) return undefined
     // update the ability of the user based on the rules defined in the JWT token
@@ -25,10 +23,20 @@ function createAgentAbility(token: string | null) {
     return undefined
 }
 
-async function buildHelpCenterClient(
-    setAgentAbility?: (ability: AppAbility | undefined) => void,
-): Promise<Client> {
-    const client = await helpCenterAPI.getClient<Client>()
+let client: Client | undefined
+let agentAbility: AppAbility | undefined
+
+export async function buildHelpCenterClient(): Promise<{
+    client: Client
+    agentAbility: AppAbility | undefined
+}> {
+    if (client) {
+        return { client, agentAbility }
+    }
+
+    client = await helpCenterAPI.init<Client>()
+
+    agentAbility = createAgentAbility(await getAccessToken())
 
     client.interceptors.request.use(async (config) => {
         // Prevent recursion while doing auth calls
@@ -37,20 +45,12 @@ async function buildHelpCenterClient(
         }
 
         const accessToken = await getAccessToken()
-
-        setAgentAbility?.(createAgentAbility(accessToken))
-
         const bearerToken = getBearerAuthorizationHeader(accessToken || '')
 
         config.headers.setAuthorization(bearerToken)
         return config
     })
-
-    return client
+    return { client, agentAbility }
 }
 
 export const getHelpCenterClient = memoize(buildHelpCenterClient)
-
-export function getAgentAbility(): AppAbility | undefined {
-    return agentAbility
-}

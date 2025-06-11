@@ -32,7 +32,7 @@ export const HelpCenterApiClientContext = createContext<
 })
 
 interface HelpCenterApiClientProviderProps {
-    children: ReactNode
+    children?: ReactNode
 }
 
 export const HelpCenterApiClientProvider = ({
@@ -48,12 +48,13 @@ export const HelpCenterApiClientProvider = ({
     )
 
     const initClient = async () => {
-        const client = await getHelpCenterClient(setAgentAbility)
+        const { client, agentAbility } = await getHelpCenterClient()
 
         setState({
             client,
             isReady: true,
         })
+        setAgentAbility(agentAbility)
     }
 
     useEffect(() => {

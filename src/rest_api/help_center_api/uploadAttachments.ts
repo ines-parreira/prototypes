@@ -89,7 +89,7 @@ export const uploadAttachments = async (
     channelInfo: ChannelInfo,
 ): Promise<Array<GenericAttachment & { google_storage_key: string }>> => {
     // 1. generate signed url
-    const client = await getHelpCenterClient()
+    const { client } = await getHelpCenterClient()
 
     const uploadAttachment = async (
         file: File,

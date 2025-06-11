@@ -53,7 +53,7 @@ export function reloadArticles(
     AnyAction
 > {
     return async (dispatch, getState) => {
-        const client = await getHelpCenterClient()
+        const { client } = await getHelpCenterClient()
         const ids = articleSelectors.getArticles(getState()).map((a) => a.id)
         const {
             data: { data: articles },

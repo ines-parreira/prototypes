@@ -101,7 +101,10 @@ function mockHelpCenterApiClient() {
 jest.mock('rest_api/help_center_api/index', () => {
     const mockedClient = mockHelpCenterApiClient()
     return {
-        getHelpCenterClient: jest.fn().mockResolvedValue(mockedClient),
+        getHelpCenterClient: jest.fn().mockResolvedValue({
+            client: mockedClient,
+            agentAbility: undefined,
+        }),
     }
 })
 
@@ -356,7 +359,7 @@ describe('useCategoriesActions', () => {
                 categoryId: 1,
                 locale: 'fr-FR',
             })
-            const apiClient = await getHelpCenterClient()
+            const { client: apiClient } = await getHelpCenterClient()
             expect(apiClient.listArticles).toHaveBeenCalled()
         })
 

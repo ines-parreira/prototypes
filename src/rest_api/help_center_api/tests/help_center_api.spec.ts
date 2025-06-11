@@ -1,32 +1,47 @@
 import MockAdapter from 'axios-mock-adapter'
 
 import * as auth from 'rest_api/auth'
-import { getHelpCenterClient } from 'rest_api/help_center_api/index'
+import {
+    buildHelpCenterClient,
+    getHelpCenterClient,
+} from 'rest_api/help_center_api/index'
 
 const TOKEN_EXAMPLE =
-    'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IkdEMW5OMW1icDdDRmpicFNVVXdaRGJsaWNWcmJYU3g3QXk2RXhFMWdMTkkifQ.eyJ1c2VyX2lkIjoxLCJhY2NvdW50X2lkIjoxLCJyb2xlcyI6WyJhZG1pbiJdLCJleHAiOjE5MjM5OTYwNjN9.VTcH71te0m21MAUDO284nOlTpVmGgITwpazWnaUsDNR4yuPoRri4kpUbjclo2cvqYjGtmaJN7y28c25iDws2ivEXaFTPDvUUW2A7yjmVcPu3zCeIyDGS2mFsiqHgscaDe4FvEEb_BxN5UnGrkXfk90NEMsv9Skcg4-gd1m9WAZTTFRZ1v28M8uzDhZwghMR_FnkzH_0Zwg-nZ0mgm8sYFrOXyx6bc5khvve-5NA7oj8eeXgr5v4PWQRJ8VpcuzWQS-A4I_SYAv4zox8qu999c_TLxSU_Iad8Xq84nVILBFPQneSyt_ep6ziTuoUpV4QqcKXyQhNBMzZEqBxmWn0Xrg'
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWNjb3VudF9pZCI6MSwicm9sZSI6eyJuYW1lIjoiYWRtaW4ifSwicnVsZXMiOlt7ImFjdGlvbiI6Im1hbmFnZSIsInN1YmplY3QiOiJhbGwifV0sImlhdCI6MTc0OTU1MTUxMiwiZXhwIjoxNzQ5NTUzMzEyfQ.0DBS0ttuHQARRmOnT9arVW34EMw36GMcTXwj-43KSQo'
 jest.mock('rest_api/auth', () => {
     const actual = jest.requireActual('rest_api/auth')
-    console.log(actual)
     return {
         ...actual,
     }
 })
 
+const authCall = jest
+    .spyOn(auth, 'getAccessToken')
+    .mockResolvedValue(TOKEN_EXAMPLE)
+
 describe('help_center_api', () => {
     describe('getHelpCenterClient', () => {
         it('should set Authorization header', async () => {
-            jest.spyOn(auth, 'getAccessToken').mockResolvedValue(TOKEN_EXAMPLE)
-            const axiosClient = await getHelpCenterClient()
+            const { client: axiosClient, agentAbility } =
+                await getHelpCenterClient()
             const mockAppAPI = new MockAdapter(axiosClient)
             mockAppAPI.onGet('/test').reply(200, { data: [] })
 
             await axiosClient.get('/test')
-
+            expect(agentAbility).toBeDefined()
             expect(mockAppAPI.history.get.length).toBe(1)
             expect(mockAppAPI.history.get[0].headers).toMatchObject({
                 Authorization: `Bearer ${TOKEN_EXAMPLE}`,
             })
+            expect(authCall).toHaveBeenCalled()
+        })
+    })
+
+    describe('buildHelpCenterClient', () => {
+        it('should return the same client without calling auth', async () => {
+            const { client } = await buildHelpCenterClient()
+            expect(client).toBeDefined()
+            expect(authCall).not.toHaveBeenCalled()
         })
     })
 })
