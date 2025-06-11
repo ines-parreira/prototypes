@@ -6,21 +6,11 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import { useTimeout } from 'hooks/useTimeout'
+import { isGorgiasApiError } from 'models/api/types'
 import socketManager from 'services/socketManager/socketManager'
 import { JoinEventType } from 'services/socketManager/types'
 
 const CLEAR_ERROR_TIMEOUT = 5000
-
-type APIError = {
-    status: number
-    response?: {
-        data?: {
-            error?: {
-                msg?: string
-            }
-        }
-    }
-}
 
 export const useTicketSummary = ({
     ticketId,
@@ -37,23 +27,26 @@ export const useTicketSummary = ({
 
     const [isLoading, setIsLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
+    const [isRetriable, setIsRetriable] = useState(true)
     const [setTimeout] = useTimeout()
 
     const { mutate: generateSummary } = useGenerateTicketSummary()
 
     const requestSummary = useCallback(() => {
         setErrorMessage('')
+        setIsRetriable(true)
         setIsLoading(true)
         generateSummary(
             { ticketId, data: {} },
             {
-                onError: (err) => {
-                    const apiError = err as APIError
+                onError: (err: unknown) => {
+                    const apiError = isGorgiasApiError(err) ? err : undefined
                     const fallbackMessage =
                         'Sorry, something went wrong. We were unable to generate a summary'
                     const message =
                         apiError?.response?.data?.error?.msg || fallbackMessage
                     setErrorMessage(message)
+                    setIsRetriable(apiError?.status !== 403)
 
                     if (summary?.content) {
                         setTimeout(
@@ -76,6 +69,7 @@ export const useTicketSummary = ({
         if (initialSummary?.updated_datetime !== summary?.updated_datetime) {
             setSummary(initialSummary)
             setErrorMessage('')
+            setIsRetriable(true)
             setIsLoading(false)
         }
     }, [initialSummary, summary?.updated_datetime])
@@ -95,6 +89,7 @@ export const useTicketSummary = ({
         summary,
         isLoading,
         errorMessage,
+        isRetriable,
         requestSummary,
         hasRequested,
     }

@@ -2,6 +2,7 @@ import { act } from '@testing-library/react'
 
 import { useGenerateTicketSummary } from '@gorgias/helpdesk-queries'
 
+import { isGorgiasApiError } from 'models/api/types'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -16,7 +17,12 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
     useGenerateTicketSummary: jest.fn(),
 }))
 
+jest.mock('models/api/types', () => ({
+    isGorgiasApiError: jest.fn(),
+}))
+
 const useGenerateTicketSummaryMock = assumeMock(useGenerateTicketSummary)
+const isGorgiasApiErrorMock = assumeMock(isGorgiasApiError)
 const mutate = jest.fn()
 
 const mockSummary = {
@@ -31,6 +37,7 @@ describe('useTicketSummary', () => {
         useGenerateTicketSummaryMock.mockReturnValue({
             mutate,
         } as unknown as ReturnType<typeof useGenerateTicketSummary>)
+        isGorgiasApiErrorMock.mockReturnValue(true)
     })
 
     it('should initialize with initialSummary', () => {
@@ -44,6 +51,7 @@ describe('useTicketSummary', () => {
         expect(result.current.summary).toEqual(mockSummary)
         expect(result.current.isLoading).toBe(false)
         expect(result.current.errorMessage).toBe('')
+        expect(result.current.isRetriable).toBe(true)
         expect(result.current.hasRequested).toBe(true)
     })
 
@@ -65,6 +73,7 @@ describe('useTicketSummary', () => {
         )
         expect(result.current.isLoading).toBe(true)
         expect(result.current.errorMessage).toBe('')
+        expect(result.current.isRetriable).toBe(true)
         expect(result.current.hasRequested).toBe(true)
     })
 
@@ -111,6 +120,7 @@ describe('useTicketSummary', () => {
         })
 
         expect(result.current.errorMessage).toBe('Custom error')
+        expect(result.current.isRetriable).toBe(true)
         expect(result.current.isLoading).toBe(false)
     })
 
@@ -175,5 +185,70 @@ describe('useTicketSummary', () => {
         })
 
         expect(result.current.errorMessage).toBe('')
+    })
+
+    it('should set isRetriable to false when error status is 403', async () => {
+        const error = {
+            status: 403,
+            response: {
+                data: {
+                    error: {
+                        msg: 'Forbidden',
+                    },
+                },
+            },
+        }
+
+        mutate.mockImplementation((_: any, { onError }: any) => {
+            onError?.(error)
+        })
+
+        const { result } = renderHook(() =>
+            useTicketSummary({
+                ticketId: 1,
+                initialSummary: null,
+            }),
+        )
+
+        await act(async () => {
+            result.current.requestSummary()
+        })
+
+        expect(result.current.errorMessage).toBe('Forbidden')
+        expect(result.current.isRetriable).toBe(false)
+        expect(result.current.isLoading).toBe(false)
+    })
+
+    it('should set isRetriable to true when error status is not 403', async () => {
+        const error = {
+            status: 400,
+            response: {
+                status: 400,
+                data: {
+                    error: {
+                        msg: 'Bad request',
+                    },
+                },
+            },
+        }
+
+        mutate.mockImplementation((_: any, { onError }: any) => {
+            onError?.(error)
+        })
+
+        const { result } = renderHook(() =>
+            useTicketSummary({
+                ticketId: 1,
+                initialSummary: null,
+            }),
+        )
+
+        await act(async () => {
+            result.current.requestSummary()
+        })
+
+        expect(result.current.errorMessage).toBe('Bad request')
+        expect(result.current.isRetriable).toBe(true)
+        expect(result.current.isLoading).toBe(false)
     })
 })

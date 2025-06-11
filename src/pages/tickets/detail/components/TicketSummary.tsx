@@ -27,6 +27,7 @@ const TicketSummarySection = ({
         summary: localSummary,
         isLoading,
         errorMessage,
+        isRetriable,
         requestSummary,
         hasRequested,
     } = useTicketSummary({
@@ -134,18 +135,21 @@ const TicketSummarySection = ({
                             />
                         )}
 
-                        {!isLoading && !hasContent && errorMessage && (
-                            <Button
-                                size="small"
-                                intent="primary"
-                                fillStyle="ghost"
-                                leadingIcon="loop"
-                                onClick={requestSummary}
-                                className={css.retryButton}
-                            >
-                                Try Again
-                            </Button>
-                        )}
+                        {!isLoading &&
+                            !hasContent &&
+                            errorMessage &&
+                            isRetriable && (
+                                <Button
+                                    size="small"
+                                    intent="primary"
+                                    fillStyle="ghost"
+                                    leadingIcon="loop"
+                                    onClick={requestSummary}
+                                    className={css.retryButton}
+                                >
+                                    Try Again
+                                </Button>
+                            )}
                     </div>
                 </>
             )}

@@ -50,6 +50,7 @@ describe('TicketSummarySection', () => {
             summary: baseSummary,
             isLoading: false,
             errorMessage: null,
+            isRetriable: true,
             requestSummary: jest.fn(),
             hasRequested: false,
         })
@@ -64,6 +65,7 @@ describe('TicketSummarySection', () => {
             summary: null,
             isLoading: true,
             errorMessage: null,
+            isRetriable: true,
             requestSummary: jest.fn(),
             hasRequested: true,
         })
@@ -80,6 +82,7 @@ describe('TicketSummarySection', () => {
             summary: baseSummary,
             isLoading: false,
             errorMessage: null,
+            isRetriable: true,
             requestSummary: jest.fn(),
             hasRequested: true,
         })
@@ -97,6 +100,7 @@ describe('TicketSummarySection', () => {
             summary: { ...baseSummary, content: '' },
             isLoading: false,
             errorMessage: 'Something went wrong',
+            isRetriable: true,
             requestSummary: jest.fn(),
             hasRequested: true,
         })
@@ -107,6 +111,22 @@ describe('TicketSummarySection', () => {
         expect(screen.getByText('Try Again')).toBeInTheDocument()
     })
 
+    it('hides retry button when error is not retriable (403)', () => {
+        useTicketSummaryMock.mockReturnValue({
+            summary: { ...baseSummary, content: '' },
+            isLoading: false,
+            errorMessage: 'Forbidden',
+            isRetriable: false,
+            requestSummary: jest.fn(),
+            hasRequested: true,
+        })
+
+        render(<TicketSummarySection summary={null} ticketId={123} />)
+
+        expect(screen.getByText('Forbidden')).toBeInTheDocument()
+        expect(screen.queryByText('Try Again')).not.toBeInTheDocument()
+    })
+
     it('calls requestSummary when retry button clicked', () => {
         const requestSummary = jest.fn()
 
@@ -114,6 +134,7 @@ describe('TicketSummarySection', () => {
             summary: { ...baseSummary, content: '' },
             isLoading: false,
             errorMessage: 'Something went wrong',
+            isRetriable: true,
             requestSummary,
             hasRequested: true,
         })
@@ -132,6 +153,7 @@ describe('TicketSummarySection', () => {
             summary: baseSummary,
             isLoading: false,
             errorMessage: 'Something went wrong',
+            isRetriable: true,
             requestSummary,
             hasRequested: true,
         })
@@ -145,6 +167,7 @@ describe('TicketSummarySection', () => {
         useTicketSummaryMock.mockReturnValue({
             summary: baseSummary,
             isLoading: false,
+            isRetriable: true,
             requestSummary: jest.fn(),
             hasRequested: false,
         })
