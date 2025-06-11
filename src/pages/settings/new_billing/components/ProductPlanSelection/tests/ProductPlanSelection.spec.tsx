@@ -355,6 +355,88 @@ describe('ProductPlanSelection', () => {
         ).not.toBeInTheDocument()
     })
 
+    it('should filter out automate plans of different generation', () => {
+        const gen5AutomatePlan = {
+            ...basicMonthlyAutomationPlan,
+            price_id: 'price_automate_456',
+            name: 'Product automate 2',
+            num_quota_tickets: 333,
+            generation: 5,
+        }
+        const automateAvailablePlans = [
+            {
+                ...basicMonthlyAutomationPlan,
+                price_id: 'price_automate_123',
+                name: 'Product automate 1',
+                num_quota_tickets: 111,
+                generation: 6,
+            },
+            gen5AutomatePlan,
+        ]
+
+        const { queryByText } = render(
+            <Provider store={store}>
+                <ProductPlanSelection
+                    {...props}
+                    availablePlans={automateAvailablePlans}
+                    currentPlan={gen5AutomatePlan}
+                    selectedPlans={{
+                        ...selectedPlans,
+                        [ProductType.Automation]: {
+                            isSelected: true,
+                            autoUpgrade: false,
+                            plan: gen5AutomatePlan,
+                        },
+                    }}
+                    type={ProductType.Automation}
+                    editingAvailable
+                />
+            </Provider>,
+        )
+
+        expect(queryByText(/111/)).not.toBeInTheDocument()
+    })
+
+    it('should filter out gen 5 automate plan when no current plan', () => {
+        const automateAvailablePlans = [
+            {
+                ...basicMonthlyAutomationPlan,
+                price_id: 'price_automate_456',
+                name: 'Product automate 2',
+                num_quota_tickets: 333,
+                generation: 5,
+            },
+            {
+                ...basicMonthlyAutomationPlan,
+                price_id: 'price_automate_123',
+                name: 'Product automate 1',
+                num_quota_tickets: 111,
+                generation: 6,
+            },
+        ]
+
+        const { queryByText } = render(
+            <Provider store={store}>
+                <ProductPlanSelection
+                    {...props}
+                    currentPlan={undefined}
+                    availablePlans={automateAvailablePlans}
+                    selectedPlans={{
+                        ...selectedPlans,
+                        [ProductType.Automation]: {
+                            isSelected: true,
+                            autoUpgrade: false,
+                        },
+                    }}
+                    type={ProductType.Automation}
+                    editingAvailable
+                />
+            </Provider>,
+        )
+
+        expect(queryByText(/333/)).not.toBeInTheDocument()
+    })
+
     it.each([ProductType.Voice, ProductType.SMS])(
         '%p: should disable the add button for trialing users ',
         (productType) => {

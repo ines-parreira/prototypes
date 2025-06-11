@@ -120,6 +120,20 @@ const ProductPlanSelection = ({
                         return !!plan.num_quota_tickets
                     }
 
+                    if (type === ProductType.Automation) {
+                        if (!!currentPlan) {
+                            // for Automate, only display plans of the same generation of the current plan.
+                            if (currentPlan.generation !== plan.generation) {
+                                return false
+                            }
+                        } else {
+                            // if no current Automate plan, show generation-6 plans only.
+                            if (plan.generation !== 6) {
+                                return false
+                            }
+                        }
+                    }
+
                     return true
                 })
                 .map((plan) => ({
