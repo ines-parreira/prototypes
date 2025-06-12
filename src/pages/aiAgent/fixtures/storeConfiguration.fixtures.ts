@@ -8,6 +8,7 @@ export const getStoreConfigurationFixture = (
     shopType: 'shopify',
     conversationBot: {
         id: 1,
+        name: 'AI Agent Name',
         email: 'bot@gorgias.com',
     },
     emailChannelDeactivatedDatetime: null,
@@ -20,6 +21,7 @@ export const getStoreConfigurationFixture = (
     helpCenterId: 1,
     guidanceHelpCenterId: 102,
     snippetHelpCenterId: 103,
+    useEmailIntegrationSignature: true,
     toneOfVoice: ToneOfVoice.Friendly,
     customToneOfVoiceGuidance: null,
     excludedTopics: [],

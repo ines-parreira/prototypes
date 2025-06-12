@@ -54,6 +54,12 @@ export const DEFAULT_FORM_VALUES: FormValues = {
     monitoredChatIntegrations: null,
     tags: null,
     excludedTopics: null,
+    conversationBot: {
+        name: 'AI Agent Name',
+        id: 0,
+        email: 'bot@gorgias.com',
+    },
+    useEmailIntegrationSignature: true,
     signature: null,
     toneOfVoice: null,
     customToneOfVoiceGuidance: null,
@@ -152,6 +158,12 @@ export const INITIAL_FORM_VALUES = {
     monitoredChatIntegrations: [],
     customFieldIds: [],
     scopes: [],
+    conversationBot: {
+        name: 'AI Agent Name',
+        id: 0,
+        email: 'bot@gorgias.com',
+    },
+    useEmailIntegrationSignature: true,
 }
 
 export const PLAYGROUND_PROMPT_CONTENT: Record<PlaygroundPromptType, string> = {

@@ -42,7 +42,9 @@ export const storeActivationFixture = (
             conversationBot: {
                 id: 1,
                 email: 'bot@gorgias.com',
+                name: 'Gorgias Bot',
             },
+            useEmailIntegrationSignature: true,
             emailChannelDeactivatedDatetime: null,
             chatChannelDeactivatedDatetime: null,
             trialModeActivatedDatetime: null,

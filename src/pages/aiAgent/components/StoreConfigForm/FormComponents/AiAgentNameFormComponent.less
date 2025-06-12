@@ -3,15 +3,15 @@
 
 :local {
     .formGroup {
-        margin-bottom: var(--layout-spacing-l);
+        margin-bottom: @layout-spacing-l;
         .formGroupDescription {
-            margin-bottom: var(--layout-spacing-s);
+            margin-bottom: @layout-spacing-s;
         }
     }
 
     .subsectionHeader {
-        margin-bottom: var(--layout-spacing-xs);
-        margin-top: var(--layout-spacing-l);
+        margin-bottom: @layout-spacing-xs;
+        margin-top: @layout-spacing-l;
     }
 
     .icon {
@@ -28,13 +28,11 @@
         .caption-regular();
         color: var(--neutral-grey-5);
         margin-top: -20px;
+        padding-right: 24px;
+        padding-left: 24px;
+        padding-bottom: 24px;
         &.error {
             color: var(--feedback-error);
         }
-    }
-
-    .checkbox {
-        border-bottom: none !important;
-        margin-bottom: -24px !important;
     }
 }

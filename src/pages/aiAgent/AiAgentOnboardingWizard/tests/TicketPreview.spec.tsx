@@ -7,10 +7,15 @@ import { ToneOfVoice } from 'pages/aiAgent/constants'
 
 describe('TicketPreview', () => {
     const signature = 'Best regards, AI Agent'
+    const aiAgentName = 'AI Agent Name'
 
     it('renders nothing if toneOfVoice is null', () => {
         const { container } = render(
-            <TicketPreview toneOfVoice={null} signature={signature} />,
+            <TicketPreview
+                toneOfVoice={null}
+                signature={signature}
+                aiAgentName={aiAgentName}
+            />,
         )
         expect(container).toBeEmptyDOMElement()
     })
@@ -20,6 +25,7 @@ describe('TicketPreview', () => {
             <TicketPreview
                 toneOfVoice={ToneOfVoice.Friendly}
                 signature={signature}
+                aiAgentName={aiAgentName}
             />,
         )
 
@@ -42,6 +48,7 @@ describe('TicketPreview', () => {
             <TicketPreview
                 toneOfVoice={ToneOfVoice.Professional}
                 signature={signature}
+                aiAgentName={aiAgentName}
             />,
         )
 
@@ -64,6 +71,7 @@ describe('TicketPreview', () => {
             <TicketPreview
                 toneOfVoice={ToneOfVoice.Sophisticated}
                 signature={signature}
+                aiAgentName={aiAgentName}
             />,
         )
 
@@ -81,11 +89,43 @@ describe('TicketPreview', () => {
         expect(screen.getByText(signature)).toBeInTheDocument()
     })
 
+    it('displays the updated AI agent name', () => {
+        // Arrange: Render with initial agent name
+        const initialAgentName = 'SupportBot'
+        const updatedAgentName = 'HelperAI'
+
+        const { rerender } = render(
+            <TicketPreview
+                toneOfVoice={ToneOfVoice.Custom}
+                signature={signature}
+                customToneOfVoiceGuidance="This is a custom tone of voice guidance"
+                aiAgentName={initialAgentName}
+            />,
+        )
+
+        // Assert initial name is present
+        expect(screen.getByText(initialAgentName)).toBeInTheDocument()
+
+        // Act: Update the agent name
+        rerender(
+            <TicketPreview
+                toneOfVoice={ToneOfVoice.Custom}
+                signature={signature}
+                customToneOfVoiceGuidance="This is a custom tone of voice guidance"
+                aiAgentName={updatedAgentName}
+            />,
+        )
+
+        // Assert updated name is present
+        expect(screen.getByText(updatedAgentName)).toBeInTheDocument()
+    })
+
     it('renders the default message for custom tone of voice and button to generate preview', () => {
         render(
             <TicketPreview
                 toneOfVoice={ToneOfVoice.Custom}
                 signature={signature}
+                aiAgentName={aiAgentName}
                 customToneOfVoiceGuidance="This is a custom tone of voice guidance"
             />,
         )
@@ -104,6 +144,7 @@ describe('TicketPreview', () => {
             <TicketPreview
                 toneOfVoice={ToneOfVoice.Custom}
                 signature={signature}
+                aiAgentName={aiAgentName}
                 customToneOfVoiceGuidance="This is a custom tone of voice guidance"
                 customToneOfVoicePreview={
                     'This is a custom tone of voice preview'
@@ -122,6 +163,7 @@ describe('TicketPreview', () => {
             <TicketPreview
                 toneOfVoice={ToneOfVoice.Custom}
                 signature={signature}
+                aiAgentName={aiAgentName}
                 customToneOfVoiceGuidance=""
                 onGenerateCustomToneOfVoicePreview={() => {}}
             />,

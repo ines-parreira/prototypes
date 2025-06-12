@@ -32,6 +32,7 @@ type Props = {
     updateChatChannelDeactivatedDatetime: (datetime: string | null) => void
 
     signature: string | null
+    useEmailIntegrationSignature: boolean | null
     monitoredEmailIntegrations: { id: number; email: string }[] | null
     isEmailChannelEnabled: boolean
     emailChannelDeactivatedDatetime: string | null | undefined
@@ -54,6 +55,7 @@ export const ChannelsFormComponent = ({
     updateChatChannelDeactivatedDatetime,
 
     signature,
+    useEmailIntegrationSignature,
     monitoredEmailIntegrations,
     isEmailChannelEnabled,
     emailChannelDeactivatedDatetime,
@@ -195,6 +197,7 @@ export const ChannelsFormComponent = ({
                     isRequired={emailChannelDeactivatedDatetime === null}
                     updateValue={updateValue}
                     signature={signature}
+                    useEmailIntegrationSignature={useEmailIntegrationSignature}
                 />
             </ConfigurationSection>
         </>

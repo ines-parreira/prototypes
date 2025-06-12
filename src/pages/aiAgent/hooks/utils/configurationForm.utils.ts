@@ -14,6 +14,12 @@ export function isAiAgentOnboardingWizardStep(
 export const getFormValuesFromStoreConfiguration = (
     storeConfig: StoreConfiguration,
 ): FormValues => ({
+    conversationBot: {
+        name: storeConfig.conversationBot?.name,
+        id: storeConfig.conversationBot?.id,
+        email: storeConfig.conversationBot?.email,
+    },
+    useEmailIntegrationSignature: storeConfig.useEmailIntegrationSignature,
     chatChannelDeactivatedDatetime: storeConfig.chatChannelDeactivatedDatetime,
     emailChannelDeactivatedDatetime:
         storeConfig.emailChannelDeactivatedDatetime,

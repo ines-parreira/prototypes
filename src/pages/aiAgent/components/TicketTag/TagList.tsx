@@ -66,6 +66,7 @@ const TagList = ({ tags, onTagsUpdate }: Props) => {
                     </div>
                     <div className={css.description}>
                         <InputField
+                            data-testid="tag-description-input"
                             value={t.description}
                             onChange={(v) => handleDescriptionChange(index, v)}
                             placeholder="e.g. Shipping status or tracking related questions"

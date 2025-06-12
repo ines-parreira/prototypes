@@ -26,6 +26,12 @@ import { useStoresDomainIngestionLogs } from '../useStoresDomainIngestionLogs'
 import { getFormValuesFromStoreConfiguration } from '../utils/configurationForm.utils'
 
 const INITIAL_FORM_VALUES: FormValues = {
+    conversationBot: {
+        name: 'AI Agent Name',
+        id: 0,
+        email: 'bot@gorgias.com',
+    },
+    useEmailIntegrationSignature: true,
     toneOfVoice: null,
     customToneOfVoiceGuidance: null,
     chatChannelDeactivatedDatetime: undefined,

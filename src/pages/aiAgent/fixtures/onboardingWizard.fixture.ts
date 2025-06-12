@@ -18,6 +18,12 @@ export const getStoreConfigurationFormValuesFixture = (
     tags: [],
     excludedTopics: [],
     signature: 'This response was created by AI',
+    useEmailIntegrationSignature: true,
+    conversationBot: {
+        name: 'AI Agent Name',
+        id: 1,
+        email: 'bot@gorgias.com',
+    },
     toneOfVoice: ToneOfVoice.Friendly,
     customToneOfVoiceGuidance:
         "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",

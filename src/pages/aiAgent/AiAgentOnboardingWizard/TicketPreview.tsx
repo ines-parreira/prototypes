@@ -14,6 +14,7 @@ import css from './TicketPreview.less'
 
 type TicketPreviewProps = {
     toneOfVoice: ToneOfVoice | null
+    aiAgentName?: string
     signature: string | null
     customToneOfVoiceGuidance?: string | null
     customToneOfVoicePreview?: string | null
@@ -31,6 +32,7 @@ type AiAgentMessageProps = {
     greetings?: string
     message: JSX.Element
     signature?: string | null
+    aiAgentName?: string | null
     isLoading?: boolean
     isError?: boolean
     isCustomToneOfVoice?: boolean
@@ -54,6 +56,7 @@ const AIAgentMessage = ({
     greetings,
     message,
     signature,
+    aiAgentName,
     isLoading,
     isError,
 }: AiAgentMessageProps) => {
@@ -81,7 +84,7 @@ const AIAgentMessage = ({
                     name="AI Agent"
                     className={classnames(css.banner, css.avatar)}
                 />
-                AI Agent
+                {aiAgentName}
             </div>
         </div>
     )
@@ -134,6 +137,7 @@ const AIAgentCustomToneOfVoiceMessage = ({
 export const TicketPreview = ({
     toneOfVoice,
     signature,
+    aiAgentName,
     customToneOfVoiceGuidance,
     customToneOfVoicePreview,
     onGenerateCustomToneOfVoicePreview,
@@ -174,6 +178,7 @@ export const TicketPreview = ({
                             message
                         )
                     }
+                    aiAgentName={aiAgentName}
                     signature={signature}
                     isLoading={
                         isCustomToneOfVoice && isLoadingCustomToneOfVoicePreview

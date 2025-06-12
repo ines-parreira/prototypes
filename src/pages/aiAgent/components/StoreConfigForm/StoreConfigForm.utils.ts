@@ -62,6 +62,8 @@ export const getStoreConfigurationFromFormValues = (
                 ? formValues.customToneOfVoiceGuidance
                 : null,
         signature,
+        useEmailIntegrationSignature:
+            formValues.useEmailIntegrationSignature ?? false,
         helpCenterId,
         monitoredChatIntegrations: formValues.monitoredChatIntegrations,
         wizard: formValues.wizard ? wizard : undefined,

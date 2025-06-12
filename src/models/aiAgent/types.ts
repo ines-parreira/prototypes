@@ -10,6 +10,7 @@ export type AccountConfigurationResponse = {
 export type AccountConfiguration = {
     accountId: number
     gorgiasDomain: string
+    conversationBot?: ConversationBot
     httpIntegration?: {
         id: number
     }
@@ -57,6 +58,7 @@ export type StoreConfiguration = {
     snippetHelpCenterId: number
     guidanceHelpCenterId: number
 
+    useEmailIntegrationSignature: boolean
     toneOfVoice: ToneOfVoice
     customToneOfVoiceGuidance: string | null
     signature: string
@@ -107,6 +109,7 @@ export type CreateStoreConfigurationPayload = Pick<
     | 'previewModeValidUntilDatetime'
     | 'customToneOfVoiceGuidance'
     | 'signature'
+    | 'useEmailIntegrationSignature'
     | 'monitoredChatIntegrations'
     | 'chatChannelDeactivatedDatetime'
     | 'emailChannelDeactivatedDatetime'
@@ -129,6 +132,7 @@ export type WelcomePageAcknowledgedResponse = {
 type ConversationBot = {
     id: number
     email: string
+    name: string
 }
 
 type EmailIntegration = {

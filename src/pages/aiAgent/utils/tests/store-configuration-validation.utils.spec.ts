@@ -15,6 +15,12 @@ import {
 } from '../store-configuration-validation.utils'
 
 const VALID_FORM_VALUES: ValidFormValues = {
+    conversationBot: {
+        name: 'AI Agent',
+        id: 0,
+        email: 'bot@gorgias.com',
+    },
+    useEmailIntegrationSignature: true,
     chatChannelDeactivatedDatetime: undefined,
     emailChannelDeactivatedDatetime: undefined,
     trialModeActivatedDatetime: null,
@@ -108,6 +114,12 @@ describe('store-configuration-validation', () => {
             const expected: ValidFormValues = {
                 ...formValues,
                 signature: 'Signature',
+                conversationBot: {
+                    name: 'AI Agent',
+                    id: 0,
+                    email: 'bot@gorgias.com',
+                },
+                useEmailIntegrationSignature: true,
                 monitoredChatIntegrations: [],
                 monitoredEmailIntegrations: [],
             }
@@ -130,12 +142,19 @@ describe('store-configuration-validation', () => {
                     ...WIZARD_FORM_VALUES,
                     completedDatetime: null,
                 },
+                useEmailIntegrationSignature: false,
                 signature: null,
                 monitoredEmailIntegrations: null,
                 monitoredChatIntegrations: null,
             }
             const expected: ValidFormValues = {
                 ...formValues,
+                conversationBot: {
+                    name: 'AI Agent',
+                    id: 0,
+                    email: 'bot@gorgias.com',
+                },
+                useEmailIntegrationSignature: false,
                 signature: '',
                 monitoredChatIntegrations: [],
                 monitoredEmailIntegrations: [],
@@ -561,6 +580,46 @@ describe('store-configuration-validation', () => {
                 ).toThrow(
                     StoreConfigurationValidationMessage.ChatIntegrationError,
                 )
+            })
+        })
+
+        it('should default conversationBot fields if missing', () => {
+            const formValues: FormValues = {
+                ...VALID_FORM_VALUES,
+                conversationBot: undefined,
+            }
+            const result = getValidStoreConfigurationFormValues(
+                formValues,
+                [],
+                false,
+                false,
+                undefined,
+                DEFAULT_OPTIONS,
+            )
+            expect(result.conversationBot).toEqual({
+                name: '',
+                id: 0,
+                email: '',
+            })
+        })
+
+        it('should default missing conversationBot fields if partially filled', () => {
+            const formValues: FormValues = {
+                ...VALID_FORM_VALUES,
+                conversationBot: undefined,
+            }
+            const result = getValidStoreConfigurationFormValues(
+                formValues,
+                [],
+                false,
+                false,
+                undefined,
+                DEFAULT_OPTIONS,
+            )
+            expect(result.conversationBot).toEqual({
+                name: '',
+                id: 0,
+                email: '',
             })
         })
     })

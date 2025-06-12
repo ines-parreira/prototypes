@@ -153,6 +153,7 @@ describe('ChannelsFormComponent', () => {
         chatChannelDeactivatedDatetime: null,
         updateChatChannelDeactivatedDatetime: jest.fn(),
         signature: 'Test Signature',
+        useEmailIntegrationSignature: false,
         monitoredEmailIntegrations: [{ id: 1, email: 'test@example.com' }],
         isEmailChannelEnabled: true,
         emailChannelDeactivatedDatetime: null,

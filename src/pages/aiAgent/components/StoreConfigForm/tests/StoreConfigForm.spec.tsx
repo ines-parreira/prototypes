@@ -336,10 +336,12 @@ describe('<StoreConfigForm />', () => {
         toneOfVoice: ToneOfVoice.Friendly,
         customToneOfVoiceGuidance:
             "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
+        useEmailIntegrationSignature: true,
         signature: 'This response was created by AI',
         excludedTopics: [],
         tags: [],
         conversationBot: {
+            name: 'AI Agent Name',
             id: 1,
             email: 'test@mail.com',
         },
@@ -376,6 +378,12 @@ describe('<StoreConfigForm />', () => {
         silentHandover: false,
         tags: [],
         excludedTopics: [],
+        conversationBot: {
+            name: 'AI Agent Name',
+            id: 1,
+            email: 'bot@gorgias.com',
+        },
+        useEmailIntegrationSignature: true,
         signature: 'This response was created by AI',
         toneOfVoice: ToneOfVoice.Friendly,
         customToneOfVoiceGuidance:
@@ -1245,12 +1253,14 @@ describe('<StoreConfigForm />', () => {
             expect(getDrawer()).toBeVisible()
         })
 
-        userEvent.click(screen.getByRole('button', { name: /add topic/i }))
+        await userEvent.click(
+            screen.getByRole('button', { name: /add topic/i }),
+        )
 
-        await screen.findByRole('textbox')
-
-        await userEvent.type(screen.getByRole('textbox'), 'Test')
-
+        const input = screen.getAllByPlaceholderText(
+            'e.g. Invoice and billing, Data privacy, or Complaints',
+        )[0]
+        await userEvent.type(input, 'Test')
         // Save changes
         const saveButton = within(getDrawer()).getByRole('button', {
             name: /save changes/i,

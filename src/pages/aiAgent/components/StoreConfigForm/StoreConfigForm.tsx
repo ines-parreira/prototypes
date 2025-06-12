@@ -31,6 +31,7 @@ import { AiAgentConfigurationModal } from 'pages/aiAgent/AiAgentConfigurationVie
 import PostCompletionWizardModal from 'pages/aiAgent/AiAgentOnboardingWizard/PostCompletionWizardModal'
 import { TicketPreview } from 'pages/aiAgent/AiAgentOnboardingWizard/TicketPreview'
 import { PublicSourcesSection } from 'pages/aiAgent/components//PublicSourcesSection/PublicSourcesSection'
+import { AiAgentNameFormComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/AiAgentNameFormComponent'
 import { ChannelsFormComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/ChannelsFormComponent'
 import { CustomFieldsFormComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/CustomFieldsFormComponent'
 import { StoreConfigDrawer } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/StoreConfigDrawer'
@@ -114,10 +115,13 @@ export const StoreConfigForm = ({
 
     const [wizardQueryParam] = useSearchParam(WIZARD_POST_COMPLETION_QUERY_KEY)
 
-    const { aiAgentTicketViewId, aiAgentPreviewTicketViewId } =
-        useAccountStoreConfiguration({
-            storeNames: [shopName],
-        })
+    const {
+        aiAgentTicketViewId,
+        aiAgentPreviewTicketViewId,
+        accountConfiguration,
+    } = useAccountStoreConfiguration({
+        storeNames: [shopName],
+    })
 
     const [ticketModalViewed, setTicketModalViewed] = useLocalStorage<string[]>(
         AI_SETTINGS_TICKET_VIEW_MODAL_VIEWED,
@@ -716,6 +720,16 @@ export const StoreConfigForm = ({
                     {shouldDisplayGeneralSections && (
                         <>
                             <section className={css.section}>
+                                <AiAgentNameFormComponent
+                                    agentsName={
+                                        accountConfiguration?.conversationBot
+                                            ?.name
+                                    }
+                                    agentsUserId={
+                                        accountConfiguration?.conversationBot
+                                            ?.id
+                                    }
+                                />
                                 <ToneOfVoiceFormComponent
                                     toneOfVoice={formValues.toneOfVoice}
                                     customToneOfVoiceGuidance={
@@ -753,6 +767,9 @@ export const StoreConfigForm = ({
                                 )
                             }}
                             signature={formValues.signature}
+                            useEmailIntegrationSignature={
+                                formValues.useEmailIntegrationSignature
+                            }
                             monitoredEmailIntegrations={
                                 formValues.monitoredEmailIntegrations
                             }
@@ -919,6 +936,9 @@ export const StoreConfigForm = ({
                         <TicketPreview
                             toneOfVoice={formValues.toneOfVoice}
                             signature={formValues.signature}
+                            aiAgentName={
+                                accountConfiguration?.conversationBot?.name
+                            }
                             customToneOfVoiceGuidance={
                                 formValues.customToneOfVoiceGuidance
                             }

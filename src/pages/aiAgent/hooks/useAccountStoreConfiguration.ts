@@ -11,14 +11,12 @@ export const useAccountStoreConfiguration = ({
 
     const accountId = currentAccount.get('id')
     const accountDomain = currentAccount.get('domain')
-
     const { data: accountConfigData } = useGetOrCreateAccountConfiguration(
         { accountId, accountDomain, storeNames },
         { refetchOnWindowFocus: false },
     )
 
     const accountConfiguration = accountConfigData?.data.accountConfiguration
-
     return {
         accountConfiguration,
         aiAgentTicketViewId: accountConfiguration?.views?.['All']?.id || null,

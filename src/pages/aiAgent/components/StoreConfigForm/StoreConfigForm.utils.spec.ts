@@ -28,8 +28,8 @@ describe('getStoreConfigurationFromFormValues', () => {
             { id: 2, email: 'email2@example.com' },
         ],
         monitoredChatIntegrations: [1, 2],
-
         customToneOfVoiceGuidance: 'Be friendly',
+        useEmailIntegrationSignature: true,
         signature: 'Best regards, Store',
         silentHandover: true,
         tags: [
@@ -39,6 +39,7 @@ describe('getStoreConfigurationFromFormValues', () => {
         excludedTopics: ['topic1', 'topic2'],
         ticketSampleRate: 0.5,
         wizard: undefined,
+        conversationBot: undefined,
         customFieldIds: [],
     }
 

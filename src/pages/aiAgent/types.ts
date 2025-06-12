@@ -24,6 +24,15 @@ export type WizardFormValues = {
 }
 
 export type FormValues = {
+    conversationBot:
+        | {
+              name: string
+              id: number
+              email: string
+          }
+        | null
+        | undefined
+    useEmailIntegrationSignature: boolean | null
     chatChannelDeactivatedDatetime: string | null | undefined
     emailChannelDeactivatedDatetime: string | null | undefined
     trialModeActivatedDatetime: string | null

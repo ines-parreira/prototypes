@@ -156,7 +156,6 @@ export const upsertStoreConfiguration = async (
     storeConfiguration: UpsertStoreConfigurationPayload,
 ) => {
     const storeName = storeConfiguration.storeName
-
     return await apiClient.put<StoreConfigurationResponse>(
         `/config/accounts/${accountDomain}/stores/${storeName}/configuration`,
         storeConfiguration,

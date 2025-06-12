@@ -165,6 +165,7 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
                     <TicketPreview
                         toneOfVoice={formValues.toneOfVoice}
                         signature={formValues.signature}
+                        aiAgentName="{formValues.conversationBot.name}"
                         customToneOfVoiceGuidance={
                             formValues.customToneOfVoiceGuidance
                         }
@@ -194,6 +195,9 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
                     <SignatureFormComponent
                         isRequired={false}
                         signature={formValues.signature}
+                        useEmailIntegrationSignature={
+                            formValues.useEmailIntegrationSignature
+                        }
                         updateValue={updateValue}
                         setIsPristine={setIsPristine}
                     />

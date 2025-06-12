@@ -151,6 +151,7 @@ describe('AiAgentStoreConfigurationProvider', () => {
             customToneOfVoiceGuidance:
                 "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
             signature: 'This response was created by AI',
+            useEmailIntegrationSignature: true,
             monitoredEmailIntegrations: [],
             monitoredChatIntegrations: [],
             excludedTopics: [],

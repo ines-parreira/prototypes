@@ -236,6 +236,13 @@ export const getValidStoreConfigurationFormValues = (
         ...formValues,
         // Need to explicitly set these fields to non-null
         signature: formValues.signature || '',
+        conversationBot: {
+            name: formValues.conversationBot?.name || '',
+            id: formValues.conversationBot?.id || 0,
+            email: formValues.conversationBot?.email || '',
+        },
+        useEmailIntegrationSignature:
+            formValues.useEmailIntegrationSignature || false,
         monitoredEmailIntegrations: formValues.monitoredEmailIntegrations || [],
         monitoredChatIntegrations: formValues.monitoredChatIntegrations || [],
     }
