@@ -125,11 +125,15 @@ describe('LiveVoice', () => {
             },
         }
         useChannelMock.mock.calls[0][0]?.onEvent!(event as DomainEvent)
-        expect(handleEventMock).toHaveBeenCalledWith(event, {
-            agent_ids: [1, 2],
-            integration_ids: [3, 4],
-            voice_queue_ids: [5, 6],
-        })
+        expect(useLiveVoiceUpdatesMock).toHaveBeenCalledWith(
+            {
+                agent_ids: [1, 2],
+                integration_ids: [3, 4],
+                voice_queue_ids: [5, 6],
+            },
+            [],
+        )
+        expect(handleEventMock).toHaveBeenCalledWith(event)
     })
 
     it('should render footer with timezone related to business hours', () => {
@@ -191,17 +195,17 @@ describe('LiveVoice', () => {
 
     it('should select correct data from useListLiveCallQueueVoiceCalls', () => {
         useListLiveCallQueueVoiceCallsMock.mockReturnValue({
-            data: { data: ['voiceCalls'] },
+            data: [{ id: 1, external_id: 'call1' }],
             isLoading: false,
         } as any)
         renderComponent()
         const result =
             useListLiveCallQueueVoiceCallsMock.mock.calls?.[0]?.[1]?.query?.select?.(
                 {
-                    data: { data: ['voiceCalls'] },
+                    data: { data: [{ id: 1, external_id: 'call1' }] },
                 } as any,
             )
 
-        expect(result).toEqual(['voiceCalls'])
+        expect(result).toEqual([{ id: 1, external_id: 'call1' }])
     })
 })

@@ -1,9 +1,11 @@
-import { cloneDeep } from 'lodash'
+import { cloneDeep, merge } from 'lodash'
 import moment from 'moment/moment'
 
 import {
+    ListLiveCallQueueAgentsQueryResult,
     ListLiveCallQueueVoiceCallsParams,
     ListLiveCallQueueVoiceCallsResult,
+    LiveCallQueueAgentCallStatusesItem,
     LiveCallQueueVoiceCall,
     queryKeys,
 } from '@gorgias/helpdesk-queries'
@@ -79,6 +81,86 @@ export const addVoiceCallToLiveCallsQueryCache = (
                 newData.data.data.unshift(voiceCall)
             }
 
+            return newData
+        },
+    )
+}
+
+export const updateVoiceCallInLiveCallsQueryCache = (
+    voiceCall: Partial<LiveCallQueueVoiceCall>,
+    params: ListLiveCallQueueVoiceCallsParams | undefined,
+) => {
+    const queryKey =
+        queryKeys.voiceCallLiveQueue.listLiveCallQueueVoiceCalls(params)
+
+    appQueryClient.setQueryData<ListLiveCallQueueVoiceCallsResult>(
+        queryKey,
+        (oldData) => {
+            if (!oldData) return
+            const index = oldData.data.data.findIndex(
+                (call) => call.id === voiceCall.id,
+            )
+            // Call not found, no update needed
+            if (index === -1) {
+                return oldData
+            }
+
+            const newData = cloneDeep(oldData)
+            const existingCall = newData.data.data[index]
+
+            const newVoiceCall = merge({}, existingCall, voiceCall)
+            if (isVoiceCallIncludedInFilters(newVoiceCall, params)) {
+                newData.data.data[index] = merge(existingCall, newVoiceCall)
+            } else {
+                // remove the call if it no longer matches the filters
+                newData.data.data.splice(index, 1)
+            }
+
+            return newData
+        },
+    )
+}
+
+export const updateAgentStatusInLiveAgentsQueryCache = (
+    agentId: number,
+    status: Partial<LiveCallQueueAgentCallStatusesItem>,
+    params: ListLiveCallQueueVoiceCallsParams | undefined,
+) => {
+    const queryKey =
+        queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+    appQueryClient.setQueryData<ListLiveCallQueueAgentsQueryResult>(
+        queryKey,
+        (oldData) => {
+            if (!oldData) return
+            const index = oldData.data.data.findIndex(
+                (agent) => agent.id === agentId,
+            )
+            if (index === -1) return oldData // Agent not found, no update needed
+
+            const newData = cloneDeep(oldData)
+            const existingAgent = newData.data.data[index]
+
+            const updatedCallStatuses = [...(existingAgent.call_statuses ?? [])]
+            const callStatusIndex = updatedCallStatuses.findIndex(
+                (cs) => cs.call_sid === status.call_sid,
+            )
+
+            if (callStatusIndex !== -1) {
+                // Update existing call status
+                updatedCallStatuses[callStatusIndex] = merge(
+                    updatedCallStatuses[callStatusIndex],
+                    status,
+                )
+            } else {
+                // Add new call status
+                updatedCallStatuses.push(status)
+            }
+
+            newData.data.data[index] = {
+                ...existingAgent,
+                call_statuses: updatedCallStatuses,
+            }
             return newData
         },
     )

@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 import {
+    AgentStatus,
     ListLiveCallQueueVoiceCallsParams,
     LiveCallQueueVoiceCall,
     queryKeys,
@@ -14,6 +15,8 @@ import {
     isFilteredOut,
     isVoiceCallIncludedInFilters,
     transformDateToUTCString,
+    updateAgentStatusInLiveAgentsQueryCache,
+    updateVoiceCallInLiveCallsQueryCache,
 } from '../utils'
 
 describe('utils.ts', () => {
@@ -145,6 +148,152 @@ describe('utils.ts', () => {
 
             expect(appQueryClient.getQueryData(queryKey)).toEqual({
                 data: { data: [] },
+            })
+        })
+    })
+
+    describe('updateVoiceCallInLiveCallsQueryCache', () => {
+        const voiceCall = {
+            id: 123,
+            status: VALID_LIVE_STATUSES[0],
+            integration_id: 1,
+            queue_id: 2,
+            initiated_by_agent_id: 3,
+        } as Partial<LiveCallQueueVoiceCall>
+        const params: ListLiveCallQueueVoiceCallsParams = {
+            integration_ids: [1],
+            voice_queue_ids: [2],
+            agent_ids: [3],
+        }
+        const queryKey =
+            queryKeys.voiceCallLiveQueue.listLiveCallQueueVoiceCalls(params)
+
+        it('should update voice call in cache if it matches filters', () => {
+            const oldData = {
+                data: { data: [{ id: voiceCall.id, status: 'oldStatus' }] },
+            }
+            appQueryClient.setQueryData(queryKey, oldData)
+
+            updateVoiceCallInLiveCallsQueryCache(voiceCall, params)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [{ ...voiceCall, status: VALID_LIVE_STATUSES[0] }],
+                },
+            })
+        })
+
+        it('should not do anything if the voice call is not in the data', () => {
+            const oldData = {
+                data: { data: [] },
+            }
+            const filteredVoiceCall = { ...voiceCall, integration_id: 99 }
+            appQueryClient.setQueryData(queryKey, oldData)
+
+            updateVoiceCallInLiveCallsQueryCache(filteredVoiceCall, params)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: { data: [] },
+            })
+        })
+
+        it('should remove voice call from cache if it is not included in filters', () => {
+            const oldData = {
+                data: { data: [{ id: voiceCall.id, status: 'oldStatus' }] },
+            }
+            appQueryClient.setQueryData(queryKey, oldData)
+
+            const filteredVoiceCall = { ...voiceCall, integration_id: 99 }
+            updateVoiceCallInLiveCallsQueryCache(filteredVoiceCall, params)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: { data: [] },
+            })
+        })
+    })
+
+    describe('updateAgentStatusInLiveAgentsQueryCache', () => {
+        const agentId = 1
+        const statusUpdate = {
+            status: AgentStatus.Ringing,
+            call_sid: '12345',
+            created_datetime: new Date().toISOString(),
+        }
+        const params: ListLiveCallQueueVoiceCallsParams = {
+            integration_ids: [1],
+            voice_queue_ids: [2],
+            agent_ids: [agentId],
+        }
+        const queryKey =
+            queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+        it('should update agent status in cache', () => {
+            const oldData = {
+                data: {
+                    data: [
+                        {
+                            id: 1,
+                            call_statuses: [
+                                {
+                                    status: 'dialling',
+                                    call_sid: '12345',
+                                },
+                            ],
+                        },
+                    ],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, oldData)
+
+            updateAgentStatusInLiveAgentsQueryCache(
+                agentId,
+                statusUpdate,
+                params,
+            )
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            id: 1,
+                            call_statuses: [statusUpdate],
+                        },
+                    ],
+                },
+            })
+        })
+
+        it('should not do anything if the agent is not in the data', () => {
+            const oldData = {
+                data: { data: [] },
+            }
+            appQueryClient.setQueryData(queryKey, oldData)
+
+            updateAgentStatusInLiveAgentsQueryCache(
+                agentId,
+                statusUpdate,
+                params,
+            )
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: { data: [] },
+            })
+        })
+
+        it('should add agent status if it does not exist', () => {
+            const oldData = {
+                data: { data: [{ id: 1, call_statuses: [] }] },
+            }
+            appQueryClient.setQueryData(queryKey, oldData)
+
+            updateAgentStatusInLiveAgentsQueryCache(
+                agentId,
+                statusUpdate,
+                params,
+            )
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: { data: [{ id: 1, call_statuses: [statusUpdate] }] },
             })
         })
     })

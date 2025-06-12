@@ -2,6 +2,7 @@ import { mockFlags } from 'jest-launchdarkly-mock'
 
 import { DomainEvent } from '@gorgias/events'
 import {
+    LiveCallQueueVoiceCall,
     queryKeys,
     VoiceCallDirection,
     VoiceCallStatus,
@@ -21,16 +22,29 @@ jest.mock('@gorgias/realtime', () => ({
 const mockUseAccountId = useAccountId as jest.Mock
 
 describe('useLiveVoiceUpdates', () => {
+    const mockedDate = new Date(2025, 0, 15, 12, 10)
+    const voiceCalls = [
+        {
+            id: 123,
+            external_id: 'abc',
+        },
+    ] as LiveCallQueueVoiceCall[]
+
     beforeEach(() => {
         jest.clearAllMocks()
         mockFlags({ [FeatureFlagKey.UseLiveVoiceUpdates]: true })
+
+        jest.useFakeTimers()
+        jest.setSystemTime(mockedDate)
     })
 
     describe('get channel', () => {
         it('should return undefined channel if accountId is not available', () => {
             mockUseAccountId.mockReturnValue(undefined)
 
-            const { result } = renderHook(() => useLiveVoiceUpdates())
+            const { result } = renderHook(() =>
+                useLiveVoiceUpdates({}, undefined),
+            )
 
             expect(result.current.channel).toBeUndefined()
         })
@@ -39,7 +53,9 @@ describe('useLiveVoiceUpdates', () => {
             const accountId = 'test-account-id'
             mockUseAccountId.mockReturnValue(accountId)
 
-            const { result } = renderHook(() => useLiveVoiceUpdates())
+            const { result } = renderHook(() =>
+                useLiveVoiceUpdates({}, undefined),
+            )
 
             expect(result.current.channel).toEqual({
                 name: 'stats.liveVoice',
@@ -83,9 +99,11 @@ describe('useLiveVoiceUpdates', () => {
 
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() => useLiveVoiceUpdates())
+            const { result } = renderHook(() =>
+                useLiveVoiceUpdates(params, voiceCalls),
+            )
 
-            result.current.handleEvent(mockEvent, params)
+            result.current.handleEvent(mockEvent)
 
             expect(appQueryClient.getQueryData(queryKey)).toEqual({
                 data: {
@@ -103,9 +121,11 @@ describe('useLiveVoiceUpdates', () => {
 
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() => useLiveVoiceUpdates())
+            const { result } = renderHook(() =>
+                useLiveVoiceUpdates(params, voiceCalls),
+            )
 
-            result.current.handleEvent(mockEvent, params)
+            result.current.handleEvent(mockEvent)
 
             expect(appQueryClient.getQueryData(queryKey)).toEqual({
                 data: {
@@ -134,6 +154,111 @@ describe('useLiveVoiceUpdates', () => {
                 integration_ids: [1],
                 voice_queue_ids: [3],
             }
+
+            const mockOldData = {
+                data: {
+                    data: [
+                        {
+                            id: 123,
+                            integration_id: 2,
+                        },
+                    ],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, mockOldData)
+
+            const { result } = renderHook(() =>
+                useLiveVoiceUpdates(params, voiceCalls),
+            )
+
+            result.current.handleEvent(mockEvent)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            id: 123,
+                            integration_id: 2,
+                        },
+                    ],
+                },
+            })
+        })
+    })
+
+    describe('handles inbound.rang-agent event', () => {
+        const params = {
+            agent_ids: [1],
+            integration_ids: [2],
+            voice_queue_ids: [3],
+        }
+
+        const mockEvent = {
+            dataschema: '//helpdesk/phone.voice-call.inbound.rang-agent/1.0.0',
+            data: {
+                voice_call_id: 123,
+                account_id: 1,
+                user_id: 1,
+            },
+        } as DomainEvent
+        const agentStatus = {
+            id: 1,
+            name: 'Test Agent',
+            profile_picture_url: null,
+            online: false,
+            available: false,
+            forward_calls: false,
+            forward_when_offline: false,
+            is_available_for_call: false,
+            phone_integration_ids: [],
+            voice_queue_ids: [],
+            call_statuses: [],
+        }
+
+        it('should update voice call in the list when an agent is rang', () => {
+            const queryKey =
+                queryKeys.voiceCallLiveQueue.listLiveCallQueueVoiceCalls(params)
+
+            const mockOldData = {
+                data: {
+                    data: [
+                        {
+                            id: 123,
+                            status: 'queued',
+                            call_sid: 'abc',
+                            last_rang_agent_id: null,
+                            status_in_queue: 'queued',
+                        },
+                    ],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, mockOldData)
+
+            const { result } = renderHook(() =>
+                useLiveVoiceUpdates(params, voiceCalls),
+            )
+
+            result.current.handleEvent(mockEvent)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            id: 123,
+                            call_sid: 'abc',
+                            status: 'queued',
+                            last_rang_agent_id: 1,
+                            status_in_queue: 'distributing',
+                        },
+                    ],
+                },
+            })
+        })
+
+        it('should not update voice call if not in the list', () => {
+            const queryKey =
+                queryKeys.voiceCallLiveQueue.listLiveCallQueueVoiceCalls(params)
+
             const mockOldData = {
                 data: {
                     data: [],
@@ -141,12 +266,126 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() => useLiveVoiceUpdates())
+            const { result } = renderHook(() => useLiveVoiceUpdates(params, []))
 
-            result.current.handleEvent(mockEvent, params)
+            result.current.handleEvent(mockEvent)
 
             expect(appQueryClient.getQueryData(queryKey)).toEqual({
-                data: { data: [] },
+                data: {
+                    data: [],
+                },
+            })
+        })
+
+        it('should create the agent status in the live call queue', () => {
+            const queryKey =
+                queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+            const mockOldData = {
+                data: {
+                    data: [agentStatus],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, mockOldData)
+
+            const { result } = renderHook(() =>
+                useLiveVoiceUpdates(params, voiceCalls),
+            )
+
+            result.current.handleEvent(mockEvent)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            ...agentStatus,
+                            call_statuses: [
+                                {
+                                    call_sid: 'abc',
+                                    status: 'ringing',
+                                    created_datetime: mockedDate.toISOString(),
+                                },
+                            ],
+                        },
+                    ],
+                },
+            })
+        })
+
+        it('should update the agent status in the live call queue', () => {
+            const queryKey =
+                queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+            const mockOldData = {
+                data: {
+                    data: [
+                        {
+                            ...agentStatus,
+                            call_statuses: [
+                                {
+                                    call_sid: 'abc',
+                                    status: 'dialling',
+                                    created_datetime: mockedDate.toISOString(),
+                                },
+                            ],
+                        },
+                    ],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, mockOldData)
+
+            const { result } = renderHook(() =>
+                useLiveVoiceUpdates(params, voiceCalls),
+            )
+
+            result.current.handleEvent(mockEvent)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            id: 1,
+                            name: 'Test Agent',
+                            profile_picture_url: null,
+                            online: false,
+                            available: false,
+                            forward_calls: false,
+                            forward_when_offline: false,
+                            is_available_for_call: false,
+                            phone_integration_ids: [],
+                            voice_queue_ids: [],
+                            call_statuses: [
+                                {
+                                    call_sid: 'abc',
+                                    status: 'ringing',
+                                    created_datetime: mockedDate.toISOString(),
+                                },
+                            ],
+                        },
+                    ],
+                },
+            })
+        })
+
+        it('should not update the agent status if the call_sid does not match', () => {
+            const queryKey =
+                queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+            const mockOldData = {
+                data: {
+                    data: [agentStatus],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, mockOldData)
+
+            const { result } = renderHook(() => useLiveVoiceUpdates(params, []))
+
+            result.current.handleEvent(mockEvent)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [agentStatus],
+                },
             })
         })
     })
