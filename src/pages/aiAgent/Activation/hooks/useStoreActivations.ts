@@ -1,47 +1,3 @@
-/**
- * Main hook for coordinating AI Agent feature activation across stores.
- *
- * **Data Flow & Dependencies:**
- * 1. `useStoreConfigurations` → extracts `storeNames` and `chatIds`
- * 2. Parallel data fetching using extracted identifiers:
- *    - Chat integration status via `useFetchChatIntegrationsStatusData` (using `chatIds`)
- *    - Self-service chat channels via `useSelfServiceChatChannelsMultiStore` (using `storeNames`)
- *    - Domain ingestion logs via `useStoresDomainIngestionLogs` (using `storeNames`)
- *    - Public resources via `usePublicResourcesList` (using `storeNames`)
- *    - Help center list via `useGetHelpCenterList` (independent)
- *    - Email integrations via `useEmailIntegrations` (independent)
- * 3. All data coordinated through `useStoreActivationReducer`
- * 4. Activation logic handled by `useActivateStore`
- *
- * **Features provided:**
- * - State management with reducer for activations
- * - Change functions for Sales/Support (Chat/Email) with automatic event logging
- * - Configuration saving with `stateToUpdatedStoreConfiguration` transformation
- * - Migration to new pricing with feature flag support
- * - Progress percentage calculation based on enabled features across stores
- * - Activation logic via `useActivateStore` with loading states
- * - Store filtering for single-store contexts (overview vs specific store pages)
- *
- * @param pageName - Current page name for analytics tracking
- * @param storeName - If provided, filters results for this store only
- * @param withPublicResources - Enables public resources retrieval (default: false)
- * @param withStoresDomainIngestionLogs - Enables domain ingestion logs retrieval (default: false)
- * @param withChatIntegrationsStatus - Enables chat integrations status retrieval (default: false)
- *
- * @returns Object containing:
- *   - storeActivations: Record of store activations by store name
- *   - progressPercentage: Overall activation progress percentage
- *   - isFetchLoading: Loading state for data fetching
- *   - isSaveLoading: Loading state for save operations
- *   - changeSales: Function to toggle sales activation for a store
- *   - changeSupport: Function to toggle support activation for a store
- *   - changeSupportChat: Function to toggle support chat activation for a store
- *   - changeSupportEmail: Function to toggle support email activation for a store
- *   - saveStoreConfigurations: Function to save current configurations
- *   - migrateToNewPricing: Function to migrate to new pricing model
- *   - endTrial: Function to end trial period
- *   - activation: Object with store activation methods (canActivate, activate, isActivating)
- */
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -136,6 +92,50 @@ export const useStoreConfigurations = (
     return { storeConfigurations, storeNames, isLoading }
 }
 
+/**
+ * Main hook for coordinating AI Agent feature activation across stores.
+ *
+ * **Data Flow & Dependencies:**
+ * 1. `useStoreConfigurations` → extracts `storeNames` and `chatIds`
+ * 2. Parallel data fetching using extracted identifiers:
+ *    - Chat integration status via `useFetchChatIntegrationsStatusData` (using `chatIds`)
+ *    - Self-service chat channels via `useSelfServiceChatChannelsMultiStore` (using `storeNames`)
+ *    - Domain ingestion logs via `useStoresDomainIngestionLogs` (using `storeNames`)
+ *    - Public resources via `usePublicResourcesList` (using `storeNames`)
+ *    - Help center list via `useGetHelpCenterList` (independent)
+ *    - Email integrations via `useEmailIntegrations` (independent)
+ * 3. All data coordinated through `useStoreActivationReducer`
+ * 4. Activation logic handled by `useActivateStore`
+ *
+ * **Features provided:**
+ * - State management with reducer for activations
+ * - Change functions for Sales/Support (Chat/Email) with automatic event logging
+ * - Configuration saving with `stateToUpdatedStoreConfiguration` transformation
+ * - Migration to new pricing with feature flag support
+ * - Progress percentage calculation based on enabled features across stores
+ * - Activation logic via `useActivateStore` with loading states
+ * - Store filtering for single-store contexts (overview vs specific store pages)
+ *
+ * @param pageName - Current page name for analytics tracking
+ * @param storeName - If provided, filters results for this store only
+ * @param withPublicResources - Enables public resources retrieval (default: false)
+ * @param withStoresDomainIngestionLogs - Enables domain ingestion logs retrieval (default: false)
+ * @param withChatIntegrationsStatus - Enables chat integrations status retrieval (default: false)
+ *
+ * @returns Object containing:
+ *   - storeActivations: Record of store activations by store name
+ *   - progressPercentage: Overall activation progress percentage
+ *   - isFetchLoading: Loading state for data fetching
+ *   - isSaveLoading: Loading state for save operations
+ *   - changeSales: Function to toggle sales activation for a store
+ *   - changeSupport: Function to toggle support activation for a store
+ *   - changeSupportChat: Function to toggle support chat activation for a store
+ *   - changeSupportEmail: Function to toggle support email activation for a store
+ *   - saveStoreConfigurations: Function to save current configurations
+ *   - migrateToNewPricing: Function to migrate to new pricing model
+ *   - endTrial: Function to end trial period
+ *   - activation: Object with store activation methods (canActivate, activate, isActivating)
+ */
 export const useStoreActivations = ({
     pageName,
     storeName,
