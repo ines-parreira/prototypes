@@ -6,7 +6,7 @@ import {
     useGetWorkflowConfiguration,
 } from 'models/workflows/queries'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import { ACTIONS } from 'pages/aiAgent/constants'
+import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
@@ -43,7 +43,13 @@ const EditActionViewContainer = () => {
         })
 
     if (isInitialLoading) {
-        return <AiAgentLayout isLoading shopName={shopName} title={ACTIONS} />
+        return (
+            <AiAgentLayout
+                isLoading
+                shopName={shopName}
+                title={SUPPORT_ACTIONS}
+            />
+        )
     }
 
     if (!configuration) {

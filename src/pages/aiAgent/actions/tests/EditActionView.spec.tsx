@@ -196,7 +196,7 @@ describe('<EditActionView />', () => {
         expect(screen.getByText('Save changes')).toBeInTheDocument()
     })
 
-    it('should redirect on "Back to actions" click', () => {
+    it('should redirect on "Back to support actions" click', () => {
         const history = createMemoryHistory({
             initialEntries: [
                 `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
@@ -218,7 +218,7 @@ describe('<EditActionView />', () => {
         )
 
         act(() => {
-            fireEvent.click(screen.getByText('Back to actions'))
+            fireEvent.click(screen.getByText('Back to support actions'))
         })
 
         expect(historyPushSpy).toHaveBeenCalledWith(

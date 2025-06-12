@@ -10,6 +10,6 @@ describe('<BackToActionButton />', () => {
     it('should render component', () => {
         renderWithRouter(<BackToActionButton />)
 
-        expect(screen.getByText('Back to Actions')).toBeInTheDocument()
+        expect(screen.getByText('Back to Support Actions')).toBeInTheDocument()
     })
 })

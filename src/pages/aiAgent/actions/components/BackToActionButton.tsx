@@ -16,7 +16,7 @@ export default function BackToActionButton() {
                 intent="secondary"
                 leadingIcon="arrow_back"
             >
-                Back to Actions
+                Back to Support Actions
             </Button>
         </Link>
     )

@@ -153,7 +153,7 @@ describe('<CreateActionView />', () => {
         expect(screen.getByText('Create Action')).toBeInTheDocument()
     })
 
-    it('should redirect on "Back to actions" click', () => {
+    it('should redirect on "Back to support actions" click', () => {
         const history = createMemoryHistory({
             initialEntries: [`/app/ai-agent/shopify/shopify-store/actions/new`],
         })
@@ -180,7 +180,7 @@ describe('<CreateActionView />', () => {
         )
 
         act(() => {
-            fireEvent.click(screen.getByText('Back to actions'))
+            fireEvent.click(screen.getByText('Back to support actions'))
         })
 
         expect(historyPushSpy).toHaveBeenCalledWith(

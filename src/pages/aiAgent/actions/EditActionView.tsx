@@ -12,7 +12,7 @@ import {
     useListActionsApps,
 } from 'models/workflows/queries'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import { ACTIONS } from 'pages/aiAgent/constants'
+import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import ActionsPlatformTemplateVisualBuilderView from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateVisualBuilderView'
 import useValidateOnVisualBuilderGraphChange from 'pages/automate/actionsPlatform/hooks/useValidateOnVisualBuilderGraphChange'
@@ -229,7 +229,7 @@ const EditActionView = ({ configuration }: Props) => {
         <AiAgentLayout
             shopName={shopName}
             className={css.container}
-            title={ACTIONS}
+            title={SUPPORT_ACTIONS}
         >
             <div>
                 <div className={css.links}>
@@ -241,7 +241,7 @@ const EditActionView = ({ configuration }: Props) => {
                         }}
                     >
                         <ButtonIconLabel icon="arrow_back">
-                            Back to actions
+                            Back to support actions
                         </ButtonIconLabel>
                     </Button>
                     <Button

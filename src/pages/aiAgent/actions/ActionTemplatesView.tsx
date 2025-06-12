@@ -4,7 +4,7 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import useEffectOnce from 'hooks/useEffectOnce'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import { ACTIONS } from 'pages/aiAgent/constants'
+import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
 
 import ActionsUseCaseTemplatesCards from './components/ActionsUseCaseTemplatesCards'
 import BackToActionButton from './components/BackToActionButton'
@@ -28,7 +28,7 @@ const ActionTemplatesView = () => {
             shopName={shopName}
             isLoading={isInitialLoading}
             className={css.container}
-            title={ACTIONS}
+            title={SUPPORT_ACTIONS}
         >
             <div className={css.backButtonContainer}>
                 <BackToActionButton />

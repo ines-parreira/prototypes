@@ -13,7 +13,7 @@ import {
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import { ACTIONS } from 'pages/aiAgent/constants'
+import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
 
 import ActionEventsHeader from './components/ActionEventsHeader'
 import ActionEventSidePanel from './components/ActionEventSidePanel'
@@ -159,7 +159,7 @@ export default function ActionExecutionsView() {
             isLoading={isFetching}
             shopName={shopName}
             className={classnames(css.container, css.actionLogsView)}
-            title={ACTIONS}
+            title={SUPPORT_ACTIONS}
         >
             <ActionEventsHeader
                 initialEndDate={filterState.to}

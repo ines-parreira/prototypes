@@ -26,7 +26,7 @@ import {
     useStoreActivations,
     useStoreConfigurations,
 } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
-import { ACTIONS } from 'pages/aiAgent/constants'
+import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import { Paths } from 'rest_api/workflows_api/client.generated'
 import { fromLegacyStatsFilters } from 'state/stats/utils'
@@ -205,7 +205,7 @@ describe('ActionEventsViewContainer', () => {
             },
         )
 
-        expect(screen.getByText(ACTIONS)).toBeInTheDocument()
+        expect(screen.getByText(SUPPORT_ACTIONS)).toBeInTheDocument()
         expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
@@ -243,7 +243,7 @@ describe('ActionEventsViewContainer', () => {
             },
         )
 
-        expect(screen.getByText(ACTIONS)).toBeInTheDocument()
+        expect(screen.getByText(SUPPORT_ACTIONS)).toBeInTheDocument()
         expect(screen.getByText('LAST UPDATED')).toBeInTheDocument()
         expect(screen.getByText('TICKET ID')).toBeInTheDocument()
         expect(screen.getByText('STATUS')).toBeInTheDocument()
