@@ -4,9 +4,11 @@ import _isArray from 'lodash/isArray'
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { DateAndTimeFormatting } from 'constants/datetime'
+import { useFlag } from 'core/flags'
 import { isTicketMessageSourceType } from 'models/ticket/predicates'
-import { SourceAddress, Source as SourceType } from 'models/ticket/types'
+import { Meta, SourceAddress, Source as SourceType } from 'models/ticket/types'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { getPersonLabelFromSource } from 'pages/tickets/common/utils'
@@ -22,6 +24,7 @@ type Props = {
     source: SourceType
     channel?: TicketChannel | string
     containerRef?: React.RefObject<HTMLElement>
+    meta?: Meta
 }
 
 export default function Source({
@@ -31,7 +34,9 @@ export default function Source({
     source,
     channel,
     containerRef,
+    meta,
 }: Props) {
+    const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
     const channelIdentifier = source.type ?? channel
     const sourceChannel = isTicketMessageSourceType(channelIdentifier)
         ? channelIdentifier
@@ -95,6 +100,42 @@ export default function Source({
                                 />
                             </strong>
                         </li>
+                        {hasTicketThreadRevamp && (
+                            <>
+                                {source.type ===
+                                TicketMessageSourceType.ChatContactForm ? (
+                                    <li>
+                                        <span className="text-faded">
+                                            Via:{' '}
+                                        </span>
+                                        <strong>contact form</strong>
+                                    </li>
+                                ) : source.type ===
+                                  TicketMessageSourceType.ChatOfflineCapture ? (
+                                    <li>
+                                        <span className="text-faded">
+                                            Via:{' '}
+                                        </span>
+                                        <strong>offline capture</strong>
+                                    </li>
+                                ) : null}
+                                {meta?.current_page && (
+                                    <li>
+                                        <span className="text-faded">
+                                            Url:{' '}
+                                        </span>
+                                        <a
+                                            target="_blank"
+                                            href={meta.current_page}
+                                            rel="noopener noreferrer"
+                                            title={meta.current_page}
+                                        >
+                                            {meta.current_page}
+                                        </a>
+                                    </li>
+                                )}
+                            </>
+                        )}
                     </ul>
                 </div>
             </Tooltip>

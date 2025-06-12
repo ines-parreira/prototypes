@@ -4,6 +4,8 @@ import moment from 'moment'
 import { Link } from 'react-router-dom'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
@@ -33,6 +35,7 @@ type Props = {
 }
 
 export default function Meta(props: Props) {
+    const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
     const {
         meta,
         source,
@@ -65,52 +68,54 @@ export default function Meta(props: Props) {
 
     useEffect(() => void startFetchingRule(), [startFetchingRule])
 
-    if (
-        source &&
-        (source.type === TicketMessageSourceType.ChatContactForm ||
-            source.type === TicketMessageSourceType.ChatOfflineCapture)
-    ) {
-        widgets.push(
-            <MetaLabel label="via" key="from-widget">
-                <span>
-                    {source.type ===
-                        TicketMessageSourceType.ChatContactForm && (
-                        <b>contact form</b>
-                    )}
-                    {source.type ===
-                        TicketMessageSourceType.ChatOfflineCapture && (
-                        <b>offline capture</b>
-                    )}
-                    {meta && meta.current_page && (
-                        <>
-                            {' '}
-                            from{' '}
-                            <a
-                                target="_blank"
-                                href={meta.current_page}
-                                rel="noopener noreferrer"
-                                title={meta.current_page}
-                            >
-                                {meta.current_page}
-                            </a>
-                        </>
-                    )}
-                </span>
-            </MetaLabel>,
-        )
-    } else if (meta && meta.current_page) {
-        widgets.push(
-            <MetaLabel label="from" key="from-widget">
-                <a
-                    target="_blank"
-                    href={meta.current_page}
-                    rel="noopener noreferrer"
-                    title={meta.current_page}
-                >
-                    {meta.current_page}
-                </a>
-            </MetaLabel>,
-        )
+    if (!hasTicketThreadRevamp) {
+        if (
+            source &&
+            (source.type === TicketMessageSourceType.ChatContactForm ||
+                source.type === TicketMessageSourceType.ChatOfflineCapture)
+        ) {
+            widgets.push(
+                <MetaLabel label="via" key="from-widget">
+                    <span>
+                        {source.type ===
+                            TicketMessageSourceType.ChatContactForm && (
+                            <b>contact form</b>
+                        )}
+                        {source.type ===
+                            TicketMessageSourceType.ChatOfflineCapture && (
+                            <b>offline capture</b>
+                        )}
+                        {meta && meta.current_page && (
+                            <>
+                                {' '}
+                                from{' '}
+                                <a
+                                    target="_blank"
+                                    href={meta.current_page}
+                                    rel="noopener noreferrer"
+                                    title={meta.current_page}
+                                >
+                                    {meta.current_page}
+                                </a>
+                            </>
+                        )}
+                    </span>
+                </MetaLabel>,
+            )
+        } else if (meta && meta.current_page) {
+            widgets.push(
+                <MetaLabel label="from" key="from-widget">
+                    <a
+                        target="_blank"
+                        href={meta.current_page}
+                        rel="noopener noreferrer"
+                        title={meta.current_page}
+                    >
+                        {meta.current_page}
+                    </a>
+                </MetaLabel>,
+            )
+        }
     }
 
     const GO_TO_WIDGET_SOURCES = [

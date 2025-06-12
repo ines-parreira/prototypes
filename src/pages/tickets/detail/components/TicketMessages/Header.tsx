@@ -115,6 +115,7 @@ export default function Header({
                         channel={message.channel}
                         source={message.source as SourceType}
                         containerRef={containerRef ?? undefined}
+                        meta={message.meta as MetaType}
                     />
                 )}
                 {metaContent}

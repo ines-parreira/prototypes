@@ -1,18 +1,21 @@
 // sort-imports-ignore
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import React from 'react'
-
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { omit } from 'lodash'
 import moment from 'moment'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
+import { useFlag } from 'core/flags'
 import { channels as mockChannels } from 'fixtures/channels'
 import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
 import { Source as MessageSource } from 'models/ticket/types'
+import { assumeMock } from 'utils/testing'
 
 import Source from '../Source'
+
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+const useFlagMock = assumeMock(useFlag)
 
 jest.mock(
     'pages/common/utils/DatetimeLabel',
@@ -46,6 +49,10 @@ const minProps = {
 }
 
 describe('<Source />', () => {
+    beforeEach(() => {
+        useFlagMock.mockReturnValue(false)
+    })
+
     it('should render a source', () => {
         const { container } = render(<Source {...minProps} />)
 
@@ -95,6 +102,60 @@ describe('<Source />', () => {
             ),
         ).toBeInTheDocument()
         expect(getByText('Email')).toBeInTheDocument()
+    })
+
+    it('should display "Via" for contact forms', async () => {
+        useFlagMock.mockReturnValue(true)
+        render(
+            <Source
+                {...minProps}
+                source={{
+                    ...minProps.source,
+                    type: TicketMessageSourceType.ChatContactForm,
+                }}
+            />,
+        )
+
+        fireEvent.mouseOver(screen.getByText('forum'))
+        await screen.findByText('From:')
+
+        expect(screen.getByText('Via:')).toBeInTheDocument()
+        expect(screen.getByText('contact form')).toBeInTheDocument()
+    })
+
+    it('should display "Via" for offline capture', async () => {
+        useFlagMock.mockReturnValue(true)
+        render(
+            <Source
+                {...minProps}
+                source={{
+                    ...minProps.source,
+                    type: TicketMessageSourceType.ChatOfflineCapture,
+                }}
+            />,
+        )
+
+        fireEvent.mouseOver(screen.getByText('forum'))
+        await screen.findByText('From:')
+
+        expect(screen.getByText('Via:')).toBeInTheDocument()
+        expect(screen.getByText('offline capture')).toBeInTheDocument()
+    })
+
+    it('should display "Url" available', async () => {
+        useFlagMock.mockReturnValue(true)
+        render(
+            <Source
+                {...minProps}
+                meta={{ current_page: 'https://example.com' }}
+            />,
+        )
+
+        fireEvent.mouseOver(screen.getByText('email'))
+        await screen.findByText('From:')
+
+        expect(screen.getByText('Url:')).toBeInTheDocument()
+        expect(screen.getByText('https://example.com')).toBeInTheDocument()
     })
 
     it('should use the channel name for new channels', async () => {
