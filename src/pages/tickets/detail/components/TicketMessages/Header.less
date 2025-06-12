@@ -1,4 +1,5 @@
 @import '~css/new/mixins';
+@import (reference) '~css/typography';
 @import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 
 :local .header {
@@ -60,5 +61,11 @@
 .ticket-thread-revamp :local {
     .header {
         line-height: 20px;
+    }
+
+    .timestamp {
+        .caption-regular();
+
+        color: var(--neutral-grey-4);
     }
 }

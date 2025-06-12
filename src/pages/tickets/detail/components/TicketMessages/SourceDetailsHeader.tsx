@@ -1,17 +1,19 @@
-import React, { ReactNode, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 
 import classnames from 'classnames'
 
 import { TicketMessage } from '@gorgias/helpdesk-types'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useDebouncedValue from 'hooks/useDebouncedValue'
 import useMeasure from 'hooks/useMeasure'
 import { TicketMessage as TicketMessage_DEPRECATED } from 'models/ticket/types'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import MessageStatusIndicator from 'tickets/ticket-detail/components/MessageStatusIndicator'
 
 import SourceActionsHeader from './SourceActionsHeader'
 import SourceDetailsContext from './SourceDetailsContext'
+import { SourceDetailsInfo } from './SourceDetailsInfo'
 
 import css from './SourceDetails.less'
 
@@ -25,13 +27,6 @@ type Props = {
     showIntents?: boolean
 }
 
-const From = ({ label, children }: { label: string; children?: ReactNode }) => (
-    <span className={classnames(css.from)}>
-        <span className={css.fromLabel}>{label}</span>{' '}
-        <span className={css.fromValue}>{children}</span>
-    </span>
-)
-
 export default function SourceDetailsHeader({
     className,
     contentClassName,
@@ -41,6 +36,7 @@ export default function SourceDetailsHeader({
     message,
     showIntents = true,
 }: Props) {
+    const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
     const [focus, setFocus] = useState(false)
 
     const [ref, { width }] = useMeasure()
@@ -68,28 +64,6 @@ export default function SourceDetailsHeader({
 
     const meta = message.meta as TicketMessage_DEPRECATED['meta']
 
-    const infoWidget = useMemo(() => {
-        if (meta?.is_duplicated) {
-            return (
-                <From label="go to" key="ref-widget">
-                    <a
-                        target="_blank"
-                        href={meta.private_reply!.original_ticket_id}
-                        rel="noopener noreferrer"
-                    >
-                        ticket
-                    </a>
-                </From>
-            )
-        }
-        return (
-            <DatetimeLabel
-                dateTime={message.created_datetime}
-                className={classnames({ [css.hideTimestamp]: hideTimestamp })}
-            />
-        )
-    }, [meta, message.created_datetime, hideTimestamp])
-
     return (
         <div
             className={classnames(css.wrapper, className)}
@@ -98,12 +72,20 @@ export default function SourceDetailsHeader({
         >
             <div className={classnames(css.content, contentClassName)}>
                 {actionHeader}
-                {showMessageStatusIndicator && (
-                    <MessageStatusIndicator
-                        message={message as TicketMessage}
-                    />
+                {!hasTicketThreadRevamp && (
+                    <>
+                        {showMessageStatusIndicator && (
+                            <MessageStatusIndicator
+                                message={message as TicketMessage}
+                            />
+                        )}
+                        <SourceDetailsInfo
+                            datetime={message.created_datetime}
+                            hideTimestamp={hideTimestamp}
+                            meta={meta ?? undefined}
+                        />
+                    </>
                 )}
-                {infoWidget}
             </div>
         </div>
     )

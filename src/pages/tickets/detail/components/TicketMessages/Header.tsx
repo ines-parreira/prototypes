@@ -6,6 +6,8 @@ import { fromJS, Map } from 'immutable'
 
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import {
     Meta as MetaType,
     Source as SourceType,
@@ -13,10 +15,12 @@ import {
 } from 'models/ticket/types'
 import { AgentLabel, CustomerLabel } from 'pages/common/utils/labels'
 import { isForwardedMessage } from 'tickets/common/utils'
+import MessageStatusIndicator from 'tickets/ticket-detail/components/MessageStatusIndicator'
 import { useTicketModalContext } from 'timeline/ticket-modal/hooks/useTicketModalContext'
 
 import Meta from './Meta'
 import Source from './Source'
+import { SourceDetailsInfo } from './SourceDetailsInfo'
 
 import css from './Header.less'
 
@@ -42,6 +46,7 @@ export default function Header({
     isMessageFromAIAgent = false,
     sourceDetails = null,
 }: Props) {
+    const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
     const { containerRef } = useTicketModalContext()
     const sender = fromJS(message.sender || {}) as Map<any, any>
     const isForwarded = isForwardedMessage(message)
@@ -119,6 +124,17 @@ export default function Header({
                     />
                 )}
                 {metaContent}
+                {hasTicketThreadRevamp && (
+                    <div className={css.timestamp}>
+                        <MessageStatusIndicator
+                            message={message as TicketMessage}
+                        />
+                        <SourceDetailsInfo
+                            datetime={message.created_datetime}
+                            meta={message.meta ?? undefined}
+                        />
+                    </div>
+                )}
             </div>
             {sourceDetails}
         </div>
