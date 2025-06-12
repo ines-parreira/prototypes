@@ -154,8 +154,8 @@ importers:
         specifier: 0.31.0
         version: 0.31.0(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(reactstrap@8.9.0(react-dom@17.0.2(react@17.0.2))(react@17.0.2))
       '@gorgias/realtime':
-        specifier: ^0.16.1
-        version: 0.16.1(@tanstack/react-query@4.36.1(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2))(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)
+        specifier: ^0.17.0
+        version: 0.17.0(@tanstack/react-query@4.36.1(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2))(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.52.1(react@17.0.2))
@@ -2747,8 +2747,8 @@ packages:
       react: ^17
       reactstrap: ^8.9.0
 
-  '@gorgias/realtime@0.16.1':
-    resolution: {integrity: sha512-hgKD+Ek3qLUg2NJE/lYLxf8owRxwo96TEfkDt6jP8aOSIHnaiHiFn+E71LTru3QjKGed/eOuQ1UkT5IzCND4VQ==, tarball: https://npm.pkg.github.com/download/@gorgias/realtime/0.16.1/7cd8a5642b160ed222c0b04160a95e6bedc43268}
+  '@gorgias/realtime@0.17.0':
+    resolution: {integrity: sha512-Y03ZGaRBFxFO8Q++NvjRWWtBxx6MI/P1hnfOnTN/k/YKCAQO6Z+9OneoH53eRPdIGkUGnZ4ZJf2PXNsQFN5LGg==, tarball: https://npm.pkg.github.com/download/@gorgias/realtime/0.17.0/e8338199f3ab91dbd99e7d60ac1827292a51c9f2}
     engines: {node: '>=18'}
     peerDependencies:
       '@tanstack/react-query': 4.36.1
@@ -13102,7 +13102,7 @@ snapshots:
     transitivePeerDependencies:
       - react-dom
 
-  '@gorgias/realtime@0.16.1(@tanstack/react-query@4.36.1(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2))(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)':
+  '@gorgias/realtime@0.17.0(@tanstack/react-query@4.36.1(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2))(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)':
     dependencies:
       '@gorgias/events': 0.5.0
       '@gorgias/helpdesk-queries': 0.7.20(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)

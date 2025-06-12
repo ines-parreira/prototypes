@@ -2,7 +2,10 @@ import React, { ReactElement } from 'react'
 
 import { CookiesProvider } from 'react-cookie'
 
-import { AgentActivityProvider } from '@gorgias/realtime'
+import {
+    AgentActivityProvider,
+    AgentOnlineStatusProvider,
+} from '@gorgias/realtime'
 
 import { BannersContextProvider } from 'AlertBanners'
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
@@ -27,17 +30,21 @@ export default function Main({ children }: Props) {
                     <BannersContextProvider>
                         <SpotlightProvider>
                             <VoiceDeviceProvider>
-                                <AgentActivityProvider>
-                                    <SplitTicketViewProvider>
-                                        <CookiesProvider
-                                            defaultSetOptions={{ path: '/' }}
-                                        >
-                                            <NavBarProvider>
-                                                <App>{children}</App>
-                                            </NavBarProvider>
-                                        </CookiesProvider>
-                                    </SplitTicketViewProvider>
-                                </AgentActivityProvider>
+                                <AgentOnlineStatusProvider>
+                                    <AgentActivityProvider>
+                                        <SplitTicketViewProvider>
+                                            <CookiesProvider
+                                                defaultSetOptions={{
+                                                    path: '/',
+                                                }}
+                                            >
+                                                <NavBarProvider>
+                                                    <App>{children}</App>
+                                                </NavBarProvider>
+                                            </CookiesProvider>
+                                        </SplitTicketViewProvider>
+                                    </AgentActivityProvider>
+                                </AgentOnlineStatusProvider>
                             </VoiceDeviceProvider>
                         </SpotlightProvider>
                     </BannersContextProvider>
