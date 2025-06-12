@@ -60,12 +60,7 @@ export default function useWrapUpTime() {
         (json: ServerMessage) => {
             const eventData = json as unknown as VoiceCallWrapUpTimeStartedEvent
             setWrapUpState({
-                wrapUpEndTimestamp: moment
-                    .utc(
-                        eventData.event.expiration_datetime,
-                        'YYYY-MM-DD HH:mm:ss.SSSSSSS',
-                    )
-                    .toISOString(),
+                wrapUpEndTimestamp: eventData.event.expiration_datetime,
                 voiceCall: eventData.voice_call,
             })
         },
