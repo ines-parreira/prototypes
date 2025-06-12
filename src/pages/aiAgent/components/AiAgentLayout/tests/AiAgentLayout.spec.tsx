@@ -111,23 +111,4 @@ describe('<AiAgentLayout />', () => {
         expect(title).toBeInTheDocument()
         expect(navigation).toBeInTheDocument()
     })
-
-    it('should call useStoreActivations with withPublicResources=false', () => {
-        // Mock the useStoreActivations hook
-        const useStoreActivationsSpy = jest.spyOn(
-            require('pages/aiAgent/Activation/hooks/useStoreActivations'),
-            'useStoreActivations',
-        )
-
-        renderComponent({})
-
-        // Verify the hook was called with the correct parameters
-        expect(useStoreActivationsSpy).toHaveBeenCalledWith({
-            pageName: expect.any(String),
-            withPublicResources: false,
-        })
-
-        // Clean up
-        useStoreActivationsSpy.mockRestore()
-    })
 })

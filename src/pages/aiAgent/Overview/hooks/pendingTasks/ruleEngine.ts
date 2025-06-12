@@ -1,5 +1,4 @@
-import { IngestionLog } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
-import { SourceItem } from 'pages/aiAgent/components/PublicSourcesSection/types'
+import { KnowledgeStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { EnableAskAnythingInputTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/EnableAskAnythingInput.task'
 import { GiveFeedbackAIAgentTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/GiveFeedbackAIAgent.task'
@@ -46,8 +45,7 @@ import { type TicketViewData } from './useTicketViewData'
 export type RuleEngineData = {
     aiAgentStoreConfiguration: AiAgentStoreConfigurationData
     faqHelpCenters?: FaqHelpCentersData
-    publicResources?: SourceItem[]
-    storeDomainIngestionLogs?: IngestionLog[]
+    storeKnowledgeStatus?: KnowledgeStatus
     fileIngestion?: FileIngestionData
     guidances?: GuidancesData
     actions?: ActionsData

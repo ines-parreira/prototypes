@@ -10,9 +10,7 @@ import {
     GmailIntegration,
     OutlookIntegration,
 } from 'models/integration/types'
-import { IngestionLog } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
-import { hasSuccessfullySyncedOnce } from 'pages/aiAgent/AiAgentScrapedDomainContent/utils'
-import { SourceItem } from 'pages/aiAgent/components/PublicSourcesSection/types'
+import { KnowledgeStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
@@ -112,11 +110,10 @@ type UpdateStoreConfiguration = {
         | GmailIntegration
         | OutlookIntegration
     )[]
+    storesKnowledgeStatus?: Record<string, KnowledgeStatus>
     helpCentersFaq?: HelpCenter[]
     ldFlags: LDFlagSet
     chatIntegrationStatus?: ChatIntegrationsStatusData
-    publicResources?: Record<string, SourceItem[]>
-    storesDomainIngestionLogs?: Record<string, IngestionLog[]>
     hasNewAutomatePlan: boolean
     flags: Flags
 }
@@ -344,13 +341,11 @@ const toggleSales = (
 export const checkIsMissingKnowledge = ({
     helpCenterId,
     helpCentersFaq,
-    publicResources,
-    storeDomainIngestionLogs,
+    storeKnowledgeStatus,
 }: {
     helpCenterId: number | null
     helpCentersFaq?: HelpCenter[]
-    publicResources?: SourceItem[]
-    storeDomainIngestionLogs?: IngestionLog[]
+    storeKnowledgeStatus?: KnowledgeStatus
 }): boolean => {
     const hasHelpCenterFaq = (helpCentersFaq ?? []).length > 0
 
@@ -358,8 +353,8 @@ export const checkIsMissingKnowledge = ({
         helpCenterId !== null &&
         !!helpCentersFaq?.some((it) => it.id === helpCenterId) &&
         hasHelpCenterFaq
-    const hasPublicUrls = !!publicResources?.length
-    const hasSyncedOnce = hasSuccessfullySyncedOnce(storeDomainIngestionLogs)
+    const hasPublicUrls = !!storeKnowledgeStatus?.has_public_resources
+    const hasSyncedOnce = !!storeKnowledgeStatus?.is_store_domain_synced
 
     return !hasHelpCenter && !hasPublicUrls && !hasSyncedOnce
 }
@@ -367,15 +362,13 @@ export const checkIsMissingKnowledge = ({
 export const getChatActivation = ({
     chatIntegrationStatus,
     helpCentersFaq,
-    publicResources,
-    storeDomainIngestionLogs,
+    storeKnowledgeStatus,
     selfServiceChatChannels,
     storeConfiguration,
 }: {
     chatIntegrationStatus?: ChatIntegrationsStatusData
     helpCentersFaq?: HelpCenter[]
-    publicResources?: SourceItem[]
-    storeDomainIngestionLogs?: IngestionLog[]
+    storeKnowledgeStatus?: KnowledgeStatus
     selfServiceChatChannels: SelfServiceChatChannel[]
     storeConfiguration: StoreConfiguration
 }): {
@@ -390,8 +383,7 @@ export const getChatActivation = ({
     const isMissingKnowledge = checkIsMissingKnowledge({
         helpCenterId,
         helpCentersFaq,
-        publicResources,
-        storeDomainIngestionLogs,
+        storeKnowledgeStatus,
     })
 
     const availableMonitoredChat =
@@ -435,8 +427,7 @@ export const storeConfigurationToState = (
         helpCentersFaq,
         chatIntegrationStatus,
         ldFlags,
-        publicResources,
-        storesDomainIngestionLogs,
+        storesKnowledgeStatus,
         hasNewAutomatePlan,
         flags: {
             hasAiAgentNewActivationXp,
@@ -458,9 +449,7 @@ export const storeConfigurationToState = (
             const isMissingKnowledge = checkIsMissingKnowledge({
                 helpCenterId,
                 helpCentersFaq,
-                publicResources: publicResources?.[storeName],
-                storeDomainIngestionLogs:
-                    storesDomainIngestionLogs?.[storeName],
+                storeKnowledgeStatus: storesKnowledgeStatus?.[storeName],
             })
 
             const alerts: StoreActivationAlert[] = []
@@ -489,11 +478,9 @@ export const storeConfigurationToState = (
             } = getChatActivation({
                 storeConfiguration,
                 selfServiceChatChannels: availableChatsForStore,
-                publicResources: publicResources?.[storeName],
-                storeDomainIngestionLogs:
-                    storesDomainIngestionLogs?.[storeName],
                 helpCentersFaq,
                 chatIntegrationStatus,
+                storeKnowledgeStatus: storesKnowledgeStatus?.[storeName],
             })
 
             const isEmailIntegrationMissing = !monitoredEmailIntegrations.some(

@@ -24,6 +24,9 @@ export const usePublicResourceMutation = ({
                 await queryClient.invalidateQueries({
                     queryKey: helpCenterKeys.articleIngestionLogsListRoot(),
                 })
+                await queryClient.invalidateQueries({
+                    queryKey: helpCenterKeys.knowledgeStatus(),
+                })
             },
         })
 
@@ -56,6 +59,9 @@ export const usePublicResourceMutation = ({
                 })
                 await queryClient.invalidateQueries({
                     queryKey: helpCenterKeys.articleIngestionLogsListRoot(),
+                })
+                await queryClient.invalidateQueries({
+                    queryKey: helpCenterKeys.knowledgeStatus(),
                 })
             },
         })

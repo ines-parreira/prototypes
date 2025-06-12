@@ -18,7 +18,9 @@ describe('EnableTriggerOnSearchTask', () => {
         const task = new EnableTriggerOnSearchTask(
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
-                publicResources: [{ id: 1 }] as any,
+                storeKnowledgeStatus: {
+                    has_public_resources: true,
+                } as any,
                 selfServiceChatChannels: [{ value: { id: 1 } }] as any,
                 chatIntegrationsStatus: [{ chatId: 1, installed: true }] as any,
                 isAiSalesAgentHelpOnSearchTemplateQueryEnabled: true,
@@ -42,7 +44,9 @@ describe('EnableTriggerOnSearchTask', () => {
         const task = new EnableTriggerOnSearchTask(
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
-                publicResources: [{ id: 1 }] as any,
+                storeKnowledgeStatus: {
+                    has_public_resources: true,
+                } as any,
                 selfServiceChatChannels: [{ value: { id: 1 } }] as any,
                 chatIntegrationsStatus: [{ chatId: 1, installed: true }] as any,
                 isAiSalesAgentHelpOnSearchTemplateQueryEnabled: true,
@@ -66,7 +70,9 @@ describe('EnableTriggerOnSearchTask', () => {
         const task = new EnableTriggerOnSearchTask(
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
-                publicResources: [{ id: 1 }] as any,
+                storeKnowledgeStatus: {
+                    has_public_resources: true,
+                } as any,
                 selfServiceChatChannels: [{ value: { id: 1 } }] as any,
                 chatIntegrationsStatus: [{ chatId: 1, installed: true }] as any,
                 isAiSalesAgentHelpOnSearchTemplateQueryEnabled: true,
@@ -89,7 +95,9 @@ describe('EnableTriggerOnSearchTask', () => {
         const task = new EnableTriggerOnSearchTask(
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
-                publicResources: [{ id: 1 }] as any,
+                storeKnowledgeStatus: {
+                    has_public_resources: true,
+                } as any,
                 selfServiceChatChannels: [{ value: { id: 1 } }] as any,
                 chatIntegrationsStatus: [{ chatId: 1, installed: true }] as any,
                 isAiSalesAgentHelpOnSearchTemplateQueryEnabled: true,
@@ -113,7 +121,9 @@ describe('EnableTriggerOnSearchTask', () => {
         const task = new EnableTriggerOnSearchTask(
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
-                publicResources: [{ id: 1 }] as any,
+                storeKnowledgeStatus: {
+                    has_public_resources: true,
+                } as any,
                 selfServiceChatChannels: [{ value: { id: 1 } }] as any,
                 chatIntegrationsStatus: [{ chatId: 1, installed: true }] as any,
                 isAiSalesAgentHelpOnSearchTemplateQueryEnabled: false,

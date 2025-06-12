@@ -322,3 +322,11 @@ export const getFileIngestionArticleTitlesAndStatus = async (
         await client.getFileIngestionArticleTitlesAndStatus(pathParams)
     return response.data
 }
+
+export const getKnowledgeStatus = async (
+    client: HelpCenterClient | undefined,
+) => {
+    if (!client) return null
+    const response = await client.getKnowledgeStatus()
+    return response.data
+}

@@ -170,7 +170,7 @@ declare namespace Components {
             raw_text?: string | null
             dataset_id: string
             scraping_id?: string | null
-            latest_sync: string // date-time
+            latest_sync?: string | null // date-time
             created_datetime: string // date-time
             id: number
             url: string | null
@@ -2256,7 +2256,7 @@ declare namespace Components {
             raw_text?: string | null
             dataset_id: string
             scraping_id?: string | null
-            latest_sync: string // date-time
+            latest_sync?: string | null // date-time
             created_datetime: string // date-time
             id: number
             url: string | null
@@ -2269,6 +2269,12 @@ declare namespace Components {
             url: string
             accountId?: number
             type: 'url' | 'domain'
+        }
+        export interface KnowledgeStatusDto {
+            help_center_id: number
+            shop_name: string
+            has_public_resources: boolean
+            is_store_domain_synced: boolean
         }
         export interface LinkDto {
             url: string
@@ -4249,6 +4255,11 @@ declare namespace Paths {
             export type $200 = Components.Schemas.IngestionLogDto[]
         }
     }
+    namespace GetKnowledgeStatus {
+        namespace Responses {
+            export type $200 = Components.Schemas.KnowledgeStatusDto[]
+        }
+    }
     namespace GetLocale {
         namespace Parameters {
             export type Locale = string
@@ -5225,6 +5236,14 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetArticleIngestionArticleTitlesAndStatus.Responses.$200>
+    /**
+     * getKnowledgeStatus - Get snippet help centers knowledge status
+     */
+    'getKnowledgeStatus'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.GetKnowledgeStatus.Responses.$200>
     /**
      * listCategoryArticles - List category's articles
      */
@@ -6402,6 +6421,16 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetArticleIngestionArticleTitlesAndStatus.Responses.$200>
+    }
+    ['/api/help-center/help-centers/article-ingestion/knowledge-status']: {
+        /**
+         * getKnowledgeStatus - Get snippet help centers knowledge status
+         */
+        'get'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.GetKnowledgeStatus.Responses.$200>
     }
     ['/api/help-center/help-centers/{help_center_id}/categories/{category_id}/articles']: {
         /**

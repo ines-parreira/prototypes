@@ -44,9 +44,8 @@ export const useActivation = (
         endTrial,
     } = useStoreActivations({
         pageName,
-        withPublicResources: isModalVisible,
+        withStoresKnowledgeStatus: isModalVisible,
         withChatIntegrationsStatus: isModalVisible,
-        withStoresDomainIngestionLogs: isModalVisible,
     })
 
     const hasActivationEnabled = useFlag(FeatureFlagKey.AiAgentActivation)

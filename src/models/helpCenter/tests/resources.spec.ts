@@ -13,6 +13,7 @@ import {
     getHelpCenterList,
     getIngestedResource,
     getIngestionLogs,
+    getKnowledgeStatus,
     listIngestedResources,
     startArticleIngestion,
     startIngestion,
@@ -492,6 +493,26 @@ describe('resources', () => {
                 file_ingestion_id: 456,
             })
             expect(result).toEqual(mockApiResponse)
+        })
+    })
+
+    describe('getKnowledgeStatus', () => {
+        it('should return correct result from API', async () => {
+            const client = {
+                getKnowledgeStatus: jest
+                    .fn()
+                    .mockReturnValue(Promise.resolve({ data: [] })),
+            }
+            const result = await getKnowledgeStatus(
+                client as unknown as HelpCenterClient,
+            )
+
+            expect(result).toEqual([])
+        })
+
+        it('should return null when client is not set', async () => {
+            const result = await getKnowledgeStatus(undefined)
+            expect(result).toBeNull()
         })
     })
 })

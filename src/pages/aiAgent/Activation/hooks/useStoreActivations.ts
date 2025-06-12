@@ -17,10 +17,9 @@ import {
     useStoreActivationReducer,
 } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useActivateStore } from 'pages/aiAgent/Activation/hooks/useActivateStore'
-import { usePublicResourcesList } from 'pages/aiAgent/hooks/usePublicResourcesList'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
-import { useStoresDomainIngestionLogs } from 'pages/aiAgent/hooks/useStoresDomainIngestionLogs'
+import { useStoresKnowledgeStatus } from 'pages/aiAgent/hooks/useStoresKnowledgeStatus'
 import { useFetchChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
 import { useSelfServiceChatChannelsMultiStore } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
@@ -100,8 +99,7 @@ export const useStoreConfigurations = (
  * 2. Parallel data fetching using extracted identifiers:
  *    - Chat integration status via `useFetchChatIntegrationsStatusData` (using `chatIds`)
  *    - Self-service chat channels via `useSelfServiceChatChannelsMultiStore` (using `storeNames`)
- *    - Domain ingestion logs via `useStoresDomainIngestionLogs` (using `storeNames`)
- *    - Public resources via `usePublicResourcesList` (using `storeNames`)
+ *    - Stores knowledge status via `useStoresKnowledgeStatus` (independent)
  *    - Help center list via `useGetHelpCenterList` (independent)
  *    - Email integrations via `useEmailIntegrations` (independent)
  * 3. All data coordinated through `useStoreActivationReducer`
@@ -119,8 +117,7 @@ export const useStoreConfigurations = (
  * @param pageName - Current page name for analytics tracking
  * @param storeName - If provided, filters results for this store only
  * @param withPublicResources - Enables public resources retrieval (default: false)
- * @param withStoresDomainIngestionLogs - Enables domain ingestion logs retrieval (default: false)
- * @param withChatIntegrationsStatus - Enables chat integrations status retrieval (default: false)
+ * @param withStoresKnowledgeStatus - Enables stores knowledge status retrieval (default: false)
  *
  * @returns Object containing:
  *   - storeActivations: Record of store activations by store name
@@ -139,15 +136,13 @@ export const useStoreConfigurations = (
 export const useStoreActivations = ({
     pageName,
     storeName,
-    withPublicResources = false,
-    withStoresDomainIngestionLogs = false,
     withChatIntegrationsStatus = false,
+    withStoresKnowledgeStatus = false,
 }: {
     pageName: string
     storeName?: string
-    withPublicResources?: boolean
-    withStoresDomainIngestionLogs?: boolean
     withChatIntegrationsStatus?: boolean
+    withStoresKnowledgeStatus?: boolean
 }): {
     storeActivations: Record<string, StoreActivation>
     progressPercentage: number
@@ -238,19 +233,10 @@ export const useStoreActivations = ({
     )
 
     const {
-        isLoading: isStoresDomainLatestIngestionLogsLoading,
-        data: storesDomainIngestionLogs,
-    } = useStoresDomainIngestionLogs({
-        storeNames,
-        enabled: withStoresDomainIngestionLogs,
-    })
-
-    const {
-        isLoading: isPublicResourcesListLoading,
-        sourceItems: publicResources,
-    } = usePublicResourcesList({
-        shopNames: storeConfigurations.map((it) => it.storeName),
-        enabled: withPublicResources,
+        data: storesKnowledgeStatus,
+        isLoading: isStoresKnowledgeStatusLoading,
+    } = useStoresKnowledgeStatus({
+        enabled: withStoresKnowledgeStatus,
     })
 
     const { data: helpCenterListData, isLoading: isHelpCenterListLoading } =
@@ -273,8 +259,7 @@ export const useStoreActivations = ({
             helpCentersFaq: helpCenterListData?.data.data,
             ldFlags: flagsRef.current,
             chatIntegrationStatus,
-            publicResources,
-            storesDomainIngestionLogs,
+            storesKnowledgeStatus,
             hasNewAutomatePlan,
             flags: {
                 hasAiAgentNewActivationXp,
@@ -289,12 +274,11 @@ export const useStoreActivations = ({
         dispatch,
         helpCenterListData,
         chatIntegrationStatus,
-        publicResources,
-        storesDomainIngestionLogs,
         hasAiAgentNewActivationXp,
         hasNewAutomatePlan,
         isAiSalesBetaUser,
         aiSalesAgentEmailEnabled,
+        storesKnowledgeStatus,
     ])
 
     const { isLoading: isSaveLoading, upsertStoresConfiguration } =
@@ -358,8 +342,7 @@ export const useStoreActivations = ({
         isStoreConfigurationLoading ||
         isHelpCenterListLoading ||
         isChatIntegrationsStatusLoading ||
-        isPublicResourcesListLoading ||
-        isStoresDomainLatestIngestionLogsLoading
+        isStoresKnowledgeStatusLoading
 
     const activateStore = useActivateStore({
         isLoading: isFetchLoading,

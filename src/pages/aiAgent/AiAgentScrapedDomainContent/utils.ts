@@ -12,7 +12,7 @@ const dateTimeOptions: Intl.DateTimeFormatOptions = {
     hour12: true,
 }
 
-export const getFormattedSyncDate = (latestSync: string | undefined) => {
+export const getFormattedSyncDate = (latestSync: string | undefined | null) => {
     if (!latestSync) return null
 
     const latestSyncDate = new Date(latestSync)
@@ -22,7 +22,9 @@ export const getFormattedSyncDate = (latestSync: string | undefined) => {
     )
 }
 
-export const getFormattedSyncDatetime = (latestSync: string | undefined) => {
+export const getFormattedSyncDatetime = (
+    latestSync: string | undefined | null,
+) => {
     if (!latestSync) return null
 
     const latestSyncDate = new Date(latestSync)
@@ -36,7 +38,9 @@ export const getFormattedSyncDatetime = (latestSync: string | undefined) => {
         .replace(/\s(am|pm)/i, (match) => match.toUpperCase())
 }
 
-export const isSyncLessThan24Hours = (latestSync: string | undefined) => {
+export const isSyncLessThan24Hours = (
+    latestSync: string | undefined | null,
+) => {
     if (!latestSync) return false
 
     const latestSyncDate = new Date(latestSync)
@@ -47,7 +51,7 @@ export const isSyncLessThan24Hours = (latestSync: string | undefined) => {
     return diffInHours < 24
 }
 
-export const getNextSyncDate = (latestSync: string | undefined) => {
+export const getNextSyncDate = (latestSync: string | undefined | null) => {
     if (!latestSync) return null
 
     const latestSyncDate = new Date(latestSync)
@@ -69,6 +73,12 @@ export const getTheLatestIngestionLog = (ingestionLogs?: IngestionLog[]) => {
     }
 
     const latestIngestionLog = ingestionLogs?.reduce((latest, current) => {
+        if (!latest.latest_sync) {
+            return current
+        }
+        if (!current.latest_sync) {
+            return latest
+        }
         return new Date(current.latest_sync) > new Date(latest.latest_sync)
             ? current
             : latest

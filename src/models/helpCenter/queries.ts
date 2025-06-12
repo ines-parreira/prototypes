@@ -35,6 +35,7 @@ import {
     getHelpCenterList,
     getIngestedResource,
     getIngestionLogs,
+    getKnowledgeStatus,
     listIngestedResources,
     startArticleIngestion,
     startIngestion,
@@ -137,6 +138,8 @@ export const helpCenterKeys = {
             'ingested-resource',
             id,
         ].filter(Boolean),
+    knowledgeStatus: () =>
+        [...helpCenterKeys.all(), 'knowledge-status'].filter(Boolean),
 }
 
 export const helpCenterArticleKeys = (
@@ -860,5 +863,20 @@ export const useGetArticleIngestionArticlesTitleAndStatus = (
             getArticleIngestionArticleTitlesAndStatus(client, pathParams),
         ...overrides,
         enabled: !!client && (overrides === undefined || overrides.enabled),
+    })
+}
+
+export const useGetKnowledgeStatus = (
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeStatus>>>,
+) => {
+    const { client: helpCenterClient } = useHelpCenterApi()
+    return useQuery({
+        queryFn: async () => getKnowledgeStatus(helpCenterClient),
+        queryKey: helpCenterKeys.knowledgeStatus(),
+        staleTime: STALE_TIME,
+        ...overrides,
+        enabled:
+            Boolean(helpCenterClient) &&
+            (overrides === undefined || overrides.enabled),
     })
 }

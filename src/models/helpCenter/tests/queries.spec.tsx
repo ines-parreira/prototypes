@@ -32,6 +32,7 @@ import {
     useGetIngestedResource,
     useGetIngestionLogs,
     useGetIngestionLogsList,
+    useGetKnowledgeStatus,
     useGetMultipleFileIngestion,
     useGetMultipleHelpCenter,
     useGetMultipleHelpCenterArticleLists,
@@ -69,6 +70,7 @@ const getFileIngestionArticleTitlesAndStatus = jest.spyOn(
     resources,
     'getFileIngestionArticleTitlesAndStatus',
 )
+const getKnowledgeStatus = jest.spyOn(resources, 'getKnowledgeStatus')
 
 const queryClient = mockQueryClient()
 const wrapper = ({ children }: any) => (
@@ -1531,6 +1533,25 @@ describe('queries', () => {
 
             await waitFor(() => expect(result.current.isError).toBe(true))
             expect(result.current.error).toBe(error)
+        })
+    })
+
+    describe('useGetKnowledgeStatus', () => {
+        it('should return correct data on success', async () => {
+            getKnowledgeStatus.mockReturnValue(Promise.resolve(null))
+            const { result } = renderHook(() => useGetKnowledgeStatus({}), {
+                wrapper,
+            })
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+            expect(result.current.data).toStrictEqual(null)
+        })
+
+        it('should not call the api function when enabled false', () => {
+            getKnowledgeStatus.mockReturnValue(Promise.resolve(null))
+            renderHook(() => useGetKnowledgeStatus({ enabled: false }), {
+                wrapper,
+            })
+            expect(getKnowledgeStatus).toHaveBeenCalledTimes(0)
         })
     })
 })

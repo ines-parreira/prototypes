@@ -15,8 +15,7 @@ import { useFetchFaqHelpCentersData } from '../useFetchFaqHelpCentersData'
 import { useFetchFileIngestionData } from '../useFetchFileIngestionData'
 import { useFetchGuidancesData } from '../useFetchGuidancesData'
 import { useFetchPageInteractionsData } from '../useFetchPageInteractionsData'
-import { useFetchPublicResourcesData } from '../useFetchPublicResourcesData'
-import { useFetchStoreDomainIngestionLogsData } from '../useFetchStoreDomainIngestionLogsData'
+import { useFetchStoreKnowledgeStatusData } from '../useFetchStoreKnowledgeStatusData'
 import { usePendingTasksRuleEngine } from '../usePendingTasksRuleEngine'
 import { useShopifyPermissionsData } from '../useShopifyPermissionsData'
 import { useTicketViewData } from '../useTicketViewData'
@@ -37,15 +36,11 @@ const useFetchFaqHelpCentersDataMock = assumeMock(useFetchFaqHelpCentersData)
 jest.mock('../useFetchAiAgentStoreConfigurationData', () => ({
     useFetchAiAgentStoreConfigurationData: jest.fn(),
 }))
-jest.mock('../useFetchPublicResourcesData', () => ({
-    useFetchPublicResourcesData: jest.fn(),
+jest.mock('../useFetchStoreKnowledgeStatusData', () => ({
+    useFetchStoreKnowledgeStatusData: jest.fn(),
 }))
-const useFetchPublicResourcesDataMock = assumeMock(useFetchPublicResourcesData)
-jest.mock('../useFetchStoreDomainIngestionLogsData', () => ({
-    useFetchStoreDomainIngestionLogsData: jest.fn(),
-}))
-const useFetchStoreDomainIngestionLogsDataMock = assumeMock(
-    useFetchStoreDomainIngestionLogsData,
+const useFetchStoreKnowledgeStatusDataMock = assumeMock(
+    useFetchStoreKnowledgeStatusData,
 )
 jest.mock('../useFetchAiAgentStoreConfigurationData', () => ({
     useFetchAiAgentStoreConfigurationData: jest.fn(),
@@ -112,14 +107,9 @@ describe('usePendingTasksRuleEngine', () => {
         data: HelpCenterDataFixture.start().withNoHelpCenter().build(),
     })
 
-    useFetchPublicResourcesDataMock.mockReturnValue({
+    useFetchStoreKnowledgeStatusDataMock.mockReturnValue({
         isLoading: false,
-        data: [],
-    })
-
-    useFetchStoreDomainIngestionLogsDataMock.mockReturnValue({
-        isLoading: false,
-        data: [],
+        data: undefined,
     })
 
     useFetchFileIngestionDataMock.mockReturnValue({

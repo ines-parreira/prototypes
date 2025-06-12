@@ -48,7 +48,6 @@ export const SalesPaywallMiddleware =
         const hasAutomate = useAppSelector(getHasAutomate)
         const { storeActivations } = useStoreActivations({
             pageName: window.location.pathname,
-            withPublicResources: false,
         })
 
         const currentStoreHasActiveTrial =

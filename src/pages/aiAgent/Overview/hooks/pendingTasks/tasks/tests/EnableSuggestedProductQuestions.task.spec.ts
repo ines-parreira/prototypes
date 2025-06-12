@@ -19,7 +19,9 @@ describe('EnableSuggestedProductQuestionsTask', () => {
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
                 hasConversationStarters: true,
-                publicResources: [{ id: 1 }] as any,
+                storeKnowledgeStatus: {
+                    has_public_resources: true,
+                } as any,
                 selfServiceChatChannels: [{ value: { id: 1 } }] as any,
                 chatIntegrationsStatus: [{ chatId: 1, installed: true }] as any,
             }),
@@ -43,7 +45,9 @@ describe('EnableSuggestedProductQuestionsTask', () => {
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
                 hasConversationStarters: true,
-                publicResources: [{ id: 1 }] as any,
+                storeKnowledgeStatus: {
+                    has_public_resources: true,
+                } as any,
                 selfServiceChatChannels: [{ value: { id: 1 } }] as any,
                 chatIntegrationsStatus: [{ chatId: 1, installed: true }] as any,
             }),
@@ -67,7 +71,9 @@ describe('EnableSuggestedProductQuestionsTask', () => {
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
                 hasConversationStarters: true,
-                publicResources: [{ id: 1 }] as any,
+                storeKnowledgeStatus: {
+                    has_public_resources: true,
+                } as any,
                 selfServiceChatChannels: [{ value: { id: 1 } }] as any,
                 chatIntegrationsStatus: [{ chatId: 1, installed: true }] as any,
             }),
@@ -90,7 +96,9 @@ describe('EnableSuggestedProductQuestionsTask', () => {
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
                 hasConversationStarters: true,
-                publicResources: [{ id: 1 }] as any,
+                storeKnowledgeStatus: {
+                    has_public_resources: true,
+                } as any,
                 selfServiceChatChannels: [{ value: { id: 1 } }] as any,
                 chatIntegrationsStatus: [{ chatId: 1, installed: true }] as any,
             }),
@@ -114,7 +122,9 @@ describe('EnableSuggestedProductQuestionsTask', () => {
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
                 hasConversationStarters: false,
-                publicResources: [{ id: 1 }] as any,
+                storeKnowledgeStatus: {
+                    has_public_resources: true,
+                } as any,
                 selfServiceChatChannels: [{ value: { id: 1 } }] as any,
                 chatIntegrationsStatus: [{ chatId: 1, installed: true }] as any,
             }),

@@ -1,5 +1,7 @@
 import { Components } from 'rest_api/help_center_api/client.generated'
 
+export type KnowledgeStatus = Components.Schemas.KnowledgeStatusDto
+
 export type IngestionLog = Components.Schemas.IngestionLogDto
 
 export type IngestedResourceWithArticleId = Omit<

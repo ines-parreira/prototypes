@@ -510,30 +510,36 @@ describe('storeActivationReducer', () => {
             description: 'no knowledge (undefined) and no public resources',
             helpCentersFaq: undefined,
             helpCenterId: STORE_HELP_CENTER_ID,
-            publicResources: {
-                'Test Store': [],
-            },
+            storesKnowledgeStatus: {
+                [mockStoreConfig.storeName]: {
+                    has_public_resources: false,
+                },
+            } as any,
         },
         {
             description: 'no knowledge (empty) and no public resources',
             helpCentersFaq: [],
             helpCenterId: STORE_HELP_CENTER_ID,
-            publicResources: {
-                'Test Store': [],
-            },
+            storesKnowledgeStatus: {
+                [mockStoreConfig.storeName]: {
+                    has_public_resources: false,
+                },
+            } as any,
         },
         {
             description:
                 'helpcenter not find in knowledge and no public resources',
             helpCentersFaq: [{ id: 2 } as Components.Schemas.GetHelpCenterDto],
             helpCenterId: STORE_HELP_CENTER_ID,
-            publicResources: {
-                'Test Store': [],
-            },
+            storesKnowledgeStatus: {
+                [mockStoreConfig.storeName]: {
+                    has_public_resources: false,
+                },
+            } as any,
         },
     ])(
         'should show an alert and disable email + chat when $description',
-        ({ helpCentersFaq, helpCenterId, publicResources }) => {
+        ({ helpCentersFaq, helpCenterId, storesKnowledgeStatus }) => {
             const state = reducer(EMPTY_STATE, {
                 type: 'UPDATE_STORE_CONFIGURATION',
                 storeConfigurations: [{ ...mockStoreConfig, helpCenterId }],
@@ -548,7 +554,7 @@ describe('storeActivationReducer', () => {
                 chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
                 helpCentersFaq,
                 ldFlags: LD_FLAGS,
-                publicResources,
+                storesKnowledgeStatus,
                 flags: {
                     isAiSalesBetaUser: false,
                     hasAiAgentNewActivationXp: false,
@@ -585,22 +591,26 @@ describe('storeActivationReducer', () => {
                 } as Components.Schemas.GetHelpCenterDto,
             ],
             helpCenterId: STORE_HELP_CENTER_ID,
-            publicResources: {
-                'Test Store': [],
-            },
+            storesKnowledgeStatus: {
+                [mockStoreConfig.storeName]: {
+                    has_public_resources: false,
+                },
+            } as any,
         },
         {
             description:
                 'no helpcenter found in knowledge and has public resources',
             helpCentersFaq: [{ id: 2 } as Components.Schemas.GetHelpCenterDto],
             helpCenterId: STORE_HELP_CENTER_ID,
-            publicResources: {
-                'Test Store': [{ id: 1 } as any],
-            },
+            storesKnowledgeStatus: {
+                [mockStoreConfig.storeName]: {
+                    has_public_resources: true,
+                },
+            } as any,
         },
     ])(
         'should have no alert when $description',
-        ({ helpCentersFaq, helpCenterId, publicResources }) => {
+        ({ helpCentersFaq, helpCenterId, storesKnowledgeStatus }) => {
             const state = reducer(EMPTY_STATE, {
                 type: 'UPDATE_STORE_CONFIGURATION',
                 storeConfigurations: [{ ...mockStoreConfig, helpCenterId }],
@@ -615,7 +625,7 @@ describe('storeActivationReducer', () => {
                 chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
                 helpCentersFaq,
                 ldFlags: LD_FLAGS,
-                publicResources,
+                storesKnowledgeStatus,
                 flags: {
                     isAiSalesBetaUser: false,
                     hasAiAgentNewActivationXp: false,
@@ -1133,9 +1143,13 @@ describe('storeActivationReducer', () => {
         it('should return true when no knowledge sources are available', () => {
             const isMissing = checkIsMissingKnowledge({
                 helpCentersFaq: [],
-                publicResources: [],
                 helpCenterId: null,
-                storeDomainIngestionLogs: undefined,
+                storeKnowledgeStatus: {
+                    has_public_resources: false,
+                    help_center_id: 123,
+                    is_store_domain_synced: false,
+                    shop_name: 'Test Store',
+                },
             })
 
             expect(isMissing).toBe(true)
@@ -1144,9 +1158,13 @@ describe('storeActivationReducer', () => {
         it('should return false when a help center is availble', () => {
             const isMissing = checkIsMissingKnowledge({
                 helpCentersFaq: [{ id: 1 } as any],
-                publicResources: [],
                 helpCenterId: 1,
-                storeDomainIngestionLogs: undefined,
+                storeKnowledgeStatus: {
+                    has_public_resources: false,
+                    help_center_id: 123,
+                    is_store_domain_synced: false,
+                    shop_name: 'Test Store',
+                },
             })
 
             expect(isMissing).toBe(false)
@@ -1155,9 +1173,13 @@ describe('storeActivationReducer', () => {
         it('should return false when public resources are available', () => {
             const isMissing = checkIsMissingKnowledge({
                 helpCentersFaq: [],
-                publicResources: [{ id: 1 } as any],
                 helpCenterId: 1,
-                storeDomainIngestionLogs: undefined,
+                storeKnowledgeStatus: {
+                    has_public_resources: true,
+                    help_center_id: 123,
+                    is_store_domain_synced: false,
+                    shop_name: 'Test Store',
+                },
             })
 
             expect(isMissing).toBe(false)
@@ -1166,14 +1188,13 @@ describe('storeActivationReducer', () => {
         it('should return true when store has been synced once', () => {
             const isMissing = checkIsMissingKnowledge({
                 helpCentersFaq: [],
-                publicResources: [],
                 helpCenterId: null,
-                storeDomainIngestionLogs: [
-                    {
-                        latest_sync: '2025-01-01T00:00:00Z',
-                        status: 'SUCCESSFUL',
-                    },
-                ] as any,
+                storeKnowledgeStatus: {
+                    has_public_resources: false,
+                    help_center_id: 123,
+                    is_store_domain_synced: true,
+                    shop_name: 'Test Store',
+                },
             })
 
             expect(isMissing).toBe(false)

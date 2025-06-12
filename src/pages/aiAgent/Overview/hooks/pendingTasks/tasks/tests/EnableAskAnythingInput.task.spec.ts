@@ -5,7 +5,9 @@ import { EnableAskAnythingInputTask } from '../EnableAskAnythingInput.task'
 import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'
 
 const baseEngineData = {
-    publicResources: [{ id: 1 }],
+    storeKnowledgeStatus: {
+        has_public_resources: true,
+    },
     selfServiceChatChannels: [{ value: { id: 1 } }],
     chatIntegrationsStatus: [{ chatId: 1, installed: true }],
 } as any

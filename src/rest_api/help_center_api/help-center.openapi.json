@@ -142,6 +142,29 @@
                 "tags": ["article-ingestion"]
             }
         },
+        "/api/help-center/help-centers/article-ingestion/knowledge-status": {
+            "get": {
+                "operationId": "getKnowledgeStatus",
+                "summary": "Get snippet help centers knowledge status",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/KnowledgeStatusDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["article-ingestion"]
+            }
+        },
         "/api/help-center/help-centers/{help_center_id}/categories/{category_id}/articles": {
             "get": {
                 "operationId": "listCategoryArticles",
@@ -4762,7 +4785,11 @@
                     "raw_text": { "type": "string", "nullable": true },
                     "dataset_id": { "type": "string" },
                     "scraping_id": { "type": "string", "nullable": true },
-                    "latest_sync": { "format": "date-time", "type": "string" },
+                    "latest_sync": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
                     "created_datetime": {
                         "format": "date-time",
                         "type": "string"
@@ -4784,7 +4811,6 @@
                     "help_center_id",
                     "article_ids",
                     "dataset_id",
-                    "latest_sync",
                     "created_datetime",
                     "id",
                     "url",
@@ -4883,6 +4909,21 @@
                     "eventType",
                     "eventData",
                     "resource"
+                ]
+            },
+            "KnowledgeStatusDto": {
+                "type": "object",
+                "properties": {
+                    "help_center_id": { "type": "number" },
+                    "shop_name": { "type": "string" },
+                    "has_public_resources": { "type": "boolean" },
+                    "is_store_domain_synced": { "type": "boolean" }
+                },
+                "required": [
+                    "help_center_id",
+                    "shop_name",
+                    "has_public_resources",
+                    "is_store_domain_synced"
                 ]
             },
             "PageMetaDto": {
@@ -9086,7 +9127,11 @@
                     "raw_text": { "type": "string", "nullable": true },
                     "dataset_id": { "type": "string" },
                     "scraping_id": { "type": "string", "nullable": true },
-                    "latest_sync": { "format": "date-time", "type": "string" },
+                    "latest_sync": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
                     "created_datetime": {
                         "format": "date-time",
                         "type": "string"
@@ -9108,7 +9153,6 @@
                     "help_center_id",
                     "article_ids",
                     "dataset_id",
-                    "latest_sync",
                     "created_datetime",
                     "id",
                     "url",

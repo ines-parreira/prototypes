@@ -17,8 +17,7 @@ import { useFetchFaqHelpCentersData } from './useFetchFaqHelpCentersData'
 import { useFetchFileIngestionData } from './useFetchFileIngestionData'
 import { useFetchGuidancesData } from './useFetchGuidancesData'
 import { useFetchPageInteractionsData } from './useFetchPageInteractionsData'
-import { useFetchPublicResourcesData } from './useFetchPublicResourcesData'
-import { useFetchStoreDomainIngestionLogsData } from './useFetchStoreDomainIngestionLogsData'
+import { useFetchStoreKnowledgeStatusData } from './useFetchStoreKnowledgeStatusData'
 import { useShopifyPermissionsData } from './useShopifyPermissionsData'
 import { useTicketViewData } from './useTicketViewData'
 
@@ -60,11 +59,6 @@ export const usePendingTasksRuleEngine = ({
         enabled: !shouldFakeTasks,
         retries: false,
     })
-
-    const {
-        isLoading: publicResourcesDataIsLoading,
-        data: publicResourcesData,
-    } = useFetchPublicResourcesData({ storeName })
 
     const {
         isLoading: fileIngestionDataIsLoading,
@@ -118,13 +112,6 @@ export const usePendingTasksRuleEngine = ({
             retries: false,
         })
 
-    const {
-        data: storeDomainIngestionLogsData,
-        isLoading: storeDomainIngestionLogsDataIsLoading,
-    } = useFetchStoreDomainIngestionLogsData({
-        storeName,
-    })
-
     const { data: emailIntegrationsData } = useFetchEmailIntegrationsData()
 
     const { data: shopifyPermissionsData } = useShopifyPermissionsData({
@@ -139,6 +126,14 @@ export const usePendingTasksRuleEngine = ({
         chatIds: aiAgentStoreConfigurationData?.monitoredChatIntegrations ?? [],
         enabled: !shouldFakeTasks && !!aiAgentStoreConfigurationData,
         refetchOnWindowFocus,
+    })
+
+    const {
+        data: storeKnowledgeStatusData,
+        isLoading: isStoresKnowledgeStatusDataLoading,
+    } = useFetchStoreKnowledgeStatusData({
+        storeName,
+        enabled: !shouldFakeTasks,
     })
 
     const selfServiceChatChannels = useSelfServiceChatChannels(
@@ -166,8 +161,7 @@ export const usePendingTasksRuleEngine = ({
         chatIntegrationsStatusDataIsLoading ||
         ticketViewDataIsLoading ||
         pageInteractionsDataIsLoading ||
-        publicResourcesDataIsLoading ||
-        storeDomainIngestionLogsDataIsLoading
+        isStoresKnowledgeStatusDataLoading
 
     const isFetched =
         aiAgentStoreConfigurationIsFetched &&
@@ -227,9 +221,8 @@ export const usePendingTasksRuleEngine = ({
                         isConvertFloatingChatInputEnabled,
                         isAiSalesAgentHelpOnSearchTemplateQueryEnabled,
                         hasConversationStarters,
-                        publicResources: publicResourcesData,
                         selfServiceChatChannels,
-                        storeDomainIngestionLogs: storeDomainIngestionLogsData,
+                        storeKnowledgeStatus: storeKnowledgeStatusData,
                     },
                     {
                         aiAgentRoutes: routes,
@@ -254,9 +247,8 @@ export const usePendingTasksRuleEngine = ({
         isConvertFloatingChatInputEnabled,
         hasConversationStarters,
         isAiSalesAgentHelpOnSearchTemplateQueryEnabled,
-        publicResourcesData,
         selfServiceChatChannels,
-        storeDomainIngestionLogsData,
+        storeKnowledgeStatusData,
     ]) /* eslint-enable react-hooks/exhaustive-deps */
 
     if (shouldFakeTasks) {
