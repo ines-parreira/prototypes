@@ -311,7 +311,7 @@ const TicketAssignment = () => {
                                     {isExceedingMaxAgentCapacityEnabled && (
                                         <div className={settingsCss.mb16}>
                                             <CheckBoxField
-                                                label=" Allow tickets to exceed max capacity when re-opened"
+                                                label=" Allow re-opened tickets to exceed agent's max capacity"
                                                 name="can_exceed_max_agent_capacity"
                                                 value={
                                                     canExceedMaxAgentCapacity
@@ -323,10 +323,16 @@ const TicketAssignment = () => {
                                                 }
                                                 caption={
                                                     <span>
-                                                        When enabled, re-opened
-                                                        tickets can enter the
-                                                        queue even if it’s at
-                                                        full capacity.
+                                                        Tickets that are
+                                                        re-opened will be
+                                                        allowed to exceed an
+                                                        agent&apos;s max
+                                                        capacity as defined in{' '}
+                                                        <i>
+                                                            Auto-assignment
+                                                            limits
+                                                        </i>{' '}
+                                                        settings below.
                                                     </span>
                                                 }
                                             />

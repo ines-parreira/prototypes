@@ -316,7 +316,7 @@ describe('<TicketAssignment />', () => {
 
         fireEvent.click(
             screen.getByText(
-                /When enabled, re-opened tickets can enter the queue/,
+                /Tickets that are re-opened will be allowed to exceed an/,
             ),
         )
         fireEvent.click(screen.getByText('Save changes'))
