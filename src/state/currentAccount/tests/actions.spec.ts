@@ -319,14 +319,13 @@ describe('current account actions', () => {
 
     describe('cancel Helpdesk auto-renewal', () => {
         it('should successfully cancel', () => {
-            const subscription = {
-                prices: [basicMonthlyHelpdeskPlan.price_id],
+            const response = {
                 scheduled_to_cancel_at: '2024-04-09T00:43:06+00:00',
             }
 
             mockServer
-                .onPut('/api/billing/subscription/')
-                .reply(202, subscription)
+                .onPost('/api/billing/subscription/cancel/')
+                .reply(201, response)
 
             return store
                 .dispatch(actions.cancelHelpdeskAutoRenewal())
@@ -351,7 +350,7 @@ describe('current account actions', () => {
 
         it('should fail to cancel with a message from the server', () => {
             mockServer
-                .onPut('/api/billing/subscription/')
+                .onPost('/api/billing/subscription/cancel/')
                 .reply(400, { error: { msg: 'error', data: [] } })
 
             return store
@@ -369,7 +368,7 @@ describe('current account actions', () => {
 
         it('should fail to cancel with a default message', () => {
             mockServer
-                .onPut('/api/billing/subscription/')
+                .onPost('/api/billing/subscription/cancel/')
                 .reply(500, { random: 'Response' })
 
             return store

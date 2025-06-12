@@ -361,9 +361,10 @@ export const resendVerificationEmail =
 export function cancelHelpdeskAutoRenewal() {
     return (dispatch: StoreDispatch): Promise<boolean> => {
         return client
-            .put<Record<string, string>>('/api/billing/subscription/', {
-                cancel_at_the_end_of_current_period: true,
-            })
+            .post<Record<string, string>>(
+                '/api/billing/subscription/cancel/',
+                {},
+            )
             .then((json) => json?.data)
             .then(
                 (resp) => {
