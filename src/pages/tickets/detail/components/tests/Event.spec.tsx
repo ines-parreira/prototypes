@@ -1,15 +1,35 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 
 import { INFOBAR_CUSTOM_BUTTON_ACTION_NAME } from 'config/actions'
+import { getIntegrationById } from 'state/integrations/selectors'
+import {
+    getAppDataByAppId,
+    getIntegrationDataByIntegrationId,
+} from 'state/ticket/selectors'
 
-import { EventContainer } from '../Event'
+import EventContainer from '../Event'
+
+jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 
 jest.mock('pages/common/utils/DatetimeLabel', () => () => (
     <div>MockedDatetimeLabel</div>
 ))
+
+jest.mock('state/integrations/selectors', () => ({
+    getIntegrationById: jest.fn(),
+}))
+const getIntegrationByIdMock = getIntegrationById as jest.Mock
+
+jest.mock('state/ticket/selectors', () => ({
+    getAppDataByAppId: jest.fn(),
+    getIntegrationDataByIntegrationId: jest.fn(),
+}))
+const getAppDataByAppIdMock = getAppDataByAppId as jest.Mock
+const getIntegrationDataByIntegrationIdMock =
+    getIntegrationDataByIntegrationId as jest.Mock
 
 describe('Event component', () => {
     const rechargeIntegrationId = 2
@@ -59,18 +79,22 @@ describe('Event component', () => {
         },
     }
 
-    const getProps = (integrationId: number) => ({
-        integrationData: fromJS(integrationsData[integrationId]),
-        integration: fromJS(integrations[integrationId]),
-    })
-
     const minProps: ComponentProps<typeof EventContainer> = {
         event: fromJS({}),
         isLast: false,
-        appData: { __app_name__: 'foo' },
-        ...getProps(rechargeIntegrationId),
-        dispatch: jest.fn(),
     }
+
+    beforeEach(() => {
+        getAppDataByAppIdMock.mockReturnValue(() => ({
+            __app_name__: 'foo',
+        }))
+        getIntegrationByIdMock.mockReturnValue(() =>
+            fromJS(integrations[rechargeIntegrationId]),
+        )
+        getIntegrationDataByIntegrationIdMock.mockReturnValue(() =>
+            fromJS(integrationsData[rechargeIntegrationId]),
+        )
+    })
 
     it('should display the correct label for an action', () => {
         const event: Map<any, any> = fromJS({
@@ -132,5 +156,27 @@ describe('Event component', () => {
         render(<EventContainer {...minProps} event={event} />)
 
         expect(screen.getByText(baseEventFixture.user.email))
+    })
+
+    it('should be toggle-able', () => {
+        const event: Map<any, any> = fromJS({
+            ...baseEventFixture,
+            data: {
+                action_name: INFOBAR_CUSTOM_BUTTON_ACTION_NAME,
+                action_label: 'You should see me in snaps',
+                integration_id: rechargeIntegrationId,
+                payload: {
+                    subscription_id: subscriptionId,
+                },
+                status: 'success',
+            },
+        })
+
+        render(<EventContainer {...minProps} event={event} />)
+        const el = screen.getByText('expand_more')
+        expect(el).toBeInTheDocument()
+        fireEvent.click(el)
+
+        expect(screen.getByText('expand_less')).toBeInTheDocument()
     })
 })
