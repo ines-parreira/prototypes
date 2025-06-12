@@ -2,3 +2,4 @@ export { OnboardingStepSelector } from './OnboardingStepSelector/OnboardingStepS
 export { Selector } from './Selector/Selector'
 export { FieldPresentation } from './FieldPresentation/FieldPresentation'
 export { Info } from './Info/Info'
+export { Switch } from './Switch/Switch'

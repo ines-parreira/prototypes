@@ -2,7 +2,7 @@ import { OnboardingStep } from './OnboardingStep/OnboardingStep'
 
 import css from './OnboardingStepSelector.less'
 
-interface OnboardingStepSelectorProps {
+type OnboardingStepSelectorProps = {
     steps: {
         stepName: string
         stepIndicator: number

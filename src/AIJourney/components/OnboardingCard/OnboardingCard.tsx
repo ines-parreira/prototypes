@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
-import { FollowUpField } from './fields'
+import { EnableDiscountField, FollowUpField } from './fields'
 
 import css from './OnboardingCard.less'
 
@@ -12,14 +12,20 @@ const GradientBackground = () => {
     return <div className={css.gradientBackground} />
 }
 
-interface OnboardingCardProps {
+type OnboardingCardProps = {
     currentStep: string
 }
 
 export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
+    const isActivationStep = currentStep === 'Activation'
+
     const history = useHistory()
 
-    const isActivationStep = currentStep === 'Activation'
+    const [isDiscountEnabled, setIsDiscountEnabled] = useState(false)
+
+    const handleDiscountToggle = () => {
+        setIsDiscountEnabled((prev) => !prev)
+    }
 
     const [followUpValue, setFollowUpValue] = useState<number>()
     const followUpOptions = [1, 2, 3]
@@ -35,6 +41,10 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
                     options={followUpOptions}
                     value={followUpValue}
                     onChange={setFollowUpValue}
+                />
+                <EnableDiscountField
+                    isEnabled={isDiscountEnabled}
+                    onChange={handleDiscountToggle}
                 />
                 <Button
                     onClick={() => history.push('/app/ai-journey/activation')}

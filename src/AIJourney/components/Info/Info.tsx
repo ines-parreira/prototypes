@@ -1,6 +1,6 @@
 import css from './Info.less'
 
-interface InfoProps {
+type InfoProps = {
     content: string
 }
 

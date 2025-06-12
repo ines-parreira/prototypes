@@ -2,7 +2,7 @@ import classNames from 'classnames'
 
 import css from './OnboardingStep.less'
 
-interface OnboardingStepProps {
+type OnboardingStepProps = {
     stepName: string
     stepIndicator: number
     isActive: boolean

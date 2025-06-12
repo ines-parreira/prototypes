@@ -1,20 +1,21 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 
 import { Selector } from './Selector'
 
 describe('<Selector />', () => {
-    it('should call onChange when clicking a selector option', () => {
+    it('should call onChange when clicking a selector option', async () => {
         const onChangeMock = jest.fn()
         render(<Selector options={[1, 2, 3]} onChange={onChangeMock} />)
 
         expect(screen.getByRole('group')).toBeInTheDocument()
-        screen.getByText('1').click()
+        await userEvent.click(screen.getByText('1'))
 
         expect(onChangeMock).toHaveBeenCalledWith(1)
     })
-    it('should highlight selected option', () => {
+    it('should highlight selected option', async () => {
         const onChangeMock = jest.fn()
         render(<Selector options={[1, 2, 3]} onChange={onChangeMock} />)
 
@@ -23,7 +24,7 @@ describe('<Selector />', () => {
         const options = screen.getAllByRole('button')
 
         const selectedOption = screen.getByText('1')
-        selectedOption.click()
+        await userEvent.click(selectedOption)
         expect(onChangeMock).toHaveBeenCalledWith(1)
 
         options.forEach((option) => {

@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 
 import { OnboardingCard } from './OnboardingCard'
 
@@ -20,10 +21,9 @@ describe('<OnboardingCard />', () => {
     })
     it('should redirect from conversation setup to activation', async () => {
         render(<OnboardingCard currentStep={'Conversation Setup'} />)
-
         expect(screen.getByText('Conversation Setup step')).toBeInTheDocument()
 
-        await screen.getByText('This is a placeholder button').click()
+        await userEvent.click(screen.getByText('This is a placeholder button'))
 
         expect(mockHistoryPush).toHaveBeenCalledTimes(1)
     })

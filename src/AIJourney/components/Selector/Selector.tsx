@@ -4,7 +4,7 @@ import classNames from 'classnames'
 
 import css from './Selector.less'
 
-interface SelectorProps {
+type SelectorProps = {
     options?: number[]
     value?: number | null
     onChange?: (option?: number) => void

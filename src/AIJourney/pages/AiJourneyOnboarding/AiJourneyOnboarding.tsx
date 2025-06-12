@@ -4,7 +4,7 @@ import { OnboardingCard } from '../../components/OnboardingCard/OnboardingCard'
 
 import css from './AiJourneyOnboarding.less'
 
-interface AiJourneyOnboardingProps {
+type AiJourneyOnboardingProps = {
     step?: string
 }
 

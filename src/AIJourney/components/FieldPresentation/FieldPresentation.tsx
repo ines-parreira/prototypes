@@ -1,6 +1,6 @@
 import css from './FieldPresentation.less'
 
-interface FieldPresentationProps {
+type FieldPresentationProps = {
     name: string
     description: string
 }

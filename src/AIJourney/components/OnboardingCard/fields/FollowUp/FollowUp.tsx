@@ -4,7 +4,7 @@ import { FieldPresentation, Info, Selector } from 'AIJourney/components'
 
 import css from './FollowUp.less'
 
-interface FollowUpFieldProps {
+type FollowUpFieldProps = {
     options?: number[]
     value?: number
     onChange?: React.Dispatch<React.SetStateAction<number | undefined>>
