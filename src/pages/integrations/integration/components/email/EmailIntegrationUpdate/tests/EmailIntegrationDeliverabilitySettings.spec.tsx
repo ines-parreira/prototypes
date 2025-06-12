@@ -78,7 +78,7 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
         const providerName = capitalize(type)
 
         const nativeProviderLabel =
-            'Send emails via Gorgias email delivery platform (recommended)'
+            'Send emails via Gorgias email delivery platform Recommended'
         const apiProviderLabel = `Send emails via ${providerName} API`
 
         it(`should render with the correct wording when the domain IS NOT verified`, () => {
@@ -102,25 +102,26 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
 
             expect(
                 screen.getByText(
-                    'Send emails via Gorgias email delivery platform (recommended)',
+                    'Send emails via Gorgias email delivery platform',
                 ),
             ).toBeInTheDocument()
+
+            expect(screen.getByText('Recommended')).toBeInTheDocument()
 
             expect(
                 screen.getByText(
-                    'Potential risk of deliverability issues with high email volume.',
+                    'Advanced configuration to handle higher volumes of emails.',
                 ),
             ).toBeInTheDocument()
 
             expect(
-                screen.getByText(
-                    `To avoid deliverability issues that can occur when using ${providerName}'s API`,
-                    { exact: false },
-                ),
+                screen.getByText(`Improve email deliverability by`, {
+                    exact: false,
+                }),
             ).toBeInTheDocument()
 
             expect(
-                screen.getByText(`Domain Verification`).getAttribute('to'),
+                screen.getByText(`verifying your domain`).getAttribute('to'),
             ).toBe('/app/settings/channels/email/1/outbound-verification')
 
             expect(nativeRadio).toBeInTheDocument()
@@ -153,13 +154,15 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
 
             expect(
                 screen.getByText(
-                    'Send emails via Gorgias email delivery platform (recommended)',
+                    'Send emails via Gorgias email delivery platform',
                 ),
             ).toBeInTheDocument()
 
+            expect(screen.getByText('Recommended')).toBeInTheDocument()
+
             expect(
                 screen.getByText(
-                    'Potential risk of deliverability issues with high email volume.',
+                    'Advanced configuration to handle higher volumes of emails.',
                 ),
             ).toBeInTheDocument()
 
@@ -199,13 +202,15 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
 
             expect(
                 screen.getByText(
-                    'Send emails via Gorgias email delivery platform (recommended)',
+                    'Send emails via Gorgias email delivery platform',
                 ),
             ).toBeInTheDocument()
 
+            expect(screen.getByText('Recommended')).toBeInTheDocument()
+
             expect(
                 screen.getByText(
-                    'Potential risk of deliverability issues with high email volume.',
+                    'A suitable delivery platform for most email operations.',
                 ),
             ).toBeInTheDocument()
 
@@ -271,9 +276,9 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
             screen.getByText('Outbound Email Delivery Settings'),
         ).toBeInTheDocument()
 
-        expect(screen.getByText('Domain Verification').getAttribute('to')).toBe(
-            '/app/settings/channels/email/1/outbound-verification',
-        )
+        expect(
+            screen.getByText('verifying your domain').getAttribute('to'),
+        ).toBe('/app/settings/channels/email/1/outbound-verification')
     })
 
     it('should render the correct domain verification URL for Mailgun', () => {
@@ -288,9 +293,9 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
             screen.getByText('Outbound Email Delivery Settings'),
         ).toBeInTheDocument()
 
-        expect(screen.getByText('Domain Verification').getAttribute('to')).toBe(
-            '/app/settings/channels/email/1/dns',
-        )
+        expect(
+            screen.getByText('verifying your domain').getAttribute('to'),
+        ).toBe('/app/settings/channels/email/1/dns')
     })
 
     it('should have a correct default value', () => {
@@ -301,7 +306,7 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
         })
 
         const nativeProviderLabel =
-            'Send emails via Gorgias email delivery platform (recommended)'
+            'Send emails via Gorgias email delivery platform Recommended'
         const apiProviderLabel = `Send emails via Email API`
 
         const nativeRadio = screen.getByRole('radio', {

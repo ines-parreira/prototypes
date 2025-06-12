@@ -1,3 +1,6 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
 :local {
     .checkboxLabel.disabled {
         cursor: pointer;
@@ -15,16 +18,13 @@
     .gmailTogglesWrapper {
         display: flex;
         flex-direction: column;
-        gap: var(--layout-spacing-s);
-        margin-top: var(--layout-spacing-l);
+        gap: @layout-spacing-s;
     }
 
     .buttonsWrapper {
+        display: flex;
+        justify-content: space-between;
         margin-top: var(--layout-spacing-xl);
-    }
-
-    .importSection {
-        margin-bottom: var(--layout-spacing-xl);
     }
 
     h3 {
@@ -36,5 +36,14 @@
     }
     .emailDeliverabilitySettings {
         margin-top: var(--layout-spacing-l);
+    }
+
+    .subTitle {
+        .heading-section-semibold();
+        margin-bottom: var(--layout-spacing-m);
+    }
+
+    .displayNameField {
+        margin-bottom: var(--layout-spacing-m);
     }
 }

@@ -1,6 +1,6 @@
-import React, { useCallback, useRef } from 'react'
+import { useCallback, useRef } from 'react'
 
-import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Button, Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
@@ -11,7 +11,6 @@ import {
     GmailIntegration,
     OutlookIntegration,
 } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import { submitSetting } from 'state/currentAccount/actions'
 import { getDefaultIntegrationSettings } from 'state/currentAccount/selectors'
@@ -55,9 +54,10 @@ function EmailIntegrationAddressField({ integration }: Props) {
 
     return (
         <>
-            <Label>Email Address</Label>
+            <Label>Email</Label>
             <div className={css.fieldValue}>
-                <span className={css.address}>{address}</span>
+                <input className={css.address} value={address} disabled />
+
                 {isDefault ? (
                     <DefaultIntegrationBadge />
                 ) : (

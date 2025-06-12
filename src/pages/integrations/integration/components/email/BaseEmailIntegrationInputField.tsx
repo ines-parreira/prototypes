@@ -3,10 +3,9 @@ import React, { useCallback } from 'react'
 import copy from 'copy-to-clipboard'
 import { isEmpty } from 'lodash'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Button, Label } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import Button from 'pages/common/components/button/Button'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
 import { notify } from 'state/notifications/actions'

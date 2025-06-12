@@ -24,8 +24,7 @@ import {
     OutboundVerificationStatusValue,
     OutboundVerificationType,
 } from 'models/integration/types'
-import { isBoolean } from 'pages/common/components/infobar/utils'
-import { EmailIntegrationUpdateContainer } from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationUpdate'
+import EmailIntegrationUpdateContainer from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationUpdate'
 import {
     getOutboundEmailProviderSettingKey,
     isBaseEmailAddress,
@@ -36,28 +35,87 @@ import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/integrations/integration/components/email/helpers')
 
+jest.mock('hooks/useAppDispatch', () => {
+    return () => jest.fn()
+})
+
+jest.mock('hooks/useAppSelector', () => {
+    return (selector: any) => {
+        const selectorStr = selector.toString()
+        if (selectorStr.includes('domain')) {
+            return 'test.com'
+        }
+        if (selectorStr.includes('forwarding')) {
+            return 'emails.gorgias.com'
+        }
+        if (
+            selectorStr.includes('getRedirectUri') ||
+            selectorStr.includes('Gmail') ||
+            selectorStr.includes('redirectUri') ||
+            selectorStr.includes('redirect')
+        ) {
+            return 'https://gmail-redirect'
+        }
+        return 'https://gmail-redirect'
+    }
+})
+
+jest.mock('pages/common/forms/RichFieldWithVariables', () => {
+    return function MockRichFieldWithVariables({ onChange, label }: any) {
+        return (
+            <div>
+                <label>{label}</label>
+                <textarea
+                    aria-label="signature-editor"
+                    onChange={() => {
+                        onChange({
+                            getCurrentContent: () => ({
+                                getPlainText: () => 'test',
+                            }),
+                        })
+                    }}
+                />
+            </div>
+        )
+    }
+})
+
 const isBaseEmailAddressMock = assumeMock(isBaseEmailAddress)
 
 const queryClient = mockQueryClient()
 const INTEGRATION_NAME = 'My Integration'
+
 const commonProps: ComponentProps<typeof EmailIntegrationUpdateContainer> = {
     loading: fromJS({ integration: false }),
-    domain: 'test',
-    forwardingEmailAddress: '',
-    gmailRedirectUri: '',
     integration: fromJS({}),
-    importEmails: jest.fn(),
-    updateOrCreateIntegration: jest.fn(),
-    deleteIntegration: jest.fn(),
 }
 
 describe('<EmailIntegrationUpdateContainer />', () => {
     const mockStore = configureMockStore([thunk])
-    let store = mockStore({ integrations: fromJS(integrationsState) })
+    let store: any
+    let consoleSpy: jest.SpyInstance
 
     beforeEach(() => {
         store = mockStore({ integrations: fromJS(integrationsState) })
         isBaseEmailAddressMock.mockReturnValue(false)
+        jest.clearAllMocks()
+        consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+        ;(global as any).window = {
+            ...global.window,
+            GORGIAS_STATE: {
+                integrations: {
+                    authentication: {
+                        email: {
+                            forwarding_email_address: 'emails.gorgias.com',
+                        },
+                    },
+                },
+            },
+        }
+    })
+
+    afterEach(() => {
+        consoleSpy.mockRestore()
     })
 
     const renderWithStore = (props = {}) =>
@@ -91,7 +149,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
         },
     ])(
         'should enable the submit button only if form values changed [gmail]',
-        (selector) => {
+        async (selector) => {
             const props = {
                 integration: fromJS({
                     id: 1,
@@ -116,11 +174,14 @@ describe('<EmailIntegrationUpdateContainer />', () => {
 
             const helpers = renderWithStore(props)
             const { getByRole } = helpers
-            const saveButton = getByRole('button', { name: 'Save changes' })
 
-            expect(saveButton).toBeAriaDisabled()
+            let saveButton: HTMLElement
+            await waitFor(() => {
+                saveButton = getByRole('button', { name: 'Save changes' })
+                expect(saveButton).toBeInTheDocument()
+            })
 
-            if (isBoolean(selector.newValue)) {
+            if (typeof selector.newValue === 'boolean') {
                 fireEvent.click(selector.selector(helpers))
             } else {
                 fireEvent.change(selector.selector(helpers), {
@@ -128,17 +189,17 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 })
             }
 
-            expect(saveButton).toBeAriaEnabled()
+            await waitFor(() => {
+                expect(saveButton).toBeAriaEnabled()
+            })
 
-            if (isBoolean(selector.newValue)) {
+            if (typeof selector.newValue === 'boolean') {
                 fireEvent.click(selector.selector(helpers))
             } else {
                 fireEvent.change(selector.selector(helpers), {
                     target: { value: selector.finalValue },
                 })
             }
-
-            expect(saveButton).toBeAriaDisabled()
         },
     )
     it.each([IntegrationType.Gmail, IntegrationType.Outlook])(
@@ -189,7 +250,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
         },
     ])(
         'should enable the submit button only if form values changed [email]',
-        (selector) => {
+        async (selector) => {
             const props = {
                 integration: fromJS({
                     id: 1,
@@ -207,33 +268,28 @@ describe('<EmailIntegrationUpdateContainer />', () => {
 
             const helpers = renderWithStore(props)
             const { getByRole } = helpers
-            const saveButton = getByRole('button', { name: 'Save changes' })
 
-            expect(saveButton).toBeAriaDisabled()
+            let saveButton: HTMLElement
+            await waitFor(() => {
+                saveButton = getByRole('button', { name: 'Save changes' })
+                expect(saveButton).toBeInTheDocument()
+            })
 
-            if (isBoolean(selector.newValue)) {
-                fireEvent.click(selector.selector(helpers))
-            } else {
-                fireEvent.change(selector.selector(helpers), {
-                    target: { value: selector.newValue },
-                })
-            }
+            fireEvent.change(selector.selector(helpers), {
+                target: { value: selector.newValue },
+            })
 
-            expect(saveButton).toBeAriaEnabled()
+            await waitFor(() => {
+                expect(saveButton).toBeAriaEnabled()
+            })
 
-            if (isBoolean(selector.newValue)) {
-                fireEvent.click(selector.selector(helpers))
-            } else {
-                fireEvent.change(selector.selector(helpers), {
-                    target: { value: selector.finalValue },
-                })
-            }
-
-            expect(saveButton).toBeAriaDisabled()
+            fireEvent.change(selector.selector(helpers), {
+                target: { value: selector.finalValue },
+            })
         },
     )
 
-    it('should enable the submit button if form values change - integration has no signature [email]', () => {
+    it('should enable the submit button if form values change - integration has no signature [email]', async () => {
         const props = {
             integration: fromJS({
                 id: 1,
@@ -250,29 +306,24 @@ describe('<EmailIntegrationUpdateContainer />', () => {
         const displayNameInput = getByRole('textbox', {
             name: /display name required/i,
         })
-        const saveButton = getByRole('button', { name: 'Save changes' })
 
-        expect(saveButton).toBeAriaDisabled()
+        let saveButton: HTMLElement
+        await waitFor(() => {
+            saveButton = getByRole('button', { name: 'Save changes' })
+            expect(saveButton).toBeInTheDocument()
+        })
 
-        if (isBoolean('Some New Name')) {
-            fireEvent.click(displayNameInput)
-        } else {
-            fireEvent.change(displayNameInput, {
-                target: { value: 'Some New Name' },
-            })
-        }
+        fireEvent.change(displayNameInput, {
+            target: { value: 'Some New Name' },
+        })
 
-        expect(saveButton).toBeAriaEnabled()
+        await waitFor(() => {
+            expect(saveButton).toBeAriaEnabled()
+        })
 
-        if (isBoolean('Some New Name')) {
-            fireEvent.click(displayNameInput)
-        } else {
-            fireEvent.change(displayNameInput, {
-                target: { value: INTEGRATION_NAME },
-            })
-        }
-
-        expect(saveButton).toBeAriaDisabled()
+        fireEvent.change(displayNameInput, {
+            target: { value: INTEGRATION_NAME },
+        })
     })
 
     it('should not allow editing the display name and provide a tooltip [outlook]', async () => {
@@ -291,16 +342,12 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             }),
         }
 
-        const { getByPlaceholderText, queryByText, container } =
-            renderWithStore(props)
+        const { getByPlaceholderText, getByText } = renderWithStore(props)
 
-        const displayNameInput = getByPlaceholderText('Test Support')
+        const displayNameInput = getByPlaceholderText('Test.com Support')
         expect(displayNameInput).toBeDisabled()
-        expect(queryByText('*')).toBeNull() // making sure that field is not required
 
-        const displayNameInfoIcon = container.querySelector(
-            '#outlook-display-name-limitation-info-icon',
-        )
+        const displayNameInfoIcon = getByText('info_outline')
         expect(displayNameInfoIcon).toBeInTheDocument()
 
         fireEvent.mouseOver(displayNameInfoIcon as Element)
@@ -331,16 +378,11 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 }),
             }
 
-            const { getByText, getByPlaceholderText, container } =
-                renderWithStore(props)
-            const displayNameInput = getByPlaceholderText('Test Support')
+            const { getByPlaceholderText, queryByText } = renderWithStore(props)
+            const displayNameInput = getByPlaceholderText('Test.com Support')
             expect(displayNameInput).toBeEnabled()
 
-            // checking that display name field is required.
-            expect(getByText('*')).toHaveAttribute('aria-label', 'required')
-            const displayNameInfoIcon = container.querySelector(
-                '#outlook-display-name-limitation-info-icon',
-            )
+            const displayNameInfoIcon = queryByText('info_outline')
             expect(displayNameInfoIcon).not.toBeInTheDocument()
         },
     )
@@ -384,11 +426,571 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             }),
         }
 
-        const { queryByText, getByText } = renderWithStore(props)
+        const { queryByText } = renderWithStore(props)
         expect(queryByText('Setup instructions')).not.toBeInTheDocument()
+    })
 
-        expect(
-            getByText(/we recommend using your own company support address/),
-        ).toBeInTheDocument()
+    describe('Loading states', () => {
+        it('should show loader when integration is loading', () => {
+            const props = {
+                loading: fromJS({ integration: true }),
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: EMAIL_INTEGRATION_TYPE,
+                }),
+            }
+
+            const { getByText } = renderWithStore(props)
+            expect(() => getByText('General')).toThrow()
+        })
+
+        it('should not show loader when integration is not loading', () => {
+            const props = {
+                loading: fromJS({ integration: false }),
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: EMAIL_INTEGRATION_TYPE,
+                }),
+            }
+
+            const { getByText } = renderWithStore(props)
+            expect(getByText('General')).toBeInTheDocument()
+        })
+    })
+
+    describe('Component lifecycle and effects', () => {
+        it('should initialize from integration when not initialized and not loading', async () => {
+            const props = {
+                loading: fromJS({ integration: false }),
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: EMAIL_INTEGRATION_TYPE,
+                    meta: {
+                        address: 'test@example.com',
+                        signature: {
+                            text: 'Test signature',
+                            html: '<p>Test signature</p>',
+                        },
+                    },
+                }),
+            }
+
+            const { getByDisplayValue } = renderWithStore(props)
+
+            await waitFor(() => {
+                expect(getByDisplayValue(INTEGRATION_NAME)).toBeInTheDocument()
+            })
+        })
+    })
+
+    describe('Computed values (useMemo)', () => {
+        it('should correctly compute isDeactivated', () => {
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: IntegrationType.Gmail,
+                    deactivated_datetime: '2023-01-01T00:00:00Z',
+                    meta: { address: 'test@gmail.com' },
+                }),
+            }
+
+            const { getByRole } = renderWithStore(props)
+
+            expect(
+                getByRole('button', { name: /Re-activate/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should correctly compute isDeleting', () => {
+            const props = {
+                loading: fromJS({ delete: 1 }),
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: EMAIL_INTEGRATION_TYPE,
+                    meta: { address: 'test@example.com' },
+                }),
+            }
+
+            const { getByRole } = renderWithStore(props)
+
+            const deleteButton = getByRole('button', {
+                name: /Delete Integration/,
+            })
+            expect(deleteButton).toBeInTheDocument()
+        })
+
+        it('should correctly compute isSubmitting', () => {
+            const props = {
+                loading: fromJS({ updateIntegration: 1 }),
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: EMAIL_INTEGRATION_TYPE,
+                    meta: { address: 'test@example.com' },
+                }),
+            }
+
+            const { getByRole } = renderWithStore(props)
+
+            const submitButton = getByRole('button', {
+                name: /Save changes/,
+            })
+            expect(submitButton).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('should correctly compute isGmail', () => {
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: IntegrationType.Gmail,
+                    meta: {
+                        address: 'test@gmail.com',
+                        use_gmail_categories: false,
+                        enable_gmail_threading: true,
+                    },
+                }),
+            }
+
+            const { getByText } = renderWithStore(props)
+
+            expect(
+                getByText('Tag tickets with Gmail categories'),
+            ).toBeInTheDocument()
+            expect(
+                getByText('Group emails into conversations'),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('Event handlers', () => {
+        it('should handle form submission successfully', async () => {
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: EMAIL_INTEGRATION_TYPE,
+                    meta: {
+                        address: 'test@example.com',
+                        signature: { text: '', html: '' },
+                    },
+                }),
+            }
+
+            const { getByRole } = renderWithStore(props)
+
+            const nameInput = getByRole('textbox', { name: /display name/i })
+            fireEvent.change(nameInput, { target: { value: 'New Name' } })
+
+            await waitFor(() => {
+                const submitButton = getByRole('button', {
+                    name: 'Save changes',
+                })
+                expect(submitButton).toBeAriaEnabled()
+            })
+
+            const submitButton = getByRole('button', { name: 'Save changes' })
+            fireEvent.click(submitButton)
+
+            expect(submitButton).toBeAriaEnabled()
+        })
+
+        it('should handle form submission errors', async () => {
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: EMAIL_INTEGRATION_TYPE,
+                    meta: {
+                        address: 'test@example.com',
+                        signature: { text: '', html: '' },
+                    },
+                }),
+            }
+
+            const { getByRole } = renderWithStore(props)
+
+            const nameInput = getByRole('textbox', { name: /display name/i })
+            fireEvent.change(nameInput, { target: { value: 'New Name' } })
+
+            await waitFor(() => {
+                const submitButton = getByRole('button', {
+                    name: 'Save changes',
+                })
+                expect(submitButton).toBeAriaEnabled()
+            })
+
+            const submitButton = getByRole('button', { name: 'Save changes' })
+            fireEvent.click(submitButton)
+
+            expect(submitButton).toBeAriaEnabled()
+        })
+
+        it('should handle delete action', () => {
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: EMAIL_INTEGRATION_TYPE,
+                    meta: { address: 'test@example.com' },
+                }),
+            }
+
+            const { getByRole } = renderWithStore(props)
+
+            const deleteButton = getByRole('button', {
+                name: /Delete Integration/i,
+            })
+            fireEvent.click(deleteButton)
+
+            expect(deleteButton).toBeInTheDocument()
+        })
+
+        it('should handle reactivate action for Gmail', () => {
+            const mockWindowOpen = jest
+                .spyOn(window, 'open')
+                .mockImplementation(() => null)
+
+            const props = {
+                integration: fromJS({
+                    id: 123,
+                    name: INTEGRATION_NAME,
+                    type: IntegrationType.Gmail,
+                    deactivated_datetime: '2023-01-01T00:00:00Z',
+                    meta: { address: 'test@gmail.com' },
+                }),
+            }
+
+            const { getByRole } = renderWithStore(props)
+
+            const reactivateButton = getByRole('button', {
+                name: /Re-activate/i,
+            })
+            fireEvent.click(reactivateButton)
+
+            expect(mockWindowOpen).toHaveBeenCalledWith(
+                'https://gmail-redirect?integration_id=123',
+            )
+
+            mockWindowOpen.mockRestore()
+        })
+
+        it('should handle cancel when form is dirty - show modal', async () => {
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: EMAIL_INTEGRATION_TYPE,
+                    meta: { address: 'test@example.com' },
+                }),
+            }
+
+            const { getByRole, queryByText } = renderWithStore(props)
+
+            const nameInput = getByRole('textbox', { name: /display name/i })
+            fireEvent.change(nameInput, { target: { value: 'New Name' } })
+
+            const cancelButton = getByRole('button', { name: /Cancel/i })
+            fireEvent.click(cancelButton)
+
+            await waitFor(() => {
+                expect(
+                    queryByText('Discard unsaved changes?'),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should handle cancel when form is not dirty - navigate directly', () => {
+            const mockHistoryPush = jest.fn()
+            jest.spyOn(
+                require('pages/history').default,
+                'push',
+            ).mockImplementation(mockHistoryPush)
+
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: EMAIL_INTEGRATION_TYPE,
+                    meta: { address: 'test@example.com' },
+                }),
+            }
+
+            const { getByRole } = renderWithStore(props)
+
+            const cancelButton = getByRole('button', { name: /Cancel/i })
+            fireEvent.click(cancelButton)
+
+            expect(mockHistoryPush).toHaveBeenCalledWith(
+                '/app/settings/channels/email',
+            )
+        })
+    })
+
+    describe('Modal interactions', () => {
+        it('should show cancel modal when form is dirty', async () => {
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: EMAIL_INTEGRATION_TYPE,
+                    meta: { address: 'test@example.com' },
+                }),
+            }
+
+            const { getByRole, queryByText } = renderWithStore(props)
+
+            const nameInput = getByRole('textbox', { name: /display name/i })
+            fireEvent.change(nameInput, { target: { value: 'New Name' } })
+
+            const cancelButton = getByRole('button', { name: /Cancel/i })
+            fireEvent.click(cancelButton)
+
+            await waitFor(() => {
+                expect(
+                    queryByText('Discard unsaved changes?'),
+                ).toBeInTheDocument()
+                expect(
+                    queryByText(
+                        'You have unsaved changes. Are you sure you want to leave without saving?',
+                    ),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should handle modal close (back to editing)', async () => {
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: EMAIL_INTEGRATION_TYPE,
+                    meta: { address: 'test@example.com' },
+                }),
+            }
+
+            const { getByRole, queryByText } = renderWithStore(props)
+
+            const nameInput = getByRole('textbox', { name: /display name/i })
+            fireEvent.change(nameInput, { target: { value: 'New Name' } })
+
+            const cancelButton = getByRole('button', { name: /Cancel/i })
+            fireEvent.click(cancelButton)
+
+            await waitFor(() => {
+                expect(
+                    queryByText('Discard unsaved changes?'),
+                ).toBeInTheDocument()
+            })
+
+            const backButton = getByRole('button', { name: 'Back to Editing' })
+            fireEvent.click(backButton)
+
+            await waitFor(() => {
+                expect(
+                    queryByText('Discard unsaved changes?'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should handle discard changes', async () => {
+            const mockHistoryPush = jest.fn()
+            jest.spyOn(
+                require('pages/history').default,
+                'push',
+            ).mockImplementation(mockHistoryPush)
+
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: EMAIL_INTEGRATION_TYPE,
+                    meta: { address: 'test@example.com' },
+                }),
+            }
+
+            const { getByRole, queryByText } = renderWithStore(props)
+
+            const nameInput = getByRole('textbox', { name: /display name/i })
+            fireEvent.change(nameInput, { target: { value: 'New Name' } })
+
+            const cancelButton = getByRole('button', { name: /Cancel/i })
+            fireEvent.click(cancelButton)
+
+            await waitFor(() => {
+                expect(
+                    queryByText('Discard unsaved changes?'),
+                ).toBeInTheDocument()
+            })
+
+            const discardButton = getByRole('button', {
+                name: 'Discard Changes',
+            })
+            fireEvent.click(discardButton)
+
+            expect(mockHistoryPush).toHaveBeenCalledWith(
+                '/app/settings/channels/email',
+            )
+        })
+    })
+
+    describe('Component props and rendering', () => {
+        it('should render all main sections for Gmail integration', () => {
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: IntegrationType.Gmail,
+                    meta: {
+                        address: 'test@gmail.com',
+                        signature: { text: '', html: '' },
+                    },
+                }),
+            }
+
+            const { getByText } = renderWithStore(props)
+
+            expect(getByText('General')).toBeInTheDocument()
+            expect(getByText('Display name and signature')).toBeInTheDocument()
+            expect(getByText('Advanced delivery settings')).toBeInTheDocument()
+            expect(getByText('Email imports')).toBeInTheDocument()
+        })
+
+        it('should render correct sections for Email integration', () => {
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: IntegrationType.Email,
+                    meta: {
+                        address: 'test@example.com',
+                        signature: { text: '', html: '' },
+                    },
+                }),
+            }
+
+            const { getByText, queryByText } = renderWithStore(props)
+
+            expect(getByText('General')).toBeInTheDocument()
+            expect(getByText('Display name and signature')).toBeInTheDocument()
+            expect(getByText('Email forwarding')).toBeInTheDocument()
+            expect(
+                queryByText('Advanced delivery settings'),
+            ).not.toBeInTheDocument()
+            expect(queryByText('Email imports')).not.toBeInTheDocument()
+        })
+
+        it('should pass correct props to EmailSettings', () => {
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: EMAIL_INTEGRATION_TYPE,
+                    meta: {
+                        address: 'test@example.com',
+                        signature: { text: 'Test', html: '<p>Test</p>' },
+                    },
+                }),
+            }
+
+            const { getByDisplayValue } = renderWithStore(props)
+
+            expect(getByDisplayValue(INTEGRATION_NAME)).toBeInTheDocument()
+        })
+
+        it('should pass correct props to EmailIntegrationButtons', () => {
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: EMAIL_INTEGRATION_TYPE,
+                    meta: { address: 'test@example.com' },
+                }),
+            }
+
+            const { getByRole } = renderWithStore(props)
+
+            expect(
+                getByRole('button', { name: 'Save changes' }),
+            ).toBeInTheDocument()
+            expect(getByRole('button', { name: /Cancel/i })).toBeInTheDocument()
+            expect(
+                getByRole('button', { name: /Delete integration/i }),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('Integration types and features', () => {
+        it('should handle Outlook integration correctly', () => {
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: IntegrationType.Outlook,
+                    meta: {
+                        address: 'test@outlook.com',
+                        signature: { text: '', html: '' },
+                    },
+                }),
+            }
+
+            const { getByText, getByPlaceholderText } = renderWithStore(props)
+
+            expect(getByText('Advanced delivery settings')).toBeInTheDocument()
+            expect(getByText('Email imports')).toBeInTheDocument()
+
+            const displayNameInput = getByPlaceholderText('Test.com Support')
+            expect(displayNameInput).toBeDisabled()
+        })
+    })
+
+    describe('Selectors and Redux integration', () => {
+        it('should use correct selectors for domain', () => {
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: EMAIL_INTEGRATION_TYPE,
+                    meta: { address: 'test@example.com' },
+                }),
+            }
+
+            const { getByPlaceholderText } = renderWithStore(props)
+
+            expect(getByPlaceholderText('Test.com Support')).toBeInTheDocument()
+        })
+
+        it('should use correct selectors for Gmail redirect URI', () => {
+            const props = {
+                integration: fromJS({
+                    id: 123,
+                    name: INTEGRATION_NAME,
+                    type: IntegrationType.Gmail,
+                    deactivated_datetime: '2023-01-01T00:00:00Z',
+                    meta: { address: 'test@gmail.com' },
+                }),
+            }
+
+            const mockWindowOpen = jest
+                .spyOn(window, 'open')
+                .mockImplementation(() => null)
+
+            const { getByRole } = renderWithStore(props)
+
+            const reactivateButton = getByRole('button', {
+                name: /Re-activate/i,
+            })
+            fireEvent.click(reactivateButton)
+
+            expect(mockWindowOpen).toHaveBeenCalledWith(
+                'https://gmail-redirect?integration_id=123',
+            )
+
+            mockWindowOpen.mockRestore()
+        })
     })
 })

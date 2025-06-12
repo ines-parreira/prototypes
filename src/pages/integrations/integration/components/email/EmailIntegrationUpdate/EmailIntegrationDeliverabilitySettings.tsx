@@ -3,7 +3,8 @@ import React, { useState } from 'react'
 import _capitalize from 'lodash/capitalize'
 import { Link } from 'react-router-dom'
 
-import warningIcon from 'assets/img/icons/warning.svg'
+import { Badge } from '@gorgias/merchant-ui-kit'
+
 import { EmailProvider, IntegrationType } from 'models/integration/constants'
 import { GmailIntegration, OutlookIntegration } from 'models/integration/types'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
@@ -64,17 +65,18 @@ export default function EmailIntegrationDeliverabilitySettings({
     }`
 
     const useInternalProviderLabel = (
-        <>
-            <div>
-                Send emails via Gorgias email delivery platform (recommended)
-            </div>
-        </>
+        <div>
+            Send emails via Gorgias email delivery platform{' '}
+            <Badge type="light-success" corner="round">
+                Recommended
+            </Badge>
+        </div>
     )
 
     const useInternalProviderCaption =
-        'Recommended to avoid deliverability issues.'
+        'Advanced configuration to handle higher volumes of emails.'
     const useDefaultProviderCaption =
-        'Potential risk of deliverability issues with high email volume.'
+        'A suitable delivery platform for most email operations.'
 
     const caption = canEnableEmailingViaInternalProvider(integration) ? (
         currentProvider === DeliverabilityProviderSetting.UseProviderAPI ? (
@@ -88,10 +90,9 @@ export default function EmailIntegrationDeliverabilitySettings({
         )
     ) : (
         <>
-            {`To avoid deliverability issues that can occur when using
-            ${capitalizedIntegrationType}'s API, complete`}
-            <Link to={domainVerificationPageLink}>Domain Verification</Link>
-            {` to enable Gorgias’ email delivery platform.`}
+            {`Improve email deliverability by `}
+            <Link to={domainVerificationPageLink}>verifying your domain</Link>
+            {` and using Gorgias’ email delivery platform. This ensures successful delivery and tracking.`}
         </>
     )
 
@@ -117,7 +118,6 @@ export default function EmailIntegrationDeliverabilitySettings({
                             currentProvider ===
                             DeliverabilityProviderSetting.UseProviderAPI ? (
                                 <div className={css.warningCaption}>
-                                    <img alt="warning" src={warningIcon} />
                                     {useDefaultProviderCaption}
                                 </div>
                             ) : (

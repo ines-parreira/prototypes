@@ -59,19 +59,19 @@ describe('<EmailIntegrationAddressField />', () => {
     it('should not render if the feature flag is disabled', () => {
         mockUseFlag.mockReturnValue(false)
         renderComponent()
-        expect(screen.queryByText('Email Address')).toBeNull()
+        expect(screen.queryByText('Email')).toBeNull()
     })
 
     it('should render the button when not setting is found', () => {
         renderComponent()
-        expect(screen.getByText('Email Address')).toBeInTheDocument()
-        expect(screen.getByText('test@gorgias.com')).toBeInTheDocument()
+        expect(screen.getByText('Email')).toBeInTheDocument()
+        expect(screen.getByDisplayValue('test@gorgias.com')).toBeInTheDocument()
         expect(screen.getByText('Set As Default')).toBeInTheDocument()
     })
 
     it('should render if the address is missing', () => {
         renderComponent({ integration: { id: 1 } as EmailIntegration })
-        expect(screen.getByText('Email Address')).toBeInTheDocument()
+        expect(screen.getByText('Email')).toBeInTheDocument()
         expect(screen.getByText('Set As Default')).toBeInTheDocument()
     })
 
@@ -82,16 +82,16 @@ describe('<EmailIntegrationAddressField />', () => {
             }),
         })
         renderComponent(minProps, store)
-        expect(screen.getByText('Email Address')).toBeInTheDocument()
-        expect(screen.getByText('test@gorgias.com')).toBeInTheDocument()
+        expect(screen.getByText('Email')).toBeInTheDocument()
+        expect(screen.getByDisplayValue('test@gorgias.com')).toBeInTheDocument()
         expect(screen.getByText('DEFAULT')).toBeInTheDocument()
         expect(screen.queryByText('Set As Default')).not.toBeInTheDocument()
     })
 
     it('should render a tooltip for the button', async () => {
         renderComponent()
-        expect(screen.getByText('Email Address')).toBeInTheDocument()
-        expect(screen.getByText('test@gorgias.com')).toBeInTheDocument()
+        expect(screen.getByText('Email')).toBeInTheDocument()
+        expect(screen.getByDisplayValue('test@gorgias.com')).toBeInTheDocument()
         expect(screen.getByText('Set As Default')).toBeInTheDocument()
 
         fireEvent.mouseEnter(screen.getByText('Set As Default'))
@@ -112,8 +112,8 @@ describe('<EmailIntegrationAddressField />', () => {
             }),
         })
         renderComponent(minProps, store)
-        expect(screen.getByText('Email Address')).toBeInTheDocument()
-        expect(screen.getByText('test@gorgias.com')).toBeInTheDocument()
+        expect(screen.getByText('Email')).toBeInTheDocument()
+        expect(screen.getByDisplayValue('test@gorgias.com')).toBeInTheDocument()
         expect(screen.getByText('DEFAULT')).toBeInTheDocument()
 
         fireEvent.mouseEnter(screen.getByText('DEFAULT'))
@@ -129,8 +129,8 @@ describe('<EmailIntegrationAddressField />', () => {
 
     it('should trigger a setting change action when clicking on the button', async () => {
         renderComponent()
-        expect(screen.getByText('Email Address')).toBeInTheDocument()
-        expect(screen.getByText('test@gorgias.com')).toBeInTheDocument()
+        expect(screen.getByText('Email')).toBeInTheDocument()
+        expect(screen.getByDisplayValue('test@gorgias.com')).toBeInTheDocument()
         expect(screen.getByText('Set As Default')).toBeInTheDocument()
 
         fireEvent.click(screen.getByText('Set As Default'))
@@ -157,8 +157,8 @@ describe('<EmailIntegrationAddressField />', () => {
         })
 
         renderComponent(minProps, store)
-        expect(screen.getByText('Email Address')).toBeInTheDocument()
-        expect(screen.getByText('test@gorgias.com')).toBeInTheDocument()
+        expect(screen.getByText('Email')).toBeInTheDocument()
+        expect(screen.getByDisplayValue('test@gorgias.com')).toBeInTheDocument()
         expect(screen.getByText('Set As Default')).toBeInTheDocument()
 
         fireEvent.click(screen.getByText('Set As Default'))

@@ -2,9 +2,10 @@ import React, { useCallback, useState } from 'react'
 
 import { fromJS, Map } from 'immutable'
 
+import { Button } from '@gorgias/merchant-ui-kit'
+
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -166,6 +167,7 @@ const EmailIntegrationConnectStore = ({ integration }: Props) => {
                     onClick={handleModalOpen}
                     isDisabled={isLoading}
                     isLoading={isLoading}
+                    leadingIcon="add"
                 >
                     Connect
                 </Button>

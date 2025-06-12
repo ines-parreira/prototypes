@@ -1,11 +1,13 @@
 @import '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
 
 :local {
     .fieldValue {
         display: flex;
         flex-direction: row;
         align-items: center;
-        margin: var(--layout-spacing-xs) 0 var(--layout-spacing-s);
+        margin-top: var(--layout-spacing-xs);
+        margin-bottom: var(--layout-spacing-m);
 
         button {
             margin-left: var(--layout-spacing-s);
@@ -17,7 +19,13 @@
     }
 
     .address {
+        background: var(--neutral-grey-1);
+        border-radius: var(--layout-spacing-xxs);
+        border: 1px solid var(--neutral-grey-3);
+        color: var(--neutral-grey-6);
         height: var(--layout-spacing-l);
         line-height: var(--layout-spacing-l);
+        padding: var(--layout-spacing-xs);
+        width: 100%;
     }
 }
