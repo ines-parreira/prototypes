@@ -2,7 +2,9 @@ import React, { ComponentType } from 'react'
 
 import { render } from '@testing-library/react'
 
+import { DomainEvent } from '@gorgias/events'
 import * as apiQueries from '@gorgias/helpdesk-queries'
+import { useChannel } from '@gorgias/realtime'
 
 import { FilterKey, StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
@@ -14,10 +16,13 @@ import { assumeMock } from 'utils/testing'
 import LiveVoiceAgentsSection from '../../components/LiveVoice/LiveVoiceAgentsSection'
 import LiveVoiceCallTable from '../../components/LiveVoice/LiveVoiceCallTable'
 import LiveVoiceMetrics from '../../components/LiveVoice/LiveVoiceMetrics'
+import { useLiveVoiceUpdates } from '../../hooks/useLiveVoiceUpdates'
 import LiveVoice from '../LiveVoice'
 
 jest.mock('state/ui/stats/selectors')
 jest.mock('@gorgias/helpdesk-queries')
+jest.mock('@gorgias/realtime')
+jest.mock('pages/stats/voice/hooks/useLiveVoiceUpdates')
 jest.mock(
     'pages/stats/voice/components/LiveVoice/LiveVoiceFilters',
     () => () => <div>LiveVoiceFilters</div>,
@@ -45,6 +50,8 @@ const getBusinessHoursSettingsMock = assumeMock(getBusinessHoursSettings)
 const useListLiveCallQueueVoiceCallsMock = assumeMock(
     apiQueries.useListLiveCallQueueVoiceCalls,
 )
+const useLiveVoiceUpdatesMock = assumeMock(useLiveVoiceUpdates)
+const useChannelMock = assumeMock(useChannel)
 const getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
 )
@@ -57,6 +64,8 @@ const cleanStatsFiltersDefaultValue = {
     [FilterKey.Integrations]: { values: [3, 4] },
     [FilterKey.VoiceQueues]: { values: [5, 6] },
 } as StatsFiltersWithLogicalOperator
+
+const handleEventMock = jest.fn()
 
 describe('LiveVoice', () => {
     const renderComponent = () => render(<LiveVoice />)
@@ -76,6 +85,13 @@ describe('LiveVoice', () => {
         LiveVoiceAgentsSectionMock.mockReturnValue(
             <div>LiveVoiceAgentsSection</div>,
         )
+        useLiveVoiceUpdatesMock.mockReturnValue({
+            channel: {
+                accountId: 123,
+                name: 'stats.liveVoice',
+            },
+            handleEvent: handleEventMock,
+        })
     })
 
     it('should render all sections', () => {
@@ -84,6 +100,36 @@ describe('LiveVoice', () => {
         expect(getByText('LiveVoiceMetrics')).toBeInTheDocument()
         expect(getByText('LiveVoiceAgentsSection')).toBeInTheDocument()
         expect(getByText('LiveVoiceCallTable')).toBeInTheDocument()
+    })
+
+    it('should handle events', () => {
+        const handleEventMock = jest.fn()
+        useLiveVoiceUpdatesMock.mockReturnValue({
+            channel: {
+                accountId: 123,
+                name: 'stats.liveVoice',
+            },
+            handleEvent: handleEventMock,
+        })
+
+        renderComponent()
+
+        expect(useChannelMock).toHaveBeenCalled()
+
+        const event = {
+            dataschema: '//helpdesk/phone.voice-call.inbound.rang-agent/1.0.0',
+            data: {
+                voice_call_id: 1234,
+                user_id: 5678,
+                account_id: 123,
+            },
+        }
+        useChannelMock.mock.calls[0][0]?.onEvent!(event as DomainEvent)
+        expect(handleEventMock).toHaveBeenCalledWith(event, {
+            agent_ids: [1, 2],
+            integration_ids: [3, 4],
+            voice_queue_ids: [5, 6],
+        })
     })
 
     it('should render footer with timezone related to business hours', () => {

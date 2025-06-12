@@ -1,3 +1,5 @@
+import { VoiceCallStatus } from '@gorgias/helpdesk-queries'
+
 export const LIVE_VOICE_PAGE_TITLE = 'Live voice'
 export const LIVE_VOICE_PAGE_TITLE_DESCRIPTION =
     'The voice live dashboard allows to monitor the number of calls in queue, track calls currently in progress, and view the status of each agent, ensuring that customer interactions are managed efficiently and effectively.'
@@ -40,3 +42,10 @@ export const INBOUND_CALLBACK_REQUESTED_CALLS_METRIC_HINT =
 export const OUTBOUND_CALLS_METRIC_TITLE = 'Outbound calls'
 export const OUTBOUND_CALLS_METRIC_HINT =
     'Total number of outbound calls placed.'
+
+export const VALID_LIVE_STATUSES: VoiceCallStatus[] = [
+    VoiceCallStatus.Queued,
+    VoiceCallStatus.Ringing,
+    VoiceCallStatus.Answered,
+    VoiceCallStatus.Connected,
+]

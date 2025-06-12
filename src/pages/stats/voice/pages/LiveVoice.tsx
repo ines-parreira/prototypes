@@ -1,4 +1,5 @@
 import { useListLiveCallQueueVoiceCalls } from '@gorgias/helpdesk-queries'
+import { useChannel } from '@gorgias/realtime'
 
 import { PaywallConfig, paywallConfigs } from 'config/paywalls'
 import useAppSelector from 'hooks/useAppSelector'
@@ -18,6 +19,7 @@ import {
     LIVE_VOICE_PAGE_TITLE,
     LIVE_VOICE_PAGE_TITLE_DESCRIPTION,
 } from '../constants/liveVoice'
+import { useLiveVoiceUpdates } from '../hooks/useLiveVoiceUpdates'
 import VoicePaywall from '../VoicePaywall'
 
 import css from './LiveVoice.less'
@@ -26,13 +28,13 @@ function LiveVoice() {
     const { cleanStatsFilters } = useAppSelector(
         getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
     )
+    const params = {
+        agent_ids: cleanStatsFilters?.[FilterKey.Agents]?.values,
+        integration_ids: cleanStatsFilters?.[FilterKey.Integrations]?.values,
+        voice_queue_ids: cleanStatsFilters?.[FilterKey.VoiceQueues]?.values,
+    }
     const { data: voiceCalls, isLoading } = useListLiveCallQueueVoiceCalls(
-        {
-            agent_ids: cleanStatsFilters?.[FilterKey.Agents]?.values,
-            integration_ids:
-                cleanStatsFilters?.[FilterKey.Integrations]?.values,
-            voice_queue_ids: cleanStatsFilters?.[FilterKey.VoiceQueues]?.values,
-        },
+        params,
         {
             http: {
                 paramsSerializer: {
@@ -45,6 +47,12 @@ function LiveVoice() {
             },
         },
     )
+
+    const { channel, handleEvent } = useLiveVoiceUpdates()
+    useChannel({
+        channel,
+        onEvent: (event) => handleEvent(event, params),
+    })
 
     return (
         <StatsPage
