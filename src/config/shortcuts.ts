@@ -232,6 +232,19 @@ const shortcuts: Record<string, KeyMap> = {
             },
         },
     },
+    TimelineModal: {
+        description: 'Timeline ticket modal',
+        actions: {
+            GO_PREVIOUS: {
+                key: 'left',
+                description: 'Go to the previous item.',
+            },
+            GO_NEXT: {
+                key: 'right',
+                description: 'Go to the next item.',
+            },
+        },
+    },
     MacroModal: {
         description: 'Macros',
         actions: {

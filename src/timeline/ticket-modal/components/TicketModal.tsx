@@ -6,17 +6,14 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import { TicketDetail } from 'tickets/ticket-detail/components/TicketDetail'
 
+import { useTicketModal } from '../hooks/useTicketModal'
 import { TicketModalProvider } from './TicketModalProvider'
 
 import css from './TicketModal.less'
 
 type Props = {
     summary?: TicketCompact
-    ticketId: number
-    onClose: () => void
-    onNext?: () => void
-    onPrevious?: () => void
-}
+} & Omit<ReturnType<typeof useTicketModal>, 'onOpen'>
 
 export function TicketModal({
     summary,
@@ -25,6 +22,8 @@ export function TicketModal({
     onNext,
     onPrevious,
 }: Props) {
+    if (!ticketId) return null
+
     return (
         <Modal
             classNameContent={css.content}

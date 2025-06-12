@@ -38,9 +38,22 @@ const TicketDetailMock = assumeMock(TicketDetail)
 const TicketModalProviderMock = assumeMock(TicketModalProvider)
 
 describe('TicketModal', () => {
+    const defaultProps = {
+        ticketId: 1,
+        onClose: jest.fn(),
+        onNext: jest.fn(),
+        onPrevious: jest.fn(),
+    }
+
+    it('should render nothing if no ticketId is passed', () => {
+        const { container } = render(
+            <TicketModal {...defaultProps} ticketId={null} />,
+        )
+        expect(container).toBeEmptyDOMElement()
+    })
+
     it('should call the TicketDetail component with the right props', () => {
-        const onClose = jest.fn()
-        render(<TicketModal ticketId={1} onClose={onClose} />)
+        render(<TicketModal {...defaultProps} />)
         expect(screen.getByText('TicketDetail')).toBeInTheDocument()
 
         expect(TicketDetailMock).toHaveBeenCalledWith(
@@ -53,21 +66,27 @@ describe('TicketModal', () => {
 
         expect(IconButton).toHaveBeenCalledWith(
             expect.objectContaining({
-                onClick: onClose,
+                onClick: defaultProps.onClose,
             }),
             {},
         )
     })
 
     it('should render a link to the full ticket', () => {
-        render(<TicketModal ticketId={1} onClose={jest.fn()} />)
+        render(<TicketModal {...defaultProps} />)
         const el = screen.getByText('View Ticket')
         expect(el).toBeInTheDocument()
         expect(el.closest('a')).toHaveAttribute('href', '/app/ticket/1')
     })
 
     it('should disable the navigation if no onNext / onPrevious handlers are passed', () => {
-        render(<TicketModal ticketId={1} onClose={jest.fn()} />)
+        render(
+            <TicketModal
+                {...defaultProps}
+                onNext={undefined}
+                onPrevious={undefined}
+            />,
+        )
         const previousEl = screen.getByText('Previous')
         const nextEl = screen.getByText('Next')
 
@@ -78,33 +97,25 @@ describe('TicketModal', () => {
     })
 
     it('should call onNext when the next link is clicked', () => {
-        const onNext = jest.fn()
-        render(<TicketModal ticketId={1} onClose={jest.fn()} onNext={onNext} />)
+        render(<TicketModal {...defaultProps} />)
 
         const el = screen.getByText('Next')
         userEvent.click(el)
 
-        expect(onNext).toHaveBeenCalled()
+        expect(defaultProps.onNext).toHaveBeenCalled()
     })
 
     it('should call onPrevious when the previous link is clicked', () => {
-        const onPrevious = jest.fn()
-        render(
-            <TicketModal
-                ticketId={1}
-                onClose={jest.fn()}
-                onPrevious={onPrevious}
-            />,
-        )
+        render(<TicketModal {...defaultProps} />)
 
         const el = screen.getByText('Previous')
         userEvent.click(el)
 
-        expect(onPrevious).toHaveBeenCalled()
+        expect(defaultProps.onPrevious).toHaveBeenCalled()
     })
 
     it('should wrap TicketDetail with TicketModalProvider', () => {
-        render(<TicketModal ticketId={1} onClose={jest.fn()} />)
+        render(<TicketModal {...defaultProps} />)
 
         expect(TicketModalProviderMock).toHaveBeenCalled()
     })

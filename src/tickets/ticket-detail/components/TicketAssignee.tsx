@@ -17,6 +17,8 @@ export function TicketAssignee({
         assignedAgent?.name || assignedAgent?.email || assignedTeam?.name
 
     const emoji = assignedTeam?.decoration?.emoji as string | undefined
+    const avatarUrl = (assignedAgent?.meta as Record<string, unknown>)
+        ?.profile_picture_url as string | undefined
 
     return (
         <div className={css.container}>
@@ -27,14 +29,13 @@ export function TicketAssignee({
             ) : (
                 name && (
                     <Avatar
-                        className={css.avatar}
+                        className={cn(css.avatar, {
+                            [css.image]: avatarUrl,
+                        })}
                         name={name}
                         shape="square"
                         size="sm"
-                        url={
-                            (assignedAgent?.meta as Record<string, unknown>)
-                                ?.profile_picture_url as string | undefined
-                        }
+                        url={avatarUrl}
                     />
                 )
             )}

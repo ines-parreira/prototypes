@@ -3,13 +3,20 @@ import { act, fireEvent, render, screen } from '@testing-library/react'
 import { TicketCompact } from '@gorgias/helpdesk-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useFlag } from 'core/flags'
+import { useModalShortcuts } from 'timeline/ticket-modal/hooks/useModalShortcuts'
 import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import { useTimelineData } from '../hooks/useTimelineData'
 import { RangeFilter } from '../RangeFilter'
+import { TicketModal } from '../ticket-modal/components/TicketModal'
+import { useTicketModal } from '../ticket-modal/hooks/useTicketModal'
 import TicketCard from '../TicketCard'
 import Timeline from '../Timeline'
 
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
@@ -25,12 +32,31 @@ jest.mock('../DisplayedDate', () => jest.fn(() => 'Mocked DatetimeLabel'))
 jest.mock('../RangeFilter', () => ({
     RangeFilter: jest.fn(() => <div>RangeFilter</div>),
 }))
+jest.mock('../ticket-modal/components/TicketModal', () => ({
+    TicketModal: jest.fn(() => <div>TicketModal</div>),
+}))
+jest.mock('../ticket-modal/hooks/useTicketModal', () => ({
+    useTicketModal: jest.fn(),
+}))
+jest.mock('../ticket-modal/hooks/useModalShortcuts', () => ({
+    useModalShortcuts: jest.fn(),
+}))
 
 const TicketCardMock = assumeMock(TicketCard)
 const rangeFilterMock = assumeMock(RangeFilter)
 const useTimelineDataMock = assumeMock(useTimelineData)
+const useFlagMock = assumeMock(useFlag)
+const useTicketModalMock = assumeMock(useTicketModal)
+const TicketModalMock = assumeMock(TicketModal)
 
 describe('<Timeline />', () => {
+    const useTicketModalReturnValue = {
+        ticketId: null,
+        onClose: jest.fn(),
+        onNext: jest.fn(),
+        onOpen: jest.fn(),
+        onPrevious: jest.fn(),
+    }
     const ticket1 = {
         id: 1,
         created_datetime: '2024-01-02T03:04:05.123456+00:00',
@@ -52,8 +78,11 @@ describe('<Timeline />', () => {
         isLoading: false,
         tickets: [ticket1, ticket2, ticket3],
     }
+
     beforeEach(() => {
         useTimelineDataMock.mockReturnValue(defaultTimelineReturnValue)
+        useFlagMock.mockReturnValue(true)
+        useTicketModalMock.mockReturnValue(useTicketModalReturnValue)
     })
 
     it('should render loading spinner', () => {
@@ -118,17 +147,6 @@ describe('<Timeline />', () => {
             },
             {},
         )
-    })
-
-    it('should log event and redirect when Link is clicked', () => {
-        render(<Timeline shopperId={null} />)
-
-        const link = screen.getAllByText('TicketCard')[0].parentElement
-        link?.click()
-        expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.CustomerTimelineTicketClicked,
-        )
-        expect(link).toHaveAttribute('to', '/app/ticket/1')
     })
 
     describe('Empty state', () => {
@@ -203,6 +221,69 @@ describe('<Timeline />', () => {
 
             expect(TicketCardMock.mock.calls[0][0].ticket).toEqual(ticket3)
             expect(TicketCardMock.mock.calls[1][0].ticket).toEqual(ticket1)
+        })
+    })
+
+    describe('Modal', () => {
+        it('should call useTicketModal with the correct props', () => {
+            render(<Timeline shopperId={null} />)
+
+            expect(useTicketModal).toHaveBeenCalledWith([1, 2, 3])
+        })
+
+        it('should log event and redirect when a ticket card is clicked', () => {
+            useFlagMock.mockReturnValue(false)
+            render(<Timeline shopperId={null} />)
+
+            const card = screen.getAllByText('TicketCard')[0].parentElement
+            card?.click()
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.CustomerTimelineTicketClicked,
+            )
+            expect(card).toHaveAttribute('to', '/app/ticket/1')
+        })
+
+        it('should log event and call modal.onOpen when a ticket card is clicked', () => {
+            render(<Timeline shopperId={null} />)
+
+            const card = screen.getAllByText('TicketCard')[0].parentElement
+            card?.click()
+
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.CustomerTimelineTicketClicked,
+            )
+            expect(useTicketModalReturnValue.onOpen).toHaveBeenCalledWith(1)
+        })
+
+        it('should call useModalShortcuts with the correct props', () => {
+            render(<Timeline shopperId={null} />)
+
+            expect(useModalShortcuts).toHaveBeenCalledWith(
+                useTicketModalReturnValue,
+            )
+        })
+
+        it('should not render TicketModal if useTicketModal returns no ticketId', () => {
+            render(<Timeline shopperId={null} />)
+
+            expect(TicketModalMock).not.toHaveBeenCalled()
+        })
+
+        it('should call TicketModal with the correct props if useTicketModal returns a ticketId', () => {
+            useTicketModalMock.mockReturnValue({
+                ...useTicketModalReturnValue,
+                ticketId: 1,
+            })
+
+            render(<Timeline shopperId={null} />)
+
+            expect(TicketModalMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    ...useTicketModalReturnValue,
+                    ticketId: 1,
+                }),
+                {},
+            )
         })
     })
 })

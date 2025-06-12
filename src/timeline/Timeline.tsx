@@ -18,6 +18,7 @@ import { NoResults } from './NoResults'
 import { RangeFilter } from './RangeFilter'
 import { Sort } from './Sort'
 import { StatusFilter } from './StatusFilter'
+import { useModalShortcuts } from './ticket-modal/hooks/useModalShortcuts'
 import TicketCard from './TicketCard'
 
 import css from './Timeline.less'
@@ -47,11 +48,8 @@ export function Timeline({ ticketId = 0, shopperId, onLoaded }: Props) {
         [sortedTickets],
     )
 
-    const {
-        onOpen,
-        ticketId: modalTicketId,
-        ...modalProps
-    } = useTicketModal(ticketIds)
+    const modal = useTicketModal(ticketIds)
+    useModalShortcuts(modal)
 
     if (isLoading) {
         return (
@@ -72,8 +70,8 @@ export function Timeline({ ticketId = 0, shopperId, onLoaded }: Props) {
         )
     }
 
-    const ticketSummary = modalTicketId
-        ? sortedTickets.find((ticket) => ticket.id === modalTicketId)
+    const ticketSummary = modal.ticketId
+        ? sortedTickets.find((ticket) => ticket.id === modal.ticketId)
         : undefined
 
     return (
@@ -122,7 +120,7 @@ export function Timeline({ ticketId = 0, shopperId, onLoaded }: Props) {
                                                 className={css.cardContainer}
                                                 onClick={(e) => {
                                                     e.preventDefault()
-                                                    onOpen(ticket.id)
+                                                    modal.onOpen(ticket.id)
                                                     logEvent(
                                                         SegmentEvent.CustomerTimelineTicketClicked,
                                                     )
@@ -148,12 +146,8 @@ export function Timeline({ ticketId = 0, shopperId, onLoaded }: Props) {
                     </ol>
                 )}
             </div>
-            {!!modalTicketId && (
-                <TicketModal
-                    summary={ticketSummary}
-                    ticketId={modalTicketId}
-                    {...modalProps}
-                />
+            {!!modal.ticketId && (
+                <TicketModal summary={ticketSummary} {...modal} />
             )}
         </>
     )
