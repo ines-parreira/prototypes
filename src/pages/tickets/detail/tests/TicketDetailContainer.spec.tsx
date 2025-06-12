@@ -20,7 +20,6 @@ import {
     ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
-import { useVisibilityState } from 'hooks/useVisibilityState/useVisibilityState'
 import client from 'models/api/resources'
 import { MacroActionName } from 'models/macroAction/types'
 import * as voiceCallQueries from 'models/voiceCall/queries'
@@ -160,9 +159,6 @@ const mockUseAgentActivity = useAgentActivity as jest.Mock
 const mockJoinTicket = jest.fn()
 const mockLeaveTicket = jest.fn()
 
-jest.mock('hooks/useVisibilityState/useVisibilityState')
-const mockUseVisibilityState = useVisibilityState as jest.Mock
-
 describe('TicketDetailContainer component', () => {
     const prepareTicketMessageMock = jest.fn()
     const newTicket = fromJS({
@@ -282,7 +278,6 @@ describe('TicketDetailContainer component', () => {
             joinTicket: mockJoinTicket,
             leaveTicket: mockLeaveTicket,
         })
-        mockUseVisibilityState.mockReturnValue(true)
     })
 
     it('should render container for new ticket', () => {
@@ -1621,7 +1616,7 @@ describe('TicketDetailContainer component', () => {
         expect(mockUseTicketActivityTracking).toHaveBeenCalledWith(undefined)
     })
 
-    it('should call joinTicket and leaveTicket from realtime package on mount / unmount and document is visible', () => {
+    it('should call joinTicket and leaveTicket from realtime package on mount / unmount', () => {
         const { unmount } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
@@ -1638,26 +1633,5 @@ describe('TicketDetailContainer component', () => {
 
         unmount()
         expect(mockLeaveTicket).toHaveBeenCalled()
-    })
-
-    it('should not call joinTicket and leaveTicket from realtime package on mount / unmount when document is not visible', () => {
-        mockUseVisibilityState.mockReturnValue(false)
-
-        const { unmount } = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockedStore}>
-                    <TicketDetailContainer {...minProps} />
-                </Provider>
-            </QueryClientProvider>,
-            {
-                path: '/foo/:ticketId',
-                route: '/foo/1',
-            },
-        )
-
-        expect(mockJoinTicket).not.toHaveBeenCalled()
-
-        unmount()
-        expect(mockLeaveTicket).not.toHaveBeenCalled()
     })
 })

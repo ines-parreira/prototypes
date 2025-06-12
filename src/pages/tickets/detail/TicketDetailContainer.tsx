@@ -25,7 +25,6 @@ import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import useSearch from 'hooks/useSearch'
 import useDraftMessages, { DRAFT_TICKET_STORE } from 'hooks/useTicketDraft'
 import useTitle from 'hooks/useTitle'
-import { useVisibilityState } from 'hooks/useVisibilityState/useVisibilityState'
 import { MacroActionName } from 'models/macroAction/types'
 import { PickedTicket, pickedTicketFields } from 'models/search/types'
 import { Ticket } from 'models/ticket/types'
@@ -633,19 +632,13 @@ export const TicketDetailContainer = ({
 
     const { joinTicket, leaveTicket } = useAgentActivity()
 
-    const isVisible = useVisibilityState()
-
     useEffect(() => {
-        if (isVisible) {
-            joinTicket(Number(ticketIdParam))
-        }
+        joinTicket(Number(ticketIdParam))
 
         return () => {
-            if (isVisible) {
-                leaveTicket()
-            }
+            leaveTicket()
         }
-    }, [isVisible, ticketIdParam, joinTicket, leaveTicket])
+    }, [ticketIdParam, joinTicket, leaveTicket])
 
     if (isLoading || isLoadingPhoneTicketData) {
         return <Loader className={css.loader} message="Loading ticket..." />
