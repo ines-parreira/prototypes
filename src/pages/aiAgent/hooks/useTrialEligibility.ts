@@ -11,7 +11,7 @@ import {
 
 export const useTrialEligibility = (
     storeActivations: Record<string, StoreActivation>,
-    isOnUsd5Plan: boolean,
+    isOnEligiblePan: boolean,
     isCurrentUserTeamLead: boolean,
 ) => {
     const [canStartTrial, setCanStartTrial] = useState(false)
@@ -26,7 +26,7 @@ export const useTrialEligibility = (
 
                 setCanStartTrial(
                     hasEligibleStoreForTrial &&
-                        isOnUsd5Plan &&
+                        isOnEligiblePan &&
                         isCurrentUserTeamLead,
                 )
             } catch (error) {
@@ -38,14 +38,14 @@ export const useTrialEligibility = (
         }
 
         checkEligibility()
-    }, [storeActivations, isOnUsd5Plan, isCurrentUserTeamLead])
+    }, [storeActivations, isOnEligiblePan, isCurrentUserTeamLead])
 
     return { canStartTrial, isLoading }
 }
 
 export const useTrialEligibilityForManualActivationFromFeatureFlag = (
     storeActivations: Record<string, StoreActivation>,
-    isOnUsd5Plan: boolean,
+    isOnEligiblePan: boolean,
     isCurrentUserTeamLead: boolean,
 ) => {
     const [canStartTrial, setCanStartTrial] = useState(false)
@@ -61,7 +61,7 @@ export const useTrialEligibilityForManualActivationFromFeatureFlag = (
                 setCanStartTrial(
                     hasEligibleStoreForTrial &&
                         isCurrentUserTeamLead &&
-                        isOnUsd5Plan &&
+                        isOnEligiblePan &&
                         isAiShoppingAssistantTrialMerchantsEnabled,
                 )
             } catch (error) {
@@ -72,7 +72,7 @@ export const useTrialEligibilityForManualActivationFromFeatureFlag = (
         checkEligibility()
     }, [
         storeActivations,
-        isOnUsd5Plan,
+        isOnEligiblePan,
         isAiShoppingAssistantTrialMerchantsEnabled,
         isCurrentUserTeamLead,
     ])

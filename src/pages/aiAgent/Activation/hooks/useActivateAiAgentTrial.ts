@@ -11,7 +11,10 @@ import {
 } from 'pages/aiAgent/hooks/useTrialEligibility'
 import { useStartAiSalesAgentTrialForMultipleStores } from 'pages/aiAgent/Overview/hooks/useStartAiSalesAgentTrialForMultipleStores'
 import { getShopNameFromStoreActivations } from 'pages/aiAgent/utils/getShopNameFromStoreActivations'
-import { getCurrentAutomatePlan } from 'state/billing/selectors'
+import {
+    getCurrentAutomatePlan,
+    getCurrentHelpdeskPlan,
+} from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
 
@@ -23,12 +26,16 @@ type AIAgentTrialType = {
     onSuccess: () => void
 }
 
+const GORGIAS_INTERNAL_PLAN_ID = 'free-gorgias-internal'
+
 export const useActivateAiAgentTrial = ({
     accountDomain,
     storeActivations,
     onSuccess,
 }: AIAgentTrialType) => {
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
+
     const currentUser = useAppSelector(getCurrentUser)
 
     const queryClient = useQueryClient()
@@ -40,18 +47,21 @@ export const useActivateAiAgentTrial = ({
     )
     const { routes } = useAiAgentNavigation({ shopName })
 
+    const isInternalAccount =
+        currentHelpdeskPlan?.plan_id === GORGIAS_INTERNAL_PLAN_ID
     const isOnUsd5Plan = currentAutomatePlan?.generation === 5
+    const isOnEligiblePlan = isOnUsd5Plan || isInternalAccount
     const isCurrentUserTeamLead = isTeamLead(currentUser)
     const { canStartTrial, isLoading: isTrialLoading } = useTrialEligibility(
         storeActivations,
-        isOnUsd5Plan,
+        isOnEligiblePlan,
         isCurrentUserTeamLead,
     )
 
     const { canStartTrial: canStartTrialFromFeatureFlag } =
         useTrialEligibilityForManualActivationFromFeatureFlag(
             storeActivations,
-            isOnUsd5Plan,
+            isOnEligiblePlan,
             isCurrentUserTeamLead,
         )
 
