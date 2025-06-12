@@ -88,7 +88,7 @@ const TicketAssignment = () => {
     )
     const [assignTicketToLastAgent, setAssignTicketToLastAgent] = useState(
         ticketAssignmentSettings.getIn(
-            ['data', 'assign_ticket_to_last_agent_responder'],
+            ['data', 'auto_assign_ticket_to_responding_agent'],
             false,
         ) as boolean,
     )
