@@ -37,7 +37,7 @@ describe('metricsPerProductAndIntent', () => {
         },
     }
     const timezone = 'UTC'
-    const intentsCustomFieldId = 'test-intent-field'
+    const intentCustomFieldId = 123
     const productId = 'test-product'
     const sorting = OrderDirection.Desc
     const mockQuery = {
@@ -69,7 +69,7 @@ describe('metricsPerProductAndIntent', () => {
                 useTicketCountPerIntent(
                     statsFilters,
                     timezone,
-                    intentsCustomFieldId,
+                    intentCustomFieldId,
                     productId,
                     sorting,
                 ),
@@ -78,7 +78,7 @@ describe('metricsPerProductAndIntent', () => {
             expect(ticketCountPerIntentQueryFactory).toHaveBeenCalledWith(
                 statsFilters,
                 timezone,
-                intentsCustomFieldId,
+                intentCustomFieldId,
                 sorting,
             )
             expect(useMetricPerDimension).toHaveBeenCalledWith(
@@ -92,14 +92,14 @@ describe('metricsPerProductAndIntent', () => {
                 useTicketCountPerIntent(
                     statsFilters,
                     timezone,
-                    intentsCustomFieldId,
+                    intentCustomFieldId,
                 ),
             )
 
             expect(ticketCountPerIntentQueryFactory).toHaveBeenCalledWith(
                 statsFilters,
                 timezone,
-                intentsCustomFieldId,
+                intentCustomFieldId,
                 undefined,
             )
             expect(useMetricPerDimension).toHaveBeenCalledWith(
@@ -113,7 +113,7 @@ describe('metricsPerProductAndIntent', () => {
                 useTicketCountPerIntent(
                     statsFilters,
                     timezone,
-                    intentsCustomFieldId,
+                    intentCustomFieldId,
                     productId,
                 ),
             )
@@ -127,7 +127,7 @@ describe('metricsPerProductAndIntent', () => {
             await fetchTicketCountPerIntentForProduct(
                 statsFilters,
                 timezone,
-                intentsCustomFieldId,
+                intentCustomFieldId,
                 productId,
                 sorting,
             )
@@ -135,7 +135,7 @@ describe('metricsPerProductAndIntent', () => {
             expect(ticketCountPerIntentQueryFactory).toHaveBeenCalledWith(
                 statsFilters,
                 timezone,
-                intentsCustomFieldId,
+                intentCustomFieldId,
                 sorting,
             )
             expect(fetchMetricPerDimension).toHaveBeenCalledWith(
@@ -148,13 +148,13 @@ describe('metricsPerProductAndIntent', () => {
             await fetchTicketCountPerIntentForProduct(
                 statsFilters,
                 timezone,
-                intentsCustomFieldId,
+                intentCustomFieldId,
             )
 
             expect(ticketCountPerIntentQueryFactory).toHaveBeenCalledWith(
                 statsFilters,
                 timezone,
-                intentsCustomFieldId,
+                intentCustomFieldId,
                 undefined,
             )
             expect(fetchMetricPerDimension).toHaveBeenCalledWith(
@@ -167,7 +167,7 @@ describe('metricsPerProductAndIntent', () => {
             const result = await fetchTicketCountPerIntentForProduct(
                 statsFilters,
                 timezone,
-                intentsCustomFieldId,
+                intentCustomFieldId,
                 productId,
             )
 
@@ -181,7 +181,7 @@ describe('metricsPerProductAndIntent', () => {
                 useTicketCountPerIntentForProduct(
                     statsFilters,
                     timezone,
-                    intentsCustomFieldId,
+                    intentCustomFieldId,
                     productId,
                 ),
             )
@@ -190,7 +190,7 @@ describe('metricsPerProductAndIntent', () => {
                 ticketCountPerIntentForProductQueryFactory(
                     statsFilters,
                     timezone,
-                    intentsCustomFieldId,
+                    intentCustomFieldId,
                     productId,
                 ),
                 undefined,
@@ -204,7 +204,7 @@ describe('metricsPerProductAndIntent', () => {
                 useTicketCountPerIntentForProduct(
                     statsFilters,
                     timezone,
-                    intentsCustomFieldId,
+                    intentCustomFieldId,
                     productId,
                     OrderDirection.Asc,
                     intent,
@@ -215,7 +215,7 @@ describe('metricsPerProductAndIntent', () => {
                 ticketCountPerIntentForProductQueryFactory(
                     statsFilters,
                     timezone,
-                    intentsCustomFieldId,
+                    intentCustomFieldId,
                     productId,
                 ),
                 intent,

@@ -33,7 +33,7 @@ describe('sentimentsTicketCountPerProduct', () => {
         },
     }
 
-    const customFieldId = '123'
+    const customFieldId = 123
     const productId = '456'
     const sorting = OrderDirection.Asc
 
@@ -81,7 +81,7 @@ describe('sentimentsTicketCountPerProduct', () => {
                     {
                         member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
                         operator: ReportingFilterOperator.Equals,
-                        values: [customFieldId],
+                        values: [String(customFieldId)],
                     },
                     {
                         member: TicketProductsEnrichedMember.DeletedDatetime,
@@ -174,7 +174,7 @@ describe('sentimentsTicketCountPerProduct', () => {
                     {
                         member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
                         operator: ReportingFilterOperator.Equals,
-                        values: [customFieldId],
+                        values: [String(customFieldId)],
                     },
                     {
                         member: TicketProductsEnrichedMember.DeletedDatetime,

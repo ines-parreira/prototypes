@@ -13,7 +13,7 @@ type Product = { id: string; name: string }
 export type L3IntentCardProps = {
     intent: string
     product: Product
-    intentCustomFieldId: string
+    intentCustomFieldId: number
 }
 
 const getFiltersForPreviousPeriod = (
@@ -23,7 +23,7 @@ const getFiltersForPreviousPeriod = (
     period: getPreviousPeriod(filters.period),
 })
 
-const getDrillDownTitle = (
+export const getDrillDownTitle = (
     intentCustomFieldValueString: string,
     product: Product,
 ) => {
@@ -35,7 +35,7 @@ const getDrillDownTitle = (
 }
 
 const getDrillDownMetricData = (
-    intentCustomFieldId: string,
+    intentCustomFieldId: number,
     intentCustomFieldValueString: string,
     product: Product,
 ) => ({

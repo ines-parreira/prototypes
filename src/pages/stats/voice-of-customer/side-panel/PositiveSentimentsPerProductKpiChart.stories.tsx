@@ -34,7 +34,7 @@ const statsFilters: StatsFilters = {
     },
 }
 const productId = 123
-const sentimentCustomFieldId = '4979'
+const sentimentCustomFieldId = 4979
 const state = {
     stats: { filters: statsFilters },
     ui: {
@@ -91,7 +91,7 @@ appQueryClient.setQueryData(
         sentimentsTicketCountPerProductQueryFactory(
             statsFilters,
             'UTC',
-            String(sentimentCustomFieldId),
+            sentimentCustomFieldId,
         ),
     ]),
     {
@@ -119,7 +119,7 @@ appQueryClient.setQueryData(
                 period: getPreviousPeriod(statsFilters.period),
             },
             'UTC',
-            String(sentimentCustomFieldId),
+            sentimentCustomFieldId,
         ),
     ]),
     {

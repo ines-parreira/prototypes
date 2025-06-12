@@ -53,7 +53,7 @@ describe('L3IntentCard', () => {
         name: 'SonicWave Pro Noise-Canceling Headphones SWP-NC500',
     }
 
-    const intentCustomFieldId = '456'
+    const intentCustomFieldId = 456
     const intent =
         'Return::Request::Connection stability issues are causing a lot of frustration for return'
 

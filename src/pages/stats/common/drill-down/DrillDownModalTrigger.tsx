@@ -1,4 +1,4 @@
-import { PropsWithChildren, useCallback } from 'react'
+import { PropsWithChildren, ReactNode, useCallback } from 'react'
 
 import classNames from 'classnames'
 
@@ -81,4 +81,22 @@ export const DrillDownModalTrigger = ({
             {children}
         </span>
     )
+}
+
+export const WithDrillDownTrigger = ({
+    children,
+    metricData,
+}: {
+    children: ReactNode
+    metricData: DrillDownMetric | null
+}) => {
+    if (metricData) {
+        return (
+            <DrillDownModalTrigger highlighted metricData={metricData}>
+                {children}
+            </DrillDownModalTrigger>
+        )
+    }
+
+    return <>{children}</>
 }

@@ -35,11 +35,13 @@ export const useTicketCountPerProductWithEnrichment = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
+    productId?: string,
 ) =>
     useMetricPerDimensionWithEnrichment(
         ticketCountPerProductQueryFactory(statsFilters, timezone, sorting),
         PRODUCT_ENRICHMENT_FIELDS,
         PRODUCT_ENRICHMENT_ENTITY_ID,
+        productId,
     )
 
 export const fetchTicketCountPerProduct = createFetchPerDimension(
@@ -49,7 +51,7 @@ export const fetchTicketCountPerProduct = createFetchPerDimension(
 export const useReturnMentionsPerProduct = (
     statsFilters: StatsFilters,
     timezone: string,
-    intentsCustomFieldId: string,
+    intentCustomFieldId: number,
     sorting?: OrderDirection,
     productId?: string,
 ) =>
@@ -57,7 +59,7 @@ export const useReturnMentionsPerProduct = (
         returnMentionsPerProductQueryFactory(
             statsFilters,
             timezone,
-            intentsCustomFieldId,
+            intentCustomFieldId,
             sorting,
         ),
         productId,
@@ -66,7 +68,7 @@ export const useReturnMentionsPerProduct = (
 export const fetchReturnMentionsPerProduct = (
     statsFilters: StatsFilters,
     timezone: string,
-    intentsCustomFieldId: string,
+    intentCustomFieldId: number,
     sorting?: OrderDirection,
     productId?: string,
 ) =>
@@ -74,7 +76,7 @@ export const fetchReturnMentionsPerProduct = (
         returnMentionsPerProductQueryFactory(
             statsFilters,
             timezone,
-            intentsCustomFieldId,
+            intentCustomFieldId,
             sorting,
         ),
         productId,

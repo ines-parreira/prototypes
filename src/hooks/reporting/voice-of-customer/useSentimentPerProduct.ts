@@ -36,7 +36,7 @@ export type DataPerProductPerSentiment = Record<
 export const useSentimentPerProduct = (
     statsFilters: StatsFilters,
     timezone: string,
-    sentimentCustomFieldId: string,
+    sentimentCustomFieldId: number,
     sentiment: Sentiment,
     productId?: string,
 ) => {
@@ -96,7 +96,7 @@ export const useNegativeSentimentsPerProductMetricTrend = (
     const currentPeriodMetric = useSentimentPerProduct(
         statsFilters,
         timezone,
-        String(sentimentCustomFieldId),
+        sentimentCustomFieldId,
         Sentiment.Negative,
         productId,
     )
@@ -107,7 +107,7 @@ export const useNegativeSentimentsPerProductMetricTrend = (
             period: getPreviousPeriod(statsFilters.period),
         },
         timezone,
-        String(sentimentCustomFieldId),
+        sentimentCustomFieldId,
         Sentiment.Negative,
         productId,
     )
@@ -132,7 +132,7 @@ export const usePositiveSentimentsPerProductMetricTrend = (
     const currentPeriodMetric = useSentimentPerProduct(
         statsFilters,
         timezone,
-        String(sentimentCustomFieldId),
+        sentimentCustomFieldId,
         Sentiment.Positive,
         productId,
     )
@@ -143,7 +143,7 @@ export const usePositiveSentimentsPerProductMetricTrend = (
             period: getPreviousPeriod(statsFilters.period),
         },
         timezone,
-        String(sentimentCustomFieldId),
+        sentimentCustomFieldId,
         Sentiment.Positive,
         productId,
     )

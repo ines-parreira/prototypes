@@ -186,7 +186,7 @@ describe('InsightsTab', () => {
                 ).toHaveBeenCalledWith(
                     cleanStatsFilters,
                     userTimezone,
-                    String(intentCustomFieldId),
+                    intentCustomFieldId,
                     product.id,
                     sortingOptions[i].direction,
                     undefined,

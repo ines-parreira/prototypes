@@ -34,7 +34,7 @@ describe('useSentimentPerProduct', () => {
     const firstProductId = 'product1'
     const secondProductId = 'product2'
 
-    const sentimentCustomFieldId = '123'
+    const sentimentCustomFieldId = 123
 
     const mockData = [
         {

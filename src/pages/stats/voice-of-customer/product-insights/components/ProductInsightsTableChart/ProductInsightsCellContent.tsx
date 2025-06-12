@@ -1,75 +1,57 @@
-import { ReactNode } from 'react'
-
-import { SegmentEvent } from 'common/segment'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
-import { OrderDirection } from 'models/api/types'
-import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
+import {
+    Sentiment,
+    useSentimentPerProduct,
+} from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
-import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
+import { WithDrillDownTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import { ProductImage } from 'pages/stats/voice-of-customer/components/ProductImage'
-import css from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsCellContent.less'
+import { CellWrapper } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/CellWrapper'
+import { ProductFeedbackCell } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductFeedbackCell'
 import {
-    getColumnAlignment,
-    getColumnWidth,
     getDrillDownMetricData,
-    getIsLeadColumn,
-    getUseMetricQuery,
-    getUseTrendQuery,
+    getUseSentimentTrendQuery,
     Product,
     ProductInsightsColumnConfig,
 } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableConfig'
-import { ProductTableBodyCell } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductTable'
-import { VoCSidePanelTrigger } from 'pages/stats/voice-of-customer/side-panel/VoCSidePanelTrigger'
+import { ProductNameCell } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductNameCell'
+import { ReturnMentionsMetricCell } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ReturnMentionsMetricCell'
+import { TicketsVolumeMetricCell } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/TicketsVolumeMetricCell'
+import { PropsWithProduct } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/types'
 import { ProductInsightsTableColumns } from 'state/ui/stats/types'
 
-const CellWrapper = ({
-    children,
-    isLoading,
-    column,
-}: {
-    column: ProductInsightsTableColumns
-    children: ReactNode
-    isLoading?: boolean
-}) => (
-    <ProductTableBodyCell
-        isLoading={isLoading}
-        width={getColumnWidth(column)}
-        isSticky={getIsLeadColumn(column)}
-        justifyContent={getColumnAlignment(column)}
-    >
-        {children}
-    </ProductTableBodyCell>
-)
-
-type ProductTableCellProps = { product: Product }
+export type ProductSentimentTableCellProps = PropsWithProduct & {
+    sentimentCustomFieldId: number
+}
 
 const createTrendCell = (
     column:
         | ProductInsightsTableColumns.NegativeSentimentDelta
         | ProductInsightsTableColumns.PositiveSentimentDelta,
 ) => {
-    const useTrendQuery = getUseTrendQuery(column)
+    const useTrendQuery = getUseSentimentTrendQuery(column)
 
-    const TrendCell = ({ product }: ProductTableCellProps) => {
+    const TrendCell = ({
+        product,
+        sentimentCustomFieldId,
+    }: ProductSentimentTableCellProps) => {
         const statsFilters = useStatsFilters()
 
         const { data, isFetching } = useTrendQuery(
             statsFilters.cleanStatsFilters,
             statsFilters.userTimezone,
+            sentimentCustomFieldId,
             product.id,
-            product.intent,
-            OrderDirection.Desc,
         )
 
         return (
             <CellWrapper column={column} isLoading={isFetching}>
                 <TrendBadge
-                    value={data.value}
-                    prevValue={data.prevValue}
+                    value={data?.value}
+                    prevValue={data?.prevValue}
                     interpretAs="more-is-better"
                     size="md"
                 />
@@ -82,50 +64,32 @@ const createTrendCell = (
     return TrendCell
 }
 
-const WithDrillDownTrigger = ({
-    children,
-    metricData,
-}: {
-    children: React.ReactNode
-    metricData: ReturnType<typeof getDrillDownMetricData>
-}) => {
-    if (metricData) {
-        return (
-            <DrillDownModalTrigger highlighted metricData={metricData}>
-                {children}
-            </DrillDownModalTrigger>
-        )
-    }
-
-    return <>{children}</>
-}
-
-const createMetricCell = (
+const createSentimentMetricCell = (
     column:
         | ProductInsightsTableColumns.NegativeSentiment
-        | ProductInsightsTableColumns.PositiveSentiment
-        | ProductInsightsTableColumns.ReturnMentions
-        | ProductInsightsTableColumns.TicketsVolume,
+        | ProductInsightsTableColumns.PositiveSentiment,
 ) => {
     const { format } = ProductInsightsColumnConfig[column]
-    const useMetricQuery = getUseMetricQuery(column)
+    const sentiment =
+        column === ProductInsightsTableColumns.PositiveSentiment
+            ? Sentiment.Positive
+            : Sentiment.Negative
 
     const MetricCell = ({
         product,
         sentimentCustomFieldId,
-    }: ProductTableCellProps & { sentimentCustomFieldId: string }) => {
+    }: ProductSentimentTableCellProps) => {
         const statsFilters = useStatsFilters()
-
-        const { data, isFetching } = useMetricQuery(
+        const { data, isFetching } = useSentimentPerProduct(
             statsFilters.cleanStatsFilters,
             statsFilters.userTimezone,
+            sentimentCustomFieldId,
+            sentiment,
             product.id,
-            product.intent,
-            OrderDirection.Desc,
         )
 
         const content = formatMetricValue(
-            data.value,
+            data?.value,
             format,
             NOT_AVAILABLE_PLACEHOLDER,
         )
@@ -150,50 +114,17 @@ const createMetricCell = (
     return MetricCell
 }
 
-const ProductFeedbackCell = ({ product }: ProductTableCellProps) => {
-    return (
-        <CellWrapper column={ProductInsightsTableColumns.Feedback}>
-            <div className={css.feedback}>{product.intent}</div>
-        </CellWrapper>
-    )
-}
-
-const ProductCell = ({ product }: ProductTableCellProps) => {
-    return (
-        <CellWrapper column={ProductInsightsTableColumns.Product}>
-            <div className={css.product}>
-                <ProductImage src={product.thumbnail_url} alt={product.name} />
-                <div className={css.productName}>
-                    <VoCSidePanelTrigger
-                        highlighted
-                        product={product}
-                        segmentEventName={
-                            SegmentEvent.StatVoCSidePanelIntentClick
-                        }
-                    >
-                        {product.name}
-                    </VoCSidePanelTrigger>
-                </div>
-            </div>
-        </CellWrapper>
-    )
-}
-
 const componentMap = {
-    [ProductInsightsTableColumns.Product]: ProductCell,
+    [ProductInsightsTableColumns.Product]: ProductNameCell,
     [ProductInsightsTableColumns.Feedback]: ProductFeedbackCell,
-    [ProductInsightsTableColumns.NegativeSentiment]: createMetricCell(
+    [ProductInsightsTableColumns.NegativeSentiment]: createSentimentMetricCell(
         ProductInsightsTableColumns.NegativeSentiment,
     ),
-    [ProductInsightsTableColumns.PositiveSentiment]: createMetricCell(
+    [ProductInsightsTableColumns.PositiveSentiment]: createSentimentMetricCell(
         ProductInsightsTableColumns.PositiveSentiment,
     ),
-    [ProductInsightsTableColumns.ReturnMentions]: createMetricCell(
-        ProductInsightsTableColumns.ReturnMentions,
-    ),
-    [ProductInsightsTableColumns.TicketsVolume]: createMetricCell(
-        ProductInsightsTableColumns.TicketsVolume,
-    ),
+    [ProductInsightsTableColumns.ReturnMentions]: ReturnMentionsMetricCell,
+    [ProductInsightsTableColumns.TicketsVolume]: TicketsVolumeMetricCell,
     [ProductInsightsTableColumns.NegativeSentimentDelta]: createTrendCell(
         ProductInsightsTableColumns.NegativeSentimentDelta,
     ),
@@ -205,20 +136,20 @@ const componentMap = {
 export const ProductInsightsCellContent = ({
     column,
     product,
+    intentCustomFieldId,
+    sentimentCustomFieldId,
 }: {
     column: ProductInsightsTableColumns
     product: Product
+    sentimentCustomFieldId: number
+    intentCustomFieldId: number
 }) => {
-    const { sentimentCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
-
-    if (!sentimentCustomFieldId) return null
-
     const Component = componentMap[column]
-
     return (
         <Component
             product={product}
-            sentimentCustomFieldId={String(sentimentCustomFieldId)}
+            sentimentCustomFieldId={sentimentCustomFieldId}
+            intentCustomFieldId={intentCustomFieldId}
         />
     )
 }

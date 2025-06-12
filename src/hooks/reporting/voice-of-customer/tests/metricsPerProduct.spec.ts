@@ -115,12 +115,13 @@ describe('metricsPerProduct', () => {
                 ),
                 PRODUCT_ENRICHMENT_FIELDS,
                 PRODUCT_ENRICHMENT_ENTITY_ID,
+                undefined,
             )
         })
     })
 
     describe('metricsPerProductAndIntent', () => {
-        const intentsCustomFieldId = '1'
+        const intentCustomFieldId = 1
 
         it.each([
             [
@@ -136,7 +137,7 @@ describe('metricsPerProduct', () => {
                         useFn(
                             statsFilters,
                             timezone,
-                            intentsCustomFieldId,
+                            intentCustomFieldId,
                             sorting,
                             agentId,
                         ),
@@ -147,7 +148,7 @@ describe('metricsPerProduct', () => {
                     queryFactory(
                         statsFilters,
                         timezone,
-                        intentsCustomFieldId,
+                        intentCustomFieldId,
                         sorting,
                     ),
                     agentId,
@@ -167,7 +168,7 @@ describe('metricsPerProduct', () => {
                 await fetchFn(
                     statsFilters,
                     timezone,
-                    intentsCustomFieldId,
+                    intentCustomFieldId,
                     sorting,
                     agentId,
                 )
@@ -176,7 +177,7 @@ describe('metricsPerProduct', () => {
                     queryFactory(
                         statsFilters,
                         timezone,
-                        intentsCustomFieldId,
+                        intentCustomFieldId,
                         sorting,
                     ),
                     agentId,

@@ -16,6 +16,7 @@ import {
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import { tagsTicketCountDrillDownByReferenceQueryFactory } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { returnMentionsPerProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/returnMentionsPerProduct'
 import { sentimentsTicketCountPerProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/sentimentPerProduct'
 import { ticketCountPerIntentForProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent'
 import { ticketCountForProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/ticketsWithProducts'
@@ -66,9 +67,11 @@ import {
     DrillDownMetric,
     SatisfactionAverageSurveyScoreMetrics,
     SatisfactionMetrics,
+    SentimentForProductMetrics,
     SlaMetrics,
     TagsFieldsMetrics,
     TicketFieldsMetrics,
+    VoiceOfCustomerMetrics,
 } from 'state/ui/stats/drillDownSlice'
 import { ProductsPerTicketColumn } from 'state/ui/stats/productsPerTicketSlice'
 import {
@@ -170,6 +173,12 @@ const totalNumberOfOrderDrillDownQueryFactoryMock = assumeMock(
 )
 const totalNumberProductRecommendationsDrillDownQueryFactoryMock = assumeMock(
     totalNumberProductRecommendationsDrillDownQueryFactory,
+)
+jest.mock(
+    'models/reporting/queryFactories/voice-of-customer/returnMentionsPerProduct',
+)
+const returnMentionsPerProductDrillDownQueryFactoryMock = assumeMock(
+    returnMentionsPerProductDrillDownQueryFactory,
 )
 
 describe('getDrillDownQuery', () => {
@@ -299,13 +308,13 @@ describe('getDrillDownQuery', () => {
         {
             metricName: ProductInsightsTableColumns.NegativeSentiment,
             productId: '123',
-            sentimentCustomFieldId: '456',
+            sentimentCustomFieldId: 456,
             sentiment: Sentiment.Negative,
         },
         {
             metricName: ProductInsightsTableColumns.PositiveSentiment,
             productId: '123',
-            sentimentCustomFieldId: '456',
+            sentimentCustomFieldId: 456,
             sentiment: Sentiment.Positive,
         },
         {
@@ -457,7 +466,7 @@ describe('getDrillDownQuery', () => {
     const voiceOfCustomerMetrics: DrillDownMetric[] = [
         {
             metricName: VoiceOfCustomerMetricWithDrillDown.IntentPerProduct,
-            intentCustomFieldId: '123',
+            intentCustomFieldId: 123,
             intentCustomFieldValueString: 'product::return',
             productId: '456',
         },
@@ -880,9 +889,9 @@ describe('getDrillDownQuery', () => {
         }
         const timezone = 'someTimeZone'
 
-        const metricData: DrillDownMetric = {
+        const metricData: SentimentForProductMetrics = {
             metricName: ProductInsightsTableColumns.PositiveSentiment,
-            sentimentCustomFieldId: '123',
+            sentimentCustomFieldId: 123,
             sentiment: Sentiment.Positive,
             productId: '456',
         }
@@ -914,9 +923,9 @@ describe('getDrillDownQuery', () => {
         }
         const timezone = 'someTimeZone'
 
-        const metricData: DrillDownMetric = {
+        const metricData: SentimentForProductMetrics = {
             metricName: ProductInsightsTableColumns.NegativeSentiment,
-            sentimentCustomFieldId: '123',
+            sentimentCustomFieldId: 123,
             sentiment: Sentiment.Negative,
             productId: '456',
         }
@@ -970,6 +979,38 @@ describe('getDrillDownQuery', () => {
         )
     })
 
+    it('should be populated with sentimentCustomFieldId, sentiment, and productId', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+
+        const metricData: DrillDownMetric = {
+            metricName: ProductInsightsTableColumns.ReturnMentions,
+            productId: '456',
+            intentCustomFieldId: 123,
+        }
+
+        const queryFactory = getDrillDownQuery(metricData)
+
+        queryFactory(statsFilters, timezone)
+
+        expect(
+            returnMentionsPerProductDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(
+            statsFilters,
+            timezone,
+            metricData.intentCustomFieldId,
+            metricData.productId,
+            undefined,
+        )
+    })
+
     it('should be populated with intentCustomFieldId, intentCustomFieldValueString and productId', () => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
@@ -981,9 +1022,9 @@ describe('getDrillDownQuery', () => {
         }
         const timezone = 'someTimeZone'
 
-        const customFieldMetric: DrillDownMetric = {
+        const customFieldMetric: VoiceOfCustomerMetrics = {
             metricName: VoiceOfCustomerMetricWithDrillDown.IntentPerProduct,
-            intentCustomFieldId: '123',
+            intentCustomFieldId: 123,
             intentCustomFieldValueString: 'product::return',
             productId: '456',
         }
@@ -1170,7 +1211,7 @@ describe('getDrillDownMetric', () => {
             metricData: {
                 metricName: ProductInsightsTableColumns.NegativeSentiment,
                 productId: '123',
-                sentimentCustomFieldId: '456',
+                sentimentCustomFieldId: 456,
                 sentiment: Sentiment.Negative,
             },
             expectedValues: {
@@ -1189,7 +1230,7 @@ describe('getDrillDownMetric', () => {
             metricData: {
                 metricName: ProductInsightsTableColumns.PositiveSentiment,
                 productId: '123',
-                sentimentCustomFieldId: '456',
+                sentimentCustomFieldId: 456,
                 sentiment: Sentiment.Positive,
             },
             expectedValues: {
@@ -1247,7 +1288,7 @@ describe('getDrillDownMetric', () => {
         {
             metricData: {
                 metricName: VoiceOfCustomerMetricWithDrillDown.IntentPerProduct,
-                intentCustomFieldId: '123',
+                intentCustomFieldId: 123,
                 intentCustomFieldValueString: 'product::return',
                 productId: '456',
             },

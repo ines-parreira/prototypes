@@ -93,6 +93,9 @@ const dummyProducts = [
 ]
 
 describe('ProductInsightsTable', () => {
+    const intentCustomFieldId = 123
+    const sentimentCustomFieldId = 456
+
     beforeEach(() => {
         useSortedProductsWithDataMock.mockReturnValue({
             isLoading: false,
@@ -119,7 +122,12 @@ describe('ProductInsightsTable', () => {
             products: dummyProducts,
         })
 
-        render(<ProductInsightsTable />)
+        render(
+            <ProductInsightsTable
+                intentCustomFieldId={intentCustomFieldId}
+                sentimentCustomFieldId={sentimentCustomFieldId}
+            />,
+        )
 
         expect(screen.getByRole('table')).toBeInTheDocument()
 
@@ -139,7 +147,12 @@ describe('ProductInsightsTable', () => {
                 })),
         })
 
-        render(<ProductInsightsTable />)
+        render(
+            <ProductInsightsTable
+                intentCustomFieldId={intentCustomFieldId}
+                sentimentCustomFieldId={sentimentCustomFieldId}
+            />,
+        )
 
         expect(NumberedPaginationMock).toHaveBeenCalled()
     })
@@ -150,7 +163,12 @@ describe('ProductInsightsTable', () => {
             products: dummyProducts.slice(0, 5),
         })
 
-        render(<ProductInsightsTable />)
+        render(
+            <ProductInsightsTable
+                intentCustomFieldId={intentCustomFieldId}
+                sentimentCustomFieldId={sentimentCustomFieldId}
+            />,
+        )
 
         expect(NumberedPaginationMock).not.toHaveBeenCalled()
     })
@@ -161,7 +179,12 @@ describe('ProductInsightsTable', () => {
             products: [],
         })
 
-        render(<ProductInsightsTable />)
+        render(
+            <ProductInsightsTable
+                intentCustomFieldId={intentCustomFieldId}
+                sentimentCustomFieldId={sentimentCustomFieldId}
+            />,
+        )
 
         expect(screen.queryByRole('table')).not.toBeInTheDocument()
 

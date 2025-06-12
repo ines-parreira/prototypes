@@ -2,6 +2,10 @@ import { screen } from '@testing-library/dom'
 import { fromJS } from 'immutable'
 
 import { UserRole } from 'config/types/user'
+import {
+    TICKET_FIELD_ID_NOT_AVAILABLE,
+    useGetCustomTicketsFieldsDefinitionData,
+} from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { ProductInsightsEditColumns } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsEditColumns'
 import { ProductInsightsTable } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTable'
 import {
@@ -14,12 +18,17 @@ import { assumeMock, renderWithStore } from 'utils/testing'
 jest.mock(
     'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsEditColumns',
 )
+const ProductInsightsEditColumnsMock = assumeMock(ProductInsightsEditColumns)
 jest.mock(
     'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTable',
 )
-
-const ProductInsightsEditColumnsMock = assumeMock(ProductInsightsEditColumns)
 const ProductInsightsTableMock = assumeMock(ProductInsightsTable)
+jest.mock(
+    'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
+)
+const useGetCustomTicketsFieldsDefinitionDataMock = assumeMock(
+    useGetCustomTicketsFieldsDefinitionData,
+)
 
 describe('ProductInsightsTableChart', () => {
     const mockAdminUser = {
@@ -31,6 +40,11 @@ describe('ProductInsightsTableChart', () => {
     }
 
     beforeEach(() => {
+        useGetCustomTicketsFieldsDefinitionDataMock.mockReturnValue({
+            sentimentCustomFieldId: 123,
+            intentCustomFieldId: 456,
+            outcomeCustomFieldId: 789,
+        })
         ProductInsightsEditColumnsMock.mockImplementation(() => (
             <div>Edit Columns</div>
         ))
@@ -77,5 +91,35 @@ describe('ProductInsightsTableChart', () => {
         renderWithStore(<ProductInsightsTableChart />, state)
 
         expect(ProductInsightsTableMock).toHaveBeenCalled()
+    })
+
+    it('should not render the product insights table if intentCustomField is missing', () => {
+        const state: Partial<RootState> = {
+            currentUser: fromJS(mockNonAdminUser),
+        }
+        useGetCustomTicketsFieldsDefinitionDataMock.mockReturnValue({
+            sentimentCustomFieldId: 123,
+            intentCustomFieldId: TICKET_FIELD_ID_NOT_AVAILABLE,
+            outcomeCustomFieldId: 789,
+        })
+
+        renderWithStore(<ProductInsightsTableChart />, state)
+
+        expect(ProductInsightsTableMock).not.toHaveBeenCalled()
+    })
+
+    it('should not render the product insights table if sentimentCustomFieldId is missing', () => {
+        const state: Partial<RootState> = {
+            currentUser: fromJS(mockNonAdminUser),
+        }
+        useGetCustomTicketsFieldsDefinitionDataMock.mockReturnValue({
+            sentimentCustomFieldId: null,
+            intentCustomFieldId: 123,
+            outcomeCustomFieldId: 789,
+        })
+
+        renderWithStore(<ProductInsightsTableChart />, state)
+
+        expect(ProductInsightsTableMock).not.toHaveBeenCalled()
     })
 })

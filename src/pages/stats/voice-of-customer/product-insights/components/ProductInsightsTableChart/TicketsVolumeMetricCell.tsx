@@ -1,0 +1,51 @@
+import { useMemo } from 'react'
+
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
+import { useTicketCountPerProductWithEnrichment } from 'hooks/reporting/voice-of-customer/metricsPerProduct'
+import { OrderDirection } from 'models/api/types'
+import { WithDrillDownTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
+import {
+    formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
+} from 'pages/stats/common/utils'
+import { CellWrapper } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/CellWrapper'
+import { ProductInsightsColumnConfig } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableConfig'
+import { PropsWithProduct } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/types'
+import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
+import { ProductInsightsTableColumns } from 'state/ui/stats/types'
+
+export const TicketsVolumeMetricCell = ({ product }: PropsWithProduct) => {
+    const column = ProductInsightsTableColumns.TicketsVolume
+    const { format } = ProductInsightsColumnConfig[column]
+    const statsFilters = useStatsFilters()
+
+    const { data, isFetching } = useTicketCountPerProductWithEnrichment(
+        statsFilters.cleanStatsFilters,
+        statsFilters.userTimezone,
+        OrderDirection.Desc,
+        product.id,
+    )
+
+    const formattedMetric = formatMetricValue(
+        data?.value,
+        format,
+        NOT_AVAILABLE_PLACEHOLDER,
+    )
+
+    const metricData: DrillDownMetric = useMemo(
+        () => ({
+            title: product.name,
+            metricName: column,
+            productId: product.id,
+        }),
+        [column, product],
+    )
+
+    return (
+        <CellWrapper column={column} isLoading={isFetching}>
+            <WithDrillDownTrigger metricData={metricData}>
+                {formattedMetric}
+            </WithDrillDownTrigger>
+        </CellWrapper>
+    )
+}

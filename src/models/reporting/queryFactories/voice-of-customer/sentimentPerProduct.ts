@@ -35,7 +35,7 @@ export const TICKET_COUNT_MEASURE = TicketProductsEnrichedMeasure.TicketCount
 export const sentimentsTicketCountPerProductQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
-    customFieldId: string,
+    customFieldId: number,
     productId?: string,
     sorting?: OrderDirection,
 ): ReportingQuery<TicketCubeWithJoins> => {
@@ -56,7 +56,7 @@ export const sentimentsTicketCountPerProductQueryFactory = (
         {
             member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
             operator: ReportingFilterOperator.Equals,
-            values: [customFieldId],
+            values: [String(customFieldId)],
         },
         {
             member: TicketProductsEnrichedDimension.DeletedDatetime,
@@ -85,7 +85,7 @@ export const sentimentsTicketCountPerProductQueryFactory = (
 export const sentimentsTicketCountPerProductDrillDownQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
-    customFieldId: string,
+    customFieldId: number,
     sentiment: Sentiment,
     productId: string,
     sorting = OrderDirection.Desc,

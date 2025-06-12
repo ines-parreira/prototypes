@@ -99,7 +99,23 @@ export const getDrillDownQuery = (
                     sorting,
                 )
         }
+        case ProductInsightsTableColumns.ReturnMentions: {
+            const { drillDownQuery } =
+                ProductInsightsColumnConfig[metricData.metricName]
 
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection,
+            ) =>
+                drillDownQuery(
+                    statsFilters,
+                    timezone,
+                    metricData.intentCustomFieldId,
+                    metricData.productId,
+                    sorting,
+                )
+        }
         case ProductInsightsTableColumns.TicketsVolume: {
             const { drillDownQuery } =
                 ProductInsightsColumnConfig[metricData.metricName]
@@ -460,11 +476,12 @@ export const getDrillDownMetricColumn = (
             ProductInsightsTableColumns.NegativeSentiment ||
         metricData.metricName ===
             ProductInsightsTableColumns.PositiveSentiment ||
-        metricData.metricName === ProductInsightsTableColumns.TicketsVolume
+        metricData.metricName === ProductInsightsTableColumns.TicketsVolume ||
+        metricData.metricName === ProductInsightsTableColumns.ReturnMentions
     ) {
         const config =
             ProductInsightsColumnWithDrillDownConfig[metricData.metricName]
-        metricTitle = config.hint.title
+        metricTitle = metricData.title ?? config.hint.title
         metricValueFormat = config.format
     } else if (
         metricData.metricName === VoiceMetric.QueueAverageTalkTime ||

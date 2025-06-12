@@ -13,6 +13,7 @@ import { ColumnSorting } from 'state/ui/stats/types'
 export const PRODUCT_ID_FIELD = TicketProductsEnrichedDimension.ProductId
 export const TICKET_COUNT_FIELD = TicketProductsEnrichedMeasure.TicketCount
 export const PRODUCT_NAME_FIELD = EnrichmentFields.ProductTitle
+export const PRODUCT_THUMBNAIL_FIELD = EnrichmentFields.ProductThumbnailUrl
 
 export enum ProductsPerTicketColumn {
     Product = 'product',

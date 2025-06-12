@@ -24,7 +24,7 @@ import { HintTooltipContent } from 'pages/stats/common/HintTooltip'
 import { TooltipData } from 'pages/stats/types'
 
 type NestedRowProps<Columns extends string> = {
-    intentsCustomFieldId?: number
+    intentCustomFieldId?: number
     level?: number
     isTableScrolled?: boolean
     columnOrder?: Columns[]
@@ -60,7 +60,7 @@ type Props<
         }
     >
     isScrollable?: boolean
-    intentsCustomFieldId?: number
+    intentCustomFieldId?: number
 }
 
 export const TableWithNestedRows = <
@@ -80,7 +80,7 @@ export const TableWithNestedRows = <
     columnConfig,
     getSetOrderHandler,
     isScrollable = true,
-    intentsCustomFieldId,
+    intentCustomFieldId,
 }: Props<RowProps, Columns>) => {
     const [currentPage, setCurrentPage] = useState(1)
     const [ref, { width }] = useMeasure<HTMLDivElement>()
@@ -156,7 +156,7 @@ export const TableWithNestedRows = <
                                     ...row,
                                     columnOrder,
                                     isTableScrolled,
-                                    intentsCustomFieldId,
+                                    intentCustomFieldId,
                                     children: row.children.map((child) => ({
                                         ...child,
                                         isTableScrolled,

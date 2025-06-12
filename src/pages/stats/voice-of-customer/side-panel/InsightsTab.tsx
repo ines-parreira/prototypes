@@ -135,7 +135,7 @@ const InsightsTabContent = ({
     intentCustomFieldId,
     product,
 }: {
-    intentCustomFieldId: string
+    intentCustomFieldId: number
     product: SidePanelProduct
 }) => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
@@ -226,7 +226,7 @@ export const InsightsTab = () => {
 
     return (
         <InsightsTabContent
-            intentCustomFieldId={String(intentCustomFieldId)}
+            intentCustomFieldId={intentCustomFieldId}
             product={product}
         />
     )

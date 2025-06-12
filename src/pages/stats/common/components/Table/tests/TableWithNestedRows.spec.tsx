@@ -82,7 +82,7 @@ describe('TableWithNestedRows', () => {
         },
         getSetOrderHandler: jest.fn(),
         columnConfig: exampleColumnConfig,
-        intentsCustomFieldId: 1,
+        intentCustomFieldId: 1,
     }
 
     it('renders header cells with correct titles', () => {

@@ -13,7 +13,7 @@ import { ChartsActionMenu } from 'pages/stats/dashboards/ChartsActionMenu/Charts
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import { TicketVolumeTable } from 'pages/stats/voice-of-customer/product-insights/charts/TicketVolumeTable'
 import { TopAIIntentsOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/charts/TopAIIntentsOverTimeChart'
-import { ProductInsightsEditColumns } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsEditColumns'
+import { ProductInsightsTableChart } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableChart'
 import { TotalProductSentimentOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TotalProductSentimentOverTimeChart'
 import {
     PRODUCT_INSIGHTS_PAGE_TITLE,
@@ -35,11 +35,6 @@ jest.mock(
     'pages/stats/voice-of-customer/product-insights/charts/TopAIIntentsOverTimeChart',
 )
 const TopAIIntentsOverTimeChartMock = assumeMock(TopAIIntentsOverTimeChart)
-
-jest.mock(
-    'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsEditColumns',
-)
-const ProductInsightsEditColumnsMock = assumeMock(ProductInsightsEditColumns)
 jest.mock('pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu')
 const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
 jest.mock(
@@ -62,6 +57,10 @@ jest.mock(
 const useGetCustomTicketsFieldsDefinitionDataMock = assumeMock(
     useGetCustomTicketsFieldsDefinitionData,
 )
+jest.mock(
+    'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableChart',
+)
+const ProductInsightsTableChartMock = assumeMock(ProductInsightsTableChart)
 
 describe('ProductInsightsPage', () => {
     const statsFilters = {
@@ -77,12 +76,12 @@ describe('ProductInsightsPage', () => {
     beforeEach(() => {
         TotalProductSentimentOverTimeChartMock.mockImplementation(() => <div />)
         TopProductsPerIntentChartMock.mockImplementation(() => <div />)
-        ProductInsightsEditColumnsMock.mockImplementation(() => <div />)
         DrillDownModalMock.mockImplementation(() => <div />)
         ChartsActionMenuMock.mockImplementation(() => <div />)
         FiltersPanelWrapperMock.mockImplementation(() => <div />)
         TopAIIntentsOverTimeChartMock.mockImplementation(() => <div />)
         TicketVolumeTableMock.mockImplementation(() => <div />)
+        ProductInsightsTableChartMock.mockImplementation(() => <div />)
         useStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: statsFilters,
             userTimezone: 'UTC',
@@ -110,9 +109,9 @@ describe('ProductInsightsPage', () => {
     it('should render children charts', () => {
         renderWithStore(<ProductInsightsPage />, state)
 
-        expect(ProductInsightsEditColumnsMock).toHaveBeenCalled()
         expect(DrillDownModalMock).toHaveBeenCalled()
         expect(FiltersPanelWrapperMock).toHaveBeenCalled()
         expect(TopAIIntentsOverTimeChartMock).toHaveBeenCalled()
+        expect(ProductInsightsTableChartMock).toHaveBeenCalled()
     })
 })

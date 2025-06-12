@@ -1,8 +1,11 @@
-import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
-import { OrderDirection } from 'models/api/types'
+import {
+    Sentiment,
+    useNegativeSentimentsPerProductMetricTrend,
+    usePositiveSentimentsPerProductMetricTrend,
+} from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
+import { returnMentionsPerProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/returnMentionsPerProduct'
 import { sentimentsTicketCountPerProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/sentimentPerProduct'
 import { ticketCountForProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/ticketsWithProducts'
-import { StatsFilters } from 'models/stat/types'
 import { isMediumOrSmallScreen } from 'pages/common/utils/mobile'
 import { Domain } from 'pages/stats/common/drill-down/types'
 import {
@@ -20,7 +23,6 @@ import {
     RETURN_MENTIONS_COLUMN_LABEL,
     TICKETS_VOLUME_COLUMN_LABEL,
 } from 'pages/stats/voice-of-customer/product-insights/constants'
-import { ProductMetricColumn } from 'state/ui/stats/drillDownSlice'
 import {
     ProductInsightsTableColumns,
     ProductInsightsTableViewIdentifier,
@@ -31,7 +33,6 @@ export type Product = {
     id: string
     name: string
     thumbnail_url?: string
-    intent: string
 }
 
 export const LeadColumn = ProductInsightsTableColumns.Product
@@ -64,61 +65,18 @@ export const ProductInsightsTableLabels: Record<
     [ProductInsightsTableColumns.TicketsVolume]: TICKETS_VOLUME_COLUMN_LABEL,
 }
 
-type PlaceholderDataHook<TData> = (
-    _statsFilters: StatsFilters,
-    _timezone: string,
-    _product: string,
-    _intent: string,
-    _sorting?: OrderDirection,
-) => {
-    data: TData
-    isFetching: boolean
-    isError: boolean
-}
-
-const usePlaceholderData: PlaceholderDataHook<{
-    value: number
-    decile: number
-}> = () => ({
-    data: {
-        value: 123,
-        decile: 4,
-    },
-    isFetching: false,
-    isError: false,
-})
-
-const usePlaceholderTrendData: PlaceholderDataHook<{
-    value: number
-    prevValue: number
-}> = () => ({
-    data: {
-        value: 321,
-        prevValue: 123,
-    },
-    isFetching: false,
-    isError: false,
-})
-
-const metricQueries = {
-    [ProductInsightsTableColumns.NegativeSentiment]: usePlaceholderData,
-    [ProductInsightsTableColumns.PositiveSentiment]: usePlaceholderData,
-    [ProductInsightsTableColumns.ReturnMentions]: usePlaceholderData,
-    [ProductInsightsTableColumns.TicketsVolume]: usePlaceholderData,
-}
-
 const trendQueries = {
     [ProductInsightsTableColumns.NegativeSentimentDelta]:
-        usePlaceholderTrendData,
+        useNegativeSentimentsPerProductMetricTrend,
     [ProductInsightsTableColumns.PositiveSentimentDelta]:
-        usePlaceholderTrendData,
+        usePositiveSentimentsPerProductMetricTrend,
 }
 
-export const getUseMetricQuery = (column: keyof typeof metricQueries) => {
-    return metricQueries[column]
-}
-
-export const getUseTrendQuery = (column: keyof typeof trendQueries) => {
+export const getUseSentimentTrendQuery = (
+    column:
+        | ProductInsightsTableColumns.NegativeSentimentDelta
+        | ProductInsightsTableColumns.PositiveSentimentDelta,
+) => {
     return trendQueries[column]
 }
 
@@ -156,6 +114,17 @@ export const ProductInsightsColumnWithDrillDownConfig = {
         domain: Domain.Ticket,
         showMetric: false,
     },
+    [ProductInsightsTableColumns.ReturnMentions]: {
+        format: 'integer',
+        hint: {
+            title: ProductInsightsTableLabels[
+                ProductInsightsTableColumns.ReturnMentions
+            ],
+        },
+        drillDownQuery: returnMentionsPerProductDrillDownQueryFactory,
+        domain: Domain.Ticket,
+        showMetric: false,
+    },
 } as const
 
 export const ProductInsightsColumnWithoutDrillDownConfig = {
@@ -188,14 +157,6 @@ export const ProductInsightsColumnWithoutDrillDownConfig = {
         hint: {
             title: ProductInsightsTableLabels[
                 ProductInsightsTableColumns.PositiveSentimentDelta
-            ],
-        },
-    },
-    [ProductInsightsTableColumns.ReturnMentions]: {
-        format: 'integer',
-        hint: {
-            title: ProductInsightsTableLabels[
-                ProductInsightsTableColumns.ReturnMentions
             ],
         },
     },
@@ -251,64 +212,37 @@ export const getIsLeadColumn = (column: ProductInsightsTableColumns) => {
     return column === LeadColumn
 }
 
-const supportsDrillDown = (
-    column: ProductInsightsTableColumns,
-): column is ProductMetricColumn => {
-    return [
-        ProductInsightsTableColumns.NegativeSentiment,
-        ProductInsightsTableColumns.PositiveSentiment,
-        ProductInsightsTableColumns.TicketsVolume,
-    ].includes(column)
-}
-
 const getDrillDownTitle = (
-    column: ProductInsightsTableColumns,
+    column:
+        | ProductInsightsTableColumns.PositiveSentiment
+        | ProductInsightsTableColumns.NegativeSentiment,
     product: Product,
 ) => {
     let title = [product.name]
 
-    if (
-        [
-            ProductInsightsTableColumns.NegativeSentiment,
-            ProductInsightsTableColumns.PositiveSentiment,
-        ].includes(column)
-    ) {
-        title.push('|')
-        title.push(ProductInsightsTableLabels[column])
-    }
+    title.push('|')
+    title.push(ProductInsightsTableLabels[column])
 
     return title.join(' ')
 }
 
 export const getDrillDownMetricData = (
-    column: ProductInsightsTableColumns,
+    column:
+        | ProductInsightsTableColumns.PositiveSentiment
+        | ProductInsightsTableColumns.NegativeSentiment,
     product: Product,
-    sentimentCustomFieldId: string,
+    sentimentCustomFieldId: number,
 ) => {
-    if (!supportsDrillDown(column)) return
-
-    if (
-        column === ProductInsightsTableColumns.PositiveSentiment ||
-        column === ProductInsightsTableColumns.NegativeSentiment
-    ) {
-        const sentiment =
-            column === ProductInsightsTableColumns.PositiveSentiment
-                ? Sentiment.Positive
-                : Sentiment.Negative
-
-        return {
-            title: getDrillDownTitle(column, product),
-            metricName: column,
-            productId: product.id,
-            sentimentCustomFieldId,
-            sentiment,
-        }
-    }
+    const sentiment =
+        column === ProductInsightsTableColumns.PositiveSentiment
+            ? Sentiment.Positive
+            : Sentiment.Negative
 
     return {
         title: getDrillDownTitle(column, product),
         metricName: column,
         productId: product.id,
         sentimentCustomFieldId,
+        sentiment,
     }
 }

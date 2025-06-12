@@ -92,8 +92,14 @@ export type SentimentForProductMetrics = {
         | ProductInsightsTableColumns.NegativeSentiment
         | ProductInsightsTableColumns.PositiveSentiment
     productId: string
-    sentimentCustomFieldId: string
+    sentimentCustomFieldId: number
     sentiment: Sentiment
+}
+
+export type ReturnMentionsMetric = {
+    metricName: ProductInsightsTableColumns.ReturnMentions
+    productId: string
+    intentCustomFieldId: number
 }
 
 export type TicketVolumeMetrics = {
@@ -106,13 +112,14 @@ export type TicketVolumeMetrics = {
 export type ProductMetrics = (
     | TicketVolumeMetrics
     | SentimentForProductMetrics
+    | ReturnMentionsMetric
 ) &
     CommonMetrics
 
 export type VoiceOfCustomerMetrics = {
     metricName: VoiceOfCustomerMetricWithDrillDown.IntentPerProduct
     productId: string
-    intentCustomFieldId: string
+    intentCustomFieldId: number
     intentCustomFieldValueString: string
 } & CommonMetrics
 

@@ -91,7 +91,32 @@ appQueryClient.setQueryData(
         sentimentsTicketCountPerProductQueryFactory(
             statsFilters,
             'UTC',
-            String(sentimentCustomFieldId),
+            sentimentCustomFieldId,
+        ),
+    ]),
+    {
+        data: {
+            data: [
+                {
+                    [PRODUCT_ID_DIMENSION]: productId,
+                    [TICKET_COUNT_MEASURE]: 33,
+                    [INTENT_DIMENSION]: Sentiment.Negative,
+                },
+                {
+                    [PRODUCT_ID_DIMENSION]: productId,
+                    [TICKET_COUNT_MEASURE]: 24,
+                    [INTENT_DIMENSION]: Sentiment.Positive,
+                },
+            ],
+        },
+    },
+)
+appQueryClient.setQueryData(
+    reportingKeys.post([
+        sentimentsTicketCountPerProductQueryFactory(
+            { ...statsFilters, period: getPreviousPeriod(statsFilters.period) },
+            'UTC',
+            sentimentCustomFieldId,
         ),
     ]),
     {
@@ -119,7 +144,7 @@ appQueryClient.setQueryData(
                 period: getPreviousPeriod(statsFilters.period),
             },
             'UTC',
-            String(sentimentCustomFieldId),
+            sentimentCustomFieldId,
         ),
     ]),
     {

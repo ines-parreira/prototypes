@@ -1,6 +1,6 @@
 export enum ProductInsightsChart {
     TotalProductSentimentOverTimeChart = 'total_product_sentiment_over_time_chart',
-    ProductInsightsTableChartPlaceholder = 'product_insights_table_chart_placeholder',
+    ProductInsightsTableChart = 'product_insights_table_chart',
     TicketVolumeChart = 'ticket_volume_chart',
     TopAIIntentsOverTimeChart = 'top_ai_intents_over_time_chart',
     TopProductsPerIntentChartPlaceholder = 'top_products_per_intent_chart_placeholder',

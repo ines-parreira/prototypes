@@ -14,7 +14,7 @@ import { StatsFilters } from 'models/stat/types'
 export const useTicketCountPerIntent = (
     statsFilters: StatsFilters,
     timezone: string,
-    intentsCustomFieldId: string,
+    intentCustomFieldId: number,
     productId?: string,
     sorting?: OrderDirection,
 ): MetricWithDecile => {
@@ -22,7 +22,7 @@ export const useTicketCountPerIntent = (
         ticketCountPerIntentQueryFactory(
             statsFilters,
             timezone,
-            intentsCustomFieldId,
+            intentCustomFieldId,
             sorting,
         ),
         productId,
@@ -32,7 +32,7 @@ export const useTicketCountPerIntent = (
 export const fetchTicketCountPerIntentForProduct = (
     statsFilters: StatsFilters,
     timezone: string,
-    intentsCustomFieldId: string,
+    intentCustomFieldId: number,
     productId?: string,
     sorting?: OrderDirection,
 ) =>
@@ -40,7 +40,7 @@ export const fetchTicketCountPerIntentForProduct = (
         ticketCountPerIntentQueryFactory(
             statsFilters,
             timezone,
-            intentsCustomFieldId,
+            intentCustomFieldId,
             sorting,
         ),
         productId,
@@ -49,7 +49,7 @@ export const fetchTicketCountPerIntentForProduct = (
 export const useTicketCountPerIntentForProduct = (
     statsFilters: StatsFilters,
     timezone: string,
-    intentsCustomFieldId: string,
+    intentCustomFieldId: number,
     productId: string,
     sorting?: OrderDirection,
     intentsCustomFieldValueString?: string,
@@ -59,7 +59,7 @@ export const useTicketCountPerIntentForProduct = (
         ticketCountPerIntentForProductQueryFactory(
             statsFilters,
             timezone,
-            intentsCustomFieldId,
+            intentCustomFieldId,
             productId,
             sorting,
             sortingField,

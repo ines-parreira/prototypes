@@ -74,7 +74,7 @@ describe('TopProductsPerIntentTable', () => {
     })
 
     it('should render data correctly', () => {
-        render(<TopProductsPerIntentTable intentsCustomFieldId={123} />)
+        render(<TopProductsPerIntentTable intentCustomFieldId={123} />)
 
         expect(screen.getByText('Intent Topic')).toBeInTheDocument()
         expect(screen.getByText('Ticket Volume')).toBeInTheDocument()
@@ -96,7 +96,7 @@ describe('TopProductsPerIntentTable', () => {
             isError: false,
         })
 
-        render(<TopProductsPerIntentTable intentsCustomFieldId={123} />)
+        render(<TopProductsPerIntentTable intentCustomFieldId={123} />)
 
         expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
@@ -108,7 +108,7 @@ describe('TopProductsPerIntentTable', () => {
             isError: false,
         })
 
-        render(<TopProductsPerIntentTable intentsCustomFieldId={123} />)
+        render(<TopProductsPerIntentTable intentCustomFieldId={123} />)
 
         expect(screen.getByText('No data available')).toBeInTheDocument()
     })
@@ -120,13 +120,13 @@ describe('TopProductsPerIntentTable', () => {
             isError: true,
         })
 
-        render(<TopProductsPerIntentTable intentsCustomFieldId={123} />)
+        render(<TopProductsPerIntentTable intentCustomFieldId={123} />)
 
         expect(screen.getByText('No data available')).toBeInTheDocument()
     })
 
     it('should handle sorting in both directions', async () => {
-        render(<TopProductsPerIntentTable intentsCustomFieldId={123} />)
+        render(<TopProductsPerIntentTable intentCustomFieldId={123} />)
 
         const headerCell = screen.getByText(
             TopProductsPerIntentColumnConfig[TopProductsPerIntentColumn.Intent]
@@ -155,7 +155,7 @@ describe('TopProductsPerIntentTable', () => {
     })
 
     it('should render trend indicators correctly', () => {
-        render(<TopProductsPerIntentTable intentsCustomFieldId={123} />)
+        render(<TopProductsPerIntentTable intentCustomFieldId={123} />)
 
         const positiveTrend = screen.getByText('25%')
         expect(positiveTrend).toBeInTheDocument()

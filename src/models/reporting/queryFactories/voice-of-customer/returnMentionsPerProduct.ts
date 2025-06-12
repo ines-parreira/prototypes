@@ -3,7 +3,10 @@ import {
     TicketProductsEnrichedDimension,
     TicketProductsEnrichedMeasure,
 } from 'models/reporting/cubes/core/TicketProductsEnrichedCube'
-import { TicketCubeWithJoins } from 'models/reporting/cubes/TicketCube'
+import {
+    TicketCubeWithJoins,
+    TicketDimension,
+} from 'models/reporting/cubes/TicketCube'
 import { TicketCustomFieldsMember } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'models/reporting/queryFactories/utils'
 import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
@@ -19,7 +22,7 @@ const RETURN_MENTION_L1_INTENT = 'Return'
 export const returnMentionsPerProductQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
-    intentsCustomFieldId: string,
+    intentCustomFieldId: number,
     sorting?: OrderDirection,
 ): ReportingQuery<TicketCubeWithJoins> => ({
     measures: [TicketProductsEnrichedMeasure.TicketCount],
@@ -35,7 +38,7 @@ export const returnMentionsPerProductQueryFactory = (
         {
             member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
             operator: ReportingFilterOperator.Equals,
-            values: [intentsCustomFieldId],
+            values: [String(intentCustomFieldId)],
         },
         {
             member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
@@ -51,3 +54,31 @@ export const returnMentionsPerProductQueryFactory = (
           }
         : {}),
 })
+
+export const returnMentionsPerProductDrillDownQueryFactory = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    intentCustomFieldId: number,
+    productId: string,
+    sorting?: OrderDirection,
+): ReportingQuery<TicketCubeWithJoins> => {
+    const baseQuery = returnMentionsPerProductQueryFactory(
+        statsFilters,
+        timezone,
+        intentCustomFieldId,
+        sorting,
+    )
+
+    return {
+        ...baseQuery,
+        dimensions: [TicketDimension.TicketId],
+        filters: [
+            ...baseQuery.filters,
+            {
+                member: TicketProductsEnrichedDimension.ProductId,
+                operator: ReportingFilterOperator.Equals,
+                values: [productId],
+            },
+        ],
+    }
+}

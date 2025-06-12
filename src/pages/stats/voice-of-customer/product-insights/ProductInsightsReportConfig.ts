@@ -74,7 +74,7 @@ export const ProductInsightsPlaceholderReportConfig: ReportConfig<ProductInsight
                 csvProducer: null,
                 chartType: ChartType.Graph,
             },
-            [ProductInsightsChart.ProductInsightsTableChartPlaceholder]: {
+            [ProductInsightsChart.ProductInsightsTableChart]: {
                 chartComponent: ProductInsightsTableChart,
                 label: TICKET_VOLUME_CHART_LABEL,
                 description: TICKET_VOLUME_CHART_LABEL,

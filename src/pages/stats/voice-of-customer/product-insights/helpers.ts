@@ -19,7 +19,7 @@ export const formatTableData = (
         value: string | null
         prevValue: string | null
     }[],
-    intentsCustomFieldId: number,
+    intentCustomFieldId: number,
 ) => {
     return data.map((row) => ({
         entityId: row.category,
@@ -28,7 +28,7 @@ export const formatTableData = (
         level: 0,
         leadColumn: LeadColumn,
         children: [],
-        intentsCustomFieldId,
+        intentCustomFieldId,
     }))
 }
 

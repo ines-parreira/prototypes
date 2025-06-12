@@ -7,11 +7,13 @@ import {
     AGENT_PERFORMANCE_SLICE_NAME,
     AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME,
     INTENT_SLICE_NAME,
+    PRODUCT_INSIGHTS_SLICE_NAME,
     PRODUCTS_PER_TICKET_SLICE_NAME,
     VOICE_AGENTS_PERFORMANCE_SLICE_NAME,
 } from 'state/ui/stats/constants'
 import { createTableSlice } from 'state/ui/stats/createTableSlice'
 import { IntentState } from 'state/ui/stats/insightsSlice'
+import { ProductInsightsSliceState } from 'state/ui/stats/productInsightsSlice'
 import { ProductsPerTicketState } from 'state/ui/stats/productsPerTicketSlice'
 
 export enum AgentsTableColumn {
@@ -193,6 +195,7 @@ export type StatsTablesState = {
     [INTENT_SLICE_NAME]: IntentState<IntentTableColumn>
     [PRODUCTS_PER_TICKET_SLICE_NAME]: ProductsPerTicketState
     [VOICE_AGENTS_PERFORMANCE_SLICE_NAME]: AgentPerformanceState<VoiceAgentsTableColumn>
+    [PRODUCT_INSIGHTS_SLICE_NAME]: ProductInsightsSliceState
 }
 
 export type TableSlice<

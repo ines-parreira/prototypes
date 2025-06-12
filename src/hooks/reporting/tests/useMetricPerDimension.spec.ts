@@ -381,6 +381,8 @@ describe('useMetricPerDimensionWithEnrichment', () => {
                 isFetching: mockedResponse.isFetching,
                 isError: mockedResponse.isError,
                 data: {
+                    decile: null,
+                    value: null,
                     allData: mockedResponse.data,
                 },
             })

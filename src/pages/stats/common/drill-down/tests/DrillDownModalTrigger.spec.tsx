@@ -1,47 +1,35 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import {
     DrillDownModalTrigger,
+    TRIGGER_ID,
     useOpenDrillDownModal,
+    WithDrillDownTrigger,
 } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import { RootState, StoreDispatch } from 'state/types'
 import { DrillDownMetric, setMetricData } from 'state/ui/stats/drillDownSlice'
 import { VoiceAgentsMetric, VoiceMetric } from 'state/ui/stats/types'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
-import { assumeMock } from 'utils/testing'
+import { assumeMock, renderWithStore } from 'utils/testing'
 import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<DrillDownModalTrigger />', () => {
     const trigger = 'drill down trigger'
-    const defaultState = {
-        ui: {
-            drillDown: {
-                metricData: {},
-            },
-        },
-    } as unknown as RootState
 
     it('should set metric data on trigger and log Segment Event', async () => {
-        const store = mockStore(defaultState)
         const metricData: DrillDownMetric = {
             metricName: OverviewMetric.OpenTickets,
         }
 
-        render(
-            <Provider store={store}>
-                <DrillDownModalTrigger metricData={metricData}>
-                    {trigger}
-                </DrillDownModalTrigger>
-            </Provider>,
+        const { store } = renderWithStore(
+            <DrillDownModalTrigger metricData={metricData}>
+                {trigger}
+            </DrillDownModalTrigger>,
+            {},
         )
 
         fireEvent.click(screen.getByText(trigger))
@@ -56,17 +44,15 @@ describe('<DrillDownModalTrigger />', () => {
     })
 
     it('should set metric data on trigger and set new filters data in store', async () => {
-        const store = mockStore(defaultState)
         const metricData: DrillDownMetric = {
             metricName: OverviewMetric.OpenTickets,
         }
 
-        render(
-            <Provider store={store}>
-                <DrillDownModalTrigger metricData={metricData}>
-                    {trigger}
-                </DrillDownModalTrigger>
-            </Provider>,
+        const { store } = renderWithStore(
+            <DrillDownModalTrigger metricData={metricData}>
+                {trigger}
+            </DrillDownModalTrigger>,
+            {},
         )
 
         fireEvent.click(screen.getByText(trigger))
@@ -94,17 +80,15 @@ describe('<DrillDownModalTrigger />', () => {
     ])(
         'should render tooltip text based on metric name for $metricName',
         async (metricName: string) => {
-            const store = mockStore(defaultState)
             const metricData = {
                 metricName,
             } as any
 
-            render(
-                <Provider store={store}>
-                    <DrillDownModalTrigger metricData={metricData}>
-                        {trigger}
-                    </DrillDownModalTrigger>
-                </Provider>,
+            renderWithStore(
+                <DrillDownModalTrigger metricData={metricData}>
+                    {trigger}
+                </DrillDownModalTrigger>,
+                {},
             )
 
             userEvent.hover(screen.getByText(trigger))
@@ -155,6 +139,50 @@ describe('useOpenDrillDownModal', () => {
                 SegmentEvent.StatClicked,
                 { metric: metricData.metricName },
             )
+        })
+    })
+})
+
+describe('WithDrillDownTrigger', () => {
+    it('should render Drilldown if metricData provided', async () => {
+        const metricData: DrillDownMetric = {
+            metricName: OverviewMetric.OpenTickets,
+        }
+        const content = 'someContent'
+        renderWithStore(
+            <WithDrillDownTrigger metricData={metricData}>
+                {content}
+            </WithDrillDownTrigger>,
+            {},
+        )
+
+        userEvent.hover(screen.getByText(content))
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('Click to view', { exact: false }),
+            ).toBeInTheDocument()
+        })
+        const drillDownTrigger = document.querySelector(`[id^="${TRIGGER_ID}"]`)
+        expect(drillDownTrigger).toBeInTheDocument()
+    })
+
+    it('should render passed value without DrillDown if no metricData provided', async () => {
+        const metricData = null
+        const content = 'someContent'
+        renderWithStore(
+            <WithDrillDownTrigger metricData={metricData}>
+                {content}
+            </WithDrillDownTrigger>,
+            {},
+        )
+
+        userEvent.hover(screen.getByText(content))
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText('Click to view', { exact: false }),
+            ).not.toBeInTheDocument()
         })
     })
 })

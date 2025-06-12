@@ -50,8 +50,15 @@ const usePagination = ({
 
 export const PAGE_SIZE = 10
 
-export const ProductInsightsTable = () => {
-    const { products, isLoading } = useSortedProductsWithData()
+export const ProductInsightsTable = ({
+    intentCustomFieldId,
+    sentimentCustomFieldId,
+}: {
+    intentCustomFieldId: number
+    sentimentCustomFieldId: number
+}) => {
+    const { isLoading, products } = useSortedProductsWithData()
+
     const { columnsOrder } = useProductInsightsTableSetting()
 
     const pageSize = PAGE_SIZE
@@ -61,7 +68,6 @@ export const ProductInsightsTable = () => {
     })
 
     const isEmpty = products.length === 0
-
     if (isEmpty) return <NoDataFallback />
 
     const currentPage = pagination.page - 1
@@ -91,6 +97,12 @@ export const ProductInsightsTable = () => {
                                         key={column}
                                         column={column}
                                         product={product}
+                                        intentCustomFieldId={
+                                            intentCustomFieldId
+                                        }
+                                        sentimentCustomFieldId={
+                                            sentimentCustomFieldId
+                                        }
                                     />
                                 ))}
                             </TableBodyRow>

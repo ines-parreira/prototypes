@@ -32,7 +32,7 @@ describe('ticketCountPerIntentQueryFactory', () => {
         },
     }
     const timezone = 'someTimeZone'
-    const intent = 'test-intent'
+    const intentCustomFieldId = 123
     const sorting = OrderDirection.Desc
 
     const query = {
@@ -72,7 +72,7 @@ describe('ticketCountPerIntentQueryFactory', () => {
             {
                 member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
                 operator: ReportingFilterOperator.Equals,
-                values: [intent],
+                values: [String(intentCustomFieldId)],
             },
         ],
     }
@@ -81,7 +81,7 @@ describe('ticketCountPerIntentQueryFactory', () => {
         const actual = ticketCountPerIntentQueryFactory(
             statsFilters,
             timezone,
-            intent,
+            intentCustomFieldId,
         )
 
         expect(actual).toEqual(query)
@@ -91,7 +91,7 @@ describe('ticketCountPerIntentQueryFactory', () => {
         const actual = ticketCountPerIntentQueryFactory(
             statsFilters,
             timezone,
-            intent,
+            intentCustomFieldId,
             sorting,
         )
 
@@ -119,7 +119,7 @@ describe('ticketCountPerIntentDrillDownQueryFactory', () => {
         },
     }
     const timezone = 'someTimeZone'
-    const intent = 'test-intent'
+    const intentCustomFieldId = 123
     const sorting = OrderDirection.Desc
 
     const query = {
@@ -159,7 +159,7 @@ describe('ticketCountPerIntentDrillDownQueryFactory', () => {
             {
                 member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
                 operator: ReportingFilterOperator.Equals,
-                values: [intent],
+                values: [String(intentCustomFieldId)],
             },
         ],
         limit: 100,
@@ -169,7 +169,7 @@ describe('ticketCountPerIntentDrillDownQueryFactory', () => {
         const actual = ticketCountPerIntentDrillDownQueryFactory(
             statsFilters,
             timezone,
-            intent,
+            intentCustomFieldId,
         )
 
         expect(actual).toEqual(query)
@@ -179,7 +179,7 @@ describe('ticketCountPerIntentDrillDownQueryFactory', () => {
         const actual = ticketCountPerIntentDrillDownQueryFactory(
             statsFilters,
             timezone,
-            intent,
+            intentCustomFieldId,
             sorting,
         )
 
@@ -203,16 +203,16 @@ describe('ticketCountPerIntentForProductQueryFactory', () => {
     }
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Desc
-    const intentCustomFieldId = '123'
+    const intentCustomFieldId = 123
     const productId = '456'
 
-    const query = {
+    const expectedQuery = {
         measures: ['TicketProductsEnriched.ticketCount'],
         dimensions: [
-            'TicketProductsEnriched.productId',
-            'TicketCustomFieldsEnriched.valueString',
+            TicketProductsEnrichedDimension.ProductId,
+            TicketCustomFieldsDimension.TicketCustomFieldsValueString,
         ],
-        timezone: 'someTimeZone',
+        timezone,
         segments: [],
         filters: [
             {
@@ -226,7 +226,7 @@ describe('ticketCountPerIntentForProductQueryFactory', () => {
                 values: ['0'],
             },
             {
-                member: 'TicketProductsEnriched.deleted_datetime',
+                member: TicketProductsEnrichedMember.DeletedDatetime,
                 operator: ReportingFilterOperator.Equals,
                 values: [null],
             },
@@ -243,7 +243,7 @@ describe('ticketCountPerIntentForProductQueryFactory', () => {
             {
                 member: 'TicketCustomFieldsEnriched.customFieldId',
                 operator: ReportingFilterOperator.Equals,
-                values: [intentCustomFieldId],
+                values: [String(intentCustomFieldId)],
             },
             {
                 member: 'TicketProductsEnriched.productId',
@@ -261,7 +261,7 @@ describe('ticketCountPerIntentForProductQueryFactory', () => {
             productId,
         )
 
-        expect(actual).toEqual(query)
+        expect(actual).toEqual(expectedQuery)
     })
 
     it('creates query with ordering if given', () => {
@@ -274,7 +274,7 @@ describe('ticketCountPerIntentForProductQueryFactory', () => {
         )
 
         const expected = {
-            ...query,
+            ...expectedQuery,
             order: [
                 [
                     TicketProductsEnrichedMeasure.TicketCount,
@@ -298,7 +298,7 @@ describe('ticketCountPerIntentForProductDrillDownQueryFactory', () => {
     }
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Desc
-    const intentCustomFieldId = '123'
+    const intentCustomFieldId = 123
     const intentCustomFieldValueString = 'Product::Return'
     const productId = '456'
 
@@ -312,9 +312,9 @@ describe('ticketCountPerIntentForProductDrillDownQueryFactory', () => {
         )
 
         expect(actual).toEqual({
-            measures: ['TicketProductsEnriched.ticketCount'],
-            dimensions: ['TicketEnriched.ticketId'],
-            timezone: 'someTimeZone',
+            measures: [TicketProductsEnrichedMeasure.TicketCount],
+            dimensions: [TicketDimension.TicketId],
+            timezone,
             segments: [],
             filters: [
                 {
@@ -328,7 +328,7 @@ describe('ticketCountPerIntentForProductDrillDownQueryFactory', () => {
                     values: ['0'],
                 },
                 {
-                    member: 'TicketProductsEnriched.deleted_datetime',
+                    member: TicketProductsEnrichedMember.DeletedDatetime,
                     operator: ReportingFilterOperator.Equals,
                     values: [null],
                 },
@@ -345,7 +345,7 @@ describe('ticketCountPerIntentForProductDrillDownQueryFactory', () => {
                 {
                     member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
                     operator: ReportingFilterOperator.Equals,
-                    values: [intentCustomFieldId],
+                    values: [String(intentCustomFieldId)],
                 },
                 {
                     member: TicketProductsEnrichedMember.ProductId,

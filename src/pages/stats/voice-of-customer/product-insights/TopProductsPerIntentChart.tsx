@@ -22,7 +22,7 @@ export const TopProductsPerIntentChart = () => {
         >
             {intentCustomFieldId !== TICKET_FIELD_ID_NOT_AVAILABLE ? (
                 <TopProductsPerIntentTable
-                    intentsCustomFieldId={intentCustomFieldId}
+                    intentCustomFieldId={intentCustomFieldId}
                 />
             ) : (
                 <NoDataAvailable />

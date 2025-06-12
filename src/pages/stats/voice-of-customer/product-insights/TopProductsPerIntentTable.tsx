@@ -31,7 +31,7 @@ import { DEFAULT_SORTING_DIRECTION } from 'state/ui/stats/createTableSlice'
 import { TicketFieldsMetric } from 'state/ui/stats/types'
 
 type Props = {
-    intentsCustomFieldId: number
+    intentCustomFieldId: number
 }
 
 type TopProductsPerIntentOrder = {
@@ -39,13 +39,13 @@ type TopProductsPerIntentOrder = {
     direction: OrderDirection
 }
 
-export const TopProductsPerIntentTable = ({ intentsCustomFieldId }: Props) => {
+export const TopProductsPerIntentTable = ({ intentCustomFieldId }: Props) => {
     const [order, setOrder] = useState<TopProductsPerIntentOrder>({
         column: DEFAULT_SORTING_COLUMN,
         direction: DEFAULT_SORTING_DIRECTION,
     })
     const { data, isFetching } = useIntentTicketCountsAndDelta(
-        intentsCustomFieldId.toString(),
+        intentCustomFieldId.toString(),
         order.direction,
         getColumnsSortingValue(order.column),
     )
@@ -61,7 +61,7 @@ export const TopProductsPerIntentTable = ({ intentsCustomFieldId }: Props) => {
     return (
         <TableWithNestedRows<IntentRowProps, TopProductsPerIntentColumn>
             RowComponent={TopProductsRow}
-            rows={formatTableData(data, intentsCustomFieldId)}
+            rows={formatTableData(data, intentCustomFieldId)}
             perPage={TOP_INTENTS_PER_PAGE}
             columnOrder={columnOrder}
             leadColumn={LeadColumn}
@@ -69,7 +69,7 @@ export const TopProductsPerIntentTable = ({ intentsCustomFieldId }: Props) => {
             columnConfig={TopProductsPerIntentColumnConfig}
             getSetOrderHandler={setOrder}
             isScrollable={false}
-            intentsCustomFieldId={intentsCustomFieldId}
+            intentCustomFieldId={intentCustomFieldId}
         />
     )
 }
@@ -82,7 +82,7 @@ type IntentRowProps = {
     prevValue: number
     productId?: string
     leadColumn: TopProductsPerIntentColumn
-    intentsCustomFieldId: number
+    intentCustomFieldId: number
     onClick?: () => void
 }
 
@@ -96,7 +96,7 @@ type CellProps = {
     productId?: string
     isLeadColumn: boolean
     onClick?: () => void
-    intentsCustomFieldId: number
+    intentCustomFieldId: number
 }
 
 const TopProductsRow = ({
@@ -108,7 +108,7 @@ const TopProductsRow = ({
     productId,
     leadColumn,
     onClick,
-    intentsCustomFieldId,
+    intentCustomFieldId,
 }: IntentRowProps) => {
     return (
         <>
@@ -124,7 +124,7 @@ const TopProductsRow = ({
                     isLeadColumn={leadColumn === column}
                     hasChildren={level === 0}
                     onClick={onClick}
-                    intentsCustomFieldId={intentsCustomFieldId}
+                    intentCustomFieldId={intentCustomFieldId}
                 />
             ))}
         </>
@@ -140,7 +140,7 @@ const TopProductsCell = ({
     level,
     hasChildren,
     onClick,
-    intentsCustomFieldId,
+    intentCustomFieldId,
 }: CellProps) => {
     const { trend, sign = 0 } = formatTrendData(value, prevValue)
 
@@ -179,7 +179,7 @@ const TopProductsCell = ({
                             title: `Intent Topic | ${entityId}`,
                             metricName:
                                 TicketFieldsMetric.TicketCustomFieldsTicketCount,
-                            customFieldId: intentsCustomFieldId,
+                            customFieldId: intentCustomFieldId,
                             customFieldValue: [
                                 transformCategorySeparatorBack(entityId),
                             ],

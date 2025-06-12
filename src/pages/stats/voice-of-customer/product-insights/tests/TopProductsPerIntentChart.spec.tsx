@@ -49,7 +49,7 @@ describe('TopProductsPerIntentChart', () => {
         render(<TopProductsPerIntentChart />)
 
         expect(TopProductsPerIntentTableMock).toHaveBeenCalledWith(
-            { intentsCustomFieldId: intentCustomFieldId },
+            { intentCustomFieldId: intentCustomFieldId },
             {},
         )
     })

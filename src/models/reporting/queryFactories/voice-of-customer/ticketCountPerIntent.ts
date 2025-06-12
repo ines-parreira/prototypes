@@ -46,7 +46,7 @@ export type TicketsPerIntentOrderField = OrderField<
 export const ticketCountPerIntentQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
-    intentsCustomFieldId: string,
+    intentCustomFieldId: number,
     sorting?: OrderDirection,
     sortingField: TicketsPerIntentOrderField = TicketPerIntentSortingField.TicketCount,
 ): ReportingQuery<TicketCubeWithJoins> => ({
@@ -67,7 +67,7 @@ export const ticketCountPerIntentQueryFactory = (
         {
             member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
             operator: ReportingFilterOperator.Equals,
-            values: [intentsCustomFieldId],
+            values: [String(intentCustomFieldId)],
         },
     ],
     order: sorting ? [[sortingField, sorting]] : undefined,
@@ -76,13 +76,13 @@ export const ticketCountPerIntentQueryFactory = (
 export const ticketCountPerIntentDrillDownQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
-    intentsCustomFieldId: string,
+    intentCustomFieldId: number,
     sorting?: OrderDirection,
 ): ReportingQuery<TicketCubeWithJoins> => ({
     ...ticketCountPerIntentQueryFactory(
         statsFilters,
         timezone,
-        intentsCustomFieldId,
+        intentCustomFieldId,
         sorting,
     ),
     limit: DRILLDOWN_QUERY_LIMIT,
@@ -91,7 +91,7 @@ export const ticketCountPerIntentDrillDownQueryFactory = (
 export const ticketCountPerIntentForProductQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
-    intentsCustomFieldId: string,
+    intentCustomFieldId: number,
     productId: string,
     sorting?: OrderDirection,
     sortingField?: TicketsPerIntentOrderField,
@@ -99,7 +99,7 @@ export const ticketCountPerIntentForProductQueryFactory = (
     const baseQuery = ticketCountPerIntentQueryFactory(
         statsFilters,
         timezone,
-        intentsCustomFieldId,
+        intentCustomFieldId,
         sorting,
         sortingField,
     )
@@ -116,7 +116,7 @@ export const ticketCountPerIntentForProductQueryFactory = (
 export const ticketCountPerIntentForProductDrillDownQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
-    intentsCustomFieldId: string,
+    intentCustomFieldId: number,
     intentsCustomFieldValueString: string,
     productId: string,
     sorting?: OrderDirection,
@@ -125,7 +125,7 @@ export const ticketCountPerIntentForProductDrillDownQueryFactory = (
         ticketCountPerIntentForProductQueryFactory(
             statsFilters,
             timezone,
-            intentsCustomFieldId,
+            intentCustomFieldId,
             productId,
         )
 

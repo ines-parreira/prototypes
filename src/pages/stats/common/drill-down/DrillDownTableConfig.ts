@@ -54,6 +54,7 @@ import {
     AIInsightsMetric,
     AutoQAMetric,
     ChannelsTableColumns,
+    ProductInsightsTableColumns,
     SatisfactionAverageSurveyScoreMetric,
     SatisfactionMetric,
     SlaMetric,
@@ -106,6 +107,7 @@ const TicketDrillDownConfig: DomainConfig<
     | AIInsightsMetric
     | ProductMetricColumn
     | VoiceOfCustomerMetricWithDrillDown
+    | ProductInsightsTableColumns.ReturnMentions
     | ProductsPerTicketColumn.TicketVolume
 > = {
     drillDownHook: useTicketDrillDownHook,
