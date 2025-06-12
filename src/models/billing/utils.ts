@@ -138,7 +138,7 @@ function getPlanPricePerCadence(plan: Plan): string {
  * @description
  *    Returns a string such as
  *    "2,000 tickets/month" for a Helpdesk plan
- *    "150 automated interactions/month" for an AI Agent plan
+ *    "150 AI resolved tickets/month" for an AI Agent plan
  *    "25 tickets/month" for a Voice or Sms plan
  *    "25 clicks/month" for a Convert plan
  *
@@ -153,7 +153,7 @@ export function getPlanUnitsPerCadence(plan: Plan): string {
 
     switch (plan.product) {
         case ProductType.Automation:
-            return `${amount} automated interactions/${plan.cadence}`
+            return `${amount} AI resolved tickets/${plan.cadence}`
         case ProductType.Convert:
             return `${amount} clicks/${plan.cadence}`
         default:
@@ -165,7 +165,7 @@ export function getPlanUnitsPerCadence(plan: Plan): string {
  * @description
  *    Returns a string such as
  *    "Pro, $360/month, 2,000 tickets/month" for a Helpdesk plan
- *    "$143/month, 150 automated interactions/month" for an AI Agent plan
+ *    "$143/month, 150 AI resolved tickets/month" for an AI Agent plan
  *    "$20/month, 25 tickets/month" for a Voice or Sms plan
  *    "$20/month, 25 clicks/month" for a Convert plan
  *

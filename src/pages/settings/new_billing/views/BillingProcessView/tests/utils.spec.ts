@@ -102,7 +102,7 @@ describe('setAutomationNotification', () => {
         })
 
         expect(notification?.message).toContain(
-            `Success! You now have <strong>${newPlan.num_quota_tickets} automated interactions per month</strong>`,
+            `Success! You now have <strong>${newPlan.num_quota_tickets} AI resolved tickets per month</strong>`,
         )
         expect(notification?.buttons?.[0].name).toBe('AI Agent Settings')
     })
@@ -128,7 +128,7 @@ describe('setAutomationNotification', () => {
         })
 
         expect(notification?.message).toContain(
-            `Your AI Agent subscription will change to <strong>${newPlan.num_quota_tickets} automated interactions/month</strong> on <strong>${periodEnd}</strong>.`,
+            `Your AI Agent subscription will change to <strong>${newPlan.num_quota_tickets} AI resolved tickets/month</strong> on <strong>${periodEnd}</strong>.`,
         )
         expect(notification?.buttons?.length).toBe(0)
     })

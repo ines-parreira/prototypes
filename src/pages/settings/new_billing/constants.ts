@@ -28,17 +28,18 @@ export const PRODUCT_INFO = {
         icon: 'desktop_mac',
         counter: 'tickets',
         perTicket: 'per ticket',
-        tooltip: 'Tickets that have a response from an agent or a rule.',
+        tooltip:
+            'Tickets with a response in Gorgias including rules, human agents or AI Agent.',
         tooltipLink: 'https://link.gorgias.com/vw1',
         bannerLink: '/app/settings',
     },
     [ProductType.Automation]: {
         title: 'AI Agent',
         icon: 'bolt',
-        counter: 'automated interactions',
-        perTicket: 'per automated interaction',
+        counter: 'AI resolved tickets',
+        perTicket: 'per AI resolved ticket',
         tooltip:
-            'An interaction is automated when your customer solves their request without human intervention.',
+            'Tickets that are resolved by AI Agent without human intervention. These tickets also count towards your Helpdesk plan ticket count.',
         tooltipLink: 'https://link.gorgias.com/5jnkqn7',
         bannerLink: '/app/automation',
     },
