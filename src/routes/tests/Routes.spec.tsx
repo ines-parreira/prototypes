@@ -706,7 +706,7 @@ describe('<Routes/>', () => {
         })
     })
 
-    describe.only('AiJourneyRoutes', () => {
+    describe('AiJourneyRoutes', () => {
         it('should render AI Journey landing page when feature flag is enabled', () => {
             mockUseFlag.mockReturnValue(true)
 
