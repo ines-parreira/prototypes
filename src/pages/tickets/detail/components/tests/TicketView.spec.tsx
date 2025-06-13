@@ -1,16 +1,25 @@
 import { ComponentProps } from 'react'
 
-import { fireEvent, waitFor } from '@testing-library/react'
+import { fireEvent, render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import { getBody, getTicketState } from 'state/ticket/selectors'
 import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
 import Timeline from 'timeline/Timeline'
-import { assumeMock, getLastMockCall, mockStore } from 'utils/testing'
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import TicketView, { TIMELINE_CLOSE_BUTTON_ID } from '../TicketView'
 
+jest.mock('hooks/useAppSelector', () => jest.fn((fn: () => unknown) => fn()))
+jest.mock('state/ticket/selectors', () => {
+    const original = jest.requireActual('state/ticket/selectors')
+
+    return {
+        ...original,
+        getBody: jest.fn(),
+        getTicketState: jest.fn(),
+    }
+})
 jest.mock('timeline/Timeline', () => jest.fn(() => <div>Timeline</div>))
 jest.mock('timeline/hooks/useTimelinePanel', () => ({
     useTimelinePanel: jest.fn(),
@@ -26,6 +35,8 @@ jest.mock('../TicketHeaderWrapper/TicketHeaderWrapper', () => () => (
 jest.mock('../ReplyForm', () => () => <div>ReplyForm</div>)
 
 const TimelineMock = assumeMock(Timeline)
+const getTicketStateMock = assumeMock(getTicketState)
+const getBodyMock = assumeMock(getBody)
 const useTimelinePanelMock = assumeMock(useTimelinePanel)
 
 const mockedDispatch = jest.fn()
@@ -43,82 +54,30 @@ describe('<TicketView />', () => {
     const closeTimelineMock = jest.fn(() => {})
     beforeEach(() => {
         HTMLElement.prototype.scrollTo = jest.fn(scrollToMock)
+        getTicketStateMock.mockReturnValue(
+            fromJS({
+                id: 0,
+                _internal: {
+                    isShopperTyping: false,
+                },
+            }) as ReturnType<typeof getTicketState>,
+        )
+        getBodyMock.mockReturnValue(fromJS({}) as ReturnType<typeof getBody>)
         useTimelinePanelMock.mockReturnValue({
             isOpen: false as boolean,
             closeTimeline: closeTimelineMock,
         } as unknown as ReturnType<typeof useTimelinePanel>)
     })
 
-    const mockTicketState = fromJS({
-        id: 0,
-        _internal: {
-            isShopperTyping: false,
-        },
-        messages: [
-            {
-                id: 0,
-                type: 'message',
-                content: 'Hello',
-            },
-        ],
-    })
-
-    const mockBillingState = fromJS({
-        products: [
-            {
-                type: 'helpdesk',
-                prices: [
-                    {
-                        plan_id: 'basic',
-                        price_id: 'price_basic',
-                        amount: 100,
-                        num_quota_tickets: 1000,
-                    },
-                ],
-            },
-        ],
-    })
-
-    const mockIntegrationsState = fromJS({
-        integrations: [
-            {
-                id: 1,
-                type: 'email',
-                name: 'Email Integration',
-                meta: {
-                    address: 'test@example.com',
-                },
-            },
-        ],
-    })
-
     it('should not have the hidden classes', () => {
-        const { container } = renderWithQueryClientProvider(
-            <Provider
-                store={mockStore({
-                    ticket: mockTicketState,
-                    billing: mockBillingState,
-                    integrations: mockIntegrationsState,
-                })}
-            >
-                <TicketView {...minProps} />
-            </Provider>,
-        )
+        const { container } = render(<TicketView {...minProps} />)
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should have the hidden classes', () => {
-        const { container } = renderWithQueryClientProvider(
-            <Provider
-                store={mockStore({
-                    ticket: mockTicketState,
-                    billing: mockBillingState,
-                    integrations: mockIntegrationsState,
-                })}
-            >
-                <TicketView {...minProps} isTicketHidden />
-            </Provider>,
+        const { container } = render(
+            <TicketView {...minProps} isTicketHidden />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -130,17 +89,7 @@ describe('<TicketView />', () => {
             closeTimeline: closeTimelineMock,
         } as unknown as ReturnType<typeof useTimelinePanel>)
 
-        renderWithQueryClientProvider(
-            <Provider
-                store={mockStore({
-                    ticket: mockTicketState,
-                    billing: mockBillingState,
-                    integrations: mockIntegrationsState,
-                })}
-            >
-                <TicketView {...minProps} />
-            </Provider>,
-        )
+        render(<TicketView {...minProps} />)
 
         fireEvent.click(document.getElementById(TIMELINE_CLOSE_BUTTON_ID)!)
 
@@ -153,17 +102,7 @@ describe('<TicketView />', () => {
             closeTimeline: closeTimelineMock,
         } as unknown as ReturnType<typeof useTimelinePanel>)
 
-        renderWithQueryClientProvider(
-            <Provider
-                store={mockStore({
-                    ticket: mockTicketState,
-                    billing: mockBillingState,
-                    integrations: mockIntegrationsState,
-                })}
-            >
-                <TicketView {...minProps} />
-            </Provider>,
-        )
+        render(<TicketView {...minProps} />)
 
         expect(TimelineMock).toHaveBeenCalledWith(
             {

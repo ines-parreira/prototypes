@@ -37,6 +37,11 @@ jest.mock('pages/tickets/detail/components/TicketBodyElement', () =>
 )
 
 jest.mock(
+    'pages/tickets/detail/components/TicketHeaderWrapper/TicketHeaderWrapper',
+    () => () => <p>TicketHeaderWrapper</p>,
+)
+
+jest.mock(
     'state/queries/selectors',
     () =>
         ({
@@ -113,12 +118,20 @@ describe('TicketBody', () => {
                     }),
                 })}
             >
-                <TicketBody elements={fromJS([])} setStatus={_noop} />
+                <TicketBody
+                    elements={fromJS([])}
+                    hideTicket={() => Promise.resolve()}
+                    isShopperTyping={false}
+                    setStatus={_noop}
+                    shopperName=""
+                    submit={_noop}
+                />
             </Provider>,
         )
 
-        expect(getByText('TicketBodyElement 0')).toBeInTheDocument()
+        expect(getByText('TicketHeaderWrapper')).toBeInTheDocument()
         expect(getByText('TicketBodyElement 1')).toBeInTheDocument()
+        expect(getByText('TicketBodyElement 2')).toBeInTheDocument()
     })
 
     it('should correctly pass `isLast` for the last element', () => {
@@ -132,7 +145,11 @@ describe('TicketBody', () => {
             >
                 <TicketBody
                     elements={fromJS([defaultMessage, defaultMessage])}
+                    hideTicket={() => Promise.resolve()}
+                    isShopperTyping={false}
                     setStatus={_noop}
+                    shopperName=""
+                    submit={_noop}
                 />
             </Provider>,
         )
@@ -155,7 +172,11 @@ describe('TicketBody', () => {
             <Provider store={mockStore({})}>
                 <TicketBody
                     elements={fromJS([defaultMessage, defaultMessage])}
+                    hideTicket={() => Promise.resolve()}
+                    isShopperTyping={false}
                     setStatus={() => {}}
+                    shopperName=""
+                    submit={() => {}}
                 />
             </Provider>,
         )
@@ -210,18 +231,22 @@ describe('TicketBody', () => {
             >
                 <TicketBody
                     elements={fromJS([defaultMessage])}
+                    hideTicket={() => Promise.resolve()}
+                    isShopperTyping={false}
                     setStatus={() => {}}
+                    shopperName=""
+                    submit={() => {}}
                 />
             </Provider>,
         )
-
-        expect(getByText(`TicketBodyElement 0`)).toBeInTheDocument()
+        expect(getByText('TicketHeaderWrapper')).toBeInTheDocument()
         expect(getByText(`TicketBodyElement 1`)).toBeInTheDocument()
+        expect(getByText(`TicketBodyElement 2`)).toBeInTheDocument()
 
         // Check if Virtuoso is called with the correct component props
         expect(mockVirtuoso).toHaveBeenCalledWith(
             expect.objectContaining({
-                initialTopMostItemIndex: { index: 1 },
+                initialTopMostItemIndex: { index: 2 },
             }),
         )
     })
@@ -242,13 +267,17 @@ describe('TicketBody', () => {
             >
                 <TicketBody
                     elements={fromJS([defaultMessage])}
+                    hideTicket={() => Promise.resolve()}
+                    isShopperTyping={false}
                     setStatus={() => {}}
+                    shopperName=""
+                    submit={() => {}}
                 />
             </Provider>,
         )
-
-        expect(getByText(`TicketBodyElement 0`)).toBeInTheDocument()
+        expect(getByText('TicketHeaderWrapper')).toBeInTheDocument()
         expect(getByText(`TicketBodyElement 1`)).toBeInTheDocument()
+        expect(getByText(`TicketBodyElement 2`)).toBeInTheDocument()
 
         // Check if Virtuoso is called with the correct component props
         expect(mockVirtuoso).toHaveBeenCalledWith(
@@ -285,13 +314,18 @@ describe('TicketBody', () => {
             >
                 <TicketBody
                     elements={fromJS([defaultMessage])}
+                    hideTicket={() => Promise.resolve()}
+                    isShopperTyping={false}
                     setStatus={() => {}}
+                    shopperName=""
+                    submit={() => {}}
                 />
             </Provider>,
         )
 
-        expect(getByText('TicketBodyElement 0')).toBeInTheDocument() // defaultMessage
-        expect(getByText('TicketBodyElement 1')).toBeInTheDocument() // shoppingAssistantEvent
+        expect(getByText('TicketHeaderWrapper')).toBeInTheDocument()
+        expect(getByText('TicketBodyElement 1')).toBeInTheDocument() // defaultMessage
+        expect(getByText('TicketBodyElement 2')).toBeInTheDocument() // shoppingAssistantEvent
 
         expect(
             mockUseInsertShoppingAssistantEventElements,

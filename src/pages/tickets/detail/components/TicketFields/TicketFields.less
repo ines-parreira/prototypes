@@ -2,8 +2,7 @@
     .wrapper {
         display: flex;
         box-sizing: content-box;
-        padding: 0 var(--layout-spacing-s) var(--layout-spacing-xs)
-            var(--layout-spacing-s);
+        padding: var(--layout-spacing-xs) var(--layout-spacing-m);
         transition: height 0.2s ease-out;
         overflow-y: hidden;
     }
@@ -33,5 +32,11 @@
     .button {
         width: 83px;
         justify-content: center;
+    }
+}
+
+:global(.globalNav) :local {
+    .wrapper {
+        padding: var(--layout-spacing-xs) var(--layout-spacing-s);
     }
 }

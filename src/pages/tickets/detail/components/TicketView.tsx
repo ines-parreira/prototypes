@@ -14,8 +14,6 @@ import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
 import Timeline from 'timeline/Timeline'
 
 import { SubmitArgs } from '../TicketDetailContainer'
-import TicketFooter, { TicketFooterContext } from './TicketFooter'
-import TicketHeaderWrapper from './TicketHeaderWrapper/TicketHeaderWrapper'
 
 import css from './TicketView.less'
 
@@ -73,18 +71,14 @@ export const TicketView = ({
         })
     }, [])
 
-    const footerContext = useMemo(
-        (): TicketFooterContext => ({
-            isShopperTyping,
-            shopperName:
-                (ticket.getIn(['customer', 'name']) as string) ?? 'Customer',
-            submit,
-        }),
-        [isShopperTyping, ticket, submit],
-    )
-
     return (
-        <div className={css.outerView}>
+        <div
+            className={classnames(css.page, {
+                'ticket-thread-revamp': hasTicketThreadRevamp,
+                'transition out fade right': isTicketHidden,
+            })}
+            ref={pageRef}
+        >
             {isTimelineOpen && (
                 <div className={classnames(css.timeline)}>
                     <div className={classnames(css.timelineHeader)}>
@@ -109,35 +103,28 @@ export const TicketView = ({
                     </div>
                 </div>
             )}
-            <div className={css.view}>
-                <TicketHeaderWrapper
-                    hideTicket={hideTicket}
+
+            <div
+                className={classnames(css.ticketContent, {
+                    [css.historyDisplayed]: isTimelineOpen,
+                })}
+                ref={ticketContentRef}
+                tabIndex={1}
+            >
+                <TicketBody
+                    elements={ticketBody}
                     setStatus={setStatus}
+                    customScrollParentRef={pageRef}
+                    submit={submit}
+                    hideTicket={hideTicket}
+                    isShopperTyping={isShopperTyping}
+                    shopperName={
+                        (ticket.getIn(['customer', 'name']) as string) ??
+                        'Customer'
+                    }
                     onGoToNextTicket={onGoToNextTicket}
                     onToggleUnread={onToggleUnread}
                 />
-                <div
-                    className={classnames(css.page, {
-                        'ticket-thread-revamp': hasTicketThreadRevamp,
-                        'transition out fade right': isTicketHidden,
-                    })}
-                    ref={pageRef}
-                >
-                    <div
-                        className={classnames(css.ticketContent, {
-                            [css.historyDisplayed]: isTimelineOpen,
-                        })}
-                        ref={ticketContentRef}
-                        tabIndex={1}
-                    >
-                        <TicketBody
-                            elements={ticketBody}
-                            setStatus={setStatus}
-                            customScrollParentRef={pageRef}
-                        />
-                    </div>
-                    <TicketFooter context={footerContext} />
-                </div>
             </div>
         </div>
     )
