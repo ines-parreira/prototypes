@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
 
 import { stripEscapedQuotes } from 'hooks/reporting/common/utils'
-import { transformCategorySeparator } from 'hooks/reporting/helpers'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import {
     MetricWithDecileData,
@@ -31,19 +30,16 @@ export const formatTicketCountData = (
             )
 
             return {
-                category: transformCategorySeparator(
-                    stripEscapedQuotes(item[INTENT_VALUE]),
-                ),
-
+                category: stripEscapedQuotes(item[INTENT_VALUE]),
                 value: item[TICKET_COUNT_VALUE],
-                prevValue: previousPeriodItem?.[TICKET_COUNT_VALUE] || null,
+                prevValue: previousPeriodItem?.[TICKET_COUNT_VALUE],
             }
         }) || []
     )
 }
 
 export const useIntentTicketCountsAndDelta = (
-    intentCustomFieldId: string,
+    intentCustomFieldId: number,
     sorting: OrderDirection,
     sortingValue:
         | TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount

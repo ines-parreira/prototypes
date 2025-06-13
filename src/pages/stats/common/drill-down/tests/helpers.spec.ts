@@ -18,7 +18,10 @@ import { tagsTicketCountDrillDownByReferenceQueryFactory } from 'models/reportin
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { returnMentionsPerProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/returnMentionsPerProduct'
 import { sentimentsTicketCountPerProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/sentimentPerProduct'
-import { ticketCountPerIntentForProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent'
+import {
+    ticketCountPerIntentForProductDrillDownQueryFactory,
+    ticketCountPerIntentForProductsDrillDownQueryFactory,
+} from 'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent'
 import { ticketCountForProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/ticketsWithProducts'
 import {
     connectedCallsListQueryFactory,
@@ -110,6 +113,9 @@ jest.mock(
 )
 const ticketCountPerIntentForProductDrillDownQueryFactoryMock = assumeMock(
     ticketCountPerIntentForProductDrillDownQueryFactory,
+)
+const ticketCountPerIntentForProductsDrillDownQueryFactoryMock = assumeMock(
+    ticketCountPerIntentForProductsDrillDownQueryFactory,
 )
 
 jest.mock('models/reporting/queryFactories/voice/voiceCall')
@@ -469,6 +475,11 @@ describe('getDrillDownQuery', () => {
             intentCustomFieldId: 123,
             intentCustomFieldValueString: 'product::return',
             productId: '456',
+        },
+        {
+            metricName: VoiceOfCustomerMetricWithDrillDown.IntentPerProducts,
+            intentCustomFieldId: 123,
+            intentCustomFieldValueString: 'product::return',
         },
         {
             metricName: ProductsPerTicketColumn.TicketVolume,
@@ -1043,6 +1054,35 @@ describe('getDrillDownQuery', () => {
         )
     })
 
+    it('should be populated with intentCustomFieldId, intentCustomFieldValueString', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+
+        const customFieldMetric: VoiceOfCustomerMetrics = {
+            metricName: VoiceOfCustomerMetricWithDrillDown.IntentPerProducts,
+            intentCustomFieldId: 123,
+            intentCustomFieldValueString: 'product::return',
+        }
+
+        getDrillDownQuery(customFieldMetric)(statsFilters, timezone)
+
+        expect(
+            ticketCountPerIntentForProductsDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(
+            statsFilters,
+            timezone,
+            customFieldMetric.intentCustomFieldId,
+            customFieldMetric.intentCustomFieldValueString,
+        )
+    })
+
     it('should be populated with ticketTimeReference', () => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
@@ -1294,6 +1334,19 @@ describe('getDrillDownMetric', () => {
             },
             expectedValues: {
                 metricTitle: 'Intent per product',
+                metricValueFormat: 'decimal',
+                showMetric: false,
+            },
+        },
+        {
+            metricData: {
+                metricName:
+                    VoiceOfCustomerMetricWithDrillDown.IntentPerProducts,
+                intentCustomFieldId: 123,
+                intentCustomFieldValueString: 'product::return',
+            },
+            expectedValues: {
+                metricTitle: 'Intent per products',
                 metricValueFormat: 'decimal',
                 showMetric: false,
             },

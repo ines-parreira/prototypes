@@ -1,14 +1,22 @@
 import {
     fetchMetricPerDimension,
     MetricWithDecile,
+    MetricWithEnrichment,
     useMetricPerDimension,
+    useMetricPerDimensionWithEnrichment,
 } from 'hooks/reporting/useMetricPerDimension'
 import { OrderDirection } from 'models/api/types'
 import {
+    TicketProductsEnrichedDimension,
+    TicketProductsEnrichedMeasure,
+} from 'models/reporting/cubes/core/TicketProductsEnrichedCube'
+import {
+    productsTicketCountPerIntentQueryFactory,
     ticketCountPerIntentForProductQueryFactory,
     ticketCountPerIntentQueryFactory,
     TicketsPerIntentOrderField,
 } from 'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent'
+import { EnrichmentFields } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 
 export const useTicketCountPerIntent = (
@@ -67,3 +75,34 @@ export const useTicketCountPerIntentForProduct = (
         intentsCustomFieldValueString,
     )
 }
+
+export const PRODUCT_ENRICHMENT_ENTITY_ID =
+    EnrichmentFields.ProductExternalProductId
+
+export const PRODUCT_ENRICHMENT_FIELDS = [
+    PRODUCT_ENRICHMENT_ENTITY_ID,
+    EnrichmentFields.ProductTitle,
+    EnrichmentFields.ProductThumbnailUrl,
+]
+
+export const useProductsTicketCountsPerIntentWithEnrichment = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    intentsCustomFieldId: number,
+    intentsCustomFieldValueString: string,
+    sorting?: OrderDirection,
+): MetricWithEnrichment<
+    TicketProductsEnrichedMeasure,
+    TicketProductsEnrichedDimension
+> =>
+    useMetricPerDimensionWithEnrichment(
+        productsTicketCountPerIntentQueryFactory(
+            statsFilters,
+            timezone,
+            intentsCustomFieldId,
+            intentsCustomFieldValueString,
+            sorting,
+        ),
+        PRODUCT_ENRICHMENT_FIELDS,
+        PRODUCT_ENRICHMENT_ENTITY_ID,
+    )

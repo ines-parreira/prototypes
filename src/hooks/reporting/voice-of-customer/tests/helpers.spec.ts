@@ -1,7 +1,6 @@
 import {
     transformCategoriesSeparator,
     transformCategorySeparator,
-    transformCategorySeparatorBack,
 } from 'hooks/reporting/helpers'
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'models/reporting/queryFactories/utils'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
@@ -132,37 +131,5 @@ describe('transformCategoriesSeparator', () => {
         ]
 
         expect(transformCategoriesSeparator(input)).toEqual(expected)
-    })
-})
-
-describe('transformCategorySeparatorBack', () => {
-    it('should transform a category with new separator back to API separator', () => {
-        const input = `category1${TICKET_CUSTOM_FIELDS_NEW_SEPARATOR}category2${TICKET_CUSTOM_FIELDS_NEW_SEPARATOR}category3`
-        const expected = `category1${TICKET_CUSTOM_FIELDS_API_SEPARATOR}category2${TICKET_CUSTOM_FIELDS_API_SEPARATOR}category3`
-
-        expect(transformCategorySeparatorBack(input)).toBe(expected)
-    })
-
-    it('should return NOT_AVAILABLE_PLACEHOLDER for null input', () => {
-        expect(transformCategorySeparatorBack(null)).toBe(
-            NOT_AVAILABLE_PLACEHOLDER,
-        )
-    })
-
-    it('should return NOT_AVAILABLE_PLACEHOLDER for undefined input', () => {
-        expect(transformCategorySeparatorBack(undefined)).toBe(
-            NOT_AVAILABLE_PLACEHOLDER,
-        )
-    })
-
-    it('should return NOT_AVAILABLE_PLACEHOLDER for empty string', () => {
-        expect(transformCategorySeparatorBack('')).toBe(
-            NOT_AVAILABLE_PLACEHOLDER,
-        )
-    })
-
-    it('should handle category without separators', () => {
-        const input = 'singleCategory'
-        expect(transformCategorySeparatorBack(input)).toBe(input)
     })
 })

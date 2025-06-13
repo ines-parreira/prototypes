@@ -34,9 +34,9 @@ const NotDeletedTicketProductsFilter = [
 ]
 
 export const TicketPerIntentSortingField = Object.freeze({
-    TicketCount: TicketProductsEnrichedMeasure.TicketCount as const,
+    TicketCount: TicketProductsEnrichedMeasure.TicketCount,
     CustomFieldValueString:
-        TicketCustomFieldsDimension.TicketCustomFieldsValueString as const,
+        TicketCustomFieldsDimension.TicketCustomFieldsValueString,
 })
 
 export type TicketsPerIntentOrderField = OrderField<
@@ -72,6 +72,36 @@ export const ticketCountPerIntentQueryFactory = (
     ],
     order: sorting ? [[sortingField, sorting]] : undefined,
 })
+
+export const productsTicketCountPerIntentQueryFactory = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    intentCustomFieldId: number,
+    intentsCustomFieldValueString: string,
+    sorting?: OrderDirection,
+) => {
+    const { filters, ...baseQuery } = ticketCountPerIntentQueryFactory(
+        statsFilters,
+        timezone,
+        intentCustomFieldId,
+        sorting,
+    )
+
+    filters.push({
+        member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+        operator: ReportingFilterOperator.Equals,
+        values: [intentsCustomFieldValueString],
+    })
+
+    return {
+        ...baseQuery,
+        dimensions: [
+            TicketProductsEnrichedDimension.ProductId,
+            TicketProductsEnrichedDimension.StoreId,
+        ],
+        filters,
+    }
+}
 
 export const ticketCountPerIntentDrillDownQueryFactory = (
     statsFilters: StatsFilters,
@@ -143,5 +173,37 @@ export const ticketCountPerIntentForProductDrillDownQueryFactory = (
         order: sorting
             ? [[TicketDimension.CreatedDatetime, sorting]]
             : undefined,
+    }
+}
+
+export const ticketCountPerIntentForProductsDrillDownQueryFactory = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    intentCustomFieldId: number,
+    intentsCustomFieldValueString: string,
+): ReportingQuery<TicketCubeWithJoins> => {
+    const { filters, ...baseQuery } = ticketCountPerIntentDrillDownQueryFactory(
+        statsFilters,
+        timezone,
+        intentCustomFieldId,
+    )
+
+    return {
+        ...baseQuery,
+        filters: [
+            ...filters,
+            {
+                member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+                operator: ReportingFilterOperator.Equals,
+                values: [intentsCustomFieldValueString],
+            },
+            {
+                member: TicketProductsEnrichedDimension.ProductId,
+                operator: ReportingFilterOperator.NotEquals,
+                values: ['null', 'undefined'],
+            },
+        ],
+        dimensions: [TicketDimension.TicketId],
+        limit: DRILLDOWN_QUERY_LIMIT,
     }
 }

@@ -2,13 +2,25 @@
 
 :local {
     .leadColumn {
-        max-width: 360px;
-        overflow: hidden;
+        padding: var(--layout-spacing-m) 0;
+        > div {
+            margin: 0;
+            padding: 0;
+        }
     }
 
-    .productCell {
+    .expandIcon {
+        font-size: 24px;
+        margin-right: var(--layout-spacing-m);
+    }
+
+    .product {
         display: flex;
         align-items: center;
-        gap: var(--layout-spacing-xs);
+        gap: var(--layout-spacing-s);
+    }
+
+    .productName {
+        flex: 1;
     }
 }

@@ -1,0 +1,78 @@
+import { useMemo } from 'react'
+
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
+import { useProductsTicketCountsPerIntentWithEnrichment } from 'hooks/reporting/voice-of-customer/metricsPerProductAndIntent'
+import { OrderDirection } from 'models/api/types'
+import { TicketProductsEnrichedMeasure } from 'models/reporting/cubes/core/TicketProductsEnrichedCube'
+import { EnrichmentFields } from 'models/reporting/types'
+import { getPreviousPeriod } from 'utils/reporting'
+
+export const useProductsTicketCountsPerIntentDistribution = (
+    intentCustomFieldId: number,
+    intentsCustomFieldValueString: string,
+    sorting?: OrderDirection,
+): {
+    data: {
+        name: string
+        value: number
+        prevValue: number
+        productId: string
+        productUrl: string
+    }[]
+    isFetching: boolean
+    isError: boolean
+} => {
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+
+    const { data, isFetching, isError } =
+        useProductsTicketCountsPerIntentWithEnrichment(
+            cleanStatsFilters,
+            userTimezone,
+            intentCustomFieldId,
+            intentsCustomFieldValueString,
+            sorting,
+        )
+
+    const {
+        data: previousPeriodData,
+        isFetching: isPreviousPeriodFetching,
+        isError: isPreviousPeriodError,
+    } = useProductsTicketCountsPerIntentWithEnrichment(
+        {
+            ...cleanStatsFilters,
+            period: getPreviousPeriod(cleanStatsFilters.period),
+        },
+        userTimezone,
+        intentCustomFieldId,
+        intentsCustomFieldValueString,
+        sorting,
+    )
+
+    const formattedData = useMemo(() => {
+        return data?.allData.map((product) => {
+            const previousPeriodProduct = previousPeriodData?.allData?.find(
+                (previousPeriodItem) =>
+                    previousPeriodItem[
+                        EnrichmentFields.ProductExternalProductId
+                    ] === product[EnrichmentFields.ProductExternalProductId],
+            )
+
+            return {
+                name: product[EnrichmentFields.ProductTitle],
+                value: product[TicketProductsEnrichedMeasure.TicketCount],
+                prevValue:
+                    previousPeriodProduct?.[
+                        TicketProductsEnrichedMeasure.TicketCount
+                    ],
+                productId: product[EnrichmentFields.ProductExternalProductId],
+                productUrl: product[EnrichmentFields.ProductThumbnailUrl],
+            }
+        })
+    }, [data?.allData, previousPeriodData?.allData])
+
+    return {
+        data: formattedData || [],
+        isFetching: isFetching || isPreviousPeriodFetching,
+        isError: isError || isPreviousPeriodError,
+    }
+}

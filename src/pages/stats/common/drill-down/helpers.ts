@@ -396,6 +396,20 @@ export const getDrillDownQuery = (
                     sorting,
                 )
         }
+        case VoiceOfCustomerMetricWithDrillDown.IntentPerProducts: {
+            const { drillDownQuery } =
+                VoiceOfCustomerMetricWithDrillDownConfig[
+                    VoiceOfCustomerMetricWithDrillDown.IntentPerProducts
+                ]
+
+            return (statsFilters: StatsFilters, timezone: string) =>
+                drillDownQuery(
+                    statsFilters,
+                    timezone,
+                    metricData.intentCustomFieldId,
+                    metricData.intentCustomFieldValueString,
+                )
+        }
     }
 }
 const queryBuilderWithAgentFilter =
@@ -616,6 +630,19 @@ export const getDrillDownMetricColumn = (
         metricValueFormat =
             VoiceOfCustomerMetricWithDrillDownConfig[
                 VoiceOfCustomerMetricWithDrillDown.IntentPerProduct
+            ].metricFormat
+    } else if (
+        metricData.metricName ===
+        VoiceOfCustomerMetricWithDrillDown.IntentPerProducts
+    ) {
+        metricTitle =
+            metricData.title ||
+            VoiceOfCustomerMetricWithDrillDownConfig[
+                VoiceOfCustomerMetricWithDrillDown.IntentPerProducts
+            ].title
+        metricValueFormat =
+            VoiceOfCustomerMetricWithDrillDownConfig[
+                VoiceOfCustomerMetricWithDrillDown.IntentPerProducts
             ].metricFormat
     } else if (metricData.metricName === ProductsPerTicketColumn.TicketVolume) {
         metricTitle = metricData.title || ''

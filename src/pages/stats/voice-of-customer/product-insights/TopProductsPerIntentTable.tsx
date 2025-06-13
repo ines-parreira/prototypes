@@ -1,11 +1,15 @@
 import { useState } from 'react'
 
 import classNames from 'classnames'
+import Skeleton from 'react-loading-skeleton'
 
-import { transformCategorySeparatorBack } from 'hooks/reporting/helpers'
+import { SegmentEvent } from 'common/segment'
+import { transformCategorySeparator } from 'hooks/reporting/helpers'
 import { useIntentTicketCountsAndDelta } from 'hooks/reporting/voice-of-customer/useIntentTicketCountsAndDelta'
+import { useProductsTicketCountsPerIntentDistribution } from 'hooks/reporting/voice-of-customer/useProductsTicketCountsPerIntentDistribution'
 import { OrderDirection } from 'models/api/types'
-import { TicketTimeReference } from 'models/stat/types'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import { NoDataAvailable } from 'pages/stats/common/components/NoDataAvailable'
 import css from 'pages/stats/common/components/Table/BreakdownTable.less'
 import { TableWithNestedRows } from 'pages/stats/common/components/Table/TableWithNestedRows'
@@ -13,9 +17,10 @@ import { TableWithNestedRowsCell } from 'pages/stats/common/components/Table/Tab
 import { TrendIcon } from 'pages/stats/common/components/TrendIcon'
 import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import { TableLoadingFallback } from 'pages/stats/ticket-insights/ticket-fields/TableLoadingFallback'
+import { ProductImage } from 'pages/stats/voice-of-customer/components/ProductImage'
 import { DEFAULT_SORTING_COLUMN } from 'pages/stats/voice-of-customer/product-insights/constants'
 import {
-    formatTableData,
+    formatProductsPerIntentsTableData,
     formatTrendData,
     getColumnsSortingValue,
 } from 'pages/stats/voice-of-customer/product-insights/helpers'
@@ -27,25 +32,84 @@ import {
     TopProductsPerIntentColumn,
     TopProductsPerIntentColumnConfig,
 } from 'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentConfig'
+import { VoCSidePanelTrigger } from 'pages/stats/voice-of-customer/side-panel/VoCSidePanelTrigger'
+import { VoiceOfCustomerMetricWithDrillDown } from 'pages/stats/voice-of-customer/VoiceOfCustomerMetricConfig'
 import { DEFAULT_SORTING_DIRECTION } from 'state/ui/stats/createTableSlice'
-import { TicketFieldsMetric } from 'state/ui/stats/types'
+import {
+    TicketsPerIntentMetrics,
+    TicketsPerProductPerIntentMetrics,
+} from 'state/ui/stats/drillDownSlice'
 
-type Props = {
+export const COLUMN_WIDTH = 24
+export const MOBILE_COLUMN_WIDTH = 10
+
+interface ProductData {
+    name: string
+    value: number
+    prevValue: number
+    productId: string
+    productUrl?: string
+}
+
+interface BaseRowProps {
+    level: number
+    columnOrder?: TopProductsPerIntentColumn[]
+    leadColumn: TopProductsPerIntentColumn
     intentCustomFieldId: number
 }
 
-type TopProductsPerIntentOrder = {
+interface BaseMetrics {
+    value: number
+    prevValue: number
+}
+
+interface TopProductsPerIntentOrder {
     column: TopProductsPerIntentColumn
     direction: OrderDirection
 }
 
-export const TopProductsPerIntentTable = ({ intentCustomFieldId }: Props) => {
+interface ProductInfo {
+    id: string
+    name: string
+    thumbnail_url?: string
+}
+
+interface TopProductsPerIntentTableProps {
+    intentCustomFieldId: number
+}
+
+interface TopIntentsRowProps extends BaseRowProps, BaseMetrics {
+    entityId: string
+    productId?: string
+    productUrl?: string
+    defaultExpanded?: boolean
+}
+
+interface TopProductsRowProps extends BaseRowProps {
+    entityId: string
+}
+
+interface TopProductsCellProps extends BaseRowProps, BaseMetrics {
+    column: TopProductsPerIntentColumn
+    entityId: string
+    productId?: string
+    productUrl?: string
+    productName?: string
+    isLeadColumn: boolean
+    isExpanded?: boolean
+    toggleExpand?: () => void
+}
+
+export const TopProductsPerIntentTable = ({
+    intentCustomFieldId,
+}: TopProductsPerIntentTableProps) => {
     const [order, setOrder] = useState<TopProductsPerIntentOrder>({
         column: DEFAULT_SORTING_COLUMN,
         direction: DEFAULT_SORTING_DIRECTION,
     })
+
     const { data, isFetching } = useIntentTicketCountsAndDelta(
-        intentCustomFieldId.toString(),
+        intentCustomFieldId,
         order.direction,
         getColumnsSortingValue(order.column),
     )
@@ -59,9 +123,9 @@ export const TopProductsPerIntentTable = ({ intentCustomFieldId }: Props) => {
     }
 
     return (
-        <TableWithNestedRows<IntentRowProps, TopProductsPerIntentColumn>
-            RowComponent={TopProductsRow}
-            rows={formatTableData(data, intentCustomFieldId)}
+        <TableWithNestedRows<TopIntentsRowProps, TopProductsPerIntentColumn>
+            RowComponent={TopIntentsRow}
+            rows={formatProductsPerIntentsTableData(data, intentCustomFieldId)}
             perPage={TOP_INTENTS_PER_PAGE}
             columnOrder={columnOrder}
             leadColumn={LeadColumn}
@@ -74,32 +138,7 @@ export const TopProductsPerIntentTable = ({ intentCustomFieldId }: Props) => {
     )
 }
 
-type IntentRowProps = {
-    level: number
-    columnOrder?: TopProductsPerIntentColumn[]
-    entityId: string
-    value: number
-    prevValue: number
-    productId?: string
-    leadColumn: TopProductsPerIntentColumn
-    intentCustomFieldId: number
-    onClick?: () => void
-}
-
-type CellProps = {
-    level: number
-    hasChildren: boolean
-    column: TopProductsPerIntentColumn
-    entityId: string
-    value: number
-    prevValue: number
-    productId?: string
-    isLeadColumn: boolean
-    onClick?: () => void
-    intentCustomFieldId: number
-}
-
-const TopProductsRow = ({
+const TopIntentsRow = ({
     columnOrder = [],
     level,
     entityId,
@@ -107,25 +146,98 @@ const TopProductsRow = ({
     prevValue,
     productId,
     leadColumn,
-    onClick,
     intentCustomFieldId,
-}: IntentRowProps) => {
+    defaultExpanded = false,
+}: TopIntentsRowProps) => {
+    const [isExpanded, setIsExpanded] = useState(defaultExpanded)
+
+    const toggleExpand = (): void => {
+        setIsExpanded(!isExpanded)
+    }
+
     return (
         <>
-            {columnOrder.map((column) => (
-                <TopProductsCell
-                    key={column}
-                    column={column}
-                    level={level}
+            <TableBodyRow>
+                {columnOrder.map((column) => (
+                    <TopProductsCell
+                        key={column}
+                        column={column}
+                        level={level}
+                        entityId={entityId}
+                        value={value}
+                        prevValue={prevValue}
+                        leadColumn={leadColumn}
+                        isLeadColumn={leadColumn === column}
+                        productId={productId}
+                        intentCustomFieldId={intentCustomFieldId}
+                        isExpanded={isExpanded}
+                        toggleExpand={toggleExpand}
+                    />
+                ))}
+            </TableBodyRow>
+            {isExpanded && (
+                <TopProductsRow
                     entityId={entityId}
-                    value={value}
-                    prevValue={prevValue}
-                    productId={productId}
-                    isLeadColumn={leadColumn === column}
-                    hasChildren={level === 0}
-                    onClick={onClick}
                     intentCustomFieldId={intentCustomFieldId}
+                    leadColumn={leadColumn}
+                    columnOrder={columnOrder}
+                    level={level}
                 />
+            )}
+        </>
+    )
+}
+
+const TopProductsRow = ({
+    entityId,
+    level,
+    leadColumn,
+    columnOrder,
+    intentCustomFieldId,
+}: TopProductsRowProps) => {
+    const { data, isFetching } = useProductsTicketCountsPerIntentDistribution(
+        intentCustomFieldId,
+        entityId,
+    )
+
+    if (isFetching) {
+        return (
+            <TableBodyRow>
+                <BodyCell />
+                <BodyCell>
+                    <Skeleton inline width={200} />
+                </BodyCell>
+                <BodyCell>
+                    <Skeleton inline width={100} />
+                </BodyCell>
+                <BodyCell>
+                    <Skeleton inline width={100} />
+                </BodyCell>
+            </TableBodyRow>
+        )
+    }
+
+    return (
+        <>
+            {data.map((product: ProductData) => (
+                <TableBodyRow key={product.productId}>
+                    {columnOrder?.map((column) => (
+                        <TopProductsCell
+                            key={column}
+                            entityId={entityId}
+                            productName={product.name}
+                            value={product.value}
+                            prevValue={product.prevValue}
+                            productUrl={product.productUrl}
+                            productId={product.productId}
+                            column={column}
+                            leadColumn={leadColumn}
+                            isLeadColumn={leadColumn === column}
+                            intentCustomFieldId={intentCustomFieldId}
+                            level={level}
+                        />
+                    ))}
+                </TableBodyRow>
             ))}
         </>
     )
@@ -136,31 +248,93 @@ const TopProductsCell = ({
     entityId,
     value,
     prevValue,
+    productUrl,
+    productName,
+    productId,
     isLeadColumn,
     level,
-    hasChildren,
-    onClick,
     intentCustomFieldId,
-}: CellProps) => {
+    isExpanded,
+    toggleExpand,
+}: TopProductsCellProps) => {
     const { trend, sign = 0 } = formatTrendData(value, prevValue)
+
+    const formattedEntity = transformCategorySeparator(entityId)
+
+    const productDrillDownMetric: TicketsPerProductPerIntentMetrics = {
+        metricName: VoiceOfCustomerMetricWithDrillDown.IntentPerProduct,
+        title: productName,
+        intentCustomFieldId: intentCustomFieldId,
+        intentCustomFieldValueString: entityId,
+        productId: productId || '',
+    }
+
+    const intentDrillDownMetric: TicketsPerIntentMetrics = {
+        title: `Intent Topic | ${formattedEntity}`,
+        metricName: VoiceOfCustomerMetricWithDrillDown.IntentPerProducts,
+        intentCustomFieldId: intentCustomFieldId,
+        intentCustomFieldValueString: entityId,
+    }
+
+    const productInfo: ProductInfo = {
+        id: productId || '',
+        name: productName || '',
+        thumbnail_url: productUrl,
+    }
 
     switch (column) {
         case TopProductsPerIntentColumn.Intent:
-            return (
+            return productId ? (
                 <TableWithNestedRowsCell
                     isLeadColumn={isLeadColumn}
                     level={level}
-                    hasChildren={hasChildren}
+                    hasChildren={false}
+                    innerStyle={{
+                        marginLeft: 0,
+                    }}
                     className={classNames(
                         css.leadColumn,
                         topProductsCss.productCell,
                     )}
-                    onClick={onClick}
+                >
+                    <div className={topProductsCss.product}>
+                        <ProductImage src={productUrl} alt={formattedEntity} />
+                        <div className={topProductsCss.productName}>
+                            <VoCSidePanelTrigger
+                                highlighted
+                                product={productInfo}
+                                segmentEventName={
+                                    SegmentEvent.StatVoCSidePanelIntentClick
+                                }
+                            >
+                                {productName}
+                            </VoCSidePanelTrigger>
+                        </div>
+                    </div>
+                </TableWithNestedRowsCell>
+            ) : (
+                <TableWithNestedRowsCell
+                    isLeadColumn={isLeadColumn}
+                    level={level}
+                    hasChildren={false}
                     innerStyle={{
                         marginLeft: 0,
                     }}
+                    className={classNames(
+                        css.leadColumn,
+                        topProductsCss.productCell,
+                    )}
+                    onClick={toggleExpand}
                 >
-                    {entityId}
+                    <i
+                        className={classNames(
+                            'material-icons-round',
+                            topProductsCss.expandIcon,
+                        )}
+                    >
+                        {isExpanded ? 'arrow_drop_down' : 'arrow_right'}
+                    </i>
+                    {formattedEntity}
                 </TableWithNestedRowsCell>
             )
         case TopProductsPerIntentColumn.TicketVolume:
@@ -168,23 +342,15 @@ const TopProductsCell = ({
                 <TableWithNestedRowsCell
                     isLeadColumn={isLeadColumn}
                     level={level}
-                    hasChildren={hasChildren}
-                    innerStyle={{
-                        marginLeft: 0,
-                    }}
+                    hasChildren={false}
                 >
                     <DrillDownModalTrigger
                         highlighted
-                        metricData={{
-                            title: `Intent Topic | ${entityId}`,
-                            metricName:
-                                TicketFieldsMetric.TicketCustomFieldsTicketCount,
-                            customFieldId: intentCustomFieldId,
-                            customFieldValue: [
-                                transformCategorySeparatorBack(entityId),
-                            ],
-                            ticketTimeReference: TicketTimeReference.CreatedAt,
-                        }}
+                        metricData={
+                            productId
+                                ? productDrillDownMetric
+                                : intentDrillDownMetric
+                        }
                     >
                         {value}
                     </DrillDownModalTrigger>
@@ -195,10 +361,7 @@ const TopProductsCell = ({
                 <TableWithNestedRowsCell
                     isLeadColumn={isLeadColumn}
                     level={level}
-                    hasChildren={hasChildren}
-                    innerStyle={{
-                        marginLeft: 0,
-                    }}
+                    hasChildren={false}
                 >
                     <TrendIcon sign={sign} />
                     {trend}

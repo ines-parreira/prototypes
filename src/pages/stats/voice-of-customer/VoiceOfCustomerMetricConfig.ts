@@ -2,7 +2,10 @@ import {
     useNegativeSentimentsPerProductMetricTrend,
     usePositiveSentimentsPerProductMetricTrend,
 } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
-import { ticketCountPerIntentForProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent'
+import {
+    ticketCountPerIntentForProductDrillDownQueryFactory,
+    ticketCountPerIntentForProductsDrillDownQueryFactory,
+} from 'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent'
 import { InterpretAs } from 'pages/stats/common/components/TrendBadge'
 import { Domain } from 'pages/stats/common/drill-down/types'
 import { MetricTrendFormat } from 'pages/stats/common/utils'
@@ -14,6 +17,7 @@ export enum VoiceOfCustomerMetric {
 
 export enum VoiceOfCustomerMetricWithDrillDown {
     IntentPerProduct = 'intent_per_product',
+    IntentPerProducts = 'intent_per_products',
 }
 
 const integer: MetricTrendFormat = 'decimal'
@@ -44,5 +48,12 @@ export const VoiceOfCustomerMetricWithDrillDownConfig = {
         showMetric: false,
         domain: Domain.Ticket,
         drillDownQuery: ticketCountPerIntentForProductDrillDownQueryFactory,
+    },
+    [VoiceOfCustomerMetricWithDrillDown.IntentPerProducts]: {
+        title: 'Intent per products',
+        metricFormat: integer,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: ticketCountPerIntentForProductsDrillDownQueryFactory,
     },
 }

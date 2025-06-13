@@ -2,14 +2,19 @@ import {
     fetchMetricPerDimension,
     MetricWithDecile,
     useMetricPerDimension,
+    useMetricPerDimensionWithEnrichment,
 } from 'hooks/reporting/useMetricPerDimension'
 import {
     fetchTicketCountPerIntentForProduct,
+    PRODUCT_ENRICHMENT_ENTITY_ID,
+    PRODUCT_ENRICHMENT_FIELDS,
+    useProductsTicketCountsPerIntentWithEnrichment,
     useTicketCountPerIntent,
     useTicketCountPerIntentForProduct,
 } from 'hooks/reporting/voice-of-customer/metricsPerProductAndIntent'
 import { OrderDirection } from 'models/api/types'
 import {
+    productsTicketCountPerIntentQueryFactory,
     ticketCountPerIntentForProductQueryFactory,
     ticketCountPerIntentQueryFactory,
 } from 'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent'
@@ -24,9 +29,15 @@ jest.mock(
 )
 
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
+const useMetricPerDimensionWithEnrichmentMock = assumeMock(
+    useMetricPerDimensionWithEnrichment,
+)
 const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
 const ticketCountPerIntentQueryFactoryMock = assumeMock(
     ticketCountPerIntentQueryFactory,
+)
+const productsTicketCountPerIntentQueryFactoryMock = assumeMock(
+    productsTicketCountPerIntentQueryFactory,
 )
 
 describe('metricsPerProductAndIntent', () => {
@@ -56,10 +67,23 @@ describe('metricsPerProductAndIntent', () => {
         isError: false,
     }
 
+    const mockEnrichmentResult = {
+        data: {
+            value: null,
+            allData: [],
+        },
+        isFetching: false,
+        isError: false,
+    }
+
     beforeEach(() => {
         jest.clearAllMocks()
         ticketCountPerIntentQueryFactoryMock.mockReturnValue(mockQuery)
+        productsTicketCountPerIntentQueryFactoryMock.mockReturnValue(mockQuery)
         useMetricPerDimensionMock.mockReturnValue(mockResult)
+        useMetricPerDimensionWithEnrichmentMock.mockReturnValue(
+            mockEnrichmentResult,
+        )
         fetchMetricPerDimensionMock.mockResolvedValue(mockResult)
     })
 
@@ -220,6 +244,77 @@ describe('metricsPerProductAndIntent', () => {
                 ),
                 intent,
             )
+        })
+    })
+
+    describe('useProductsTicketCountsPerIntentWithEnrichment', () => {
+        const intentsCustomFieldValueString = 'Product::Return'
+
+        it('should call useMetricPerDimensionWithEnrichment with correct parameters', () => {
+            renderHook(() =>
+                useProductsTicketCountsPerIntentWithEnrichment(
+                    statsFilters,
+                    timezone,
+                    intentCustomFieldId,
+                    intentsCustomFieldValueString,
+                    sorting,
+                ),
+            )
+
+            expect(
+                productsTicketCountPerIntentQueryFactory,
+            ).toHaveBeenCalledWith(
+                statsFilters,
+                timezone,
+                intentCustomFieldId,
+                intentsCustomFieldValueString,
+                sorting,
+            )
+            expect(useMetricPerDimensionWithEnrichment).toHaveBeenCalledWith(
+                mockQuery,
+                PRODUCT_ENRICHMENT_FIELDS,
+                PRODUCT_ENRICHMENT_ENTITY_ID,
+            )
+        })
+
+        it('should work without sorting parameter', () => {
+            renderHook(() =>
+                useProductsTicketCountsPerIntentWithEnrichment(
+                    statsFilters,
+                    timezone,
+                    intentCustomFieldId,
+                    intentsCustomFieldValueString,
+                ),
+            )
+
+            expect(
+                productsTicketCountPerIntentQueryFactory,
+            ).toHaveBeenCalledWith(
+                statsFilters,
+                timezone,
+                intentCustomFieldId,
+                intentsCustomFieldValueString,
+                undefined,
+            )
+            expect(useMetricPerDimensionWithEnrichment).toHaveBeenCalledWith(
+                mockQuery,
+                PRODUCT_ENRICHMENT_FIELDS,
+                PRODUCT_ENRICHMENT_ENTITY_ID,
+            )
+        })
+
+        it('should return the result from useMetricPerDimensionWithEnrichment', () => {
+            const { result } = renderHook(() =>
+                useProductsTicketCountsPerIntentWithEnrichment(
+                    statsFilters,
+                    timezone,
+                    intentCustomFieldId,
+                    intentsCustomFieldValueString,
+                    sorting,
+                ),
+            )
+
+            expect(result.current).toEqual(mockEnrichmentResult)
         })
     })
 })

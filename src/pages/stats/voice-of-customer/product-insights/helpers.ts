@@ -13,16 +13,16 @@ import {
     TopProductsPerIntentColumn,
 } from 'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentConfig'
 
-export const formatTableData = (
+export const formatProductsPerIntentsTableData = (
     data: {
-        category: string
+        category: string | null
         value: string | null
-        prevValue: string | null
+        prevValue?: string | null
     }[],
     intentCustomFieldId: number,
 ) => {
     return data.map((row) => ({
-        entityId: row.category,
+        entityId: row.category || '',
         value: row.value ? Number(row.value) : 0,
         prevValue: row.prevValue ? Number(row.prevValue) : 0,
         level: 0,

@@ -1076,7 +1076,7 @@ describe('customFieldsTicketCountWithSortQueryFactory', () => {
         },
     }
     const timezone = 'UTC'
-    const customFieldId = '123'
+    const customFieldId = 123
     const sortingDirection = OrderDirection.Desc
     const sortingValue = TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
 
@@ -1113,7 +1113,7 @@ describe('customFieldsTicketCountWithSortQueryFactory', () => {
                     TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId &&
                 filter.operator === ReportingFilterOperator.Equals,
         )
-        expect(customFieldIdFilter?.values).toEqual([customFieldId])
+        expect(customFieldIdFilter?.values).toEqual([customFieldId.toString()])
     })
 
     it('should apply sorting correctly', () => {

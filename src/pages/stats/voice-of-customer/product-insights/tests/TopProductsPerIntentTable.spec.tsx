@@ -4,6 +4,7 @@ import { act, render, screen } from '@testing-library/react'
 
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useIntentTicketCountsAndDelta } from 'hooks/reporting/voice-of-customer/useIntentTicketCountsAndDelta'
+import { useProductsTicketCountsPerIntentDistribution } from 'hooks/reporting/voice-of-customer/useProductsTicketCountsPerIntentDistribution'
 import { useNotify } from 'hooks/useNotify'
 import { OrderDirection } from 'models/api/types'
 import { ReportingGranularity } from 'models/reporting/types'
@@ -14,6 +15,7 @@ import {
     TopProductsPerIntentColumnConfig,
 } from 'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentConfig'
 import { TopProductsPerIntentTable } from 'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentTable'
+import { VoCSidePanelTrigger } from 'pages/stats/voice-of-customer/side-panel/VoCSidePanelTrigger'
 import { assumeMock } from 'utils/testing'
 import { userEvent } from 'utils/testing/userEvent'
 
@@ -32,6 +34,16 @@ const TableLoadingFallbackMock = assumeMock(TableLoadingFallback)
 
 jest.mock('pages/stats/common/drill-down/DrillDownModalTrigger')
 const DrillDownModalTriggerMock = assumeMock(DrillDownModalTrigger)
+
+jest.mock(
+    'hooks/reporting/voice-of-customer/useProductsTicketCountsPerIntentDistribution',
+)
+const useProductsTicketCountsPerIntentDistributionMock = assumeMock(
+    useProductsTicketCountsPerIntentDistribution,
+)
+
+jest.mock('pages/stats/voice-of-customer/side-panel/VoCSidePanelTrigger')
+const VoCSidePanelTriggerMock = assumeMock(VoCSidePanelTrigger)
 
 describe('TopProductsPerIntentTable', () => {
     const statsFilters = {
@@ -54,6 +66,16 @@ describe('TopProductsPerIntentTable', () => {
         },
     ]
 
+    const mockProductData = [
+        {
+            name: 'iPhone 15',
+            value: 25,
+            prevValue: 20,
+            productId: 'product-1',
+            productUrl: 'https://example.com/iphone.jpg',
+        },
+    ]
+
     beforeEach(() => {
         jest.clearAllMocks()
         useStatsFiltersMock.mockReturnValue({
@@ -70,6 +92,14 @@ describe('TopProductsPerIntentTable', () => {
         TableLoadingFallbackMock.mockReturnValue(<div>Loading...</div>)
         DrillDownModalTriggerMock.mockImplementation(({ children }) => (
             <div>{children}</div>
+        ))
+        useProductsTicketCountsPerIntentDistributionMock.mockReturnValue({
+            data: [],
+            isFetching: false,
+            isError: false,
+        })
+        VoCSidePanelTriggerMock.mockImplementation(({ children }) => (
+            <span>{children}</span>
         ))
     })
 
@@ -138,7 +168,7 @@ describe('TopProductsPerIntentTable', () => {
         })
 
         expect(useIntentTicketCountsAndDeltaMock).toHaveBeenCalledWith(
-            '123',
+            123,
             OrderDirection.Desc,
             expect.any(String),
         )
@@ -148,7 +178,7 @@ describe('TopProductsPerIntentTable', () => {
         })
 
         expect(useIntentTicketCountsAndDeltaMock).toHaveBeenCalledWith(
-            '123',
+            123,
             OrderDirection.Asc,
             expect.any(String),
         )
@@ -162,5 +192,56 @@ describe('TopProductsPerIntentTable', () => {
 
         const negativeTrend = screen.getByText('20%')
         expect(negativeTrend).toBeInTheDocument()
+    })
+
+    it('should check the expanded row data', async () => {
+        useProductsTicketCountsPerIntentDistributionMock.mockReturnValue({
+            data: mockProductData,
+            isFetching: false,
+            isError: false,
+        })
+
+        render(<TopProductsPerIntentTable intentCustomFieldId={123} />)
+
+        expect(screen.getByText('arrow_drop_down')).toBeInTheDocument()
+        expect(screen.getByText('iPhone 15')).toBeInTheDocument()
+
+        expect(
+            useProductsTicketCountsPerIntentDistributionMock,
+        ).toHaveBeenCalledWith(123, 'intent1')
+    })
+
+    it('should collapse row when expand button is clicked', async () => {
+        useProductsTicketCountsPerIntentDistributionMock.mockReturnValue({
+            data: mockProductData,
+            isFetching: false,
+            isError: false,
+        })
+
+        render(<TopProductsPerIntentTable intentCustomFieldId={123} />)
+
+        const collapseButton = screen.getByText('arrow_drop_down')
+        await act(async () => {
+            await userEvent.click(collapseButton)
+        })
+
+        expect(screen.getAllByText('arrow_right')).toHaveLength(2)
+        expect(screen.queryByText('arrow_drop_down')).not.toBeInTheDocument()
+        expect(screen.queryByText('iPhone 15')).not.toBeInTheDocument()
+    })
+
+    it('should show loading state when expanding row and product data is loading', async () => {
+        useProductsTicketCountsPerIntentDistributionMock.mockReturnValue({
+            data: [],
+            isFetching: true,
+            isError: false,
+        })
+
+        render(<TopProductsPerIntentTable intentCustomFieldId={123} />)
+
+        expect(screen.getByText('arrow_drop_down')).toBeInTheDocument()
+        expect(
+            useProductsTicketCountsPerIntentDistributionMock,
+        ).toHaveBeenCalledWith(123, 'intent1')
     })
 })

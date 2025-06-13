@@ -35,6 +35,7 @@ export const TableWithNestedRowsCell = ({
             innerClassName={classNames(css.small, {
                 [css.columnCell]: !isLeadColumn,
             })}
+            colSpan={isLeadColumn ? 2 : 1}
             className={classNames(
                 {
                     [css.withShadow]: isLeadColumn && isTableScrolled,

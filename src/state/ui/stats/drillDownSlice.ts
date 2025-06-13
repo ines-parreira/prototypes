@@ -116,12 +116,24 @@ export type ProductMetrics = (
 ) &
     CommonMetrics
 
-export type VoiceOfCustomerMetrics = {
-    metricName: VoiceOfCustomerMetricWithDrillDown.IntentPerProduct
-    productId: string
+export type TicketsPerIntentMetrics = {
+    metricName: VoiceOfCustomerMetricWithDrillDown.IntentPerProducts
     intentCustomFieldId: number
     intentCustomFieldValueString: string
 } & CommonMetrics
+
+export type TicketsPerProductPerIntentMetrics = {
+    metricName: VoiceOfCustomerMetricWithDrillDown.IntentPerProduct
+    intentCustomFieldId: number
+    intentCustomFieldValueString: string
+    productId: string
+} & CommonMetrics
+
+export type VoiceOfCustomerMetrics = (
+    | TicketsPerProductPerIntentMetrics
+    | TicketsPerIntentMetrics
+) &
+    CommonMetrics
 
 export type AiSalesAgentMetrics = {
     metricName: AiSalesAgentDrillDownMetrics

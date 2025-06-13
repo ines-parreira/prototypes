@@ -77,6 +77,7 @@ export const hiddenMetrics: DrillDownMetric['metricName'][] = [
     ProductInsightsTableColumns.TicketsVolume,
     ProductInsightsTableColumns.ReturnMentions,
     VoiceOfCustomerMetricWithDrillDown.IntentPerProduct,
+    VoiceOfCustomerMetricWithDrillDown.IntentPerProducts,
     ProductsPerTicketColumn.TicketVolume,
 ]
 

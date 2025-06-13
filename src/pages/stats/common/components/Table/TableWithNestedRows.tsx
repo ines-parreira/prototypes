@@ -13,10 +13,6 @@ import { opposite, OrderDirection } from 'models/api/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
-import {
-    TableBodyRowExpandable,
-    WithChildren,
-} from 'pages/common/components/table/TableBodyRowExpandable'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import css from 'pages/stats/common/components/Table/TableWithNestedRows.less'
@@ -29,6 +25,8 @@ type NestedRowProps<Columns extends string> = {
     isTableScrolled?: boolean
     columnOrder?: Columns[]
 }
+
+type WithChildren<T> = T
 
 type Props<
     RowProps extends {
@@ -148,22 +146,14 @@ export const TableWithNestedRows = <
                         ))}
                     </TableHead>
                     <TableBody>
-                        {paginatedRows.map((row) => (
-                            <TableBodyRowExpandable<RowProps>
+                        {paginatedRows.map((row, index) => (
+                            <RowComponent
                                 key={row.entityId}
-                                RowContentComponent={RowComponent}
-                                rowContentProps={{
-                                    ...row,
-                                    columnOrder,
-                                    isTableScrolled,
-                                    intentCustomFieldId,
-                                    children: row.children.map((child) => ({
-                                        ...child,
-                                        isTableScrolled,
-                                        columnOrder,
-                                        entityId: row.entityId,
-                                    })),
-                                }}
+                                columnOrder={columnOrder}
+                                isTableScrolled={isTableScrolled}
+                                intentsCustomFieldId={intentCustomFieldId}
+                                defaultExpanded={index === 0}
+                                {...row}
                             />
                         ))}
                     </TableBody>

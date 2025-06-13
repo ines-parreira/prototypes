@@ -1,6 +1,7 @@
 import { TICKET_FIELDS_LIST_LIMIT } from 'hooks/reporting/voice-of-customer/constants'
 import { BREAKDOWN_FIELD, VALUE_FIELD } from 'hooks/reporting/withBreakdown'
 import { OrderDirection } from 'models/api/types'
+import { TicketProductsEnrichedMember } from 'models/reporting/cubes/core/TicketProductsEnrichedCube'
 import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
 import {
     TicketDimension,
@@ -104,23 +105,35 @@ export const customFieldsTicketCountQueryFactory = (
 export const customFieldsTicketCountWithSortQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    customFieldId: string,
+    customFieldId: number,
     sortingDirection: OrderDirection,
     sortingValue:
         | TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
         | TicketCustomFieldsDimension.TicketCustomFieldsValue,
     additionalFilters?: ReportingFilter[],
-): CustomFieldsReportingQuery => ({
-    ...customFieldsTicketCountQueryFactory(
-        filters,
-        timezone,
-        customFieldId,
-        sortingDirection,
-        additionalFilters,
-    ),
-    order: [[sortingValue, sortingDirection]],
-    limit: TICKET_FIELDS_LIST_LIMIT,
-})
+): CustomFieldsReportingQuery => {
+    const { filters: baseQueryFilters, ...baseQuery } =
+        customFieldsTicketCountQueryFactory(
+            filters,
+            timezone,
+            String(customFieldId),
+            sortingDirection,
+            additionalFilters,
+        )
+    return {
+        ...baseQuery,
+        filters: [
+            ...baseQueryFilters,
+            {
+                member: TicketProductsEnrichedMember.ProductId,
+                operator: ReportingFilterOperator.NotEquals,
+                values: ['null', 'undefined'],
+            },
+        ],
+        order: [[sortingValue, sortingDirection]],
+        limit: TICKET_FIELDS_LIST_LIMIT,
+    }
+}
 
 export const customFieldsTicketCountOnCreatedDatetimeQueryFactory = (
     filters: StatsFilters,

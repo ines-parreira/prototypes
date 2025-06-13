@@ -131,12 +131,5 @@ export const transformCategorySeparator = (category?: string | null): string =>
         ?.split(TICKET_CUSTOM_FIELDS_API_SEPARATOR)
         .join(TICKET_CUSTOM_FIELDS_NEW_SEPARATOR) || NOT_AVAILABLE_PLACEHOLDER
 
-export const transformCategorySeparatorBack = (
-    category?: string | null,
-): string =>
-    category
-        ?.split(TICKET_CUSTOM_FIELDS_NEW_SEPARATOR)
-        .join(TICKET_CUSTOM_FIELDS_API_SEPARATOR) || NOT_AVAILABLE_PLACEHOLDER
-
 export const transformCategoriesSeparator = (allData?: (string | null)[]) =>
     allData?.map(transformCategorySeparator) || []

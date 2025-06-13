@@ -82,7 +82,7 @@ describe('formatTicketCountData', () => {
         expect(result[0]).toEqual({
             category: 'intent1',
             value: '50',
-            prevValue: null,
+            prevValue: undefined,
         })
     })
 
@@ -93,7 +93,7 @@ describe('formatTicketCountData', () => {
 })
 
 describe('useIntentTicketCountsAndDelta', () => {
-    const mockIntentCustomFieldId = '123'
+    const mockIntentCustomFieldId = 123
     const mockOrder = {
         column: TopProductsPerIntentColumn.Intent,
         direction: OrderDirection.Asc,
