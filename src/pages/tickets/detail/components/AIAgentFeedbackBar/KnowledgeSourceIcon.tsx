@@ -10,27 +10,39 @@ import {
 
 type KnowledgeSourceIconProps = {
     type: KnowledgeSourceType
+    withLabel?: boolean
 }
 
-const KnowledgeSourceIcon = ({ type }: KnowledgeSourceIconProps) => {
+const KnowledgeSourceIcon = ({
+    type,
+    withLabel = false,
+}: KnowledgeSourceIconProps) => {
     if (!KNOWLEDGE_SOURCE_TYPE[type]) {
         return null
     }
 
     if (KNOWLEDGE_SOURCE_TYPE[type].icon === KnowledgeSourceTypeIcon.shopify) {
         return (
-            <img
-                className={css.shopifyLogo}
-                alt="shopify logo"
-                src={shopifyLogo}
-            />
+            <>
+                <img
+                    className={css.shopifyLogo}
+                    alt="shopify logo"
+                    src={shopifyLogo}
+                />
+                {withLabel && <span>{KNOWLEDGE_SOURCE_TYPE[type].label}</span>}
+            </>
         )
     }
 
     return (
-        <Badge className={css.badge}>
-            <i className="material-icons">{KNOWLEDGE_SOURCE_TYPE[type].icon}</i>
-        </Badge>
+        <>
+            <Badge className={css.badge}>
+                <i className="material-icons">
+                    {KNOWLEDGE_SOURCE_TYPE[type].icon}
+                </i>
+            </Badge>
+            {withLabel && <span>{KNOWLEDGE_SOURCE_TYPE[type].label}</span>}
+        </>
     )
 }
 

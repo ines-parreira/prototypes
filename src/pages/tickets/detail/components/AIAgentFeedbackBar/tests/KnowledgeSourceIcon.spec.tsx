@@ -39,4 +39,10 @@ describe('KnowledgeSourceIcon', () => {
         expect(screen.queryByRole('img')).not.toBeInTheDocument()
         expect(screen.queryByText(/./)).toBeNull()
     })
+
+    it('renders label when passed withLabel', () => {
+        render(<KnowledgeSourceIcon type="order" withLabel />)
+
+        expect(screen.getByText('Order')).toBeInTheDocument()
+    })
 })

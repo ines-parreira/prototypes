@@ -2,7 +2,8 @@ import { ldClientMock } from 'jest-launchdarkly-mock'
 
 import { Knowledge } from 'models/aiAgentFeedback/types'
 
-import { getKnowledgeUrl } from '../utils'
+import { AiAgentKnowledgeResourceTypeEnum } from '../types'
+import { getKnowledgeUrl, mapToKnowledgeSourceType } from '../utils'
 
 describe('getKnowledgeUrl', () => {
     beforeEach(() => {
@@ -53,5 +54,35 @@ describe('getKnowledgeUrl', () => {
         } as Knowledge
         const result = getKnowledgeUrl(knowledge, shopType, shopName)
         expect(result).toBe(`/app/settings/macros/123`)
+    })
+})
+
+describe('mapToKnowledgeSourceType', () => {
+    it('should return correct string for each known type', () => {
+        expect(
+            mapToKnowledgeSourceType(AiAgentKnowledgeResourceTypeEnum.ARTICLE),
+        ).toBe('article')
+        expect(
+            mapToKnowledgeSourceType(AiAgentKnowledgeResourceTypeEnum.ACTION),
+        ).toBe('action')
+        expect(
+            mapToKnowledgeSourceType(AiAgentKnowledgeResourceTypeEnum.GUIDANCE),
+        ).toBe('guidance')
+        expect(
+            mapToKnowledgeSourceType(AiAgentKnowledgeResourceTypeEnum.MACRO),
+        ).toBe('macro')
+        expect(
+            mapToKnowledgeSourceType(
+                AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
+            ),
+        ).toBe('website')
+        expect(
+            mapToKnowledgeSourceType(
+                AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
+            ),
+        ).toBe('external_snippet')
+        expect(
+            mapToKnowledgeSourceType(AiAgentKnowledgeResourceTypeEnum.ORDER),
+        ).toBe('order')
     })
 })

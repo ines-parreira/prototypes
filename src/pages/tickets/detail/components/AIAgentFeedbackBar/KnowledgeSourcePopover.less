@@ -1,0 +1,57 @@
+@import (reference) '~css/typography.less';
+@import '~css/new/mixins';
+
+:local {
+    .popoverWrapper {
+        padding: 0;
+    }
+    .popover {
+        width: 304px;
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xxs);
+        padding: 16px;
+
+        .title {
+            .body-semibold();
+            color: var(--neutral-grey-6);
+        }
+
+        .type {
+            display: flex;
+            align-items: center;
+            gap: var(--layout-spacing-xxs);
+            color: var(--neutral-grey-5);
+            .caption-regular();
+        }
+
+        .body {
+            .caption-regular();
+            color: var(--neutral-grey-6);
+            position: relative;
+            display: flex;
+            gap: var(--layout-spacing-xs);
+            padding-left: var(--layout-spacing-xs);
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 2px;
+                height: 100%;
+                background-color: var(--neutral-grey-4);
+                z-index: -1;
+                border-radius: 2px;
+            }
+
+            span {
+                .line-clamp(2);
+                max-height: 32px;
+            }
+        }
+    }
+    a.popover {
+        outline: none;
+    }
+}

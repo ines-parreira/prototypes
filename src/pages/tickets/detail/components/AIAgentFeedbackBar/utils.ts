@@ -1,6 +1,10 @@
 import { Action, Guidance, Knowledge } from 'models/aiAgentFeedback/types'
 import { TicketMessage } from 'models/ticket/types'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import {
+    AiAgentKnowledgeResourceType,
+    AiAgentKnowledgeResourceTypeEnum,
+} from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { getLDClient } from 'utils/launchDarkly'
 
 import { TRIAL_MESSAGE_TAG } from './constants'
@@ -74,4 +78,27 @@ export const isTrialMessageFromAIAgent = (message: TicketMessage) => {
         message?.body_html &&
         message?.body_html.indexOf(TRIAL_MESSAGE_TAG) !== -1
     )
+}
+
+export const mapToKnowledgeSourceType = (
+    type: AiAgentKnowledgeResourceType,
+) => {
+    switch (type) {
+        case AiAgentKnowledgeResourceTypeEnum.ARTICLE:
+            return 'article'
+        case AiAgentKnowledgeResourceTypeEnum.ACTION:
+            return 'action'
+        case AiAgentKnowledgeResourceTypeEnum.GUIDANCE:
+            return 'guidance'
+        case AiAgentKnowledgeResourceTypeEnum.MACRO:
+            return 'macro'
+        case AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET:
+            return 'website'
+        case AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET:
+            return 'external_snippet'
+        case AiAgentKnowledgeResourceTypeEnum.ORDER:
+            return 'order'
+        default:
+            return 'article'
+    }
 }
