@@ -6,7 +6,7 @@ import { TicketMessage as TicketMessageType } from '@gorgias/helpdesk-types'
 
 import { hasFailedAction, isFailed, isPending } from 'models/ticket/predicates'
 import { TicketMessage } from 'models/ticket/types'
-import Actions from 'tickets/ticket-detail/components/MessageActions'
+import { MessageActions } from 'tickets/ticket-detail/components/MessageActions'
 import { MessageAttachments } from 'tickets/ticket-detail/components/MessageAttachments'
 
 import Body from './Body'
@@ -68,7 +68,7 @@ export default function Message({
             />
             <MessageAttachments message={message as TicketMessageType} />
             {!isAIAgentMessage && (
-                <Actions message={message as TicketMessageType} />
+                <MessageActions message={message as TicketMessageType} />
             )}
             <Errors
                 message={message}

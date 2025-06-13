@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 
-import MessageActions from '../MessageActions'
+import { MessageActions } from '../MessageActions'
 import { MessageAttachments } from '../MessageAttachments'
 import { MessageBody } from '../MessageBody'
 
@@ -10,7 +10,9 @@ jest.mock('../MessageAttachments', () => ({
     MessageAttachments: jest.fn(() => null),
 }))
 
-jest.mock('../MessageActions', () => jest.fn(() => null))
+jest.mock('../MessageActions', () => ({
+    MessageActions: jest.fn(() => <div>Actions</div>),
+}))
 
 describe('MessageBody', () => {
     const mockMessage = {

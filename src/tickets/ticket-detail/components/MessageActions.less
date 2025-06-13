@@ -25,4 +25,20 @@
     .spinner {
         margin-right: 5px;
     }
+
+    .tooltipContent {
+        padding-left: var(--layout-spacing-xxs);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .tooltip {
+        :global {
+            .tooltip {
+                // less than the modal z-index (1050 as of today)
+                z-index: 1000 !important;
+            }
+        }
+    }
 }

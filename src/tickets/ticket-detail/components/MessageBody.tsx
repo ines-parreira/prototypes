@@ -4,7 +4,7 @@ import { TicketMessage } from '@gorgias/helpdesk-types'
 
 import { MessageAttachments } from 'tickets/ticket-detail/components/MessageAttachments'
 
-import MessageActions from './MessageActions'
+import { MessageActions } from './MessageActions'
 
 type MessageBodyProps = {
     message: TicketMessage

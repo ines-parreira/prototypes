@@ -7,9 +7,9 @@ import Message from '../Message'
 jest.mock('pages/common/components/AIBanner/AIBanner', () => () => (
     <div>AIBanner</div>
 ))
-jest.mock('tickets/ticket-detail/components/MessageActions', () => () => (
-    <div>Actions</div>
-))
+jest.mock('tickets/ticket-detail/components/MessageActions', () => ({
+    MessageActions: () => <div>Actions</div>,
+}))
 jest.mock('tickets/ticket-detail/components/MessageAttachments', () => ({
     MessageAttachments: () => <div>Attachments</div>,
 }))

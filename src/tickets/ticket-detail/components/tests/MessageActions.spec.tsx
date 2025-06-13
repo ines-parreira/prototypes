@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { TicketMessage } from '@gorgias/helpdesk-types'
 
@@ -8,8 +8,15 @@ import {
     message as defaultMessage,
 } from 'models/ticket/tests/mocks'
 import { Action, ActionStatus } from 'models/ticket/types'
+import { useTicketModalContext } from 'timeline/ticket-modal/hooks/useTicketModalContext'
 
-import MessageActions from '../MessageActions'
+import { MessageActions } from '../MessageActions'
+
+jest.mock('timeline/ticket-modal/hooks/useTicketModalContext', () => ({
+    useTicketModalContext: jest.fn(),
+}))
+
+const useTicketModalContextMock = jest.mocked(useTicketModalContext)
 
 describe('MessageActions', () => {
     const args: Action['arguments'] = {
@@ -76,6 +83,13 @@ describe('MessageActions', () => {
         ],
     } as TicketMessage
 
+    beforeEach(() => {
+        useTicketModalContextMock.mockReturnValue({
+            isInsideTicketModal: false,
+            containerRef: null,
+        })
+    })
+
     it('should display only actions with execution in back-end', () => {
         const { container } = render(<MessageActions message={message} />)
         // 6 actions + 1 header message
@@ -125,7 +139,21 @@ describe('MessageActions', () => {
         expect(screen.getByText(title)).toBeInTheDocument()
     })
 
-    it('should display modal when hovering http or shopify action', async () => {
+    it('should not display tooltip when hovering http or shopify action in ticket modal', () => {
+        useTicketModalContextMock.mockReturnValue({
+            isInsideTicketModal: true,
+            containerRef: null,
+        })
+
+        render(<MessageActions message={message} />)
+        fireEvent.mouseOver(screen.getByText('action1'))
+
+        expect(
+            screen.queryByText('Action failed.', { exact: false }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should display tooltip when hovering http or shopify action', async () => {
         render(<MessageActions message={message} />)
         fireEvent.mouseOver(screen.getByText('action1'))
 
@@ -134,10 +162,14 @@ describe('MessageActions', () => {
         ).toBeInTheDocument()
     })
 
-    it('should open modal when clicking more details on http or shopify tooltip', async () => {
+    it('should handle the display of a shopify modal', async () => {
         const minArguments = {
             restock: true,
             order_id: 1234,
+            object_value: {
+                key: 'is displayed',
+            },
+            tracking_event_name: 'not displayed',
         }
         const messageWithRefund: TicketMessage = {
             ...defaultMessage,
@@ -161,32 +193,99 @@ describe('MessageActions', () => {
         fireEvent.click(await screen.findByText('More details'))
 
         expect(screen.getByText('order_id:')).toBeInTheDocument()
+        expect(
+            screen.getByText('is displayed', { exact: false }),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByText('tracking_event_name:'),
+        ).not.toBeInTheDocument()
+
+        // should close the modal
+        fireEvent.click(screen.getByText('close'))
+
+        await waitFor(() => {
+            expect(screen.queryByText('order_id:')).not.toBeInTheDocument()
+        })
     })
 
-    it('should not crash when passing objects to Shopify actions', async () => {
-        const minArguments = {
-            restock: true,
-            order_id: 1234,
-            object_value: {
-                key: 'value',
-            },
-        }
-        const messageWithRefund: TicketMessage = {
+    it('should handle the display of a http modal', async () => {
+        const messageWithHttp: TicketMessage = {
             ...defaultMessage,
             actions: [
                 {
                     ...defaultAction,
-                    name: MacroActionName.ShopifyFullRefundLastOrder,
-                    title: 'Refund Action',
-                    arguments: minArguments,
+                    name: MacroActionName.Http,
+                    title: 'HTTP Action',
+                    arguments: {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: 'Bearer token123',
+                        },
+                        params: {
+                            userId: '123',
+                            action: 'update',
+                        },
+                        form: {
+                            name: 'John Doe',
+                            email: 'john@example.com',
+                        },
+                        content_type: 'form',
+                    },
+                    response: {
+                        status_code: 200,
+                        response: '{"success": true}',
+                    },
                 },
             ],
         } as TicketMessage
 
-        render(<MessageActions message={messageWithRefund} />)
-        fireEvent.mouseOver(screen.getByText('Refund Action'))
+        render(<MessageActions message={messageWithHttp} />)
+        fireEvent.mouseOver(screen.getByText('HTTP Action'))
+
+        expect(
+            await screen.findByText('Action succeeded.', { exact: false }),
+        ).toBeInTheDocument()
+
         fireEvent.click(await screen.findByText('More details'))
 
-        expect(screen.getByText('order_id:').closest('div')).toBeInTheDocument()
+        expect(screen.getByText('Authorization:')).toBeInTheDocument()
+        expect(screen.getByText('Bearer token123')).toBeInTheDocument()
+        expect(screen.getByText('URL Parameters')).toBeInTheDocument()
+        expect(screen.getByText('123')).toBeInTheDocument()
+        expect(screen.getByText('update')).toBeInTheDocument()
+        expect(screen.getByText('Response')).toBeInTheDocument()
+        expect(screen.getByText('{"success": true}')).toBeInTheDocument()
+    })
+
+    it('should cover several cases of action arguments', () => {
+        const messageWithNoArg = {
+            ...defaultMessage,
+            actions: [
+                {
+                    ...defaultAction,
+                    name: MacroActionName.SetPriority,
+                    title: 'Set Priority',
+                    arguments: { priority: '' },
+                },
+                {
+                    ...defaultAction,
+                    name: MacroActionName.SetAssignee,
+                    title: 'Assign an agent',
+                    arguments: { assignee_user: { name: 'Agent Smith' } },
+                },
+                {
+                    ...defaultAction,
+                    name: MacroActionName.SetAssignee,
+                    title: 'Assign an agent',
+                    arguments: { assignee_user: { id: 123 } },
+                },
+            ],
+        } as TicketMessage
+        render(<MessageActions message={messageWithNoArg} />)
+        expect(screen.getByText('Set Priority: None')).toBeInTheDocument()
+        expect(
+            screen.getByText('Assign an agent: Agent Smith'),
+        ).toBeInTheDocument()
+        expect(screen.getByText('Assign an agent: None')).toBeInTheDocument()
     })
 })
