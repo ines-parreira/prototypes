@@ -165,3 +165,36 @@ export const updateAgentStatusInLiveAgentsQueryCache = (
         },
     )
 }
+
+export const removeAgentStatusInLiveAgentsQueryCache = (
+    agentId: number,
+    callSid: string | undefined,
+    params: ListLiveCallQueueVoiceCallsParams | undefined,
+) => {
+    const queryKey =
+        queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+    appQueryClient.setQueryData<ListLiveCallQueueAgentsQueryResult>(
+        queryKey,
+        (oldData) => {
+            if (!oldData) return
+            const index = oldData.data.data.findIndex(
+                (agent) => agent.id === agentId,
+            )
+            if (index === -1) return oldData // Agent not found, no update needed
+
+            const newData = cloneDeep(oldData)
+            const existingAgent = newData.data.data[index]
+
+            const updatedCallStatuses = (
+                existingAgent.call_statuses ?? []
+            ).filter((cs) => cs.call_sid !== callSid)
+
+            newData.data.data[index] = {
+                ...existingAgent,
+                call_statuses: updatedCallStatuses,
+            }
+            return newData
+        },
+    )
+}

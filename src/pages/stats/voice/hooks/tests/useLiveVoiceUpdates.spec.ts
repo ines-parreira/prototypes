@@ -389,4 +389,134 @@ describe('useLiveVoiceUpdates', () => {
             })
         })
     })
+
+    describe('handles declined/unanswered events', () => {
+        const params = {
+            agent_ids: [1],
+            integration_ids: [2],
+            voice_queue_ids: [3],
+        }
+
+        const mockDeclinedEvent = {
+            dataschema: '//helpdesk/phone.voice-call.inbound.declined/1.0.0',
+            data: {
+                voice_call_id: 123,
+                account_id: 1,
+                user_id: 1,
+            },
+        } as DomainEvent
+        const mockUnansweredEvent = {
+            dataschema: '//helpdesk/phone.voice-call.inbound.declined/1.0.0',
+            data: {
+                voice_call_id: 123,
+                account_id: 1,
+                user_id: 1,
+            },
+        } as DomainEvent
+        const agentStatus = {
+            id: 1,
+            name: 'Test Agent',
+            profile_picture_url: null,
+            online: false,
+            available: false,
+            forward_calls: false,
+            forward_when_offline: false,
+            is_available_for_call: false,
+            phone_integration_ids: [],
+            voice_queue_ids: [],
+            call_statuses: [
+                {
+                    call_sid: 'abc',
+                    status: 'ringing',
+                    created_datetime: mockedDate.toISOString(),
+                },
+            ],
+        }
+
+        it.each([mockUnansweredEvent, mockDeclinedEvent])(
+            'should update agent status in the list when an agent declines a call',
+            (event) => {
+                const queryKey =
+                    queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+                const mockOldData = {
+                    data: {
+                        data: [agentStatus],
+                    },
+                }
+                appQueryClient.setQueryData(queryKey, mockOldData)
+
+                const { result } = renderHook(() =>
+                    useLiveVoiceUpdates(params, voiceCalls),
+                )
+
+                result.current.handleEvent(event)
+
+                expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                    data: {
+                        data: [
+                            {
+                                ...agentStatus,
+                                call_statuses: [],
+                            },
+                        ],
+                    },
+                })
+            },
+        )
+
+        it.each([mockUnansweredEvent, mockDeclinedEvent])(
+            'should not update agent status in the list if agent is not in the list',
+            (event) => {
+                const queryKey =
+                    queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+                const mockOldData = {
+                    data: {
+                        data: [],
+                    },
+                }
+                appQueryClient.setQueryData(queryKey, mockOldData)
+
+                const { result } = renderHook(() =>
+                    useLiveVoiceUpdates(params, voiceCalls),
+                )
+
+                result.current.handleEvent(event)
+
+                expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                    data: {
+                        data: [],
+                    },
+                })
+            },
+        )
+
+        it.each([mockUnansweredEvent, mockDeclinedEvent])(
+            'should not update agent status in the list if the call is not in the list',
+            (event) => {
+                const queryKey =
+                    queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+                const mockOldData = {
+                    data: {
+                        data: [agentStatus],
+                    },
+                }
+                appQueryClient.setQueryData(queryKey, mockOldData)
+
+                const { result } = renderHook(() =>
+                    useLiveVoiceUpdates(params, []),
+                )
+
+                result.current.handleEvent(event)
+
+                expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                    data: {
+                        data: [agentStatus],
+                    },
+                })
+            },
+        )
+    })
 })

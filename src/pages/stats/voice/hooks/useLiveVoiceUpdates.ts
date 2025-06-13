@@ -15,6 +15,7 @@ import { FeatureFlagKey } from 'config/featureFlags'
 
 import {
     addVoiceCallToLiveCallsQueryCache,
+    removeAgentStatusInLiveAgentsQueryCache,
     transformDateToUTCString,
     updateAgentStatusInLiveAgentsQueryCache,
     updateVoiceCallInLiveCallsQueryCache,
@@ -90,6 +91,18 @@ export const useLiveVoiceUpdates = (
                             call_sid: voiceCallSid,
                             created_datetime: new Date().toISOString(),
                         },
+                        params,
+                    )
+                }
+                break
+            }
+            case '//helpdesk/phone.voice-call.inbound.declined/1.0.0':
+            case '//helpdesk/phone.voice-call.inbound.unanswered/1.0.0': {
+                const voiceCallSid = voiceCallIdToSid[event.data.voice_call_id]
+                if (voiceCallSid) {
+                    removeAgentStatusInLiveAgentsQueryCache(
+                        event.data.user_id,
+                        voiceCallSid,
                         params,
                     )
                 }
