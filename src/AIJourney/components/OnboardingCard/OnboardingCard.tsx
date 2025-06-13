@@ -4,7 +4,12 @@ import { useHistory } from 'react-router-dom'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
-import { EnableDiscountField, FollowUpField } from './fields'
+import { FieldPresentation } from '..'
+import {
+    EnableDiscountField,
+    FollowUpField,
+    MaximumDiscountField,
+} from './fields'
 
 import css from './OnboardingCard.less'
 
@@ -22,12 +27,16 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
     const history = useHistory()
 
     const [isDiscountEnabled, setIsDiscountEnabled] = useState(false)
+    const [followUpValue, setFollowUpValue] = useState<number>()
+    const [discountValue, setDiscountValue] = useState('')
 
     const handleDiscountToggle = () => {
         setIsDiscountEnabled((prev) => !prev)
     }
 
-    const [followUpValue, setFollowUpValue] = useState<number>()
+    const handleMaximumDiscountChange = (newValue: string) => {
+        setDiscountValue(newValue)
+    }
     const followUpOptions = [1, 2, 3]
 
     return (
@@ -37,15 +46,29 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
                 <div style={{ marginBottom: '16px' }}>
                     <span>{currentStep} step</span>
                 </div>
-                <FollowUpField
-                    options={followUpOptions}
-                    value={followUpValue}
-                    onChange={setFollowUpValue}
-                />
-                <EnableDiscountField
-                    isEnabled={isDiscountEnabled}
-                    onChange={handleDiscountToggle}
-                />
+                {isActivationStep ? (
+                    <FieldPresentation
+                        name="Test phone number"
+                        description="Select the phone number to preview your campaign"
+                    />
+                ) : (
+                    <>
+                        <FollowUpField
+                            value={followUpValue}
+                            options={followUpOptions}
+                            onChange={setFollowUpValue}
+                        />
+                        <EnableDiscountField
+                            isEnabled={isDiscountEnabled}
+                            onChange={handleDiscountToggle}
+                        />
+                        <MaximumDiscountField
+                            value={discountValue}
+                            isDisabled={!isDiscountEnabled}
+                            onChange={handleMaximumDiscountChange}
+                        />
+                    </>
+                )}
                 <Button
                     onClick={() => history.push('/app/ai-journey/activation')}
                     isDisabled={isActivationStep}

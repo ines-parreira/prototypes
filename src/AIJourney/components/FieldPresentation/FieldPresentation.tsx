@@ -2,7 +2,7 @@ import css from './FieldPresentation.less'
 
 type FieldPresentationProps = {
     name: string
-    description: string
+    description?: string
 }
 
 export const FieldPresentation = ({

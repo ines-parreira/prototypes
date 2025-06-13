@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { render } from '@testing-library/react'
 
 import { OnboardingStepSelector } from './OnboardingStepSelector'
@@ -27,16 +25,10 @@ describe('<OnboardingStepSelector />', () => {
     })
     it('should render active step with correct modifier', () => {
         const { container } = render(<OnboardingStepSelector steps={steps} />)
-        const activeIndicator = container.querySelectorAll(
-            '.stepIndicator--active',
-        )
-        expect(activeIndicator.length).toBe(1)
-        expect(activeIndicator).not.toBeNull()
-        expect(activeIndicator[0]?.textContent).toBe('2')
 
-        const activeStepName = container.querySelectorAll('.stepName--active')
+        const activeStepName = container.querySelectorAll('.step--active')
         expect(activeStepName.length).toBe(1)
         expect(activeStepName).not.toBeNull()
-        expect(activeStepName[0]?.textContent).toBe('Activation')
+        expect(activeStepName[0]?.textContent).toContain('Activation')
     })
 })

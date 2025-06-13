@@ -13,19 +13,16 @@ export const OnboardingStep = ({
     stepIndicator,
     isActive,
 }: OnboardingStepProps) => {
-    const stepIndicatorClass = classNames(css.stepIndicator, {
-        [css['stepIndicator--active']]: isActive,
-    })
-    const stepNameClass = classNames(css.stepName, {
-        [css['stepName--active']]: isActive,
+    const stepClass = classNames(css.step, {
+        [css['step--active']]: isActive,
     })
 
     return (
-        <div className={css.step}>
+        <div className={stepClass}>
             <div className={css.stepIndicatorMargin}>
-                <div className={stepIndicatorClass}>{stepIndicator}</div>
+                <div className={css.stepIndicator}>{stepIndicator}</div>
             </div>
-            <span className={stepNameClass}>{stepName}</span>
+            <span className={css.stepName}>{stepName}</span>
         </div>
     )
 }

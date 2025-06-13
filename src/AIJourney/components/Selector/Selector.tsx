@@ -18,9 +18,7 @@ export const Selector = ({ options, value, onChange }: SelectorProps) => {
     const handleOptionChange = useCallback(
         (optionIndex: number) => {
             setSelectedOptionIndex(optionIndex)
-            if (onChange) {
-                onChange(options?.[optionIndex])
-            }
+            onChange?.(options?.[optionIndex])
         },
         [options, onChange],
     )
