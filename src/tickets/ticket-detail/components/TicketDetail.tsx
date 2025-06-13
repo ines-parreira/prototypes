@@ -6,7 +6,6 @@ import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 import { useTicket } from '../hooks/useTicket'
 import { TicketBody } from './TicketBody'
 import { TicketHeader } from './TicketHeader'
-import { TicketSummary } from './TicketSummary'
 
 import css from './TicketDetail.less'
 
@@ -40,12 +39,11 @@ export function TicketDetail({
                         <p>Loading ticket...</p>
                     </div>
                 ) : (
-                    <>
-                        <TicketSummary ticket={ticket} />
-                        <div className={css.body}>
-                            <TicketBody elements={body} />
-                        </div>
-                    </>
+                    <TicketBody
+                        elements={body}
+                        ticketId={ticketId}
+                        summary={ticket.summary}
+                    />
                 )}
             </div>
         </div>

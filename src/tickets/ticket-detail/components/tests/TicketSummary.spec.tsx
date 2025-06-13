@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import type { Ticket } from '@gorgias/helpdesk-types'
+import type { TicketSummary as TicketSummaryType } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
 import { assumeMock } from 'utils/testing'
@@ -19,9 +19,11 @@ describe('TicketSummary', () => {
         useFlagMock.mockReturnValue(false)
     })
 
+    const props = { ticketId: 1, summary: {} as TicketSummaryType }
+
     it('should not render the ticket summary is the feature flag is disabled', () => {
-        const ticket = { id: 1, summary: 'yep' } as unknown as Ticket
-        render(<TicketSummary ticket={ticket} />)
+        render(<TicketSummary {...props} />)
+
         expect(
             screen.queryByText('TicketSummarySection'),
         ).not.toBeInTheDocument()
@@ -29,8 +31,9 @@ describe('TicketSummary', () => {
 
     it('should render the ticket summary is the feature flag is enabled', () => {
         useFlagMock.mockReturnValue(true)
-        const ticket = { id: 1, summary: 'yep' } as unknown as Ticket
-        render(<TicketSummary ticket={ticket} />)
+
+        render(<TicketSummary {...props} />)
+
         expect(screen.getByText('TicketSummarySection')).toBeInTheDocument()
     })
 })

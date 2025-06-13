@@ -23,10 +23,6 @@ jest.mock('../TicketHeader', () => ({
     TicketHeader: jest.fn(() => <div>TicketHeader</div>),
 }))
 
-jest.mock('../TicketSummary', () => ({
-    TicketSummary: () => <div>TicketSummary</div>,
-}))
-
 describe('TicketDetail', () => {
     beforeEach(() => {
         useTicketMock.mockReturnValue({
@@ -62,17 +58,6 @@ describe('TicketDetail', () => {
             },
             {},
         )
-    })
-
-    it('should render the ticket summary once the ticket is loaded', () => {
-        useTicketMock.mockReturnValue({
-            body: [],
-            isLoading: false,
-            ticket: { id: 1 } as Ticket,
-        })
-        render(<TicketDetail ticketId={1} />)
-
-        expect(screen.getByText('TicketSummary')).toBeInTheDocument()
     })
 
     it('should render the ticket body once the has loaded', () => {
