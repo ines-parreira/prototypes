@@ -50,7 +50,7 @@ export const useGuidanceArticles = (
  */
 export const useMultipleGuidanceArticles = (
     guidanceHelpCenterIds: number[],
-    overrides?: Parameters<typeof useGetHelpCenterArticleList>[2],
+    overrides?: Parameters<typeof useGetMultipleHelpCenterArticleLists>[2],
     paramsOverrides?: Paths.ListArticles.QueryParameters,
 ) => {
     const {

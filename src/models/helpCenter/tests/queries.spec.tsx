@@ -16,6 +16,7 @@ import { renderHook } from 'utils/testing/renderHook'
 
 import { HELP_CENTER_ROOT_CATEGORY_ID } from '../../../pages/settings/helpCenter/constants'
 import {
+    fetchAllPagesForHelpCenter,
     useCreateFileIngestion,
     useDeleteFileIngestion,
     useGetArticleIngestionArticlesTitleAndStatus,
@@ -79,6 +80,93 @@ const wrapper = ({ children }: any) => (
 
 const helpCenterId = 1
 const mockUseHelpCenterApi = jest.mocked(useHelpCenterApi)
+
+// Define article mock data that matches the expected structure at the top level
+const mockArticles = [
+    {
+        id: 1,
+        unlisted_id: 'unlisted1',
+        created_datetime: '2023-01-01T00:00:00Z',
+        updated_datetime: '2023-01-02T00:00:00Z',
+        ingested_resource_id: 1,
+        category_id: 100,
+        help_center_id: 1,
+        available_locales: ['en-US'],
+        translation: {
+            created_datetime: '2023-01-01T00:00:00Z',
+            updated_datetime: '2023-01-02T00:00:00Z',
+            title: 'Article 1',
+            excerpt: 'Excerpt 1',
+            content: 'Content 1',
+            slug: 'article-1',
+            locale: 'en-US',
+            article_id: 1,
+            category_id: 100,
+            article_unlisted_id: 'unlisted1',
+            seo_meta: { title: null, description: null },
+            visibility_status: 'PUBLIC',
+            is_current: true,
+            rating: { up: 0, down: 0 },
+        },
+        rating: { up: 0, down: 0 },
+    },
+    {
+        id: 2,
+        unlisted_id: 'unlisted2',
+        created_datetime: '2023-01-01T00:00:00Z',
+        updated_datetime: '2023-01-02T00:00:00Z',
+        ingested_resource_id: 1,
+        category_id: 100,
+        slug: 'article-2',
+        help_center_id: 2,
+        available_locales: ['en-US'],
+        translation: {
+            created_datetime: '2023-01-01T00:00:00Z',
+            updated_datetime: '2023-01-02T00:00:00Z',
+            title: 'Article 2',
+            excerpt: 'Excerpt 2',
+            content: 'Content 2',
+            slug: 'article-2',
+            locale: 'en-US',
+            article_id: 2,
+            category_id: 100,
+            article_unlisted_id: 'unlisted2',
+            seo_meta: { title: null, description: null },
+            visibility_status: 'PUBLIC',
+            is_current: true,
+            rating: { up: 0, down: 0 },
+        },
+        rating: { up: 0, down: 0 },
+    },
+    {
+        id: 3,
+        unlisted_id: 'unlisted3',
+        created_datetime: '2023-01-01T00:00:00Z',
+        updated_datetime: '2023-01-02T00:00:00Z',
+        ingested_resource_id: 1,
+        category_id: 100,
+        slug: 'article-3',
+        help_center_id: 3,
+        available_locales: ['en-US'],
+        translation: {
+            created_datetime: '2023-01-01T00:00:00Z',
+            updated_datetime: '2023-01-02T00:00:00Z',
+            title: 'Article 3',
+            excerpt: 'Excerpt 3',
+            content: 'Content 3',
+            slug: 'article-3',
+            locale: 'en-US',
+            article_id: 3,
+            category_id: 100,
+            article_unlisted_id: 'unlisted3',
+            seo_meta: { title: null, description: null },
+            visibility_status: 'PUBLIC',
+            is_current: true,
+            rating: { up: 0, down: 0 },
+        },
+        rating: { up: 0, down: 0 },
+    },
+] as Components.Schemas.ArticleListDataDto[]
 
 describe('queries', () => {
     beforeEach(() => {
@@ -308,19 +396,19 @@ describe('queries', () => {
                 1,
                 expect.anything(),
                 { help_center_id: helpCenterIds[0] },
-                queryParams,
+                { ...queryParams, page: 1 },
             )
             expect(getHelpCenterArticles).toHaveBeenNthCalledWith(
                 2,
                 expect.anything(),
                 { help_center_id: helpCenterIds[1] },
-                queryParams,
+                { ...queryParams, page: 1 },
             )
             expect(getHelpCenterArticles).toHaveBeenNthCalledWith(
                 3,
                 expect.anything(),
                 { help_center_id: helpCenterIds[2] },
-                queryParams,
+                { ...queryParams, page: 1 },
             )
         })
 
@@ -412,7 +500,7 @@ describe('queries', () => {
             expect(getHelpCenterArticles).toHaveBeenCalledWith(
                 expect.anything(),
                 { help_center_id: 3 },
-                queryParams,
+                { ...queryParams, page: 1 },
             )
         })
     })
@@ -1552,6 +1640,248 @@ describe('queries', () => {
                 wrapper,
             })
             expect(getKnowledgeStatus).toHaveBeenCalledTimes(0)
+        })
+    })
+
+    describe('fetchAllPagesForHelpCenter', () => {
+        const mockClient = {} as any
+        const helpCenterId = 1
+        const baseQueryParams = { locale: 'en-US' as const }
+
+        beforeEach(() => {
+            jest.clearAllMocks()
+        })
+
+        it('should fetch single page when nb_pages is 1', async () => {
+            const mockResponse = {
+                data: [mockArticles[0]],
+                meta: {
+                    page: 1,
+                    per_page: 1000,
+                    current_page: '1',
+                    item_count: 1,
+                    nb_pages: 1,
+                },
+                object: 'list' as const,
+            }
+            getHelpCenterArticles.mockResolvedValue(mockResponse)
+
+            const result = await fetchAllPagesForHelpCenter({
+                client: mockClient,
+                helpCenterId,
+                queryParams: baseQueryParams,
+            })
+
+            expect(getHelpCenterArticles).toHaveBeenCalledTimes(1)
+            expect(getHelpCenterArticles).toHaveBeenCalledWith(
+                mockClient,
+                { help_center_id: helpCenterId },
+                { ...baseQueryParams, page: 1 },
+            )
+            expect(result.data).toEqual([mockArticles[0]])
+            expect(result.meta.item_count).toBe(1)
+        })
+
+        it('should fetch multiple pages when nb_pages > 1', async () => {
+            const firstPageResponse = {
+                data: [mockArticles[0]],
+                meta: {
+                    page: 1,
+                    per_page: 1,
+                    current_page: '1',
+                    item_count: 3,
+                    nb_pages: 3,
+                },
+                object: 'list',
+            }
+            const secondPageResponse = {
+                data: [mockArticles[1]],
+                meta: {
+                    page: 2,
+                    per_page: 1,
+                    current_page: '2',
+                    item_count: 3,
+                    nb_pages: 3,
+                },
+                object: 'list',
+            }
+            const thirdPageResponse = {
+                data: [mockArticles[2]],
+                meta: {
+                    page: 3,
+                    per_page: 1,
+                    current_page: '3',
+                    item_count: 3,
+                    nb_pages: 3,
+                },
+                object: 'list',
+            }
+
+            getHelpCenterArticles
+                .mockResolvedValueOnce(firstPageResponse as any)
+                .mockResolvedValueOnce(secondPageResponse as any)
+                .mockResolvedValueOnce(thirdPageResponse as any)
+
+            const result = await fetchAllPagesForHelpCenter({
+                client: mockClient,
+                helpCenterId,
+                queryParams: baseQueryParams,
+            })
+
+            expect(getHelpCenterArticles).toHaveBeenCalledTimes(3)
+            expect(getHelpCenterArticles).toHaveBeenNthCalledWith(
+                1,
+                mockClient,
+                { help_center_id: helpCenterId },
+                { ...baseQueryParams, page: 1 },
+            )
+            expect(getHelpCenterArticles).toHaveBeenNthCalledWith(
+                2,
+                mockClient,
+                { help_center_id: helpCenterId },
+                { ...baseQueryParams, page: 2 },
+            )
+            expect(getHelpCenterArticles).toHaveBeenNthCalledWith(
+                3,
+                mockClient,
+                { help_center_id: helpCenterId },
+                { ...baseQueryParams, page: 3 },
+            )
+
+            expect(result.data).toEqual([
+                mockArticles[0],
+                mockArticles[1],
+                mockArticles[2],
+            ])
+            expect(result.meta.item_count).toBe(3)
+        })
+
+        it('should handle empty first page response gracefully', async () => {
+            const emptyResponse = {
+                data: [],
+                meta: {
+                    page: 1,
+                    per_page: 1000,
+                    current_page: '1',
+                    item_count: 0,
+                    nb_pages: 1,
+                },
+                object: 'list',
+            }
+            getHelpCenterArticles.mockResolvedValue(emptyResponse as any)
+
+            const result = await fetchAllPagesForHelpCenter({
+                client: mockClient,
+                helpCenterId,
+                queryParams: baseQueryParams,
+            })
+
+            expect(getHelpCenterArticles).toHaveBeenCalledTimes(1)
+            expect(result.data).toEqual([])
+            expect(result.meta.item_count).toBe(0)
+        })
+
+        it('should continue fetching when subsequent pages return null', async () => {
+            const firstPageResponse = {
+                data: [mockArticles[0]],
+                meta: {
+                    page: 1,
+                    per_page: 1,
+                    current_page: '1',
+                    item_count: 2,
+                    nb_pages: 2,
+                },
+                object: 'list',
+            }
+
+            getHelpCenterArticles
+                .mockResolvedValueOnce(firstPageResponse as any)
+                .mockResolvedValueOnce(null) // Second page returns null
+
+            const result = await fetchAllPagesForHelpCenter({
+                client: mockClient,
+                helpCenterId,
+                queryParams: baseQueryParams,
+            })
+
+            expect(getHelpCenterArticles).toHaveBeenCalledTimes(2)
+            expect(result.data).toEqual([mockArticles[0]])
+            expect(result.meta.item_count).toBe(1)
+        })
+
+        it('should handle missing meta information', async () => {
+            const responseWithoutMeta = {
+                data: [mockArticles[0]],
+                meta: null,
+                object: 'list',
+            }
+            getHelpCenterArticles.mockResolvedValue(responseWithoutMeta as any)
+
+            const result = await fetchAllPagesForHelpCenter({
+                client: mockClient,
+                helpCenterId,
+                queryParams: baseQueryParams,
+            })
+
+            expect(getHelpCenterArticles).toHaveBeenCalledTimes(1)
+            expect(result.data).toEqual([mockArticles[0]])
+            expect(result.meta).toEqual({
+                item_count: 1,
+                page: 1,
+                per_page: 1000,
+                current_page: '1',
+                nb_pages: 1,
+            })
+        })
+
+        it('should handle large number of pages efficiently', async () => {
+            const pageSize = 100
+            const totalItems = 2500 // Should result in 25 pages
+            const totalPages = Math.ceil(totalItems / pageSize)
+
+            // Mock first page response
+            const firstPageResponse = {
+                data: Array(pageSize).fill(mockArticles[0]),
+                meta: {
+                    page: 1,
+                    per_page: pageSize,
+                    current_page: '1',
+                    item_count: totalItems,
+                    nb_pages: totalPages,
+                },
+                object: 'list',
+            }
+
+            // Setup mock to return appropriate responses for each page
+            getHelpCenterArticles.mockResolvedValue({
+                data: Array(pageSize).fill(mockArticles[0]),
+                meta: firstPageResponse.meta,
+                object: 'list',
+            })
+
+            const result = await fetchAllPagesForHelpCenter({
+                client: mockClient,
+                helpCenterId,
+                queryParams: { ...baseQueryParams, per_page: pageSize },
+            })
+
+            expect(getHelpCenterArticles).toHaveBeenCalledTimes(totalPages)
+            expect(result.data).toHaveLength(totalItems)
+            expect(result.meta.item_count).toBe(totalItems)
+
+            // Verify first and last page calls
+            expect(getHelpCenterArticles).toHaveBeenNthCalledWith(
+                1,
+                mockClient,
+                { help_center_id: helpCenterId },
+                { ...baseQueryParams, per_page: pageSize, page: 1 },
+            )
+            expect(getHelpCenterArticles).toHaveBeenNthCalledWith(
+                totalPages,
+                mockClient,
+                { help_center_id: helpCenterId },
+                { ...baseQueryParams, per_page: pageSize, page: totalPages },
+            )
         })
     })
 })

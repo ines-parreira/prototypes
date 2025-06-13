@@ -7,6 +7,7 @@ import {
     UseQueryOptions,
 } from '@tanstack/react-query'
 
+import { HelpCenterClient } from 'rest_api/help_center_api/client'
 import { MutationOverrides } from 'types/query'
 
 import { useHelpCenterApi } from '../../pages/settings/helpCenter/hooks/useHelpCenterApi'
@@ -170,6 +171,59 @@ export const useGetHelpCenterArticleList = (
     })
 }
 
+export const fetchAllPagesForHelpCenter = async ({
+    client,
+    helpCenterId,
+    queryParams,
+}: {
+    client?: HelpCenterClient
+    helpCenterId: Paths.ListArticles.Parameters.HelpCenterId
+    queryParams: Paths.ListArticles.QueryParameters
+}): Promise<{
+    data: NonNullable<Awaited<ReturnType<typeof getHelpCenterArticles>>>['data']
+    meta: NonNullable<Awaited<ReturnType<typeof getHelpCenterArticles>>>['meta']
+}> => {
+    let allData: NonNullable<
+        Awaited<ReturnType<typeof getHelpCenterArticles>>
+    >['data'] = []
+    let totalPages = 1
+    let finalMeta:
+        | NonNullable<Awaited<ReturnType<typeof getHelpCenterArticles>>>['meta']
+        | null = null
+
+    // Fetch first page to get total pages
+    const firstResponse = await getHelpCenterArticles(
+        client,
+        { help_center_id: helpCenterId },
+        { ...queryParams, page: 1 },
+    )
+
+    allData.push(...(firstResponse?.data || []))
+    totalPages = firstResponse?.meta?.nb_pages || 1
+    finalMeta = firstResponse?.meta ?? {
+        item_count: 0,
+        page: 1,
+        per_page: 1000,
+        current_page: '1',
+        nb_pages: 1,
+    }
+
+    // Fetch remaining pages sequentially
+    for (let page = 2; page <= totalPages; page++) {
+        const response = await getHelpCenterArticles(
+            client,
+            { help_center_id: helpCenterId },
+            { ...queryParams, page },
+        )
+        allData.push(...(response?.data || []))
+    }
+
+    return {
+        data: allData,
+        meta: { ...finalMeta, item_count: allData.length },
+    }
+}
+
 /**
  * Hook to fetch articles from multiple help centers in parallel
  */
@@ -177,7 +231,7 @@ export const useGetMultipleHelpCenterArticleLists = (
     helpCenterIds: Paths.ListArticles.Parameters.HelpCenterId[],
     queryParams: Paths.ListArticles.QueryParameters,
     overrides?: UseQueryOptions<
-        Awaited<ReturnType<typeof getHelpCenterArticles>>
+        Awaited<ReturnType<typeof fetchAllPagesForHelpCenter>>
     >,
 ) => {
     const { client } = useHelpCenterApi()
@@ -186,11 +240,11 @@ export const useGetMultipleHelpCenterArticleLists = (
         queries: helpCenterIds.map((helpCenterId) => ({
             queryKey: helpCenterKeys.articles(helpCenterId, queryParams),
             queryFn: async () =>
-                getHelpCenterArticles(
+                fetchAllPagesForHelpCenter({
                     client,
-                    { help_center_id: helpCenterId },
+                    helpCenterId,
                     queryParams,
-                ),
+                }),
             ...overrides,
             enabled:
                 !!client &&
@@ -206,6 +260,7 @@ export const useGetMultipleHelpCenterArticleLists = (
     const articles = useMemo(() => {
         return queries.flatMap((query, index) => {
             const helpCenterId = helpCenterIds[index]
+
             return (query.data?.data || []).map((article) => ({
                 ...article,
                 helpCenterId, // Add helpCenterId to each article
