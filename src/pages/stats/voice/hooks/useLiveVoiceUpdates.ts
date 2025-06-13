@@ -108,6 +108,51 @@ export const useLiveVoiceUpdates = (
                 }
                 break
             }
+            case '//helpdesk/phone.voice-call.inbound.answered/1.0.0': {
+                updateVoiceCallInLiveCallsQueryCache(
+                    {
+                        id: event.data.voice_call_id,
+                        last_answered_by_agent_id: event.data.user_id,
+                        status: VoiceCallStatus.Answered,
+                    },
+                    params,
+                )
+                const voiceCallSid = voiceCallIdToSid[event.data.voice_call_id]
+                if (voiceCallSid) {
+                    updateAgentStatusInLiveAgentsQueryCache(
+                        event.data.user_id,
+                        {
+                            status: VoiceCallStatus.InProgress,
+                            call_sid: voiceCallSid,
+                            created_datetime: new Date().toISOString(),
+                        },
+                        params,
+                    )
+                }
+                break
+            }
+            case '//helpdesk/phone.voice-call.inbound.ticket-associated/1.0.0': {
+                updateVoiceCallInLiveCallsQueryCache(
+                    {
+                        id: event.data.voice_call_id,
+                        ticket_id: event.data.ticket_id,
+                    },
+                    params,
+                )
+                break
+            }
+            case '//helpdesk/phone.voice-call.inbound.enqueued/1.1.0': {
+                updateVoiceCallInLiveCallsQueryCache(
+                    {
+                        id: event.data.voice_call_id,
+                        status: VoiceCallStatus.Queued,
+                        queue_id: event.data.queue_id,
+                        status_in_queue: event.data.status_in_queue,
+                    },
+                    params,
+                )
+                break
+            }
         }
     }
 
