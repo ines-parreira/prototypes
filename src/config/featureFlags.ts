@@ -114,6 +114,7 @@ export enum FeatureFlagKey {
     MacroArchives = 'macro-archives',
     MacroForwardByEmail = 'macro-forward-by-email',
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',
+    MessagesTranslations = 'linear.introduce-native-translations-for-inbound-and-outbound-messages.fe-implementation',
     MLFeaturesKillswitch = 'ml-features-killswitch',
     MultiStore = 'linear.project_multistore.enable_multistore',
     NewDomainVerification = 'new-domain-verification',
