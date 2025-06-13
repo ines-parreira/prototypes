@@ -29,7 +29,7 @@ declare namespace Components {
         export interface CreateTokenBodyDto {
             auth_code: string
             store_name: string
-            store_type: 'shopify'
+            store_type: 'shopify' | 'bigcommerce' | 'magento2'
         }
         export interface CreateTokenResponseDto {
             connection_id: string
@@ -3410,14 +3410,14 @@ declare namespace Components {
                 | null
             state?: {
                 store?: {
-                    type: 'shopify'
+                    type: 'shopify' | 'bigcommerce' | 'magento2'
                     name: string
                     helpdesk_integration_id: number
                 } | null
                 preview_mode?: boolean | null
                 channel: 'chat' | 'help-center' | 'contact-form' | 'email'
                 channel_integration_id?: number | null
-                trigger: 'llm-prompt'
+                trigger?: 'llm-prompt'
                 entrypoint?: 'llm-conversation'
                 objects?: {
                     customer?: {
@@ -4460,7 +4460,7 @@ declare namespace Components {
                                       | string
                               } | null
                               store?: {
-                                  type: 'shopify'
+                                  type: 'shopify' | 'bigcommerce' | 'magento2'
                                   name: string
                                   helpdesk_integration_id: number
                               } | null
@@ -5256,7 +5256,7 @@ declare namespace Components {
               }
         )[]
         export type ListStoreAppResponseDto = {
-            store_type: 'shopify'
+            store_type: 'shopify' | 'bigcommerce' | 'magento2'
             store_name: string
             account_id: number
             integration_id: number
@@ -6250,7 +6250,7 @@ declare namespace Components {
         export type ListTrackstarConnectionsResponseDto = {
             connection_id: string
             store_name: string
-            store_type: 'shopify'
+            store_type: 'shopify' | 'bigcommerce' | 'magento2'
             account_id: number
             integration_name:
                 | 'sandbox'
@@ -8378,14 +8378,14 @@ declare namespace Components {
                   status?: 'success' | 'error' | 'partial_success'
                   state: {
                       store?: {
-                          type: 'shopify'
+                          type: 'shopify' | 'bigcommerce' | 'magento2'
                           name: string
                           helpdesk_integration_id: number
                       } | null
                       preview_mode?: boolean | null
                       channel: 'chat' | 'help-center' | 'contact-form' | 'email'
                       channel_integration_id?: number | null
-                      trigger: 'llm-prompt'
+                      trigger?: 'llm-prompt'
                       entrypoint?: 'llm-conversation'
                       objects?: {
                           customer?: {
@@ -9532,7 +9532,10 @@ declare namespace Components {
                                             | string
                                     } | null
                                     store?: {
-                                        type: 'shopify'
+                                        type:
+                                            | 'shopify'
+                                            | 'bigcommerce'
+                                            | 'magento2'
                                         name: string
                                         helpdesk_integration_id: number
                                     } | null
@@ -11112,14 +11115,14 @@ declare namespace Components {
                   status?: 'success' | 'error' | 'partial_success'
                   state: {
                       store?: {
-                          type: 'shopify'
+                          type: 'shopify' | 'bigcommerce' | 'magento2'
                           name: string
                           helpdesk_integration_id: number
                       } | null
                       preview_mode?: boolean | null
                       channel: 'chat' | 'help-center' | 'contact-form' | 'email'
                       channel_integration_id?: number | null
-                      trigger: 'llm-prompt'
+                      trigger?: 'llm-prompt'
                       entrypoint?: 'llm-conversation'
                       objects?: {
                           customer?: {
@@ -12266,7 +12269,10 @@ declare namespace Components {
                                             | string
                                     } | null
                                     store?: {
-                                        type: 'shopify'
+                                        type:
+                                            | 'shopify'
+                                            | 'bigcommerce'
+                                            | 'magento2'
                                         name: string
                                         helpdesk_integration_id: number
                                     } | null
@@ -13217,14 +13223,14 @@ declare namespace Components {
                 | null
             state?: {
                 store?: {
-                    type: 'shopify'
+                    type: 'shopify' | 'bigcommerce' | 'magento2'
                     name: string
                     helpdesk_integration_id: number
                 } | null
                 preview_mode?: boolean | null
                 channel: 'chat' | 'help-center' | 'contact-form' | 'email'
                 channel_integration_id?: number | null
-                trigger: 'llm-prompt'
+                trigger?: 'llm-prompt'
                 entrypoint?: 'llm-conversation'
                 objects?: {
                     customer?: {
@@ -14267,7 +14273,7 @@ declare namespace Components {
                                       | string
                               } | null
                               store?: {
-                                  type: 'shopify'
+                                  type: 'shopify' | 'bigcommerce' | 'magento2'
                                   name: string
                                   helpdesk_integration_id: number
                               } | null
@@ -15085,7 +15091,7 @@ declare namespace Components {
             integration_id: number
         }
         export interface UpsertStoreAppResponseDto {
-            store_type: 'shopify'
+            store_type: 'shopify' | 'bigcommerce' | 'magento2'
             store_name: string
             account_id: number
             integration_id: number
@@ -20355,7 +20361,7 @@ declare namespace Paths {
     namespace StoreAppControllerDelete {
         namespace Parameters {
             export type StoreName = string
-            export type StoreType = 'shopify'
+            export type StoreType = 'shopify' | 'bigcommerce' | 'magento2'
             export type Type = 'recharge'
         }
         export interface PathParameters {
@@ -20370,7 +20376,7 @@ declare namespace Paths {
     namespace StoreAppControllerList {
         namespace Parameters {
             export type StoreName = string
-            export type StoreType = 'shopify'
+            export type StoreType = 'shopify' | 'bigcommerce' | 'magento2'
         }
         export interface PathParameters {
             store_type: Parameters.StoreType
@@ -20383,7 +20389,7 @@ declare namespace Paths {
     namespace StoreAppControllerUpsert {
         namespace Parameters {
             export type StoreName = string
-            export type StoreType = 'shopify'
+            export type StoreType = 'shopify' | 'bigcommerce' | 'magento2'
             export type Type = 'recharge'
         }
         export interface PathParameters {
@@ -20399,8 +20405,9 @@ declare namespace Paths {
     }
     namespace StoreWfConfigurationControllerList {
         namespace Parameters {
+            export type Enabled = '0' | '1' | 'true' | 'false'
             export type StoreName = string
-            export type StoreType = 'shopify'
+            export type StoreType = 'shopify' | 'bigcommerce' | 'magento2'
             export type Triggers = (
                 | 'llm-prompt'
                 | 'channel'
@@ -20413,6 +20420,7 @@ declare namespace Paths {
         }
         export interface QueryParameters {
             triggers: Parameters.Triggers
+            enabled?: Parameters.Enabled
         }
         namespace Responses {
             export type $200 =
@@ -20423,7 +20431,7 @@ declare namespace Paths {
         namespace Parameters {
             export type InternalId = string
             export type StoreName = string
-            export type StoreType = 'shopify'
+            export type StoreType = 'shopify' | 'bigcommerce' | 'magento2'
         }
         export interface PathParameters {
             store_type: Parameters.StoreType
@@ -20441,7 +20449,7 @@ declare namespace Paths {
         namespace Parameters {
             export type AccountId = number
             export type StoreName = string
-            export type StoreType = 'shopify'
+            export type StoreType = 'shopify' | 'bigcommerce' | 'magento2'
         }
         export interface PathParameters {
             account_id: Parameters.AccountId
@@ -20467,7 +20475,7 @@ declare namespace Paths {
     namespace TrackstarControllerList {
         namespace Parameters {
             export type StoreName = string
-            export type StoreType = 'shopify'
+            export type StoreType = 'shopify' | 'bigcommerce' | 'magento2'
         }
         export interface PathParameters {
             store_type: Parameters.StoreType
@@ -20571,7 +20579,6 @@ declare namespace Paths {
             export type Page = number
             export type StartDate = string // date-time
             export type Status = ('success' | 'error' | 'partial_success')[]
-            export type Success = '0' | '1' | 'true' | 'false'
         }
         export interface PathParameters {
             internal_id: Parameters.InternalId
@@ -20579,7 +20586,6 @@ declare namespace Paths {
         export interface QueryParameters {
             order_by?: Parameters.OrderBy
             page?: Parameters.Page
-            success?: Parameters.Success
             status?: Parameters.Status
             end_date: Parameters.EndDate /* date-time */
             start_date: Parameters.StartDate /* date-time */

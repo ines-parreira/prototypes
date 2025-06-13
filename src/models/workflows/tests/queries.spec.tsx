@@ -15,6 +15,7 @@ import {
     useGetConfigurationExecution,
     useGetConfigurationExecutionLogs,
     useGetConfigurationExecutions,
+    useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
     useListActionsApps,
     useListTrackstarConnections,
@@ -381,6 +382,83 @@ describe('queries', () => {
 
             await waitFor(() => expect(result.current.isSuccess).toEqual(true))
             expect(result.current.data?.data).toEqual(tokenResponse)
+        })
+    })
+
+    describe('useGetStoreWorkflowsConfigurations()', () => {
+        it('should handle enabled parameter correctly when it is true', async () => {
+            const mockResponse = { data: [] }
+
+            mockedServer
+                .onPost(/auth/)
+                .reply(200, {})
+                .onGet(/\/stores\/.*\/.*\/configurations/)
+                .reply(function (config) {
+                    expect(config.params.enabled).toBe('true')
+                    return [200, mockResponse]
+                })
+
+            const { result } = renderHookWithQueryClientProvider(() =>
+                useGetStoreWorkflowsConfigurations({
+                    storeName: 'test-store',
+                    storeType: 'shopify',
+                    triggers: ['llm-prompt'],
+                    enabled: true,
+                }),
+            )
+
+            await waitFor(() => expect(result.current.isSuccess).toEqual(true))
+            expect(result.current.data).toEqual(mockResponse)
+        })
+
+        it('should handle enabled parameter correctly when it is false', async () => {
+            const mockResponse = { data: [] }
+
+            mockedServer
+                .onPost(/auth/)
+                .reply(200, {})
+                .onGet(/\/stores\/.*\/.*\/configurations/)
+                .reply(function (config) {
+                    expect(config.params.enabled).toBe('false')
+                    return [200, mockResponse]
+                })
+
+            const { result } = renderHookWithQueryClientProvider(() =>
+                useGetStoreWorkflowsConfigurations({
+                    storeName: 'test-store',
+                    storeType: 'shopify',
+                    triggers: ['llm-prompt'],
+                    enabled: false,
+                }),
+            )
+
+            await waitFor(() => expect(result.current.isSuccess).toEqual(true))
+            expect(result.current.data).toEqual(mockResponse)
+        })
+
+        it('should not include enabled parameter when it is undefined', async () => {
+            const mockResponse = { data: [] }
+
+            mockedServer
+                .onPost(/auth/)
+                .reply(200, {})
+                .onGet(/\/stores\/.*\/.*\/configurations/)
+                .reply(function (config) {
+                    expect(config.params.enabled).toBeUndefined()
+                    return [200, mockResponse]
+                })
+
+            const { result } = renderHookWithQueryClientProvider(() =>
+                useGetStoreWorkflowsConfigurations({
+                    storeName: 'test-store',
+                    storeType: 'shopify',
+                    triggers: ['llm-prompt'],
+                    enabled: undefined,
+                }),
+            )
+
+            await waitFor(() => expect(result.current.isSuccess).toEqual(true))
+            expect(result.current.data).toEqual(mockResponse)
         })
     })
 })

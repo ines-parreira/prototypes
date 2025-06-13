@@ -12,6 +12,7 @@ export const useGetGuidancesAvailableActions = (
             storeName: shopName,
             storeType: shopType,
             triggers: ['llm-prompt'],
+            enabled: true,
         })
 
     const guidanceActions: GuidanceAction[] = useMemo(() => {

@@ -56,6 +56,7 @@ describe('useGetGuidancesAvailableActions', () => {
             storeName: 'store1',
             storeType: 'shopify',
             triggers: ['llm-prompt'],
+            enabled: true,
         })
     })
 })
