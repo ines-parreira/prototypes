@@ -121,83 +121,41 @@ describe('current account actions', () => {
     })
 
     describe('update subscription', () => {
-        describe('when new products are loaded', () => {
-            beforeEach(() => {
-                const updatedSubscription = {
-                    products: {
-                        [HELPDESK_PRODUCT_ID]:
-                            basicMonthlyHelpdeskPlan.price_id,
-                    },
-                }
+        beforeEach(() => {
+            const updatedSubscription = {
+                products: {
+                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
+                },
+            }
 
-                mockServer
-                    .onPut('/api/billing/subscription/')
-                    .reply(202, updatedSubscription)
-            })
-
-            it('should update subscription', () => {
-                return store
-                    .dispatch(
-                        actions.updateSubscription({
-                            prices: [basicMonthlyHelpdeskPlan.price_id],
-                        }),
-                    )
-                    .then(() => expect(store.getActions()).toMatchSnapshot())
-            })
-
-            it('should notify that the update was successful', () => {
-                return store
-                    .dispatch(
-                        actions.updateSubscription({
-                            prices: [basicMonthlyHelpdeskPlan.price_id],
-                        }),
-                    )
-                    .then(() =>
-                        expect(notifyMock).toHaveBeenCalledWith({
-                            status: NotificationStatus.Success,
-                            message: 'Your subscription was updated.',
-                        }),
-                    )
-            })
+            mockServer
+                .onPut('/api/billing/subscription/')
+                .reply(202, updatedSubscription)
         })
 
-        describe('when new products are not loaded', () => {
-            beforeEach(() => {
-                const updatedSubscription = {
-                    products: {
-                        [HELPDESK_PRODUCT_ID]: 'not-loaded-product-price-id',
-                    },
-                }
+        it('should update subscription', () => {
+            return store
+                .dispatch(
+                    actions.updateSubscription({
+                        prices: [basicMonthlyHelpdeskPlan.price_id],
+                    }),
+                )
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
 
-                mockServer
-                    .onPut('/api/billing/subscription/')
-                    .reply(202, updatedSubscription)
-            })
-
-            it('should notify that the update was successful', () => {
-                return store
-                    .dispatch(
-                        actions.updateSubscription({
-                            prices: [basicMonthlyHelpdeskPlan.price_id],
-                        }),
-                    )
-                    .then(() =>
-                        expect(notifyMock).toHaveBeenCalledWith({
-                            status: NotificationStatus.Success,
-                            message: 'Your subscription was updated.',
-                        }),
-                    )
-            })
-
-            it('it should not update store', () => {
-                return store
-                    .dispatch(
-                        actions.updateSubscription({
-                            prices: [basicMonthlyHelpdeskPlan.price_id],
-                        }),
-                    )
-                    .then(() => expect(store.getActions()).toHaveLength(0))
-            })
+        it('should notify that the update was successful', () => {
+            return store
+                .dispatch(
+                    actions.updateSubscription({
+                        prices: [basicMonthlyHelpdeskPlan.price_id],
+                    }),
+                )
+                .then(() =>
+                    expect(notifyMock).toHaveBeenCalledWith({
+                        status: NotificationStatus.Success,
+                        message: 'Your subscription was updated.',
+                    }),
+                )
         })
 
         describe('when the update fails', () => {

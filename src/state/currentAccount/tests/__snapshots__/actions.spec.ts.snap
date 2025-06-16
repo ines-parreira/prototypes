@@ -122,7 +122,7 @@ exports[`current account actions update subscription product plans updates the l
 ]
 `;
 
-exports[`current account actions update subscription when new products are loaded should update subscription 1`] = `
+exports[`current account actions update subscription should update subscription 1`] = `
 [
   {
     "subscription": {
