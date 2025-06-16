@@ -292,34 +292,39 @@ const AIAgentSimplifiedFeedback = () => {
                                   : 'No knowledge used'}
                         </div>
 
-                        <MissingKnowledgeSelect
-                            helpCenterId={storeConfiguration?.helpCenterId}
-                            guidanceHelpCenterId={
-                                storeConfiguration?.guidanceHelpCenterId
-                            }
-                            snippetHelpCenterId={
-                                storeConfiguration?.snippetHelpCenterId
-                            }
-                            knowledgeResources={enrichedData.knowledgeResources}
-                            enrichedData={{
-                                isLoading: isLoadingEnrichedData,
-                                enrichedData,
-                                actions,
-                                macros,
-                                articles,
-                                guidanceArticles,
-                                sourceItems,
-                                ingestedFiles,
-                                helpCenters,
-                                storeWebsiteQuestions,
-                            }}
-                            onSubmit={onSubmitMissingKnowledge}
-                            onRemove={onSubmitMissingKnowledge}
-                            initialValues={
-                                enrichedData.suggestedResources ?? []
-                            }
-                            accountId={accountId}
-                        />
+                        {shopName && (
+                            <MissingKnowledgeSelect
+                                helpCenterId={storeConfiguration?.helpCenterId}
+                                guidanceHelpCenterId={
+                                    storeConfiguration?.guidanceHelpCenterId
+                                }
+                                snippetHelpCenterId={
+                                    storeConfiguration?.snippetHelpCenterId
+                                }
+                                knowledgeResources={
+                                    enrichedData.knowledgeResources
+                                }
+                                enrichedData={{
+                                    isLoading: isLoadingEnrichedData,
+                                    enrichedData,
+                                    actions,
+                                    macros,
+                                    articles,
+                                    guidanceArticles,
+                                    sourceItems,
+                                    ingestedFiles,
+                                    helpCenters,
+                                    storeWebsiteQuestions,
+                                }}
+                                onSubmit={onSubmitMissingKnowledge}
+                                onRemove={onSubmitMissingKnowledge}
+                                initialValues={
+                                    enrichedData.suggestedResources ?? []
+                                }
+                                accountId={accountId}
+                                shopName={shopName}
+                            />
+                        )}
 
                         <CreateKnowledgeSection
                             shopName={shopName as string}

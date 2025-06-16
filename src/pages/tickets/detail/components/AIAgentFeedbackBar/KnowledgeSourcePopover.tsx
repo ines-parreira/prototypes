@@ -4,15 +4,15 @@ import { Popover } from 'components/Popover'
 import { useTimeout } from 'hooks/useTimeout'
 import KnowledgeSourceIcon from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceIcon'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePopover.less'
-import {
-    AiAgentKnowledgeResourceTypeEnum,
-    KnowledgeResource,
-} from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { mapToKnowledgeSourceType } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import { stripHTML } from 'utils'
 
 type KnowledgeSourcePopoverProps = {
-    resource: KnowledgeResource
+    url: string
+    title: string
+    content: string
+    type: AiAgentKnowledgeResourceTypeEnum
     children: (
         ref: React.RefObject<HTMLElement>,
         eventHandlers: {
@@ -23,30 +23,29 @@ type KnowledgeSourcePopoverProps = {
 }
 
 const KnowledgeSourcePopover = ({
-    resource,
+    url,
+    title,
+    content,
+    type,
     children,
 }: KnowledgeSourcePopoverProps) => {
     const triggerRef = useRef<HTMLElement>(null)
     const [isOpen, setIsOpen] = useState(false)
     const [setTimeout, clearTimeout] = useTimeout()
 
-    const { href, title, body } = useMemo(() => {
-        const { metadata, resource: res } = resource
+    const { href, popoverTitle, body } = useMemo(() => {
         const showBody = [
             AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
             AiAgentKnowledgeResourceTypeEnum.MACRO,
             AiAgentKnowledgeResourceTypeEnum.ARTICLE,
-        ].includes(res.resourceType as AiAgentKnowledgeResourceTypeEnum)
+        ].includes(type)
 
         return {
-            href: metadata?.url ?? '',
-            title: metadata?.title ?? '',
-            body:
-                showBody && metadata?.content
-                    ? stripHTML(metadata.content)
-                    : null,
+            href: url ?? '',
+            popoverTitle: title || '',
+            body: showBody && content ? stripHTML(content) : null,
         }
-    }, [resource])
+    }, [url, title, content, type])
 
     const openPopover = useCallback(() => {
         clearTimeout()
@@ -91,13 +90,11 @@ const KnowledgeSourcePopover = ({
                     >
                         <div className={css.type}>
                             <KnowledgeSourceIcon
-                                type={mapToKnowledgeSourceType(
-                                    resource.resource.resourceType,
-                                )}
+                                type={mapToKnowledgeSourceType(type)}
                                 withLabel
                             />
                         </div>
-                        <div className={css.title}>{title}</div>
+                        <div className={css.title}>{popoverTitle}</div>
                         {body && (
                             <div className={css.body}>
                                 <span>{body}</span>

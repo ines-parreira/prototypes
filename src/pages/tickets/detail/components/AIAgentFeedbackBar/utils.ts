@@ -93,9 +93,9 @@ export const mapToKnowledgeSourceType = (
         case AiAgentKnowledgeResourceTypeEnum.MACRO:
             return 'macro'
         case AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET:
-            return 'website'
-        case AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET:
             return 'external_snippet'
+        case AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET:
+            return 'link'
         case AiAgentKnowledgeResourceTypeEnum.ORDER:
             return 'order'
         default:

@@ -75,12 +75,12 @@ describe('mapToKnowledgeSourceType', () => {
             mapToKnowledgeSourceType(
                 AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
             ),
-        ).toBe('website')
+        ).toBe('external_snippet')
         expect(
             mapToKnowledgeSourceType(
                 AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
             ),
-        ).toBe('external_snippet')
+        ).toBe('link')
         expect(
             mapToKnowledgeSourceType(AiAgentKnowledgeResourceTypeEnum.ORDER),
         ).toBe('order')

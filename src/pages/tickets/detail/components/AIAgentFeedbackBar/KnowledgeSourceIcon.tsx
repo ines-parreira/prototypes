@@ -1,21 +1,25 @@
+import cs from 'classnames'
+
 import { Badge } from '@gorgias/merchant-ui-kit'
 
 import shopifyLogo from 'assets/img/icons/shopifyStore.svg'
-import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import {
     KNOWLEDGE_SOURCE_TYPE,
     KnowledgeSourceType,
     KnowledgeSourceTypeIcon,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
+import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceIcon.less'
 
 type KnowledgeSourceIconProps = {
     type: KnowledgeSourceType
     withLabel?: boolean
+    badgeIconClassname?: string
 }
 
 const KnowledgeSourceIcon = ({
     type,
     withLabel = false,
+    badgeIconClassname,
 }: KnowledgeSourceIconProps) => {
     if (!KNOWLEDGE_SOURCE_TYPE[type]) {
         return null
@@ -25,7 +29,7 @@ const KnowledgeSourceIcon = ({
         return (
             <>
                 <img
-                    className={css.shopifyLogo}
+                    className={css.imageLogo}
                     alt="shopify logo"
                     src={shopifyLogo}
                 />
@@ -36,7 +40,7 @@ const KnowledgeSourceIcon = ({
 
     return (
         <>
-            <Badge className={css.badge}>
+            <Badge className={cs(css.badge, badgeIconClassname)}>
                 <i className="material-icons">
                     {KNOWLEDGE_SOURCE_TYPE[type].icon}
                 </i>

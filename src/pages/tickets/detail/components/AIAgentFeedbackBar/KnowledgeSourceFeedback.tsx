@@ -9,6 +9,7 @@ import KnowledgeSourceIcon from 'pages/tickets/detail/components/AIAgentFeedback
 import KnowledgeSourcePopover from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePopover'
 import {
     AiAgentBinaryFeedbackEnum,
+    AiAgentKnowledgeResourceTypeEnum,
     KnowledgeResource,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { mapToKnowledgeSourceType } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
@@ -54,9 +55,17 @@ const KnowledgeSourceFeedback = ({
         ? resource.feedback?.feedbackValue === AiAgentBinaryFeedbackEnum.DOWN
         : false
 
+    const popoverProps = {
+        url: href || '',
+        title: resource.metadata?.title || resource.resource?.resourceTitle,
+        content: resource.metadata?.content,
+        type: resource.resource
+            .resourceType as AiAgentKnowledgeResourceTypeEnum,
+    }
+
     return (
         <div className={css.source}>
-            <KnowledgeSourcePopover resource={resource}>
+            <KnowledgeSourcePopover {...popoverProps}>
                 {(ref, eventHandlers) => (
                     <a
                         href={isDeleted || !href ? undefined : href}

@@ -1,5 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
+import { getResourceMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
+import { assumeMock } from 'utils/testing'
+
 import MissingKnowledgeSelect, { KnowledgeTag } from '../MissingKnowledgeSelect'
 import {
     AiAgentKnowledgeResourceTypeEnum,
@@ -113,13 +116,30 @@ jest.mock('../constants', () => {
     }
 })
 
+jest.mock(
+    'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData',
+    () => ({
+        getResourceMetadata: jest.fn(),
+    }),
+)
+
+const getResourceMetadataMock = assumeMock(getResourceMetadata)
+
 describe('MissingKnowledgeSelect', () => {
+    beforeEach(() => {
+        getResourceMetadataMock.mockReturnValue({
+            title: '',
+            content: '',
+            isDeleted: false,
+        })
+    })
     it('renders correctly and handles selection and submission', () => {
         const onSubmit = jest.fn()
         const onRemove = jest.fn()
 
         render(
             <MissingKnowledgeSelect
+                shopName="test-shop"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}
@@ -151,6 +171,7 @@ describe('MissingKnowledgeSelect', () => {
 
         render(
             <MissingKnowledgeSelect
+                shopName="test-shop"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}
@@ -173,10 +194,15 @@ describe('MissingKnowledgeSelect', () => {
         render(
             <KnowledgeTag
                 choice={{
+                    meta: {
+                        url: 'https://example.com',
+                        title: 'Knowledge Tag Test',
+                        content: 'This is a test',
+                    },
+                    type: AiAgentKnowledgeResourceTypeEnum.MACRO,
                     displayLabel: 'Macros::Macro Test',
                     label: 'Macros::Macro Test',
                     value: '1',
-                    type: 'MACRO' as AiAgentKnowledgeResourceTypeEnum,
                 }}
                 handleRemove={handleRemove}
             />,
@@ -197,6 +223,7 @@ describe('MissingKnowledgeSelect', () => {
 
         render(
             <MissingKnowledgeSelect
+                shopName="test-shop"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}
@@ -219,6 +246,7 @@ describe('MissingKnowledgeSelect', () => {
 
         render(
             <MissingKnowledgeSelect
+                shopName="test-shop"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}
@@ -249,6 +277,7 @@ describe('MissingKnowledgeSelect', () => {
 
         render(
             <MissingKnowledgeSelect
+                shopName="test-shop"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}
@@ -277,6 +306,7 @@ describe('MissingKnowledgeSelect', () => {
                 enrichedData={enrichedDataMock}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
+                shopName="test-shop"
                 knowledgeResources={[
                     createResource(
                         '3',
@@ -322,6 +352,7 @@ describe('MissingKnowledgeSelect', () => {
         // Set up component with multiple pre-selected values
         render(
             <MissingKnowledgeSelect
+                shopName="test-shop"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}
@@ -387,6 +418,7 @@ describe('MissingKnowledgeSelect', () => {
 
         render(
             <MissingKnowledgeSelect
+                shopName="test-shop"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}
@@ -427,6 +459,7 @@ describe('MissingKnowledgeSelect', () => {
 
         render(
             <MissingKnowledgeSelect
+                shopName="test-shop"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}
@@ -473,6 +506,7 @@ describe('MissingKnowledgeSelect', () => {
 
         render(
             <MissingKnowledgeSelect
+                shopName="test-shop"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}
@@ -503,6 +537,11 @@ describe('MissingKnowledgeSelect', () => {
         render(
             <KnowledgeTag
                 choice={{
+                    meta: {
+                        url: 'https://example.com',
+                        title: 'Knowledge Tag Test',
+                        content: 'This is a test',
+                    },
                     displayLabel: 'Test::No Icon Mapping',
                     label: 'Test::No Icon Mapping',
                     value: 'test2',
@@ -519,6 +558,11 @@ describe('MissingKnowledgeSelect', () => {
         render(
             <KnowledgeTag
                 choice={{
+                    meta: {
+                        url: 'https://example.com',
+                        title: 'Knowledge Tag Test',
+                        content: 'This is a test',
+                    },
                     displayLabel:
                         'Test::This is an extremely long text that would normally overflow in a constrained container and trigger the overflow condition in line 268',
                     label: 'Test::This is an extremely long text that would normally overflow in a constrained container and trigger the overflow condition in line 268',
@@ -563,6 +607,7 @@ describe('MissingKnowledgeSelect', () => {
 
         const { container } = render(
             <MissingKnowledgeSelect
+                shopName="test-shop"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}
@@ -598,6 +643,7 @@ describe('MissingKnowledgeSelect', () => {
 
         render(
             <MissingKnowledgeSelect
+                shopName="test-shop"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}
@@ -654,6 +700,7 @@ describe('MissingKnowledgeSelect', () => {
 
         render(
             <MissingKnowledgeSelect
+                shopName="test-shop"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}

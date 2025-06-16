@@ -1,6 +1,14 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, {
+    RefObject,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react'
 
-import { Badge, BadgeIcon, Label, Tooltip } from '@gorgias/merchant-ui-kit'
+import cn from 'classnames'
+
+import { Badge, BadgeIcon, Label } from '@gorgias/merchant-ui-kit'
 
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'
@@ -12,12 +20,16 @@ import {
     SIMPLIFIED_TO_DEFAULT_KNOWLEDGE_SOURCE_ICON_MAP,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
 import KnowledgeSourceIcon from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceIcon'
+import KnowledgeSourcePopover from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePopover'
 import {
     AiAgentKnowledgeResourceTypeEnum,
     KnowledgeResource,
     SuggestedResource,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import { useEnrichFeedbackData } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
+import {
+    getResourceMetadata,
+    useEnrichFeedbackData,
+} from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
 
 type MissingKnowledgeSelectProps = {
     helpCenterId?: number | null
@@ -30,9 +42,15 @@ type MissingKnowledgeSelectProps = {
     onRemove: (choice: Array<ChoiceOption>) => void
     disabled?: boolean
     knowledgeResources?: KnowledgeResource[]
+    shopName: string
 }
 
 export type ChoiceOption = {
+    meta: {
+        url?: string
+        title?: string
+        content?: string
+    }
     label: string
     value: string
     type: AiAgentKnowledgeResourceTypeEnum
@@ -51,143 +69,208 @@ const MissingKnowledgeSelect = ({
     accountId,
     enrichedData,
     disabled,
+    shopName,
 }: MissingKnowledgeSelectProps) => {
     const [values, setValues] = useState<string[]>([])
 
-    const choices = useMemo(
-        () =>
-            [
-                // Order is important here, as it determines the order of the options in the select dropdown
-                // GUIDANCES
-                ...enrichedData.guidanceArticles
-                    .filter((guidance) => {
-                        return !knowledgeResources?.find(
-                            (resource) =>
-                                resource.resource.resourceId ===
-                                    guidance.id.toString() &&
-                                resource.resource.resourceType === 'GUIDANCE',
-                        )
-                    })
-                    .map((guidance) => ({
-                        label: `${SIMPLIFIED_RESOURCE_LABELS.guidance}${guidance.title}`,
-                        value: guidance.id.toString(),
-                        type: 'GUIDANCE',
-                        hide:
-                            guidance.helpCenterId !== guidanceHelpCenterId ||
-                            guidance.visibility === 'UNLISTED',
-                    })),
-                // ACTIONS
-                ...enrichedData.actions
-                    .filter((action) => {
-                        return !knowledgeResources?.find(
-                            (resource) =>
-                                resource.resource.resourceId ===
-                                    action.id.toString() &&
-                                resource.resource.resourceType === 'ACTION',
-                        )
-                    })
-                    .map((action) => ({
-                        label: `${SIMPLIFIED_RESOURCE_LABELS.action}${action.name}`,
-                        value: action.id.toString(),
-                        type: 'ACTION',
-                        hide: action?.entrypoints?.[0]?.deactivated_datetime,
-                    })),
-                // HELP CENTER ARTICLES
-                ...enrichedData.articles
-                    .filter((article) => {
-                        return !knowledgeResources?.find(
-                            (resource) =>
-                                resource.resource.resourceId ===
-                                    article.id.toString() &&
-                                resource.resource.resourceType === 'ARTICLE',
-                        )
-                    })
-                    .map((article) => ({
-                        label: `${SIMPLIFIED_RESOURCE_LABELS.article}${article.translation.title}`,
-                        value: article.id.toString(),
-                        type: 'ARTICLE',
-                        hide:
-                            article.helpCenterId !== helpCenterId ||
-                            !article.translation.is_current,
-                    })),
-                //MACROS
-                ...enrichedData.macros
-                    .filter((macro) => {
-                        return !knowledgeResources?.find(
-                            (resource) =>
-                                resource.resource.resourceId ===
-                                    macro.id?.toString() &&
-                                resource.resource.resourceType === 'MACRO',
-                        )
-                    })
-                    .map((macro) => ({
-                        label: `${SIMPLIFIED_RESOURCE_LABELS.macro}${macro.name}`,
-                        value: macro.id?.toString(),
-                        type: 'MACRO',
-                    })),
-                // EXTERNAL WEBSITE LINKS
-                ...enrichedData.sourceItems
-                    .filter((snippet) => {
-                        return !knowledgeResources?.find(
-                            (resource) =>
-                                resource.resource.resourceId ===
-                                    snippet.id.toString() &&
-                                resource.resource.resourceType ===
-                                    'EXTERNAL_SNIPPET',
-                        )
-                    })
-                    .map((snippet) => ({
-                        label: `${SIMPLIFIED_RESOURCE_LABELS.external_snippet}${snippet.url}`,
-                        value: snippet.id.toString(),
-                        type: 'EXTERNAL_SNIPPET',
-                        hide:
-                            snippet.helpCenterId !== snippetHelpCenterId ||
-                            snippet.status !== 'done',
-                    })),
-                //EXTERNAL FILES
-                ...enrichedData.ingestedFiles
-                    .filter((file) => {
-                        return !knowledgeResources?.find(
-                            (resource) =>
-                                resource.resource.resourceId ===
-                                    file.id.toString() &&
-                                resource.resource.resourceType ===
-                                    'FILE_EXTERNAL_SNIPPET',
-                        )
-                    })
-                    .map((snippet) => ({
-                        label: `${SIMPLIFIED_RESOURCE_LABELS.file_external_snippet}${snippet.filename}`,
-                        value: snippet.id.toString(),
-                        type: 'FILE_EXTERNAL_SNIPPET',
-                        hide:
-                            snippet.helpCenterId !== snippetHelpCenterId ||
-                            snippet.status !== 'SUCCESSFUL',
-                    })),
-                ...enrichedData.storeWebsiteQuestions
-                    .filter((question) => {
-                        return !knowledgeResources?.find(
-                            (resource) =>
-                                resource.resource.resourceId ===
-                                    question.id.toString() &&
-                                resource.resource.resourceType ===
-                                    'EXTERNAL_SNIPPET',
-                        )
-                    })
-                    .map((question) => ({
-                        label: `${SIMPLIFIED_RESOURCE_LABELS.store_website}${question.title}`,
-                        value: question.id.toString(),
-                        type: 'EXTERNAL_SNIPPET',
-                        hide: question.helpCenterId !== snippetHelpCenterId,
-                    })),
-            ] as ChoiceOption[],
-        [
-            enrichedData,
-            helpCenterId,
-            guidanceHelpCenterId,
-            snippetHelpCenterId,
-            knowledgeResources,
-        ],
-    )
+    const choices = useMemo(() => {
+        const resourcesData = {
+            articles: enrichedData.articles,
+            guidanceArticles: enrichedData.guidanceArticles,
+            sourceItems: enrichedData.sourceItems,
+            ingestedFiles: enrichedData.ingestedFiles,
+            macros: enrichedData.macros,
+            actions: enrichedData.actions,
+            helpCenters: enrichedData.helpCenters,
+            storeWebsiteQuestions: enrichedData.storeWebsiteQuestions,
+        }
+        return [
+            // Order is important here, as it determines the order of the options in the select dropdown
+            // GUIDANCES
+            ...enrichedData.guidanceArticles
+                .filter((guidance) => {
+                    return !knowledgeResources?.find(
+                        (resource) =>
+                            resource.resource.resourceId ===
+                                guidance.id.toString() &&
+                            resource.resource.resourceType ===
+                                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                    )
+                })
+                .map((guidance) => ({
+                    meta: getResourceMetadata(
+                        {
+                            id: guidance.id.toString(),
+                            type: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                        },
+                        shopName,
+                        resourcesData,
+                    ),
+                    label: `${SIMPLIFIED_RESOURCE_LABELS.guidance}${guidance.title}`,
+                    value: guidance.id.toString(),
+                    type: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                    hide:
+                        guidance.helpCenterId !== guidanceHelpCenterId ||
+                        guidance.visibility === 'UNLISTED',
+                })),
+            // ACTIONS
+            ...enrichedData.actions
+                .filter((action) => {
+                    return !knowledgeResources?.find(
+                        (resource) =>
+                            resource.resource.resourceId ===
+                                action.id.toString() &&
+                            resource.resource.resourceType ===
+                                AiAgentKnowledgeResourceTypeEnum.ACTION,
+                    )
+                })
+                .map((action) => ({
+                    meta: getResourceMetadata(
+                        {
+                            id: action.id,
+                            type: AiAgentKnowledgeResourceTypeEnum.ACTION,
+                        },
+                        shopName,
+                        resourcesData,
+                    ),
+                    label: `${SIMPLIFIED_RESOURCE_LABELS.action}${action.name}`,
+                    value: action.id.toString(),
+                    type: 'ACTION',
+                    hide: action?.entrypoints?.[0]?.deactivated_datetime,
+                })),
+            // HELP CENTER ARTICLES
+            ...enrichedData.articles
+                .filter((article) => {
+                    return !knowledgeResources?.find(
+                        (resource) =>
+                            resource.resource.resourceId ===
+                                article.id.toString() &&
+                            resource.resource.resourceType ===
+                                AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    )
+                })
+                .map((article) => ({
+                    meta: getResourceMetadata(
+                        {
+                            id: article.id.toString(),
+                            type: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                        },
+                        shopName,
+                        resourcesData,
+                    ),
+                    label: `${SIMPLIFIED_RESOURCE_LABELS.article}${article.translation.title}`,
+                    value: article.id.toString(),
+                    type: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    hide:
+                        article.helpCenterId !== helpCenterId ||
+                        !article.translation.is_current,
+                })),
+            //MACROS
+            ...enrichedData.macros
+                .filter((macro) => {
+                    return !knowledgeResources?.find(
+                        (resource) =>
+                            resource.resource.resourceId ===
+                                macro.id?.toString() &&
+                            resource.resource.resourceType ===
+                                AiAgentKnowledgeResourceTypeEnum.MACRO,
+                    )
+                })
+                .map((macro) => ({
+                    meta:
+                        macro.id &&
+                        getResourceMetadata(
+                            {
+                                id: macro.id.toString(),
+                                type: AiAgentKnowledgeResourceTypeEnum.MACRO,
+                            },
+                            shopName,
+                            resourcesData,
+                        ),
+                    label: `${SIMPLIFIED_RESOURCE_LABELS.macro}${macro.name}`,
+                    value: macro.id?.toString(),
+                    type: AiAgentKnowledgeResourceTypeEnum.MACRO,
+                })),
+            // EXTERNAL WEBSITE LINKS
+            ...enrichedData.sourceItems
+                .filter((snippet) => {
+                    return !knowledgeResources?.find(
+                        (resource) =>
+                            resource.resource.resourceId ===
+                                snippet.id.toString() &&
+                            resource.resource.resourceType ===
+                                AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
+                    )
+                })
+                .map((snippet) => ({
+                    meta: getResourceMetadata(
+                        {
+                            id: snippet.id.toString(),
+                            type: AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
+                        },
+                        shopName,
+                        resourcesData,
+                    ),
+                    label: `${SIMPLIFIED_RESOURCE_LABELS.external_snippet}${snippet.url}`,
+                    value: snippet.id.toString(),
+                    type: AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
+                    hide:
+                        snippet.helpCenterId !== snippetHelpCenterId ||
+                        snippet.status !== 'done',
+                })),
+            //EXTERNAL FILES
+            ...enrichedData.ingestedFiles
+                .filter((file) => {
+                    return !knowledgeResources?.find(
+                        (resource) =>
+                            resource.resource.resourceId ===
+                                file.id.toString() &&
+                            resource.resource.resourceType ===
+                                AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
+                    )
+                })
+                .map((snippet) => ({
+                    meta: getResourceMetadata(
+                        {
+                            id: snippet.id.toString(),
+                            type: AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
+                        },
+                        shopName,
+                        resourcesData,
+                    ),
+                    label: `${SIMPLIFIED_RESOURCE_LABELS.file_external_snippet}${snippet.filename}`,
+                    value: snippet.id.toString(),
+                    type: AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
+                    hide:
+                        snippet.helpCenterId !== snippetHelpCenterId ||
+                        snippet.status !== 'SUCCESSFUL',
+                })),
+            ...enrichedData.storeWebsiteQuestions
+                .filter((question) => {
+                    return !knowledgeResources?.find(
+                        (resource) =>
+                            resource.resource.resourceId ===
+                                question.id.toString() &&
+                            resource.resource.resourceType ===
+                                AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
+                    )
+                })
+                .map((question) => ({
+                    resource: question,
+                    label: `${SIMPLIFIED_RESOURCE_LABELS.store_website}${question.title}`,
+                    value: question.id.toString(),
+                    type: AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
+                    hide: question.helpCenterId !== snippetHelpCenterId,
+                })),
+        ] as ChoiceOption[]
+    }, [
+        enrichedData,
+        helpCenterId,
+        guidanceHelpCenterId,
+        snippetHelpCenterId,
+        knowledgeResources,
+        shopName,
+    ])
 
     const makeLabelsUnique = useCallback((choices: ChoiceOption[]) => {
         const labelCounts = new Map<string, number>()
@@ -394,51 +477,60 @@ type KnowledgeTagProps = {
 }
 
 export const KnowledgeTag = ({ choice, handleRemove }: KnowledgeTagProps) => {
-    const tagRef = React.useRef<HTMLSpanElement>(null)
-
-    const isOverflowing = tagRef.current
-        ? tagRef.current.scrollWidth > tagRef.current.offsetWidth
-        : false
-
     if (!choice) {
         return null
     }
 
+    const { meta, type } = choice
+
+    const popoverProps = {
+        url: meta?.url || '',
+        title: meta?.title || '',
+        content: meta?.content || '',
+        type,
+    }
     const label = choice.displayLabel.split('::').pop()
 
     return (
-        <>
-            <Badge
-                type={'light-dark'}
-                className={css.tag}
-                upperCase={false}
-                corner="square"
-            >
-                {!!SIMPLIFIED_TO_DEFAULT_KNOWLEDGE_SOURCE_ICON_MAP[
-                    choice.type
-                ] && (
-                    <KnowledgeSourceIcon
-                        type={
-                            SIMPLIFIED_TO_DEFAULT_KNOWLEDGE_SOURCE_ICON_MAP[
-                                choice.type
-                            ]
-                        }
+        <KnowledgeSourcePopover {...popoverProps}>
+            {(ref, eventHandlers) => (
+                <Badge
+                    type={'light-dark'}
+                    upperCase={false}
+                    corner="square"
+                    className={css.tag}
+                    {...eventHandlers}
+                    ref={ref as RefObject<HTMLDivElement>}
+                >
+                    <a
+                        href={!meta.url ? undefined : meta.url}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className={cn(css.tagLink, {
+                            [css.hasLink]: !!meta.url,
+                        })}
+                    >
+                        {!!SIMPLIFIED_TO_DEFAULT_KNOWLEDGE_SOURCE_ICON_MAP[
+                            choice.type
+                        ] && (
+                            <KnowledgeSourceIcon
+                                badgeIconClassname={css.badge}
+                                type={
+                                    SIMPLIFIED_TO_DEFAULT_KNOWLEDGE_SOURCE_ICON_MAP[
+                                        choice.type
+                                    ]
+                                }
+                            />
+                        )}
+                        <span className={css.tagText}>{label}</span>
+                    </a>
+                    <BadgeIcon
+                        className={css.tagIcon}
+                        icon={<i className="material-icons">close</i>}
+                        onClick={() => handleRemove(choice.value)}
                     />
-                )}
-                <span ref={tagRef} className={css.tagText}>
-                    {label}
-                </span>
-                <BadgeIcon
-                    className={css.tagIcon}
-                    icon={<i className="material-icons">close</i>}
-                    onClick={() => handleRemove(choice.value)}
-                />
-            </Badge>
-            {isOverflowing && tagRef.current && (
-                <Tooltip placement="bottom" target={tagRef.current}>
-                    {label}
-                </Tooltip>
+                </Badge>
             )}
-        </>
+        </KnowledgeSourcePopover>
     )
 }

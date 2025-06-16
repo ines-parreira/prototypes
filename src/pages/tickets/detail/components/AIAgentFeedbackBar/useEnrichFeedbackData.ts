@@ -205,8 +205,16 @@ const emptyMetadata = {
     isDeleted: true,
 }
 
-const getResourceMetadata = (
-    resource: Components.Schemas.FeedbackDto['executions'][number]['resources'][number],
+export const getResourceMetadata = (
+    {
+        id,
+        title,
+        type,
+    }: {
+        id: string
+        title?: string
+        type: AiAgentKnowledgeResourceTypeEnum
+    },
     shopName: string,
     {
         articles,
@@ -247,10 +255,12 @@ const getResourceMetadata = (
         ? getAiAgentNavigationRoutes(shopName, flags)
         : undefined
 
-    switch (resource.resourceType) {
+    const idAsNumber = parseInt(id)
+
+    switch (type) {
         case AiAgentKnowledgeResourceTypeEnum.ARTICLE: {
             const article = articles.find(
-                (article) => article.id === Number(resource.resourceId),
+                (article) => article.id === idAsNumber,
             )
             const helpCenter = helpCenters.find(
                 (hc) => hc?.id === article?.helpCenterId,
@@ -279,32 +289,29 @@ const getResourceMetadata = (
         }
         case AiAgentKnowledgeResourceTypeEnum.GUIDANCE: {
             const guidance = guidanceArticles.find(
-                (guidance) => guidance.id === Number(resource.resourceId),
+                (guidance) => guidance.id === idAsNumber,
             )
             return guidance
                 ? {
                       title: guidance.title ?? '',
                       content: guidance.content ?? '',
-                      url: aiAgentRoutes?.guidanceArticleEdit(
-                          parseInt(resource.resourceId) ?? '',
-                      ),
+                      url: aiAgentRoutes?.guidanceArticleEdit(idAsNumber),
                   }
                 : emptyMetadata
         }
         case AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET: {
             const snippet = sourceItems.find(
-                (snippet) => snippet.id === Number(resource.resourceId),
+                (snippet) => snippet.id === idAsNumber,
             )
             if (snippet) {
                 return {
-                    title: 'Public URL',
+                    title: snippet.url ?? '',
                     content: snippet.url ?? '',
                     url: snippet.url ?? '',
                 }
             }
             const storeWebsiteQuestion = storeWebsiteQuestions.find(
-                (question) =>
-                    question.article_id === Number(resource.resourceId),
+                (question) => question.article_id === idAsNumber,
             )
             if (storeWebsiteQuestion) {
                 return {
@@ -321,13 +328,10 @@ const getResourceMetadata = (
         case AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET: {
             const fileSnippet = ingestedFiles
                 .filter((file) => file.status === 'SUCCESSFUL')
-                .find(
-                    (fileSnippet) =>
-                        fileSnippet.id === Number(resource.resourceId),
-                )
+                .find((fileSnippet) => fileSnippet.id === idAsNumber)
             return fileSnippet
                 ? {
-                      title: 'External file',
+                      title: fileSnippet.filename,
                       content: fileSnippet.filename ?? '',
                       url:
                           fileSnippet.google_storage_url ||
@@ -337,36 +341,30 @@ const getResourceMetadata = (
                 : emptyMetadata
         }
         case AiAgentKnowledgeResourceTypeEnum.MACRO: {
-            const macro = macros.find(
-                (macro) => macro.id === Number(resource.resourceId),
-            )
+            const macro = macros.find((macro) => macro.id === idAsNumber)
             return macro
                 ? {
                       title: macro.name ?? '',
                       content: macro.intent ?? '',
-                      url: `/app/settings/macros/${resource.resourceId}`,
+                      url: `/app/settings/macros/${id}`,
                   }
                 : emptyMetadata
         }
         case AiAgentKnowledgeResourceTypeEnum.ACTION: {
-            const action = actions.find(
-                (action) => action.id === resource.resourceId,
-            )
+            const action = actions.find((action) => action.id === id)
             return action
                 ? {
                       title: action.name ?? '',
                       content: action.name ?? '',
-                      url: aiAgentRoutes?.editAction(resource.resourceId) ?? '',
+                      url: aiAgentRoutes?.editAction(id) ?? '',
                   }
                 : emptyMetadata
         }
         case AiAgentKnowledgeResourceTypeEnum.ORDER: {
             return {
-                title: `Order ${resource.resourceTitle}`,
-                content: `Order ${resource.resourceTitle}`,
-                url:
-                    shopifyAdminBaseUrl(shopName) +
-                    `/orders/${resource.resourceId}`,
+                title: `Order ${title}`,
+                content: `Order ${title}`,
+                url: shopifyAdminBaseUrl(shopName) + `/orders/${id}`,
             }
         }
         default: {
@@ -428,16 +426,24 @@ const useProcessResources = (
 
         executions.forEach((execution) => {
             execution.resources.forEach((resource) => {
-                let metadata = getResourceMetadata(resource, shopName, {
-                    articles,
-                    guidanceArticles,
-                    sourceItems,
-                    ingestedFiles,
-                    macros,
-                    actions,
-                    helpCenters,
-                    storeWebsiteQuestions,
-                })
+                let metadata = getResourceMetadata(
+                    {
+                        id: resource.resourceId,
+                        title: resource.resourceTitle,
+                        type: resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
+                    },
+                    shopName,
+                    {
+                        articles,
+                        guidanceArticles,
+                        sourceItems,
+                        ingestedFiles,
+                        macros,
+                        actions,
+                        helpCenters,
+                        storeWebsiteQuestions,
+                    },
+                )
 
                 if (!metadata) {
                     return
@@ -469,8 +475,12 @@ const useProcessResources = (
                                 suggestedResourceValueSchema.parse(
                                     JSON.parse(feedback.feedbackValue ?? '{}'),
                                 )
+
                             let metadata = getResourceMetadata(
-                                parsedResource as unknown as Components.Schemas.FeedbackDto['executions'][number]['resources'][number],
+                                {
+                                    id: parsedResource.resourceId,
+                                    type: parsedResource.resourceType as AiAgentKnowledgeResourceTypeEnum,
+                                },
                                 shopName,
                                 {
                                     articles,

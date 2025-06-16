@@ -33,6 +33,11 @@ describe('useFeedbackActions', () => {
 
             // Create choice for the specific type
             const mockChoice: ChoiceOption = {
+                meta: {
+                    url: 'https://example.com',
+                    title: 'Example Title',
+                    content: 'Example Content',
+                },
                 label: `${choiceType} Title`,
                 value: `${choiceType.toLowerCase()}-1`,
                 type: choiceType,
@@ -274,6 +279,11 @@ describe('useFeedbackActions', () => {
 
             // Create a choice with an unknown type to hit the default case
             const unknownChoice: ChoiceOption = {
+                meta: {
+                    url: 'https://example.com',
+                    title: 'Example Title',
+                    content: 'Example Content',
+                },
                 label: 'Unknown Type',
                 value: 'unknown-1',
                 type: 'UNKNOWN_TYPE' as any, // Force an unknown type
@@ -463,6 +473,11 @@ describe('useFeedbackActions', () => {
 
             // Create a choice that is marked as deleted
             const deletedChoice: ChoiceOption = {
+                meta: {
+                    url: 'https://example.com',
+                    title: 'Example Title',
+                    content: 'Example Content',
+                },
                 label: 'Deleted Article',
                 value: 'article-1',
                 type: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
@@ -522,6 +537,11 @@ describe('useFeedbackActions', () => {
                     const setLoadingMutationsMock = jest.fn()
 
                     const choice: ChoiceOption = {
+                        meta: {
+                            url: 'https://example.com',
+                            title: 'Example Title',
+                            content: 'Example Content',
+                        },
                         label: `Missing ${resourceType}`,
                         value: 'non-existent-id',
                         type: resourceType as any,
@@ -592,6 +612,11 @@ describe('useFeedbackActions', () => {
             }
 
             const choice: ChoiceOption = {
+                meta: {
+                    url: 'https://example.com',
+                    title: 'Example Title',
+                    content: 'Example Content',
+                },
                 label: 'Test Article',
                 value: 'article-1',
                 type: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
@@ -632,6 +657,11 @@ describe('useFeedbackActions', () => {
             const setLoadingMutationsMock = jest.fn()
 
             const choice: ChoiceOption = {
+                meta: {
+                    url: 'https://example.com',
+                    title: 'Example Title',
+                    content: 'Example Content',
+                },
                 label: 'Store Website Question',
                 value: 'website-question-1',
                 type: AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,

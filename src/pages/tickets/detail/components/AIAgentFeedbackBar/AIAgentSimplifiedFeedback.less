@@ -184,11 +184,27 @@
             overflow: hidden;
             .caption-regular();
 
+            .tagLink {
+                overflow: hidden;
+                display: flex;
+                gap: var(--layout-spacing-xxs);
+                align-items: center;
+                color: var(--neutral-grey-6);
+
+                &:hover {
+                    color: var(--main-primary);
+                }
+            }
+
             .badge {
                 background-color: var(--neutral-grey-3);
                 color: var(--neutral-grey-6);
                 padding: 0;
-                font-size: 12px;
+                :global {
+                    .material-icons {
+                        font-size: 12px;
+                    }
+                }
             }
 
             .shopifyLogo {
