@@ -1470,7 +1470,12 @@ export function triggerTicketFieldsErrors(
 export const restoreTicketDraft = createAction<
     Pick<
         Ticket,
-        'assignee_team' | 'assignee_user' | 'customer' | 'subject' | 'tags'
+        | 'assignee_team'
+        | 'assignee_user'
+        | 'customer'
+        | 'subject'
+        | 'tags'
+        | 'custom_fields'
     >
 >(types.RESTORE_TICKET_DRAFT)
 

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { convertFromRaw, RawDraftContentState, SelectionState } from 'draft-js'
 import { fromJS, List, Map } from 'immutable'
+import _isEmpty from 'lodash/isEmpty'
 import { v4 as uuidv4 } from 'uuid'
 
 import { Macro } from '@gorgias/helpdesk-queries'
@@ -35,7 +36,11 @@ import {
     restoreTicketDraft,
     restoreTicketDraftApplyMacro,
 } from 'state/ticket/actions'
-import { getAppliedMacro, getProperty } from 'state/ticket/selectors'
+import {
+    getAppliedMacro,
+    getProperty,
+    getTicketFieldState,
+} from 'state/ticket/selectors'
 
 import useEffectOnce from './useEffectOnce'
 import usePrevious from './usePrevious'
@@ -46,15 +51,16 @@ export type TicketDraft = {
     appliedMacro: Macro | null
     assignee_team: Ticket['assignee_team'] | null
     assignee_user: Ticket['assignee_user'] | null
-    customer: Ticket['customer'] | null
     attachments: Message['attachments']
+    custom_fields: Ticket['custom_fields']
+    customer: Ticket['customer'] | null
     source: Message['source']
     sourceType: TicketMessageSourceType
     subject: string
+    tags: Ticket['tags']
     ticket: {
         contentState: RawDraftContentState
     } | null
-    tags: Ticket['tags']
     temporaryId: string
 }
 
@@ -65,6 +71,7 @@ export const isTicketDraftEmpty = (ticketDraft: TicketDraft | null) => {
             assignee_team,
             assignee_user,
             attachments,
+            custom_fields,
             customer,
             source,
             subject,
@@ -80,6 +87,7 @@ export const isTicketDraftEmpty = (ticketDraft: TicketDraft | null) => {
             assignee_team === null &&
             assignee_user === null &&
             attachments.length === 0 &&
+            _isEmpty(custom_fields) &&
             customer === null &&
             source.type === TicketMessageSourceType.Email &&
             source.to?.length === 0 &&
@@ -150,6 +158,7 @@ export default function useTicketDraft(isTicketNew = false) {
     const appliedMacro = useAppSelector(getAppliedMacro)
     const isMacroApplied = !!appliedMacro && !appliedMacro.isEmpty()
     const newMessageDiscountCodes = useAppSelector(getNewMessageDiscountCodes)
+    const customFields = useAppSelector(getTicketFieldState)
 
     const ticket = useMemo(() => {
         if (
@@ -191,6 +200,7 @@ export default function useTicketDraft(isTicketNew = false) {
                 (assigneeTeam?.toJS() as Ticket['assignee_team']) || null,
             assignee_user:
                 (assigneeUser?.toJS() as Ticket['assignee_user']) || null,
+            custom_fields: customFields,
             customer: (customer?.toJS() as Ticket['customer']) || null,
             attachments: attachments.toJS() as Message['attachments'],
             source: source.toJS() as Message['source'],
@@ -205,6 +215,7 @@ export default function useTicketDraft(isTicketNew = false) {
             assigneeTeam,
             assigneeUser,
             attachments,
+            customFields,
             customer,
             newMessageSourceType,
             source,
@@ -228,6 +239,7 @@ export default function useTicketDraft(isTicketNew = false) {
             assigneeUser === null &&
             attachments.size === 0 &&
             bodyText === '' &&
+            _isEmpty(customFields) &&
             customer === null &&
             source.get('type') === TicketMessageSourceType.Email &&
             (!!source.get('to')
@@ -241,6 +253,7 @@ export default function useTicketDraft(isTicketNew = false) {
             assigneeUser,
             attachments,
             bodyText,
+            customFields,
             customer,
             source,
             subject,
@@ -295,6 +308,7 @@ export default function useTicketDraft(isTicketNew = false) {
                 assignee_team,
                 assignee_user,
                 attachments,
+                custom_fields,
                 customer,
                 source,
                 sourceType,
@@ -315,6 +329,7 @@ export default function useTicketDraft(isTicketNew = false) {
                 restoreTicketDraft({
                     assignee_team,
                     assignee_user,
+                    custom_fields,
                     customer,
                     subject,
                     tags,

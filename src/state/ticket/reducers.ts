@@ -942,18 +942,26 @@ export default function reducer(
         }
 
         case types.RESTORE_TICKET_DRAFT: {
-            const { assignee_team, assignee_user, customer, subject, tags } =
-                action.payload as Pick<
-                    Ticket,
-                    | 'assignee_team'
-                    | 'assignee_user'
-                    | 'customer'
-                    | 'subject'
-                    | 'tags'
-                >
+            const {
+                assignee_team,
+                assignee_user,
+                custom_fields,
+                customer,
+                subject,
+                tags,
+            } = action.payload as Pick<
+                Ticket,
+                | 'assignee_team'
+                | 'assignee_user'
+                | 'customer'
+                | 'subject'
+                | 'tags'
+                | 'custom_fields'
+            >
             return state
                 .set('assignee_team', fromJS(assignee_team))
                 .set('assignee_user', fromJS(assignee_user))
+                .set('custom_fields', fromJS(custom_fields ?? {}))
                 .set('customer', fromJS(customer) || null)
                 .set('subject', subject)
                 .set('tags', fromJS(tags))
