@@ -69,6 +69,7 @@ export const ConditionsBranchItem = ({
                         className={css.input}
                         onChange={onNameChange}
                         onBlur={onNameBlur}
+                        maxLength={50}
                     />
                 ) : (
                     <>{name}</>
