@@ -321,18 +321,22 @@ describe('useStoreActivations', () => {
     })
 
     describe('storeActivations', () => {
-        it('should return all storeActivations when not on a single store page', () => {
+        it('should return all storeActivations when not on a single store page', async () => {
             const { result } = renderHookWithRouter({ initialEntry: '/' })
 
-            expect(result.current.storeActivations['store1']).toBeTruthy()
-            expect(result.current.storeActivations['store2']).toBeTruthy()
+            await waitFor(() => {
+                expect(result.current.storeActivations['store1']).toBeTruthy()
+                expect(result.current.storeActivations['store2']).toBeTruthy()
+            })
         })
 
-        it('should return only storeActivations for the current store when on a single store page', () => {
+        it('should return only storeActivations for the current store when on a single store page', async () => {
             const { result } = renderHookWithRouter({ initialEntry: '/store1' })
 
-            expect(result.current.storeActivations['store1']).toBeTruthy()
-            expect(result.current.storeActivations['store2']).toBeFalsy()
+            await waitFor(() => {
+                expect(result.current.storeActivations['store1']).toBeTruthy()
+                expect(result.current.storeActivations['store2']).toBeFalsy()
+            })
         })
     })
 

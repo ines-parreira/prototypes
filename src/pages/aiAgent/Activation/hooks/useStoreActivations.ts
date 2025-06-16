@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
+import _isEqual from 'lodash/isEqual'
 import { useLocation, useParams } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -10,6 +11,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import {
+    ACTION_TYPE,
     State,
     stateToUpdatedStoreConfiguration,
     StoreActivation,
@@ -251,8 +253,12 @@ export const useStoreActivations = ({
 
     const { emailIntegrations } = useEmailIntegrations()
 
+    const [storeConfigUpdateAction, setStoreConfigUpdateAction] = useState<
+        ACTION_TYPE | undefined
+    >(undefined)
+
     useEffect(() => {
-        dispatch({
+        const updateAction: ACTION_TYPE = {
             type: 'UPDATE_STORE_CONFIGURATION',
             storeConfigurations,
             selfServiceChatChannels,
@@ -267,7 +273,14 @@ export const useStoreActivations = ({
                 isAiSalesBetaUser,
                 aiSalesAgentEmailEnabled,
             },
-        })
+        }
+
+        if (_isEqual(storeConfigUpdateAction, updateAction)) {
+            return
+        }
+
+        setStoreConfigUpdateAction(updateAction)
+        dispatch(updateAction)
     }, [
         selfServiceChatChannels,
         emailIntegrations,
@@ -280,6 +293,7 @@ export const useStoreActivations = ({
         isAiSalesBetaUser,
         aiSalesAgentEmailEnabled,
         storesKnowledgeStatus,
+        storeConfigUpdateAction,
     ])
 
     const { isLoading: isSaveLoading, upsertStoresConfiguration } =

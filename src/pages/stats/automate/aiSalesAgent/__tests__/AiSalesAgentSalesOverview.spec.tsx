@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
@@ -8,9 +8,11 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
 import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
+import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { RootState } from 'state/types'
 import { initialState } from 'state/ui/stats/filtersSlice'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
+import { assumeMock } from 'utils/testing'
 
 import AiSalesAgentSalesOverview from '../AiSalesAgentSalesOverview'
 
@@ -99,6 +101,9 @@ jest.mock('launchdarkly-react-client-sdk', () => ({
     useFlags: jest.fn(),
 }))
 
+jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
+const mockUseStoreActivations = assumeMock(useStoreActivations)
+
 const mockUseFlags = useFlags as jest.Mock
 
 describe('AiSalesAgentSalesOverview', () => {
@@ -134,6 +139,24 @@ describe('AiSalesAgentSalesOverview', () => {
             [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
         })
         mockUseCanUseAiSalesAgent.mockReturnValue(true)
+        mockUseStoreActivations.mockReturnValue({
+            storeActivations: {
+                'test-shop': {
+                    configuration: {
+                        monitoredChatIntegrations: [2],
+                    },
+                    support: {
+                        chat: {
+                            isIntegrationMissing: false,
+                        },
+                    },
+                    sales: {
+                        enabled: true,
+                    },
+                },
+            },
+            isFetchLoading: false,
+        } as unknown as ReturnType<typeof useStoreActivations>)
     })
 
     it('should render when store data is ready', () => {
@@ -176,6 +199,7 @@ describe('AiSalesAgentSalesOverview', () => {
 
     it('should render all main metric sections', () => {
         renderComponent()
+
         expect(screen.getByText('Main metrics')).toBeInTheDocument()
         expect(screen.getByText('Orders')).toBeInTheDocument()
         expect(
@@ -184,15 +208,18 @@ describe('AiSalesAgentSalesOverview', () => {
         expect(screen.getByText('Product recommendations')).toBeInTheDocument()
     })
 
-    it('should render all chart components', () => {
+    it('should render all chart components', async () => {
         renderComponent()
-        expect(
-            screen.getAllByText('generic-trend-card').length,
-        ).toBeGreaterThan(0)
-        expect(
-            screen.getByText('gmv-influenced-over-time-chart'),
-        ).toBeInTheDocument()
-        expect(screen.getByText('top-products-table')).toBeInTheDocument()
+
+        await waitFor(() => {
+            expect(
+                screen.getAllByText('generic-trend-card').length,
+            ).toBeGreaterThan(0)
+            expect(
+                screen.getByText('gmv-influenced-over-time-chart'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('top-products-table')).toBeInTheDocument()
+        })
     })
 
     it('should render paywall when user does not have access to Ai Sales Agent', () => {

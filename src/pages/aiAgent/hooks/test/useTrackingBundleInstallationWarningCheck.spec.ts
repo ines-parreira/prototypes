@@ -134,7 +134,7 @@ describe('useTrackingBundleInstallationWarningCheck', () => {
         )
     })
 
-    it('should return undefined when store integration is installed  and seen within last 72 hours', () => {
+    it('should return undefined when store integration is installed and seen within last 72 hours', () => {
         mockUseListBundles.mockReturnValueOnce({
             data: [
                 {

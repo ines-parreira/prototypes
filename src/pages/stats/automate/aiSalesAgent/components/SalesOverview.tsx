@@ -1,15 +1,20 @@
-import { useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Banner, Button, Skeleton } from '@gorgias/merchant-ui-kit'
 
+import { AlertBannerTypes } from 'AlertBanners'
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey, StaticFilter } from 'models/stat/types'
+import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { useStoreIntegrationById } from 'pages/aiAgent/hooks/useStoreIntegrationById'
+import { useTrackingBundleInstallationWarningCheck } from 'pages/aiAgent/hooks/useTrackingBundleInstallationWarningCheck'
 import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
 import { AiSalesAgentChart } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { RenderChart } from 'pages/stats/automate/aiSalesAgent/components/RenderChart'
@@ -22,9 +27,14 @@ import DashboardSection from 'pages/stats/common/layout/DashboardSection'
 import { useFirstStoreWithAiSalesData } from 'pages/stats/convert/hooks/useFirstStoreWithAiSalesData'
 import { CampaignStatsFilters } from 'pages/stats/convert/providers/CampaignStatsFilters'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { getStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 import { mergeStatsFiltersWithLogicalOperator } from 'state/stats/statsSlice'
+import { isAdmin, isTeamLead } from 'utils'
 
 import { AiSalesAgentReportConfig } from '../AiSalesAgentReportConfig'
+
+import css from './SalesOverview.less'
 
 const SalesOverview = () => {
     const getGridCellSize = useGridSize()
@@ -35,16 +45,57 @@ const SalesOverview = () => {
     }>()
     const { isLoading } = useFirstStoreWithAiSalesData({ enabled: true })
     const dispatch = useAppDispatch()
+    const statsFilters = useAppSelector(getStatsFiltersWithLogicalOperators)
     const storeIntegration = useStoreIntegrationByShopName(shopName)
 
+    const activeStoreIntegrationId = useMemo(
+        () => statsFilters.storeIntegrations?.values?.[0] || -1,
+        [statsFilters.storeIntegrations?.values],
+    )
+
+    const storeIntegrationFromStoreFilter = useStoreIntegrationById(
+        activeStoreIntegrationId,
+    )
+
+    const history = useHistory()
+
+    const { storeActivations, isFetchLoading } = useStoreActivations({
+        pageName: window.location.pathname,
+        storeName: shopName || storeIntegrationFromStoreFilter?.name,
+        withChatIntegrationsStatus: true,
+        withStoresKnowledgeStatus: true,
+    })
+
+    const { uninstalledChatIntegrationId } =
+        useTrackingBundleInstallationWarningCheck({ storeActivations })
+
+    const redirectionPath = useMemo(() => {
+        if (!uninstalledChatIntegrationId) {
+            return ''
+        }
+
+        return `/app/settings/channels/gorgias_chat/${uninstalledChatIntegrationId}/installation`
+    }, [uninstalledChatIntegrationId])
+    const onClick = useCallback(() => {
+        history.push(redirectionPath)
+    }, [history, redirectionPath])
+    const currentUser = useAppSelector(getCurrentUser)
+    const displayBanner = useMemo(
+        () =>
+            !!uninstalledChatIntegrationId &&
+            !!redirectionPath &&
+            (isAdmin(currentUser) || isTeamLead(currentUser)),
+        [currentUser, redirectionPath, uninstalledChatIntegrationId],
+    )
+
     const filteredPersistentFilters = useMemo((): StaticFilter[] => {
-        if (storeIntegration?.id) {
+        if (shopName) {
             return AiSalesAgentReportConfig.reportFilters.persistent.filter(
                 (filter) => filter !== FilterKey.StoreIntegrations,
             )
         }
         return AiSalesAgentReportConfig.reportFilters.persistent
-    }, [storeIntegration?.id])
+    }, [shopName])
 
     useEffect(() => {
         if (storeIntegration?.id) {
@@ -57,9 +108,9 @@ const SalesOverview = () => {
                 }),
             )
         }
-    }, [dispatch, storeIntegration?.id, shopName])
+    }, [dispatch, storeIntegration?.id])
 
-    if (isLoading) {
+    if (isLoading || isFetchLoading) {
         return (
             <>
                 <DashboardSection>
@@ -109,6 +160,23 @@ const SalesOverview = () => {
                     </CampaignStatsFilters>
                 </DashboardGridCell>
             </DashboardSection>
+
+            {displayBanner && (
+                <Banner
+                    type={AlertBannerTypes.Warning}
+                    suffix={
+                        <Button fillStyle="ghost" onClick={onClick}>
+                            Update Installation
+                        </Button>
+                    }
+                    className={css.banner}
+                >
+                    We cannot display Shopping Assistant&apos;s analytics until
+                    you update your chat&apos;s manual installation with the
+                    tracking bundle
+                </Banner>
+            )}
+
             <DashboardSection title="Main metrics">
                 <DashboardGridCell size={getGridCellSize(3)}>
                     <RenderChart
