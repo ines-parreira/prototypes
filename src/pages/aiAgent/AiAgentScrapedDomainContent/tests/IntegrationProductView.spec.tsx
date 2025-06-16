@@ -1,9 +1,10 @@
 import React from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import { Variant } from 'constants/integrations/types/shopify'
 import { shopifyProductFixture } from 'fixtures/shopify'
+import { createImageFetchMock } from 'tests/utils'
 
 import IntegrationProductView from '../IntegrationProductView'
 
@@ -32,19 +33,27 @@ const mockProduct = {
     vendor: 'Test Vendor',
 }
 
+const imageMock = createImageFetchMock()
+
 describe('IntegrationProductView', () => {
-    it('renders basic product information', () => {
-        render(<IntegrationProductView product={mockProduct} />)
+    afterEach(() => {
+        imageMock.resetMock()
+    })
+
+    it('renders basic product information', async () => {
+        imageMock.mock(() => Promise.resolve())
+
+        await act(async () => {
+            render(<IntegrationProductView product={mockProduct} />)
+        })
 
         expect(screen.getByText('Product ID:')).toBeInTheDocument()
         expect(screen.getByText('123')).toBeInTheDocument()
         expect(screen.getByText('Title:')).toBeInTheDocument()
         expect(screen.getByText('Test Product')).toBeInTheDocument()
-        expect(screen.getByText('Vendor:')).toBeInTheDocument()
-        expect(screen.getByText('Test Vendor')).toBeInTheDocument()
         expect(screen.getByText('Description')).toBeInTheDocument()
 
-        const images = screen.getAllByRole('img')
+        const images = screen.getAllByRole('img', { hidden: true })
         expect(images).toHaveLength(1)
     })
 
@@ -80,7 +89,9 @@ describe('IntegrationProductView', () => {
         expect(screen.queryByText('Available Variants')).not.toBeInTheDocument()
     })
 
-    it('limits displayed images to MAX_IMAGES', () => {
+    it('limits displayed images to MAX_IMAGES', async () => {
+        imageMock.mock(() => Promise.resolve())
+
         const productWithManyImages = {
             ...mockProduct,
             images: Array(10)
@@ -93,7 +104,9 @@ describe('IntegrationProductView', () => {
                 })),
         }
 
-        render(<IntegrationProductView product={productWithManyImages} />)
+        await act(async () => {
+            render(<IntegrationProductView product={productWithManyImages} />)
+        })
 
         const images = screen.getAllByRole('img')
         expect(images).toHaveLength(5) // MAX_IMAGES is 5

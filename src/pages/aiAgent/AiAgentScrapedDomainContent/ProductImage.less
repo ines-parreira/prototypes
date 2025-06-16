@@ -1,0 +1,17 @@
+:local {
+    .productImage {
+        object-fit: cover;
+        border-radius: 4px;
+        aspect-ratio: 1/1;
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+
+        &.loaded {
+            opacity: 1;
+        }
+    }
+
+    .color {
+        background-color: var(--neutral-grey-4);
+    }
+}

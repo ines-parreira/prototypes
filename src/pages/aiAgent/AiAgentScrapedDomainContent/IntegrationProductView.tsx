@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import { Product } from 'constants/integrations/types/shopify'
 import ControlledCollapsibleDetails from 'pages/tickets/detail/components/TicketVoiceCall/ControlledCollapsibleDetails'
 import { sanitizeHtmlMinimal } from 'utils/html'
+
+import { ProductImage } from './ProductImage'
 
 import css from './IntegrationProductView.less'
 
@@ -14,6 +16,7 @@ const MAX_IMAGES = 5
 
 const IntegrationProductView = ({ product }: Props) => {
     const [isVariantsOpen, setIsVariantsOpen] = useState(false)
+    const [imagesLoaded, setImagesLoaded] = useState(false)
 
     const formatPrice = (price: string | number, currency: string = 'USD') => {
         const formatter = new Intl.NumberFormat('en-US', {
@@ -25,6 +28,43 @@ const IntegrationProductView = ({ product }: Props) => {
         return price && Number(price) > 0 ? formatter.format(Number(price)) : ''
     }
 
+    const productImages = useMemo(
+        () =>
+            product.images?.length > 0
+                ? product.images.slice(0, MAX_IMAGES)
+                : undefined,
+        [product.images],
+    )
+
+    useEffect(() => {
+        if (!productImages) {
+            setImagesLoaded(true)
+            return
+        }
+
+        let loadedCount = 0
+        const totalImages = productImages.length
+
+        productImages.forEach((image) => {
+            if (!image.src) {
+                loadedCount++
+                if (loadedCount === totalImages) {
+                    setImagesLoaded(true)
+                }
+                return
+            }
+
+            const img = new Image()
+            img.src = image.src
+            img.onload = img.onerror = () => {
+                loadedCount++
+                if (loadedCount === totalImages) {
+                    setImagesLoaded(true)
+                }
+            }
+        })
+    }, [productImages])
+
     return (
         <div className={css.productDetails}>
             <div className={css.productField}>
@@ -32,9 +72,6 @@ const IntegrationProductView = ({ product }: Props) => {
             </div>
             <div className={css.productField}>
                 <span className="body-semibold">Title:</span> {product.title}
-            </div>
-            <div className={css.productField}>
-                <span className="body-semibold">Vendor:</span> {product.vendor}
             </div>
             {product.images?.length > 0 && (
                 <div className={css.productField}>
@@ -46,19 +83,18 @@ const IntegrationProductView = ({ product }: Props) => {
                         </span>
                     )}
                     <div className={css.imageGrid}>
-                        {product.images
-                            ?.slice(0, MAX_IMAGES)
-                            ?.map((image: any, index: number) => (
-                                <img
-                                    key={image.id}
-                                    src={image.src}
-                                    alt={
-                                        image.alt ||
-                                        `Product image ${index + 1}`
-                                    }
-                                    className={css.productImage}
-                                />
-                            ))}
+                        {productImages?.map((image: any, index: number) => (
+                            <ProductImage
+                                key={image.id}
+                                index={index}
+                                imageSource={image.src}
+                                imageAlt={image.alt}
+                                skeletonsize={95}
+                                skeletonClassname={css.imagesSkeleton}
+                                productImageClassname={css.productImage}
+                                allImagesLoaded={imagesLoaded}
+                            />
+                        ))}
                     </div>
                 </div>
             )}

@@ -1,6 +1,8 @@
 import React from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+
+import { createImageFetchMock } from 'tests/utils'
 
 import { CONTENT_TYPE } from '../constant'
 import ScrapedDomainContentView from '../ScrapedDomainContentView'
@@ -22,6 +24,8 @@ const mockContent = [
         image: { src: 'https://example.com/image.jpg' },
     },
 ]
+
+const imageMock = createImageFetchMock()
 
 const setup = (propsOverride = {}) => {
     const defaultProps = {
@@ -47,6 +51,10 @@ const setup = (propsOverride = {}) => {
 }
 
 describe('ScrapedDomainContentView', () => {
+    afterEach(() => {
+        imageMock.resetMock()
+    })
+
     it('renders header description for Question page based on pageType', () => {
         setup({ pageType: CONTENT_TYPE.QUESTION })
         expect(
@@ -133,5 +141,59 @@ describe('ScrapedDomainContentView', () => {
         setup({ pageType: 'UNKNOWN' })
         // Should not find any description text
         expect(screen.queryByText(/AI Agent/i)).not.toBeInTheDocument()
+    })
+
+    it('should set imagesLoaded to true and display the list of product when there is no image', () => {
+        const mockContentWithoutImage = [
+            {
+                id: 1,
+                title: 'Sample Product',
+                image: { src: '' },
+            },
+        ]
+
+        setup({
+            pageType: CONTENT_TYPE.PRODUCT,
+            contents: mockContentWithoutImage,
+        })
+
+        expect(screen.getByText('Sample Product')).toBeInTheDocument()
+    })
+
+    it('should set imagesLoaded to true and display the list of product when all images are loaded', async () => {
+        imageMock.mock(() => Promise.resolve())
+
+        const mockContentWithImage = [
+            {
+                id: 1,
+                title: 'Sample Product',
+                image: { src: 'https://example.com/image.jpg' },
+            },
+        ]
+
+        await act(async () => {
+            setup({
+                pageType: CONTENT_TYPE.PRODUCT,
+                contents: mockContentWithImage,
+            })
+        })
+
+        expect(screen.getByText('Sample Product')).toBeInTheDocument()
+    })
+
+    it('should add the loaded class when image is loaded', async () => {
+        imageMock.mock(() => Promise.resolve())
+
+        await act(async () => {
+            setup({
+                pageType: CONTENT_TYPE.PRODUCT,
+                contents: mockContent,
+            })
+        })
+
+        const image = screen.getByAltText('Product image 1')
+        fireEvent.load(image)
+
+        await waitFor(() => expect(image).toHaveClass('loaded'))
     })
 })

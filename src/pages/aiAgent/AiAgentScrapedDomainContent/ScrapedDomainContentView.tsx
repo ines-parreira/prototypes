@@ -26,11 +26,10 @@ import {
     IngestedResourceStatus,
     PAGINATED_ITEMS_PER_PAGE,
 } from './constant'
+import { ProductImage } from './ProductImage'
 import ScrapedDomainHeader from './ScrapedDomainHeader'
 
 import css from './ScrapedDomainContentView.less'
-
-const DEFAULT_COLUMN_WIDTH = 188
 
 type Props<T> = {
     isLoading: boolean
@@ -82,8 +81,7 @@ const ColumnIsNotUsedByAiAgent = ({ id }: { id: number }) => (
 
         <Tooltip target={`ai-agent-status-${id}`} placement="bottom">
             Product is not in use by AI Agent if it is not active or published,
-            does not have at least 1 variant or has the tag
-            ‘gorgias_do_not_recommend’ in Shopify
+            or has the tag ‘gorgias_do_not_recommend’ in Shopify
         </Tooltip>
     </BodyCell>
 )
@@ -102,6 +100,32 @@ const getPageDescription = (pageType: string) => {
             return ''
     }
 }
+
+const LoadingState = ({
+    index,
+    pageType,
+}: {
+    index: number
+    pageType: string
+}) => (
+    <TableBodyRow key={index} className={css.tableBodyRow}>
+        <BodyCell key={index}>
+            {pageType === CONTENT_TYPE.PRODUCT && (
+                <div className={css.imageLoader}>
+                    <Skeleton height={32} width={32} />
+                </div>
+            )}
+            <div className={css.loader}>
+                <Skeleton
+                    height={pageType === CONTENT_TYPE.PRODUCT ? 32 : 24}
+                />
+            </div>
+            <i className={classnames('material-icons', css.chevronRight)}>
+                chevron_right
+            </i>
+        </BodyCell>
+    </TableBodyRow>
+)
 
 function ScrapedDomainContentView<T extends ContentType>({
     isLoading,
@@ -122,6 +146,39 @@ function ScrapedDomainContentView<T extends ContentType>({
     const [questionStatusMap, setQuestionStatusMap] = useState<
         Record<number, string>
     >({})
+    const [imagesLoaded, setImagesLoaded] = useState(false)
+
+    useEffect(() => {
+        if (
+            pageType !== CONTENT_TYPE.PRODUCT ||
+            (contents.length === 0 && !isLoading)
+        ) {
+            setImagesLoaded(true)
+            return
+        }
+
+        let loadedCount = 0
+        const totalImages = contents.length
+
+        contents.forEach((content) => {
+            const contentImage = getContentImage(content)
+            if (!contentImage) {
+                loadedCount++
+                if (loadedCount === totalImages) {
+                    setImagesLoaded(true)
+                }
+                return
+            }
+            const img = new Image()
+            img.src = contentImage
+            img.onload = img.onerror = () => {
+                loadedCount++
+                if (loadedCount === totalImages) {
+                    setImagesLoaded(true)
+                }
+            }
+        })
+    }, [contents, pageType, isLoading])
 
     const pageTitle = pageType === CONTENT_TYPE.PRODUCT ? 'Product' : 'Question'
 
@@ -169,19 +226,6 @@ function ScrapedDomainContentView<T extends ContentType>({
         }
     }
     const displayEmptyState = !isLoading && contents?.length === 0
-
-    const ProductImage = ({ image }: { image: string | undefined }) => {
-        if (image) {
-            return (
-                <img
-                    src={image}
-                    alt="product-image"
-                    className={css.productImage}
-                />
-            )
-        }
-        return <div className={classnames(css.productImage, css.color)} />
-    }
 
     const getContentImage = (item: T): string | undefined => {
         if ('image' in item) {
@@ -231,23 +275,15 @@ function ScrapedDomainContentView<T extends ContentType>({
                             Array(PAGINATED_ITEMS_PER_PAGE)
                                 .fill(null)
                                 .map((_, index) => (
-                                    <TableBodyRow
+                                    <LoadingState
                                         key={index}
-                                        className={css.tableBodyRow}
-                                    >
-                                        <BodyCell
-                                            key={index}
-                                            width={DEFAULT_COLUMN_WIDTH}
-                                        >
-                                            <div className={css.loader}>
-                                                <Skeleton height={24} />
-                                            </div>
-                                        </BodyCell>
-                                    </TableBodyRow>
+                                        index={index}
+                                        pageType={pageType}
+                                    />
                                 ))}
                         {contents &&
                             contents.length > 0 &&
-                            contents.map((content) => (
+                            contents.map((content: any, index: number) => (
                                 <TableBodyRow
                                     key={content.id}
                                     className={css.tableBodyRow}
@@ -287,7 +323,18 @@ function ScrapedDomainContentView<T extends ContentType>({
                                             </div>
                                         ) : (
                                             <ProductImage
-                                                image={getContentImage(content)}
+                                                index={index}
+                                                imageSource={getContentImage(
+                                                    content,
+                                                )}
+                                                allImagesLoaded={imagesLoaded}
+                                                skeletonsize={32}
+                                                skeletonClassname={
+                                                    css.imagesSkeleton
+                                                }
+                                                productImageClassname={
+                                                    css.productImage
+                                                }
                                             />
                                         )}
 
