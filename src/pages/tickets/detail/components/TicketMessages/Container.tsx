@@ -12,7 +12,7 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { IntegrationType } from 'models/integration/constants'
 import { isFailed, isPending } from 'models/ticket/predicates'
 import { MessageMetadataType, TicketMessage } from 'models/ticket/types'
-import Avatar from 'pages/common/components/Avatar/Avatar'
+import DEPRECATED_Avatar from 'pages/common/components/Avatar/Avatar'
 import { getDisplayCustomerLastSeenOnChat } from 'pages/common/components/infobar/utils'
 import { scrollToReactNode } from 'pages/common/utils/keyboard'
 import SimplifiedAIAgentBanner from 'pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner'
@@ -20,6 +20,7 @@ import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants
 
 import AIAgentBanner from './AIAgentBanner'
 import AIAgentMessageEvents from './AIAgentMessageEvents'
+import { Avatar } from './Avatar'
 import Footer from './Footer'
 import Header from './Header'
 import SourceDetailsHeader from './SourceDetailsHeader'
@@ -84,6 +85,9 @@ export class Container extends Component<Props> {
             flags,
         } = this.props
 
+        const hasTicketThreadRevamp =
+            !!flags?.[FeatureFlagKey.TicketThreadRevamp]
+
         const isSimplifiedFeedbackCollectionEnabled =
             !!flags?.[FeatureFlagKey.SimplifyAiAgentFeedbackCollection] &&
             isTicketAfterFeedbackCollectionPeriod
@@ -103,12 +107,15 @@ export class Container extends Component<Props> {
                 lastSeenOnChat = null,
                 tooltipText
 
+            let status: 'offline' | 'online' | undefined = undefined
+
             if (
                 customer &&
                 !customer.isEmpty() &&
                 containsLastCustomerMessage
             ) {
                 badgeBorderColor = 'var(--neutral-grey-0)'
+                status = 'offline'
 
                 const memoizedCustomerIntegrationsData = _memoize(
                     (customer: Map<any, any>): Map<any, any> =>
@@ -149,12 +156,29 @@ export class Container extends Component<Props> {
                         timeReadableValue === 'now'
                             ? `Active ${timeReadableValue}`
                             : `Last seen: ${timeReadableValue}`
+
+                    status = timeReadableValue === 'now' ? 'online' : 'offline'
                 }
             }
 
-            avatar = (
+            avatar = hasTicketThreadRevamp ? (
                 <div className={css.avatar}>
                     <Avatar
+                        isAgent={message.from_agent}
+                        isAIAgent={isAIAgentMessage}
+                        name={sender.get('name') ?? ''}
+                        status={status}
+                        tooltip={tooltipText}
+                        url={
+                            sender.getIn(['meta', 'profile_picture_url']) ??
+                            undefined
+                        }
+                        userId={sender.get('id')}
+                    />
+                </div>
+            ) : (
+                <div className={css.avatar}>
+                    <DEPRECATED_Avatar
                         email={message.from_agent ? null : sender.get('email')}
                         name={sender.get('name')}
                         url={sender.getIn(['meta', 'profile_picture_url'])}

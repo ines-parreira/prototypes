@@ -15,15 +15,22 @@ import {
     SHOPIFY_INTEGRATION_TYPE,
     SMILE_INTEGRATION_TYPE,
 } from 'constants/integration'
+import { useFlag } from 'core/flags'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import InfobarCustomerInfo from '../InfobarCustomerInfo'
 
+jest.mock('pages/tickets/detail/components/TicketMessages/Avatar', () => ({
+    Avatar: () => <div>New Avatar</div>,
+}))
+
 jest.mock('core/flags', () => ({
     ...jest.requireActual('core/flags'),
     useFlag: jest.fn(() => false),
 }))
+const useFlagMock = useFlag as jest.Mock
+
 jest.mock('../CustomerTimelineWidget', () => ({
     CustomerTimelineWidget: () => <div>CustomerTimelineWidget</div>,
 }))
@@ -54,6 +61,7 @@ const minProps: ComponentProps<typeof InfobarCustomerInfo> = {
 
 describe('<InfobarCustomerInfo/>', () => {
     beforeEach(() => {
+        useFlagMock.mockReturnValue(false)
         jest.resetAllMocks()
     })
 
@@ -389,5 +397,17 @@ describe('<InfobarCustomerInfo/>', () => {
         )
 
         expect(screen.queryByText('Sync Profile')).not.toBeInTheDocument()
+    })
+
+    it('should render the new avatar if the ticket thread revamp flag is enabled', () => {
+        useFlagMock.mockReturnValue(true)
+
+        render(
+            <Provider store={store}>
+                <InfobarCustomerInfo {...minProps} />
+            </Provider>,
+        )
+
+        expect(screen.getByText('New Avatar')).toBeInTheDocument()
     })
 })

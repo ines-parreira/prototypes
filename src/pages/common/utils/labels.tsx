@@ -7,14 +7,17 @@ import { Map } from 'immutable'
 import { Badge, ColorType } from '@gorgias/merchant-ui-kit'
 
 import { isImmutable } from 'common/utils'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { SourceType } from 'models/ticket/types'
 import { ViewField } from 'models/view/types'
-import Avatar from 'pages/common/components/Avatar/Avatar'
+import DEPRECATED_Avatar from 'pages/common/components/Avatar/Avatar'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import TicketTag from 'pages/common/components/TicketTag'
+import { Avatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
 import { getHumanAgents } from 'state/agents/selectors'
 import { getDisplayName } from 'state/customers/helpers'
 import { getIntegrationChannel } from 'state/integrations/selectors'
@@ -59,18 +62,23 @@ export function AgentLabel({
     badgeColor?: string
     id?: string
 }) {
+    const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
     const showAvatar = shouldDisplayAvatar || profilePictureUrl
 
     return (
         <div className={classnames(css.AgentLabel, className)} id={id}>
             {showAvatar ? (
-                <Avatar
-                    name={name}
-                    url={profilePictureUrl}
-                    size={size}
-                    className={css.avatar}
-                    badgeColor={badgeColor}
-                />
+                hasTicketThreadRevamp ? (
+                    <Avatar name={name} size="sm" />
+                ) : (
+                    <DEPRECATED_Avatar
+                        name={name}
+                        url={profilePictureUrl}
+                        size={size}
+                        className={css.avatar}
+                        badgeColor={badgeColor}
+                    />
+                )
             ) : (
                 !isAIAgent && (
                     <span
@@ -126,7 +134,11 @@ export const TeamLabel = ({
                     />
                 </span>
             ) : (
-                <Avatar name={name} size={26} className={css.avatar} />
+                <DEPRECATED_Avatar
+                    name={name}
+                    size={26}
+                    className={css.avatar}
+                />
             )
         ) : (
             <span className="material-icons md-2">people</span>
@@ -338,7 +350,7 @@ export const UserAssigneeLabel = ({
 
     return assigneeUser.isEmpty() ? null : (
         <div className={css.assigneeLabelContainer}>
-            <Avatar
+            <DEPRECATED_Avatar
                 name={assigneeUser.get('name')}
                 email={assigneeUser.get('email')}
                 url={avatarUrl}
@@ -379,7 +391,7 @@ export const TeamAssigneeLabel = ({
                     />
                 </span>
             ) : (
-                <Avatar
+                <DEPRECATED_Avatar
                     name={assigneeTeam.get('name')}
                     size={26}
                     className={css.assigneeLabelAvatar}

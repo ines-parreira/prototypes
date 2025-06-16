@@ -1,6 +1,9 @@
 import classNames from 'classnames'
 
-import Avatar from 'pages/common/components/Avatar/Avatar'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import DEPRECATED_Avatar from 'pages/common/components/Avatar/Avatar'
+import { Avatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
 import { assetsUrl } from 'utils'
 
 import css from './InTicketSuggestionContainer.less'
@@ -14,6 +17,8 @@ export default function InTicketSuggestionContainer({
     children,
     isAIAgent = false,
 }: Props) {
+    const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
+
     return (
         <div
             className={classNames(css.container, {
@@ -21,12 +26,24 @@ export default function InTicketSuggestionContainer({
             })}
         >
             <div className={css.avatar}>
-                <Avatar
-                    isAIAgent={isAIAgent}
-                    name={isAIAgent ? 'AI Agent' : 'Gorgias Tips'}
-                    size={36}
-                    url={assetsUrl('/img/icons/gorgias-icon-logo-white.png')}
-                />
+                {hasTicketThreadRevamp ? (
+                    <Avatar
+                        isAIAgent={isAIAgent}
+                        name={isAIAgent ? 'AI Agent' : 'Gorgias Tips'}
+                        url={assetsUrl(
+                            '/img/icons/gorgias-icon-logo-white.png',
+                        )}
+                    />
+                ) : (
+                    <DEPRECATED_Avatar
+                        isAIAgent={isAIAgent}
+                        name={isAIAgent ? 'AI Agent' : 'Gorgias Tips'}
+                        size={36}
+                        url={assetsUrl(
+                            '/img/icons/gorgias-icon-logo-white.png',
+                        )}
+                    />
+                )}
             </div>
             {children}
         </div>

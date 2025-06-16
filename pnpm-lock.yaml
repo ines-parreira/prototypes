@@ -151,8 +151,8 @@ importers:
         specifier: catalog:rest-api-sdk
         version: 0.2.0
       '@gorgias/merchant-ui-kit':
-        specifier: 0.31.0
-        version: 0.31.0(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(reactstrap@8.9.0(react-dom@17.0.2(react@17.0.2))(react@17.0.2))
+        specifier: ^0.35.3
+        version: 0.35.3(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(reactstrap@8.9.0(react-dom@17.0.2(react@17.0.2))(react@17.0.2))
       '@gorgias/realtime':
         specifier: ^0.17.0
         version: 0.17.0(@tanstack/react-query@4.36.1(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2))(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)
@@ -2676,8 +2676,8 @@ packages:
       eslint-plugin-react: ^7.34.3
       eslint-plugin-react-hooks: ^4.6.2
 
-  '@gorgias/design-tokens@0.5.0':
-    resolution: {integrity: sha512-e/B9Ypnto2z5mhLU2gYxLdl/bvlUmETS0az/+h78tGPCsHxLGWVGcDphRC/BLdBzmef30UGhCVi9i/Rlb8T8Fg==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.5.0/562a88cc0d8b7585a09ea1348f0eabdd83b27ece}
+  '@gorgias/design-tokens@0.10.2':
+    resolution: {integrity: sha512-WfZ76lyPNHThtjOaW2OHI1CwprcQriO7+DGeOLhgg+xq6rKO28NrCtV4Rs5c4lv9Qh8h2Gji8RnIKuYDa1y8jw==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.10.2/c38285ac14e6bcfc888beddf1b8057129a59afba}
 
   '@gorgias/design-tokens@0.7.0':
     resolution: {integrity: sha512-Bww6tpeDkFqoplCwI0+NivdS3tDJbA3FZaead8hT4yJcFWco2Qg3TriVpE/VpMMy42+9bWuZMUbXX9GmMMVdKA==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.7.0/3f0c18899a0925057d6c569e34e3fc05950185bd}
@@ -2740,11 +2740,12 @@ packages:
   '@gorgias/knowledge-service-validators@0.2.0':
     resolution: {integrity: sha512-JobC9sts+kJq1dyGevIVnv4skO880X4a6h1RRgpCCpiyTS3zAxTmZzi9nKyHZfFpsYmPYC/oIV3gzs18y/Bp4A==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-validators/0.2.0/f4f8e5c923aec36e657d92f0378335a3e40ee625}
 
-  '@gorgias/merchant-ui-kit@0.31.0':
-    resolution: {integrity: sha512-EO4EOshPynEzyZv6HQrEWHtKjETjAuiV3bbnfYep5S477qJRTHjaXkToLKCp/4ggIPd9qBgH13V/iNfasBwhpw==, tarball: https://npm.pkg.github.com/download/@gorgias/merchant-ui-kit/0.31.0/dbe81fcba79708b187f2abf302b80abffd819891}
+  '@gorgias/merchant-ui-kit@0.35.3':
+    resolution: {integrity: sha512-4te0ugeBtMGwdhygd2FWDHZ5gWxtzMGkvQ6bSRMDL73XH6/Cb0MqZFPKfLBvEpnlNOOvEDJ2zx7dMKFjQr9uGA==, tarball: https://npm.pkg.github.com/download/@gorgias/merchant-ui-kit/0.35.3/49ded6ec09f7413bfb490776a8f7850e3ac71b35}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^17
+      react-dom: ^17
       reactstrap: ^8.9.0
 
   '@gorgias/realtime@0.17.0':
@@ -5639,9 +5640,6 @@ packages:
 
   compute-scroll-into-view@3.1.0:
     resolution: {integrity: sha512-rj8l8pD4bJ1nx+dAkMhV1xB5RuZEyVysfxJqB1pRchh1KVvwOv9b7CGB8ZfjTImVv2oF+sYMUkMZq6Na5Ftmbg==}
-
-  compute-scroll-into-view@3.1.1:
-    resolution: {integrity: sha512-VRhuHOLoKYOy4UbilLbUzbYg93XLjv2PncJC50EuTWPA3gaja1UjBsUP/D/9/juV3vQFr6XBEzn9KCAHdUvOHw==}
 
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
@@ -12952,7 +12950,7 @@ snapshots:
       eslint-plugin-react: 7.26.1(eslint@8.1.0)
       eslint-plugin-react-hooks: 4.3.0(eslint@8.1.0)
 
-  '@gorgias/design-tokens@0.5.0': {}
+  '@gorgias/design-tokens@0.10.2': {}
 
   '@gorgias/design-tokens@0.7.0': {}
 
@@ -13090,17 +13088,16 @@ snapshots:
       immer: 10.1.1
       json-schema: 0.4.0
 
-  '@gorgias/merchant-ui-kit@0.31.0(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(reactstrap@8.9.0(react-dom@17.0.2(react@17.0.2))(react@17.0.2))':
+  '@gorgias/merchant-ui-kit@0.35.3(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(reactstrap@8.9.0(react-dom@17.0.2(react@17.0.2))(react@17.0.2))':
     dependencies:
       '@floating-ui/react': 0.25.1(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
-      '@gorgias/design-tokens': 0.5.0
+      '@gorgias/design-tokens': 0.10.2
       classnames: 2.5.1
       downshift: 9.0.9(react@17.0.2)
       react: 17.0.2
+      react-dom: 17.0.2(react@17.0.2)
       react-loading-skeleton: 3.5.0(react@17.0.2)
       reactstrap: 8.9.0(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
-    transitivePeerDependencies:
-      - react-dom
 
   '@gorgias/realtime@0.17.0(@tanstack/react-query@4.36.1(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2))(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)':
     dependencies:
@@ -16747,8 +16744,6 @@ snapshots:
 
   compute-scroll-into-view@3.1.0: {}
 
-  compute-scroll-into-view@3.1.1: {}
-
   concat-map@0.0.1: {}
 
   connect-history-api-fallback@2.0.0: {}
@@ -17323,7 +17318,7 @@ snapshots:
   downshift@9.0.9(react@17.0.2):
     dependencies:
       '@babel/runtime': 7.27.0
-      compute-scroll-into-view: 3.1.1
+      compute-scroll-into-view: 3.1.0
       prop-types: 15.8.1
       react: 17.0.2
       react-is: 18.2.0

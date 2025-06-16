@@ -12,13 +12,22 @@ import {
     TicketMessageSourceType,
     TicketStatus,
 } from 'business/types/ticket'
+import { useFlag } from 'core/flags'
 import { channels as mockChannels } from 'fixtures/channels'
 import { IntegrationType } from 'models/integration/types'
 import * as Avatar from 'pages/common/components/Avatar/Avatar'
 import * as channelsService from 'services/channels'
+import { assumeMock } from 'utils/testing'
 
 import DatetimeLabel from '../DatetimeLabel'
 import * as labels from '../labels'
+
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+const useFlagMock = assumeMock(useFlag)
+
+jest.mock('pages/tickets/detail/components/TicketMessages/Avatar', () => ({
+    Avatar: () => <div>Avatar</div>,
+}))
 
 const integrationJsObject = {
     type: 'email',
@@ -46,7 +55,9 @@ const AvatarSpy = jest.spyOn(Avatar, 'default')
 describe('components utils: labels', () => {
     beforeEach(() => {
         AvatarSpy.mockClear()
+        useFlagMock.mockReturnValue(false)
     })
+
     describe('RenderLabel', () => {
         describe('distribution', () => {
             ;[

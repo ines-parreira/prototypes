@@ -6,16 +6,19 @@ import { Link } from 'react-router-dom'
 
 import { Separator } from '@gorgias/merchant-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
-import Avatar from 'pages/common/components/Avatar/Avatar'
+import DEPRECATED_Avatar from 'pages/common/components/Avatar/Avatar'
 import Button from 'pages/common/components/button/Button'
 import {
     areSourcesReady,
     jsonToWidgets,
 } from 'pages/common/components/infobar/utils'
 import ShopifyCustomerProfileSync from 'pages/common/components/ShopifyCustomerProfileSync/ShopifyCustomerProfileSync'
+import { Avatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
 import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { EditionContext } from 'providers/infobar/EditionContext'
 import { getDisplayName } from 'state/customers/helpers'
@@ -77,6 +80,7 @@ const InfobarCustomerInfo = ({
     sources,
     widgets,
 }: OwnProps) => {
+    const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
     const dispatch = useAppDispatch()
     const hasIntegrations =
         useAppSelector(
@@ -251,12 +255,19 @@ const InfobarCustomerInfo = ({
         >
             <div className={css.customerInfo}>
                 <div className={css.customerProfile}>
-                    <Avatar
-                        name={customer.get('name', '')}
-                        email={customer.get('email', '')}
-                        url={customer.getIn(['meta', 'profile_picture_url'])}
-                        size={36}
-                    />
+                    {hasTicketThreadRevamp ? (
+                        <Avatar name={customer.get('name') ?? ''} />
+                    ) : (
+                        <DEPRECATED_Avatar
+                            name={customer.get('name', '')}
+                            email={customer.get('email', '')}
+                            url={customer.getIn([
+                                'meta',
+                                'profile_picture_url',
+                            ])}
+                            size={36}
+                        />
+                    )}
                     <div className={css.customerLink}>
                         <Link
                             to={`/app/customer/${customer.get('id') as string}`}

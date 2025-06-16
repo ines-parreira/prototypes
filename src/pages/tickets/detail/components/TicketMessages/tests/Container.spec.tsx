@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react'
 
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import moment from 'moment'
 
@@ -52,8 +52,13 @@ jest.mock(
     () => jest.fn(() => <div>SourceDetailsHeader</div>),
 )
 
+jest.mock('../Avatar', () => ({ Avatar: () => <div>New Avatar</div> }))
+
 describe('Container', () => {
-    const flags = { [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: false }
+    const flags = {
+        [FeatureFlagKey.TicketThreadRevamp]: false,
+        [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: false,
+    }
     const props = {
         id: 'some-header',
         hasCursor: false,
@@ -189,5 +194,16 @@ describe('Container', () => {
             }),
             expect.any(Object),
         )
+    })
+
+    it('should render the new avatar if the ticket thread revamp flag is enabled', () => {
+        render(
+            <Container
+                {...props}
+                flags={{ ...flags, [FeatureFlagKey.TicketThreadRevamp]: true }}
+            />,
+        )
+
+        expect(screen.getByText('New Avatar')).toBeInTheDocument()
     })
 })
