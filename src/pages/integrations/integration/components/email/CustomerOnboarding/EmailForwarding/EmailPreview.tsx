@@ -5,14 +5,13 @@ import cn from 'classnames'
 import { Tag } from '@gorgias/merchant-ui-kit'
 
 import css from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboarding.less'
-import SettingsSidebar from 'pages/settings/SettingsSidebar'
 
 const EmailPreview = ({ displayName = '', emailAddress = '' }) => {
     return (
-        <SettingsSidebar className={css.sidebar} contentTakeFullWidth={false}>
-            <div className={cn('full-width p-4 mt-12', css.formPreview)}>
-                <h4 className="text-secondary text-center">Email preview</h4>
+        <>
+            <h6 className={css.emailPreviewLabel}>Email preview</h6>
 
+            <div className={cn('full-width mt-12', css.formPreview)}>
                 <div className={css.card}>
                     <div className="flex align-baseline">
                         <i
@@ -31,7 +30,7 @@ const EmailPreview = ({ displayName = '', emailAddress = '' }) => {
                         <div className={css.emailPreviewTagWrapper}>
                             <p>From </p>
                             <Tag
-                                text={`${displayName || '<Display name> '}${displayName && emailAddress ? ' ' : ''}${emailAddress ? `(${emailAddress})` : '(<Email>)'}`}
+                                text={`${displayName || '<Display name> '}${displayName && emailAddress ? ' ' : ''}${emailAddress ? `(${emailAddress})` : '(<>)'}`}
                                 color="blue"
                             />
                         </div>
@@ -46,7 +45,7 @@ const EmailPreview = ({ displayName = '', emailAddress = '' }) => {
                     </div>
                 </div>
             </div>
-        </SettingsSidebar>
+        </>
     )
 }
 

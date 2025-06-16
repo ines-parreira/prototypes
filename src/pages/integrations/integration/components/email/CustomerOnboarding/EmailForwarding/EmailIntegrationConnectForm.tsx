@@ -14,6 +14,7 @@ import {
     useEmailOnboarding,
 } from '../../hooks/useEmailOnboarding'
 import EmailIntegrationOnboardingButtons from '../EmailIntegrationOnboardingButtons'
+import EmailPreview from './EmailPreview'
 
 import css from '../EmailIntegrationOnboarding.less'
 
@@ -97,6 +98,11 @@ export default function EmailIntegrationConnectForm(props: Props) {
                         />
                     </FormRow>
                 </FormSection>
+                <div className={css.divider} />
+                <EmailPreview
+                    emailAddress={props.emailAddress}
+                    displayName={props.displayName}
+                />
                 <EmailIntegrationOnboardingButtons
                     integration={integration}
                     cancelCallback={props.handleCancel}

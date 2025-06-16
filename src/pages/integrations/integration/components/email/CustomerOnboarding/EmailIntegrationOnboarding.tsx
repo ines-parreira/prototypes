@@ -27,7 +27,6 @@ import {
     useEmailOnboarding,
 } from '../hooks/useEmailOnboarding'
 import EmailIntegrationForwardingSetupForm from './EmailForwarding/EmailIntegrationForwardingSetupForm'
-import EmailPreview from './EmailForwarding/EmailPreview'
 import EmailIntegrationOnboardingBreadcrumbs from './EmailIntegrationOnboardingBreadcrumbs'
 import EmailIntegrationOnboardingDomainVerification from './EmailIntegrationOnboardingDomainVerification'
 
@@ -168,13 +167,6 @@ export default function EmailIntegrationOnboarding({ integration }: Props) {
                             )}
                     </Wizard>
                 </SettingsContent>
-                {currentStep ===
-                    EmailIntegrationOnboardingStep.ConnectIntegration && (
-                    <EmailPreview
-                        emailAddress={emailAddress}
-                        displayName={displayName}
-                    />
-                )}
                 {currentStep ===
                     EmailIntegrationOnboardingStep.DomainVerification && (
                     <EmailDomainVerificationSupportContentSidebar />

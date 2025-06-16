@@ -1,7 +1,9 @@
+@import (reference) '~css/typography.less';
+
 :local {
     .divider {
         height: 1px;
-        margin-top: var(--layout-spacing-s);
+        margin-top: calc(var(--layout-spacing-m) * -1);
         margin-bottom: var(--layout-spacing-s);
         background-color: var(--neutral-grey-3);
         width: 100%;
@@ -15,10 +17,15 @@
         flex: 2;
     }
 
+    .emailPreviewLabel {
+        .body-semibold();
+        margin-bottom: 0;
+    }
+
     .formPreview {
         flex: 1;
-        max-width: 800px;
-        margin-top: 60px;
+        margin-top: var(--layout-spacing-s);
+        margin-bottom: var(--layout-spacing-xl);
 
         .emailPreviewTagWrapper {
             align-items: flex-start;
@@ -40,7 +47,6 @@
             flex: 1 0 0;
             min-height: 160px;
             padding: var(--layout-spacing-s);
-            width: 500px;
         }
 
         .emailIcon {
