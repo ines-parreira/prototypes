@@ -271,7 +271,7 @@ describe('CustomFieldsFormComponent', () => {
                     isLoading: false,
                     isError: false,
                 })
-                const { queryAllByTestId, getByTestId } = render(
+                const { getAllByTestId } = render(
                     <QueryClientProvider client={queryClient}>
                         <CustomFieldsFormComponent
                             {...mockProps}
@@ -281,16 +281,11 @@ describe('CustomFieldsFormComponent', () => {
                     </QueryClientProvider>,
                 )
 
-                const selectedCustomFields = queryAllByTestId(
-                    'custom-fields-disabled-input-container',
-                )
+                const button = getAllByTestId(
+                    'custom-field-disabled-input-delete-button',
+                )[0]
 
-                // Only one selected custom field disabled input should be displayed as the second custom field is a conditional one
-                expect(selectedCustomFields.length).toBe(1)
-
-                fireEvent.click(
-                    getByTestId('custom-field-disabled-input-delete-button'),
-                )
+                fireEvent.click(button)
 
                 expect(updateValueMock).toHaveBeenNthCalledWith(
                     1,

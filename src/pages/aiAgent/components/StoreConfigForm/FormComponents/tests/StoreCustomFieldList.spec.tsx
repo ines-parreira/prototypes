@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { RequirementType } from '@gorgias/helpdesk-queries'
@@ -77,7 +75,7 @@ describe('StoreCustomFieldsList', () => {
         jest.clearAllMocks()
     })
 
-    test('renders only non-conditional fields', () => {
+    test('renders non-conditional fields along with conditional ones', () => {
         render(
             <StoreCustomFieldsList
                 customFieldIds={[1, 2]}
@@ -86,7 +84,7 @@ describe('StoreCustomFieldsList', () => {
             />,
         )
         expect(screen.getByDisplayValue('Field One')).toBeInTheDocument()
-        expect(screen.queryByDisplayValue('Field Two')).toBeNull()
+        expect(screen.queryByDisplayValue('Field Two')).toBeInTheDocument()
     })
 
     test('calls onDelete with correct id when delete button is clicked', () => {

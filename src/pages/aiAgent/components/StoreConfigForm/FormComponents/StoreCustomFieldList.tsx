@@ -1,4 +1,3 @@
-import { RequirementType } from '@gorgias/helpdesk-queries'
 import { IconButton } from '@gorgias/merchant-ui-kit'
 
 import { CustomField } from 'custom-fields/types'
@@ -53,19 +52,15 @@ export const StoreCustomFieldsList = ({
         <>
             {customFieldIds.map((id) => {
                 const customField = accountCustomFieldMap.get(id)
-                if (
-                    customField &&
-                    customField.requirement_type !== RequirementType.Conditional
-                ) {
-                    return (
+                return (
+                    customField && (
                         <StoreCustomFieldComponent
                             key={customField.id}
                             customField={customField}
                             onDelete={() => onDelete(id)}
                         />
                     )
-                }
-                return null
+                )
             })}
         </>
     )
