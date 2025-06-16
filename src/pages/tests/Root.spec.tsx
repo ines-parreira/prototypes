@@ -15,17 +15,6 @@ import { assumeMock } from 'utils/testing'
 import history from '../history'
 import Root from '../Root'
 
-jest.mock(
-    'providers/realtime/RealtimeAppProvider',
-    () =>
-        ({ children }: { children: ReactNode }) => (
-            <div>
-                <p>RealtimeAppProvider</p>
-                {children}
-            </div>
-        ),
-)
-
 jest.mock('@tanstack/react-query', () => ({
     QueryClientProvider: ({ children }: { children: ReactNode }) => (
         <div>
@@ -105,7 +94,6 @@ describe('Root', () => {
         screen.getByText('CompatRouter')
         screen.getByText('Main')
         screen.getByText('RoutesWrapper')
-        screen.getByText('RealtimeAppProvider')
     })
 
     it('should create a user context for the activity tracker', () => {

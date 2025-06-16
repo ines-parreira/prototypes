@@ -8,9 +8,13 @@ import {
     RealtimeStatus,
 } from '@gorgias/realtime'
 
+import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
+import useUpdateEffect from 'hooks/useUpdateEffect'
 import { reportError } from 'utils/errors'
+
+import { useErrorThreshold } from './hooks/useErrorThreshold'
 
 const pubNubWorkerUrl = window.PUBNUB_WORKER_URL
 
@@ -32,8 +36,43 @@ type RealtimeAppProviderProps = {
     children: ReactNode
 }
 
+const REALTIME_CONNECTIVITY_BANNER_INSTANCE_ID = 'realtime-connectivity-banner'
+
 const RealtimeAppProvider = ({ children }: RealtimeAppProviderProps) => {
     const isCatchPNErrorsEnabled = useFlag(FeatureFlagKey.CatchPNErrors)
+    const isRealtimeEnabled = useFlag(FeatureFlagKey.PubNubRealtime)
+    const { enabled: isErrorThresholdEnabled, threshold } = useFlag(
+        FeatureFlagKey.PubnNubRealtimeErrorThreshold,
+        {
+            enabled: false,
+            threshold: 0,
+        },
+    )
+    const { addBanner, removeBanner } = useBanners()
+
+    const displayRealtimeConnectivityBanner = useCallback(() => {
+        addBanner({
+            category: BannerCategories.REALTIME_CONNECTIVITY,
+            type: AlertBannerTypes.Critical,
+            message: `Can't connect to realtime updates. Please consult the debugging guide.`,
+            instanceId: REALTIME_CONNECTIVITY_BANNER_INSTANCE_ID,
+            CTA: {
+                type: 'action',
+                text: 'View debugging guide',
+                onClick: () => {
+                    window.open(
+                        'https://docs.gorgias.com/en-US/common-account-errors-486968#cant-connect-to-real-time-updates',
+                        '_blank',
+                    )
+                },
+            },
+        })
+    }, [addBanner])
+
+    const { incrementErrorCount, resetErrorCount } = useErrorThreshold(
+        threshold,
+        displayRealtimeConnectivityBanner,
+    )
 
     const pubNubWorkerLogVerbosity = useMemo(
         () =>
@@ -45,6 +84,10 @@ const RealtimeAppProvider = ({ children }: RealtimeAppProviderProps) => {
 
     const handleErrorStatus = useCallback(
         (status: RealtimeStatus) => {
+            status.category === 'PNNetworkIssuesCategory' &&
+                isRealtimeEnabled &&
+                isErrorThresholdEnabled &&
+                incrementErrorCount()
             isCatchPNErrorsEnabled &&
                 reportError(new Error(`PubNub Status error`), {
                     tags: {
@@ -55,8 +98,25 @@ const RealtimeAppProvider = ({ children }: RealtimeAppProviderProps) => {
                     extra: { status: toPlainObject(status) },
                 })
         },
-        [isCatchPNErrorsEnabled],
+        [
+            isRealtimeEnabled,
+            isErrorThresholdEnabled,
+            isCatchPNErrorsEnabled,
+            incrementErrorCount,
+        ],
     )
+
+    const handleReconnectStatus = useCallback(() => {
+        removeBanner(
+            BannerCategories.REALTIME_CONNECTIVITY,
+            REALTIME_CONNECTIVITY_BANNER_INSTANCE_ID,
+        )
+        resetErrorCount()
+    }, [removeBanner, resetErrorCount])
+
+    useUpdateEffect(() => {
+        resetErrorCount()
+    }, [isRealtimeEnabled, isErrorThresholdEnabled, threshold, resetErrorCount])
 
     return (
         <RealtimeProvider
@@ -70,6 +130,7 @@ const RealtimeAppProvider = ({ children }: RealtimeAppProviderProps) => {
             subscriptionWorkerLogVerbosity={pubNubWorkerLogVerbosity}
             retryConfiguration={realtimeRetryPolicy}
             onErrorStatus={handleErrorStatus}
+            onReconnectStatus={handleReconnectStatus}
         >
             {children}
         </RealtimeProvider>

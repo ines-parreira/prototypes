@@ -13,6 +13,7 @@ import { NotificationsProvider } from 'common/notifications'
 import { ThemeProvider } from 'core/theme'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 import VoiceDeviceProvider from 'pages/integrations/integration/components/voice/VoiceDeviceProvider'
+import RealtimeAppProvider from 'providers/realtime/RealtimeAppProvider'
 import { SpotlightProvider } from 'providers/ui/SpotlightProvider'
 import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
 
@@ -28,25 +29,27 @@ export default function Main({ children }: Props) {
             <ThemeProvider>
                 <NotificationsProvider>
                     <BannersContextProvider>
-                        <SpotlightProvider>
-                            <VoiceDeviceProvider>
-                                <AgentOnlineStatusProvider>
-                                    <AgentActivityProvider>
-                                        <SplitTicketViewProvider>
-                                            <CookiesProvider
-                                                defaultSetOptions={{
-                                                    path: '/',
-                                                }}
-                                            >
-                                                <NavBarProvider>
-                                                    <App>{children}</App>
-                                                </NavBarProvider>
-                                            </CookiesProvider>
-                                        </SplitTicketViewProvider>
-                                    </AgentActivityProvider>
-                                </AgentOnlineStatusProvider>
-                            </VoiceDeviceProvider>
-                        </SpotlightProvider>
+                        <RealtimeAppProvider>
+                            <SpotlightProvider>
+                                <VoiceDeviceProvider>
+                                    <AgentOnlineStatusProvider>
+                                        <AgentActivityProvider>
+                                            <SplitTicketViewProvider>
+                                                <CookiesProvider
+                                                    defaultSetOptions={{
+                                                        path: '/',
+                                                    }}
+                                                >
+                                                    <NavBarProvider>
+                                                        <App>{children}</App>
+                                                    </NavBarProvider>
+                                                </CookiesProvider>
+                                            </SplitTicketViewProvider>
+                                        </AgentActivityProvider>
+                                    </AgentOnlineStatusProvider>
+                                </VoiceDeviceProvider>
+                            </SpotlightProvider>
+                        </RealtimeAppProvider>
                     </BannersContextProvider>
                 </NotificationsProvider>
             </ThemeProvider>

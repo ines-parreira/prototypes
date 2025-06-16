@@ -56,6 +56,7 @@ export const BannerCategories = {
     ERROR_HANDLING_PHONE: 'error_handling_phone',
     IMPERSONATION: 'impersonation',
     PAYMENT_ENABLED: 'payment_enabled',
+    REALTIME_CONNECTIVITY: 'realtime_connectivity',
     STATUS_PAGE_INCIDENT: 'status_page_incident',
     STATUS_PAGE_MAINTENANCE: 'status_page_maintenance',
     TMP_AI_AGENT_MOVED: 'ai_agent_moved',
