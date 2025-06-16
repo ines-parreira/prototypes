@@ -36,10 +36,10 @@ export const PRODUCT_INFO = {
     [ProductType.Automation]: {
         title: 'AI Agent',
         icon: 'bolt',
-        counter: 'AI resolved tickets',
-        perTicket: 'per AI resolved ticket',
+        counter: 'automated interactions',
+        perTicket: 'per automated interaction',
         tooltip:
-            'Tickets that are resolved by AI Agent without human intervention. These tickets also count towards your Helpdesk plan ticket count.',
+            'Tickets that are resolved by AI Agent and automated without human intervention. These tickets also count towards your Helpdesk plan ticket.',
         tooltipLink: 'https://link.gorgias.com/5jnkqn7',
         bannerLink: '/app/automation',
     },

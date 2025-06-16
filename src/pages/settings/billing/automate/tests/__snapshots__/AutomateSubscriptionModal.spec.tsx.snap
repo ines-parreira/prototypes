@@ -272,7 +272,7 @@ exports[`<AutomateSubscriptionModal /> should render for customers already with 
                         class="counter"
                       >
                         <div>
-                          AI resolved tickets
+                          automated interactions
                           /
                           month
                         </div>
@@ -601,7 +601,7 @@ exports[`<AutomateSubscriptionModal /> should render the modal 1`] = `
                         class="counter"
                       >
                         <div>
-                          AI resolved tickets
+                          automated interactions
                           /
                           month
                         </div>
