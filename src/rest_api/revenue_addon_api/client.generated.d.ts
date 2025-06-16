@@ -1152,6 +1152,10 @@ declare namespace Components {
              */
             config: {}
             /**
+             * Last Loaded Datetime
+             */
+            last_loaded_datetime?: string | null
+            /**
              * Created Datetime
              */
             created_datetime: string // date-time

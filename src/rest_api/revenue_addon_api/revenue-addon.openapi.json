@@ -4054,6 +4054,13 @@
                     "status": { "$ref": "#/components/schemas/StatusEnum" },
                     "method": { "$ref": "#/components/schemas/MethodEnum" },
                     "config": { "type": "object", "title": "Config" },
+                    "last_loaded_datetime": {
+                        "anyOf": [
+                            { "type": "string", "format": "date-time" },
+                            { "type": "null" }
+                        ],
+                        "title": "Last Loaded Datetime"
+                    },
                     "created_datetime": {
                         "type": "string",
                         "format": "date-time",

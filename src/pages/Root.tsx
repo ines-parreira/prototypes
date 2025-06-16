@@ -16,6 +16,8 @@ import { Store } from 'redux'
 import { appQueryClient } from 'api/queryClient'
 import useEffectOnce from 'hooks/useEffectOnce'
 import { Main } from 'main/app'
+import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
+import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import RoutesWrapper from 'routes'
 import activityTracker from 'services/activityTracker'
 import { RootState } from 'state/types'
@@ -68,13 +70,17 @@ const Root = ({ store }: Props) => {
                         reactOptions={{ useCamelCaseFlagKeys: false }}
                         context={LDContext}
                     >
-                        <Router history={history}>
-                            <CompatRouter>
-                                <Main>
-                                    <RoutesWrapper />
-                                </Main>
-                            </CompatRouter>
-                        </Router>
+                        <RevenueAddonApiClientProvider>
+                            <HelpCenterApiClientProvider>
+                                <Router history={history}>
+                                    <CompatRouter>
+                                        <Main>
+                                            <RoutesWrapper />
+                                        </Main>
+                                    </CompatRouter>
+                                </Router>
+                            </HelpCenterApiClientProvider>
+                        </RevenueAddonApiClientProvider>
                     </LDProvider>
                 </DndProvider>
             </Provider>

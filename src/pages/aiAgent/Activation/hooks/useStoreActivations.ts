@@ -116,7 +116,7 @@ export const useStoreConfigurations = (
  *
  * @param pageName - Current page name for analytics tracking
  * @param storeName - If provided, filters results for this store only
- * @param withPublicResources - Enables public resources retrieval (default: false)
+ * @param withChatIntegrationsStatus - Enables chat integrations status retrieval (default: false)
  * @param withStoresKnowledgeStatus - Enables stores knowledge status retrieval (default: false)
  *
  * @returns Object containing:
@@ -224,6 +224,7 @@ export const useStoreActivations = ({
     } = useFetchChatIntegrationsStatusData({
         enabled: !!chatIds.length && withChatIntegrationsStatus,
         chatIds,
+        refetchOnWindowFocus: false,
     })
 
     const selfServiceChatChannels = useSelfServiceChatChannelsMultiStore(
