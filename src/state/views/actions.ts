@@ -14,6 +14,7 @@ import {
     ApiListResponseLegacyPagination,
     OrderDirection,
 } from 'models/api/types'
+import { deepMapKeysToSnakeCase } from 'models/api/utils'
 import { searchCustomersWithHighlights } from 'models/customer/resources'
 import { JOBS_PATH } from 'models/job/resources'
 import { Job } from 'models/job/types'
@@ -22,6 +23,7 @@ import {
     CUSTOMER_SEARCH_ORDERING,
     SearchEngine,
     SearchType,
+    TicketSearchSortableProperties,
 } from 'models/search/types'
 import { searchTicketsWithHighlights } from 'models/ticket/resources'
 import { Ticket } from 'models/ticket/types'
@@ -84,7 +86,11 @@ export const toggleViewSelection = () => ({
 })
 
 export const setOrderDirection =
-    (fieldPath: string, direction: OrderDirection = OrderDirection.Asc) =>
+    (
+        fieldPath: string,
+        direction: OrderDirection = OrderDirection.Asc,
+        isEditable: boolean,
+    ) =>
     (dispatch: StoreDispatch) => {
         dispatch({
             type: types.SET_ORDER_DIRECTION,
@@ -92,7 +98,7 @@ export const setOrderDirection =
             direction,
         })
 
-        dispatch(updateView())
+        dispatch(updateView(undefined, isEditable))
     }
 
 export const setFieldVisibility =
@@ -403,6 +409,7 @@ export function fetchViewItems(
             url = navigation.get('prev_items')
         }
         const isDirty = viewsSelectors.isDirty(state)
+        const isEditMode = viewsSelectors.isEditMode(state)
 
         if (activeView.get('deactivated_datetime')) {
             return Promise.resolve()
@@ -458,7 +465,11 @@ export function fetchViewItems(
                 orderBy: CUSTOMER_SEARCH_ORDERING,
                 cancelToken,
             })
-        } else if (isDirty && activeViewType === ViewType.TicketList) {
+        } else if (
+            isDirty &&
+            isEditMode &&
+            activeViewType === ViewType.TicketList
+        ) {
             // when a view is dirty, just send the whole view data rather than just the id
             // this will allow us to test a view before submitting it to the DB
             promise = searchTicketsWithHighlights({
@@ -474,6 +485,11 @@ export function fetchViewItems(
                 url,
                 {
                     ...options,
+                    // only send params if we're not in edit mode -
+                    // i.e. view orderBy was modified without opening the view edition
+                    ...(params && isDirty
+                        ? { params: deepMapKeysToSnakeCase(params) }
+                        : {}),
                     headers: { 'x-gorgias-search-engine': 'ES' },
                 },
             )
@@ -716,9 +732,24 @@ export const fetchActiveViewTickets =
         const state = getState()
         const shouldFetchActiveViewTickets =
             viewsSelectors.shouldFetchActiveViewTickets(state)
+        const isDirty = viewsSelectors.isDirty(state)
+        const viewOrderBy = viewsSelectors.getActiveViewOrderBy(
+            state,
+        ) as ValueOf<typeof TicketSearchSortableProperties>
+        const viewOrderDir = viewsSelectors.getActiveViewOrderDirection(state)
 
         if (!shouldFetchActiveViewTickets) return
-        return dispatch(fetchViewItems(null, null, true))
+        return dispatch(
+            fetchViewItems(
+                null,
+                null,
+                true,
+                undefined,
+                isDirty
+                    ? { orderBy: `${viewOrderBy}:${viewOrderDir}` }
+                    : undefined,
+            ),
+        )
     }
 
 export const fetchVisibleViewsCounts =

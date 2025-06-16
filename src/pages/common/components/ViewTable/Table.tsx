@@ -33,7 +33,10 @@ import {
     toggleViewSelection,
     updateSelectedItemsIds,
 } from 'state/views/actions'
-import { areAllActiveViewItemsSelected } from 'state/views/selectors'
+import {
+    areAllActiveViewItemsSelected,
+    isEditMode,
+} from 'state/views/selectors'
 import {
     FetchViewItemsOptions,
     ViewImmutable,
@@ -89,6 +92,7 @@ const TableContainer = ({
     viewSelected,
     shouldRenderShowMoreDropdown = true,
     areHeaderCellsClickable = true,
+    isEditMode,
 }: Props) => {
     const hasNextItems =
         !!navigation.get('next_items') || !!navigation.get('next_cursor')
@@ -355,6 +359,7 @@ const TableContainer = ({
                                 ActionsComponent={ActionsComponent}
                                 field={field}
                                 isSearch={isSearch}
+                                isEditMode={isEditMode}
                                 type={type}
                                 isClickable={areHeaderCellsClickable}
                             />
@@ -449,6 +454,7 @@ const TableContainer = ({
 const connector = connect(
     (state: RootState) => ({
         viewSelected: areAllActiveViewItemsSelected(state),
+        isEditMode: isEditMode(state),
     }),
     {
         resetView,

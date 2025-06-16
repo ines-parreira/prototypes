@@ -38,6 +38,7 @@ describe('ViewTable::Table::HeaderCell', () => {
         fields: viewConfigFields.take(3) as List<any>,
         shouldRenderShowMoreDropdown: false,
         isSearch: false,
+        isEditMode: false,
         type: viewConfig.get('name'),
     }
 
@@ -93,15 +94,17 @@ describe('ViewTable::Table::HeaderCell', () => {
     })
 
     it.each([
-        ['when not in search mode', false],
-        ['when in search mode', true],
-    ])('sorts by the field value on click %s', (_, isSearch) => {
+        ['when not in search mode and not in edit mode', false, false],
+        ['when in search mode and not in edit mode', true, false],
+        ['when not in search mode and in edit mode', false, true],
+    ])('sorts by the field value on click %s', (_, isSearch, isEditMode) => {
         const { getByText } = render(
             <Provider store={mockStore()}>
                 <HeaderCell
                     {...minProps}
                     field={createdViewField}
                     isSearch={isSearch}
+                    isEditMode={isEditMode}
                 />
             </Provider>,
         )
@@ -122,6 +125,7 @@ describe('ViewTable::Table::HeaderCell', () => {
         expect(setOrderDirectionMock).toHaveBeenCalledWith(
             createdViewField.get('path'),
             OrderDirection.Desc,
+            isSearch || isEditMode,
         )
     })
 

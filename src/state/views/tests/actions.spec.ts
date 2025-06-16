@@ -34,6 +34,7 @@ import socketManager from 'services/socketManager/socketManager'
 import { SocketEventType } from 'services/socketManager/types'
 import { RootState, StoreDispatch } from 'state/types'
 import * as actions from 'state/views/actions'
+import { fetchActiveViewTickets } from 'state/views/actions'
 import {
     FETCH_LIST_VIEW_START,
     FETCH_LIST_VIEW_SUCCESS,
@@ -134,6 +135,13 @@ afterEach(() => {
 })
 
 describe('actions', () => {
+    const view = {
+        id: 1,
+        type: ViewType.TicketList,
+        filters: 'eq(ticket.channel, "chat")',
+        filters_ast: getAST('eq(ticket.channel, "chat")'),
+    }
+
     describe('fieldEnumSearch()', () => {
         it('should dispatch results', async () => {
             const response = {
@@ -226,6 +234,46 @@ describe('actions', () => {
                     },
                 ])
             })
+        })
+
+        it('should include orderBy params when view is dirty', () => {
+            shouldFetchActiveViewTicketsMock.mockReturnValue(true)
+            const viewOrderBy = 'created_datetime'
+            const viewOrderDir = OrderDirection.Desc
+            const store = mockStore({
+                views: fromJS({
+                    active: {
+                        ...view,
+                        dirty: true,
+                        order_by: viewOrderBy,
+                        order_dir: viewOrderDir,
+                    },
+                }),
+            })
+
+            store.dispatch(fetchActiveViewTickets())
+            expect(mockServer.history.get[0].params.order_by).toEqual(
+                `${viewOrderBy}:${viewOrderDir}`,
+            )
+        })
+
+        it('should not include orderBy params when view is not dirty', () => {
+            shouldFetchActiveViewTicketsMock.mockReturnValue(true)
+            const viewOrderBy = 'created_datetime'
+            const viewOrderDir = OrderDirection.Desc
+            const store = mockStore({
+                views: fromJS({
+                    active: {
+                        ...view,
+                        dirty: false,
+                        order_by: viewOrderBy,
+                        order_dir: viewOrderDir,
+                    },
+                }),
+            })
+
+            store.dispatch(fetchActiveViewTickets())
+            expect(mockServer.history.get[0].params).toBeUndefined()
         })
     })
 
@@ -444,13 +492,13 @@ describe('actions', () => {
                 })
         })
 
-        it('should use the elasticsearch endpoint while the view is dirty', () => {
+        it('should use the elasticsearch endpoint while the view is dirty and in edit mode', () => {
             const store = mockStore({
                 views: fromJS({
                     active: {
                         ...view,
                         dirty: true,
-                        editMode: false,
+                        editMode: true,
                     },
                 }),
             })
@@ -507,7 +555,7 @@ describe('actions', () => {
                         active: {
                             ...view,
                             dirty: true,
-                            editMode: false,
+                            editMode: true,
                         },
                         _internal: {
                             navigation: {
@@ -543,13 +591,13 @@ describe('actions', () => {
             },
         )
 
-        it('should pass the view because it is dirty', () => {
+        it('should pass the view because it is dirty and in edit mode', () => {
             const store = mockStore({
                 views: fromJS({
                     active: {
                         ...view,
                         dirty: true,
-                        editMode: false,
+                        editMode: true,
                     },
                 }),
             })
@@ -947,6 +995,33 @@ describe('actions', () => {
                 })
             })
         })
+
+        it('should not use elasticsearch endpoint when view is dirty but not in edit mode', () => {
+            const store = mockStore({
+                views: fromJS({
+                    active: {
+                        ...view,
+                        dirty: true,
+                        editMode: false,
+                    },
+                }),
+            })
+
+            return store
+                .dispatch(
+                    actions.fetchViewItems(null, null, null, null, {
+                        orderBy: 'closed_datetime:asc',
+                    }),
+                )
+                .then(() => {
+                    expect(
+                        searchTicketsWithHighlightsMock,
+                    ).not.toHaveBeenCalled()
+                    expect(mockServer.history.get[0].params).toEqual({
+                        order_by: 'closed_datetime:asc',
+                    })
+                })
+        })
     })
 
     describe('createJob()', () => {
@@ -1229,5 +1304,36 @@ describe('actions', () => {
                 expectedAction,
             )
         })
+    })
+
+    describe('setOrderDirection', () => {
+        it.each([
+            [true, 'in edit mode'],
+            [false, 'not in edit mode'],
+        ])(
+            'should dispatch SET_ORDER_DIRECTION and updateView with isEditable=%s when %s',
+            (isEditable) => {
+                const store = mockStore()
+                const fieldPath = 'created_datetime'
+                const direction = OrderDirection.Desc
+
+                store.dispatch(
+                    actions.setOrderDirection(fieldPath, direction, isEditable),
+                )
+
+                expect(store.getActions()).toEqual([
+                    {
+                        type: types.SET_ORDER_DIRECTION,
+                        fieldPath,
+                        direction,
+                    },
+                    {
+                        type: types.UPDATE_VIEW,
+                        edit: isEditable,
+                        view: undefined,
+                    },
+                ])
+            },
+        )
     })
 })

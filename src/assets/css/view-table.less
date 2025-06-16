@@ -111,14 +111,14 @@
 
         tr:first-child .field-title {
             color: var(--neutral-grey-4);
+            .caption-allcaps();
 
-            font-size: 11px;
-            letter-spacing: 0.6px;
-            text-transform: uppercase;
+            &.active {
+                color: var(--neutral-grey-6);
+            }
         }
 
         .clickable {
-            font-weight: 500;
             color: var(--main-primary);
         }
 

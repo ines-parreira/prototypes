@@ -24,6 +24,7 @@ type Props = {
     ActionsComponent: Maybe<ComponentType<any>>
     field: Map<any, any>
     isSearch: boolean
+    isEditMode: boolean
     type: EntityType
     isClickable?: boolean
 }
@@ -32,6 +33,7 @@ const HeaderCell = ({
     ActionsComponent,
     field,
     isSearch,
+    isEditMode,
     type,
     isClickable = true,
 }: Props) => {
@@ -50,19 +52,19 @@ const HeaderCell = ({
         [field],
     ) as TicketSearchSortableProperties
 
-    const isSearchSortingEnabled = useMemo(
+    const isTicketSearchSortingEnabled = useMemo(
         () => isSearch && type === EntityType.Ticket,
         [isSearch, type],
     )
 
     const action = useMemo(
         () =>
-            field.get('filter') && (isSearchSortingEnabled || !isSearch)
+            field.get('filter') && (isTicketSearchSortingEnabled || !isSearch)
                 ? field.getIn(['filter', 'sort'])
                     ? 'sort'
                     : 'filter'
                 : '',
-        [field, isSearch, isSearchSortingEnabled],
+        [field, isSearch, isTicketSearchSortingEnabled],
     )
 
     const renderOrderIcon = useCallback(
@@ -86,7 +88,7 @@ const HeaderCell = ({
         // if currently searching, can't do anything (no edition)
         if (
             field.get('filter') &&
-            (isSearchSortingEnabled || !isSearch) &&
+            (isTicketSearchSortingEnabled || !isSearch) &&
             action === 'sort' &&
             isClickable
         ) {
@@ -94,7 +96,13 @@ const HeaderCell = ({
                 orderDirection === OrderDirection.Desc
                     ? OrderDirection.Asc
                     : OrderDirection.Desc
-            dispatch(setOrderDirection(fieldPath, newDirection))
+            dispatch(
+                setOrderDirection(
+                    fieldPath,
+                    newDirection,
+                    isSearch || isEditMode,
+                ),
+            )
             void dispatch(
                 fetchViewItems(undefined, undefined, undefined, undefined, {
                     orderBy: `${fieldPath}:${newDirection}`,
@@ -107,7 +115,8 @@ const HeaderCell = ({
         field,
         fieldPath,
         isSearch,
-        isSearchSortingEnabled,
+        isEditMode,
+        isTicketSearchSortingEnabled,
         orderDirection,
         isClickable,
     ])
@@ -132,7 +141,13 @@ const HeaderCell = ({
                                 clickable: action === 'sort' && isClickable,
                             })}
                         >
-                            <span className="field-title">
+                            <span
+                                className={classnames('field-title', {
+                                    active:
+                                        action === 'sort' &&
+                                        fieldPath === orderBy,
+                                })}
+                            >
                                 {field.get('title')}
                             </span>
                             {action === 'sort' &&
