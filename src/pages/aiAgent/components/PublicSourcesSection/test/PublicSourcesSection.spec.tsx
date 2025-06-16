@@ -1,6 +1,7 @@
 import React, { ComponentProps } from 'react'
 
 import { screen } from '@testing-library/react'
+import { useParams } from 'react-router-dom'
 
 import { useSearchParam } from 'hooks/useSearchParam'
 import {
@@ -11,6 +12,7 @@ import { usePublicResourceMutation } from 'pages/aiAgent/hooks/usePublicResource
 import { usePublicResourcesPooling } from 'pages/aiAgent/hooks/usePublicResourcesPooling'
 import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 import { userEvent } from 'utils/testing/userEvent'
 
 import { PublicSourcesSection } from '../PublicSourcesSection'
@@ -33,6 +35,11 @@ jest.mock('hooks/useSearchParam', () => ({
     useSearchParam: jest.fn(),
 }))
 
+jest.mock('react-router-dom', () => ({
+    useParams: jest.fn(),
+}))
+const mockUseParams = assumeMock(useParams)
+
 const HELP_CENTER_ID = 1
 
 const createSource = (id: number, props?: Partial<SourceItem>): SourceItem => ({
@@ -43,6 +50,8 @@ const createSource = (id: number, props?: Partial<SourceItem>): SourceItem => ({
     ...props,
 })
 
+const shopName = 'test'
+
 const renderComponent = (
     props?: Partial<ComponentProps<typeof PublicSourcesSection>>,
 ) => {
@@ -50,7 +59,7 @@ const renderComponent = (
         <PublicSourcesSection
             onPublicURLsChanged={jest.fn()}
             helpCenterId={HELP_CENTER_ID}
-            shopName="test"
+            shopName={shopName}
             {...props}
         />,
     )
@@ -80,6 +89,10 @@ describe('<PublicSourcesSection />', () => {
             articleIngestionLogsStatus: [],
         })
         mockUseSearchParam.mockReturnValue([null, jest.fn()])
+
+        mockUseParams.mockReturnValue({
+            shopName: shopName,
+        })
     })
     it('should render component', () => {
         renderComponent()
@@ -215,7 +228,7 @@ describe('<PublicSourcesSection />', () => {
         ).toBeAriaDisabled()
         expect(
             screen.getByText(
-                'URL must include a subpage (ie. yourstore.com/faqs)',
+                'URL must include a subpage (ie. www.example.com/faqs)',
             ),
         ).toBeInTheDocument()
     })

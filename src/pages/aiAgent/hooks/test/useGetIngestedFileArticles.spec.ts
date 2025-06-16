@@ -5,7 +5,7 @@ import { useGetIngestedFileArticles } from '../useGetIngestedFileArticles'
 
 jest.mock('models/helpCenter/queries')
 
-const useGetFileIngestionArticleTitlesMock = jest.mocked(
+const useGetFileIngestionArticleTitlesAndStatusMock = jest.mocked(
     useGetFileIngestionArticleTitlesAndStatus,
 )
 
@@ -14,7 +14,7 @@ describe('useGetIngestedFileArticles', () => {
         const mockData = [
             { id: 1, title: 'File Article 1', visibilityStatus: 'PUBLIC' },
         ]
-        useGetFileIngestionArticleTitlesMock.mockReturnValue({
+        useGetFileIngestionArticleTitlesAndStatusMock.mockReturnValue({
             data: mockData,
             isLoading: false,
         } as any)
@@ -28,7 +28,7 @@ describe('useGetIngestedFileArticles', () => {
     })
 
     it('returns loading state correctly when query is loading', () => {
-        useGetFileIngestionArticleTitlesMock.mockReturnValue({
+        useGetFileIngestionArticleTitlesAndStatusMock.mockReturnValue({
             data: null,
             isLoading: true,
         } as any)
@@ -42,7 +42,7 @@ describe('useGetIngestedFileArticles', () => {
     })
 
     it('does not fetch data when helpCenterId is missing', () => {
-        useGetFileIngestionArticleTitlesMock.mockReturnValue({
+        useGetFileIngestionArticleTitlesAndStatusMock.mockReturnValue({
             data: null,
             isLoading: false,
         } as any)
@@ -58,7 +58,7 @@ describe('useGetIngestedFileArticles', () => {
     })
 
     it('does not fetch data when fileIngestionId is missing', () => {
-        useGetFileIngestionArticleTitlesMock.mockReturnValue({
+        useGetFileIngestionArticleTitlesAndStatusMock.mockReturnValue({
             data: null,
             isLoading: false,
         } as any)

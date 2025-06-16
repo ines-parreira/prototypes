@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 import Skeleton from 'react-loading-skeleton'
@@ -6,6 +6,10 @@ import Skeleton from 'react-loading-skeleton'
 import { ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import {
+    ContentType,
+    ProductIngestedResourceWithArticleId,
+} from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -33,12 +37,12 @@ type Props<T> = {
     contents: T[]
     onSelect: (id: number) => void
     pageType: string
-    hasNextItems: boolean
-    hasPrevItems: boolean
-    fetchNextItems: () => void
-    fetchPrevItems: () => void
+    hasNextItems?: boolean
+    hasPrevItems?: boolean
+    fetchNextItems?: () => void
+    fetchPrevItems?: () => void
     searchValue: string
-    onSearch: (value: string) => void
+    onSearch?: (value: string) => void
     onUpdateStatus?: (
         id: number,
         { status }: { status: IngestedResourceStatus },
@@ -48,7 +52,7 @@ type Props<T> = {
 const EmptyStateView = ({ pageType }: { pageType: string }) => {
     return (
         <div className={css.emptyState}>
-            {pageType === CONTENT_TYPE.QUESTION
+            {pageType !== CONTENT_TYPE.PRODUCT
                 ? 'No questions generated'
                 : 'No products available'}
         </div>
@@ -84,17 +88,22 @@ const ColumnIsNotUsedByAiAgent = ({ id }: { id: number }) => (
     </BodyCell>
 )
 
-function ScrapedDomainContentView<
-    T extends {
-        id: number
-        title: string
-        image?: {
-            src: string
-        } | null
-        status?: string
-        is_used_by_ai_agent?: boolean
-    },
->({
+const getPageDescription = (pageType: string) => {
+    switch (pageType) {
+        case CONTENT_TYPE.QUESTION:
+            return 'AI Agent automatically generates questions and answers from your website content to use as knowledge.'
+        case CONTENT_TYPE.PRODUCT:
+            return 'AI Agent uses product details from your Shopify app and store website.'
+        case CONTENT_TYPE.FILE_QUESTION:
+            return 'AI Agent generates questions and answers from the document to use when responding to customers.'
+        case CONTENT_TYPE.URL_QUESTION:
+            return 'AI Agent generates questions and answers from the page content to use when responding to customers.'
+        default:
+            return ''
+    }
+}
+
+function ScrapedDomainContentView<T extends ContentType>({
     isLoading,
     contents,
     onSelect,
@@ -108,17 +117,16 @@ function ScrapedDomainContentView<
     onUpdateStatus,
 }: Props<T>) {
     const dispatch = useAppDispatch()
-    const description =
-        pageType === CONTENT_TYPE.QUESTION
-            ? 'AI Agent automatically generates questions and answers from your website content to use as knowledge.'
-            : 'AI Agent uses product details from your Shopify app and store website.'
+    const description = getPageDescription(pageType)
 
     const [questionStatusMap, setQuestionStatusMap] = useState<
         Record<number, string>
     >({})
 
+    const pageTitle = pageType === CONTENT_TYPE.PRODUCT ? 'Product' : 'Question'
+
     useEffect(() => {
-        const initialStatusMap = contents.reduce(
+        const initialStatusMap = contents?.reduce(
             (acc, item) => {
                 acc[item.id] = item.status || IngestedResourceStatus.Disabled
                 return acc
@@ -175,6 +183,21 @@ function ScrapedDomainContentView<
         return <div className={classnames(css.productImage, css.color)} />
     }
 
+    const getContentImage = (item: T): string | undefined => {
+        if ('image' in item) {
+            return (item as ProductIngestedResourceWithArticleId).image?.src
+        }
+        return undefined
+    }
+
+    const getContentIsUsedByAiAgent = (item: T): boolean | undefined => {
+        if ('is_used_by_ai_agent' in item) {
+            return (item as ProductIngestedResourceWithArticleId)
+                .is_used_by_ai_agent
+        }
+        return undefined
+    }
+
     return (
         <>
             <div>
@@ -189,7 +212,7 @@ function ScrapedDomainContentView<
                     })}
                 >
                     <TableHead>
-                        <HeaderCellProperty title={pageType} />
+                        <HeaderCellProperty title={pageTitle} />
                         {pageType === CONTENT_TYPE.PRODUCT && !isLoading && (
                             <HeaderCellProperty title="IN USE BY AI AGENT" />
                         )}
@@ -222,7 +245,8 @@ function ScrapedDomainContentView<
                                         </BodyCell>
                                     </TableBodyRow>
                                 ))}
-                        {contents.length > 0 &&
+                        {contents &&
+                            contents.length > 0 &&
                             contents.map((content) => (
                                 <TableBodyRow
                                     key={content.id}
@@ -234,9 +258,12 @@ function ScrapedDomainContentView<
                                             [css.productCell]:
                                                 pageType ===
                                                 CONTENT_TYPE.PRODUCT,
+                                            [css.questionCell]:
+                                                pageType !==
+                                                CONTENT_TYPE.PRODUCT,
                                         })}
                                     >
-                                        {pageType === CONTENT_TYPE.QUESTION ? (
+                                        {pageType !== CONTENT_TYPE.PRODUCT ? (
                                             <div
                                                 onClick={(e) => {
                                                     e.stopPropagation()
@@ -244,10 +271,11 @@ function ScrapedDomainContentView<
                                             >
                                                 <ToggleField
                                                     value={
+                                                        questionStatusMap &&
                                                         questionStatusMap[
                                                             content.id
                                                         ] ===
-                                                        IngestedResourceStatus.Enabled
+                                                            IngestedResourceStatus.Enabled
                                                     }
                                                     onChange={() => {
                                                         handleToggleChange(
@@ -259,7 +287,7 @@ function ScrapedDomainContentView<
                                             </div>
                                         ) : (
                                             <ProductImage
-                                                image={content.image?.src}
+                                                image={getContentImage(content)}
                                             />
                                         )}
 
@@ -267,7 +295,7 @@ function ScrapedDomainContentView<
                                     </BodyCell>
 
                                     {pageType === CONTENT_TYPE.PRODUCT &&
-                                        (content.is_used_by_ai_agent ? (
+                                        (getContentIsUsedByAiAgent(content) ? (
                                             <ColumnIsUsedByAiAgent
                                                 id={content.id}
                                             />
@@ -292,13 +320,18 @@ function ScrapedDomainContentView<
                 </TableWrapper>
             </div>
 
-            <Navigation
-                className={css.navigation}
-                hasNextItems={hasNextItems}
-                hasPrevItems={hasPrevItems}
-                fetchNextItems={fetchNextItems}
-                fetchPrevItems={fetchPrevItems}
-            />
+            {!!fetchNextItems &&
+                !!fetchPrevItems &&
+                hasNextItems !== undefined &&
+                hasPrevItems !== undefined && (
+                    <Navigation
+                        className={css.navigation}
+                        hasNextItems={hasNextItems}
+                        hasPrevItems={hasPrevItems}
+                        fetchNextItems={fetchNextItems}
+                        fetchPrevItems={fetchPrevItems}
+                    />
+                )}
         </>
     )
 }

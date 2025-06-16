@@ -2,7 +2,7 @@
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -11,6 +11,7 @@ import thunk from 'redux-thunk'
 import { toImmutable } from 'common/utils'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useGetIngestedResource } from 'models/helpCenter/queries'
+import { useSelectedQuestionAndDetail } from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/useSelectedQuestionAndDetail'
 import {
     getIngestedResourceFixture,
     getIngestedResourcesListResponse,
@@ -54,6 +55,13 @@ const mockUsePollStoreDomainIngestionLog = assumeMock(
 jest.mock('../hooks/usePaginatedIngestedResources')
 const mockUsePaginatedIngestedResources = assumeMock(
     usePaginatedIngestedResources,
+)
+
+jest.mock(
+    'pages/aiAgent/AiAgentScrapedDomainContent/hooks/useSelectedQuestionAndDetail',
+)
+const mockUseSelectedQuestionAndDetail = assumeMock(
+    useSelectedQuestionAndDetail,
 )
 
 jest.mock('../hooks/useIngestedResourceMutation')
@@ -161,6 +169,25 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
             isError: false,
             data: null,
         } as unknown as ReturnType<typeof useGetIngestedResource>)
+
+        mockUseSelectedQuestionAndDetail.mockReturnValue({
+            selectedQuestion: {
+                id: null,
+                title: '',
+                article_ingestion_log_id: null,
+                web_pages: [
+                    {
+                        url: 'https://example.com',
+                        title: '',
+                        pageType: 'other',
+                    },
+                ],
+                status: IngestedResourceStatus.Enabled,
+            },
+            questionDetail: null,
+            isError: false,
+            isLoading: false,
+        } as unknown as ReturnType<typeof useSelectedQuestionAndDetail>)
     })
 
     it('should render the component', () => {
@@ -252,12 +279,16 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
             hasPrevPage: false,
         })
 
-        renderComponent()
+        await act(async () => {
+            renderComponent()
+        })
 
-        const questionRow = screen.getByText(
-            mockedListIngestedResources.data[0].title,
-        )
-        fireEvent.click(questionRow)
+        await act(async () => {
+            const questionRow = screen.getByText(
+                mockedListIngestedResources.data[0].title,
+            )
+            fireEvent.click(questionRow)
+        })
 
         expect(screen.getByText('Question details')).toBeInTheDocument()
         const hideIcon = screen.getByAltText('hide-view-icon')

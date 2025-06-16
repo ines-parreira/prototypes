@@ -39,6 +39,7 @@ export enum SegmentEvent {
     AiAgentFeedbackSidePanelViewed = 'ai-agent-feedback-side-panel-viewed',
     AiAgentFeedbackSubmitFeedback = 'ai-agent-feedback-submit-feedback',
     AiAgentFeedbackTabClicked = 'ai-agent-feedback-tab-clicked',
+    AiAgentGoToGuidanceLinkClicked = 'ai-agent-go-to-guidance-link-clicked',
     AiAgentGuidanceCardClicked = 'ai-agent-guidance-card-clicked',
     AiAgentGuidanceCreated = 'ai-agent-guidance-created',
     AiAgentGuidanceEdited = 'ai-agent-guidance-edited',

@@ -5,7 +5,10 @@ import { Button, IconButton, Label, Tooltip } from '@gorgias/merchant-ui-kit'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useId from 'hooks/useId'
-import { IngestionLogStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
+import {
+    HeaderType,
+    IngestionLogStatus,
+} from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import SyncDomainConfirmationModal from 'pages/aiAgent/AiAgentScrapedDomainContent/SyncDomainConfirmationModal'
 import {
     getFormattedSyncDate,
@@ -79,6 +82,7 @@ export const ScrapeStoreDomainSection = ({
                 isOpen={syncTriggered}
                 onCancel={handleOnCancel}
                 onSync={handleOnSync}
+                pageType={HeaderType.Domain}
             />
             <div className={css.label}>
                 <Label>Store website</Label>

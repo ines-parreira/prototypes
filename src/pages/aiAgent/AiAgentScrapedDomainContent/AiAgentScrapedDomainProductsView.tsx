@@ -12,6 +12,7 @@ import { useSyncStoreDomain } from '../hooks/useSyncStoreDomain'
 import AiAgentScrapedDomainContentLayout from './AiAgentScrapedDomainContentLayout'
 import {
     CONTENT_TYPE,
+    HeaderType,
     IngestionLogStatus,
     PAGINATED_ITEMS_PER_PAGE,
 } from './constant'
@@ -111,7 +112,7 @@ const AiAgentScrapedDomainProductsView = ({
     return (
         <AiAgentScrapedDomainContentLayout
             shopName={shopName}
-            storeDomainIngestionLog={storeDomainIngestionLog}
+            latestSync={storeDomainIngestionLog?.latest_sync}
             storeDomain={storeDomain ?? null}
             storeUrl={storeUrl ?? null}
             isFetchLoading={isDataLoading}
@@ -120,6 +121,8 @@ const AiAgentScrapedDomainProductsView = ({
             handleOnCancel={handleOnCancel}
             handleTriggerSync={handleTriggerSync}
             syncStoreDomainStatus={syncStoreDomainStatus}
+            title="Store website"
+            pageType={HeaderType.Domain}
         >
             <ScrapedDomainContentView<ProductWithAiAgentStatus>
                 searchValue={searchTerm}

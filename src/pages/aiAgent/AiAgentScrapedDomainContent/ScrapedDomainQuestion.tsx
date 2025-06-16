@@ -4,28 +4,37 @@ import { useHistory, useParams } from 'react-router'
 
 import { Banner, Button, ToggleField } from '@gorgias/merchant-ui-kit'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { ArticleWithLocalTranslation } from 'models/helpCenter/types'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import ControlledCollapsibleDetails from 'pages/tickets/detail/components/TicketVoiceCall/ControlledCollapsibleDetails'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import { IngestedResourceStatus } from './constant'
-import { IngestedResourceWithArticleId } from './types'
 
 import css from './ScrapedDomainQuestion.less'
 
 type Props = {
-    question: IngestedResourceWithArticleId | null
-    detail?: ArticleWithLocalTranslation | null
     onUpdateStatus?: (
         id: number,
         { status }: { status: IngestedResourceStatus },
     ) => Promise<void>
+    questionId?: number
+    questionStatus?: 'enabled' | 'disabled'
+    questionTitle?: string
+    questionAnswer?: string
+    questionWebPages?: { url: string }[]
 }
 
-const ScrapedDomainQuestion = ({ question, detail, onUpdateStatus }: Props) => {
+const ScrapedDomainQuestion = ({
+    onUpdateStatus,
+    questionId,
+    questionStatus,
+    questionTitle,
+    questionAnswer,
+    questionWebPages,
+}: Props) => {
     const dispatch = useAppDispatch()
     const history = useHistory()
     const { shopName } = useParams<{
@@ -35,12 +44,12 @@ const ScrapedDomainQuestion = ({ question, detail, onUpdateStatus }: Props) => {
 
     const [isOpen, setIsOpen] = useState(false)
     const [isEnabled, setIsEnabled] = useState(
-        question?.status === IngestedResourceStatus.Enabled,
+        questionStatus === IngestedResourceStatus.Enabled,
     )
 
     useEffect(() => {
-        setIsEnabled(question?.status === IngestedResourceStatus.Enabled)
-    }, [question?.status])
+        setIsEnabled(questionStatus === IngestedResourceStatus.Enabled)
+    }, [questionStatus])
 
     const handleToggleChange = ({ id }: { id?: number }) => {
         if (onUpdateStatus && id) {
@@ -68,7 +77,7 @@ const ScrapedDomainQuestion = ({ question, detail, onUpdateStatus }: Props) => {
                 value={isEnabled}
                 onChange={() => {
                     handleToggleChange({
-                        id: question?.id,
+                        id: questionId,
                     })
                     setIsEnabled(!isEnabled)
                 }}
@@ -82,7 +91,12 @@ const ScrapedDomainQuestion = ({ question, detail, onUpdateStatus }: Props) => {
                 action={
                     <Button
                         fillStyle="ghost"
-                        onClick={() => history.push(routes.guidance)}
+                        onClick={() => {
+                            logEvent(
+                                SegmentEvent.AiAgentGoToGuidanceLinkClicked,
+                            )
+                            history.push(routes.guidance)
+                        }}
                     >
                         Go to Guidance
                     </Button>
@@ -93,34 +107,38 @@ const ScrapedDomainQuestion = ({ question, detail, onUpdateStatus }: Props) => {
             </Banner>
             <div className={css.contentBody}>
                 <div className={css.bodySemibold}>Question</div>
-                <div>{question?.title}</div>
+                <div>{questionTitle}</div>
             </div>
             <div className={css.contentBody}>
                 <div className={css.bodySemibold}>Answer</div>
-                <div>{detail?.translation.content}</div>
+                <div>{questionAnswer}</div>
             </div>
-            <div>
-                <ControlledCollapsibleDetails
-                    isOpen={isOpen}
-                    setIsOpen={setIsOpen}
-                    title={
-                        <div className={css.sourceHeader}>View source URLs</div>
-                    }
-                >
-                    <div className={css.sourceBody}>
-                        {question?.web_pages?.map((web_page, index) => (
-                            <a
-                                key={index}
-                                href={web_page.url}
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                {web_page.url}
-                            </a>
-                        ))}
-                    </div>
-                </ControlledCollapsibleDetails>
-            </div>
+            {questionWebPages && questionWebPages.length > 0 && (
+                <div>
+                    <ControlledCollapsibleDetails
+                        isOpen={isOpen}
+                        setIsOpen={setIsOpen}
+                        title={
+                            <div className={css.sourceHeader}>
+                                View source URLs
+                            </div>
+                        }
+                    >
+                        <div className={css.sourceBody}>
+                            {questionWebPages.map((web_page, index) => (
+                                <a
+                                    key={index}
+                                    href={web_page.url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    {web_page.url}
+                                </a>
+                            ))}
+                        </div>
+                    </ControlledCollapsibleDetails>
+                </div>
+            )}
         </div>
     )
 }

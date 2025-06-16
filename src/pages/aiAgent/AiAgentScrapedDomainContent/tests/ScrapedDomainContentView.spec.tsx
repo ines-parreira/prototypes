@@ -39,7 +39,10 @@ const setup = (propsOverride = {}) => {
     }
 
     return render(
-        <ScrapedDomainContentView {...defaultProps} {...propsOverride} />,
+        <ScrapedDomainContentView
+            {...(defaultProps as any)}
+            {...propsOverride}
+        />,
     )
 }
 
@@ -88,5 +91,47 @@ describe('ScrapedDomainContentView', () => {
     it('renders empty state for Product page when there is no content', () => {
         setup({ contents: [], pageType: CONTENT_TYPE.PRODUCT })
         expect(screen.getByText(/No products available/i)).toBeInTheDocument()
+    })
+
+    it('renders correct description for QUESTION pageType', () => {
+        setup({ pageType: CONTENT_TYPE.QUESTION })
+        expect(
+            screen.getByText(
+                /AI Agent automatically generates questions and answers from your website content to use as knowledge\./i,
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('renders correct description for PRODUCT pageType', () => {
+        setup({ pageType: CONTENT_TYPE.PRODUCT })
+        expect(
+            screen.getByText(
+                /AI Agent uses product details from your Shopify app and store website\./i,
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('renders correct description for FILE_QUESTION pageType', () => {
+        setup({ pageType: CONTENT_TYPE.FILE_QUESTION })
+        expect(
+            screen.getByText(
+                /AI Agent generates questions and answers from the document to use when responding to customers\./i,
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('renders correct description for URL_QUESTION pageType', () => {
+        setup({ pageType: CONTENT_TYPE.URL_QUESTION })
+        expect(
+            screen.getByText(
+                /AI Agent generates questions and answers from the page content to use when responding to customers\./i,
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('renders empty description for unknown pageType', () => {
+        setup({ pageType: 'UNKNOWN' })
+        // Should not find any description text
+        expect(screen.queryByText(/AI Agent/i)).not.toBeInTheDocument()
     })
 })

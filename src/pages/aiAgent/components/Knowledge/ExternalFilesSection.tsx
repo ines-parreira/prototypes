@@ -1,10 +1,14 @@
 import React, { createRef, useEffect, useState } from 'react'
 
+import { useHistory } from 'react-router'
+import { useParams } from 'react-router-dom'
+
 import { Button, IconButton, Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
 import { ConfirmNavigationPrompt } from 'pages/common/components/ConfirmNavigationPrompt'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
@@ -50,6 +54,11 @@ export const ExternalFilesSection = ({
     const [isLoading, setIsLoading] = useState(false)
     const inputRef = createRef<HTMLInputElement>()
     const dispatch = useAppDispatch()
+
+    const { shopName } = useParams<{ shopName: string }>()
+    const { routes } = useAiAgentNavigation({ shopName })
+    const history = useHistory()
+
     const isAiAgentFilesAndUrlsKnowledgeVisible = useFlag(
         FeatureFlagKey.AiAgentFilesAndUrlsKnowledgeVisibilityButton,
     )
@@ -182,8 +191,10 @@ export const ExternalFilesSection = ({
         onEmptyStateChange && onEmptyStateChange(isEmpty)
     }, [isEmpty, onEmptyStateChange])
 
-    const handleOpenArticles = () => {
-        // TODO: Implement logic to open articles for other file types
+    const handleOpenArticles = (ingestedFile: any) => {
+        history.push(routes.fileArticles(ingestedFile.id), {
+            selectedResource: ingestedFile,
+        })
     }
 
     const isExcelFile = (filename: string) =>
@@ -300,7 +311,9 @@ export const ExternalFilesSection = ({
                                             fillStyle="ghost"
                                             intent="secondary"
                                             aria-label="Open articles"
-                                            onClick={handleOpenArticles}
+                                            onClick={() =>
+                                                handleOpenArticles(ingestedFile)
+                                            }
                                             icon="keyboard_arrow_right"
                                             isDisabled={isExcelFile(
                                                 ingestedFile.filename,

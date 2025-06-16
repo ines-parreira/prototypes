@@ -1,7 +1,6 @@
 import { useGetArticleIngestionArticlesTitleAndStatus } from 'models/helpCenter/queries'
+import { useGetIngestedUrlArticles } from 'pages/aiAgent/hooks/useGetIngestedUrlArticles'
 import { renderHook } from 'utils/testing/renderHook'
-
-import { useGetIngestedUrlArticles } from '../useGetIngestedUrlArticles'
 
 jest.mock('models/helpCenter/queries')
 const useGetArticleIngestionArticleTitlesMock = jest.mocked(

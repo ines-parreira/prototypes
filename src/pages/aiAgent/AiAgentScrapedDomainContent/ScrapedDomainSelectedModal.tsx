@@ -102,7 +102,12 @@ export const ScrapedDomainSelectedModal = ({
                 })}
             >
                 {isLoading ? (
-                    <div className={settingsCss.pageContainer}>
+                    <div
+                        className={classnames(
+                            settingsCss.pageContainer,
+                            css.loader,
+                        )}
+                    >
                         <Loader />
                     </div>
                 ) : (

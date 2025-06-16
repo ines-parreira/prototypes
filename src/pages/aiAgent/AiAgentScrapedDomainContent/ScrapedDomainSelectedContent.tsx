@@ -23,7 +23,11 @@ import IngestionProductView from './IngestionProductView'
 import IntegrationProductView from './IntegrationProductView'
 import ScrapedDomainQuestion from './ScrapedDomainQuestion'
 import ScrapedDomainSelectedModal from './ScrapedDomainSelectedModal'
-import { IngestedProduct, IngestedResourceWithArticleId } from './types'
+import {
+    BaseArticle,
+    IngestedProduct,
+    IngestedResourceWithArticleId,
+} from './types'
 
 import css from './ScrapedDomainSelectedContent.less'
 
@@ -39,6 +43,18 @@ type ProductProps = {
     detail?: IngestedProduct | null
 }
 
+type FileQuestionProps = {
+    contentType: typeof CONTENT_TYPE.FILE_QUESTION
+    selectedContent: BaseArticle | null
+    detail?: ArticleWithLocalTranslation | null
+}
+
+type UrlQuestionProps = {
+    contentType: typeof CONTENT_TYPE.URL_QUESTION
+    selectedContent: IngestedResourceWithArticleId | null
+    detail?: ArticleWithLocalTranslation | null
+}
+
 type SharedProps = {
     isOpened: boolean
     isLoading: boolean
@@ -49,7 +65,13 @@ type SharedProps = {
     ) => Promise<void>
 }
 
-type Props = (QuestionProps | ProductProps) & SharedProps
+type Props = (
+    | QuestionProps
+    | ProductProps
+    | FileQuestionProps
+    | UrlQuestionProps
+) &
+    SharedProps
 
 const SelectedProductView = ({
     product,
@@ -124,11 +146,17 @@ const ScrapedDomainSelectedContent = ({
     const titleForQuestion = 'Question details'
     const titleForProduct = 'Product details'
 
+    const selectedQuestionContent =
+        selectedContent as IngestedResourceWithArticleId
+    const selectedQuestionDetail = detail as ArticleWithLocalTranslation
     const contentForQuestion = (
         <ScrapedDomainQuestion
-            question={selectedContent as IngestedResourceWithArticleId}
-            detail={detail as ArticleWithLocalTranslation}
+            questionId={selectedQuestionContent?.id}
+            questionStatus={selectedQuestionContent?.status}
+            questionTitle={selectedQuestionContent?.title}
+            questionWebPages={selectedQuestionContent?.web_pages}
             onUpdateStatus={onUpdateStatus}
+            questionAnswer={selectedQuestionDetail?.translation?.content}
         />
     )
     const contentForProduct = (

@@ -66,6 +66,11 @@ export const getAiAgentNavigationRoutes = (
             `${basePath}/knowledge/sources/pages-content/${contentId}`,
         productsContentDetail: (contentId: number) =>
             `${basePath}/knowledge/sources/products-content/${contentId}`,
+        urlArticles: (articleIngestionId: number) =>
+            `${basePath}/knowledge/sources/url-articles/${articleIngestionId}`,
+        fileArticles: (fileIngestionId: number) =>
+            `${basePath}/knowledge/sources/file-articles/${fileIngestionId}`,
+
         guidance: `${basePath}/${guidancePath}`,
         newGuidanceArticle: `${basePath}/${guidancePath}/new`,
         guidanceArticleEdit: (articleId: number) =>

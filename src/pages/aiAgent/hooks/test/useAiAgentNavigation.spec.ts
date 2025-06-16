@@ -145,6 +145,19 @@ describe('useAiAgentNavigation', () => {
         )
     })
 
+    it('should return correct urlArticles and fileArticles paths', () => {
+        const { result } = renderHook(() =>
+            useAiAgentNavigation({ shopName: 'test' }),
+        )
+
+        expect(result.current.routes.urlArticles(42)).toBe(
+            '/app/ai-agent/shopify/test/knowledge/sources/url-articles/42',
+        )
+        expect(result.current.routes.fileArticles(99)).toBe(
+            '/app/ai-agent/shopify/test/knowledge/sources/file-articles/99',
+        )
+    })
+
     describe('useNavigationItems', () => {
         describe('when AiShoppingAssistantEnabled=false', () => {
             it('should return ai-agent route for ai-agent support set up', () => {

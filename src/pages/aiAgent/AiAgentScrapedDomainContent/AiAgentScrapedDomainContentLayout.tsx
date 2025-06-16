@@ -7,9 +7,8 @@ import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNa
 
 import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import AiAgentScrapedDomainContentHeader from './AiAgentScrapedDomainContentHeader'
-import { SCRAPPING_CONTENT } from './constant'
+import { HeaderType, SCRAPPING_CONTENT } from './constant'
 import SyncIngestionDomainBanner from './SyncIngestionDomainBanner'
-import { IngestionLog } from './types'
 
 import css from './AiAgentScrapedDomainContentLayout.less'
 
@@ -17,21 +16,23 @@ type Props = {
     shopName: string
     storeDomain: string | null
     storeUrl: string | null
-    storeDomainIngestionLog?: IngestionLog
+    latestSync?: string | null
     isFetchLoading: boolean
     syncTriggered: boolean
-    handleOnSync: () => void
-    handleOnCancel: () => void
-    handleTriggerSync: () => void
+    handleOnSync?: () => void
+    handleOnCancel?: () => void
+    handleTriggerSync?: () => void
     syncStoreDomainStatus: string | null
     children?: React.ReactNode
+    title: string
+    pageType: HeaderType
 }
 
 const AiAgentScrapedDomainContentLayout = ({
     shopName,
     storeDomain,
     storeUrl,
-    storeDomainIngestionLog,
+    latestSync,
     isFetchLoading,
     syncTriggered,
     handleOnSync,
@@ -39,6 +40,8 @@ const AiAgentScrapedDomainContentLayout = ({
     handleTriggerSync,
     syncStoreDomainStatus,
     children,
+    title,
+    pageType,
 }: Props) => {
     const { routes } = useAiAgentNavigation({ shopName })
 
@@ -57,17 +60,18 @@ const AiAgentScrapedDomainContentLayout = ({
         <div className={css.container}>
             <BackLink path={routes.knowledge} label="Back to Sources" />
 
-            <SyncIngestionDomainBanner
-                syncStoreDomainStatus={syncStoreDomainStatus}
-                shopName={shopName}
-                isSourcePage={false}
-                className={css.banner}
-            />
+            {pageType === HeaderType.Domain && (
+                <SyncIngestionDomainBanner
+                    syncStoreDomainStatus={syncStoreDomainStatus}
+                    shopName={shopName}
+                    isSourcePage={false}
+                    className={css.banner}
+                />
+            )}
 
             <Card className={css.wrapper}>
                 <AiAgentScrapedDomainContentHeader
-                    storeDomainIngestionLog={storeDomainIngestionLog}
-                    storeDomain={storeDomain}
+                    latestSync={latestSync}
                     storeUrl={storeUrl}
                     isFetchLoading={isFetchLoading}
                     syncTriggered={syncTriggered}
@@ -75,15 +79,21 @@ const AiAgentScrapedDomainContentLayout = ({
                     handleOnCancel={handleOnCancel}
                     handleTriggerSync={handleTriggerSync}
                     syncStoreDomainStatus={syncStoreDomainStatus}
+                    title={title}
+                    pageType={pageType}
+                    storeDomain={storeDomain}
                 />
                 <div>
-                    <SecondaryNavbar>
-                        {headerNavbarItems.map(({ route, title }) => (
-                            <NavLink key={route} to={route}>
-                                {title}
-                            </NavLink>
-                        ))}
-                    </SecondaryNavbar>
+                    {pageType === HeaderType.Domain && (
+                        <SecondaryNavbar>
+                            {headerNavbarItems.map(({ route, title }) => (
+                                <NavLink key={route} to={route}>
+                                    {title}
+                                </NavLink>
+                            ))}
+                        </SecondaryNavbar>
+                    )}
+
                     {children}
                 </div>
             </Card>

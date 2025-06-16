@@ -4,6 +4,7 @@ import _noop from 'lodash/noop'
 
 import { Banner, Button } from '@gorgias/merchant-ui-kit'
 
+import { HeaderType } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import { AlertType } from 'pages/common/components/Alert/Alert'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -16,17 +17,32 @@ type Props = {
     isOpen: boolean
     onCancel: () => void
     onSync: () => void
+    pageType: HeaderType
 }
 
-const SyncDomainConfirmationModal = ({ isOpen, onCancel, onSync }: Props) => {
+const SyncDomainConfirmationModal = ({
+    isOpen,
+    onCancel,
+    onSync,
+    pageType,
+}: Props) => {
+    const title =
+        pageType === HeaderType.Domain ? 'Sync store website' : 'Sync URL'
     return (
         <Modal isOpen={isOpen} isClosable={false} onClose={_noop}>
-            <ModalHeader title="Sync store website" />
+            <ModalHeader title={title} />
             <ModalBody className={css.body}>
                 <div>
-                    Syncing will replace all existing questions and answers,
-                    reset any disabled questions and answers, and update all
-                    product information from your store website.
+                    <span>
+                        Syncing will replace all existing questions and answers,
+                        reset any disabled questions and answers
+                    </span>
+                    {pageType === HeaderType.Domain && (
+                        <span>
+                            , and update all product information from your store
+                            website.
+                        </span>
+                    )}
                 </div>
                 <Banner variant="inline" icon type={AlertType.Warning}>
                     This action cannot be undone. You will need to review newly

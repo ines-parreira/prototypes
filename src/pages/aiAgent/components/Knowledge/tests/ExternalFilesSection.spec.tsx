@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { useParams } from 'react-router-dom'
 
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -9,8 +10,9 @@ import { Components } from 'rest_api/help_center_api/client.generated'
 import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
+import { renderWithStoreAndQueryClientAndRouter } from '../../../../../tests/renderWithStoreAndQueryClientAndRouter'
 import { ExternalFilesSection } from '../ExternalFilesSection'
 
 jest.mock('state/notifications/actions')
@@ -19,6 +21,11 @@ jest.mock('pages/aiAgent/hooks/useFileIngestion')
 jest.mock('rest_api/help_center_api/uploadAttachments')
 jest.mock('launchdarkly-react-client-sdk')
 jest.mock('core/flags')
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useParams: jest.fn(),
+}))
+const mockUseParams = assumeMock(useParams)
 
 const mockDispatch = jest.fn()
 const mockIngestFile = jest.fn()
@@ -59,7 +66,7 @@ const renderComponent = ({
         }
     })
 
-    return renderWithRouter(
+    return renderWithStoreAndQueryClientAndRouter(
         <ExternalFilesSection
             helpCenterId={1}
             onEmptyStateChange={mockOnEmptyStateChange}
@@ -68,6 +75,9 @@ const renderComponent = ({
 }
 
 describe('ExternalFilesSection', () => {
+    beforeEach(() => {
+        mockUseParams.mockReturnValue({ shopName: 'test' })
+    })
     it('should render correctly', () => {
         renderComponent()
         expect(screen.getByText('Documents')).toBeInTheDocument()
@@ -454,5 +464,32 @@ describe('ExternalFilesSection', () => {
                 'Viewing content from .xlsx files is not supported. Download to view its content.',
             ),
         ).toBeInTheDocument()
+    })
+
+    it('should navigate to file articles page with selectedResource in location state when Open articles button is clicked and file is not .xlsx', () => {
+        useFlagMock.mockReturnValue(true)
+
+        const ingestedFile: Components.Schemas.RetrieveFileIngestionLogDto = {
+            id: 1,
+            help_center_id: 1,
+            filename: 'test.pdf',
+            status: 'SUCCESSFUL' as const,
+            google_storage_url: 'https://storage.googleapis.com/test.xlsx',
+            uploaded_datetime: '2024-11-04T19:24:08Z',
+            snippets_article_ids: [],
+        }
+        const { history } = renderComponent({
+            ingestedFiles: [ingestedFile],
+        })
+
+        jest.spyOn(history, 'push')
+
+        const openArticlesButton = screen.getByLabelText('Open articles')
+        fireEvent.click(openArticlesButton)
+
+        expect(history.push).toHaveBeenCalledWith(
+            '/app/ai-agent/shopify/test/knowledge/sources/file-articles/1',
+            { selectedResource: ingestedFile },
+        )
     })
 })

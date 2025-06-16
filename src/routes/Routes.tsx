@@ -49,6 +49,8 @@ import AiAgentScrapedDomainProductsContainer from 'pages/aiAgent/AiAgentScrapedD
 import AiAgentScrapedDomainQuestionsContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainQuestionsContainer'
 import { AiAgentNavbar } from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbar'
 import { AiAgentRedirect } from 'pages/aiAgent/components/AiAgentRedirect/AiAgentRedirect'
+import AiAgentExternalDocumentsArticleContainer from 'pages/aiAgent/components/Knowledge/AiAgentExternalDocumentsArticleContainer'
+import AiAgentUrlSourcesArticleContainer from 'pages/aiAgent/components/Knowledge/AiAgentUrlSourcesArticleContainer'
 import { aiAgentRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { Level2IntentsContainer } from 'pages/aiAgent/insights/Level2IntentsContainer/Level2IntentsContainer'
 import { OptimizeContainer } from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
@@ -646,6 +648,18 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                                             path={`${path}/knowledge/sources/products-content/:id`}
                                             component={
                                                 AiAgentScrapedDomainProductsContainer
+                                            }
+                                        />
+                                        <Route
+                                            path={`${path}/knowledge/sources/url-articles/:articleIngestionId`}
+                                            component={
+                                                AiAgentUrlSourcesArticleContainer
+                                            }
+                                        />
+                                        <Route
+                                            path={`${path}/knowledge/sources/file-articles/:fileIngestionId`}
+                                            component={
+                                                AiAgentExternalDocumentsArticleContainer
                                             }
                                         />
                                     </Switch>

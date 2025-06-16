@@ -9,7 +9,7 @@ import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import { usePollStoreDomainIngestionLog } from '../hooks/usePollStoreDomainIngestionLog'
 import { useSyncStoreDomain } from '../hooks/useSyncStoreDomain'
 import AiAgentScrapedDomainContentLayout from './AiAgentScrapedDomainContentLayout'
-import { CONTENT_TYPE, IngestionLogStatus } from './constant'
+import { CONTENT_TYPE, HeaderType, IngestionLogStatus } from './constant'
 import { useIngestedResourceMutation } from './hooks/useIngestedResourceMutation'
 import { usePaginatedIngestedResources } from './hooks/usePaginatedIngestedResources'
 import { useSelectedQuestionAndDetail } from './hooks/useSelectedQuestionAndDetail'
@@ -117,7 +117,7 @@ const AiAgentScrapedDomainQuestionsView = ({
     return (
         <AiAgentScrapedDomainContentLayout
             shopName={shopName}
-            storeDomainIngestionLog={storeDomainIngestionLog}
+            latestSync={storeDomainIngestionLog?.latest_sync}
             storeDomain={storeDomain ?? null}
             storeUrl={storeUrl ?? null}
             isFetchLoading={isDataLoading}
@@ -126,6 +126,8 @@ const AiAgentScrapedDomainQuestionsView = ({
             handleOnCancel={handleOnCancel}
             handleTriggerSync={handleTriggerSync}
             syncStoreDomainStatus={syncStoreDomainStatus}
+            title="Store website"
+            pageType={HeaderType.Domain}
         >
             <ScrapedDomainContentView<IngestedResourceWithArticleId>
                 searchValue={searchTerm}

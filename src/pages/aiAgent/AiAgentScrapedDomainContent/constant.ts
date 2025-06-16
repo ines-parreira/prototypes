@@ -6,6 +6,19 @@ export const SCRAPPING_CONTENT = {
 export const CONTENT_TYPE = {
     QUESTION: 'Question',
     PRODUCT: 'Product',
+    FILE_QUESTION: 'File Question',
+    URL_QUESTION: 'Url Question',
+}
+
+export enum HeaderType {
+    Domain = 'domain',
+    ExternalDocument = 'externalDocument',
+    URL = 'url',
+}
+
+export enum VisibilityStatus {
+    PUBLIC = 'PUBLIC',
+    UNLISTED = 'UNLISTED',
 }
 
 export const PAGE_NAME = {

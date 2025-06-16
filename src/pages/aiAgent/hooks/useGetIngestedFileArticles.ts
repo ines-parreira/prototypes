@@ -32,5 +32,6 @@ export const useGetIngestedFileArticles = (
     return {
         data: queryResult.data,
         isLoading: queryResult.isLoading,
+        refetch: queryResult.refetch,
     }
 }

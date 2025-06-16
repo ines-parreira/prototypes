@@ -1,5 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
+import { useHistory } from 'react-router'
+import { useParams } from 'react-router-dom'
+
 import { IconButton } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -8,6 +11,7 @@ import Button from 'pages/common/components/button/Button'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import InputField from 'pages/common/forms/input/InputField'
 
+import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
 import { SourceItem } from './types'
 import { DOCUMENT_EXTENSIONS } from './utils'
 
@@ -81,7 +85,7 @@ const getInputError = (
     }
 
     if (isRootUrl) {
-        return 'URL must include a subpage (ie. yourstore.com/faqs)'
+        return 'URL must include a subpage (ie. www.example.com/faqs)'
     }
 
     if (isDuplicate) {
@@ -121,7 +125,12 @@ export const PublicSourcesItem = ({
     setSyncUrlOnCommand,
 }: Props) => {
     const [value, setValue] = useState(source.url ?? '')
+    const history = useHistory()
+
     const [isCurrentUrlPristine, setIsCurrentUrlPristine] = useState(true)
+
+    const { shopName } = useParams<{ shopName: string }>()
+    const { routes } = useAiAgentNavigation({ shopName })
 
     const isAiAgentFilesAndUrlsKnowledgeVisible = useFlag(
         FeatureFlagKey.AiAgentFilesAndUrlsKnowledgeVisibilityButton,
@@ -211,7 +220,7 @@ export const PublicSourcesItem = ({
                 value={value}
                 isDisabled={isEditingDisabled}
                 onChange={handleChange}
-                placeholder="https://yourstore.com/faqs"
+                placeholder="https://www.example.com/return-policy"
                 hasError={source.status === 'error' || !!inputError}
                 aria-label="Public URL"
                 error={inputError}
@@ -284,7 +293,9 @@ export const PublicSourcesItem = ({
                         intent="secondary"
                         aria-label="Open articles"
                         onClick={() => {
-                            //     TODO implement this
+                            history.push(routes.urlArticles(source.id), {
+                                selectedResource: source,
+                            })
                         }}
                         className={css.arrowIcon}
                         icon="keyboard_arrow_right"

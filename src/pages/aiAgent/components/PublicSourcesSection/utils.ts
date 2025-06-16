@@ -25,6 +25,7 @@ export const mapArticleIngestionLogsToSourceItem = (
     status: convertArticleIngestionStatus(articleIngestionLog.status),
     url: articleIngestionLog.url,
     createdDatetime: articleIngestionLog.created_datetime,
+    latestSync: articleIngestionLog.latest_sync,
 })
 
 export const updateArticleIngestionLogs = (

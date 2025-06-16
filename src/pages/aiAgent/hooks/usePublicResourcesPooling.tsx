@@ -11,6 +11,7 @@ import {
 } from 'models/helpCenter/queries'
 import { getArticleIngestionLogs } from 'models/helpCenter/resources'
 import history from 'pages/history'
+import { Components } from 'rest_api/help_center_api/client.generated'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { reportError } from 'utils/errors'
@@ -26,14 +27,17 @@ const UPDATE_STATUS_INTERVAL = 5000
 
 type UsePublicResourcesPoolingReturn = {
     articleIngestionLogsStatus: ArticleIngestionLogsStatus[]
+    articleIngestionLogs?: Components.Schemas.ArticleIngestionLogDto[] | null
 }
 
 export const usePublicResourcesPooling = ({
     shopName,
     helpCenterId,
+    enabled,
 }: {
     helpCenterId: number
     shopName: string
+    enabled?: boolean
 }): UsePublicResourcesPoolingReturn => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
@@ -46,7 +50,7 @@ export const usePublicResourcesPooling = ({
         },
         {
             // Only read from existing cache. No fetching
-            enabled: false,
+            enabled: enabled || false,
         },
     )
 
@@ -165,9 +169,7 @@ export const usePublicResourcesPooling = ({
             void dispatch(
                 notify({
                     status: NotificationStatus.Success,
-                    message: isOnboardingWizardPage
-                        ? 'URL sources have successfully synced.'
-                        : 'URL sources have successfully synced. AI Agent is now active and you can test the sources.',
+                    message: 'URL sources have successfully synced.',
                     buttons: isOnboardingWizardPage
                         ? []
                         : [
@@ -221,5 +223,5 @@ export const usePublicResourcesPooling = ({
         return logs.map((log) => log.status)
     }, [articleIngestionLogs])
 
-    return { articleIngestionLogsStatus }
+    return { articleIngestionLogsStatus, articleIngestionLogs }
 }
