@@ -1,17 +1,16 @@
-@import (reference) '~@gorgias/design-tokens/dist/css/layout';
 @import (reference) '~css/typography';
 
 :local {
     .formGroup {
-        margin-bottom: @layout-spacing-l;
+        margin-bottom: var(--layout-spacing-l);
         .formGroupDescription {
-            margin-bottom: @layout-spacing-s;
+            margin-bottom: var(--layout-spacing-s);
         }
     }
 
     .subsectionHeader {
-        margin-bottom: @layout-spacing-xs;
-        margin-top: @layout-spacing-l;
+        margin-bottom: var(--layout-spacing-xs);
+        margin-top: var(--layout-spacing-l);
     }
 
     .icon {
