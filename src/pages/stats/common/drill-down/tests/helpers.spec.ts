@@ -1218,7 +1218,30 @@ describe('getDrillDownQuery', () => {
 
         expect(
             totalNumberProductRecommendationsDrillDownQueryFactoryMock,
-        ).toHaveBeenCalledWith(statsFilters, timezone)
+        ).toHaveBeenCalledWith(statsFilters, timezone, undefined, undefined)
+    })
+
+    it('should be populated with AiSalesAgentTotalProductRecommendations with productId', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric: AiSalesAgentMetrics = {
+            metricName:
+                AiSalesAgentChart.AiSalesAgentTotalProductRecommendations,
+            productId: '456',
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            totalNumberProductRecommendationsDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(statsFilters, timezone, undefined, '456')
     })
 })
 

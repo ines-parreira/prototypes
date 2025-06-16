@@ -3,7 +3,6 @@ import classNames from 'classnames'
 import { logEvent, SegmentEvent } from 'common/segment'
 import {
     defaultEnrichmentFields,
-    enrichmentMappingPerMetric,
     extraEnrichmentFieldsPerMetric,
     useEnrichedDrillDownData,
 } from 'hooks/reporting/useDrillDownData'
@@ -170,7 +169,6 @@ export const TicketDrillDownTableContent = ({
             defaultEnrichmentFields,
         formatTicketDrillDownRowData,
         EnrichmentFields.TicketId,
-        enrichmentMappingPerMetric[metricData.metricName],
     )
 
     const getTicketColumnWidth = () => {

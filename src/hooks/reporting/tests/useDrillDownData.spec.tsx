@@ -18,7 +18,7 @@ import {
 } from 'hooks/reporting/useDrillDownData'
 import {
     useMetricPerDimension,
-    useMetricPerDimensionWithEnrichmentOnTwoDimensions,
+    useMetricPerDimensionWithEnrichment,
 } from 'hooks/reporting/useMetricPerDimension'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { OrderDirection } from 'models/api/types'
@@ -87,8 +87,8 @@ const getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock = assumeMock(
 jest.mock('state/agents/selectors')
 const getHumanAndBotAgentsJSMock = assumeMock(getHumanAndAutomationBotAgentsJS)
 jest.mock('hooks/reporting/useMetricPerDimension')
-const useMetricPerDimensionWithEnrichmentOnTwoDimensionsMock = assumeMock(
-    useMetricPerDimensionWithEnrichmentOnTwoDimensions,
+const useMetricPerDimensionWithEnrichmentMock = assumeMock(
+    useMetricPerDimensionWithEnrichment,
 )
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
 
@@ -150,13 +150,11 @@ describe('DrillDownData hooks', () => {
 
         beforeEach(() => {
             getHumanAndBotAgentsJSMock.mockReturnValue(agents)
-            useMetricPerDimensionWithEnrichmentOnTwoDimensionsMock.mockReturnValue(
-                {
-                    data: { allData: rowData } as unknown as any,
-                    isFetching: false,
-                    isError: false,
-                },
-            )
+            useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
+                data: { allData: rowData } as unknown as any,
+                isFetching: false,
+                isError: false,
+            })
         })
 
         it('should return formatted Data', () => {
@@ -241,13 +239,11 @@ describe('DrillDownData hooks', () => {
         })
 
         it('should return empty array when no data', () => {
-            useMetricPerDimensionWithEnrichmentOnTwoDimensionsMock.mockReturnValue(
-                {
-                    data: null,
-                    isFetching: false,
-                    isError: false,
-                },
-            )
+            useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
+                data: null,
+                isFetching: false,
+                isError: false,
+            })
 
             const { result } = renderHook(
                 () =>
@@ -312,7 +308,7 @@ describe('DrillDownData hooks', () => {
             )
 
             expect(
-                useMetricPerDimensionWithEnrichmentOnTwoDimensionsMock,
+                useMetricPerDimensionWithEnrichmentMock,
             ).toHaveBeenCalledWith(
                 expect.objectContaining({
                     filters: expect.arrayContaining([
@@ -324,7 +320,7 @@ describe('DrillDownData hooks', () => {
                     ]),
                 }),
                 defaultEnrichmentFields,
-                { 'TicketEnriched.ticketId': enrichmentIdField },
+                'Ticket.id',
             )
         })
 
@@ -356,7 +352,7 @@ describe('DrillDownData hooks', () => {
             )
 
             expect(
-                useMetricPerDimensionWithEnrichmentOnTwoDimensionsMock,
+                useMetricPerDimensionWithEnrichmentMock,
             ).toHaveBeenCalledWith(
                 expect.objectContaining({
                     filters: expect.arrayContaining([
@@ -368,7 +364,7 @@ describe('DrillDownData hooks', () => {
                     ]),
                 }),
                 defaultEnrichmentFields,
-                { 'TicketEnriched.ticketId': enrichmentIdField },
+                'Ticket.id',
             )
         })
 
@@ -397,7 +393,7 @@ describe('DrillDownData hooks', () => {
             )
 
             expect(
-                useMetricPerDimensionWithEnrichmentOnTwoDimensionsMock,
+                useMetricPerDimensionWithEnrichmentMock,
             ).toHaveBeenCalledWith(
                 expect.objectContaining({
                     order: [
@@ -408,24 +404,22 @@ describe('DrillDownData hooks', () => {
                     ],
                 }),
                 defaultEnrichmentFields,
-                { 'TicketEnriched.ticketId': enrichmentIdField },
+                'Ticket.id',
             )
         })
 
         it('should assume unread Tickets when ticket enrichment missing missing and null other fields', () => {
-            useMetricPerDimensionWithEnrichmentOnTwoDimensionsMock.mockReturnValue(
-                {
-                    data: {
-                        allData: [
-                            {
-                                [EnrichmentFields.IsUnread]: undefined,
-                            },
-                        ],
-                    } as unknown as any,
-                    isFetching: false,
-                    isError: false,
-                },
-            )
+            useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
+                data: {
+                    allData: [
+                        {
+                            [EnrichmentFields.IsUnread]: undefined,
+                        },
+                    ],
+                } as unknown as any,
+                isFetching: false,
+                isError: false,
+            })
             const metricData: DrillDownMetric = {
                 metricName: OverviewMetric.MessagesSent,
             }
@@ -465,20 +459,18 @@ describe('DrillDownData hooks', () => {
         })
 
         it('should return null when assignee missing', () => {
-            useMetricPerDimensionWithEnrichmentOnTwoDimensionsMock.mockReturnValue(
-                {
-                    data: {
-                        allData: [
-                            {
-                                ...exampleRow,
-                                [EnrichmentFields.AssigneeId]: undefined,
-                            },
-                        ],
-                    } as unknown as any,
-                    isFetching: false,
-                    isError: false,
-                },
-            )
+            useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
+                data: {
+                    allData: [
+                        {
+                            ...exampleRow,
+                            [EnrichmentFields.AssigneeId]: undefined,
+                        },
+                    ],
+                } as unknown as any,
+                isFetching: false,
+                isError: false,
+            })
 
             const { result } = renderHook(
                 () =>
@@ -504,17 +496,15 @@ describe('DrillDownData hooks', () => {
         })
 
         it('should switch to next page of data', () => {
-            useMetricPerDimensionWithEnrichmentOnTwoDimensionsMock.mockReturnValue(
-                {
-                    data: {
-                        allData: new Array(DRILL_DOWN_PER_PAGE + 1).fill(
-                            exampleRow,
-                        ),
-                    } as unknown as any,
-                    isFetching: false,
-                    isError: false,
-                },
-            )
+            useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
+                data: {
+                    allData: new Array(DRILL_DOWN_PER_PAGE + 1).fill(
+                        exampleRow,
+                    ),
+                } as unknown as any,
+                isFetching: false,
+                isError: false,
+            })
 
             const { result } = renderHook(
                 () =>
@@ -592,15 +582,13 @@ describe('DrillDownData hooks', () => {
                 [metricDimension]: 12,
             }
 
-            useMetricPerDimensionWithEnrichmentOnTwoDimensionsMock.mockReturnValue(
-                {
-                    data: {
-                        allData: [FRTData, RTData],
-                    } as unknown as any,
-                    isFetching: false,
-                    isError: false,
-                },
-            )
+            useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
+                data: {
+                    allData: [FRTData, RTData],
+                } as unknown as any,
+                isFetching: false,
+                isError: false,
+            })
             const metricData: DrillDownMetric = {
                 metricName: metricName,
             }

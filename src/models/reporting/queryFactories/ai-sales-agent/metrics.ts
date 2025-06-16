@@ -253,6 +253,7 @@ export const totalNumberOfAutomatedSalesDrillDownQueryFactory = (
 export const totalNumberProductRecommendationsQueryFactory = (
     filters: StatsFilters,
     timezone: string,
+    productId?: string,
 ): ReportingQuery<AiSalesAgentConversationsCube> => ({
     measures: [AiSalesAgentConversationsMeasure.Count],
     dimensions: [],
@@ -267,6 +268,15 @@ export const totalNumberProductRecommendationsQueryFactory = (
             operator: ReportingFilterOperator.Set,
             values: [],
         },
+        ...(productId
+            ? [
+                  {
+                      member: AiSalesAgentConversationsDimension.ProductId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: [productId],
+                  },
+              ]
+            : []),
         ...statsFiltersToReportingFilters(
             aiSalesAgentConversationsDefaultFiltersMembers,
             filters,
@@ -279,8 +289,13 @@ export const totalNumberProductRecommendationsDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
+    productId?: string,
 ): ReportingQuery<AiSalesAgentConversationsCube> => ({
-    ...totalNumberProductRecommendationsQueryFactory(filters, timezone),
+    ...totalNumberProductRecommendationsQueryFactory(
+        filters,
+        timezone,
+        productId,
+    ),
     dimensions: [
         AiSalesAgentConversationsDimension.TicketId,
         AiSalesAgentConversationsDimension.ProductId,

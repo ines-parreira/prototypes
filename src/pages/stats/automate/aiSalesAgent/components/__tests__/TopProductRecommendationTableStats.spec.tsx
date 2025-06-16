@@ -1,6 +1,9 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
+
+import { store } from 'common/store'
 
 import { ProductTableContentCell } from '../../types/productTable'
 import { TopProductRecommendationTableStats } from '../TopProductRecommendationTableStats'
@@ -37,14 +40,17 @@ describe('<TopProductRecommendationTableStats />', () => {
 
     it('renders with links', () => {
         render(
-            <TopProductRecommendationTableStats
-                isLoading={false}
-                rows={rowsWithLink}
-                offset={0}
-                perPage={10}
-                onClickNextPage={() => {}}
-                onClickPrevPage={() => {}}
-            />,
+            <Provider store={store}>
+                <TopProductRecommendationTableStats
+                    isLoading={false}
+                    rows={rowsWithLink}
+                    offset={0}
+                    perPage={10}
+                    onClickNextPage={() => {}}
+                    onClickPrevPage={() => {}}
+                />
+                ,
+            </Provider>,
         )
 
         expect(screen.getByText('Product name')).toBeInTheDocument()
@@ -58,14 +64,16 @@ describe('<TopProductRecommendationTableStats />', () => {
 
     it('renders without links', () => {
         render(
-            <TopProductRecommendationTableStats
-                isLoading={false}
-                rows={rowsWithoutLink}
-                offset={0}
-                perPage={10}
-                onClickNextPage={() => {}}
-                onClickPrevPage={() => {}}
-            />,
+            <Provider store={store}>
+                <TopProductRecommendationTableStats
+                    isLoading={false}
+                    rows={rowsWithoutLink}
+                    offset={0}
+                    perPage={10}
+                    onClickNextPage={() => {}}
+                    onClickPrevPage={() => {}}
+                />
+            </Provider>,
         )
 
         expect(screen.getByText('Product name')).toBeInTheDocument()

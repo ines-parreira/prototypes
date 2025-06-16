@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import {
     useMetricPerDimension,
-    useMetricPerDimensionWithEnrichmentOnTwoDimensions,
+    useMetricPerDimensionWithEnrichment,
 } from 'hooks/reporting/useMetricPerDimension'
 import { IDRecord, MergedRecord } from 'hooks/reporting/withEnrichment'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -204,20 +204,16 @@ export function useEnrichedDrillDownData<T>(
     enrichmentFields: EnrichmentFields[],
     getDrillDownFormatter: (props: DrillDownFormatterProps) => T,
     enrichmentIdField: EnrichmentFields,
-    enrichmentMapping?: Record<string, EnrichmentFields>,
 ): DrillDownData<T> {
     const dispatch = useAppDispatch()
     const currentPage = useAppSelector(getDrillDownCurrentPage)
     const query = useDrillDownQuery(queryFactory, metricData)
     const agents = useAppSelector(getHumanAndAutomationBotAgentsJS)
-    const { data: someData, isFetching } =
-        useMetricPerDimensionWithEnrichmentOnTwoDimensions(
-            query,
-            enrichmentFields,
-            enrichmentMapping ?? {
-                [query.dimensions[0]]: enrichmentIdField,
-            },
-        )
+    const { data: someData, isFetching } = useMetricPerDimensionWithEnrichment(
+        query,
+        enrichmentFields,
+        enrichmentIdField,
+    )
 
     const customFieldsIds = useGetCustomTicketsFieldsDefinitionData()
 

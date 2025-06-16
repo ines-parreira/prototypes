@@ -466,4 +466,56 @@ describe('totalNumberProductRecommendationsDrillDownQueryFactory', () => {
             timezone: 'UTC',
         })
     })
+
+    it('should build a query with productId', () => {
+        expect(
+            totalNumberProductRecommendationsDrillDownQueryFactory(
+                {
+                    period: {
+                        start_datetime: '2021-01-01T00:00:00Z',
+                        end_datetime: '2021-01-02T00:00:00Z',
+                    },
+                },
+                'UTC',
+                undefined,
+                '123',
+            ),
+        ).toEqual({
+            measures: ['AiSalesAgentConversations.count'],
+            dimensions: [
+                AiSalesAgentConversationsDimension.TicketId,
+                AiSalesAgentConversationsDimension.ProductId,
+                AiSalesAgentConversationsDimension.StoreIntegrationId,
+            ],
+            filters: [
+                {
+                    member: AiSalesAgentConversationsDimension.IsSalesOpportunity,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['1'],
+                },
+                {
+                    member: AiSalesAgentConversationsDimension.ProductId,
+                    operator: ReportingFilterOperator.Set,
+                    values: [],
+                },
+                {
+                    member: AiSalesAgentConversationsDimension.ProductId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['123'],
+                },
+                ...statsFiltersToReportingFilters(
+                    aiSalesAgentConversationsDefaultFiltersMembers,
+                    {
+                        period: {
+                            start_datetime: '2021-01-01T00:00:00Z',
+                            end_datetime: '2021-01-02T00:00:00Z',
+                        },
+                    },
+                ),
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [],
+            timezone: 'UTC',
+        })
+    })
 })

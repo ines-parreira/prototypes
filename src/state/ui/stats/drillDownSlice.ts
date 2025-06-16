@@ -137,6 +137,7 @@ export type VoiceOfCustomerMetrics = (
 
 export type AiSalesAgentMetrics = {
     metricName: AiSalesAgentDrillDownMetrics
+    productId?: string
 } & CommonMetrics
 
 export type AutoQAMetrics = {

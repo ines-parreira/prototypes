@@ -13,6 +13,10 @@ import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import { formatPercentage } from 'pages/common/utils/numbers'
 import {
+    AiSalesAgentChart,
+    AiSalesAgentMetricsWithDrillDownConfig,
+} from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
+import {
     ProductTableConfig,
     ProductTableKeys,
 } from 'pages/stats/automate/aiSalesAgent/constants'
@@ -22,7 +26,9 @@ import {
     ProductTableContentCell,
 } from 'pages/stats/automate/aiSalesAgent/types/productTable'
 import { NoDataAvailable } from 'pages/stats/common/components/NoDataAvailable'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import { formatNumber } from 'pages/stats/common/utils'
+import { AiSalesAgentMetrics } from 'state/ui/stats/drillDownSlice'
 
 import css from './TopProductRecommendationTableStats.less'
 
@@ -125,6 +131,20 @@ export const TopProductRecommendationTableStats = ({
                 )
             }
 
+            if (column.key === ProductTableKeys.NumberOfRecommendations) {
+                return (
+                    <BodyCell>
+                        <DrillDownModalTrigger
+                            enabled={!!cell.metrics[column.key]}
+                            highlighted
+                            metricData={getDrillDownMetricData(cell)}
+                        >
+                            {cell.metrics[column.key]}
+                        </DrillDownModalTrigger>
+                    </BodyCell>
+                )
+            }
+
             const data = getDataFromTableCell(cell, column.key)
 
             if (column.metricFormat === 'decimal-to-percent') {
@@ -139,6 +159,19 @@ export const TopProductRecommendationTableStats = ({
         },
         [isLoading],
     )
+
+    const getDrillDownMetricData = (
+        cell: ProductTableContentCell,
+    ): AiSalesAgentMetrics => {
+        return {
+            title: AiSalesAgentMetricsWithDrillDownConfig[
+                AiSalesAgentChart.AiSalesAgentTotalProductRecommendations
+            ].title,
+            metricName:
+                AiSalesAgentChart.AiSalesAgentTotalProductRecommendations,
+            productId: cell.product.id.toString(),
+        }
+    }
 
     const renderRows = useCallback(
         (cell: ProductTableContentCell, index: number) => {

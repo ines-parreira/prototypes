@@ -1,4 +1,5 @@
 import { OrderDirection } from 'models/api/types'
+import { totalNumberProductRecommendationsDrillDownQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import {
     aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory,
     coverageRateTicketDrillDownQueryFactory,
@@ -373,9 +374,17 @@ export const getDrillDownQuery = (
                 AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders
             ].drillDownQuery
         case AiSalesAgentChart.AiSalesAgentTotalProductRecommendations:
-            return AiSalesAgentMetricsWithDrillDownConfig[
-                AiSalesAgentChart.AiSalesAgentTotalProductRecommendations
-            ].drillDownQuery
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection,
+            ) =>
+                totalNumberProductRecommendationsDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    sorting,
+                    metricData.productId,
+                )
         case VoiceOfCustomerMetricWithDrillDown.IntentPerProduct: {
             const { drillDownQuery } =
                 VoiceOfCustomerMetricWithDrillDownConfig[
