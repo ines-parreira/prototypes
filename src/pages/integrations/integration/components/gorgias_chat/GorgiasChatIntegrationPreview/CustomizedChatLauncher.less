@@ -117,7 +117,7 @@
             &.bottom-right,
             &.bottom-left {
                 padding-bottom: var(--layout-spacing-m);
-                margin-top: -var(--layout-spacing-m);
+                margin-top: calc(-1 * var(--layout-spacing-m));
 
                 .axisY {
                     top: 0;
@@ -143,7 +143,7 @@
             margin-bottom: 1em;
             .axisX  {
                 top: @launcher-spacing;
-                right: -var(--layout-spacing-m);
+                right: calc(-1 * var(--layout-spacing-m));
             }
         }
 
@@ -153,11 +153,11 @@
 
             .axisX  {
                 top: @launcher-spacing;
-                left: -var(--layout-spacing-m);
+                left: calc(-1 * var(--layout-spacing-m));
             }
 
             .axisY {
-                top: -var(--layout-spacing-m);
+                top: calc(-1 * var(--layout-spacing-m));
             }
         }
 
@@ -165,7 +165,7 @@
             justify-content: flex-start;
             margin-top: 1em;
             .axisX  {
-                left: -var(--layout-spacing-m);
+                left: calc(-1 * var(--layout-spacing-m));
                 bottom: @launcher-spacing;
             }
         }
@@ -174,7 +174,7 @@
             margin-top: 1em;
             .axisX {
                 bottom: @launcher-spacing;
-                right: -var(--layout-spacing-m);
+                right: calc(-1 * var(--layout-spacing-m));
             }
         }
     }
