@@ -1,10 +1,12 @@
+import _isNil from 'lodash/isNil'
+
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import {
     Sentiment,
     useSentimentPerProduct,
 } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
-import { WithDrillDownTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
@@ -89,7 +91,7 @@ const createSentimentMetricCell = (
         )
 
         const content = formatMetricValue(
-            data?.value,
+            data.value,
             format,
             NOT_AVAILABLE_PLACEHOLDER,
         )
@@ -100,11 +102,17 @@ const createSentimentMetricCell = (
             sentimentCustomFieldId,
         )
 
+        const isDrillDownEnabled = !_isNil(data.value)
+
         return (
             <CellWrapper column={column} isLoading={isFetching}>
-                <WithDrillDownTrigger metricData={metricData}>
+                <DrillDownModalTrigger
+                    metricData={metricData}
+                    enabled={isDrillDownEnabled}
+                    highlighted
+                >
                     {content}
-                </WithDrillDownTrigger>
+                </DrillDownModalTrigger>
             </CellWrapper>
         )
     }

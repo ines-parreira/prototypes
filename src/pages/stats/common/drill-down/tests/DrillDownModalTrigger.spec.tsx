@@ -3,9 +3,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { logEvent, SegmentEvent } from 'common/segment'
 import {
     DrillDownModalTrigger,
-    TRIGGER_ID,
     useOpenDrillDownModal,
-    WithDrillDownTrigger,
 } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { DrillDownMetric, setMetricData } from 'state/ui/stats/drillDownSlice'
@@ -139,50 +137,6 @@ describe('useOpenDrillDownModal', () => {
                 SegmentEvent.StatClicked,
                 { metric: metricData.metricName },
             )
-        })
-    })
-})
-
-describe('WithDrillDownTrigger', () => {
-    it('should render Drilldown if metricData provided', async () => {
-        const metricData: DrillDownMetric = {
-            metricName: OverviewMetric.OpenTickets,
-        }
-        const content = 'someContent'
-        renderWithStore(
-            <WithDrillDownTrigger metricData={metricData}>
-                {content}
-            </WithDrillDownTrigger>,
-            {},
-        )
-
-        userEvent.hover(screen.getByText(content))
-
-        await waitFor(() => {
-            expect(
-                screen.getByText('Click to view', { exact: false }),
-            ).toBeInTheDocument()
-        })
-        const drillDownTrigger = document.querySelector(`[id^="${TRIGGER_ID}"]`)
-        expect(drillDownTrigger).toBeInTheDocument()
-    })
-
-    it('should render passed value without DrillDown if no metricData provided', async () => {
-        const metricData = null
-        const content = 'someContent'
-        renderWithStore(
-            <WithDrillDownTrigger metricData={metricData}>
-                {content}
-            </WithDrillDownTrigger>,
-            {},
-        )
-
-        userEvent.hover(screen.getByText(content))
-
-        await waitFor(() => {
-            expect(
-                screen.queryByText('Click to view', { exact: false }),
-            ).not.toBeInTheDocument()
         })
     })
 })

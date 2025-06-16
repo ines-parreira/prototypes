@@ -4,7 +4,7 @@ import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFil
 import { useTicketCountPerProductWithEnrichment } from 'hooks/reporting/voice-of-customer/metricsPerProduct'
 import { OrderDirection } from 'models/api/types'
 import { ReportingGranularity } from 'models/reporting/types'
-import { WithDrillDownTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
 import { TicketsVolumeMetricCell } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/TicketsVolumeMetricCell'
 import { assumeMock } from 'utils/testing'
@@ -18,7 +18,7 @@ const useTicketCountPerProductWithEnrichmentMock = assumeMock(
 )
 
 jest.mock('pages/stats/common/drill-down/DrillDownModalTrigger')
-const WithDrillDownTriggerMock = assumeMock(WithDrillDownTrigger)
+const DrillDownModalTriggerMock = assumeMock(DrillDownModalTrigger)
 
 describe('TicketsVolumeMetricCell', () => {
     const product = {
@@ -49,7 +49,7 @@ describe('TicketsVolumeMetricCell', () => {
             isError: false,
         })
 
-        WithDrillDownTriggerMock.mockImplementation(({ children }) => (
+        DrillDownModalTriggerMock.mockImplementation(({ children }) => (
             <span>{children}</span>
         ))
     })
@@ -82,7 +82,7 @@ describe('TicketsVolumeMetricCell', () => {
     it('wraps content in drill-down trigger', () => {
         render(<TicketsVolumeMetricCell product={product} />)
 
-        expect(WithDrillDownTriggerMock).toHaveBeenCalled()
+        expect(DrillDownModalTriggerMock).toHaveBeenCalled()
     })
 
     it('shows loading state', () => {

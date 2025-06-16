@@ -1,9 +1,11 @@
 import { useMemo } from 'react'
 
+import _isNil from 'lodash/isNil'
+
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useReturnMentionsPerProduct } from 'hooks/reporting/voice-of-customer/metricsPerProduct'
 import { OrderDirection } from 'models/api/types'
-import { WithDrillDownTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
@@ -47,11 +49,17 @@ export const ReturnMentionsMetricCell = ({
         [column, product, intentCustomFieldId],
     )
 
+    const isDrillDownEnabled = !_isNil(data?.value)
+
     return (
         <CellWrapper column={column} isLoading={isFetching}>
-            <WithDrillDownTrigger metricData={metricData}>
+            <DrillDownModalTrigger
+                metricData={metricData}
+                enabled={isDrillDownEnabled}
+                highlighted
+            >
                 {formattedMetric}
-            </WithDrillDownTrigger>
+            </DrillDownModalTrigger>
         </CellWrapper>
     )
 }

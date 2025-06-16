@@ -11,7 +11,7 @@ import { useTopIntentPerProduct } from 'hooks/reporting/voice-of-customer/useTop
 import { ReportingGranularity } from 'models/reporting/types'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
-import { WithDrillDownTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import { ProductInsightsCellContent } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsCellContent'
 import { ProductTableBodyCell } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductTable'
 import { VoCSidePanelTrigger } from 'pages/stats/voice-of-customer/side-panel/VoCSidePanelTrigger'
@@ -48,7 +48,7 @@ jest.mock(
 )
 const ProductTableBodyCellMock = assumeMock(ProductTableBodyCell)
 jest.mock('pages/stats/common/drill-down/DrillDownModalTrigger')
-const WithDrillDownTriggerMock = assumeMock(WithDrillDownTrigger)
+const DrillDownModalTriggerMock = assumeMock(DrillDownModalTrigger)
 jest.mock('hooks/reporting/voice-of-customer/useTopIntentPerProduct')
 const useTopIntentPerProductMock = assumeMock(useTopIntentPerProduct)
 jest.mock('hooks/reporting/voice-of-customer/useSentimentPerProduct')
@@ -134,7 +134,7 @@ describe('ProductInsightsCellContent', () => {
             <span>{children}</span>
         ))
 
-        WithDrillDownTriggerMock.mockImplementation(({ children }) => (
+        DrillDownModalTriggerMock.mockImplementation(({ children }) => (
             <span>{children}</span>
         ))
 
@@ -259,7 +259,7 @@ describe('ProductInsightsCellContent', () => {
                 />,
             )
 
-            expect(WithDrillDownTriggerMock).toHaveBeenCalled()
+            expect(DrillDownModalTriggerMock).toHaveBeenCalled()
         })
     })
 

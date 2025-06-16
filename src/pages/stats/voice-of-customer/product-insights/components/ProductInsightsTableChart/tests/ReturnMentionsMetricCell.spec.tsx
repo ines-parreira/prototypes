@@ -4,7 +4,7 @@ import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFil
 import { useReturnMentionsPerProduct } from 'hooks/reporting/voice-of-customer/metricsPerProduct'
 import { OrderDirection } from 'models/api/types'
 import { ReportingGranularity } from 'models/reporting/types'
-import { WithDrillDownTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
 import { ReturnMentionsMetricCell } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ReturnMentionsMetricCell'
 import { ProductInsightsTableColumns } from 'state/ui/stats/types'
@@ -17,7 +17,7 @@ jest.mock('hooks/reporting/voice-of-customer/metricsPerProduct')
 const useReturnMentionsPerProductMock = assumeMock(useReturnMentionsPerProduct)
 
 jest.mock('pages/stats/common/drill-down/DrillDownModalTrigger')
-const WithDrillDownTriggerMock = assumeMock(WithDrillDownTrigger)
+const DrillDownModalTriggerMock = assumeMock(DrillDownModalTrigger)
 
 describe('ReturnMentionsMetricCell', () => {
     const product = {
@@ -50,7 +50,7 @@ describe('ReturnMentionsMetricCell', () => {
             isError: false,
         })
 
-        WithDrillDownTriggerMock.mockImplementation(({ children }) => (
+        DrillDownModalTriggerMock.mockImplementation(({ children }) => (
             <span>{children}</span>
         ))
     })
@@ -113,7 +113,7 @@ describe('ReturnMentionsMetricCell', () => {
             </table>,
         )
 
-        expect(WithDrillDownTriggerMock).toHaveBeenCalledWith(
+        expect(DrillDownModalTriggerMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 metricData: {
                     metricName: ProductInsightsTableColumns.ReturnMentions,
