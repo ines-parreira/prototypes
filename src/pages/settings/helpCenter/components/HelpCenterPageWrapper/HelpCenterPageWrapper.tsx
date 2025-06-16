@@ -6,7 +6,6 @@ import { Link, useHistory } from 'react-router-dom'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import { TicketChannel } from 'business/types/ticket'
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -128,25 +127,7 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                 <div className={css.header}>
                     {!changeAutomateSettingButtomPosition &&
                         (hasAutomate ? (
-                            helpCenter.shop_name ? (
-                                <Button
-                                    fillStyle="ghost"
-                                    intent="primary"
-                                    onClick={() => {
-                                        history.push(
-                                            `/app/automation/shopify/${
-                                                helpCenter.shop_name as string
-                                            }/connected-channels?type=${
-                                                TicketChannel.HelpCenter
-                                            }&id=${helpCenter.id}`,
-                                            { from: 'help-center-settings' },
-                                        )
-                                    }}
-                                    leadingIcon="bolt"
-                                >
-                                    Go to AI Agent settings
-                                </Button>
-                            ) : (
+                            !helpCenter.shop_name && (
                                 <Button
                                     fillStyle="ghost"
                                     intent="primary"

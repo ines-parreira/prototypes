@@ -2,6 +2,7 @@ import React, { ComponentProps } from 'react'
 
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -15,11 +16,25 @@ import {
     getAbsoluteUrl,
     getHelpCenterDomain,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import { getHasAutomate } from 'state/billing/selectors'
 import { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import { useHasAccessToAILibrary } from '../../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
+
+jest.mock('state/billing/selectors', () => ({
+    __esModule: true,
+    ...jest.requireActual('state/billing/selectors'),
+    getHasAutomate: jest.fn(),
+}))
+
+jest.mock('launchdarkly-react-client-sdk', () => ({
+    useFlags: jest.fn(),
+}))
+
+const mockGetHasAutomate = jest.mocked(getHasAutomate)
+const mockUseFlags = jest.mocked(useFlags)
 
 jest.mock('../../AIArticlesLibraryView/hooks/useHasAccessToAILibrary')
 ;(useHasAccessToAILibrary as jest.Mock).mockReturnValue(true)
@@ -174,5 +189,36 @@ describe('<HelpCenterPageWrapper />', () => {
         fireEvent.click(saveBtn)
 
         expect(onSave).toHaveBeenCalled()
+    })
+
+    it('renders the connect store warning button when shop is not connected', () => {
+        mockGetHasAutomate.mockReturnValue(true)
+        mockUseFlags.mockReturnValue({
+            ChangeAutomateSettingButtomPosition: false,
+        })
+
+        const helpCenter = {
+            ...getSingleHelpCenterResponseFixture,
+            shop_name: null,
+        }
+
+        const stateWithAutomate = {
+            ...defaultState,
+            billing: fromJS({ ...billingState, hasAutomate: true }),
+        }
+
+        const automateStore = mockStore(stateWithAutomate)
+
+        renderWithRouter(
+            <Provider store={automateStore}>
+                <HelpCenterPageWrapper helpCenter={helpCenter} />
+            </Provider>,
+        )
+
+        expect(
+            screen.getByRole('button', {
+                name: /Connect store to enable AI Agent/i,
+            }),
+        ).toBeInTheDocument()
     })
 })
