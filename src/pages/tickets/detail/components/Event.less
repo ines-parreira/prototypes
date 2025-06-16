@@ -1,29 +1,31 @@
 @import '~css/new/mixins';
 @import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 
-:local .component {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    padding: 16px 24px 16px 16px;
-    margin-left: 42px;
+:local {
+    .component {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        padding: 16px 24px 16px 16px;
+        margin-left: 42px;
 
-    @media @mobiles {
-        margin-left: 18px;
-        padding: 16px 0 16px 16px;
-    }
+        @media @mobiles {
+            margin-left: 18px;
+            padding: 16px 0 16px 16px;
+        }
 
-    &::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        height: 100%;
-        border-left: 1px solid var(--neutral-grey-3);
-    }
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            border-left: 1px solid var(--neutral-grey-3);
+        }
 
-    &.last::before {
-        height: 30px;
+        &.last::before {
+            height: 30px;
+        }
     }
 
     .date {
@@ -35,88 +37,87 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+    }
 
-        .content {
-            display: flex;
-            align-items: center;
+    .content {
+        display: flex;
+        align-items: center;
+    }
 
-            .icon {
-                @size: 20px;
-                position: relative;
-                display: flex;
-                flex-shrink: 0;
-                align-items: center;
-                justify-content: center;
-                width: @size;
-                height: @size;
-                margin-left: -25px;
-                margin-right: var(--layout-spacing-xs);
-                border-radius: 50%;
-                background-color: var(--neutral-grey-6);
+    .icon {
+        @size: 20px;
+        position: relative;
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        width: @size;
+        height: @size;
+        margin-left: -25px;
+        margin-right: var(--layout-spacing-xs);
+        border-radius: 50%;
+        background-color: var(--neutral-grey-6);
+        font-size: 14px;
+        color: var(--neutral-grey-0);
 
-                font-size: 14px;
-                color: var(--neutral-grey-0);
-
-                &.success {
-                    background-color: var(--feedback-success);
-                }
-
-                &.danger {
-                    background-color: var(--feedback-error);
-                }
-
-                &.warning {
-                    background-color: var(--feedback-warning);
-                }
-            }
-
-            .logo {
-                display: block;
-                height: 20px;
-                width: 20px;
-                background-color: var(--neutral-grey-0);
-                mask-repeat: no-repeat;
-                -webkit-mask-repeat: no-repeat;
-                mask-position: center;
-                -webkit-mask-position: center;
-            }
-
-            .privateReplyEventIcon {
-                @size: 20px;
-                position: relative;
-                display: flex;
-                flex-shrink: 0;
-                align-items: center;
-                justify-content: center;
-                width: @size;
-                height: @size;
-                margin-left: -27px;
-                margin-right: 28px;
-
-                font-size: 14px;
-                color: var(--neutral-grey-0);
-            }
-
-            .actionName {
-                font-weight: 600;
-            }
-
-            .filler {
-                margin-left: 3px;
-                margin-right: 6px;
-            }
-
-            .equalFiller {
-                margin-left: 3px;
-                margin-right: 3px;
-            }
-
-            .arrow {
-                height: 24px;
-                padding: var(--layout-spacing-xxs);
-                margin: 0 var(--layout-spacing-xxs);
-            }
+        &.success {
+            background-color: var(--feedback-success);
         }
+
+        &.danger {
+            background-color: var(--feedback-error);
+        }
+
+        &.warning {
+            background-color: var(--feedback-warning);
+        }
+    }
+
+    .logo {
+        display: block;
+        height: 20px;
+        width: 20px;
+        background-color: var(--neutral-grey-0);
+        mask-repeat: no-repeat;
+        -webkit-mask-repeat: no-repeat;
+        mask-position: center;
+        -webkit-mask-position: center;
+    }
+
+    .privateReplyEventIcon {
+        @size: 20px;
+        position: relative;
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        width: @size;
+        height: @size;
+        margin-left: -27px;
+        margin-right: 28px;
+
+        font-size: 14px;
+        color: var(--neutral-grey-0);
+    }
+
+    .actionName {
+        font-weight: 600;
+    }
+
+    .filler {
+        margin-left: 3px;
+        margin-right: 6px;
+    }
+
+    .equalFiller {
+        margin-left: 3px;
+        margin-right: 3px;
+    }
+
+    .arrow {
+        height: 24px;
+        padding: var(--layout-spacing-xxs);
+        margin: 0 var(--layout-spacing-xxs);
     }
 
     .details {
@@ -130,36 +131,67 @@
     .failedActions {
         padding: 10px 0 0 0;
         font-size: 13px;
+    }
 
-        .failedAction {
-            padding: 0 0 0 22px;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
+    .failedAction {
+        padding: 0 0 0 22px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
 
-            .failureName {
-                font-weight: bold;
-                margin-right: 3px;
-            }
+    .failureName {
+        font-weight: bold;
+        margin-right: 3px;
+    }
 
-            .failureReasonWarning {
-                color: var(--feedback-warning);
-                font-weight: bold;
-                margin-left: 3px;
-                margin-right: 3px;
-            }
+    .failureReasonWarning {
+        color: var(--feedback-warning);
+        font-weight: bold;
+        margin-left: 3px;
+        margin-right: 3px;
+    }
 
-            .failureReasonError {
-                color: var(--feedback-error);
-                font-weight: bold;
-                margin-left: 3px;
-                margin-right: 3px;
-            }
-        }
+    .failureReasonError {
+        color: var(--feedback-error);
+        font-weight: bold;
+        margin-left: 3px;
+        margin-right: 3px;
     }
 
     .eventDetailsGreyIcon {
         margin-left: 2px;
         color: var(--neutral-grey-4);
+    }
+}
+
+.ticket-thread-revamp :local {
+    .component {
+        margin-left: 34px;
+        line-height: 20px;
+
+        &::before {
+            bottom: calc(50% + 12px);
+            height: auto;
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: calc(50% + 12px);
+            left: 0;
+            bottom: 0;
+            border-left: 1px solid var(--neutral-grey-3);
+        }
+
+        &.last {
+            &::after {
+                display: none;
+            }
+        }
+    }
+
+    .icon.success {
+        background-color: var(--main-primary);
     }
 }
