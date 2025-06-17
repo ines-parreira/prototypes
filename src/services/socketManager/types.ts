@@ -90,6 +90,7 @@ export enum SocketEventType {
     VoiceCallTransferFailed = 'voice-call-transfer-failed',
     VoiceCallRecordingUpdated = 'voice-call-recording-updated',
     VoiceCallWrapUpTimeStarted = 'voice-call-wrap-up-time-started',
+    VoiceCallWrapUpTimeStartReceived = 'voice-call-wrap-up-time-start-received',
     VoiceCallWrapUpTimeEnded = 'voice-call-wrap-up-time-ended',
     WhatsAppOnboardingSucceeded = 'whatsapp-onboarding-succeeded',
     WhatsAppOnboardingFailed = 'whatsapp-onboarding-failed',

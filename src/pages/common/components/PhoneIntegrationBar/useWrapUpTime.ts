@@ -59,10 +59,21 @@ export default function useWrapUpTime() {
     const handleWrapUpTimeStarted = useCallback(
         (json: ServerMessage) => {
             const eventData = json as unknown as VoiceCallWrapUpTimeStartedEvent
+
             setWrapUpState({
                 wrapUpEndTimestamp: eventData.event.expiration_datetime,
                 voiceCall: eventData.voice_call,
             })
+
+            socketManager.send(
+                SocketEventType.VoiceCallWrapUpTimeStartReceived,
+                {
+                    data: {
+                        wrapUpEndTimestamp: eventData.event.expiration_datetime,
+                        currentTimeDate: new Date().toISOString(),
+                    },
+                },
+            )
         },
         [setWrapUpState],
     )
