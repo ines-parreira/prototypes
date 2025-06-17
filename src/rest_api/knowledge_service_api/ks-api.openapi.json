@@ -1,41 +1,65 @@
 {
-    "openapi": "3.0.0",
+    "openapi": "3.1.0",
     "paths": {
         "/api/knowledge-resources": {
             "get": {
                 "operationId": "findAllKnowledgeResources",
-                "summary": "Get all knowledge resources",
                 "parameters": [
                     {
                         "name": "accountId",
                         "required": true,
                         "in": "query",
-                        "oneOf": [{ "type": "string" }, { "type": "number" }],
                         "description": "Account ID to filter by",
-                        "schema": { "example": 1 }
+                        "schema": {
+                            "example": 1,
+                            "oneOf": [
+                                { "type": "string" },
+                                { "type": "number" }
+                            ]
+                        }
                     },
                     {
                         "name": "sourceSetIds",
                         "required": true,
                         "in": "query",
-                        "oneOf": [
-                            { "type": "string" },
-                            { "type": "array", "items": { "type": "string" } },
-                            { "type": "array", "items": { "type": "number" } }
-                        ],
                         "description": "Source Set IDs to filter by (Ex. Help Center ID)",
-                        "schema": { "example": [1, 2], "type": "array" }
+                        "schema": {
+                            "example": [1, 2],
+                            "oneOf": [
+                                { "type": "string" },
+                                {
+                                    "type": "array",
+                                    "items": { "type": "string" },
+                                    "isArray": true
+                                },
+                                {
+                                    "type": "array",
+                                    "items": { "type": "number" },
+                                    "isArray": true
+                                }
+                            ],
+                            "type": "array",
+                            "items": { "type": "number" }
+                        }
                     },
                     {
                         "name": "sourceIds",
                         "required": false,
                         "in": "query",
-                        "oneOf": [
-                            { "type": "string" },
-                            { "type": "array", "items": { "type": "string" } }
-                        ],
                         "description": "Source IDs to filter by",
-                        "schema": { "example": ["1", "2"], "type": "array" }
+                        "schema": {
+                            "example": ["1", "2"],
+                            "oneOf": [
+                                { "type": "string" },
+                                {
+                                    "type": "array",
+                                    "items": { "type": "string" },
+                                    "isArray": true
+                                }
+                            ],
+                            "type": "array",
+                            "items": { "type": "string" }
+                        }
                     },
                     {
                         "name": "locale",
@@ -48,23 +72,34 @@
                         "name": "tags",
                         "required": false,
                         "in": "query",
-                        "oneOf": [
-                            { "type": "string" },
-                            { "type": "array", "items": { "type": "string" } }
-                        ],
                         "description": "Tags to filter by",
                         "schema": {
                             "example": ["DEFAULT", "CONTEXT_SPECIFIC"],
-                            "type": "array"
+                            "oneOf": [
+                                { "type": "string" },
+                                {
+                                    "type": "array",
+                                    "items": { "type": "string" },
+                                    "isArray": true
+                                }
+                            ],
+                            "type": "array",
+                            "items": { "type": "string" }
                         }
                     },
                     {
                         "name": "includeWithoutTags",
                         "required": false,
                         "in": "query",
-                        "oneOf": [{ "type": "boolean" }, { "type": "string" }],
                         "description": "Include resources with empty tags",
-                        "schema": { "default": false, "example": true }
+                        "schema": {
+                            "default": false,
+                            "example": true,
+                            "oneOf": [
+                                { "type": "boolean" },
+                                { "type": "string" }
+                            ]
+                        }
                     }
                 ],
                 "responses": {
@@ -82,13 +117,72 @@
                         }
                     }
                 },
+                "summary": "Get all knowledge resources",
+                "tags": ["knowledge-resources"]
+            }
+        },
+        "/api/knowledge-resources/guidances": {
+            "get": {
+                "operationId": "findAllGuidancesKnowledgeResources",
+                "parameters": [
+                    {
+                        "name": "accountId",
+                        "required": false,
+                        "in": "query",
+                        "description": "Account ID to filter by",
+                        "schema": {
+                            "example": 1,
+                            "oneOf": [
+                                { "type": "string" },
+                                { "type": "number" }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "actionsIds",
+                        "required": true,
+                        "in": "query",
+                        "description": "Actions IDs to filter by",
+                        "schema": {
+                            "example": [
+                                "00AAAAA7AAA0AAA1A50AAAA00A",
+                                "00AAAAA7AAA0AAA1A50AAAA00B"
+                            ],
+                            "oneOf": [
+                                { "type": "string" },
+                                {
+                                    "type": "array",
+                                    "items": { "type": "string" },
+                                    "isArray": true
+                                }
+                            ],
+                            "type": "array",
+                            "items": { "type": "string" }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of guidances",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/KnowledgeResourceDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "summary": "Get all guidances",
                 "tags": ["knowledge-resources"]
             }
         },
         "/api/knowledge-resources/{id}": {
             "get": {
                 "operationId": "findOneKnowledgeResources",
-                "summary": "Get a knowledge resource by ID",
                 "parameters": [
                     {
                         "name": "id",
@@ -109,13 +203,43 @@
                         }
                     }
                 },
+                "summary": "Get a knowledge resource by ID",
+                "tags": ["knowledge-resources"]
+            }
+        },
+        "/api/knowledge-resources/guidances/hydrate": {
+            "post": {
+                "operationId": "hydrateGuidanceKnowledgeResources",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GuidancesHydrateRequestDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Hydrated guidances",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GuidancesHydrateResponseDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "summary": "Hydrate a guidance",
                 "tags": ["knowledge-resources"]
             }
         },
         "/api/feedback": {
             "get": {
                 "operationId": "findFeedbackFeedback",
-                "summary": "Get all resources used by AI Agent and the related feedback",
                 "parameters": [
                     {
                         "name": "objectType",
@@ -151,12 +275,12 @@
                         "description": "Feedback feature is not available"
                     }
                 },
+                "summary": "Get all resources used by AI Agent and the related feedback",
                 "tags": ["feedback"]
             },
             "post": {
-                "operationId": "upsertFeedbackFeedback",
-                "summary": "Upsert feedback",
                 "description": "Creates or updates feedback records. To delete knowledge resource feedback records, provide the ID and set feedbackValue to null.",
+                "operationId": "upsertFeedbackFeedback",
                 "parameters": [],
                 "requestBody": {
                     "required": true,
@@ -176,6 +300,7 @@
                         "description": "Feedback feature is not available"
                     }
                 },
+                "summary": "Upsert feedback",
                 "tags": ["feedback"]
             }
         },
@@ -183,7 +308,8 @@
             "get": {
                 "operationId": "readyHealth",
                 "parameters": [],
-                "responses": { "200": { "description": "" } }
+                "responses": { "200": { "description": "" } },
+                "tags": ["Health"]
             }
         },
         "/api/health/startup": {
@@ -328,14 +454,55 @@
                             }
                         }
                     }
-                }
+                },
+                "tags": ["Health"]
             }
         },
         "/api/health/live": {
             "get": {
                 "operationId": "liveHealth",
                 "parameters": [],
-                "responses": { "200": { "description": "" } }
+                "responses": { "200": { "description": "" } },
+                "tags": ["Health"]
+            }
+        },
+        "/api/ai-reasoning": {
+            "get": {
+                "operationId": "findAiReasoningsAiReasoning",
+                "parameters": [
+                    {
+                        "name": "objectType",
+                        "required": true,
+                        "in": "query",
+                        "description": "Type of object",
+                        "schema": {
+                            "example": "TICKET",
+                            "enum": ["TICKET", "SEARCH_BAR"],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "objectId",
+                        "required": true,
+                        "in": "query",
+                        "description": "Object identifier",
+                        "schema": { "example": "789", "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns a constant AI reasoning message",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AiReasoningDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "summary": "Get AI reasoning message",
+                "tags": ["ai-reasoning"]
             }
         }
     },
@@ -349,11 +516,16 @@
     "servers": [],
     "components": {
         "securitySchemes": {
-            "X-API-Key": {
+            "ApiKey": {
                 "type": "apiKey",
                 "in": "header",
                 "name": "X-API-Key",
                 "description": "Enter your API token"
+            },
+            "agentBearerAuth": {
+                "scheme": "bearer",
+                "type": "http",
+                "description": "Enter your agent token"
             }
         },
         "schemas": {
@@ -436,6 +608,38 @@
                     "updatedDatetime": {
                         "type": "string",
                         "format": "date-time"
+                    },
+                    "metadata": {
+                        "type": "object",
+                        "properties": {
+                            "actions": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "pattern": { "type": "string" },
+                                        "id": { "type": "string" }
+                                    },
+                                    "required": ["pattern", "id"]
+                                }
+                            },
+                            "variables": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "variable": { "type": "string" },
+                                        "variableType": {
+                                            "type": "string",
+                                            "enum": ["customer", "order"]
+                                        }
+                                    },
+                                    "required": ["variable", "variableType"]
+                                }
+                            }
+                        },
+                        "required": ["actions", "variables"],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -450,8 +654,294 @@
                     "tags",
                     "type",
                     "createdDatetime",
-                    "updatedDatetime"
+                    "updatedDatetime",
+                    "metadata"
                 ]
+            },
+            "GuidancesHydrateRequestDto": {
+                "type": "object",
+                "properties": {
+                    "knowledge_resources_references": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "object",
+                            "properties": {
+                                "order_id": {
+                                    "type": "number",
+                                    "nullable": true
+                                }
+                            },
+                            "required": ["order_id"]
+                        }
+                    },
+                    "customer": {
+                        "type": "object",
+                        "properties": {
+                            "id": { "type": "number" },
+                            "name": { "type": "string", "nullable": true },
+                            "email": { "type": "string" },
+                            "lastname": { "type": "string" },
+                            "firstname": { "type": "string" },
+                            "tags": {
+                                "type": "array",
+                                "items": { "type": "string" },
+                                "nullable": true
+                            },
+                            "orders": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": { "type": "number" },
+                                        "shop_name": { "type": "string" },
+                                        "created_at": { "type": "string" },
+                                        "order_number": { "type": "number" },
+                                        "order_status_url": {
+                                            "type": "string"
+                                        },
+                                        "name": { "type": "string" },
+                                        "note": {
+                                            "type": "string",
+                                            "nullable": true
+                                        },
+                                        "tags": {
+                                            "type": "string",
+                                            "nullable": true
+                                        },
+                                        "cancelled_at": {
+                                            "type": "string",
+                                            "nullable": true
+                                        },
+                                        "shipping_address": {
+                                            "type": "object",
+                                            "properties": {
+                                                "address1": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "address2": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "city": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "country": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "province": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "province_code": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "zip": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                }
+                                            },
+                                            "required": [
+                                                "address1",
+                                                "address2",
+                                                "city",
+                                                "country",
+                                                "province",
+                                                "province_code",
+                                                "zip"
+                                            ],
+                                            "additionalProperties": true,
+                                            "nullable": true
+                                        },
+                                        "fulfillment_status": {
+                                            "type": "string",
+                                            "nullable": true
+                                        },
+                                        "financial_status": {
+                                            "type": "string",
+                                            "nullable": true
+                                        },
+                                        "line_items": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": { "type": "number" },
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "title": {
+                                                        "default": "",
+                                                        "type": "string"
+                                                    },
+                                                    "quantity": {
+                                                        "type": "number"
+                                                    },
+                                                    "vendor": {
+                                                        "default": "",
+                                                        "type": "string"
+                                                    },
+                                                    "product_id": {
+                                                        "default": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "type": "string"
+                                                            },
+                                                            { "type": "number" }
+                                                        ]
+                                                    },
+                                                    "variant_id": {
+                                                        "default": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "type": "string"
+                                                            },
+                                                            { "type": "number" }
+                                                        ]
+                                                    }
+                                                },
+                                                "required": [
+                                                    "id",
+                                                    "name",
+                                                    "quantity"
+                                                ],
+                                                "additionalProperties": true
+                                            }
+                                        },
+                                        "fulfillments": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": { "type": "number" },
+                                                    "order_id": {
+                                                        "type": "number"
+                                                    },
+                                                    "tracking_url": {
+                                                        "type": "string",
+                                                        "nullable": true
+                                                    },
+                                                    "tracking_number": {
+                                                        "type": "string",
+                                                        "nullable": true
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "shipment_status": {
+                                                        "type": "string",
+                                                        "nullable": true
+                                                    },
+                                                    "fulfillment_status": {
+                                                        "type": "string",
+                                                        "nullable": true
+                                                    },
+                                                    "line_items": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "number"
+                                                                },
+                                                                "name": {
+                                                                    "type": "string"
+                                                                },
+                                                                "title": {
+                                                                    "default": "",
+                                                                    "type": "string"
+                                                                },
+                                                                "quantity": {
+                                                                    "type": "number"
+                                                                },
+                                                                "vendor": {
+                                                                    "default": "",
+                                                                    "type": "string"
+                                                                },
+                                                                "product_id": {
+                                                                    "default": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "type": "string"
+                                                                        },
+                                                                        {
+                                                                            "type": "number"
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "variant_id": {
+                                                                    "default": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "type": "string"
+                                                                        },
+                                                                        {
+                                                                            "type": "number"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "id",
+                                                                "name",
+                                                                "quantity"
+                                                            ],
+                                                            "additionalProperties": true
+                                                        }
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "nullable": true
+                                                    }
+                                                },
+                                                "required": [
+                                                    "id",
+                                                    "order_id",
+                                                    "tracking_url",
+                                                    "tracking_number",
+                                                    "created_at",
+                                                    "name",
+                                                    "line_items"
+                                                ],
+                                                "additionalProperties": true
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "id",
+                                        "shop_name",
+                                        "created_at",
+                                        "order_number",
+                                        "order_status_url",
+                                        "name",
+                                        "shipping_address",
+                                        "line_items"
+                                    ],
+                                    "additionalProperties": true
+                                }
+                            }
+                        },
+                        "required": [
+                            "id",
+                            "email",
+                            "lastname",
+                            "firstname",
+                            "orders"
+                        ],
+                        "nullable": true
+                    }
+                },
+                "required": ["knowledge_resources_references", "customer"]
+            },
+            "GuidancesHydrateResponseDto": {
+                "type": "object",
+                "additionalProperties": { "type": "string" }
             },
             "FeedbackMutationDto": {
                 "discriminator": { "propertyName": "feedbackType" },
@@ -543,10 +1033,8 @@
                                 "example": "target-123"
                             },
                             "feedbackValue": {
-                                "oneOf": [
-                                    { "type": "string" },
-                                    { "type": "null" }
-                                ],
+                                "type": "string",
+                                "nullable": true,
                                 "example": "This was very helpful feedback"
                             },
                             "feedbackType": {
@@ -649,10 +1137,8 @@
                                 "example": "article-123"
                             },
                             "feedbackValue": {
-                                "oneOf": [
-                                    { "type": "string" },
-                                    { "type": "null" }
-                                ]
+                                "type": "string",
+                                "nullable": true
                             },
                             "feedbackType": {
                                 "type": "string",
@@ -732,10 +1218,8 @@
                                                 "description": "Resource set ID"
                                             },
                                             "resourceLocale": {
-                                                "oneOf": [
-                                                    { "type": "string" },
-                                                    { "type": "null" }
-                                                ],
+                                                "type": "string",
+                                                "nullable": true,
                                                 "description": "Resource locale"
                                             },
                                             "resourceTitle": {
@@ -743,88 +1227,78 @@
                                                 "description": "Resource title"
                                             },
                                             "feedback": {
-                                                "oneOf": [
-                                                    {
-                                                        "type": "object",
-                                                        "properties": {
-                                                            "id": {
-                                                                "type": "number",
-                                                                "description": "Optional feedback ID",
-                                                                "example": 123
-                                                            },
-                                                            "objectType": {
-                                                                "type": "string",
-                                                                "enum": [
-                                                                    "TICKET"
-                                                                ],
-                                                                "example": "TICKET"
-                                                            },
-                                                            "objectId": {
-                                                                "type": "string",
-                                                                "description": "Object identifier",
-                                                                "example": "789"
-                                                            },
-                                                            "executionId": {
-                                                                "type": "string",
-                                                                "description": "Execution identifier",
-                                                                "example": "exec-123"
-                                                            },
-                                                            "targetType": {
-                                                                "type": "string",
-                                                                "enum": [
-                                                                    "KNOWLEDGE_RESOURCE"
-                                                                ],
-                                                                "example": "KNOWLEDGE_RESOURCE"
-                                                            },
-                                                            "targetId": {
-                                                                "type": "string",
-                                                                "example": "article-123"
-                                                            },
-                                                            "feedbackValue": {
-                                                                "type": "string",
-                                                                "enum": [
-                                                                    "UP",
-                                                                    "DOWN"
-                                                                ],
-                                                                "example": "UP"
-                                                            },
-                                                            "submittedBy": {
-                                                                "type": "number",
-                                                                "description": "User ID who submitted the feedback"
-                                                            },
-                                                            "createdDatetime": {
-                                                                "type": "string",
-                                                                "format": "date-time",
-                                                                "description": "Feedback creation datetime"
-                                                            },
-                                                            "updatedDatetime": {
-                                                                "type": "string",
-                                                                "format": "date-time",
-                                                                "description": "Feedback update datetime"
-                                                            },
-                                                            "feedbackType": {
-                                                                "type": "string",
-                                                                "enum": [
-                                                                    "KNOWLEDGE_RESOURCE_BINARY"
-                                                                ]
-                                                            }
-                                                        },
-                                                        "required": [
-                                                            "objectType",
-                                                            "objectId",
-                                                            "executionId",
-                                                            "targetType",
-                                                            "targetId",
-                                                            "feedbackValue",
-                                                            "submittedBy",
-                                                            "createdDatetime",
-                                                            "updatedDatetime",
-                                                            "feedbackType"
-                                                        ]
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number",
+                                                        "description": "Optional feedback ID",
+                                                        "example": 123
                                                     },
-                                                    { "type": "null" }
+                                                    "objectType": {
+                                                        "type": "string",
+                                                        "enum": ["TICKET"],
+                                                        "example": "TICKET"
+                                                    },
+                                                    "objectId": {
+                                                        "type": "string",
+                                                        "description": "Object identifier",
+                                                        "example": "789"
+                                                    },
+                                                    "executionId": {
+                                                        "type": "string",
+                                                        "description": "Execution identifier",
+                                                        "example": "exec-123"
+                                                    },
+                                                    "targetType": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "KNOWLEDGE_RESOURCE"
+                                                        ],
+                                                        "example": "KNOWLEDGE_RESOURCE"
+                                                    },
+                                                    "targetId": {
+                                                        "type": "string",
+                                                        "example": "article-123"
+                                                    },
+                                                    "feedbackValue": {
+                                                        "type": "string",
+                                                        "enum": ["UP", "DOWN"],
+                                                        "example": "UP"
+                                                    },
+                                                    "submittedBy": {
+                                                        "type": "number",
+                                                        "description": "User ID who submitted the feedback"
+                                                    },
+                                                    "createdDatetime": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "description": "Feedback creation datetime"
+                                                    },
+                                                    "updatedDatetime": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "description": "Feedback update datetime"
+                                                    },
+                                                    "feedbackType": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "KNOWLEDGE_RESOURCE_BINARY"
+                                                        ]
+                                                    }
+                                                },
+                                                "required": [
+                                                    "objectType",
+                                                    "objectId",
+                                                    "executionId",
+                                                    "targetType",
+                                                    "targetId",
+                                                    "feedbackValue",
+                                                    "submittedBy",
+                                                    "createdDatetime",
+                                                    "updatedDatetime",
+                                                    "feedbackType"
                                                 ],
-                                                "description": "Resource feedback"
+                                                "nullable": true
                                             }
                                         },
                                         "required": [
@@ -840,43 +1314,35 @@
                                     "description": "Resources used in the execution"
                                 },
                                 "storeConfiguration": {
-                                    "oneOf": [
-                                        {
-                                            "type": "object",
-                                            "properties": {
-                                                "shopName": {
-                                                    "type": "string",
-                                                    "example": "My Shop"
-                                                },
-                                                "shopType": {
-                                                    "type": "string",
-                                                    "example": "shopify"
-                                                },
-                                                "faqHelpCenterId": {
-                                                    "oneOf": [
-                                                        { "type": "number" },
-                                                        { "type": "null" }
-                                                    ],
-                                                    "example": 1
-                                                },
-                                                "guidanceHelpCenterId": {
-                                                    "type": "number",
-                                                    "example": 2
-                                                },
-                                                "snippetHelpCenterId": {
-                                                    "type": "number",
-                                                    "example": 3
-                                                }
-                                            },
-                                            "required": [
-                                                "shopName",
-                                                "shopType",
-                                                "faqHelpCenterId",
-                                                "guidanceHelpCenterId",
-                                                "snippetHelpCenterId"
-                                            ]
+                                    "type": "object",
+                                    "properties": {
+                                        "shopName": {
+                                            "type": "string",
+                                            "example": "My Shop"
                                         },
-                                        { "type": "null" }
+                                        "shopType": {
+                                            "type": "string",
+                                            "example": "shopify"
+                                        },
+                                        "faqHelpCenterId": {
+                                            "type": "number",
+                                            "nullable": true
+                                        },
+                                        "guidanceHelpCenterId": {
+                                            "type": "number",
+                                            "example": 2
+                                        },
+                                        "snippetHelpCenterId": {
+                                            "type": "number",
+                                            "example": 3
+                                        }
+                                    },
+                                    "required": [
+                                        "shopName",
+                                        "shopType",
+                                        "faqHelpCenterId",
+                                        "guidanceHelpCenterId",
+                                        "snippetHelpCenterId"
                                     ],
                                     "description": "Store configuration at the time of the execution"
                                 },
@@ -993,12 +1459,8 @@
                                                         "example": "target-123"
                                                     },
                                                     "feedbackValue": {
-                                                        "oneOf": [
-                                                            {
-                                                                "type": "string"
-                                                            },
-                                                            { "type": "null" }
-                                                        ],
+                                                        "type": "string",
+                                                        "nullable": true,
                                                         "example": "This was very helpful feedback"
                                                     },
                                                     "submittedBy": {
@@ -1068,12 +1530,8 @@
                                                         "example": "article-123"
                                                     },
                                                     "feedbackValue": {
-                                                        "oneOf": [
-                                                            {
-                                                                "type": "string"
-                                                            },
-                                                            { "type": "null" }
-                                                        ]
+                                                        "type": "string",
+                                                        "nullable": true
                                                     },
                                                     "submittedBy": {
                                                         "type": "number",
@@ -1121,7 +1579,8 @@
                                 "storeConfiguration",
                                 "feedback"
                             ]
-                        }
+                        },
+                        "description": "Executions in decreasing order (latest one first)"
                     }
                 },
                 "required": [
@@ -1226,10 +1685,8 @@
                                             "example": "target-123"
                                         },
                                         "feedbackValue": {
-                                            "oneOf": [
-                                                { "type": "string" },
-                                                { "type": "null" }
-                                            ],
+                                            "type": "string",
+                                            "nullable": true,
                                             "example": "This was very helpful feedback"
                                         },
                                         "feedbackType": {
@@ -1334,10 +1791,8 @@
                                             "example": "article-123"
                                         },
                                         "feedbackValue": {
-                                            "oneOf": [
-                                                { "type": "string" },
-                                                { "type": "null" }
-                                            ]
+                                            "type": "string",
+                                            "nullable": true
                                         },
                                         "feedbackType": {
                                             "type": "string",
@@ -1375,8 +1830,63 @@
                 },
                 "required": ["feedbackToUpsert"],
                 "description": "Request to upsert multiple feedback records"
+            },
+            "AiReasoningDto": {
+                "type": "object",
+                "properties": {
+                    "objectType": {
+                        "type": "string",
+                        "enum": ["TICKET", "SEARCH_BAR"],
+                        "description": "Type of object",
+                        "example": "TICKET"
+                    },
+                    "objectId": {
+                        "type": "string",
+                        "description": "Object identifier",
+                        "example": "789"
+                    },
+                    "executionId": {
+                        "type": "string",
+                        "description": "AI Agent Execution identifier",
+                        "example": "exec-123"
+                    },
+                    "targetType": {
+                        "type": "string",
+                        "enum": [
+                            "TICKET_MESSAGE",
+                            "TICKET_HANDOVER",
+                            "TICKET_CLOSE"
+                        ],
+                        "description": "Target type",
+                        "example": "TICKET_MESSAGE"
+                    },
+                    "targetId": {
+                        "type": "string",
+                        "description": "Target identifier",
+                        "example": "target-123"
+                    },
+                    "value": {
+                        "type": "string",
+                        "description": "AI Reasoning content",
+                        "example": "exec-123"
+                    },
+                    "createdDatetime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Ai Reasoning creation datetime"
+                    }
+                },
+                "required": [
+                    "objectType",
+                    "objectId",
+                    "executionId",
+                    "targetType",
+                    "targetId",
+                    "value",
+                    "createdDatetime"
+                ]
             }
         }
     },
-    "security": [{ "X-API-Key": [] }]
+    "security": [{ "ApiKey": [] }, { "agentBearerAuth": [] }]
 }

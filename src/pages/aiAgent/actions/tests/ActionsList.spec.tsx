@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -10,6 +8,7 @@ import thunk from 'redux-thunk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { IntegrationType } from 'models/integration/constants'
+import { useFindAllGuidancesKnowledgeResources } from 'models/knowledgeService/queries'
 import {
     useGetStoreApps,
     useGetWorkflowConfigurationTemplates,
@@ -26,6 +25,7 @@ import ActionsList from '../components/ActionsList'
 import { StoresWorkflowConfiguration } from '../types'
 
 jest.mock('models/workflows/queries')
+jest.mock('models/knowledgeService/queries')
 jest.mock('pages/aiAgent/actions/hooks/useAddStoreApp')
 jest.mock('pages/aiAgent/actions/hooks/useDeleteAction')
 jest.mock('pages/aiAgent/actions/hooks/useUpsertAction')
@@ -41,6 +41,9 @@ const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates,
 )
 const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
+const mockUseFindAllGuidancesKnowledgeResources = jest.mocked(
+    useFindAllGuidancesKnowledgeResources,
+)
 
 const mockActions: StoresWorkflowConfiguration = [
     {
@@ -125,6 +128,11 @@ describe('ActionsList', () => {
         mockUseListTrackstarConnections.mockReturnValue({
             data: [],
         } as unknown as ReturnType<typeof useListTrackstarConnections>)
+        mockUseFindAllGuidancesKnowledgeResources.mockReturnValue({
+            data: {},
+        } as unknown as ReturnType<
+            typeof useFindAllGuidancesKnowledgeResources
+        >)
     })
 
     it('sorts actions by updated date in ascending order', () => {

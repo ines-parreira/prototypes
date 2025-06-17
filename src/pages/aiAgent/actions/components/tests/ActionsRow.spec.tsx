@@ -22,6 +22,14 @@ import { renderWithRouter } from 'utils/testing'
 import StoreTrackstarProvider from '../../providers/StoreTrackstarProvider'
 import ActionsRow from '../ActionsRow'
 
+jest.mock('pages/aiAgent/actions/providers/GuidanceReferenceContext', () => {
+    return {
+        useGuidanceReferenceContext: () => ({
+            canBeDeleted: () => true,
+            references: {},
+        }),
+    }
+})
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
 jest.mock('models/workflows/queries')
 jest.mock('hooks/useGetDateAndTimeFormat')

@@ -16,6 +16,15 @@ export const feedbackDefinitionKeys = {
     get: (id: string) => [FEEDBACK_QUERY_KEY, id] as const,
 }
 
+const KNOWLEDGE_RESOURCES_QUERY_KEY = 'knowledge-resources'
+
+export const knowledgeResourcesDefinitionKeys = {
+    all: () => [KNOWLEDGE_RESOURCES_QUERY_KEY] as const,
+    lists: () => [...knowledgeResourcesDefinitionKeys.all(), 'list'] as const,
+    list: (params: Paths.FindAllGuidancesKnowledgeResources.QueryParameters) =>
+        [...knowledgeResourcesDefinitionKeys.lists(), params] as const,
+}
+
 export const useGetFeedback = (
     params: Paths.FindFeedbackFeedback.QueryParameters,
     overrides?: UseQueryOptions<
@@ -27,6 +36,35 @@ export const useGetFeedback = (
         queryFn: async () => {
             const client = await getGorgiasKsApiClient()
             const response = await client.findFeedbackFeedback(
+                params,
+                {},
+                {
+                    paramsSerializer: {
+                        indexes: false,
+                    },
+                },
+            )
+            return response.data
+        },
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+        ...overrides,
+    })
+}
+
+export const useFindAllGuidancesKnowledgeResources = <T>(
+    params: Paths.FindAllGuidancesKnowledgeResources.QueryParameters,
+    overrides?: UseQueryOptions<
+        Awaited<Paths.FindAllGuidancesKnowledgeResources.Responses.$200>,
+        unknown,
+        T
+    >,
+) => {
+    return useQuery({
+        queryKey: knowledgeResourcesDefinitionKeys.list(params),
+        queryFn: async () => {
+            const client = await getGorgiasKsApiClient()
+            const response = await client.findAllGuidancesKnowledgeResources(
                 params,
                 {},
                 {

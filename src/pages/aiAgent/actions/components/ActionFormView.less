@@ -11,4 +11,31 @@
             gap: var(--layout-spacing-xl);
         }
     }
+
+    .toggle {
+        width: fit-content;
+    }
+
+    .chevron {
+        font-size: 16px;
+        color: var(--neutral-grey-6);
+    }
+
+    .indicator {
+        margin-left: var(--layout-spacing-xxs);
+    }
+
+    .trigger {
+        color: var(--neutral-grey-6);
+        padding: 0;
+
+        .triggerButton {
+            padding: 0;
+
+            &:hover,
+            &:active {
+                background-color: transparent;
+            }
+        }
+    }
 }

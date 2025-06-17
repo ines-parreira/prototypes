@@ -12,6 +12,7 @@ import { ulid } from 'ulidx'
 import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import useAppDispatch from 'hooks/useAppDispatch'
+import { useFindAllGuidancesKnowledgeResources } from 'models/knowledgeService/queries'
 import {
     useDownloadWorkflowConfigurationStepLogs,
     useGetStoreApps,
@@ -34,8 +35,10 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
 import CreateActionView from '../CreateActionView'
+import GuidanceReferenceProvider from '../providers/GuidanceReferenceProvider'
 
 jest.mock('models/workflows/queries')
+jest.mock('models/knowledgeService/queries')
 jest.mock('pages/aiAgent/actions/hooks/useUpsertAction')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
@@ -70,7 +73,9 @@ const mockUseAiAgentOnboardingNotification = jest.mocked(
     useAiAgentOnboardingNotification,
 )
 const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
-
+const mockUseFindAllGuidancesKnowledgeResources = jest.mocked(
+    useFindAllGuidancesKnowledgeResources,
+)
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
 const queryClient = mockQueryClient()
@@ -132,6 +137,11 @@ describe('<CreateActionView />', () => {
         mockUseListTrackstarConnections.mockReturnValue({
             data: [],
         } as unknown as ReturnType<typeof useListTrackstarConnections>)
+        mockUseFindAllGuidancesKnowledgeResources.mockReturnValue({
+            data: {},
+        } as unknown as ReturnType<
+            typeof useFindAllGuidancesKnowledgeResources
+        >)
     })
 
     it('should render create action page', () => {
@@ -327,7 +337,9 @@ describe('<CreateActionView />', () => {
                 } as RootState)}
             >
                 <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
+                    <GuidanceReferenceProvider actions={[]}>
+                        <CreateActionView />
+                    </GuidanceReferenceProvider>
                 </QueryClientProvider>
             </Provider>,
         )

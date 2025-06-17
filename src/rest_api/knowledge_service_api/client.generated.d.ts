@@ -8,6 +8,48 @@ import type {
 
 declare namespace Components {
     namespace Schemas {
+        export interface AiReasoningDto {
+            /**
+             * Type of object
+             * example:
+             * TICKET
+             */
+            objectType: 'TICKET' | 'SEARCH_BAR'
+            /**
+             * Object identifier
+             * example:
+             * 789
+             */
+            objectId: string
+            /**
+             * AI Agent Execution identifier
+             * example:
+             * exec-123
+             */
+            executionId: string
+            /**
+             * Target type
+             * example:
+             * TICKET_MESSAGE
+             */
+            targetType: 'TICKET_MESSAGE' | 'TICKET_HANDOVER' | 'TICKET_CLOSE'
+            /**
+             * Target identifier
+             * example:
+             * target-123
+             */
+            targetId: string
+            /**
+             * AI Reasoning content
+             * example:
+             * exec-123
+             */
+            value: string
+            /**
+             * Ai Reasoning creation datetime
+             */
+            createdDatetime: string // date-time
+        }
         export interface FeedbackDto {
             /**
              * Account ID
@@ -27,6 +69,9 @@ declare namespace Components {
              * 789
              */
             objectId: string
+            /**
+             * Executions in decreasing order (latest one first)
+             */
             executions: {
                 /**
                  * Execution identifier
@@ -64,15 +109,12 @@ declare namespace Components {
                     /**
                      * Resource locale
                      */
-                    resourceLocale: /* Resource locale */ string | null
+                    resourceLocale: string | null
                     /**
                      * Resource title
                      */
                     resourceTitle: string
-                    /**
-                     * Resource feedback
-                     */
-                    feedback: /* Resource feedback */ {
+                    feedback: {
                         /**
                          * Optional feedback ID
                          * example:
@@ -129,7 +171,7 @@ declare namespace Components {
                 /**
                  * Store configuration at the time of the execution
                  */
-                storeConfiguration: /* Store configuration at the time of the execution */ {
+                storeConfiguration: {
                     /**
                      * example:
                      * My Shop
@@ -140,15 +182,7 @@ declare namespace Components {
                      * shopify
                      */
                     shopType: string
-                    /**
-                     * example:
-                     * 1
-                     */
-                    faqHelpCenterId: /**
-                     * example:
-                     * 1
-                     */
-                    number | null
+                    faqHelpCenterId: number | null
                     /**
                      * example:
                      * 2
@@ -159,7 +193,7 @@ declare namespace Components {
                      * 3
                      */
                     snippetHelpCenterId: number
-                } | null
+                }
                 /**
                  * Feedback given at the object level
                  */
@@ -257,11 +291,7 @@ declare namespace Components {
                            * example:
                            * This was very helpful feedback
                            */
-                          feedbackValue: /**
-                           * example:
-                           * This was very helpful feedback
-                           */
-                          string | null
+                          feedbackValue: string | null
                           /**
                            * User ID who submitted the feedback
                            */
@@ -414,11 +444,7 @@ declare namespace Components {
                    * example:
                    * This was very helpful feedback
                    */
-                  feedbackValue: /**
-                   * example:
-                   * This was very helpful feedback
-                   */
-                  string | null
+                  feedbackValue: string | null
                   feedbackType: 'TICKET_FREEFORM'
               }
             | {
@@ -651,6 +677,80 @@ declare namespace Components {
              */
             boolean | string
         }
+        export interface GuidancesHydrateRequestDto {
+            knowledge_resources_references: {
+                [name: string]: {
+                    order_id: number | null
+                }
+            }
+            customer: {
+                id: number
+                name?: string | null
+                email: string
+                lastname: string
+                firstname: string
+                tags?: string[] | null
+                orders: {
+                    [name: string]: any
+                    id: number
+                    shop_name: string
+                    created_at: string
+                    order_number: number
+                    order_status_url: string
+                    name: string
+                    note?: string | null
+                    tags?: string | null
+                    cancelled_at?: string | null
+                    shipping_address: {
+                        [name: string]: any
+                        address1: string | null
+                        address2: string | null
+                        city: string | null
+                        country: string | null
+                        province: string | null
+                        province_code: string | null
+                        zip: string | null
+                    } | null
+                    fulfillment_status?: string | null
+                    financial_status?: string | null
+                    line_items: {
+                        [name: string]: any
+                        id: number
+                        name: string
+                        title?: string
+                        quantity: number
+                        vendor?: string
+                        product_id?: string | number
+                        variant_id?: string | number
+                    }[]
+                    fulfillments?: {
+                        [name: string]: any
+                        id: number
+                        order_id: number
+                        tracking_url: string | null
+                        tracking_number: string | null
+                        created_at: string
+                        name: string
+                        shipment_status?: string | null
+                        fulfillment_status?: string | null
+                        line_items: {
+                            [name: string]: any
+                            id: number
+                            name: string
+                            title?: string
+                            quantity: number
+                            vendor?: string
+                            product_id?: string | number
+                            variant_id?: string | number
+                        }[]
+                        status?: string | null
+                    }[]
+                }[]
+            } | null
+        }
+        export interface GuidancesHydrateResponseDto {
+            [name: string]: string
+        }
         export interface KnowledgeResourceDto {
             id: number
             accountId: number
@@ -664,22 +764,111 @@ declare namespace Components {
             type: 'guidance' | 'article' | 'external_snippet'
             createdDatetime: string // date-time
             updatedDatetime: string // date-time
+            metadata: {
+                actions: {
+                    pattern: string
+                    id: string
+                }[]
+                variables: {
+                    variable: string
+                    variableType: 'customer' | 'order'
+                }[]
+            } | null
         }
     }
 }
 declare namespace Paths {
+    namespace FindAiReasoningsAiReasoning {
+        namespace Parameters {
+            /**
+             * example:
+             * 789
+             */
+            export type ObjectId = string
+            /**
+             * example:
+             * TICKET
+             */
+            export type ObjectType = 'TICKET' | 'SEARCH_BAR'
+        }
+        export interface QueryParameters {
+            objectType: /**
+             * example:
+             * TICKET
+             */
+            Parameters.ObjectType
+            objectId: /**
+             * example:
+             * 789
+             */
+            Parameters.ObjectId
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.AiReasoningDto
+        }
+    }
+    namespace FindAllGuidancesKnowledgeResources {
+        namespace Parameters {
+            /**
+             * example:
+             * 1
+             */
+            export type AccountId =
+                /**
+                 * example:
+                 * 1
+                 */
+                string | number
+            /**
+             * example:
+             * [
+             *   "00AAAAA7AAA0AAA1A50AAAA00A",
+             *   "00AAAAA7AAA0AAA1A50AAAA00B"
+             * ]
+             */
+            export type ActionsIds = string[]
+        }
+        export interface QueryParameters {
+            accountId?: /**
+             * example:
+             * 1
+             */
+            Parameters.AccountId
+            actionsIds: /**
+             * example:
+             * [
+             *   "00AAAAA7AAA0AAA1A50AAAA00A",
+             *   "00AAAAA7AAA0AAA1A50AAAA00B"
+             * ]
+             */
+            Parameters.ActionsIds
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.KnowledgeResourceDto[]
+        }
+    }
     namespace FindAllKnowledgeResources {
         namespace Parameters {
             /**
              * example:
              * 1
              */
-            export type AccountId = any
+            export type AccountId =
+                /**
+                 * example:
+                 * 1
+                 */
+                string | number
             /**
              * example:
              * true
              */
-            export type IncludeWithoutTags = any
+            export type IncludeWithoutTags =
+                /**
+                 * example:
+                 * true
+                 */
+                boolean | string
             /**
              * example:
              * en-US
@@ -692,7 +881,7 @@ declare namespace Paths {
              *   "2"
              * ]
              */
-            export type SourceIds = any[]
+            export type SourceIds = string[]
             /**
              * example:
              * [
@@ -700,7 +889,7 @@ declare namespace Paths {
              *   2
              * ]
              */
-            export type SourceSetIds = any[]
+            export type SourceSetIds = number[]
             /**
              * example:
              * [
@@ -708,7 +897,7 @@ declare namespace Paths {
              *   "CONTEXT_SPECIFIC"
              * ]
              */
-            export type Tags = any[]
+            export type Tags = string[]
         }
         export interface QueryParameters {
             accountId: /**
@@ -794,6 +983,12 @@ declare namespace Paths {
         }
         namespace Responses {
             export type $200 = Components.Schemas.KnowledgeResourceDto
+        }
+    }
+    namespace HydrateGuidanceKnowledgeResources {
+        export type RequestBody = Components.Schemas.GuidancesHydrateRequestDto
+        namespace Responses {
+            export type $200 = Components.Schemas.GuidancesHydrateResponseDto
         }
     }
     namespace LiveHealth {
@@ -929,6 +1124,14 @@ export interface OperationMethods {
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.FindAllKnowledgeResources.Responses.$200>
     /**
+     * findAllGuidancesKnowledgeResources - Get all guidances
+     */
+    'findAllGuidancesKnowledgeResources'(
+        parameters?: Parameters<Paths.FindAllGuidancesKnowledgeResources.QueryParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.FindAllGuidancesKnowledgeResources.Responses.$200>
+    /**
      * findOneKnowledgeResources - Get a knowledge resource by ID
      */
     'findOneKnowledgeResources'(
@@ -936,6 +1139,14 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.FindOneKnowledgeResources.Responses.$200>
+    /**
+     * hydrateGuidanceKnowledgeResources - Hydrate a guidance
+     */
+    'hydrateGuidanceKnowledgeResources'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.HydrateGuidanceKnowledgeResources.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.HydrateGuidanceKnowledgeResources.Responses.$200>
     /**
      * findFeedbackFeedback - Get all resources used by AI Agent and the related feedback
      */
@@ -978,6 +1189,14 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.LiveHealth.Responses.$200>
+    /**
+     * findAiReasoningsAiReasoning - Get AI reasoning message
+     */
+    'findAiReasoningsAiReasoning'(
+        parameters?: Parameters<Paths.FindAiReasoningsAiReasoning.QueryParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.FindAiReasoningsAiReasoning.Responses.$200>
 }
 
 export interface PathsDictionary {
@@ -991,6 +1210,16 @@ export interface PathsDictionary {
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.FindAllKnowledgeResources.Responses.$200>
     }
+    ['/api/knowledge-resources/guidances']: {
+        /**
+         * findAllGuidancesKnowledgeResources - Get all guidances
+         */
+        'get'(
+            parameters?: Parameters<Paths.FindAllGuidancesKnowledgeResources.QueryParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.FindAllGuidancesKnowledgeResources.Responses.$200>
+    }
     ['/api/knowledge-resources/{id}']: {
         /**
          * findOneKnowledgeResources - Get a knowledge resource by ID
@@ -1000,6 +1229,16 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.FindOneKnowledgeResources.Responses.$200>
+    }
+    ['/api/knowledge-resources/guidances/hydrate']: {
+        /**
+         * hydrateGuidanceKnowledgeResources - Hydrate a guidance
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.HydrateGuidanceKnowledgeResources.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.HydrateGuidanceKnowledgeResources.Responses.$200>
     }
     ['/api/feedback']: {
         /**
@@ -1050,6 +1289,16 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.LiveHealth.Responses.$200>
+    }
+    ['/api/ai-reasoning']: {
+        /**
+         * findAiReasoningsAiReasoning - Get AI reasoning message
+         */
+        'get'(
+            parameters?: Parameters<Paths.FindAiReasoningsAiReasoning.QueryParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.FindAiReasoningsAiReasoning.Responses.$200>
     }
 }
 

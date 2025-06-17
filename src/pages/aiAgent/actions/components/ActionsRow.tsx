@@ -1,4 +1,10 @@
-import React, { MouseEvent, useCallback, useMemo, useState } from 'react'
+import React, {
+    MouseEvent,
+    useCallback,
+    useMemo,
+    useRef,
+    useState,
+} from 'react'
 
 import { Link, useHistory, useParams } from 'react-router-dom'
 
@@ -22,6 +28,7 @@ import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import { formatDatetime } from 'utils'
 
 import { getActionsAppFromTemplateApp } from '../../../automate/actionsPlatform/utils'
+import { useGuidanceReferenceContext } from '../providers/GuidanceReferenceContext'
 import { useStoreTrackstarContext } from '../providers/StoreTrackstarContext'
 import DeleteActionConfirmation from './DeleteActionConfirmation'
 
@@ -58,6 +65,8 @@ export default function ActionsRow({ action }: Props) {
     const datetimeFormat = useGetDateAndTimeFormat(
         DateAndTimeFormatting.CompactDate,
     )
+
+    const { canBeDeleted } = useGuidanceReferenceContext()
 
     const handleToggleAction = useCallback(
         (nextValue: boolean, event: MouseEvent<HTMLLabelElement>) => {
@@ -96,6 +105,8 @@ export default function ActionsRow({ action }: Props) {
     const [bodyRowRef, setBodyRowRef] = useState<HTMLTableRowElement | null>(
         null,
     )
+    const [deleteActionConfirmationRef, setDeleteActionConfirmationRef] =
+        useState<HTMLTableCellElement | null>(null)
 
     const appIcons = useMemo(() => {
         const iconsMap: Record<string, React.ReactElement> = {}
@@ -142,6 +153,8 @@ export default function ActionsRow({ action }: Props) {
         }
     }, [action.id, history, isDeleteActionLoading, isFakeAction, routes])
 
+    const enabledToggleRef = useRef<HTMLDivElement>(null)
+
     return (
         <TableBodyRow
             className={css.container}
@@ -157,12 +170,25 @@ export default function ActionsRow({ action }: Props) {
             )}
             <BodyCell width={360} className={css.nameCell}>
                 <div className={css.nameWrapper}>
-                    <ToggleField
-                        isLoading={isEditActionLoading}
-                        isDisabled={isDeleteActionLoading || isFakeAction}
-                        onChange={handleToggleAction}
-                        value={!action.entrypoints[0]?.deactivated_datetime}
-                    />
+                    <div ref={enabledToggleRef}>
+                        <ToggleField
+                            isLoading={isEditActionLoading}
+                            isDisabled={
+                                isDeleteActionLoading ||
+                                isFakeAction ||
+                                !canBeDeleted(action.id)
+                            }
+                            onChange={handleToggleAction}
+                            value={!action.entrypoints[0]?.deactivated_datetime}
+                        />
+                    </div>
+                    {!canBeDeleted(action.id) && enabledToggleRef && (
+                        <Tooltip placement="top" target={enabledToggleRef}>
+                            This Action is currently being used in Guidance.
+                            Remove the Action from all Guidance in order to
+                            disable.
+                        </Tooltip>
+                    )}
                     {action.apps?.map((templateApp) => {
                         const app = getAppFromTemplateApp(templateApp)
                         const actionsApp = getActionsAppFromTemplateApp(
@@ -240,6 +266,7 @@ export default function ActionsRow({ action }: Props) {
             </BodyCell>
             <BodyCell
                 size="smallest"
+                ref={setDeleteActionConfirmationRef}
                 onClick={(event) => {
                     event.stopPropagation()
                 }}
@@ -251,9 +278,19 @@ export default function ActionsRow({ action }: Props) {
                     isDisabled={
                         isDeleteActionLoading ||
                         isEditActionLoading ||
-                        isFakeAction
+                        isFakeAction ||
+                        !canBeDeleted(action.id)
                     }
                 />
+                {!canBeDeleted(action.id) && deleteActionConfirmationRef && (
+                    <Tooltip
+                        placement="top"
+                        target={deleteActionConfirmationRef}
+                    >
+                        This Action is currently being used in Guidance. Remove
+                        the Action from all Guidance in order to delete.
+                    </Tooltip>
+                )}
             </BodyCell>
         </TableBodyRow>
     )

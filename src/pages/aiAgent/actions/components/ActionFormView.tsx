@@ -1,10 +1,11 @@
-import { useMemo } from 'react'
+import { useMemo, useRef } from 'react'
 
 import classnames from 'classnames'
 import { useParams } from 'react-router-dom'
 
-import { ToggleField } from '@gorgias/merchant-ui-kit'
+import { Button, ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
 
+import { Accordion } from 'components/Accordion/Accordion'
 import ActionsPlatformTemplateConditions from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateConditions'
 import ActionsPlatformTemplateConfirmation from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateConfirmation'
 import ActionsPlatformTemplateInstructions from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateInstructions'
@@ -14,6 +15,8 @@ import { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
+import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
+import { useGuidanceReferenceContext } from '../providers/GuidanceReferenceContext'
 import { SimplifiedStepBuilder } from './SimplifiedStepBuilder'
 
 import css from './ActionFormView.less'
@@ -38,6 +41,7 @@ const ActionFormView = ({
 
     const triggerNode = visualBuilderGraph.nodes[0]
 
+    const { canBeDeleted, references } = useGuidanceReferenceContext()
     const variables = useMemo(
         () => getVariableListForNode(triggerNode.id),
         [getVariableListForNode, triggerNode.id],
@@ -47,9 +51,11 @@ const ActionFormView = ({
         shopName: string
         shopType: string
     }>()
+    const { routes } = useAiAgentNavigation({ shopName })
 
     const isAdvanced = visualBuilderGraph.advanced_datetime
 
+    const enabledToggleRef = useRef<HTMLDivElement>(null)
     return (
         <>
             <div className={css.section}>
@@ -170,19 +176,83 @@ const ActionFormView = ({
                         shopType={shopType}
                     />
                 )}
-                <ToggleField
-                    value={!triggerNode.data.deactivated_datetime}
-                    onChange={(nextValue) => {
-                        dispatch({
-                            type: 'SET_LLM_PROMPT_TRIGGER_DEACTIVATED_DATETIME',
-                            deactivated_datetime: nextValue
-                                ? null
-                                : new Date().toISOString(),
-                        })
-                    }}
-                    caption="When enabled, you can preview this Action in the test area"
-                    label="Enable Action"
-                />
+                <div className={css.toggle} ref={enabledToggleRef}>
+                    <ToggleField
+                        value={!triggerNode.data.deactivated_datetime}
+                        onChange={(nextValue) => {
+                            dispatch({
+                                type: 'SET_LLM_PROMPT_TRIGGER_DEACTIVATED_DATETIME',
+                                deactivated_datetime: nextValue
+                                    ? null
+                                    : new Date().toISOString(),
+                            })
+                        }}
+                        caption={
+                            <div>
+                                Enabling will allow AI Agent to perform this
+                                Action indepedently from Guidance.
+                                <br />
+                                Actions can still be be used in Guidance when
+                                disabled here.
+                            </div>
+                        }
+                        label="Enable Action"
+                        isDisabled={!canBeDeleted(visualBuilderGraph.id)}
+                    />
+                </div>
+
+                {!canBeDeleted(visualBuilderGraph.id) && enabledToggleRef && (
+                    <Tooltip placement="top" target={enabledToggleRef}>
+                        This Action is currently being used in Guidance. Remove
+                        the Action from all Guidance in order to disable.
+                    </Tooltip>
+                )}
+                {references[visualBuilderGraph.id] && (
+                    <Accordion.Root>
+                        <Accordion.Item value="title">
+                            <Accordion.ItemTrigger className={css.trigger}>
+                                <Button
+                                    fillStyle="ghost"
+                                    intent="secondary"
+                                    size="medium"
+                                    className={css.triggerButton}
+                                >
+                                    Action is referenced in{' '}
+                                    {references[visualBuilderGraph.id].length}{' '}
+                                    Guidance
+                                    <Accordion.ItemIndicator
+                                        className={css.indicator}
+                                    >
+                                        <i
+                                            className={classnames(
+                                                css.chevron,
+                                                'material-icons',
+                                            )}
+                                        >
+                                            keyboard_arrow_down
+                                        </i>
+                                    </Accordion.ItemIndicator>
+                                </Button>
+                            </Accordion.ItemTrigger>
+                            <Accordion.ItemContent>
+                                {references[visualBuilderGraph.id].map(
+                                    (reference) => (
+                                        <a
+                                            key={reference.id}
+                                            href={routes.guidanceArticleEdit(
+                                                parseInt(reference.sourceId),
+                                            )}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
+                                            {reference.title}
+                                        </a>
+                                    ),
+                                )}
+                            </Accordion.ItemContent>
+                        </Accordion.Item>
+                    </Accordion.Root>
+                )}
             </div>
         </>
     )

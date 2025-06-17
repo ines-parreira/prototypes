@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom'
 
 import CreateActionView from './CreateActionView'
+import GuidanceReferenceProvider from './providers/GuidanceReferenceProvider'
 import StoreTrackstarProvider from './providers/StoreTrackstarProvider'
 
 const CreateActionViewContainer = () => {
@@ -11,7 +12,9 @@ const CreateActionViewContainer = () => {
 
     return (
         <StoreTrackstarProvider storeName={shopName} storeType={shopType}>
-            <CreateActionView />
+            <GuidanceReferenceProvider actions={[]}>
+                <CreateActionView />
+            </GuidanceReferenceProvider>
         </StoreTrackstarProvider>
     )
 }

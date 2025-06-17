@@ -11,7 +11,9 @@ import { renderHook } from 'utils/testing/renderHook'
 import {
     CACHE_TIME_MS,
     feedbackDefinitionKeys,
+    knowledgeResourcesDefinitionKeys,
     STALE_TIME_MS,
+    useFindAllGuidancesKnowledgeResources,
     useGetFeedback,
 } from '../queries'
 
@@ -24,6 +26,7 @@ describe('knowledgeService queries', () => {
 
     const mockClient = {
         findFeedbackFeedback: jest.fn(),
+        findAllGuidancesKnowledgeResources: jest.fn(),
     }
 
     beforeEach(() => {
@@ -169,6 +172,118 @@ describe('knowledgeService queries', () => {
                     retry: customRetry,
                 }),
             )
+        })
+    })
+
+    describe('knowledgeResourcesDefinitionKeys', () => {
+        it('should generate correct all key', () => {
+            expect(knowledgeResourcesDefinitionKeys.all()).toEqual([
+                'knowledge-resources',
+            ])
+        })
+
+        it('should generate correct lists key', () => {
+            expect(knowledgeResourcesDefinitionKeys.lists()).toEqual([
+                'knowledge-resources',
+                'list',
+            ])
+        })
+
+        it('should generate correct list key with params', () => {
+            const params: Paths.FindAllGuidancesKnowledgeResources.QueryParameters =
+                {
+                    accountId: 1,
+                    actionsIds: ['1', '2'],
+                }
+            expect(knowledgeResourcesDefinitionKeys.list(params)).toEqual([
+                'knowledge-resources',
+                'list',
+                params,
+            ])
+        })
+    })
+
+    describe('useFindAllGuidancesKnowledgeResources', () => {
+        const params: Paths.FindAllGuidancesKnowledgeResources.QueryParameters =
+            {
+                accountId: 1,
+                actionsIds: ['1', '2'],
+            }
+
+        const mockResponse = {
+            data: [
+                {
+                    id: 1,
+                    accountId: 1,
+                    sourceId: '1',
+                    sourceSetId: '1',
+                    processingState: 'completed',
+                    locale: 'en-GB',
+                    body: 'Test body content',
+                    title: 'Test Title',
+                    tags: ['DEFAULT', 'CONTEXT_SPECIFIC'],
+                    type: 'article',
+                    createdDatetime: '2025-06-12T13:43:16.179Z',
+                    updatedDatetime: '2025-06-12T13:43:16.180Z',
+                    metadata: {
+                        actions: [
+                            {
+                                pattern: '$$$00AAAAA7AAA0AAA1A50AAAA00A$$$',
+                                id: '01JWBNZKENYVRC2P6K3TDF6BZM',
+                            },
+                            {
+                                pattern: '$$$00BBBBB7BBB0BBB1B50BBBB00B$$$',
+                                id: '00BBBBB7BBB0BBB1B50BBBB00B',
+                            },
+                        ],
+                        variables: [
+                            {
+                                variable: 'customer.name',
+                                variableType: 'customer',
+                            },
+                            {
+                                variable: 'order.fulfillment.tracking_url',
+                                variableType: 'order',
+                            },
+                        ],
+                    },
+                },
+            ],
+        }
+
+        beforeEach(() => {
+            mockClient.findAllGuidancesKnowledgeResources.mockResolvedValue(
+                mockResponse,
+            )
+        })
+
+        it('should call API with correct parameters', async () => {
+            const { result } = renderHook(
+                () =>
+                    useFindAllGuidancesKnowledgeResources({
+                        accountId: 1,
+                        actionsIds: ['1', '2'],
+                    }),
+                {
+                    wrapper,
+                },
+            )
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+            expect(
+                mockClient.findAllGuidancesKnowledgeResources,
+            ).toHaveBeenCalledWith(
+                params,
+                {},
+                {
+                    paramsSerializer: {
+                        indexes: false,
+                    },
+                },
+            )
+
+            expect(result.current.data).toEqual(mockResponse.data)
         })
     })
 })

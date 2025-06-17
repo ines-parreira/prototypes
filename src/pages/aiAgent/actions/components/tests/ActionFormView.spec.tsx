@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { produce } from 'immer'
 
@@ -9,6 +7,14 @@ import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import ActionFormView from '../ActionFormView'
 
+jest.mock('pages/aiAgent/actions/providers/GuidanceReferenceContext', () => {
+    return {
+        useGuidanceReferenceContext: () => ({
+            canBeDeleted: () => true,
+            references: {},
+        }),
+    }
+})
 jest.mock('react-router-dom', () => {
     const actual = jest.requireActual('react-router-dom')
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return

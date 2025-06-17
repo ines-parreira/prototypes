@@ -11,6 +11,7 @@ import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
 import EditActionView from './EditActionView'
+import GuidanceReferenceProvider from './providers/GuidanceReferenceProvider'
 import StoreTrackstarProvider from './providers/StoreTrackstarProvider'
 import { StoresWorkflowConfiguration } from './types'
 
@@ -58,9 +59,11 @@ const EditActionViewContainer = () => {
 
     return (
         <StoreTrackstarProvider storeName={shopName} storeType={shopType}>
-            <EditActionView
-                configuration={configuration as WorkflowConfiguration}
-            />
+            <GuidanceReferenceProvider actions={[configuration]}>
+                <EditActionView
+                    configuration={configuration as WorkflowConfiguration}
+                />
+            </GuidanceReferenceProvider>
         </StoreTrackstarProvider>
     )
 }

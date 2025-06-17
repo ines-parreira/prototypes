@@ -1,8 +1,6 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -16,6 +14,7 @@ import { ulid } from 'ulidx'
 import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import useAppDispatch from 'hooks/useAppDispatch'
+import { useFindAllGuidancesKnowledgeResources } from 'models/knowledgeService/queries'
 import {
     useGetStoreApps,
     useGetStoreWorkflowsConfigurations,
@@ -39,6 +38,7 @@ import { renderWithRouter } from 'utils/testing'
 import EditActionView from '../EditActionView'
 
 jest.mock('models/workflows/queries')
+jest.mock('models/knowledgeService/queries')
 jest.mock('pages/aiAgent/actions/hooks/useUpsertAction')
 jest.mock('pages/aiAgent/actions/hooks/useDeleteAction')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
@@ -66,6 +66,9 @@ const mockUseGetStoreWorkflowsConfigurations = jest.mocked(
 )
 const mockUseListActionsApps = jest.mocked(useListActionsApps)
 const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
+const mockUseFindAllGuidancesKnowledgeResources = jest.mocked(
+    useFindAllGuidancesKnowledgeResources,
+)
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
 jest.mock('state/integrations/selectors', () => ({
@@ -182,6 +185,11 @@ describe('<EditActionView />', () => {
         mockUseListTrackstarConnections.mockReturnValue({
             data: [],
         } as unknown as ReturnType<typeof useListTrackstarConnections>)
+        mockUseFindAllGuidancesKnowledgeResources.mockReturnValue({
+            data: {},
+        } as unknown as ReturnType<
+            typeof useFindAllGuidancesKnowledgeResources
+        >)
     })
 
     it('should render edit action page', () => {

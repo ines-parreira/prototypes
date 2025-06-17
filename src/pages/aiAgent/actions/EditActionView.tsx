@@ -42,6 +42,7 @@ import useThreeplIntegrations from './hooks/useThreeplIntegrations'
 import useTouchActionGraph from './hooks/useTouchActionGraph'
 import useUpsertAction from './hooks/useUpsertAction'
 import useValidateActionGraph from './hooks/useValidateActionGraph'
+import { useGuidanceReferenceContext } from './providers/GuidanceReferenceContext'
 import StoreAppsProvider from './providers/StoreAppsProvider'
 import { StoreWorkflowsConfiguration } from './types'
 
@@ -69,6 +70,8 @@ const EditActionView = ({ configuration }: Props) => {
         isSuccess: isDeleteActionSuccess,
     } = useDeleteAction(configuration.name, shopName, shopType)
 
+    const { canBeDeleted } = useGuidanceReferenceContext()
+
     const appDispatch = useAppDispatch()
     const history = useHistory()
 
@@ -76,6 +79,8 @@ const EditActionView = ({ configuration }: Props) => {
         triggers: ['reusable-llm-prompt'],
     })
     const [saveAndTestButtonRef, setSaveAndTestButtonRef] =
+        useState<HTMLButtonElement | null>(null)
+    const [deleteActionConfirmationRef, setDeleteActionConfirmationRef] =
         useState<HTMLButtonElement | null>(null)
     const [isSaveAndTestButtonClicked, setIsSaveAndTestButtonClicked] =
         useState(false)
@@ -345,9 +350,13 @@ const EditActionView = ({ configuration }: Props) => {
                     >
                         {(onClick) => (
                             <Button
+                                ref={setDeleteActionConfirmationRef}
                                 isLoading={isDeleteActionLoading}
                                 intent="destructive"
-                                isDisabled={isEditActionLoading}
+                                isDisabled={
+                                    isEditActionLoading ||
+                                    !canBeDeleted(configuration.id)
+                                }
                                 onClick={onClick}
                                 className={css.deleteButton}
                                 fillStyle="ghost"
@@ -355,6 +364,17 @@ const EditActionView = ({ configuration }: Props) => {
                                 <ButtonIconLabel icon="delete">
                                     Delete Action
                                 </ButtonIconLabel>
+                                {!canBeDeleted(configuration.id) &&
+                                    deleteActionConfirmationRef && (
+                                        <Tooltip
+                                            placement="top"
+                                            target={deleteActionConfirmationRef}
+                                        >
+                                            This Action is currently being used
+                                            in Guidance. Remove the Action from
+                                            all Guidance in order to delete.
+                                        </Tooltip>
+                                    )}
                             </Button>
                         )}
                     </ConfirmModalAction>
