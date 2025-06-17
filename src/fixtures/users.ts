@@ -40,3 +40,23 @@ export const user: User = {
     has_2fa_enabled: false,
     client_id: null,
 }
+
+export const userProfile = {
+    active: true,
+    bio: 'CTO',
+    client_id: null,
+    country: 'US',
+    created_datetime: '2016-12-22T19:36:12.487448+00:00',
+    deactivated_datetime: null,
+    email: 'alex@gorgias.io',
+    external_id: '2',
+    firstname: 'Alex',
+    has_2fa_enabled: false,
+    id: 2,
+    lastname: 'Plugaru',
+    name: 'Alex Plugaru',
+    password_confirmation: '',
+    role: { name: 'admin' },
+    timezone: 'EST',
+    updated_datetime: '2016-12-22T19:36:12.489432+00:00',
+}

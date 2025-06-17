@@ -1,14 +1,12 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import {
-    act,
     fireEvent,
     render,
     screen,
     waitFor,
     within,
 } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -16,34 +14,39 @@ import thunk from 'redux-thunk'
 
 import { SelectField } from '@gorgias/merchant-ui-kit'
 
-import { logEvent, SegmentEvent } from 'common/segment'
-import { THEME_NAME } from 'core/theme'
-import type { ColorTokens } from 'core/theme'
-import { user } from 'fixtures/users'
+import { ThemeProvider } from 'core/theme'
+import { user, userProfile } from 'fixtures/users'
 import {
     DateFormattingSetting,
     TimeFormattingSetting,
 } from 'models/agents/types'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import { YourProfileView } from 'pages/settings/yourProfile/components/YourProfileView'
+import { userEvent } from 'utils/testing/userEvent'
 
-jest.mock('common/segment')
-const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
+// Write mocks for the submitSetting and updateCurrentUser actions
+jest.mock('state/currentUser/actions', () => ({
+    submitSetting: (data: any, isPublic: boolean) => (dispatch: any) => {
+        dispatch({ type: 'SUBMIT_SETTING', payload: { data, isPublic } })
+        return Promise.resolve()
+    },
+    updateCurrentUser: (data: any) => (dispatch: any) => {
+        dispatch({ type: 'UPDATE_CURRENT_USER', payload: data })
+        return Promise.resolve({})
+    },
+}))
 
 const mockedStore = configureMockStore([thunk])
 const minProps: ComponentProps<typeof YourProfileView> = {
-    updateCurrentUser: jest.fn(),
     currentUser: fromJS(user),
-    submitSetting: jest.fn(),
     preferences: fromJS({
-        data: { date_format: 'en_GB', time_format: '24-hour' },
+        data: {
+            date_format: 'en_GB',
+            time_format: '24-hour',
+            show_macros: false,
+            show_macros_suggestions: true,
+        },
     }),
-    setTheme: jest.fn(),
-    theme: {
-        name: THEME_NAME.Dark,
-        resolvedName: THEME_NAME.Dark,
-        tokens: {} as ColorTokens,
-    },
     isGorgiasAgent: false,
 }
 
@@ -96,6 +99,18 @@ jest.mock(
         ),
 )
 
+jest.mock('pages/common/forms/FileField', () => {
+    return ({ onChange }: { onChange: (url: string) => void }) => (
+        <input
+            type="file"
+            data-testid="file-field"
+            onChange={() =>
+                onChange('https://config.gorgias.io/production/blabla')
+            }
+        />
+    )
+})
+
 const defaultState = {}
 
 describe('YourProfileView', () => {
@@ -103,6 +118,7 @@ describe('YourProfileView', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
+        jest.clearAllMocks()
         global.Date.now = jest.fn(() => 1587000000000)
         Object.defineProperty(window, 'matchMedia', {
             value: jest.fn(() => {
@@ -115,6 +131,7 @@ describe('YourProfileView', () => {
     })
 
     afterEach(() => {
+        jest.resetAllMocks()
         global.Date.now = realDateNow
     })
 
@@ -122,9 +139,11 @@ describe('YourProfileView', () => {
         describe('personal information section', () => {
             it('should render name input', () => {
                 const { getByLabelText } = render(
-                    <Provider store={mockedStore(defaultState)}>
-                        <YourProfileView {...minProps} />
-                    </Provider>,
+                    <ThemeProvider>
+                        <Provider store={mockedStore(defaultState)}>
+                            <YourProfileView {...minProps} />
+                        </Provider>
+                    </ThemeProvider>,
                 )
                 const yourName = getByLabelText(/Your name/)
 
@@ -137,9 +156,11 @@ describe('YourProfileView', () => {
 
             it('should render email input', () => {
                 const { getByLabelText } = render(
-                    <Provider store={mockedStore(defaultState)}>
-                        <YourProfileView {...minProps} />
-                    </Provider>,
+                    <ThemeProvider>
+                        <Provider store={mockedStore(defaultState)}>
+                            <YourProfileView {...minProps} />
+                        </Provider>
+                    </ThemeProvider>,
                 )
                 const yourEmail = getByLabelText(/Your email/)
 
@@ -155,9 +176,11 @@ describe('YourProfileView', () => {
 
             it('should render bio input', () => {
                 const { getByLabelText } = render(
-                    <Provider store={mockedStore(defaultState)}>
-                        <YourProfileView {...minProps} />
-                    </Provider>,
+                    <ThemeProvider>
+                        <Provider store={mockedStore(defaultState)}>
+                            <YourProfileView {...minProps} />
+                        </Provider>
+                    </ThemeProvider>,
                 )
                 const yourBio = getByLabelText(/Your bio/)
 
@@ -174,9 +197,11 @@ describe('YourProfileView', () => {
                     isGorgiasAgent: true,
                 }
                 const { getByLabelText } = render(
-                    <Provider store={mockedStore(defaultState)}>
-                        <YourProfileView {...props} />
-                    </Provider>,
+                    <ThemeProvider>
+                        <Provider store={mockedStore(defaultState)}>
+                            <YourProfileView {...props} />
+                        </Provider>
+                    </ThemeProvider>,
                 )
                 const yourBio = getByLabelText(/Your bio/)
 
@@ -191,9 +216,11 @@ describe('YourProfileView', () => {
         describe('date and time settings', () => {
             it('should render timezone select', () => {
                 const { getByLabelText } = render(
-                    <Provider store={mockedStore(defaultState)}>
-                        <YourProfileView {...minProps} />
-                    </Provider>,
+                    <ThemeProvider>
+                        <Provider store={mockedStore(defaultState)}>
+                            <YourProfileView {...minProps} />
+                        </Provider>
+                    </ThemeProvider>,
                 )
                 const timezone = getByLabelText(/Timezone/)
                 const options = within(timezone).getAllByRole('option')
@@ -212,9 +239,11 @@ describe('YourProfileView', () => {
                     isGorgiasAgent: true,
                 }
                 const { getByLabelText } = render(
-                    <Provider store={mockedStore(defaultState)}>
-                        <YourProfileView {...props} />
-                    </Provider>,
+                    <ThemeProvider>
+                        <Provider store={mockedStore(defaultState)}>
+                            <YourProfileView {...props} />
+                        </Provider>
+                    </ThemeProvider>,
                 )
                 const timezone = getByLabelText(/Timezone/)
                 const options = within(timezone).getAllByRole('option')
@@ -229,9 +258,11 @@ describe('YourProfileView', () => {
 
             it('should render date format', () => {
                 const { getByText } = render(
-                    <Provider store={mockedStore(defaultState)}>
-                        <YourProfileView {...minProps} />
-                    </Provider>,
+                    <ThemeProvider>
+                        <Provider store={mockedStore(defaultState)}>
+                            <YourProfileView {...minProps} />
+                        </Provider>
+                    </ThemeProvider>,
                 )
                 const legend = getByText('Date format')
                 const fieldset = legend.closest('fieldset')!
@@ -248,9 +279,11 @@ describe('YourProfileView', () => {
 
             it('should render time format', () => {
                 const { getByText } = render(
-                    <Provider store={mockedStore(defaultState)}>
-                        <YourProfileView {...minProps} />
-                    </Provider>,
+                    <ThemeProvider>
+                        <Provider store={mockedStore(defaultState)}>
+                            <YourProfileView {...minProps} />
+                        </Provider>
+                    </ThemeProvider>,
                 )
                 const legend = getByText('Time format')
                 const fieldset = legend.closest('fieldset')!
@@ -269,22 +302,26 @@ describe('YourProfileView', () => {
         describe('account preferences', () => {
             it('should render theme select', () => {
                 const { getByLabelText } = render(
-                    <Provider store={mockedStore(defaultState)}>
-                        <YourProfileView {...minProps} />
-                    </Provider>,
+                    <ThemeProvider>
+                        <Provider store={mockedStore(defaultState)}>
+                            <YourProfileView {...minProps} />
+                        </Provider>
+                    </ThemeProvider>,
                 )
 
                 expect(getByLabelText(/System/)).not.toHaveAttribute('checked')
-                expect(getByLabelText(/Dark/)).toHaveAttribute('checked')
-                expect(getByLabelText(/Light/)).not.toHaveAttribute('checked')
+                expect(getByLabelText(/Dark/)).not.toHaveAttribute('checked')
+                expect(getByLabelText(/Light/)).toHaveAttribute('checked')
                 expect(getByLabelText(/Classic/)).not.toHaveAttribute('checked')
             })
 
             it('should render macro display', () => {
                 const { getByLabelText } = render(
-                    <Provider store={mockedStore(defaultState)}>
-                        <YourProfileView {...minProps} />
-                    </Provider>,
+                    <ThemeProvider>
+                        <Provider store={mockedStore(defaultState)}>
+                            <YourProfileView {...minProps} />
+                        </Provider>
+                    </ThemeProvider>,
                 )
 
                 expect(getByLabelText(/Macro prediction/)).not.toHaveAttribute(
@@ -300,62 +337,50 @@ describe('YourProfileView', () => {
 
             it('should expand to show the phone number field when enabling call forwarding', () => {
                 const { getByLabelText, getByTestId } = render(
-                    <Provider store={mockedStore(defaultState)}>
-                        <YourProfileView {...minProps} />
-                    </Provider>,
+                    <ThemeProvider>
+                        <Provider store={mockedStore(defaultState)}>
+                            <YourProfileView {...minProps} />
+                        </Provider>
+                    </ThemeProvider>,
                 )
 
                 fireEvent.click(getByLabelText(/Enable call forwarding/i))
                 expect(getByTestId('phone-input')).toBeEnabled()
             })
         })
-
-        describe('profile picture', () => {
-            it('should render avatar upload input', () => {
-                const { getByText } = render(
-                    <Provider store={mockedStore(defaultState)}>
-                        <YourProfileView {...minProps} />
-                    </Provider>,
-                )
-
-                expect(getByText('Select a file')).toBeInTheDocument()
-            })
-        })
     })
 
-    describe('_handleSubmit', () => {
+    describe('Form submission', () => {
         it('should submit user data', async () => {
-            const updateCurrentUserSpy = jest.fn(() => Promise.resolve(user))
-            const submitSetting = jest
-                .fn()
-                .mockReturnValueOnce(Promise.resolve())
-            const preferences: Map<any, any> = fromJS({
-                data: { time_format: 'bar' },
+            const store = mockedStore({
+                currentUser: fromJS({
+                    user: user,
+                    settings: [
+                        {
+                            id: 3,
+                            type: 'preferences',
+                            data: { time_format: 'bar' },
+                        },
+                    ],
+                }),
             })
-            const settingLabel = '24-hour'
-            const newPreferences: Map<any, any> = fromJS({
-                time_format: settingLabel,
-            })
-            const expectedPreferences = preferences
-                .update('data', (data: Map<any, any>) =>
-                    data.mergeDeep(newPreferences),
-                )
-                .toJS()
 
             render(
-                <Provider store={mockedStore(defaultState)}>
-                    <YourProfileView
-                        {...minProps}
-                        updateCurrentUser={updateCurrentUserSpy}
-                        submitSetting={submitSetting}
-                        preferences={fromJS({ data: { time_format: 'bar' } })}
-                    />
-                </Provider>,
+                <ThemeProvider>
+                    <Provider store={store}>
+                        <YourProfileView
+                            {...minProps}
+                            preferences={fromJS({
+                                data: { time_format: 'bar' },
+                            })}
+                        />
+                    </Provider>
+                </ThemeProvider>,
             )
 
             await userEvent.click(
                 screen.getByRole('radio', {
-                    name: settingLabel,
+                    name: '24-hour',
                 }),
             )
 
@@ -364,215 +389,235 @@ describe('YourProfileView', () => {
             )
 
             await waitFor(() => {
-                expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
-                expect(submitSetting).toHaveBeenCalledWith(
-                    expectedPreferences,
-                    false,
-                )
-                expect(logEventMock).toHaveBeenLastCalledWith(
-                    SegmentEvent.UserSettingsUpdated,
-                    {
-                        newSettings: newPreferences.toJS(),
-                        oldSettings: (
-                            preferences.get('data') as Map<any, any>
-                        ).toJS(),
+                const [currentUserAction, settingAction] = store.getActions()
+                expect(currentUserAction).toEqual({
+                    type: 'UPDATE_CURRENT_USER',
+                    payload: userProfile,
+                })
+
+                expect(settingAction).toEqual({
+                    type: 'SUBMIT_SETTING',
+                    payload: {
+                        data: {
+                            id: 3,
+                            type: 'preferences',
+                            data: {
+                                time_format: '24-hour',
+                                date_format: 'en_GB',
+                                show_macros: false,
+                                show_macros_suggestions: true,
+                            },
+                        },
+                        isPublic: false,
                     },
-                )
+                })
             })
         })
 
-        it(
-            'should submit user data and reset the password confirmation field ' +
-                'because the email field was marked as changed',
-            async () => {
-                const updateCurrentUserSpy = jest.fn(() => {
-                    return Promise.resolve(user)
+        it('should submit user data and reset the password confirmation field because the email field was marked as changed', async () => {
+            const store = mockedStore({
+                currentUser: fromJS({
+                    user: user,
+                    settings: [],
+                }),
+            })
+
+            const { getByRole, findByLabelText } = render(
+                <ThemeProvider>
+                    <Provider store={store}>
+                        <YourProfileView {...minProps} />
+                    </Provider>
+                </ThemeProvider>,
+            )
+
+            await userEvent.type(
+                getByRole('textbox', {
+                    name: 'Your email required',
+                }),
+                'alex@gorgias.com',
+            )
+
+            const passwordField = await findByLabelText(
+                /Password confirmation/i,
+            )
+
+            await userEvent.type(passwordField, 'a-password')
+            await userEvent.click(getByRole('button', { name: 'Save Changes' }))
+
+            await waitFor(() => {
+                const [currentUserAction] = store.getActions()
+                expect(currentUserAction).toEqual({
+                    type: 'UPDATE_CURRENT_USER',
+                    payload: {
+                        ...userProfile,
+                        email: 'alex@gorgias.com',
+                        password_confirmation: 'a-password',
+                    },
                 })
-                render(
-                    <Provider store={mockedStore(defaultState)}>
-                        <YourProfileView
-                            {...minProps}
-                            updateCurrentUser={updateCurrentUserSpy}
-                        />
-                    </Provider>,
-                )
-                act(() => {
-                    void userEvent.type(
-                        screen.getByRole('textbox', {
-                            name: 'Your email required',
-                        }),
-                        'q',
-                    )
-                })
-
-                await screen.findByPlaceholderText('Your password')
-
-                await userEvent.type(
-                    screen.getByPlaceholderText('Your password'),
-                    'a-password',
-                )
-
-                await screen.findByRole('button', { name: 'Save Changes' })
-
-                await userEvent.click(
-                    screen.getByRole('button', { name: 'Save Changes' }),
-                )
-
-                await waitFor(() => {
-                    expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
-                    expect(updateCurrentUserSpy).toHaveBeenCalled()
-                    expect(logEventMock).toHaveBeenCalledTimes(0)
-                })
-            },
-        )
+            })
+        })
 
         it('should submit user data and update user preferences because date format and time format preferences were changed', async () => {
-            const updateCurrentUserSpy = jest.fn(() => Promise.resolve(user))
-            const submitSettingSpy = jest
-                .fn()
-                .mockReturnValueOnce(Promise.resolve())
+            const store = mockedStore(defaultState)
 
             const preferences: Map<any, any> = fromJS({
                 data: {
                     date_format: Object.keys(DateFormattingSetting)[1], // en_US
                     time_format: TimeFormattingSetting[1], // AM/PM
-                    foo: 'bar',
-                },
-            })
-            const expectedPreferences: Map<any, any> = fromJS({
-                data: {
-                    date_format: Object.keys(DateFormattingSetting)[0], // en_GB
-                    time_format: TimeFormattingSetting[0], // 24-hour
-                    foo: 'bar',
                 },
             })
 
             const { getByLabelText } = render(
-                <Provider store={mockedStore(defaultState)}>
-                    <YourProfileView
-                        {...minProps}
-                        updateCurrentUser={updateCurrentUserSpy}
-                        submitSetting={submitSettingSpy}
-                        preferences={fromJS(preferences)}
-                    />
-                </Provider>,
+                <ThemeProvider>
+                    <Provider store={store}>
+                        <YourProfileView
+                            {...minProps}
+                            preferences={preferences}
+                        />
+                    </Provider>
+                </ThemeProvider>,
             )
 
-            fireEvent.click(
+            await userEvent.click(
                 getByLabelText(DateFormattingSetting.en_GB.label), // en_GB
             )
-            fireEvent.click(getByLabelText(TimeFormattingSetting[0])) // 24-hour
+            await userEvent.click(getByLabelText(TimeFormattingSetting[0])) // 24-hour
 
-            fireEvent.click(screen.getByText('Save Changes'))
+            await userEvent.click(screen.getByText('Save Changes'))
 
             await waitFor(() => {
-                expect(submitSettingSpy).toHaveBeenCalledWith(
-                    expectedPreferences.toJS(),
-                    false,
-                )
-                expect(logEventMock).toHaveBeenLastCalledWith(
-                    SegmentEvent.UserSettingsUpdated,
-                    {
-                        newSettings: (
-                            expectedPreferences.get('data') as Map<any, any>
-                        ).toJS(),
-                        oldSettings: (
-                            preferences.get('data') as Map<any, any>
-                        ).toJS(),
+                const [__, settingAction] = store.getActions()
+                expect(settingAction).toEqual({
+                    type: 'SUBMIT_SETTING',
+                    payload: {
+                        data: {
+                            id: 3,
+                            type: 'preferences',
+                            data: {
+                                show_macros: false,
+                                show_macros_suggestions: true,
+                                time_format: '24-hour',
+                                date_format: 'en_GB',
+                            },
+                        },
+                        isPublic: false,
                     },
-                )
+                })
             })
         })
     })
 
     describe('change theme from Settings', () => {
         it('should change the existing theme', async () => {
-            jest.spyOn(Storage.prototype, 'getItem').mockReturnValue('"dark"')
+            jest.spyOn(Storage.prototype, 'getItem').mockReturnValue('"light"')
             const setThemeSpy = jest.fn()
 
-            render(
-                <Provider store={mockedStore(defaultState)}>
-                    <YourProfileView {...minProps} setTheme={setThemeSpy} />
-                </Provider>,
+            jest.spyOn(require('core/theme'), 'useSetTheme').mockReturnValue(
+                setThemeSpy,
             )
 
-            // Dark theme is selected by default
-            await waitFor(() =>
-                expect(screen.getAllByRole('radio')[5]).toBeChecked(),
+            const { getByLabelText } = render(
+                <ThemeProvider>
+                    <Provider store={mockedStore(defaultState)}>
+                        <YourProfileView {...minProps} />
+                    </Provider>
+                </ThemeProvider>,
             )
-            // Select light theme
-            userEvent.click(screen.getAllByRole('radio')[6])
+
+            const darkThemeButton = getByLabelText(/Dark/i)
+            await userEvent.click(darkThemeButton)
+
             await waitFor(() => {
-                expect(setThemeSpy).toHaveBeenCalledWith('light')
+                expect(setThemeSpy).toHaveBeenCalledWith('dark')
             })
         })
     })
 
-    describe('_saveProfilePicture', () => {
+    describe('Profile picture saving', () => {
         it('should save profile picture', async () => {
             const fileUrl = 'https://config.gorgias.io/production/blabla'
-            const updateCurrentUserSpy = jest.fn(() => Promise.resolve(user))
+            const store = mockedStore(defaultState)
             render(
-                <Provider store={mockedStore(defaultState)}>
-                    <YourProfileView
-                        {...minProps}
-                        currentUser={fromJS({
-                            ...user,
-                            meta: {
-                                ...user.meta,
-                                profile_picture_url: fileUrl,
-                            },
-                        })}
-                        updateCurrentUser={updateCurrentUserSpy}
-                    />
-                </Provider>,
+                <ThemeProvider>
+                    <Provider store={store}>
+                        <YourProfileView
+                            {...minProps}
+                            currentUser={fromJS({
+                                ...user,
+                                meta: {
+                                    ...user.meta,
+                                    profile_picture_url: fileUrl,
+                                },
+                            })}
+                        />
+                    </Provider>
+                </ThemeProvider>,
             )
 
-            await screen.findByText('Save Changes')
-            await userEvent.click(screen.getByText('Save Changes'))
+            const fileInput = screen.getByTestId('file-field')
+            fireEvent.change(fileInput)
 
             await waitFor(() => {
-                expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
+                const [currentUserAction] = store.getActions()
+                expect(currentUserAction).toEqual({
+                    type: 'UPDATE_CURRENT_USER',
+                    payload: {
+                        meta: {
+                            profile_picture_url: fileUrl,
+                        },
+                    },
+                })
             })
         })
 
         it('should remove profile picture', async () => {
-            const updateCurrentUserSpy = jest.fn(() => Promise.resolve(user))
+            const store = mockedStore(defaultState)
             render(
-                <Provider store={mockedStore(defaultState)}>
-                    <YourProfileView
-                        {...minProps}
-                        updateCurrentUser={updateCurrentUserSpy}
-                        currentUser={fromJS({
-                            ...user,
-                            meta: {
-                                profile_picture_url:
-                                    'https://config.gorgias.io/staging/pic.jpg',
-                            },
-                        })}
-                    />
-                </Provider>,
+                <ThemeProvider>
+                    <Provider store={store}>
+                        <YourProfileView
+                            {...minProps}
+                            currentUser={fromJS({
+                                ...user,
+                                meta: {
+                                    profile_picture_url:
+                                        'https://config.gorgias.io/staging/pic.jpg',
+                                },
+                            })}
+                        />
+                    </Provider>
+                </ThemeProvider>,
             )
 
             const removePictureButton = screen.getByText('Remove Picture')
             await userEvent.click(removePictureButton)
 
             await waitFor(() => {
-                expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
+                const [currentUserAction] = store.getActions()
+                expect(currentUserAction).toEqual({
+                    type: 'UPDATE_CURRENT_USER',
+                    payload: {
+                        meta: {
+                            profile_picture_url: null,
+                        },
+                    },
+                })
             })
         })
     })
 
-    describe('_getForm', () => {
+    describe('Initial values', () => {
         it('should return default values because `currentUser` is empty', () => {
             const props: ComponentProps<typeof YourProfileView> = {
                 ...minProps,
                 currentUser: fromJS({}),
             }
             render(
-                <Provider store={mockedStore(defaultState)}>
-                    <YourProfileView {...props} />
-                </Provider>,
+                <ThemeProvider>
+                    <Provider store={mockedStore(defaultState)}>
+                        <YourProfileView {...props} />
+                    </Provider>
+                </ThemeProvider>,
             )
             const userName = screen.getByPlaceholderText('John Doe')
 
@@ -581,9 +626,11 @@ describe('YourProfileView', () => {
 
         it('should return form values because `currentUser` is not empty', () => {
             render(
-                <Provider store={mockedStore(defaultState)}>
-                    <YourProfileView {...minProps} />
-                </Provider>,
+                <ThemeProvider>
+                    <Provider store={mockedStore(defaultState)}>
+                        <YourProfileView {...minProps} />
+                    </Provider>
+                </ThemeProvider>,
             )
 
             const userName = screen.getByDisplayValue(user.name)

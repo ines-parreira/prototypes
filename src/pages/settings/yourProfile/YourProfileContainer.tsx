@@ -1,45 +1,37 @@
-import React, { Component } from 'react'
+import { useMemo } from 'react'
 
 import { fromJS } from 'immutable'
 import _pick from 'lodash/pick'
 import { connect, ConnectedProps } from 'react-redux'
-import { bindActionCreators } from 'redux'
 
-import {
-    EditableUserProfile,
-    User,
-    UserRole,
-    UserSetting,
-} from 'config/types/user'
-import { submitSetting, updateCurrentUser } from 'state/currentUser/actions'
+import { UserRole } from 'config/types/user'
 import { getPreferences } from 'state/currentUser/selectors'
-import { StoreDispatch, StoreState } from 'state/types'
+import { StoreState } from 'state/types'
 
-import YourProfileView from './components/YourProfileView'
+import { YourProfileView } from './components/YourProfileView'
 
-type Props = ConnectedProps<typeof connector>
-
-class YourProfileContainer extends Component<Props> {
-    UNSAFE_componentWillReceiveProps(nextProps: Props) {
-        // Reload the page when modifying currentUser.language (e.g. the timeformat), to refresh all moment instances
-        if (
-            this.props.currentUser.get('language') !==
-                nextProps.currentUser.get('language') ||
-            this.props.preferences.getIn(['data', 'date_format']) !==
-                nextProps.preferences.getIn(['data', 'date_format']) ||
-            this.props.preferences.getIn(['data', 'time_format']) !==
-                nextProps.preferences.getIn(['data', 'time_format'])
-        ) {
-            window.location.reload() // reload only from the cache; we just need all the `moment` objects to reinit
-        }
+function mapStateToProps(state: StoreState) {
+    return {
+        currentUser: state.currentUser,
+        preferences: getPreferences(state),
     }
+}
 
-    render() {
-        const { currentUser } = this.props
-        let prunedCurrentUser = fromJS({})
+const connector = connect(mapStateToProps)
 
+type YourProfileContainerProps = ConnectedProps<typeof connector>
+
+function YourProfileContainer({
+    currentUser,
+    preferences,
+}: YourProfileContainerProps) {
+    const isGorgiasAgent = useMemo(() => {
+        return currentUser.getIn(['role', 'name']) === UserRole.GorgiasAgent
+    }, [currentUser])
+
+    const prunedCurrentUser = useMemo(() => {
         if (!currentUser.delete('_internal').isEmpty()) {
-            prunedCurrentUser = fromJS(
+            return fromJS(
                 _pick(currentUser.toJS(), [
                     'name',
                     'email',
@@ -51,44 +43,16 @@ class YourProfileContainer extends Component<Props> {
                 ]),
             )
         }
+        return fromJS({})
+    }, [currentUser])
 
-        const isGorgiasAgent =
-            currentUser.getIn(['role', 'name']) === UserRole.GorgiasAgent
-        return (
-            <YourProfileView
-                currentUser={prunedCurrentUser}
-                updateCurrentUser={
-                    this.props.updateCurrentUser as unknown as (
-                        object: Partial<EditableUserProfile>,
-                    ) => Promise<User>
-                }
-                submitSetting={
-                    this.props.submitSetting as unknown as (
-                        object: UserSetting,
-                        notification: boolean,
-                    ) => Promise<unknown>
-                }
-                preferences={this.props.preferences}
-                isGorgiasAgent={isGorgiasAgent}
-            />
-        )
-    }
+    return (
+        <YourProfileView
+            currentUser={prunedCurrentUser}
+            preferences={preferences}
+            isGorgiasAgent={isGorgiasAgent}
+        />
+    )
 }
-
-function mapStateToProps(state: StoreState) {
-    return {
-        currentUser: state.currentUser,
-        preferences: getPreferences(state),
-    }
-}
-
-function mapDispatchToProps(dispatch: StoreDispatch) {
-    return {
-        updateCurrentUser: bindActionCreators(updateCurrentUser, dispatch),
-        submitSetting: bindActionCreators(submitSetting, dispatch),
-    }
-}
-
-const connector = connect(mapStateToProps, mapDispatchToProps)
 
 export default connector(YourProfileContainer)
