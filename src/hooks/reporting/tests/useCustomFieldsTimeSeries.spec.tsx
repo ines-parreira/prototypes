@@ -9,11 +9,13 @@ import {
     useCustomFieldsTicketCount,
 } from 'hooks/reporting/metricsPerCustomField'
 import {
+    useAIIntentCustomFieldsTicketCountTimeSeries,
     useCustomFieldsTicketCountForProductTimeSeries,
     useCustomFieldsTicketCountTimeSeries,
     useSentimentsCustomFieldsTicketCountTimeSeries,
 } from 'hooks/reporting/timeSeries'
 import {
+    useAIIntentCustomFieldsTimeSeries,
     useCustomFieldsForProductTimeSeries,
     useCustomFieldsTimeSeries,
     useSentimentsCustomFieldsTimeSeries,
@@ -34,6 +36,9 @@ import { renderHook } from 'utils/testing/renderHook'
 const mockStore = configureMockStore([thunk])
 
 jest.mock('hooks/reporting/timeSeries')
+const useAIIntentCustomFieldsTicketCountTimeSeriesMock = assumeMock(
+    useAIIntentCustomFieldsTicketCountTimeSeries,
+)
 const useCustomFieldsTicketCountTimeSeriesMock = assumeMock(
     useCustomFieldsTicketCountTimeSeries,
 )
@@ -161,6 +166,122 @@ describe('useCustomFieldsTimeSeries', () => {
                 },
                 legendDatasetVisibility: {},
             })
+        })
+    })
+
+    describe('useAIIntentCustomFieldsTimeSeries', () => {
+        beforeEach(() => {
+            useAIIntentCustomFieldsTicketCountTimeSeriesMock.mockReturnValue({
+                data: {
+                    'Category::Subcategory': [
+                        [
+                            { dateTime: '2023-04-07T00:00:00.000', value: 10 },
+                            { dateTime: '2023-04-08T00:00:00.000', value: 15 },
+                            { dateTime: '2023-04-09T00:00:00.000', value: 20 },
+                        ],
+                    ],
+                },
+                isFetching: false,
+            } as any)
+        })
+
+        it('should return AI intent custom fields trend', () => {
+            const { result } = renderHook(
+                () =>
+                    useAIIntentCustomFieldsTimeSeries({
+                        selectedCustomFieldId,
+                        ticketFieldsTicketTimeReference,
+                    }),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore(defaultState)}>
+                            {children}
+                        </Provider>
+                    ),
+                },
+            )
+
+            expect(result.current).toEqual({
+                isFetching: false,
+                data: [
+                    [
+                        { dateTime: '2023-04-07T00:00:00.000', value: 10 },
+                        { dateTime: '2023-04-08T00:00:00.000', value: 15 },
+                        { dateTime: '2023-04-09T00:00:00.000', value: 20 },
+                    ],
+                ],
+                granularity: ReportingGranularity.Hour,
+                legendInfo: {
+                    labels: ['Subcategory'],
+                    tooltips: ['Category > Subcategory'],
+                },
+                legendDatasetVisibility: { 0: true },
+            })
+        })
+
+        it('should return empty when no data', () => {
+            useAIIntentCustomFieldsTicketCountTimeSeriesMock.mockReturnValue({
+                data: undefined,
+                isFetching: false,
+            } as any)
+
+            const { result } = renderHook(
+                () =>
+                    useAIIntentCustomFieldsTimeSeries({
+                        selectedCustomFieldId,
+                        ticketFieldsTicketTimeReference,
+                    }),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore(defaultState)}>
+                            {children}
+                        </Provider>
+                    ),
+                },
+            )
+
+            expect(result.current).toEqual({
+                isFetching: false,
+                data: [],
+                granularity: ReportingGranularity.Hour,
+                legendInfo: {
+                    labels: [],
+                    tooltips: [],
+                },
+                legendDatasetVisibility: {},
+            })
+        })
+
+        it('should call useAIIntentCustomFieldsTicketCountTimeSeries with correct parameters', () => {
+            renderHook(
+                () =>
+                    useAIIntentCustomFieldsTimeSeries({
+                        selectedCustomFieldId,
+                        ticketFieldsTicketTimeReference,
+                        topAmount: 5,
+                        datasetVisibilityItems: 2,
+                    }),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore(defaultState)}>
+                            {children}
+                        </Provider>
+                    ),
+                },
+            )
+
+            expect(
+                useAIIntentCustomFieldsTicketCountTimeSeriesMock,
+            ).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    period: expect.anything(),
+                }),
+                'UTC',
+                ReportingGranularity.Hour,
+                '2',
+                'desc',
+                true,
+            )
         })
     })
 

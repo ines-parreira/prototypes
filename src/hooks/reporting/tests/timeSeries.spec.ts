@@ -7,6 +7,7 @@ import {
     fetchTicketsCreatedTimeSeries,
     fetchTicketsRepliedTimeSeries,
     fetchTotalTaggedTicketCountTimeSeries,
+    useAIIntentCustomFieldsTicketCountTimeSeries,
     useCustomFieldsTicketCountForProductTimeSeries,
     useCustomFieldsTicketCountTimeSeries,
     useMessagesSentTimeSeries,
@@ -25,6 +26,7 @@ import {
 } from 'hooks/reporting/useTimeSeries'
 import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { OrderDirection } from 'models/api/types'
+import { TicketProductsEnrichedDimension } from 'models/reporting/cubes/core/TicketProductsEnrichedCube'
 import { TicketCustomFieldsDimension } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { closedTicketsTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
 import { messagesSentTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
@@ -553,6 +555,11 @@ describe('time series', () => {
                             operator: ReportingFilterOperator.Equals,
                             values: sentimentValueStrings,
                         },
+                        {
+                            member: TicketProductsEnrichedDimension.ProductId,
+                            operator: ReportingFilterOperator.NotEquals,
+                            values: ['null'],
+                        },
                     ],
                 },
                 enabled,
@@ -580,6 +587,88 @@ describe('time series', () => {
                             member: TicketCustomFieldsDimension.TicketCustomFieldsValueString,
                             operator: ReportingFilterOperator.Equals,
                             values: sentimentValueStrings,
+                        },
+                        {
+                            member: TicketProductsEnrichedDimension.ProductId,
+                            operator: ReportingFilterOperator.NotEquals,
+                            values: ['null'],
+                        },
+                    ],
+                },
+                true,
+            )
+        })
+    })
+
+    describe('useAIIntentCustomFieldsTicketCountTimeSeries', () => {
+        const customFieldId = '123'
+        const sorting = OrderDirection.Desc
+        const enabled = false
+
+        it('should call useTimeSeriesPerDimension with correct query and ProductId filter', () => {
+            const baseQuery = customFieldsTicketCountTimeSeriesQueryFactory(
+                statsFilters,
+                timezone,
+                granularity,
+                customFieldId,
+                sorting,
+            )
+
+            renderHook(() =>
+                useAIIntentCustomFieldsTicketCountTimeSeries(
+                    statsFilters,
+                    timezone,
+                    granularity,
+                    customFieldId,
+                    sorting,
+                    enabled,
+                ),
+            )
+
+            expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
+                {
+                    ...baseQuery,
+                    filters: [
+                        ...baseQuery.filters,
+                        {
+                            member: TicketProductsEnrichedDimension.ProductId,
+                            operator: ReportingFilterOperator.NotEquals,
+                            values: ['null'],
+                        },
+                    ],
+                },
+                enabled,
+            )
+        })
+
+        it('should call with default enabled value', () => {
+            const baseQuery = customFieldsTicketCountTimeSeriesQueryFactory(
+                statsFilters,
+                timezone,
+                granularity,
+                customFieldId,
+                sorting,
+            )
+
+            renderHook(() =>
+                useAIIntentCustomFieldsTicketCountTimeSeries(
+                    statsFilters,
+                    timezone,
+                    granularity,
+                    customFieldId,
+                    sorting,
+                ),
+            )
+
+            expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
+                {
+                    ...baseQuery,
+                    filters: [
+                        ...baseQuery.filters,
+                        {
+                            member: TicketProductsEnrichedDimension.ProductId,
+                            operator: ReportingFilterOperator.NotEquals,
+                            values: ['null'],
                         },
                     ],
                 },

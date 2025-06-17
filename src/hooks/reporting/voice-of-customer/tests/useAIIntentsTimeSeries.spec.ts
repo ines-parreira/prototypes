@@ -1,4 +1,5 @@
 import {
+    useAIIntentCustomFieldsTimeSeries,
     useCustomFieldsForProductTimeSeries,
     useCustomFieldsTimeSeries,
 } from 'hooks/reporting/useCustomFieldsTimeSeries'
@@ -13,7 +14,9 @@ import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/reporting/useCustomFieldsTimeSeries')
-const useCustomFieldsTimeSeriesMock = assumeMock(useCustomFieldsTimeSeries)
+const useAIIntentCustomFieldsTimeSeriesMock = assumeMock(
+    useAIIntentCustomFieldsTimeSeries,
+)
 const useCustomFieldsForProductTimeSeriesMock = assumeMock(
     useCustomFieldsForProductTimeSeries,
 )
@@ -37,7 +40,7 @@ describe('useAIIntentsTimeSeries', () => {
         legendDatasetVisibility: { 0: true },
     }
 
-    useCustomFieldsTimeSeriesMock.mockReturnValue(response)
+    useAIIntentCustomFieldsTimeSeriesMock.mockReturnValue(response)
     useGetCustomTicketsFieldsDefinitionDataMock.mockReturnValue({
         intentCustomFieldId: 2,
         outcomeCustomFieldId: 3,
@@ -49,7 +52,7 @@ describe('useAIIntentsTimeSeries', () => {
             useAIIntentsTimeSeries(intentCustomFieldId),
         )
 
-        expect(useCustomFieldsTimeSeriesMock).toHaveBeenCalledWith({
+        expect(useAIIntentCustomFieldsTimeSeriesMock).toHaveBeenCalledWith({
             selectedCustomFieldId: intentCustomFieldId,
             ticketFieldsTicketTimeReference: TicketTimeReference.CreatedAt,
             datasetVisibilityItems: 5,

@@ -3,6 +3,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 
 import { useTicketsFieldTimeSeries } from 'hooks/reporting/ticket-insights/useTicketsFieldTimeSeries'
+import useAppSelector from 'hooks/useAppSelector'
 import { ReportingGranularity } from 'models/reporting/types'
 import { TicketInsightsFieldTrend } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
 import { assumeMock } from 'utils/testing'
@@ -19,6 +20,8 @@ jest.mock(
 
 jest.mock('hooks/reporting/ticket-insights/useTicketsFieldTimeSeries')
 const useTicketsFieldTrendMock = assumeMock(useTicketsFieldTimeSeries)
+jest.mock('hooks/useAppSelector')
+const useAppSelectorMock = assumeMock(useAppSelector)
 
 describe('<TicketInsightsFieldTrend>', () => {
     const data = [
@@ -46,6 +49,7 @@ describe('<TicketInsightsFieldTrend>', () => {
     }
 
     useTicketsFieldTrendMock.mockReturnValue(useTicketsFieldTrendReturnValue)
+    useAppSelectorMock.mockReturnValue({ id: 2 })
 
     it('should render the chart', () => {
         render(<TicketInsightsFieldTrend />)

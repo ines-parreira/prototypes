@@ -7,6 +7,7 @@ import {
 import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { OrderDirection } from 'models/api/types'
 import { Cubes } from 'models/reporting/cubes'
+import { TicketProductsEnrichedDimension } from 'models/reporting/cubes/core/TicketProductsEnrichedCube'
 import { TicketCustomFieldsDimension } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { closedTicketsTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
 import { messagesReceivedTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesReceived'
@@ -132,6 +133,38 @@ export const useCustomFieldsTicketCountTimeSeries = (
     )
 }
 
+export const useAIIntentCustomFieldsTicketCountTimeSeries = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    customFieldId: string,
+    sorting?: OrderDirection,
+    enabled = true,
+) => {
+    const query = customFieldsTicketCountTimeSeriesQueryFactory(
+        filters,
+        timezone,
+        granularity,
+        customFieldId,
+        sorting,
+    )
+
+    return useTimeSeriesPerDimension(
+        {
+            ...query,
+            filters: [
+                ...query.filters,
+                {
+                    member: TicketProductsEnrichedDimension.ProductId,
+                    operator: ReportingFilterOperator.NotEquals,
+                    values: ['null'],
+                },
+            ],
+        },
+        enabled,
+    )
+}
+
 export const useSentimentsCustomFieldsTicketCountTimeSeries = (
     filters: StatsFilters,
     timezone: string,
@@ -158,6 +191,11 @@ export const useSentimentsCustomFieldsTicketCountTimeSeries = (
                     member: TicketCustomFieldsDimension.TicketCustomFieldsValueString,
                     operator: ReportingFilterOperator.Equals,
                     values: sentimentValueStrings,
+                },
+                {
+                    member: TicketProductsEnrichedDimension.ProductId,
+                    operator: ReportingFilterOperator.NotEquals,
+                    values: ['null'],
                 },
             ],
         },
