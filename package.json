@@ -84,7 +84,7 @@
         "@formatjs/intl-pluralrules": "3.4.7",
         "@gorgias/analytics-ui-kit": "0.1.14",
         "@gorgias/branding-assets": "^0.2.1",
-        "@gorgias/design-tokens": "^0.7.0",
+        "@gorgias/design-tokens": "^0.10.5",
         "@gorgias/event-tracker-api": "1.1.0",
         "@gorgias/event-tracker-browser": "2.0.3",
         "@gorgias/events": "^0.5.0",

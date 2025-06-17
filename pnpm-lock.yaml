@@ -110,13 +110,13 @@ importers:
         version: 3.4.7
       '@gorgias/analytics-ui-kit':
         specifier: 0.1.14
-        version: 0.1.14(@gorgias/design-tokens@0.7.0)(classnames@2.2.6)(core-js@3.36.1)(react@17.0.2)
+        version: 0.1.14(@gorgias/design-tokens@0.10.5)(classnames@2.2.6)(core-js@3.36.1)(react@17.0.2)
       '@gorgias/branding-assets':
         specifier: ^0.2.1
         version: 0.2.1
       '@gorgias/design-tokens':
-        specifier: ^0.7.0
-        version: 0.7.0
+        specifier: ^0.10.5
+        version: 0.10.5
       '@gorgias/event-tracker-api':
         specifier: 1.1.0
         version: 1.1.0
@@ -2679,8 +2679,8 @@ packages:
   '@gorgias/design-tokens@0.10.2':
     resolution: {integrity: sha512-WfZ76lyPNHThtjOaW2OHI1CwprcQriO7+DGeOLhgg+xq6rKO28NrCtV4Rs5c4lv9Qh8h2Gji8RnIKuYDa1y8jw==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.10.2/c38285ac14e6bcfc888beddf1b8057129a59afba}
 
-  '@gorgias/design-tokens@0.7.0':
-    resolution: {integrity: sha512-Bww6tpeDkFqoplCwI0+NivdS3tDJbA3FZaead8hT4yJcFWco2Qg3TriVpE/VpMMy42+9bWuZMUbXX9GmMMVdKA==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.7.0/3f0c18899a0925057d6c569e34e3fc05950185bd}
+  '@gorgias/design-tokens@0.10.5':
+    resolution: {integrity: sha512-qx8g0V81tVGQYJNhpNwbo+XpdMU/QUUfb2EukKjzKeTE9elPYKuZj0LrWErax2MibAeSh5ngOl/5mPtbcHpAgg==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.10.5/f9bd803a287ca6ae26e6c47b2234e67fbc0f8242}
 
   '@gorgias/event-tracker-api@1.1.0':
     resolution: {integrity: sha512-a8GgwT7PtdbbayjpPKBUBl8gGCzGA1n64/X3qYzXSQQ3zboCNFaJ0L2nKhcuu7E6cbANCeFyf/kRqD+Wa5wrkQ==, tarball: https://npm.pkg.github.com/download/@gorgias/event-tracker-api/1.1.0/d9b9487ff2eba9161dfa48efa5a927397ded692d}
@@ -12930,9 +12930,9 @@ snapshots:
     dependencies:
       emojis-list: 3.0.0
 
-  '@gorgias/analytics-ui-kit@0.1.14(@gorgias/design-tokens@0.7.0)(classnames@2.2.6)(core-js@3.36.1)(react@17.0.2)':
+  '@gorgias/analytics-ui-kit@0.1.14(@gorgias/design-tokens@0.10.5)(classnames@2.2.6)(core-js@3.36.1)(react@17.0.2)':
     dependencies:
-      '@gorgias/design-tokens': 0.7.0
+      '@gorgias/design-tokens': 0.10.5
       classnames: 2.2.6
       core-js: 3.36.1
       react: 17.0.2
@@ -12952,7 +12952,7 @@ snapshots:
 
   '@gorgias/design-tokens@0.10.2': {}
 
-  '@gorgias/design-tokens@0.7.0': {}
+  '@gorgias/design-tokens@0.10.5': {}
 
   '@gorgias/event-tracker-api@1.1.0':
     dependencies:
