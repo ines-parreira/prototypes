@@ -5,11 +5,9 @@ import {
     useMetricPerDimensionWithEnrichment,
 } from 'hooks/reporting/useMetricPerDimension'
 import {
-    fetchTicketCountPerIntentForProduct,
     PRODUCT_ENRICHMENT_ENTITY_ID,
     PRODUCT_ENRICHMENT_FIELDS,
     useProductsTicketCountsPerIntentWithEnrichment,
-    useTicketCountPerIntent,
     useTicketCountPerIntentForProduct,
 } from 'hooks/reporting/voice-of-customer/metricsPerProductAndIntent'
 import { OrderDirection } from 'models/api/types'
@@ -85,118 +83,6 @@ describe('metricsPerProductAndIntent', () => {
             mockEnrichmentResult,
         )
         fetchMetricPerDimensionMock.mockResolvedValue(mockResult)
-    })
-
-    describe('useTicketCountPerIntent', () => {
-        it('should call useMetricPerDimension with correct parameters', () => {
-            renderHook(() =>
-                useTicketCountPerIntent(
-                    statsFilters,
-                    timezone,
-                    intentCustomFieldId,
-                    productId,
-                    sorting,
-                ),
-            )
-
-            expect(ticketCountPerIntentQueryFactory).toHaveBeenCalledWith(
-                statsFilters,
-                timezone,
-                intentCustomFieldId,
-                sorting,
-            )
-            expect(useMetricPerDimension).toHaveBeenCalledWith(
-                mockQuery,
-                productId,
-            )
-        })
-
-        it('should work without optional parameters', () => {
-            renderHook(() =>
-                useTicketCountPerIntent(
-                    statsFilters,
-                    timezone,
-                    intentCustomFieldId,
-                ),
-            )
-
-            expect(ticketCountPerIntentQueryFactory).toHaveBeenCalledWith(
-                statsFilters,
-                timezone,
-                intentCustomFieldId,
-                undefined,
-            )
-            expect(useMetricPerDimension).toHaveBeenCalledWith(
-                mockQuery,
-                undefined,
-            )
-        })
-
-        it('should return the result from useMetricPerDimension', () => {
-            const { result } = renderHook(() =>
-                useTicketCountPerIntent(
-                    statsFilters,
-                    timezone,
-                    intentCustomFieldId,
-                    productId,
-                ),
-            )
-
-            expect(result.current).toEqual(mockResult)
-        })
-    })
-
-    describe('fetchTicketCountPerIntent', () => {
-        it('should call fetchMetricPerDimension with correct parameters', async () => {
-            await fetchTicketCountPerIntentForProduct(
-                statsFilters,
-                timezone,
-                intentCustomFieldId,
-                productId,
-                sorting,
-            )
-
-            expect(ticketCountPerIntentQueryFactory).toHaveBeenCalledWith(
-                statsFilters,
-                timezone,
-                intentCustomFieldId,
-                sorting,
-            )
-            expect(fetchMetricPerDimension).toHaveBeenCalledWith(
-                mockQuery,
-                productId,
-            )
-        })
-
-        it('should work without optional parameters', async () => {
-            await fetchTicketCountPerIntentForProduct(
-                statsFilters,
-                timezone,
-                intentCustomFieldId,
-            )
-
-            expect(ticketCountPerIntentQueryFactory).toHaveBeenCalledWith(
-                statsFilters,
-                timezone,
-                intentCustomFieldId,
-                undefined,
-            )
-            expect(fetchMetricPerDimension).toHaveBeenCalledWith(
-                mockQuery,
-                undefined,
-            )
-        })
-
-        it('should return the result from fetchMetricPerDimension', async () => {
-            const result = await fetchTicketCountPerIntentForProduct(
-                statsFilters,
-                timezone,
-                intentCustomFieldId,
-                productId,
-            )
-
-            expect(result).toEqual(mockResult)
-        })
     })
 
     describe('useTicketCountPerIntentForProduct', () => {

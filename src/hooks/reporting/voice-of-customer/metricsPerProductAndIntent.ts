@@ -1,6 +1,4 @@
 import {
-    fetchMetricPerDimension,
-    MetricWithDecile,
     MetricWithEnrichment,
     useMetricPerDimension,
     useMetricPerDimensionWithEnrichment,
@@ -13,46 +11,10 @@ import {
 import {
     productsTicketCountPerIntentQueryFactory,
     ticketCountPerIntentForProductQueryFactory,
-    ticketCountPerIntentQueryFactory,
     TicketsPerIntentOrderField,
 } from 'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent'
 import { EnrichmentFields } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
-
-export const useTicketCountPerIntent = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    intentCustomFieldId: number,
-    productId?: string,
-    sorting?: OrderDirection,
-): MetricWithDecile => {
-    return useMetricPerDimension(
-        ticketCountPerIntentQueryFactory(
-            statsFilters,
-            timezone,
-            intentCustomFieldId,
-            sorting,
-        ),
-        productId,
-    )
-}
-
-export const fetchTicketCountPerIntentForProduct = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    intentCustomFieldId: number,
-    productId?: string,
-    sorting?: OrderDirection,
-) =>
-    fetchMetricPerDimension(
-        ticketCountPerIntentQueryFactory(
-            statsFilters,
-            timezone,
-            intentCustomFieldId,
-            sorting,
-        ),
-        productId,
-    )
 
 export const useTicketCountPerIntentForProduct = (
     statsFilters: StatsFilters,
