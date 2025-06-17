@@ -1,6 +1,9 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import { useLocation } from 'react-router'
+
 import useAppSelector from 'hooks/useAppSelector'
+import useEffectOnce from 'hooks/useEffectOnce'
 import useLocalStorageWithExpiry from 'hooks/useLocalStorageWithExpiry'
 import { IntegrationType } from 'models/integration/constants'
 import { PendingTasksSection } from 'pages/aiAgent/Overview/components/PendingTasksSection/PendingTasksSection'
@@ -29,6 +32,12 @@ export const PendingTasksSectionConnected = () => {
     const accountDomain = useAppSelector(getCurrentDomain)
     const accountId = useAppSelector(getCurrentAccountId)
 
+    const { search } = useLocation()
+    const shopName = useMemo(() => {
+        const urlParams = new URLSearchParams(search)
+        return urlParams.get('shopName')
+    }, [search])
+
     const stores = useMemo(
         () =>
             rawStores.map<Store>((store) => ({
@@ -38,6 +47,10 @@ export const PendingTasksSectionConnected = () => {
             })),
         [rawStores],
     )
+    const store = useMemo(
+        () => stores.find((store) => store.name === shopName),
+        [stores, shopName],
+    )
 
     const selectedStoreStorageKey = `ai-agent-pending-tasks:${accountId}`
     const {
@@ -46,7 +59,7 @@ export const PendingTasksSectionConnected = () => {
     } = useLocalStorageWithExpiry<Store>(
         selectedStoreStorageKey,
         expireIn1Hour,
-        stores[0],
+        store ?? stores[0],
     )
 
     const [selectedStore, setSelectedStore] = useState(selectedStoreFromStorage)
@@ -58,6 +71,10 @@ export const PendingTasksSectionConnected = () => {
         },
         [setSelectedStoreToStorage],
     )
+
+    useEffectOnce(() => {
+        setSelectedStoreAndPersist(store ?? stores[0])
+    })
 
     const { isLoading, isFetched, pendingTasks, completedTasks } =
         usePendingTasksRuleEngine({
