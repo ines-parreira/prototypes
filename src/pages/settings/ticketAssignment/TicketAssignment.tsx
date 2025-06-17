@@ -341,7 +341,7 @@ const TicketAssignment = () => {
                                     {isAssignTicketToLastAgentEnabled && (
                                         <div className={settingsCss.mb16}>
                                             <CheckBoxField
-                                                label=" Reassign tickets to the last responding agent"
+                                                label=" Assign ticket to last responding agent"
                                                 name="auto_assign_ticket_to_responding_agent"
                                                 value={assignTicketToLastAgent}
                                                 onChange={(value: boolean) =>
@@ -351,10 +351,10 @@ const TicketAssignment = () => {
                                                 }
                                                 caption={
                                                     <span>
-                                                        When enabled, unassigned
-                                                        tickets will be assigned
-                                                        to the last agent that
-                                                        responded.
+                                                        Tickets will be
+                                                        automatically assigned
+                                                        to the agent that last
+                                                        responded to that ticket
                                                     </span>
                                                 }
                                             />

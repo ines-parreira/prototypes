@@ -128,7 +128,7 @@ describe('<TicketAssignment />', () => {
         ).not.toBeInTheDocument()
         expect(
             screen.queryByText(
-                /When enabled, unassigned tickets will be assigned/,
+                /Tickets will be automatically assigned to the agent/,
             ),
         ).not.toBeInTheDocument()
 
@@ -344,7 +344,7 @@ describe('<TicketAssignment />', () => {
 
         fireEvent.click(
             screen.getByText(
-                /When enabled, unassigned tickets will be assigned/,
+                /Tickets will be automatically assigned to the agent/,
             ),
         )
         fireEvent.click(screen.getByText('Save changes'))
