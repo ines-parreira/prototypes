@@ -69,7 +69,7 @@ export const GuidanceHeader = ({
                     ) : (
                         <>
                             <SearchBar
-                                placeholder="Search guidance"
+                                placeholder="Search Guidance"
                                 onChange={(value) => onSearch(value)}
                                 value={searchQuery}
                             />

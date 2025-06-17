@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react'
 
+import classNames from 'classnames'
+
 import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { OrderDirection } from 'models/api/types'
@@ -148,7 +150,11 @@ export const GuidanceList = ({
                     </TableBodyRow>
                 </TableBody>
             ) : (
-                <TableBody className={css.emptyTableBody}>
+                <TableBody
+                    className={classNames({
+                        [css.emptyTableBody]: guidanceArticles.length === 0,
+                    })}
+                >
                     {guidanceArticles.length === 0 && (
                         <TableBodyRow cols={4}>
                             <BodyCell className={css.centeredCell} colSpan={4}>

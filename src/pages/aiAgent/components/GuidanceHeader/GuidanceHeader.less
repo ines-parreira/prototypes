@@ -1,10 +1,14 @@
+@import '~css/new/mixins';
+
 :local {
     .container {
         display: flex;
         padding: var(--layout-spacing-m);
         align-items: flex-start;
         justify-content: space-between;
-        gap: var(--layout-spacing-s);
+        gap: var(--layout-spacing-xs);
+        flex-direction: row;
+        flex-wrap: wrap;
     }
 
     .warningContainer {
@@ -20,8 +24,14 @@
 
     .btnGroup {
         display: flex;
+        flex-wrap: wrap;
         max-width: 580px;
         flex-grow: 1;
         gap: var(--layout-spacing-xs);
+
+        @media @desktops {
+            flex-wrap: nowrap;
+            gap: var(--layout-spacing-s);
+        }
     }
 }
