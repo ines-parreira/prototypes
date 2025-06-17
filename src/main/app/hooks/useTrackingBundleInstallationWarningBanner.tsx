@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo } from 'react'
 
-import { useHistory, useLocation, useRouteMatch } from 'react-router-dom'
+import { useHistory, useRouteMatch } from 'react-router-dom'
 
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
 import useAppSelector from 'hooks/useAppSelector'
@@ -19,10 +19,7 @@ const ticketsPages = [
 export function useTrackingBundleInstallationWarningBanner() {
     const { addBanner, removeBanner } = useBanners()
 
-    const { pathname } = useLocation()
-
     const { storeActivations } = useStoreActivations({
-        pageName: pathname,
         withChatIntegrationsStatus: true,
         withStoresKnowledgeStatus: true,
     })

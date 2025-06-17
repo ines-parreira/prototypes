@@ -27,9 +27,7 @@ const AiShoppingAssistantExpireBanner: React.FC<
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
     const hasNewAutomatePlan = (currentAutomatePlan?.generation ?? 0) >= 6
 
-    const { earlyAccessModal, showEarlyAccessModal } = useActivation(
-        window.location.pathname,
-    )
+    const { earlyAccessModal, showEarlyAccessModal } = useActivation()
 
     const days = useMemo(() => {
         if (!deactiveDatetime) {

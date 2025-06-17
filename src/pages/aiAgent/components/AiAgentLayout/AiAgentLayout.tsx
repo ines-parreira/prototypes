@@ -1,7 +1,6 @@
 import { ReactNode, useMemo } from 'react'
 
 import classnames from 'classnames'
-import { useLocation } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useAtLeastOneStoreHasActiveTrial } from 'hooks/aiAgent/useCanUseAiSalesAgent'
@@ -10,7 +9,6 @@ import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActiv
 import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useAccountStoreConfiguration } from 'pages/aiAgent/hooks/useAccountStoreConfiguration'
-import { getAiAgentBasePath } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -48,14 +46,9 @@ export const AiAgentLayout = ({
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
 
-    // For tracking purpose in activation feature, we need to pass the page path
-    const basePath = getAiAgentBasePath(shopName)
-    const currentPagePath = useLocation().pathname.replace(`${basePath}/`, '')
     const atLeastOneStoreHasActiveTrial = useAtLeastOneStoreHasActiveTrial()
 
-    const { storeActivations } = useStoreActivations({
-        pageName: window.location.pathname,
-    })
+    const { storeActivations } = useStoreActivations()
 
     const { canStartTrial, canStartTrialFromFeatureFlag } =
         useActivateAiAgentTrial({
@@ -65,7 +58,7 @@ export const AiAgentLayout = ({
         })
 
     const { activationModal, earlyAccessModal, activationButton } =
-        useActivation(currentPagePath, {
+        useActivation({
             autoDisplayEarlyAccessDisabled:
                 atLeastOneStoreHasActiveTrial ||
                 canStartTrial ||

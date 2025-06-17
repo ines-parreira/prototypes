@@ -30,7 +30,7 @@ export const AiAgentOverview = () => {
         isOnNewPlan,
         showEarlyAccessModal,
         showActivationModal,
-    } = useActivation('overview', {
+    } = useActivation({
         autoDisplayEarlyAccessDisabled: true,
     })
 

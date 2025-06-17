@@ -36,9 +36,7 @@ export const useGmvInfluencedCtaButton = ({
     const currentUser = useAppSelector(getCurrentUser)
     const userRole = useAppSelector(getRoleName)
 
-    const { storeActivations } = useStoreActivations({
-        pageName: window.location.pathname,
-    })
+    const { storeActivations } = useStoreActivations()
 
     const atLeastOneStoreHasActiveTrial =
         atLeastOneStoreHasActiveTrialOnSpecificStores(storeActivations)

@@ -208,10 +208,8 @@ describe('useStoreConfigurations', () => {
 
 describe('useStoreActivations', () => {
     const renderHookWithRouter = ({
-        pageName = 'dummy-page',
         initialEntry = '/',
     }: {
-        pageName?: string
         initialEntry?: string
     } = {}) => {
         const queryClient = mockQueryClient()
@@ -298,7 +296,7 @@ describe('useStoreActivations', () => {
         )
 
         return {
-            ...renderHook(() => useStoreActivations({ pageName }), { wrapper }),
+            ...renderHook(() => useStoreActivations(), { wrapper }),
             history,
         }
     }

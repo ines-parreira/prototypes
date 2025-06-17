@@ -116,7 +116,6 @@ export const useStoreConfigurations = (
  * - Activation logic via `useActivateStore` with loading states
  * - Store filtering for single-store contexts (overview vs specific store pages)
  *
- * @param pageName - Current page name for analytics tracking
  * @param storeName - If provided, filters results for this store only
  * @param withChatIntegrationsStatus - Enables chat integrations status retrieval (default: false)
  * @param withStoresKnowledgeStatus - Enables stores knowledge status retrieval (default: false)
@@ -136,16 +135,14 @@ export const useStoreConfigurations = (
  *   - activation: Object with store activation methods (canActivate, activate, isActivating)
  */
 export const useStoreActivations = ({
-    pageName,
     storeName,
     withChatIntegrationsStatus = false,
     withStoresKnowledgeStatus = false,
 }: {
-    pageName: string
     storeName?: string
     withChatIntegrationsStatus?: boolean
     withStoresKnowledgeStatus?: boolean
-}): {
+} = {}): {
     storeActivations: Record<string, StoreActivation>
     progressPercentage: number
     isFetchLoading: boolean
@@ -172,6 +169,7 @@ export const useStoreActivations = ({
 
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
     const hasNewAutomatePlan = (currentAutomatePlan?.generation ?? 0) >= 6
+    const pageName = window.location.pathname
 
     const isAiSalesBetaUser = !!flags[FeatureFlagKey.AiSalesAgentBeta]
     const hasAiAgentNewActivationXp =

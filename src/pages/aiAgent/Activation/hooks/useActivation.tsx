@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
+import { useLocation } from 'react-router-dom'
+
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
@@ -18,12 +20,12 @@ import { useEarlyAccessModalState } from './useEarlyAccessModalState'
 import { useStoreActivations } from './useStoreActivations'
 
 export const useActivation = (
-    // TODO: Remove pageName to use window.location.pathname instead
-    pageName: string,
     options: {
         autoDisplayEarlyAccessDisabled?: boolean
     } = {},
 ) => {
+    const location = useLocation()
+    const pageName = location.pathname
     const hasAiAgentNewActivationXp = useFlag(
         FeatureFlagKey.AiAgentNewActivationXp,
     )
@@ -43,7 +45,6 @@ export const useActivation = (
         migrateToNewPricing,
         endTrial,
     } = useStoreActivations({
-        pageName,
         withStoresKnowledgeStatus: isModalVisible,
         withChatIntegrationsStatus: isModalVisible,
     })
@@ -106,7 +107,7 @@ export const useActivation = (
         | Omit<ActivationManageButtonBorderedProps, 'onClick'>
         | Omit<ActivationManageButtonFlatProps, 'onClick'>
     if (hasAiAgentNewActivationXp) {
-        if (pageName === 'overview') {
+        if (pageName.includes('overview')) {
             activationButtonProps = {
                 hasAiAgentNewActivationXp,
                 variant: 'bordered',
@@ -132,7 +133,7 @@ export const useActivation = (
         activationButtonProps = {
             hasAiAgentNewActivationXp,
             progress: progressPercentage,
-            variant: pageName === 'overview' ? 'bordered' : 'flat',
+            variant: pageName.includes('overview') ? 'bordered' : 'flat',
         } satisfies Omit<LegacyActivationManageButtonProps, 'onClick'>
     }
 

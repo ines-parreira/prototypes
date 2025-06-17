@@ -46,9 +46,7 @@ export const SalesPaywallMiddleware =
     (ChildComponent: React.ComponentType<any>) => (): React.ReactElement => {
         const flags = useFlags()
         const hasAutomate = useAppSelector(getHasAutomate)
-        const { storeActivations } = useStoreActivations({
-            pageName: window.location.pathname,
-        })
+        const { storeActivations } = useStoreActivations()
 
         const currentStoreHasActiveTrial =
             atLeastOneStoreHasActiveTrialOnSpecificStores(storeActivations)
@@ -79,16 +77,13 @@ export const SalesPaywallMiddleware =
             onSuccess,
         })
 
-        const { earlyAccessModal, showEarlyAccessModal } = useActivation(
-            window.location.pathname,
-            {
-                autoDisplayEarlyAccessDisabled:
-                    currentStoreHasActiveTrial ||
-                    isLoading ||
-                    canStartTrial ||
-                    canStartTrialFromFeatureFlag,
-            },
-        )
+        const { earlyAccessModal, showEarlyAccessModal } = useActivation({
+            autoDisplayEarlyAccessDisabled:
+                currentStoreHasActiveTrial ||
+                isLoading ||
+                canStartTrial ||
+                canStartTrialFromFeatureFlag,
+        })
 
         const eventData = {
             accountId: currentAccount.get('id'),

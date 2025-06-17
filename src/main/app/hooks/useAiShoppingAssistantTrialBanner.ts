@@ -23,9 +23,7 @@ export function useAiShoppingAssistantTrialBanner() {
 
     const pathname = useLocation().pathname
 
-    const { storeActivations } = useStoreActivations({
-        pageName: pathname,
-    })
+    const { storeActivations } = useStoreActivations()
     const history = useHistory()
 
     const currentUser = useAppSelector(getCurrentUser)

@@ -37,9 +37,7 @@ const AiSalesAgentSalesOverview = () => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
 
-    const { storeActivations } = useStoreActivations({
-        pageName: window.location.pathname,
-    })
+    const { storeActivations } = useStoreActivations()
 
     const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -59,16 +57,13 @@ const AiSalesAgentSalesOverview = () => {
         onSuccess,
     })
 
-    const { earlyAccessModal, showEarlyAccessModal } = useActivation(
-        window.location.pathname,
-        {
-            autoDisplayEarlyAccessDisabled:
-                atLeastOneStoreHasActiveTrial ||
-                isLoading ||
-                canStartTrial ||
-                canStartTrialFromFeatureFlag,
-        },
-    )
+    const { earlyAccessModal, showEarlyAccessModal } = useActivation({
+        autoDisplayEarlyAccessDisabled:
+            atLeastOneStoreHasActiveTrial ||
+            isLoading ||
+            canStartTrial ||
+            canStartTrialFromFeatureFlag,
+    })
 
     const component: React.ReactNode = (
         <AIAgentTrialSuccessModal

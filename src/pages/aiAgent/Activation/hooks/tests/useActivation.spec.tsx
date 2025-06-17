@@ -6,7 +6,7 @@ import axios from 'axios'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import { Route, Router } from 'react-router-dom'
+import { Route, Router, Switch } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -61,8 +61,8 @@ jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations', () => {
 
     return {
         ...originalModule,
-        useStoreActivations: ({ pageName }: { pageName: string }) => ({
-            ...originalModule.useStoreActivations({ pageName }),
+        useStoreActivations: () => ({
+            ...originalModule.useStoreActivations(),
             migrateToNewPricing: migrateToNewPricingMock,
         }),
         // Expose the mock so we can access it in tests
@@ -261,11 +261,9 @@ jest.spyOn(axios, 'get').mockImplementation(async (url) => {
 })
 
 const renderHookWithRouter = ({
-    pageName = 'dummy-page',
     initialEntry = '/',
     autoDisplayEarlyAccessDisabled = false,
 }: {
-    pageName?: string
     initialEntry?: string
     autoDisplayEarlyAccessDisabled?: boolean
 } = {}) => {
@@ -274,7 +272,10 @@ const renderHookWithRouter = ({
         <Router history={history}>
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore(defaultState)}>
-                    <Route path="/:shopName?">{children}</Route>
+                    <Switch>
+                        <Route path="/overview">{children}</Route>
+                        <Route path="/:shopName?">{children}</Route>
+                    </Switch>
                 </Provider>
             </QueryClientProvider>
         </Router>
@@ -283,7 +284,7 @@ const renderHookWithRouter = ({
     return {
         ...renderHook(
             () =>
-                useActivation(pageName, {
+                useActivation({
                     autoDisplayEarlyAccessDisabled,
                 }),
             { wrapper },
@@ -334,7 +335,7 @@ describe('useActivation', () => {
 
         it('should render bordered variant when on overview page', () => {
             const { result } = renderHookWithRouter({
-                pageName: 'overview',
+                initialEntry: '/overview',
             })
 
             expect(result.current.activationButton?.props.variant).toBe(
@@ -342,17 +343,17 @@ describe('useActivation', () => {
             )
         })
 
-        it('should open activation modal and log event when clicked', () => {
+        it('should open activation modal and log event when clicked', async () => {
             const { result } = renderHookWithRouter()
 
-            act(() => {
+            await act(() => {
                 result.current.activationButton?.props.onClick()
             })
 
             expect(result.current.activationModal.props.isOpen).toBe(true)
             expect(mockLogEvent).toHaveBeenCalledWith(
                 segment.SegmentEvent.AiAgentActivateMainButtonClicked,
-                { page: 'dummy-page' },
+                { page: '/' },
             )
         })
     })
@@ -375,10 +376,10 @@ describe('useActivation', () => {
     })
 
     describe('activationModal', () => {
-        it('should show early access modal when clicking on learn more', () => {
+        it('should show early access modal when clicking on learn more', async () => {
             const { result } = renderHookWithRouter()
 
-            act(() => {
+            await act(() => {
                 result.current.activationModal.props.onLearnMoreClick()
             })
 
@@ -402,10 +403,10 @@ describe('useActivation', () => {
                 )
             })
 
-            it('should handle sales change and show early access modal when not on new plan', () => {
+            it('should handle sales change and show early access modal when not on new plan', async () => {
                 const { result } = renderHookWithRouter()
 
-                act(() => {
+                await act(() => {
                     result.current.activationModal.props.onSalesChange(
                         'store1',
                         true,
@@ -415,10 +416,10 @@ describe('useActivation', () => {
                 expect(result.current.earlyAccessModal.props.isOpen).toBe(true)
             })
 
-            it('should handle support changes', () => {
+            it('should handle support changes', async () => {
                 const { result } = renderHookWithRouter()
 
-                act(() => {
+                await act(() => {
                     result.current.activationModal.props.onSupportChange(
                         'store1',
                         true,
@@ -430,7 +431,7 @@ describe('useActivation', () => {
                     {
                         storeName: 'store1',
                         skill: 'support',
-                        page: 'dummy-page',
+                        page: '/',
                     },
                 )
             })
@@ -454,10 +455,10 @@ describe('useActivation', () => {
             })
         })
 
-        it('should handle support chat changes', () => {
+        it('should handle support chat changes', async () => {
             const { result } = renderHookWithRouter()
 
-            act(() => {
+            await act(() => {
                 result.current.activationModal.props.onSupportChatChange(
                     'store1',
                     true,
@@ -469,16 +470,16 @@ describe('useActivation', () => {
                 {
                     storeName: 'store1',
                     skill: 'support',
-                    page: 'dummy-page',
+                    page: '/',
                     channel: 'chat',
                 },
             )
         })
 
-        it('should handle support email changes', () => {
+        it('should handle support email changes', async () => {
             const { result } = renderHookWithRouter()
 
-            act(() => {
+            await act(() => {
                 result.current.activationModal.props.onSupportEmailChange(
                     'store1',
                     true,
@@ -490,20 +491,20 @@ describe('useActivation', () => {
                 {
                     storeName: 'store1',
                     skill: 'support',
-                    page: 'dummy-page',
+                    page: '/',
                     channel: 'email',
                 },
             )
         })
 
-        it('should close modal and log event when clicking close', () => {
+        it('should close modal and log event when clicking close', async () => {
             const { result } = renderHookWithRouter()
 
-            act(() => {
+            await act(() => {
                 result.current.activationButton?.props.onClick()
             })
 
-            act(() => {
+            await act(() => {
                 result.current.activationModal.props.onClose()
             })
 
@@ -511,7 +512,7 @@ describe('useActivation', () => {
             expect(mockLogEvent).toHaveBeenCalledWith(
                 segment.SegmentEvent.AiAgentActivateCloseActivationModal,
                 {
-                    page: 'dummy-page',
+                    page: '/',
                     reason: 'clicked-on-cancel-or-clicked-outside',
                 },
             )
@@ -519,7 +520,6 @@ describe('useActivation', () => {
 
         it('should open the activation modal when ?focusActivationModal param is present', () => {
             const { result } = renderHookWithRouter({
-                pageName: 'dummy-page',
                 initialEntry: '/?focusActivationModal=true',
             })
 
@@ -528,17 +528,17 @@ describe('useActivation', () => {
     })
 
     describe('earlyAccessModal', () => {
-        it('should handle modal close', () => {
+        it('should handle modal close', async () => {
             const { result } = renderHookWithRouter()
 
-            act(() => {
+            await act(() => {
                 result.current.earlyAccessModal.props.onClose()
             })
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 segment.SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
                 {
-                    page: 'dummy-page',
+                    page: '/',
                     reason: 'clicked-on-cross-or-outside',
                 },
             )
@@ -554,7 +554,7 @@ describe('useActivation', () => {
             // expect(mockLogEvent).toHaveBeenCalledWith(
             //     segment.SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
             //     {
-            //         page: 'dummy-page',
+            //         page: '/',
             //         reason: 'upgraded',
             //     },
             // )
@@ -604,10 +604,10 @@ describe('useActivation', () => {
             })
         })
 
-        it('should log event when modal is viewed', () => {
+        it('should log event when modal is viewed', async () => {
             const { result } = renderHookWithRouter()
 
-            act(() => {
+            await act(() => {
                 result.current.activationModal.props.onSalesChange(
                     'store1',
                     true,
@@ -616,20 +616,18 @@ describe('useActivation', () => {
 
             // expect(mockLogEvent).toHaveBeenCalledWith(
             //     segment.SegmentEvent.AiAgentActivateEarlyAccessModalViewed,
-            //     { page: 'dummy-page' },
+            //     { page: '/' },
             // )
         })
 
         it('should auto-display early access modal when redering hook for the first time only', () => {
             renderHookWithRouter({
-                pageName: 'dummy-page',
                 initialEntry: '/',
             })
 
             // expect(result.current.earlyAccessModal.props.isOpen).toBe(true)
 
             const { result: result2 } = renderHookWithRouter({
-                pageName: 'dummy-page',
                 initialEntry: '/',
             })
 
@@ -641,7 +639,7 @@ describe('useActivation', () => {
                 autoDisplayEarlyAccessDisabled: true,
             })
 
-            act(() => {
+            await act(() => {
                 result.current.activationModal.props.onSalesChange(
                     'store1',
                     true,
