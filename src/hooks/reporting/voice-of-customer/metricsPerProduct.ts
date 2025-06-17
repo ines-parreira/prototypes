@@ -65,6 +65,25 @@ export const useReturnMentionsPerProduct = (
         productId,
     )
 
+export const useReturnMentionsPerProductWithEnrichment = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    intentsCustomFieldId: number,
+    sorting?: OrderDirection,
+    productId?: string,
+) =>
+    useMetricPerDimensionWithEnrichment(
+        returnMentionsPerProductQueryFactory(
+            statsFilters,
+            timezone,
+            intentsCustomFieldId,
+            sorting,
+        ),
+        PRODUCT_ENRICHMENT_FIELDS,
+        PRODUCT_ENRICHMENT_ENTITY_ID,
+        productId,
+    )
+
 export const fetchReturnMentionsPerProduct = (
     statsFilters: StatsFilters,
     timezone: string,

@@ -16,8 +16,8 @@ import {
     useCustomFieldsTicketCountTimeSeries,
     useSentimentsCustomFieldsTicketCountTimeSeries,
 } from 'hooks/reporting/timeSeries'
-import { Sentiments } from 'hooks/reporting/types'
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
+import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { OrderDirection } from 'models/api/types'
 import { TicketCustomFieldsDimension } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'models/reporting/queryFactories/utils'
@@ -206,7 +206,7 @@ export const useSentimentsCustomFieldsTimeSeries = ({
     sentimentValueStrings,
 }: {
     sentimentCustomFieldId: number | null
-    sentimentValueStrings: Sentiments[]
+    sentimentValueStrings: Sentiment[]
 }) => {
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
 

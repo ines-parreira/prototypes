@@ -44,7 +44,10 @@ describe('return mentions per product', () => {
 
             expect(query).toEqual({
                 measures: [TicketProductsEnrichedMeasure.TicketCount],
-                dimensions: [TicketProductsEnrichedDimension.ProductId],
+                dimensions: [
+                    TicketProductsEnrichedDimension.ProductId,
+                    TicketProductsEnrichedDimension.StoreId,
+                ],
                 timezone,
                 segments: [],
                 filters: [
@@ -79,7 +82,10 @@ describe('return mentions per product', () => {
 
             expect(query).toEqual({
                 measures: [TicketProductsEnrichedMeasure.TicketCount],
-                dimensions: [TicketProductsEnrichedDimension.ProductId],
+                dimensions: [
+                    TicketProductsEnrichedDimension.ProductId,
+                    TicketProductsEnrichedDimension.StoreId,
+                ],
                 timezone,
                 segments: [],
                 filters: [

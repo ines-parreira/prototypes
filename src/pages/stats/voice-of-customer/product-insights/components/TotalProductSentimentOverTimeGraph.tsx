@@ -1,0 +1,51 @@
+import analyticsColors from 'assets/css/new/stats/modern.json'
+import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
+import { useTotalProductSentimentTimeSeries } from 'hooks/reporting/voice-of-customer/useTotalProductSentimentTimeSeries'
+import { BarChart } from 'pages/stats/common/components/charts/BarChart/BarChart'
+
+export const CHART_COLORS = [
+    analyticsColors['analytics'].data.pink.value,
+    analyticsColors['analytics'].data['dark-blue'].value,
+]
+
+enum SentimentFields {
+    Negative = 'negative',
+    Positive = 'positive',
+}
+
+export const TOTAL_PRODUCTS_SENTIMENTS_CHART_FIELDS = [
+    {
+        field: SentimentFields.Negative,
+        label: 'Negative',
+    },
+    {
+        field: SentimentFields.Positive,
+        label: 'Positive',
+    },
+]
+
+const PRODUCT_SENTIMENT_VALUE_STRINGS = [Sentiment.Negative, Sentiment.Positive]
+
+export const TotalProductSentimentOverTimeGraph = ({
+    sentimentCustomFieldId,
+}: {
+    sentimentCustomFieldId: number
+}) => {
+    const { data, isFetching } = useTotalProductSentimentTimeSeries(
+        sentimentCustomFieldId,
+        PRODUCT_SENTIMENT_VALUE_STRINGS,
+    )
+
+    return (
+        <BarChart
+            data={data}
+            isStacked={true}
+            isLoading={isFetching}
+            hasBackground
+            _displayLegacyTooltip
+            displayLegend
+            legendOnLeft
+            customColors={CHART_COLORS}
+        />
+    )
+}

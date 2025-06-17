@@ -1,6 +1,12 @@
 import {
+    useReturnMentionsPerProductWithEnrichment,
+    useTicketCountPerProductWithEnrichment,
+} from 'hooks/reporting/voice-of-customer/metricsPerProduct'
+import {
     Sentiment,
+    useNegativeSentimentPerProduct,
     useNegativeSentimentsPerProductMetricTrend,
+    usePositiveSentimentPerProduct,
     usePositiveSentimentsPerProductMetricTrend,
 } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { returnMentionsPerProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/returnMentionsPerProduct'
@@ -88,6 +94,7 @@ export const ProductInsightsColumnWithDrillDownConfig = {
                 ProductInsightsTableColumns.NegativeSentiment
             ],
         },
+        sortingHook: useNegativeSentimentPerProduct,
         drillDownQuery: sentimentsTicketCountPerProductDrillDownQueryFactory,
         domain: Domain.Ticket,
         showMetric: false,
@@ -99,6 +106,7 @@ export const ProductInsightsColumnWithDrillDownConfig = {
                 ProductInsightsTableColumns.PositiveSentiment
             ],
         },
+        sortingHook: usePositiveSentimentPerProduct,
         drillDownQuery: sentimentsTicketCountPerProductDrillDownQueryFactory,
         domain: Domain.Ticket,
         showMetric: false,
@@ -110,6 +118,7 @@ export const ProductInsightsColumnWithDrillDownConfig = {
                 ProductInsightsTableColumns.TicketsVolume
             ],
         },
+        sortingHook: useTicketCountPerProductWithEnrichment,
         drillDownQuery: ticketCountForProductDrillDownQueryFactory,
         domain: Domain.Ticket,
         showMetric: false,
@@ -121,6 +130,7 @@ export const ProductInsightsColumnWithDrillDownConfig = {
                 ProductInsightsTableColumns.ReturnMentions
             ],
         },
+        sortingHook: useReturnMentionsPerProductWithEnrichment,
         drillDownQuery: returnMentionsPerProductDrillDownQueryFactory,
         domain: Domain.Ticket,
         showMetric: false,
@@ -135,6 +145,7 @@ export const ProductInsightsColumnWithoutDrillDownConfig = {
                 ProductInsightsTableColumns.Product
             ],
         },
+        sortingHook: useTicketCountPerProductWithEnrichment,
     },
     [ProductInsightsTableColumns.Feedback]: {
         format: 'integer',
@@ -143,6 +154,7 @@ export const ProductInsightsColumnWithoutDrillDownConfig = {
                 ProductInsightsTableColumns.Feedback
             ],
         },
+        sortingHook: useTicketCountPerProductWithEnrichment,
     },
     [ProductInsightsTableColumns.NegativeSentimentDelta]: {
         format: 'percent',
@@ -151,6 +163,7 @@ export const ProductInsightsColumnWithoutDrillDownConfig = {
                 ProductInsightsTableColumns.NegativeSentimentDelta
             ],
         },
+        sortingHook: useNegativeSentimentPerProduct,
     },
     [ProductInsightsTableColumns.PositiveSentimentDelta]: {
         format: 'percent',
@@ -159,6 +172,7 @@ export const ProductInsightsColumnWithoutDrillDownConfig = {
                 ProductInsightsTableColumns.PositiveSentimentDelta
             ],
         },
+        sortingHook: usePositiveSentimentPerProduct,
     },
 } as const
 

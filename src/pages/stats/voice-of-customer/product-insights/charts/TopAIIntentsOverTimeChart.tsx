@@ -1,3 +1,4 @@
+import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import ChartCard from 'pages/stats/common/components/ChartCard'
 import { TopAIIntentsOverTimeGraph } from 'pages/stats/voice-of-customer/product-insights/components/TopAIIntentsOverTimeGraph'
 import {
@@ -5,15 +6,17 @@ import {
     ProductInsightsChartConfig,
 } from 'pages/stats/voice-of-customer/product-insights/ProductInsightsChartConfig'
 
+const { hint, title } =
+    ProductInsightsChartConfig[ProductInsightsChart.TopAIIntentsOverTimeChart]
+
 export function TopAIIntentsOverTimeChart() {
-    const { hint, title } =
-        ProductInsightsChartConfig[
-            ProductInsightsChart.TopAIIntentsOverTimeChart
-        ]
+    const { intentCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
 
     return (
         <ChartCard title={title} hint={hint}>
-            <TopAIIntentsOverTimeGraph />
+            <TopAIIntentsOverTimeGraph
+                intentCustomFieldId={intentCustomFieldId}
+            />
         </ChartCard>
     )
 }

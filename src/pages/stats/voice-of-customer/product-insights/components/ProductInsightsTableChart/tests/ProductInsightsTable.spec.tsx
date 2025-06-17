@@ -1,7 +1,17 @@
 import { render, screen } from '@testing-library/react'
 
 import { useProductInsightsTableSetting } from 'hooks/reporting/useProductInsightsTableConfigSetting'
-import { useSortedProductsWithData } from 'hooks/reporting/voice-of-customer/useSortedProductsWithData'
+import {
+    useReturnMentionsPerProductWithEnrichment,
+    useTicketCountPerProductWithEnrichment,
+} from 'hooks/reporting/voice-of-customer/metricsPerProduct'
+import {
+    useNegativeSentimentPerProduct,
+    usePositiveSentimentPerProduct,
+} from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
+import { useSortedProducts } from 'hooks/reporting/voice-of-customer/useSortedProducts'
+import { OrderDirection } from 'models/api/types'
+import { FilterKey } from 'models/stat/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 import { ProductInsightsCellContent } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsCellContent'
 import { ProductInsightsHeaderCellContent } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsHeaderCellContent'
@@ -10,8 +20,12 @@ import {
     NO_DATA_SUBHEADING,
     ProductInsightsTable,
 } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTable'
-import { ProductInsightsTableColumns } from 'state/ui/stats/types'
+import {
+    columnsOrder,
+    productInsightsTableActiveView,
+} from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableConfig'
 import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('pages/common/components/Paginations')
 const NumberedPaginationMock = assumeMock(NumberedPagination)
@@ -32,8 +46,23 @@ jest.mock('hooks/reporting/useProductInsightsTableConfigSetting')
 const useProductInsightsTableSettingMock = assumeMock(
     useProductInsightsTableSetting,
 )
-jest.mock('hooks/reporting/voice-of-customer/useSortedProductsWithData')
-const useSortedProductsWithDataMock = assumeMock(useSortedProductsWithData)
+jest.mock('hooks/reporting/voice-of-customer/useSortedProducts')
+const useSortedProductsWithDataMock = assumeMock(useSortedProducts)
+
+jest.mock('hooks/reporting/voice-of-customer/metricsPerProduct')
+const useTicketCountPerProductWithEnrichmentMock = assumeMock(
+    useTicketCountPerProductWithEnrichment,
+)
+const useReturnMentionsPerProductWithEnrichmentMock = assumeMock(
+    useReturnMentionsPerProductWithEnrichment,
+)
+jest.mock('hooks/reporting/voice-of-customer/useSentimentPerProduct')
+const usePositiveSentimentPerProductMock = assumeMock(
+    usePositiveSentimentPerProduct,
+)
+const useNegativeSentimentPerProductMock = assumeMock(
+    useNegativeSentimentPerProduct,
+)
 
 const dummyProducts = [
     {
@@ -103,17 +132,69 @@ describe('ProductInsightsTable', () => {
         })
 
         useProductInsightsTableSettingMock.mockReturnValue({
-            columnsOrder: [
-                ProductInsightsTableColumns.Product,
-                ProductInsightsTableColumns.Feedback,
-            ],
-        } as any)
+            columnsOrder,
+            rowsOrder: [],
+            currentView: { ...productInsightsTableActiveView, rows: [] },
+            submitActiveView: jest.fn(),
+        })
 
         ProductInsightsCellContentMock.mockImplementation(() => <td />)
-
         ProductInsightsHeaderCellContentMock.mockImplementation(() => <th />)
-
         NumberedPaginationMock.mockImplementation(() => <div />)
+    })
+
+    it('should pass the sorting hook to header cells with respective props', () => {
+        const statsFilters = {
+            [FilterKey.Period]: {
+                start_datetime: '',
+                end_datetime: '',
+            },
+        }
+        const userTimezone = 'UTC'
+        const order = OrderDirection.Desc
+
+        render(
+            <ProductInsightsTable
+                intentCustomFieldId={intentCustomFieldId}
+                sentimentCustomFieldId={sentimentCustomFieldId}
+            />,
+        )
+        const calls = ProductInsightsHeaderCellContentMock.mock.calls
+        calls.forEach((call) => {
+            const hook = call[0].useSortingQuery
+            renderHook(() => hook(statsFilters, userTimezone, order))
+        })
+
+        expect(useTicketCountPerProductWithEnrichmentMock).toHaveBeenCalledWith(
+            statsFilters,
+            userTimezone,
+            order,
+        )
+        expect(usePositiveSentimentPerProductMock).toHaveBeenCalledWith(
+            statsFilters,
+            userTimezone,
+            sentimentCustomFieldId,
+            order,
+        )
+        expect(useNegativeSentimentPerProductMock).toHaveBeenCalledWith(
+            statsFilters,
+            userTimezone,
+            sentimentCustomFieldId,
+            order,
+        )
+        expect(useTicketCountPerProductWithEnrichmentMock).toHaveBeenCalledWith(
+            statsFilters,
+            userTimezone,
+            order,
+        )
+        expect(
+            useReturnMentionsPerProductWithEnrichmentMock,
+        ).toHaveBeenCalledWith(
+            statsFilters,
+            userTimezone,
+            intentCustomFieldId,
+            order,
+        )
     })
 
     it('renders loading fallback rows when isLoading is true', () => {
@@ -185,8 +266,6 @@ describe('ProductInsightsTable', () => {
                 sentimentCustomFieldId={sentimentCustomFieldId}
             />,
         )
-
-        expect(screen.queryByRole('table')).not.toBeInTheDocument()
 
         expect(screen.getByText(NO_DATA_HEADING)).toBeInTheDocument()
         expect(screen.getByText(NO_DATA_SUBHEADING)).toBeInTheDocument()

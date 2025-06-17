@@ -4,8 +4,10 @@ import { formatLabeledTimeSeriesData } from 'pages/stats/common/utils'
 import { LINES_COLORS } from 'pages/stats/constants'
 
 export const TopAIIntentsForProductOverTimeGraph = ({
+    intentCustomFieldId,
     productId,
 }: {
+    intentCustomFieldId: number
     productId: string
 }) => {
     const {
@@ -14,7 +16,7 @@ export const TopAIIntentsForProductOverTimeGraph = ({
         legendDatasetVisibility,
         granularity,
         isFetching,
-    } = useAIIntentsForProductTimeSeries(productId)
+    } = useAIIntentsForProductTimeSeries(productId, intentCustomFieldId)
 
     return (
         <LineChart

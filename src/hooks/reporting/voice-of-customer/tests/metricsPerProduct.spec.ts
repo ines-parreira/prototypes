@@ -12,6 +12,7 @@ import {
     PRODUCT_ENRICHMENT_ENTITY_ID,
     PRODUCT_ENRICHMENT_FIELDS,
     useReturnMentionsPerProduct,
+    useReturnMentionsPerProductWithEnrichment,
     useTicketCountPerProduct,
     useTicketCountPerProductWithEnrichment,
 } from 'hooks/reporting/voice-of-customer/metricsPerProduct'
@@ -52,9 +53,9 @@ describe('metricsPerProduct', () => {
     }
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Asc
-    const agentId = '2'
+    const productId = '2'
 
-    describe('metricsPerProduct', () => {
+    describe('TicketCountPerProduct', () => {
         it.each([
             [
                 'useTicketCountPerProduct',
@@ -65,13 +66,13 @@ describe('metricsPerProduct', () => {
             '%s should pass the query to useMetricPerDimension hook',
             (_, useFn, queryFactory) => {
                 renderHook(
-                    () => useFn(statsFilters, timezone, sorting, agentId),
+                    () => useFn(statsFilters, timezone, sorting, productId),
                     {},
                 )
 
                 expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
                     queryFactory(statsFilters, timezone, sorting),
-                    agentId,
+                    productId,
                 )
             },
         )
@@ -85,11 +86,11 @@ describe('metricsPerProduct', () => {
         ])(
             '%s should pass the query to useMetricPerDimension hook',
             async (_, fetchFn, queryFactory) => {
-                await fetchFn(statsFilters, timezone, sorting, agentId)
+                await fetchFn(statsFilters, timezone, sorting, productId)
 
                 expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
                     queryFactory(statsFilters, timezone, sorting),
-                    agentId,
+                    productId,
                 )
             },
         )
@@ -120,7 +121,7 @@ describe('metricsPerProduct', () => {
         })
     })
 
-    describe('metricsPerProductAndIntent', () => {
+    describe('returnMentionsPerProduct', () => {
         const intentCustomFieldId = 1
 
         it.each([
@@ -139,7 +140,7 @@ describe('metricsPerProduct', () => {
                             timezone,
                             intentCustomFieldId,
                             sorting,
-                            agentId,
+                            productId,
                         ),
                     {},
                 )
@@ -151,7 +152,7 @@ describe('metricsPerProduct', () => {
                         intentCustomFieldId,
                         sorting,
                     ),
-                    agentId,
+                    productId,
                 )
             },
         )
@@ -170,7 +171,7 @@ describe('metricsPerProduct', () => {
                     timezone,
                     intentCustomFieldId,
                     sorting,
-                    agentId,
+                    productId,
                 )
 
                 expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
@@ -180,7 +181,48 @@ describe('metricsPerProduct', () => {
                         intentCustomFieldId,
                         sorting,
                     ),
-                    agentId,
+                    productId,
+                )
+            },
+        )
+    })
+
+    describe('returnMentionsPerProductWithEnrichment', () => {
+        const intentCustomFieldId = 1
+
+        it.each([
+            [
+                'useReturnMentionsPerProductWithEnrichment',
+                useReturnMentionsPerProductWithEnrichment,
+                returnMentionsPerProductQueryFactory,
+            ],
+        ])(
+            '%s should pass the query to useMetricPerDimension hook',
+            (_, useFn, queryFactory) => {
+                renderHook(
+                    () =>
+                        useFn(
+                            statsFilters,
+                            timezone,
+                            intentCustomFieldId,
+                            sorting,
+                            productId,
+                        ),
+                    {},
+                )
+
+                expect(
+                    useMetricPerDimensionWithEnrichmentMock,
+                ).toHaveBeenCalledWith(
+                    queryFactory(
+                        statsFilters,
+                        timezone,
+                        intentCustomFieldId,
+                        sorting,
+                    ),
+                    PRODUCT_ENRICHMENT_FIELDS,
+                    PRODUCT_ENRICHMENT_ENTITY_ID,
+                    productId,
                 )
             },
         )

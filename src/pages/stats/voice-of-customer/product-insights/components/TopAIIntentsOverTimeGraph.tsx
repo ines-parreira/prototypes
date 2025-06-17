@@ -3,14 +3,18 @@ import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { formatLabeledTimeSeriesData } from 'pages/stats/common/utils'
 import { LINES_COLORS } from 'pages/stats/constants'
 
-export const TopAIIntentsOverTimeGraph = () => {
+export const TopAIIntentsOverTimeGraph = ({
+    intentCustomFieldId,
+}: {
+    intentCustomFieldId: number
+}) => {
     const {
         data,
         legendInfo,
         legendDatasetVisibility,
         granularity,
         isFetching,
-    } = useAIIntentsTimeSeries()
+    } = useAIIntentsTimeSeries(intentCustomFieldId)
 
     return (
         <LineChart

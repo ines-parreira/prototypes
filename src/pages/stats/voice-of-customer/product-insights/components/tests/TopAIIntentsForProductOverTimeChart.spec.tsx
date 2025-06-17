@@ -1,3 +1,4 @@
+import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import ChartCard from 'pages/stats/common/components/ChartCard'
 import { TopAIIntentsForProductOverTimeGraph } from 'pages/stats/voice-of-customer/product-insights/components/TopAIIntentsForProductOverTimeGraph'
 import { TopAIIntentsForProductOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TopAIIntentsOverTimeForProductChart'
@@ -17,6 +18,12 @@ jest.mock(
 const TopAIIntentsForProductOverTimeGraphMock = assumeMock(
     TopAIIntentsForProductOverTimeGraph,
 )
+jest.mock(
+    'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
+)
+const useGetCustomTicketsFieldsDefinitionDataMock = assumeMock(
+    useGetCustomTicketsFieldsDefinitionData,
+)
 
 describe('TopAIIntentsForProductOverTimeChart', () => {
     const defaultState = {
@@ -32,11 +39,21 @@ describe('TopAIIntentsForProductOverTimeChart', () => {
         ]
 
     const productId = '123'
+    const intentCustomFieldId = 123
 
-    ChartCardMock.mockImplementation(({ children }) => <div>{children}</div>)
-    TopAIIntentsForProductOverTimeGraphMock.mockImplementation(() => (
-        <div></div>
-    ))
+    beforeEach(() => {
+        ChartCardMock.mockImplementation(({ children }) => (
+            <div>{children}</div>
+        ))
+        TopAIIntentsForProductOverTimeGraphMock.mockImplementation(() => (
+            <div></div>
+        ))
+        useGetCustomTicketsFieldsDefinitionDataMock.mockReturnValue({
+            sentimentCustomFieldId: 123,
+            intentCustomFieldId: intentCustomFieldId,
+            outcomeCustomFieldId: 789,
+        })
+    })
 
     it('should not render the chart when no productId', () => {
         renderWithStore(<TopAIIntentsForProductOverTimeChart />, defaultState)
@@ -70,6 +87,7 @@ describe('TopAIIntentsForProductOverTimeChart', () => {
         expect(TopAIIntentsForProductOverTimeGraphMock).toHaveBeenCalledWith(
             {
                 productId,
+                intentCustomFieldId,
             },
             {},
         )

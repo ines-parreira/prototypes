@@ -1,12 +1,10 @@
-import { Sentiments } from 'hooks/reporting/types'
 import { useSentimentsCustomFieldsTimeSeries } from 'hooks/reporting/useCustomFieldsTimeSeries'
-import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
+import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 
 export const useTotalProductSentimentTimeSeries = (
-    sentimentValueStrings: Sentiments[],
+    sentimentCustomFieldId: number,
+    sentimentValueStrings: Sentiment[],
 ) => {
-    const { sentimentCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
-
     return useSentimentsCustomFieldsTimeSeries({
         sentimentCustomFieldId,
         sentimentValueStrings,

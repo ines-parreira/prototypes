@@ -247,8 +247,8 @@ export function useMetricPerDimensionWithEnrichment(
     enrichmentIdField: EnrichmentFields,
     dimensionId?: string,
 ): MetricPerDimensionWithEnrichment<
-    (typeof query)['measures'][0],
-    (typeof query)['dimensions'][0]
+    DrillDownReportingQuery['measures'][0],
+    DrillDownReportingQuery['dimensions'][0]
 > {
     const idField = query.dimensions[0]
     const metricData = useEnrichedPostReporting<

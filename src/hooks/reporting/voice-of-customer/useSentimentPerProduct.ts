@@ -14,6 +14,7 @@ import {
 } from 'models/reporting/queryFactories/voice-of-customer/sentimentPerProduct'
 import { StatsFilters } from 'models/stat/types'
 import { getPreviousPeriod } from 'utils/reporting'
+import { notUndefined } from 'utils/types'
 
 export enum Sentiment {
     Positive = 'Positive',
@@ -21,7 +22,7 @@ export enum Sentiment {
 }
 
 export type SentimentData = {
-    productId: string
+    [PRODUCT_ID_DIMENSION]: string
     sentiment: Sentiment
     value: number
 }
@@ -32,6 +33,15 @@ export type DataPerProductPerSentiment = Record<
     string,
     SentimentMap | undefined
 >
+
+export const fromNormalizedData = (
+    normalizedData: DataPerProductPerSentiment,
+    sentiment: Sentiment,
+) =>
+    Object.values(normalizedData)
+        .filter(notUndefined)
+        .map((item) => item[sentiment])
+        .filter(notUndefined)
 
 export const useSentimentPerProduct = (
     statsFilters: StatsFilters,
@@ -66,7 +76,7 @@ export const useSentimentPerProduct = (
             acc[productId] = {
                 ...acc[productId],
                 [sentiment]: {
-                    productId,
+                    [PRODUCT_ID_DIMENSION]: productId,
                     sentiment,
                     value: Number(ticketCount),
                 },
@@ -80,12 +90,42 @@ export const useSentimentPerProduct = (
         ? _get(normalizedData, [productId, sentiment, 'value'], null)
         : null
 
+    const allData = fromNormalizedData(normalizedData, sentiment)
+
     return {
-        data: { value, allData: normalizedData },
+        data: { value, allData },
         isFetching,
         isError,
     }
 }
+
+export const usePositiveSentimentPerProduct = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sentimentCustomFieldId: number,
+    productId?: string,
+) =>
+    useSentimentPerProduct(
+        statsFilters,
+        timezone,
+        sentimentCustomFieldId,
+        Sentiment.Positive,
+        productId,
+    )
+
+export const useNegativeSentimentPerProduct = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sentimentCustomFieldId: number,
+    productId?: string,
+) =>
+    useSentimentPerProduct(
+        statsFilters,
+        timezone,
+        sentimentCustomFieldId,
+        Sentiment.Negative,
+        productId,
+    )
 
 export const useNegativeSentimentsPerProductMetricTrend = (
     statsFilters: StatsFilters,

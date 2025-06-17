@@ -1,10 +1,10 @@
-import { Sentiments } from 'hooks/reporting/types'
 import {
     fetchTimeSeries,
     fetchTimeSeriesPerDimension,
     useTimeSeries,
     useTimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
+import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { OrderDirection } from 'models/api/types'
 import { Cubes } from 'models/reporting/cubes'
 import { TicketCustomFieldsDimension } from 'models/reporting/cubes/TicketCustomFieldsCube'
@@ -137,7 +137,7 @@ export const useSentimentsCustomFieldsTicketCountTimeSeries = (
     timezone: string,
     granularity: ReportingGranularity,
     sentimentCustomFieldId: string,
-    sentimentValueStrings: Sentiments[],
+    sentimentValueStrings: Sentiment[],
     sorting?: OrderDirection,
     enabled = true,
 ) => {

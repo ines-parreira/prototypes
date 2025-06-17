@@ -13,12 +13,12 @@ import {
     useCustomFieldsTicketCountTimeSeries,
     useSentimentsCustomFieldsTicketCountTimeSeries,
 } from 'hooks/reporting/timeSeries'
-import { Sentiments } from 'hooks/reporting/types'
 import {
     useCustomFieldsForProductTimeSeries,
     useCustomFieldsTimeSeries,
     useSentimentsCustomFieldsTimeSeries,
 } from 'hooks/reporting/useCustomFieldsTimeSeries'
+import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
@@ -268,18 +268,18 @@ describe('useCustomFieldsTimeSeries', () => {
 
     describe('useSentimentsCustomFieldsTimeSeries', () => {
         const sentimentCustomFieldId = 123
-        const sentimentValueStrings = [Sentiments.Positive, Sentiments.Negative]
+        const sentimentValueStrings = [Sentiment.Positive, Sentiment.Negative]
 
         it('should return formatted sentiment data', () => {
             useSentimentsCustomFieldsTicketCountTimeSeriesMock.mockReturnValue({
                 data: {
-                    [Sentiments.Positive]: [
+                    [Sentiment.Positive]: [
                         [
                             { dateTime: '2023-04-07T10:00:00.000Z', value: 5 },
                             { dateTime: '2023-04-07T11:00:00.000Z', value: 10 },
                         ],
                     ],
-                    [Sentiments.Negative]: [
+                    [Sentiment.Negative]: [
                         [
                             { dateTime: '2023-04-07T10:00:00.000Z', value: 3 },
                             { dateTime: '2023-04-07T11:00:00.000Z', value: 7 },
@@ -310,7 +310,7 @@ describe('useCustomFieldsTimeSeries', () => {
                 isError: false,
                 data: [
                     {
-                        label: Sentiments.Positive,
+                        label: Sentiment.Positive,
                         values: [
                             { x: '10:00 AM', y: 5 },
                             { x: '11:00 AM', y: 10 },
@@ -318,7 +318,7 @@ describe('useCustomFieldsTimeSeries', () => {
                         isDisabled: false,
                     },
                     {
-                        label: Sentiments.Negative,
+                        label: Sentiment.Negative,
                         values: [
                             { x: '10:00 AM', y: 3 },
                             { x: '11:00 AM', y: 7 },

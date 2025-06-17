@@ -20,6 +20,7 @@ const LineChartMock = assumeMock(LineChart)
 
 describe('TopAIIntentsForProductOverTimeGraph', () => {
     const productId = 'some-product-id'
+    const intentCustomFieldId = 123
 
     const data = [
         [
@@ -52,7 +53,12 @@ describe('TopAIIntentsForProductOverTimeGraph', () => {
     LineChartMock.mockImplementation(() => <div>LineChart</div>)
 
     it('should render the chart', () => {
-        render(<TopAIIntentsForProductOverTimeGraph productId={productId} />)
+        render(
+            <TopAIIntentsForProductOverTimeGraph
+                productId={productId}
+                intentCustomFieldId={intentCustomFieldId}
+            />,
+        )
 
         expect(LineChartMock).toHaveBeenCalledWith(
             {
@@ -89,7 +95,12 @@ describe('TopAIIntentsForProductOverTimeGraph', () => {
             isFetching: true,
         })
 
-        render(<TopAIIntentsForProductOverTimeGraph productId={productId} />)
+        render(
+            <TopAIIntentsForProductOverTimeGraph
+                productId={productId}
+                intentCustomFieldId={intentCustomFieldId}
+            />,
+        )
 
         expect(LineChartMock).toHaveBeenCalledWith(
             expect.objectContaining({

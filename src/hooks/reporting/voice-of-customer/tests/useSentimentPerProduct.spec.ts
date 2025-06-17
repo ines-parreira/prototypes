@@ -2,8 +2,12 @@ import { UseQueryResult } from '@tanstack/react-query'
 import moment from 'moment'
 
 import {
+    DataPerProductPerSentiment,
+    fromNormalizedData,
     Sentiment,
+    useNegativeSentimentPerProduct,
     useNegativeSentimentsPerProductMetricTrend,
+    usePositiveSentimentPerProduct,
     usePositiveSentimentsPerProductMetricTrend,
     useSentimentPerProduct,
 } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
@@ -59,27 +63,29 @@ describe('useSentimentPerProduct', () => {
         },
     ]
 
-    const normalizedData = {
+    const firstProductNegativeSentimentCount = 5
+    const firstProductPositiveSentimentCount = 10
+    const normalizedData: DataPerProductPerSentiment = {
         [firstProductId]: {
             [Sentiment.Negative]: {
-                productId: firstProductId,
+                [PRODUCT_ID_DIMENSION]: firstProductId,
                 sentiment: Sentiment.Negative,
-                value: 5,
+                value: firstProductNegativeSentimentCount,
             },
             [Sentiment.Positive]: {
-                productId: firstProductId,
+                [PRODUCT_ID_DIMENSION]: firstProductId,
                 sentiment: Sentiment.Positive,
-                value: 10,
+                value: firstProductPositiveSentimentCount,
             },
         },
         [secondProductId]: {
             [Sentiment.Negative]: {
-                productId: secondProductId,
+                [PRODUCT_ID_DIMENSION]: secondProductId,
                 sentiment: Sentiment.Negative,
                 value: 30,
             },
             [Sentiment.Positive]: {
-                productId: secondProductId,
+                [PRODUCT_ID_DIMENSION]: secondProductId,
                 sentiment: Sentiment.Positive,
                 value: 15,
             },
@@ -142,9 +148,39 @@ describe('useSentimentPerProduct', () => {
             ),
         )
 
-        const expected = 5
+        expect(result.current.data.value).toBe(
+            firstProductNegativeSentimentCount,
+        )
+    })
 
-        expect(result.current.data.value).toBe(expected)
+    it('returns number of tickets for Positive sentiment and product', () => {
+        const { result } = renderHook(() =>
+            usePositiveSentimentPerProduct(
+                statsFilters,
+                timezone,
+                sentimentCustomFieldId,
+                firstProductId,
+            ),
+        )
+
+        expect(result.current.data.value).toBe(
+            firstProductPositiveSentimentCount,
+        )
+    })
+
+    it('returns number of tickets for Negative sentiment and product', () => {
+        const { result } = renderHook(() =>
+            useNegativeSentimentPerProduct(
+                statsFilters,
+                timezone,
+                sentimentCustomFieldId,
+                firstProductId,
+            ),
+        )
+
+        expect(result.current.data.value).toBe(
+            firstProductNegativeSentimentCount,
+        )
     })
 
     it('returns normalized data per product and per sentiment', () => {
@@ -158,7 +194,9 @@ describe('useSentimentPerProduct', () => {
             ),
         )
 
-        expect(result.current.data.allData).toEqual(normalizedData)
+        expect(result.current.data.allData).toEqual(
+            fromNormalizedData(normalizedData, Sentiment.Negative),
+        )
     })
 
     it('returns `null` when product is missing', () => {
@@ -206,13 +244,17 @@ describe('useSentimentPerProduct', () => {
             ),
         )
 
-        expect(result.current.data.allData).toEqual(normalizedData)
+        expect(result.current.data.allData).toEqual(
+            fromNormalizedData(normalizedData, Sentiment.Negative),
+        )
     })
 
     it('ignores entries that are missing sentiment', () => {
         usePostReportingMock.mockReturnValue({
             ...defaultReporting,
-            data: mockData.concat({ [PRODUCT_ID_DIMENSION]: '123456' } as any),
+            data: mockData.concat({
+                [PRODUCT_ID_DIMENSION]: '123456',
+            } as any),
         } as UseQueryResult)
 
         const { result } = renderHook(() =>
@@ -225,7 +267,9 @@ describe('useSentimentPerProduct', () => {
             ),
         )
 
-        expect(result.current.data.allData).toEqual(normalizedData)
+        expect(result.current.data.allData).toEqual(
+            fromNormalizedData(normalizedData, Sentiment.Negative),
+        )
     })
 
     it('returns `null` when no data', () => {
@@ -245,7 +289,7 @@ describe('useSentimentPerProduct', () => {
         )
 
         expect(result.current.data.value).toBeNull()
-        expect(result.current.data.allData).toEqual({})
+        expect(result.current.data.allData).toEqual([])
     })
 
     describe('useNegativeSentimentsPerProductMetricTrend', () => {
@@ -297,7 +341,9 @@ describe('useSentimentPerProduct', () => {
                     {
                         [PRODUCT_ID_DIMENSION]: firstProductId,
                         [INTENT_DIMENSION]: Sentiment.Positive,
-                        [TICKET_COUNT_MEASURE]: '5',
+                        [TICKET_COUNT_MEASURE]: String(
+                            firstProductPositiveSentimentCount,
+                        ),
                     },
                 ],
             } as UseQueryResult)
@@ -321,7 +367,9 @@ describe('useSentimentPerProduct', () => {
                 ),
             )
 
-            expect(result.current.data?.value).toEqual(5)
+            expect(result.current.data?.value).toEqual(
+                firstProductPositiveSentimentCount,
+            )
             expect(result.current.data?.prevValue).toEqual(1)
         })
     })

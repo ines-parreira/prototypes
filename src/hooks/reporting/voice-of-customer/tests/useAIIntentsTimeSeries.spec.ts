@@ -25,6 +25,7 @@ const useGetCustomTicketsFieldsDefinitionDataMock = assumeMock(
 )
 
 describe('useAIIntentsTimeSeries', () => {
+    const intentCustomFieldId = 123
     const response: ReturnType<typeof useCustomFieldsTimeSeries> = {
         isFetching: false,
         data: [],
@@ -44,10 +45,12 @@ describe('useAIIntentsTimeSeries', () => {
     })
 
     it('should return intents custom field trend', () => {
-        const { result } = renderHook(() => useAIIntentsTimeSeries())
+        const { result } = renderHook(() =>
+            useAIIntentsTimeSeries(intentCustomFieldId),
+        )
 
         expect(useCustomFieldsTimeSeriesMock).toHaveBeenCalledWith({
-            selectedCustomFieldId: 2,
+            selectedCustomFieldId: intentCustomFieldId,
             ticketFieldsTicketTimeReference: TicketTimeReference.CreatedAt,
             datasetVisibilityItems: 5,
             topAmount: 5,
@@ -57,6 +60,7 @@ describe('useAIIntentsTimeSeries', () => {
 })
 
 describe('useAIIntentsForProductTimeSeries', () => {
+    const intentCustomFieldId = 123
     const response: ReturnType<typeof useAIIntentsForProductTimeSeries> = {
         isFetching: false,
         data: [],
@@ -78,11 +82,11 @@ describe('useAIIntentsForProductTimeSeries', () => {
 
     it('should return intents custom field trend', () => {
         const { result } = renderHook(() =>
-            useAIIntentsForProductTimeSeries(productId),
+            useAIIntentsForProductTimeSeries(productId, intentCustomFieldId),
         )
 
         expect(useCustomFieldsForProductTimeSeriesMock).toHaveBeenCalledWith({
-            selectedCustomFieldId: 2,
+            selectedCustomFieldId: intentCustomFieldId,
             datasetVisibilityItems: 5,
             topAmount: 5,
             productId,

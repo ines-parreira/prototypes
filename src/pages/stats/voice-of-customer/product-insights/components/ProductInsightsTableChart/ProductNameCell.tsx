@@ -1,5 +1,5 @@
 import { SegmentEvent } from 'common/segment'
-import { ProductImage } from 'pages/stats/voice-of-customer/product-insights/components/ProductImage'
+import { ProductImage } from 'pages/stats/voice-of-customer/components/ProductImage'
 import { CellWrapper } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/CellWrapper'
 import css from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsCellContent.less'
 import { PropsWithProduct } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/types'

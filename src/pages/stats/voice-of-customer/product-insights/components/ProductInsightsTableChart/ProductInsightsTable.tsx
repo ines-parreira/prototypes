@@ -1,7 +1,9 @@
 import { useState } from 'react'
 
 import { useProductInsightsTableSetting } from 'hooks/reporting/useProductInsightsTableConfigSetting'
-import { useSortedProductsWithData } from 'hooks/reporting/voice-of-customer/useSortedProductsWithData'
+import { useSortedProducts } from 'hooks/reporting/voice-of-customer/useSortedProducts'
+import { OrderDirection } from 'models/api/types'
+import { StatsFilters } from 'models/stat/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -13,6 +15,7 @@ import {
     getColumnAlignment,
     getColumnWidth,
     getIsLeadColumn,
+    ProductInsightsColumnConfig,
 } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableConfig'
 import {
     ProductTable,
@@ -50,6 +53,64 @@ const usePagination = ({
 
 export const PAGE_SIZE = 10
 
+const getSortingQueryHook = (
+    column: ProductInsightsTableColumns,
+    intentCustomFieldId: number,
+    sentimentCustomFieldId: number,
+): ((
+    statsFilters: StatsFilters,
+    userTimezone: string,
+    sorting: OrderDirection,
+) => {
+    data: {
+        allData: any[]
+        value: number | null
+    } | null
+    isFetching: boolean
+    isError: boolean
+}) => {
+    if (column === ProductInsightsTableColumns.ReturnMentions) {
+        return (
+            statsFilters: StatsFilters,
+            userTimezone: string,
+            sorting: OrderDirection,
+        ) =>
+            ProductInsightsColumnConfig[column].sortingHook(
+                statsFilters,
+                userTimezone,
+                intentCustomFieldId,
+                sorting,
+            )
+    } else if (
+        column === ProductInsightsTableColumns.PositiveSentiment ||
+        column === ProductInsightsTableColumns.NegativeSentiment ||
+        column === ProductInsightsTableColumns.NegativeSentimentDelta ||
+        column === ProductInsightsTableColumns.PositiveSentimentDelta
+    ) {
+        return (
+            statsFilters: StatsFilters,
+            userTimezone: string,
+            sorting: OrderDirection,
+        ) =>
+            ProductInsightsColumnConfig[column].sortingHook(
+                statsFilters,
+                userTimezone,
+                sentimentCustomFieldId,
+                sorting,
+            )
+    }
+    return (
+        statsFilters: StatsFilters,
+        userTimezone: string,
+        sorting: OrderDirection,
+    ) =>
+        ProductInsightsColumnConfig[column].sortingHook(
+            statsFilters,
+            userTimezone,
+            sorting,
+        )
+}
+
 export const ProductInsightsTable = ({
     intentCustomFieldId,
     sentimentCustomFieldId,
@@ -57,7 +118,7 @@ export const ProductInsightsTable = ({
     intentCustomFieldId: number
     sentimentCustomFieldId: number
 }) => {
-    const { isLoading, products } = useSortedProductsWithData()
+    const { isLoading, products } = useSortedProducts()
 
     const { columnsOrder } = useProductInsightsTableSetting()
 
@@ -68,8 +129,6 @@ export const ProductInsightsTable = ({
     })
 
     const isEmpty = products.length === 0
-    if (isEmpty) return <NoDataFallback />
-
     const currentPage = pagination.page - 1
     const startIndex = currentPage * pageSize
     const endIndex = startIndex + pageSize
@@ -83,12 +142,19 @@ export const ProductInsightsTable = ({
                         <ProductInsightsHeaderCellContent
                             key={column}
                             column={column}
+                            useSortingQuery={getSortingQueryHook(
+                                column,
+                                intentCustomFieldId,
+                                sentimentCustomFieldId,
+                            )}
                         />
                     ))}
                 </TableHead>
                 <TableBody>
                     {isLoading ? (
                         <LoadingFallback columns={columnsOrder} />
+                    ) : isEmpty ? (
+                        <NoDataFallback />
                     ) : (
                         paginatedProducts.map((product) => (
                             <TableBodyRow key={product.id} className={css.row}>

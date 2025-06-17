@@ -26,7 +26,10 @@ export const returnMentionsPerProductQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<TicketCubeWithJoins> => ({
     measures: [TicketProductsEnrichedMeasure.TicketCount],
-    dimensions: [TicketProductsEnrichedDimension.ProductId],
+    dimensions: [
+        TicketProductsEnrichedDimension.ProductId,
+        TicketProductsEnrichedDimension.StoreId,
+    ],
     timezone,
     segments: [],
     filters: [

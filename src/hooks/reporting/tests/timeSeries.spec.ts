@@ -17,13 +17,13 @@ import {
     useTicketsRepliedTimeSeries,
     useTotalTaggedTicketCountTimeSeries,
 } from 'hooks/reporting/timeSeries'
-import { Sentiments } from 'hooks/reporting/types'
 import {
     fetchTimeSeries,
     fetchTimeSeriesPerDimension,
     useTimeSeries,
     useTimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
+import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { OrderDirection } from 'models/api/types'
 import { TicketCustomFieldsDimension } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { closedTicketsTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
@@ -519,7 +519,7 @@ describe('time series', () => {
 
     describe('useSentimentsCustomFieldsTicketCountTimeSeries', () => {
         const sentimentCustomFieldId = '123'
-        const sentimentValueStrings = [Sentiments.Positive, Sentiments.Negative]
+        const sentimentValueStrings = [Sentiment.Positive, Sentiment.Negative]
         const sorting = OrderDirection.Desc
         const enabled = true
         const baseQuery = customFieldsTicketCountTimeSeriesQueryFactory(

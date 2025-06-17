@@ -2,6 +2,7 @@ import { render } from '@testing-library/react'
 
 import { useAIIntentsTimeSeries } from 'hooks/reporting/voice-of-customer/useAIIntentsTimeSeries'
 import { ReportingGranularity } from 'models/reporting/types'
+import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import ChartCard from 'pages/stats/common/components/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { formatLabeledTimeSeriesData } from 'pages/stats/common/utils'
@@ -19,8 +20,15 @@ jest.mock('pages/stats/common/components/charts/LineChart/LineChart')
 const LineChartMock = assumeMock(LineChart)
 jest.mock('pages/stats/common/components/ChartCard')
 const ChartCardMock = assumeMock(ChartCard)
+jest.mock(
+    'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
+)
+const useGetCustomTicketsFieldsDefinitionDataMock = assumeMock(
+    useGetCustomTicketsFieldsDefinitionData,
+)
 
 describe('TopAIIntentsOverTimeChart', () => {
+    const intentCustomFieldId = 123
     const { hint, title } =
         ProductInsightsChartConfig[
             ProductInsightsChart.TopAIIntentsOverTimeChart
@@ -50,12 +58,21 @@ describe('TopAIIntentsOverTimeChart', () => {
         },
     }
 
-    useIntentsOverTimeTimeSeriesMock.mockReturnValue(
-        useTopAIIntentsOverTimeReturnValue,
-    )
+    beforeEach(() => {
+        useGetCustomTicketsFieldsDefinitionDataMock.mockReturnValue({
+            sentimentCustomFieldId: 123,
+            intentCustomFieldId: intentCustomFieldId,
+            outcomeCustomFieldId: 789,
+        })
+        useIntentsOverTimeTimeSeriesMock.mockReturnValue(
+            useTopAIIntentsOverTimeReturnValue,
+        )
 
-    LineChartMock.mockImplementation(() => <div>LineChart</div>)
-    ChartCardMock.mockImplementation(({ children }) => <div>{children}</div>)
+        LineChartMock.mockImplementation(() => <div>LineChart</div>)
+        ChartCardMock.mockImplementation(({ children }) => (
+            <div>{children}</div>
+        ))
+    })
 
     it('should render the chart', () => {
         render(<TopAIIntentsOverTimeChart />)

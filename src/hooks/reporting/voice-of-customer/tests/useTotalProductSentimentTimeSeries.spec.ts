@@ -1,5 +1,5 @@
-import { Sentiments } from 'hooks/reporting/types'
 import { useSentimentsCustomFieldsTimeSeries } from 'hooks/reporting/useCustomFieldsTimeSeries'
+import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { useTotalProductSentimentTimeSeries } from 'hooks/reporting/voice-of-customer/useTotalProductSentimentTimeSeries'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { assumeMock } from 'utils/testing'
@@ -31,15 +31,15 @@ describe('useTotalProductSentimentTimeSeries', () => {
 
     it('should return intents custom field trend', () => {
         const { result } = renderHook(() =>
-            useTotalProductSentimentTimeSeries([
-                Sentiments.Negative,
-                Sentiments.Positive,
+            useTotalProductSentimentTimeSeries(sentimentCustomFieldId, [
+                Sentiment.Negative,
+                Sentiment.Positive,
             ]),
         )
 
         expect(useCustomFieldsTrendMock).toHaveBeenCalledWith({
             sentimentCustomFieldId: sentimentCustomFieldId,
-            sentimentValueStrings: [Sentiments.Negative, Sentiments.Positive],
+            sentimentValueStrings: [Sentiment.Negative, Sentiment.Positive],
         })
 
         expect(result.current).toEqual(response)
