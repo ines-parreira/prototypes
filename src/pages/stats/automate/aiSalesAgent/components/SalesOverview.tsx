@@ -60,7 +60,6 @@ const SalesOverview = () => {
     const history = useHistory()
 
     const { storeActivations, isFetchLoading } = useStoreActivations({
-        pageName: window.location.pathname,
         storeName: shopName || storeIntegrationFromStoreFilter?.name,
         withChatIntegrationsStatus: true,
         withStoresKnowledgeStatus: true,
