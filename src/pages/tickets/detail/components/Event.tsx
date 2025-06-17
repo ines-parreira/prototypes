@@ -116,7 +116,7 @@ export default function EventContainer({ event, isLast = false }: Props) {
     const actionConfig = getActionByName(actionName)
 
     if (!actionConfig) {
-        return null
+        return <div className={css.placeholder} />
     }
 
     const hasIntegration = !integration.isEmpty()
