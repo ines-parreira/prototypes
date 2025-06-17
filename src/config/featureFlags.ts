@@ -78,6 +78,7 @@ export enum FeatureFlagKey {
     ChatSnippetV3Banner = 'chat-snippet-v3-banner',
     ChatSnippetV3DefaultManual = 'chat-snippet-v3-default-manual',
     ChatTranscript = 'chat-transcript',
+    MultiStoreIncludedChannels = 'linear.project_multistore.included_channels',
     ContactFormAutoEmbed = 'contact-form-auto-embed',
     ContactFormExtraHtml = 'contact-form-extra-html',
     ConversationStarters = 'conversation-starters',

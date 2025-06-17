@@ -3,12 +3,17 @@ import React, { ReactNode } from 'react'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
+import { useFlag } from 'core/flags'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { renderWithStore } from 'utils/testing'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 import { mockStoresWithAssignedChannels } from '../../../fixtures'
 import { StoreManagementProvider } from '../../../StoreManagementProvider'
 import ChannelsTab from '../ChannelsTab'
+
+jest.mock('core/flags')
+
+const mockUseFlag = assumeMock(useFlag)
 
 const mockChannel = {
     title: 'Email',
@@ -140,6 +145,17 @@ jest.mock('../../../StoreManagementProvider', () => ({
 describe('ChannelsTab', () => {
     const storeId = '1'
     const { QueryClientProvider } = mockQueryClientProvider()
+
+    beforeAll(() => {
+        mockUseFlag.mockReturnValue([
+            'email',
+            'chat',
+            'helpCenter',
+            'contactForm',
+            'whatsApp',
+            'facebook',
+        ])
+    })
 
     const renderComponent = () => {
         return renderWithStore(
@@ -321,5 +337,20 @@ describe('ChannelsTab', () => {
             )
             expect(mockRefetchMapping).toHaveBeenCalled()
         })
+    })
+
+    it('should respect the included channels flag', () => {
+        mockUseFlag.mockReturnValue(['email', 'chat'])
+        renderComponent()
+
+        expect(
+            screen.getByTestId('settings-feature-row-email'),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByTestId('settings-feature-row-chat'),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByTestId('settings-feature-row-helpCenter'),
+        ).not.toBeInTheDocument()
     })
 })
