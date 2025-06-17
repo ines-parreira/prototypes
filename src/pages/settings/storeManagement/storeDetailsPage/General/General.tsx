@@ -2,11 +2,13 @@ import React, { useCallback, useState } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {
+    isBigCommerceIntegration,
     isShopifyIntegration,
     StoreIntegration,
 } from 'models/integration/types'
 import { makeGetRedirectUri } from 'state/integrations/selectors'
 
+import BigCommerceSettings from './BigCommerceSettings/BigCommerceSettings'
 import getStoreTypeName from './helpers/getStoreTypeName'
 import useStoreDeleter from './hooks/useStoreDeleter'
 import DeleteIntegrationConfirmationModal from './ShopifySettings/DeleteIntegrationConfirmationModal'
@@ -41,6 +43,13 @@ export default function General({ store, refetchStore }: GeneralProps) {
                     integration={store}
                     onDeleteIntegration={setIntegrationToDelete}
                     redirectUri={redirectUri}
+                />
+            ) : null}
+
+            {store && isBigCommerceIntegration(store) ? (
+                <BigCommerceSettings
+                    integration={store}
+                    onDeleteIntegration={setIntegrationToDelete}
                 />
             ) : null}
 
