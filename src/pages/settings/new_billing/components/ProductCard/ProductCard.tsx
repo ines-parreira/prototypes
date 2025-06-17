@@ -274,7 +274,7 @@ const ProductCard = ({
                             Auto-upgrade
                             {autoUpgradeEnabled ? ' enabled ' : ' disabled '}
                             <a
-                                href="https://docs.gorgias.com/en-US/convert-pricing-348387"
+                                href="https://link.gorgias.com/5015d3"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >

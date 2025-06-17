@@ -70,7 +70,7 @@ export const PRODUCT_INFO = {
         perTicket: 'per click',
         tooltip:
             'Campaign clicks represent the cumulative count of instances when a visitor clicks on campaigns.',
-        tooltipLink: 'https://docs.gorgias.com/en-US/subscription-plans-81852',
+        tooltipLink: 'https://link.gorgias.com/d71713',
         bannerLink: '/app/convert',
     },
 }
