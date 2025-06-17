@@ -1,13 +1,11 @@
 import { render } from '@testing-library/react'
 
 import { useTotalProductSentimentTimeSeries } from 'hooks/reporting/voice-of-customer/useTotalProductSentimentTimeSeries'
-import { ReportingGranularity } from 'models/reporting/types'
 import ChartCard from 'pages/stats/common/components/ChartCard'
 import { BarChart } from 'pages/stats/common/components/charts/BarChart/BarChart'
-import { formatLabeledTimeSeriesData } from 'pages/stats/common/utils'
 import {
     CHART_COLORS,
-    CHART_FIELDS,
+    TOTAL_PRODUCTS_SENTIMENTS_CHART_FIELDS,
     TotalProductSentimentOverTimeChart,
 } from 'pages/stats/voice-of-customer/product-insights/components/TotalProductSentimentOverTimeChart'
 import {
@@ -35,27 +33,30 @@ describe('TotalProductSentimentOverTimeChart', () => {
         ]
 
     const data = [
-        [
-            { dateTime: '2023-02-27T00:00:00.000', value: 6 },
-            { dateTime: '2023-03-06T00:00:00.000', value: 21 },
-        ],
-        [
-            { dateTime: '2023-03-24T00:00:00.000', value: 10 },
-            { dateTime: '2023-04-05T00:00:00.000', value: 5 },
-        ],
+        {
+            label: TOTAL_PRODUCTS_SENTIMENTS_CHART_FIELDS[0].label,
+            values: [
+                { x: '2023-02-27T00:00:00.000', y: 6 },
+                { x: '2023-03-06T00:00:00.000', y: 21 },
+            ],
+            isDisabled: false,
+        },
+        {
+            label: TOTAL_PRODUCTS_SENTIMENTS_CHART_FIELDS[1].label,
+            values: [
+                { x: '2023-02-27T00:00:00.000', y: 6 },
+                { x: '2023-03-06T00:00:00.000', y: 21 },
+            ],
+            isDisabled: false,
+        },
     ]
 
     const useTotalProductSentimentReturnValue: ReturnType<
         typeof useTotalProductSentimentTimeSeries
     > = {
-        data: data,
-        granularity: ReportingGranularity.Month,
+        data,
         isFetching: false,
-        legendDatasetVisibility: { 0: true },
-        legendInfo: {
-            labels: ['Level1', 'Level2'],
-            tooltips: ['Level1 > Level2'],
-        },
+        isError: false,
     }
 
     useTotalProductSentimentTimeSeriesMock.mockReturnValue(
@@ -72,11 +73,7 @@ describe('TotalProductSentimentOverTimeChart', () => {
             {
                 _displayLegacyTooltip: true,
                 customColors: CHART_COLORS,
-                data: formatLabeledTimeSeriesData(
-                    data,
-                    CHART_FIELDS.map((metric) => metric.label),
-                    useTotalProductSentimentReturnValue.granularity,
-                ),
+                data: data,
                 displayLegend: true,
                 hasBackground: true,
                 isLoading: false,

@@ -379,7 +379,7 @@ export const SHORT_FORMAT = 'MMM Do, YYYY'
 export const getFormat = (granularity: ReportingGranularity) =>
     granularity === ReportingGranularity.Hour ? 'LT' : SHORT_FORMAT
 
-const formatTimeSeries = (
+export const formatTimeSeries = (
     label: string,
     items: TimeSeriesDataItem[],
     format: string,

@@ -10,18 +10,22 @@ import {
     useCustomFieldsTicketCountForProductTimeSeries,
     useCustomFieldsTicketCountTimeSeries,
     useMessagesSentTimeSeries,
+    useSentimentsCustomFieldsTicketCountTimeSeries,
     useTagsTicketCountTimeSeries,
     useTicketsClosedTimeSeries,
     useTicketsCreatedTimeSeries,
     useTicketsRepliedTimeSeries,
     useTotalTaggedTicketCountTimeSeries,
 } from 'hooks/reporting/timeSeries'
+import { Sentiments } from 'hooks/reporting/types'
 import {
     fetchTimeSeries,
     fetchTimeSeriesPerDimension,
     useTimeSeries,
     useTimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
+import { OrderDirection } from 'models/api/types'
+import { TicketCustomFieldsDimension } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { closedTicketsTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
 import { messagesSentTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
 import { ticketsCreatedTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
@@ -38,7 +42,10 @@ import {
     totalTaggedTicketCountTimeSeriesFactory,
 } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
-import { ReportingGranularity } from 'models/reporting/types'
+import {
+    ReportingFilterOperator,
+    ReportingGranularity,
+} from 'models/reporting/types'
 import {
     StatsFilters,
     TagFilterInstanceId,
@@ -506,6 +513,77 @@ describe('time series', () => {
                     timezone,
                     granularity,
                 ),
+            )
+        })
+    })
+
+    describe('useSentimentsCustomFieldsTicketCountTimeSeries', () => {
+        const sentimentCustomFieldId = '123'
+        const sentimentValueStrings = [Sentiments.Positive, Sentiments.Negative]
+        const sorting = OrderDirection.Desc
+        const enabled = true
+        const baseQuery = customFieldsTicketCountTimeSeriesQueryFactory(
+            statsFilters,
+            timezone,
+            granularity,
+            sentimentCustomFieldId,
+            sorting,
+        )
+
+        it('should call useTimeSeriesPerDimension with correct query and sentiment filters', () => {
+            renderHook(() =>
+                useSentimentsCustomFieldsTicketCountTimeSeries(
+                    statsFilters,
+                    timezone,
+                    granularity,
+                    sentimentCustomFieldId,
+                    sentimentValueStrings,
+                    sorting,
+                    enabled,
+                ),
+            )
+
+            expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
+                {
+                    ...baseQuery,
+                    filters: [
+                        ...baseQuery.filters,
+                        {
+                            member: TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+                            operator: ReportingFilterOperator.Equals,
+                            values: sentimentValueStrings,
+                        },
+                    ],
+                },
+                enabled,
+            )
+        })
+
+        it('should call with the default enabled value', () => {
+            renderHook(() =>
+                useSentimentsCustomFieldsTicketCountTimeSeries(
+                    statsFilters,
+                    timezone,
+                    granularity,
+                    sentimentCustomFieldId,
+                    sentimentValueStrings,
+                    sorting,
+                ),
+            )
+
+            expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
+                {
+                    ...baseQuery,
+                    filters: [
+                        ...baseQuery.filters,
+                        {
+                            member: TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+                            operator: ReportingFilterOperator.Equals,
+                            values: sentimentValueStrings,
+                        },
+                    ],
+                },
+                true,
             )
         })
     })

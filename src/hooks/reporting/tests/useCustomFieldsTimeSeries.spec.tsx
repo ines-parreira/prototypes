@@ -11,10 +11,13 @@ import {
 import {
     useCustomFieldsTicketCountForProductTimeSeries,
     useCustomFieldsTicketCountTimeSeries,
+    useSentimentsCustomFieldsTicketCountTimeSeries,
 } from 'hooks/reporting/timeSeries'
+import { Sentiments } from 'hooks/reporting/types'
 import {
     useCustomFieldsForProductTimeSeries,
     useCustomFieldsTimeSeries,
+    useSentimentsCustomFieldsTimeSeries,
 } from 'hooks/reporting/useCustomFieldsTimeSeries'
 import {
     TicketCustomFieldsDimension,
@@ -36,6 +39,9 @@ const useCustomFieldsTicketCountTimeSeriesMock = assumeMock(
 )
 const useCustomFieldsTicketCountForProductTimeSeriesMock = assumeMock(
     useCustomFieldsTicketCountForProductTimeSeries,
+)
+const useSentimentsCustomFieldsTicketCountTimeSeriesMock = assumeMock(
+    useSentimentsCustomFieldsTicketCountTimeSeries,
 )
 jest.mock('hooks/reporting/metricsPerCustomField')
 const useCustomFieldsTicketCountMock = assumeMock(useCustomFieldsTicketCount)
@@ -85,6 +91,8 @@ describe('useCustomFieldsTimeSeries', () => {
             isError: false,
             isFetching: false,
         })
+
+        jest.clearAllMocks()
     })
 
     describe('useCustomFieldsTicketCountTimeSeries', () => {
@@ -254,6 +262,99 @@ describe('useCustomFieldsTimeSeries', () => {
                     tooltips: [],
                 },
                 legendDatasetVisibility: {},
+            })
+        })
+    })
+
+    describe('useSentimentsCustomFieldsTimeSeries', () => {
+        const sentimentCustomFieldId = 123
+        const sentimentValueStrings = [Sentiments.Positive, Sentiments.Negative]
+
+        it('should return formatted sentiment data', () => {
+            useSentimentsCustomFieldsTicketCountTimeSeriesMock.mockReturnValue({
+                data: {
+                    [Sentiments.Positive]: [
+                        [
+                            { dateTime: '2023-04-07T10:00:00.000Z', value: 5 },
+                            { dateTime: '2023-04-07T11:00:00.000Z', value: 10 },
+                        ],
+                    ],
+                    [Sentiments.Negative]: [
+                        [
+                            { dateTime: '2023-04-07T10:00:00.000Z', value: 3 },
+                            { dateTime: '2023-04-07T11:00:00.000Z', value: 7 },
+                        ],
+                    ],
+                },
+                isFetching: false,
+                isError: false,
+            } as any)
+
+            const { result } = renderHook(
+                () =>
+                    useSentimentsCustomFieldsTimeSeries({
+                        sentimentCustomFieldId,
+                        sentimentValueStrings,
+                    }),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore(defaultState)}>
+                            {children}
+                        </Provider>
+                    ),
+                },
+            )
+
+            expect(result.current).toEqual({
+                isFetching: false,
+                isError: false,
+                data: [
+                    {
+                        label: Sentiments.Positive,
+                        values: [
+                            { x: '10:00 AM', y: 5 },
+                            { x: '11:00 AM', y: 10 },
+                        ],
+                        isDisabled: false,
+                    },
+                    {
+                        label: Sentiments.Negative,
+                        values: [
+                            { x: '10:00 AM', y: 3 },
+                            { x: '11:00 AM', y: 7 },
+                        ],
+                        isDisabled: false,
+                    },
+                ],
+            })
+        })
+
+        it('should handle loading and error states', () => {
+            useSentimentsCustomFieldsTicketCountTimeSeriesMock.mockReturnValue({
+                data: undefined,
+                isFetching: true,
+                isError: true,
+            } as any)
+
+            const { result } = renderHook(
+                () =>
+                    useSentimentsCustomFieldsTimeSeries({
+                        sentimentCustomFieldId,
+                        sentimentValueStrings,
+                    }),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore(defaultState)}>
+                            {children}
+                        </Provider>
+                    ),
+                },
+            )
+
+            expect(result.current).toEqual({
+                isFetching: true,
+                isError: true,
+                data: [],
             })
         })
     })

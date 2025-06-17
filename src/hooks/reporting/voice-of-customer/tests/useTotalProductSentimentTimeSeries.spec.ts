@@ -1,13 +1,12 @@
-import { useCustomFieldsTimeSeries } from 'hooks/reporting/useCustomFieldsTimeSeries'
+import { Sentiments } from 'hooks/reporting/types'
+import { useSentimentsCustomFieldsTimeSeries } from 'hooks/reporting/useCustomFieldsTimeSeries'
 import { useTotalProductSentimentTimeSeries } from 'hooks/reporting/voice-of-customer/useTotalProductSentimentTimeSeries'
-import { ReportingGranularity } from 'models/reporting/types'
-import { TicketTimeReference } from 'models/stat/types'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/reporting/useCustomFieldsTimeSeries')
-const useCustomFieldsTrendMock = assumeMock(useCustomFieldsTimeSeries)
+const useCustomFieldsTrendMock = assumeMock(useSentimentsCustomFieldsTimeSeries)
 jest.mock(
     'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
 )
@@ -17,15 +16,10 @@ const useGetCustomTicketsFieldsDefinitionDataMock = assumeMock(
 
 describe('useTotalProductSentimentTimeSeries', () => {
     const sentimentCustomFieldId = 4
-    const response: ReturnType<typeof useCustomFieldsTimeSeries> = {
+    const response = {
         isFetching: false,
+        isError: false,
         data: [],
-        granularity: ReportingGranularity.Hour,
-        legendInfo: {
-            labels: ['Subcategory'],
-            tooltips: ['Category > Subcategory'],
-        },
-        legendDatasetVisibility: { 0: true },
     }
 
     useCustomFieldsTrendMock.mockReturnValue(response)
@@ -37,15 +31,17 @@ describe('useTotalProductSentimentTimeSeries', () => {
 
     it('should return intents custom field trend', () => {
         const { result } = renderHook(() =>
-            useTotalProductSentimentTimeSeries(),
+            useTotalProductSentimentTimeSeries([
+                Sentiments.Negative,
+                Sentiments.Positive,
+            ]),
         )
 
         expect(useCustomFieldsTrendMock).toHaveBeenCalledWith({
-            selectedCustomFieldId: sentimentCustomFieldId,
-            ticketFieldsTicketTimeReference: TicketTimeReference.CreatedAt,
-            datasetVisibilityItems: 2,
-            topAmount: 2,
+            sentimentCustomFieldId: sentimentCustomFieldId,
+            sentimentValueStrings: [Sentiments.Negative, Sentiments.Positive],
         })
+
         expect(result.current).toEqual(response)
     })
 })

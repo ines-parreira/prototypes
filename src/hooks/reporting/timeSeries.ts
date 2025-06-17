@@ -1,3 +1,4 @@
+import { Sentiments } from 'hooks/reporting/types'
 import {
     fetchTimeSeries,
     fetchTimeSeriesPerDimension,
@@ -6,6 +7,7 @@ import {
 } from 'hooks/reporting/useTimeSeries'
 import { OrderDirection } from 'models/api/types'
 import { Cubes } from 'models/reporting/cubes'
+import { TicketCustomFieldsDimension } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { closedTicketsTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
 import { messagesReceivedTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesReceived'
 import { messagesSentTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
@@ -24,7 +26,11 @@ import {
     totalTaggedTicketCountOnCreatedDatetimeTimeSeriesFactory,
     totalTaggedTicketCountTimeSeriesFactory,
 } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
-import { ReportingGranularity, TimeSeriesQuery } from 'models/reporting/types'
+import {
+    ReportingFilterOperator,
+    ReportingGranularity,
+    TimeSeriesQuery,
+} from 'models/reporting/types'
 import { StatsFilters, TicketTimeReference } from 'models/stat/types'
 
 type TimeSeriesQueryFactory<TCube extends Cubes> = (
@@ -122,6 +128,39 @@ export const useCustomFieldsTicketCountTimeSeries = (
 
     return useTimeSeriesPerDimension(
         queryFactory(filters, timezone, granularity, customFieldId, sorting),
+        enabled,
+    )
+}
+
+export const useSentimentsCustomFieldsTicketCountTimeSeries = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    sentimentCustomFieldId: string,
+    sentimentValueStrings: Sentiments[],
+    sorting?: OrderDirection,
+    enabled = true,
+) => {
+    const queryFactory = customFieldsTicketCountTimeSeriesQueryFactory(
+        filters,
+        timezone,
+        granularity,
+        sentimentCustomFieldId,
+        sorting,
+    )
+
+    return useTimeSeriesPerDimension(
+        {
+            ...queryFactory,
+            filters: [
+                ...queryFactory.filters,
+                {
+                    member: TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+                    operator: ReportingFilterOperator.Equals,
+                    values: sentimentValueStrings,
+                },
+            ],
+        },
         enabled,
     )
 }

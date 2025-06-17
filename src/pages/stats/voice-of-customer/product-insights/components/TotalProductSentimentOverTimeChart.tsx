@@ -1,8 +1,8 @@
 import analyticsColors from 'assets/css/new/stats/modern.json'
+import { Sentiments } from 'hooks/reporting/types'
 import { useTotalProductSentimentTimeSeries } from 'hooks/reporting/voice-of-customer/useTotalProductSentimentTimeSeries'
 import ChartCard from 'pages/stats/common/components/ChartCard'
 import { BarChart } from 'pages/stats/common/components/charts/BarChart/BarChart'
-import { formatLabeledTimeSeriesData } from 'pages/stats/common/utils'
 import {
     ProductInsightsChart,
     ProductInsightsChartConfig,
@@ -13,20 +13,25 @@ export const CHART_COLORS = [
     analyticsColors['analytics'].data['dark-blue'].value,
 ]
 
-enum Sentiment {
+enum SentimentFields {
     Negative = 'negative',
     Positive = 'positive',
 }
 
-export const CHART_FIELDS = [
+export const TOTAL_PRODUCTS_SENTIMENTS_CHART_FIELDS = [
     {
-        field: Sentiment.Negative,
+        field: SentimentFields.Negative,
         label: 'Negative',
     },
     {
-        field: Sentiment.Positive,
+        field: SentimentFields.Positive,
         label: 'Positive',
     },
+]
+
+const PRODUCT_SENTIMENT_VALUE_STRINGS = [
+    Sentiments.Negative,
+    Sentiments.Positive,
 ]
 
 export const TotalProductSentimentOverTimeChart = () => {
@@ -35,18 +40,15 @@ export const TotalProductSentimentOverTimeChart = () => {
             ProductInsightsChart.TotalProductSentimentOverTimeChart
         ]
 
-    const { data, granularity, isFetching } =
-        useTotalProductSentimentTimeSeries()
+    const { data, isFetching } = useTotalProductSentimentTimeSeries(
+        PRODUCT_SENTIMENT_VALUE_STRINGS,
+    )
 
     return (
         <ChartCard title={title} hint={hint}>
             <BarChart
-                data={formatLabeledTimeSeriesData(
-                    data,
-                    CHART_FIELDS.map((metric) => metric.label),
-                    granularity,
-                )}
-                isStacked={true}
+                data={data}
+                isStacked
                 isLoading={isFetching}
                 hasBackground
                 _displayLegacyTooltip

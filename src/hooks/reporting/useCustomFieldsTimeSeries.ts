@@ -14,12 +14,15 @@ import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFil
 import {
     useCustomFieldsTicketCountForProductTimeSeries,
     useCustomFieldsTicketCountTimeSeries,
+    useSentimentsCustomFieldsTicketCountTimeSeries,
 } from 'hooks/reporting/timeSeries'
+import { Sentiments } from 'hooks/reporting/types'
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
 import { OrderDirection } from 'models/api/types'
 import { TicketCustomFieldsDimension } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'models/reporting/queryFactories/utils'
 import { TicketTimeReference } from 'models/stat/types'
+import { formatTimeSeries, getFormat } from 'pages/stats/common/utils'
 import { TICKET_CUSTOM_FIELDS_NEW_SEPARATOR } from 'pages/stats/utils'
 
 const DATASET_VISIBILITY_ITEMS = 3
@@ -196,4 +199,45 @@ export const useCustomFieldsForProductTimeSeries = ({
             datasetVisibilityItems,
         ],
     )
+}
+
+export const useSentimentsCustomFieldsTimeSeries = ({
+    sentimentCustomFieldId,
+    sentimentValueStrings,
+}: {
+    sentimentCustomFieldId: number | null
+    sentimentValueStrings: Sentiments[]
+}) => {
+    const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
+
+    const {
+        data = {},
+        isFetching,
+        isError,
+    } = useSentimentsCustomFieldsTicketCountTimeSeries(
+        cleanStatsFilters,
+        userTimezone,
+        granularity,
+        String(sentimentCustomFieldId),
+        sentimentValueStrings,
+        OrderDirection.Desc,
+        true,
+    )
+
+    const format = getFormat(granularity)
+
+    const formattedData = useMemo(() => {
+        return Object.keys(data).length
+            ? sentimentValueStrings.map((sentiment) => {
+                  const items: TimeSeriesDataItem[] = _flatten(data[sentiment])
+                  return formatTimeSeries(sentiment, items, format)
+              })
+            : []
+    }, [data, format, sentimentValueStrings])
+
+    return {
+        isFetching,
+        isError,
+        data: formattedData,
+    }
 }
