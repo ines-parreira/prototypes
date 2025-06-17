@@ -202,3 +202,4 @@ jobs:
         pr-mode: ${{ github.ref_name != 'main' }}
         files-to-ignore: "src/assets/ /tests/ __snapshots__"
         split-main-scan: true
+        split-pr-scan: true
