@@ -721,23 +721,17 @@ describe('useLiveVoiceUpdates', () => {
         )
     })
 
-    describe('handles inbound.ticket-associated event', () => {
+    describe('handles ticket-associated event', () => {
         const params = {
             agent_ids: [1],
             integration_ids: [2],
             voice_queue_ids: [3],
         }
 
-        const mockEvent = {
-            dataschema:
-                '//helpdesk/phone.voice-call.inbound.ticket-associated/1.0.0',
-            data: {
-                voice_call_id: 123,
-                ticket_id: 456,
-            },
-        } as DomainEvent
-
-        it('should update the voice call with the ticket ID', () => {
+        it.each([
+            '//helpdesk/phone.voice-call.inbound.ticket-associated/1.0.0',
+            '//helpdesk/phone.voice-call.outbound.ticket-associated/1.0.0',
+        ])('should update the voice call with the ticket ID', (dataschema) => {
             const queryKey =
                 queryKeys.voiceCallLiveQueue.listLiveCallQueueVoiceCalls(params)
 
@@ -754,6 +748,14 @@ describe('useLiveVoiceUpdates', () => {
             appQueryClient.setQueryData(queryKey, mockOldData)
 
             const { result } = renderHook(() => useLiveVoiceUpdates(params, []))
+
+            const mockEvent = {
+                dataschema: dataschema,
+                data: {
+                    voice_call_id: 123,
+                    ticket_id: 456,
+                },
+            } as DomainEvent
 
             result.current.handleEvent(mockEvent)
 
@@ -770,27 +772,44 @@ describe('useLiveVoiceUpdates', () => {
             })
         })
 
-        it('should not update the voice call if it is not in the list', () => {
-            const queryKey =
-                queryKeys.voiceCallLiveQueue.listLiveCallQueueVoiceCalls(params)
+        it.each([
+            '//helpdesk/phone.voice-call.inbound.ticket-associated/1.0.0',
+            '//helpdesk/phone.voice-call.outbound.ticket-associated/1.0.0',
+        ])(
+            'should not update the voice call if it is not in the list',
+            (dataschema) => {
+                const queryKey =
+                    queryKeys.voiceCallLiveQueue.listLiveCallQueueVoiceCalls(
+                        params,
+                    )
 
-            const mockOldData = {
-                data: {
-                    data: [],
-                },
-            }
-            appQueryClient.setQueryData(queryKey, mockOldData)
+                const mockOldData = {
+                    data: {
+                        data: [],
+                    },
+                }
+                appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() => useLiveVoiceUpdates(params, []))
+                const { result } = renderHook(() =>
+                    useLiveVoiceUpdates(params, []),
+                )
 
-            result.current.handleEvent(mockEvent)
+                const mockEvent = {
+                    dataschema: dataschema,
+                    data: {
+                        voice_call_id: 123,
+                        ticket_id: 456,
+                    },
+                } as DomainEvent
+                result.current.handleEvent(mockEvent)
 
-            expect(appQueryClient.getQueryData(queryKey)).toEqual({
-                data: {
-                    data: [],
-                },
-            })
-        })
+                expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                    data: {
+                        data: [],
+                    },
+                })
+            },
+        )
     })
 
     describe('handles inbound.enqueued event', () => {
@@ -884,6 +903,7 @@ describe('useLiveVoiceUpdates', () => {
 
         it.each([
             '//helpdesk/phone.voice-call.inbound.ended/1.1.0',
+            '//helpdesk/phone.voice-call.outbound.ended/1.1.0',
             '//helpdesk/phone.voice-call.inbound.ending-triggered/1.1.0',
         ])('should remove the voice call from the list', (dataschema) => {
             const queryKey =
@@ -923,6 +943,7 @@ describe('useLiveVoiceUpdates', () => {
 
         it.each([
             '//helpdesk/phone.voice-call.inbound.ended/1.1.0',
+            '//helpdesk/phone.voice-call.outbound.ended/1.1.0',
             '//helpdesk/phone.voice-call.inbound.ending-triggered/1.1.0',
         ])('should remove the related agent statuses', (dataschema) => {
             const queryKey =
@@ -981,6 +1002,277 @@ describe('useLiveVoiceUpdates', () => {
                                 {
                                     call_sid: 'def',
                                     status: 'dialling',
+                                    created_datetime: mockedDate.toISOString(),
+                                },
+                            ],
+                        },
+                    ],
+                },
+            })
+        })
+    })
+
+    describe('handles outbound.started event', () => {
+        const params = {
+            agent_ids: [1],
+            integration_ids: [2],
+            voice_queue_ids: [3],
+        }
+        const queryKey =
+            queryKeys.voiceCallLiveQueue.listLiveCallQueueVoiceCalls(params)
+        const mockEvent = {
+            dataschema: '//helpdesk/phone.voice-call.outbound.started/1.0.0',
+            data: {
+                voice_call_id: 123,
+                integration_id: 2,
+                status: 'queued',
+                call_sid: 'abc',
+                phone_number_source: '123456789',
+                phone_number_destination: '987654321',
+                started_datetime: new Date(),
+                created_datetime: new Date(),
+                provider: 'provider',
+                customer_id: 123456,
+                user_id: 1,
+            },
+        } as DomainEvent
+        const agentStatus = {
+            id: 1,
+            name: 'Test Agent',
+            profile_picture_url: null,
+            online: false,
+            available: false,
+            forward_calls: false,
+            forward_when_offline: false,
+            is_available_for_call: false,
+            phone_integration_ids: [],
+            voice_queue_ids: [],
+            call_statuses: [],
+        }
+
+        it('should handle inbound voice call event and add it to the list', () => {
+            const mockOldData = {
+                data: {
+                    data: [],
+                },
+            }
+
+            appQueryClient.setQueryData(queryKey, mockOldData)
+
+            const { result } = renderHook(() =>
+                useLiveVoiceUpdates(params, voiceCalls),
+            )
+
+            result.current.handleEvent(mockEvent)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            id: 123,
+                            integration_id: 2,
+                            direction: VoiceCallDirection.Outbound,
+                            status: VoiceCallStatus.Queued,
+                            external_id: 'abc',
+                            phone_number_source: '123456789',
+                            phone_number_destination: '987654321',
+                            started_datetime: expect.any(String),
+                            created_datetime: expect.any(String),
+                            provider: 'provider',
+                            customer_id: 123456,
+                            initiated_by_agent_id: 1,
+                        },
+                    ],
+                },
+            })
+        })
+
+        it('should not add voice call to the list if it does not match filters', () => {
+            const params = {
+                agent_ids: [1],
+                integration_ids: [1],
+                voice_queue_ids: [3],
+            }
+
+            const mockOldData = {
+                data: {
+                    data: [
+                        {
+                            id: 123,
+                            integration_id: 2,
+                        },
+                    ],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, mockOldData)
+
+            const { result } = renderHook(() =>
+                useLiveVoiceUpdates(params, voiceCalls),
+            )
+
+            result.current.handleEvent(mockEvent)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            id: 123,
+                            integration_id: 2,
+                        },
+                    ],
+                },
+            })
+        })
+
+        it('should create the agent status in the live call queue', () => {
+            const queryKey =
+                queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+            const mockOldData = {
+                data: {
+                    data: [agentStatus],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, mockOldData)
+
+            const { result } = renderHook(() =>
+                useLiveVoiceUpdates(params, voiceCalls),
+            )
+
+            result.current.handleEvent(mockEvent)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            ...agentStatus,
+                            call_statuses: [
+                                {
+                                    call_sid: 'abc',
+                                    status: 'ringing',
+                                    created_datetime: mockedDate.toISOString(),
+                                },
+                            ],
+                        },
+                    ],
+                },
+            })
+        })
+    })
+
+    describe('handles outbound.connected event', () => {
+        const params = {
+            agent_ids: [1],
+            integration_ids: [2],
+            voice_queue_ids: [3],
+        }
+
+        const mockEvent = {
+            dataschema: '//helpdesk/phone.voice-call.outbound.connected/1.0.0',
+            data: {
+                voice_call_id: 123,
+                account_id: 1,
+                user_id: 1,
+            },
+        } as DomainEvent
+        const agentStatus = {
+            id: 1,
+            name: 'Test Agent',
+            profile_picture_url: null,
+            online: false,
+            available: false,
+            forward_calls: false,
+            forward_when_offline: false,
+            is_available_for_call: false,
+            phone_integration_ids: [],
+            voice_queue_ids: [],
+            call_statuses: [],
+        }
+
+        it('should update voice call in the list when an agent answered', () => {
+            const queryKey =
+                queryKeys.voiceCallLiveQueue.listLiveCallQueueVoiceCalls(params)
+
+            const mockOldData = {
+                data: {
+                    data: [
+                        {
+                            id: 123,
+                            status: 'ringing',
+                            call_sid: 'abc',
+                        },
+                    ],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, mockOldData)
+
+            const { result } = renderHook(() =>
+                useLiveVoiceUpdates(params, voiceCalls),
+            )
+
+            result.current.handleEvent(mockEvent)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            id: 123,
+                            call_sid: 'abc',
+                            status: 'connected',
+                        },
+                    ],
+                },
+            })
+        })
+
+        it('should not update voice call is not in the list', () => {
+            const queryKey =
+                queryKeys.voiceCallLiveQueue.listLiveCallQueueVoiceCalls(params)
+
+            const mockOldData = {
+                data: {
+                    data: [],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, mockOldData)
+
+            const { result } = renderHook(() => useLiveVoiceUpdates(params, []))
+
+            result.current.handleEvent(mockEvent)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [],
+                },
+            })
+        })
+
+        it('should create the agent status in the live call queue', () => {
+            const queryKey =
+                queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+            const mockOldData = {
+                data: {
+                    data: [agentStatus],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, mockOldData)
+
+            const { result } = renderHook(() =>
+                useLiveVoiceUpdates(params, voiceCalls),
+            )
+
+            result.current.handleEvent(mockEvent)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            ...agentStatus,
+                            call_statuses: [
+                                {
+                                    call_sid: 'abc',
+                                    status: 'in-progress',
                                     created_datetime: mockedDate.toISOString(),
                                 },
                             ],

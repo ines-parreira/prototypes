@@ -16,7 +16,7 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import {
     addVoiceCallToLiveCallsQueryCache,
     removeAgentStatusInLiveAgentsQueryCache,
-    removeVoiceCallInLiveCallsQueryCache,
+    removeVoiceCallInLiveAgentsQueryCache,
     transformDateToUTCString,
     updateAgentStatusInLiveAgentsQueryCache,
     updateVoiceCallInLiveCallsQueryCache,
@@ -132,6 +132,7 @@ export const useLiveVoiceUpdates = (
                 }
                 break
             }
+            case '//helpdesk/phone.voice-call.outbound.ticket-associated/1.0.0':
             case '//helpdesk/phone.voice-call.inbound.ticket-associated/1.0.0': {
                 updateVoiceCallInLiveCallsQueryCache(
                     {
@@ -155,10 +156,11 @@ export const useLiveVoiceUpdates = (
                 break
             }
             case '//helpdesk/phone.voice-call.inbound.ended/1.1.0':
+            case '//helpdesk/phone.voice-call.outbound.ended/1.1.0':
             case '//helpdesk/phone.voice-call.inbound.ending-triggered/1.1.0': {
                 const voiceCallSid = voiceCallIdToSid[event.data.voice_call_id]
                 if (voiceCallSid) {
-                    removeVoiceCallInLiveCallsQueryCache(voiceCallSid, params)
+                    removeVoiceCallInLiveAgentsQueryCache(voiceCallSid, params)
                 }
                 updateVoiceCallInLiveCallsQueryCache(
                     {
@@ -167,6 +169,62 @@ export const useLiveVoiceUpdates = (
                     },
                     params,
                 )
+                break
+            }
+            case '//helpdesk/phone.voice-call.outbound.started/1.0.0': {
+                const data = event.data
+                const voiceCall = {
+                    id: data.voice_call_id,
+                    integration_id: data.integration_id,
+                    direction: VoiceCallDirection.Outbound,
+                    status: data.status as VoiceCallStatus,
+                    external_id: data.call_sid,
+                    phone_number_source: data.phone_number_source,
+                    phone_number_destination: data.phone_number_destination,
+                    started_datetime: transformDateToUTCString(
+                        data.started_datetime,
+                    ),
+                    created_datetime: transformDateToUTCString(
+                        data.created_datetime,
+                    ),
+                    provider: data.provider,
+                    customer_id: data.customer_id,
+                    initiated_by_agent_id: data.user_id,
+                }
+                addVoiceCallToLiveCallsQueryCache(voiceCall, params)
+                updateAgentStatusInLiveAgentsQueryCache(
+                    data.user_id,
+                    {
+                        status: VoiceCallStatus.Ringing,
+                        call_sid: data.call_sid,
+                        created_datetime: new Date().toISOString(),
+                    },
+                    params,
+                )
+
+                break
+            }
+            case '//helpdesk/phone.voice-call.outbound.connected/1.0.0': {
+                updateVoiceCallInLiveCallsQueryCache(
+                    {
+                        id: event.data.voice_call_id,
+                        status: VoiceCallStatus.Connected,
+                    },
+                    params,
+                )
+                const voiceCallSid = voiceCallIdToSid[event.data.voice_call_id]
+                if (voiceCallSid) {
+                    updateAgentStatusInLiveAgentsQueryCache(
+                        event.data.user_id,
+                        {
+                            status: VoiceCallStatus.InProgress,
+                            call_sid: voiceCallSid,
+                            created_datetime: new Date().toISOString(),
+                        },
+                        params,
+                    )
+                }
+                break
             }
         }
     }

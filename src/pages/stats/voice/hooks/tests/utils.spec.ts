@@ -14,7 +14,7 @@ import {
     addVoiceCallToLiveCallsQueryCache,
     isFilteredOut,
     isVoiceCallIncludedInFilters,
-    removeVoiceCallInLiveCallsQueryCache,
+    removeVoiceCallInLiveAgentsQueryCache,
     transformDateToUTCString,
     updateAgentStatusInLiveAgentsQueryCache,
     updateVoiceCallInLiveCallsQueryCache,
@@ -334,7 +334,7 @@ describe('utils.ts', () => {
 
         it('should remove voice call from cache', () => {
             appQueryClient.setQueryData(queryKey, oldData)
-            removeVoiceCallInLiveCallsQueryCache('12345', {})
+            removeVoiceCallInLiveAgentsQueryCache('12345', {})
             expect(appQueryClient.getQueryData(queryKey)).toEqual({
                 data: {
                     data: [

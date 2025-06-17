@@ -186,9 +186,10 @@ export const removeAgentStatusInLiveAgentsQueryCache = (
             const newData = cloneDeep(oldData)
             const existingAgent = newData.data.data[index]
 
-            const updatedCallStatuses = (
-                existingAgent.call_statuses ?? []
-            ).filter((cs) => cs.call_sid !== callSid)
+            const updatedCallStatuses =
+                existingAgent.call_statuses?.filter(
+                    (cs) => cs.call_sid !== callSid,
+                ) ?? []
 
             newData.data.data[index] = {
                 ...existingAgent,
@@ -199,7 +200,7 @@ export const removeAgentStatusInLiveAgentsQueryCache = (
     )
 }
 
-export const removeVoiceCallInLiveCallsQueryCache = (
+export const removeVoiceCallInLiveAgentsQueryCache = (
     callSid: string,
     params: ListLiveCallQueueVoiceCallsParams | undefined,
 ) => {
