@@ -1,5 +1,3 @@
-import { ReactNode } from 'react'
-
 import { Tag } from '@gorgias/helpdesk-queries'
 
 import { User } from 'config/types/user'
@@ -179,9 +177,9 @@ export interface DashboardChartProps {
 
 export type ChartConfig = {
     chartComponent: (props: DashboardChartProps) => React.JSX.Element
-    label: ReactNode
+    label: string
     csvProducer: DataExportFetch[] | null
-    description: ReactNode
+    description: string
     chartType: ChartType
 }
 

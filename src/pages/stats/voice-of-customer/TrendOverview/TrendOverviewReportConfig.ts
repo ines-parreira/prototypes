@@ -12,10 +12,6 @@ import {
     TrendOverviewChart,
     TrendOverviewChartConfig,
 } from 'pages/stats/voice-of-customer/TrendOverview/TrendOverviewChartConfig'
-import {
-    VoiceOfCustomerMetric,
-    VoiceOfCustomerMetricConfig,
-} from 'pages/stats/voice-of-customer/VoiceOfCustomerMetricConfig'
 
 export const TrendOverviewReportConfig: ReportConfig<TrendOverviewChart> = {
     id: ReportsIDs.TrendOverviewReportConfig,
@@ -36,9 +32,9 @@ export const TrendOverviewReportConfig: ReportConfig<TrendOverviewChart> = {
         },
         [TrendOverviewChart.PositiveSentimentsPerProductKpiChart]: {
             chartComponent: PositiveSentimentsPerProductKpiChart,
-            label: VoiceOfCustomerMetricConfig[
-                VoiceOfCustomerMetric.PositiveSentimentsPerProduct
-            ],
+            label: TrendOverviewChartConfig[
+                TrendOverviewChart.PositiveSentimentsPerProductKpiChart
+            ].title,
             description:
                 TrendOverviewChartConfig[
                     TrendOverviewChart.PositiveSentimentsPerProductKpiChart
@@ -49,8 +45,8 @@ export const TrendOverviewReportConfig: ReportConfig<TrendOverviewChart> = {
         [TrendOverviewChart.NegativeSentimentsPerProductKpiChart]: {
             chartComponent: NegativeSentimentsPerProductKpiChart,
             label: TrendOverviewChartConfig[
-                TrendOverviewChart.PositiveSentimentsPerProductKpiChart
-            ],
+                TrendOverviewChart.NegativeSentimentsPerProductKpiChart
+            ].title,
             description:
                 TrendOverviewChartConfig[
                     TrendOverviewChart.NegativeSentimentsPerProductKpiChart

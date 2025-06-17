@@ -247,7 +247,7 @@ export const AiSalesAgentReportConfig: ReportConfig<AiSalesAgentChart> = {
         [AiSalesAgentChart.AiSalesAgentProductsTable]: {
             chartType: ChartType.Table,
             label: 'Top products recommended',
-            description: undefined,
+            description: '',
             chartComponent: TopProductRecommendationTable,
             csvProducer: [
                 {

@@ -148,7 +148,7 @@ export const CampaignsPerformanceReportConfig: ReportConfig<CampaignsChart> = {
                     fetch: fetchCampaignReportData,
                 },
             ],
-            description: undefined,
+            description: '',
             chartType: ChartType.Table,
         },
     },
