@@ -874,4 +874,120 @@ describe('useLiveVoiceUpdates', () => {
             })
         })
     })
+
+    describe('handles voice call ended events', () => {
+        const params = {
+            agent_ids: [1],
+            integration_ids: [2],
+            voice_queue_ids: [3],
+        }
+
+        it.each([
+            '//helpdesk/phone.voice-call.inbound.ended/1.1.0',
+            '//helpdesk/phone.voice-call.inbound.ending-triggered/1.1.0',
+        ])('should remove the voice call from the list', (dataschema) => {
+            const queryKey =
+                queryKeys.voiceCallLiveQueue.listLiveCallQueueVoiceCalls(params)
+
+            const mockOldData = {
+                data: {
+                    data: [
+                        {
+                            id: 123,
+                            external_id: 'abc',
+                            status: 'queued',
+                        },
+                    ],
+                },
+            }
+            const mockEvent = {
+                dataschema: dataschema,
+                data: {
+                    voice_call_id: 123,
+                },
+            } as DomainEvent
+            appQueryClient.setQueryData(queryKey, mockOldData)
+
+            const { result } = renderHook(() =>
+                useLiveVoiceUpdates(params, voiceCalls),
+            )
+
+            result.current.handleEvent(mockEvent)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [],
+                },
+            })
+        })
+
+        it.each([
+            '//helpdesk/phone.voice-call.inbound.ended/1.1.0',
+            '//helpdesk/phone.voice-call.inbound.ending-triggered/1.1.0',
+        ])('should remove the related agent statuses', (dataschema) => {
+            const queryKey =
+                queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+            const mockOldData = {
+                data: {
+                    data: [
+                        {
+                            id: 123,
+                            call_statuses: [
+                                {
+                                    call_sid: 'abc',
+                                    status: 'ringing',
+                                    created_datetime: mockedDate.toISOString(),
+                                },
+                            ],
+                        },
+                        {
+                            id: 456,
+                            call_statuses: [
+                                {
+                                    call_sid: 'def',
+                                    status: 'dialling',
+                                    created_datetime: mockedDate.toISOString(),
+                                },
+                            ],
+                        },
+                    ],
+                },
+            }
+            const mockEvent = {
+                dataschema: dataschema,
+                data: {
+                    voice_call_id: 123,
+                },
+            } as DomainEvent
+            appQueryClient.setQueryData(queryKey, mockOldData)
+
+            const { result } = renderHook(() =>
+                useLiveVoiceUpdates(params, voiceCalls),
+            )
+
+            result.current.handleEvent(mockEvent)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            id: 123,
+                            call_statuses: [],
+                        },
+                        {
+                            id: 456,
+                            call_statuses: [
+                                {
+                                    call_sid: 'def',
+                                    status: 'dialling',
+                                    created_datetime: mockedDate.toISOString(),
+                                },
+                            ],
+                        },
+                    ],
+                },
+            })
+        })
+    })
 })

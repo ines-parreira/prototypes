@@ -14,6 +14,7 @@ import {
     addVoiceCallToLiveCallsQueryCache,
     isFilteredOut,
     isVoiceCallIncludedInFilters,
+    removeVoiceCallInLiveCallsQueryCache,
     transformDateToUTCString,
     updateAgentStatusInLiveAgentsQueryCache,
     updateVoiceCallInLiveCallsQueryCache,
@@ -294,6 +295,65 @@ describe('utils.ts', () => {
 
             expect(appQueryClient.getQueryData(queryKey)).toEqual({
                 data: { data: [{ id: 1, call_statuses: [statusUpdate] }] },
+            })
+        })
+    })
+
+    describe('removeVoiceCallInLiveCallsQueryCache', () => {
+        const queryKey = queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(
+            {},
+        )
+        const oldData = {
+            data: {
+                data: [
+                    {
+                        id: 1,
+                        call_statuses: [
+                            {
+                                status: 'dialling',
+                                call_sid: '12345',
+                            },
+                            { status: 'ringing', call_sid: '67890' },
+                        ],
+                    },
+                    {
+                        id: 2,
+                        call_statuses: [
+                            {
+                                status: 'ringing',
+                                call_sid: '12345',
+                            },
+                        ],
+                    },
+                    {
+                        id: 3,
+                    },
+                ],
+            },
+        }
+
+        it('should remove voice call from cache', () => {
+            appQueryClient.setQueryData(queryKey, oldData)
+            removeVoiceCallInLiveCallsQueryCache('12345', {})
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            id: 1,
+                            call_statuses: [
+                                { status: 'ringing', call_sid: '67890' },
+                            ],
+                        },
+                        {
+                            id: 2,
+                            call_statuses: [],
+                        },
+                        {
+                            id: 3,
+                            call_statuses: [],
+                        },
+                    ],
+                },
             })
         })
     })

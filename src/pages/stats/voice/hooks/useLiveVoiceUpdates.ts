@@ -16,6 +16,7 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import {
     addVoiceCallToLiveCallsQueryCache,
     removeAgentStatusInLiveAgentsQueryCache,
+    removeVoiceCallInLiveCallsQueryCache,
     transformDateToUTCString,
     updateAgentStatusInLiveAgentsQueryCache,
     updateVoiceCallInLiveCallsQueryCache,
@@ -152,6 +153,20 @@ export const useLiveVoiceUpdates = (
                     params,
                 )
                 break
+            }
+            case '//helpdesk/phone.voice-call.inbound.ended/1.1.0':
+            case '//helpdesk/phone.voice-call.inbound.ending-triggered/1.1.0': {
+                const voiceCallSid = voiceCallIdToSid[event.data.voice_call_id]
+                if (voiceCallSid) {
+                    removeVoiceCallInLiveCallsQueryCache(voiceCallSid, params)
+                }
+                updateVoiceCallInLiveCallsQueryCache(
+                    {
+                        id: event.data.voice_call_id,
+                        status: VoiceCallStatus.Ending,
+                    },
+                    params,
+                )
             }
         }
     }

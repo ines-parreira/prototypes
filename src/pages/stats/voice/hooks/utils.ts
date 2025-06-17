@@ -198,3 +198,28 @@ export const removeAgentStatusInLiveAgentsQueryCache = (
         },
     )
 }
+
+export const removeVoiceCallInLiveCallsQueryCache = (
+    callSid: string,
+    params: ListLiveCallQueueVoiceCallsParams | undefined,
+) => {
+    const queryKey =
+        queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+    appQueryClient.setQueryData<ListLiveCallQueueAgentsQueryResult>(
+        queryKey,
+        (oldData) => {
+            if (!oldData) return
+
+            const newData = cloneDeep(oldData)
+            newData.data.data = newData.data.data.map((existingAgent) => ({
+                ...existingAgent,
+                call_statuses:
+                    existingAgent.call_statuses?.filter(
+                        (s) => s.call_sid !== callSid,
+                    ) ?? [],
+            }))
+            return newData
+        },
+    )
+}
