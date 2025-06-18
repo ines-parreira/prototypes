@@ -4,9 +4,9 @@ import usePrevNextTicketId from '../usePrevNextTicketId'
 
 describe('usePrevNextTicketId', () => {
     const mockPartials = [
-        { id: 123, updated_datetime: Date.now() },
-        { id: 456, updated_datetime: Date.now() },
-        { id: 789, updated_datetime: Date.now() },
+        { id: 123, cursor: '123', updated_datetime: Date.now() },
+        { id: 456, cursor: '456', updated_datetime: Date.now() },
+        { id: 789, cursor: '789', updated_datetime: Date.now() },
     ]
 
     it('should return undefined if activeTicketId is undefined', () => {

@@ -8,6 +8,7 @@ export type SortField =
 export type TicketPartial = {
     id: number
     updated_datetime: number
+    cursor: string
 }
 
 export type TicketCompact = Pick<

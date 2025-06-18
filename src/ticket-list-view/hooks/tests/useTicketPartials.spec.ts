@@ -2,11 +2,16 @@ import { act } from '@testing-library/react'
 
 import { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
+import { useFlag } from 'core/flags'
+import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
 import TicketUpdatesManager from '../../TicketUpdatesManager'
 import { TicketPartial } from '../../types'
 import useTicketPartials from '../useTicketPartials'
+
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+const useFlagMock = assumeMock(useFlag)
 
 jest.mock('../../TicketUpdatesManager', () => jest.fn())
 const TicketUpdatesManagerMock = TicketUpdatesManager as jest.Mock
@@ -26,6 +31,7 @@ describe('useTicketPartials', () => {
         unsubscribe = jest.fn()
         subscribe = jest.fn(() => unsubscribe)
         TicketUpdatesManagerMock.mockReturnValue({ loadMore, subscribe })
+        useFlagMock.mockReturnValue(false)
     })
 
     it('should should subscribe to ticket updates on mount', () => {

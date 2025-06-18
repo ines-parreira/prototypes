@@ -6,9 +6,9 @@ import useStaleTickets from '../useStaleTickets'
 
 describe('useStaleTickets', () => {
     const initialPartials = [
-        { id: 1, updated_datetime: 1000 },
-        { id: 2, updated_datetime: 1000 },
-        { id: 3, updated_datetime: 1000 },
+        { id: 1, cursor: '1', updated_datetime: 1000 },
+        { id: 2, cursor: '2', updated_datetime: 1000 },
+        { id: 3, cursor: '3', updated_datetime: 1000 },
     ]
 
     it('should return an empty array', () => {
@@ -54,9 +54,9 @@ describe('useStaleTickets', () => {
         })
 
         rerender([
-            { id: 1, updated_datetime: 1000 },
-            { id: 2, updated_datetime: 1000 },
-            { id: 3, updated_datetime: 1000 },
+            { id: 1, cursor: '1', updated_datetime: 1000 },
+            { id: 2, cursor: '2', updated_datetime: 1000 },
+            { id: 3, cursor: '3', updated_datetime: 1000 },
         ])
 
         expect(result.current.staleTickets).toEqual({
@@ -76,10 +76,10 @@ describe('useStaleTickets', () => {
         })
 
         rerender([
-            { id: 1, updated_datetime: 1000 },
-            { id: 2, updated_datetime: 2000 },
-            { id: 3, updated_datetime: 1000 },
-            { id: 4, updated_datetime: 1500 },
+            { id: 1, cursor: '1', updated_datetime: 1000 },
+            { id: 2, cursor: '2', updated_datetime: 2000 },
+            { id: 3, cursor: '3', updated_datetime: 1000 },
+            { id: 4, cursor: '4', updated_datetime: 1500 },
         ])
 
         expect(result.current.staleTickets).toEqual({

@@ -88,6 +88,7 @@ export enum FeatureFlagKey {
     ConvertPerformanceView = 'convert-performance-view',
     DefaultEmailAddress = 'default-email-address',
     DontTriggerLoginsOnInactiveTabs = 'dont-trigger-logins-on-inactive-tabs',
+    DTPCursorPolling = 'linear.project_ability-to-dictate-priority-of-tickets.frontend',
     EmailReducedThreadSize = 'linear.email-size-reduction-to-ensure-deliverability.reducing-body-html-payload',
     EnableCustomerSatisfactionQaFiltersInViews = 'linear.project_csat-qa-filters-in-views.enable_filters',
     EnableEmailToStoreMapping = 'enable-email-to-store-mapping',

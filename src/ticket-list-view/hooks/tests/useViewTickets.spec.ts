@@ -14,8 +14,8 @@ describe('useViewTickets', () => {
 
     it('should call viewTickets with ticket ids', () => {
         const partials = [
-            { id: 1, updated_datetime: 1 },
-            { id: 2, updated_datetime: 1 },
+            { id: 1, cursor: '1', updated_datetime: 1 },
+            { id: 2, cursor: '2', updated_datetime: 1 },
         ]
         const viewTickets = jest.fn()
         mockUseAgentActivity.mockReturnValue({ viewTickets })
@@ -29,8 +29,8 @@ describe('useViewTickets', () => {
 
     it('should debounce the call to viewTickets with ticket ids', () => {
         const partials = [
-            { id: 3, updated_datetime: 1 },
-            { id: 4, updated_datetime: 1 },
+            { id: 3, cursor: '3', updated_datetime: 1 },
+            { id: 4, cursor: '4', updated_datetime: 1 },
         ]
         const viewTickets = jest.fn()
         mockUseAgentActivity.mockReturnValue({ viewTickets })

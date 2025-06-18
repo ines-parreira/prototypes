@@ -42,6 +42,7 @@ describe('useTickets', () => {
         partials = [
             {
                 id: 123,
+                cursor: '123',
                 updated_datetime: new Date('28-11-2023T13:36:57').getTime(),
             },
         ]
@@ -110,8 +111,8 @@ describe('useTickets', () => {
     it('should set prev and next ticket IDs', () => {
         const mockPartials = [
             ...partials,
-            { id: 456, updated_datetime: Date.now() },
-            { id: 789, updated_datetime: Date.now() },
+            { id: 456, cursor: '456', updated_datetime: Date.now() },
+            { id: 789, cursor: '789', updated_datetime: Date.now() },
         ]
         useTicketPartialsMock.mockReturnValue({
             hasMore: false,

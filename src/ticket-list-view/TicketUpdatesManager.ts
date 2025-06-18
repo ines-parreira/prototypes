@@ -1,4 +1,4 @@
-import { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
+import { PaginationMetaNextCursor } from '@gorgias/helpdesk-types'
 
 /* istanbul ignore file */
 import { appQueryClient } from 'api/queryClient'
@@ -11,7 +11,7 @@ import transformApiTicketPartial from './utils/transformApiTicketPartial'
 
 export type Listener = (
     tickets: TicketPartial[],
-    cursor: CursorPaginationMeta['next_cursor'],
+    cursor: PaginationMetaNextCursor,
 ) => void
 export type Unsubscribe = () => void
 
@@ -19,20 +19,22 @@ const PAGE_LIMIT = 25
 const POLLING_INTERVAL = 5000
 
 export default class TicketUpdatesManager {
+    private cursorPolling = false
     private isPaused: boolean = false
     private latestDatetime: number | string | null = null
     private latestIndex = 0
     private listener: Listener | null = null
     private loading = false
-    private nextCursor: CursorPaginationMeta['next_cursor'] = null
+    private nextCursor: PaginationMetaNextCursor = null
     private pollTimeout: ReturnType<typeof setTimeout> | null = null
     private sortOrder: SortOrder
     private tickets: TicketPartial[] = []
     private viewId: number
 
-    constructor(viewId: number, sortOrder: SortOrder) {
+    constructor(viewId: number, sortOrder: SortOrder, cursorPolling = false) {
         this.viewId = viewId
         this.sortOrder = sortOrder
+        this.cursorPolling = cursorPolling
     }
 
     async loadMore() {
@@ -79,7 +81,7 @@ export default class TicketUpdatesManager {
 
     private async getPage(
         sortOrder: SortOrder,
-        cursor: CursorPaginationMeta['next_cursor'],
+        cursor: PaginationMetaNextCursor,
     ) {
         const response = await appQueryClient.fetchQuery({
             queryFn: () =>
@@ -94,16 +96,20 @@ export default class TicketUpdatesManager {
         return response.data
     }
 
-    private async getTicketsUpTo(
-        sortOrder: SortOrder,
-        datetime: number | string,
-    ) {
+    private async getTicketsUpToLatest() {
+        const datetime = this.latestDatetime
+        const cursor = this.tickets[this.latestIndex]?.cursor
+
         const response = await appQueryClient.fetchQuery({
             queryFn: () =>
                 getViewTicketUpdates(this.viewId, {
-                    order_by: sortOrder,
-                    up_to_datetime:
-                        datetime === Infinity ? undefined : datetime,
+                    order_by: this.sortOrder,
+                    up_to_cursor: this.cursorPolling ? cursor : undefined,
+                    up_to_datetime: this.cursorPolling
+                        ? undefined
+                        : datetime === Infinity
+                          ? undefined
+                          : datetime,
                 }),
             queryKey: viewItemsDefinitionKeys.updates(this.viewId),
         })
@@ -151,10 +157,7 @@ export default class TicketUpdatesManager {
         this.loading = true
 
         try {
-            const { data } = await this.getTicketsUpTo(
-                this.sortOrder,
-                this.latestDatetime,
-            )
+            const { data } = await this.getTicketsUpToLatest()
 
             const newTickets = data.map(transformApiTicketPartial)
             const newTicketIds = newTickets.reduce(
