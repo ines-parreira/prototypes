@@ -194,7 +194,7 @@ export default function PhoneIntegrationsList({
                     {config?.description}
                     {type !== IntegrationType.WhatsApp && (
                         <a
-                            href={config?.pricingLink}
+                            href={config?.additionalChargesLink}
                             target="_blank"
                             rel="noopener noreferrer"
                         >

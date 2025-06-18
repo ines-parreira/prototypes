@@ -216,6 +216,7 @@ export type IntegrationConfig = {
     pricingPlan: PricingPlan | null
     pricingLink?: string
     pricingDetails?: string
+    additionalChargesLink?: string
 }
 
 // A list of integration types along with descriptions that will be displayed in the integrations summary
@@ -257,9 +258,9 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
             '/img/integrations/screenshots/voice-3.png',
         ],
         pricingPlan: PricingPlan.RECURRING,
-        pricingLink:
-            'https://docs.gorgias.com/en-US/billing-and-subscriptions-81852#voice-tickets',
+        pricingLink: 'https://gorgias.com/pricing',
         pricingDetails: 'Try without commitment',
+        additionalChargesLink: 'https://link.gorgias.com/39286b',
         company: { name: 'Gorgias', url: 'https://www.gorgias.com/' },
         setupGuide: 'https://docs.gorgias.com/en-US/phone-integration-81798',
         supportEmail: 'support@gorgias.com',
@@ -281,9 +282,9 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
             '/img/integrations/screenshots/sms-3.png',
         ],
         pricingPlan: PricingPlan.RECURRING,
-        pricingLink:
-            'https://docs.gorgias.com/en-US/billing-and-subscriptions-81852#sms-tickets',
+        pricingLink: 'http://gorgias.com/pricing',
         pricingDetails: 'Try without commitment',
+        additionalChargesLink: 'https://link.gorgias.com/95e887',
         company: { name: 'Gorgias', url: 'https://www.gorgias.com/' },
         setupGuide:
             'https://docs.gorgias.com/en-US/gorgias-sms-integration-81919',
