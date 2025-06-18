@@ -1,5 +1,6 @@
 import {
     createContext,
+    ReactNode,
     UIEventHandler,
     useCallback,
     useContext,
@@ -32,7 +33,7 @@ const tableContext = createContext(false)
 
 const useTableContext = () => useContext(tableContext)
 
-export const ProductTable = ({ children }: { children: React.ReactNode }) => {
+export const ProductTable = ({ children }: { children: ReactNode }) => {
     const { isScrolled, handleScroll } = useIsHorizontalScrolled()
 
     return (
@@ -54,6 +55,7 @@ export const ProductTable = ({ children }: { children: React.ReactNode }) => {
 
 export const ProductTableHeadCell = ({
     children,
+    tooltip,
     isSticky,
     width,
     justifyContent = 'right',
@@ -62,7 +64,8 @@ export const ProductTableHeadCell = ({
     direction = OrderDirection.Desc,
     onSetSortDirection,
 }: {
-    children?: React.ReactNode
+    children?: ReactNode
+    tooltip?: ReactNode
     title: string
     isOrderedBy?: boolean
     direction?: OrderDirection
@@ -86,6 +89,7 @@ export const ProductTableHeadCell = ({
             className={classNames({
                 [analyticsTableCss.withShadow]: isSticky && isScrolled,
             })}
+            tooltip={tooltip}
         >
             {children}
         </HeaderCellProperty>
@@ -99,7 +103,7 @@ export const ProductTableBodyCell = ({
     width,
     justifyContent = 'right',
 }: {
-    children?: React.ReactNode
+    children?: ReactNode
     isLoading?: boolean
     isSticky?: boolean
     width?: number

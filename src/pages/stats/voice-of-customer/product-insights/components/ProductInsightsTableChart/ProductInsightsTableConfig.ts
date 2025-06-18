@@ -14,10 +14,7 @@ import { sentimentsTicketCountPerProductDrillDownQueryFactory } from 'models/rep
 import { ticketCountForProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/ticketsWithProducts'
 import { isMediumOrSmallScreen } from 'pages/common/utils/mobile'
 import { Domain } from 'pages/stats/common/drill-down/types'
-import {
-    METRIC_COLUMN_WIDTH,
-    MOBILE_METRIC_COLUMN_WIDTH,
-} from 'pages/stats/support-performance/agents/AgentsTableConfig'
+import { MOBILE_METRIC_COLUMN_WIDTH } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import { MOBILE_CHANNEL_COLUMN_WIDTH } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {
     FEEDBACK_COLUMN_LABEL,
@@ -90,9 +87,7 @@ export const ProductInsightsColumnWithDrillDownConfig = {
     [ProductInsightsTableColumns.NegativeSentiment]: {
         format: 'integer',
         hint: {
-            title: ProductInsightsTableLabels[
-                ProductInsightsTableColumns.NegativeSentiment
-            ],
+            title: 'Number of tickets where AI detected frustrated or negative customer tone.',
         },
         sortingHook: useNegativeSentimentPerProduct,
         drillDownQuery: sentimentsTicketCountPerProductDrillDownQueryFactory,
@@ -102,9 +97,7 @@ export const ProductInsightsColumnWithDrillDownConfig = {
     [ProductInsightsTableColumns.PositiveSentiment]: {
         format: 'integer',
         hint: {
-            title: ProductInsightsTableLabels[
-                ProductInsightsTableColumns.PositiveSentiment
-            ],
+            title: 'AI classified positive sentiment including Positive and Promoter categorizations.',
         },
         sortingHook: usePositiveSentimentPerProduct,
         drillDownQuery: sentimentsTicketCountPerProductDrillDownQueryFactory,
@@ -114,9 +107,7 @@ export const ProductInsightsColumnWithDrillDownConfig = {
     [ProductInsightsTableColumns.TicketsVolume]: {
         format: 'integer',
         hint: {
-            title: ProductInsightsTableLabels[
-                ProductInsightsTableColumns.TicketsVolume
-            ],
+            title: 'Number of tickets in relation to product.',
         },
         sortingHook: useTicketCountPerProductWithEnrichment,
         drillDownQuery: ticketCountForProductDrillDownQueryFactory,
@@ -126,9 +117,7 @@ export const ProductInsightsColumnWithDrillDownConfig = {
     [ProductInsightsTableColumns.ReturnMentions]: {
         format: 'integer',
         hint: {
-            title: ProductInsightsTableLabels[
-                ProductInsightsTableColumns.ReturnMentions
-            ],
+            title: 'Tickets where the customer expresses intent to return a product.',
         },
         sortingHook: useReturnMentionsPerProductWithEnrichment,
         drillDownQuery: returnMentionsPerProductDrillDownQueryFactory,
@@ -141,36 +130,28 @@ export const ProductInsightsColumnWithoutDrillDownConfig = {
     [ProductInsightsTableColumns.Product]: {
         format: 'integer',
         hint: {
-            title: ProductInsightsTableLabels[
-                ProductInsightsTableColumns.Product
-            ],
+            title: 'Name of the product, as labeled in Shopify.',
         },
         sortingHook: useTicketCountPerProductWithEnrichment,
     },
     [ProductInsightsTableColumns.Feedback]: {
         format: 'integer',
         hint: {
-            title: ProductInsightsTableLabels[
-                ProductInsightsTableColumns.Feedback
-            ],
+            title: 'Main feedback about this product from across customer conversations, summarized by AI.',
         },
         sortingHook: useTicketCountPerProductWithEnrichment,
     },
     [ProductInsightsTableColumns.NegativeSentimentDelta]: {
         format: 'percent',
         hint: {
-            title: ProductInsightsTableLabels[
-                ProductInsightsTableColumns.NegativeSentimentDelta
-            ],
+            title: 'Change in negative sentiment tickets compared to previous period.',
         },
         sortingHook: useNegativeSentimentPerProduct,
     },
     [ProductInsightsTableColumns.PositiveSentimentDelta]: {
         format: 'percent',
         hint: {
-            title: ProductInsightsTableLabels[
-                ProductInsightsTableColumns.PositiveSentimentDelta
-            ],
+            title: 'Change in positive sentiment tickets compared to previous period.',
         },
         sortingHook: usePositiveSentimentPerProduct,
     },
@@ -199,6 +180,7 @@ export const productInsightsTableActiveView = {
 }
 
 const PRODUCT_COLUMN_WIDTH = 380
+const METRIC_COLUMN_WIDTH = 140
 
 export const getColumnWidth = (column: ProductInsightsTableColumns) => {
     const isWideColumn =
@@ -220,6 +202,14 @@ export const getColumnAlignment = (column: ProductInsightsTableColumns) => {
         column === ProductInsightsTableColumns.Feedback
 
     return isLeftAlignedColumn ? 'left' : 'right'
+}
+
+export const getTooltipPosition = (column: ProductInsightsTableColumns) => {
+    const isRightAlignedColumn =
+        column === ProductInsightsTableColumns.Product ||
+        column === ProductInsightsTableColumns.Feedback
+
+    return isRightAlignedColumn ? 'right' : 'left'
 }
 
 export const getIsLeadColumn = (column: ProductInsightsTableColumns) => {

@@ -7,11 +7,12 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { opposite, OrderDirection } from 'models/api/types'
 import { StatsFilters } from 'models/stat/types'
-import { HintTooltip } from 'pages/stats/common/HintTooltip'
+import { HintTooltip, HintTooltipContent } from 'pages/stats/common/HintTooltip'
 import {
     getColumnAlignment,
     getColumnWidth,
     getIsLeadColumn,
+    getTooltipPosition,
     ProductInsightsColumnConfig,
     ProductInsightsTableLabels,
 } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableConfig'
@@ -73,6 +74,18 @@ export const ProductInsightsHeaderCellContent = ({
         return SORTABLE_COLUMNS.includes(column)
     }, [column])
 
+    const tooltipPosition = getTooltipPosition(column)
+
+    const tooltipElement =
+        tooltip && tooltipPosition === 'right' ? (
+            <HintTooltipContent {...tooltip} />
+        ) : null
+
+    const childElement =
+        tooltip && tooltipPosition === 'left' ? (
+            <HintTooltip {...tooltip} />
+        ) : null
+
     return (
         <ProductTableHeadCell
             isOrderedBy={isSortable && sorting.field === column}
@@ -82,8 +95,9 @@ export const ProductInsightsHeaderCellContent = ({
             width={getColumnWidth(column)}
             isSticky={getIsLeadColumn(column)}
             justifyContent={getColumnAlignment(column)}
+            tooltip={tooltipElement}
         >
-            {tooltip && <HintTooltip {...tooltip} />}
+            {childElement}
         </ProductTableHeadCell>
     )
 }

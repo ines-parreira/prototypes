@@ -12,6 +12,8 @@ import { getCurrentUser } from 'state/currentUser/selectors'
 import { hasRole } from 'utils'
 
 export const PRODUCT_INSIGHTS_TABLE_TITLE = 'Product centric insights'
+export const PRODUCT_INSIGHTS_TABLE_HINT =
+    'AI sorted insights per product. Click on product name to drill down.'
 
 export const ProductInsightsTableChart = () => {
     const currentUser = useAppSelector(getCurrentUser)
@@ -22,6 +24,7 @@ export const ProductInsightsTableChart = () => {
     return (
         <ChartCard
             title={PRODUCT_INSIGHTS_TABLE_TITLE}
+            hint={{ title: PRODUCT_INSIGHTS_TABLE_HINT }}
             titleExtra={isAdmin && <ProductInsightsEditColumns />}
             noPadding
         >

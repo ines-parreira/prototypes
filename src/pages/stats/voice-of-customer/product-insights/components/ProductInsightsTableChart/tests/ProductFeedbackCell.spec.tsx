@@ -1,3 +1,5 @@
+import { ReactNode } from 'react'
+
 import { render, screen } from '@testing-library/react'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
@@ -6,7 +8,6 @@ import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFil
 import { useTopIntentPerProduct } from 'hooks/reporting/voice-of-customer/useTopIntentPerProduct'
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'models/reporting/queryFactories/utils'
 import { ReportingGranularity } from 'models/reporting/types'
-import { formatCategory } from 'pages/stats/ticket-insights/components/DistributionCategoryCell'
 import { ProductFeedbackCell } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductFeedbackCell'
 import { assumeMock } from 'utils/testing'
 
@@ -19,6 +20,16 @@ const useTopIntentPerProductMock = assumeMock(useTopIntentPerProduct)
 jest.mock('@gorgias/merchant-ui-kit')
 const SkeletonMock = assumeMock(Skeleton)
 
+const renderWithTable = (ui: ReactNode) => {
+    return render(
+        <table>
+            <tbody>
+                <tr>{ui}</tr>
+            </tbody>
+        </table>,
+    )
+}
+
 describe('ProductFeedbackCell', () => {
     const product = {
         id: '1',
@@ -26,7 +37,10 @@ describe('ProductFeedbackCell', () => {
         thumbnail_url: 'https://example.com/image.png',
     }
     const intentCustomFieldId = 123
-    const intent = `Test${TICKET_CUSTOM_FIELDS_API_SEPARATOR}Intent`
+    const feedback = 'Feedback'
+    const intent = ['Product', 'Test', feedback].join(
+        TICKET_CUSTOM_FIELDS_API_SEPARATOR,
+    )
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -55,7 +69,7 @@ describe('ProductFeedbackCell', () => {
     })
 
     it('renders the component with intent data', () => {
-        render(
+        renderWithTable(
             <ProductFeedbackCell
                 product={product}
                 intentCustomFieldId={intentCustomFieldId}
@@ -69,9 +83,7 @@ describe('ProductFeedbackCell', () => {
             product.id,
         )
 
-        expect(screen.getByRole('cell').textContent).toEqual(
-            formatCategory(intent),
-        )
+        expect(screen.getByRole('cell').textContent).toEqual(feedback)
     })
 
     it('shows loading state when data is being fetched', () => {
@@ -84,7 +96,7 @@ describe('ProductFeedbackCell', () => {
             isError: false,
         })
 
-        render(
+        renderWithTable(
             <ProductFeedbackCell
                 product={product}
                 intentCustomFieldId={intentCustomFieldId}
@@ -104,7 +116,7 @@ describe('ProductFeedbackCell', () => {
             isError: false,
         })
 
-        render(
+        renderWithTable(
             <ProductFeedbackCell
                 product={product}
                 intentCustomFieldId={intentCustomFieldId}
@@ -124,7 +136,7 @@ describe('ProductFeedbackCell', () => {
             isError: false,
         })
 
-        render(
+        renderWithTable(
             <ProductFeedbackCell
                 product={product}
                 intentCustomFieldId={intentCustomFieldId}

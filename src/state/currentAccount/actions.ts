@@ -191,20 +191,23 @@ export function submitProductInsightsTableConfigView(
             ? settings.data
             : ProductInsightsTableViews
         return dispatch(
-            submitSetting({
-                id: settings?.id,
-                type: AccountSettingType.ProductInsightsTableConfig,
-                data: {
-                    active_view: activeView.id,
-                    views: currentSettings.views.find(
-                        (view) => view.id === activeView.id,
-                    )
-                        ? currentSettings.views.map((view) =>
-                              view.id === activeView.id ? activeView : view,
-                          )
-                        : [...currentSettings.views, activeView],
+            submitSetting(
+                {
+                    id: settings?.id,
+                    type: AccountSettingType.ProductInsightsTableConfig,
+                    data: {
+                        active_view: activeView.id,
+                        views: currentSettings.views.find(
+                            (view) => view.id === activeView.id,
+                        )
+                            ? currentSettings.views.map((view) =>
+                                  view.id === activeView.id ? activeView : view,
+                              )
+                            : [...currentSettings.views, activeView],
+                    },
                 },
-            }),
+                'Product centric insights table settings saved',
+            ),
         )
     }
 }
