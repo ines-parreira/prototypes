@@ -3,6 +3,7 @@ import React, { useCallback, useState } from 'react'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     isBigCommerceIntegration,
+    isMagento2Integration,
     isShopifyIntegration,
     StoreIntegration,
 } from 'models/integration/types'
@@ -11,6 +12,7 @@ import { makeGetRedirectUri } from 'state/integrations/selectors'
 import BigCommerceSettings from './BigCommerceSettings/BigCommerceSettings'
 import getStoreTypeName from './helpers/getStoreTypeName'
 import useStoreDeleter from './hooks/useStoreDeleter'
+import MagentoSettings from './MagentoSettings/MagentoSettings'
 import DeleteIntegrationConfirmationModal from './ShopifySettings/DeleteIntegrationConfirmationModal'
 import ShopifySettings from './ShopifySettings/ShopifySettings'
 
@@ -48,6 +50,15 @@ export default function General({ store, refetchStore }: GeneralProps) {
 
             {store && isBigCommerceIntegration(store) ? (
                 <BigCommerceSettings
+                    integration={store}
+                    onDeleteIntegration={setIntegrationToDelete}
+                />
+            ) : null}
+
+            {store && isMagento2Integration(store) ? (
+                <MagentoSettings
+                    refetchStore={refetchStore}
+                    redirectUri={redirectUri}
                     integration={store}
                     onDeleteIntegration={setIntegrationToDelete}
                 />
