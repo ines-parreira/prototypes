@@ -3,7 +3,7 @@ import { useState } from 'react'
 import classNames from 'classnames'
 import Skeleton from 'react-loading-skeleton'
 
-import { SegmentEvent } from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import { transformCategorySeparator } from 'hooks/reporting/helpers'
 import { useIntentTicketCountsAndDelta } from 'hooks/reporting/voice-of-customer/useIntentTicketCountsAndDelta'
 import { useProductsTicketCountsPerIntentDistribution } from 'hooks/reporting/voice-of-customer/useProductsTicketCountsPerIntentDistribution'
@@ -39,9 +39,6 @@ import {
     TicketsPerIntentMetrics,
     TicketsPerProductPerIntentMetrics,
 } from 'state/ui/stats/drillDownSlice'
-
-export const COLUMN_WIDTH = 24
-export const MOBILE_COLUMN_WIDTH = 10
 
 interface ProductData {
     name: string
@@ -153,6 +150,9 @@ const TopIntentsRow = ({
 
     const toggleExpand = (): void => {
         setIsExpanded(!isExpanded)
+        if (!isExpanded) {
+            logEvent(SegmentEvent.StatVoCSidePanelIntentClick)
+        }
     }
 
     return (
@@ -304,7 +304,7 @@ const TopProductsCell = ({
                                 highlighted
                                 product={productInfo}
                                 segmentEventName={
-                                    SegmentEvent.StatVoCSidePanelIntentClick
+                                    SegmentEvent.StatVoCSidePanelProductClick
                                 }
                             >
                                 {productName}

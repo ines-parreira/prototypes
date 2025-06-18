@@ -1,10 +1,11 @@
-import { useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
 import classnames from 'classnames'
 import _isEmpty from 'lodash/isEmpty'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useTicketCountPerIntentForProduct } from 'hooks/reporting/voice-of-customer/metricsPerProductAndIntent'
 import useAppSelector from 'hooks/useAppSelector'
@@ -141,6 +142,15 @@ const InsightsTabContent = ({
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
     const [sorting, setSorting] = useState<SortingOption>(sortingOptions[0])
+    const setSortingCallback = useCallback(
+        (option: SortingOption) => {
+            setSorting(option)
+            logEvent(SegmentEvent.StatVocSidePanelSortBySelected, {
+                field: option.label,
+            })
+        },
+        [setSorting],
+    )
     const { direction, field } = sorting
 
     const ticketCountPerIntentForProduct = useTicketCountPerIntentForProduct(
@@ -176,7 +186,7 @@ const InsightsTabContent = ({
                         </h3>
                         <SelectSorting
                             value={sorting}
-                            onChange={setSorting}
+                            onChange={setSortingCallback}
                             options={sortingOptions}
                         />
                     </div>

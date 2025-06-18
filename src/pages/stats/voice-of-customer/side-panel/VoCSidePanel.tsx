@@ -2,6 +2,7 @@ import { FC } from 'react'
 
 import { TabNavigation } from '@gorgias/merchant-ui-kit'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { Drawer } from 'pages/common/components/Drawer/Drawer'
@@ -55,8 +56,10 @@ export const VoCSidePanel = () => {
     const product = useAppSelector(getSidePanelProduct)
 
     const closePanel = () => dispatch(closeSidePanel())
-    const setActiveTab = (tab: SidePanelTab) =>
+    const setActiveTab = (tab: SidePanelTab) => {
         dispatch(setSidePanelActiveTab(tab))
+        logEvent(SegmentEvent.StatVoCSidePanelTabClicked, { tab })
+    }
 
     const TabContent = VoCSidePanelTabs[activeTab].content
 

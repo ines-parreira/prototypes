@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -39,6 +40,9 @@ export function PeriodShortcutSelector() {
                     },
                 }),
             )
+            logEvent(SegmentEvent.VocSidePanelTrendOverviewTimeRange, {
+                period: selectedPeriod,
+            })
         }
     }
 

@@ -16,7 +16,7 @@ export const ProductNameCell = ({ product }: PropsWithProduct) => {
                         highlighted
                         product={product}
                         segmentEventName={
-                            SegmentEvent.StatVoCSidePanelIntentClick
+                            SegmentEvent.StatVoCSidePanelProductClick
                         }
                     >
                         {product.name}

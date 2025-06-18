@@ -2,6 +2,7 @@ import React from 'react'
 
 import { act, render, screen } from '@testing-library/react'
 
+import { logEvent } from 'common/segment'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useIntentTicketCountsAndDelta } from 'hooks/reporting/voice-of-customer/useIntentTicketCountsAndDelta'
 import { useProductsTicketCountsPerIntentDistribution } from 'hooks/reporting/voice-of-customer/useProductsTicketCountsPerIntentDistribution'
@@ -41,9 +42,10 @@ jest.mock(
 const useProductsTicketCountsPerIntentDistributionMock = assumeMock(
     useProductsTicketCountsPerIntentDistribution,
 )
-
 jest.mock('pages/stats/voice-of-customer/side-panel/VoCSidePanelTrigger')
 const VoCSidePanelTriggerMock = assumeMock(VoCSidePanelTrigger)
+jest.mock('common/segment')
+const logEventMock = assumeMock(logEvent)
 
 describe('TopProductsPerIntentTable', () => {
     const statsFilters = {
@@ -228,6 +230,24 @@ describe('TopProductsPerIntentTable', () => {
         expect(screen.getAllByText('arrow_right')).toHaveLength(2)
         expect(screen.queryByText('arrow_drop_down')).not.toBeInTheDocument()
         expect(screen.queryByText('iPhone 15')).not.toBeInTheDocument()
+    })
+
+    it('should expand row when collapsed button is clicked and report a Segment event', async () => {
+        useProductsTicketCountsPerIntentDistributionMock.mockReturnValue({
+            data: mockProductData,
+            isFetching: false,
+            isError: false,
+        })
+
+        render(<TopProductsPerIntentTable intentCustomFieldId={123} />)
+
+        const expandButton = screen.getByText('arrow_right')
+        await act(async () => {
+            await userEvent.click(expandButton)
+        })
+
+        expect(screen.getAllByText('arrow_drop_down')).toHaveLength(2)
+        expect(logEventMock).toHaveBeenCalled()
     })
 
     it('should show loading state when expanding row and product data is loading', async () => {
