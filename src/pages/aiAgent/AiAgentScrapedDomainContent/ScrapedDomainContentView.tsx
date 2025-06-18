@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import classnames from 'classnames'
 import Skeleton from 'react-loading-skeleton'
@@ -46,6 +46,13 @@ type Props<T> = {
         id: number,
         { status }: { status: IngestedResourceStatus },
     ) => Promise<void>
+    onUpdateAllStatus?: ({
+        status,
+    }: {
+        status: IngestedResourceStatus
+    }) => Promise<void>
+    isAllEnabled?: boolean
+    setIsAllEnabled?: (isAllEnabled: boolean) => void
 }
 
 const EmptyStateView = ({ pageType }: { pageType: string }) => {
@@ -139,6 +146,9 @@ function ScrapedDomainContentView<T extends ContentType>({
     searchValue,
     onSearch,
     onUpdateStatus,
+    onUpdateAllStatus,
+    isAllEnabled,
+    setIsAllEnabled,
 }: Props<T>) {
     const dispatch = useAppDispatch()
     const description = getPageDescription(pageType)
@@ -147,6 +157,7 @@ function ScrapedDomainContentView<T extends ContentType>({
         Record<number, string>
     >({})
     const [imagesLoaded, setImagesLoaded] = useState(false)
+    const isLocalUpdateRef = useRef(false)
 
     useEffect(() => {
         if (
@@ -183,6 +194,11 @@ function ScrapedDomainContentView<T extends ContentType>({
     const pageTitle = pageType === CONTENT_TYPE.PRODUCT ? 'Product' : 'Question'
 
     useEffect(() => {
+        if (!contents || contents.length === 0 || isLocalUpdateRef.current) {
+            isLocalUpdateRef.current = false
+            return
+        }
+
         const initialStatusMap = contents?.reduce(
             (acc, item) => {
                 acc[item.id] = item.status || IngestedResourceStatus.Disabled
@@ -203,6 +219,7 @@ function ScrapedDomainContentView<T extends ContentType>({
             ...prev,
             [content.id]: newStatus,
         }))
+        isLocalUpdateRef.current = true
 
         if (onUpdateStatus) {
             onUpdateStatus(content.id, {
@@ -225,7 +242,32 @@ function ScrapedDomainContentView<T extends ContentType>({
                 })
         }
     }
+
+    const handleMasterToggleChange = async () => {
+        if (
+            onUpdateAllStatus &&
+            setIsAllEnabled &&
+            isAllEnabled !== undefined
+        ) {
+            await onUpdateAllStatus({
+                status: isAllEnabled
+                    ? IngestedResourceStatus.Disabled
+                    : IngestedResourceStatus.Enabled,
+            })
+            setIsAllEnabled(!isAllEnabled)
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Successfully updated all questions',
+                    showDismissButton: true,
+                }),
+            )
+        }
+    }
+
     const displayEmptyState = !isLoading && contents?.length === 0
+    const hasMasterToogle =
+        !isLoading && contents?.length > 0 && pageType === CONTENT_TYPE.QUESTION
 
     const getContentImage = (item: T): string | undefined => {
         if ('image' in item) {
@@ -256,7 +298,20 @@ function ScrapedDomainContentView<T extends ContentType>({
                     })}
                 >
                     <TableHead>
-                        <HeaderCellProperty title={pageTitle} />
+                        {hasMasterToogle && isAllEnabled !== undefined ? (
+                            <BodyCell>
+                                <div className={css.masterToggle}>
+                                    <ToggleField
+                                        value={isAllEnabled}
+                                        onChange={handleMasterToggleChange}
+                                        className={css.toggleInput}
+                                    />
+                                    Select all questions
+                                </div>
+                            </BodyCell>
+                        ) : (
+                            <HeaderCellProperty title={pageTitle} />
+                        )}
                         {pageType === CONTENT_TYPE.PRODUCT && !isLoading && (
                             <HeaderCellProperty title="IN USE BY AI AGENT" />
                         )}
@@ -297,6 +352,8 @@ function ScrapedDomainContentView<T extends ContentType>({
                                             [css.questionCell]:
                                                 pageType !==
                                                 CONTENT_TYPE.PRODUCT,
+                                            [css.masterToggleCell]:
+                                                hasMasterToogle,
                                         })}
                                     >
                                         {pageType !== CONTENT_TYPE.PRODUCT ? (

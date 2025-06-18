@@ -5,6 +5,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import {
     helpCenterKeys,
+    useUpdateAllIngestedResourcesStatus,
     useUpdateIngestedResource,
 } from 'models/helpCenter/queries'
 import { reportError } from 'utils/errors'
@@ -24,6 +25,20 @@ export const useIngestedResourceMutation = ({
         mutateAsync: updatedIngestedResourceMutateAsync,
         isLoading: isIngestedResourceUpdating,
     } = useUpdateIngestedResource({
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: helpCenterKeys.ingestedResources(
+                    helpCenterId,
+                    ingestionLogId,
+                ),
+            })
+        },
+    })
+
+    const {
+        mutateAsync: updatedAllIngestedResourcesStatusMutateAsync,
+        isLoading: isAllIngestedResourceUpdating,
+    } = useUpdateAllIngestedResourcesStatus({
         onSuccess: async () => {
             await queryClient.invalidateQueries({
                 queryKey: helpCenterKeys.ingestedResources(
@@ -64,8 +79,40 @@ export const useIngestedResourceMutation = ({
         [updatedIngestedResourceMutateAsync, helpCenterId],
     )
 
+    const updateAllIngestedResourcesStatus = useCallback(
+        async (updateFields: { status: IngestedResourceStatus }) => {
+            try {
+                await updatedAllIngestedResourcesStatusMutateAsync([
+                    undefined,
+                    {
+                        help_center_id: helpCenterId,
+                        article_ingestion_log_id: ingestionLogId,
+                    },
+                    updateFields,
+                ])
+            } catch (error) {
+                reportError(error, {
+                    tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
+                    extra: {
+                        context:
+                            'Error during ingested resources status update',
+                        updateFields,
+                    },
+                })
+                throw error
+            }
+        },
+        [
+            updatedAllIngestedResourcesStatusMutateAsync,
+            helpCenterId,
+            ingestionLogId,
+        ],
+    )
+
     return {
         updateIngestedResource,
         isIngestedResourceUpdating,
+        updateAllIngestedResourcesStatus,
+        isAllIngestedResourceUpdating,
     }
 }

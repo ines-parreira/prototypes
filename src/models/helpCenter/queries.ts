@@ -40,6 +40,7 @@ import {
     listIngestedResources,
     startArticleIngestion,
     startIngestion,
+    updateAllIngestedResourcesStatus,
     updateArticleTranslation,
     updateHelpCenter,
     updateIngestedResource,
@@ -770,6 +771,17 @@ export const useUpdateIngestedResource = (
     return useMutation({
         mutationFn: ([client = helpCenterClient, pathParams, data]) =>
             updateIngestedResource(client, pathParams, data),
+        ...overrides,
+    })
+}
+
+export const useUpdateAllIngestedResourcesStatus = (
+    overrides?: MutationOverrides<typeof updateAllIngestedResourcesStatus>,
+) => {
+    const { client: helpCenterClient } = useHelpCenterApi()
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, pathParams, data]) =>
+            updateAllIngestedResourcesStatus(client, pathParams, data),
         ...overrides,
     })
 }

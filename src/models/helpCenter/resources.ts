@@ -282,6 +282,19 @@ export const updateIngestedResource = async (
     return response
 }
 
+export const updateAllIngestedResourcesStatus = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.UpdateAllIngestedResourcesStatus.PathParameters,
+    data: Paths.UpdateAllIngestedResourcesStatus.RequestBody,
+) => {
+    if (!client) return null
+    const response = await client.updateAllIngestedResourcesStatus(
+        pathParams,
+        data,
+    )
+    return response
+}
+
 export const createFileIngestion = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.CreateFileIngestion.PathParameters,

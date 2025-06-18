@@ -9,7 +9,12 @@ import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import { usePollStoreDomainIngestionLog } from '../hooks/usePollStoreDomainIngestionLog'
 import { useSyncStoreDomain } from '../hooks/useSyncStoreDomain'
 import AiAgentScrapedDomainContentLayout from './AiAgentScrapedDomainContentLayout'
-import { CONTENT_TYPE, HeaderType, IngestionLogStatus } from './constant'
+import {
+    CONTENT_TYPE,
+    HeaderType,
+    IngestedResourceStatus,
+    IngestionLogStatus,
+} from './constant'
 import { useIngestedResourceMutation } from './hooks/useIngestedResourceMutation'
 import { usePaginatedIngestedResources } from './hooks/usePaginatedIngestedResources'
 import { useSelectedQuestionAndDetail } from './hooks/useSelectedQuestionAndDetail'
@@ -34,6 +39,9 @@ const AiAgentScrapedDomainQuestionsView = ({
         string | null
     >(null)
     const [isOpened, setIsOpened] = useState(false)
+    const [isAllQuestionsEnabled, setIsAllQuestionsEnabled] = useState<
+        boolean | undefined
+    >()
 
     const {
         storeDomain,
@@ -83,10 +91,22 @@ const AiAgentScrapedDomainQuestionsView = ({
         enabled: !!storeDomainIngestionLog?.id,
     })
 
-    const { updateIngestedResource } = useIngestedResourceMutation({
-        helpCenterId,
-        ingestionLogId: storeDomainIngestionLog?.id ?? 0,
-    })
+    useEffect(() => {
+        if (!!paginatedQuestions.length) {
+            setIsAllQuestionsEnabled(
+                paginatedQuestions.every(
+                    (question) =>
+                        question.status === IngestedResourceStatus.Enabled,
+                ),
+            )
+        }
+    }, [paginatedQuestions])
+
+    const { updateIngestedResource, updateAllIngestedResourcesStatus } =
+        useIngestedResourceMutation({
+            helpCenterId,
+            ingestionLogId: storeDomainIngestionLog?.id ?? 0,
+        })
 
     const isDataLoading =
         isFetchLoading ||
@@ -141,6 +161,9 @@ const AiAgentScrapedDomainQuestionsView = ({
                 fetchNextItems={fetchNext}
                 fetchPrevItems={fetchPrev}
                 onUpdateStatus={updateIngestedResource}
+                onUpdateAllStatus={updateAllIngestedResourcesStatus}
+                isAllEnabled={isAllQuestionsEnabled}
+                setIsAllEnabled={setIsAllQuestionsEnabled}
             />
             <ScrapedDomainSelectedContent
                 selectedContent={selectedQuestion}

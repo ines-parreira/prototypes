@@ -17,6 +17,7 @@ import {
     listIngestedResources,
     startArticleIngestion,
     startIngestion,
+    updateAllIngestedResourcesStatus,
     updateIngestedResource,
 } from '../resources'
 
@@ -285,7 +286,9 @@ describe('resources', () => {
                     ingested_resource_id: 1,
                     help_center_id,
                 },
-                {},
+                {
+                    status: 'enabled',
+                },
             )
             expect(result).toBeNull()
         })
@@ -299,6 +302,40 @@ describe('resources', () => {
                 client as unknown as HelpCenterClient,
                 {
                     ingested_resource_id: 1,
+                    help_center_id,
+                },
+                {
+                    status: 'enabled',
+                },
+            )
+            expect(result).toEqual({ data: null })
+        })
+    })
+
+    describe('updateAllIngestedResourceStatus', () => {
+        it('should return null when client is not set', async () => {
+            const result = await updateAllIngestedResourcesStatus(
+                undefined,
+                {
+                    article_ingestion_log_id: 1,
+                    help_center_id,
+                },
+                {
+                    status: 'enabled',
+                },
+            )
+            expect(result).toBeNull()
+        })
+        it('should return correct result from API', async () => {
+            const client = {
+                updateAllIngestedResourcesStatus: jest
+                    .fn()
+                    .mockReturnValue(Promise.resolve({ data: null })),
+            }
+            const result = await updateAllIngestedResourcesStatus(
+                client as unknown as HelpCenterClient,
+                {
+                    article_ingestion_log_id: 1,
                     help_center_id,
                 },
                 {

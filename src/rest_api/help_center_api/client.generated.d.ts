@@ -3125,7 +3125,7 @@ declare namespace Components {
             logo_hyperlink?: string | null
         }
         export interface UpdateIngestedResourceDto {
-            status?: 'disabled' | 'enabled'
+            status: 'disabled' | 'enabled'
         }
         export interface UpdateNavigationLinkDto {
             /**
@@ -4956,6 +4956,20 @@ declare namespace Paths {
             export interface $204 {}
         }
     }
+    namespace UpdateAllIngestedResourcesStatus {
+        namespace Parameters {
+            export type ArticleIngestionLogId = number
+            export type HelpCenterId = number
+        }
+        export interface PathParameters {
+            article_ingestion_log_id: Parameters.ArticleIngestionLogId
+            help_center_id: Parameters.HelpCenterId
+        }
+        export type RequestBody = Components.Schemas.UpdateIngestedResourceDto
+        namespace Responses {
+            export interface $200 {}
+        }
+    }
     namespace UpdateArticle {
         namespace Parameters {
             export type HelpCenterId = number
@@ -6241,6 +6255,14 @@ export interface OperationMethods {
         data?: Paths.UpdateIngestedResource.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UpdateIngestedResource.Responses.$200>
+    /**
+     * updateAllIngestedResourcesStatus - Update status of all ingested resources by ingestion log id
+     */
+    'updateAllIngestedResourcesStatus'(
+        parameters: Parameters<Paths.UpdateAllIngestedResourcesStatus.PathParameters>,
+        data?: Paths.UpdateAllIngestedResourcesStatus.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.UpdateAllIngestedResourcesStatus.Responses.$200>
     /**
      * getIngestionLogs - Get ingestion logs
      */
@@ -7582,6 +7604,16 @@ export interface PathsDictionary {
             data?: Paths.UpdateIngestedResource.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.UpdateIngestedResource.Responses.$200>
+    }
+    ['/api/help-center/help-centers/{help_center_id}/ingested-resources/{article_ingestion_log_id}/status']: {
+        /**
+         * updateAllIngestedResourcesStatus - Update status of all ingested resources by ingestion log id
+         */
+        'put'(
+            parameters: Parameters<Paths.UpdateAllIngestedResourcesStatus.PathParameters>,
+            data?: Paths.UpdateAllIngestedResourcesStatus.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.UpdateAllIngestedResourcesStatus.Responses.$200>
     }
     ['/api/help-center/help-centers/{help_center_id}/ingestions']: {
         /**

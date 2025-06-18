@@ -160,6 +160,8 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
         mockUseIngestedResourceMutation.mockReturnValue({
             isIngestedResourceUpdating: false,
             updateIngestedResource: mockedUpdateIngestedResource,
+            isAllIngestedResourceUpdating: false,
+            updateAllIngestedResourcesStatus: jest.fn(),
         })
         mockFlags({
             [FeatureFlagKey.AiAgentScrapeStoreDomain]: true,

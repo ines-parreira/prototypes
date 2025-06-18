@@ -40,6 +40,7 @@ import {
     useListIngestedResources,
     useStartArticleIngestion,
     useStartIngestion,
+    useUpdateAllIngestedResourcesStatus,
     useUpdateIngestedResource,
 } from '../queries'
 import * as resources from '../resources'
@@ -60,6 +61,10 @@ const startIngestion = jest.spyOn(resources, 'startIngestion')
 const listIngestedResources = jest.spyOn(resources, 'listIngestedResources')
 const getIngestedResource = jest.spyOn(resources, 'getIngestedResource')
 const updateIngestedResource = jest.spyOn(resources, 'updateIngestedResource')
+const updateAllIngestedResourcesStatus = jest.spyOn(
+    resources,
+    'updateAllIngestedResourcesStatus',
+)
 const createFileIngestion = jest.spyOn(resources, 'createFileIngestion')
 const getFileIngestion = jest.spyOn(resources, 'getFileIngestion')
 const deleteFileIngestion = jest.spyOn(resources, 'deleteFileIngestion')
@@ -1166,6 +1171,33 @@ describe('queries', () => {
                 undefined,
                 {
                     ingested_resource_id: 34,
+                    help_center_id: helpCenterId,
+                },
+                { status: 'enabled' },
+            ])
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+            expect(result.current.data).toStrictEqual(null)
+        })
+    })
+
+    describe('useUpdateAllIngestedResourcesStatus', () => {
+        it('should return correct data on success', async () => {
+            updateAllIngestedResourcesStatus.mockReturnValue(
+                Promise.resolve(null),
+            )
+            const { result } = renderHook(
+                () => useUpdateAllIngestedResourcesStatus(),
+                {
+                    wrapper,
+                },
+            )
+
+            await result.current.mutateAsync([
+                undefined,
+                {
+                    article_ingestion_log_id: 34,
                     help_center_id: helpCenterId,
                 },
                 { status: 'enabled' },

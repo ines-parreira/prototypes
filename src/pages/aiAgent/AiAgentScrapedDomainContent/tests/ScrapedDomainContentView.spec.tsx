@@ -16,6 +16,8 @@ const mockOnFetchNextItems = jest.fn()
 const mockOnFetchPrevItems = jest.fn()
 const mockOnSearch = jest.fn()
 const mockOnUpdateStatus = jest.fn().mockResolvedValue(undefined)
+const mockOnUpdateAllStatus = jest.fn().mockResolvedValue(undefined)
+const mockSetIsAllEnabled = jest.fn()
 
 const mockContent = [
     {
@@ -89,6 +91,19 @@ describe('ScrapedDomainContentView', () => {
         const toggle = screen.getByRole('switch')
         fireEvent.click(toggle)
         expect(mockOnUpdateStatus).toHaveBeenCalled()
+    })
+
+    it('calls onUpdateAllStatus when toggle is changed', () => {
+        setup({
+            onUpdateAllStatus: mockOnUpdateAllStatus,
+            isAllEnabled: true,
+            setIsAllEnabled: mockSetIsAllEnabled,
+        })
+        const toggle = screen.getAllByRole('switch')
+        fireEvent.click(toggle[0])
+        expect(mockOnUpdateAllStatus).toHaveBeenCalledWith({
+            status: 'disabled',
+        })
     })
 
     it('renders empty state for Question page when there is no content', () => {
