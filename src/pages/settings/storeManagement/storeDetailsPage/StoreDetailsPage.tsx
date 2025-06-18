@@ -58,7 +58,7 @@ export default function StoreDetailsPage() {
                 </Route>
                 <Route path={`/app/settings/store-management/:id/`}>
                     <Redirect
-                        to={`/app/settings/store-management/${id}/channels`}
+                        to={`/app/settings/store-management/${id}/settings`}
                     />
                 </Route>
             </Switch>
