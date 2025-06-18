@@ -1,20 +1,32 @@
-import React, { useState } from 'react'
+import { useContext, useMemo, useState } from 'react'
 
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { TopProductRecommendationTableStats } from 'pages/stats/automate/aiSalesAgent/components/TopProductRecommendationTableStats'
+import { WarningBannerContext } from 'pages/stats/automate/aiSalesAgent/components/WarningBannerProvider'
 import { useProductRecommendations } from 'pages/stats/automate/aiSalesAgent/metrics/useProductRecommendations'
 import ChartCard from 'pages/stats/common/components/ChartCard'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 
 const ITEMS_PER_PAGE = 10
 
-const TopProductRecommendationTable = ({
+const useNullProductRecommendations = () => {
+    return {
+        isFetching: false,
+        isError: false,
+        data: [],
+    }
+}
+
+const Chart = ({
     chartId,
     dashboard,
-}: DashboardChartProps) => {
+    useData,
+}: DashboardChartProps & {
+    useData: typeof useProductRecommendations
+}) => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
-    const data = useProductRecommendations(cleanStatsFilters, userTimezone)
+    const data = useData(cleanStatsFilters, userTimezone)
 
     const [offset, setOffset] = useState(0)
 
@@ -53,6 +65,25 @@ const TopProductRecommendationTable = ({
             />
         </ChartCard>
     )
+}
+
+const TopProductRecommendationTable = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
+    const { isBannerVisible } = useContext(WarningBannerContext)
+
+    const ChartComponent = useMemo(() => {
+        const useData = isBannerVisible
+            ? useNullProductRecommendations
+            : useProductRecommendations
+
+        return () => (
+            <Chart chartId={chartId} dashboard={dashboard} useData={useData} />
+        )
+    }, [chartId, dashboard, isBannerVisible])
+
+    return <ChartComponent />
 }
 
 export default TopProductRecommendationTable

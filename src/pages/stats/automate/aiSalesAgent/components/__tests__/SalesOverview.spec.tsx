@@ -61,7 +61,15 @@ describe('<SalesOverview />', () => {
         currentAccount: fromJS(account),
         currentUser: fromJS(user),
         billing: fromJS(billingState),
-        integrations: fromJS(integrationsState),
+        integrations: fromJS({
+            ...integrationsState,
+            integrations: integrationsState.integrations.map(
+                (integration: any) =>
+                    integration.id === 1
+                        ? { ...integration, name: 'test-shop', type: 'shopify' }
+                        : integration,
+            ),
+        }),
         stats: {
             filters: {
                 period: {

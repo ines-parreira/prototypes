@@ -11,6 +11,8 @@ import { RootState } from 'state/types'
 import { initialState as uiFiltersInitialState } from 'state/ui/stats/filtersSlice'
 import { assumeMock, mockStore } from 'utils/testing'
 
+import { WarningBannerProvider } from '../../components/WarningBannerProvider'
+
 jest.mock('pages/stats/automate/aiSalesAgent/metrics/useProductRecommendations')
 const useProductRecommendationsMock = assumeMock(useProductRecommendations)
 
@@ -56,7 +58,9 @@ describe('<TopProductRecommendationTable />', () => {
     it('renders', () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <TopProductRecommendationTable />
+                <WarningBannerProvider isBannerVisible={false}>
+                    <TopProductRecommendationTable />
+                </WarningBannerProvider>
             </Provider>,
         )
 
@@ -67,10 +71,24 @@ describe('<TopProductRecommendationTable />', () => {
         expect(screen.getByText('Buy rate')).toBeInTheDocument()
     })
 
+    it('does not render data if banner is visible', () => {
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <WarningBannerProvider isBannerVisible>
+                    <TopProductRecommendationTable />
+                </WarningBannerProvider>
+            </Provider>,
+        )
+
+        expect(screen.getByText('No data available')).toBeInTheDocument()
+    })
+
     it('navigates pages correctly', () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <TopProductRecommendationTable />
+                <WarningBannerProvider isBannerVisible={false}>
+                    <TopProductRecommendationTable />
+                </WarningBannerProvider>
             </Provider>,
         )
 
@@ -92,7 +110,9 @@ describe('<TopProductRecommendationTable />', () => {
     it('sorts columns correctly', () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <TopProductRecommendationTable />
+                <WarningBannerProvider isBannerVisible={false}>
+                    <TopProductRecommendationTable />
+                </WarningBannerProvider>
             </Provider>,
         )
 

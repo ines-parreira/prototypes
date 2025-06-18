@@ -18,6 +18,8 @@ import { RootState } from 'state/types'
 import { formatReportingQueryDate } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
 
+import { WarningBannerProvider } from '../../components/WarningBannerProvider'
+
 jest.mock('hooks/reporting/timeSeries')
 jest.mock('pages/stats/common/components/charts/LineChart/LineChart')
 const LineChartMock = assumeMock(LineChart)
@@ -143,5 +145,29 @@ describe('<GmvInfluencedOverTimeChart />', () => {
         )
 
         expect(screen.getByText('GMV influenced over time')).toBeInTheDocument()
+    })
+
+    it('should use valid hook when banner is not visible', () => {
+        render(
+            <Provider store={store}>
+                <WarningBannerProvider isBannerVisible={false}>
+                    <GmvInfluencedOverTimeChart />
+                </WarningBannerProvider>
+            </Provider>,
+        )
+
+        expect(useGmvInfluenceOverTimeSeriesMock).toHaveBeenCalled()
+    })
+
+    it('should not use valid hook when banner is visible', () => {
+        render(
+            <Provider store={store}>
+                <WarningBannerProvider isBannerVisible>
+                    <GmvInfluencedOverTimeChart />
+                </WarningBannerProvider>
+            </Provider>,
+        )
+
+        expect(useGmvInfluenceOverTimeSeriesMock).not.toHaveBeenCalled()
     })
 })
