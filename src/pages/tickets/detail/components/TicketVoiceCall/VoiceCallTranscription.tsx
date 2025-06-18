@@ -26,6 +26,8 @@ export default function VoiceCallTranscription({ audio, type }: Props) {
 
     const entity =
         type === VoiceCallRecordingType.Recording ? 'call' : 'voicemail'
+    const maxRecordingLength =
+        type === VoiceCallRecordingType.Recording ? 20 : 8
 
     switch (audio.transcription_status) {
         case VoiceCallRecordingTranscriptionStatus.Completed:
@@ -79,7 +81,7 @@ export default function VoiceCallTranscription({ audio, type }: Props) {
         case VoiceCallRecordingTranscriptionStatus.RecordingTooShort:
             return (
                 <Alert icon type={AlertType.Warning}>
-                    {`We do not support ${entity}s shorter than 20 seconds. This
+                    {`We do not support ${entity}s shorter than ${maxRecordingLength} seconds. This
                     ${entity} falls below our minimum supported duration, so we
                     are unable to transcribe.`}
                 </Alert>

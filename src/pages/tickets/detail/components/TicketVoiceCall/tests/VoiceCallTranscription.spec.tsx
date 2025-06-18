@@ -129,19 +129,26 @@ describe('VoiceCallTranscription', () => {
     })
 
     it.each([
-        VoiceCallRecordingType.Recording,
-        VoiceCallRecordingType.Voicemail,
-    ])('should render recording too short status for %s', (recordingType) => {
-        const { getByText } = renderComponent(
-            VoiceCallRecordingTranscriptionStatus.RecordingTooShort,
-            recordingType,
-        )
-        expect(
-            getByText(
-                `We do not support ${entityMapping[recordingType]}s shorter than 20 seconds. This ${entityMapping[recordingType]} falls below our minimum supported duration, so we are unable to transcribe.`,
-            ),
-        ).toBeInTheDocument()
-    })
+        {
+            recordingType: VoiceCallRecordingType.Recording,
+            message:
+                'We do not support calls shorter than 20 seconds. This call falls below our minimum supported duration, so we are unable to transcribe.',
+        },
+        {
+            recordingType: VoiceCallRecordingType.Voicemail,
+            message:
+                'We do not support voicemails shorter than 8 seconds. This voicemail falls below our minimum supported duration, so we are unable to transcribe.',
+        },
+    ])(
+        'should render recording too short status for %s',
+        ({ recordingType, message }) => {
+            const { getByText } = renderComponent(
+                VoiceCallRecordingTranscriptionStatus.RecordingTooShort,
+                recordingType,
+            )
+            expect(getByText(message)).toBeInTheDocument()
+        },
+    )
 
     it.each([
         VoiceCallRecordingType.Recording,
