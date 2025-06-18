@@ -379,6 +379,10 @@ export const FilterTopbar = ({
         FeatureFlagKey.EnableCustomerSatisfactionQaFiltersInViews,
     )
 
+    const hasPriorityFilteringEnabled = useFlag(
+        FeatureFlagKey.TicketAllowPriorityUsage,
+    )
+
     const filterableFields = (config.get('fields') as List<any>)
         .filter((field) => {
             const filterConfig = field.get('filter')
@@ -391,6 +395,13 @@ export const FilterTopbar = ({
                 !areCustomerSatisfactionQaFiltersInViewsEnabled &&
                 (fieldName === ViewField.CSATScore ||
                     fieldName === ViewField.QAScore)
+            ) {
+                return false
+            }
+
+            if (
+                fieldName === ViewField.Priority &&
+                !hasPriorityFilteringEnabled
             ) {
                 return false
             }

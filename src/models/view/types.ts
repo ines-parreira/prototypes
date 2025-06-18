@@ -47,6 +47,7 @@ export enum ViewField {
     TicketField = 'ticket_field',
     CSATScore = 'csat_score',
     QAScore = 'qa_score',
+    Priority = 'priority',
 }
 
 export enum ViewVisibility {

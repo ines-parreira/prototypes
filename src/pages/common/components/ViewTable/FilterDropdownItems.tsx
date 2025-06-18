@@ -1,4 +1,5 @@
 import { List, Map } from 'immutable'
+import _capitalize from 'lodash/capitalize'
 import { DropdownItem } from 'reactstrap'
 
 import { isImmutable } from 'common/utils'
@@ -63,6 +64,8 @@ export default function FilterDropdownItems({
             renderValue = <RenderLabel field={field} value={value} />
         } else if (fieldName === ViewField.Channel) {
             renderValue = humanizeChannel(value)
+        } else if (fieldName === ViewField.Priority) {
+            renderValue = _capitalize(value)
         }
 
         const passedValue = isImmutable(value) ? value.toJS() : value

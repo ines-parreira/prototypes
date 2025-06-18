@@ -1,6 +1,7 @@
 import {
     TicketChannel,
     TicketMessageSourceType,
+    TicketPriority,
     TicketStatus,
 } from 'business/types/ticket'
 import {
@@ -13,6 +14,7 @@ export const DEFAULT_CHANNEL = TicketChannel.Email
 
 export const CHANNELS = Object.values(TicketChannel)
 export const STATUSES = Object.values(TicketStatus)
+export const PRIORITIES = Object.values(TicketPriority)
 
 export const DEFAULT_SOURCE_TYPE = TicketMessageSourceType.Email
 

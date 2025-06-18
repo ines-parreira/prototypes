@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { act, fireEvent, render, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -770,5 +770,32 @@ describe('<FilterTopbar />', () => {
         )
 
         expect(queryByText('1 tickets')).not.toBeInTheDocument()
+    })
+
+    it('should not render priority filter when FF is disabled', () => {
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <FilterTopbar {...minProps} />
+            </Provider>,
+        )
+
+        const addFilterButton = screen.getByLabelText('Add filter')
+        fireEvent.click(addFilterButton)
+
+        expect(screen.queryByText('Priority')).toBeInTheDocument()
+    })
+
+    it('should render priority filter when FF is enabled', () => {
+        mockUseFlag.mockReturnValue(true)
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <FilterTopbar {...minProps} />
+            </Provider>,
+        )
+
+        const addFilterButton = screen.getByLabelText('Add filter')
+        fireEvent.click(addFilterButton)
+
+        expect(screen.getByText('Priority')).toBeInTheDocument()
     })
 })

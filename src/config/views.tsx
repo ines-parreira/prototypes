@@ -17,7 +17,7 @@ import {
 import { trimWithEllipsisBeforeTheHighlight } from 'pages/common/components/Spotlight/helpers'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 import { getChannels } from 'services/channels'
-import { STATUSES } from 'tickets/common/config'
+import { PRIORITIES, STATUSES } from 'tickets/common/config'
 import { fieldPath, getAST, getLanguageDisplayName, stripHTML } from 'utils'
 import { getMomentUtcISOString } from 'utils/date'
 import { sanitizeHtmlDefault } from 'utils/html'
@@ -359,7 +359,16 @@ export const defaultTicketView = {
             },
             show: false,
         },
+        {
+            name: ViewField.Priority,
+            title: 'Priority',
+            path: 'priority',
+            filter: {
+                enum: PRIORITIES,
+            },
+        },
     ],
+
     cell: (fieldName: ViewField, item: Map<any, any>) => {
         switch (fieldName) {
             case ViewField.Created:
