@@ -3,6 +3,8 @@ import React from 'react'
 import { screen, waitFor } from '@testing-library/react'
 import { MemoryRouter, Route } from 'react-router-dom'
 
+import { HttpResponse, Integration } from '@gorgias/helpdesk-queries'
+
 import { useFlag } from 'core/flags'
 import { assumeMock, renderWithStore } from 'utils/testing'
 
@@ -88,9 +90,6 @@ describe('StoreDetailsPage', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByRole('heading', { name: 'Store Details' }),
-            ).toBeInTheDocument()
-            expect(
                 screen.getByRole('link', { name: 'Channels' }),
             ).toHaveAttribute(
                 'href',
@@ -123,5 +122,86 @@ describe('StoreDetailsPage', () => {
         )
 
         expect(screen.getByRole('status')).toBeInTheDocument()
+    })
+
+    it('should render breadcrumbs with Store Management link and store name', () => {
+        const storeId = 123
+        const storeName = 'My Test Store'
+
+        mockUseFlag.mockReturnValue(true)
+        mockuseStoreGetter.mockReturnValue({
+            isFetching: false,
+            data: {
+                data: {
+                    id: storeId,
+                    name: storeName,
+                    type: 'shopify',
+                    meta: {},
+                },
+            } as unknown as HttpResponse<Integration>,
+            refetchStore: jest.fn(),
+        })
+
+        renderWithStore(
+            <MemoryRouter
+                initialEntries={[`/app/settings/store-management/${storeId}`]}
+            >
+                <QueryClientProvider>
+                    <StoreManagementProvider>
+                        <Route path="/app/settings/store-management/:id">
+                            <StoreDetailsPage />
+                        </Route>
+                    </StoreManagementProvider>
+                </QueryClientProvider>
+            </MemoryRouter>,
+            {},
+        )
+
+        expect(
+            screen.getByRole('navigation', { name: 'breadcrumb' }),
+        ).toBeInTheDocument()
+
+        const storeManagementLink = screen.getByText('Store Management')
+        expect(storeManagementLink.closest('a')).toHaveAttribute(
+            'to',
+            '/app/settings/store-management',
+        )
+
+        expect(screen.getByText(storeName)).toBeInTheDocument()
+    })
+
+    it('should render breadcrumbs with fallback name when store name is not available', () => {
+        const storeId = 123
+
+        mockUseFlag.mockReturnValue(true)
+
+        mockuseStoreGetter.mockReturnValue({
+            isFetching: false,
+            data: {
+                data: {
+                    id: storeId,
+                    type: 'shopify',
+                    meta: {},
+                },
+            } as unknown as HttpResponse<Integration>,
+            refetchStore: jest.fn(),
+        })
+
+        renderWithStore(
+            <MemoryRouter
+                initialEntries={[`/app/settings/store-management/${storeId}`]}
+            >
+                <QueryClientProvider>
+                    <StoreManagementProvider>
+                        <Route path="/app/settings/store-management/:id">
+                            <StoreDetailsPage />
+                        </Route>
+                    </StoreManagementProvider>
+                </QueryClientProvider>
+            </MemoryRouter>,
+            {},
+        )
+
+        expect(screen.getByText('Store Details')).toBeInTheDocument()
     })
 })

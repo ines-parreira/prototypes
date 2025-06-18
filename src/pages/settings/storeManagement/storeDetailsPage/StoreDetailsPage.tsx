@@ -1,6 +1,14 @@
 import React from 'react'
 
-import { NavLink, Redirect, Route, Switch, useParams } from 'react-router-dom'
+import {
+    Link,
+    NavLink,
+    Redirect,
+    Route,
+    Switch,
+    useParams,
+} from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
@@ -27,9 +35,24 @@ export default function StoreDetailsPage() {
         return <Loader role="status" />
     }
 
+    const store = data?.data as unknown as StoreIntegration
+
     return (
         <div className="full-width">
-            <PageHeader title="Store Details" />
+            <PageHeader
+                title={
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/store-management">
+                                Store Management
+                            </Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>
+                            {store?.name || 'Store Details'}
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                }
+            />
             <SecondaryNavbar>
                 <NavLink
                     to={`/app/settings/store-management/${id}/settings`}
