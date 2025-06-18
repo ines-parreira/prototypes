@@ -5,7 +5,10 @@ import { render, screen } from '@testing-library/react'
 import { userEvent } from 'utils/testing/userEvent'
 
 import { mockStoresWithAssignedChannels } from '../fixtures'
-import { StoreManagementProvider } from '../StoreManagementProvider'
+import {
+    StoreManagementProvider,
+    useStoreManagementState,
+} from '../StoreManagementProvider'
 import { StoreManagementTable } from '../storeManagementTable/storeManagementTable'
 
 jest.mock('../StoreManagementProvider', () => ({
@@ -15,22 +18,26 @@ jest.mock('../StoreManagementProvider', () => ({
     ),
 }))
 
+const mockUseStoreManagementState = jest.mocked(useStoreManagementState)
+
 describe('StoreManagementTable', () => {
     const mockStores = mockStoresWithAssignedChannels
 
     const mockState = {
+        stores: mockStores,
+        unassignedChannels: [],
+        refetchMapping: jest.fn(),
+        refetchIntegrations: jest.fn(),
         currentPage: 1,
         totalPages: 2,
         paginatedStores: mockStores,
         setCurrentPage: jest.fn(),
+        isLoading: false,
     }
 
     beforeEach(() => {
         jest.clearAllMocks()
-        const {
-            useStoreManagementState,
-        } = require('../StoreManagementProvider')
-        useStoreManagementState.mockReturnValue(mockState)
+        mockUseStoreManagementState.mockReturnValue(mockState)
     })
 
     it('renders table headers correctly', () => {
@@ -70,13 +77,10 @@ describe('StoreManagementTable', () => {
     })
 
     it('does not render pagination when there is only one page', () => {
-        const {
-            useStoreManagementState,
-        } = require('../StoreManagementProvider')
-        useStoreManagementState.mockReturnValue({
+        mockUseStoreManagementState.mockReturnValue({
+            ...mockState,
             currentPage: 1,
             paginatedStores: [],
-            setCurrentPage: jest.fn(),
             totalPages: 1,
         })
 
@@ -100,5 +104,20 @@ describe('StoreManagementTable', () => {
         await userEvent.click(nextPageButton)
 
         expect(mockState.setCurrentPage).toHaveBeenCalledWith(2)
+    })
+
+    it('renders loader when isLoading is true', () => {
+        mockUseStoreManagementState.mockReturnValue({
+            ...mockState,
+            isLoading: true,
+        })
+
+        render(
+            <StoreManagementProvider>
+                <StoreManagementTable />
+            </StoreManagementProvider>,
+        )
+
+        expect(screen.getByRole('status')).toBeInTheDocument()
     })
 })

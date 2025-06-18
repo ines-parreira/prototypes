@@ -1,5 +1,6 @@
 import React from 'react'
 
+import Loader from 'pages/common/components/Loader/Loader'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -13,11 +14,20 @@ import StoreManagementTableRow from './StoreManagementTableRow/StoreManagementTa
 import css from './StoreManagementTable.less'
 
 export const StoreManagementTable = () => {
-    const { currentPage, totalPages, paginatedStores, setCurrentPage } =
-        useStoreManagementState()
+    const {
+        currentPage,
+        totalPages,
+        paginatedStores,
+        setCurrentPage,
+        isLoading,
+    } = useStoreManagementState()
 
     const onPageChangeCallback = (page: number) => {
         setCurrentPage(page)
+    }
+
+    if (isLoading) {
+        return <Loader role="status" aria-label="Loading..." />
     }
 
     return (
