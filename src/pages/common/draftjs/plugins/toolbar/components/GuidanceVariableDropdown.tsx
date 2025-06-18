@@ -244,7 +244,9 @@ const GuidanceVariableDropdown = ({
                                         />
                                     </span>
                                     <span className={css.itemName}>
-                                        {option.name}
+                                        {'category' in option
+                                            ? `${option.category === 'customer' ? 'Customer' : 'Order'}: ${option.name}`
+                                            : option.name}
                                     </span>
                                 </div>
                                 {!selectedProvider &&

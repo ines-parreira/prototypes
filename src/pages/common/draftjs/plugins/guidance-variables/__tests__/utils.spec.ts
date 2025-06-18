@@ -50,12 +50,6 @@ describe('Guidance Variables Utils', () => {
         category: 'order',
     }
 
-    const fulfillmentVariable: GuidanceVariable = {
-        name: 'Tracking Number',
-        value: '&&&fulfillment.tracking_number&&&',
-        category: 'fulfillment',
-    }
-
     const nestedVariable: GuidanceVariable = {
         name: 'Nested Variable',
         value: '&&&nested.variable&&&',
@@ -86,7 +80,6 @@ describe('Guidance Variables Utils', () => {
     const variableList: GuidanceVariableList = [
         customerVariable,
         variableGroup,
-        fulfillmentVariable,
         deeplyNestedGroup,
     ]
 

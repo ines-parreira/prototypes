@@ -30,9 +30,14 @@ jest.mock('hooks/useId', () => {
 describe('GuidanceVariableTag', () => {
     const mockGuidanceVariables = [
         {
-            name: 'Customer Name',
+            name: 'Name',
             value: '&&&customer.name&&&',
             category: 'customer',
+        },
+        {
+            name: 'Is cancelled',
+            value: '&&&order.is_cancelled&&&',
+            category: 'order',
         },
     ]
 
@@ -58,9 +63,30 @@ describe('GuidanceVariableTag', () => {
     it('renders with default size', () => {
         const variableValue = '&&&customer.name&&&'
         ;(parseGuidanceVariable as jest.Mock).mockReturnValue({
-            name: 'Customer Name',
+            name: 'Name',
             value: variableValue,
             category: 'customer',
+        })
+
+        render(
+            <GuidanceVariableTag value={variableValue}>
+                Variable Content
+            </GuidanceVariableTag>,
+        )
+
+        expect(screen.getByText('Variable Content')).toBeInTheDocument()
+        expect(screen.getByAltText('shopify logo')).toBeInTheDocument()
+
+        const container = screen.getByText('Variable Content').parentElement
+        expect(container).toHaveAttribute('id', 'guidance-variable-tag-mock-id')
+    })
+
+    it('displays variable prefix', () => {
+        const variableValue = '&&&order.is_cancelled&&&'
+        ;(parseGuidanceVariable as jest.Mock).mockReturnValue({
+            name: 'Is cancelled',
+            value: variableValue,
+            category: 'order',
         })
 
         render(
@@ -79,7 +105,7 @@ describe('GuidanceVariableTag', () => {
     it('renders with small size', () => {
         const variableValue = '&&&customer.name&&&'
         ;(parseGuidanceVariable as jest.Mock).mockReturnValue({
-            name: 'Customer Name',
+            name: 'Name',
             value: variableValue,
             category: 'customer',
         })
@@ -91,7 +117,7 @@ describe('GuidanceVariableTag', () => {
         )
 
         const contentElement = document.querySelector(
-            '[aria-label="Customer Name"]',
+            '[aria-label="Customer: Name"]',
         )
         expect(contentElement).toBeInTheDocument()
         expect(contentElement).toHaveClass('small')
@@ -120,7 +146,7 @@ describe('GuidanceVariableTag', () => {
         const variableValue = '&&&customer.name&&&'
         const handleClick = jest.fn()
         ;(parseGuidanceVariable as jest.Mock).mockReturnValue({
-            name: 'Customer Name',
+            name: 'Name',
             value: variableValue,
             category: 'customer',
         })
@@ -132,7 +158,7 @@ describe('GuidanceVariableTag', () => {
         )
 
         const contentElement = document.querySelector(
-            '[aria-label="Customer Name"]',
+            '[aria-label="Customer: Name"]',
         )
         const container = contentElement?.parentElement
         fireEvent.click(container as HTMLElement)
@@ -153,7 +179,7 @@ describe('GuidanceVariableTag', () => {
 
         const variableValue = '&&&customer.name&&&'
         ;(parseGuidanceVariable as jest.Mock).mockReturnValue({
-            name: 'Customer Name',
+            name: 'Name',
             value: variableValue,
             category: 'customer',
         })
@@ -166,7 +192,7 @@ describe('GuidanceVariableTag', () => {
 
         const tooltip = screen.getByTestId('tooltip')
         expect(tooltip).toBeInTheDocument()
-        expect(tooltip).toHaveTextContent('Customer Name')
+        expect(tooltip).toHaveTextContent('Customer: Name')
         expect(tooltip).toHaveAttribute(
             'data-target',
             'guidance-variable-tag-mock-id',
@@ -186,7 +212,7 @@ describe('GuidanceVariableTag', () => {
 
         const variableValue = '&&&customer.name&&&'
         ;(parseGuidanceVariable as jest.Mock).mockReturnValue({
-            name: 'Customer Name',
+            name: 'Name',
             value: variableValue,
             category: 'customer',
         })
@@ -203,7 +229,7 @@ describe('GuidanceVariableTag', () => {
     it('passes the correct variable to parseGuidanceVariable', () => {
         const variableValue = '&&&customer.name&&&'
         ;(parseGuidanceVariable as jest.Mock).mockReturnValue({
-            name: 'Customer Name',
+            name: 'Name',
             value: variableValue,
             category: 'customer',
         })

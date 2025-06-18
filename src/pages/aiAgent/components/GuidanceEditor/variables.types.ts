@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-type Category = 'customer' | 'fulfillment' | 'order'
+type Category = 'customer' | 'order'
 
 export type BaseGuidanceVariable<T extends Category> = {
     name: string
@@ -9,13 +9,9 @@ export type BaseGuidanceVariable<T extends Category> = {
 }
 
 type ShopifyCustomerVariable = BaseGuidanceVariable<'customer'>
-type ShopifyFulfillmentVariable = BaseGuidanceVariable<'fulfillment'>
 type ShopifyOrderVariable = BaseGuidanceVariable<'order'>
 
-export type GuidanceVariable =
-    | ShopifyCustomerVariable
-    | ShopifyFulfillmentVariable
-    | ShopifyOrderVariable
+export type GuidanceVariable = ShopifyCustomerVariable | ShopifyOrderVariable
 
 export type GuidanceVariableGroup = {
     name: string

@@ -86,12 +86,12 @@ describe('GuidanceVariableDropdown', () => {
 
     const mockVariables: GuidanceVariable[] = [
         {
-            name: 'Customer Name',
+            name: 'Name',
             value: '&&&customer.name&&&',
             category: 'customer',
         },
         {
-            name: 'Customer Email',
+            name: 'Email',
             value: '&&&customer.email&&&',
             category: 'customer',
         },
@@ -197,8 +197,8 @@ describe('GuidanceVariableDropdown', () => {
         expect(variableItems.length).toBe(2)
 
         const itemTexts = variableItems.map((item) => item.textContent)
-        expect(itemTexts).toContain('Customer Name')
-        expect(itemTexts).toContain('Customer Email')
+        expect(itemTexts).toContain('Name')
+        expect(itemTexts).toContain('Email')
     })
 
     it('calls onSelect when a variable is clicked', () => {
@@ -240,7 +240,7 @@ describe('GuidanceVariableDropdown', () => {
 
         const dropdownItems = screen.getAllByTestId('dropdown-item')
         expect(dropdownItems.length).toBe(1)
-        expect(dropdownItems[0]).toHaveTextContent('Customer Email')
+        expect(dropdownItems[0]).toHaveTextContent('Customer: Email')
     })
 
     it('displays "No variables available" when there are no variables', () => {

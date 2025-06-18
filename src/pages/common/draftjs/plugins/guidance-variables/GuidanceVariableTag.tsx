@@ -61,7 +61,13 @@ export default function GuidanceVariableTag({
         [onClick],
     )
 
-    const variableName = variable?.name ?? 'Invalid variable'
+    const variableName = useMemo(() => {
+        if (!variable) return 'Invalid variable'
+
+        const prefix = variable.category === 'customer' ? 'Customer' : 'Order'
+
+        return `${prefix}: ${variable.name}`
+    }, [variable])
 
     return (
         <span id={wrapperId} className={css.wrapper}>
