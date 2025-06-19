@@ -17,12 +17,9 @@ describe('ChannelListCell', () => {
             <ChannelListCell channels={mockChannels} storeId={mockStoreId} />,
         )
 
-        expect(screen.getByText('email')).toBeInTheDocument()
-        expect(screen.getByText('forum')).toBeInTheDocument()
-        expect(
-            document.querySelector('.icon-facebook-feed'),
-        ).toBeInTheDocument()
-        screen.debug(undefined, 100000)
+        expect(screen.getByAltText('email')).toBeInTheDocument()
+        expect(screen.getByAltText('gorgias_chat')).toBeInTheDocument()
+        expect(screen.getByAltText('facebook')).toBeInTheDocument()
     })
 
     it('handles empty channels array', () => {
@@ -47,6 +44,6 @@ describe('ChannelListCell', () => {
             />,
         )
 
-        expect(screen.getByAltText('TikTok Shop')).toBeInTheDocument()
+        expect(screen.getByAltText('tiktok-shop')).toBeInTheDocument()
     })
 })

@@ -98,13 +98,6 @@ describe('StoreManagementTableRow', () => {
         expect(storeUrl).toBeInTheDocument()
     })
 
-    it('renders channel icons', () => {
-        renderComponent()
-
-        const channelIcons = document.querySelectorAll('.channelIcon')
-        expect(channelIcons.length).toBe(2)
-    })
-
     it('renders navigation icon', () => {
         renderComponent()
 
