@@ -18,7 +18,8 @@ export default function useStoreDeleter() {
         onSuccess: () => {
             void dispatch(
                 notify({
-                    message: 'Integration successfully deleted',
+                    message:
+                        'Store is successfully deleted. It may take a minute for all channels and features to disconnect.',
                     status: NotificationStatus.Success,
                 }),
             )
