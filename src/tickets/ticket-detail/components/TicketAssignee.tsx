@@ -4,6 +4,10 @@ import { Emoji } from 'emoji-mart'
 import { TicketAssigneeTeam, TicketAssigneeUser } from '@gorgias/helpdesk-types'
 import { Avatar } from '@gorgias/merchant-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import { Avatar as NewAvatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
+
 import css from './TicketAssignee.less'
 
 export function TicketAssignee({
@@ -13,6 +17,7 @@ export function TicketAssignee({
     assignedAgent: TicketAssigneeUser
     assignedTeam: TicketAssigneeTeam
 }) {
+    const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
     const name =
         assignedAgent?.name || assignedAgent?.email || assignedTeam?.name
 
@@ -27,7 +32,10 @@ export function TicketAssignee({
                     <Emoji emoji={emoji} size={20} />
                 </span>
             ) : (
-                name && (
+                name &&
+                (hasTicketThreadRevamp ? (
+                    <NewAvatar name={name} size="sm" url={avatarUrl} />
+                ) : (
                     <Avatar
                         className={cn(css.avatar, {
                             [css.image]: avatarUrl,
@@ -37,7 +45,7 @@ export function TicketAssignee({
                         size="sm"
                         url={avatarUrl}
                     />
-                )
+                ))
             )}
 
             <span className={css.name}>{name || 'Unassigned'}</span>

@@ -60,3 +60,20 @@
         width: 100%;
     }
 }
+
+.ticket-thread-revamp :local {
+    .container {
+        gap: var(--layout-spacing-xs);
+        padding: var(--layout-spacing-s);
+    }
+
+    .internal {
+        background: var(--feedback-warning-0);
+        box-shadow: inset 4px 0 0 0 var(--feedback-warning-3);
+        transition: background-color 0.2s ease-out;
+
+        &:hover {
+            background: #fff4e5;
+        }
+    }
+}

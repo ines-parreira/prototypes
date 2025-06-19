@@ -5,6 +5,8 @@ import cn from 'classnames'
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 import { Avatar } from '@gorgias/merchant-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import {
     isTicketMessageDeleted,
     isTicketMessageHidden,
@@ -13,6 +15,7 @@ import {
     getAvatar,
     getAvatarFromCache,
 } from 'pages/common/components/Avatar/utils'
+import { Avatar as NewAvatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
 
 import css from './MessageAvatar.less'
 
@@ -29,6 +32,7 @@ export function MessageAvatar({
     isAI = false,
     isFailed = false,
 }: Props) {
+    const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
     const isMessageDuplicated = Boolean(
         ((message.meta ?? {}) as Record<string, unknown>).is_duplicated,
     )
@@ -68,7 +72,15 @@ export function MessageAvatar({
         return null
     }
 
-    return (
+    return hasTicketThreadRevamp ? (
+        <NewAvatar
+            isAgent={message.from_agent}
+            isAIAgent={isAI}
+            name={message.sender.name ?? ''}
+            url={imageUrl ?? undefined}
+            userId={message.sender.id ?? undefined}
+        />
+    ) : (
         <Avatar
             name={message.sender.name ?? ''}
             url={imageUrl ?? undefined}

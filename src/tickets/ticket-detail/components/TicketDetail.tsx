@@ -1,7 +1,12 @@
 import { ReactNode } from 'react'
 
+import cn from 'classnames'
+
 import { TicketCompact } from '@gorgias/helpdesk-queries'
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 
 import { useTicket } from '../hooks/useTicket'
 import { TicketBody } from './TicketBody'
@@ -21,11 +26,16 @@ export function TicketDetail({
     ticketId,
     additionalHeaderActions,
 }: Props) {
+    const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
     const { body, isLoading, ticket } = useTicket(ticketId)
     const headerData = ticket || summary
 
     return (
-        <div className={css.container}>
+        <div
+            className={cn(css.container, {
+                'ticket-thread-revamp': hasTicketThreadRevamp,
+            })}
+        >
             <div className={css.content}>
                 {!!headerData && (
                     <TicketHeader

@@ -4,6 +4,8 @@ import classnames from 'classnames'
 
 import { TicketMessage } from '@gorgias/helpdesk-types'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
 import { MessageStatusIndicator } from './MessageStatusIndicator'
@@ -15,6 +17,7 @@ type Props = {
 }
 
 export function MessageMetadata({ message }: Props) {
+    const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
     const meta = message.meta as {
         is_duplicated?: boolean
         private_reply?: {
@@ -34,7 +37,7 @@ export function MessageMetadata({ message }: Props) {
         return <DatetimeLabel dateTime={message.created_datetime} />
     }, [meta, message.created_datetime])
 
-    return (
+    return hasTicketThreadRevamp ? null : (
         <div className={classnames(css.wrapper)}>
             <MessageStatusIndicator message={message} />
             {infoWidget}

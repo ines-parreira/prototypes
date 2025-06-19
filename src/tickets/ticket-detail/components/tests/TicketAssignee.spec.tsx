@@ -4,6 +4,9 @@ import { Emoji } from 'emoji-mart'
 import { TicketAssigneeTeam, TicketAssigneeUser } from '@gorgias/helpdesk-types'
 import { Avatar } from '@gorgias/merchant-ui-kit'
 
+import { useFlag } from 'core/flags'
+import { assumeMock } from 'utils/testing'
+
 import { TicketAssignee } from '../TicketAssignee'
 
 jest.mock('@gorgias/merchant-ui-kit', () => ({
@@ -12,6 +15,13 @@ jest.mock('@gorgias/merchant-ui-kit', () => ({
 
 jest.mock('emoji-mart', () => ({
     Emoji: jest.fn(() => <div />),
+}))
+
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+const useFlagMock = assumeMock(useFlag)
+
+jest.mock('pages/tickets/detail/components/TicketMessages/Avatar', () => ({
+    Avatar: () => <div>New Avatar</div>,
 }))
 
 describe('TicketAssignee', () => {
@@ -33,6 +43,10 @@ describe('TicketAssignee', () => {
         },
     }
 
+    beforeEach(() => {
+        useFlagMock.mockReturnValue(false)
+    })
+
     it('renders agent name and avatar when agent and team are assigned', () => {
         render(
             <TicketAssignee
@@ -51,6 +65,18 @@ describe('TicketAssignee', () => {
             }),
             expect.anything(),
         )
+    })
+
+    it('renders the new avatar when the ticket thread revamp is enabled', () => {
+        useFlagMock.mockReturnValue(true)
+        render(
+            <TicketAssignee
+                assignedAgent={mockAssignedAgent}
+                assignedTeam={mockAssignedTeam}
+            />,
+        )
+
+        expect(screen.getByText('New Avatar')).toBeInTheDocument()
     })
 
     it('renders agent email when name is not available', () => {

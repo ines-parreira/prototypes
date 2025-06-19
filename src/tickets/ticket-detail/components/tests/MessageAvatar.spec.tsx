@@ -1,16 +1,21 @@
-import { render, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 import { Avatar } from '@gorgias/merchant-ui-kit'
 
+import { useFlag } from 'core/flags'
 import * as predicates from 'models/ticket/predicates'
 import { getAvatar } from 'pages/common/components/Avatar/utils'
+import { assumeMock } from 'utils/testing'
 
 import { AVATAR_SIZE, MessageAvatar } from '../MessageAvatar'
 
 jest.mock('@gorgias/merchant-ui-kit', () => ({
     Avatar: jest.fn(() => null),
 }))
+
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+const useFlagMock = assumeMock(useFlag)
 
 jest.mock('models/ticket/predicates', () => ({
     isTicketMessageDeleted: jest.fn(),
@@ -20,6 +25,10 @@ jest.mock('models/ticket/predicates', () => ({
 jest.mock('pages/common/components/Avatar/utils', () => ({
     getAvatar: jest.fn(),
     getAvatarFromCache: jest.fn(),
+}))
+
+jest.mock('pages/tickets/detail/components/TicketMessages/Avatar', () => ({
+    Avatar: () => <div>New Avatar</div>,
 }))
 
 const isTicketMessageDeletedMock = jest.mocked(
@@ -40,6 +49,7 @@ describe('MessageAvatar', () => {
         getAvatarMock.mockResolvedValue('ok')
         isTicketMessageDeletedMock.mockReturnValue(false)
         isTicketMessageHiddenMock.mockReturnValue(false)
+        useFlagMock.mockReturnValue(false)
     })
 
     it('renders avatar with correct props for regular message', () => {
@@ -164,5 +174,11 @@ describe('MessageAvatar', () => {
                 expect.anything(),
             ),
         )
+    })
+
+    it('should render the new avatar if the ticket thread revamp is enabled', () => {
+        useFlagMock.mockReturnValue(true)
+        render(<MessageAvatar message={mockMessage} />)
+        expect(screen.getByText('New Avatar')).toBeInTheDocument()
     })
 })
