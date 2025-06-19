@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query'
 
 import {
     GetAnalyticsCustomReportResult,
-    getGetAnalyticsCustomReportQueryOptions,
+    queryKeys,
 } from '@gorgias/helpdesk-queries'
 
 import { DashboardSchema } from 'pages/stats/dashboards/types'
@@ -15,7 +15,8 @@ export const useUpdateDashboardCache = (id: number) => {
 
     return useCallback(
         (dashboard: DashboardSchema) => {
-            const { queryKey } = getGetAnalyticsCustomReportQueryOptions(id)
+            const queryKey =
+                queryKeys.analyticsCustomReports.getAnalyticsCustomReport(id)
 
             const fromCache =
                 queryClient.getQueryData<GetAnalyticsCustomReportResult>(

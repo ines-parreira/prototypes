@@ -23,35 +23,35 @@ catalogs:
       version: 17.0.2
   rest-api-sdk:
     '@gorgias/helpdesk-client':
-      specifier: 0.8.2
-      version: 0.8.2
+      specifier: 0.8.18
+      version: 0.8.18
     '@gorgias/helpdesk-mocks':
-      specifier: 0.7.25
-      version: 0.7.25
+      specifier: 0.7.41
+      version: 0.7.41
     '@gorgias/helpdesk-queries':
-      specifier: 0.8.2
-      version: 0.8.2
+      specifier: 0.8.18
+      version: 0.8.18
     '@gorgias/helpdesk-types':
-      specifier: 0.7.25
-      version: 0.7.25
+      specifier: 0.7.37
+      version: 0.7.37
     '@gorgias/helpdesk-validators':
-      specifier: 0.7.25
-      version: 0.7.25
+      specifier: 0.7.37
+      version: 0.7.37
     '@gorgias/knowledge-service-client':
-      specifier: 0.2.0
-      version: 0.2.0
+      specifier: 0.2.8
+      version: 0.2.8
     '@gorgias/knowledge-service-mocks':
-      specifier: 0.2.0
-      version: 0.2.0
+      specifier: 0.2.8
+      version: 0.2.8
     '@gorgias/knowledge-service-queries':
-      specifier: 0.2.0
-      version: 0.2.0
+      specifier: 0.2.8
+      version: 0.2.8
     '@gorgias/knowledge-service-types':
-      specifier: 0.2.0
-      version: 0.2.0
+      specifier: 0.2.8
+      version: 0.2.8
     '@gorgias/knowledge-service-validators':
-      specifier: 0.2.0
-      version: 0.2.0
+      specifier: 0.2.8
+      version: 0.2.8
 
 overrides:
   '@tanstack/react-query': 4.36.1
@@ -128,28 +128,28 @@ importers:
         version: 0.6.0
       '@gorgias/helpdesk-client':
         specifier: catalog:rest-api-sdk
-        version: 0.8.2
+        version: 0.8.18
       '@gorgias/helpdesk-queries':
         specifier: catalog:rest-api-sdk
-        version: 0.8.2(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)
+        version: 0.8.18(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)
       '@gorgias/helpdesk-types':
         specifier: catalog:rest-api-sdk
-        version: 0.7.25
+        version: 0.7.37
       '@gorgias/helpdesk-validators':
         specifier: catalog:rest-api-sdk
-        version: 0.7.25
+        version: 0.7.37
       '@gorgias/knowledge-service-client':
         specifier: catalog:rest-api-sdk
-        version: 0.2.0
+        version: 0.2.8
       '@gorgias/knowledge-service-queries':
         specifier: catalog:rest-api-sdk
-        version: 0.2.0(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)
+        version: 0.2.8(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)
       '@gorgias/knowledge-service-types':
         specifier: catalog:rest-api-sdk
-        version: 0.2.0
+        version: 0.2.8
       '@gorgias/knowledge-service-validators':
         specifier: catalog:rest-api-sdk
-        version: 0.2.0
+        version: 0.2.8
       '@gorgias/merchant-ui-kit':
         specifier: ^0.35.3
         version: 0.35.3(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(reactstrap@8.9.0(react-dom@17.0.2(react@17.0.2))(react@17.0.2))
@@ -582,10 +582,10 @@ importers:
         version: 0.2.4(@babel/core@7.23.9)(@babel/eslint-parser@7.23.10(@babel/core@7.23.9)(eslint@8.1.0))(@trivago/prettier-plugin-sort-imports@5.2.2(prettier@3.5.2))(eslint-plugin-import@2.25.2(eslint@8.1.0))(eslint-plugin-jsx-a11y@6.4.1(eslint@8.1.0))(eslint-plugin-react-hooks@4.3.0(eslint@8.1.0))(eslint-plugin-react@7.26.1(eslint@8.1.0))(eslint@8.1.0)
       '@gorgias/helpdesk-mocks':
         specifier: catalog:rest-api-sdk
-        version: 0.7.25(@types/node@22.13.13)(typescript@5.3.3)
+        version: 0.7.41(@types/node@22.13.13)(typescript@5.3.3)
       '@gorgias/knowledge-service-mocks':
         specifier: catalog:rest-api-sdk
-        version: 0.2.0(@types/node@22.13.13)(typescript@5.3.3)
+        version: 0.2.8(@types/node@22.13.13)(typescript@5.3.3)
       '@gorgias/static-analysis':
         specifier: 0.3.0
         version: 0.3.0(@types/node@22.13.13)
@@ -2698,47 +2698,53 @@ packages:
   '@gorgias/helpdesk-client@0.7.20':
     resolution: {integrity: sha512-62jim36Rq3CuQKYYKtq2e0hVIQjWNRFOV0GxSc2yCtpCN+KOmAaC++8CNxhF28wYHVR7gp7yd9Ymauoh0KJYvQ==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-client/0.7.20/760424d0ad69f34938053ced2d3cfd3c921ff6a9}
 
-  '@gorgias/helpdesk-client@0.8.2':
-    resolution: {integrity: sha512-2857ZRDii5JBhL6nMRFCY1a0aIbGx50ghf+LiFGf0U1X3rT0dq+gD5EhEQEl7zo0I8nFR0bZ7xLRF9MdvoZq/A==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-client/0.8.2/a8d534bd4563c0a98f6c35da2e79251476f5bd52}
+  '@gorgias/helpdesk-client@0.8.18':
+    resolution: {integrity: sha512-+6v9og46Vjjuzdp3LQ39sJLO2zTNejOsNgcBNpJOkghjZVI56hn1PmjpN4C/Q44BIhW9y5qXlH4EuJ9XyX+SEQ==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-client/0.8.18/930d9f019c4f8b9fbb3100f80b7b7b589dee6ae5}
 
-  '@gorgias/helpdesk-mocks@0.7.25':
-    resolution: {integrity: sha512-VGyjwuCqh7I0rJ2s8i1PqfMpJ9ayw73hMv730iAiS7FebASHJBtEihhw7E+P67liPobvlUWpnl0Ip6tUaQwUIA==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-mocks/0.7.25/4a27dd793a00a2ffe17395d9e4aa78436d25eb91}
+  '@gorgias/helpdesk-mocks@0.7.41':
+    resolution: {integrity: sha512-xYIUWw80480dO488DcefidR0abXH2ut5i1s5FjywWPLaC2Xa6DN7EPwvQCTpMcXbxc8FWdOilif9k2C4NCzmZA==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-mocks/0.7.41/c5b900ba9006cb6e26ce40449f04825bf196f56b}
 
   '@gorgias/helpdesk-queries@0.7.20':
     resolution: {integrity: sha512-lpQ+6gryHAW9Ck/NujPOh7rS1Uk8og0RPJ+RMGFPvY+ENTBB+n6IAdSAjJ5ztW614+I9u/CsZE3Ro/9lY4qcxQ==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-queries/0.7.20/c72a29b24b391e835fb53524c281ff48882cdea5}
 
-  '@gorgias/helpdesk-queries@0.8.2':
-    resolution: {integrity: sha512-zcgwu/2btlPf7bfniePbUh+JrVSnDHjcgDqltLz/MFfmSBJw84wTYBjxW9N6DRcrYOxoYTtpR6i7LZ5tJ8TWgw==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-queries/0.8.2/300dab76433b6699cf88253abf383f2473b43b58}
+  '@gorgias/helpdesk-queries@0.8.18':
+    resolution: {integrity: sha512-Mmc5DKl51MyZxlhD6Cb6OPPXU93Pd3B3O5RqKQbCkdvi/1C6ph5hcp7D/bDiUoAERR1elc6Q481lKOgE/P0k7g==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-queries/0.8.18/59ab5fdec48e4b98d770a575e8a0ee6b14cdf604}
 
-  '@gorgias/helpdesk-spec@0.8.2':
-    resolution: {integrity: sha512-1mAB6F7tGKypsPmVOzMpHhkf3gtVmXihbkyxL/LMvKHM6bwXBbFTP4T32P7l5igkCZVQo6AvMKl9yWgC0Kf3kA==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-spec/0.8.2/23910ed927f80256d0988c578c566d0329512b8c}
+  '@gorgias/helpdesk-spec@0.10.2':
+    resolution: {integrity: sha512-3UdxKAZCxw0TZs/StHBEYfHN52z89pnIHbTfBKi3cGfJSyGeoNDvXNCz0in68n99tOc2CSXN0BWbPNinM/FITQ==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-spec/0.10.2/15cb61bae507258b895b8a489fee93ec97c281cf}
+
+  '@gorgias/helpdesk-spec@0.9.7':
+    resolution: {integrity: sha512-3l2OW+F6OaYQ9pj9/xuFqHPGDmWSg6NWgzcaIMGP46AqEpygP//McJJKuX/mSgYm7ya5t/yI67xwqYzSl83qYg==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-spec/0.9.7/85280755b8650e6bbb0e5b3bd6c2542cbac9c504}
 
   '@gorgias/helpdesk-types@0.7.20':
     resolution: {integrity: sha512-cba3DExOdHPfDjtKNJ0YHVsFM+7/t/OSZ4z4UtL47EM8sHKOtQY14+YHxaXAiDlfU8txYSqqQcE3aTU+5ShBPQ==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-types/0.7.20/ab7285255fff84f1acd0a3417912151a81699515}
 
-  '@gorgias/helpdesk-types@0.7.25':
-    resolution: {integrity: sha512-FmYh1+4vdHd6hkrtDGtgPOevSWrlyF4Qefb5aFyUeaLFiFJiYdEj92lGKhJXH+mDKTFj1ZrfiGb4EkcEde6fyw==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-types/0.7.25/e3826ce1d0e4d57e6f9ef4a2278eb7e2a05ebc6f}
+  '@gorgias/helpdesk-types@0.7.37':
+    resolution: {integrity: sha512-UgyTzOgV0Zxzr9yMqFWS2BNhMdAhFE4HPuGxVlqZ0n3JEpr7JahFNsL5uKVUr0tqH/AZH/Fyyucd9n1bK3sBYA==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-types/0.7.37/d2743bbbbfa81626234b17654456677749c62feb}
 
-  '@gorgias/helpdesk-validators@0.7.25':
-    resolution: {integrity: sha512-x6GkvaDrfb45jVkUd/AebsXPF/YmxppXzErUQVv77V3uc16mdGnB1corpnOFHaMK/gaaMM7fgjBUci8OyTiYKw==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-validators/0.7.25/7470530be057d715dd5e3c211ed1644a18f1b813}
+  '@gorgias/helpdesk-types@0.7.40':
+    resolution: {integrity: sha512-YcEEK/QYd6iddk21Mvm7rdmMguMwuJQAgQ0sVGfakDgqSs6H9fqBsqBDxZYpCMImZdmn1f9PO6WfKp/ffhSVfA==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-types/0.7.40/4933421c68a9e683bda00c94a7d2a71a11470dba}
 
-  '@gorgias/knowledge-service-client@0.2.0':
-    resolution: {integrity: sha512-5gkFpMdIpWy2YL4gbKyamnYMCpx3AMGFCe/oaQsW77fhx7vfVrw5EbJuPYotr4MO14uzvzT8tZaoQEDKUj/c8g==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-client/0.2.0/be25615af047384b7e141e96f61b6db5f0ff11f3}
+  '@gorgias/helpdesk-validators@0.7.37':
+    resolution: {integrity: sha512-/9p+UoL9kSTcbPvHMAExirHZHtoFE99jxwrGH6VwuM8vOJ9W14O8F1qhWKAb0LQwPz8NaxWSL5dNRhn3v4mPDA==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-validators/0.7.37/3db57bfa607fefc37bae45e92e2675b57004bd2f}
 
-  '@gorgias/knowledge-service-mocks@0.2.0':
-    resolution: {integrity: sha512-wox7epoaEEKuzTbHifKt/Vaoy+FdkEPcWSHd1u0fK71Q2ii6MN2TujquIl3JaEuvhJ+VcZxzMkuwfPNSP3NtPw==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-mocks/0.2.0/d65ec6c1220c545aeb6276bda3bd3734d56d72fc}
+  '@gorgias/knowledge-service-client@0.2.8':
+    resolution: {integrity: sha512-oF08GOR8cwnpti8a9hLeUewO/ho/GcxXF2yQWYVo5PyEXK906LdyZ+FCfY6cch2UtyRaBtO9nWYyoqAFtVAeRg==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-client/0.2.8/5c2068541e911c2c14ce5e99a96d1a4a33b71a4b}
 
-  '@gorgias/knowledge-service-queries@0.2.0':
-    resolution: {integrity: sha512-b1eRLbF0l/fRUvwAZdVCopTP2HyQwXh4tvO7z5SyQ1T7WjNDzqcUF2WdVVuhyWUPnsZpgZSFnU8Nco8nuQdxUQ==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-queries/0.2.0/f0693b720d66c1efebadc31ea3e5d93dcf86aeba}
+  '@gorgias/knowledge-service-mocks@0.2.8':
+    resolution: {integrity: sha512-QYNpwi5l/RL03sWD3g2yl0bFb3ow6013juN44mbC0MKt4mcbO/QxdKOUhQC0nyN7xumOmGoDpHE2Ih1PcGq/QA==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-mocks/0.2.8/d4098139189ea2c3124f77247a32fcd8c4b00b16}
 
-  '@gorgias/knowledge-service-spec@0.2.0':
-    resolution: {integrity: sha512-nG3eNoP8C8SKAcNQKIyA3Q84tuRP/DULxCJO4JDMnNrNO1g/YtRPrL1fIHAOBsPT7SuuWQN4TBlhfy/9+IqqMg==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-spec/0.2.0/49db3758435e06c03ba41424a22c9bf97a207be9}
+  '@gorgias/knowledge-service-queries@0.2.8':
+    resolution: {integrity: sha512-Axasmfgf9Y5e488cuDaT7kkGeZDurvEf42sdz4Ph0MbSxskxGEVNyOIRur+s3SOywDOoOE5Pw9ct8aa0MnEzSg==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-queries/0.2.8/84f4cded76fdbfc90e01539bbd6e4a76c496b25a}
 
-  '@gorgias/knowledge-service-types@0.2.0':
-    resolution: {integrity: sha512-qEw2Ima0oBmE8iLlyzQqOAf3etInxQSk7IXcvTL3FG8l+MJIYHxTA2nojXA64vVYGgbZDg/Na9ICLmUHilIusw==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-types/0.2.0/3ebb0cc4e4ef010c9e99ebb27ac27a2b9c39800c}
+  '@gorgias/knowledge-service-spec@0.3.6':
+    resolution: {integrity: sha512-9DvxphXnImDgLcTMBu+4SE3bXbDjyFJNXtwCCPDld1Q2SCglAIK03fSMsRkVCYbYs3aXOD+4e/czBtkkTwm+LA==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-spec/0.3.6/ddf3641ad40d72530958584773d94141b4aa6c10}
 
-  '@gorgias/knowledge-service-validators@0.2.0':
-    resolution: {integrity: sha512-JobC9sts+kJq1dyGevIVnv4skO880X4a6h1RRgpCCpiyTS3zAxTmZzi9nKyHZfFpsYmPYC/oIV3gzs18y/Bp4A==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-validators/0.2.0/f4f8e5c923aec36e657d92f0378335a3e40ee625}
+  '@gorgias/knowledge-service-types@0.2.8':
+    resolution: {integrity: sha512-ZuO5nNSpt1T2gpM72piYbTI66HUYqwqMPcsiIi4cyAt94DRVZO3MWlG3dHS+NTY9CytriykBDDWisPcOP2U+dQ==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-types/0.2.8/dd0a1e445c279a5bc6fada7eee5b9d1b7fe70d44}
+
+  '@gorgias/knowledge-service-validators@0.2.8':
+    resolution: {integrity: sha512-zNwT/dMpaYIqxHWDDi/sQjyqLccCQ52E92fsyEUBlDIv3mpp46QFqIEprDLnHE7/Uhd+AH4VTXprQgj9Xt5HNA==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-validators/0.2.8/d43320478dfc42d8201bffaa496ca4c170361bc0}
 
   '@gorgias/merchant-ui-kit@0.35.3':
     resolution: {integrity: sha512-4te0ugeBtMGwdhygd2FWDHZ5gWxtzMGkvQ6bSRMDL73XH6/Cb0MqZFPKfLBvEpnlNOOvEDJ2zx7dMKFjQr9uGA==, tarball: https://npm.pkg.github.com/download/@gorgias/merchant-ui-kit/0.35.3/49ded6ec09f7413bfb490776a8f7850e3ac71b35}
@@ -2756,17 +2762,20 @@ packages:
       react: ^17
       react-dom: ^17
 
-  '@gorgias/sdk-client@0.8.0':
-    resolution: {integrity: sha512-ve1kjyopLciYtV4GLUjmRaePWqwiwAL4ZVcoq6hY0qrtkLWRcP3GS4X8RRNj5TZBIWUM48WGlJK+mRPivHawig==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-client/0.8.0/959c7e57d5b12f9d72e1ed0f13761d39e2e75f8c}
+  '@gorgias/sdk-client@0.9.0':
+    resolution: {integrity: sha512-2v/tXa/9+NlL7BTLvzRMTwJsM7QabomJJzuGPPq+m9gwE97B8BaP04RjECbymJxXCdmvZtumXH72itVUktYbgg==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-client/0.9.0/8febec9390ff65c726a9d0cad688af7d401c8b7c}
 
-  '@gorgias/sdk-mocks@0.8.0':
-    resolution: {integrity: sha512-ikCCl524XFYukJsEVLyxDvT/88o1l8KxADiw2Jn+waby9FNtrgv1Ar3G5+C8R/JnwpWWYj20pUsnWFTzRjHJkQ==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-mocks/0.8.0/ab29aa71f4cab5d90f3015a44ba5a00573cea080}
+  '@gorgias/sdk-mocks@0.10.1':
+    resolution: {integrity: sha512-VF9FlxCZfFnLjxe9+73Wdxl0tgOuaut67MqMY9YhCsr4c7gAdI1s5UGRzzPB+uhfjP3bkb2a4LDAnYhVvyvxrg==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-mocks/0.10.1/36bc291d3c498bc9e71bb329896842230cf4c27d}
 
-  '@gorgias/sdk-spec-utils@0.8.0':
-    resolution: {integrity: sha512-a9xdc8WNz5miPgt0DOh6km9Pz+oYWGOkx9mUDFi3G9mQ6Ea23aORVeCwfUYzE9gzmmPeacALq0TJvvCZM2KFnA==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-spec-utils/0.8.0/5fb70b11d6c2c274a2d608b92df6e2213af00401}
+  '@gorgias/sdk-mocks@0.11.0':
+    resolution: {integrity: sha512-uSg9W6jrRew2gmYUTLrqZOuXSQT/NcY0Nb/C5ssjHt3EY6ztkZtPoyl0022xkTWVHjfUz/FURJkkDfC7PdqF6g==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-mocks/0.11.0/cb898ef50bc0914e4a2a2e9bca2f08d08e8725c6}
 
-  '@gorgias/sdk-validators@0.7.17':
-    resolution: {integrity: sha512-1OJwcaWZVQB7DXG5zhz0av5jJLhOS2SMYSel5dXqQc6W6nDuQ7+cUzUBWzmn8hLT2C308Ou7c2LwC+M8D0qNvg==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-validators/0.7.17/93c5280f01b099722e74e10ab2eaa773788f6408}
+  '@gorgias/sdk-spec-utils@0.9.0':
+    resolution: {integrity: sha512-jjI1C1GB5SdcA5PiYchmnICrCTnxZB0K6qVhNgPRMBe9IqI+vCpYQ0XF72TTbx3U7vnX5LYspt6RW6EIzyRAAQ==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-spec-utils/0.9.0/d4b443839859bdade5ff9ff25668bd88ee6988ee}
+
+  '@gorgias/sdk-validators@0.9.0':
+    resolution: {integrity: sha512-WbFN8B3pQy3qec9YH4SucZ031VexG247+QlkumtbddFhWL06VMDF0+KK4f8z5uDQtGtfOsMXJjc9MRXNtZVZLQ==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-validators/0.9.0/9529aae58d9c69ec87df9c81979248f4419071fb}
 
   '@gorgias/static-analysis@0.3.0':
     resolution: {integrity: sha512-oV93vVb5qRWIvYWiGi/5XuMxcGxnURyKIjRgcPFhOYnH8mJpaCtTxgJk+1svQkdwz9zJlC7roarwV986qYvsXg==, tarball: https://npm.pkg.github.com/download/@gorgias/static-analysis/0.3.0/d9975fc1db154cbd1074fd8d2f3a0e53832f5bb3}
@@ -6225,6 +6234,10 @@ packages:
       react: ^0.14.0 || ^15.0.0-rc || ^16.0.0-rc || ^16.0.0
       react-dom: ^0.14.0 || ^15.0.0-rc || ^16.0.0-rc || ^16.0.0
 
+  drange@1.1.1:
+    resolution: {integrity: sha512-pYxfDYpued//QpnLIm4Avk7rsNtAtQkUES2cwAYSvD/wd2pKD71gN2Ebj3e7klzXwjocvE8c5vx/1fxwpqmSxA==}
+    engines: {node: '>=4'}
+
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
     engines: {node: '>= 0.4'}
@@ -9150,6 +9163,10 @@ packages:
   queue@6.0.2:
     resolution: {integrity: sha512-iHZWu+q3IdFZFX36ro/lKBkSvfkztY5Y7HMiPlOUjhupPcG2JMfst2KKEpu5XndviX/3UhFbRngUPNKtgvtZiA==}
 
+  randexp@0.5.3:
+    resolution: {integrity: sha512-U+5l2KrcMNOUPYvazA3h5ekF80FHTUG+87SEAmHZmolh1M+i/WyTCxVzmi+tidIa1tM4BSe8g2Y/D3loWDjj+w==}
+    engines: {node: '>=4'}
+
   randombytes@2.0.3:
     resolution: {integrity: sha512-lDVjxQQFoCG1jcrP06LNo2lbWp4QTShEXnhActFBwYuHprllQV6VUpwreApsYqCgD+N1mHoqJ/BI/4eV4R2GYg==}
 
@@ -9706,6 +9723,10 @@ packages:
   restore-cursor@3.1.0:
     resolution: {integrity: sha512-l+sSefzHpj5qimhFSE5a8nufZYAM3sBSVMAPtYkmC+4EH2anSGaEMXSD0izRQbu9nfyQ9y5JrVmp7E8oZrUjvA==}
     engines: {node: '>=8'}
+
+  ret@0.2.2:
+    resolution: {integrity: sha512-M0b3YWQs7R3Z917WRQy1HHA7Ba7D8hvZg6UE5mLykJxQVE2ju0IXbGlaHPPlkY+WN7wFP+wUMXmBFA0aV6vYGQ==}
+    engines: {node: '>=4'}
 
   retry@0.13.1:
     resolution: {integrity: sha512-XQBQ3I8W1Cge0Seh+6gjj03LbmRFWuoszgK9ooCpwYIrhhoO80pfq4cUkU5DkknwfOfFteRwlZ56PYOGYyFWdg==}
@@ -12982,20 +13003,20 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@gorgias/helpdesk-client@0.8.2':
+  '@gorgias/helpdesk-client@0.8.18':
     dependencies:
-      '@gorgias/helpdesk-types': 0.7.25
-      '@gorgias/sdk-client': 0.8.0
+      '@gorgias/helpdesk-types': 0.7.40
+      '@gorgias/sdk-client': 0.9.0
       axios: 1.8.4
     transitivePeerDependencies:
       - debug
 
-  '@gorgias/helpdesk-mocks@0.7.25(@types/node@22.13.13)(typescript@5.3.3)':
+  '@gorgias/helpdesk-mocks@0.7.41(@types/node@22.13.13)(typescript@5.3.3)':
     dependencies:
-      '@gorgias/helpdesk-spec': 0.8.2
-      '@gorgias/helpdesk-types': 0.7.25
-      '@gorgias/sdk-mocks': 0.8.0(@types/node@22.13.13)(typescript@5.3.3)
-      '@gorgias/sdk-spec-utils': 0.8.0
+      '@gorgias/helpdesk-spec': 0.10.2
+      '@gorgias/helpdesk-types': 0.7.40
+      '@gorgias/sdk-mocks': 0.11.0(@types/node@22.13.13)(typescript@5.3.3)
+      '@gorgias/sdk-spec-utils': 0.9.0
       lodash-es: 4.17.21
       msw: 2.9.0(@types/node@22.13.13)(typescript@5.3.3)
     transitivePeerDependencies:
@@ -13013,10 +13034,10 @@ snapshots:
       - react-dom
       - react-native
 
-  '@gorgias/helpdesk-queries@0.8.2(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)':
+  '@gorgias/helpdesk-queries@0.8.18(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)':
     dependencies:
-      '@gorgias/helpdesk-client': 0.8.2
-      '@gorgias/helpdesk-types': 0.7.25
+      '@gorgias/helpdesk-client': 0.8.18
+      '@gorgias/helpdesk-types': 0.7.40
       '@tanstack/react-query': 4.36.1(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)
     transitivePeerDependencies:
       - debug
@@ -13024,47 +13045,51 @@ snapshots:
       - react-dom
       - react-native
 
-  '@gorgias/helpdesk-spec@0.8.2': {}
+  '@gorgias/helpdesk-spec@0.10.2': {}
+
+  '@gorgias/helpdesk-spec@0.9.7': {}
 
   '@gorgias/helpdesk-types@0.7.20': {}
 
-  '@gorgias/helpdesk-types@0.7.25': {}
+  '@gorgias/helpdesk-types@0.7.37': {}
 
-  '@gorgias/helpdesk-validators@0.7.25':
+  '@gorgias/helpdesk-types@0.7.40': {}
+
+  '@gorgias/helpdesk-validators@0.7.37':
     dependencies:
       '@apideck/better-ajv-errors': 0.3.6(ajv@8.17.1)
-      '@gorgias/helpdesk-spec': 0.8.2
-      '@gorgias/helpdesk-types': 0.7.25
-      '@gorgias/sdk-spec-utils': 0.8.0
-      '@gorgias/sdk-validators': 0.7.17
+      '@gorgias/helpdesk-spec': 0.9.7
+      '@gorgias/helpdesk-types': 0.7.37
+      '@gorgias/sdk-spec-utils': 0.9.0
+      '@gorgias/sdk-validators': 0.9.0
       ajv: 8.17.1
       ajv-formats: 3.0.1(ajv@8.17.1)
       immer: 10.1.1
       json-schema: 0.4.0
 
-  '@gorgias/knowledge-service-client@0.2.0':
+  '@gorgias/knowledge-service-client@0.2.8':
     dependencies:
-      '@gorgias/knowledge-service-types': 0.2.0
+      '@gorgias/knowledge-service-types': 0.2.8
       axios: 1.8.4
     transitivePeerDependencies:
       - debug
 
-  '@gorgias/knowledge-service-mocks@0.2.0(@types/node@22.13.13)(typescript@5.3.3)':
+  '@gorgias/knowledge-service-mocks@0.2.8(@types/node@22.13.13)(typescript@5.3.3)':
     dependencies:
-      '@gorgias/knowledge-service-spec': 0.2.0
-      '@gorgias/knowledge-service-types': 0.2.0
-      '@gorgias/sdk-mocks': 0.8.0(@types/node@22.13.13)(typescript@5.3.3)
-      '@gorgias/sdk-spec-utils': 0.8.0
+      '@gorgias/knowledge-service-spec': 0.3.6
+      '@gorgias/knowledge-service-types': 0.2.8
+      '@gorgias/sdk-mocks': 0.10.1(@types/node@22.13.13)(typescript@5.3.3)
+      '@gorgias/sdk-spec-utils': 0.9.0
       lodash-es: 4.17.21
       msw: 2.9.0(@types/node@22.13.13)(typescript@5.3.3)
     transitivePeerDependencies:
       - '@types/node'
       - typescript
 
-  '@gorgias/knowledge-service-queries@0.2.0(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)':
+  '@gorgias/knowledge-service-queries@0.2.8(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)':
     dependencies:
-      '@gorgias/knowledge-service-client': 0.2.0
-      '@gorgias/knowledge-service-types': 0.2.0
+      '@gorgias/knowledge-service-client': 0.2.8
+      '@gorgias/knowledge-service-types': 0.2.8
       '@tanstack/react-query': 4.36.1(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)
     transitivePeerDependencies:
       - debug
@@ -13072,17 +13097,17 @@ snapshots:
       - react-dom
       - react-native
 
-  '@gorgias/knowledge-service-spec@0.2.0': {}
+  '@gorgias/knowledge-service-spec@0.3.6': {}
 
-  '@gorgias/knowledge-service-types@0.2.0': {}
+  '@gorgias/knowledge-service-types@0.2.8': {}
 
-  '@gorgias/knowledge-service-validators@0.2.0':
+  '@gorgias/knowledge-service-validators@0.2.8':
     dependencies:
       '@apideck/better-ajv-errors': 0.3.6(ajv@8.17.1)
-      '@gorgias/knowledge-service-spec': 0.2.0
-      '@gorgias/knowledge-service-types': 0.2.0
-      '@gorgias/sdk-spec-utils': 0.8.0
-      '@gorgias/sdk-validators': 0.7.17
+      '@gorgias/knowledge-service-spec': 0.3.6
+      '@gorgias/knowledge-service-types': 0.2.8
+      '@gorgias/sdk-spec-utils': 0.9.0
+      '@gorgias/sdk-validators': 0.9.0
       ajv: 8.17.1
       ajv-formats: 3.0.1(ajv@8.17.1)
       immer: 10.1.1
@@ -13117,23 +13142,35 @@ snapshots:
       - react-native
       - supports-color
 
-  '@gorgias/sdk-client@0.8.0':
+  '@gorgias/sdk-client@0.9.0':
     dependencies:
       axios: 1.8.4
     transitivePeerDependencies:
       - debug
 
-  '@gorgias/sdk-mocks@0.8.0(@types/node@22.13.13)(typescript@5.3.3)':
+  '@gorgias/sdk-mocks@0.10.1(@types/node@22.13.13)(typescript@5.3.3)':
     dependencies:
       '@faker-js/faker': 9.8.0
-      '@gorgias/sdk-spec-utils': 0.8.0
+      '@gorgias/sdk-spec-utils': 0.9.0
       lodash-es: 4.17.21
       msw: 2.9.0(@types/node@22.13.13)(typescript@5.3.3)
+      randexp: 0.5.3
     transitivePeerDependencies:
       - '@types/node'
       - typescript
 
-  '@gorgias/sdk-spec-utils@0.8.0':
+  '@gorgias/sdk-mocks@0.11.0(@types/node@22.13.13)(typescript@5.3.3)':
+    dependencies:
+      '@faker-js/faker': 9.8.0
+      '@gorgias/sdk-spec-utils': 0.9.0
+      lodash-es: 4.17.21
+      msw: 2.9.0(@types/node@22.13.13)(typescript@5.3.3)
+      randexp: 0.5.3
+    transitivePeerDependencies:
+      - '@types/node'
+      - typescript
+
+  '@gorgias/sdk-spec-utils@0.9.0':
     dependencies:
       immer: 10.1.1
       js-yaml: 4.1.0
@@ -13141,10 +13178,10 @@ snapshots:
       jsonpath: 1.1.1
       lodash-es: 4.17.21
 
-  '@gorgias/sdk-validators@0.7.17':
+  '@gorgias/sdk-validators@0.9.0':
     dependencies:
       '@apideck/better-ajv-errors': 0.3.6(ajv@8.17.1)
-      '@gorgias/sdk-spec-utils': 0.8.0
+      '@gorgias/sdk-spec-utils': 0.9.0
       ajv: 8.17.1
       ajv-formats: 3.0.1(ajv@8.17.1)
       immer: 10.1.1
@@ -17378,6 +17415,8 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
+  drange@1.1.1: {}
+
   dunder-proto@1.0.1:
     dependencies:
       call-bind-apply-helpers: 1.0.2
@@ -21019,6 +21058,11 @@ snapshots:
     dependencies:
       inherits: 2.0.4
 
+  randexp@0.5.3:
+    dependencies:
+      drange: 1.1.1
+      ret: 0.2.2
+
   randombytes@2.0.3: {}
 
   randombytes@2.1.0:
@@ -21736,6 +21780,8 @@ snapshots:
     dependencies:
       onetime: 5.1.2
       signal-exit: 3.0.7
+
+  ret@0.2.2: {}
 
   retry@0.13.1: {}
 

@@ -6,9 +6,8 @@ import _sortBy from 'lodash/sortBy'
 import {
     AnalyticsCustomReport,
     CreateAnalyticsCustomReportBody,
-    getGetAnalyticsCustomReportQueryOptions,
-    getListAnalyticsCustomReportsQueryOptions,
     HttpResponse,
+    queryKeys,
     useCreateAnalyticsCustomReport,
     useDeleteAnalyticsCustomReport,
     useListAnalyticsCustomReports,
@@ -77,7 +76,6 @@ export const useDashboardActions = () => {
         },
     })
     const listDashboardsQuery = useListAnalyticsCustomReports()
-    const listReportsQueryKey = listDashboardsQuery.queryKey
 
     const createDashboardHandler = useCallback(
         ({
@@ -110,10 +108,10 @@ export const useDashboardActions = () => {
                 },
                 {
                     onSuccess: ({ data }: { data: AnalyticsCustomReport }) => {
-                        const { queryKey: dashboardsQueryKey } =
-                            getListAnalyticsCustomReportsQueryOptions()
+                        const queryKey =
+                            queryKeys.analyticsCustomReports.listAnalyticsCustomReports()
 
-                        void queryClient.invalidateQueries(dashboardsQueryKey)
+                        void queryClient.invalidateQueries(queryKey)
 
                         handleMutationSuccess(
                             dispatch,
@@ -143,8 +141,9 @@ export const useDashboardActions = () => {
                 },
                 {
                     onSuccess: () => {
-                        void queryClient.invalidateQueries({
-                            queryKey: listReportsQueryKey,
+                        queryClient.invalidateQueries({
+                            queryKey:
+                                queryKeys.analyticsCustomReports.listAnalyticsCustomReports(),
                         })
 
                         handleMutationSuccess(
@@ -160,7 +159,7 @@ export const useDashboardActions = () => {
                 },
             )
         },
-        [createMutation, dispatch, listReportsQueryKey, queryClient],
+        [createMutation, dispatch, queryClient],
     )
 
     const deleteReportHandler = useCallback(
@@ -180,7 +179,8 @@ export const useDashboardActions = () => {
                 {
                     onSuccess: () => {
                         void queryClient.invalidateQueries({
-                            queryKey: listReportsQueryKey,
+                            queryKey:
+                                queryKeys.analyticsCustomReports.listAnalyticsCustomReports(),
                         })
 
                         handleMutationSuccess(
@@ -200,7 +200,7 @@ export const useDashboardActions = () => {
                 },
             )
         },
-        [deleteMutation, dispatch, listReportsQueryKey, queryClient],
+        [deleteMutation, dispatch, queryClient],
     )
 
     const updateDashboardHandler = useCallback(
@@ -237,15 +237,14 @@ export const useDashboardActions = () => {
                                 `Successfully saved ${chartIds?.length} ${chartIds?.length === 1 ? 'chart' : 'charts'} to ${dashboard.name}`,
                         )
 
-                        const byIdQueryKey =
-                            getGetAnalyticsCustomReportQueryOptions(
+                        queryClient.invalidateQueries(
+                            queryKeys.analyticsCustomReports.getAnalyticsCustomReport(
                                 data.data.id,
-                            ).queryKey
-
-                        void Promise.all([
-                            queryClient.invalidateQueries(byIdQueryKey),
-                            queryClient.invalidateQueries(listReportsQueryKey),
-                        ])
+                            ),
+                        )
+                        queryClient.invalidateQueries(
+                            queryKeys.analyticsCustomReports.listAnalyticsCustomReports(),
+                        )
 
                         if (onSuccess) {
                             onSuccess()
@@ -257,7 +256,7 @@ export const useDashboardActions = () => {
             )
         },
 
-        [updateMutation, dispatch, queryClient, listReportsQueryKey],
+        [updateMutation, dispatch, queryClient],
     )
 
     const addChartToDashboardHandler = useCallback(
@@ -323,6 +322,7 @@ export const useDashboardActions = () => {
         addChartToDashboardHandler,
         getDashboardsHandler,
         removeChartFromDashboardHandler,
+        isListing: listDashboardsQuery.isLoading,
         isCreateMutationLoading: createMutation.isLoading,
         isCreateMutationError: createMutation.isError,
         isUpdateMutationLoading: updateMutation.isLoading,

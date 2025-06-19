@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {
-    ListCustomFieldConditionsQueryResult,
+    ListCustomFieldConditionsResult,
     queryKeys,
     useUpdateCustomFieldConditions as useBulkUpdate,
 } from '@gorgias/helpdesk-queries'
@@ -75,7 +75,7 @@ describe('useUpdateCustomFieldConditions', () => {
         )
 
         // The new data should match the one passed to the endpoint, sorted by sort_order
-        const results: ListCustomFieldConditionsQueryResult =
+        const results: ListCustomFieldConditionsResult =
             setQueryDataMock.mock.results[0].value
         expect(
             results.data.data.map(({ id, sort_order }) => ({ id, sort_order })),

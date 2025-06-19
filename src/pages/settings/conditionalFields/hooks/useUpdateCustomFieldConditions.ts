@@ -2,7 +2,7 @@ import { useQueryClient } from '@tanstack/react-query'
 
 import {
     CustomFieldCondition,
-    ListCustomFieldConditionsQueryResult,
+    ListCustomFieldConditionsResult,
     queryKeys,
     useUpdateCustomFieldConditions as useBulkUpdate,
 } from '@gorgias/helpdesk-queries'
@@ -27,7 +27,7 @@ export default function useUpdateCustomFieldConditions() {
                     data.reduce((acc, row) => ({ ...acc, [row.id]: row }), {})
 
                 // Optimistically update each values with the partial new data
-                queryClient.setQueryData<ListCustomFieldConditionsQueryResult>(
+                queryClient.setQueryData<ListCustomFieldConditionsResult>(
                     queryKey,
                     (oldData) => {
                         if (!oldData) return

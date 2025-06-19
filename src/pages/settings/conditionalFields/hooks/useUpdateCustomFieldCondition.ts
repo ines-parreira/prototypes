@@ -2,7 +2,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { produce } from 'immer'
 
 import {
-    ListCustomFieldConditionsQueryResult,
+    ListCustomFieldConditionsResult,
     queryKeys,
     useUpdateCustomFieldCondition as useUpdate,
 } from '@gorgias/helpdesk-queries'
@@ -20,7 +20,7 @@ export default function useUpdateCustomFieldCondition() {
             onSuccess: (_response, { id, data }) => {
                 const queryKey =
                     queryKeys.customFieldConditions.listCustomFieldConditions()
-                queryClient.setQueryData<ListCustomFieldConditionsQueryResult>(
+                queryClient.setQueryData<ListCustomFieldConditionsResult>(
                     queryKey,
                     (oldData) => {
                         if (!oldData) return

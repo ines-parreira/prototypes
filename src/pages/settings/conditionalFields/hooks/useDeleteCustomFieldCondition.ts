@@ -2,7 +2,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { produce } from 'immer'
 
 import {
-    ListCustomFieldConditionsQueryResult,
+    ListCustomFieldConditionsResult,
     queryKeys,
     useDeleteCustomFieldCondition as useDelete,
 } from '@gorgias/helpdesk-queries'
@@ -26,7 +26,7 @@ export default function useDeleteCustomFieldCondition() {
             onSuccess: (_response, { id }) => {
                 const queryKey =
                     queryKeys.customFieldConditions.listCustomFieldConditions()
-                queryClient.setQueryData<ListCustomFieldConditionsQueryResult>(
+                queryClient.setQueryData<ListCustomFieldConditionsResult>(
                     queryKey,
                     (oldData) => {
                         if (!oldData) return

@@ -1,6 +1,6 @@
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 
-import { getGetAnalyticsCustomReportQueryOptions } from '@gorgias/helpdesk-queries'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { useUpdateDashboardCache } from 'hooks/reporting/dashboards/useUpdateDashboardCache'
 import { DashboardSchema } from 'pages/stats/dashboards/types'
@@ -8,9 +8,6 @@ import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('@gorgias/helpdesk-queries')
-const getGetAnalyticsCustomReportQueryOptionsMock = assumeMock(
-    getGetAnalyticsCustomReportQueryOptions,
-)
 
 jest.mock('@tanstack/react-query')
 const useQueryClientMock = assumeMock(useQueryClient)
@@ -28,10 +25,6 @@ describe('useUpdateQueryCache(dashboardId)', () => {
     const dashboard = { name: 'Text Report', emoji: '🦫' } as DashboardSchema
 
     beforeEach(() => {
-        getGetAnalyticsCustomReportQueryOptionsMock.mockImplementation(
-            (id: number) => ({ queryKey: ['dashboard', id] }),
-        )
-
         useQueryClientMock.mockImplementation(() => mockQueryClient)
     })
 
@@ -47,7 +40,7 @@ describe('useUpdateQueryCache(dashboardId)', () => {
         result.current(dashboard)
 
         expect(mockQueryClient.getQueryData).toHaveBeenCalledWith(
-            getGetAnalyticsCustomReportQueryOptionsMock(id).queryKey,
+            queryKeys.analyticsCustomReports.getAnalyticsCustomReport(id),
         )
     })
 
@@ -57,7 +50,7 @@ describe('useUpdateQueryCache(dashboardId)', () => {
         result.current(dashboard)
 
         expect(mockQueryClient.setQueryData).toHaveBeenCalledWith(
-            getGetAnalyticsCustomReportQueryOptionsMock(id).queryKey,
+            queryKeys.analyticsCustomReports.getAnalyticsCustomReport(id),
             expect.objectContaining({
                 data: expect.objectContaining(dashboard),
             }),
@@ -73,7 +66,7 @@ describe('useUpdateQueryCache(dashboardId)', () => {
         result.current(dashboard)
 
         expect(mockQueryClient.setQueryData).toHaveBeenCalledWith(
-            getGetAnalyticsCustomReportQueryOptionsMock(id).queryKey,
+            queryKeys.analyticsCustomReports.getAnalyticsCustomReport(id),
             expect.objectContaining({
                 ...cachedData,
                 data: expect.objectContaining(dashboard),

@@ -2,7 +2,7 @@ import { cloneDeep, merge } from 'lodash'
 import moment from 'moment/moment'
 
 import {
-    ListLiveCallQueueAgentsQueryResult,
+    ListLiveCallQueueAgentsResult,
     ListLiveCallQueueVoiceCallsParams,
     ListLiveCallQueueVoiceCallsResult,
     LiveCallQueueAgent,
@@ -131,7 +131,7 @@ export const updateAgentStatusInLiveAgentsQueryCache = (
     const queryKey =
         queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
 
-    appQueryClient.setQueryData<ListLiveCallQueueAgentsQueryResult>(
+    appQueryClient.setQueryData<ListLiveCallQueueAgentsResult>(
         queryKey,
         (oldData) => {
             if (!oldData) return
@@ -177,7 +177,7 @@ export const removeAgentStatusInLiveAgentsQueryCache = (
     const queryKey =
         queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
 
-    appQueryClient.setQueryData<ListLiveCallQueueAgentsQueryResult>(
+    appQueryClient.setQueryData<ListLiveCallQueueAgentsResult>(
         queryKey,
         (oldData) => {
             if (!oldData) return
@@ -213,7 +213,7 @@ export const removeVoiceCallInLiveAgentsQueryCache = (
     const queryKey =
         queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
 
-    appQueryClient.setQueryData<ListLiveCallQueueAgentsQueryResult>(
+    appQueryClient.setQueryData<ListLiveCallQueueAgentsResult>(
         queryKey,
         (oldData) => {
             if (!oldData) return
