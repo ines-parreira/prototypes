@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { MutableRefObject, useEffect, useMemo, useRef } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
@@ -6,17 +6,21 @@ import { DomainEvent } from '@gorgias/events'
 import {
     ListLiveCallQueueVoiceCallsParams,
     LiveCallQueueVoiceCall,
+    useListLiveCallQueueAgents,
     VoiceCallDirection,
     VoiceCallStatus,
 } from '@gorgias/helpdesk-queries'
+import { AgentStatus } from '@gorgias/helpdesk-types'
 import { ChannelNameOptions, useAccountId } from '@gorgias/realtime'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 
 import {
     addVoiceCallToLiveCallsQueryCache,
+    getWrapUpStatusesThatShouldExpire,
     removeAgentStatusInLiveAgentsQueryCache,
     removeVoiceCallInLiveAgentsQueryCache,
+    setWrapUpExpirationTimer,
     transformDateToUTCString,
     updateAgentStatusInLiveAgentsQueryCache,
     updateVoiceCallInLiveCallsQueryCache,
@@ -25,10 +29,14 @@ import {
 const CHANNEL_NAME = 'stats.liveVoice'
 
 export const useLiveVoiceUpdates = (
-    params: ListLiveCallQueueVoiceCallsParams | undefined,
-    voiceCalls: LiveCallQueueVoiceCall[] | undefined,
+    params?: ListLiveCallQueueVoiceCallsParams,
+    voiceCalls?: LiveCallQueueVoiceCall[],
 ) => {
+    const processedEvents = useRef<Set<string>>(new Set())
     const useLiveUpdates = useFlags()[FeatureFlagKey.UseLiveVoiceUpdates]
+    const timeouts: MutableRefObject<Record<string, NodeJS.Timeout>> = useRef(
+        {},
+    )
     const accountId = useAccountId()
     const channel: ChannelNameOptions | undefined = useMemo(() => {
         if (!accountId) {
@@ -41,16 +49,56 @@ export const useLiveVoiceUpdates = (
         }
     }, [accountId])
 
+    const { data: agentsData } = useListLiveCallQueueAgents(params, {
+        http: {
+            paramsSerializer: {
+                indexes: null,
+            },
+        },
+        query: {
+            refetchOnWindowFocus: false,
+            enabled: false,
+        },
+    })
+
     const voiceCallIdToSid: Record<number, string> =
         voiceCalls?.reduce(
             (acc, call) => ({ ...acc, [call.id]: call.external_id }),
             {},
         ) ?? {}
 
+    useEffect(() => {
+        // set up expiration timers for wrap-up statuses of the agents
+        const wrapUpStatuses = getWrapUpStatusesThatShouldExpire(
+            agentsData?.data?.data,
+        )
+
+        if (wrapUpStatuses.length > 0) {
+            wrapUpStatuses.forEach((status) => {
+                setWrapUpExpirationTimer(timeouts, status, params)
+            })
+        }
+
+        // clear existing timeouts
+        return () => {
+            Object.values(timeouts.current).forEach((timeout) =>
+                clearTimeout(timeout),
+            )
+            timeouts.current = {}
+        }
+    }, [agentsData, params])
+
     const handleEvent = (event: DomainEvent) => {
         if (!useLiveUpdates) {
             return
         }
+
+        // avoid processing the same event multiple times
+        if (processedEvents.current.has(event.id)) {
+            return
+        }
+        processedEvents.current.add(event.id)
+
         switch (event.dataschema) {
             case '//helpdesk/phone.voice-call.inbound.received/1.0.0': {
                 const data = event.data
@@ -169,6 +217,36 @@ export const useLiveVoiceUpdates = (
                     },
                     params,
                 )
+                break
+            }
+            case '//helpdesk/phone.voice-call.inbound.wrap-up-ended/1.1.0': {
+                const callSid = event.data.call_sid
+                if (callSid) {
+                    removeVoiceCallInLiveAgentsQueryCache(
+                        callSid,
+                        params,
+                        false, // remove wrap up from live agents cache
+                    )
+                }
+                break
+            }
+            case '//helpdesk/phone.voice-call.inbound.wrap-up-started/1.1.0': {
+                const callSid = event.data.call_sid
+                const userId = event.data.user_id
+                if (callSid) {
+                    updateAgentStatusInLiveAgentsQueryCache(
+                        userId,
+                        {
+                            agent_id: userId,
+                            call_sid: callSid,
+                            status: AgentStatus.WrappingUp,
+                            expiration_datetime: transformDateToUTCString(
+                                event.data.expiration_datetime,
+                            ),
+                        },
+                        params,
+                    )
+                }
                 break
             }
             case '//helpdesk/phone.voice-call.outbound.started/1.0.0': {

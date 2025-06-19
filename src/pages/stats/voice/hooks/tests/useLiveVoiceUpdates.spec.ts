@@ -2,22 +2,38 @@ import { mockFlags } from 'jest-launchdarkly-mock'
 
 import { DomainEvent } from '@gorgias/events'
 import {
+    ListLiveCallQueueAgentsResult,
     LiveCallQueueVoiceCall,
     queryKeys,
     VoiceCallDirection,
     VoiceCallStatus,
 } from '@gorgias/helpdesk-queries'
+import * as apiQueries from '@gorgias/helpdesk-queries'
 import { useAccountId } from '@gorgias/realtime'
 
 import { appQueryClient } from 'api/queryClient'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { useLiveVoiceUpdates } from '../useLiveVoiceUpdates'
 
+jest.mock('@gorgias/helpdesk-queries', () => {
+    return {
+        ...jest.requireActual('@gorgias/helpdesk-queries'),
+        useListLiveCallQueueVoiceCalls: jest.fn(),
+        useListLiveCallQueueAgents: jest.fn(),
+    }
+})
 jest.mock('@gorgias/realtime', () => ({
     useAccountId: jest.fn(),
 }))
+const useListLiveCallQueueAgentsMock = assumeMock(
+    apiQueries.useListLiveCallQueueAgents,
+)
+const useListLiveCallQueueVoiceCallsMock = assumeMock(
+    apiQueries.useListLiveCallQueueVoiceCalls,
+)
 
 const mockUseAccountId = useAccountId as jest.Mock
 
@@ -29,6 +45,19 @@ describe('useLiveVoiceUpdates', () => {
             external_id: 'abc',
         },
     ] as LiveCallQueueVoiceCall[]
+    const agentStatus = {
+        id: 1,
+        name: 'Test Agent',
+        profile_picture_url: null,
+        online: false,
+        available: false,
+        forward_calls: false,
+        forward_when_offline: false,
+        is_available_for_call: false,
+        phone_integration_ids: [],
+        voice_queue_ids: [],
+        call_statuses: [],
+    }
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -36,6 +65,15 @@ describe('useLiveVoiceUpdates', () => {
 
         jest.useFakeTimers()
         jest.setSystemTime(mockedDate)
+
+        useListLiveCallQueueAgentsMock.mockReturnValue({
+            data: [],
+            isLoading: false,
+        } as any)
+        useListLiveCallQueueVoiceCallsMock.mockReturnValue({
+            data: { data: [] },
+            isLoading: false,
+        } as any)
     })
 
     describe('get channel', () => {
@@ -62,6 +100,57 @@ describe('useLiveVoiceUpdates', () => {
                 accountId,
             })
         })
+    })
+
+    it('should  handle events only once', () => {
+        jest.useRealTimers()
+
+        const queryKey = queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(
+            {},
+        )
+        const mockOldData = {
+            data: {
+                data: [agentStatus],
+            },
+        }
+
+        appQueryClient.setQueryData(queryKey, mockOldData)
+
+        const { result } = renderHook(() => useLiveVoiceUpdates({}, voiceCalls))
+
+        const mockEvent = {
+            id: 'test-event-id',
+            dataschema: '//helpdesk/phone.voice-call.inbound.answered/1.0.0',
+            data: {
+                voice_call_id: 123,
+                account_id: 1,
+                user_id: 1,
+            },
+        } as DomainEvent
+
+        // process the event for the first time and check we update the status creation
+        result.current.handleEvent(mockEvent)
+
+        const response = appQueryClient.getQueryData(
+            queryKey,
+        ) as ListLiveCallQueueAgentsResult
+        const callStatuses = response?.data?.data[0]?.call_statuses
+        const statusCreatedAt = callStatuses
+            ? callStatuses[0]?.created_datetime
+            : undefined
+        expect(statusCreatedAt).not.toBeUndefined()
+
+        // process the event again and check we didn't update the status creation
+        result.current.handleEvent(mockEvent)
+        const updatedResponse = appQueryClient.getQueryData(
+            queryKey,
+        ) as ListLiveCallQueueAgentsResult
+        const updatedCallStatuses =
+            updatedResponse?.data?.data[0]?.call_statuses
+        const updatedStatusCreatedAt = updatedCallStatuses
+            ? updatedCallStatuses[0]?.created_datetime
+            : undefined
+        expect(updatedStatusCreatedAt).toBe(statusCreatedAt)
     })
 
     describe('handles inbound.received event', () => {
@@ -201,19 +290,6 @@ describe('useLiveVoiceUpdates', () => {
                 user_id: 1,
             },
         } as DomainEvent
-        const agentStatus = {
-            id: 1,
-            name: 'Test Agent',
-            profile_picture_url: null,
-            online: false,
-            available: false,
-            forward_calls: false,
-            forward_when_offline: false,
-            is_available_for_call: false,
-            phone_integration_ids: [],
-            voice_queue_ids: [],
-            call_statuses: [],
-        }
 
         it('should update voice call in the list when an agent is rang', () => {
             const queryKey =
@@ -405,19 +481,6 @@ describe('useLiveVoiceUpdates', () => {
                 user_id: 1,
             },
         } as DomainEvent
-        const agentStatus = {
-            id: 1,
-            name: 'Test Agent',
-            profile_picture_url: null,
-            online: false,
-            available: false,
-            forward_calls: false,
-            forward_when_offline: false,
-            is_available_for_call: false,
-            phone_integration_ids: [],
-            voice_queue_ids: [],
-            call_statuses: [],
-        }
 
         it('should update voice call in the list when an agent answered', () => {
             const queryKey =
@@ -1010,6 +1073,62 @@ describe('useLiveVoiceUpdates', () => {
                 },
             })
         })
+
+        it.each([
+            '//helpdesk/phone.voice-call.inbound.ended/1.1.0',
+            '//helpdesk/phone.voice-call.outbound.ended/1.1.0',
+            '//helpdesk/phone.voice-call.inbound.ending-triggered/1.1.0',
+        ])('should not remove wrapping up gent statuses', (dataschema) => {
+            const queryKey =
+                queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+            const mockOldData = {
+                data: {
+                    data: [
+                        {
+                            id: 123,
+                            call_statuses: [
+                                {
+                                    call_sid: 'abc',
+                                    status: 'wrapping-up',
+                                    created_datetime: mockedDate.toISOString(),
+                                },
+                            ],
+                        },
+                    ],
+                },
+            }
+            const mockEvent = {
+                dataschema: dataschema,
+                data: {
+                    voice_call_id: 123,
+                },
+            } as DomainEvent
+            appQueryClient.setQueryData(queryKey, mockOldData)
+
+            const { result } = renderHook(() =>
+                useLiveVoiceUpdates(params, voiceCalls),
+            )
+
+            result.current.handleEvent(mockEvent)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            id: 123,
+                            call_statuses: [
+                                {
+                                    call_sid: 'abc',
+                                    status: 'wrapping-up',
+                                    created_datetime: mockedDate.toISOString(),
+                                },
+                            ],
+                        },
+                    ],
+                },
+            })
+        })
     })
 
     describe('handles outbound.started event', () => {
@@ -1036,19 +1155,6 @@ describe('useLiveVoiceUpdates', () => {
                 user_id: 1,
             },
         } as DomainEvent
-        const agentStatus = {
-            id: 1,
-            name: 'Test Agent',
-            profile_picture_url: null,
-            online: false,
-            available: false,
-            forward_calls: false,
-            forward_when_offline: false,
-            is_available_for_call: false,
-            phone_integration_ids: [],
-            voice_queue_ids: [],
-            call_statuses: [],
-        }
 
         it('should handle inbound voice call event and add it to the list', () => {
             const mockOldData = {
@@ -1175,19 +1281,6 @@ describe('useLiveVoiceUpdates', () => {
                 user_id: 1,
             },
         } as DomainEvent
-        const agentStatus = {
-            id: 1,
-            name: 'Test Agent',
-            profile_picture_url: null,
-            online: false,
-            available: false,
-            forward_calls: false,
-            forward_when_offline: false,
-            is_available_for_call: false,
-            phone_integration_ids: [],
-            voice_queue_ids: [],
-            call_statuses: [],
-        }
 
         it('should update voice call in the list when an agent answered', () => {
             const queryKey =
@@ -1274,6 +1367,225 @@ describe('useLiveVoiceUpdates', () => {
                                     call_sid: 'abc',
                                     status: 'in-progress',
                                     created_datetime: mockedDate.toISOString(),
+                                },
+                            ],
+                        },
+                    ],
+                },
+            })
+        })
+    })
+
+    describe('handles wrap-up events', () => {
+        const params = {
+            agent_ids: [1],
+            integration_ids: [2],
+            voice_queue_ids: [3],
+        }
+
+        const mockWrapUpStartedEvent = {
+            dataschema:
+                '//helpdesk/phone.voice-call.inbound.wrap-up-started/1.1.0',
+            data: {
+                voice_call_id: 123,
+                account_id: 1,
+                user_id: 1,
+                call_sid: 'abc',
+                expiration_datetime: mockedDate,
+            },
+        } as DomainEvent
+        const mockWrapUpEndedEvent = {
+            dataschema:
+                '//helpdesk/phone.voice-call.inbound.wrap-up-ended/1.1.0',
+            data: {
+                voice_call_id: 123,
+                account_id: 1,
+                user_id: 1,
+                call_sid: 'abc',
+            },
+        } as DomainEvent
+
+        it('should create the agent status on started event', () => {
+            const queryKey =
+                queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+            const mockOldData = {
+                data: {
+                    data: [agentStatus],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, mockOldData)
+
+            const { result } = renderHook(() =>
+                useLiveVoiceUpdates(params, voiceCalls),
+            )
+
+            result.current.handleEvent(mockWrapUpStartedEvent)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            ...agentStatus,
+                            call_statuses: [
+                                {
+                                    agent_id: 1,
+                                    call_sid: 'abc',
+                                    status: 'wrapping-up',
+                                    expiration_datetime:
+                                        mockedDate.toISOString(),
+                                },
+                            ],
+                        },
+                    ],
+                },
+            })
+        })
+
+        it('should create the agent status on ended event', () => {
+            const queryKey =
+                queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+            const mockOldData = {
+                data: {
+                    data: [
+                        {
+                            ...agentStatus,
+                            call_statuses: [
+                                {
+                                    call_sid: 'abc',
+                                    status: 'wrapping-up',
+                                    agent_id: 1,
+                                },
+                            ],
+                        },
+                    ],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, mockOldData)
+
+            const { result } = renderHook(() =>
+                useLiveVoiceUpdates(params, voiceCalls),
+            )
+
+            result.current.handleEvent(mockWrapUpEndedEvent)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            id: 1,
+                            name: 'Test Agent',
+                            profile_picture_url: null,
+                            online: false,
+                            available: false,
+                            forward_calls: false,
+                            forward_when_offline: false,
+                            is_available_for_call: false,
+                            phone_integration_ids: [],
+                            voice_queue_ids: [],
+                            call_statuses: [],
+                        },
+                    ],
+                },
+            })
+        })
+
+        it('should do nothing for missing callSid on started event', () => {
+            const queryKey =
+                queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+            const mockOldData = {
+                data: {
+                    data: [agentStatus],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, mockOldData)
+
+            const { result } = renderHook(() =>
+                useLiveVoiceUpdates(params, voiceCalls),
+            )
+            const mockEvent = {
+                dataschema:
+                    '//helpdesk/phone.voice-call.inbound.wrap-up-started/1.1.0',
+                data: {
+                    voice_call_id: 123,
+                    account_id: 1,
+                    user_id: 1,
+                    expiration_datetime: mockedDate,
+                },
+            } as DomainEvent
+
+            result.current.handleEvent(mockEvent)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            ...agentStatus,
+                            call_statuses: [],
+                        },
+                    ],
+                },
+            })
+        })
+
+        it('should do nothing for missing callSid on ended event', () => {
+            const queryKey =
+                queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+            const mockOldData = {
+                data: {
+                    data: [
+                        {
+                            ...agentStatus,
+                            call_statuses: [
+                                {
+                                    call_sid: 'abc',
+                                    status: 'wrapping-up',
+                                    agent_id: 1,
+                                },
+                            ],
+                        },
+                    ],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, mockOldData)
+
+            const { result } = renderHook(() =>
+                useLiveVoiceUpdates(params, voiceCalls),
+            )
+            const mockEvent = {
+                dataschema:
+                    '//helpdesk/phone.voice-call.inbound.wrap-up-ended/1.1.0',
+                data: {
+                    voice_call_id: 123,
+                    account_id: 1,
+                    user_id: 1,
+                },
+            } as DomainEvent
+
+            result.current.handleEvent(mockEvent)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            id: 1,
+                            name: 'Test Agent',
+                            profile_picture_url: null,
+                            online: false,
+                            available: false,
+                            forward_calls: false,
+                            forward_when_offline: false,
+                            is_available_for_call: false,
+                            phone_integration_ids: [],
+                            voice_queue_ids: [],
+                            call_statuses: [
+                                {
+                                    call_sid: 'abc',
+                                    status: 'wrapping-up',
+                                    agent_id: 1,
                                 },
                             ],
                         },

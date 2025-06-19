@@ -4,7 +4,6 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 
 import { useListLiveCallQueueAgents } from '@gorgias/helpdesk-queries'
 
-import { FilterKey, StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import { assumeMock } from 'utils/testing'
 
 import LiveVoiceAgentsSection from './LiveVoiceAgentsSection'
@@ -25,11 +24,11 @@ jest.mock(
 describe('LiveVoiceAgentsSection', () => {
     const renderComponent = (
         props = {
-            cleanStatsFilters: {
-                [FilterKey.Agents]: { values: [1, 2] },
-                [FilterKey.Integrations]: { values: [3, 4] },
-                [FilterKey.VoiceQueues]: { values: [5, 6] },
-            } as StatsFiltersWithLogicalOperator,
+            params: {
+                agent_ids: [1, 2],
+                integration_ids: [3, 4],
+                voice_queue_ids: [5, 6],
+            },
         },
     ) => render(<LiveVoiceAgentsSection {...props} />)
 

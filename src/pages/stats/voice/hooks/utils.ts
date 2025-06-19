@@ -5,10 +5,12 @@ import {
     ListLiveCallQueueAgentsQueryResult,
     ListLiveCallQueueVoiceCallsParams,
     ListLiveCallQueueVoiceCallsResult,
+    LiveCallQueueAgent,
     LiveCallQueueAgentCallStatusesItem,
     LiveCallQueueVoiceCall,
     queryKeys,
 } from '@gorgias/helpdesk-queries'
+import { AgentStatus } from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'
 
@@ -170,6 +172,7 @@ export const removeAgentStatusInLiveAgentsQueryCache = (
     agentId: number,
     callSid: string | undefined,
     params: ListLiveCallQueueVoiceCallsParams | undefined,
+    ignoreWrapUp = true,
 ) => {
     const queryKey =
         queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
@@ -188,7 +191,9 @@ export const removeAgentStatusInLiveAgentsQueryCache = (
 
             const updatedCallStatuses =
                 existingAgent.call_statuses?.filter(
-                    (cs) => cs.call_sid !== callSid,
+                    (s) =>
+                        s.call_sid !== callSid ||
+                        (ignoreWrapUp && s.status === AgentStatus.WrappingUp),
                 ) ?? []
 
             newData.data.data[index] = {
@@ -203,6 +208,7 @@ export const removeAgentStatusInLiveAgentsQueryCache = (
 export const removeVoiceCallInLiveAgentsQueryCache = (
     callSid: string,
     params: ListLiveCallQueueVoiceCallsParams | undefined,
+    ignoreWrapUp = true,
 ) => {
     const queryKey =
         queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
@@ -217,10 +223,59 @@ export const removeVoiceCallInLiveAgentsQueryCache = (
                 ...existingAgent,
                 call_statuses:
                     existingAgent.call_statuses?.filter(
-                        (s) => s.call_sid !== callSid,
+                        (s) =>
+                            s.call_sid !== callSid ||
+                            (ignoreWrapUp &&
+                                s.status === AgentStatus.WrappingUp),
                     ) ?? [],
             }))
+
             return newData
         },
     )
+}
+
+export const getWrapUpStatusesThatShouldExpire = (
+    agents?: LiveCallQueueAgent[],
+) => {
+    return (
+        agents?.reduce((res: LiveCallQueueAgentCallStatusesItem[], agent) => {
+            const callStatuses =
+                agent.call_statuses?.filter(
+                    (call) =>
+                        call.status === AgentStatus.WrappingUp &&
+                        call.expiration_datetime,
+                ) ?? []
+            return [...res, ...callStatuses]
+        }, []) ?? []
+    )
+}
+
+export const setWrapUpExpirationTimer = (
+    timeouts: React.MutableRefObject<Record<string, NodeJS.Timeout>>,
+    status: LiveCallQueueAgentCallStatusesItem,
+    params?: ListLiveCallQueueVoiceCallsParams,
+) => {
+    if (status.expiration_datetime) {
+        const expiresAt = moment.utc(status.expiration_datetime)
+        const now = moment.utc()
+        const timeLeft = expiresAt.diff(now)
+
+        if (
+            timeLeft > 0 &&
+            !timeouts.current[`${status.agent_id}-${status.call_sid}`]
+        ) {
+            timeouts.current[`${status.agent_id}-${status.call_sid}`] =
+                setTimeout(() => {
+                    if (status.agent_id && status.call_sid) {
+                        removeAgentStatusInLiveAgentsQueryCache(
+                            status.agent_id,
+                            status.call_sid,
+                            params,
+                            false,
+                        )
+                    }
+                }, timeLeft)
+        }
+    }
 }

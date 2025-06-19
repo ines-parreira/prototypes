@@ -175,7 +175,16 @@ describe('LiveVoice', () => {
         )
         expect(LiveVoiceAgentsSectionMock).toHaveBeenCalledWith(
             {
-                cleanStatsFilters: cleanStatsFiltersDefaultValue,
+                params: {
+                    agent_ids:
+                        cleanStatsFiltersDefaultValue[FilterKey.Agents]?.values,
+                    integration_ids:
+                        cleanStatsFiltersDefaultValue[FilterKey.Integrations]
+                            ?.values,
+                    voice_queue_ids:
+                        cleanStatsFiltersDefaultValue[FilterKey.VoiceQueues]
+                            ?.values,
+                },
             },
             {},
         )

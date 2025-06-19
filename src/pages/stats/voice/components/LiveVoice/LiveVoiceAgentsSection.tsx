@@ -1,7 +1,7 @@
 import { useListLiveCallQueueAgents } from '@gorgias/helpdesk-queries'
+import { ListLiveCallQueueAgentsParams } from '@gorgias/helpdesk-types'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
-import { FilterKey, StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import Button from 'pages/common/components/button/Button'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -14,32 +14,24 @@ import LiveVoiceAgentsList from './LiveVoiceAgentsList'
 import css from './LiveVoiceAgentsList.less'
 
 type Props = {
-    cleanStatsFilters: StatsFiltersWithLogicalOperator
+    params: ListLiveCallQueueAgentsParams
 }
 
-export default function LiveVoiceAgentsSection({ cleanStatsFilters }: Props) {
+export default function LiveVoiceAgentsSection({ params }: Props) {
     const {
         data: agents,
         isLoading,
         refetch,
-    } = useListLiveCallQueueAgents(
-        {
-            agent_ids: cleanStatsFilters?.[FilterKey.Agents]?.values,
-            integration_ids:
-                cleanStatsFilters?.[FilterKey.Integrations]?.values,
-            voice_queue_ids: cleanStatsFilters?.[FilterKey.VoiceQueues]?.values,
-        },
-        {
-            http: {
-                paramsSerializer: {
-                    indexes: null,
-                },
-            },
-            query: {
-                refetchOnWindowFocus: false,
+    } = useListLiveCallQueueAgents(params, {
+        http: {
+            paramsSerializer: {
+                indexes: null,
             },
         },
-    )
+        query: {
+            refetchOnWindowFocus: false,
+        },
+    })
 
     if (isLoading && !agents) {
         return (

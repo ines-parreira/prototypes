@@ -12,9 +12,11 @@ import { appQueryClient } from 'api/queryClient'
 import { VALID_LIVE_STATUSES } from '../../constants/liveVoice'
 import {
     addVoiceCallToLiveCallsQueryCache,
+    getWrapUpStatusesThatShouldExpire,
     isFilteredOut,
     isVoiceCallIncludedInFilters,
     removeVoiceCallInLiveAgentsQueryCache,
+    setWrapUpExpirationTimer,
     transformDateToUTCString,
     updateAgentStatusInLiveAgentsQueryCache,
     updateVoiceCallInLiveCallsQueryCache,
@@ -299,7 +301,7 @@ describe('utils.ts', () => {
         })
     })
 
-    describe('removeVoiceCallInLiveCallsQueryCache', () => {
+    describe('removeVoiceCallInLiveAgentsQueryCache', () => {
         const queryKey = queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(
             {},
         )
@@ -328,11 +330,17 @@ describe('utils.ts', () => {
                     {
                         id: 3,
                     },
+                    {
+                        id: 4,
+                        call_statuses: [
+                            { status: 'wrapping-up', call_sid: '12345' },
+                        ],
+                    },
                 ],
             },
         }
 
-        it('should remove voice call from cache', () => {
+        it('should remove statuses from cache', () => {
             appQueryClient.setQueryData(queryKey, oldData)
             removeVoiceCallInLiveAgentsQueryCache('12345', {})
             expect(appQueryClient.getQueryData(queryKey)).toEqual({
@@ -352,9 +360,156 @@ describe('utils.ts', () => {
                             id: 3,
                             call_statuses: [],
                         },
+                        {
+                            id: 4,
+                            call_statuses: [
+                                { status: 'wrapping-up', call_sid: '12345' },
+                            ],
+                        },
                     ],
                 },
             })
+        })
+
+        it('should should not ignore wrap up', () => {
+            appQueryClient.setQueryData(queryKey, oldData)
+            removeVoiceCallInLiveAgentsQueryCache('12345', {}, false)
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            id: 1,
+                            call_statuses: [
+                                { status: 'ringing', call_sid: '67890' },
+                            ],
+                        },
+                        {
+                            id: 2,
+                            call_statuses: [],
+                        },
+                        {
+                            id: 3,
+                            call_statuses: [],
+                        },
+                        {
+                            id: 4,
+                            call_statuses: [],
+                        },
+                    ],
+                },
+            })
+        })
+    })
+
+    describe('getWrapUpStatuses', () => {
+        it('should return wrapping up statuses', () => {
+            const wrapUpStatus = {
+                agent_id: 1,
+                status: AgentStatus.WrappingUp,
+                call_sid: '123',
+                expiration_datetime: new Date().toISOString(),
+            }
+            const agents = [
+                {
+                    id: 1,
+                    call_statuses: [
+                        wrapUpStatus,
+                        { status: AgentStatus.Ringing, call_sid: '456' },
+                    ],
+                },
+                {
+                    id: 2,
+                    call_statuses: [
+                        { status: AgentStatus.WrappingUp, call_sid: '789' },
+                    ],
+                },
+                {
+                    id: 3,
+                    call_statuses: [
+                        { status: AgentStatus.Ringing, call_sid: '101' },
+                    ],
+                },
+                {
+                    id: 4,
+                },
+            ]
+            const result = getWrapUpStatusesThatShouldExpire(agents)
+            expect(result).toEqual([wrapUpStatus])
+        })
+
+        it('should return empty array if no agents', () => {
+            const result = getWrapUpStatusesThatShouldExpire(undefined)
+            expect(result).toEqual([])
+        })
+    })
+
+    describe('setWrapUpExpirationTimer', () => {
+        beforeEach(() => {
+            jest.useFakeTimers()
+        })
+
+        afterEach(() => {
+            jest.useRealTimers()
+        })
+
+        it('should set a timeout for wrap up expiration', () => {
+            const queryKey =
+                queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents({})
+            const oldData = {
+                data: {
+                    data: [
+                        {
+                            id: 1,
+                            call_statuses: [
+                                {
+                                    status: AgentStatus.WrappingUp,
+                                    call_sid: '123',
+                                },
+                            ],
+                        },
+                    ],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, oldData)
+
+            const timeouts: React.MutableRefObject<
+                Record<string, NodeJS.Timeout>
+            > = { current: {} }
+            const status = {
+                agent_id: 1,
+                call_sid: '123',
+                expiration_datetime: moment
+                    .utc()
+                    .add(1, 'minute')
+                    .toISOString(),
+            }
+            setWrapUpExpirationTimer(timeouts, status, {})
+
+            expect(timeouts.current['1-123']).toBeDefined()
+
+            jest.advanceTimersByTime(60000) // Advance time by 1 minute
+            expect(
+                appQueryClient.getQueryData(
+                    queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents({}),
+                ),
+            ).toEqual({ data: { data: [{ call_statuses: [], id: 1 }] } })
+        })
+
+        it('should not set a timeout if expiration_datetime is in the past', () => {
+            const timeouts: React.MutableRefObject<
+                Record<string, NodeJS.Timeout>
+            > = { current: {} }
+            const status = {
+                agent_id: 1,
+                call_sid: '123',
+                expiration_datetime: moment
+                    .utc()
+                    .subtract(1, 'minute')
+                    .toISOString(),
+            }
+            setWrapUpExpirationTimer(timeouts, status)
+
+            expect(timeouts.current['1-123']).toBeUndefined()
         })
     })
 })

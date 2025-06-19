@@ -75,9 +75,7 @@ function LiveVoice() {
                     <AnalyticsFooter useBusinessHoursTimezone />
                 </div>
                 <div className={css.agentsSection}>
-                    <LiveVoiceAgentsSection
-                        cleanStatsFilters={cleanStatsFilters}
-                    />
+                    <LiveVoiceAgentsSection params={params} />
                 </div>
             </div>
         </StatsPage>
