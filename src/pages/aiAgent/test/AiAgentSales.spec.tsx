@@ -4,8 +4,10 @@ import 'pages/aiAgent/test/mock-activation-hooks.utils'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { AGENT_ROLE } from 'config/user'
 import { HTTP_INTEGRATION_TYPE } from 'constants/integration'
 import {
@@ -19,6 +21,7 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore, renderWithRouter } from 'utils/testing'
 
 import { AiAgentSales } from '../AiAgentSales'
+import { useGetShoppingAssistantEnabled } from '../hooks/useGetShoppingAssistantEnabled'
 
 jest.mock('../AiAgentPaywallView', () => ({
     AiAgentPaywallView: jest.fn(() => (
@@ -28,6 +31,20 @@ jest.mock('../AiAgentPaywallView', () => ({
 
 jest.mock('../components/SalesSettings/SalesSettings', () => ({
     SalesSettings: jest.fn(() => <div data-testid="sales-settings" />),
+}))
+
+jest.mock('launchdarkly-react-client-sdk', () => ({
+    useFlags: jest.fn(),
+}))
+
+jest.mock('../hooks/useGetShoppingAssistantEnabled')
+
+const mockHistoryPush = jest.fn()
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: mockHistoryPush,
+    }),
 }))
 
 const queryClient = mockQueryClient()
@@ -50,6 +67,10 @@ const defaultState = {
     billing: fromJS({ products }),
 }
 
+const mockUseGetShoppingAssistantEnabled =
+    useGetShoppingAssistantEnabled as jest.Mock
+const mockUseFlags = useFlags as jest.Mock
+
 const renderComponent = () =>
     renderWithRouter(
         <Provider store={mockStore(defaultState)}>
@@ -57,12 +78,80 @@ const renderComponent = () =>
                 <AiAgentSales />
             </QueryClientProvider>
         </Provider>,
+        {
+            path: '/app/ai-agent/:shopType/:shopName/sales',
+            route: '/app/ai-agent/shopify/test-shop/sales',
+        },
     )
 
 describe('<AiAgentSales />', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+        mockUseFlags.mockReturnValue({
+            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+        })
+    })
+
     it('should render without error', () => {
+        mockUseGetShoppingAssistantEnabled.mockReturnValue({
+            isEnabled: true,
+            isLoading: false,
+        })
+
         renderComponent()
 
         expect(screen.getByTestId('sales-settings')).toBeInTheDocument()
+    })
+
+    it('should redirect to strategy tab when shopping assistant is not enabled', () => {
+        mockUseGetShoppingAssistantEnabled.mockReturnValue({
+            isEnabled: false,
+            isLoading: false,
+        })
+
+        renderComponent()
+
+        expect(mockHistoryPush).toHaveBeenCalledWith(
+            '/app/ai-agent/shopify/test-shop/sales/strategy',
+        )
+    })
+
+    it('should redirect to analytics tab when shopping assistant is enabled', () => {
+        mockUseGetShoppingAssistantEnabled.mockReturnValue({
+            isEnabled: true,
+            isLoading: false,
+        })
+
+        renderComponent()
+
+        expect(mockHistoryPush).toHaveBeenCalledWith(
+            '/app/ai-agent/shopify/test-shop/sales/analytics',
+        )
+    })
+
+    it('should not redirect when data is loading', () => {
+        mockUseGetShoppingAssistantEnabled.mockReturnValue({
+            isEnabled: false,
+            isLoading: true,
+        })
+
+        renderComponent()
+
+        expect(mockHistoryPush).not.toHaveBeenCalled()
+    })
+
+    it('should not redirect when feature flag is disabled', () => {
+        mockUseFlags.mockReturnValue({
+            [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
+        })
+
+        mockUseGetShoppingAssistantEnabled.mockReturnValue({
+            isEnabled: false,
+            isLoading: false,
+        })
+
+        renderComponent()
+
+        expect(mockHistoryPush).not.toHaveBeenCalled()
     })
 })

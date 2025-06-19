@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useHistory, useParams } from 'react-router-dom'
 
@@ -7,6 +9,7 @@ import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
 import { SalesSettings } from './components/SalesSettings/SalesSettings'
 import { SALES } from './constants'
 import { getAiAgentNavigationRoutes } from './hooks/useAiAgentNavigation'
+import { useGetShoppingAssistantEnabled } from './hooks/useGetShoppingAssistantEnabled'
 
 import css from './AiAgentSales.less'
 
@@ -18,11 +21,31 @@ export const AiAgentSales = () => {
     const isSalesPageEnabled = flags[FeatureFlagKey.AiShoppingAssistantEnabled]
     const history = useHistory()
     const analyticsRoute = getAiAgentNavigationRoutes(shopName, flags).analytics
+    const strategyRoute = getAiAgentNavigationRoutes(
+        shopName,
+        flags,
+    ).salesStrategy
+    const { isEnabled: isShoppingAssistantEnabled, isLoading } =
+        useGetShoppingAssistantEnabled({ shopName })
 
-    if (isSalesPageEnabled) {
-        // Redirects to analytics as it's the first tab on the sales page
-        history.push(analyticsRoute)
-    }
+    useEffect(() => {
+        if (!isSalesPageEnabled || isLoading) {
+            return
+        }
+
+        const route = isShoppingAssistantEnabled
+            ? analyticsRoute
+            : strategyRoute
+
+        history.push(route)
+    }, [
+        isSalesPageEnabled,
+        isLoading,
+        isShoppingAssistantEnabled,
+        history,
+        analyticsRoute,
+        strategyRoute,
+    ])
 
     return (
         <AiAgentLayout
