@@ -475,7 +475,7 @@ describe('<AiAgentGuidanceContainer />', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should show warning about guidance article limit', () => {
+        it('should show warning about guidance article limit and dismiss the warning when dismiss button is clicked', () => {
             const guidanceArticles = Array(GUIDANCE_ARTICLE_LIMIT_WARNING)
                 .fill(null)
                 .map((_, index) => getGuidanceArticleFixture(index))
@@ -494,6 +494,17 @@ describe('<AiAgentGuidanceContainer />', () => {
                     ),
                 ),
             ).toBeInTheDocument()
+
+            const dismissButton = screen.getByLabelText('Close')
+            fireEvent.click(dismissButton)
+
+            expect(
+                screen.queryByText((content) =>
+                    content.includes(
+                        `${GUIDANCE_ARTICLE_LIMIT_WARNING} out of ${GUIDANCE_ARTICLE_LIMIT}`,
+                    ),
+                ),
+            ).not.toBeInTheDocument()
         })
 
         it('should disable creation button when guidance limit reached', () => {

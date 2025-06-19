@@ -2,17 +2,19 @@
 
 :local {
     .container {
-        display: flex;
         padding: var(--layout-spacing-m);
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-s);
+    }
+
+    .header {
+        display: flex;
         align-items: flex-start;
         justify-content: space-between;
         gap: var(--layout-spacing-xs);
         flex-direction: row;
         flex-wrap: wrap;
-    }
-
-    .warningContainer {
-        padding: var(--layout-spacing-s);
     }
 
     .textGroup {
@@ -33,5 +35,11 @@
             flex-wrap: nowrap;
             gap: var(--layout-spacing-s);
         }
+    }
+
+    .alertBanner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
 }

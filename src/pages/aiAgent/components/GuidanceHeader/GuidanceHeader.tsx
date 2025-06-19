@@ -1,6 +1,9 @@
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { useParams } from 'react-router'
 
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Banner, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import useLocalStorage from 'hooks/useLocalStorage'
+import { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import { SearchBar } from 'pages/common/components/SearchBar/SearchBar'
 
@@ -38,84 +41,111 @@ export const GuidanceHeader = ({
     const isGuidanceArticleLimitReached =
         guidanceArticlesLength >= GUIDANCE_ARTICLE_LIMIT
     const isGuidanceArticleLimitWarning =
-        guidanceArticlesLength >= GUIDANCE_ARTICLE_LIMIT_WARNING
+        guidanceArticlesLength >= GUIDANCE_ARTICLE_LIMIT_WARNING &&
+        guidanceArticlesLength < GUIDANCE_ARTICLE_LIMIT
     const { guidanceTemplates } = useGuidanceTemplates()
     const isGuidanceTemplatesEmpty = guidanceTemplates.length === 0
 
     const displayCreateGuidanceButton =
         isLoading || (!hasAiGuidanceSuggestions && isGuidanceTemplatesEmpty)
 
+    const { shopName } = useParams<{ shopName: string }>()
+    const dismissedKey = `ai-agent-guidance-warning-dismissed-${shopName}`
+    const [isDismissed, setIsDismissed] = useLocalStorage(dismissedKey, false)
+
     return (
         <>
             <div className={css.container}>
-                <p
-                    className={css.textGroup}
-                    data-candu-id="ai-agent-guidance-has-guidance-articles"
-                >
-                    Create Guidance to tell AI Agent how to handle customer
-                    inquiries and end-to-end processes.
-                </p>
+                <div className={css.header}>
+                    <p
+                        className={css.textGroup}
+                        data-candu-id="ai-agent-guidance-has-guidance-articles"
+                    >
+                        Create Guidance to tell AI Agent how to handle customer
+                        inquiries and end-to-end processes.
+                    </p>
 
-                <div className={css.btnGroup}>
-                    {displayCreateGuidanceButton ? (
-                        <Button
-                            isDisabled={isGuidanceArticleLimitReached}
-                            onClick={onCreateGuidanceClick}
-                            intent="secondary"
-                            id={CREATE_GUIDANCE_BUTTON_ID}
-                        >
-                            Create Guidance
-                        </Button>
-                    ) : (
-                        <>
-                            <SearchBar
-                                placeholder="Search Guidance"
-                                onChange={(value) => onSearch(value)}
-                                value={searchQuery}
-                            />
+                    <div className={css.btnGroup}>
+                        {displayCreateGuidanceButton ? (
                             <Button
                                 isDisabled={isGuidanceArticleLimitReached}
                                 onClick={onCreateGuidanceClick}
                                 intent="secondary"
                                 id={CREATE_GUIDANCE_BUTTON_ID}
                             >
-                                Create Custom Guidance
+                                Create Guidance
                             </Button>
-
-                            {hasAiGuidanceSuggestions ? (
-                                <Button onClick={onBrowseSuggestions}>
-                                    Start from Template
-                                </Button>
-                            ) : (
+                        ) : (
+                            <>
+                                <SearchBar
+                                    placeholder="Search Guidance"
+                                    onChange={(value) => onSearch(value)}
+                                    value={searchQuery}
+                                />
                                 <Button
                                     isDisabled={isGuidanceArticleLimitReached}
-                                    onClick={onCreateFromTemplate}
+                                    onClick={onCreateGuidanceClick}
+                                    intent="secondary"
+                                    id={CREATE_GUIDANCE_BUTTON_ID}
                                 >
-                                    Start From Template
+                                    Create Custom Guidance
                                 </Button>
-                            )}
-                        </>
-                    )}
-                    {isGuidanceArticleLimitReached && (
-                        <Tooltip
-                            target={CREATE_GUIDANCE_BUTTON_ID}
-                            placement="bottom"
-                        >
-                            You can only add up to {GUIDANCE_ARTICLE_LIMIT}{' '}
-                            pieces of guidance. Edit or delete Guidance to
-                            further improve the AI Agent performance.
-                        </Tooltip>
-                    )}
+
+                                {hasAiGuidanceSuggestions ? (
+                                    <Button onClick={onBrowseSuggestions}>
+                                        Start from Template
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        isDisabled={
+                                            isGuidanceArticleLimitReached
+                                        }
+                                        onClick={onCreateFromTemplate}
+                                    >
+                                        Start From Template
+                                    </Button>
+                                )}
+                            </>
+                        )}
+                        {isGuidanceArticleLimitReached && (
+                            <Tooltip
+                                target={CREATE_GUIDANCE_BUTTON_ID}
+                                placement="bottom"
+                            >
+                                You can only add up to {GUIDANCE_ARTICLE_LIMIT}{' '}
+                                pieces of guidance. Edit or delete Guidance to
+                                further improve the AI Agent performance.
+                            </Tooltip>
+                        )}
+                    </div>
                 </div>
+                {!isDismissed && isGuidanceArticleLimitWarning && (
+                    <Banner
+                        type={AlertType.Warning}
+                        icon
+                        fillStyle="fill"
+                        className={css.alertBanner}
+                        onClose={() => setIsDismissed(true)}
+                    >
+                        You’re approaching your Guidance limit:{' '}
+                        {guidanceArticlesLength} out of {GUIDANCE_ARTICLE_LIMIT}{' '}
+                        added. Once you reach the limit, you’ll need to delete
+                        or update existing Guidance before adding new ones.
+                    </Banner>
+                )}
+                {isGuidanceArticleLimitReached && (
+                    <Banner
+                        type={AlertType.Error}
+                        icon
+                        fillStyle="fill"
+                        className={css.alertBanner}
+                    >
+                        You’ve reached the maximum of {GUIDANCE_ARTICLE_LIMIT}{' '}
+                        Guidance entries. To add more, delete or update existing
+                        ones.
+                    </Banner>
+                )}
             </div>
-            {isGuidanceArticleLimitWarning && (
-                <div className={css.warningContainer}>
-                    <Alert type={AlertType.Warning} icon className={css.alert}>
-                        You’ve added {guidanceArticlesLength} out of{' '}
-                        {GUIDANCE_ARTICLE_LIMIT} pieces of guidance.
-                    </Alert>
-                </div>
-            )}
         </>
     )
 }
