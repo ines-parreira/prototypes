@@ -52,6 +52,18 @@ jest.mock(
     () => jest.fn(() => <div>SourceDetailsHeader</div>),
 )
 
+jest.mock(
+    'pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner',
+    () => jest.fn(() => <div>SimplifiedAIAgentBanner</div>),
+)
+
+jest.mock(
+    'pages/tickets/detail/components/TicketMessages/AiAgentReasoning',
+    () => ({
+        AiAgentReasoning: jest.fn(() => <div>AiAgentReasoning</div>),
+    }),
+)
+
 jest.mock('../Avatar', () => ({ Avatar: () => <div>New Avatar</div> }))
 
 describe('Container', () => {
@@ -194,6 +206,43 @@ describe('Container', () => {
             }),
             expect.any(Object),
         )
+    })
+
+    it('should render AiAgentReasoning when showAiReasoning feature flag is true and message is from AI agent', () => {
+        // AI reasoning has priority over simplified banner
+        const aiAgentFlags = {
+            [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: true,
+            [FeatureFlagKey.ShowAiReasoningInTicket]: true,
+        }
+
+        const { getByText } = render(
+            <Container
+                {...props}
+                flags={aiAgentFlags}
+                isAIAgentMessage={true}
+                isTicketAfterFeedbackCollectionPeriod={true}
+            />,
+        )
+
+        expect(getByText('AiAgentReasoning')).toBeInTheDocument()
+    })
+
+    it('should render SimplifiedAIAgentBanner when showAiReasoning feature flag is false and message is from AI agent', () => {
+        const aiAgentFlags = {
+            [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: true,
+            [FeatureFlagKey.ShowAiReasoningInTicket]: false,
+        }
+
+        const { getByText } = render(
+            <Container
+                {...props}
+                flags={aiAgentFlags}
+                isAIAgentMessage={true}
+                isTicketAfterFeedbackCollectionPeriod={true}
+            />,
+        )
+
+        expect(getByText('SimplifiedAIAgentBanner')).toBeInTheDocument()
     })
 
     it('should render the new avatar if the ticket thread revamp flag is enabled', () => {

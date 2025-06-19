@@ -1,6 +1,9 @@
 import { MacroAction } from 'models/macroAction/types'
+import {
+    ActionStatus,
+    AiAgentKnowledgeResourceTypeEnum,
+} from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 
-import { ActionStatus } from '../../pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { ReportIssueOption } from './constants'
 
 export type Feedback = 'thumbs_up' | 'thumbs_down' | null
@@ -60,6 +63,13 @@ export type ResourceFeedbackOnMessage = {
         | 'file_external_snippet'
         | 'other'
     resourceId: number | string
+}
+
+export type KnowledgeReasoningResource = {
+    resourceId: string
+    resourceType: AiAgentKnowledgeResourceTypeEnum
+    resourceSetId?: string
+    resourceTitle?: string
 }
 
 export type NoteFeedbackOnMessage = {

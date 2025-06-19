@@ -20,6 +20,7 @@ import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants
 
 import AIAgentBanner from './AIAgentBanner'
 import AIAgentMessageEvents from './AIAgentMessageEvents'
+import { AiAgentReasoning } from './AiAgentReasoning'
 import { Avatar } from './Avatar'
 import Footer from './Footer'
 import Header from './Header'
@@ -91,6 +92,9 @@ export class Container extends Component<Props> {
         const isSimplifiedFeedbackCollectionEnabled =
             !!flags?.[FeatureFlagKey.SimplifyAiAgentFeedbackCollection] &&
             isTicketAfterFeedbackCollectionPeriod
+
+        const showAiReasoning =
+            !!flags?.[FeatureFlagKey.ShowAiReasoningInTicket]
 
         const sender = fromJS(message.sender || {}) as Map<any, any>
         let avatar
@@ -266,10 +270,16 @@ export class Container extends Component<Props> {
                             {!isAIAgentInternalNote && children}
                             {isAIAgentMessage &&
                                 (isSimplifiedFeedbackCollectionEnabled ? (
-                                    <SimplifiedAIAgentBanner
-                                        message={message}
-                                        messages={messages}
-                                    />
+                                    showAiReasoning ? (
+                                        <AiAgentReasoning
+                                            messageId={message.id}
+                                        />
+                                    ) : (
+                                        <SimplifiedAIAgentBanner
+                                            message={message}
+                                            messages={messages}
+                                        />
+                                    )
                                 ) : (
                                     <AIAgentBanner
                                         message={message}

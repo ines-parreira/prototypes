@@ -4,6 +4,7 @@ import _flatten from 'lodash/flatten'
 
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 import { StoreConfiguration } from 'models/aiAgent/types'
+import { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
 import {
     useGetMultipleFileIngestion,
     useGetMultipleHelpCenter,
@@ -31,6 +32,7 @@ import { Components } from 'rest_api/knowledge_service_api/client.generated'
 import { getLDClient } from 'utils/launchDarkly'
 
 const DEFAULT_STALE_TIME = 10 * 60 * 1000
+const DEFAULT_CACHE_TIME = 10 * 60 * 1000
 
 const knowledgeResourceOrder = [
     AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
@@ -145,6 +147,7 @@ const useMacroResources = (ticketId: number, queryEnabled = true) => {
     const macrosQuery = useGetAICompatibleMacros({
         enabled: queryEnabled,
         staleTime: DEFAULT_STALE_TIME,
+        cacheTime: DEFAULT_CACHE_TIME,
     })
 
     const macros = useMemo(() => {
@@ -190,6 +193,7 @@ const useActionResources = (
         {
             enabled: queryEnabled,
             staleTime: DEFAULT_STALE_TIME,
+            cacheTime: DEFAULT_CACHE_TIME,
         },
     )
 
@@ -583,6 +587,7 @@ export const useGetResourceData = ({
                 enabled: queriesEnabled && faqHelpCenterIds.length > 0,
                 refetchOnWindowFocus: false,
                 staleTime: DEFAULT_STALE_TIME,
+                cacheTime: DEFAULT_CACHE_TIME,
             },
         )
 
@@ -591,6 +596,7 @@ export const useGetResourceData = ({
             enabled: queriesEnabled && faqHelpCenterIds.length > 0,
             refetchOnWindowFocus: false,
             staleTime: DEFAULT_STALE_TIME,
+            cacheTime: DEFAULT_CACHE_TIME,
         })
 
     // Fetch guidance articles
@@ -598,6 +604,7 @@ export const useGetResourceData = ({
         useMultipleGuidanceArticles(guidanceHelpCenterIds, {
             enabled: queriesEnabled,
             staleTime: DEFAULT_STALE_TIME,
+            cacheTime: DEFAULT_CACHE_TIME,
         })
 
     // Fetch snippets from multiple help centers
@@ -607,6 +614,7 @@ export const useGetResourceData = ({
             queryOptionsOverrides: {
                 enabled: queriesEnabled && snippetHelpCenterIds.length > 0,
                 staleTime: DEFAULT_STALE_TIME,
+                cacheTime: DEFAULT_CACHE_TIME,
             },
         })
 
@@ -618,6 +626,7 @@ export const useGetResourceData = ({
             {
                 enabled: queriesEnabled && snippetHelpCenterIds.length > 0,
                 staleTime: DEFAULT_STALE_TIME,
+                cacheTime: DEFAULT_CACHE_TIME,
             },
         )
 
@@ -628,6 +637,7 @@ export const useGetResourceData = ({
             queryOptionsOverrides: {
                 enabled: queriesEnabled && snippetHelpCenterIds.length > 0,
                 staleTime: DEFAULT_STALE_TIME,
+                cacheTime: DEFAULT_CACHE_TIME,
             },
         })
 
@@ -737,5 +747,92 @@ export const useEnrichFeedbackData = ({
         ingestedFiles,
         helpCenters,
         storeWebsiteQuestions,
+    }
+}
+
+export const useGetResourcesReasoningMetadata = ({
+    resources,
+    ticketId,
+    storeConfiguration,
+    queriesEnabled = true,
+}: {
+    resources: KnowledgeReasoningResource[]
+    ticketId: number
+    storeConfiguration?: StoreConfiguration
+    queriesEnabled?: boolean
+}) => {
+    const relatedHelpCenterData = resources.reduce(
+        (acc, resource) => {
+            if (!resource.resourceSetId) {
+                return acc
+            }
+
+            if (
+                resource.resourceType ===
+                AiAgentKnowledgeResourceTypeEnum.ARTICLE
+            ) {
+                acc.faqHelpCenterIds.push(Number(resource.resourceSetId))
+            } else if (
+                resource.resourceType ===
+                AiAgentKnowledgeResourceTypeEnum.GUIDANCE
+            ) {
+                acc.guidanceHelpCenterIds.push(Number(resource.resourceSetId))
+            } else if (
+                resource.resourceType ===
+                    AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET ||
+                resource.resourceType ===
+                    AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET
+            ) {
+                acc.snippetHelpCenterIds.push(Number(resource.resourceSetId))
+            }
+            return acc
+        },
+        {
+            faqHelpCenterIds: [] as number[],
+            guidanceHelpCenterIds: [] as number[],
+            snippetHelpCenterIds: [] as number[],
+        },
+    )
+
+    const {
+        articles,
+        guidanceArticles,
+        sourceItems,
+        ingestedFiles,
+        macros,
+        actions,
+        helpCenters,
+        storeWebsiteQuestions,
+        isLoading,
+    } = useGetResourceData({
+        queriesEnabled,
+        ...relatedHelpCenterData,
+        ticketId,
+        shopName: storeConfiguration?.storeName ?? '',
+        shopType: storeConfiguration?.shopType ?? '',
+    })
+
+    return {
+        isLoading,
+        data: resources.map((resource) => {
+            return getResourceMetadata(
+                {
+                    id: resource.resourceId,
+                    title: resource.resourceTitle,
+                    type: resource.resourceType,
+                },
+                storeConfiguration?.storeName ?? '',
+                {
+                    articles,
+                    guidanceArticles,
+                    sourceItems,
+                    ingestedFiles,
+                    macros,
+                    actions,
+                    helpCenters,
+                    storeWebsiteQuestions,
+                },
+            )
+        }),
     }
 }

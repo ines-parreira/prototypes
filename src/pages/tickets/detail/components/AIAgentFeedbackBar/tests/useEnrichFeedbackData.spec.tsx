@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ldClientMock } from 'jest-launchdarkly-mock'
 
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
+import { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
 import {
     useGetMultipleFileIngestion,
     useGetMultipleHelpCenter,
@@ -16,9 +17,11 @@ import { useMultiplePublicResources } from 'pages/aiAgent/hooks/usePublicResourc
 import { Components } from 'rest_api/knowledge_service_api/client.generated'
 import { renderHook } from 'utils/testing/renderHook'
 
+import { AiAgentKnowledgeResourceTypeEnum } from '../types'
 import {
     useEnrichFeedbackData,
     useGetResourceData,
+    useGetResourcesReasoningMetadata,
 } from '../useEnrichFeedbackData'
 
 // Mock all the hooks that our target hooks depend on
@@ -843,5 +846,246 @@ describe('useEnrichFeedbackData', () => {
             content: '',
             isDeleted: true,
         })
+    })
+})
+
+describe('useGetResourcesReasoningMetadata', () => {
+    const resources: KnowledgeReasoningResource[] = [
+        {
+            resourceId: '1',
+            resourceSetId: '100',
+            resourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+        },
+        {
+            resourceId: '2',
+            resourceSetId: '200',
+            resourceType: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+        },
+        {
+            resourceId: '3',
+            resourceSetId: '300',
+            resourceType: AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
+        },
+        {
+            resourceId: '4',
+            resourceSetId: '300',
+            resourceType:
+                AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
+        },
+        {
+            resourceId: '5',
+            resourceType: AiAgentKnowledgeResourceTypeEnum.MACRO,
+        },
+        {
+            resourceId: '6',
+            resourceType: AiAgentKnowledgeResourceTypeEnum.ACTION,
+        },
+        {
+            resourceId: '7',
+            resourceType: AiAgentKnowledgeResourceTypeEnum.ORDER,
+            resourceTitle: '#123',
+        },
+    ]
+
+    const wrapper = ({ children }: any) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+
+    it('should correctly process resources and call useGetResourceData with correct parameters', () => {
+        const storeConfiguration = createMockStoreConfiguration()
+
+        renderHook(
+            () =>
+                useGetResourcesReasoningMetadata({
+                    resources,
+                    ticketId: 123,
+                    storeConfiguration,
+                    queriesEnabled: true,
+                }),
+            { wrapper },
+        )
+
+        expect(useGetMultipleHelpCenterArticleLists).toHaveBeenCalledWith(
+            [100],
+            { version_status: 'latest_draft', per_page: 1000 },
+            expect.objectContaining({ enabled: true }),
+        )
+
+        expect(useMultipleGuidanceArticles).toHaveBeenCalledWith(
+            [200],
+            expect.objectContaining({ enabled: true }),
+        )
+
+        expect(useMultiplePublicResources).toHaveBeenCalledWith({
+            helpCenterIds: [300, 300], // two resources tied to the same help center are requested
+            queryOptionsOverrides: expect.objectContaining({ enabled: true }),
+        })
+    })
+
+    it('should return enriched resource metadata for all resource types', () => {
+        const storeConfiguration = createMockStoreConfiguration()
+
+        const mockArticles = [
+            {
+                id: 1,
+                translation: {
+                    title: 'Article Title',
+                    content: 'Article Content',
+                },
+                helpCenterId: 100,
+            },
+        ]
+        const mockGuidanceArticles = [
+            { id: 2, title: 'Guidance Title', content: 'Guidance Content' },
+        ]
+        const mockSourceItems = [{ id: 3, url: 'https://example.com' }]
+        const mockIngestedFiles = [
+            {
+                id: 4,
+                status: 'SUCCESSFUL',
+                filename: 'test.pdf',
+                google_storage_url: 'https://storage.example.com/test.pdf',
+            },
+        ]
+        const mockMacros = [
+            { id: 5, name: 'Macro Name', intent: 'Macro Intent' },
+        ]
+        const mockActions = [{ id: '6', name: 'Action Name' }]
+        const mockHelpCenters = [{ id: 100, subdomain: 'test' }]
+
+        ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
+            articles: mockArticles,
+            isLoading: false,
+        })
+        ;(useGetMultipleHelpCenter as jest.Mock).mockReturnValue({
+            helpCenters: mockHelpCenters,
+            isLoading: false,
+        })
+        ;(useMultipleGuidanceArticles as jest.Mock).mockReturnValue({
+            guidanceArticles: mockGuidanceArticles,
+            isGuidanceArticleListLoading: false,
+        })
+        ;(useMultiplePublicResources as jest.Mock).mockReturnValue({
+            sourceItems: mockSourceItems,
+            isSourceItemsListLoading: false,
+        })
+        ;(useGetMultipleFileIngestion as jest.Mock).mockReturnValue({
+            ingestedFiles: mockIngestedFiles,
+            isLoading: false,
+        })
+        ;(useGetAICompatibleMacros as jest.Mock).mockReturnValue({
+            data: { pages: [{ data: { data: mockMacros } }] },
+            isLoading: false,
+            hasNextPage: false,
+            fetchNextPage: jest.fn(),
+        })
+        ;(useGetStoreWorkflowsConfigurations as jest.Mock).mockReturnValue({
+            data: mockActions,
+            isLoading: false,
+        })
+        ;(useMultipleStoreWebsiteQuestions as jest.Mock).mockReturnValue({
+            storeWebsiteQuestions: [],
+            isLoading: false,
+        })
+
+        const { result } = renderHook(
+            () =>
+                useGetResourcesReasoningMetadata({
+                    resources,
+                    ticketId: 123,
+                    storeConfiguration,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current.isLoading).toBe(false)
+        expect(result.current.data).toHaveLength(7)
+
+        expect(result.current.data[0]).toEqual({
+            title: 'Article Title',
+            content: 'Article Content',
+            url: expect.any(String),
+        })
+
+        expect(result.current.data[1]).toEqual({
+            title: 'Guidance Title',
+            content: 'Guidance Content',
+            url: expect.any(String),
+        })
+
+        expect(result.current.data[2]).toEqual({
+            title: 'https://example.com',
+            content: 'https://example.com',
+            url: 'https://example.com',
+        })
+
+        expect(result.current.data[3]).toEqual({
+            title: 'test.pdf',
+            content: 'test.pdf',
+            url: expect.any(String),
+        })
+
+        expect(result.current.data[4]).toEqual({
+            title: 'Macro Name',
+            content: 'Macro Intent',
+            url: '/app/settings/macros/5',
+        })
+
+        expect(result.current.data[5]).toEqual({
+            title: 'Action Name',
+            content: 'Action Name',
+            url: expect.any(String),
+        })
+
+        expect(result.current.data[6]).toEqual({
+            title: 'Order #123',
+            content: 'Order #123',
+            url: 'https://admin.shopify.com/store/test-store/orders/7',
+        })
+    })
+
+    it('should handle loading state correctly', () => {
+        const storeConfiguration = createMockStoreConfiguration()
+
+        // at least one resource has to be loading
+        ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
+            articles: [],
+            isLoading: true,
+        })
+
+        const { result } = renderHook(
+            () =>
+                useGetResourcesReasoningMetadata({
+                    resources,
+                    ticketId: 123,
+                    storeConfiguration,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should handle disabled queries', () => {
+        const storeConfiguration = createMockStoreConfiguration()
+
+        renderHook(
+            () =>
+                useGetResourcesReasoningMetadata({
+                    resources,
+                    ticketId: 123,
+                    storeConfiguration,
+                    queriesEnabled: false,
+                }),
+            { wrapper },
+        )
+
+        expect(useGetMultipleHelpCenterArticleLists).toHaveBeenCalledWith(
+            [100],
+            { version_status: 'latest_draft', per_page: 1000 },
+            expect.objectContaining({ enabled: false }),
+        )
     })
 })
