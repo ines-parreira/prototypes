@@ -1278,12 +1278,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                                   <div
                                     class="avatar css-hbesmq"
                                     size="32"
-                                  />
+                                  >
+                                    J
+                                  </div>
                                 </div>
                               </div>
                               <div
                                 class="user"
-                              />
+                              >
+                                John
+                              </div>
                             </div>
                             <div
                               class="messages"
@@ -2775,12 +2779,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                                   <div
                                     class="avatar css-hbesmq"
                                     size="32"
-                                  />
+                                  >
+                                    J
+                                  </div>
                                 </div>
                               </div>
                               <div
                                 class="user"
-                              />
+                              >
+                                John
+                              </div>
                             </div>
                             <div
                               class="messages"
@@ -4242,12 +4250,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                                   <div
                                     class="avatar css-hbesmq"
                                     size="32"
-                                  />
+                                  >
+                                    J
+                                  </div>
                                 </div>
                               </div>
                               <div
                                 class="user"
-                              />
+                              >
+                                John
+                              </div>
                             </div>
                             <div
                               class="messages"
@@ -5709,12 +5721,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                                   <div
                                     class="avatar css-hbesmq"
                                     size="32"
-                                  />
+                                  >
+                                    J
+                                  </div>
                                 </div>
                               </div>
                               <div
                                 class="user"
-                              />
+                              >
+                                John
+                              </div>
                             </div>
                             <div
                               class="messages"
@@ -7176,12 +7192,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                                   <div
                                     class="avatar css-hbesmq"
                                     size="32"
-                                  />
+                                  >
+                                    J
+                                  </div>
                                 </div>
                               </div>
                               <div
                                 class="user"
-                              />
+                              >
+                                John
+                              </div>
                             </div>
                             <div
                               class="messages"
@@ -8643,12 +8663,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                                   <div
                                     class="avatar css-hbesmq"
                                     size="32"
-                                  />
+                                  >
+                                    J
+                                  </div>
                                 </div>
                               </div>
                               <div
                                 class="user"
-                              />
+                              >
+                                John
+                              </div>
                             </div>
                             <div
                               class="messages"
@@ -10008,12 +10032,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                                   <div
                                     class="avatar css-hbesmq"
                                     size="32"
-                                  />
+                                  >
+                                    J
+                                  </div>
                                 </div>
                               </div>
                               <div
                                 class="user"
-                              />
+                              >
+                                John
+                              </div>
                             </div>
                             <div
                               class="messages"
@@ -10325,6 +10353,43 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                     />
                   </div>
                 </div>
+                <div
+                  class="alert info mb-4"
+                >
+                  <div
+                    class="iconContainer"
+                  >
+                    <img
+                      alt="icon"
+                      src="test-file-stub"
+                    />
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <span
+                      class="label"
+                    >
+                      <div>
+                        Customize copy for labels, automated messages, and
+                         
+                        contact form
+                         
+                        subjects to match your tone of voice.
+                      </div>
+                    </span>
+                    <div
+                      class="customActions"
+                    >
+                      <a
+                        class="actionLink"
+                        to="/app/settings/channels/gorgias_chat/1/appearance/texts"
+                      >
+                        Customize Copy
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div
                 class="formSection"
@@ -10423,6 +10488,39 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       </div>
                     </div>
                   </div>
+                </div>
+                <div
+                  class="mainColorOutsideBusinessHoursCheckbox"
+                >
+                  <label
+                    class="ui-label-label-3864 label"
+                    for="checkbox-42"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-42"
+                      name="checkbox-42"
+                      type="checkbox"
+                    />
+                    <span
+                      class="mainColorOutsideBusinessHoursCheckboxLabel"
+                    >
+                      <b>
+                        Keep main color when outside business hours
+                      </b>
+                       
+                      <span
+                        class="mainColorOutsideBusinessHoursTooltipIcon"
+                        id="use-main-color-outside-business-hours-tooltip"
+                      >
+                        <i
+                          class="material-icons-outlined tooltipIcon"
+                        >
+                          info
+                        </i>
+                      </span>
+                    </span>
+                  </label>
                 </div>
               </div>
               <div
@@ -10834,6 +10932,38 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       </div>
                     </div>
                   </fieldset>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Chatbot
+                </h2>
+                <div>
+                  <label
+                    aria-checked="true"
+                    class="ui-label-label-3864 ui-togglefield-label-52f1"
+                    role="switch"
+                  >
+                    <input
+                      checked=""
+                      class="ui-togglefield-input-52f1"
+                      disabled=""
+                      name="show-bot-toggle"
+                      type="checkbox"
+                    />
+                    <div
+                      class="ui-togglefield-slider-52f1"
+                    />
+                    <div>
+                      <b>
+                        Display ”Bot” next to chat title for automated messages
+                      </b>
+                    </div>
+                  </label>
                 </div>
               </div>
               <div
@@ -12856,17 +12986,18 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                                   class="avatar-container css-1j6zot1"
                                 >
                                   <div
-                                    class="avatar css-hbesmq"
+                                    class="avatar css-adln4x"
                                     size="32"
+                                    src="https://gorgias.io/avatar_picture.png"
                                   >
-                                    JD
+                                    J
                                   </div>
                                 </div>
                               </div>
                               <div
                                 class="user"
                               >
-                                John Doe
+                                John
                               </div>
                             </div>
                             <div
@@ -14277,12 +14408,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                                   <div
                                     class="avatar css-hbesmq"
                                     size="32"
-                                  />
+                                  >
+                                    J
+                                  </div>
                                 </div>
                               </div>
                               <div
                                 class="user"
-                              />
+                              >
+                                John
+                              </div>
                             </div>
                             <div
                               class="messages"
@@ -15744,12 +15879,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                                   <div
                                     class="avatar css-hbesmq"
                                     size="32"
-                                  />
+                                  >
+                                    J
+                                  </div>
                                 </div>
                               </div>
                               <div
                                 class="user"
-                              />
+                              >
+                                John
+                              </div>
                             </div>
                             <div
                               class="messages"

@@ -1,19 +1,13 @@
 import React from 'react'
 
 import { render } from '@testing-library/react'
-import { mockFlags } from 'jest-launchdarkly-mock'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
 
 import ChatAvatar from '../ChatAvatar'
-
-mockFlags({
-    [FeatureFlagKey.ChatAgentAvatarCustomization]: true,
-})
 
 const agentName = 'Agent Name'
 const agentAvatarUrl = 'agent-avatar-url.jpg'

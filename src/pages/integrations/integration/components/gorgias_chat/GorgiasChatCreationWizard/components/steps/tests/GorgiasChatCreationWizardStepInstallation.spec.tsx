@@ -24,6 +24,28 @@ jest.mock(
 const mockStore = configureMockStore([thunk])
 
 const defaultState = {
+    currentUser: fromJS({
+        id: 1,
+        name: 'John Doe',
+        email: 'john@example.com',
+        role: { name: 'admin' },
+    }),
+    agents: fromJS({
+        all: [
+            {
+                id: 1,
+                name: 'John Doe',
+                email: 'john@example.com',
+                role: { name: 'admin' },
+            },
+            {
+                id: 2,
+                name: 'Jane Smith',
+                email: 'jane@example.com',
+                role: { name: 'agent' },
+            },
+        ],
+    }),
     integrations: fromJS({
         integrations: [
             {

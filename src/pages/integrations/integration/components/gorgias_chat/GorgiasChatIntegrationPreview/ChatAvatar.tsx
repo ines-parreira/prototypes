@@ -1,6 +1,3 @@
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
-import { FeatureFlagKey } from 'config/featureFlags'
 import Avatar from 'gorgias-design-system/Avatar/Avatar'
 import {
     GorgiasChatAvatarImageType,
@@ -30,25 +27,19 @@ const ChatAvatar: React.FC<Props> = ({
 }) => {
     const nameType = forceNameType || avatar?.nameType
 
-    const isAgentAvatarCustomizationEnabled =
-        useFlags()[FeatureFlagKey.ChatAgentAvatarCustomization]
-
-    const avatarUrl = isAgentAvatarCustomizationEnabled
-        ? avatar?.imageType === GorgiasChatAvatarImageType.AGENT_PICTURE
+    const avatarUrl =
+        avatar?.imageType === GorgiasChatAvatarImageType.AGENT_PICTURE
             ? agentAvatarUrl
             : avatar?.imageType === GorgiasChatAvatarImageType.COMPANY_LOGO
               ? avatar.companyLogoUrl
               : undefined
-        : agentAvatarUrl
 
     const formattedAgentName =
-        isAgentAvatarCustomizationEnabled &&
         nameType === GorgiasChatAvatarNameType.AGENT_FIRST_NAME
             ? agentName.split(' ')[0]
             : agentName
 
     const name =
-        isAgentAvatarCustomizationEnabled &&
         nameType === GorgiasChatAvatarNameType.CHAT_TITLE
             ? chatTitle
             : formattedAgentName

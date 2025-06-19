@@ -40,16 +40,6 @@ exports[`<AgentDisplayName /> should render agent full name 1`] = `
 </div>
 `;
 
-exports[`<AgentDisplayName /> should render agent full name as legacy implementation 1`] = `
-<div>
-  <div
-    class="acme"
-  >
-    John Doe
-  </div>
-</div>
-`;
-
 exports[`<AgentDisplayName /> should render agent fullname if chat title is not provided 1`] = `
 <div>
   <div

@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
 
 import classNames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import ReactPlayer from 'react-player'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import useMeasure from 'hooks/useMeasure'
 import {
     GorgiasChatAvatarImageType,
@@ -107,8 +105,6 @@ export const ChatCampaign = ({
     defaultLanguage,
 }: Props) => {
     const [measureRef, { height }] = useMeasure<HTMLDivElement>()
-    const isAgentAvatarCustomizationEnabled =
-        useFlags()[FeatureFlagKey.ChatAgentAvatarCustomization]
 
     const [newMessage, setNewMessage] = useState<string>()
 
@@ -142,7 +138,6 @@ export const ChatCampaign = ({
                                 agentAvatarUrl={authorAvatarUrl}
                                 avatar={avatar}
                                 showPlaceholderAvatar={
-                                    isAgentAvatarCustomizationEnabled &&
                                     avatar?.imageType ===
                                         GorgiasChatAvatarImageType.AGENT_PICTURE &&
                                     !isAuthorSelected
@@ -158,16 +153,12 @@ export const ChatCampaign = ({
                             />
                             <div className={css.authorName}>
                                 <b>
-                                    {isAgentAvatarCustomizationEnabled ? (
-                                        <AuthorName
-                                            authorName={authorName}
-                                            avatar={avatar}
-                                            chatTitle={chatTitle}
-                                            isAuthorSelected={isAuthorSelected}
-                                        />
-                                    ) : (
-                                        authorName || "[Random agent's name]"
-                                    )}
+                                    <AuthorName
+                                        authorName={authorName}
+                                        avatar={avatar}
+                                        chatTitle={chatTitle}
+                                        isAuthorSelected={isAuthorSelected}
+                                    />
                                 </b>
                             </div>
                         </div>

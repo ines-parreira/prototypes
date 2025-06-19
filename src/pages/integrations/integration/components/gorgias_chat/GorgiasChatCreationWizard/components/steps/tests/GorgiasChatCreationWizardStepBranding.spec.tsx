@@ -21,6 +21,31 @@ jest.mock(
 
 const mockStore = configureMockStore([thunk])
 
+const mockStoreState = {
+    currentUser: fromJS({
+        id: 1,
+        name: 'John Doe',
+        email: 'john@example.com',
+        role: { name: 'admin' },
+    }),
+    agents: fromJS({
+        all: [
+            {
+                id: 1,
+                name: 'John Doe',
+                email: 'john@example.com',
+                role: { name: 'admin' },
+            },
+            {
+                id: 2,
+                name: 'Jane Smith',
+                email: 'jane@example.com',
+                role: { name: 'agent' },
+            },
+        ],
+    }),
+}
+
 const integration = fromJS({
     id: 1,
     name: 'Test Integration',
@@ -41,7 +66,7 @@ describe('<GorgiasChatCreationWizardStepBranding />', () => {
     it('renders wizard with default options selected', () => {
         const { container, getByLabelText } = render(
             <MemoryRouter>
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(mockStoreState)}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
                         <GorgiasChatCreationWizardStepBranding {...minProps} />
                     </Wizard>
@@ -61,7 +86,7 @@ describe('<GorgiasChatCreationWizardStepBranding />', () => {
     it('submits form when fields have been changed', () => {
         const { container, getByRole, getByLabelText } = render(
             <MemoryRouter>
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(mockStoreState)}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
                         <GorgiasChatCreationWizardStepBranding {...minProps} />
                     </Wizard>
@@ -85,7 +110,7 @@ describe('<GorgiasChatCreationWizardStepBranding />', () => {
     it('disables buttons when submitting form', () => {
         const { getByRole } = render(
             <MemoryRouter>
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(mockStoreState)}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
                         <GorgiasChatCreationWizardStepBranding
                             {...minProps}

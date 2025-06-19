@@ -55,7 +55,6 @@ export enum FeatureFlagKey {
     CanExceedMaxAgentCapacity = 'linear.task_SUPXP-3147.disable-exceeding-max-agent-capacity-option',
     CatchPNErrors = 'linear.task_SUPXP-3152.catch-pn-errors',
     ChangeAutomateSettingButtomPosition = 'change-automate-settings-button-position',
-    ChatAgentAvatarCustomization = 'chat-agent-avatar-customization',
     ChatBackgroundColorStyle = 'chat-background-color-style',
     ChatControlBotLabelVisibility = 'chat-control-bot-label-visibility',
     ChatControlOutsideBusinessHoursColor = 'chat-control-outside-business-hours-color',

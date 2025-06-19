@@ -2,6 +2,7 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -92,6 +93,31 @@ const defaultState = {
     entities: {
         chatsApplicationAutomationSettings: {},
     },
+    currentUser: fromJS({
+        id: 1,
+        name: 'John Doe',
+        email: 'john@example.com',
+        role: { name: 'admin' },
+    }),
+    agents: fromJS({
+        all: [
+            {
+                id: 1,
+                name: 'John Doe',
+                email: 'john@example.com',
+                role: { name: 'admin' },
+            },
+            {
+                id: 2,
+                name: 'Jane Smith',
+                email: 'jane@example.com',
+                role: { name: 'agent' },
+            },
+        ],
+    }),
+    integrations: fromJS({
+        integrations: [],
+    }),
 } as RootState
 
 describe('<ArticleRecommendationPreview />', () => {

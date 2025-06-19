@@ -33,6 +33,10 @@ import { GorgiasChatIntegrationAppearanceComponent } from '../GorgiasChatIntegra
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
+const mockCurrentUser = fromJS({
+    name: 'John Doe',
+})
+
 const defaultState = {
     agents: fromJS({
         all: [user],
@@ -143,7 +147,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                                 {...minProps}
                                 loading={fromJS({ updateIntegration: false })}
                                 integration={fromJS({})}
-                                currentUser={fromJS({})}
+                                currentUser={mockCurrentUser}
                                 isUpdate={false}
                             />
                         </Provider>
@@ -171,7 +175,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                                             GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
                                     },
                                 })}
-                                currentUser={fromJS({})}
+                                currentUser={mockCurrentUser}
                                 isUpdate={true}
                             />
                         </Provider>
@@ -199,7 +203,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                                             GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
                                     },
                                 })}
-                                currentUser={fromJS({})}
+                                currentUser={mockCurrentUser}
                                 isUpdate={true}
                             />
                         </Provider>
@@ -237,7 +241,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                                                 GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
                                         },
                                     })}
-                                    currentUser={fromJS({})}
+                                    currentUser={mockCurrentUser}
                                     isUpdate={true}
                                 />
                             </Provider>
@@ -277,7 +281,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                                                 GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
                                         },
                                     })}
-                                    currentUser={fromJS({})}
+                                    currentUser={mockCurrentUser}
                                     isUpdate={true}
                                 />
                             </Provider>
@@ -316,7 +320,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                                                 GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
                                         },
                                     })}
-                                    currentUser={fromJS({})}
+                                    currentUser={mockCurrentUser}
                                     isUpdate={true}
                                 />
                             </Provider>
@@ -415,7 +419,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                                             GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
                                     },
                                 })}
-                                currentUser={fromJS({})}
+                                currentUser={mockCurrentUser}
                                 isUpdate={false}
                             />
                         </Provider>
@@ -579,7 +583,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                                         shop_integration_id: 2,
                                     },
                                 })}
-                                currentUser={fromJS({})}
+                                currentUser={mockCurrentUser}
                                 isUpdate={true}
                             />
                         </Provider>
@@ -684,7 +688,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                                 ])}
                                 loading={fromJS({ updateIntegration: false })}
                                 integration={fromJS({})}
-                                currentUser={fromJS({})}
+                                currentUser={mockCurrentUser}
                                 isUpdate={false}
                             />
                         </Provider>
@@ -696,10 +700,6 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
         })
 
         it('should render inputs for agent avatar name and image settings', () => {
-            mockFlags({
-                [FeatureFlagKey.ChatAgentAvatarCustomization]: true,
-            })
-
             const { container } = render(
                 <Router history={history}>
                     <QueryClientProvider client={mockClient}>
@@ -724,9 +724,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                                             GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
                                     },
                                 })}
-                                currentUser={fromJS({
-                                    name: 'John Doe',
-                                })}
+                                currentUser={mockCurrentUser}
                                 isUpdate={true}
                             />
                         </Provider>
@@ -770,9 +768,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                                             GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
                                     },
                                 })}
-                                currentUser={fromJS({
-                                    name: 'John Doe',
-                                })}
+                                currentUser={mockCurrentUser}
                                 isUpdate={true}
                             />
                         </Provider>

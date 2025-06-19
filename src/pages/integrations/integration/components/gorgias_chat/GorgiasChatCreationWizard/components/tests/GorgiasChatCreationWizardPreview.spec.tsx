@@ -16,6 +16,8 @@ import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPrevie
 
 const mockStore = configureMockStore([thunk])
 
+const testChatTitle = 'Test Chat Title'
+
 const language = 'en-US'
 
 const integration: Map<any, any> = fromJS({
@@ -25,6 +27,31 @@ const integration: Map<any, any> = fromJS({
         language,
     },
 })
+
+const mockStoreState = {
+    currentUser: fromJS({
+        id: 1,
+        name: 'John Doe',
+        email: 'john@example.com',
+        role: { name: 'admin' },
+    }),
+    agents: fromJS({
+        all: [
+            {
+                id: 1,
+                name: 'John Doe',
+                email: 'john@example.com',
+                role: { name: 'admin' },
+            },
+            {
+                id: 2,
+                name: 'Jane Smith',
+                email: 'jane@example.com',
+                role: { name: 'agent' },
+            },
+        ],
+    }),
+}
 
 const minProps: React.ComponentProps<typeof GorgiasChatCreationWizardPreview> =
     {
@@ -37,8 +64,11 @@ describe('<GorgiasChatCreationWizardPreview />', () => {
             getAllByRole,
             container: { firstChild },
         } = render(
-            <Provider store={mockStore({})}>
-                <GorgiasChatCreationWizardPreview {...minProps} />
+            <Provider store={mockStore(mockStoreState)}>
+                <GorgiasChatCreationWizardPreview
+                    {...minProps}
+                    name={testChatTitle}
+                />
             </Provider>,
         )
 
@@ -61,12 +91,13 @@ describe('<GorgiasChatCreationWizardPreview />', () => {
         const {
             container: { firstChild: onlineFirstChild },
         } = render(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(mockStoreState)}>
                 <GorgiasChatCreationWizardPreview
                     integration={integration.setIn(
                         ['meta', 'preferences', 'live_chat_availability'],
                         GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
                     )}
+                    name={testChatTitle}
                 />
             </Provider>,
         )
@@ -78,12 +109,13 @@ describe('<GorgiasChatCreationWizardPreview />', () => {
         const {
             container: { firstChild: offlineFirstChild },
         } = render(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(mockStoreState)}>
                 <GorgiasChatCreationWizardPreview
                     integration={integration.setIn(
                         ['meta', 'preferences', 'live_chat_availability'],
                         GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
                     )}
+                    name={testChatTitle}
                 />
             </Provider>,
         )
@@ -94,12 +126,10 @@ describe('<GorgiasChatCreationWizardPreview />', () => {
     })
 
     it('props override integration values', () => {
-        const testChatTitle = 'Test Chat Title'
-
         const {
             container: { firstChild },
         } = render(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(mockStoreState)}>
                 <GorgiasChatCreationWizardPreview
                     {...minProps}
                     isOnline={false}

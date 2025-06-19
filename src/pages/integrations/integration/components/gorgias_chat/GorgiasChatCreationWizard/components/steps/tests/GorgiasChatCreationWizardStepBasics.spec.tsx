@@ -25,6 +25,34 @@ jest.mock(
 
 const mockStore = configureMockStore([thunk])
 
+const mockStoreState = {
+    currentUser: fromJS({
+        id: 1,
+        name: 'John Doe',
+        email: 'john@example.com',
+        role: { name: 'admin' },
+    }),
+    agents: fromJS({
+        all: [
+            {
+                id: 1,
+                name: 'John Doe',
+                email: 'john@example.com',
+                role: { name: 'admin' },
+            },
+            {
+                id: 2,
+                name: 'Jane Smith',
+                email: 'jane@example.com',
+                role: { name: 'agent' },
+            },
+        ],
+    }),
+    integrations: fromJS({
+        integrations: [],
+    }),
+}
+
 const integration = fromJS({
     id: 1,
     name: 'Test Integration',
@@ -49,18 +77,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
     it('renders wizard with default options selected', () => {
         const { getByLabelText } = render(
             <MemoryRouter>
-                <Provider
-                    store={mockStore({
-                        integrations: fromJS({
-                            integrations: [
-                                {
-                                    id: 1,
-                                    type: IntegrationType.Shopify,
-                                },
-                            ],
-                        }),
-                    })}
-                >
+                <Provider store={mockStore(mockStoreState)}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
                         <GorgiasChatCreationWizardStepBasics {...minProps} />
                     </Wizard>
@@ -80,7 +97,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
     it('renders error for empty fields after submit attempt', () => {
         const { getByLabelText, getAllByText, getByRole } = render(
             <MemoryRouter>
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(mockStoreState)}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
                         <GorgiasChatCreationWizardStepBasics {...minProps} />
                     </Wizard>
@@ -108,7 +125,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
     it('submits form with default values when creating chat', () => {
         const { getByRole, getByLabelText } = render(
             <MemoryRouter>
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(mockStoreState)}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
                         <GorgiasChatCreationWizardStepBasics {...minProps} />
                     </Wizard>
@@ -134,7 +151,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
     it('submits form when updating chat', () => {
         const { getByRole, getByLabelText } = render(
             <MemoryRouter>
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(mockStoreState)}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
                         <GorgiasChatCreationWizardStepBasics
                             {...minProps}
@@ -164,7 +181,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
     it('disables buttons when submitting create form', () => {
         const { getByRole } = render(
             <MemoryRouter>
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(mockStoreState)}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
                         <GorgiasChatCreationWizardStepBasics
                             {...minProps}
@@ -184,7 +201,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
     it('disables buttons when submitting update form', () => {
         const { getByRole } = render(
             <MemoryRouter>
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(mockStoreState)}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
                         <GorgiasChatCreationWizardStepBasics
                             {...minProps}
@@ -209,7 +226,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
         })
         const { getByRole, getByLabelText } = render(
             <MemoryRouter>
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(mockStoreState)}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
                         <GorgiasChatCreationWizardStepBasics {...minProps} />
                     </Wizard>
@@ -239,7 +256,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
 
         const { getByRole, getByLabelText } = render(
             <MemoryRouter>
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(mockStoreState)}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
                         <GorgiasChatCreationWizardStepBasics
                             {...minProps}

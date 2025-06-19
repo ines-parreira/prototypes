@@ -1,7 +1,10 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import { IntegrationType } from 'models/integration/constants'
 import {
@@ -10,7 +13,6 @@ import {
     GorgiasChatIntegration,
 } from 'models/integration/types'
 import { GorgiasChatPositionAlignmentEnum } from 'models/integration/types/gorgiasChat'
-import { mockStore } from 'utils/testing'
 
 import SelfServiceChatIntegrationArticleRecommendationPage from '../SelfServiceChatIntegrationArticleRecommendationPage'
 
@@ -55,10 +57,38 @@ const mockIntegration: GorgiasChatIntegration = {
         use_main_color_outside_business_hours: true,
     },
 }
+
+const mockStore = configureMockStore([thunk])
+
+const mockStoreState = {
+    currentUser: fromJS({
+        id: 1,
+        name: 'John Doe',
+        email: 'john@example.com',
+        role: { name: 'admin' },
+    }),
+    agents: fromJS({
+        all: [
+            {
+                id: 1,
+                name: 'John Doe',
+                email: 'john@example.com',
+                role: { name: 'admin' },
+            },
+            {
+                id: 2,
+                name: 'Jane Smith',
+                email: 'jane@example.com',
+                role: { name: 'agent' },
+            },
+        ],
+    }),
+}
+
 describe('<SelfServiceChatIntegrationArticleRecommendationPage />', () => {
     it('should render component', () => {
         render(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(mockStoreState)}>
                 <SelfServiceChatIntegrationArticleRecommendationPage
                     integration={mockIntegration}
                 />
