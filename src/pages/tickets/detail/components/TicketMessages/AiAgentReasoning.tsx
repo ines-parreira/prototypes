@@ -223,6 +223,7 @@ export const AiAgentReasoning = ({
                 if (resource && resourceData) {
                     elements.push(
                         <KnowledgeSourcePopover
+                            id={resource.resourceId}
                             key={`resource-${index}`}
                             type={resource.resourceType}
                             url={resourceData.url}
