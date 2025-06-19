@@ -9,6 +9,7 @@ import {
     AiSalesAgentOrdersCube,
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
+    ProductRecommendation,
 } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
 import {
     AiSalesAgentOrderCustomersCube,
@@ -264,15 +265,15 @@ export const totalNumberProductRecommendationsQueryFactory = (
             values: ['1'],
         },
         {
-            member: AiSalesAgentConversationsDimension.ProductId,
+            member: AiSalesAgentConversationsDimension.ProductIds,
             operator: ReportingFilterOperator.Set,
             values: [],
         },
         ...(productId
             ? [
                   {
-                      member: AiSalesAgentConversationsDimension.ProductId,
-                      operator: ReportingFilterOperator.Equals,
+                      member: AiSalesAgentConversationsDimension.ProductIds,
+                      operator: ReportingFilterOperator.Contains,
                       values: [productId],
                   },
               ]
@@ -298,7 +299,8 @@ export const totalNumberProductRecommendationsDrillDownQueryFactory = (
     ),
     dimensions: [
         AiSalesAgentConversationsDimension.TicketId,
-        AiSalesAgentConversationsDimension.ProductId,
+        AiSalesAgentConversationsDimension.ProductIds,
+        AiSalesAgentConversationsDimension.ProductVariantIds,
         AiSalesAgentConversationsDimension.StoreIntegrationId,
     ],
     limit: DRILLDOWN_QUERY_LIMIT,
@@ -311,7 +313,7 @@ export const totalProductClicksQueryFactory = (
     filters: StatsFilters,
     timezone: string,
 ): ReportingQuery<ConvertTrackingEventsCube> => ({
-    measures: [ConvertTrackingEventsMeasure.Clicks],
+    measures: [ConvertTrackingEventsMeasure.UniqClicks],
     dimensions: [],
     filters: [
         {
@@ -354,9 +356,9 @@ export const totalProductBoughtQueryFactory = (
             values: ['1'],
         },
         {
-            member: AiSalesAgentOrdersDimension.InfluencedProductId,
-            operator: ReportingFilterOperator.Set,
-            values: [],
+            member: AiSalesAgentOrdersDimension.InfluencedBy,
+            operator: ReportingFilterOperator.Equals,
+            values: [ProductRecommendation],
         },
         ...statsFiltersToReportingFilters(
             aiSalesAgentOrdersDefaultFiltersMembers,
@@ -379,9 +381,9 @@ export const productBoughtQueryFactory = (
             values: ['1'],
         },
         {
-            member: AiSalesAgentOrdersDimension.InfluencedProductId,
-            operator: ReportingFilterOperator.Set,
-            values: [],
+            member: AiSalesAgentOrdersDimension.InfluencedBy,
+            operator: ReportingFilterOperator.Equals,
+            values: [ProductRecommendation],
         },
         ...statsFiltersToReportingFilters(
             aiSalesAgentOrdersDefaultFiltersMembers,
@@ -396,7 +398,7 @@ export const productRecommendationsQueryFactory = (
     timezone: string,
 ): ReportingQuery<AiSalesAgentConversationsCube> => ({
     measures: [AiSalesAgentConversationsMeasure.Count],
-    dimensions: [AiSalesAgentConversationsDimension.ProductId],
+    dimensions: [AiSalesAgentConversationsDimension.ProductIds],
     filters: [
         {
             member: AiSalesAgentConversationsDimension.IsSalesOpportunity,
@@ -404,7 +406,7 @@ export const productRecommendationsQueryFactory = (
             values: ['1'],
         },
         {
-            member: AiSalesAgentConversationsDimension.ProductId,
+            member: AiSalesAgentConversationsDimension.ProductIds,
             operator: ReportingFilterOperator.Set,
             values: [],
         },

@@ -197,7 +197,7 @@ export const TicketDrillDownTableContent = ({
         outcome: 140,
         intent: 180,
         order: 140,
-        product: 140,
+        product: 180,
     }
     const columnWidthsForSkeleton = [
         columnWidths.ticket,
@@ -241,7 +241,7 @@ export const TicketDrillDownTableContent = ({
                 {isAiSalesAgentTotalProductRecommendationsMetric && (
                     <>
                         <HeaderCellProperty
-                            title="Product"
+                            title="Products SKUs"
                             width={columnWidths.product}
                             className={css.headerCell}
                         />
@@ -452,7 +452,11 @@ export const TicketDrillDownTableContent = ({
                             )}
                             {isAiSalesAgentTotalProductRecommendationsMetric && (
                                 <BodyCell width={columnWidths.product}>
-                                    {item.product?.title}
+                                    <TruncateCellContent
+                                        content={item.product?.variants.join(
+                                            ', ',
+                                        )}
+                                    />
                                 </BodyCell>
                             )}
                             {(isAiInsightsMetric ||

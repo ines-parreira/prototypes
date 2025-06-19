@@ -50,7 +50,8 @@ export interface TicketDrillDownRowData extends BaseDrillDownRowData {
         customer: string
     } | null
     product?: {
-        title: string
+        titles: string[]
+        variants: string[]
     } | null
 }
 
@@ -138,7 +139,6 @@ export const formatTicketDrillDownRowData = ({
     const outcome = getAIOutcome({ row, customFieldsIds })
     const intent = getAIIntent({ row, customFieldsIds })
     const surveyScore = row[TicketSatisfactionSurveyDimension.SurveyScore]
-
     return {
         ticket: {
             id: (ticketIdField && row[ticketIdField]) || null,
@@ -175,7 +175,12 @@ export const formatTicketDrillDownRowData = ({
             customer: row[EnrichmentFields.CustomerIntegrationDataByExternalId],
         },
         product: {
-            title: row[EnrichmentFields.ProductTitle],
+            titles: row[EnrichmentFields.ProductsTitles]
+                ? Object.values(row[EnrichmentFields.ProductsTitles])
+                : [],
+            variants: row[EnrichmentFields.ProductsVariants]
+                ? Object.values(row[EnrichmentFields.ProductsVariants])
+                : [],
         },
     }
 }

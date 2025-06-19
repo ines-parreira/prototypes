@@ -38,10 +38,11 @@ const useProductRecommendations = (filters: StatsFilters, timezone: string) => {
     // Get recommendations totals
     const recommendationsTotalData = useMetricPerDimension(
         productRecommendationsQueryFactory(filters, timezone),
+        AiSalesAgentConversationsDimension.ProductIds,
     )
     const productTotals = mapMetrics(
         recommendationsTotalData,
-        AiSalesAgentConversationsDimension.ProductId,
+        AiSalesAgentConversationsDimension.ProductIds,
         AiSalesAgentConversationsMeasure.Count,
     )
 
@@ -175,19 +176,19 @@ const fetchProductRecommendations = async (
         // Map metrics
         const productTotals = mapMetrics(
             recommendationsTotalData,
-            AiSalesAgentConversationsDimension.ProductId,
+            AiSalesAgentConversationsDimension.ProductIds,
             AiSalesAgentConversationsMeasure.Count,
         )
 
         const clickTotals = mapMetrics(
             clickTotalData,
             ConvertTrackingEventsDimension.ProductId,
-            ConvertTrackingEventsMeasure.Clicks,
+            ConvertTrackingEventsMeasure.UniqClicks,
         )
         const boughtTotals = mapMetrics(
             boughtTotalData,
             AiSalesAgentOrdersDimension.InfluencedProductId,
-            AiSalesAgentOrdersMeasure.Count,
+            AiSalesAgentOrdersMeasure.UniqCount,
         )
 
         // Fetch product details

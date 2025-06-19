@@ -88,7 +88,7 @@ describe('productRecommendations', () => {
         decile: null,
         allData: [
             {
-                [AiSalesAgentConversationsDimension.ProductId]: '1',
+                [AiSalesAgentConversationsDimension.ProductIds]: "['1']",
                 [AiSalesAgentConversationsMeasure.Count]: '100',
             },
         ],
@@ -258,8 +258,8 @@ describe('productRecommendations', () => {
                         decile: 0,
                         allData: [
                             {
-                                [AiSalesAgentConversationsDimension.ProductId]:
-                                    '1',
+                                [AiSalesAgentConversationsDimension.ProductIds]:
+                                    "['1']",
                                 [AiSalesAgentConversationsMeasure.Count]: '100',
                             },
                         ],
@@ -274,7 +274,7 @@ describe('productRecommendations', () => {
                         allData: [
                             {
                                 [ConvertTrackingEventsDimension.ProductId]: '1',
-                                [ConvertTrackingEventsMeasure.Clicks]: '50',
+                                [ConvertTrackingEventsMeasure.UniqClicks]: '50',
                             },
                         ],
                     },
@@ -289,7 +289,7 @@ describe('productRecommendations', () => {
                             {
                                 [AiSalesAgentOrdersDimension.InfluencedProductId]:
                                     '1',
-                                [AiSalesAgentOrdersMeasure.Count]: '10',
+                                [AiSalesAgentOrdersMeasure.UniqCount]: '10',
                             },
                         ],
                     },

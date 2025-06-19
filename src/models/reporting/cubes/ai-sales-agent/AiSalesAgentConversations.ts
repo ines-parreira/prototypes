@@ -10,6 +10,8 @@ export enum AiSalesAgentConversationsDimension {
     StoreIntegrationId = 'AiSalesAgentConversations.storeIntegrationId',
     IsSalesOpportunity = 'AiSalesAgentConversations.isSalesOpportunity',
     ProductId = 'AiSalesAgentConversations.productId',
+    ProductIds = 'AiSalesAgentConversations.productIds',
+    ProductVariantIds = 'AiSalesAgentConversations.productVariantIds',
     DiscountCode = 'AiSalesAgentConversations.discountCode',
     PeriodStart = 'AiSalesAgentConversations.periodStart',
     PeriodEnd = 'AiSalesAgentConversations.periodEnd',

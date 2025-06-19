@@ -433,7 +433,7 @@ describe('<DrillDownTable />', () => {
             )
         })
 
-        it('should render product title', () => {
+        it('should render product skus', () => {
             const metricData: AiSalesAgentMetrics = {
                 metricName:
                     AiSalesAgentChart.AiSalesAgentTotalProductRecommendations,
@@ -442,7 +442,7 @@ describe('<DrillDownTable />', () => {
             const dataWithProduct = {
                 ...exampleRow,
                 product: {
-                    title: 'Product 1',
+                    variants: ['SKU-1', 'SKU-2'],
                 },
             }
 
@@ -457,7 +457,7 @@ describe('<DrillDownTable />', () => {
 
             renderTableForTicket(metricData)
 
-            expect(screen.getByText('Product 1')).toBeInTheDocument()
+            expect(screen.getByText('SKU-1, SKU-2')).toBeInTheDocument()
         })
     })
 

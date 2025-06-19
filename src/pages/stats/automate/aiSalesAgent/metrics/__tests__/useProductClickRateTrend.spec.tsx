@@ -113,13 +113,13 @@ describe('productClickRateTrend', () => {
             fetchPostReportingMock.mockReturnValueOnce({
                 data: {
                     ...defaultReporting,
-                    data: [{ [ConvertTrackingEventsMeasure.Clicks]: 3 }],
+                    data: [{ [ConvertTrackingEventsMeasure.UniqClicks]: 3 }],
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
             fetchPostReportingMock.mockReturnValueOnce({
                 data: {
                     ...defaultReporting,
-                    data: [{ [ConvertTrackingEventsMeasure.Clicks]: 6 }],
+                    data: [{ [ConvertTrackingEventsMeasure.UniqClicks]: 6 }],
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
 

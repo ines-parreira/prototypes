@@ -30,6 +30,8 @@ export enum AiSalesAgentOrdersDimension {
     CustomerId = 'AiSalesAgentOrders.customerId',
 }
 
+export const ProductRecommendation = 'product-recommendation'
+
 export enum AiSalesAgentOrdersFilterMember {
     AccountId = 'AiSalesAgentOrders.accountId',
     IntegrationId = 'AiSalesAgentOrders.integrationId',

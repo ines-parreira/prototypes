@@ -132,4 +132,6 @@ export enum EnrichmentFields {
     ProductHandle = 'Product.handle',
     ProductThumbnailUrl = 'Product.thumbnail_url',
     ProductExternalProductId = 'Product.external_product_id',
+    ProductsTitles = 'Products.titles',
+    ProductsVariants = 'Products.variants',
 }

@@ -292,9 +292,9 @@ export const AiSalesAgentMetricConfig: Record<
         domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesAgentProductBuyRate]: {
-        title: 'Converted recommendations',
+        title: 'Buy through rate',
         hint: {
-            title: 'The percentage of product recommendations that led to a purchase.',
+            title: 'The percentage of tickets with product recommendations that led to a purchase.',
         },
         useTrend: useProductBuyRateTrend,
         fetchTrend: fetchProductBuyRateTrend,

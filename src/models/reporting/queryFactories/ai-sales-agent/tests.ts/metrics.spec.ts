@@ -386,7 +386,8 @@ describe('totalNumberProductRecommendationsDrillDownQueryFactory', () => {
             measures: ['AiSalesAgentConversations.count'],
             dimensions: [
                 AiSalesAgentConversationsDimension.TicketId,
-                AiSalesAgentConversationsDimension.ProductId,
+                AiSalesAgentConversationsDimension.ProductIds,
+                AiSalesAgentConversationsDimension.ProductVariantIds,
                 AiSalesAgentConversationsDimension.StoreIntegrationId,
             ],
             filters: [
@@ -396,7 +397,7 @@ describe('totalNumberProductRecommendationsDrillDownQueryFactory', () => {
                     values: ['1'],
                 },
                 {
-                    member: AiSalesAgentConversationsDimension.ProductId,
+                    member: AiSalesAgentConversationsDimension.ProductIds,
                     operator: ReportingFilterOperator.Set,
                     values: [],
                 },
@@ -432,7 +433,8 @@ describe('totalNumberProductRecommendationsDrillDownQueryFactory', () => {
             measures: ['AiSalesAgentConversations.count'],
             dimensions: [
                 AiSalesAgentConversationsDimension.TicketId,
-                AiSalesAgentConversationsDimension.ProductId,
+                AiSalesAgentConversationsDimension.ProductIds,
+                AiSalesAgentConversationsDimension.ProductVariantIds,
                 AiSalesAgentConversationsDimension.StoreIntegrationId,
             ],
             filters: [
@@ -442,7 +444,7 @@ describe('totalNumberProductRecommendationsDrillDownQueryFactory', () => {
                     values: ['1'],
                 },
                 {
-                    member: AiSalesAgentConversationsDimension.ProductId,
+                    member: AiSalesAgentConversationsDimension.ProductIds,
                     operator: ReportingFilterOperator.Set,
                     values: [],
                 },
@@ -484,7 +486,8 @@ describe('totalNumberProductRecommendationsDrillDownQueryFactory', () => {
             measures: ['AiSalesAgentConversations.count'],
             dimensions: [
                 AiSalesAgentConversationsDimension.TicketId,
-                AiSalesAgentConversationsDimension.ProductId,
+                AiSalesAgentConversationsDimension.ProductIds,
+                AiSalesAgentConversationsDimension.ProductVariantIds,
                 AiSalesAgentConversationsDimension.StoreIntegrationId,
             ],
             filters: [
@@ -494,13 +497,13 @@ describe('totalNumberProductRecommendationsDrillDownQueryFactory', () => {
                     values: ['1'],
                 },
                 {
-                    member: AiSalesAgentConversationsDimension.ProductId,
+                    member: AiSalesAgentConversationsDimension.ProductIds,
                     operator: ReportingFilterOperator.Set,
                     values: [],
                 },
                 {
-                    member: AiSalesAgentConversationsDimension.ProductId,
-                    operator: ReportingFilterOperator.Equals,
+                    member: AiSalesAgentConversationsDimension.ProductIds,
+                    operator: ReportingFilterOperator.Contains,
                     values: ['123'],
                 },
                 ...statsFiltersToReportingFilters(

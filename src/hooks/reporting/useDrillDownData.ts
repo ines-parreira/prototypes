@@ -90,8 +90,8 @@ export const extraEnrichmentFieldsPerMetric: Record<
     ],
     [AiSalesAgentChart.AiSalesAgentTotalProductRecommendations]: [
         ...defaultEnrichmentFields,
-        EnrichmentFields.ProductTitle,
-        EnrichmentFields.ProductHandle,
+        EnrichmentFields.ProductsTitles,
+        EnrichmentFields.ProductsVariants,
     ],
 }
 

@@ -269,5 +269,61 @@ describe('DrillDownFormatters', () => {
                 }),
             )
         })
+
+        it('should handle product data with titles and variants present', () => {
+            const row = {
+                'Ticket.assignee_user_id': null,
+                'Ticket.channel': 'chat',
+                'Ticket.contact_reason': null,
+                'Ticket.created_datetime': '2024-12-19T17:13:00.291264',
+                'TicketEnriched.ticketId': '1',
+                'Products.titles': {
+                    product1: 'Product One',
+                    product2: 'Product Two',
+                },
+                'Products.variants': {
+                    variant1: 'Variant One',
+                    variant2: 'Variant Two',
+                },
+            }
+            const result = formatTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+                customFieldsIds: {},
+            })
+
+            expect(result).toEqual(
+                expect.objectContaining({
+                    product: {
+                        titles: ['Product One', 'Product Two'],
+                        variants: ['Variant One', 'Variant Two'],
+                    },
+                }),
+            )
+        })
+
+        it('should handle product data with titles and variants missing', () => {
+            const row = {
+                'Ticket.assignee_user_id': null,
+                'Ticket.channel': 'chat',
+                'Ticket.contact_reason': null,
+                'Ticket.created_datetime': '2024-12-19T17:13:00.291264',
+                'TicketEnriched.ticketId': '1',
+            }
+            const result = formatTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+                customFieldsIds: {},
+            })
+
+            expect(result).toEqual(
+                expect.objectContaining({
+                    product: {
+                        titles: [],
+                        variants: [],
+                    },
+                }),
+            )
+        })
     })
 })
