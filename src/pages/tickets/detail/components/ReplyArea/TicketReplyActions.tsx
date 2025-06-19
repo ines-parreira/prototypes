@@ -29,9 +29,16 @@ export default function TicketReplyActions({
 }: Props) {
     const backendActions: List<any> = appliedMacro
         ? (appliedMacro.get('actions') as List<Map<any, any>>).filter(
-              (action) =>
-                  getActionTemplate(action!.get('name'))?.execution !==
-                  ActionTemplateExecution.Front,
+              (action) => {
+                  const execution = getActionTemplate(
+                      action!.get('name'),
+                  )?.execution
+                  return (
+                      execution !== undefined &&
+                      getActionTemplate(action!.get('name'))?.execution !==
+                          ActionTemplateExecution.Front
+                  )
+              },
           )
         : fromJS([])
 
