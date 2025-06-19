@@ -1,5 +1,4 @@
-import { Metric } from 'hooks/reporting/metrics'
-import { voiceCallCountQueryFactory } from 'models/reporting/queryFactories/voice/voiceCall'
+import { VoiceCallSummaryMeasure } from 'models/reporting/cubes/VoiceCallSummaryCube'
 import BigNumberMetric from 'pages/stats/common/components/BigNumberMetric'
 import MetricCard from 'pages/stats/common/components/MetricCard'
 import { TableValueModeSwitch } from 'pages/stats/common/components/Table/TableValueModeSwitch'
@@ -15,11 +14,14 @@ import { useMetricFormat } from '../../hooks/useMetricFormat'
 type FullProps = {
     title: string
     hint: string
-    fetchData: () => Metric
+    metric: {
+        data?: number | null | Record<VoiceCallSummaryMeasure, number | null>
+        isFetching: boolean
+    }
     metricValueFormat?: MetricValueFormat
     metricName?: VoiceMetric
     showPercentage?: boolean
-    totalCallsQueryFactory?: ReturnType<typeof voiceCallCountQueryFactory>
+    measure?: VoiceCallSummaryMeasure
 }
 
 type EmptyProps = {
@@ -34,12 +36,12 @@ type Props = FullProps & {
 export const LiveVoiceMetricCard = ({
     title,
     hint,
-    fetchData,
     metricValueFormat = 'integer',
     metricName,
     showPercentage = false,
     shouldHide = false,
-    totalCallsQueryFactory,
+    metric,
+    measure,
 }: Props) => {
     return shouldHide ? (
         <LiveVoiceMetricCardEmpty title={title} hint={hint} />
@@ -47,11 +49,11 @@ export const LiveVoiceMetricCard = ({
         <LiveVoiceMetricCardFull
             title={title}
             hint={hint}
-            fetchData={fetchData}
             metricValueFormat={metricValueFormat}
             metricName={metricName}
             showPercentage={showPercentage}
-            totalCallsQueryFactory={totalCallsQueryFactory}
+            metric={metric}
+            measure={measure}
         />
     )
 }
@@ -59,15 +61,19 @@ export const LiveVoiceMetricCard = ({
 const LiveVoiceMetricCardFull = ({
     title,
     hint,
-    fetchData,
     metricValueFormat,
     metricName,
     showPercentage = false,
-    totalCallsQueryFactory,
+    metric,
+    measure,
 }: FullProps) => {
-    const metric = fetchData()
-    const value = metric.data?.value
+    const value = getMetricValue(metric.data, measure)
     const isLoading = metric.isFetching
+    const percentageOfValue = getMetricValue(
+        metric.data,
+        VoiceCallSummaryMeasure.VoiceCallSummaryInboundTotal,
+    )
+
     const {
         metricValue,
         isFetching: isAdditionalDataFetching,
@@ -76,7 +82,7 @@ const LiveVoiceMetricCardFull = ({
     } = useMetricFormat({
         isPercentageEnabled: showPercentage,
         value,
-        queryFactory: totalCallsQueryFactory,
+        percentageOfValue,
         defaultValueFormat: showPercentage ? 'percent' : metricValueFormat,
         storageKey: metricName,
     })
@@ -89,7 +95,7 @@ const LiveVoiceMetricCardFull = ({
             }}
             isLoading={isLoading || isAdditionalDataFetching}
             titleExtra={
-                totalCallsQueryFactory && (
+                percentageOfValue !== null && (
                     <TableValueModeSwitch
                         size="extraSmall"
                         valueMode={
@@ -139,4 +145,15 @@ const LiveVoiceMetricCardEmpty = ({ title, hint }: EmptyProps) => {
             <BigNumberMetric>{NOT_AVAILABLE_PLACEHOLDER}</BigNumberMetric>
         </MetricCard>
     )
+}
+
+const getMetricValue = (
+    data?: number | null | Record<VoiceCallSummaryMeasure, number | null>,
+    measure?: VoiceCallSummaryMeasure,
+): number | null => {
+    if (typeof data === 'object') {
+        return (measure && data?.[measure]) ?? null
+    }
+
+    return data ?? null
 }

@@ -2,6 +2,7 @@ import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
+import { VoiceCallSummaryMeasure } from 'models/reporting/cubes/VoiceCallSummaryCube'
 import BigNumberMetric from 'pages/stats/common/components/BigNumberMetric'
 import MetricCard from 'pages/stats/common/components/MetricCard'
 import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
@@ -33,6 +34,12 @@ const mockMetricFormat = {
     setSelectedFormat: jest.fn(),
 }
 
+const defaultMetric = {
+    data: { value: 100 },
+    isFetching: false,
+    isError: false,
+}
+
 describe('LiveVoiceMetricCard', () => {
     beforeEach(() => {
         BigNumberMetricMock.mockImplementation(({ children }) => (
@@ -54,7 +61,7 @@ describe('LiveVoiceMetricCard', () => {
         const props = {
             title: 'Test Title',
             hint: 'Test Hint',
-            fetchData: () => ({ data: { value: 100 }, isFetching: false }),
+            metric: defaultMetric,
         }
 
         renderComponent(props)
@@ -89,7 +96,7 @@ describe('LiveVoiceMetricCard', () => {
             const props = {
                 title: 'Test Title',
                 hint: 'Test Hint',
-                fetchData: () => ({ data: { value: 100 } }),
+                metric: defaultMetric,
                 metricValueFormat: inputMetricValueFormat,
                 metricName: 'Test Metric',
             }
@@ -107,11 +114,34 @@ describe('LiveVoiceMetricCard', () => {
         },
     )
 
+    it('renders the metric value when metric data is object and measure is provided', () => {
+        const props = {
+            title: 'Test Title',
+            hint: 'Test Hint',
+            metric: {
+                data: {
+                    [VoiceCallSummaryMeasure.VoiceCallSummaryTotal]: 101,
+                },
+                isFetching: false,
+                isError: false,
+            },
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryTotal,
+        }
+
+        renderComponent(props)
+
+        expect(useMetricFormatMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                value: 101,
+            }),
+        )
+    })
+
     it('renders the DrillDownModalTrigger when metricName is provided', () => {
         const props = {
             title: 'Test Title',
             hint: 'Test Hint',
-            fetchData: () => ({ data: { value: 100 } }),
+            metric: defaultMetric,
             metricName: 'Test Metric',
         }
 
@@ -132,7 +162,7 @@ describe('LiveVoiceMetricCard', () => {
         const props = {
             title: 'Test Title',
             hint: 'Test Hint',
-            fetchData: () => ({ data: { value: 100 } }),
+            metric: defaultMetric,
         }
 
         renderComponent(props)
@@ -144,7 +174,7 @@ describe('LiveVoiceMetricCard', () => {
         const props = {
             title: 'Test Title',
             hint: 'Test Hint',
-            fetchData: () => ({ data: null }),
+            metric: { data: null },
             metricName: 'Test Metric',
         }
 
@@ -159,18 +189,15 @@ describe('LiveVoiceMetricCard', () => {
     })
 
     it('renders empty metric when should hide', () => {
-        const fetchData = jest.fn()
-
         const props = {
             title: 'Test Title',
             hint: 'Test Hint',
-            fetchData: fetchData,
+            metric: defaultMetric,
             shouldHide: true,
         }
 
         renderComponent(props)
 
-        expect(fetchData).not.toHaveBeenCalled()
         expect(MetricCardMock).toHaveBeenLastCalledWith(
             expect.objectContaining({
                 title: props.title,
@@ -189,7 +216,7 @@ describe('LiveVoiceMetricCard', () => {
             const props = {
                 title: 'Test Title',
                 hint: 'Test Hint',
-                fetchData: () => ({ data: { value: 100 } }),
+                metric: defaultMetric,
             }
 
             renderComponent(props)
@@ -207,7 +234,12 @@ describe('LiveVoiceMetricCard', () => {
             const props = {
                 title: 'Test Title',
                 hint: 'Test Hint',
-                fetchData: () => ({ data: { value: 100 } }),
+                metric: {
+                    ...defaultMetric,
+                    data: {
+                        [VoiceCallSummaryMeasure.VoiceCallSummaryInboundTotal]: 100,
+                    },
+                },
                 showPercentage: true,
                 totalCallsQueryFactory: jest.fn(),
             }
@@ -232,7 +264,12 @@ describe('LiveVoiceMetricCard', () => {
             const props = {
                 title: 'Test Title',
                 hint: 'Test Hint',
-                fetchData: () => ({ data: { value: 100 } }),
+                metric: {
+                    ...defaultMetric,
+                    data: {
+                        [VoiceCallSummaryMeasure.VoiceCallSummaryInboundTotal]: 100,
+                    },
+                },
                 showPercentage: true,
                 totalCallsQueryFactory: jest.fn(),
             }

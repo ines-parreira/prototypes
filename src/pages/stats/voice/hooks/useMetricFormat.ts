@@ -11,8 +11,8 @@ import {
 
 type Args = {
     isPercentageEnabled: boolean
+    percentageOfValue?: number | null
     value?: number | null
-    queryFactory?: ReturnType<typeof voiceCallCountQueryFactory>
     defaultValueFormat?: MetricValueFormat
     storageKey?: string
 }
@@ -20,25 +20,30 @@ type Args = {
 export const useMetricFormat = ({
     isPercentageEnabled,
     value,
-    queryFactory,
     defaultValueFormat = 'integer',
+    percentageOfValue,
     storageKey = 'voice-metric-format',
 }: Args) => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
     const [selectedFormat, setSelectedFormat] =
         useSessionStorage<MetricValueFormat>(storageKey, defaultValueFormat)
 
-    const defaultQueryFactory = voiceCallCountQueryFactory(
+    const queryFactory = voiceCallCountQueryFactory(
         cleanStatsFilters,
         userTimezone,
         VoiceCallSegment.inboundCalls,
     )
+    const hasTotalCount = percentageOfValue !== undefined
     const { data: allCallsMetric, isFetching: isAllCallsMetricFetching } =
-        useMetric(queryFactory ?? defaultQueryFactory, isPercentageEnabled)
+        useMetric(queryFactory, isPercentageEnabled && !hasTotalCount)
+
+    const totalCountValue = hasTotalCount
+        ? percentageOfValue
+        : allCallsMetric?.value
 
     const resultedValue =
-        selectedFormat === 'percent' && allCallsMetric?.value && value
-            ? (value / allCallsMetric?.value) * 100
+        selectedFormat === 'percent' && totalCountValue && value
+            ? (value / totalCountValue) * 100
             : value
 
     const metricValue = formatMetricValue(

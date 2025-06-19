@@ -75,7 +75,6 @@ describe('useMetricFormat', () => {
             useMetricFormat({
                 isPercentageEnabled: true,
                 value: 50,
-                queryFactory: customQueryFactory,
             }),
         )
 

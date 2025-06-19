@@ -25,7 +25,7 @@ import {
 
 import { TicketMember } from '../../cubes/TicketCube'
 
-const getAccountBusinessHoursTimezone = () =>
+export const getAccountBusinessHoursTimezone = () =>
     (
         window.GORGIAS_STATE?.currentAccount?.settings?.find(
             (setting) => setting.type === AccountSettingType.BusinessHours,
@@ -72,21 +72,19 @@ export const getTicketPeriodFilters = (filters: StatsFilters) => {
 export const voiceCallDefaultFilters = (
     filters: StatsFilters,
     isAdvancedMetric = false,
+    filterMembers = VoiceCallFiltersMembers,
 ) => {
     if (isAdvancedMetric) {
         const extraPeriodFilters = getAdvancedVoicePeriodFilters(filters.period)
         const correctFilters = { ...filters, period: extraPeriodFilters }
         return [
-            ...statsFiltersToReportingFilters(
-                VoiceCallFiltersMembers,
-                correctFilters,
-            ),
+            ...statsFiltersToReportingFilters(filterMembers, correctFilters),
             ...getTicketPeriodFilters(correctFilters),
         ]
     }
 
     return [
-        ...statsFiltersToReportingFilters(VoiceCallFiltersMembers, filters),
+        ...statsFiltersToReportingFilters(filterMembers, filters),
         ...getTicketPeriodFilters(filters),
     ]
 }

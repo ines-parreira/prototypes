@@ -10,7 +10,7 @@ import DashboardSection from 'pages/stats/common/layout/DashboardSection'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 
 import { LiveVoiceMetricCard } from './LiveVoiceMetricCard'
-import { getLiveVoiceMetricCards } from './LiveVoiceMetricsConfig'
+import useLiveVoiceMetricCards from './useLiveVoiceMetricCards'
 import { getLiveVoicePeriodFilter } from './utils'
 
 type Props = {
@@ -41,22 +41,11 @@ export default function LiveVoiceMetrics({
         }
     }, [cleanStatsFilters, timezone])
 
-    const metricCards = useMemo(
-        () =>
-            getLiveVoiceMetricCards(
-                liveVoiceCalls,
-                isLoadingVoiceCalls,
-                filters,
-                timezone,
-                isCallbackRequestsEnabled,
-            ),
-        [
-            liveVoiceCalls,
-            isLoadingVoiceCalls,
-            filters,
-            timezone,
-            isCallbackRequestsEnabled,
-        ],
+    const metricCards = useLiveVoiceMetricCards(
+        liveVoiceCalls,
+        isLoadingVoiceCalls,
+        filters,
+        isCallbackRequestsEnabled,
     )
 
     return (

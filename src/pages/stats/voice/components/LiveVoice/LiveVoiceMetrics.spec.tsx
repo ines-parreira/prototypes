@@ -13,7 +13,7 @@ import { assumeMock } from 'utils/testing'
 
 import { LiveVoiceMetricCard } from './LiveVoiceMetricCard'
 import LiveVoiceMetrics from './LiveVoiceMetrics'
-import { getLiveVoiceMetricCards } from './LiveVoiceMetricsConfig'
+import useLiveVoiceMetricCards from './useLiveVoiceMetricCards'
 import { getLiveVoicePeriodFilter } from './utils'
 
 const renderComponent = (
@@ -42,13 +42,13 @@ jest.mock('utils/reporting')
 jest.mock('pages/stats/voice/components/LiveVoice/LiveVoiceMetricCard')
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 jest.mock('pages/stats/voice/components/LiveVoice/utils')
-jest.mock('pages/stats/voice/components/LiveVoice/LiveVoiceMetricsConfig')
+jest.mock('pages/stats/voice/components/LiveVoice/useLiveVoiceMetricCards')
 
 const LiveVoiceMetricCardMock = assumeMock(LiveVoiceMetricCard)
 const formatReportingQueryDateMock = assumeMock(formatReportingQueryDate)
 const getBusinessHoursSettingsMock = assumeMock(getBusinessHoursSettings)
 const getLiveVoicePeriodFilterMock = assumeMock(getLiveVoicePeriodFilter)
-const getLiveVoiceMetricCardsMock = assumeMock(getLiveVoiceMetricCards)
+const useLiveVoiceMetricCardsMock = assumeMock(useLiveVoiceMetricCards)
 
 jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
 const useFlagMock = assumeMock(useFlag)
@@ -111,32 +111,24 @@ describe('LiveVoiceMetrics', () => {
                     timezone: 'Europe/Paris',
                 },
             },
-            expectedTimezone: 'Europe/Paris',
         },
         {
             liveVoiceCalls: liveVoiceCalls,
             isLoadingVoiceCalls: false,
             businessHours: undefined,
-            expectedTimezone: 'UTC',
         },
     ])(
-        'should call config function with correct timezone',
-        ({
-            liveVoiceCalls,
-            isLoadingVoiceCalls,
-            businessHours,
-            expectedTimezone,
-        }) => {
+        'should call config function with correct filters',
+        ({ liveVoiceCalls, isLoadingVoiceCalls, businessHours }) => {
             getBusinessHoursSettingsMock.mockReturnValue(businessHours as any)
-            getLiveVoiceMetricCardsMock.mockReturnValue([
+            useLiveVoiceMetricCardsMock.mockReturnValue([
                 {
                     title: 'Metric title',
                     hint: 'Metric hint',
-                    fetchData: () => ({
-                        data: { value: 1 },
+                    metric: {
+                        data: 1,
                         isFetching: false,
-                        isError: false,
-                    }),
+                    },
                     size: 4,
                 },
             ])
@@ -150,11 +142,10 @@ describe('LiveVoiceMetrics', () => {
                 isLoadingVoiceCalls: isLoadingVoiceCalls,
             })
 
-            expect(getLiveVoiceMetricCardsMock).toHaveBeenCalledWith(
+            expect(useLiveVoiceMetricCardsMock).toHaveBeenCalledWith(
                 liveVoiceCalls,
                 isLoadingVoiceCalls,
                 filters,
-                expectedTimezone,
                 true,
             )
 
@@ -162,7 +153,7 @@ describe('LiveVoiceMetrics', () => {
                 expect.objectContaining({
                     title: 'Metric title',
                     hint: 'Metric hint',
-                    fetchData: expect.any(Function),
+                    metric: expect.any(Object),
                     size: 4,
                 }),
                 {},
@@ -180,15 +171,14 @@ describe('LiveVoiceMetrics', () => {
             }
         })
 
-        getLiveVoiceMetricCardsMock.mockReturnValue([
+        useLiveVoiceMetricCardsMock.mockReturnValue([
             {
                 title: 'Metric title',
                 hint: 'Metric hint',
-                fetchData: () => ({
-                    data: { value: 1 },
+                metric: {
+                    data: 1,
                     isFetching: false,
-                    isError: false,
-                }),
+                },
                 size: 4,
             },
         ])
@@ -202,11 +192,10 @@ describe('LiveVoiceMetrics', () => {
             isLoadingVoiceCalls: false,
         })
 
-        expect(getLiveVoiceMetricCardsMock).toHaveBeenCalledWith(
+        expect(useLiveVoiceMetricCardsMock).toHaveBeenCalledWith(
             liveVoiceCalls,
             false,
             filters,
-            'Europe/Paris',
             false,
         )
 
@@ -214,7 +203,7 @@ describe('LiveVoiceMetrics', () => {
             expect.objectContaining({
                 title: 'Metric title',
                 hint: 'Metric hint',
-                fetchData: expect.any(Function),
+                metric: expect.any(Object),
                 size: 4,
             }),
             {},

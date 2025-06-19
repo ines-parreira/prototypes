@@ -20,6 +20,7 @@ import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMes
 import { TicketSLACubeWithJoins } from 'models/reporting/cubes/sla/TicketSLACube'
 import { TicketTagsEnrichedCube } from 'models/reporting/cubes/TicketTagsEnrichedCube'
 import { VoiceCallCube } from 'models/reporting/cubes/VoiceCallCube'
+import { VoiceCallSummaryCube } from 'models/reporting/cubes/VoiceCallSummaryCube'
 import { VoiceEventsByAgentCube } from 'models/reporting/cubes/VoiceEventsByAgent'
 
 export type Cubes =
@@ -37,6 +38,7 @@ export type Cubes =
     | TicketQAScoreCubeWithJoins
     | TicketSLACubeWithJoins
     | VoiceCallCube
+    | VoiceCallSummaryCube
     | VoiceEventsByAgentCube
     | WorkflowDatasetCube
     | TicketTagsEnrichedCube

@@ -1,12 +1,9 @@
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-queries'
 
 import { agents } from 'fixtures/agents'
-import { useMetric } from 'hooks/reporting/useMetric'
-import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
-import {
-    voiceCallAverageWaitTimeQueryFactory,
-    voiceCallCountQueryFactory,
-} from 'models/reporting/queryFactories/voice/voiceCall'
+import { useSummaryMetric } from 'hooks/reporting/useSummaryMetric'
+import { VoiceCallSummaryMeasure } from 'models/reporting/cubes/VoiceCallSummaryCube'
+import { liveVoiceCallSummaryQueryFactory } from 'models/reporting/queryFactories/voice/voiceCallSummary'
 import { StatsFilters } from 'models/stat/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import * as constants from 'pages/stats/voice/constants/liveVoice'
@@ -14,24 +11,27 @@ import { VoiceMetric } from 'state/ui/stats/types'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
-import { useAverageTalkTimeMetric } from '../../hooks/agentMetrics'
-import { useVoiceCallCountMetric } from '../../hooks/useVoiceCallCountMetric'
-import { getLiveVoiceMetricCards } from './LiveVoiceMetricsConfig'
+import useLiveVoiceMetricCards from './useLiveVoiceMetricCards'
 import { filterLiveCallsByStatus } from './utils'
 
 jest.mock('pages/stats/voice/components/LiveVoice/utils')
-jest.mock('hooks/reporting/useMetric')
+jest.mock('hooks/reporting/useSummaryMetric')
 jest.mock('models/reporting/queryFactories/voice/voiceCall')
-jest.mock('pages/stats/voice/hooks/agentMetrics')
-jest.mock('pages/stats/voice/hooks/useVoiceCallCountMetric')
+jest.mock('models/reporting/queryFactories/voice/voiceCallSummary')
 
 const filterLiveCallsByStatusMock = assumeMock(filterLiveCallsByStatus)
-const useMetricMock = assumeMock(useMetric)
-const voiceCallAverageWaitTimeQueryFactoryMock = assumeMock(
-    voiceCallAverageWaitTimeQueryFactory,
+const useSummaryMetricMock = assumeMock(useSummaryMetric)
+const liveVoiceCallSummaryQueryFactoryMock = assumeMock(
+    liveVoiceCallSummaryQueryFactory,
 )
-const useAverageTalkTimeMetricMock = assumeMock(useAverageTalkTimeMetric)
-const useVoiceCallCountMetricMock = assumeMock(useVoiceCallCountMetric)
+
+const mockSummaryMetric = {
+    data: {
+        someMeasure: 1,
+    },
+    isFetching: false,
+    isError: false,
+}
 
 const sampleLiveVoiceCalls = [
     {
@@ -59,11 +59,10 @@ const filters: StatsFilters = {
         end_datetime: '2024-01-01T23:59:59+01:00',
     },
 }
-const timezone = 'UTC'
 
-describe('LiveVoiceMetricsConfig', () => {
+describe('useLiveVoiceMetricCards', () => {
     beforeEach(() => {
-        jest.clearAllMocks()
+        filterLiveCallsByStatusMock.mockReturnValue(sampleLiveVoiceCalls)
     })
 
     it.each([
@@ -83,11 +82,10 @@ describe('LiveVoiceMetricsConfig', () => {
             filterLiveCallsByStatusMock.mockReturnValue(liveVoiceCalls)
 
             const { result } = renderHook(() =>
-                getLiveVoiceMetricCards(
+                useLiveVoiceMetricCards(
                     liveVoiceCalls,
                     isLoadingVoiceCalls,
                     filters,
-                    timezone,
                 ),
             )
 
@@ -96,136 +94,125 @@ describe('LiveVoiceMetricsConfig', () => {
                 hint: constants.CALLS_IN_QUEUE_METRIC_HINT,
                 size: 4,
             })
-            expect(result.current[0].fetchData()).toEqual({
-                data: { value: callsInQueueCount },
+            expect(result.current[0].metric).toEqual({
+                data: callsInQueueCount,
                 isFetching: isLoadingVoiceCalls,
                 isError: false,
             })
         },
     )
 
-    it('should return correct average wait time', () => {
-        const { result } = renderHook(() =>
-            getLiveVoiceMetricCards([], true, filters, timezone),
-        )
+    it('should call the correct query for the summary', () => {
+        renderHook(() => useLiveVoiceMetricCards([], true, filters))
 
-        expect(result.current[1]).toMatchObject({
-            title: constants.AVERAGE_WAIT_TIME_METRIC_TITLE,
-            hint: constants.AVERAGE_WAIT_TIME_METRIC_HINT,
-            metricValueFormat: 'duration',
-            metricName: VoiceMetric.QueueAverageWaitTime,
-            size: 4,
-        })
-        result.current[1].fetchData()
-        expect(useMetricMock).toHaveBeenCalledWith(
-            expect(
-                voiceCallAverageWaitTimeQueryFactoryMock,
-            ).toHaveBeenCalledWith(filters, timezone, true),
-        )
-    })
-
-    it('should return correct average talk time', () => {
-        const { result } = renderHook(() =>
-            getLiveVoiceMetricCards([], true, filters, timezone),
-        )
-
-        expect(result.current[2]).toMatchObject({
-            title: constants.AVERAGE_TALK_TIME_METRIC_TITLE,
-            hint: constants.AVERAGE_TALK_TIME_METRIC_HINT,
-            metricValueFormat: 'duration',
-            metricName: VoiceMetric.QueueAverageTalkTime,
-            size: 4,
-        })
-        result.current[2].fetchData()
-        expect(useAverageTalkTimeMetricMock).toHaveBeenCalledWith(
-            filters,
-            timezone,
-            true,
+        expect(useSummaryMetricMock).toHaveBeenCalledWith(
+            liveVoiceCallSummaryQueryFactoryMock(filters),
         )
     })
 
     it.each([
         {
+            index: 1,
+            title: constants.AVERAGE_WAIT_TIME_METRIC_TITLE,
+            hint: constants.AVERAGE_WAIT_TIME_METRIC_HINT,
+            metricValueFormat: 'duration',
+            metricName: VoiceMetric.QueueAverageWaitTime,
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryAverageWaitTime,
+            size: 4,
+        },
+        {
+            index: 2,
+            title: constants.AVERAGE_TALK_TIME_METRIC_TITLE,
+            hint: constants.AVERAGE_TALK_TIME_METRIC_HINT,
+            metricValueFormat: 'duration',
+            metricName: VoiceMetric.QueueAverageTalkTime,
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryAverageTalkTime,
+            size: 4,
+        },
+        {
             index: 3,
             title: constants.INBOUND_CALLS_METRIC_TITLE,
             hint: constants.INBOUND_CALLS_METRIC_HINT,
             metricName: VoiceMetric.QueueInboundCalls,
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryInboundTotal,
             size: 6,
-            filteringSegment: VoiceCallSegment.inboundCalls,
         },
         {
             index: 4,
             title: constants.OUTBOUND_CALLS_METRIC_TITLE,
             hint: constants.OUTBOUND_CALLS_METRIC_HINT,
             metricName: VoiceMetric.QueueOutboundCalls,
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryOutboundTotal,
             size: 6,
-            filteringSegment: VoiceCallSegment.outboundCalls,
         },
         {
             index: 5,
             title: constants.UNANSWERED_INBOUND_CALLS_METRIC_TITLE,
             hint: constants.UNANSWERED_INBOUND_CALLS_METRIC_HINT,
             metricName: VoiceMetric.QueueInboundUnansweredCalls,
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryUnansweredTotal,
             size: 4,
-            filteringSegment: VoiceCallSegment.inboundUnansweredCalls,
         },
         {
             index: 6,
             title: constants.INBOUND_MISSED_CALLS_METRIC_TITLE,
             hint: constants.INBOUND_MISSED_CALLS_METRIC_HINT,
             metricName: VoiceMetric.QueueInboundMissedCalls,
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryMissedTotal,
             size: 4,
-            filteringSegment: VoiceCallSegment.inboundMissedCalls,
-            totalCallsQueryFactory: voiceCallCountQueryFactory(
-                filters,
-                timezone,
-                VoiceCallSegment.inboundCalls,
-            ),
         },
         {
             index: 7,
             title: constants.INBOUND_ABANDONED_CALLS_METRIC_TITLE,
             hint: constants.INBOUND_ABANDONED_CALLS_METRIC_HINT,
             metricName: VoiceMetric.QueueInboundAbandonedCalls,
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryAbandonedTotal,
             size: 4,
-            filteringSegment: VoiceCallSegment.inboundAbandonedCalls,
-            totalCallsQueryFactory: voiceCallCountQueryFactory(
-                filters,
-                timezone,
-                VoiceCallSegment.inboundCalls,
-            ),
         },
     ])(
         'should return correct voice call count metric with callback requests FF off',
-        ({ index, title, hint, metricName, size, filteringSegment }) => {
+        ({ index, title, hint, metricName, size, measure }) => {
+            useSummaryMetricMock.mockReturnValue(mockSummaryMetric as any)
+
             const { result } = renderHook(() =>
-                getLiveVoiceMetricCards([], true, filters, timezone),
+                useLiveVoiceMetricCards([], true, filters),
             )
 
             expect(result.current[index]).toMatchObject({
                 title: title,
                 hint: hint,
+                metric: mockSummaryMetric,
                 metricName: metricName,
+                measure,
                 size: size,
             })
-            result.current[index].fetchData()
-            expect(useVoiceCallCountMetricMock).toHaveBeenCalledWith(
-                filters,
-                timezone,
-                filteringSegment,
-                true,
-            )
         },
     )
 
     it.each([
+        {
+            index: 1,
+            title: constants.AVERAGE_WAIT_TIME_METRIC_TITLE,
+            hint: constants.AVERAGE_WAIT_TIME_METRIC_HINT,
+            metricName: VoiceMetric.QueueAverageWaitTime,
+            size: 4,
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryAverageWaitTime,
+        },
+        {
+            index: 2,
+            title: constants.AVERAGE_TALK_TIME_METRIC_TITLE,
+            hint: constants.AVERAGE_TALK_TIME_METRIC_HINT,
+            metricName: VoiceMetric.QueueAverageTalkTime,
+            size: 4,
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryAverageTalkTime,
+        },
         {
             index: 3,
             title: constants.INBOUND_CALLS_METRIC_TITLE,
             hint: constants.INBOUND_CALLS_METRIC_HINT,
             metricName: VoiceMetric.QueueInboundCalls,
             size: 4,
-            filteringSegment: VoiceCallSegment.inboundCalls,
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryInboundTotal,
         },
         {
             index: 4,
@@ -233,7 +220,7 @@ describe('LiveVoiceMetricsConfig', () => {
             hint: constants.OUTBOUND_CALLS_METRIC_HINT,
             metricName: VoiceMetric.QueueOutboundCalls,
             size: 4,
-            filteringSegment: VoiceCallSegment.outboundCalls,
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryOutboundTotal,
         },
         {
             index: 5,
@@ -241,7 +228,7 @@ describe('LiveVoiceMetricsConfig', () => {
             hint: constants.UNANSWERED_INBOUND_CALLS_METRIC_HINT,
             metricName: VoiceMetric.QueueInboundUnansweredCalls,
             size: 4,
-            filteringSegment: VoiceCallSegment.inboundUnansweredCalls,
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryUnansweredTotal,
         },
         {
             index: 6,
@@ -249,12 +236,7 @@ describe('LiveVoiceMetricsConfig', () => {
             hint: constants.INBOUND_MISSED_CALLS_METRIC_HINT,
             metricName: VoiceMetric.QueueInboundMissedCalls,
             size: 3,
-            filteringSegment: VoiceCallSegment.inboundMissedCalls,
-            totalCallsQueryFactory: voiceCallCountQueryFactory(
-                filters,
-                timezone,
-                VoiceCallSegment.inboundCalls,
-            ),
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryMissedTotal,
         },
         {
             index: 7,
@@ -262,12 +244,7 @@ describe('LiveVoiceMetricsConfig', () => {
             hint: constants.INBOUND_CANCELLED_CALLS_METRIC_HINT,
             metricName: VoiceMetric.QueueInboundCancelledCalls,
             size: 3,
-            filteringSegment: VoiceCallSegment.inboundCancelledCalls,
-            totalCallsQueryFactory: voiceCallCountQueryFactory(
-                filters,
-                timezone,
-                VoiceCallSegment.inboundCancelledCalls,
-            ),
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryCancelledTotal,
         },
         {
             index: 8,
@@ -275,12 +252,7 @@ describe('LiveVoiceMetricsConfig', () => {
             hint: constants.INBOUND_ABANDONED_CALLS_METRIC_HINT,
             metricName: VoiceMetric.QueueInboundAbandonedCalls,
             size: 3,
-            filteringSegment: VoiceCallSegment.inboundAbandonedCalls,
-            totalCallsQueryFactory: voiceCallCountQueryFactory(
-                filters,
-                timezone,
-                VoiceCallSegment.inboundCalls,
-            ),
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryAbandonedTotal,
         },
         {
             index: 9,
@@ -288,33 +260,26 @@ describe('LiveVoiceMetricsConfig', () => {
             hint: constants.INBOUND_CALLBACK_REQUESTED_CALLS_METRIC_HINT,
             metricName: VoiceMetric.QueueInboundCallbackRequestedCalls,
             size: 3,
-            filteringSegment: VoiceCallSegment.inboundCallbackRequestedCalls,
-            totalCallsQueryFactory: voiceCallCountQueryFactory(
-                filters,
-                timezone,
-                VoiceCallSegment.inboundCallbackRequestedCalls,
-            ),
+            measure:
+                VoiceCallSummaryMeasure.VoiceCallSummaryCallbackRequestedTotal,
         },
     ])(
         'should return correct voice call count metric',
-        ({ index, title, hint, metricName, size, filteringSegment }) => {
+        ({ index, title, hint, metricName, size, measure }) => {
+            useSummaryMetricMock.mockReturnValue(mockSummaryMetric as any)
+
             const { result } = renderHook(() =>
-                getLiveVoiceMetricCards([], true, filters, timezone, true),
+                useLiveVoiceMetricCards([], true, filters, true),
             )
 
             expect(result.current[index]).toMatchObject({
                 title: title,
                 hint: hint,
+                metric: mockSummaryMetric,
                 metricName: metricName,
+                measure,
                 size: size,
             })
-            result.current[index].fetchData()
-            expect(useVoiceCallCountMetricMock).toHaveBeenCalledWith(
-                filters,
-                timezone,
-                filteringSegment,
-                true,
-            )
         },
     )
 
@@ -363,12 +328,11 @@ describe('LiveVoiceMetricsConfig', () => {
         'should hide $title when filtering by agent',
         ({ index, title, additionalFilters, shouldHide }) => {
             const { result } = renderHook(() =>
-                getLiveVoiceMetricCards(
+                useLiveVoiceMetricCards(
                     [],
                     true,
                     // @ts-ignore: Filters are not accepted but actually valid
                     { ...filters, ...additionalFilters },
-                    timezone,
                     true,
                 ),
             )

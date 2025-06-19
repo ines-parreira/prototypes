@@ -2,19 +2,14 @@ import { ComponentProps } from 'react'
 
 import { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
 
-import { useMetric } from 'hooks/reporting/useMetric'
-import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
-import {
-    voiceCallAverageWaitTimeQueryFactory,
-    voiceCallCountQueryFactory,
-} from 'models/reporting/queryFactories/voice/voiceCall'
+import { useSummaryMetric } from 'hooks/reporting/useSummaryMetric'
+import { VoiceCallSummaryMeasure } from 'models/reporting/cubes/VoiceCallSummaryCube'
+import { liveVoiceCallSummaryQueryFactory } from 'models/reporting/queryFactories/voice/voiceCallSummary'
 import { StatsFilters } from 'models/stat/types'
 import { isFilterEmpty } from 'pages/stats/utils'
 import * as constants from 'pages/stats/voice/constants/liveVoice'
 import { VoiceMetric } from 'state/ui/stats/types'
 
-import { useAverageTalkTimeMetric } from '../../hooks/agentMetrics'
-import { useVoiceCallCountMetric } from '../../hooks/useVoiceCallCountMetric'
 import { LiveVoiceMetricCard } from './LiveVoiceMetricCard'
 import { LiveVoiceStatusFilterOption } from './types'
 import { filterLiveCallsByStatus } from './utils'
@@ -23,85 +18,25 @@ type MetricCardProps = ComponentProps<typeof LiveVoiceMetricCard> & {
     size: number
 }
 
-export const getLiveVoiceMetricCards = (
+export default function useLiveVoiceMetricCards(
     liveVoiceCalls: LiveCallQueueVoiceCall[],
     isLoadingVoiceCalls: boolean,
     filters: StatsFilters,
-    timezone: string,
     isCallbackRequestsEnabled: boolean = false,
-): MetricCardProps[] => {
+): MetricCardProps[] {
     const isFilteringByAgent = !isFilterEmpty(filters.agents)
 
-    const useLiveInQueueVoiceCallList = () => {
-        return {
-            data: {
-                value: filterLiveCallsByStatus(
-                    liveVoiceCalls,
-                    LiveVoiceStatusFilterOption.IN_QUEUE,
-                ).length,
-            },
-            isFetching: isLoadingVoiceCalls,
-            isError: false,
-        }
+    const liveInQueueVoiceCallListMetric = {
+        data: filterLiveCallsByStatus(
+            liveVoiceCalls,
+            LiveVoiceStatusFilterOption.IN_QUEUE,
+        ).length,
+        isFetching: isLoadingVoiceCalls,
+        isError: false,
     }
-    const useLiveAverageWaitTimeMetric = () =>
-        useMetric(voiceCallAverageWaitTimeQueryFactory(filters, timezone, true))
-    const useLiveAverageTalkTimeMetric = () =>
-        useAverageTalkTimeMetric(filters, timezone, true)
-    const useLiveInboundCallsCountMetric = () =>
-        useVoiceCallCountMetric(
-            filters,
-            timezone,
-            VoiceCallSegment.inboundCalls,
-            true,
-        )
-    const useLiveOutboundCallsCountMetric = () =>
-        useVoiceCallCountMetric(
-            filters,
-            timezone,
-            VoiceCallSegment.outboundCalls,
-            true,
-        )
-    const useLiveInboundUnansweredCallsCountMetric = () =>
-        useVoiceCallCountMetric(
-            filters,
-            timezone,
-            VoiceCallSegment.inboundUnansweredCalls,
-            true,
-        )
-    const useLiveInboundMissedCallsCountMetric = () =>
-        useVoiceCallCountMetric(
-            filters,
-            timezone,
-            VoiceCallSegment.inboundMissedCalls,
-            true,
-        )
-    const useLiveInboundAbandonedCallsCountMetric = () =>
-        useVoiceCallCountMetric(
-            filters,
-            timezone,
-            VoiceCallSegment.inboundAbandonedCalls,
-            true,
-        )
-    const useLiveInboundCancelledCallsCountMetric = () =>
-        useVoiceCallCountMetric(
-            filters,
-            timezone,
-            VoiceCallSegment.inboundCancelledCalls,
-            true,
-        )
-    const useLiveInboundCallbackRequestedCallsCountMetric = () =>
-        useVoiceCallCountMetric(
-            filters,
-            timezone,
-            VoiceCallSegment.inboundCallbackRequestedCalls,
-            true,
-        )
 
-    const totalInboundCallsQueryFactory = voiceCallCountQueryFactory(
-        filters,
-        timezone,
-        VoiceCallSegment.inboundCalls,
+    const summaryMetric = useSummaryMetric(
+        liveVoiceCallSummaryQueryFactory(filters),
     )
 
     if (!isCallbackRequestsEnabled) {
@@ -109,13 +44,15 @@ export const getLiveVoiceMetricCards = (
             {
                 title: constants.CALLS_IN_QUEUE_METRIC_TITLE,
                 hint: constants.CALLS_IN_QUEUE_METRIC_HINT,
-                fetchData: useLiveInQueueVoiceCallList,
+                metric: liveInQueueVoiceCallListMetric,
                 size: 4,
             },
             {
                 title: constants.AVERAGE_WAIT_TIME_METRIC_TITLE,
                 hint: constants.AVERAGE_WAIT_TIME_METRIC_HINT,
-                fetchData: useLiveAverageWaitTimeMetric,
+                metric: summaryMetric,
+                measure:
+                    VoiceCallSummaryMeasure.VoiceCallSummaryAverageWaitTime,
                 metricValueFormat: 'duration',
                 metricName: VoiceMetric.QueueAverageWaitTime,
                 size: 4,
@@ -123,7 +60,9 @@ export const getLiveVoiceMetricCards = (
             {
                 title: constants.AVERAGE_TALK_TIME_METRIC_TITLE,
                 hint: constants.AVERAGE_TALK_TIME_METRIC_HINT,
-                fetchData: useLiveAverageTalkTimeMetric,
+                metric: summaryMetric,
+                measure:
+                    VoiceCallSummaryMeasure.VoiceCallSummaryAverageTalkTime,
                 metricValueFormat: 'duration',
                 metricName: VoiceMetric.QueueAverageTalkTime,
                 size: 4,
@@ -131,41 +70,47 @@ export const getLiveVoiceMetricCards = (
             {
                 title: constants.INBOUND_CALLS_METRIC_TITLE,
                 hint: constants.INBOUND_CALLS_METRIC_HINT,
-                fetchData: useLiveInboundCallsCountMetric,
+                metric: summaryMetric,
+                measure: VoiceCallSummaryMeasure.VoiceCallSummaryInboundTotal,
                 metricName: VoiceMetric.QueueInboundCalls,
                 size: 6,
             },
             {
                 title: constants.OUTBOUND_CALLS_METRIC_TITLE,
                 hint: constants.OUTBOUND_CALLS_METRIC_HINT,
-                fetchData: useLiveOutboundCallsCountMetric,
+                metric: summaryMetric,
+                measure: VoiceCallSummaryMeasure.VoiceCallSummaryOutboundTotal,
                 metricName: VoiceMetric.QueueOutboundCalls,
                 size: 6,
             },
             {
                 title: constants.UNANSWERED_INBOUND_CALLS_METRIC_TITLE,
                 hint: constants.UNANSWERED_INBOUND_CALLS_METRIC_HINT,
-                fetchData: useLiveInboundUnansweredCallsCountMetric,
+                metric: summaryMetric,
+                measure:
+                    VoiceCallSummaryMeasure.VoiceCallSummaryUnansweredTotal,
                 metricName: VoiceMetric.QueueInboundUnansweredCalls,
                 size: 4,
             },
             {
                 title: constants.INBOUND_MISSED_CALLS_METRIC_TITLE,
                 hint: constants.INBOUND_MISSED_CALLS_METRIC_HINT,
-                fetchData: useLiveInboundMissedCallsCountMetric,
+                metric: summaryMetric,
+                measure: VoiceCallSummaryMeasure.VoiceCallSummaryMissedTotal,
                 metricName: VoiceMetric.QueueInboundMissedCalls,
                 showPercentage: true,
-                totalCallsQueryFactory: totalInboundCallsQueryFactory,
+
                 size: 4,
             },
             {
                 title: constants.INBOUND_ABANDONED_CALLS_METRIC_TITLE,
                 hint: constants.INBOUND_ABANDONED_CALLS_METRIC_HINT,
-                fetchData: useLiveInboundAbandonedCallsCountMetric,
+                metric: summaryMetric,
+                measure: VoiceCallSummaryMeasure.VoiceCallSummaryAbandonedTotal,
                 metricName: VoiceMetric.QueueInboundAbandonedCalls,
                 shouldHide: isFilteringByAgent,
                 showPercentage: true,
-                totalCallsQueryFactory: totalInboundCallsQueryFactory,
+
                 size: 4,
             },
         ]
@@ -175,13 +120,14 @@ export const getLiveVoiceMetricCards = (
         {
             title: constants.CALLS_IN_QUEUE_METRIC_TITLE,
             hint: constants.CALLS_IN_QUEUE_METRIC_HINT,
-            fetchData: useLiveInQueueVoiceCallList,
+            metric: liveInQueueVoiceCallListMetric,
             size: 4,
         },
         {
             title: constants.AVERAGE_WAIT_TIME_METRIC_TITLE,
             hint: constants.AVERAGE_WAIT_TIME_METRIC_HINT,
-            fetchData: useLiveAverageWaitTimeMetric,
+            metric: summaryMetric,
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryAverageWaitTime,
             metricValueFormat: 'duration',
             metricName: VoiceMetric.QueueAverageWaitTime,
             size: 4,
@@ -189,7 +135,8 @@ export const getLiveVoiceMetricCards = (
         {
             title: constants.AVERAGE_TALK_TIME_METRIC_TITLE,
             hint: constants.AVERAGE_TALK_TIME_METRIC_HINT,
-            fetchData: useLiveAverageTalkTimeMetric,
+            metric: summaryMetric,
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryAverageTalkTime,
             metricValueFormat: 'duration',
             metricName: VoiceMetric.QueueAverageTalkTime,
             size: 4,
@@ -197,61 +144,65 @@ export const getLiveVoiceMetricCards = (
         {
             title: constants.INBOUND_CALLS_METRIC_TITLE,
             hint: constants.INBOUND_CALLS_METRIC_HINT,
-            fetchData: useLiveInboundCallsCountMetric,
+            metric: summaryMetric,
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryInboundTotal,
             metricName: VoiceMetric.QueueInboundCalls,
             size: 4,
         },
         {
             title: constants.OUTBOUND_CALLS_METRIC_TITLE,
             hint: constants.OUTBOUND_CALLS_METRIC_HINT,
-            fetchData: useLiveOutboundCallsCountMetric,
+            metric: summaryMetric,
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryOutboundTotal,
             metricName: VoiceMetric.QueueOutboundCalls,
             size: 4,
         },
         {
             title: constants.UNANSWERED_INBOUND_CALLS_METRIC_TITLE,
             hint: constants.UNANSWERED_INBOUND_CALLS_METRIC_HINT,
-            fetchData: useLiveInboundUnansweredCallsCountMetric,
+            metric: summaryMetric,
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryUnansweredTotal,
             metricName: VoiceMetric.QueueInboundUnansweredCalls,
             size: 4,
         },
         {
             title: constants.INBOUND_MISSED_CALLS_METRIC_TITLE,
             hint: constants.INBOUND_MISSED_CALLS_METRIC_HINT,
-            fetchData: useLiveInboundMissedCallsCountMetric,
+            metric: summaryMetric,
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryMissedTotal,
             metricName: VoiceMetric.QueueInboundMissedCalls,
             showPercentage: true,
-            totalCallsQueryFactory: totalInboundCallsQueryFactory,
             size: 3,
         },
         {
             title: constants.INBOUND_CANCELLED_CALLS_METRIC_TITLE,
             hint: constants.INBOUND_CANCELLED_CALLS_METRIC_HINT,
-            fetchData: useLiveInboundCancelledCallsCountMetric,
+            metric: summaryMetric,
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryCancelledTotal,
             metricName: VoiceMetric.QueueInboundCancelledCalls,
             shouldHide: isFilteringByAgent,
             showPercentage: true,
-            totalCallsQueryFactory: totalInboundCallsQueryFactory,
             size: 3,
         },
         {
             title: constants.INBOUND_ABANDONED_CALLS_METRIC_TITLE,
             hint: constants.INBOUND_ABANDONED_CALLS_METRIC_HINT,
-            fetchData: useLiveInboundAbandonedCallsCountMetric,
+            metric: summaryMetric,
+            measure: VoiceCallSummaryMeasure.VoiceCallSummaryAbandonedTotal,
             metricName: VoiceMetric.QueueInboundAbandonedCalls,
             shouldHide: isFilteringByAgent,
             showPercentage: true,
-            totalCallsQueryFactory: totalInboundCallsQueryFactory,
             size: 3,
         },
         {
             title: constants.INBOUND_CALLBACK_REQUESTED_CALLS_METRIC_TITLE,
             hint: constants.INBOUND_CALLBACK_REQUESTED_CALLS_METRIC_HINT,
-            fetchData: useLiveInboundCallbackRequestedCallsCountMetric,
+            metric: summaryMetric,
+            measure:
+                VoiceCallSummaryMeasure.VoiceCallSummaryCallbackRequestedTotal,
             metricName: VoiceMetric.QueueInboundCallbackRequestedCalls,
             shouldHide: isFilteringByAgent,
             showPercentage: true,
-            totalCallsQueryFactory: totalInboundCallsQueryFactory,
             size: 3,
         },
     ]
