@@ -55,6 +55,7 @@ export const storeActivationFixture = (
             guidanceHelpCenterId: 102,
             snippetHelpCenterId: 103,
             toneOfVoice: ToneOfVoice.Friendly,
+            aiAgentLanguage: null,
             customToneOfVoiceGuidance: null,
             excludedTopics: [],
             signature: 'This response was created by AI',

@@ -46,6 +46,7 @@ describe('getStoreConfigurationFromFormValues', () => {
     const formValues: ValidFormValues = {
         ...formValuesPartial,
         toneOfVoice,
+        aiAgentLanguage: null,
     }
 
     const filterNonNullResult = {
@@ -56,6 +57,7 @@ describe('getStoreConfigurationFromFormValues', () => {
         ],
         excludedTopics: ['topic1', 'topic2'],
         ticketSampleRate: 0.5,
+        toneOfVoice: ToneOfVoice.Professional,
     }
 
     beforeEach(() => {
@@ -83,6 +85,15 @@ describe('getStoreConfigurationFromFormValues', () => {
             ...formValuesPartial,
             storeName,
             customToneOfVoiceGuidance: null,
+            aiAgentLanguage: null,
+            toneOfVoice: ToneOfVoice.Professional,
+            silentHandover: true,
+            tags: [
+                { name: 'tag1', description: 'description1' },
+                { name: 'tag2', description: 'description2' },
+            ],
+            excludedTopics: ['topic1', 'topic2'],
+            ticketSampleRate: 0.5,
         })
     })
 

@@ -334,6 +334,7 @@ describe('<StoreConfigForm />', () => {
         snippetHelpCenterId: 1,
         guidanceHelpCenterId: 1,
         toneOfVoice: ToneOfVoice.Friendly,
+        aiAgentLanguage: null,
         customToneOfVoiceGuidance:
             "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
         useEmailIntegrationSignature: true,
@@ -386,9 +387,11 @@ describe('<StoreConfigForm />', () => {
         useEmailIntegrationSignature: true,
         signature: 'This response was created by AI',
         toneOfVoice: ToneOfVoice.Friendly,
+        aiAgentLanguage: null,
         customToneOfVoiceGuidance:
             "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
         helpCenterId: 1,
+        previewModeValidUntilDatetime: '2024-07-30T12:55:07.585Z',
         monitoredChatIntegrations: null,
         monitoredEmailIntegrations: [{ id: 1, email: MOCK_EMAIL_ADDRESS }],
         wizard: undefined,
@@ -514,7 +517,9 @@ describe('<StoreConfigForm />', () => {
     it('should render the component', () => {
         renderComponent()
 
-        expect(screen.getByText('Tone of voice')).toBeInTheDocument()
+        expect(
+            screen.getByText('Tone of Voice and Language'),
+        ).toBeInTheDocument()
     })
 
     it('should render new email integration caption', () => {

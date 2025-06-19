@@ -42,6 +42,7 @@ const dummyStoreActivation: StoreActivation = {
         helpCenterId: 1,
         guidanceHelpCenterId: 102,
         snippetHelpCenterId: 103,
+        aiAgentLanguage: null,
         toneOfVoice: ToneOfVoice.Friendly,
         customToneOfVoiceGuidance: null,
         useEmailIntegrationSignature: true,

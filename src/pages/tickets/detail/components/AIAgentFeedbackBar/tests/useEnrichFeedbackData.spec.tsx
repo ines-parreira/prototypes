@@ -71,6 +71,7 @@ const createMockStoreConfiguration = (
     snippetHelpCenterId: 300,
     guidanceHelpCenterId: 200,
     toneOfVoice: ToneOfVoice.Friendly,
+    aiAgentLanguage: null,
     customToneOfVoiceGuidance: null,
     signature: '',
     excludedTopics: [],

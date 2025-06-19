@@ -1,5 +1,5 @@
 // External Libraries
-import {
+import React, {
     ComponentProps,
     useCallback,
     useEffect,
@@ -741,6 +741,13 @@ export const StoreConfigForm = ({
                                     aiAgentPreviewTicketViewId={
                                         aiAgentPreviewTicketViewId
                                     }
+                                    setIsPristine={(isPristine) =>
+                                        setIsFormDirty(
+                                            'generalSettings',
+                                            !isPristine,
+                                        )
+                                    }
+                                    aiAgentLanguage={formValues.aiAgentLanguage}
                                 />
                             </section>
                         </>

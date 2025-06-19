@@ -190,6 +190,7 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
                             formValues.customToneOfVoiceGuidance
                         }
                         setIsPristine={setIsPristine}
+                        aiAgentLanguage={formValues.aiAgentLanguage}
                     />
 
                     <SignatureFormComponent

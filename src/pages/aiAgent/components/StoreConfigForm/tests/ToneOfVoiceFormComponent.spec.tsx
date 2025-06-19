@@ -22,22 +22,10 @@ const defaultProps = {
 
 describe('ToneOfVoiceFormComponent', () => {
     it.each([
-        {
-            toneOfVoice: ToneOfVoice.Friendly,
-            label: /Friendly/i,
-        },
-        {
-            toneOfVoice: ToneOfVoice.Professional,
-            label: /Professional/i,
-        },
-        {
-            toneOfVoice: ToneOfVoice.Sophisticated,
-            label: /Sophisticated/i,
-        },
-        {
-            toneOfVoice: ToneOfVoice.Custom,
-            label: /Custom/i,
-        },
+        { toneOfVoice: 'Friendly', label: /Friendly/i },
+        { toneOfVoice: 'Professional', label: /Professional/i },
+        { toneOfVoice: 'Sophisticated', label: /Sophisticated/i },
+        { toneOfVoice: 'Custom', label: /Custom: Add your own instructions/i },
     ])(
         'renders tone of voice fields and label for $label',
         ({ toneOfVoice, label }) => {
@@ -70,7 +58,9 @@ describe('ToneOfVoiceFormComponent', () => {
 
         render(<ToneOfVoiceFormComponent {...customProps} />)
 
-        expect(screen.getByText('Tone of voice')).toBeInTheDocument()
+        expect(
+            screen.getByText('Tone of Voice and Language'),
+        ).toBeInTheDocument()
         expect(screen.getByLabelText(/Friendly/i)).toBeInTheDocument()
     })
 

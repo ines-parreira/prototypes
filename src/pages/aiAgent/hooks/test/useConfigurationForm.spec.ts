@@ -34,6 +34,7 @@ const INITIAL_FORM_VALUES: FormValues = {
     useEmailIntegrationSignature: true,
     toneOfVoice: null,
     customToneOfVoiceGuidance: null,
+    aiAgentLanguage: null,
     chatChannelDeactivatedDatetime: undefined,
     emailChannelDeactivatedDatetime: undefined,
     trialModeActivatedDatetime: null,

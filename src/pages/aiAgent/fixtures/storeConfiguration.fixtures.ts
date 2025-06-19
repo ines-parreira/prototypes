@@ -24,6 +24,7 @@ export const getStoreConfigurationFixture = (
     useEmailIntegrationSignature: true,
     toneOfVoice: ToneOfVoice.Friendly,
     customToneOfVoiceGuidance: null,
+    aiAgentLanguage: null,
     excludedTopics: [],
     signature: 'This response was created by AI',
     tags: [],

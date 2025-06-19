@@ -21,6 +21,7 @@ import SettingsCard from 'pages/common/components/SettingsCard/SettingsCard'
 import { Value } from 'pages/common/forms/SelectField/types'
 import TextArea from 'pages/common/forms/TextArea'
 
+import AiLanguageSettings from './AiLanguageSettings'
 import { ToneOfVoiceComponent } from './ToneOfVoiceComponent'
 
 import css from './ToneOfVoiceFormComponent.less'
@@ -33,6 +34,7 @@ type ToneOfVoiceFormComponentProps = {
     storeConfiguration?: StoreConfiguration
     aiAgentMode?: string
     aiAgentPreviewTicketViewId?: number | null
+    aiAgentLanguage?: string | null
 }
 
 export const ToneOfVoiceFormComponent = ({
@@ -73,6 +75,9 @@ export const ToneOfVoiceFormComponent = ({
         updateValue('toneOfVoice', toneOfVoiceLabel as ToneOfVoice)
     }
 
+    const isCustomLanguageEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentCustomLanguage]
+
     const handleCustomToneOfVoiceChange = (newValue: unknown) => {
         if (typeof newValue !== 'string') return
         if (setIsPristine) setIsPristine(false)
@@ -92,7 +97,9 @@ export const ToneOfVoiceFormComponent = ({
             <div>
                 <SettingsCard>
                     <SettingsCardHeader>
-                        <SettingsCardTitle>Tone of voice</SettingsCardTitle>
+                        <SettingsCardTitle>
+                            Tone of Voice and Language
+                        </SettingsCardTitle>
 
                         <p>
                             Tone of Voice allows you to customize how your AI
@@ -101,6 +108,7 @@ export const ToneOfVoiceFormComponent = ({
                             <a
                                 href="https://docs.gorgias.com/en-US/customize-how-ai-agent-behaves-567324"
                                 target="_blank"
+                                rel="noreferrer"
                             >
                                 See examples
                             </a>
@@ -165,6 +173,12 @@ export const ToneOfVoiceFormComponent = ({
                                         'Give your AI Agent specific instructions to always follow to match your brand.'}
                                 </div>
                             </div>
+                        )}
+                        {isCustomLanguageEnabled && (
+                            <AiLanguageSettings
+                                aiAgentLanguage={props.aiAgentLanguage}
+                                updateValue={updateValue}
+                            />
                         )}
                     </SettingsCardContent>
                 </SettingsCard>

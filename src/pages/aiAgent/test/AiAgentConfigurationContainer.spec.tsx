@@ -386,7 +386,9 @@ describe('AiAgentConfigurationContainer', () => {
         })
         renderComponent()
 
-        expect(screen.getByText('Tone of voice')).toBeInTheDocument()
+        expect(
+            screen.getByText('Tone of Voice and Language'),
+        ).toBeInTheDocument()
         expect(screen.queryByText('Chat')).not.toBeInTheDocument()
         expect(screen.queryByText('Email')).not.toBeInTheDocument()
         expect(screen.getByText('Handover and exclusion')).toBeInTheDocument()

@@ -33,6 +33,7 @@ const VALID_FORM_VALUES: ValidFormValues = {
     excludedTopics: [],
     signature: 'Signature',
     toneOfVoice: null,
+    aiAgentLanguage: null,
     customToneOfVoiceGuidance: null,
     helpCenterId: 1,
     monitoredChatIntegrations: [],
@@ -194,7 +195,7 @@ describe('store-configuration-validation', () => {
             const formValues: FormValues = {
                 ...VALID_FORM_VALUES,
                 signature: '',
-                wizard: null,
+                wizard: undefined,
                 emailChannelDeactivatedDatetime: null,
             }
             expect(() =>

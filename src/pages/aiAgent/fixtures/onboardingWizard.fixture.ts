@@ -25,6 +25,7 @@ export const getStoreConfigurationFormValuesFixture = (
         email: 'bot@gorgias.com',
     },
     toneOfVoice: ToneOfVoice.Friendly,
+    aiAgentLanguage: null,
     customToneOfVoiceGuidance:
         "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
     helpCenterId: 1,
@@ -36,5 +37,46 @@ export const getStoreConfigurationFormValuesFixture = (
         onCompletePathway: null,
     },
     customFieldIds: [],
+    ...props,
+})
+
+export const getOnboardingWizardFormValuesFixture = (
+    props?: Partial<FormValues>,
+): FormValues => ({
+    chatChannelDeactivatedDatetime: '2024-06-05T11:27:06.939Z',
+    emailChannelDeactivatedDatetime: null,
+    trialModeActivatedDatetime: '2024-06-05T11:27:06.939Z',
+    previewModeActivatedDatetime: null,
+    previewModeValidUntilDatetime: null,
+    silentHandover: false,
+    monitoredEmailIntegrations: [
+        {
+            id: 1,
+            email: 'test@gorgias.com',
+        },
+    ],
+    tags: [
+        {
+            name: 'my-awesome-tag',
+            description: 'my tag description',
+        },
+    ],
+    excludedTopics: ['returns', 'refund'],
+    signature: 'Thank you!\nNice ecommerce team',
+    toneOfVoice: ToneOfVoice.Friendly,
+    conversationBot: {
+        name: 'AI Agent Name',
+        id: 1,
+        email: '',
+    },
+    useEmailIntegrationSignature: true,
+    aiAgentLanguage: null,
+    customToneOfVoiceGuidance:
+        'The only brand response with exclamation points.',
+    helpCenterId: 1,
+    ticketSampleRate: null,
+    monitoredChatIntegrations: [],
+    wizard: undefined,
+    customFieldIds: null,
     ...props,
 })

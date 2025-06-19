@@ -61,6 +61,7 @@ export type StoreConfiguration = {
     useEmailIntegrationSignature: boolean
     toneOfVoice: ToneOfVoice
     customToneOfVoiceGuidance: string | null
+    aiAgentLanguage: string | null
     signature: string
     excludedTopics: string[]
     tags: Tag[]
@@ -108,6 +109,7 @@ export type CreateStoreConfigurationPayload = Pick<
     | 'previewModeActivatedDatetime'
     | 'previewModeValidUntilDatetime'
     | 'customToneOfVoiceGuidance'
+    | 'aiAgentLanguage'
     | 'signature'
     | 'useEmailIntegrationSignature'
     | 'monitoredChatIntegrations'

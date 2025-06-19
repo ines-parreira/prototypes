@@ -33,6 +33,7 @@ export const getFormValuesFromStoreConfiguration = (
     excludedTopics: storeConfig.excludedTopics,
     signature: storeConfig.signature,
     toneOfVoice: storeConfig.toneOfVoice,
+    aiAgentLanguage: storeConfig.aiAgentLanguage,
     customToneOfVoiceGuidance: storeConfig.customToneOfVoiceGuidance,
     helpCenterId: storeConfig.helpCenterId,
     monitoredChatIntegrations: storeConfig.monitoredChatIntegrations,

@@ -65,6 +65,7 @@ export const getStoreConfigurationFromFormValues = (
         useEmailIntegrationSignature:
             formValues.useEmailIntegrationSignature ?? false,
         helpCenterId,
+        aiAgentLanguage: formValues.aiAgentLanguage,
         monitoredChatIntegrations: formValues.monitoredChatIntegrations,
         wizard: formValues.wizard ? wizard : undefined,
         customFieldIds: formValues.customFieldIds ?? [],

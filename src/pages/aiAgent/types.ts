@@ -33,22 +33,23 @@ export type FormValues = {
         | null
         | undefined
     useEmailIntegrationSignature: boolean | null
-    chatChannelDeactivatedDatetime: string | null | undefined
     emailChannelDeactivatedDatetime: string | null | undefined
+    chatChannelDeactivatedDatetime: string | null | undefined
     trialModeActivatedDatetime: string | null
     previewModeActivatedDatetime: string | null
+    previewModeValidUntilDatetime: string | null
     ticketSampleRate: number | null
     silentHandover: boolean | null
     monitoredEmailIntegrations: { id: number; email: string }[] | null
+    monitoredChatIntegrations: number[] | null
     tags: Tag[] | null
     excludedTopics: string[] | null
     signature: string | null
     toneOfVoice: ToneOfVoice | null
+    aiAgentLanguage: string | null
     customToneOfVoiceGuidance: string | null
     helpCenterId: number | null
-    monitoredChatIntegrations: number[] | null
-    wizard: WizardFormValues | null | undefined
-    previewModeValidUntilDatetime?: string | null
+    wizard: WizardFormValues | undefined
     customFieldIds: number[] | null
 }
 
