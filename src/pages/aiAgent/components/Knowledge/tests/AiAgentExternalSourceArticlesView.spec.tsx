@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { fireEvent, screen } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { useLocation } from 'react-router-dom'
@@ -10,8 +10,10 @@ import {
     useGetHelpCenterArticle,
 } from 'models/helpCenter/queries'
 import { HeaderType } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
+import { useIngestionDomainBannerDismissed } from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import { usePublicResourceMutation } from 'pages/aiAgent/hooks/usePublicResourcesMutation'
+import { usePublicResourcesPooling } from 'pages/aiAgent/hooks/usePublicResourcesPooling'
 import { getSingleHelpCenterResponseFixtureWithTranslation } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 import { assumeMock } from 'utils/testing'
@@ -26,12 +28,20 @@ jest.mock('react-router-dom', () => ({
 jest.mock('models/helpCenter/queries')
 jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation')
 jest.mock('pages/aiAgent/hooks/usePublicResourcesMutation')
+jest.mock('pages/aiAgent/hooks/usePublicResourcesPooling')
+jest.mock(
+    'pages/aiAgent/AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed',
+)
 
 const mockUseLocation = assumeMock(useLocation)
 const mockUseGetHelpCenterArticle = assumeMock(useGetHelpCenterArticle)
 const mockUseGetArticleIngestionLogs = assumeMock(useGetArticleIngestionLogs)
 const mockUseGuidanceArticleMutation = assumeMock(useGuidanceArticleMutation)
-const umockUsePublicResourceMutation = assumeMock(usePublicResourceMutation)
+const mockUsePublicResourceMutation = assumeMock(usePublicResourceMutation)
+const mockUsePublicResourcesPooling = assumeMock(usePublicResourcesPooling)
+const mockUseIngestionDomainBannerDismissed = assumeMock(
+    useIngestionDomainBannerDismissed,
+)
 const mockedShopName = 'test-shop'
 const mockedFileIngestionId = '123'
 const mockedHelpCenterId = 1
@@ -117,9 +127,21 @@ describe('AiAgentExternalSourceArticlesView', () => {
             isGuidanceArticleUpdating: false,
         } as any)
 
-        umockUsePublicResourceMutation.mockReturnValue({
+        mockUsePublicResourceMutation.mockReturnValue({
             addPublicResource: jest.fn(),
             deletePublicResource: jest.fn(),
+        } as any)
+
+        mockUsePublicResourcesPooling.mockReturnValue({
+            articleIngestionLogs: [],
+            isLoading: false,
+            refetch: jest.fn(),
+        } as any)
+
+        mockUseIngestionDomainBannerDismissed.mockReturnValue({
+            resetAllBanner: jest.fn(),
+            isDismissed: false,
+            dismissBanner: jest.fn(),
         } as any)
     })
 
@@ -217,5 +239,102 @@ describe('AiAgentExternalSourceArticlesView', () => {
 
         expect(screen.queryByText('Test article 1')).not.toBeInTheDocument()
         expect(screen.queryByText('Test article 2')).not.toBeInTheDocument()
+    })
+
+    describe('handleOnSync function', () => {
+        let mockAddPublicResource: jest.Mock
+        let mockResetAllBanner: jest.Mock
+
+        beforeEach(() => {
+            mockAddPublicResource = jest.fn()
+            mockResetAllBanner = jest.fn()
+
+            mockUsePublicResourceMutation.mockReturnValue({
+                addPublicResource: mockAddPublicResource,
+                deletePublicResource: jest.fn(),
+            } as any)
+
+            mockUseIngestionDomainBannerDismissed.mockReturnValue({
+                resetAllBanner: mockResetAllBanner,
+                isDismissed: false,
+                dismissBanner: jest.fn(),
+            } as any)
+
+            mockUsePublicResourcesPooling.mockReturnValue({
+                articleIngestionLogs: [],
+            } as any)
+
+            // Mock location with fileUrl
+            mockUseLocation.mockReturnValue({
+                state: {
+                    selectedResource: {
+                        url: 'https://example.com/test.pdf',
+                    },
+                },
+            } as any)
+        })
+
+        it('should handle successful sync', async () => {
+            mockAddPublicResource.mockResolvedValue({})
+
+            renderComponent({ headerType: HeaderType.URL })
+
+            // Find and click the initial sync button to open modal
+            const syncButton = screen.getByText('Sync')
+            fireEvent.click(syncButton)
+
+            // Wait for modal to open and click the sync button in the modal
+            await waitFor(() => {
+                expect(screen.getByText('Sync URL')).toBeInTheDocument()
+            })
+
+            // Click the sync button in the modal footer
+            const modalSyncButtons = screen.getAllByText('Sync')
+            const modalSyncButton = modalSyncButtons.find((button) =>
+                button.closest('.footer'),
+            )
+            if (modalSyncButton) {
+                fireEvent.click(modalSyncButton)
+            }
+
+            // Wait for async operations
+            await waitFor(() => {
+                expect(mockAddPublicResource).toHaveBeenCalledWith([
+                    'https://example.com/test.pdf',
+                ])
+            })
+
+            await waitFor(() => {
+                expect(mockResetAllBanner).toHaveBeenCalled()
+            })
+        })
+
+        it('should not sync when fileUrl is null', async () => {
+            // Mock location without fileUrl
+            mockUseLocation.mockReturnValue({
+                state: {
+                    selectedResource: null,
+                },
+            } as any)
+
+            renderComponent({ headerType: HeaderType.URL })
+
+            // The sync button should still be present but clicking it should do nothing
+            const syncButton = screen.getByText('Sync')
+            fireEvent.click(syncButton)
+
+            // Wait a bit to ensure no async operations are triggered
+            await new Promise((resolve) => setTimeout(resolve, 100))
+
+            expect(mockAddPublicResource).not.toHaveBeenCalled()
+            expect(mockResetAllBanner).not.toHaveBeenCalled()
+        })
+
+        it('should not show sync button for external document', () => {
+            renderComponent({ headerType: HeaderType.ExternalDocument })
+
+            // Sync button should not be present for external documents
+            expect(screen.queryByText('Sync')).not.toBeInTheDocument()
+        })
     })
 })

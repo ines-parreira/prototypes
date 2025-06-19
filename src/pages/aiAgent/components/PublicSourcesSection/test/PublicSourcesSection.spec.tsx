@@ -298,11 +298,41 @@ describe('<PublicSourcesSection />', () => {
         const syncButton = screen.getByRole('button', { name: /Sync URL/ })
         const input = screen.getByLabelText('Public URL')
 
-        await userEvent.type(input, 'https://example.com/faqs')
+        userEvent.type(input, 'https://example.com/faqs')
         userEvent.click(syncButton)
 
+        // For new URLs being added, sync directly without modal
         expect(syncButton).toBeAriaDisabled()
         expect(input).toBeDisabled()
+    })
+
+    it('should show confirmation modal when re-syncing existing URL', async () => {
+        const sources = [
+            createSource(1, {
+                url: 'https://example.com/existing',
+                articleIds: [1, 2],
+            }),
+        ]
+        renderComponent({ sourceItems: sources })
+
+        const syncButton = screen.getAllByRole('button', {
+            name: /Sync URL/,
+        })[0]
+        userEvent.click(syncButton)
+
+        // For existing URLs being re-synced (same URL), show modal
+        expect(screen.getByRole('dialog')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Syncing will replace all existing questions and answers, and reset any disabled questions and answers from this URL.',
+            ),
+        ).toBeInTheDocument()
+
+        // Confirm the sync in the modal
+        const confirmSyncButton = screen.getByRole('button', { name: 'Sync' })
+        userEvent.click(confirmSyncButton)
+
+        expect(syncButton).toBeAriaDisabled()
     })
 
     it('should set isSuccessResources to true when all resources are successfully synced', () => {
@@ -370,9 +400,10 @@ describe('<PublicSourcesSection />', () => {
         const syncButton = screen.getByRole('button', { name: /Sync URL/ })
         const input = screen.getByLabelText('Public URL')
 
-        await userEvent.type(input, 'https://example.com/faqs')
+        userEvent.type(input, 'https://example.com/faqs')
         userEvent.click(syncButton)
 
+        // For new URLs, sync happens directly without modal
         expect(mockedLogConnectedPublicUrl).toHaveBeenCalledWith(
             'https://example.com/faqs',
         )

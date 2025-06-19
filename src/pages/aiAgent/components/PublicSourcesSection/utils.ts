@@ -26,6 +26,7 @@ export const mapArticleIngestionLogsToSourceItem = (
     url: articleIngestionLog.url,
     createdDatetime: articleIngestionLog.created_datetime,
     latestSync: articleIngestionLog.latest_sync,
+    articleIds: articleIngestionLog.article_ids,
 })
 
 export const updateArticleIngestionLogs = (

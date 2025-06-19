@@ -33,14 +33,18 @@ const SyncDomainConfirmationModal = ({
             <ModalHeader title={title} />
             <ModalBody className={css.body}>
                 <div>
-                    <span>
-                        Syncing will replace all existing questions and answers,
-                        reset any disabled questions and answers
-                    </span>
-                    {pageType === HeaderType.Domain && (
+                    {pageType === HeaderType.Domain ? (
                         <span>
-                            , and update all product information from your store
+                            Syncing will replace all existing questions and
+                            answers, reset any disabled questions and answers,
+                            and update all product information from your store
                             website.
+                        </span>
+                    ) : (
+                        <span>
+                            Syncing will replace all existing questions and
+                            answers, and reset any disabled questions and
+                            answers from this URL.
                         </span>
                     )}
                 </div>

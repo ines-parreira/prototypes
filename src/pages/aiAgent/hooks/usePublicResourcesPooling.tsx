@@ -163,49 +163,53 @@ export const usePublicResourcesPooling = ({
             (log) => log.status === 'SUCCESSFUL',
         )
 
-        if (!!wizardQueryParam) return
+        const hasError = finishedArticleIngestionIds.some(
+            (log) => log.status === 'FAILED',
+        )
+
+        if (
+            !!wizardQueryParam ||
+            window.location.pathname.includes(routes.urlArticles(ids[0]))
+        )
+            return
 
         if (isAllSuccess) {
             void dispatch(
                 notify({
                     status: NotificationStatus.Success,
-                    message: 'URL sources have successfully synced.',
-                    buttons: isOnboardingWizardPage
-                        ? []
-                        : [
-                              {
-                                  name: 'Go To Test',
-                                  primary: false,
-                                  onClick: () => {
-                                      history.push(routes.test)
-                                  },
-                              },
-                          ],
+                    message:
+                        'URL successfully synced. Review newly generated content for accuracy.',
+                    buttons: [
+                        {
+                            name: 'Review',
+                            primary: false,
+                            onClick: () => {
+                                history.push(
+                                    routes.urlArticles(
+                                        finishedArticleIngestionIds[0].id,
+                                    ),
+                                    {
+                                        selectedResource: {
+                                            id: finishedArticleIngestionIds[0]
+                                                .id,
+                                            url: finishedArticleIngestionIds[0]
+                                                .url,
+                                        },
+                                    },
+                                )
+                            },
+                        },
+                    ],
                     showDismissButton: isOnboardingWizardPage,
                 }),
             )
-        } else {
-            const isConfigurationPage = window.location.pathname.startsWith(
-                routes.configuration(),
-            )
+        } else if (hasError) {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
                     message:
-                        'One or more URL sources for AI Agent failed to sync. Review URLs and try again.',
-                    buttons:
-                        isConfigurationPage || isOnboardingWizardPage
-                            ? []
-                            : [
-                                  {
-                                      name: 'Go to Knowledge settings',
-                                      primary: false,
-                                      onClick: () => {
-                                          history.push(routes.test)
-                                      },
-                                  },
-                              ],
-                    showDismissButton: isOnboardingWizardPage,
+                        'We couldn’t sync your URL. Please try again or contact support if the issue persists.',
+                    showDismissButton: true,
                 }),
             )
         }

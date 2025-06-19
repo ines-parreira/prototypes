@@ -4,4 +4,5 @@ export type SourceItem = {
     status: 'idle' | 'loading' | 'done' | 'error'
     createdDatetime: string
     latestSync?: string | null
+    articleIds?: number[] | null
 }

@@ -12,6 +12,7 @@ import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
+import { PAGE_NAME } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import { ExternalFilesSection } from 'pages/aiAgent/components/Knowledge/ExternalFilesSection'
 import { useConfigurationForm } from 'pages/aiAgent/hooks/useConfigurationForm'
@@ -252,7 +253,7 @@ export const AiAgentKnowledgeContainer = () => {
                             <SyncIngestionDomainBanner
                                 syncStoreDomainStatus={syncStoreDomainStatus}
                                 shopName={shopName}
-                                isSourcePage={true}
+                                syncEntityType={PAGE_NAME.SOURCE}
                                 className={css.banner}
                             />
                             <ConfigurationSection

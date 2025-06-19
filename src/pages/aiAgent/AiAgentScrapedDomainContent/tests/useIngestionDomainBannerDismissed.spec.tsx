@@ -7,6 +7,7 @@ import { useIngestionDomainBannerDismissed } from '../hooks/useIngestionDomainBa
 
 describe('useIngestionDomainBannerDismissed', () => {
     const shopName = 'test-shop'
+    const pageName = PAGE_NAME.STORE_WEBSITE
 
     beforeEach(() => {
         localStorage.clear()
@@ -14,7 +15,7 @@ describe('useIngestionDomainBannerDismissed', () => {
 
     it('returns false initially when no dismiss key is set', () => {
         const { result } = renderHook(() =>
-            useIngestionDomainBannerDismissed({ shopName }),
+            useIngestionDomainBannerDismissed({ shopName, pageName }),
         )
 
         expect(result.current.isDismissed).toBe(false)
@@ -22,12 +23,12 @@ describe('useIngestionDomainBannerDismissed', () => {
 
     it('returns true if localStorage has the dismissed key for MANAGE', () => {
         localStorage.setItem(
-            `scraped-domain-banner-dismissed-${shopName}-${PAGE_NAME.MANAGE}`,
+            `scraped-domain-banner-dismissed-${shopName}-${PAGE_NAME.STORE_WEBSITE}`,
             'true',
         )
 
         const { result } = renderHook(() =>
-            useIngestionDomainBannerDismissed({ shopName }),
+            useIngestionDomainBannerDismissed({ shopName, pageName }),
         )
 
         expect(result.current.isDismissed).toBe(true)
@@ -40,7 +41,10 @@ describe('useIngestionDomainBannerDismissed', () => {
         )
 
         const { result } = renderHook(() =>
-            useIngestionDomainBannerDismissed({ shopName, isSourcePage: true }),
+            useIngestionDomainBannerDismissed({
+                shopName,
+                pageName: PAGE_NAME.SOURCE,
+            }),
         )
 
         expect(result.current.isDismissed).toBe(true)
@@ -48,7 +52,7 @@ describe('useIngestionDomainBannerDismissed', () => {
 
     it('dismissBanner sets the dismissed key in localStorage', () => {
         const { result } = renderHook(() =>
-            useIngestionDomainBannerDismissed({ shopName }),
+            useIngestionDomainBannerDismissed({ shopName, pageName }),
         )
 
         act(() => {
@@ -57,7 +61,7 @@ describe('useIngestionDomainBannerDismissed', () => {
 
         expect(
             localStorage.getItem(
-                `scraped-domain-banner-dismissed-${shopName}-${PAGE_NAME.MANAGE}`,
+                `scraped-domain-banner-dismissed-${shopName}-${PAGE_NAME.STORE_WEBSITE}`,
             ),
         ).toBe('true')
 
@@ -66,7 +70,7 @@ describe('useIngestionDomainBannerDismissed', () => {
 
     it('resetAllBanner removes both dismiss keys', () => {
         localStorage.setItem(
-            `scraped-domain-banner-dismissed-${shopName}-${PAGE_NAME.MANAGE}`,
+            `scraped-domain-banner-dismissed-${shopName}-${PAGE_NAME.STORE_WEBSITE}`,
             'true',
         )
         localStorage.setItem(
@@ -75,7 +79,7 @@ describe('useIngestionDomainBannerDismissed', () => {
         )
 
         const { result } = renderHook(() =>
-            useIngestionDomainBannerDismissed({ shopName }),
+            useIngestionDomainBannerDismissed({ shopName, pageName }),
         )
 
         act(() => {
@@ -84,7 +88,7 @@ describe('useIngestionDomainBannerDismissed', () => {
 
         expect(
             localStorage.getItem(
-                `scraped-domain-banner-dismissed-${shopName}-${PAGE_NAME.MANAGE}`,
+                `scraped-domain-banner-dismissed-${shopName}-${PAGE_NAME.STORE_WEBSITE}`,
             ),
         ).toBe(null)
         expect(

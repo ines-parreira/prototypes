@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 
-import { IngestionLogStatus } from '../AiAgentScrapedDomainContent/constant'
+import { IngestionLogStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
+
 import { useIngestionDomainBannerDismissed } from '../AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed'
 import { useGetStoreDomainIngestionLog } from './useGetStoreDomainIngestionLog'
 
@@ -24,7 +25,9 @@ export const usePollStoreDomainIngestionLog = ({
 
     const previousStatusRef = useRef<string | null>(null)
 
-    const { resetAllBanner } = useIngestionDomainBannerDismissed({ shopName })
+    const { resetAllBanner } = useIngestionDomainBannerDismissed({
+        shopName,
+    })
 
     useEffect(() => {
         // reset the status when the storeUrl changes

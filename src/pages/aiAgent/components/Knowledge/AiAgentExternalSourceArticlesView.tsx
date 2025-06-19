@@ -8,6 +8,7 @@ import AiAgentScrapedDomainContentLayout from 'pages/aiAgent/AiAgentScrapedDomai
 import {
     HeaderType,
     IngestedResourceStatus,
+    PAGE_NAME,
     VisibilityStatus,
 } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import ScrapedDomainContentView from 'pages/aiAgent/AiAgentScrapedDomainContent/ScrapedDomainContentView'
@@ -21,6 +22,8 @@ import { usePublicResourceMutation } from 'pages/aiAgent/hooks/usePublicResource
 import { usePublicResourcesPooling } from 'pages/aiAgent/hooks/usePublicResourcesPooling'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
+
+import { useIngestionDomainBannerDismissed } from '../../AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed'
 
 // Normalize API response immediately
 function normalizeArticles(
@@ -81,6 +84,7 @@ const AiAgentExternalSourceArticlesView = ({
 
     const [articleId, setArticleId] = useState<number | null>(null)
     const [syncTriggered, setSyncTriggered] = useState(false)
+    const [isLocalSyncing, setIsLocalSyncing] = useState(false)
 
     const { data, isLoading, refetch } = fetchArticles(
         helpCenterId,
@@ -93,14 +97,24 @@ const AiAgentExternalSourceArticlesView = ({
         })
 
     const { addPublicResource } = usePublicResourceMutation({ helpCenterId })
+    const { resetAllBanner } = useIngestionDomainBannerDismissed({
+        shopName,
+        pageName: PAGE_NAME.URL,
+    })
     const { articleIngestionLogs } = usePublicResourcesPooling({
         helpCenterId,
         shopName,
         enabled: true,
     })
-    const syncStaus =
+
+    const polledSyncStatus =
         articleIngestionLogs?.find((a) => a.id === ingestedFile?.id)?.status ??
         null
+
+    const syncStatus =
+        isLocalSyncing && !polledSyncStatus
+            ? ARTICLE_INGESTION_LOGS_STATUS.PENDING
+            : polledSyncStatus
 
     const articles: BaseArticle[] = useMemo(
         () => normalizeArticles(data as BaseArticle[]),
@@ -112,10 +126,16 @@ const AiAgentExternalSourceArticlesView = ({
     }, [articles, articleId])
 
     useEffect(() => {
-        if (syncStaus === ARTICLE_INGESTION_LOGS_STATUS.SUCCESSFUL) {
+        if (syncStatus === ARTICLE_INGESTION_LOGS_STATUS.SUCCESSFUL) {
             void refetch()
         }
-    }, [syncStaus, refetch])
+    }, [syncStatus, refetch])
+
+    useEffect(() => {
+        if (polledSyncStatus && isLocalSyncing) {
+            setIsLocalSyncing(false)
+        }
+    }, [polledSyncStatus, isLocalSyncing])
 
     const onChangeVisibility = async (
         articleId: number,
@@ -155,8 +175,15 @@ const AiAgentExternalSourceArticlesView = ({
 
     const handleOnSync = async () => {
         if (fileUrl) {
-            await addPublicResource([fileUrl])
-            setSyncTriggered(false)
+            setIsLocalSyncing(true)
+            try {
+                await addPublicResource([fileUrl])
+                resetAllBanner()
+            } catch {
+                setIsLocalSyncing(false)
+            } finally {
+                setSyncTriggered(false)
+            }
         }
     }
 
@@ -165,10 +192,6 @@ const AiAgentExternalSourceArticlesView = ({
     }
 
     const storeUrl = headerType === HeaderType.ExternalDocument ? null : fileUrl
-    const isLoadingContentView =
-        isLoading || syncStaus === ARTICLE_INGESTION_LOGS_STATUS.PENDING
-    const contents =
-        syncStaus === ARTICLE_INGESTION_LOGS_STATUS.PENDING ? [] : articles
     return (
         <AiAgentScrapedDomainContentLayout
             shopName={shopName}
@@ -176,7 +199,7 @@ const AiAgentExternalSourceArticlesView = ({
             storeUrl={storeUrl}
             isFetchLoading={isLoading}
             syncTriggered={syncTriggered}
-            syncStoreDomainStatus={syncStaus}
+            syncStoreDomainStatus={syncStatus}
             title={
                 headerType === HeaderType.ExternalDocument
                     ? 'Document'
@@ -193,9 +216,9 @@ const AiAgentExternalSourceArticlesView = ({
             }
         >
             <ScrapedDomainContentView<BaseArticle>
-                contents={contents}
+                contents={articles}
                 pageType={pageType}
-                isLoading={isLoadingContentView}
+                isLoading={isLoading}
                 onSelect={handleOnSelect}
                 searchValue=""
                 onUpdateStatus={onChangeVisibility}

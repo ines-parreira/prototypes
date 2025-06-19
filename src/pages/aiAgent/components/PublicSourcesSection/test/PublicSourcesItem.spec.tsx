@@ -79,6 +79,7 @@ describe('PublicSourcesItem', () => {
                 url: 'https://example.com',
                 status: 'idle' as const,
                 createdDatetime: '2024-01-01T00:00:00.000Z',
+                articleIds: [1, 2, 3],
             }
             const { history } = renderComponent({ source })
 

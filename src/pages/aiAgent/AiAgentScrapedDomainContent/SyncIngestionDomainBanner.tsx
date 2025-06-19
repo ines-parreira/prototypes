@@ -1,30 +1,37 @@
 import { Banner, Button } from '@gorgias/merchant-ui-kit'
 
+import {
+    IngestionLogStatus,
+    PAGE_NAME,
+} from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
+import { useIngestionDomainBannerDismissed } from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import history from 'pages/history'
-
-import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
-import { IngestionLogStatus } from './constant'
-import { useIngestionDomainBannerDismissed } from './hooks/useIngestionDomainBannerDismissed'
 
 type Props = {
     syncStoreDomainStatus: string | null
     shopName: string
-    isSourcePage: boolean
     className?: string
+    syncEntityType: (typeof PAGE_NAME)[keyof typeof PAGE_NAME]
 }
 
 const SyncIngestionDomainBanner = ({
     syncStoreDomainStatus,
     shopName,
-    isSourcePage,
     className,
+    syncEntityType,
 }: Props) => {
     const { routes } = useAiAgentNavigation({ shopName })
+
+    // Derive values from syncEntityType (which is now a PAGE_NAME value)
+    const isUrlSync = syncEntityType === PAGE_NAME.URL
+    const isReviewButtonVisible = syncEntityType === PAGE_NAME.SOURCE
+    const pageName = syncEntityType // syncEntityType is already a PAGE_NAME value
+
     const { isDismissed, dismissBanner } = useIngestionDomainBannerDismissed({
         shopName,
-        isSourcePage,
+        pageName,
     })
-
     const onReview = () => {
         history.push(routes.pagesContent)
     }
@@ -44,9 +51,9 @@ const SyncIngestionDomainBanner = ({
             onClose={dismissBanner}
             className={className}
         >
-            Your store website is syncing. This may take a while. You will be
-            notified once it is complete. In the meantime, the AI Agent may not
-            have your latest content.
+            {isUrlSync
+                ? 'Your URL is syncing. You will be notified once complete. In the meantime, AI Agent may not have your latest content.'
+                : 'Your store website is syncing. This may take a while. You will be notified once it is complete. In the meantime, the AI Agent may not have your latest content.'}
         </Banner>
     )
 
@@ -58,10 +65,11 @@ const SyncIngestionDomainBanner = ({
             fillStyle="fill"
             onClose={dismissBanner}
             className={className}
-            action={isSourcePage ? reviewButton : undefined}
+            action={isReviewButtonVisible ? reviewButton : undefined}
         >
-            Your store website has been synced successfully and is in use by AI
-            Agent. Review newly generated content for accuracy.
+            {isUrlSync
+                ? 'Your URL has been synced successfully and is in use by AI Agent. Review newly generated content for accuracy.'
+                : 'Your store website has been synced successfully and is in use by AI Agent. Review newly generated content for accuracy.'}
         </Banner>
     )
 
@@ -74,8 +82,9 @@ const SyncIngestionDomainBanner = ({
             onClose={dismissBanner}
             className={className}
         >
-            We couldn’t sync your store website. AI Agent is using your previous
-            content. Please try again or contact support if the issue persists.
+            {isUrlSync
+                ? "We couldn't sync your URL. AI Agent is using your previous content. Please try again or contact support if the issue persists."
+                : "We couldn't sync your store website. AI Agent is using your previous content. Please try again or contact support if the issue persists."}
         </Banner>
     )
 

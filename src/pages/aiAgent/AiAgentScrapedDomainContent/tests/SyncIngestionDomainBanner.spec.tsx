@@ -2,17 +2,22 @@ import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
+import {
+    IngestionLogStatus,
+    PAGE_NAME,
+} from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
+import { useIngestionDomainBannerDismissed } from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import history from 'pages/history'
 import { assumeMock } from 'utils/testing'
 
-import { IngestionLogStatus } from '../constant'
-import { useIngestionDomainBannerDismissed } from '../hooks/useIngestionDomainBannerDismissed'
 import SyncIngestionDomainBanner from '../SyncIngestionDomainBanner'
 
 jest.mock('pages/history')
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
-jest.mock('../hooks/useIngestionDomainBannerDismissed')
+jest.mock(
+    'pages/aiAgent/AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed',
+)
 
 const mockUseAiAgentNavigation = assumeMock(useAiAgentNavigation)
 const mockUseIngestionDomainBannerDismissed = assumeMock(
@@ -25,7 +30,7 @@ describe('SyncIngestionDomainBanner', () => {
 
     const defaultProps = {
         shopName: mockedShopName,
-        isSourcePage: false,
+        syncEntityType: PAGE_NAME.SOURCE,
     }
 
     beforeEach(() => {
@@ -82,11 +87,11 @@ describe('SyncIngestionDomainBanner', () => {
         ).toBeInTheDocument()
     })
 
-    it('renders success banner and shows Review button if isSourcePage is true', () => {
+    it('renders success banner and shows Review button when syncEntityType is Source', () => {
         render(
             <SyncIngestionDomainBanner
                 {...defaultProps}
-                isSourcePage={true}
+                syncEntityType={PAGE_NAME.SOURCE}
                 syncStoreDomainStatus={IngestionLogStatus.Successful}
             />,
         )
@@ -103,7 +108,7 @@ describe('SyncIngestionDomainBanner', () => {
         render(
             <SyncIngestionDomainBanner
                 {...defaultProps}
-                isSourcePage={true}
+                syncEntityType={PAGE_NAME.SOURCE}
                 syncStoreDomainStatus={IngestionLogStatus.Successful}
             />,
         )
@@ -121,7 +126,111 @@ describe('SyncIngestionDomainBanner', () => {
         )
 
         expect(
-            screen.getByText(/We couldn’t sync your store website/i),
+            screen.getByText(/We couldn't sync your store website/i),
         ).toBeInTheDocument()
+    })
+
+    describe('Conditional text messages based on sync type', () => {
+        describe('Pending banner text', () => {
+            it('shows URL syncing message when syncEntityType is URL', () => {
+                render(
+                    <SyncIngestionDomainBanner
+                        {...defaultProps}
+                        syncEntityType="url-content"
+                        syncStoreDomainStatus={IngestionLogStatus.Pending}
+                    />,
+                )
+
+                expect(
+                    screen.getByText(
+                        /Your URL is syncing. You will be notified once complete. In the meantime, AI Agent may not have your latest content./i,
+                    ),
+                ).toBeInTheDocument()
+            })
+
+            it('shows store website syncing message when syncEntityType is not URL', () => {
+                render(
+                    <SyncIngestionDomainBanner
+                        {...defaultProps}
+                        syncEntityType={PAGE_NAME.STORE_WEBSITE}
+                        syncStoreDomainStatus={IngestionLogStatus.Pending}
+                    />,
+                )
+
+                expect(
+                    screen.getByText(
+                        /Your store website is syncing\. This may take a while/i,
+                    ),
+                ).toBeInTheDocument()
+            })
+        })
+
+        describe('Success banner text', () => {
+            it('shows URL synced successfully message when syncEntityType is URL', () => {
+                render(
+                    <SyncIngestionDomainBanner
+                        {...defaultProps}
+                        syncEntityType="url-content"
+                        syncStoreDomainStatus={IngestionLogStatus.Successful}
+                    />,
+                )
+
+                expect(
+                    screen.getByText(
+                        /Your URL has been synced successfully and is in use by AI Agent/i,
+                    ),
+                ).toBeInTheDocument()
+            })
+
+            it('shows store website synced successfully message when syncEntityType is not URL', () => {
+                render(
+                    <SyncIngestionDomainBanner
+                        {...defaultProps}
+                        syncEntityType={PAGE_NAME.STORE_WEBSITE}
+                        syncStoreDomainStatus={IngestionLogStatus.Successful}
+                    />,
+                )
+
+                expect(
+                    screen.getByText(
+                        /Your store website has been synced successfully and is in use by AI Agent/i,
+                    ),
+                ).toBeInTheDocument()
+            })
+        })
+
+        describe('Failed banner text', () => {
+            it('shows URL sync failed message when syncEntityType is URL', () => {
+                render(
+                    <SyncIngestionDomainBanner
+                        {...defaultProps}
+                        syncEntityType="url-content"
+                        syncStoreDomainStatus={IngestionLogStatus.Failed}
+                    />,
+                )
+
+                expect(
+                    screen.getByText(
+                        /We couldn't sync your URL. AI Agent is using your previous content/i,
+                    ),
+                ).toBeInTheDocument()
+            })
+
+            it('shows store website sync failed message when syncEntityType is not URL', () => {
+                render(
+                    <SyncIngestionDomainBanner
+                        {...defaultProps}
+                        syncEntityType={PAGE_NAME.STORE_WEBSITE}
+                        syncStoreDomainStatus={IngestionLogStatus.Failed}
+                    />,
+                )
+
+                expect(
+                    screen.getByText(
+                        /We couldn't sync your store website. AI Agent is using your previous content. Please try again or contact support if the issue persists./i,
+                    ),
+                ).toBeInTheDocument()
+            })
+        })
     })
 })

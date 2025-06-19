@@ -2,12 +2,16 @@ import { NavLink } from 'react-router-dom'
 
 import { Card } from '@gorgias/analytics-ui-kit'
 
+import {
+    HeaderType,
+    PAGE_NAME,
+    SCRAPPING_CONTENT,
+} from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import BackLink from 'pages/common/components/BackLink'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
 import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import AiAgentScrapedDomainContentHeader from './AiAgentScrapedDomainContentHeader'
-import { HeaderType, SCRAPPING_CONTENT } from './constant'
 import SyncIngestionDomainBanner from './SyncIngestionDomainBanner'
 
 import css from './AiAgentScrapedDomainContentLayout.less'
@@ -60,11 +64,16 @@ const AiAgentScrapedDomainContentLayout = ({
         <div className={css.container}>
             <BackLink path={routes.knowledge} label="Back to Sources" />
 
-            {pageType === HeaderType.Domain && (
+            {(pageType === HeaderType.Domain ||
+                pageType === HeaderType.URL) && (
                 <SyncIngestionDomainBanner
                     syncStoreDomainStatus={syncStoreDomainStatus}
                     shopName={shopName}
-                    isSourcePage={false}
+                    syncEntityType={
+                        pageType === HeaderType.Domain
+                            ? PAGE_NAME.STORE_WEBSITE
+                            : PAGE_NAME.URL
+                    }
                     className={css.banner}
                 />
             )}

@@ -6,7 +6,7 @@ import { PAGE_NAME } from '../constant'
 
 type Props = {
     shopName: string
-    isSourcePage?: boolean
+    pageName?: string
 }
 
 const getDismissedKey = (shopName: string, page: string) =>
@@ -14,18 +14,19 @@ const getDismissedKey = (shopName: string, page: string) =>
 
 export const useIngestionDomainBannerDismissed = ({
     shopName,
-    isSourcePage = false,
+    pageName = PAGE_NAME.SOURCE,
 }: Props) => {
-    const dismissedKey = getDismissedKey(
-        shopName,
-        isSourcePage ? PAGE_NAME.SOURCE : PAGE_NAME.MANAGE,
-    )
+    const dismissedKey = getDismissedKey(shopName, pageName)
     const [isDismissed, setIsDismissed] = useLocalStorage(dismissedKey, false)
 
     const resetAllBanner = useCallback(() => {
+        setIsDismissed(false)
         localStorage.removeItem(getDismissedKey(shopName, PAGE_NAME.SOURCE))
-        localStorage.removeItem(getDismissedKey(shopName, PAGE_NAME.MANAGE))
-    }, [shopName])
+        localStorage.removeItem(
+            getDismissedKey(shopName, PAGE_NAME.STORE_WEBSITE),
+        )
+        localStorage.removeItem(getDismissedKey(shopName, PAGE_NAME.URL))
+    }, [shopName, setIsDismissed])
 
     return {
         isDismissed,

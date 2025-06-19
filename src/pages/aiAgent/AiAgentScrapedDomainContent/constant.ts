@@ -23,7 +23,8 @@ export enum VisibilityStatus {
 
 export const PAGE_NAME = {
     SOURCE: 'knowledge-source',
-    MANAGE: 'manage-content',
+    STORE_WEBSITE: 'store-website-content',
+    URL: 'url-content',
 }
 
 export const PAGINATED_ITEMS_PER_PAGE = 15
