@@ -4,13 +4,11 @@ import classnames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
 
 import { Tag, TicketTag as TicketTagType } from '@gorgias/helpdesk-types'
-import { Badge, BadgeIcon, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Badge, BadgeIcon, Button, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { getWrappedElementCount } from 'common/utils'
 import useCallbackRef from 'hooks/useCallbackRef'
 import useElementSize from 'hooks/useElementSize'
-import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import TicketTag from 'pages/common/components/TicketTag'
 
 import TagDropdown from './TagDropdown'
@@ -60,9 +58,7 @@ const TicketTags = ({
 
     // make sure we do the wrapping count after the first render
     useEffect(() => {
-        if (!isExpanded) {
-            setWrapperElementCount(getWrappedElementCount(element, ['button']))
-        }
+        setWrapperElementCount(getWrappedElementCount(element, ['button']))
     }, [element, width, height, isExpanded, ticketTags.length])
 
     const hiddenTags = wrappedElementCount
@@ -72,6 +68,8 @@ const TicketTags = ({
     const displayExpandButton = Boolean(
         !isExpanded && wrappedElementCount && wrappedElementCount > 0,
     )
+
+    const displayShowLessButton = wrappedElementCount > 0 && isExpanded
 
     return (
         <div
@@ -102,14 +100,9 @@ const TicketTags = ({
                     {tags.map((tag, i) => (
                         <Fragment key={tag.name}>
                             {wrappedElementCount > 0 &&
-                                tags.length - i === wrappedElementCount && (
-                                    <div
-                                        style={{
-                                            display: displayExpandButton
-                                                ? 'block'
-                                                : 'none',
-                                        }}
-                                    >
+                                tags.length - i === wrappedElementCount &&
+                                displayExpandButton && (
+                                    <div>
                                         <Badge
                                             id={`expand-tags-badge-${uniqueId}`}
                                             className={css.displayMore}
@@ -160,19 +153,14 @@ const TicketTags = ({
                             />
                         </Fragment>
                     ))}
-                    {isExpanded && (
+                    {displayShowLessButton && (
                         <Button
                             fillStyle="ghost"
                             size="small"
                             onClick={() => setExpanded(false)}
+                            trailingIcon="expand_less"
                         >
-                            <ButtonIconLabel
-                                className={css.button}
-                                position="right"
-                                icon="expand_less"
-                            >
-                                Show less
-                            </ButtonIconLabel>
+                            Show less
                         </Button>
                     )}
                 </div>
