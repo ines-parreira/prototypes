@@ -40,7 +40,7 @@ export const AiAgentNameFormComponent = ({
                     </SettingsCardContent>
                     <div className={css.formInputFooterInfo}>
                         This name will be used as sign-off in its responses.
-                        Changes can also be done in{' '}
+                        Changes can be done in{' '}
                         <a href={`/app/settings/users/${agentsUserId}`}>
                             users settings
                         </a>
