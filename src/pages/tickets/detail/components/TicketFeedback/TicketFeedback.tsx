@@ -12,6 +12,7 @@ import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/use
 import AIAgentFeedbackBar from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentFeedbackBar'
 import AIAgentSimplifiedFeedback from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback'
 import useAiAgentMessageFeedback from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useAiAgentMessageFeedback'
+import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
 import { changeTicketMessage } from 'state/ui/ticketAIAgentFeedback'
 import TicketListInfo from 'ticket-list-view/components/TicketListInfo'
 
@@ -48,7 +49,9 @@ export default function TicketFeedback() {
     if (isSimplifiedFeedbackCollectionEnabled) {
         return (
             <HelpCenterApiClientProvider>
-                <AIAgentSimplifiedFeedback />
+                <KnowledgeSourceSideBarProvider>
+                    <AIAgentSimplifiedFeedback />
+                </KnowledgeSourceSideBarProvider>
             </HelpCenterApiClientProvider>
         )
     }

@@ -94,6 +94,7 @@ export enum FeatureFlagKey {
     EnableEmailToStoreMapping = 'enable-email-to-store-mapping',
     EnableNewLanguages = 'enable-new-languages',
     EnableNonShopifyStoresInHelpCenter = 'enable-non-shopify-stores-in-help-center',
+    EnableKnowledgeManagementFromTicketView = 'linear.project_view-edit-and-create-knowledge-inside-ticket-view.enable_knowledge_mana',
     FakeActionPlaceholder = 'fake-action-placeholder',
     FeedbackToAIAgentInTicketViews = 'feedback-to-ai-agent-in-ticket-views',
     FeedbackToAIAgentInTicketViewsV3 = 'feedback-to-ai-agent-in-ticket-views-v3',

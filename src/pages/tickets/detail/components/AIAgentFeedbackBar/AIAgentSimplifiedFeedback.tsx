@@ -16,6 +16,7 @@ import FeedbackInternalNote from 'pages/tickets/detail/components/AIAgentFeedbac
 import { useFeedbackActions } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackActions'
 import KnowledgeSourceFeedback from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceFeedback'
 import { KnowledgeSourceFeedbackSkeleton } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceFeedbackSkeleton'
+import KnowledgeSourceSideBar from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBar'
 import MissingKnowledgeSelect from 'pages/tickets/detail/components/AIAgentFeedbackBar/MissingKnowledgeSelect'
 import {
     AiAgentBinaryFeedbackEnum,
@@ -34,10 +35,8 @@ const AIAgentSimplifiedFeedback = () => {
     const [freeFormFeedback, setFreeFormFeedback] = useState('')
     const [isInitialLoad, setIsInitialLoad] = useState(true)
     const [loadingMutations, setLoadingMutations] = useState<string[]>()
-
     const viewsState = useAppSelector(getViewsState)
     const existingSections = useAppSelector(getSectionIdByName)
-
     const showNextTicketButton =
         viewsState.getIn(['active', 'section_id']) ===
         existingSections['AI Agent']
@@ -358,6 +357,11 @@ const AIAgentSimplifiedFeedback = () => {
                     </Button>
                 </div>
             )}
+
+            <KnowledgeSourceSideBar
+                articles={articles}
+                guidanceArticles={guidanceArticles}
+            />
         </>
     )
 }

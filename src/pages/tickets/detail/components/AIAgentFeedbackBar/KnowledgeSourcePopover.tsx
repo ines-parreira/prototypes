@@ -13,6 +13,7 @@ type KnowledgeSourcePopoverProps = {
     title: string
     content: string
     type: AiAgentKnowledgeResourceTypeEnum
+    id: string
     children: (
         ref: React.RefObject<HTMLElement>,
         eventHandlers: {
@@ -20,6 +21,7 @@ type KnowledgeSourcePopoverProps = {
             onMouseOut: (e: React.MouseEvent) => void
         },
     ) => ReactNode
+    onClick?: (e: React.MouseEvent) => void
 }
 
 const KnowledgeSourcePopover = ({
@@ -28,6 +30,7 @@ const KnowledgeSourcePopover = ({
     content,
     type,
     children,
+    onClick,
 }: KnowledgeSourcePopoverProps) => {
     const triggerRef = useRef<HTMLElement>(null)
     const [isOpen, setIsOpen] = useState(false)
@@ -64,7 +67,6 @@ const KnowledgeSourcePopover = ({
         }),
         [openPopover, closePopover],
     )
-
     return (
         <>
             {children(triggerRef, eventHandlers)}
@@ -81,12 +83,13 @@ const KnowledgeSourcePopover = ({
                     className={css.popoverWrapper}
                 >
                     <a
-                        href={!href ? undefined : href}
+                        href={!href || !!onClick ? undefined : href}
                         target="_blank"
                         rel="noreferrer noopener"
                         className={css.popover}
                         onMouseEnter={openPopover}
                         onMouseLeave={closePopover}
+                        onClick={onClick}
                     >
                         <div className={css.type}>
                             <KnowledgeSourceIcon

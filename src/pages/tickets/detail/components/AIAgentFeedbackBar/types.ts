@@ -95,3 +95,11 @@ export const suggestedResourceValueSchema = z.object({
 export type SuggestedResourceValue = z.infer<
     typeof suggestedResourceValueSchema
 >
+
+export type KnowledgeResourcePreview = {
+    id: string
+    type: AiAgentKnowledgeResourceTypeEnum
+    url: string
+    title: string
+    content: string
+}

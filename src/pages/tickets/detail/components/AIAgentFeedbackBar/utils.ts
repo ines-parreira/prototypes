@@ -102,3 +102,11 @@ export const mapToKnowledgeSourceType = (
             return 'article'
     }
 }
+
+export const knowledgeResourceShouldBeLink = (
+    type: AiAgentKnowledgeResourceTypeEnum,
+) =>
+    ![
+        AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+        AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+    ].includes(type)

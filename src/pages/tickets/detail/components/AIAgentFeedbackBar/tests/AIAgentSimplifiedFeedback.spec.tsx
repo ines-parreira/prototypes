@@ -6,6 +6,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
+import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
 import { getSectionIdByName } from 'state/entities/sections/selectors'
@@ -38,6 +39,10 @@ const useUpsertFeedbackMock = useUpsertFeedback as jest.Mock
 jest.mock('pages/aiAgent/hooks/useStoreConfiguration', () => ({
     useStoreConfiguration: () => ({ storeConfiguration: {} }),
 }))
+jest.mock(
+    'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar',
+)
+const useKnowledgeSourceSideBarMocked = useKnowledgeSourceSideBar as jest.Mock
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     HelpCenterApiClientProvider: ({
@@ -94,6 +99,15 @@ describe('AIAgentSimplifiedFeedback', () => {
 
         useUpsertFeedbackMock.mockReturnValue({
             mutateAsync: jest.fn(),
+        })
+
+        useKnowledgeSourceSideBarMocked.mockReturnValue({
+            selectedResource: null,
+            mode: null,
+            openPreview: jest.fn(),
+            openEdit: jest.fn(),
+            openCreate: jest.fn(),
+            closeModal: jest.fn(),
         })
     })
 

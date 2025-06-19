@@ -8,17 +8,19 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 
 type LinkProps = {
-    href: string
+    href?: string
     text: string
+    onClick?: () => void
 }
 
-const LinkInText = ({ href, text }: LinkProps) => {
+const LinkInText = ({ href, text, onClick }: LinkProps) => {
     return (
         <a
             href={href}
             target="_blank"
             rel="noreferrer"
             className={css.dropdownLink}
+            onClick={onClick}
         >
             {text}
         </a>
@@ -37,7 +39,6 @@ const CreateKnowledgeSection = ({
     const [toggleDropdown, setToggleDropdown] = useState<boolean>(false)
     const buttonRef = useRef<HTMLDivElement>(null)
     const aiAgentNavigation = useAiAgentNavigation({ shopName })
-
     const guidanceLink = aiAgentNavigation.routes.guidanceTemplates
     const helpCenterArticlesLink = `/app/settings/help-center/${helpCenterId}/articles`
 

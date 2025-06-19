@@ -1,0 +1,21 @@
+@import (reference) '~css/typography';
+
+:local {
+    .root {
+        :global {
+            .backdrop.opened {
+                opacity: 0;
+            }
+        }
+    }
+
+    .previewContent {
+        grid-row: span 2;
+    }
+
+    .lastUpdatedAt {
+        .caption-regular;
+        color: var(--neutral-grey-5);
+        margin-bottom: var(--layout-spacing-xs);
+    }
+}

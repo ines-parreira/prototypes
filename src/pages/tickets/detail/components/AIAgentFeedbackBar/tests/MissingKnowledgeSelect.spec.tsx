@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
+import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { getResourceMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
 import { assumeMock } from 'utils/testing'
 
@@ -14,6 +15,15 @@ import {
 jest.mock('common/segment/segment', () => ({
     logEventWithSampling: jest.fn(),
 }))
+
+jest.mock(
+    'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar',
+    () => ({
+        useKnowledgeSourceSideBar: jest.fn(),
+    }),
+)
+
+const useKnowledgeSourceSideBarMocked = assumeMock(useKnowledgeSourceSideBar)
 
 jest.mock('custom-fields/components/MultiLevelSelect', () => {
     return jest.fn(({ onChange, choices, onFocus, isDisabled }) => (
@@ -131,6 +141,15 @@ describe('MissingKnowledgeSelect', () => {
             title: '',
             content: '',
             isDeleted: false,
+        })
+
+        useKnowledgeSourceSideBarMocked.mockReturnValue({
+            selectedResource: null,
+            mode: null,
+            openPreview: jest.fn(),
+            openEdit: jest.fn(),
+            openCreate: jest.fn(),
+            closeModal: jest.fn(),
         })
     })
     it('renders correctly and handles selection and submission', () => {

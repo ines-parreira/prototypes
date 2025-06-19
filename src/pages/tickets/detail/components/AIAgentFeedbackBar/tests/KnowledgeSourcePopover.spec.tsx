@@ -13,6 +13,7 @@ const popoverProps = {
     title: 'Order #3584',
     content: 'Order #3584',
     type: AiAgentKnowledgeResourceTypeEnum.ORDER,
+    id: 'order-3584',
 }
 
 describe('KnowledgeSourcePopover', () => {

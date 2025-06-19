@@ -4,7 +4,10 @@ import cn from 'classnames'
 
 import { IconButton, Tooltip } from '@gorgias/merchant-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
+import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import KnowledgeSourceIcon from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceIcon'
 import KnowledgeSourcePopover from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePopover'
 import {
@@ -12,7 +15,10 @@ import {
     AiAgentKnowledgeResourceTypeEnum,
     KnowledgeResource,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import { mapToKnowledgeSourceType } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
+import {
+    knowledgeResourceShouldBeLink,
+    mapToKnowledgeSourceType,
+} from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 
 const OPEN_IN_NEW_TAB_ICON = 'open_in_new'
 const THUMB_DOWN = 'thumb_down'
@@ -45,8 +51,19 @@ const KnowledgeSourceFeedback = ({
     resource,
     onIconClick,
 }: KnowledgeSourceProps) => {
-    const href = resource.metadata?.url
+    const { openPreview } = useKnowledgeSourceSideBar()
+    const enableKnowledgeManagementFromTicketView = useFlag(
+        FeatureFlagKey.EnableKnowledgeManagementFromTicketView,
+    )
     const isDeleted = resource.metadata?.isDeleted || false
+    const isLink = enableKnowledgeManagementFromTicketView
+        ? knowledgeResourceShouldBeLink(
+              resource.resource
+                  .resourceType as AiAgentKnowledgeResourceTypeEnum,
+          )
+        : true
+
+    const href = isLink ? resource.metadata?.url : undefined
 
     const isPositive = !isDeleted
         ? resource.feedback?.feedbackValue === AiAgentBinaryFeedbackEnum.UP
@@ -56,27 +73,34 @@ const KnowledgeSourceFeedback = ({
         : false
 
     const popoverProps = {
-        url: href || '',
+        id: resource.resource.resourceId,
+        url: resource.metadata?.url || '',
         title: resource.metadata?.title || resource.resource?.resourceTitle,
         content: resource.metadata?.content,
         type: resource.resource
             .resourceType as AiAgentKnowledgeResourceTypeEnum,
     }
 
+    const onClick =
+        !enableKnowledgeManagementFromTicketView || isLink || isDeleted
+            ? undefined
+            : () => openPreview(popoverProps)
+
     return (
         <div className={css.source}>
-            <KnowledgeSourcePopover {...popoverProps}>
+            <KnowledgeSourcePopover {...popoverProps} onClick={onClick}>
                 {(ref, eventHandlers) => (
                     <a
-                        href={isDeleted || !href ? undefined : href}
+                        href={isLink && !isDeleted ? href : undefined}
                         target="_blank"
                         rel="noreferrer noopener"
                         className={cn(css.sourceName, {
                             [css.deleted]: isDeleted,
-                            [css.hasLink]: !!href,
+                            [css.hasLink]: !!href || !!openPreview,
                         })}
                         ref={ref as RefObject<HTMLAnchorElement>}
                         id={`knowledge-source-${resource.resource.id}`}
+                        onClick={onClick}
                         {...(!isDeleted && eventHandlers)}
                     >
                         <KnowledgeSourceIcon

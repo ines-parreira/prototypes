@@ -1,5 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
+import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
+import { assumeMock } from 'utils/testing'
+
 import KnowledgeSourceFeedback from '../KnowledgeSourceFeedback'
 import { KnowledgeResource } from '../types'
 
@@ -17,6 +20,15 @@ const defaultResource = {
     },
 }
 
+jest.mock(
+    'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar',
+    () => ({
+        useKnowledgeSourceSideBar: jest.fn(),
+    }),
+)
+
+const useKnowledgeSourceSideBarMocked = assumeMock(useKnowledgeSourceSideBar)
+
 const mockResource = (overrides = {}) =>
     ({
         ...defaultResource,
@@ -24,6 +36,16 @@ const mockResource = (overrides = {}) =>
     }) as unknown as KnowledgeResource
 
 describe('KnowledgeSourceFeedback', () => {
+    beforeEach(() => {
+        useKnowledgeSourceSideBarMocked.mockReturnValue({
+            selectedResource: null,
+            mode: null,
+            openPreview: jest.fn(),
+            openEdit: jest.fn(),
+            openCreate: jest.fn(),
+            closeModal: jest.fn(),
+        })
+    })
     it('renders resource title and icon', () => {
         render(
             <KnowledgeSourceFeedback

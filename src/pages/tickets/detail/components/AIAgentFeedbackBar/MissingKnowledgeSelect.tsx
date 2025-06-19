@@ -12,6 +12,8 @@ import { Badge, BadgeIcon, Label } from '@gorgias/merchant-ui-kit'
 
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
 import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
@@ -30,6 +32,9 @@ import {
     getResourceMetadata,
     useEnrichFeedbackData,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
+
+import { useKnowledgeSourceSideBar } from './hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
+import { knowledgeResourceShouldBeLink } from './utils'
 
 type MissingKnowledgeSelectProps = {
     helpCenterId?: number | null
@@ -477,6 +482,11 @@ type KnowledgeTagProps = {
 }
 
 export const KnowledgeTag = ({ choice, handleRemove }: KnowledgeTagProps) => {
+    const { openPreview } = useKnowledgeSourceSideBar()
+    const enableKnowledgeManagementFromTicketView = useFlag(
+        FeatureFlagKey.EnableKnowledgeManagementFromTicketView,
+    )
+
     if (!choice) {
         return null
     }
@@ -484,15 +494,24 @@ export const KnowledgeTag = ({ choice, handleRemove }: KnowledgeTagProps) => {
     const { meta, type } = choice
 
     const popoverProps = {
+        id: choice.value,
         url: meta?.url || '',
         title: meta?.title || '',
         content: meta?.content || '',
         type,
     }
-    const label = choice.displayLabel.split('::').pop()
 
+    const label = choice.displayLabel.split('::').pop()
+    const isLink = enableKnowledgeManagementFromTicketView
+        ? knowledgeResourceShouldBeLink(type)
+        : true
+
+    const onClick =
+        !enableKnowledgeManagementFromTicketView || isLink
+            ? undefined
+            : () => openPreview(popoverProps)
     return (
-        <KnowledgeSourcePopover {...popoverProps}>
+        <KnowledgeSourcePopover {...popoverProps} onClick={onClick}>
             {(ref, eventHandlers) => (
                 <Badge
                     type={'light-dark'}
@@ -503,12 +522,13 @@ export const KnowledgeTag = ({ choice, handleRemove }: KnowledgeTagProps) => {
                     ref={ref as RefObject<HTMLDivElement>}
                 >
                     <a
-                        href={!meta.url ? undefined : meta.url}
+                        href={!isLink || !meta.url ? undefined : meta.url}
                         target="_blank"
                         rel="noreferrer noopener"
                         className={cn(css.tagLink, {
                             [css.hasLink]: !!meta.url,
                         })}
+                        onClick={onClick}
                     >
                         {!!SIMPLIFIED_TO_DEFAULT_KNOWLEDGE_SOURCE_ICON_MAP[
                             choice.type
