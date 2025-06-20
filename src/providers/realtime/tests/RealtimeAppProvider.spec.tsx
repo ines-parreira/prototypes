@@ -5,6 +5,7 @@ import { render } from '@testing-library/react'
 import { RealtimeProvider } from '@gorgias/realtime'
 
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
+import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { reportError } from 'utils/errors'
@@ -45,6 +46,9 @@ jest.mock('../hooks/useErrorThreshold', () => ({
     }),
 }))
 const mockUseErrorThreshold = useErrorThreshold as jest.Mock
+
+jest.mock('common/segment/segment')
+const mockLogEvent = logEvent as jest.Mock
 
 jest.mock('AlertBanners', () => ({
     ...jest.requireActual('AlertBanners'),
@@ -209,7 +213,7 @@ describe('RealtimeAppProvider', () => {
         expect(mockIncrementErrorCount).not.toHaveBeenCalled()
     })
 
-    it('should add a banner when the error threshold is reached', () => {
+    it('should add a banner when the error threshold is reached and log an event', () => {
         const mockAddBanner = jest.fn()
         mockUseBanners.mockReturnValue({
             addBanner: mockAddBanner,
@@ -231,6 +235,32 @@ describe('RealtimeAppProvider', () => {
                 onClick: expect.any(Function),
             },
         })
+
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            SegmentEvent.RealtimeConnectivityBannerDisplayed,
+        )
+    })
+
+    it('should open helpdocs when clicking the error banner CTA and log an event', () => {
+        const mockAddBanner = jest.fn()
+        mockUseBanners.mockReturnValue({
+            addBanner: mockAddBanner,
+            removeBanner: jest.fn(),
+        })
+
+        render(<RealtimeAppProvider>foo</RealtimeAppProvider>)
+
+        mockUseErrorThreshold.mock.calls[0][1]()
+
+        mockAddBanner.mock.calls[0][0].CTA.onClick()
+
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            SegmentEvent.RealtimeConnectivityBannerDocsClicked,
+        )
+        expect(window.open).toHaveBeenCalledWith(
+            'https://docs.gorgias.com/en-US/common-account-errors-486968#cant-connect-to-real-time-updates',
+            '_blank',
+        )
     })
 
     it('should remove the banner when the error threshold is reset', () => {

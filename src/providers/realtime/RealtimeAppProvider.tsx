@@ -9,6 +9,7 @@ import {
 } from '@gorgias/realtime'
 
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
+import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useUpdateEffect from 'hooks/useUpdateEffect'
@@ -51,6 +52,7 @@ const RealtimeAppProvider = ({ children }: RealtimeAppProviderProps) => {
     const { addBanner, removeBanner } = useBanners()
 
     const displayRealtimeConnectivityBanner = useCallback(() => {
+        logEvent(SegmentEvent.RealtimeConnectivityBannerDisplayed)
         addBanner({
             category: BannerCategories.REALTIME_CONNECTIVITY,
             type: AlertBannerTypes.Critical,
@@ -60,6 +62,7 @@ const RealtimeAppProvider = ({ children }: RealtimeAppProviderProps) => {
                 type: 'action',
                 text: 'View debugging guide',
                 onClick: () => {
+                    logEvent(SegmentEvent.RealtimeConnectivityBannerDocsClicked)
                     window.open(
                         'https://docs.gorgias.com/en-US/common-account-errors-486968#cant-connect-to-real-time-updates',
                         '_blank',

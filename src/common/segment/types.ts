@@ -255,6 +255,8 @@ export enum SegmentEvent {
     PaywallUpgradeButtonSelected = 'paywall-upgrade-button-selected',
     PreviewModeClicked = 'preview-mode-clicked',
     PrintTicketClicked = 'print-ticket-clicked',
+    RealtimeConnectivityBannerDisplayed = 'realtime/connectivity-banner-displayed',
+    RealtimeConnectivityBannerDocsClicked = 'realtime/connectivity-banner-docs-clicked',
     RecentActivityClicked = 'recent-activity-clicked',
     RecentItemAccessed = 'recent-item-accessed',
     RechargeOrderClicked = 'widget/recharge-order-link/link-clicked',
