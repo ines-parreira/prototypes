@@ -60,7 +60,6 @@ describe('useTrackingBundleInstallationWarningCheck', () => {
     beforeEach(() => {
         mockUseFlags.mockReturnValue({
             [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-            [FeatureFlagKey.TrackingBundleWarningBanner]: true,
         })
 
         mockUseShopifyIntegrations.mockReturnValue([
@@ -91,22 +90,6 @@ describe('useTrackingBundleInstallationWarningCheck', () => {
     it('should disable query when ai shopping assistant is not enabled', () => {
         mockUseFlags.mockReturnValue({
             [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
-            [FeatureFlagKey.TrackingBundleWarningBanner]: true,
-        })
-
-        renderHook(() =>
-            useTrackingBundleInstallationWarningCheck({
-                storeActivations: STORE_ACTIVATIONS,
-            }),
-        )
-
-        expect(mockUseListBundles).toHaveBeenCalledWith({ enabled: false })
-    })
-
-    it('should disable query when tracking bundle warning banner is not enabled', () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-            [FeatureFlagKey.TrackingBundleWarningBanner]: false,
         })
 
         renderHook(() =>

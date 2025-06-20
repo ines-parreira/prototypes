@@ -156,7 +156,6 @@ export enum FeatureFlagKey {
     TicketDemoSuggestion = 'ticket-demo-suggestion',
     TicketThreadRevamp = 'linear.project_ticket-thread-revamp.access',
     TimelineTicketModal = 'timeline-ticket-modal',
-    TrackingBundleWarningBanner = 'tracking-bundle-warning-banner',
     UseLiveVoiceUpdates = 'use-live-voice-updates',
     VoiceCallbackEnabled1 = 'voice-callback-enabled',
     VoiceCallbackEnabled2 = 'voice-callback-enabled-MILESTONE-2-FEATURE-RELEASE',

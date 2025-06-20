@@ -20,11 +20,8 @@ export const useTrackingBundleInstallationWarningCheck = ({
     const hasShoppingAssistant =
         useFlags()[FeatureFlagKey.AiShoppingAssistantEnabled]
 
-    const hasTrackingBundleWarningBanner =
-        useFlags()[FeatureFlagKey.TrackingBundleWarningBanner]
-
     const { data: bundles } = useListBundles({
-        enabled: hasShoppingAssistant && hasTrackingBundleWarningBanner,
+        enabled: hasShoppingAssistant,
     })
 
     const integrationsToCheck = Object.values(storeActivations)
