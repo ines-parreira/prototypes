@@ -16,7 +16,10 @@ import { TableWithNestedRowsCell } from 'pages/stats/common/components/Table/Tab
 import { TrendIcon } from 'pages/stats/common/components/TrendIcon'
 import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import { ProductImage } from 'pages/stats/voice-of-customer/components/ProductImage'
-import { DEFAULT_SORTING_COLUMN } from 'pages/stats/voice-of-customer/product-insights/constants'
+import {
+    DEFAULT_SORTING_COLUMN,
+    DEFAULT_SORTING_DIRECTION,
+} from 'pages/stats/voice-of-customer/product-insights/constants'
 import {
     formatProductsPerIntentsTableData,
     formatTrendData,
@@ -32,7 +35,6 @@ import {
 } from 'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentConfig'
 import { VoCSidePanelTrigger } from 'pages/stats/voice-of-customer/side-panel/VoCSidePanelTrigger'
 import { VoiceOfCustomerMetricWithDrillDown } from 'pages/stats/voice-of-customer/VoiceOfCustomerMetricConfig'
-import { DEFAULT_SORTING_DIRECTION } from 'state/ui/stats/createTableSlice'
 import {
     TicketsPerIntentMetrics,
     TicketsPerProductPerIntentMetrics,

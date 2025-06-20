@@ -1,6 +1,6 @@
 import analyticsColors from 'assets/css/new/stats/modern.json'
+import { useSentimentsCustomFieldsTimeSeries } from 'hooks/reporting/useCustomFieldsTimeSeries'
 import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
-import { useTotalProductSentimentTimeSeries } from 'hooks/reporting/voice-of-customer/useTotalProductSentimentTimeSeries'
 import { BarChart } from 'pages/stats/common/components/charts/BarChart/BarChart'
 
 export const CHART_COLORS = [
@@ -31,10 +31,10 @@ export const TotalProductSentimentOverTimeGraph = ({
 }: {
     sentimentCustomFieldId: number
 }) => {
-    const { data, isFetching } = useTotalProductSentimentTimeSeries(
+    const { data, isFetching } = useSentimentsCustomFieldsTimeSeries({
         sentimentCustomFieldId,
-        PRODUCT_SENTIMENT_VALUE_STRINGS,
-    )
+        sentimentValueStrings: PRODUCT_SENTIMENT_VALUE_STRINGS,
+    })
 
     return (
         <BarChart

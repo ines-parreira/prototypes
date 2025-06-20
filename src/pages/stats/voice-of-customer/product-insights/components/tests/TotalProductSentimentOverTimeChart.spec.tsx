@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 
-import { useTotalProductSentimentTimeSeries } from 'hooks/reporting/voice-of-customer/useTotalProductSentimentTimeSeries'
+import { useSentimentsCustomFieldsTimeSeries } from 'hooks/reporting/useCustomFieldsTimeSeries'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import ChartCard from 'pages/stats/common/components/ChartCard'
 import { BarChart } from 'pages/stats/common/components/charts/BarChart/BarChart'
@@ -15,11 +15,9 @@ import {
 } from 'pages/stats/voice-of-customer/product-insights/ProductInsightsChartConfig'
 import { assumeMock } from 'utils/testing'
 
-jest.mock(
-    'hooks/reporting/voice-of-customer/useTotalProductSentimentTimeSeries',
-)
-const useTotalProductSentimentTimeSeriesMock = assumeMock(
-    useTotalProductSentimentTimeSeries,
+jest.mock('hooks/reporting/useCustomFieldsTimeSeries')
+const useSentimentsCustomFieldsTimeSeriesMock = assumeMock(
+    useSentimentsCustomFieldsTimeSeries,
 )
 
 jest.mock('pages/stats/common/components/charts/BarChart/BarChart')
@@ -60,7 +58,7 @@ describe('TotalProductSentimentOverTimeChart', () => {
     ]
 
     const useTotalProductSentimentReturnValue: ReturnType<
-        typeof useTotalProductSentimentTimeSeries
+        typeof useSentimentsCustomFieldsTimeSeries
     > = {
         data,
         isFetching: false,
@@ -68,7 +66,7 @@ describe('TotalProductSentimentOverTimeChart', () => {
     }
 
     beforeEach(() => {
-        useTotalProductSentimentTimeSeriesMock.mockReturnValue(
+        useSentimentsCustomFieldsTimeSeriesMock.mockReturnValue(
             useTotalProductSentimentReturnValue,
         )
 
@@ -114,7 +112,7 @@ describe('TotalProductSentimentOverTimeChart', () => {
     })
 
     it('should render loading state', () => {
-        useTotalProductSentimentTimeSeriesMock.mockReturnValue({
+        useSentimentsCustomFieldsTimeSeriesMock.mockReturnValue({
             ...useTotalProductSentimentReturnValue,
             isFetching: true,
         })

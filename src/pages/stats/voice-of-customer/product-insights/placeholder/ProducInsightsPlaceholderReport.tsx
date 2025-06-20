@@ -52,9 +52,7 @@ export const ProductInsightsPlaceholderReport = () => {
                 </DashboardGridCell>
                 <DashboardGridCell size={getGridCellSize(6)}>
                     <DashboardComponent
-                        chart={
-                            ProductInsightsChart.TopProductsPerIntentChartPlaceholder
-                        }
+                        chart={ProductInsightsChart.TopProductsPerIntentChart}
                         config={ProductInsightsPlaceholderReportConfig}
                     />
                 </DashboardGridCell>

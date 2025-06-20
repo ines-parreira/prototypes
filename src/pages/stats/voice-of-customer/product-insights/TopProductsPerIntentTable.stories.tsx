@@ -26,8 +26,8 @@ import { customFieldsTicketCountWithSortQueryFactory } from 'models/reporting/qu
 import { productsTicketCountPerIntentQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent'
 import { EnrichmentFields } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
+import { DEFAULT_SORTING_DIRECTION } from 'pages/stats/voice-of-customer/product-insights/constants'
 import { TopProductsPerIntentTable } from 'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentTable'
-import { DEFAULT_SORTING_DIRECTION } from 'state/ui/stats/createTableSlice'
 import {
     filtersSlice,
     initialState as filtersSliceInitialState,
@@ -113,7 +113,7 @@ appQueryClient.setQueryData(
             'UTC',
             intentCustomFieldId,
             DEFAULT_SORTING_DIRECTION,
-            TicketCustomFieldsDimension.TicketCustomFieldsValue,
+            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
         ),
     ]),
     {
@@ -136,7 +136,7 @@ appQueryClient.setQueryData(
             'UTC',
             intentCustomFieldId,
             DEFAULT_SORTING_DIRECTION,
-            TicketCustomFieldsDimension.TicketCustomFieldsValue,
+            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
         ),
     ]),
     {

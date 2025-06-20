@@ -1,3 +1,4 @@
+import { OrderDirection } from 'models/api/types'
 import { TicketCustomFieldsDimension } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { TopProductsPerIntentColumn } from 'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentConfig'
 
@@ -13,6 +14,7 @@ export const TICKET_VOLUME_CHART_LABEL = 'Change in ticket volume'
 export const TICKET_VOLUME_CHART_TOOLTIP =
     'Ticket quantity and change of ticket volume classified per product'
 
-export const DEFAULT_SORTING_COLUMN = TopProductsPerIntentColumn.Intent
+export const DEFAULT_SORTING_COLUMN = TopProductsPerIntentColumn.TicketVolume
+export const DEFAULT_SORTING_DIRECTION = OrderDirection.Desc
 export const DEFAULT_SORTING_VALUE =
     TicketCustomFieldsDimension.TicketCustomFieldsValue
