@@ -2,6 +2,8 @@ import { useMemo } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import {
     helpCenterKeys,
     useGetHelpCenterArticle,
@@ -10,7 +12,7 @@ import {
     ArticleWithLocalTranslationAndRating,
     LocaleCode,
 } from 'models/helpCenter/types'
-import { GUIDANCE_ARTICLES_QUERY_PARAMS } from 'pages/aiAgent/hooks/useGuidanceArticles'
+import { getGuidanceArticleQueryParams } from 'pages/aiAgent/hooks/useGuidanceArticles'
 import { mapArticleApiToGuidanceArticle } from 'pages/aiAgent/utils/guidance.utils'
 
 export const useGuidanceArticle = ({
@@ -22,6 +24,9 @@ export const useGuidanceArticle = ({
     guidanceHelpCenterId: number
     locale: LocaleCode
 }) => {
+    const isIncreaseGuidanceCreationLimit = useFlag(
+        FeatureFlagKey.IncreaseGuidanceCreationLimit,
+    )
     const queryClient = useQueryClient()
     const { data, isLoading: isGuidanceArticleLoading } =
         useGetHelpCenterArticle(
@@ -33,7 +38,9 @@ export const useGuidanceArticle = ({
                     const articlesCache = queryClient.getQueryData(
                         helpCenterKeys.articles(
                             guidanceHelpCenterId,
-                            GUIDANCE_ARTICLES_QUERY_PARAMS,
+                            getGuidanceArticleQueryParams(
+                                isIncreaseGuidanceCreationLimit,
+                            ),
                         ),
                     ) as { data?: ArticleWithLocalTranslationAndRating[] }
 

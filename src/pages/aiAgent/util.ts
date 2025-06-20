@@ -1,6 +1,12 @@
 import { AI_MANAGED_TYPES } from 'custom-fields/constants'
 import { CustomField } from 'custom-fields/types'
 
+import {
+    GUIDANCE_ARTICLE_LIMIT,
+    GUIDANCE_ARTICLE_LIMIT_WARNING,
+    NEW_GUIDANCE_ARTICLE_LIMIT,
+    NEW_GUIDANCE_ARTICLE_LIMIT_WARNING,
+} from './constants'
 import { NonNullProperties } from './types'
 
 export const filterNonNull = <T extends object>(
@@ -26,3 +32,19 @@ export const isAiAgentEnabled = (deactivatedDatetime: string | null) => {
 export const isAiAgentCustomField = (customField: CustomField) =>
     customField.managed_type !== null &&
     Object.values(AI_MANAGED_TYPES).includes(customField.managed_type)
+
+export const getGuidanceArticleLimitWarning = (
+    isIncreaseGuidanceCreationLimit: boolean,
+) => {
+    return isIncreaseGuidanceCreationLimit
+        ? NEW_GUIDANCE_ARTICLE_LIMIT_WARNING
+        : GUIDANCE_ARTICLE_LIMIT_WARNING
+}
+
+export const getGuidanceArticleLimit = (
+    isIncreaseGuidanceCreationLimit: boolean,
+) => {
+    return isIncreaseGuidanceCreationLimit
+        ? NEW_GUIDANCE_ARTICLE_LIMIT
+        : GUIDANCE_ARTICLE_LIMIT
+}

@@ -10,6 +10,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { toImmutable } from 'common/utils'
+import { useFlag } from 'core/flags'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
@@ -29,6 +30,8 @@ import {
     GUIDANCE_ARTICLE_LIMIT,
     GUIDANCE_ARTICLE_LIMIT_WARNING,
     KNOWLEDGE,
+    NEW_GUIDANCE_ARTICLE_LIMIT,
+    NEW_GUIDANCE_ARTICLE_LIMIT_WARNING,
 } from '../constants'
 import { getGuidanceArticleFixture } from '../fixtures/guidanceArticle.fixture'
 import { getStoreConfigurationFixture } from '../fixtures/storeConfiguration.fixtures'
@@ -85,6 +88,9 @@ jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration', () => ({
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations.ts')
 const useStoreActivationsMock = assumeMock(useStoreActivations)
 const useStoreConfigurationsMock = assumeMock(useStoreConfigurations)
+
+jest.mock('core/flags')
+const mockUseFlag = assumeMock(useFlag)
 
 const queryClient = mockQueryClient()
 
@@ -475,7 +481,31 @@ describe('<AiAgentGuidanceContainer />', () => {
             ).not.toBeInTheDocument()
         })
 
+        it('should show warning with the new guidance article limit when increaseGuidanceCreationLimitation feature flag is true', () => {
+            mockUseFlag.mockReturnValue(true)
+            const guidanceArticles = Array(NEW_GUIDANCE_ARTICLE_LIMIT_WARNING)
+                .fill(null)
+                .map((_, index) => getGuidanceArticleFixture(index))
+            mockedUseGuidanceAiSuggestions.mockReturnValue({
+                ...defaultGuidanceAiSuggestionsProps,
+                isGuidancesOnly: true,
+                guidanceArticles,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.getByText((content) =>
+                    content.includes(
+                        `${NEW_GUIDANCE_ARTICLE_LIMIT_WARNING} out of ${NEW_GUIDANCE_ARTICLE_LIMIT}`,
+                    ),
+                ),
+            ).toBeInTheDocument()
+        })
+
         it('should show warning about guidance article limit and dismiss the warning when dismiss button is clicked', () => {
+            mockUseFlag.mockReturnValue(false)
+
             const guidanceArticles = Array(GUIDANCE_ARTICLE_LIMIT_WARNING)
                 .fill(null)
                 .map((_, index) => getGuidanceArticleFixture(index))
@@ -508,6 +538,8 @@ describe('<AiAgentGuidanceContainer />', () => {
         })
 
         it('should disable creation button when guidance limit reached', () => {
+            mockUseFlag.mockReturnValue(false)
+
             const guidanceArticles = Array(GUIDANCE_ARTICLE_LIMIT)
                 .fill(null)
                 .map((_, index) => getGuidanceArticleFixture(index))

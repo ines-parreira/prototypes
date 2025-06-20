@@ -2,15 +2,17 @@ import { useParams } from 'react-router'
 
 import { Banner, Tooltip } from '@gorgias/merchant-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useLocalStorage from 'hooks/useLocalStorage'
+import {
+    getGuidanceArticleLimit,
+    getGuidanceArticleLimitWarning,
+} from 'pages/aiAgent/util'
 import { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import { SearchBar } from 'pages/common/components/SearchBar/SearchBar'
 
-import {
-    GUIDANCE_ARTICLE_LIMIT,
-    GUIDANCE_ARTICLE_LIMIT_WARNING,
-} from '../../constants'
 import { useGuidanceTemplates } from '../../hooks/useGuidanceTemplates'
 
 import css from './GuidanceHeader.less'
@@ -38,11 +40,21 @@ export const GuidanceHeader = ({
     hasAiGuidanceSuggestions,
     isLoading,
 }: Props) => {
+    const isIncreaseGuidanceCreationLimit = useFlag(
+        FeatureFlagKey.IncreaseGuidanceCreationLimit,
+    )
+    const guidanceArticleLimit = getGuidanceArticleLimit(
+        isIncreaseGuidanceCreationLimit,
+    )
+    const guidanceArticleLimitWarning = getGuidanceArticleLimitWarning(
+        isIncreaseGuidanceCreationLimit,
+    )
+
     const isGuidanceArticleLimitReached =
-        guidanceArticlesLength >= GUIDANCE_ARTICLE_LIMIT
+        guidanceArticlesLength >= guidanceArticleLimit
     const isGuidanceArticleLimitWarning =
-        guidanceArticlesLength >= GUIDANCE_ARTICLE_LIMIT_WARNING &&
-        guidanceArticlesLength < GUIDANCE_ARTICLE_LIMIT
+        guidanceArticlesLength >= guidanceArticleLimitWarning &&
+        guidanceArticlesLength < guidanceArticleLimit
     const { guidanceTemplates } = useGuidanceTemplates()
     const isGuidanceTemplatesEmpty = guidanceTemplates.length === 0
 
@@ -112,7 +124,7 @@ export const GuidanceHeader = ({
                                 target={CREATE_GUIDANCE_BUTTON_ID}
                                 placement="bottom"
                             >
-                                You can only add up to {GUIDANCE_ARTICLE_LIMIT}{' '}
+                                You can only add up to {guidanceArticleLimit}{' '}
                                 pieces of guidance. Edit or delete Guidance to
                                 further improve the AI Agent performance.
                             </Tooltip>
@@ -128,7 +140,7 @@ export const GuidanceHeader = ({
                         onClose={() => setIsDismissed(true)}
                     >
                         You’re approaching your Guidance limit:{' '}
-                        {guidanceArticlesLength} out of {GUIDANCE_ARTICLE_LIMIT}{' '}
+                        {guidanceArticlesLength} out of {guidanceArticleLimit}{' '}
                         added. Once you reach the limit, you’ll need to delete
                         or update existing Guidance before adding new ones.
                     </Banner>
@@ -140,7 +152,7 @@ export const GuidanceHeader = ({
                         fillStyle="fill"
                         className={css.alertBanner}
                     >
-                        You’ve reached the maximum of {GUIDANCE_ARTICLE_LIMIT}{' '}
+                        You’ve reached the maximum of {guidanceArticleLimit}{' '}
                         Guidance entries. To add more, delete or update existing
                         ones.
                     </Banner>

@@ -2,6 +2,8 @@ import { useMemo } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     aiGeneratedGuidanceKeys,
@@ -13,7 +15,7 @@ import { getStoreIntegrations } from 'state/integrations/selectors'
 import type { GuidanceArticle } from '../types'
 import { mapAIGuidanceDTOToAIGuidance } from '../utils/guidance.utils'
 import {
-    GUIDANCE_ARTICLES_QUERY_PARAMS,
+    getGuidanceArticleQueryParams,
     useGuidanceArticles,
 } from './useGuidanceArticles'
 
@@ -30,7 +32,12 @@ export const useGuidanceAiSuggestions = ({
 }: Props) => {
     const queryClient = useQueryClient()
 
-    const queryParamsBase = { ...GUIDANCE_ARTICLES_QUERY_PARAMS }
+    const isIncreaseGuidanceCreationLimit = useFlag(
+        FeatureFlagKey.IncreaseGuidanceCreationLimit,
+    )
+    const queryParamsBase = {
+        ...getGuidanceArticleQueryParams(isIncreaseGuidanceCreationLimit),
+    }
 
     const {
         guidanceArticles: titleGuidanceArticles,

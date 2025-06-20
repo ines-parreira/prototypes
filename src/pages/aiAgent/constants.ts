@@ -82,8 +82,12 @@ export const DEFAULT_FORM_VALUES_WITH_WIZARD: FormValues = {
     wizard: DEFAULT_WIZARD_FORM_VALUES,
 }
 
-export const GUIDANCE_ARTICLE_LIMIT = 100
-export const GUIDANCE_ARTICLE_LIMIT_WARNING = 90
+export const GUIDANCE_ARTICLE_LIMIT = 40
+export const GUIDANCE_ARTICLE_LIMIT_WARNING = 35
+
+export const NEW_GUIDANCE_ARTICLE_LIMIT = 100
+export const NEW_GUIDANCE_ARTICLE_LIMIT_WARNING = 90
+
 export const CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE = `Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.`
 
 // Playground

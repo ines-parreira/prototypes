@@ -1,32 +1,48 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import {
     useGetHelpCenterArticleList,
     useGetMultipleHelpCenterArticleLists,
 } from 'models/helpCenter/queries'
 import { Paths } from 'rest_api/help_center_api/client.generated'
 
-import { GUIDANCE_ARTICLE_LIMIT } from '../constants'
+import {
+    GUIDANCE_ARTICLE_LIMIT,
+    NEW_GUIDANCE_ARTICLE_LIMIT,
+} from '../constants'
 import { mapArticleApiToGuidanceArticle } from '../utils/guidance.utils'
 
-export const GUIDANCE_ARTICLES_QUERY_PARAMS: Paths.ListArticles.QueryParameters =
-    {
+export const getGuidanceArticleQueryParams = (
+    isIncreaseGuidanceCreationLimit: boolean,
+): Paths.ListArticles.QueryParameters => {
+    return {
         version_status: 'latest_draft',
-        per_page: GUIDANCE_ARTICLE_LIMIT, // Temp limit until pagination is implemented
+        per_page: isIncreaseGuidanceCreationLimit // Temp limit until pagination is implemented
+            ? NEW_GUIDANCE_ARTICLE_LIMIT
+            : GUIDANCE_ARTICLE_LIMIT,
     }
+}
 
 export const useGuidanceArticles = (
     guidanceHelpCenterId: number,
     overrides?: Parameters<typeof useGetHelpCenterArticleList>[2],
     paramsOverrides?: Paths.ListArticles.QueryParameters,
 ) => {
+    const isIncreaseGuidanceCreationLimit = useFlag(
+        FeatureFlagKey.IncreaseGuidanceCreationLimit,
+    )
     const {
         data,
         isLoading: isGuidanceArticleListLoading,
         isFetched,
     } = useGetHelpCenterArticleList(
         guidanceHelpCenterId,
-        { ...GUIDANCE_ARTICLES_QUERY_PARAMS, ...paramsOverrides },
+        {
+            ...getGuidanceArticleQueryParams(isIncreaseGuidanceCreationLimit),
+            ...paramsOverrides,
+        },
         {
             ...overrides,
             refetchOnWindowFocus: false,
@@ -53,13 +69,19 @@ export const useMultipleGuidanceArticles = (
     overrides?: Parameters<typeof useGetMultipleHelpCenterArticleLists>[2],
     paramsOverrides?: Paths.ListArticles.QueryParameters,
 ) => {
+    const isIncreaseGuidanceCreationLimit = useFlag(
+        FeatureFlagKey.IncreaseGuidanceCreationLimit,
+    )
     const {
         articles,
         isLoading: isGuidanceArticleListLoading,
         queries,
     } = useGetMultipleHelpCenterArticleLists(
         guidanceHelpCenterIds,
-        { ...GUIDANCE_ARTICLES_QUERY_PARAMS, ...paramsOverrides },
+        {
+            ...getGuidanceArticleQueryParams(isIncreaseGuidanceCreationLimit),
+            ...paramsOverrides,
+        },
         {
             ...overrides,
             refetchOnWindowFocus: false,

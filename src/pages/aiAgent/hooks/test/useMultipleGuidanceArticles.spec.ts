@@ -1,12 +1,13 @@
 import { QueryObserverResult } from '@tanstack/react-query'
 
+import { useFlag } from 'core/flags'
 import { useGetMultipleHelpCenterArticleLists } from 'models/helpCenter/queries'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { mapArticleApiToGuidanceArticle } from '../../utils/guidance.utils'
 import {
-    GUIDANCE_ARTICLES_QUERY_PARAMS,
+    getGuidanceArticleQueryParams,
     useMultipleGuidanceArticles,
 } from '../useGuidanceArticles'
 
@@ -52,6 +53,9 @@ const mockedUseGetMultipleHelpCenterArticleLists = assumeMock(
 const mockedMapArticleApiToGuidanceArticle = assumeMock(
     mapArticleApiToGuidanceArticle,
 )
+
+jest.mock('core/flags')
+const mockUseFlag = assumeMock(useFlag)
 
 // Create a mock article that matches the expected shape
 const createMockArticle = (
@@ -110,6 +114,7 @@ describe('useMultipleGuidanceArticles', () => {
     })
 
     it('should call useGetMultipleHelpCenterArticleLists with correct parameters', () => {
+        mockUseFlag.mockReturnValue(false)
         mockedUseGetMultipleHelpCenterArticleLists.mockReturnValue({
             articles: [],
             isLoading: false,
@@ -120,7 +125,7 @@ describe('useMultipleGuidanceArticles', () => {
 
         expect(useGetMultipleHelpCenterArticleLists).toHaveBeenCalledWith(
             helpCenterIds,
-            GUIDANCE_ARTICLES_QUERY_PARAMS,
+            getGuidanceArticleQueryParams(false),
             {
                 refetchOnWindowFocus: false,
             },
@@ -128,6 +133,7 @@ describe('useMultipleGuidanceArticles', () => {
     })
 
     it('should call useGetMultipleHelpCenterArticleLists with overrides', () => {
+        mockUseFlag.mockReturnValue(false)
         mockedUseGetMultipleHelpCenterArticleLists.mockReturnValue({
             articles: [],
             isLoading: false,
@@ -147,7 +153,7 @@ describe('useMultipleGuidanceArticles', () => {
 
         expect(useGetMultipleHelpCenterArticleLists).toHaveBeenCalledWith(
             helpCenterIds,
-            { ...GUIDANCE_ARTICLES_QUERY_PARAMS, ...paramsOverrides },
+            { ...getGuidanceArticleQueryParams(false), ...paramsOverrides },
             {
                 ...overrides,
                 refetchOnWindowFocus: false,
