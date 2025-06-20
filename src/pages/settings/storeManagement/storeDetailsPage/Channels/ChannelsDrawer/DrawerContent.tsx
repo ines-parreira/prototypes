@@ -43,6 +43,7 @@ export default function DrawerContent({
             />
             <ChannelsList
                 listLabel={labels.listLabel}
+                activeChannel={activeChannel}
                 channels={[
                     ...activeChannel.unassignedChannels,
                     ...activeChannel.assignedChannels,

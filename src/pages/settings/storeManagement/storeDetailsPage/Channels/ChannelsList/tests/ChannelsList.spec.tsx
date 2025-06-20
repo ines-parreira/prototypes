@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom'
 
 import { Integration, IntegrationType } from 'models/integration/types'
 
+import { ChannelWithMetadata } from '../../../../types'
 import ChannelsList from '../ChannelsList'
 
 const mockChannels = [
@@ -60,10 +61,15 @@ const renderWithRouter = (component: React.ReactElement) => {
 }
 
 describe('ChannelsList', () => {
+    const defaultProps = {
+        activeChannel: {} as ChannelWithMetadata,
+    }
+
     it('renders channels list correctly', () => {
         const onDelete = jest.fn()
         renderWithRouter(
             <ChannelsList
+                {...defaultProps}
                 listLabel="Assigned Email"
                 channels={mockChannels}
                 onDelete={onDelete}
@@ -82,6 +88,7 @@ describe('ChannelsList', () => {
         const onDelete = jest.fn()
         const { container } = renderWithRouter(
             <ChannelsList
+                {...defaultProps}
                 listLabel="Assigned Email"
                 channels={[]}
                 onDelete={onDelete}
@@ -94,6 +101,7 @@ describe('ChannelsList', () => {
         const onDelete = jest.fn()
         renderWithRouter(
             <ChannelsList
+                {...defaultProps}
                 listLabel="Assigned Email"
                 channels={mockChannels}
                 onDelete={onDelete}
@@ -110,6 +118,7 @@ describe('ChannelsList', () => {
         const onDelete = jest.fn()
         renderWithRouter(
             <ChannelsList
+                {...defaultProps}
                 listLabel="Assigned Facebook"
                 channels={mockChannelsWithoutAddress}
                 onDelete={onDelete}
@@ -123,6 +132,7 @@ describe('ChannelsList', () => {
         const onDelete = jest.fn()
         renderWithRouter(
             <ChannelsList
+                {...defaultProps}
                 listLabel="Help Center"
                 channels={mockHelpCenterChannel}
                 onDelete={onDelete}
@@ -138,6 +148,7 @@ describe('ChannelsList', () => {
         const onDelete = jest.fn()
         renderWithRouter(
             <ChannelsList
+                {...defaultProps}
                 listLabel="Contact Form"
                 channels={mockContactFormChannel}
                 onDelete={onDelete}
@@ -147,5 +158,40 @@ describe('ChannelsList', () => {
         expect(screen.queryByText('open_in_new')).not.toBeInTheDocument()
         expect(screen.getByText('delete')).toBeInTheDocument()
         expect(screen.getByText('Contact Form 1')).toBeInTheDocument()
+    })
+
+    it('shows tooltip and doesnt show delete button for contact form channels', () => {
+        const onDelete = jest.fn()
+        renderWithRouter(
+            <ChannelsList
+                activeChannel={
+                    {
+                        type: 'contactForm',
+                        assignedChannels: [
+                            {
+                                id: 1,
+                            },
+                        ],
+                    } as ChannelWithMetadata
+                }
+                listLabel="Assigned Email"
+                channels={
+                    [
+                        {
+                            id: 1,
+                            name: 'Contact Form',
+                            type: IntegrationType.App,
+                            meta: {
+                                address: 'contact-form|',
+                            },
+                        },
+                    ] as Integration[]
+                }
+                onDelete={onDelete}
+            />,
+        )
+
+        expect(screen.queryByText('delete')).not.toBeInTheDocument()
+        expect(screen.getByText('info')).toBeInTheDocument()
     })
 })
