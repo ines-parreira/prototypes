@@ -72,13 +72,13 @@ export const CustomerEngagementSettings = () => {
     const isTriggerOnSearchEnabled =
         !!flags[FeatureFlagKey.AiSalesAgentHelpOnSearchTemplateQuery]
 
-    const shouldFetchTexts =
+    const canUpdateTexts =
         storeConfiguration?.monitoredChatIntegrations.length === 1
 
     const { texts, translations } = useTexts({
         appId,
         primaryLanguage,
-        shouldFetch: shouldFetchTexts,
+        shouldFetch: canUpdateTexts,
     })
 
     const primaryLanguageTexts = texts[primaryLanguage as keyof typeof texts]
@@ -127,24 +127,26 @@ export const CustomerEngagementSettings = () => {
                             data.isSalesHelpOnSearchEnabled,
                     })
 
-                    const primaryLanguageTexts =
-                        texts[primaryLanguage as keyof typeof texts]
+                    if (canUpdateTexts) {
+                        const primaryLanguageTexts =
+                            texts[primaryLanguage as keyof typeof texts]
 
-                    const mergedData = {
-                        ...texts,
-                        [primaryLanguage]: {
-                            ...primaryLanguageTexts,
-                            sspTexts: {
-                                ...primaryLanguageTexts.sspTexts,
-                                needHelp: data.needHelpText || undefined,
+                        const mergedData = {
+                            ...texts,
+                            [primaryLanguage]: {
+                                ...primaryLanguageTexts,
+                                sspTexts: {
+                                    ...primaryLanguageTexts.sspTexts,
+                                    needHelp: data.needHelpText || undefined,
+                                },
                             },
-                        },
-                    }
+                        }
 
-                    await IntegrationsActions.updateApplicationTexts(
-                        appId,
-                        mergedData,
-                    )
+                        await IntegrationsActions.updateApplicationTexts(
+                            appId,
+                            mergedData,
+                        )
+                    }
 
                     reset(data, { keepDirty: false })
 
@@ -166,6 +168,7 @@ export const CustomerEngagementSettings = () => {
             }
         },
         [
+            canUpdateTexts,
             updateStoreConfiguration,
             storeConfiguration,
             dispatch,
@@ -194,45 +197,51 @@ export const CustomerEngagementSettings = () => {
                 <Box
                     className={css.container}
                     flexDirection="column"
+                    alignItems="start"
                     flexGrow={1}
                 >
-                    <div className={css.bannerContainer}>
+                    <Box
+                        flexDirection="column"
+                        gap="var(--layout-spacing-s)"
+                        w="100%"
+                    >
                         <AiShoppingAssistantExpireBanner
                             deactiveDatetime={
                                 storeConfiguration?.salesDeactivatedDatetime ??
                                 undefined
                             }
                         />
-                    </div>
-                    {isTriggerOnSearchEnabled && (
-                        <TriggerOnSearchSettings
+                        {isTriggerOnSearchEnabled && (
+                            <TriggerOnSearchSettings
+                                gmv={gmv}
+                                isGmvLoading={isGmvLoading}
+                            />
+                        )}
+                        <ConversationStartersSettings
+                            isEnabled={isConversationStartersFeatureEnabled}
                             gmv={gmv}
                             isGmvLoading={isGmvLoading}
                         />
-                    )}
-                    <ConversationStartersSettings
-                        isEnabled={isConversationStartersFeatureEnabled}
-                        gmv={gmv}
-                        isGmvLoading={isGmvLoading}
-                    />
-                    {isConvertFloatingChatInputFeatureEnabled && (
-                        <ConversationLauncherSettings
-                            gmv={gmv}
-                            isGmvLoading={isGmvLoading}
-                            primaryLanguage={primaryLanguage}
-                            translations={translations}
-                        />
-                    )}
-                    <Box className={css.saveButtonWrapper}>
-                        <Button
-                            isDisabled={!isDirty || isSubmitting}
-                            onClick={handleSubmit(onSave)}
-                            intent="primary"
-                            type="submit"
-                        >
-                            Save Changes
-                        </Button>
+                        {isConvertFloatingChatInputFeatureEnabled && (
+                            <ConversationLauncherSettings
+                                gmv={gmv}
+                                isGmvLoading={isGmvLoading}
+                                primaryLanguage={primaryLanguage}
+                                translations={translations}
+                                onAdvancedSettingsSave={handleSubmit(onSave)}
+                            />
+                        )}
                     </Box>
+
+                    <Button
+                        className={css.saveButton}
+                        isDisabled={!isDirty || isSubmitting}
+                        onClick={handleSubmit(onSave)}
+                        intent="primary"
+                        type="submit"
+                    >
+                        Save Changes
+                    </Button>
                 </Box>
             </FormProvider>
         </>

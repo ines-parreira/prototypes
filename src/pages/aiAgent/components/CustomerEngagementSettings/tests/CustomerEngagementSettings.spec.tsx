@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, waitFor, within } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -18,6 +16,7 @@ import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import * as chatColorHook from 'pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import * as IntegrationsActions from 'state/integrations/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { getLDClient } from 'utils/launchDarkly'
@@ -118,6 +117,10 @@ const mockedUseAiAgentStoreConfigurationContext = jest.mocked(
     useAiAgentStoreConfigurationContext,
 )
 
+const mockUpdateApplicationTexts = jest.mocked(
+    IntegrationsActions.updateApplicationTexts,
+)
+
 const mockUpdateStoreConfiguration = jest
     .fn()
     .mockImplementation((c: StoreConfiguration) => c)
@@ -136,29 +139,11 @@ const getConversationStartersSwitch = (container: HTMLElement) => {
     )
 }
 
-const getFloatingInputSwitch = (container: HTMLElement) => {
-    const label = within(container).getByText(
-        'Drive more sales by adding an always-on input field that encourages shoppers to start a conversation.',
-    )
-    return within(label.closest('.cardContentWrapper')!).getByRole('switch')
-}
-
-const getUpdateButton = (result: RenderComponentReturn) =>
-    result.getByRole('button', { name: 'Update' })
-
 const getSaveButton = (result: RenderComponentReturn) =>
     result.getByRole('button', { name: 'Save Changes' })
 
 const getDiscardButton = (result: RenderComponentReturn) =>
     result.getByRole('button', { name: 'Discard Changes' })
-
-const modalText =
-    'Your changes to this page will be lost if you don’t save them.'
-
-const getModal = (result: RenderComponentReturn) => result.getByText(modalText)
-
-const queryModal = (result: RenderComponentReturn) =>
-    result.queryByText(modalText)
 
 const getClickEvent = () =>
     new MouseEvent('click', {
@@ -167,6 +152,22 @@ const getClickEvent = () =>
     })
 
 const click = (element: HTMLElement) => fireEvent(element, getClickEvent())
+
+const getFloatingInputSetupButton = (container: HTMLElement) => {
+    const label = within(container).getByText(
+        'Drive more sales by adding an always-on input field that encourages shoppers to start a conversation.',
+    )
+    return within(label.closest('.cardContentWrapper')!).getByRole('button', {
+        name: 'Set up',
+    })
+}
+
+const getFloatingInputToggle = (container: HTMLElement) => {
+    const label = within(container).getByText(
+        'Drive more sales by adding an always-on input field that encourages shoppers to start a conversation.',
+    )
+    return within(label.closest('.cardContentWrapper')!).getByRole('switch')
+}
 
 describe('CustomerEngagementSettings', () => {
     beforeEach(() => {
@@ -186,6 +187,7 @@ describe('CustomerEngagementSettings', () => {
             storeConfiguration: {
                 ...storeConfiguration,
                 monitoredChatIntegrations: [1],
+                floatingChatInputConfiguration: undefined,
             },
             isLoading: false,
             updateStoreConfiguration: mockUpdateStoreConfiguration,
@@ -204,11 +206,80 @@ describe('CustomerEngagementSettings', () => {
         client = ldClientMock
     })
 
-    it('renders conversation starters toggle correctly', () => {
+    it('renders conversation starters toggle and floating input setup button correctly', () => {
+        // Use setup button configuration for this test
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                ...storeConfiguration,
+                monitoredChatIntegrations: [1],
+                floatingChatInputConfiguration: undefined,
+            },
+            isLoading: false,
+            updateStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration: jest.fn(),
+            isPendingCreateOrUpdate: false,
+        })
+
         const result = renderComponent()
 
-        getConversationStartersSwitch(result.container)
-        getFloatingInputSwitch(result.container)
+        // Check conversation starters toggle
+        const conversationStartersToggle = getConversationStartersSwitch(
+            result.container,
+        )
+        expect(conversationStartersToggle).toBeInTheDocument()
+
+        // Check floating input setup button
+        const setupButton = getFloatingInputSetupButton(result.container)
+        expect(setupButton).toBeInTheDocument()
+    })
+
+    it('should call updateApplicationTexts', async () => {
+        const result = renderComponent()
+
+        const switchElement = getConversationStartersSwitch(result.container)
+        expect(switchElement).not.toBeChecked()
+        click(switchElement)
+
+        const saveButton = getSaveButton(result)
+        expect(saveButton).not.toBeAriaDisabled()
+        click(saveButton)
+
+        await waitFor(() => {
+            expect(mockUpdateApplicationTexts).toHaveBeenCalledWith('', {
+                'en-US': {
+                    meta: {},
+                    sspTexts: { needHelp: 'Need help? Ask us anything!' },
+                    texts: {},
+                },
+            })
+        })
+    })
+
+    it('should not call updateApplicationTexts when there is more than one chat', async () => {
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                ...storeConfiguration,
+                monitoredChatIntegrations: [1, 2],
+            },
+            isLoading: false,
+            updateStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration: jest.fn(),
+            isPendingCreateOrUpdate: false,
+        })
+
+        const result = renderComponent()
+
+        const switchElement = getConversationStartersSwitch(result.container)
+        expect(switchElement).not.toBeChecked()
+        click(switchElement)
+
+        const saveButton = getSaveButton(result)
+        expect(saveButton).not.toBeAriaDisabled()
+        click(saveButton)
+
+        await waitFor(() => {
+            expect(mockUpdateApplicationTexts).not.toHaveBeenCalled()
+        })
     })
 
     it('should render save button disabled by default', () => {
@@ -217,7 +288,7 @@ describe('CustomerEngagementSettings', () => {
         expect(saveButton).toBeAriaDisabled()
     })
 
-    it('enables save button when toggle is clicked', async () => {
+    it('enables save button when conversation starters toggle is clicked', async () => {
         const result = renderComponent()
         const switchElement = getConversationStartersSwitch(result.container)
         expect(switchElement).not.toBeChecked()
@@ -225,27 +296,82 @@ describe('CustomerEngagementSettings', () => {
         expect(getSaveButton(result)).not.toBeAriaDisabled()
     })
 
+    it('enables save button when floating input is set up', async () => {
+        // Use setup button configuration for this test
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                ...storeConfiguration,
+                monitoredChatIntegrations: [1],
+                floatingChatInputConfiguration: undefined,
+            },
+            isLoading: false,
+            updateStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration: jest.fn(),
+            isPendingCreateOrUpdate: false,
+        })
+
+        const result = renderComponent()
+
+        // Click setup button
+        const setupButton = getFloatingInputSetupButton(result.container)
+        click(setupButton)
+
+        // Enable floating input
+        const floatingInputToggle = result
+            .getByText('Enable Ask anything input on all devices')
+            .closest('.drawerToggleRow')!
+            .querySelector('[role="switch"]') as HTMLElement
+        click(floatingInputToggle)
+
+        // Click update in drawer
+        const updateButton = result.getByRole('button', { name: 'Update' })
+        click(updateButton)
+
+        await waitFor(() => {
+            expect(
+                result.queryByRole('dialog', { name: 'Ask anything input' }),
+            ).not.toBeInTheDocument()
+        })
+
+        expect(setupButton).toBeInTheDocument()
+    })
+
     describe('when user clicks on the save button with new settings', () => {
         it('should call updateStoreConfiguration', async () => {
             const result = renderComponent()
 
-            const switchElement = getConversationStartersSwitch(
-                result.container,
-            )
-            expect(switchElement).not.toBeChecked()
-            click(switchElement)
+            // Click setup button
+            const setupButton = getFloatingInputSetupButton(result.container)
+            click(setupButton)
+
+            // Enable floating input
+            const floatingInputToggle = result
+                .getByText('Enable Ask anything input on all devices')
+                .closest('.drawerToggleRow')!
+                .querySelector('[role="switch"]') as HTMLElement
+            click(floatingInputToggle)
+
+            // Click update in drawer
+            const updateButton = result.getByRole('button', { name: 'Update' })
+            click(updateButton)
+
+            await waitFor(() => {
+                expect(
+                    result.queryByRole('dialog', {
+                        name: 'Ask anything input',
+                    }),
+                ).not.toBeInTheDocument()
+            })
 
             const saveButton = getSaveButton(result)
-            expect(saveButton).not.toBeAriaDisabled()
-            click(saveButton)
+            fireEvent.click(saveButton)
 
             await waitFor(() => {
                 expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith({
                     ...storeConfiguration,
-                    isConversationStartersEnabled: true,
                     monitoredChatIntegrations: [1],
                     floatingChatInputConfiguration: {
-                        isEnabled: false,
+                        isEnabled: true,
                         isDesktopOnly: false,
                         needHelpText: 'Need help? Ask us anything!',
                     },
@@ -256,15 +382,31 @@ describe('CustomerEngagementSettings', () => {
         it('should dispatch a success message', async () => {
             const result = renderComponent()
 
-            const switchElement = getConversationStartersSwitch(
-                result.container,
-            )
-            expect(switchElement).not.toBeChecked()
-            click(switchElement)
+            // Click setup button
+            const setupButton = getFloatingInputSetupButton(result.container)
+            click(setupButton)
+
+            // Enable floating input
+            const floatingInputToggle = result
+                .getByText('Enable Ask anything input on all devices')
+                .closest('.drawerToggleRow')!
+                .querySelector('[role="switch"]') as HTMLElement
+            click(floatingInputToggle)
+
+            // Click update in drawer
+            const updateButton = result.getByRole('button', { name: 'Update' })
+            click(updateButton)
+
+            await waitFor(() => {
+                expect(
+                    result.queryByRole('dialog', {
+                        name: 'Ask anything input',
+                    }),
+                ).not.toBeInTheDocument()
+            })
 
             const saveButton = getSaveButton(result)
-            expect(saveButton).not.toBeAriaDisabled()
-            click(saveButton)
+            fireEvent.click(saveButton)
 
             await waitFor(() => {
                 expect(store.getActions()).toMatchObject([
@@ -289,17 +431,28 @@ describe('CustomerEngagementSettings', () => {
 
             const result = renderComponent()
 
-            const switchElement = getConversationStartersSwitch(
-                result.container,
-            )
-            expect(switchElement).not.toBeChecked()
-            click(switchElement)
+            // Click setup button
+            const setupButton = getFloatingInputSetupButton(result.container)
+            click(setupButton)
+
+            // Enable floating input
+            const floatingInputToggle = result
+                .getByText('Enable Ask anything input on all devices')
+                .closest('.drawerToggleRow')!
+                .querySelector('[role="switch"]') as HTMLElement
+            click(floatingInputToggle)
+
+            // Click update in drawer
+            const updateButton = result.getByRole('button', { name: 'Update' })
+            click(updateButton)
 
             await waitFor(() => {
-                expect(getSaveButton(result)).not.toBeAriaDisabled()
+                const saveButton = getSaveButton(result)
+                expect(saveButton).not.toBeAriaDisabled()
             })
 
-            click(getSaveButton(result))
+            const saveButton = getSaveButton(result)
+            click(saveButton)
 
             await waitFor(() => {
                 expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
@@ -309,31 +462,42 @@ describe('CustomerEngagementSettings', () => {
         it('should send needHelp text as undefined when value is empty', async () => {
             const result = renderComponent()
 
-            const switchElement = getFloatingInputSwitch(result.container)
-            click(switchElement)
+            // Click setup button
+            const setupButton = getFloatingInputSetupButton(result.container)
+            click(setupButton)
 
-            const advancedSettingsLabel = result.getByText('Advanced settings')
-            click(advancedSettingsLabel)
+            // Enable floating input
+            const floatingInputToggle = result
+                .getByText('Enable Ask anything input on all devices')
+                .closest('.drawerToggleRow')!
+                .querySelector('[role="switch"]') as HTMLElement
+            click(floatingInputToggle)
 
-            expect(
-                result.getByText('Enable on Desktop only'),
-            ).toBeInTheDocument()
-
-            result.getByText('Need help? Ask us anything!')
-
+            // Clear the textarea
             const textarea = result.getByPlaceholderText('Enter custom value')
             fireEvent.change(textarea, { target: { value: '' } })
-            fireEvent.click(getUpdateButton(result))
-            click(getSaveButton(result))
+
+            // Click update in drawer
+            const updateButton = result.getByRole('button', { name: 'Update' })
+            click(updateButton)
 
             await waitFor(() => {
-                expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith({
-                    ...storeConfiguration,
-                    monitoredChatIntegrations: [1],
-                    floatingChatInputConfiguration: {
-                        isEnabled: true,
-                        isDesktopOnly: false,
-                        needHelpText: undefined,
+                expect(
+                    result.queryByRole('dialog', {
+                        name: 'Ask anything input',
+                    }),
+                ).not.toBeInTheDocument()
+            })
+
+            const saveButton = getSaveButton(result)
+            fireEvent.click(saveButton)
+
+            await waitFor(() => {
+                expect(mockUpdateApplicationTexts).toHaveBeenCalledWith('', {
+                    'en-US': {
+                        meta: {},
+                        sspTexts: { needHelp: undefined },
+                        texts: {},
                     },
                 })
             })
@@ -374,7 +538,17 @@ describe('CustomerEngagementSettings', () => {
     it('should show a warning when navigating away without submitting the form', async () => {
         const result = renderComponent()
 
-        click(getConversationStartersSwitch(result.container))
+        const setupButton = getFloatingInputSetupButton(result.container)
+        click(setupButton)
+
+        const floatingInputToggle = result
+            .getByText('Enable Ask anything input on all devices')
+            .closest('.drawerToggleRow')!
+            .querySelector('[role="switch"]') as HTMLElement
+        click(floatingInputToggle)
+
+        const updateButton = result.getByRole('button', { name: 'Update' })
+        click(updateButton)
 
         await waitFor(() => {
             expect(getSaveButton(result)).not.toBeAriaDisabled()
@@ -384,9 +558,7 @@ describe('CustomerEngagementSettings', () => {
             history.push('/test')
         })
 
-        await waitFor(() => {
-            getModal(result)
-        })
+        expect(result.getByText('Save changes?')).toBeInTheDocument()
     })
 
     describe('feature flag behavior', () => {
@@ -414,9 +586,7 @@ describe('CustomerEngagementSettings', () => {
             })
 
             // Assert that the modal *does* appear due to dirty form state
-            await waitFor(() => {
-                expect(queryModal(result)).toBeInTheDocument()
-            })
+            expect(result.getByText('Save changes?')).toBeInTheDocument()
         })
 
         it('should enable toggle when feature flag is enabled', async () => {
@@ -439,9 +609,7 @@ describe('CustomerEngagementSettings', () => {
                 history.push('/test')
             })
 
-            await waitFor(() => {
-                getModal(result)
-            })
+            expect(result.getByText('Save changes?')).toBeInTheDocument()
         })
 
         it('Should not render Floating Input settings when ConvertFloatingChatInput flag is disabled', () => {
@@ -478,9 +646,7 @@ describe('CustomerEngagementSettings', () => {
             history.push('/test')
         })
 
-        await waitFor(() => {
-            getModal(result)
-        })
+        expect(result.getByText('Save changes?')).toBeInTheDocument()
 
         click(getDiscardButton(result))
 
@@ -501,36 +667,161 @@ describe('CustomerEngagementSettings', () => {
             )
         })
 
-        it('enables save button when floating input toggle is clicked', () => {
+        it('renders floating input setup button correctly', () => {
             const result = renderComponent()
-
-            const switchElement = getFloatingInputSwitch(result.container)
-            expect(switchElement).not.toBeChecked()
-
-            click(switchElement)
-
-            expect(getSaveButton(result)).not.toBeAriaDisabled()
+            result.getByText(
+                'Drive more sales by adding an always-on input field that encourages shoppers to start a conversation.',
+            )
+            getFloatingInputSetupButton(result.container)
         })
 
-        it('opens advanced settings sidebar when toggle is on and label is clicked', () => {
+        it('Save button stays disabled when setup button is clicked', () => {
             const result = renderComponent()
 
-            const switchElement = getFloatingInputSwitch(result.container)
-            click(switchElement)
+            const setupButton = getFloatingInputSetupButton(result.container)
+            click(setupButton)
 
-            const advancedSettingsLabel = result.getByText('Advanced settings')
-            click(advancedSettingsLabel)
+            expect(getSaveButton(result)).toBeAriaDisabled()
+        })
+
+        it('opens advanced settings sidebar when setup button is clicked', () => {
+            const result = renderComponent()
+
+            const setupButton = getFloatingInputSetupButton(result.container)
+            click(setupButton)
 
             expect(
-                result.getByText('Enable on Desktop only'),
+                result.getByRole('dialog', { name: 'Ask anything input' }),
+            ).toBeInTheDocument()
+            expect(
+                result.getByText('Enable Ask anything input on all devices'),
             ).toBeInTheDocument()
         })
 
-        it('should disable advanced settings label when floating input is off', () => {
+        it('should show setup button when input is not configured', () => {
             const result = renderComponent()
-            const advancedLabel = result.getByText('Advanced settings')
+            const setupButton = getFloatingInputSetupButton(result.container)
+            expect(setupButton).toBeInTheDocument()
+        })
 
-            expect(advancedLabel.closest('.featureRow')).toHaveClass('disabled')
+        it('should show toggle when input is configured', () => {
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    floatingChatInputConfiguration: {
+                        isEnabled: true,
+                        isDesktopOnly: false,
+                        needHelpText: 'Need help? Ask us anything!',
+                    },
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            })
+
+            const result = renderComponent()
+            const toggle = getFloatingInputToggle(result.container)
+            expect(toggle).toBeInTheDocument()
+        })
+
+        it('enables save button when floating input is enabled and update is clicked', async () => {
+            // Use setup button configuration for this test
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    monitoredChatIntegrations: [1],
+                    floatingChatInputConfiguration: undefined,
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            })
+
+            const result = renderComponent()
+
+            // Click setup button
+            const setupButton = getFloatingInputSetupButton(result.container)
+            click(setupButton)
+
+            // Enable floating input
+            const floatingInputToggle = result
+                .getByText('Enable Ask anything input on all devices')
+                .closest('.drawerToggleRow')!
+                .querySelector('[role="switch"]') as HTMLElement
+            click(floatingInputToggle)
+
+            // Click update in drawer
+            const updateButton = result.getByRole('button', { name: 'Update' })
+            click(updateButton)
+
+            await waitFor(() => {
+                expect(getSaveButton(result)).not.toBeAriaDisabled()
+            })
+        })
+
+        it('enables save button when desktop-only is enabled and update is clicked', async () => {
+            // Use setup button configuration for this test
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    monitoredChatIntegrations: [1],
+                    floatingChatInputConfiguration: undefined,
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            })
+
+            const result = renderComponent()
+
+            // Click setup button
+            const setupButton = getFloatingInputSetupButton(result.container)
+            click(setupButton)
+
+            // Enable desktop-only
+            const desktopOnlyToggle = result
+                .getByText('Enable on Desktop only')
+                .closest('.drawerToggleRow')!
+                .querySelector('[role="switch"]') as HTMLElement
+            click(desktopOnlyToggle)
+
+            // Click update in drawer
+            const updateButton = result.getByRole('button', { name: 'Update' })
+            click(updateButton)
+
+            await waitFor(() => {
+                expect(getSaveButton(result)).not.toBeAriaDisabled()
+            })
+        })
+
+        it('keeps save button disabled when no changes are made in drawer', () => {
+            // Use setup button configuration for this test
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    monitoredChatIntegrations: [1],
+                    floatingChatInputConfiguration: undefined,
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            })
+
+            const result = renderComponent()
+
+            const setupButton = getFloatingInputSetupButton(result.container)
+            click(setupButton)
+
+            // Click update in drawer without making any changes
+            const updateButton = result.getByRole('button', { name: 'Update' })
+            click(updateButton)
+
+            // Save button should still be disabled
+            expect(getSaveButton(result)).toBeAriaDisabled()
         })
     })
 })

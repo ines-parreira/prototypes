@@ -3,15 +3,14 @@ import { FC, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
-import { getPrimaryLanguageFromChatConfig } from 'config/integrations/gorgias_chat'
 import useAppSelector from 'hooks/useAppSelector'
 import { OnboardingData } from 'models/aiAgent/types'
-import { ConversationLauncherSettings } from 'pages/aiAgent/components/CustomerEngagementSettings/ConversationLauncherSettings'
-import { ConversationStartersSettings } from 'pages/aiAgent/components/CustomerEngagementSettings/ConversationStartersSettings'
 import { useGmvUsdOver30Days } from 'pages/aiAgent/components/CustomerEngagementSettings/hooks/useGmvUsdOver30Days'
-import { TriggerOnSearchSettings } from 'pages/aiAgent/components/CustomerEngagementSettings/TriggerOnSearchSettings'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
 import { Separator } from 'pages/aiAgent/Onboarding/components/Separator/Separator'
+import { ConversationLauncherSettings } from 'pages/aiAgent/Onboarding/components/steps/EngagementStep/components/ConversationLauncherSettings'
+import { ConversationStartersSettings } from 'pages/aiAgent/Onboarding/components/steps/EngagementStep/components/ConversationStartersSettings'
+import { TriggerOnSearchSettings } from 'pages/aiAgent/Onboarding/components/steps/EngagementStep/components/TriggerOnSearchSettings'
 import { EngagementStepConfirmationPopup } from 'pages/aiAgent/Onboarding/components/steps/EngagementStep/EngagementStepConfirmationPopup'
 import GorgiasIcon from 'pages/aiAgent/Onboarding/components/steps/KnowledgeStep/icons/GorgiasIcon'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
@@ -26,10 +25,7 @@ import {
     OnboardingContentContainer,
     OnboardingPreviewContainer,
 } from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
-import {
-    getGorgiasChatIntegrationsByStoreName,
-    getShopifyIntegrationByShopName,
-} from 'state/integrations/selectors'
+import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 
 import css from './EngagementStep.less'
 
@@ -77,14 +73,6 @@ export const EngagementStep: FC<StepProps> = ({
 
     const { data: gmv, isLoading: isGmvLoading } = useGmvUsdOver30Days(
         storeIntegration.id,
-    )
-
-    const gorgiasChatIntegrations = useAppSelector(
-        getGorgiasChatIntegrationsByStoreName(shopName),
-    )
-
-    const primaryLanguage = getPrimaryLanguageFromChatConfig(
-        gorgiasChatIntegrations?.meta,
     )
 
     const {
@@ -160,21 +148,17 @@ export const EngagementStep: FC<StepProps> = ({
                             description="Send tailored messages after searches to guide shoppers and boost conversions."
                             gmv={gmv}
                             isGmvLoading={isGmvLoading}
-                            isOnboarding
                         />
                         <ConversationStartersSettings
                             description="Display AI-generated FAQs based on shopper intent to help them buy faster."
                             isEnabled
                             gmv={gmv}
                             isGmvLoading={isGmvLoading}
-                            isOnboarding
                         />
                         <ConversationLauncherSettings
                             description="Keep an input field visible to spark conversations and increase sales."
                             gmv={gmv}
                             isGmvLoading={isGmvLoading}
-                            primaryLanguage={primaryLanguage}
-                            isOnboarding
                         />
                     </div>
                 </FormProvider>

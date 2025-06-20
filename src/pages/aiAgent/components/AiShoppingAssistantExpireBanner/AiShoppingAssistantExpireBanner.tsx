@@ -53,25 +53,22 @@ const AiShoppingAssistantExpireBanner: React.FC<
     }
 
     return (
-        <>
-            <div className={css.container}>
-                <div className={css.contentContainer}>
-                    <div className={css.title}>
-                        Your trial for Shopping Assistant expires{' '}
-                        {days > 0 ? `in ${days} days` : `today`}.
-                    </div>
-                    <div className={css.content}>
-                        Shopping Assistant is already driving more revenue for
-                        your store. Let’s keep that going—upgrade now and stay
-                        ahead.
-                    </div>
+        <div className={css.container}>
+            <div className={css.contentContainer}>
+                <div className={css.title}>
+                    Your trial for Shopping Assistant expires{' '}
+                    {days > 0 ? `in ${days} days` : `today`}.
                 </div>
-                <div className={css.buttonContainer}>
-                    <AIButton onClick={showEarlyAccessModal}>Upgrade</AIButton>
+                <div className={css.content}>
+                    Shopping Assistant is already driving more revenue for your
+                    store. Let’s keep that going—upgrade now and stay ahead.
                 </div>
             </div>
+            <div className={css.buttonContainer}>
+                <AIButton onClick={showEarlyAccessModal}>Upgrade</AIButton>
+            </div>
             {earlyAccessModal}
-        </>
+        </div>
     )
 }
 

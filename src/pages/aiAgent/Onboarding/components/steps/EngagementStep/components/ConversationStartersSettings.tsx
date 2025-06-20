@@ -1,11 +1,6 @@
 import { useFormContext } from 'react-hook-form'
-import { useParams } from 'react-router'
 
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
-import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import { assetsUrl } from 'utils'
-
 import {
     EngagementSettingsCard,
     EngagementSettingsCardContent,
@@ -13,13 +8,13 @@ import {
     EngagementSettingsCardDescription,
     EngagementSettingsCardImage,
     EngagementSettingsCardTitle,
-} from './card/EngagementSettingsCard'
-import { EngagementSettingsCardImpact } from './card/EngagementSettingsCardImpact'
-import { EngagementSettingsCardLinkButton } from './card/EngagementSettingsCardLinkButton'
-import { EngagementSettingsCardToggle } from './card/EngagementSettingsCardToggle'
-import { usePotentialImpact } from './hooks/usePotentialImpact'
+} from 'pages/aiAgent/components/CustomerEngagementSettings/card/EngagementSettingsCard'
+import { EngagementSettingsCardImpact } from 'pages/aiAgent/components/CustomerEngagementSettings/card/EngagementSettingsCardImpact'
+import { EngagementSettingsCardToggle } from 'pages/aiAgent/components/CustomerEngagementSettings/card/EngagementSettingsCardToggle'
+import { usePotentialImpact } from 'pages/aiAgent/components/CustomerEngagementSettings/hooks/usePotentialImpact'
+import { assetsUrl } from 'utils'
 
-import css from './ConversationStartersSettings.less'
+import css from '../EngagementStep.less'
 
 export const CONV_STARTERS_ESTIMATED_INFLUENCED_GMV = 0.17
 
@@ -38,11 +33,7 @@ export const ConversationStartersSettings = ({
 }: Props) => {
     const { watch, setValue } = useFormContext()
     const isConversationStartersEnabled = watch('isConversationStartersEnabled')
-    const { shopName } = useParams<{ shopName: string }>()
 
-    const { routes } = useAiAgentNavigation({ shopName })
-
-    const { storeConfiguration } = useAiAgentStoreConfigurationContext()
     const potentialImpact = usePotentialImpact(
         CONV_STARTERS_ESTIMATED_INFLUENCED_GMV,
         gmv,
@@ -72,28 +63,19 @@ export const ConversationStartersSettings = ({
                         <EngagementSettingsCardTitle>
                             Suggested product questions
                         </EngagementSettingsCardTitle>
-                        {!storeConfiguration?.isConversationStartersEnabled && (
-                            <EngagementSettingsCardImpact
-                                icon="lock"
-                                impact={potentialImpact}
-                                isLoading={isGmvLoading}
-                                isChecked
-                            />
-                        )}
+
+                        <EngagementSettingsCardImpact
+                            icon="lock"
+                            impact={potentialImpact}
+                            isLoading={isGmvLoading}
+                            isChecked={isConversationStartersEnabled}
+                        />
                     </div>
 
                     <EngagementSettingsCardDescription>
                         {description}
                     </EngagementSettingsCardDescription>
-
-                    {storeConfiguration?.isConversationStartersEnabled && (
-                        <EngagementSettingsCardLinkButton
-                            href={routes.analytics}
-                            text="Track Performance"
-                        />
-                    )}
                 </EngagementSettingsCardContent>
-
                 <EngagementSettingsCardToggle
                     isChecked={isConversationStartersEnabled}
                     isDisabled={!isEnabled}

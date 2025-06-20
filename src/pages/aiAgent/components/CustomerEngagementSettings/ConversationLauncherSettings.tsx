@@ -11,24 +11,21 @@ import { Button, Label } from '@gorgias/merchant-ui-kit'
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
 import useAppSelector from 'hooks/useAppSelector'
 import { StoreConfiguration } from 'models/aiAgent/types'
-import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { Drawer } from 'pages/common/components/Drawer'
-import { SettingsFeatureRow } from 'pages/common/components/SettingsCard/SettingsFeatureRow'
 import { NewToggleButton } from 'pages/common/forms/NewToggleButton'
 import GorgiasTranslateInputField from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateInputField'
 import translationsAvailableKeys from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/translations-available-keys'
 import { Translations } from 'rest_api/gorgias_chat_protected_api/types'
 import { getGorgiasChatIntegrationsByStoreName } from 'state/integrations/selectors'
 import { assetsUrl } from 'utils'
-import { getLDClient } from 'utils/launchDarkly'
 
 import {
     EngagementSettingsCard,
     EngagementSettingsCardContent,
     EngagementSettingsCardContentWrapper,
     EngagementSettingsCardDescription,
-    EngagementSettingsCardFooter,
     EngagementSettingsCardImage,
     EngagementSettingsCardTitle,
 } from './card/EngagementSettingsCard'
@@ -42,24 +39,28 @@ import css from './ConversationLauncherSettings.less'
 export const ConversationLauncherAdvancedSettings = ({
     isOpen,
     onClose,
+    onSave,
     storeConfiguration,
     primaryLanguage,
     translations,
 }: {
     isOpen: boolean
     onClose: () => void
+    onSave: () => void
     storeConfiguration?: StoreConfiguration
     primaryLanguage: string
     translations?: Translations
 }) => {
     const { watch, setValue } = useFormContext()
     const isFloatingInputDesktopOnly = watch('isFloatingInputDesktopOnly')
+    const isAskAnythingInputEnabled = watch('isAskAnythingInputEnabled')
     const needHelpText = watch('needHelpText')
     const needHelpKey = 'sspTexts.needHelp'
     const storeHasOnlyOneChatIntegration =
         storeConfiguration?.monitoredChatIntegrations.length === 1
 
     const [localValue, setLocalValue] = useState({
+        isAskAnythingInputEnabled: false,
         isFloatingInputDesktopOnly: false,
         needHelpText: '',
     })
@@ -73,11 +74,17 @@ export const ConversationLauncherAdvancedSettings = ({
     useEffect(() => {
         if (isOpen) {
             setLocalValue(() => ({
+                isAskAnythingInputEnabled: isAskAnythingInputEnabled,
                 needHelpText: needHelpText,
                 isFloatingInputDesktopOnly: isFloatingInputDesktopOnly,
             }))
         }
-    }, [isOpen, isFloatingInputDesktopOnly, needHelpText])
+    }, [
+        isOpen,
+        isFloatingInputDesktopOnly,
+        needHelpText,
+        isAskAnythingInputEnabled,
+    ])
 
     const handleUpdate = () => {
         setValue(
@@ -87,10 +94,21 @@ export const ConversationLauncherAdvancedSettings = ({
                 shouldDirty: true,
             },
         )
+
+        setValue(
+            'isAskAnythingInputEnabled',
+            localValue.isFloatingInputDesktopOnly ||
+                localValue.isAskAnythingInputEnabled,
+            {
+                shouldDirty: true,
+            },
+        )
+
         setValue('needHelpText', localValue.needHelpText, {
             shouldDirty: true,
         })
-        onClose()
+
+        onSave()
     }
 
     const saveKeyValue = useCallback((key: string, value: string) => {
@@ -153,12 +171,37 @@ export const ConversationLauncherAdvancedSettings = ({
                     </>
                 )}
                 <Label className={css.drawerToggleRow}>
-                    <div className={css.desktopSwitch}>
-                        Enable on Desktop only
-                        <p className={css.desktopSwitchDescription}>
-                            When enabled, the Ask anything input will only be
-                            displayed on desktop.
+                    <div className={css.allDevicesSwitch}>
+                        Enable Ask anything input on all devices
+                        <p className={css.allDevicesSwitchDescription}>
+                            Drives more sales by showing an always-on input
+                            field that encourages
+                            <br />
+                            shoppers to start a conversation.
                         </p>
+                    </div>
+                    <NewToggleButton
+                        checked={localValue.isAskAnythingInputEnabled}
+                        onChange={() =>
+                            setLocalValue((prev) => ({
+                                ...prev,
+                                isAskAnythingInputEnabled:
+                                    !prev.isAskAnythingInputEnabled,
+                            }))
+                        }
+                        stopPropagation
+                        isDisabled={localValue.isFloatingInputDesktopOnly}
+                    />
+                </Label>
+
+                <Label
+                    className={classNames(
+                        css.drawerToggleRow,
+                        css.desktopToggleRow,
+                    )}
+                >
+                    <div className={css.allDevicesSwitch}>
+                        Enable on Desktop only
                     </div>
                     <NewToggleButton
                         checked={localValue.isFloatingInputDesktopOnly}
@@ -169,6 +212,7 @@ export const ConversationLauncherAdvancedSettings = ({
                                     !prev.isFloatingInputDesktopOnly,
                             }))
                         }
+                        isDisabled={localValue.isAskAnythingInputEnabled}
                         stopPropagation
                     />
                 </Label>
@@ -179,7 +223,9 @@ export const ConversationLauncherAdvancedSettings = ({
                     isDisabled={
                         isFloatingInputDesktopOnly ===
                             localValue.isFloatingInputDesktopOnly &&
-                        needHelpText === localValue.needHelpText
+                        needHelpText === localValue.needHelpText &&
+                        isAskAnythingInputEnabled ===
+                            localValue.isAskAnythingInputEnabled
                     }
                     onClick={handleUpdate}
                     intent="primary"
@@ -209,7 +255,7 @@ type Props = {
     isGmvLoading: boolean
     primaryLanguage: string
     translations?: any
-    isOnboarding?: boolean
+    onAdvancedSettingsSave?: () => void
 }
 
 export const ConversationLauncherSettings = ({
@@ -218,16 +264,16 @@ export const ConversationLauncherSettings = ({
     isGmvLoading,
     primaryLanguage,
     translations,
-    isOnboarding = false,
+    onAdvancedSettingsSave,
 }: Props) => {
     const [isSidebarOpen, setSidebarOpen] = useState(false)
 
     const { watch, setValue } = useFormContext()
     const isAskAnythingInputEnabled = watch('isAskAnythingInputEnabled')
+    const isFloatingInputDesktopOnly = watch('isFloatingInputDesktopOnly')
     const { shopName } = useParams<{ shopName: string }>()
 
-    const flags = getLDClient().allFlags()
-    const routes = getAiAgentNavigationRoutes(shopName, flags)
+    const { routes } = useAiAgentNavigation({ shopName })
 
     const { storeConfiguration } = useAiAgentStoreConfigurationContext()
     const potentialImpact = usePotentialImpact(
@@ -235,44 +281,18 @@ export const ConversationLauncherSettings = ({
         gmv,
     )
 
-    const handleToggle = () =>
-        setValue('isAskAnythingInputEnabled', !isAskAnythingInputEnabled, {
+    const handleAdvancedSettingsSave = useCallback(() => {
+        onAdvancedSettingsSave?.()
+        setSidebarOpen(false)
+    }, [onAdvancedSettingsSave])
+
+    const handleToggle = () => {
+        setValue('isAskAnythingInputEnabled', false, {
             shouldDirty: true,
         })
-
-    const renderLinkOrImpact = (hideImpact?: boolean) => {
-        if (hideImpact) {
-            return null
-        }
-
-        if (isOnboarding) {
-            return (
-                <EngagementSettingsCardImpact
-                    icon="lock"
-                    impact={potentialImpact}
-                    isLoading={isGmvLoading}
-                    isChecked={isAskAnythingInputEnabled}
-                />
-            )
-        }
-
-        if (storeConfiguration?.floatingChatInputConfiguration?.isEnabled) {
-            return (
-                <EngagementSettingsCardLinkButton
-                    href={routes.analytics}
-                    text="Track Performance"
-                />
-            )
-        }
-
-        return (
-            <EngagementSettingsCardImpact
-                icon="lock"
-                impact={potentialImpact}
-                isLoading={isGmvLoading}
-                isChecked
-            />
-        )
+        setValue('isFloatingInputDesktopOnly', false, {
+            shouldDirty: true,
+        })
     }
 
     return (
@@ -280,6 +300,7 @@ export const ConversationLauncherSettings = ({
             <ConversationLauncherAdvancedSettings
                 isOpen={isSidebarOpen}
                 onClose={() => setSidebarOpen(false)}
+                onSave={handleAdvancedSettingsSave}
                 storeConfiguration={storeConfiguration}
                 primaryLanguage={primaryLanguage}
                 translations={translations}
@@ -295,53 +316,58 @@ export const ConversationLauncherSettings = ({
                     />
 
                     <EngagementSettingsCardContent>
-                        <div
-                            className={classNames(
-                                css.cardHeader,
-                                isOnboarding
-                                    ? css['cardHeader--spaceBetween']
-                                    : css['cardHeader--flexStart'],
-                            )}
-                        >
+                        <div className={css.cardHeader}>
                             <EngagementSettingsCardTitle>
                                 Ask anything input
                             </EngagementSettingsCardTitle>
-
-                            {isOnboarding && (
-                                <EngagementSettingsCardToggle
-                                    isChecked={isAskAnythingInputEnabled}
-                                    onChange={handleToggle}
+                            {!storeConfiguration?.floatingChatInputConfiguration
+                                ?.isEnabled && (
+                                <EngagementSettingsCardImpact
+                                    icon="lock"
+                                    impact={potentialImpact}
+                                    isLoading={isGmvLoading}
+                                    isChecked
                                 />
                             )}
                         </div>
-                        {renderLinkOrImpact(!isOnboarding)}
+
                         <EngagementSettingsCardDescription>
                             {description}
                         </EngagementSettingsCardDescription>
-                        {renderLinkOrImpact(isOnboarding)}
+
+                        {storeConfiguration?.floatingChatInputConfiguration
+                            ?.isEnabled && (
+                            <EngagementSettingsCardLinkButton
+                                href={routes.analytics}
+                                text="Track Performance"
+                            />
+                        )}
                     </EngagementSettingsCardContent>
 
-                    {!isOnboarding && (
+                    {Object.keys(
+                        storeConfiguration?.floatingChatInputConfiguration ||
+                            {},
+                    ).length ? (
                         <EngagementSettingsCardToggle
                             isChecked={isAskAnythingInputEnabled}
-                            onChange={handleToggle}
+                            onChange={() =>
+                                isAskAnythingInputEnabled
+                                    ? handleToggle()
+                                    : setSidebarOpen(true)
+                            }
+                            isDesktopOnly={isFloatingInputDesktopOnly}
                         />
+                    ) : (
+                        <div className={css.setUpButton}>
+                            <Button
+                                intent="primary"
+                                onClick={() => setSidebarOpen(true)}
+                            >
+                                Set up
+                            </Button>
+                        </div>
                     )}
                 </EngagementSettingsCardContentWrapper>
-
-                {!isOnboarding && (
-                    <EngagementSettingsCardFooter>
-                        <SettingsFeatureRow
-                            title="Advanced settings"
-                            isDisabled={!isAskAnythingInputEnabled}
-                            onClick={
-                                isAskAnythingInputEnabled
-                                    ? () => setSidebarOpen(true)
-                                    : undefined
-                            }
-                        />
-                    </EngagementSettingsCardFooter>
-                )}
             </EngagementSettingsCard>
         </>
     )
