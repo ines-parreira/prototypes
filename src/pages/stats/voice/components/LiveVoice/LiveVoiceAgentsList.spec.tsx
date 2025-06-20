@@ -1,22 +1,40 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
+
+import { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
+import { useAgentsOnlineStatus } from '@gorgias/realtime'
 
 import { assumeMock } from 'utils/testing'
 
+import { FeatureFlagKey } from '../../../../../config/featureFlags'
 import LiveVoiceAgentsList from './LiveVoiceAgentsList'
 import { AgentStatusCategory, groupAgentsByStatus } from './utils'
 
-jest.mock('pages/stats/voice/components/LiveVoice/utils')
+jest.mock('@gorgias/realtime')
+jest.mock('pages/stats/voice/components/LiveVoice/utils', () => ({
+    ...jest.requireActual('pages/stats/voice/components/LiveVoice/utils'),
+    groupAgentsByStatus: jest.fn(),
+}))
 jest.mock(
     'pages/stats/voice/components/LiveVoice/LiveVoiceAgentRow',
     () => () => <div>LiveVoiceAgentRow</div>,
 )
+const useAgentsOnlineStatusMock = assumeMock(useAgentsOnlineStatus)
 
 const groupAgentsByStatusMock = assumeMock(groupAgentsByStatus)
 
 describe('LiveVoiceAgentsList', () => {
-    const renderComponent = () => render(<LiveVoiceAgentsList agents={[]} />)
+    beforeEach(() => {
+        mockFlags({ [FeatureFlagKey.UseLiveVoiceUpdates]: true })
+        useAgentsOnlineStatusMock.mockReturnValue({
+            onlineAgents: {},
+        })
+    })
+
+    const renderComponent = (agents?: LiveCallQueueAgent[]) =>
+        render(<LiveVoiceAgentsList agents={agents || []} />)
 
     it('should render the title and category labels correctly when there are no agents in category', () => {
         groupAgentsByStatusMock.mockReturnValue({
@@ -45,5 +63,168 @@ describe('LiveVoiceAgentsList', () => {
         expect(screen.getByText('Busy (2)')).toBeInTheDocument()
         expect(screen.getByText('Available (1)')).toBeInTheDocument()
         expect(screen.getByText('Unavailable (1)')).toBeInTheDocument()
+    })
+
+    it('should take into account the online statuses', () => {
+        groupAgentsByStatusMock.mockReturnValue({
+            [AgentStatusCategory.Busy]: [{ id: 1, name: 'Agent 1' }],
+            [AgentStatusCategory.Available]: [
+                { id: 2, name: 'Agent 2' },
+                { id: 4, name: 'Agent 4' },
+            ],
+            [AgentStatusCategory.Unavailable]: [{ id: 3, name: 'Agent 3' }],
+        })
+        useAgentsOnlineStatusMock.mockReturnValue({
+            onlineAgents: { 1: {}, 4: {} },
+        })
+
+        renderComponent([
+            {
+                id: 1,
+                name: 'Agent 1',
+                online: true,
+                available: true,
+                is_available_for_call: false,
+                call_statuses: [{ call_sid: 'call1' }],
+                voice_queue_ids: [1],
+            },
+            {
+                id: 2,
+                name: 'Agent 2',
+                online: true,
+                available: true,
+                is_available_for_call: true,
+                forward_when_offline: true,
+                forward_calls: true,
+                call_statuses: [],
+                voice_queue_ids: [2],
+            },
+            {
+                id: 3,
+                name: 'Agent 3',
+                online: false,
+                is_available_for_call: false,
+                voice_queue_ids: [],
+                call_statuses: [],
+                available: true,
+            },
+            {
+                id: 4,
+                name: 'Agent 4',
+                online: false,
+                available: true,
+                is_available_for_call: false,
+                forward_when_offline: false,
+                forward_calls: false,
+                call_statuses: [],
+                voice_queue_ids: [3],
+            },
+        ])
+
+        expect(groupAgentsByStatusMock).toHaveBeenCalledWith([
+            {
+                id: 1,
+                name: 'Agent 1',
+                online: true,
+                available: true,
+                is_available_for_call: false,
+                call_statuses: [{ call_sid: 'call1' }],
+                voice_queue_ids: [1],
+            }, // nothing changed here
+            {
+                id: 2,
+                name: 'Agent 2',
+                online: false,
+                available: true,
+                is_available_for_call: true,
+                forward_when_offline: true,
+                forward_calls: true,
+                call_statuses: [],
+                voice_queue_ids: [2],
+            }, // Agent 2 is offline but available due to forward calls
+            {
+                id: 3,
+                name: 'Agent 3',
+                online: false,
+                is_available_for_call: false,
+                voice_queue_ids: [],
+                call_statuses: [],
+                available: true,
+            }, // Agent 3 is offline and not available
+            {
+                id: 4,
+                name: 'Agent 4',
+                online: true,
+                available: true,
+                is_available_for_call: true,
+                forward_when_offline: false,
+                forward_calls: false,
+                call_statuses: [],
+                voice_queue_ids: [3],
+            }, // Agent 4 is now online and available
+        ])
+    })
+
+    it('should not take into account the online statuses with FF off', () => {
+        mockFlags({ [FeatureFlagKey.UseLiveVoiceUpdates]: false })
+
+        groupAgentsByStatusMock.mockReturnValue({
+            [AgentStatusCategory.Busy]: [{ id: 1, name: 'Agent 1' }],
+            [AgentStatusCategory.Available]: [
+                { id: 2, name: 'Agent 2' },
+                { id: 4, name: 'Agent 4' },
+            ],
+            [AgentStatusCategory.Unavailable]: [{ id: 3, name: 'Agent 3' }],
+        })
+        useAgentsOnlineStatusMock.mockReturnValue({
+            onlineAgents: { 1: {}, 4: {} },
+        })
+
+        const agents = [
+            {
+                id: 1,
+                name: 'Agent 1',
+                online: true,
+                available: true,
+                is_available_for_call: false,
+                call_statuses: [{ call_sid: 'call1' }],
+                voice_queue_ids: [1],
+            },
+            {
+                id: 2,
+                name: 'Agent 2',
+                online: true,
+                available: true,
+                is_available_for_call: true,
+                forward_when_offline: true,
+                forward_calls: true,
+                call_statuses: [],
+                voice_queue_ids: [2],
+            },
+            {
+                id: 3,
+                name: 'Agent 3',
+                online: false,
+                is_available_for_call: false,
+                voice_queue_ids: [],
+                call_statuses: [],
+                available: true,
+            },
+            {
+                id: 4,
+                name: 'Agent 4',
+                online: false,
+                available: true,
+                is_available_for_call: false,
+                forward_when_offline: false,
+                forward_calls: false,
+                call_statuses: [],
+                voice_queue_ids: [3],
+            },
+        ]
+
+        renderComponent(agents)
+
+        expect(groupAgentsByStatusMock).toHaveBeenCalledWith(agents) // no recompute with online status
     })
 })

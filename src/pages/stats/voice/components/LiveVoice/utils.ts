@@ -2,6 +2,7 @@ import {
     LiveCallQueueAgent,
     LiveCallQueueAgentCallStatusesItem,
     LiveCallQueueVoiceCall,
+    User,
     VoiceCallDirection,
     VoiceCallStatus,
 } from '@gorgias/helpdesk-queries'
@@ -39,6 +40,33 @@ export const isAgentBusy = (agent: LiveCallQueueAgent): boolean => {
 
 export const isAgentAvailable = (agent: LiveCallQueueAgent): boolean => {
     return !!agent.is_available_for_call
+}
+
+export const isAgentAvailableComputed = (
+    agent: LiveCallQueueAgent,
+): boolean => {
+    const available =
+        !!agent.available &&
+        (!!agent.online ||
+            (!!agent.forward_calls && !!agent.forward_when_offline))
+    return available && !isAgentBusy(agent) && !!agent.voice_queue_ids?.length
+}
+
+export const recomputeAgentsWithOnlineStatusChange = (
+    agents: LiveCallQueueAgent[],
+    onlineAgents: Record<number, User>,
+): LiveCallQueueAgent[] => {
+    return agents.map((agent) => {
+        const online = agent.id ? !!onlineAgents[agent.id] : !!agent.online
+        return {
+            ...agent,
+            online,
+            is_available_for_call: isAgentAvailableComputed({
+                ...agent,
+                online,
+            }),
+        }
+    })
 }
 
 const sortOnlineAgentsFirst = (

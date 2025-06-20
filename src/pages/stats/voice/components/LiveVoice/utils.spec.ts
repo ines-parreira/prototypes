@@ -20,11 +20,13 @@ import {
     getLiveVoicePeriodFilter,
     groupAgentsByStatus,
     isAgentAvailable,
+    isAgentAvailableComputed,
     isAgentBusy,
     isLiveCallRinging,
     isLiveInboundVoiceCallAnswered,
     mapBusyAgentStatus,
     orderLiveVoiceCallsByOngoingTime,
+    recomputeAgentsWithOnlineStatusChange,
 } from './utils'
 
 jest.mock('utils/date')
@@ -617,6 +619,152 @@ describe('utils', () => {
                 description: '2021-08-01T09:59:00Z',
                 isDescriptionTimestamp: true,
             })
+        })
+    })
+
+    describe('isAgentAvailableComputed', () => {
+        it('should return true if agent is available', () => {
+            const agent: LiveCallQueueAgent = {
+                id: 1,
+                name: 'Agent 1',
+                is_available_for_call: true,
+                online: true,
+                available: true,
+                forward_calls: false,
+                forward_when_offline: false,
+                call_statuses: [],
+                voice_queue_ids: [1],
+            }
+
+            const result = isAgentAvailableComputed(agent)
+
+            expect(result).toBe(true)
+        })
+
+        it('should return false if agent is offline', () => {
+            const agent: LiveCallQueueAgent = {
+                id: 1,
+                name: 'Agent 1',
+                is_available_for_call: true,
+                online: false,
+                available: true,
+                forward_calls: false,
+                forward_when_offline: false,
+                call_statuses: [],
+                voice_queue_ids: [1],
+            }
+
+            const result = isAgentAvailableComputed(agent)
+
+            expect(result).toBe(false)
+        })
+
+        it('should return true if agent is offline and has forwarding', () => {
+            const agent: LiveCallQueueAgent = {
+                id: 1,
+                name: 'Agent 1',
+                is_available_for_call: true,
+                online: false,
+                available: true,
+                forward_calls: true,
+                forward_when_offline: true,
+                call_statuses: [],
+                voice_queue_ids: [1],
+            }
+
+            const result = isAgentAvailableComputed(agent)
+
+            expect(result).toBe(true)
+        })
+
+        it('should return false if agent is busy by a call', () => {
+            const agent: LiveCallQueueAgent = {
+                id: 1,
+                name: 'Agent 1',
+                is_available_for_call: true,
+                online: true,
+                available: true,
+                forward_calls: false,
+                forward_when_offline: false,
+                call_statuses: [
+                    {
+                        call_sid: '12345',
+                        status: 'in-progress',
+                        created_datetime: '2024-01-02T14:00:00.000Z',
+                    },
+                ],
+                voice_queue_ids: [1],
+            }
+
+            const result = isAgentAvailableComputed(agent)
+
+            expect(result).toBe(false)
+        })
+
+        it('should return false if agent has no target queues', () => {
+            const agent: LiveCallQueueAgent = {
+                id: 1,
+                name: 'Agent 1',
+                is_available_for_call: true,
+                online: true,
+                available: true,
+                forward_calls: false,
+                forward_when_offline: false,
+                call_statuses: [],
+                voice_queue_ids: [],
+            }
+
+            const result = isAgentAvailableComputed(agent)
+
+            expect(result).toBe(false)
+        })
+    })
+
+    describe('recomputeAgentWithOnlineStatusChange', () => {
+        it('should recompute agent availability based on online status', () => {
+            const agent: LiveCallQueueAgent = {
+                id: 1,
+                name: 'Agent 1',
+                is_available_for_call: true,
+                online: true,
+                available: true,
+                forward_calls: false,
+                forward_when_offline: false,
+                call_statuses: [],
+                voice_queue_ids: [1],
+            }
+
+            const updatedAgents = recomputeAgentsWithOnlineStatusChange(
+                [agent],
+                {},
+            )
+
+            const updatedAgent = updatedAgents[0]
+            expect(updatedAgent.online).toBe(false)
+            expect(updatedAgent.is_available_for_call).toBe(false)
+        })
+
+        it('should return true if agent is offline and has forwarding', () => {
+            const agent: LiveCallQueueAgent = {
+                id: 1,
+                name: 'Agent 1',
+                is_available_for_call: true,
+                online: false,
+                available: true,
+                forward_calls: true,
+                forward_when_offline: true,
+                call_statuses: [],
+                voice_queue_ids: [1],
+            }
+
+            const updatedAgents = recomputeAgentsWithOnlineStatusChange(
+                [agent],
+                {},
+            )
+
+            const updatedAgent = updatedAgents[0]
+            expect(updatedAgent.online).toBe(false)
+            expect(updatedAgent.is_available_for_call).toBe(true)
         })
     })
 })
