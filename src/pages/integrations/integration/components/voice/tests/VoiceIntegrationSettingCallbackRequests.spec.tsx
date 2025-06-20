@@ -9,9 +9,9 @@ jest.mock('../VoiceMessageFieldWithLabel', () =>
 )
 
 describe('VoiceIntegrationSettingCallbackRequests', () => {
-    const renderComponent = () => {
+    const renderComponent = (defaultValues: any = undefined) => {
         return render(
-            <Form onValidSubmit={jest.fn()}>
+            <Form onValidSubmit={jest.fn()} defaultValues={defaultValues}>
                 <VoiceIntegrationSettingCallbackRequests />
             </Form>,
         )
@@ -65,5 +65,49 @@ describe('VoiceIntegrationSettingCallbackRequests', () => {
                 'Allow caller to leave a voice message after requesting a callback',
             ),
         ).toBeInTheDocument()
+    })
+
+    it('should show/hide info banner based on voice message checkbox dirty state', () => {
+        renderComponent({
+            meta: {
+                callback_requests: {
+                    enabled: false,
+                    allow_to_leave_voicemail: false,
+                },
+            },
+        })
+
+        fireEvent.click(screen.getByText('Allow callers to request callback'))
+
+        expect(
+            screen.queryByText(
+                'Update the confirmation message to indicate if callers can leave a voice message after requesting a callback or not.',
+            ),
+        ).not.toBeInTheDocument()
+
+        fireEvent.click(
+            screen.getByText(
+                'Allow caller to leave a voice message after requesting a callback',
+            ),
+        )
+
+        expect(
+            screen.getByText(
+                'Update the confirmation message to indicate if callers can leave a voice message after requesting a callback or not.',
+            ),
+        ).toBeInTheDocument()
+
+        // reverting back to the initial state
+        fireEvent.click(
+            screen.getByText(
+                'Allow caller to leave a voice message after requesting a callback',
+            ),
+        )
+
+        expect(
+            screen.queryByText(
+                'Update the confirmation message to indicate if callers can leave a voice message after requesting a callback or not.',
+            ),
+        ).not.toBeInTheDocument()
     })
 })

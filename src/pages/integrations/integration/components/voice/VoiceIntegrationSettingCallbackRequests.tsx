@@ -2,9 +2,10 @@ import {
     CustomRecordingType,
     UpdateAllPhoneIntegrationSettings,
 } from '@gorgias/helpdesk-types'
-import { CheckBoxField, ToggleField } from '@gorgias/merchant-ui-kit'
+import { Banner, CheckBoxField, ToggleField } from '@gorgias/merchant-ui-kit'
 
 import { FormField, useFormContext } from 'core/forms'
+import { AlertType } from 'pages/common/components/Alert/Alert'
 
 import VoiceMessageFieldWithLabel from './VoiceMessageFieldWithLabel'
 
@@ -59,6 +60,19 @@ export default function VoiceIntegrationSettingCallbackRequests() {
                             'When enabled, callers can leave a voice message with their callback request to provide more context.'
                         }
                     />
+                    {methods.formState.dirtyFields?.meta?.callback_requests
+                        ?.allow_to_leave_voicemail && (
+                        <Banner
+                            type={AlertType.Info}
+                            icon
+                            fillStyle="ghost"
+                            isClosable={false}
+                        >
+                            Update the confirmation message to indicate if
+                            callers can leave a voice message after requesting a
+                            callback or not.
+                        </Banner>
+                    )}
                 </>
             )}
         </div>
