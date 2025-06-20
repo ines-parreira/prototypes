@@ -9,7 +9,7 @@ import { SentryTeam } from 'common/const/sentryTeamNames'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldConditions } from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import { CustomField } from 'custom-fields/types'
+import { CustomField, isCustomFieldSystemReadOnly } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { populateConditionalFieldIds } from 'pages/aiAgent/hooks/utils/add-conditional-custom-field-ids-based-on-conditions.util'
 import { FormValues, UpdateValue } from 'pages/aiAgent/types'
@@ -64,8 +64,8 @@ export const CustomFieldsFormComponent = ({
         () =>
             accountCustomFields.filter(
                 (field) =>
-                    // Only non-managed custom fields
-                    field.managed_type === null &&
+                    // Only non-read only custom fields
+                    !isCustomFieldSystemReadOnly(field.managed_type) &&
                     // Only non-conditional custom fields
                     field.requirement_type !== RequirementType.Conditional &&
                     !customFieldIds?.includes(field.id),
