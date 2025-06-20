@@ -8,7 +8,7 @@ export enum ProductInsightsChart {
 
 export const ProductInsightsChartConfig = {
     [ProductInsightsChart.TotalProductSentimentOverTimeChart]: {
-        title: 'Total product sentiment over time',
+        title: 'Total ticket sentiment over time',
         hint: {
             title: 'Product sentiment is derived from tickets and classified as positive or negative after excluding neutral sentiments',
         },
