@@ -158,10 +158,6 @@
     const aggregationTimers = new Map();
     // region State
     /**
-     * Service `ArrayBuffer` response decoder.
-     */
-    const decoder = new TextDecoder();
-    /**
      * Per-subscription key map of "offline" clients detection timeouts.
      */
     const pingTimeouts = {};
@@ -302,7 +298,6 @@
             requestOrId = requestOrId.identifier;
         if (client.subscription)
             isInitialSubscribe = client.subscription.timetoken === '0';
-        notifyRequestProcessing('start', [client], new Date().toISOString(), event.request);
         if (typeof requestOrId === 'string') {
             const scheduledRequest = serviceRequests[requestOrId];
             if (client) {
@@ -324,7 +319,6 @@
                 result.url = `${event.request.origin}${event.request.path}`;
                 result.clientIdentifier = event.clientIdentifier;
                 result.identifier = event.request.identifier;
-                notifyRequestProcessing('end', [client], new Date().toISOString(), event.request, body, headers.get('Content-Type'), 0);
                 publishClientEvent(client, result);
             }
             return;
@@ -404,7 +398,6 @@
         const heartbeatRequestKey = `${client.userId}_${(_a = clientAggregateAuthKey(client)) !== null && _a !== void 0 ? _a : ''}`;
         const hbRequestsBySubscriptionKey = serviceHeartbeatRequests[client.subscriptionKey];
         const hbRequests = (hbRequestsBySubscriptionKey !== null && hbRequestsBySubscriptionKey !== void 0 ? hbRequestsBySubscriptionKey : {})[heartbeatRequestKey];
-        notifyRequestProcessing('start', [client], new Date().toISOString(), event.request);
         if (!request) {
             consoleLog(`Previous heartbeat request has been sent less than ${client.heartbeatInterval} seconds ago. Skipping...`, client);
             let response;
@@ -424,7 +417,6 @@
             result.url = `${event.request.origin}${event.request.path}`;
             result.clientIdentifier = event.clientIdentifier;
             result.identifier = event.request.identifier;
-            notifyRequestProcessing('end', [client], new Date().toISOString(), event.request, body, response.headers.get('Content-Type'), 0);
             publishClientEvent(client, result);
             return;
         }
@@ -443,18 +435,20 @@
      * Handle client request to leave request.
      *
      * @param data - Leave event details.
-     * @param [client] - Specific client to handle leave request.
+     * @param [invalidatedClient] - Specific client to handle leave request.
+     * @param [invalidatedClientServiceRequestId] - Identifier of the service request ID for which the invalidated
+     * client waited for a subscribe response.
      */
-    const handleSendLeaveRequestEvent = (data, client) => {
+    const handleSendLeaveRequestEvent = (data, invalidatedClient, invalidatedClientServiceRequestId) => {
         var _a, _b;
         var _c;
-        client = client !== null && client !== void 0 ? client : pubNubClients[data.clientIdentifier];
-        const request = leaveTransportRequestFromEvent(data);
+        const client = invalidatedClient !== null && invalidatedClient !== void 0 ? invalidatedClient : pubNubClients[data.clientIdentifier];
+        const request = leaveTransportRequestFromEvent(data, invalidatedClient);
         if (!client)
             return;
         // Clean up client subscription information if there is no more channels / groups to use.
         const { subscription, heartbeat } = client;
-        const serviceRequestId = subscription === null || subscription === void 0 ? void 0 : subscription.serviceRequestId;
+        const serviceRequestId = invalidatedClientServiceRequestId !== null && invalidatedClientServiceRequestId !== void 0 ? invalidatedClientServiceRequestId : subscription === null || subscription === void 0 ? void 0 : subscription.serviceRequestId;
         if (subscription && subscription.channels.length === 0 && subscription.channelGroups.length === 0) {
             subscription.channelGroupQuery = '';
             subscription.path = '';
@@ -558,7 +552,6 @@
             type: 'send-request',
             clientIdentifier: clientWithRequest.clientIdentifier,
             subscriptionKey: clientWithRequest.subscriptionKey,
-            logVerbosity: clientWithRequest.logVerbosity,
             request,
         };
         handleSendSubscribeRequestEventForClients([[clientWithRequest, sendRequest]], sendRequest);
@@ -580,8 +573,6 @@
     const sendRequest = (request, getClients, success, failure, responsePreProcess) => {
         (() => __awaiter(void 0, void 0, void 0, function* () {
             var _a;
-            // Request progress support.
-            const start = new Date().getTime();
             Promise.race([
                 fetch(requestFromTransportRequest(request), {
                     signal: (_a = abortControllers.get(request.identifier)) === null || _a === void 0 ? void 0 : _a.signal,
@@ -592,11 +583,9 @@
                 .then((response) => response.arrayBuffer().then((buffer) => [response, buffer]))
                 .then((response) => (responsePreProcess ? responsePreProcess(response) : response))
                 .then((response) => {
-                const responseBody = response[1].byteLength > 0 ? response[1] : undefined;
                 const clients = getClients();
                 if (clients.length === 0)
                     return;
-                notifyRequestProcessing('end', clients, new Date().toISOString(), request, responseBody, response[0].headers.get('Content-Type'), new Date().getTime() - start);
                 success(clients, response);
             })
                 .catch((error) => {
@@ -882,9 +871,10 @@
         if (aggregated && hbRequestsBySubscriptionKey[heartbeatRequestKey].clientIdentifier) {
             const expectedTimestamp = hbRequestsBySubscriptionKey[heartbeatRequestKey].timestamp + minimumHeartbeatInterval * 1000;
             const currentTimestamp = Date.now();
-            // Check whether it is too soon to send request or not (5 is leeway which let send request a bit earlier).
-            // Request should be sent if previous attempt failed.
-            if (!failedPreviousRequest && currentTimestamp < expectedTimestamp && expectedTimestamp - currentTimestamp > 5000)
+            // Check whether it is too soon to send request or not.
+            // Request should be sent if a previous attempt failed.
+            const leeway = minimumHeartbeatInterval * 0.05 * 1000;
+            if (!failedPreviousRequest && currentTimestamp < expectedTimestamp && expectedTimestamp - currentTimestamp > leeway)
                 return undefined;
         }
         delete hbRequestsBySubscriptionKey[heartbeatRequestKey].response;
@@ -938,15 +928,16 @@
      *
      * Filter out channels and groups, which is still in use by other PubNub client instances from leave request.
      *
-     * @param event - Client's send leave event request.
+     * @param event - Client's sending leave event request.
+     * @param [invalidatedClient] - Invalidated PubNub client state.
      *
-     * @returns Final transport request or `undefined` in case if there is no channels and groups for which request can be
+     * @returns Final transport request or `undefined` in case if there are no channels and groups for which request can be
      * done.
      */
-    const leaveTransportRequestFromEvent = (event) => {
+    const leaveTransportRequestFromEvent = (event, invalidatedClient) => {
         var _a;
-        const client = pubNubClients[event.clientIdentifier];
-        const clients = clientsForSendLeaveRequestEvent(event);
+        const client = invalidatedClient !== null && invalidatedClient !== void 0 ? invalidatedClient : pubNubClients[event.clientIdentifier];
+        const clients = clientsForSendLeaveRequestEvent(event, invalidatedClient);
         let channelGroups = channelGroupsFromRequest(event.request);
         let channels = channelsFromRequest(event.request);
         const request = Object.assign({}, event.request);
@@ -1046,65 +1037,6 @@
                 console.error(`[SharedWorker] Unable send message using message port: ${error}`);
         }
         return false;
-    };
-    /**
-     * Send request processing update.
-     *
-     * @param type - Type of processing event.
-     * @param clients - List of PubNub clients which should be notified about request progress.
-     * @param timestamp - Date and time when request processing update happened.
-     * @param [request] - Processed request information.
-     * @param [responseBody] - PubNub service response.
-     * @param [contentType] - PubNub service response content type.
-     * @param [duration] - How long it took to complete request.
-     */
-    const notifyRequestProcessing = (type, clients, timestamp, request, responseBody, contentType, duration) => {
-        var _a, _b;
-        if (clients.length === 0)
-            return;
-        const clientIds = (_a = sharedWorkerClients[clients[0].subscriptionKey]) !== null && _a !== void 0 ? _a : {};
-        const isSubscribeRequest = request && request.path.startsWith('/v2/subscribe');
-        let event;
-        if (type === 'start') {
-            event = {
-                type: 'request-progress-start',
-                clientIdentifier: '',
-                url: '',
-                timestamp,
-            };
-        }
-        else {
-            let response;
-            if (responseBody &&
-                contentType &&
-                (contentType.indexOf('text/javascript') !== -1 ||
-                    contentType.indexOf('application/json') !== -1 ||
-                    contentType.indexOf('text/plain') !== -1 ||
-                    contentType.indexOf('text/html') !== -1)) {
-                response = decoder.decode(responseBody);
-            }
-            event = {
-                type: 'request-progress-end',
-                clientIdentifier: '',
-                url: '',
-                response,
-                timestamp,
-                duration: duration,
-            };
-        }
-        for (const client of clients) {
-            if (isSubscribeRequest && !client.subscription)
-                continue;
-            const serviceWorkerClientId = clientIds[client.clientIdentifier];
-            const { request: clientRequest } = (_b = client.subscription) !== null && _b !== void 0 ? _b : {};
-            let decidedRequest = clientRequest !== null && clientRequest !== void 0 ? clientRequest : request;
-            if (!isSubscribeRequest)
-                decidedRequest = request;
-            if (client.logVerbosity && serviceWorkerClientId && decidedRequest) {
-                const payload = Object.assign(Object.assign({}, event), { clientIdentifier: client.clientIdentifier, url: `${decidedRequest.origin}${decidedRequest.path}`, query: decidedRequest.queryParameters });
-                publishClientEvent(client, payload);
-            }
-        }
     };
     /**
      * Send request processing result event.
@@ -1270,7 +1202,6 @@
             userId: event.userId,
             heartbeatInterval: event.heartbeatInterval,
             newlyRegistered: true,
-            logVerbosity: event.logVerbosity,
             offlineClientsCheckInterval: event.workerOfflineClientsCheckInterval,
             unsubscribeOfflineClients: event.workerUnsubscribeOfflineClients,
             workerLogVerbosity: event.workerLogVerbosity,
@@ -1455,11 +1386,12 @@
         const invalidatedClient = pubNubClients[clientId];
         delete pubNubClients[clientId];
         let clients = pubNubClientsBySubscriptionKey[subscriptionKey];
+        let serviceRequestId;
         // Unsubscribe invalidated PubNub client.
         if (invalidatedClient) {
             // Cancel long-poll request if possible.
             if (invalidatedClient.subscription) {
-                const { serviceRequestId } = invalidatedClient.subscription;
+                serviceRequestId = invalidatedClient.subscription.serviceRequestId;
                 delete invalidatedClient.subscription.serviceRequestId;
                 if (serviceRequestId)
                     cancelRequest(serviceRequestId);
@@ -1473,7 +1405,7 @@
             }
             // Leave subscribed channels / groups properly.
             if (invalidatedClient.unsubscribeOfflineClients)
-                unsubscribeClient(invalidatedClient);
+                unsubscribeClient(invalidatedClient, serviceRequestId);
         }
         if (clients) {
             // Clean up linkage between client and subscription key.
@@ -1506,10 +1438,17 @@
             for (const _client of clients)
                 consoleLog(message, _client);
     };
-    const unsubscribeClient = (client) => {
+    /**
+     * Unsubscribe offline / invalidated PubNub client.
+     *
+     * @param client - Invalidated PubNub client state object.
+     * @param [invalidatedClientServiceRequestId] - Identifier of the service request ID for which the invalidated
+     * client waited for a subscribe response.
+     */
+    const unsubscribeClient = (client, invalidatedClientServiceRequestId) => {
         if (!client.subscription)
             return;
-        const { channels, channelGroups, serviceRequestId } = client.subscription;
+        const { channels, channelGroups } = client.subscription;
         const encodedChannelGroups = (channelGroups !== null && channelGroups !== void 0 ? channelGroups : [])
             .filter((name) => !name.endsWith('-pnpres'))
             .map((name) => encodeString(name))
@@ -1527,7 +1466,6 @@
             type: 'send-request',
             clientIdentifier: client.clientIdentifier,
             subscriptionKey: client.subscriptionKey,
-            logVerbosity: client.logVerbosity,
             request: {
                 origin: client.origin,
                 path: `/v2/presence/sub-key/${client.subscriptionKey}/channel/${channelsString}/leave`,
@@ -1540,15 +1478,13 @@
                 identifier: query.requestid,
             },
         };
-        handleSendLeaveRequestEvent(request, client);
+        handleSendLeaveRequestEvent(request, client, invalidatedClientServiceRequestId);
     };
     /**
      * Validate received event payload.
      */
     const validateEventPayload = (event) => {
-        const { clientIdentifier, subscriptionKey, logVerbosity } = event.data;
-        if (logVerbosity === undefined || typeof logVerbosity !== 'boolean')
-            return false;
+        const { clientIdentifier, subscriptionKey } = event.data;
         if (!clientIdentifier || typeof clientIdentifier !== 'string')
             return false;
         return !(!subscriptionKey || typeof subscriptionKey !== 'string');
@@ -1656,12 +1592,13 @@ which has started by '${client.clientIdentifier}' client. Waiting for existing '
      * - `auth` key
      *
      * @param event - Send leave request event information.
+     * @param [invalidatedClient] - Invalidated PubNub client state.
      *
      * @returns List of PubNub client states which works from other pages for the same user.
      */
-    const clientsForSendLeaveRequestEvent = (event) => {
+    const clientsForSendLeaveRequestEvent = (event, invalidatedClient) => {
         var _a;
-        const reqClient = pubNubClients[event.clientIdentifier];
+        const reqClient = invalidatedClient !== null && invalidatedClient !== void 0 ? invalidatedClient : pubNubClients[event.clientIdentifier];
         if (!reqClient)
             return [];
         const query = event.request.queryParameters;
