@@ -508,6 +508,62 @@ describe('queries', () => {
                 { ...queryParams, page: 1 },
             )
         })
+
+        it('should not be loading when queries are disabled via overrides', async () => {
+            getHelpCenterArticles.mockResolvedValue({
+                data: [mockArticles[0]],
+                meta: {
+                    page: 1,
+                    per_page: 10,
+                    current_page: '1',
+                    item_count: 1,
+                    nb_pages: 1,
+                },
+                object: 'list',
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useGetMultipleHelpCenterArticleLists(
+                        helpCenterIds,
+                        queryParams,
+                        { enabled: false },
+                    ),
+                { wrapper },
+            )
+
+            expect(result.current.isLoading).toBe(false)
+
+            await waitFor(() => {
+                expect(result.current.isLoading).toBe(false)
+            })
+
+            expect(getHelpCenterArticles).not.toHaveBeenCalled()
+            expect(result.current.articles).toEqual([])
+        })
+
+        it('should not be loading when helpCenterIds is empty', async () => {
+            getHelpCenterArticles.mockResolvedValue({
+                data: [],
+                meta: {
+                    page: 1,
+                    per_page: 10,
+                    current_page: '1',
+                    item_count: 0,
+                    nb_pages: 1,
+                },
+                object: 'list',
+            })
+
+            const { result } = renderHook(
+                () => useGetMultipleHelpCenterArticleLists([], queryParams),
+                { wrapper },
+            )
+
+            expect(result.current.isLoading).toBe(false)
+            expect(getHelpCenterArticles).not.toHaveBeenCalled()
+            expect(result.current.articles).toEqual([])
+        })
     })
 
     describe('useGetHelpCenterCategoryTree', () => {

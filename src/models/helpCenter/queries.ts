@@ -237,8 +237,11 @@ export const useGetMultipleHelpCenterArticleLists = (
 ) => {
     const { client } = useHelpCenterApi()
 
+    const isQueryEnabled = (queryIndex: number) =>
+        !!client && !!helpCenterIds[queryIndex] && (overrides?.enabled ?? true)
+
     const queries = useQueries({
-        queries: helpCenterIds.map((helpCenterId) => ({
+        queries: helpCenterIds.map((helpCenterId, i) => ({
             queryKey: helpCenterKeys.articles(helpCenterId, queryParams),
             queryFn: async () =>
                 fetchAllPagesForHelpCenter({
@@ -247,15 +250,14 @@ export const useGetMultipleHelpCenterArticleLists = (
                     queryParams,
                 }),
             ...overrides,
-            enabled:
-                !!client &&
-                !!helpCenterId &&
-                (overrides === undefined || overrides.enabled),
+            enabled: isQueryEnabled(i),
         })),
     })
 
     // Compute loading state
-    const isLoading = queries.some((query) => query.isLoading)
+    const isLoading = queries.some(
+        (query, i) => isQueryEnabled(i) && query.isLoading,
+    )
 
     // Combine articles from all help centers and add helpCenterId to each article
     const articles = useMemo(() => {
