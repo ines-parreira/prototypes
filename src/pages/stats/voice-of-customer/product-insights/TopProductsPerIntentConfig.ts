@@ -1,4 +1,4 @@
-import { TooltipData } from 'pages/stats/types'
+import { NestedTableColumnConfig } from 'pages/stats/common/components/Table/TableWithNestedRows'
 
 export const TOP_INTENTS_PER_PAGE = 10
 
@@ -19,15 +19,10 @@ export const columnOrder: TopProductsPerIntentColumn[] = [
 ]
 
 export const LeadColumn = TopProductsPerIntentColumn.Intent
-export type TopProductsPerIntentColumnConfig = {
-    title: string
-    tooltip: TooltipData
-    isSortable: boolean
-}
 
 export const TopProductsPerIntentColumnConfig: Record<
     TopProductsPerIntentColumn,
-    TopProductsPerIntentColumnConfig
+    NestedTableColumnConfig
 > = {
     [TopProductsPerIntentColumn.Intent]: {
         title: INTENT_TOPIC_COLUMN_LABEL,

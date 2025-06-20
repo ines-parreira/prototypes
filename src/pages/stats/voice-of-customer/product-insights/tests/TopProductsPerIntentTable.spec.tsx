@@ -10,7 +10,6 @@ import { useNotify } from 'hooks/useNotify'
 import { OrderDirection } from 'models/api/types'
 import { ReportingGranularity } from 'models/reporting/types'
 import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
-import { TableLoadingFallback } from 'pages/stats/ticket-insights/ticket-fields/TableLoadingFallback'
 import {
     TopProductsPerIntentColumn,
     TopProductsPerIntentColumnConfig,
@@ -30,8 +29,6 @@ jest.mock('hooks/reporting/voice-of-customer/useIntentTicketCountsAndDelta')
 const useIntentTicketCountsAndDeltaMock = assumeMock(
     useIntentTicketCountsAndDelta,
 )
-jest.mock('pages/stats/ticket-insights/ticket-fields/TableLoadingFallback')
-const TableLoadingFallbackMock = assumeMock(TableLoadingFallback)
 
 jest.mock('pages/stats/common/drill-down/DrillDownModalTrigger')
 const DrillDownModalTriggerMock = assumeMock(DrillDownModalTrigger)
@@ -91,7 +88,6 @@ describe('TopProductsPerIntentTable', () => {
             isFetching: false,
             isError: false,
         })
-        TableLoadingFallbackMock.mockReturnValue(<div>Loading...</div>)
         DrillDownModalTriggerMock.mockImplementation(({ children }) => (
             <div>{children}</div>
         ))
@@ -119,18 +115,6 @@ describe('TopProductsPerIntentTable', () => {
 
         expect(screen.getByText('25%')).toBeInTheDocument()
         expect(screen.getByText('20%')).toBeInTheDocument()
-    })
-
-    it('should show loading state', () => {
-        useIntentTicketCountsAndDeltaMock.mockReturnValue({
-            data: [],
-            isFetching: true,
-            isError: false,
-        })
-
-        render(<TopProductsPerIntentTable intentCustomFieldId={123} />)
-
-        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('should show no data state', () => {

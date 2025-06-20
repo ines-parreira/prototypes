@@ -17,6 +17,7 @@ import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import css from 'pages/stats/common/components/Table/TableWithNestedRows.less'
 import { HintTooltipContent } from 'pages/stats/common/HintTooltip'
+import { TableFallbackDisplay } from 'pages/stats/ticket-insights/components/TableFallbackDisplay'
 import { TooltipData } from 'pages/stats/types'
 
 type NestedRowProps<Columns extends string> = {
@@ -24,6 +25,12 @@ type NestedRowProps<Columns extends string> = {
     level?: number
     isTableScrolled?: boolean
     columnOrder?: Columns[]
+}
+
+export type NestedTableColumnConfig = {
+    title: string
+    tooltip: TooltipData
+    isSortable: boolean
 }
 
 type WithChildren<T> = T
@@ -49,16 +56,10 @@ type Props<
         column: Columns
         direction: OrderDirection
     }) => void
-    columnConfig: Record<
-        Columns,
-        {
-            title: string
-            tooltip: TooltipData
-            isSortable: boolean
-        }
-    >
+    columnConfig: Record<Columns, NestedTableColumnConfig>
     isScrollable?: boolean
     intentCustomFieldId?: number
+    isLoading: boolean
 }
 
 export const TableWithNestedRows = <
@@ -71,6 +72,7 @@ export const TableWithNestedRows = <
 >({
     RowComponent,
     rows,
+    isLoading,
     perPage,
     columnOrder,
     leadColumn,
@@ -111,53 +113,60 @@ export const TableWithNestedRows = <
                 })}
                 onScroll={handleScroll}
             >
-                <TableWrapper className={css.table} style={{ width }}>
-                    <TableHead>
-                        {columnOrder.map((column) => (
-                            <HeaderCellProperty
-                                key={column}
-                                className={classNames({
-                                    [css.withShadow]:
-                                        column === leadColumn &&
-                                        isTableScrolled,
-                                    [css.headerCell]: column !== leadColumn,
-                                })}
-                                colSpan={column === leadColumn ? 2 : 1}
-                                title={columnConfig[column].title}
-                                tooltip={
-                                    <HintTooltipContent
-                                        {...columnConfig[column].tooltip}
-                                    />
-                                }
-                                isOrderedBy={sortingOrder.column === column}
-                                direction={opposite(sortingOrder.direction)}
-                                onClick={
-                                    columnConfig[column].isSortable
-                                        ? () =>
-                                              getSetOrderHandler({
-                                                  column,
-                                                  direction: opposite(
-                                                      sortingOrder.direction,
-                                                  ),
-                                              })
-                                        : undefined
-                                }
-                            />
-                        ))}
-                    </TableHead>
-                    <TableBody>
-                        {paginatedRows.map((row, index) => (
-                            <RowComponent
-                                key={row.entityId}
-                                columnOrder={columnOrder}
-                                isTableScrolled={isTableScrolled}
-                                intentsCustomFieldId={intentCustomFieldId}
-                                defaultExpanded={index === 0}
-                                {...row}
-                            />
-                        ))}
-                    </TableBody>
-                </TableWrapper>
+                <TableFallbackDisplay
+                    columnOrder={columnOrder}
+                    isLoading={isLoading}
+                    noData={!isLoading && rows.length === 0}
+                    columnConfig={columnConfig}
+                >
+                    <TableWrapper className={css.table} style={{ width }}>
+                        <TableHead>
+                            {columnOrder.map((column) => (
+                                <HeaderCellProperty
+                                    key={column}
+                                    className={classNames({
+                                        [css.withShadow]:
+                                            column === leadColumn &&
+                                            isTableScrolled,
+                                        [css.headerCell]: column !== leadColumn,
+                                    })}
+                                    colSpan={column === leadColumn ? 2 : 1}
+                                    title={columnConfig[column].title}
+                                    tooltip={
+                                        <HintTooltipContent
+                                            {...columnConfig[column].tooltip}
+                                        />
+                                    }
+                                    isOrderedBy={sortingOrder.column === column}
+                                    direction={opposite(sortingOrder.direction)}
+                                    onClick={
+                                        columnConfig[column].isSortable
+                                            ? () =>
+                                                  getSetOrderHandler({
+                                                      column,
+                                                      direction: opposite(
+                                                          sortingOrder.direction,
+                                                      ),
+                                                  })
+                                            : undefined
+                                    }
+                                />
+                            ))}
+                        </TableHead>
+                        <TableBody>
+                            {paginatedRows.map((row, index) => (
+                                <RowComponent
+                                    key={row.entityId}
+                                    columnOrder={columnOrder}
+                                    isTableScrolled={isTableScrolled}
+                                    intentsCustomFieldId={intentCustomFieldId}
+                                    defaultExpanded={index === 0}
+                                    {...row}
+                                />
+                            ))}
+                        </TableBody>
+                    </TableWrapper>
+                </TableFallbackDisplay>
             </div>
 
             {hasPagination && (

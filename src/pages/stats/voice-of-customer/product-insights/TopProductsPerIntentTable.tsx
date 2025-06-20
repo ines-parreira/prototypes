@@ -10,13 +10,11 @@ import { useProductsTicketCountsPerIntentDistribution } from 'hooks/reporting/vo
 import { OrderDirection } from 'models/api/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import { NoDataAvailable } from 'pages/stats/common/components/NoDataAvailable'
 import css from 'pages/stats/common/components/Table/BreakdownTable.less'
 import { TableWithNestedRows } from 'pages/stats/common/components/Table/TableWithNestedRows'
 import { TableWithNestedRowsCell } from 'pages/stats/common/components/Table/TableWithNestedRowsCell'
 import { TrendIcon } from 'pages/stats/common/components/TrendIcon'
 import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
-import { TableLoadingFallback } from 'pages/stats/ticket-insights/ticket-fields/TableLoadingFallback'
 import { ProductImage } from 'pages/stats/voice-of-customer/components/ProductImage'
 import { DEFAULT_SORTING_COLUMN } from 'pages/stats/voice-of-customer/product-insights/constants'
 import {
@@ -111,14 +109,6 @@ export const TopProductsPerIntentTable = ({
         getColumnsSortingValue(order.column),
     )
 
-    if (isFetching) {
-        return <TableLoadingFallback />
-    }
-
-    if (data.length === 0) {
-        return <NoDataAvailable style={{ minHeight: 300 }} />
-    }
-
     return (
         <TableWithNestedRows<TopIntentsRowProps, TopProductsPerIntentColumn>
             RowComponent={TopIntentsRow}
@@ -131,6 +121,7 @@ export const TopProductsPerIntentTable = ({
             getSetOrderHandler={setOrder}
             isScrollable={false}
             intentCustomFieldId={intentCustomFieldId}
+            isLoading={isFetching}
         />
     )
 }
@@ -203,7 +194,6 @@ const TopProductsRow = ({
     if (isFetching) {
         return (
             <TableBodyRow>
-                <BodyCell />
                 <BodyCell>
                     <Skeleton inline width={200} />
                 </BodyCell>
