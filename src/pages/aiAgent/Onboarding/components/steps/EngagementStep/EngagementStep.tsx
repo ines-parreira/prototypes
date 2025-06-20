@@ -12,7 +12,6 @@ import { ConversationLauncherSettings } from 'pages/aiAgent/Onboarding/component
 import { ConversationStartersSettings } from 'pages/aiAgent/Onboarding/components/steps/EngagementStep/components/ConversationStartersSettings'
 import { TriggerOnSearchSettings } from 'pages/aiAgent/Onboarding/components/steps/EngagementStep/components/TriggerOnSearchSettings'
 import { EngagementStepConfirmationPopup } from 'pages/aiAgent/Onboarding/components/steps/EngagementStep/EngagementStepConfirmationPopup'
-import GorgiasIcon from 'pages/aiAgent/Onboarding/components/steps/KnowledgeStep/icons/GorgiasIcon'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding/hooks/useCheckStoreAlreadyConfigured'
@@ -23,7 +22,6 @@ import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnb
 import {
     OnboardingBody,
     OnboardingContentContainer,
-    OnboardingPreviewContainer,
 } from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
 import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 
@@ -136,6 +134,7 @@ export const EngagementStep: FC<StepProps> = ({
                 totalSteps={totalSteps}
                 onNextClick={handleSubmit(() => onNextClick())}
                 onBackClick={onBackClick}
+                containerClassName={css.contentContainer}
             >
                 <MainTitle
                     titleBlack="Choose how to"
@@ -163,11 +162,6 @@ export const EngagementStep: FC<StepProps> = ({
                     </div>
                 </FormProvider>
             </OnboardingContentContainer>
-            <OnboardingPreviewContainer
-                isLoading
-                icon={<GorgiasIcon size="40%" />}
-                caption="This is a sample conversation with AI Agent. It will evolve as you onboard."
-            />
             {isConfirmationPopupOpen && (
                 <EngagementStepConfirmationPopup
                     isOpen={isConfirmationPopupOpen}

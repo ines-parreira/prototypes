@@ -110,6 +110,7 @@ export const OnboardingContentContainer: React.FC<{
     onNextClick: () => void
     onBackClick: () => void
     isLoading?: boolean
+    containerClassName?: string
 }> = ({
     children,
     totalSteps,
@@ -117,6 +118,7 @@ export const OnboardingContentContainer: React.FC<{
     onNextClick,
     onBackClick,
     isLoading,
+    containerClassName,
 }) => {
     const { step, shopName } = useParams<{ step: string; shopName: string }>()
 
@@ -148,7 +150,12 @@ export const OnboardingContentContainer: React.FC<{
     }
 
     return (
-        <div className={css.onboardingContentContainer}>
+        <div
+            className={classNames(
+                css.onboardingContentContainer,
+                containerClassName,
+            )}
+        >
             <div className={css.onboardingHeader}>
                 <div title="Gorgias logo" className={css.logo} />
                 <div className={css.onboardingHeaderClose}>

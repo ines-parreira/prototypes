@@ -1,4 +1,6 @@
 @import (reference) '~css/typography.less';
+@import (reference)
+    'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout.less';
 
 :local {
     .form {
@@ -12,5 +14,28 @@
         width: 100%;
         flex-direction: column;
         gap: var(--layout-spacing-xs);
+    }
+
+    .contentContainer {
+        @media @tablets-up {
+            align-items: center;
+
+            width: 100% !important;
+        }
+    }
+
+    [class*='EngagementSettingsCard--cardContentWrapper'] {
+        [class*='EngagementSettingsCard--cardContent'] {
+            @media @tablets-up {
+                max-width: 300px;
+            }
+        }
+
+        [class*='EngagementSettingsCard--cardToggle'] {
+            @media @tablets-up {
+                justify-content: flex-end;
+                min-width: 82px;
+            }
+        }
     }
 }
