@@ -6,7 +6,6 @@ import { Route, Switch } from 'react-router-dom'
 
 import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
 import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
-import { OverviewPage } from 'pages/stats/voice-of-customer/overview/OverviewPage'
 import { ProductInsightsPage } from 'pages/stats/voice-of-customer/product-insights/ProductInsightsPage'
 import { VoiceOfCustomerNavbarContainer } from 'pages/stats/voice-of-customer/VoiceOfCustomerNavbarContainer'
 import { VOICE_OF_CUSTOMER_ROUTES } from 'routes/constants'
@@ -17,8 +16,6 @@ jest.mock('pages/stats/voice-of-customer/VoiceOfCustomerNavbarContainer')
 const VoiceOfCustomerNavbarContainerMock = assumeMock(
     VoiceOfCustomerNavbarContainer,
 )
-jest.mock('pages/stats/voice-of-customer/overview/OverviewPage')
-const OverviewPageMock = assumeMock(OverviewPage)
 jest.mock('pages/stats/voice-of-customer/product-insights/ProductInsightsPage')
 const ProductInsightsPageMock = assumeMock(ProductInsightsPage)
 jest.mock('pages/stats/report-chart-restrictions/ProtectedRoute')
@@ -52,15 +49,10 @@ describe('VoiceOfCustomerRoutes', () => {
             <div>{children}</div>
         ))
         VoiceOfCustomerNavbarContainerMock.mockImplementation(() => <div />)
-        OverviewPageMock.mockImplementation(() => <div />)
         ProductInsightsPageMock.mockImplementation(() => <div />)
     })
 
     it.each([
-        {
-            route: `${VOICE_OF_CUSTOMER_ROUTES.OVERVIEW}`,
-            mock: OverviewPageMock,
-        },
         {
             route: `${VOICE_OF_CUSTOMER_ROUTES.PRODUCT_INSIGHTS}`,
             mock: ProductInsightsPageMock,

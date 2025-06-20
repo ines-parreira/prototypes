@@ -20,6 +20,7 @@ import {
     ProductInsightsPage,
 } from 'pages/stats/voice-of-customer/product-insights/ProductInsightsPage'
 import { TopProductsPerIntentChart } from 'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentChart'
+import { VoCSidePanel } from 'pages/stats/voice-of-customer/side-panel/VoCSidePanel'
 import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('hooks/reporting/useCleanStatsFilters')
@@ -61,6 +62,8 @@ jest.mock(
     'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableChart',
 )
 const ProductInsightsTableChartMock = assumeMock(ProductInsightsTableChart)
+jest.mock('pages/stats/voice-of-customer/side-panel/VoCSidePanel')
+const VoCSidePanelMock = assumeMock(VoCSidePanel)
 
 describe('ProductInsightsPage', () => {
     const statsFilters = {
@@ -82,6 +85,7 @@ describe('ProductInsightsPage', () => {
         TopAIIntentsOverTimeChartMock.mockImplementation(() => <div />)
         TicketVolumeTableMock.mockImplementation(() => <div />)
         ProductInsightsTableChartMock.mockImplementation(() => <div />)
+        VoCSidePanelMock.mockImplementation(() => <div />)
         useStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: statsFilters,
             userTimezone: 'UTC',

@@ -1,6 +1,7 @@
 import StatsPage from 'pages/stats/common/layout/StatsPage'
+import { VOICE_OF_CUSTOMER_SECTION_NAME } from 'pages/stats/voice-of-customer/constants'
 import { ProductInsightsPlaceholderReport } from 'pages/stats/voice-of-customer/product-insights/placeholder/ProducInsightsPlaceholderReport'
-import { VOICE_OF_CUSTOMER_SECTION_NAME } from 'pages/stats/voice-of-customer/utils'
+import { VoCSidePanel } from 'pages/stats/voice-of-customer/side-panel/VoCSidePanel'
 
 export const PRODUCT_INSIGHTS_PAGE_TITLE = 'Product insights'
 
@@ -9,6 +10,7 @@ export const ProductInsightsPage = () => {
         <div className="full-width">
             <StatsPage title={VOICE_OF_CUSTOMER_SECTION_NAME}>
                 <ProductInsightsPlaceholderReport />
+                <VoCSidePanel />
             </StatsPage>
         </div>
     )

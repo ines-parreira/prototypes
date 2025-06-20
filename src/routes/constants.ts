@@ -39,6 +39,5 @@ export const STATS_ROUTES = {
 }
 
 export const VOICE_OF_CUSTOMER_ROUTES = {
-    OVERVIEW: 'overview',
     PRODUCT_INSIGHTS: 'product-insights',
 }

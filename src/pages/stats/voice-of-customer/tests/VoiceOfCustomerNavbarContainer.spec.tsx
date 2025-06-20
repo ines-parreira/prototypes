@@ -1,11 +1,10 @@
 import { render } from '@testing-library/react'
 
 import { Navbar } from 'common/navigation'
+import { VOICE_OF_CUSTOMER_SECTION_NAME } from 'pages/stats/voice-of-customer/constants'
 import { VoiceOfCustomerNavbarContainer } from 'pages/stats/voice-of-customer/VoiceOfCustomerNavbarContainer'
 import { VoiceOfCustomerNavbarView } from 'pages/stats/voice-of-customer/VoiceOfCustomerNavbarView'
 import { assumeMock } from 'utils/testing'
-
-import { VOICE_OF_CUSTOMER_SECTION_NAME } from '../utils'
 
 jest.mock('common/navigation')
 const NavbarMock = assumeMock(Navbar)

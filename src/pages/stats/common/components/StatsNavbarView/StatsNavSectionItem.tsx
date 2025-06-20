@@ -2,16 +2,19 @@ import { ComponentProps } from 'react'
 
 import { NavLink } from 'react-router-dom'
 
+import { DisplayType } from 'components/Navigation/components/NavigationSectionItem'
 import { Navigation } from 'components/Navigation/Navigation'
 import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
 
 type StatsNavSectionItemProps = Omit<ComponentProps<typeof NavLink>, 'to'> & {
     to: string
+    displayType?: (typeof DisplayType)[keyof typeof DisplayType]
 }
 
 export function StatsNavSectionItem({
     to,
     children,
+    displayType = DisplayType.Indent,
     ...props
 }: StatsNavSectionItemProps) {
     return (
@@ -19,7 +22,7 @@ export function StatsNavSectionItem({
             <Navigation.SectionItem
                 as={NavLink}
                 to={to}
-                displayType="indent"
+                displayType={displayType}
                 {...props}
             >
                 {children}

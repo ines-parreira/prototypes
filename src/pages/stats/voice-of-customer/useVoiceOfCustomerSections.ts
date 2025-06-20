@@ -2,13 +2,15 @@ import { useCallback } from 'react'
 
 import { AccordionValues } from 'components/Accordion/utils/types'
 import useLocalStorage from 'hooks/useLocalStorage'
+import {
+    VOICE_OF_CUSTOMER_NAVBAR_SECTIONS_KEY,
+    VoiceOfCustomerViewSections,
+} from 'pages/stats/voice-of-customer/constants'
 
-import { STATS_NAVBAR_SECTIONS_KEY, StatsNavbarViewSections } from './constants'
-
-export const useStatsNavbarSections = () => {
+export const useVoiceOfCustomerSections = () => {
     const [sections, setSections] = useLocalStorage<AccordionValues>(
-        STATS_NAVBAR_SECTIONS_KEY,
-        Object.values(StatsNavbarViewSections),
+        VOICE_OF_CUSTOMER_NAVBAR_SECTIONS_KEY,
+        Object.values(VoiceOfCustomerViewSections),
     )
 
     const handleNavigationStateChange = useCallback(
