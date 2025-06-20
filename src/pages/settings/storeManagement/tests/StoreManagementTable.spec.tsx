@@ -33,6 +33,8 @@ describe('StoreManagementTable', () => {
         paginatedStores: mockStores,
         setCurrentPage: jest.fn(),
         isLoading: false,
+        filter: '',
+        setFilter: jest.fn(),
     }
 
     beforeEach(() => {

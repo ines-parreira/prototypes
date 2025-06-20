@@ -21,6 +21,8 @@ type StoreManagementContextType = {
     paginatedStores: StoreWithAssignedChannels[]
     currentPage: number
     setCurrentPage: Dispatch<SetStateAction<number>>
+    filter: string
+    setFilter: React.Dispatch<React.SetStateAction<string>>
     totalPages: number
     isLoading: boolean
 }
@@ -42,13 +44,21 @@ export function StoreManagementProvider({ children }: { children: ReactNode }) {
     } = useStoresWithMaps()
 
     const [currentPage, setCurrentPage] = useState(1)
+    const [filter, setFilter] = useState('')
+
+    const filteredStores = useMemo(() => {
+        if (!filter) return stores
+        return stores.filter((store) =>
+            store.store.name.toLowerCase().includes(filter.toLowerCase()),
+        )
+    }, [stores, filter])
 
     const paginatedStores = useMemo(() => {
         const startIndex = (currentPage - 1) * PAGE_SIZE
-        return stores.slice(startIndex, startIndex + PAGE_SIZE)
-    }, [currentPage, stores])
+        return filteredStores.slice(startIndex, startIndex + PAGE_SIZE)
+    }, [filteredStores, currentPage])
 
-    const totalPages = Math.ceil(stores.length / PAGE_SIZE)
+    const totalPages = Math.ceil(filteredStores.length / PAGE_SIZE)
     return (
         <StoreManagementContext.Provider
             value={{
@@ -60,6 +70,8 @@ export function StoreManagementProvider({ children }: { children: ReactNode }) {
                 unassignedChannels,
                 refetchMapping,
                 refetchIntegrations,
+                filter,
+                setFilter,
                 isLoading,
             }}
         >
