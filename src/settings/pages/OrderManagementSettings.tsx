@@ -2,6 +2,7 @@ import { Link, NavLink, Route, Switch, useRouteMatch } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import { IntegrationType } from 'models/integration/constants'
+import OrderManagementPreviewProvider from 'pages/automate/orderManagement/OrderManagementPreviewProvider'
 import OrderManagementView from 'pages/automate/orderManagement/OrderManagementView'
 import Header from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
@@ -102,7 +103,7 @@ export function OrderManagementSettings() {
                 />
             </Header>
             {!!selected && !!selectedPath && (
-                <>
+                <OrderManagementPreviewProvider>
                     <SecondaryNavbar>
                         <NavLink exact to={selectedPath}>
                             Configuration
@@ -146,7 +147,7 @@ export function OrderManagementSettings() {
                             <AutomateSettingsChannelsRoute />
                         </Route>
                     </Switch>
-                </>
+                </OrderManagementPreviewProvider>
             )}
         </div>
     )
