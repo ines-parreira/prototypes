@@ -55,7 +55,7 @@ export const TrendOverviewReport = () => {
                     />
                 </DashboardGridCell>
             </DashboardSection>
-            <DashboardSection>
+            <DashboardSection className="pb-0">
                 <DashboardGridCell size={getGridCellSize(12)}>
                     <DashboardComponent
                         chart={

@@ -26,12 +26,18 @@ import { ProductInsightsTableColumns } from 'state/ui/stats/types'
 export const NO_DATA_HEADING = 'No data available'
 export const NO_DATA_SUBHEADING = 'Try adjusting filters to get results.'
 
-const NoDataFallback = () => {
+const NoDataFallback = ({ colSpan }: { colSpan: number }) => {
     return (
-        <div className={css.fallback}>
-            <div className={css.fallbackHeading}>{NO_DATA_HEADING}</div>
-            <div className={css.fallbackSubheading}>{NO_DATA_SUBHEADING}</div>
-        </div>
+        <tr>
+            <td colSpan={colSpan}>
+                <div className={css.fallback}>
+                    <div className={css.fallbackHeading}>{NO_DATA_HEADING}</div>
+                    <div className={css.fallbackSubheading}>
+                        {NO_DATA_SUBHEADING}
+                    </div>
+                </div>
+            </td>
+        </tr>
     )
 }
 
@@ -154,7 +160,7 @@ export const ProductInsightsTable = ({
                     {isLoading ? (
                         <LoadingFallback columns={columnsOrder} />
                     ) : isEmpty ? (
-                        <NoDataFallback />
+                        <NoDataFallback colSpan={columnsOrder.length} />
                     ) : (
                         paginatedProducts.map((product) => (
                             <TableBodyRow key={product.id} className={css.row}>

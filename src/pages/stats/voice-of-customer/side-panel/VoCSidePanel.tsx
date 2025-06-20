@@ -28,7 +28,6 @@ type VoCSidePanelTabsType = Record<
     {
         value: SidePanelTab
         label: string
-        icon: string
         content: FC
     }
 >
@@ -37,13 +36,11 @@ export const VoCSidePanelTabs: VoCSidePanelTabsType = {
     [SidePanelTab.Insights]: {
         value: SidePanelTab.Insights,
         label: INSIGHTS_LABEL,
-        icon: 'psychology',
         content: InsightsTab,
     },
     [SidePanelTab.TrendOverview]: {
         value: SidePanelTab.TrendOverview,
         label: TREND_OVERVIEW_LABEL,
-        icon: 'show_chart',
         content: TrendOverviewReport,
     },
 }

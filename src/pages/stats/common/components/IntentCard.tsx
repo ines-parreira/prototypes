@@ -98,7 +98,6 @@ export function IntentCard({
                     {formattedTicketCount}/{formattedTotalTicketCount} tickets
                 </span>
                 <Button
-                    leadingIcon={<IconInput icon="inbox" />}
                     intent="secondary"
                     fillStyle="ghost"
                     size="small"

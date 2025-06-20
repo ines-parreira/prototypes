@@ -77,7 +77,7 @@ const SelectSorting = ({
                 fillStyle="ghost"
                 trailingIcon={<IconInput icon="arrow_drop_down" />}
             >
-                Order by
+                Sort by
             </Button>
             <Dropdown
                 target={triggerRef}
@@ -119,12 +119,12 @@ export const sortingOptions: SortingOption[] = [
     {
         label: 'Highest ticket quantity',
         field: TicketPerIntentSortingField.TicketCount,
-        direction: OrderDirection.Asc,
+        direction: OrderDirection.Desc,
     },
     {
         label: 'Lowest ticket quantity',
         field: TicketPerIntentSortingField.TicketCount,
-        direction: OrderDirection.Desc,
+        direction: OrderDirection.Asc,
     },
 ]
 
