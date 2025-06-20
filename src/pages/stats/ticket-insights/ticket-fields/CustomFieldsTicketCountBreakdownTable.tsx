@@ -91,7 +91,7 @@ export const CustomFieldsTicketCountBreakdownTable = ({
                 <TableWrapper className={css.table} style={{ width }}>
                     <TableHead>
                         <HeaderCellProperty
-                            colSpan={2}
+                            colSpan={3}
                             title={CUSTOM_FIELD_COLUMN_LABEL}
                             className={classNames(
                                 {
@@ -111,6 +111,7 @@ export const CustomFieldsTicketCountBreakdownTable = ({
                             direction={opposite(order.direction)}
                             isOrderedBy={order.column === 'total'}
                             onClick={() => setOrdering('total')}
+                            colSpan={1}
                         />
                         {dateTimes.map((dateTime, index) => (
                             <HeaderCellProperty
@@ -122,6 +123,7 @@ export const CustomFieldsTicketCountBreakdownTable = ({
                                 direction={opposite(order.direction)}
                                 isOrderedBy={order.column === index}
                                 onClick={() => setOrdering(index)}
+                                colSpan={1}
                             />
                         ))}
                     </TableHead>

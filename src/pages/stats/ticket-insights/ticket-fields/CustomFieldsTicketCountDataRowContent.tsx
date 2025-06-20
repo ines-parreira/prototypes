@@ -85,7 +85,7 @@ export const CustomFieldsTicketCountDataRowContent = (props: DataRowProps) => {
     return (
         <>
             <TableWithNestedRowsCell
-                isLeadColumn={true}
+                isLeadColumn
                 isTableScrolled={isTableScrolled}
                 hasChildren={hasChildren}
                 onClick={onClick}
