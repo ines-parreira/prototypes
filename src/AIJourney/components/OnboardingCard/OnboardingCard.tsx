@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
@@ -25,6 +25,7 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
     const isActivationStep = currentStep === 'Activation'
 
     const history = useHistory()
+    const { shopName } = useParams<{ shopName: string }>()
 
     const [isDiscountEnabled, setIsDiscountEnabled] = useState(false)
     const [followUpValue, setFollowUpValue] = useState<number>()
@@ -70,7 +71,9 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
                     </>
                 )}
                 <Button
-                    onClick={() => history.push('/app/ai-journey/activation')}
+                    onClick={() =>
+                        history.push(`/app/ai-journey/${shopName}/activation`)
+                    }
                     isDisabled={isActivationStep}
                 >
                     This is a placeholder button

@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
@@ -8,6 +8,7 @@ import css from './LandingPage.less'
 
 export const LandingPage = () => {
     const history = useHistory()
+    const { shopName } = useParams<{ shopName: string }>()
 
     return (
         <div className={css.container}>
@@ -28,7 +29,9 @@ export const LandingPage = () => {
                 <div style={{ marginTop: '32px', alignSelf: 'center' }}>
                     <Button
                         onClick={() =>
-                            history.push('/app/ai-journey/conversation-setup')
+                            history.push(
+                                `/app/ai-journey/${shopName}/conversation-setup`,
+                            )
                         }
                     >
                         This is a placeholder button

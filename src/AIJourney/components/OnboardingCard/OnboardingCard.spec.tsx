@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
@@ -11,9 +9,17 @@ jest.mock('react-router-dom', () => ({
     useHistory: () => ({
         push: mockHistoryPush,
     }),
+    useParams: () => ({
+        shop_name: 'shopify-store',
+    }),
 }))
 
 describe('<OnboardingCard />', () => {
+    it('should render step name in card', () => {
+        render(<OnboardingCard currentStep={'Conversation Setup'} />)
+
+        expect(screen.getByText('Conversation Setup step')).toBeInTheDocument()
+    })
     it('should redirect from conversation setup to activation', async () => {
         render(<OnboardingCard currentStep={'Conversation Setup'} />)
         expect(screen.getByText('Conversation Setup step')).toBeInTheDocument()

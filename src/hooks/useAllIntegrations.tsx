@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react'
 
-import { listIntegrations } from '@gorgias/helpdesk-client'
+import { IntegrationType, listIntegrations } from '@gorgias/helpdesk-client'
 import { Integration, queryKeys } from '@gorgias/helpdesk-queries'
 
 import { useExhaustEndpoint } from './useExhaustEndpoint'
 
-export default function useAllIntegrations() {
+export default function useAllIntegrations(type?: IntegrationType) {
     const [allIntegrations, setAllIntegrations] = useState<Integration[]>([])
 
     const { data, isLoading, refetch } = useExhaustEndpoint(
         queryKeys.integrations.listIntegrations(),
-        (cursor) => listIntegrations({ cursor, limit: 100 }),
+        (cursor) => listIntegrations({ cursor, limit: 100, type }),
     )
 
     useEffect(() => {
