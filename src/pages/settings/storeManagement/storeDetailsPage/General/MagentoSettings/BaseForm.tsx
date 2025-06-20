@@ -2,6 +2,7 @@ import { Form } from 'core/forms/components/Form'
 import { Magento2Integration } from 'models/integration/types'
 
 import ActionButtons from './ActionButtons'
+import { useMagentoSettings } from './hooks/useMagentoSettings'
 import { InformationForm } from './InformationForm'
 
 import css from './BaseForm.less'
@@ -28,6 +29,8 @@ export function BaseForm({
     redirectUri,
     children,
 }: BaseFormProps) {
+    const { isActive } = useMagentoSettings(integration)
+
     return (
         <Form
             defaultValues={defaultValues}
@@ -35,6 +38,7 @@ export function BaseForm({
             onValidSubmit={handleUpdate}
         >
             <InformationForm
+                isActive={isActive}
                 storeId={integration.id}
                 storeURL={storeURL}
                 isSyncComplete={integration.meta.import_state?.is_over ?? false}

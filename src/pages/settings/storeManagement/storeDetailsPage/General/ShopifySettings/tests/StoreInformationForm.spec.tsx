@@ -24,6 +24,7 @@ describe('<StoreInformationForm />', () => {
         onSyncCustomerNotesChange: jest.fn(),
         onDefaultAddressPhoneMatchingChange: jest.fn(),
         storeId: 123,
+        isActive: true,
     }
 
     it('should render store information with correct shop name', () => {

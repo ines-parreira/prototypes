@@ -33,6 +33,7 @@ export default function BigCommerceSettings({
         <form>
             <div className={css.container}>
                 <InformationForm
+                    isActive={isActive}
                     storeId={integration.id}
                     shopName={shopName}
                     isSyncComplete={isSyncComplete}

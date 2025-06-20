@@ -10,9 +10,11 @@ type SyncNotificationProps = {
     platform: string
     shopName: string
     isSyncComplete: boolean
+    isActive: boolean
 }
 
 const SyncNotification = ({
+    isActive,
     platform,
     shopName,
     isSyncComplete,
@@ -21,6 +23,15 @@ const SyncNotification = ({
         `${platform}_${shopName}_sync_notification`,
         false,
     )
+
+    if (!isActive) {
+        return (
+            <Banner type="warning" fillStyle="fill">
+                Your store is disconnected. To keep syncing data with Gorgias,
+                please reconnect your store.
+            </Banner>
+        )
+    }
 
     if (!isSyncComplete) {
         return (

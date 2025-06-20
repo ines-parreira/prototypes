@@ -77,6 +77,7 @@ export default function ShopifySettings({
             <form onSubmit={handleUpdate}>
                 <div className={css.container}>
                     <StoreInformationForm
+                        isActive={isActive}
                         storeId={integration.id}
                         shopName={shopName}
                         isCustomersImportOver={isCustomersImportOver}

@@ -16,6 +16,7 @@ describe('<SyncNotification />', () => {
         platform: 'Shopify',
         shopName: 'test-store',
         isSyncComplete: false,
+        isActive: true,
     }
 
     it('should render loading banner when sync is in progress', () => {
@@ -82,5 +83,13 @@ describe('<SyncNotification />', () => {
         expect(
             screen.queryByRole('button', { name: 'View Customers' }),
         ).not.toBeInTheDocument()
+    })
+    it('should render proper banner when the store is disconnected', () => {
+        renderWithRouter(
+            <SyncNotification {...defaultProps} isActive={false} />,
+        )
+        expect(
+            screen.getByText(/Your store is disconnected./),
+        ).toBeInTheDocument()
     })
 })

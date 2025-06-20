@@ -21,7 +21,7 @@ import css from './BaseForm.less'
 
 export interface StoreInformationFormProps {
     storeURL: string
-
+    isActive: boolean
     isSyncComplete: boolean
     storeId: number
     children?: React.ReactNode
@@ -32,6 +32,7 @@ export function InformationForm({
     isSyncComplete,
     storeId,
     children,
+    isActive,
 }: StoreInformationFormProps) {
     return (
         <SettingsCard>
@@ -49,6 +50,7 @@ export function InformationForm({
             <SettingsCardContent>
                 <div>
                     <SyncNotificationNew
+                        isActive={isActive}
                         platform="Magento"
                         shopName={storeURL}
                         isSyncComplete={isSyncComplete}

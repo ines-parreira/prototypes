@@ -27,6 +27,7 @@ export interface StoreInformationFormProps {
     onSyncCustomerNotesChange: (value: boolean) => void
     onDefaultAddressPhoneMatchingChange: (value: boolean) => void
     storeId: number
+    isActive: boolean
 }
 
 export function StoreInformationForm({
@@ -37,6 +38,7 @@ export function StoreInformationForm({
     onSyncCustomerNotesChange,
     onDefaultAddressPhoneMatchingChange,
     storeId,
+    isActive,
 }: StoreInformationFormProps) {
     return (
         <SettingsCard>
@@ -54,6 +56,7 @@ export function StoreInformationForm({
             <SettingsCardContent>
                 <div className={css.metaContainer}>
                     <SyncNotificationNew
+                        isActive={isActive}
                         platform="Shopify"
                         shopName={shopName}
                         isSyncComplete={isCustomersImportOver}

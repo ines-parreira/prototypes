@@ -10,6 +10,7 @@ describe('InformationForm', () => {
         shopName: 'teststore',
         isSyncComplete: true,
         storeId: 123,
+        isActive: true,
     }
 
     const renderComponent = (props = defaultProps) => {

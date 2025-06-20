@@ -22,12 +22,14 @@ export interface StoreInformationFormProps {
     shopName: string
     isSyncComplete: boolean
     storeId: number
+    isActive: boolean
 }
 
 export function InformationForm({
     shopName,
     isSyncComplete,
     storeId,
+    isActive,
 }: StoreInformationFormProps) {
     return (
         <SettingsCard>
@@ -47,6 +49,7 @@ export function InformationForm({
             <SettingsCardContent>
                 <div className={css.metaContainer}>
                     <SyncNotificationNew
+                        isActive={isActive}
                         platform="BigCommerce"
                         shopName={shopName}
                         isSyncComplete={isSyncComplete}
