@@ -23,7 +23,7 @@ import { usePotentialImpact } from './hooks/usePotentialImpact'
 
 import css from './TriggerOnSearchSettings.less'
 
-export const TRIGGER_ON_SEARCH_ESTIMATED_INFLUENCED_GMV = 0.06
+export const TRIGGER_ON_SEARCH_ESTIMATED_INFLUENCED_GMV = 0.04
 
 type Props = {
     description?: string

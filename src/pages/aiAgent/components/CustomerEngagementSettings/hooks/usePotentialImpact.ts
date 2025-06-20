@@ -69,7 +69,7 @@ export const usePotentialImpact = (
         const formatter = getCurrencyFormatter()
         const lower = formatter.format(potentialImpact.lowerImpact)
 
-        return `Unlock up to ${lower} of additional GMV.`
+        return `Unlock up to ${lower} of yearly additional GMV.`
     }, [estimatedInfluencedGMV, gmv])
 
     return formattedImpact

@@ -201,7 +201,7 @@ export const ConversationLauncherAdvancedSettings = ({
     )
 }
 
-export const CONV_LAUNCHER_ESTIMATED_INFLUENCED_GMV = 0.03
+export const CONV_LAUNCHER_ESTIMATED_INFLUENCED_GMV = 0.05
 
 type Props = {
     description?: string

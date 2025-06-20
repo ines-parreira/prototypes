@@ -23,7 +23,7 @@ import { usePotentialImpact } from './hooks/usePotentialImpact'
 
 import css from './ConversationStartersSettings.less'
 
-export const CONV_STARTERS_ESTIMATED_INFLUENCED_GMV = 0.03
+export const CONV_STARTERS_ESTIMATED_INFLUENCED_GMV = 0.17
 
 type Props = {
     description?: string

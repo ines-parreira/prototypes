@@ -14,7 +14,8 @@ jest.mock(
     () => {
         return {
             usePotentialImpact: jest.fn(
-                () => 'Unlock up to ~5% additional GMV',
+                (coefficient: number) =>
+                    `Unlock up to ${coefficient}% additional GMV`,
             ),
         }
     },
@@ -67,7 +68,7 @@ describe('ConversationStartersSettings', () => {
             ),
         ).toBeInTheDocument()
         expect(
-            screen.getByText('Unlock up to ~5% additional GMV'),
+            screen.getByText('Unlock up to 0.17% additional GMV'),
         ).toBeInTheDocument()
         expect(
             screen.getByAltText(
