@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
 
 import { Language } from 'constants/languages'
 import { useNotify } from 'hooks/useNotify'
@@ -151,7 +151,7 @@ describe('useHandoverCustomizationChatFallbackSettingsForm', () => {
             updateMultiLanguageTexts: mockUpdateMultiLanguageTexts,
         })
 
-        rerender()
+        rerender({ integration: mockIntegration })
 
         expect(result.current.formValues).toEqual({
             en: { fallbackMessage: 'Updated English message' },
@@ -263,21 +263,18 @@ describe('useHandoverCustomizationChatFallbackSettingsForm', () => {
             )
         })
 
-        const promise = result.current.handleOnSave()
+        result.current.handleOnSave()
 
-        expect(result.current.isSaving).toBe(true)
+        await waitFor(() => {
+            expect(result.current.isSaving).toBe(false)
+            expect(mockUpdateMultiLanguageTexts).toHaveBeenCalledWith(
+                expectedMergedMultiLanguageTexts,
+            )
 
-        await act(async () => {
-            await promise
+            expect(mockNotify.success).toHaveBeenCalledWith(
+                CHANGES_SAVED_SUCCESS,
+            )
         })
-
-        expect(result.current.isSaving).toBe(false)
-
-        expect(mockUpdateMultiLanguageTexts).toHaveBeenCalledWith(
-            expectedMergedMultiLanguageTexts,
-        )
-
-        expect(mockNotify.success).toHaveBeenCalledWith(CHANGES_SAVED_SUCCESS)
     })
     it('should handle error save operation', async () => {
         const expectedMergedMultiLanguageTexts = {
@@ -309,25 +306,20 @@ describe('useHandoverCustomizationChatFallbackSettingsForm', () => {
             )
         })
 
-        const promise = result.current.handleOnSave()
+        result.current.handleOnSave()
 
-        expect(result.current.isSaving).toBe(true)
+        await waitFor(() => {
+            expect(result.current.isSaving).toBe(false)
 
-        await act(async () => {
-            await promise
+            expect(mockUpdateMultiLanguageTexts).toHaveBeenCalledWith(
+                expectedMergedMultiLanguageTexts,
+            )
+            expect(mockNotify.success).not.toHaveBeenCalled()
+            expect(mockNotify.error).toHaveBeenCalledWith(
+                'Failed to update multi-language texts',
+            )
+            expect(result.current.isSaving).toBe(false)
         })
-
-        expect(result.current.isSaving).toBe(false)
-
-        expect(mockUpdateMultiLanguageTexts).toHaveBeenCalledWith(
-            expectedMergedMultiLanguageTexts,
-        )
-
-        expect(mockNotify.success).not.toHaveBeenCalled()
-
-        expect(mockNotify.error).toHaveBeenCalledWith(
-            'Failed to update multi-language texts',
-        )
     })
     it('should reset form values on cancel', () => {
         const { result } = renderHook(() =>

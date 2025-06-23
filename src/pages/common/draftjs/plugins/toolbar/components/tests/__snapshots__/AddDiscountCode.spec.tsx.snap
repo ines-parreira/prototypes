@@ -89,7 +89,6 @@ exports[`<AddDiscountCode/> should render the discount picker when the popover i
                   class="resultTotal"
                 >
                   0
-                  
                    Discounts
                 </span>
               </div>

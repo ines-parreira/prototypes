@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -165,7 +166,7 @@ describe('ProductPlanSelection', () => {
         expect(getByTestId('cancel-product-modal')).toBeInTheDocument()
     })
 
-    it('opens the cancel product modal flow', () => {
+    it('opens the cancel product modal flow', async () => {
         useAutomatedHelpdeskCancellationFlowAvailableMock.mockImplementation(
             () => true,
         )
@@ -193,7 +194,7 @@ describe('ProductPlanSelection', () => {
             name: 'Cancel auto-renewal',
         })
         expect(CancelProductModalMock).toHaveBeenCalledWith(expectedProps, {})
-        cancelAutoRenewalButton.click()
+        await userEvent.click(cancelAutoRenewalButton)
         expect(getByTestId('cancel-product-modal')).toBeInTheDocument()
 
         expect(CancelProductModalMock).toHaveBeenCalledWith(
@@ -219,7 +220,7 @@ describe('ProductPlanSelection', () => {
         expect(screen.getByText('Helpdesk')).toBeInTheDocument()
     })
 
-    it('is possible to change plans', () => {
+    it('is possible to change plans', async () => {
         render(
             <Provider store={store}>
                 <ProductPlanSelection {...props} />
@@ -231,7 +232,7 @@ describe('ProductPlanSelection', () => {
             currentPlan.num_quota_tickets.toString(),
         )
 
-        selectedPlan.click()
+        await userEvent.click(selectedPlan)
 
         const items = screen.getAllByRole('menuitem')
 
@@ -245,7 +246,7 @@ describe('ProductPlanSelection', () => {
             availablePlans[2].num_quota_tickets.toString(),
         )
 
-        items[1].click()
+        await userEvent.click(items[1])
 
         expect(mockSetSelectedPlans).toHaveBeenCalledTimes(1)
     })

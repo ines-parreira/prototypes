@@ -1,7 +1,7 @@
 import React, { ComponentType } from 'react'
 
 import { waitFor } from '@testing-library/react'
-import { fromJS, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -42,7 +42,11 @@ const defaultState = {
 
 describe('useTicketDraft hook', () => {
     it('should not save draft when ticket is not new', () => {
-        renderHook(() => useTicketDraft(false))
+        renderHook(() => useTicketDraft(false), {
+            wrapper: (({ children }: { children: React.ReactNode }) => (
+                <Provider store={mockStore(defaultState)}>{children}</Provider>
+            )) as unknown as ComponentType,
+        })
         expect(mockSetItem).not.toHaveBeenCalled()
     })
 
@@ -85,30 +89,38 @@ describe('useTicketDraft hook', () => {
             mockGetTableObject,
         )
 
-        const wrapper = (({
-            children,
-            ticket,
-        }: {
-            children: React.ReactNode
-            ticket: Map<any, any>
-        }) => (
-            <Provider store={mockStore({ ...defaultState, ticket })}>
-                {children}
-            </Provider>
-        )) as unknown as ComponentType
+        const filledTicket = fromJS({
+            ...defaultTicket,
+            subject: '',
+            tags: [{ name: 'during-business-hours' }],
+        })
+
+        const emptyTicket = fromJS({
+            ...defaultTicket,
+            tags: [],
+        })
+
+        let currentTicket = filledTicket
+
+        const wrapper = ({ children }: { children: React.ReactNode }) => {
+            const store = mockStore({
+                ...defaultState,
+                ticket: currentTicket,
+            })
+            return <Provider store={store}>{children}</Provider>
+        }
 
         const { rerender } = renderHook(() => useTicketDraft(true), {
             wrapper,
-            initialProps: {
-                ticket: fromJS({
-                    ...defaultTicket,
-                    subject: '',
-                    tags: [{ name: 'during-business-hours' }],
-                }),
-            },
         })
 
-        rerender({ ticket: defaultState.ticket })
+        await waitFor(() => {
+            expect(mockSetItem).toHaveBeenCalledTimes(1)
+        })
+
+        // Update ticket to empty
+        currentTicket = emptyTicket
+        rerender()
 
         await waitFor(() => {
             expect(mockSetItem).toHaveBeenCalledTimes(2)

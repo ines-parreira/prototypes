@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { act } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -175,49 +174,47 @@ describe('useHelpCenterTranslation', () => {
                 currentHelpCenter: helpCenter,
             })
 
-            await act(async () => {
-                result.current.updateEmailIntegration({
-                    id: 1001,
-                    email: 'XXXX@YYYY.ZZZZ',
-                })
-
-                result.current.updateContactForm({
-                    ...result.current.contactForm,
-                    card_enabled: false,
-                    subject_lines: {
-                        options: ['XXX'],
-                        allow_other: false,
-                    },
-                })
-
-                result.current.updateTranslation({
-                    contactInfo: {
-                        chat: {
-                            enabled: true,
-                            description: 'AAA',
-                        },
-                        email: {
-                            enabled: false,
-                            email: 'PTN@PNH.COM',
-                            description: 'BBB',
-                        },
-                        phone: {
-                            enabled: true,
-                            phone_numbers: [
-                                {
-                                    phone_number: 'XXXXX',
-                                    reference: 'YYYY',
-                                },
-                            ],
-                            description: 'CCC',
-                        },
-                    },
-                })
-                await flushPromises()
-
-                await result.current.updateHelpCenter()
-                await flushPromises()
+            result.current.updateEmailIntegration({
+                id: 1001,
+                email: 'XXXX@YYYY.ZZZZ',
             })
+
+            result.current.updateContactForm({
+                ...result.current.contactForm,
+                card_enabled: false,
+                subject_lines: {
+                    options: ['XXX'],
+                    allow_other: false,
+                },
+            })
+
+            result.current.updateTranslation({
+                contactInfo: {
+                    chat: {
+                        enabled: true,
+                        description: 'AAA',
+                    },
+                    email: {
+                        enabled: false,
+                        email: 'PTN@PNH.COM',
+                        description: 'BBB',
+                    },
+                    phone: {
+                        enabled: true,
+                        phone_numbers: [
+                            {
+                                phone_number: 'XXXXX',
+                                reference: 'YYYY',
+                            },
+                        ],
+                        description: 'CCC',
+                    },
+                },
+            })
+            await flushPromises()
+
+            await result.current.updateHelpCenter()
+            await flushPromises()
 
             expect(mockGetContactFormById).toHaveBeenCalledTimes(0)
             expect(mockUpdateContactForm).toHaveBeenCalledTimes(1)

@@ -229,6 +229,8 @@ describe('<Row />', () => {
 
         const archiveModalButton = await findByTitle('Archive')
         archiveModalButton.click()
+
+        await screen.findByText('Are you sure you want to archive this field?')
         expect(screen.getByText('Are you sure you want to archive this field?')) // ensure modal shows up
 
         const cancelButton = await findByText('Cancel')

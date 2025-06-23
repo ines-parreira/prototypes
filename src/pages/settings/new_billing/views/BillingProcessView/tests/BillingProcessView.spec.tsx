@@ -1,6 +1,5 @@
-import React from 'react'
-
 import { screen, waitFor, within } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 
@@ -20,7 +19,6 @@ import { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 import { assumeMock } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import ScheduledCancellationSummary from '../../../components/ScheduledCancellationSummary'
 import BillingProcessView from '../BillingProcessView'
@@ -204,7 +202,7 @@ describe('UsageAndPlansView', () => {
             name: 'Cancel auto-renewal',
         })
 
-        userEvent.click(cancelAutoRenewalButton)
+        await userEvent.click(cancelAutoRenewalButton)
 
         await waitFor(() => {
             expect(
@@ -218,7 +216,7 @@ describe('UsageAndPlansView', () => {
             ),
         ).not.toBeInTheDocument()
 
-        userEvent.click(screen.getByText('Continue cancelling'))
+        await userEvent.click(screen.getByText('Continue cancelling'))
 
         await waitFor(() => {
             expect(
@@ -228,7 +226,7 @@ describe('UsageAndPlansView', () => {
             ).toBeVisible()
         })
 
-        userEvent.click(
+        await userEvent.click(
             within(screen.getByRole('combobox')).getByText('arrow_drop_down'),
         )
 
@@ -244,7 +242,7 @@ describe('UsageAndPlansView', () => {
             screen.queryByText('Could you please share more?'),
         ).not.toBeInTheDocument()
 
-        userEvent.click(
+        await userEvent.click(
             screen.getByRole('option', {
                 name: HelpdeskPrimaryReasonLabel.DoesNotFitMyNeeds,
             }),
@@ -260,7 +258,7 @@ describe('UsageAndPlansView', () => {
             screen.queryByText('Please share any additional details'),
         ).not.toBeInTheDocument()
 
-        userEvent.click(
+        await userEvent.click(
             screen.getByRole('radio', {
                 name: CommonReasonLabel.Other,
             }),

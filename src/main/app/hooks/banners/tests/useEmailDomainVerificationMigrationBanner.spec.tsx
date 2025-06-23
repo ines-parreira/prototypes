@@ -1,3 +1,4 @@
+import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -136,7 +137,7 @@ describe('useEmailDomainVerificationBanner', () => {
         isAdminMock.mockReset()
     })
 
-    it('should not call addBanner if FF is not enabled', () => {
+    it('should not call addBanner if FF is not enabled', async () => {
         mockUseFlag.mockImplementation((flag) => {
             if (flag === FeatureFlagKey.GlobalBannerRefactor) {
                 return {
@@ -146,10 +147,22 @@ describe('useEmailDomainVerificationBanner', () => {
         })
         isAdminMock.mockReturnValue(true)
 
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getEmailIntegrations) {
+                return []
+            }
+            return null
+        })
+
         renderHook(useEmailDomainVerificationBanner)
 
-        expect(mockedAddBanner).not.toHaveBeenCalled()
-        expect(mockedRemoveBanner).not.toHaveBeenCalled()
+        await waitFor(() => {
+            expect(mockedAddBanner).not.toHaveBeenCalled()
+            expect(mockedRemoveBanner).toHaveBeenCalledWith(
+                'email_domain_verification',
+                'email-domain-verification',
+            )
+        })
     })
 
     it('should call addBanner with proper data when conditions are met', () => {

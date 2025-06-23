@@ -1,11 +1,12 @@
-import React from 'react'
-
 import { waitFor } from '@testing-library/react'
 
 import { TicketChannel } from 'business/types/ticket'
 import { agents } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'
-import { fetchTableReportData } from 'hooks/reporting/common/useTableReportData'
+import {
+    fetchTableReportData,
+    useTableReportData,
+} from 'hooks/reporting/common/useTableReportData'
 import { useTimeSeriesReportData } from 'hooks/reporting/common/useTimeSeriesReportData'
 import { useTrendReportData } from 'hooks/reporting/common/useTrendReportData'
 import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
@@ -47,6 +48,7 @@ jest.mock('hooks/reporting/common/useTableReportData', () => ({
     fetchTableReportData: jest.fn(),
     useTableReportData: jest.fn(),
 }))
+const useTableReportDataMock = assumeMock(useTableReportData)
 
 jest.mock('hooks/reporting/common/utils', () => ({
     getCsvFileNameWithDates: jest.fn(),
@@ -80,6 +82,34 @@ describe('useAiSalesAgentOverviewReportData', () => {
             cleanStatsFilters: fromLegacyStatsFilters(defaultStatsFilters),
             granularity: ReportingGranularity.Day,
             userTimezone: DEFAULT_TIMEZONE,
+        })
+
+        saveTrendReportMock.mockReturnValue({
+            files: {
+                'metrics.csv': 'trend-report-data',
+            },
+        })
+
+        saveTimeSeriesReportMock.mockReturnValue({
+            files: {
+                'gmv-influenced-over-time.csv': 'time-series-report-data',
+            },
+        })
+
+        useTableReportDataMock.mockReturnValue({
+            data: {
+                totalProductRecommendations: {
+                    data: [
+                        {
+                            btr: 0.1,
+                            ctr: 0.5,
+                            name: 'Product 1',
+                            recommendations: 100,
+                        },
+                    ],
+                },
+            },
+            isFetching: false,
         })
     })
 

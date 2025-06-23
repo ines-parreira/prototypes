@@ -194,7 +194,7 @@ exports[`<TeamCreationModal /> should render the opened modal 1`] = `
   </div>
   <div
     data-floating-ui-portal=""
-    id="floating-ui-0"
+    id=":r1:"
   />
 </body>
 `;

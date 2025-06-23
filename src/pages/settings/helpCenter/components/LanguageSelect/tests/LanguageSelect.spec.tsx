@@ -1,6 +1,5 @@
-import React from 'react'
-
-import { render } from '@testing-library/react'
+import { render, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -63,12 +62,14 @@ describe('<LanguageSelect />', () => {
 
         const dropdownButton = await findByText(/English - USA/)
 
-        dropdownButton.click()
+        await userEvent.click(dropdownButton)
 
         const selectButton = await findByText(/French/)
 
-        selectButton.click()
+        await userEvent.click(selectButton)
 
-        expect(onChange).toHaveBeenCalledTimes(2)
+        await waitFor(() => {
+            expect(onChange).toHaveBeenCalledTimes(2)
+        })
     })
 })

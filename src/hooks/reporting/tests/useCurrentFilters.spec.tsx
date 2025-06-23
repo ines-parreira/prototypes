@@ -48,54 +48,18 @@ const filters = {
     },
 } as StatsFiltersWithLogicalOperator
 
-const logSpy = jest.spyOn(console, 'error')
+let logSpy: jest.SpyInstance
 
-describe('useCurrentFilters', () => {
+describe('validateAndParseFilters', () => {
     beforeEach(() => {
         sessionStorage.clear()
+        logSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
     })
 
     afterEach(() => {
         jest.restoreAllMocks()
     })
 
-    it('should return the default value', () => {
-        const { result } = renderHook(() => useCurrentFilters({ period }))
-        const response = JSON.stringify({
-            period: filters.period,
-        })
-        expect(sessionStorage.getItem(CURRENT_FILTERS)).toStrictEqual(response)
-        expect(result.current.filters).toStrictEqual(JSON.parse(response))
-    })
-
-    it('should save the filters on sessionStorage and return them', async () => {
-        const { result } = renderHook(() => useCurrentFilters({ period }))
-
-        act(() => {
-            result.current.persistFilters(filters)
-        })
-
-        const response = JSON.stringify(filters)
-        await waitFor(() => {
-            expect(sessionStorage.getItem(CURRENT_FILTERS)).toStrictEqual(
-                response,
-            )
-        })
-        expect(result.current.filters).toStrictEqual(filters)
-    })
-
-    it('should return default value if the filters retried are not correctly typed', () => {
-        sessionStorage.setItem(
-            CURRENT_FILTERS,
-            JSON.stringify({ period, test: 'false' }),
-        )
-        const { result } = renderHook(() => useCurrentFilters({ period }))
-        expect(result.current.filters).toStrictEqual({ period })
-        expect(logSpy).toHaveBeenCalledWith('Invalid filter type.')
-    })
-})
-
-describe('validateAndParseFilters', () => {
     const defaultValue = {
         [FilterKey.Period]: {
             start_datetime: '1970-01-01T00:00:00+00:00',
@@ -250,7 +214,55 @@ describe('validateAndParseFilters', () => {
                 }),
                 defaultValue,
             ),
-        ).toStrictEqual(defaultValue)
+        )
+
+        expect(logSpy).toHaveBeenCalledWith('Invalid filter type.')
+    })
+})
+
+describe('useCurrentFilters', () => {
+    beforeEach(() => {
+        sessionStorage.clear()
+        logSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+    })
+
+    afterEach(() => {
+        jest.restoreAllMocks()
+    })
+
+    it('should return the default value', () => {
+        const { result } = renderHook(() => useCurrentFilters({ period }))
+        const response = JSON.stringify({
+            period: filters.period,
+        })
+        expect(sessionStorage.getItem(CURRENT_FILTERS)).toStrictEqual(response)
+        expect(result.current.filters).toStrictEqual(JSON.parse(response))
+    })
+
+    it('should save the filters on sessionStorage and return them', async () => {
+        const { result } = renderHook(() => useCurrentFilters({ period }))
+
+        act(() => {
+            result.current.persistFilters(filters)
+        })
+
+        const response = JSON.stringify(filters)
+        await waitFor(() => {
+            expect(sessionStorage.getItem(CURRENT_FILTERS)).toStrictEqual(
+                response,
+            )
+        })
+        expect(result.current.filters).toStrictEqual(filters)
+    })
+
+    it('should return default value if the filters retried are not correctly typed', async () => {
+        sessionStorage.setItem(
+            CURRENT_FILTERS,
+            JSON.stringify({ period, test: 'false' }),
+        )
+        const { result } = renderHook(() => useCurrentFilters({ period }))
+
+        expect(result.current.filters).toStrictEqual({ period })
         expect(logSpy).toHaveBeenCalledWith('Invalid filter type.')
     })
 })

@@ -45,7 +45,6 @@ exports[`<FontSelectField /> matches snapshot 1`] = `
         role="menu"
         tabindex="-1"
       >
-        
         <div>
           <h6
             class="action action--focused dropdown-header"

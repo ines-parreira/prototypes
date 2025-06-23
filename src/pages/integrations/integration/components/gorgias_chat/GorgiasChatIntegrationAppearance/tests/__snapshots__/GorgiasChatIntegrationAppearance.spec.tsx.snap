@@ -556,7 +556,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         role="menu"
                         tabindex="-1"
                       >
-                        
                         <div>
                           <h6
                             class="action action--focused dropdown-header"
@@ -1823,7 +1822,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         role="menu"
                         tabindex="-1"
                       >
-                        
                         <div>
                           <h6
                             class="action action--focused dropdown-header"
@@ -3324,7 +3322,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         role="menu"
                         tabindex="-1"
                       >
-                        
                         <div>
                           <h6
                             class="action action--focused dropdown-header"
@@ -4795,7 +4792,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         role="menu"
                         tabindex="-1"
                       >
-                        
                         <div>
                           <h6
                             class="action action--focused dropdown-header"
@@ -6266,7 +6262,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         role="menu"
                         tabindex="-1"
                       >
-                        
                         <div>
                           <h6
                             class="action action--focused dropdown-header"
@@ -7737,7 +7732,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         role="menu"
                         tabindex="-1"
                       >
-                        
                         <div>
                           <h6
                             class="action action--focused dropdown-header"
@@ -9310,7 +9304,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                         role="menu"
                         tabindex="-1"
                       >
-                        
                         <div>
                           <h6
                             class="action action--focused dropdown-header"
@@ -10577,7 +10570,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                         role="menu"
                         tabindex="-1"
                       >
-                        
                         <div>
                           <h6
                             class="action action--focused dropdown-header"
@@ -11978,7 +11970,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                         role="menu"
                         tabindex="-1"
                       >
-                        
                         <div>
                           <h6
                             class="action action--focused dropdown-header"
@@ -13686,7 +13677,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         role="menu"
                         tabindex="-1"
                       >
-                        
                         <div>
                           <h6
                             class="action action--focused dropdown-header"
@@ -14953,7 +14943,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         role="menu"
                         tabindex="-1"
                       >
-                        
                         <div>
                           <h6
                             class="action action--focused dropdown-header"

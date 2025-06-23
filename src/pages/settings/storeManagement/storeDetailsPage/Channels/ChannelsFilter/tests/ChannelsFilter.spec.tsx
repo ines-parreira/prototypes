@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { MemoryRouter, Route } from 'react-router-dom'
 
 import { Integration } from 'models/integration/types'
@@ -95,7 +95,7 @@ describe('ChannelsFilter', () => {
         ).toBeInTheDocument()
     })
 
-    it('filters out already assigned channels', () => {
+    it('filters out already assigned channels', async () => {
         renderWithStore(
             <MemoryRouter initialEntries={[`/settings/stores/1}`]}>
                 <Route path="/settings/stores/:id">
@@ -114,12 +114,16 @@ describe('ChannelsFilter', () => {
         const button = screen.getByText(`Assign ${activeChannel.title}`)
         button.click()
 
-        expect(screen.queryByText('email2@test.com')).not.toBeInTheDocument()
-        expect(
-            screen.queryByText('store2suppport@company.com'),
-        ).toBeInTheDocument()
-        expect(screen.getByText('email3@test.com')).toBeInTheDocument()
-        expect(screen.getByText('email4@test.com')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.queryByText('email2@test.com'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('store2suppport@company.com'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('email3@test.com')).toBeInTheDocument()
+            expect(screen.getByText('email4@test.com')).toBeInTheDocument()
+        })
     })
 
     it('renders nothing when activeChannel is not provided', () => {

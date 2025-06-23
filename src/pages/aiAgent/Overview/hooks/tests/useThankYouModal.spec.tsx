@@ -1,3 +1,4 @@
+import { waitFor } from '@testing-library/react'
 import { useLocation } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -73,7 +74,7 @@ describe('useThankYouModal', () => {
         expect(activateMock).toHaveBeenCalledTimes(1)
     })
 
-    it('should call clearFromQueryParam when handleModalAction("close") is triggered', () => {
+    it('should call clearFromQueryParam when handleModalAction("close") is triggered', async () => {
         const mockReplaceState = jest.fn()
         global.window.history.replaceState = mockReplaceState
 
@@ -85,10 +86,12 @@ describe('useThankYouModal', () => {
 
         const { result } = renderHook(() => useThankYouModal())
 
-        result.current.handleModalAction('close')
+        await result.current.handleModalAction('close')
 
-        expect(mockReplaceState).toHaveBeenCalledWith({}, '', '/test-path')
-        expect(result.current.isOpen).toBe(false)
+        await waitFor(() => {
+            expect(mockReplaceState).toHaveBeenCalledWith({}, '', '/test-path')
+            expect(result.current.isOpen).toBe(false)
+        })
     })
 
     it('should not call open the ThankYouModal when shopName if missing', () => {

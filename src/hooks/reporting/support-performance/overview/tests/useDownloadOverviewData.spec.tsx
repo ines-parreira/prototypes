@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { waitFor } from '@testing-library/react'
 
 import { TicketChannel } from 'business/types/ticket'
@@ -89,6 +87,19 @@ describe('useDownloadOverviewData', () => {
             cleanStatsFilters: defaultStatsFilters,
             granularity: ReportingGranularity.Day,
             userTimezone: DEFAULT_TIMEZONE,
+        })
+
+        saveTrendReportMock.mockReturnValue({
+            files: {
+                'trend-report.csv': 'trend data',
+            },
+        })
+
+        // Ensure createTimeSeriesReport returns something with `.files`
+        saveTimeSeriesReportMock.mockReturnValue({
+            files: {
+                'timeseries-report.csv': 'timeseries data',
+            },
         })
     })
 

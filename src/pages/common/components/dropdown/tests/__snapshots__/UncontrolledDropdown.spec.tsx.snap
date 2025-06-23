@@ -9,7 +9,7 @@ exports[`<UncontrolledDropdown /> should open the dropdown when clicking the tar
   </div>
   <div
     data-floating-ui-portal=""
-    id="floating-ui-3"
+    id=":r3:"
   >
     <div
       class="overlay"
@@ -36,7 +36,7 @@ exports[`<UncontrolledDropdown /> should render a closed dropdown 1`] = `
   </div>
   <div
     data-floating-ui-portal=""
-    id="floating-ui-0"
+    id=":r1:"
   />
 </body>
 `;

@@ -91,7 +91,6 @@ exports[`<AddProductLink/> should render the product picker when the popover is 
                   class="resultTotal"
                 >
                   0
-                  
                    PRODUCTS
                 </span>
               </div>

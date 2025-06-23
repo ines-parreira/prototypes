@@ -199,7 +199,6 @@ exports[`SatisfactionSurveyView should render current survey settings form 1`] =
                     role="menu"
                     tabindex="-1"
                   >
-                    
                     <button
                       class="option option--focused dropdown-item"
                       role="menuitem"

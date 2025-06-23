@@ -3,7 +3,8 @@ import {
     QueryClientProvider,
     UseQueryResult,
 } from '@tanstack/react-query'
-import { act, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -19,7 +20,6 @@ import { TicketSatisfactionSurveyMeasure } from 'models/reporting/cubes/TicketSa
 import { ReportingGranularity } from 'models/reporting/types'
 import { AverageScorePerDimensionTrendChart } from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerDimensionTrendChart'
 import { assumeMock } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock(
     'hooks/reporting/quality-management/satisfaction/useAverageScorePerDimensionTimeSeries',
@@ -285,23 +285,23 @@ describe('<AverageScorePerDimensionTrendChart>', () => {
         expect(screen.getByText('chat')).toBeInTheDocument()
     })
 
-    it('should render assignee trend chart when switched', () => {
+    it('should render assignee trend chart when switched', async () => {
         renderComponent(mockStoreState)
         const selectBox = screen.getByRole('combobox')
-        userEvent.click(selectBox)
+        await userEvent.click(selectBox)
         const assigneeOption = screen.getByText('Per assignee')
-        userEvent.click(assigneeOption)
+        await userEvent.click(assigneeOption)
 
         expect(screen.getByText('agent1')).toBeInTheDocument()
         expect(screen.getByText('agent2')).toBeInTheDocument()
     })
 
-    it('should render integration trend chart when switched', () => {
+    it('should render integration trend chart when switched', async () => {
         renderComponent(mockStoreState)
         const selectBox = screen.getByRole('combobox')
-        userEvent.click(selectBox)
+        await userEvent.click(selectBox)
         const integrationOption = screen.getByText('Per integration')
-        userEvent.click(integrationOption)
+        await userEvent.click(integrationOption)
 
         expect(screen.getByText('email')).toBeInTheDocument()
         expect(screen.getByText('gmail')).toBeInTheDocument()
@@ -318,7 +318,7 @@ describe('<AverageScorePerDimensionTrendChart>', () => {
         expect(screen.getByTestId('skeleton')).toBeInTheDocument()
     })
 
-    it('should show error state', () => {
+    it('should show error state', async () => {
         useAverageCSATPerChannelTimeseriesMock.mockReturnValue({
             data: [],
             isError: true,
@@ -330,7 +330,7 @@ describe('<AverageScorePerDimensionTrendChart>', () => {
         expect(screen.getByText(/failed to load data/i)).toBeInTheDocument()
     })
 
-    it('should show error state for assignee metric', () => {
+    it('should show error state for assignee metric', async () => {
         useAverageCSATPerAssigneeTimeseriesMock.mockReturnValue(
             getErrorResponse(new Error('Failed to load data')),
         )
@@ -343,14 +343,14 @@ describe('<AverageScorePerDimensionTrendChart>', () => {
 
         renderComponent(mockStoreState)
         const selectBox = screen.getByRole('combobox')
-        userEvent.click(selectBox)
+        await userEvent.click(selectBox)
         const assigneeOption = screen.getByText('Per assignee')
-        userEvent.click(assigneeOption)
+        await userEvent.click(assigneeOption)
 
         expect(screen.getByText(/failed to load data/i)).toBeInTheDocument()
     })
 
-    it('should show error state for integration metric', () => {
+    it('should show error state for integration metric', async () => {
         useAverageCSATPerIntegrationTimeseriesMock.mockReturnValue(
             getErrorResponse(new Error('Failed to load data')),
         )
@@ -363,58 +363,54 @@ describe('<AverageScorePerDimensionTrendChart>', () => {
 
         renderComponent(mockStoreState)
         const selectBox = screen.getByRole('combobox')
-        userEvent.click(selectBox)
+        await userEvent.click(selectBox)
         const assigneeOption = screen.getByText('Per integration')
-        userEvent.click(assigneeOption)
+        await userEvent.click(assigneeOption)
 
         expect(screen.getByText(/failed to load data/i)).toBeInTheDocument()
     })
 
-    it('should open dimension selector dropdown when clicked', () => {
+    it('should open dimension selector dropdown when clicked', async () => {
         renderComponent(mockStoreState)
         const selectBox = screen.getByRole('combobox')
-        userEvent.click(selectBox)
+        await userEvent.click(selectBox)
 
         expect(screen.getByText('Per assignee')).toBeInTheDocument()
         expect(screen.getByText('Per integration')).toBeInTheDocument()
     })
 
-    it('should close dimension selector dropdown when option is selected', () => {
+    it('should close dimension selector dropdown when option is selected', async () => {
         renderComponent(mockStoreState)
         const selectBox = screen.getByRole('combobox')
 
-        act(() => {
-            userEvent.click(selectBox)
-        })
+        await userEvent.click(selectBox)
 
         const assigneeOption = screen.getByText('Per assignee')
-        act(() => {
-            userEvent.click(assigneeOption)
-        })
+        await userEvent.click(assigneeOption)
 
         expect(screen.queryByText('Per integration')).not.toBeInTheDocument()
     })
 
-    it('should render N/A for zero values in channel view', () => {
+    it('should render N/A for zero values in channel view', async () => {
         renderComponent(mockStoreState)
         expect(screen.getByTestId('y-tick-0')).toHaveTextContent('N/A')
         expect(screen.getByTestId('y-tick-5')).toHaveTextContent('5')
     })
 
-    it('should render N/A for zero values in assignee view', () => {
+    it('should render N/A for zero values in assignee view', async () => {
         renderComponent(mockStoreState)
         const selectBox = screen.getByRole('combobox')
-        userEvent.click(selectBox)
-        userEvent.click(screen.getByText('Per assignee'))
+        await userEvent.click(selectBox)
+        await userEvent.click(screen.getByText('Per assignee'))
         expect(screen.getByTestId('y-tick-0')).toHaveTextContent('N/A')
         expect(screen.getByTestId('y-tick-5')).toHaveTextContent('5')
     })
 
-    it('should render N/A for zero values in integration view', () => {
+    it('should render N/A for zero values in integration view', async () => {
         renderComponent(mockStoreState)
         const selectBox = screen.getByRole('combobox')
-        userEvent.click(selectBox)
-        userEvent.click(screen.getByText('Per integration'))
+        await userEvent.click(selectBox)
+        await userEvent.click(screen.getByText('Per integration'))
         expect(screen.getByTestId('y-tick-0')).toHaveTextContent('N/A')
         expect(screen.getByTestId('y-tick-5')).toHaveTextContent('5')
     })

@@ -7,12 +7,8 @@ import useDomainVerification from '../useDomainVerification'
 
 describe('useDomainVerification', () => {
     it('should throw an error if it is used outside of the provider', () => {
-        const { result } = renderHook(() => useDomainVerification())
-
-        expect(result.error).toEqual(
-            new Error(
-                'useDomainVerification must be used within a DomainVerificationProvider',
-            ),
+        expect(() => renderHook(() => useDomainVerification())).toThrow(
+            'useDomainVerification must be used within a DomainVerificationProvider',
         )
     })
 

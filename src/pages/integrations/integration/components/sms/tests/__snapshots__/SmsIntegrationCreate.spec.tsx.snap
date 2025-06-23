@@ -139,7 +139,6 @@ exports[`<SmsIntegrationCreate/> render() should prefill the title field using t
                 role="menu"
                 tabindex="-1"
               >
-                
                 <button
                   class="option option--focused dropdown-item"
                   role="menuitem"
@@ -377,7 +376,6 @@ exports[`<SmsIntegrationCreate/> render() should render 1`] = `
                 role="menu"
                 tabindex="-1"
               >
-                
                 <button
                   class="option option--focused dropdown-item"
                   role="menuitem"
@@ -585,7 +583,6 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
                 role="menu"
                 tabindex="-1"
               >
-                
                 <button
                   class="option option--focused dropdown-item"
                   role="menuitem"

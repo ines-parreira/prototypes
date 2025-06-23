@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
@@ -64,7 +65,7 @@ describe('useWhatsAppEditor', () => {
         expect(result.current.showWhatsAppTemplateEditor).toBe(true)
     })
 
-    it('WhatsApp template editor should not be visible after selecting Macro search', () => {
+    it('WhatsApp template editor should not be visible after selecting Macro search', async () => {
         const { result } = renderHookWithStore({
             channel: TicketChannel.WhatsApp,
             actions: null,
@@ -72,8 +73,12 @@ describe('useWhatsAppEditor', () => {
         })
         expect(result.current.showWhatsAppTemplateEditor).toBe(true)
 
-        result.current.setSelectedTemplateType(TemplateTypeFilterOption.Macros)
-        expect(result.current.showWhatsAppTemplateEditor).toBe(false)
+        await result.current.setSelectedTemplateType(
+            TemplateTypeFilterOption.Macros,
+        )
+        await waitFor(() => {
+            expect(result.current.showWhatsAppTemplateEditor).toBe(false)
+        })
     })
 
     it.each([

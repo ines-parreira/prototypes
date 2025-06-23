@@ -139,7 +139,7 @@ export const HelpCenterPreferencesSettings = ({
         [defaultLanguageChanged, seoChanged, connectedShopChanged],
     )
 
-    const savePreferences = async () => {
+    const savePreferences = useCallback(async () => {
         if (!client) return
 
         setIsSavingInProgress(true)
@@ -213,7 +213,17 @@ export const HelpCenterPreferencesSettings = ({
         } finally {
             setIsSavingInProgress(false)
         }
-    }
+    }, [
+        client,
+        seoChanged,
+        preferences,
+        viewLanguage,
+        fetchHelpCenterTranslations,
+        defaultLanguageChanged,
+        helpCenter.id,
+        dispatch,
+        connectedShopChanged,
+    ])
 
     const handleSupportedLocalesChange = useCallback(async () => {
         if (!client) return

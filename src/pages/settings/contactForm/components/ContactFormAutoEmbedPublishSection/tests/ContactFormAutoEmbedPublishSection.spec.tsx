@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import LD from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
@@ -252,7 +252,7 @@ describe('<ContactFormAutoEmbedPublishSection />', () => {
                 expect(screen.queryByText(/recommended/i)).toBeNull()
             })
 
-            it('should fetch Shopify pages', () => {
+            it('should fetch Shopify pages', async () => {
                 renderView(
                     <ContactFormAutoEmbedPublishSection
                         contactFormShopName={SHOPIFY_SHOP_NAME_NO_UPDATE_NEEDED}
@@ -270,10 +270,12 @@ describe('<ContactFormAutoEmbedPublishSection />', () => {
                     )
                     .click()
 
-                expect(useGetShopifyPages).toHaveBeenLastCalledWith(
-                    contactFormWithShop.id,
-                    { enabled: true },
-                )
+                await waitFor(() => {
+                    expect(useGetShopifyPages).toHaveBeenLastCalledWith(
+                        contactFormWithShop.id,
+                        { enabled: true },
+                    )
+                })
             })
 
             it('should not fetch Shopify pages if is disabled', () => {

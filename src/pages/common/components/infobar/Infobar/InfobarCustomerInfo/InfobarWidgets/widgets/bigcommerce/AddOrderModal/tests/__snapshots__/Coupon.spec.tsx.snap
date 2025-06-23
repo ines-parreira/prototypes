@@ -24,7 +24,7 @@ exports[`<Coupon /> renders empty as expected: initial 1`] = `
   </div>
   <div
     data-floating-ui-portal=""
-    id="floating-ui-0"
+    id=":r1:"
   />
 </body>
 `;

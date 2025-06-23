@@ -29,7 +29,9 @@ export default function ChannelItem({
             <div className={css.labels}>
                 <span className={css.primaryLabel}>{channel.name}</span>
                 <span className={css.secondaryLabel}>
-                    {'address' in channel.meta ? channel.meta.address : ''}
+                    {'address' in channel.meta
+                        ? (channel.meta.address as string)
+                        : ''}
                 </span>
             </div>
             <div className={css.actions}>

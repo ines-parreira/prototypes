@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent, render, waitFor } from '@testing-library/react'
 
 import { getLDClient } from 'utils/launchDarkly'
 
@@ -105,14 +105,16 @@ describe('EventSettings', () => {
 
             await getLDClient()?.waitForInitialization()
 
-            expect(getByText(label as string)).toBeInTheDocument()
+            await waitFor(() => {
+                expect(getByText(label as string)).toBeInTheDocument()
+            })
         },
     )
 
     it('should call a function to handle a channel change', async () => {
         const onChangeChannel = jest.fn()
 
-        const { getAllByRole } = render(
+        const { getAllByRole, findAllByRole } = render(
             <EventSettings
                 settings={settings}
                 onChangeChannel={onChangeChannel}
@@ -121,6 +123,8 @@ describe('EventSettings', () => {
         )
 
         await getLDClient()?.waitForInitialization()
+
+        await findAllByRole('checkbox')
 
         const checkbox = getAllByRole('checkbox')[0]
         fireEvent.click(checkbox)
@@ -135,7 +139,7 @@ describe('EventSettings', () => {
     it('should call a function to handle a sound change', async () => {
         const onChangeSound = jest.fn()
 
-        const { getAllByRole } = render(
+        const { getAllByRole, findAllByRole } = render(
             <EventSettings
                 settings={settings}
                 onChangeChannel={jest.fn()}
@@ -144,6 +148,8 @@ describe('EventSettings', () => {
         )
 
         await getLDClient()?.waitForInitialization()
+
+        await findAllByRole('combobox')
 
         const combobox = getAllByRole('combobox')[0]
         fireEvent.change(combobox, { target: { value: 'sound 1' } })

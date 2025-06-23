@@ -1,6 +1,6 @@
-import React from 'react'
+import { render, screen, waitFor } from '@testing-library/react'
 
-import { render, screen } from '@testing-library/react'
+import { userEvent } from 'utils/testing/userEvent'
 
 import InstructionsCard, { InstructionsCardProps } from '../InstructionsCard'
 import { InstructionTab } from '../types'
@@ -67,7 +67,7 @@ describe('<InstructionsCard />', () => {
         expect(screen.queryByText('Code B')).toBeNull()
     })
 
-    it('allows navigating between tab content', () => {
+    it('allows navigating between tab content', async () => {
         render(<InstructionsCard {...instructionsCardProps} />)
 
         // see the tab titles
@@ -89,21 +89,23 @@ describe('<InstructionsCard />', () => {
         expect(screen.queryByText('Code B')).toBeNull()
 
         // click on tab B
-        screen.getByText('Tab Title B').click()
+        await userEvent.click(screen.getByText('Tab Title B'))
 
-        // see tab B content
-        screen.getByText('instruction B1')
-        screen.getByText('instruction B2')
-        screen.getByText('instruction B3')
-        screen.getByText('Alert B')
-        screen.getByText('Code B')
+        await waitFor(() => {
+            // see tab B content
+            screen.getByText('instruction B1')
+            screen.getByText('instruction B2')
+            screen.getByText('instruction B3')
+            screen.getByText('Alert B')
+            screen.getByText('Code B')
 
-        // don't see the tab A content because it's not active
-        expect(screen.queryByText('instruction A1')).toBeNull()
-        expect(screen.queryByText('instruction A2')).toBeNull()
-        expect(screen.queryByText('instruction A3')).toBeNull()
-        expect(screen.queryByText('Alert A')).toBeNull()
-        expect(screen.queryByText('Code A')).toBeNull()
+            // don't see the tab A content because it's not active
+            expect(screen.queryByText('instruction A1')).toBeNull()
+            expect(screen.queryByText('instruction A2')).toBeNull()
+            expect(screen.queryByText('instruction A3')).toBeNull()
+            expect(screen.queryByText('Alert A')).toBeNull()
+            expect(screen.queryByText('Code A')).toBeNull()
+        })
     })
 
     it('allows copying code and triggering side effects on copy', () => {

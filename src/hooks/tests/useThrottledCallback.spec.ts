@@ -8,10 +8,11 @@ jest.useFakeTimers()
 
 describe('useThrottledCallback', () => {
     it('should render', () => {
-        const { result } = renderHook(() => {
-            useThrottledCallback(noop, 200)
-        })
-        expect(result.error).toBeUndefined()
+        expect(() =>
+            renderHook(() => {
+                useThrottledCallback(noop, 200)
+            }),
+        ).not.toThrow()
     })
 
     it('should return function same length and wrapped name', () => {

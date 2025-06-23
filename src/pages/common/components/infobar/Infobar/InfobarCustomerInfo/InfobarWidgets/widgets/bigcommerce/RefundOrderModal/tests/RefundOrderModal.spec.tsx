@@ -369,6 +369,9 @@ describe('RefundOrderModalConnected', () => {
         const newOrderStatus = 'Partially Shipped'
 
         userEvent.click(screen.getByRole('combobox'))
+
+        await screen.findByRole('option', { name: /Partially Shipped/ })
+
         userEvent.click(
             screen.getByRole('option', { name: /Partially Shipped/ }),
         )
@@ -479,6 +482,9 @@ describe('RefundOrderModalConnected', () => {
         const newOrderStatus = 'Partially Shipped'
 
         userEvent.click(screen.getByRole('combobox'))
+
+        await screen.findByRole('option', { name: /Partially Shipped/ })
+
         userEvent.click(
             screen.getByRole('option', { name: /Partially Shipped/ }),
         )
@@ -628,6 +634,9 @@ describe('RefundOrderModalConnected', () => {
         const newOrderStatus = 'Partially Shipped'
 
         userEvent.click(screen.getByRole('combobox'))
+
+        await screen.findByRole('option', { name: /Partially Shipped/ })
+
         userEvent.click(
             screen.getByRole('option', { name: /Partially Shipped/ }),
         )

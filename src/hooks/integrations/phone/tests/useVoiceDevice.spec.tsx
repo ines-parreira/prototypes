@@ -23,12 +23,8 @@ describe('useVoiceDevice', () => {
     })
 
     it('should throw an error if used outside of VoiceDeviceProvider', () => {
-        const { result } = renderHook(() => useVoiceDevice())
-
-        expect(result.error).toEqual(
-            new Error(
-                'useVoiceDevice must be used within a VoiceDeviceProvider',
-            ),
+        expect(() => renderHook(() => useVoiceDevice())).toThrow(
+            'useVoiceDevice must be used within a VoiceDeviceProvider',
         )
     })
 })

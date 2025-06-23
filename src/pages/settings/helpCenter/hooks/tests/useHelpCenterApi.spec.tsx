@@ -1,3 +1,5 @@
+import { waitFor } from '@testing-library/react'
+
 import * as auth from 'rest_api/auth'
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -20,7 +22,7 @@ describe('HelpCenterApiClientProvider', () => {
     it('should render useHelpCenterApi', async () => {
         jest.spyOn(auth, 'getAccessToken').mockResolvedValue(TOKEN_EXAMPLE)
 
-        const { result, waitFor } = renderHook(() => useHelpCenterApi(), {
+        const { result } = renderHook(() => useHelpCenterApi(), {
             wrapper: HelpCenterApiClientProvider,
         })
         await waitFor(() => {
@@ -32,7 +34,7 @@ describe('HelpCenterApiClientProvider', () => {
     it('should render useAbilityChecker', async () => {
         jest.spyOn(auth, 'getAccessToken').mockResolvedValue(TOKEN_EXAMPLE)
 
-        const { result, waitFor } = renderHook(() => useAbilityChecker(), {
+        const { result } = renderHook(() => useAbilityChecker(), {
             wrapper: HelpCenterApiClientProvider,
         })
         await waitFor(() => {

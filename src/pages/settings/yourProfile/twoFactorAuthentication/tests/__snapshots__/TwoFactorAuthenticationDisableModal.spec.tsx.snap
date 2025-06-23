@@ -49,7 +49,6 @@ exports[`<TwoFactorAuthenticationDisableModal /> should call the delete function
             <div
               class="modal-body"
             >
-              
               Foo 
               <b>
                 body
@@ -181,7 +180,6 @@ exports[`<TwoFactorAuthenticationDisableModal /> should call the delete function
             <div
               class="modal-body"
             >
-              
               Foo 
               <b>
                 body
@@ -281,7 +279,6 @@ exports[`<TwoFactorAuthenticationDisableModal /> should render the modal 1`] = `
             <div
               class="modal-body"
             >
-              
               Foo 
               <b>
                 body
@@ -413,7 +410,6 @@ exports[`<TwoFactorAuthenticationDisableModal /> should render the modal 2`] = `
             <div
               class="modal-body"
             >
-              
               Foo 
               <b>
                 body

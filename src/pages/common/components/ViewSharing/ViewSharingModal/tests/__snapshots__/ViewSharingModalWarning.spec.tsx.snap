@@ -23,7 +23,6 @@ exports[`<ViewSharingModalWarning/> render() should render one missing team 1`] 
         >
           1
            team
-          
         </span>
          
         will no longer be able to access this view.
@@ -52,7 +51,6 @@ exports[`<ViewSharingModalWarning/> render() should render one missing user 1`] 
         >
           1
            user
-          
         </span>
          
         will no longer be able to access this view.
@@ -81,7 +79,6 @@ exports[`<ViewSharingModalWarning/> render() should render one missing user and 
         >
           1
            team
-          
         </span>
          and 
         <span
@@ -90,7 +87,6 @@ exports[`<ViewSharingModalWarning/> render() should render one missing user and 
         >
           1
            user
-          
         </span>
          
         will no longer be able to access this view.

@@ -74,7 +74,7 @@ describe('useTrialEligibility', () => {
                 isCurrentUserTeamLead,
             ),
         )
-        await waitFor(async () => {
+        await waitFor(() => {
             expect(result.current).toEqual({
                 canStartTrial: false,
                 isLoading: true,
@@ -97,7 +97,7 @@ describe('useTrialEligibility', () => {
             ),
         )
 
-        await waitFor(async () => {
+        await waitFor(() => {
             expect(result.current).toEqual({
                 canStartTrial: true,
                 isLoading: false,
@@ -120,7 +120,7 @@ describe('useTrialEligibility', () => {
             ),
         )
 
-        await waitFor(async () => {
+        await waitFor(() => {
             expect(result.current).toEqual({
                 canStartTrial: false,
                 isLoading: false,

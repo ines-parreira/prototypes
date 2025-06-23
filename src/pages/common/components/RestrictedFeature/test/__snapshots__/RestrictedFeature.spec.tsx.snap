@@ -36,7 +36,6 @@ exports[`RestrictedFeature component should render alert with a link and an acti
     <div
       class="slick-slider slick-initialized"
     >
-      
       <div
         class="slick-list"
       >
@@ -98,8 +97,6 @@ exports[`RestrictedFeature component should render alert with a link and an acti
           </div>
         </div>
       </div>
-      
-      
     </div>
   </div>
 </div>
@@ -139,7 +136,6 @@ exports[`RestrictedFeature component should render image carousel and Lightbox 1
     <div
       class="slick-slider slick-initialized"
     >
-      
       <div
         class="slick-list"
       >
@@ -201,8 +197,6 @@ exports[`RestrictedFeature component should render image carousel and Lightbox 1
           </div>
         </div>
       </div>
-      
-      
     </div>
   </div>
 </div>

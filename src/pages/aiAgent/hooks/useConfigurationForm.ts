@@ -125,6 +125,7 @@ export const useConfigurationForm = ({
     ])
 
     const resetForm = useCallback(() => {
+        isInitializedRef.current = false
         setFormValues(defaultValues)
     }, [defaultValues])
 

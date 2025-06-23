@@ -1,6 +1,5 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -121,19 +120,19 @@ describe('<TicketMacros />', () => {
         expect(screen.queryByText('settings')).not.toBeInTheDocument()
     })
 
-    it('should open modal', () => {
+    it('should open modal', async () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <TicketMacros {...minProps} />
             </Provider>,
         )
 
-        screen.getByText('No macros found').click()
+        await userEvent.click(screen.getByText('No macros found'))
 
         expect(screen.getByText('MacroContainer')).toBeInTheDocument()
     })
 
-    it('should delete macro', () => {
+    it('should delete macro', async () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <TicketMacros
@@ -144,8 +143,8 @@ describe('<TicketMacros />', () => {
             </Provider>,
         )
 
-        screen.getByText(/Delete macro/i).click()
-        screen.getAllByText(/Delete macro/i)[1].click()
+        await userEvent.click(screen.getByText(/Delete macro/i))
+        await userEvent.click(screen.getAllByText(/Delete macro/i)[1])
 
         expect(mockMutateDelete).toHaveBeenCalledWith({
             id: macros[1].id,

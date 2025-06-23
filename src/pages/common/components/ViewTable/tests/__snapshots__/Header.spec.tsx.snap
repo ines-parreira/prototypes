@@ -13,9 +13,7 @@ exports[`ViewTable::Header should display an empty view 1`] = `
       <div
         class="title"
       >
-        <span>
-          
-        </span>
+        <span />
         <button
           aria-disabled="false"
           class="wrapper editIcon wrapper ghost ghost secondary medium"

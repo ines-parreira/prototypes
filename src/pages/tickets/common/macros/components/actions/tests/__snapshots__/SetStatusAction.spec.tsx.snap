@@ -43,7 +43,6 @@ exports[`SetStatusAction action component should render the SetStatusAction acti
         role="menu"
         tabindex="-1"
       >
-        
         <button
           class="option option--focused dropdown-item"
           role="menuitem"

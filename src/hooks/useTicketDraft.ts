@@ -118,9 +118,9 @@ export default function useTicketDraft(isTicketNew = false) {
     const subject = useAppSelector((state) =>
         getProperty('subject')(state),
     ) as unknown as string
-    const tags = useAppSelector((state) =>
-        getProperty('tags')(state),
-    ) as unknown as List<any>
+    const tags =
+        useAppSelector((state) => getProperty('tags')(state)) ??
+        (List() as unknown as List<any>)
     const customer = useAppSelector((state) =>
         getProperty('customer')(state),
     ) as Map<any, any> | null

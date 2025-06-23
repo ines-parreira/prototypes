@@ -198,15 +198,14 @@ describe('useTopQuestionsFilters', () => {
 
         result.current.storeFilter?.setSelectedStoreIntegrationId(2)
 
-        expect(result.current.selectedStore).toEqual(
-            storesWithHelpCentersFixture[1].store,
-        )
-
-        await waitFor(() =>
+        await waitFor(() => {
+            expect(result.current.selectedStore).toEqual(
+                storesWithHelpCentersFixture[1].store,
+            )
             expect(result.current.selectedHelpCenter).toEqual(
                 storesWithHelpCentersFixture[1].helpCenters[0],
-            ),
-        )
+            )
+        })
     })
 
     it('uses the first store and help-center with top questions when available', async () => {

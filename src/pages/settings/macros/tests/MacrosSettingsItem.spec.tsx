@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
-import { act, render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { useRouteMatch } from 'react-router-dom'
 
 import { macros } from 'fixtures/macro'
@@ -102,27 +102,35 @@ describe('<MacrosSettingsItem />', () => {
         expect(screen.getByText(minProps.macro.name!)).toBeInTheDocument()
     })
 
-    it('should duplicate a macro', () => {
+    it('should duplicate a macro', async () => {
         render(<MacrosSettingsItem {...minProps} />)
 
+        await screen.findByText('more_vert')
+
         screen.getByText('more_vert').click()
+        await screen.findByText(/Make a copy/)
         screen.getByText(/Make a copy/).click()
 
-        expect(minProps.onMacroDuplicate).toHaveBeenCalledWith(minProps.macro)
+        await waitFor(() => {
+            expect(minProps.onMacroDuplicate).toHaveBeenCalledWith(
+                minProps.macro,
+            )
+        })
     })
 
-    it('should delete macro', () => {
+    it('should delete macro', async () => {
         render(<MacrosSettingsItem {...minProps} />)
 
+        await screen.findByText('more_vert')
         screen.getByText('more_vert').click()
-        act(() => {
-            screen.getByText(/Delete/).click()
-        })
-        act(() => {
-            screen.getByText('Confirm', { exact: false }).click()
-        })
+        await screen.findByText(/Delete/)
+        screen.getByText(/Delete/).click()
+        await screen.findByText('Confirm', { exact: false })
+        screen.getByText('Confirm', { exact: false }).click()
 
-        expect(minProps.onMacroDelete).toHaveBeenCalledWith(1)
+        await waitFor(() => {
+            expect(minProps.onMacroDelete).toHaveBeenCalledWith(1)
+        })
     })
 
     it('should display proper UI for active macros', () => {

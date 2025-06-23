@@ -52,6 +52,10 @@ const STORE_NAME_1_SNIPPET_ID_2_INGESTION_LOG_2 = 204
 const STORE_NAME_2_SNIPPET_ID_1_INGESTION_LOG_1 = 205
 const STORE_NAME_2_SNIPPET_ID_1_INGESTION_LOG_2 = 206
 
+const wrapper = ({ children }: { children: React.ReactNode }) => (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+)
+
 describe('usePublicResourcesList', () => {
     let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
 
@@ -189,11 +193,7 @@ describe('usePublicResourcesList', () => {
                     shopNames: [STORE_NAME_1, STORE_NAME_2],
                 }),
             {
-                wrapper: ({ children }) => (
-                    <QueryClientProvider client={queryClient}>
-                        {children}
-                    </QueryClientProvider>
-                ),
+                wrapper,
             },
         )
 
@@ -242,19 +242,16 @@ describe('usePublicResourcesList', () => {
                     shopNames: [STORE_NAME_3],
                 }),
             {
-                wrapper: ({ children }) => (
-                    <QueryClientProvider client={queryClient}>
-                        {children}
-                    </QueryClientProvider>
-                ),
+                wrapper,
             },
         )
 
         expect(result.current.isLoading).toBe(true)
 
-        await waitFor(() => expect(result.current.isLoading).toBe(false))
-
-        expect(result.current.sourceItems).toBeUndefined()
-        expect(reportErrorSpy).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(false)
+            expect(result.current.sourceItems).toBeUndefined()
+            expect(reportErrorSpy).toHaveBeenCalled()
+        })
     })
 })

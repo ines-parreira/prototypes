@@ -42,7 +42,6 @@ exports[`SelectField should render a select input with custom props 1`] = `
       role="menu"
       tabindex="-1"
     >
-      
       <button
         class="option option--focused dropdown-item"
         role="menuitem"

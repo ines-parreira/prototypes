@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
 
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -53,7 +53,7 @@ describe('useDimensions', () => {
         })
     })
 
-    it('should return the updated dimensions on resize', () => {
+    it('should return the updated dimensions on resize', async () => {
         const element = document.getElementById('foo')
         const { result } = renderHook(useDimensions)
 
@@ -63,11 +63,13 @@ describe('useDimensions', () => {
         element!.style.width = '50px'
 
         window.dispatchEvent(new Event('resize'))
-        expect(result.current[1]).toStrictEqual({
-            x: 10,
-            y: 10,
-            width: 50,
-            height: 100,
+        await waitFor(() => {
+            expect(result.current[1]).toStrictEqual({
+                x: 10,
+                y: 10,
+                width: 50,
+                height: 100,
+            })
         })
     })
 })

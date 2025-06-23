@@ -1,3 +1,5 @@
+import { QueryClientProvider } from '@tanstack/react-query'
+
 import * as timeSeriesHooks from 'hooks/reporting/timeSeries'
 import { TicketMeasure } from 'models/reporting/cubes/TicketCube'
 import { ReportingGranularity } from 'models/reporting/types'
@@ -18,7 +20,10 @@ import {
     AccountSettingBusinessHours,
     AccountSettingType,
 } from 'state/currentAccount/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderHook } from 'utils/testing/renderHook'
+
+const queryClient = mockQueryClient()
 
 describe('getAggregatedBusiestTimesOfDayData', () => {
     it('should aggregateDataFromCube', () => {
@@ -154,7 +159,13 @@ describe('getAggregatedBusiestTimesOfDayData', () => {
 
         Object.values(BusiestTimeOfDaysMetrics).forEach((metric) => {
             const query = getMetricQuery(metric)
-            renderHook(() => query(filters, 'UTC', ReportingGranularity.Day))
+            renderHook(() => query(filters, 'UTC', ReportingGranularity.Day), {
+                wrapper: ({ children }) => (
+                    <QueryClientProvider client={queryClient}>
+                        {children}
+                    </QueryClientProvider>
+                ),
+            })
         })
 
         expect(useMessagesSentTimeSeriesSpy).toHaveBeenCalled()

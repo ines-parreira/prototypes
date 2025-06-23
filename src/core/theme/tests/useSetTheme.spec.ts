@@ -7,12 +7,8 @@ jest.unmock('core/theme/useTheme.ts')
 
 describe('useTheme', () => {
     it('should throw an error when used outside of the provider', () => {
-        const { result } = renderHook(() => useSetTheme())
-
-        expect(result.error).toEqual(
-            new Error(
-                '`useSetTheme` may not be used outside of a ThemeProvider',
-            ),
+        expect(() => renderHook(() => useSetTheme())).toThrow(
+            '`useSetTheme` may not be used outside of a ThemeProvider',
         )
     })
 

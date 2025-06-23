@@ -305,7 +305,6 @@ exports[`App should render 2`] = `
         <ul
           class="cardList"
         >
-          
           <li>
             <a
               class="actionLink"

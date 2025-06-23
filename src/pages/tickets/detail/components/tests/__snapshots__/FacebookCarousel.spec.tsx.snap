@@ -13,7 +13,6 @@ exports[`FacebookCarousel component render generic template 1`] = `
   <div
     class="slick-slider slick-initialized"
   >
-    
     <div
       class="slick-list"
     >
@@ -101,8 +100,6 @@ exports[`FacebookCarousel component render generic template 1`] = `
         </div>
       </div>
     </div>
-    
-    
   </div>
 </div>
 `;

@@ -1,20 +1,28 @@
+import { waitFor } from '@testing-library/react'
+
 import { renderHook } from 'utils/testing/renderHook'
 
 import { useImmerState } from '../useImmerState'
 
 describe('useImmerState', () => {
-    it('should return the initial state', () => {
+    it('should return the initial state', async () => {
         const initialState = { key: { nestedKey: 'value' } }
         const { result } = renderHook(() => useImmerState(initialState))
-        expect(result.current[0]).toEqual(initialState)
+
+        await waitFor(() => {
+            expect(result.current[0]).toEqual(initialState)
+        })
     })
 
-    it('should update the state with the new value, and let previous state untouched', () => {
+    it('should update the state with the new value, and let previous state untouched', async () => {
         const initialState = { key: 'value' }
         const newValue = 'newValue'
         const { result } = renderHook(() => useImmerState(initialState))
         result.current[1]('key.nestedKey', newValue)
-        expect(result.current[0]).toEqual({ key: { nestedKey: newValue } })
-        expect(initialState).toEqual({ key: 'value' })
+
+        await waitFor(() => {
+            expect(result.current[0]).toEqual({ key: { nestedKey: newValue } })
+            expect(initialState).toEqual({ key: 'value' })
+        })
     })
 })

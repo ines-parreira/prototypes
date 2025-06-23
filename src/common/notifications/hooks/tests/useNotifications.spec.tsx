@@ -1,4 +1,3 @@
-import React from 'react'
 import type { ReactNode } from 'react'
 
 import { renderHook } from 'utils/testing/renderHook'
@@ -9,8 +8,7 @@ import useNotifications from '../useNotifications'
 
 describe('useNotifications', () => {
     it('should throw an error if it is used outside of the provider', () => {
-        const { result } = renderHook(() => useNotifications(jest.fn()))
-        expect(result.error?.message).toBe(
+        expect(() => renderHook(() => useNotifications(jest.fn()))).toThrow(
             '`useNotifications` may not be used outside of a `ClientProvider`',
         )
     })

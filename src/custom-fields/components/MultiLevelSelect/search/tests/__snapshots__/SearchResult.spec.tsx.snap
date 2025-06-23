@@ -7,7 +7,6 @@ exports[`SearchResult should render with a highlighted label or path when curren
   <span
     class="ellipsis"
   >
-    
     <strong>
       fo
     </strong>
@@ -34,6 +33,5 @@ exports[`SearchResult should render with only a label 1`] = `
   >
     foo
   </span>
-  
 </span>
 `;

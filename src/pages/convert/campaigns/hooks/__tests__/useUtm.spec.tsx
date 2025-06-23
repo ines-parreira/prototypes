@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
 
 import * as segment from 'common/segment'
 import { useUpdateChannelConnection } from 'models/convert/channelConnection/queries'
@@ -48,7 +48,7 @@ describe('useUtm', () => {
         expect(utmEnabled).toBe(false)
     })
 
-    it('should make the call with the updated values on reset', () => {
+    it('should make the call with the updated values on reset', async () => {
         const mockOutboundCall = jest.fn()
         const campaignName = 'awesome-campaign'
         useUpdateChannelConnectionMock.mockReturnValue({
@@ -65,10 +65,12 @@ describe('useUtm', () => {
         )
         const { onUtmQueryStringChange } = hook.result.current
         act(() => onUtmQueryStringChange('?hello=world'))
-        hook.result.current.onUtmReset()
-        expect(hook.result.current.utmQueryString).toBe(
-            `?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=${campaignName}`,
-        )
+        await hook.result.current.onUtmReset()
+        await waitFor(() => {
+            expect(hook.result.current.utmQueryString).toBe(
+                `?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=${campaignName}`,
+            )
+        })
     })
 
     it('should make the call with the updated values at the moment of the submission', async () => {

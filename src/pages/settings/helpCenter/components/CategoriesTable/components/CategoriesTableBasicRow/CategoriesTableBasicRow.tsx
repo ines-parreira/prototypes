@@ -1,10 +1,4 @@
-import React, {
-    ReactElement,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react'
+import React, { ReactElement, useCallback, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 import { Badge } from 'reactstrap'
@@ -93,11 +87,19 @@ export const CategoriesTableBasicRow = ({
     const onLoadMore = useCallback(
         (e: React.MouseEvent) => {
             e.preventDefault()
-
             void fetchMore()
         },
         [fetchMore],
     )
+
+    const handleBodyCellClick = useCallback(() => {
+        if (hasArticles) {
+            if (articles.length === 0) {
+                void fetchMore()
+            }
+            setOpen(!isOpen)
+        }
+    }, [hasArticles, isOpen, fetchMore, articles.length])
 
     const renderContent = () => {
         if (!isOpen) {
@@ -139,15 +141,6 @@ export const CategoriesTableBasicRow = ({
         )
     }
 
-    useEffect(() => {
-        // On category open, fetch articles if category has some and no articles
-        // are currently displayed
-        if (isOpen && hasArticles && articles.length === 0) {
-            void fetchMore()
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isOpen, hasArticles, articles])
-
     const id = `category-title-uncategorized`
     const caret = hasArticles ? (
         <span className={classNames(css.caret, 'material-icons')}>
@@ -168,7 +161,7 @@ export const CategoriesTableBasicRow = ({
         <BodyCell
             className={css['cell']}
             innerClassName={bodyInnerClass}
-            onClick={() => hasArticles && setOpen(!isOpen)}
+            onClick={handleBodyCellClick}
             data-testid="openCaret"
         >
             {caret}

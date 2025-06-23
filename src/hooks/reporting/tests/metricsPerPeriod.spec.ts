@@ -81,6 +81,13 @@ describe('useTagsTicketCount', () => {
     })
 
     it('should pass the query to useMetricPerDimension hook', () => {
+        const mockResponse = {
+            data: { allData: [], value: null, decile: null },
+            isFetching: false,
+            isError: false,
+        }
+        useMetricPerDimensionMock.mockReturnValue(mockResponse)
+
         renderHook(() => useTagsTicketCount(statsFilters, timezone, sorting))
 
         expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
@@ -104,6 +111,13 @@ describe('useTagsTicketCount', () => {
             TicketTimeReference.CreatedAt,
             jest.fn(),
         ])
+
+        const mockResponse = {
+            data: { allData: [], value: null, decile: null },
+            isFetching: false,
+            isError: false,
+        }
+        useMetricPerDimensionMock.mockReturnValue(mockResponse)
 
         renderHook(() => useTagsTicketCount(statsFilters, timezone, sorting))
 

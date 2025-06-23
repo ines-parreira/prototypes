@@ -72,8 +72,15 @@ describe('useFileUpload()', () => {
 
         expect(uploadAttachmentsSpy).not.toHaveBeenCalled()
 
-        await act(async () => {
+        act(() => {
             result.current.changeFile(dummyFile)
+        })
+
+        await waitFor(() => {
+            expect(result.current.serializedFile).toEqual('base64String')
+        })
+
+        await act(async () => {
             await result.current.uploadFile()
         })
 
@@ -94,8 +101,15 @@ describe('useFileUpload()', () => {
 
         const { result } = renderHook(useFileUpload, renderOptions)
 
-        await act(async () => {
+        act(() => {
             result.current.changeFile(dummyFile)
+        })
+
+        await waitFor(() => {
+            expect(result.current.serializedFile).toEqual('base64String')
+        })
+
+        await act(async () => {
             const url = await result.current.getFileUploadURL()
             expect(uploadAttachmentsSpy).toHaveBeenCalled()
             expect(url).toEqual('http://example.com/foo.text')

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -13,6 +13,7 @@ import {
     convertProduct,
 } from 'fixtures/productPrices'
 import { ProductType } from 'models/billing/types'
+import { userEvent } from 'utils/testing/userEvent'
 
 import AutoUpgradeToggle, { AutoUpgradeToggleProps } from '../AutoUpgradeToggle'
 
@@ -53,7 +54,7 @@ describe('AutoUpgradeToggle', () => {
         setSelectedPlans: mockSetSelectedPlans,
     }
 
-    it('displays the toggle and opens the modal', () => {
+    it('displays the toggle and opens the modal', async () => {
         const { getByText, getByRole } = render(
             <Provider store={store}>
                 <AutoUpgradeToggle {...props} />
@@ -61,20 +62,27 @@ describe('AutoUpgradeToggle', () => {
         )
         expect(getByText('Click allowance auto-upgrade')).toBeInTheDocument()
 
-        getByRole('switch').click()
-        expect(mockSetSelectedPlans).toHaveBeenCalled()
+        await userEvent.click(getByRole('switch'))
 
-        getByRole('button').click()
-        expect(
-            getByText('Keep your campaigns live at any time!'),
-        ).toBeInTheDocument()
-        expect(getByRole('button', { name: 'Learn more' })).toBeInTheDocument()
-        expect(
-            getByText(
-                'Get automatically upgraded to the next plan if you reach your' +
-                    ' click allowance to keep displaying campaigns to your customers.',
-            ),
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(mockSetSelectedPlans).toHaveBeenCalled()
+        })
+
+        await userEvent.click(getByRole('button'))
+        await waitFor(() => {
+            expect(
+                getByText('Keep your campaigns live at any time!'),
+            ).toBeInTheDocument()
+            expect(
+                getByRole('button', { name: 'Learn more' }),
+            ).toBeInTheDocument()
+            expect(
+                getByText(
+                    'Get automatically upgraded to the next plan if you reach your' +
+                        ' click allowance to keep displaying campaigns to your customers.',
+                ),
+            ).toBeInTheDocument()
+        })
     })
 
     it('displays the toggle for enterprise plan', () => {

@@ -30,6 +30,16 @@ describe('useFetchFileIngestionData', () => {
                 },
             })
 
+            mockUseGetFileIngestion.mockReturnValue({
+                data: {
+                    data: {
+                        id: 'file-ingestion-id',
+                    },
+                },
+                isLoading: false,
+                isFetched: true,
+            })
+
             renderHook(() =>
                 useFetchFileIngestionData({
                     storeName,

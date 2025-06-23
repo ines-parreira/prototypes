@@ -1,3 +1,5 @@
+import { waitFor } from '@testing-library/react'
+
 import { renderHook } from 'utils/testing/renderHook'
 
 import { useActiveState } from '../useActiveState'
@@ -11,13 +13,15 @@ describe('useActiveState', () => {
         expect(result.current).toEqual([false, expect.any(Function)])
     })
 
-    it('should set the state to active and not call the provided function', () => {
+    it('should set the state to active and not call the provided function', async () => {
         const { result } = renderHook(() => useActiveState(setSearch))
 
         result.current[1](true)
 
-        expect(result.current).toEqual([true, expect.any(Function)])
-        expect(setSearch).not.toHaveBeenCalled()
+        await waitFor(() => {
+            expect(result.current).toEqual([true, expect.any(Function)])
+            expect(setSearch).not.toHaveBeenCalled()
+        })
     })
 
     it('should set the state to inactive and call the provided function', () => {

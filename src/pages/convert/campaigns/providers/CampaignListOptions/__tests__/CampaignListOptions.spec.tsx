@@ -1,8 +1,9 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 
-import { render } from '@testing-library/react'
+import { render, waitFor } from '@testing-library/react'
 
 import useSearch from 'hooks/useSearch'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { CampaignListOptions } from '../CampaignListOptions'
 import { CampaignListOptionsContext } from '../context'
@@ -82,24 +83,26 @@ describe('<CampaignListOptions />', () => {
         })
     })
 
-    it('updates the URL when the options change', () => {
+    it('updates the URL when the options change', async () => {
         const { getByTestId } = render(
             <CampaignListOptions>
                 <TestingComponent />
             </CampaignListOptions>,
         )
 
-        getByTestId('update').click()
+        await userEvent.click(getByTestId('update'))
 
-        expect(getByTestId('page')).toHaveTextContent('2')
-        expect(getByTestId('search')).toHaveTextContent('test')
-        expect(getByTestId('state')).toHaveTextContent('active')
+        await waitFor(() => {
+            expect(getByTestId('page')).toHaveTextContent('2')
+            expect(getByTestId('search')).toHaveTextContent('test')
+            expect(getByTestId('state')).toHaveTextContent('active')
 
-        expect(updateUrlSpy).toHaveBeenCalledWith({
-            page: 2,
-            search: 'test',
-            state: 'active',
-            filters: '',
+            expect(updateUrlSpy).toHaveBeenCalledWith({
+                page: 2,
+                search: 'test',
+                state: 'active',
+                filters: '',
+            })
         })
     })
 })

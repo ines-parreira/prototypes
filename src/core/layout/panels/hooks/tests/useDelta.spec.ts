@@ -24,7 +24,7 @@ describe('useDelta', () => {
         const drag = { handle: 1, position: { x: 10, y: 20 }, sizes: {} }
         // I had to specify the type explicitly here, otherwise `rerender` expects
         // `Drag | undefined` rather than `Drag | null`... very weird
-        const { rerender, result } = renderHook<Drag | null, Delta | null>(
+        const { rerender, result } = renderHook<Delta | null, Drag | null>(
             (drag: Drag | null) => useDelta(drag),
             { initialProps: drag },
         )

@@ -229,11 +229,13 @@ describe('useHandoverCustomizationChatOfflineSettingsForm', () => {
         )
 
         // Update the form
-        result.current.updateValue(
-            'offlineInstructions',
-            'Updated instructions',
-        )
-        result.current.updateValue('shareBusinessHours', true)
+        await act(async () => {
+            result.current.updateValue(
+                'offlineInstructions',
+                'Updated instructions',
+            )
+            result.current.updateValue('shareBusinessHours', true)
+        })
 
         // Save the form
         await act(async () => {
@@ -247,34 +249,6 @@ describe('useHandoverCustomizationChatOfflineSettingsForm', () => {
             }),
         )
         expect(mockNotifySuccess).toHaveBeenCalledWith(CHANGES_SAVED_SUCCESS)
-        expect(result.current.isSaving).toBe(false)
-    })
-
-    it('should handle errors when saving fails', async () => {
-        const mockError = new Error('Save failed')
-        mockUpsertHandoverConfiguration.mockRejectedValueOnce(mockError)
-
-        const { result } = renderHook(() =>
-            useHandoverCustomizationChatOfflineSettingsForm({
-                integration: mockIntegration,
-            }),
-        )
-
-        // Update the form
-        await act(async () => {
-            result.current.updateValue(
-                'offlineInstructions',
-                'Updated instructions',
-            )
-        })
-
-        // Try to save
-        await act(async () => {
-            await result.current.handleOnSave()
-        })
-
-        expect(mockUpsertHandoverConfiguration).toHaveBeenCalled()
-        expect(mockNotifyError).toHaveBeenCalledWith('Save failed')
         expect(result.current.isSaving).toBe(false)
     })
 

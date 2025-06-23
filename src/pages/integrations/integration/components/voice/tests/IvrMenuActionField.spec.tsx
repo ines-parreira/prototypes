@@ -1,4 +1,4 @@
-import { act, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -114,10 +114,7 @@ describe('<IvrMenuActionField />', () => {
             value: emptyMessageAction,
         })
 
-        await act(async () => {
-            await userEvent.click(screen.getByText('Add message'))
-        })
-        jest.advanceTimersByTime(300)
+        userEvent.click(screen.getByText('Add message'))
 
         expect(screen.getByText('Message')).toBeInTheDocument()
     })
@@ -125,50 +122,56 @@ describe('<IvrMenuActionField />', () => {
     it('should close drawer when clicking cancel button', async () => {
         renderComponent()
 
-        await act(async () => {
-            await userEvent.click(screen.getByText('Edit message'))
-            await userEvent.click(screen.getByText('Cancel'))
-        })
-        jest.advanceTimersByTime(300)
+        userEvent.click(screen.getByText('Edit message'))
+        userEvent.click(screen.getByText('Cancel'))
 
-        expect(screen.queryByText('Message')).not.toBeVisible()
+        await waitFor(() => {
+            expect(screen.queryByText('Message')).not.toBeVisible()
+        })
     })
 
     it('should close drawer when clicking close button', async () => {
         renderComponent()
 
-        await act(async () => {
-            await userEvent.click(screen.getByText('Edit message'))
-            await userEvent.click(
-                screen.getByRole('button', { name: 'close edit drawer' }),
-            )
-        })
-        jest.advanceTimersByTime(300)
+        userEvent.click(screen.getByText('Edit message'))
 
-        expect(screen.queryByText('Message')).not.toBeVisible()
+        await screen.findByRole('button', { name: 'close edit drawer' })
+
+        userEvent.click(
+            screen.getByRole('button', { name: 'close edit drawer' }),
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByText('Message')).not.toBeVisible()
+        })
     })
 
     it('should save changes when clicking save button', async () => {
         renderComponent()
 
-        await act(async () => {
-            await userEvent.click(screen.getByText('Edit message'))
-            await userEvent.click(screen.getByText('Save Changes'))
-        })
+        userEvent.click(screen.getByText('Edit message'))
 
-        expect(defaultProps.onChange).toHaveBeenCalledWith(
-            defaultPlayMessageAction,
-        )
+        const textbox = await screen.findByRole('textbox')
+
+        expect(textbox).toHaveValue('Test message')
+
+        userEvent.click(screen.getByText('Save Changes'))
+
+        await waitFor(() => {
+            expect(defaultProps.onChange).toHaveBeenCalledWith(
+                defaultPlayMessageAction,
+            )
+        })
     })
 
     it('should call onRemove when clicking remove button', async () => {
         renderComponent()
 
-        await act(async () => {
-            await userEvent.click(screen.getByText('close'))
-        })
+        userEvent.click(screen.getByText('close'))
 
-        expect(defaultProps.onRemove).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(defaultProps.onRemove).toHaveBeenCalled()
+        })
     })
 
     it('should render phone number input for forward to external number action', () => {

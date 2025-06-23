@@ -18,9 +18,7 @@ jest.mock('split-ticket-view-toggle', () => ({
 }))
 describe('useKnowledgeSourceSideBar', () => {
     it('throws an error if used outside the provider', () => {
-        const { result } = renderHook(() => useKnowledgeSourceSideBar())
-
-        expect(result.error).toEqual(
+        expect(() => renderHook(useKnowledgeSourceSideBar)).toThrow(
             new Error(
                 'useKnowledgeSourceSideBar must be used within a KnowledgeSourceSideBarProvider',
             ),

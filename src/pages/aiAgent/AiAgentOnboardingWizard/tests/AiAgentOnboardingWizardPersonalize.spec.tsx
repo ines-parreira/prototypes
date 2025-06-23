@@ -2,7 +2,7 @@ import 'tests/__mocks__/intersectionObserverMock'
 
 import React, { ComponentProps } from 'react'
 
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
@@ -221,19 +221,21 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should display confirmation dialog modal when user try to leave the page after changes are made', () => {
+    it('should display confirmation dialog modal when user try to leave the page after changes are made', async () => {
         renderComponent({})
 
         userEvent.click(screen.getByText('Professional'))
         history.push('/test')
 
-        expect(
-            screen.getByText(
-                'Your changes to this page will be lost if you don’t save them.',
-            ),
-        ).toBeInTheDocument()
-        expect(screen.getByText('Save Changes')).toBeInTheDocument()
-        expect(screen.getByText('Discard Changes')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    'Your changes to this page will be lost if you don’t save them.',
+                ),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Save Changes')).toBeInTheDocument()
+            expect(screen.getByText('Discard Changes')).toBeInTheDocument()
+        })
 
         userEvent.click(screen.getByText('Save Changes'))
         expect(mockHandleSave).toHaveBeenCalledWith({

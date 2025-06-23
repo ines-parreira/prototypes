@@ -2,7 +2,6 @@ import React, {
     MouseEvent,
     ReactElement,
     useCallback,
-    useEffect,
     useMemo,
     useState,
 } from 'react'
@@ -407,15 +406,6 @@ export const CategoriesTableRow = ({
         )
     }
 
-    useEffect(() => {
-        // On category open, fetch articles if category has some and no articles
-        // are currently displayed
-        if (isOpen && hasArticles && articles.length === 0) {
-            void fetchMore()
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isOpen, hasArticles, articles])
-
     const id = `category-title-${categoryId ?? 'uncategorized'}`
     const caret =
         hasArticles || hasSubcategories ? (
@@ -439,6 +429,10 @@ export const CategoriesTableRow = ({
         if (hasArticles || hasSubcategories) {
             const nextIsOpen = !isOpen
 
+            if (hasArticles && articles.length === 0) {
+                void fetchMore()
+            }
+
             if (nextIsOpen) {
                 void fetchCategoryArticleCount(categoryId, viewLanguage)
             }
@@ -452,6 +446,8 @@ export const CategoriesTableRow = ({
         fetchCategoryArticleCount,
         categoryId,
         viewLanguage,
+        fetchMore,
+        articles.length,
     ])
 
     const headerCell = (

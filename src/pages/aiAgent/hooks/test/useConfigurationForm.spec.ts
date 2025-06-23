@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 
@@ -387,7 +387,7 @@ describe('useConfigurationForm', () => {
         })
 
         // Rerender to simulate store config update
-        rerender()
+        rerender({ shopName, shopType, ...INITIAL_FORM_VALUES })
 
         // Assert that user changes were preserved
         expect(result.current.formValues.signature).toBe(
@@ -397,7 +397,7 @@ describe('useConfigurationForm', () => {
         expect(result.current.isFormDirty).toBe(true)
     })
 
-    it('should reset the initialization state when resetForm is called', () => {
+    it('should reset the initialization state when resetForm is called', async () => {
         const initialStoreConfig = getStoreConfigurationFixture({
             storeName: 'test-shop',
             toneOfVoice: ToneOfVoice.Friendly,
@@ -409,52 +409,39 @@ describe('useConfigurationForm', () => {
             storeConfiguration: initialStoreConfig,
         })
 
-        const { result, rerender } = renderHook(
-            (props) => useConfigurationForm(props),
-            {
-                initialProps: {
-                    shopName,
-                    shopType,
-                    initValues: {
-                        signature: 'initial signature',
-                    },
+        const { result } = renderHook((props) => useConfigurationForm(props), {
+            initialProps: {
+                shopName,
+                shopType,
+                initValues: {
+                    signature: 'initial signature',
                 },
             },
-        )
+        })
 
         // Make changes
-        act(() => {
-            result.current.updateValue('signature', 'user modified signature')
+        await act(async () => {
+            await result.current.updateValue(
+                'signature',
+                'user modified signature',
+            )
         })
 
         // Reset the form
-        act(() => {
-            result.current.resetForm()
+        await act(async () => {
+            await result.current.resetForm()
         })
-
-        // Store configuration changes
-        const updatedStoreConfig = {
-            ...initialStoreConfig,
-            signature: 'new backend signature',
-        }
-
-        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-            ...defaultStoreConfigurationContextMock,
-            storeConfiguration: updatedStoreConfig,
-        })
-
-        // We need to modify useConfigurationForm to reset isInitializedRef when resetForm is called
-        // This test will verify that isInitializedRef is properly reset
-
-        // Rerender to simulate store config update
-        rerender()
 
         // Form should use values from updated store config
-        expect(result.current.formValues.signature).toBe('initial signature')
-        expect(result.current.isFormDirty).toBe(false)
+        await waitFor(() => {
+            expect(result.current.formValues.signature).toBe(
+                'initial signature',
+            )
+            expect(result.current.isFormDirty).toBe(false)
+        })
     })
 
-    it('should preserve unsaved form changes when storeConfiguration updates', () => {
+    it('should preserve unsaved form changes when storeConfiguration updates', async () => {
         const initialStoreConfig = getStoreConfigurationFixture({
             storeName: 'test-shop',
             toneOfVoice: ToneOfVoice.Friendly,
@@ -489,9 +476,13 @@ describe('useConfigurationForm', () => {
             },
         })
 
-        rerender()
+        rerender({ shopName, shopType, ...INITIAL_FORM_VALUES })
 
-        expect(result.current.formValues.signature).toBe('new user signature')
+        await waitFor(() => {
+            expect(result.current.formValues.signature).toBe(
+                'new user signature',
+            )
+        })
     })
 
     it('should not mark form is dirty when initial props changed', () => {

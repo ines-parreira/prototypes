@@ -35,9 +35,7 @@ describe('useNavBar', () => {
     })
 
     it('should throw error when used outside NavBarProvider', () => {
-        const { result } = renderHook(useNavBar)
-
-        expect(result.error).toEqual(
+        expect(() => renderHook(useNavBar)).toThrow(
             new Error('useNavBar must be used within a NavBarProvider'),
         )
     })

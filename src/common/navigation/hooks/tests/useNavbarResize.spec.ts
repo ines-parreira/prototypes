@@ -4,7 +4,6 @@ import { fireEvent } from '@testing-library/react'
 
 import { useSavedSizes } from 'core/layout/panels'
 import { assumeMock } from 'utils/testing'
-// TODO(React18): Remove act import this once we upgrade to React 18
 import { act, renderHook } from 'utils/testing/renderHook'
 
 import useNavbarResize, { DEFAULT_WIDTH } from '../useNavbarResize'

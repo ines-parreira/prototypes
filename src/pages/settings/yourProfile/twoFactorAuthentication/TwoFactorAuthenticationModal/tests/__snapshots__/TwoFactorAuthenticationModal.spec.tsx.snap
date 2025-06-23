@@ -65,7 +65,6 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                   </span>
                 </div>
               </div>
-              
               <div
                 class="wrapper mb-4"
               >
@@ -630,7 +629,6 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
             <div
               class="modal-body"
             >
-              
               <div
                 class="wrapper mb-4"
               >
@@ -1023,7 +1021,6 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
             <div
               class="modal-body"
             >
-              
               <div
                 class="wrapper mb-4"
               >
@@ -1218,7 +1215,6 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
             <div
               class="modal-body"
             >
-              
               <div
                 class="wrapper mb-4"
               >
@@ -1620,7 +1616,6 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
             <div
               class="modal-body"
             >
-              
               <div
                 class="wrapper mb-4"
               >
@@ -1809,7 +1804,6 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
             <div
               class="modal-body"
             >
-              
               <div
                 class="wrapper mb-4"
               >
@@ -2014,7 +2008,6 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with app 
                   </span>
                 </div>
               </div>
-              
               <div
                 class="wrapper mb-4"
               >
@@ -2212,7 +2205,6 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with app 
                   </span>
                 </div>
               </div>
-              
               <div
                 class="wrapper mb-4"
               >
@@ -2394,7 +2386,6 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with the 
             <div
               class="modal-body"
             >
-              
               <div
                 class="wrapper mb-4"
               >
@@ -2604,7 +2595,6 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
             <div
               class="modal-body"
             >
-              
               <div
                 class="wrapper mb-4"
               >
@@ -2758,7 +2748,6 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
             <div
               class="modal-body"
             >
-              
               <div
                 class="wrapper mb-4"
               >
@@ -2912,7 +2901,6 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
             <div
               class="modal-body"
             >
-              
               <div
                 class="wrapper mb-4"
               >

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import {
     cleanup,
     fireEvent,
@@ -101,14 +99,18 @@ describe('<PlaceCallNavbarButton />', () => {
         expect(useConditionalShortcutsMock.mock.lastCall?.[0]).toBe(false)
     })
 
-    it('should open PhoneDevice on shortcut', () => {
+    it('should open PhoneDevice on shortcut', async () => {
         renderComponent()
 
         useConditionalShortcutsMock.mock.calls[0][2]?.OPEN_DIALPAD?.action?.({
             preventDefault: jest.fn(),
         } as unknown as Event)
 
-        expect(screen.getByTestId('phone-device')).toHaveTextContent('visible')
+        await waitFor(() => {
+            expect(screen.getByTestId('phone-device')).toHaveTextContent(
+                'visible',
+            )
+        })
     })
 
     it('should open PhoneDevice on button click', () => {

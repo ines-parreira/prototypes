@@ -974,16 +974,12 @@ exports[`RichField should render mutable variable 1`] = `
                     data-offset-key="123-0-0"
                   >
                     <span
-                      class="d-inline text-primary"
+                      data-offset-key="123-0-0"
                     >
                       <span
-                        data-offset-key="123-0-0"
+                        data-text="true"
                       >
-                        <span
-                          data-text="true"
-                        >
-                          {{current_user.name}}
-                        </span>
+                        html
                       </span>
                     </span>
                   </div>

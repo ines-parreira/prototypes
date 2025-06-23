@@ -1,10 +1,7 @@
-import React from 'react'
-
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { Variant } from 'constants/integrations/types/shopify'
 import { shopifyProductFixture } from 'fixtures/shopify'
-import { createImageFetchMock } from 'tests/utils'
 
 import IntegrationProductView from '../IntegrationProductView'
 
@@ -33,19 +30,29 @@ const mockProduct = {
     vendor: 'Test Vendor',
 }
 
-const imageMock = createImageFetchMock()
+// Mock Image constructor
+beforeAll(() => {
+    global.Image = jest.fn().mockImplementation(() => ({
+        onload: null,
+        onerror: null,
+        set src(value: string) {
+            // Simulate successful image load
+            setTimeout(() => {
+                if (this.onload) {
+                    this.onload()
+                }
+            }, 0)
+        },
+    })) as any
+})
 
 describe('IntegrationProductView', () => {
     afterEach(() => {
-        imageMock.resetMock()
+        jest.clearAllMocks()
     })
 
     it('renders basic product information', async () => {
-        imageMock.mock(() => Promise.resolve())
-
-        await act(async () => {
-            render(<IntegrationProductView product={mockProduct} />)
-        })
+        render(<IntegrationProductView product={mockProduct} />)
 
         expect(screen.getByText('Product ID:')).toBeInTheDocument()
         expect(screen.getByText('123')).toBeInTheDocument()
@@ -53,8 +60,11 @@ describe('IntegrationProductView', () => {
         expect(screen.getByText('Test Product')).toBeInTheDocument()
         expect(screen.getByText('Description')).toBeInTheDocument()
 
-        const images = screen.getAllByRole('img', { hidden: true })
-        expect(images).toHaveLength(1)
+        // Wait for images to load
+        await waitFor(() => {
+            const images = screen.getAllByRole('img')
+            expect(images).toHaveLength(1)
+        })
     })
 
     it('renders product variants with prices', () => {
@@ -90,8 +100,6 @@ describe('IntegrationProductView', () => {
     })
 
     it('limits displayed images to MAX_IMAGES', async () => {
-        imageMock.mock(() => Promise.resolve())
-
         const productWithManyImages = {
             ...mockProduct,
             images: Array(10)
@@ -104,11 +112,12 @@ describe('IntegrationProductView', () => {
                 })),
         }
 
-        await act(async () => {
-            render(<IntegrationProductView product={productWithManyImages} />)
-        })
+        render(<IntegrationProductView product={productWithManyImages} />)
 
-        const images = screen.getAllByRole('img')
-        expect(images).toHaveLength(5) // MAX_IMAGES is 5
+        // Wait for images to load
+        await waitFor(() => {
+            const images = screen.getAllByRole('img')
+            expect(images).toHaveLength(5) // MAX_IMAGES is 5
+        })
     })
 })

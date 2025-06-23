@@ -43,7 +43,6 @@ exports[`ast widgets <AssigneeUserSelect/> render() should render a dropdown wit
         role="menu"
         tabindex="-1"
       >
-        
         <button
           class="option option--focused dropdown-item"
           role="menuitem"
@@ -113,7 +112,6 @@ exports[`ast widgets <AssigneeUserSelect/> render() should render a dropdown wit
         role="menu"
         tabindex="-1"
       >
-        
         <button
           class="option option--focused dropdown-item"
           role="menuitem"
@@ -183,7 +181,6 @@ exports[`ast widgets <AssigneeUserSelect/> render() should render a dropdown wit
         role="menu"
         tabindex="-1"
       >
-        
         <button
           class="option option--focused dropdown-item"
           role="menuitem"

@@ -624,7 +624,6 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                     role="menu"
                     tabindex="-1"
                   >
-                    
                     <div>
                       <h6
                         class="action action--focused dropdown-header"
@@ -849,7 +848,6 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                     role="menu"
                     tabindex="-1"
                   >
-                    
                     <button
                       class="option option--focused dropdown-item"
                       role="menuitem"

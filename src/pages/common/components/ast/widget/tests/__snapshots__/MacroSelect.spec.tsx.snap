@@ -43,7 +43,6 @@ exports[`<MacroSelect/> should render 1`] = `
         role="menu"
         tabindex="-1"
       >
-        
         <button
           class="option option--focused dropdown-item"
           role="menuitem"
@@ -113,7 +112,6 @@ exports[`<MacroSelect/> should render when no macros available 1`] = `
         role="menu"
         tabindex="-1"
       >
-        
         <button
           class="option option--focused dropdown-item"
           role="menuitem"

@@ -156,10 +156,11 @@ describe('evaluateCustomFieldsConditions', () => {
     )
 
     it('supports only ticket for now', () => {
-        const { result } = renderHook(() =>
-            evaluateCustomFieldsConditions([], OBJECT_TYPES.CUSTOMER, {}),
-        )
-        expect(result.error?.message).toBe('Unsupported object type: Customer')
+        expect(() =>
+            renderHook(() =>
+                evaluateCustomFieldsConditions([], OBJECT_TYPES.CUSTOMER, {}),
+            ),
+        ).toThrow('Unsupported object type: Customer')
     })
 
     it.each([

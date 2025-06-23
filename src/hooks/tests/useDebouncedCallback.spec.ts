@@ -8,10 +8,9 @@ jest.useFakeTimers()
 
 describe('useDebouncedCallback', () => {
     it('should render', () => {
-        const { result } = renderHook(() => {
-            useDebouncedCallback(noop, 200)
-        })
-        expect(result.error).toBeUndefined()
+        expect(() =>
+            renderHook(() => useDebouncedCallback(noop, 200)),
+        ).not.toThrow()
     })
 
     it('should return function same length and wrapped name', () => {

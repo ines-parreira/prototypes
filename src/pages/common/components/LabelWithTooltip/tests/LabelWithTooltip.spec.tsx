@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { LabelWithTooltip } from 'pages/common/components/LabelWithTooltip/LabelWithTooltip'
 
@@ -28,14 +26,14 @@ describe('<LabelWithTooltip />', () => {
         expect(screen.getByRole('tooltip')).toBeInTheDocument()
     })
 
-    it('should render tooltip with custom text', () => {
-        jest.useFakeTimers()
+    it('should render tooltip with custom text', async () => {
         const tooltipText = 'Tooltip text'
         render(<LabelWithTooltip label={label} tooltipText={tooltipText} />)
 
-        fireEvent.mouseOver(screen.getByText(label))
-        jest.runAllTimers()
+        await fireEvent.mouseOver(screen.getByText(label))
 
-        expect(screen.getByText(tooltipText)).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText(tooltipText)).toBeInTheDocument()
+        })
     })
 })

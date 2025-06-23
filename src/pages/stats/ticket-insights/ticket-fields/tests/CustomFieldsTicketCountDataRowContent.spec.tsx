@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { forEach } from 'lodash'
 import { Provider } from 'react-redux'
 
@@ -331,7 +331,7 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
         },
     ])(
         'should check the mobile view marginLeft styles for label with different levels of depth',
-        ({ props, expectedResult }) => {
+        async ({ props, expectedResult }) => {
             getValueModeMock.mockReturnValue(ValueMode.Percentage)
             render(
                 <Provider store={mockStore({} as any)}>
@@ -341,7 +341,9 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
             triggerWidthResize(500)
             rafControl.run()
             const label = screen.getByText('someTag')
-            expect(label).toHaveStyle({ marginLeft: expectedResult })
+            await waitFor(() => {
+                expect(label).toHaveStyle({ marginLeft: expectedResult })
+            })
         },
     )
 

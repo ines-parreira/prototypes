@@ -1,10 +1,9 @@
-import React from 'react'
-
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import * as useLocalStorage from 'hooks/useLocalStorage'
 import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { userEvent } from 'utils/testing/userEvent'
 
 import { CampaignToolsCell } from '../CampaignToolsCell'
 
@@ -56,13 +55,15 @@ describe('<CampaignToolsCell />', () => {
         expect(screen.queryByText('file_copy')).not.toBeInTheDocument()
     })
 
-    it('calls onClickDelete when delete button is clicked', () => {
+    it('calls onClickDelete when delete button is clicked', async () => {
         render(<CampaignToolsCell {...props} />)
 
-        screen.getByLabelText('Delete campaign').click()
-        screen.getByText('Confirm').click()
+        await userEvent.click(screen.getByLabelText('Delete campaign'))
+        await userEvent.click(screen.getByText('Confirm'))
 
-        expect(onClickDelete).toHaveBeenCalledWith(campaign)
+        await waitFor(() => {
+            expect(onClickDelete).toHaveBeenCalledWith(campaign)
+        })
     })
 
     it('calls onClickDuplicate when duplicate button is clicked', () => {
@@ -92,24 +93,28 @@ describe('<CampaignToolsCell />', () => {
         expect(onClickEdit).toHaveBeenCalled()
     })
 
-    it('renders delete button with light modal when over campaigns limit', () => {
+    it('renders delete button with light modal when over campaigns limit', async () => {
         render(<CampaignToolsCell {...props} isOverCampaignsLimit={true} />)
 
-        screen.getByLabelText('Delete campaign').click()
+        await userEvent.click(screen.getByLabelText('Delete campaign'))
 
-        expect(screen.getByText('Learn About Convert')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('Learn About Convert')).toBeInTheDocument()
+        })
     })
 
-    it('renders delete button without light modal when over campaigns limit, but dismissed', () => {
+    it('renders delete button without light modal when over campaigns limit, but dismissed', async () => {
         useLocalStorageSpy.mockReturnValue([true])
 
         render(<CampaignToolsCell {...props} isOverCampaignsLimit={true} />)
 
-        screen.getByLabelText('Delete campaign').click()
+        await userEvent.click(screen.getByLabelText('Delete campaign'))
 
-        expect(
-            screen.queryByText('Learn About Convert'),
-        ).not.toBeInTheDocument()
-        expect(screen.getByText('Confirm')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.queryByText('Learn About Convert'),
+            ).not.toBeInTheDocument()
+            expect(screen.getByText('Confirm')).toBeInTheDocument()
+        })
     })
 })

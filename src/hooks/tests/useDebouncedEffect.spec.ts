@@ -9,10 +9,11 @@ jest.useFakeTimers()
 // Note: more detailed tests we have in useDebouncedCallback which is being used under the hood
 describe('useDebouncedEffect', () => {
     it('should render', () => {
-        const { result } = renderHook(() => {
-            useDebouncedEffect(noop, [], 200)
-        })
-        expect(result.error).toBeUndefined()
+        expect(() =>
+            renderHook(() => {
+                useDebouncedEffect(noop, [], 200)
+            }),
+        ).not.toThrow()
     })
 
     it('should call effect only after delay', () => {

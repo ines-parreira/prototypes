@@ -139,7 +139,6 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
               role="menu"
               tabindex="-1"
             >
-              
               <button
                 class="option dropdown-item"
                 role="menuitem"

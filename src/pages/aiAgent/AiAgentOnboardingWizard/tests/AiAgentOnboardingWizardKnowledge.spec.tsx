@@ -466,7 +466,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         )
     })
 
-    it('should display confirmation dialog modal when user tries to leave after changes help center select', () => {
+    it('should display confirmation dialog modal when user tries to leave after changes help center select', async () => {
         renderComponent({})
 
         const selectedHelpCenter = screen.getByText(mockedHelpCenters[0].name)
@@ -483,13 +483,15 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
 
         history.push('/test')
 
-        expect(
-            screen.getByText(
-                'Your changes to this page will be lost if you don’t save them.',
-            ),
-        ).toBeInTheDocument()
-        expect(screen.getByText('Save Changes')).toBeInTheDocument()
-        expect(screen.getByText('Discard Changes')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    'Your changes to this page will be lost if you don’t save them.',
+                ),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Save Changes')).toBeInTheDocument()
+            expect(screen.getByText('Discard Changes')).toBeInTheDocument()
+        })
 
         userEvent.click(screen.getByText('Save Changes'))
         expect(

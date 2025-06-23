@@ -55,17 +55,14 @@ describe('useTemplateContext', () => {
         mockedGetActiveCustomer.mockReturnValue(defaultCustomer)
         mockedGetTicket.mockReturnValue(defaultTicket)
     })
-    // With react 18, you will be able to test this by using standard `.toThrow()` assertion
     it('should not break if source is not a record', () => {
-        expect(
-            renderHook(() => useTemplateContext('source')).result.error,
-        ).not.toBeDefined()
-        expect(
-            renderHook(() => useTemplateContext(['source'])).result.error,
-        ).not.toBeDefined()
-        expect(
-            renderHook(() => useTemplateContext()).result.error,
-        ).not.toBeDefined()
+        expect(() =>
+            renderHook(() => useTemplateContext('source')),
+        ).not.toThrow()
+        expect(() =>
+            renderHook(() => useTemplateContext(['source'])),
+        ).not.toThrow()
+        expect(() => renderHook(() => useTemplateContext())).not.toThrow()
     })
 
     it("should return a context merged with the provided source if it's a record", () => {

@@ -24,7 +24,7 @@ exports[`<Discount /> works as expected: discount set 1`] = `
   </div>
   <div
     data-floating-ui-portal=""
-    id="floating-ui-0"
+    id=":r1:"
   />
 </body>
 `;
@@ -53,7 +53,7 @@ exports[`<Discount /> works as expected: initial 1`] = `
   </div>
   <div
     data-floating-ui-portal=""
-    id="floating-ui-0"
+    id=":r1:"
   />
 </body>
 `;

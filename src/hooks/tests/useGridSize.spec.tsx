@@ -1,3 +1,5 @@
+import { waitFor } from '@testing-library/react'
+
 import { useGridSize } from 'hooks/useGridSize'
 import { mockRequestAnimationFrame, triggerWidthResize } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
@@ -15,13 +17,15 @@ describe('useGridSize', () => {
         { screenSize: 1920, defaultGreedSize: 4, expectedValue: 4 },
     ])(
         'returns grid cell size based on screen size $screenSize px',
-        ({ screenSize, defaultGreedSize, expectedValue }) => {
+        async ({ screenSize, defaultGreedSize, expectedValue }) => {
             const { result } = renderHook(() => useGridSize())
 
             triggerWidthResize(screenSize)
             rafControl.run()
 
-            expect(result.current(defaultGreedSize)).toBe(expectedValue)
+            await waitFor(() => {
+                expect(result.current(defaultGreedSize)).toBe(expectedValue)
+            })
         },
     )
 })

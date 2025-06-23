@@ -91,7 +91,6 @@ exports[`<TwilioSubaccountStatusForm /> render() should render with the Twillio 
                 role="menu"
                 tabindex="-1"
               >
-                
                 <button
                   class="option option--focused dropdown-item"
                   role="menuitem"

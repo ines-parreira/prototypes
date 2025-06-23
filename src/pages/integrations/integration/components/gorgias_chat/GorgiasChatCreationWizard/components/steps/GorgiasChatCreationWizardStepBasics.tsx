@@ -106,6 +106,28 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
         isModalUpdateShopifyPermissionsOpen,
         setIsModalUpdateShopifyPermissionsOpen,
     ] = useState(false)
+    const [redirectAction, setRedirectAction] = useState<{
+        redirectId: number | null
+        redirectToNextStep: boolean
+    }>({
+        redirectId: null,
+        redirectToNextStep: false,
+    })
+
+    useEffect(() => {
+        if (redirectAction.redirectId) {
+            history.replace(
+                `/app/settings/channels/gorgias_chat/${redirectAction.redirectId}/create-wizard`,
+            )
+            if (redirectAction.redirectToNextStep) {
+                navigateWizardSteps.goToNextStep()
+            }
+        }
+    }, [
+        redirectAction.redirectId,
+        redirectAction.redirectToNextStep,
+        navigateWizardSteps,
+    ])
 
     useEffect(() => {
         // Used to keep saving the correct `language` with `languages` for the time being.
@@ -231,11 +253,19 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
 
     const hasIncompleteFields = !name || (isStoreRequired && !storeIntegration)
 
-    const goToCreatedIntegrationWizard = (id: number) => {
+    const goToCreatedIntegrationWizard = (
+        id: number,
+        shouldGoToNextStep = false,
+    ) => {
         if (!isUpdate) {
-            history.replace(
-                `/app/settings/channels/gorgias_chat/${id}/create-wizard`,
-            )
+            setRedirectAction({
+                redirectId: id,
+                redirectToNextStep: shouldGoToNextStep,
+            })
+            return
+        }
+        if (shouldGoToNextStep) {
+            navigateWizardSteps.goToNextStep()
         }
     }
 
@@ -378,12 +408,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                     )
 
                     setHasSubmitted(true)
-
-                    if (shouldGoToNextStep) {
-                        navigateWizardSteps.goToNextStep()
-                    }
-
-                    goToCreatedIntegrationWizard(id)
+                    goToCreatedIntegrationWizard(id, shouldGoToNextStep)
                 },
                 shouldGoToNextStep,
                 'Changes saved',
@@ -425,7 +450,12 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
     return (
         <>
             <DiscardNewChatPrompt
-                when={!isUpdate && !isPristine && !oAuthFlowTriggered}
+                when={
+                    !isUpdate &&
+                    !isPristine &&
+                    !oAuthFlowTriggered &&
+                    !redirectAction.redirectId
+                }
             />
             <UnsavedChangesPrompt
                 onSave={() => onSave()}

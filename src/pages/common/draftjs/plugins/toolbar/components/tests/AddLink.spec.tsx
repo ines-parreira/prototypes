@@ -1,6 +1,7 @@
 import React, { ComponentProps, MouseEvent } from 'react'
 
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { EditorState } from 'draft-js'
 import _noop from 'lodash/noop'
 
@@ -201,7 +202,7 @@ describe('<AddLink />', () => {
         expect(mockRemoveLink).toBeCalled()
     })
 
-    it('should update the link if its different from the one in text', () => {
+    it('should update the link if its different from the one in text', async () => {
         const editorState = defaultProps.getEditorState()
         const contentState = editorState.getCurrentContent()
         const contentStateWithEntity = contentState.createEntity(
@@ -219,8 +220,8 @@ describe('<AddLink />', () => {
                 text="New URL"
             />,
         )
-        getByText('link').click()
-        getByText('Update Link').click()
+        await userEvent.click(getByText('link'))
+        await userEvent.click(getByText('Update Link'))
     })
 
     it.each(['Enter', 'Escape'])(
@@ -466,14 +467,12 @@ describe('<AddLink />', () => {
         )
         fireEvent.click(screen.getByText(/link/))
 
-        await act(async () => {
-            await waitFor(() => {
-                fireEvent.click(screen.getByText('{+}'))
-                expect(
-                    screen.getByText(/Insert variable from previous steps/i),
-                ).toBeInTheDocument()
-                expect(onOpenMock).not.toHaveBeenCalled()
-            })
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('{+}'))
+            expect(
+                screen.getByText(/Insert variable from previous steps/i),
+            ).toBeInTheDocument()
+            expect(onOpenMock).not.toHaveBeenCalled()
         })
     })
 

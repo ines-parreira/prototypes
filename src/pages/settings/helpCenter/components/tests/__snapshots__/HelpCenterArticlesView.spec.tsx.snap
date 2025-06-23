@@ -355,7 +355,6 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                   role="menu"
                   tabindex="-1"
                 >
-                  
                   <button
                     class="option dropdown-item"
                     role="menuitem"
@@ -667,7 +666,6 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                 type="text"
                 value=""
               />
-              
             </div>
             <small
               class="form-text text-muted"
@@ -816,7 +814,6 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                   class="url-item"
                 >
                    › 
-                  
                 </span>
               </div>
               <div

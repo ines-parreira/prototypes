@@ -1,6 +1,8 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
+
+import { userEvent } from 'utils/testing/userEvent'
 
 import { VerticalTextCarousel } from '../VerticalTextCarousel'
 
@@ -24,35 +26,42 @@ describe('VerticalTextCarousel', () => {
         expect(container.firstChild).toBeNull()
     })
 
-    it('should render next text', () => {
+    it('should render next text', async () => {
         render(<VerticalTextCarousel texts={['text1', 'text2', 'text3']} />)
 
         const nextButton = screen.getByLabelText('Next')
-        nextButton.click()
+        await userEvent.click(nextButton)
 
-        expect(screen.queryByText('text1')).not.toBeInTheDocument()
-        expect(screen.getByText('text2')).toBeInTheDocument()
-        expect(screen.queryByText('text3')).not.toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.queryByText('text1')).not.toBeInTheDocument()
+            expect(screen.getByText('text2')).toBeInTheDocument()
+            expect(screen.queryByText('text3')).not.toBeInTheDocument()
+        })
 
         // to test that it wraps around in cycle
-        nextButton.click()
-        nextButton.click()
-        expect(screen.getByText('text1')).toBeInTheDocument()
+        await userEvent.click(nextButton)
+        await userEvent.click(nextButton)
+
+        await waitFor(() => {
+            expect(screen.getByText('text1')).toBeInTheDocument()
+        })
     })
 
-    it('should render prev text', () => {
+    it('should render prev text', async () => {
         render(<VerticalTextCarousel texts={['text1', 'text2', 'text3']} />)
 
         const prevButton = screen.getByLabelText('Previous')
-        prevButton.click()
+        await userEvent.click(prevButton)
 
         // tests that it wraps around in cycle
-        expect(screen.queryByText('text1')).not.toBeInTheDocument()
-        expect(screen.queryByText('text2')).not.toBeInTheDocument()
-        expect(screen.getByText('text3')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.queryByText('text1')).not.toBeInTheDocument()
+            expect(screen.queryByText('text2')).not.toBeInTheDocument()
+            expect(screen.getByText('text3')).toBeInTheDocument()
+        })
     })
 
-    it('should handle CTA click', () => {
+    it('should handle CTA click', async () => {
         const onCtaClick = jest.fn()
         render(
             <VerticalTextCarousel
@@ -65,12 +74,14 @@ describe('VerticalTextCarousel', () => {
 
         // move to the 2nd suggestion
         const nextButton = screen.getByLabelText('Next')
-        nextButton.click()
+        await userEvent.click(nextButton)
 
         const ctaButton = screen.getByText('CTA')
-        ctaButton.click()
+        await userEvent.click(ctaButton)
 
-        expect(onCtaClick).toHaveBeenCalledWith('text2')
-        expect(screen.getByText('Successful CTA click')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(onCtaClick).toHaveBeenCalledWith('text2')
+            expect(screen.getByText('Successful CTA click')).toBeInTheDocument()
+        })
     })
 })

@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-import { act } from '@testing-library/react'
+import { act, renderHook, waitFor } from '@testing-library/react'
 import axios from 'axios'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -11,7 +11,6 @@ import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fi
 import * as helpCenterApi from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { HelpCenterClient } from 'rest_api/help_center_api/client'
 import { RootState, StoreDispatch } from 'state/types'
-import { renderHook } from 'utils/testing/renderHook'
 
 import {
     HelpCenterPreferencesSettings,
@@ -127,46 +126,48 @@ describe('HelpCenterPreferencesSettings', () => {
             ],
         }
 
-        let preferencesResult: any
+        const wrapper = ({ children }: { children?: ReactNode }) => (
+            <Provider store={store}>
+                <CurrentHelpCenterContext.Provider value={helpCenter}>
+                    <HelpCenterPreferencesSettings helpCenter={helpCenter}>
+                        {children}
+                    </HelpCenterPreferencesSettings>
+                </CurrentHelpCenterContext.Provider>
+            </Provider>
+        )
 
-        await act(async () => {
-            const { result } = renderHook(
-                () => useHelpCenterPreferencesSettings(),
-                {
-                    wrapper: ({ children }: { children?: ReactNode }) => (
-                        <Provider store={store}>
-                            <CurrentHelpCenterContext.Provider
-                                value={helpCenter}
-                            >
-                                <HelpCenterPreferencesSettings
-                                    helpCenter={helpCenter}
-                                >
-                                    {children}
-                                </HelpCenterPreferencesSettings>
-                            </CurrentHelpCenterContext.Provider>
-                        </Provider>
-                    ),
-                },
-            )
+        const { result } = renderHook(
+            () => useHelpCenterPreferencesSettings(),
+            {
+                wrapper,
+            },
+        )
 
-            // Call resetPreferences which internally calls updatePreferencesFromData
-            result.current.resetPreferences()
-            preferencesResult = result.current.preferences
+        // Wait for the hook to be initialized
+        await waitFor(() => {
+            expect(result.current).not.toBeNull()
         })
 
-        // Verify that preferences were updated correctly
-        expect(preferencesResult).toEqual({
-            defaultLanguage: 'en-US',
-            availableLanguages: ['en-US', 'fr-FR'],
-            seoMeta: {
-                title: 'Test Title',
-                description: 'Test Description',
-            },
-            connectedShop: {
-                shopName: 'Test Shop',
-                shopIntegrationId: 123,
-                selfServiceDeactivated: true,
-            },
+        // Call resetPreferences which internally calls updatePreferencesFromData
+        await act(async () => {
+            result.current.resetPreferences()
+        })
+
+        // Wait for the preferences to be updated
+        await waitFor(() => {
+            expect(result.current.preferences).toEqual({
+                defaultLanguage: 'en-US',
+                availableLanguages: ['en-US', 'fr-FR'],
+                seoMeta: {
+                    title: 'Test Title',
+                    description: 'Test Description',
+                },
+                connectedShop: {
+                    shopName: 'Test Shop',
+                    shopIntegrationId: 123,
+                    selfServiceDeactivated: true,
+                },
+            })
         })
     })
 })

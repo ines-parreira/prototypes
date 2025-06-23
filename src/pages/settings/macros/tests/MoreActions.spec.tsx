@@ -159,21 +159,26 @@ describe('<MoreActions />', () => {
         expect(props.onMacroArchiveOrUnarchived).toHaveBeenCalledWith(1)
     })
 
-    it('should duplicate macro', () => {
+    it('should duplicate macro', async () => {
         render(<MoreActions {...props} hasAgentPrivileges />)
 
         screen.getByLabelText('More actions on macro').click()
+
+        await screen.findByText(/Make a copy/)
         screen.getByText(/Make a copy/).click()
 
         expect(props.onMacroDuplicate).toHaveBeenCalled()
     })
 
-    it('should delete macro', () => {
+    it('should delete macro', async () => {
         render(<MoreActions {...props} hasAgentPrivileges />)
 
         screen.getByLabelText('More actions on macro').click()
+
+        await screen.findByText(/Delete/)
         screen.getByText(/Delete/).click()
 
+        await screen.findByText(/You are about to delete/)
         expect(screen.getByText(/You are about to delete/)).toBeInTheDocument()
 
         screen.getByText(/Confirm/).click()

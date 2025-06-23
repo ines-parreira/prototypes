@@ -1,11 +1,11 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { act, render, screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 
 import { getTicket, Ticket } from '@gorgias/helpdesk-client'
 
 import { useSearchEmailTickets } from 'models/aiAgent/queries'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { TicketSearchDropdownSelectView } from './TicketSearchDropdownSelectView'
 
@@ -128,16 +128,14 @@ describe('TicketSearchDropdownSelectView', () => {
     })
 
     it('should display search results', async () => {
-        renderComponent()
+        const { rerender } = renderComponent()
 
         // Start typing to trigger search
         const searchInput = screen.getByPlaceholderText(
             'Search by ticket id or email subject',
         )
 
-        await act(async () => {
-            await userEvent.type(searchInput, 'test')
-        })
+        await userEvent.type(searchInput, 'test')
 
         // Update the mock to return data after typing
         const mockRefetch = jest.fn()
@@ -150,6 +148,8 @@ describe('TicketSearchDropdownSelectView', () => {
             refetch: mockRefetch,
         } as unknown as ReturnType<typeof useSearchEmailTickets>)
 
+        rerender(<TicketSearchDropdownSelectView onSelect={mockOnSelect} />)
+
         await waitFor(() => {
             expect(
                 screen.getByText('Test Ticket 1 - John Doe - 123'),
@@ -161,15 +161,13 @@ describe('TicketSearchDropdownSelectView', () => {
     })
 
     it('should show "No results found" when search returns empty results', async () => {
-        renderComponent()
+        const { rerender } = renderComponent()
 
         const searchInput = screen.getByPlaceholderText(
             'Search by ticket id or email subject',
         )
 
-        await act(async () => {
-            await userEvent.type(searchInput, 'nonexistent')
-        })
+        await userEvent.type(searchInput, 'nonexistent')
 
         // Update mock to return empty results
         mockUseSearchTickets.mockReturnValue({
@@ -180,6 +178,8 @@ describe('TicketSearchDropdownSelectView', () => {
             data: { data: { data: [] } },
             refetch: jest.fn(),
         } as unknown as ReturnType<typeof useSearchEmailTickets>)
+
+        rerender(<TicketSearchDropdownSelectView onSelect={mockOnSelect} />)
 
         await waitFor(() => {
             expect(screen.getByText('No results found')).toBeInTheDocument()

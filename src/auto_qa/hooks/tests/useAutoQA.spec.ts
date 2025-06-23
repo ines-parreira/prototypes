@@ -4,7 +4,6 @@ import {
     useUpsertTicketQaScoreDimension,
 } from '@gorgias/helpdesk-queries'
 
-// TODO(React18): Remove act import this once we upgrade to React 18
 import { act, renderHook } from 'utils/testing/renderHook'
 
 import useAutoQA from '../useAutoQA'

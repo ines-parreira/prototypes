@@ -15,6 +15,16 @@ describe('useFetchAiAgentPlaygroundExecutionsData', () => {
         (retries) => {
             const enabled = true
 
+            mockUseGetPlaygroundExecutions.mockReturnValue({
+                data: {
+                    data: {
+                        id: 'playground-execution-id',
+                    },
+                },
+                isLoading: false,
+                isFetched: true,
+            })
+
             renderHook(() =>
                 useFetchAiAgentPlaygroundExecutionsData({
                     accountDomain,

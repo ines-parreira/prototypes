@@ -1,7 +1,5 @@
-/* eslint-disable import/order */
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
+import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -94,23 +92,28 @@ describe('useBillingPlans', () => {
             },
         )
 
-        result.current.setSelectedPlans((prev) => ({
-            ...prev,
-            [ProductType.SMS]: {
-                plan: smsPlan1,
-                isSelected: true,
-            },
-        }))
+        await act(async () => {
+            await result.current.setSelectedPlans((prev) => ({
+                ...prev,
+                [ProductType.SMS]: {
+                    plan: smsPlan1,
+                    isSelected: true,
+                },
+            }))
+        })
+
         await result.current.updateSubscription()
 
-        expect(client.get).toHaveBeenCalledTimes(1)
-        // ticket created should contain "SMS plan request: SMS Addon 150 Monthly"
-        expect(client.get).toHaveBeenCalledWith(
-            'https://hooks.zapier.com/hooks/catch/9639651/3hsj6pb/?message=New%20SMS%20Add-on%20Request%20by%20acme%0AProduct(s)%3A%20SMS%20Add-on%20Plan%20selection%20-%20acme%0ASMS%20plan%20request%3A%20SMS%20Addon%20150%20Monthly&from=undefined&to=billing%40gorgias.com&subject=SMS%20Add-on%20Plan%20selection%20-%20acme&helpdeskPlan=Basic&freeTrial=true&account=acme',
-            {
-                transformRequest: expect.any(Function),
-            },
-        )
+        await waitFor(() => {
+            expect(client.get).toHaveBeenCalledTimes(1)
+            // ticket created should contain "SMS plan request: SMS Addon 150 Monthly"
+            expect(client.get).toHaveBeenCalledWith(
+                'https://hooks.zapier.com/hooks/catch/9639651/3hsj6pb/?message=New%20SMS%20Add-on%20Request%20by%20acme%0AProduct(s)%3A%20SMS%20Add-on%20Plan%20selection%20-%20acme%0ASMS%20plan%20request%3A%20SMS%20Addon%20150%20Monthly&from=undefined&to=billing%40gorgias.com&subject=SMS%20Add-on%20Plan%20selection%20-%20acme&helpdeskPlan=Basic&freeTrial=true&account=acme',
+                {
+                    transformRequest: expect.any(Function),
+                },
+            )
+        })
     })
 
     it('should update subscriptions when a vetted user changes phone plans', async () => {
@@ -146,25 +149,33 @@ describe('useBillingPlans', () => {
             },
         )
 
-        result.current.setSelectedPlans((prev) => ({
-            ...prev,
-            [ProductType.SMS]: {
-                plan: smsPlan1,
-                isSelected: true,
-            },
-        }))
+        await act(async () => {
+            result.current.setSelectedPlans((prev) => ({
+                ...prev,
+                [ProductType.SMS]: {
+                    plan: smsPlan1,
+                    isSelected: true,
+                },
+            }))
+        })
+
         await result.current.updateSubscription()
 
         // ensure we're not trying to create a support ticket
-        expect(client.get).not.toHaveBeenCalled()
+        await waitFor(() => {
+            expect(client.get).not.toHaveBeenCalled()
 
-        expect(client.put).toHaveBeenCalledTimes(1)
-        expect(client.put).toHaveBeenCalledWith('/api/billing/subscription/', {
-            prices: [
-                basicMonthlyHelpdeskPlan.price_id,
-                voicePlan0.price_id, // current voice plan stays in place
-                smsPlan1.price_id,
-            ],
+            expect(client.put).toHaveBeenCalledTimes(1)
+            expect(client.put).toHaveBeenCalledWith(
+                '/api/billing/subscription/',
+                {
+                    prices: [
+                        basicMonthlyHelpdeskPlan.price_id,
+                        voicePlan0.price_id, // current voice plan stays in place
+                        smsPlan1.price_id,
+                    ],
+                },
+            )
         })
     })
 })

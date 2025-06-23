@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 
 import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 
@@ -59,6 +59,7 @@ const workflowVariables: WorkflowVariableList = [
         type: 'number',
     },
 ]
+
 describe('WorkflowVariablePicker', () => {
     const renderWithToolbarProvider = (
         overrides?: Partial<WorkflowVariablePickerProps>,
@@ -79,53 +80,82 @@ describe('WorkflowVariablePicker', () => {
         expect(screen.getByRole('button')).toHaveTextContent(/{\+} variables/i)
     })
 
-    it('should render a dropdown when the button is clicked', () => {
+    it('should render a dropdown when the button is clicked', async () => {
         renderWithToolbarProvider()
         screen.getByRole('button').click()
-        expect(screen.getByTestId('floating-overlay')).toBeInTheDocument()
+
+        await waitFor(() => {
+            expect(screen.getByTestId('floating-overlay')).toBeInTheDocument()
+        })
     })
 
-    it("should change the dropdown's content when a category is selected", () => {
+    it("should change the dropdown's content when a category is selected", async () => {
         // temp until we render the content from the context
         renderWithToolbarProvider()
         screen.getByRole('button').click()
+
+        await screen.findByText('Which order are you contacting us about?')
         screen.getByText('Which order are you contacting us about?').click()
-        expect(screen.getByTestId('floating-overlay')).toHaveTextContent(
-            'Order ID',
-        )
-        expect(screen.getByTestId('floating-overlay')).toHaveTextContent(
-            'Order date',
-        )
-        expect(screen.getByTestId('floating-overlay')).toHaveTextContent(
-            'Order total',
-        )
+
+        await waitFor(() => {
+            expect(screen.getByTestId('floating-overlay')).toHaveTextContent(
+                'Order ID',
+            )
+            expect(screen.getByTestId('floating-overlay')).toHaveTextContent(
+                'Order date',
+            )
+            expect(screen.getByTestId('floating-overlay')).toHaveTextContent(
+                'Order total',
+            )
+        })
     })
 
-    it("should go back to the categories when the 'back' button is clicked", () => {
+    it("should go back to the categories when the 'back' button is clicked", async () => {
         renderWithToolbarProvider()
         screen.getByRole('button').click()
+
+        await screen.findByText('Which order are you contacting us about?')
         screen.getByText('Which order are you contacting us about?').click()
+
+        await screen.findByText('arrow_back')
         screen.getByText('arrow_back').click()
-        expect(screen.getByTestId('floating-overlay')).toHaveTextContent(
-            'Customer first name',
-        )
+
+        await waitFor(() => {
+            expect(screen.getByTestId('floating-overlay')).toHaveTextContent(
+                'Customer first name',
+            )
+        })
     })
 
-    it('should close the dropdown when selecting an item', () => {
+    it('should close the dropdown when selecting an item', async () => {
         renderWithToolbarProvider()
         screen.getByRole('button').click()
+
+        await screen.findByText('Which order are you contacting us about?')
         screen.getByText('Which order are you contacting us about?').click()
         expect(screen.getByTestId('floating-overlay')).toBeInTheDocument()
+
+        await screen.findByText('Order ID')
         screen.getByText('Order ID').click()
-        expect(screen.queryByTestId('floating-overlay')).not.toBeInTheDocument()
+
+        await waitFor(() => {
+            expect(
+                screen.queryByTestId('floating-overlay'),
+            ).not.toBeInTheDocument()
+        })
     })
 
-    it("should call the 'onSelect' callback when selecting an item", () => {
+    it("should call the 'onSelect' callback when selecting an item", async () => {
         const onSelect = jest.fn()
         renderWithToolbarProvider({ onSelect })
         screen.getByRole('button').click()
+
+        await screen.findByText('Which order are you contacting us about?')
         screen.getByText('Which order are you contacting us about?').click()
+
+        await screen.findByText('Order ID')
         screen.getByText('Order ID').click()
+
         expect(onSelect).toHaveBeenCalledWith({
             nodeType: 'text_reply',
             name: 'Order ID',

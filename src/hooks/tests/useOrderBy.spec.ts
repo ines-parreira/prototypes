@@ -1,3 +1,5 @@
+import { waitFor } from '@testing-library/react'
+
 import useOrderBy from 'hooks/useOrderBy'
 import { OrderDirection } from 'models/api/types'
 import { renderHook } from 'utils/testing/renderHook'
@@ -26,41 +28,53 @@ describe('useOrderBy', () => {
         expect(result.current.orderParam).toBe('name:desc')
     })
 
-    it('should correctly update result when toggleOrderBy is called with same orderBy', () => {
+    it('should correctly update result when toggleOrderBy is called with same orderBy', async () => {
         const { result } = renderHook(() => useOrderBy<string>('name'))
         result.current.toggleOrderBy('name')
-        expect(result.current).toEqual(
-            expect.objectContaining({
-                orderBy: 'name',
-                orderDirection: 'desc',
-                orderParam: 'name:desc',
-            }),
-        )
+
+        await waitFor(() => {
+            expect(result.current).toEqual(
+                expect.objectContaining({
+                    orderBy: 'name',
+                    orderDirection: 'desc',
+                    orderParam: 'name:desc',
+                }),
+            )
+        })
     })
 
-    it('should correctly update result when toggleOrderBy is called with different orderBy', () => {
+    it('should correctly update result when toggleOrderBy is called with different orderBy', async () => {
         const { result } = renderHook(() => useOrderBy<string>('name'))
+
+        // act(() => {
         result.current.toggleOrderBy('category')
-        expect(result.current).toEqual(
-            expect.objectContaining({
-                orderBy: 'category',
-                orderDirection: 'asc',
-                orderParam: 'category:asc',
-            }),
-        )
+        // })
+
+        await waitFor(() => {
+            expect(result.current).toEqual(
+                expect.objectContaining({
+                    orderBy: 'category',
+                    orderDirection: 'asc',
+                    orderParam: 'category:asc',
+                }),
+            )
+        })
     })
 
-    it('should correctly update result when toggleOrderBy is called with different orderBy and orderDirection is not default', () => {
+    it('should correctly update result when toggleOrderBy is called with different orderBy and orderDirection is not default', async () => {
         const { result } = renderHook(() =>
             useOrderBy<string>('name', OrderDirection.Desc),
         )
         result.current.toggleOrderBy('language')
-        expect(result.current).toEqual(
-            expect.objectContaining({
-                orderBy: 'language',
-                orderDirection: 'asc',
-                orderParam: 'language:asc',
-            }),
-        )
+
+        await waitFor(() => {
+            expect(result.current).toEqual(
+                expect.objectContaining({
+                    orderBy: 'language',
+                    orderDirection: 'asc',
+                    orderParam: 'language:asc',
+                }),
+            )
+        })
     })
 })

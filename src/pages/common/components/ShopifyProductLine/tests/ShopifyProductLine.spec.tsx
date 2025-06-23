@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -151,10 +152,10 @@ describe('<ShopifyProductLine/>', () => {
             ).toBeInTheDocument()
         })
 
-        getByText('Product Recommendation').click()
+        await userEvent.click(getByText('Product Recommendation'))
         expect(getByText('Similar Browsed Products')).toBeInTheDocument()
 
-        getByText('Back').click()
+        await userEvent.click(getByText('Back'))
         expect(getByText('Automations', { exact: false })).toBeInTheDocument()
     })
 

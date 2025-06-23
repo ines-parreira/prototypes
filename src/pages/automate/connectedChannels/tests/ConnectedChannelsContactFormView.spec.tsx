@@ -2,6 +2,7 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { keyBy } from 'lodash'
 import { Provider } from 'react-redux'
@@ -343,7 +344,7 @@ describe('ConnectedChannelsContactFormView', () => {
         ).toHaveTextContent(mockContactFormChannels[0].value.name)
     })
 
-    it('should render the dropdown options', () => {
+    it('should render the dropdown options', async () => {
         render(
             <Router history={history}>
                 <Provider store={mockedStore}>
@@ -355,7 +356,9 @@ describe('ConnectedChannelsContactFormView', () => {
         )
 
         // click on the dropdown button
-        screen.getByRole('button', { name: 'Currently viewing' }).click()
+        await userEvent.click(
+            screen.getByRole('button', { name: 'Currently viewing' }),
+        )
 
         // expect the dropdown to be visible
         expect(screen.getByText('Currently viewing')).toBeInTheDocument()

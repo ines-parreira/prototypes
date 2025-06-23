@@ -404,12 +404,16 @@ exports[`<Infobar/> should render loading state because the search is in progres
       class="content"
     >
       <div
-        data-testid="InfobarCustomerInfo"
+        class="container"
       >
-        InfobarCustomerInfo
-        <div>
-          customer: 
-          {"id":2}
+        <div
+          class="inner"
+          style="min-height: 500px;"
+        >
+          <i
+            class="icon-custom icon-circle-o-notch md-spin"
+            style="font-size: 40px;"
+          />
         </div>
       </div>
     </div>

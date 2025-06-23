@@ -1,6 +1,5 @@
-import React, { Component, ReactNode } from 'react'
+import React, { Component, createRef, ReactNode } from 'react'
 
-import ReactDOM from 'react-dom'
 import Sortable, { MoveEvent, SortableEvent, SortableOptions } from 'sortablejs'
 
 type Props = {
@@ -21,6 +20,7 @@ type Props = {
  */
 class ReactSortable extends Component<Props> {
     private sortable: Sortable | null
+    private elementRef = createRef<HTMLElement>()
     static defaultProps: Pick<Props, 'options' | 'tag'> = {
         options: {},
         tag: 'div',
@@ -111,10 +111,9 @@ class ReactSortable extends Component<Props> {
             }
         })
 
-        this.sortable = Sortable.create(
-            ReactDOM.findDOMNode(this) as Element,
-            options,
-        )
+        if (this.elementRef.current) {
+            this.sortable = Sortable.create(this.elementRef.current, options)
+        }
     }
 
     componentWillUnmount() {
@@ -127,9 +126,15 @@ class ReactSortable extends Component<Props> {
     render() {
         const { children, className, tag } = this.props
         if (tag) {
-            return React.createElement(tag, { className }, children)
+            return React.createElement(
+                tag,
+                { className, ref: this.elementRef },
+                children,
+            )
         }
-        return children
+        return React.cloneElement(children as React.ReactElement, {
+            ref: this.elementRef,
+        })
     }
 }
 

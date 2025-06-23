@@ -96,7 +96,7 @@ exports[`<DropdownSearch /> should render 1`] = `
   </div>
   <div
     data-floating-ui-portal=""
-    id="floating-ui-0"
+    id=":r1:"
   >
     <div
       class="overlay"
@@ -124,8 +124,8 @@ exports[`<DropdownSearch /> should render 1`] = `
             </span>
             <input
               class="input"
-              id="input-text-2"
-              name="input-text-2"
+              id="input-text-1"
+              name="input-text-1"
               placeholder="Search"
               type="text"
               value=""

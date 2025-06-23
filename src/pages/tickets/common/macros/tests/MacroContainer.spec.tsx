@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -141,31 +141,34 @@ describe('<MacroContainer />', () => {
         expect(getDefaultSelectedMacroIdMock).toHaveBeenCalledTimes(1)
     })
 
-    it('should trigger update of displayed macro on click', () => {
+    it('should trigger update of displayed macro on click', async () => {
         render(
             <Provider store={mockStore(defaultStore)}>
                 <MacroContainer {...props} />
             </Provider>,
         )
 
+        await screen.findByText('handleClickItem')
         screen.getByText('handleClickItem').click()
 
-        expect(props.toggleCreateMacro).toHaveBeenCalledWith(false)
-        expect(getDefaultSelectedMacroIdMock).toHaveBeenNthCalledWith(
-            1,
-            [],
-            null,
-            false,
-        )
-        expect(getDefaultSelectedMacroIdMock).toHaveBeenNthCalledWith(
-            2,
-            [],
-            11,
-            false,
-        )
+        await waitFor(() => {
+            expect(props.toggleCreateMacro).toHaveBeenCalledWith(false)
+            expect(getDefaultSelectedMacroIdMock).toHaveBeenNthCalledWith(
+                1,
+                [],
+                null,
+                false,
+            )
+            expect(getDefaultSelectedMacroIdMock).toHaveBeenNthCalledWith(
+                2,
+                [],
+                11,
+                false,
+            )
+        })
     })
 
-    it('should trigger search update', () => {
+    it('should trigger search update', async () => {
         render(
             <Provider store={mockStore(defaultStore)}>
                 <MacroContainer {...props} />
@@ -177,13 +180,15 @@ describe('<MacroContainer />', () => {
             ticket: undefined,
         })
 
+        await screen.findByText('onSearch')
         screen.getByText('onSearch').click()
-
-        expect(useMacrosSearchMock).toHaveBeenNthCalledWith(2, {
-            params: {
-                search: 'new search',
-            },
-            ticket: undefined,
+        await waitFor(() => {
+            expect(useMacrosSearchMock).toHaveBeenNthCalledWith(2, {
+                params: {
+                    search: 'new search',
+                },
+                ticket: undefined,
+            })
         })
     })
 })

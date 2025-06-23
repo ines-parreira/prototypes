@@ -1,6 +1,7 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -75,10 +76,10 @@ describe('<MoreActions />', () => {
             </Provider>,
         )
 
-    it('should trigger a job for marking as unread tickets', () => {
+    it('should trigger a job for marking as unread tickets', async () => {
         renderWithStore(minProps)
-        screen.getByText('more_horiz').click()
-        screen.getByText('Mark as unread').click()
+        await userEvent.click(screen.getByText('more_horiz'))
+        await userEvent.click(screen.getByText('Mark as unread'))
 
         expect(minProps.launchJob).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -90,10 +91,10 @@ describe('<MoreActions />', () => {
         )
     })
 
-    it('should trigger a job for marking as read tickets', () => {
+    it('should trigger a job for marking as read tickets', async () => {
         renderWithStore(minProps)
-        screen.getByText('more_horiz').click()
-        screen.getByText('Mark as read').click()
+        await userEvent.click(screen.getByText('more_horiz'))
+        await userEvent.click(screen.getByText('Mark as read'))
 
         expect(minProps.launchJob).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -105,10 +106,10 @@ describe('<MoreActions />', () => {
         )
     })
 
-    it('should trigger a job for exporting tickets', () => {
+    it('should trigger a job for exporting tickets', async () => {
         renderWithStore(minProps)
-        screen.getByText('more_horiz').click()
-        screen.getByText('Export tickets').click()
+        await userEvent.click(screen.getByText('more_horiz'))
+        await userEvent.click(screen.getByText('Export tickets'))
 
         expect(minProps.launchJob).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -120,11 +121,11 @@ describe('<MoreActions />', () => {
         )
     })
 
-    it('should trigger a job for trashing tickets', () => {
+    it('should trigger a job for trashing tickets', async () => {
         renderWithStore(minProps)
-        screen.getByText('more_horiz').click()
-        screen.getByText('Delete').click()
-        screen.getByText('Confirm').click()
+        await userEvent.click(screen.getByText('more_horiz'))
+        await userEvent.click(screen.getByText('Delete'))
+        await userEvent.click(screen.getByText('Confirm'))
 
         expect(minProps.launchJob).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -135,7 +136,7 @@ describe('<MoreActions />', () => {
         )
     })
 
-    it('should trigger a job for untrashing tickets', () => {
+    it('should trigger a job for untrashing tickets', async () => {
         renderWithStore(minProps, {
             ...defaultStore,
             views: fromJS({
@@ -144,8 +145,8 @@ describe('<MoreActions />', () => {
                 },
             }),
         })
-        screen.getByText('more_horiz').click()
-        screen.getByText('Undelete').click()
+        await userEvent.click(screen.getByText('more_horiz'))
+        await userEvent.click(screen.getByText('Undelete'))
 
         expect(minProps.launchJob).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -157,7 +158,7 @@ describe('<MoreActions />', () => {
         )
     })
 
-    it('should trigger a job for deleting tickets', () => {
+    it('should trigger a job for deleting tickets', async () => {
         renderWithStore(minProps, {
             ...defaultStore,
             views: fromJS({
@@ -166,9 +167,9 @@ describe('<MoreActions />', () => {
                 },
             }),
         })
-        screen.getByText('more_horiz').click()
-        screen.getByText('Delete forever').click()
-        screen.getByText('Confirm').click()
+        await userEvent.click(screen.getByText('more_horiz'))
+        await userEvent.click(screen.getByText('Delete forever'))
+        await userEvent.click(screen.getByText('Confirm'))
 
         expect(minProps.launchJob).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -179,21 +180,21 @@ describe('<MoreActions />', () => {
         )
     })
 
-    it('should disable bulk action buttons', () => {
+    it('should disable bulk action buttons', async () => {
         renderWithStore({
             ...minProps,
             isDisabled: true,
         })
-        screen.getByText('more_horiz').click()
+        await userEvent.click(screen.getByText('more_horiz'))
         expect(screen.queryByText('Mark as read')).not.toBeInTheDocument
     })
 
-    it('should trigger a job for applying a tag', () => {
+    it('should trigger a job for applying a tag', async () => {
         renderWithStore()
-        screen.getByText('more_horiz').click()
-        screen.getByText('Add tag').click()
+        await userEvent.click(screen.getByText('more_horiz'))
+        await userEvent.click(screen.getByText('Add tag'))
         expect(screen.getByText('arrow_back')).toBeInTheDocument
-        screen.getByText('TagDropdownMenuMock').click()
+        await userEvent.click(screen.getByText('TagDropdownMenuMock'))
 
         expect(minProps.launchJob).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -207,11 +208,11 @@ describe('<MoreActions />', () => {
         expect(screen.queryByText('Add tag')).not.toBeInTheDocument
     })
 
-    it('should trigger a job for applying a macro', () => {
+    it('should trigger a job for applying a macro', async () => {
         renderWithStore()
-        screen.getByText('more_horiz').click()
-        screen.getByText('Apply macro').click()
-        screen.getByText('ApplyMacroMock').click()
+        await userEvent.click(screen.getByText('more_horiz'))
+        await userEvent.click(screen.getByText('Apply macro'))
+        await userEvent.click(screen.getByText('ApplyMacroMock'))
 
         expect(minProps.onComplete).toHaveBeenCalledWith()
         expect(logEventMock).toHaveBeenCalledWith(SegmentEvent.BulkAction, {
@@ -223,12 +224,12 @@ describe('<MoreActions />', () => {
         expect(screen.queryByText('Apply macro')).not.toBeInTheDocument
     })
 
-    it('should trigger a job for assigning a team', () => {
+    it('should trigger a job for assigning a team', async () => {
         renderWithStore()
-        screen.getByText('more_horiz').click()
-        screen.getByText('Assign to team').click()
+        await userEvent.click(screen.getByText('more_horiz'))
+        await userEvent.click(screen.getByText('Assign to team'))
         expect(screen.getByText('arrow_back')).toBeInTheDocument
-        screen.getByText('TeamAssigneeDropdownMenuMock').click()
+        await userEvent.click(screen.getByText('TeamAssigneeDropdownMenuMock'))
 
         expect(minProps.launchJob).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -244,20 +245,20 @@ describe('<MoreActions />', () => {
         expect(screen.queryByText('Assign to team')).not.toBeInTheDocument
     })
 
-    it('should not display the inaccessible actions for user below agent role', () => {
+    it('should not display the inaccessible actions for user below agent role', async () => {
         renderWithStore(minProps, {
             ...defaultStore,
             currentUser: fromJS({
                 role: { name: UserRole.BasicAgent },
             }),
         })
-        screen.getByText('more_horiz').click()
+        await userEvent.click(screen.getByText('more_horiz'))
 
         expect(screen.queryByText('Export tickets')).not.toBeInTheDocument
         expect(screen.queryByText('Delete')).not.toBeInTheDocument
     })
 
-    it('should not display the inaccessible actions on trash-like view for user below agent role', () => {
+    it('should not display the inaccessible actions on trash-like view for user below agent role', async () => {
         renderWithStore(minProps, {
             currentUser: fromJS({
                 role: { name: UserRole.BasicAgent },
@@ -268,26 +269,26 @@ describe('<MoreActions />', () => {
                 },
             }),
         })
-        screen.getByText('more_horiz').click()
+        await userEvent.click(screen.getByText('more_horiz'))
 
         expect(screen.queryByText('Undelete')).not.toBeInTheDocument
         expect(screen.queryByText('Delete forever')).not.toBeInTheDocument
     })
 
-    it('should display singular noun', () => {
+    it('should display singular noun', async () => {
         renderWithStore({ ...minProps, selectionCount: 1 })
-        screen.getByText('more_horiz').click()
-        screen.getByText('Delete').click()
+        await userEvent.click(screen.getByText('more_horiz'))
+        await userEvent.click(screen.getByText('Delete'))
 
         expect(
             screen.getByText('Are you sure you want to delete 1 ticket?'),
         ).toBeInTheDocument()
     })
 
-    it('should display plural noun', () => {
+    it('should display plural noun', async () => {
         renderWithStore(minProps)
-        screen.getByText('more_horiz').click()
-        screen.getByText('Delete').click()
+        await userEvent.click(screen.getByText('more_horiz'))
+        await userEvent.click(screen.getByText('Delete'))
 
         expect(
             screen.getByText('Are you sure you want to delete tickets?'),

@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { render } from '@testing-library/react'
+import { render, waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
 import { Tag, TicketTag } from '@gorgias/helpdesk-queries'
@@ -8,6 +8,7 @@ import { Tag, TicketTag } from '@gorgias/helpdesk-queries'
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import { TagDropdownMenu } from 'tags'
 import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
 
 import TagDropdown from '../TagDropdown'
 
@@ -52,12 +53,14 @@ describe('<TagDropdown />', () => {
         expect(getByText(/TagDropdownMenuMock/)).toBeInTheDocument()
     })
 
-    it('should filter out tags already added to ticket', () => {
+    it('should filter out tags already added to ticket', async () => {
         const { getByText } = render(<TagDropdown {...props} />)
 
-        getByText(/Add tags/).click()
+        await userEvent.click(getByText(/Add tags/))
 
-        expect(getByText(/filterBy test: angry false/)).toBeInTheDocument()
-        expect(getByText(/filterBy test: pop true/)).toBeInTheDocument()
+        await waitFor(() => {
+            expect(getByText(/filterBy test: angry false/)).toBeInTheDocument()
+            expect(getByText(/filterBy test: pop true/)).toBeInTheDocument()
+        })
     })
 })

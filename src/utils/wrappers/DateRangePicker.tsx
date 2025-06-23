@@ -14,6 +14,7 @@ export const DateRangePicker = forwardRef<
     DateRangePickerProps
 >(({ children, ...props }, ref) => {
     return (
+        // @ts-expect-error
         <BaseDateRangePicker ref={ref} {...props}>
             {children}
         </BaseDateRangePicker>

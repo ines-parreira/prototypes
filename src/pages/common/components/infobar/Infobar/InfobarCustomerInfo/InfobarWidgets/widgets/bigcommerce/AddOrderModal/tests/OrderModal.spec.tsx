@@ -283,7 +283,7 @@ describe('OrderModalConnected', () => {
         expect(bigcommerceCreateOrderSpy).toHaveBeenCalledTimes(0)
     })
 
-    // @todo: Fix test
+    // TODO(React18): fix this test
     test.skip('`Create order` button sends a create BigCommerce order action', () => {
         const bigcommerceCreateOrderSpy = jest.spyOn(
             utils,

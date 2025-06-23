@@ -1,9 +1,8 @@
-import React from 'react'
-
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import { ViewCategoryNavbar, ViewVisibility } from 'models/view/types'
+import { userEvent } from 'utils/testing/userEvent'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import NavbarBlock from '../NavbarBlock'
@@ -30,18 +29,20 @@ describe('<NavbarBlock/>', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should toggle the menu on clicking the dropdown toggle', () => {
+    it('should toggle the menu on clicking the dropdown toggle', async () => {
         render(
             <DndProvider backend={HTML5Backend}>
                 <NavbarBlock {...minProps}>foobar</NavbarBlock>
             </DndProvider>,
         )
 
-        screen.getByRole('button').click()
+        await userEvent.click(screen.getByRole('button'))
 
-        expect(screen.getByRole('menu').getAttribute('aria-hidden')).toBe(
-            'false',
-        )
+        await waitFor(() => {
+            expect(screen.getByRole('menu').getAttribute('aria-hidden')).toBe(
+                'false',
+            )
+        })
     })
 
     it('should render an icon', () => {

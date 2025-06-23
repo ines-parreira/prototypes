@@ -98,6 +98,13 @@ describe('useEmailMigrationBanner', () => {
             }
         })
 
+        mockUseLocation.mockReturnValue({
+            pathname: mockLocation,
+            search: '',
+            state: undefined,
+            hash: '',
+        })
+
         renderHook(useEmailMigrationBanner)
 
         expect(mockedAddBanner).not.toHaveBeenCalled()

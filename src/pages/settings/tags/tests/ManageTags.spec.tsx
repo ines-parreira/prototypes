@@ -106,22 +106,16 @@ describe('ManageTags component', () => {
             </Provider>,
         )
 
-        await act(async () => {
-            await screen.findByText(tagsFixtures[0].name)
+        await screen.findByText(tagsFixtures[0].name)
 
-            fireEvent.click(
-                screen.getByRole('checkbox', { name: 'select-all' }),
-            )
+        fireEvent.click(screen.getByRole('checkbox', { name: 'select-all' }))
 
-            fireEvent.click(screen.getByText('Delete'))
-            const confirmButton = await screen.findByText(/Confirm/i)
-            fireEvent.click(confirmButton)
+        fireEvent.click(screen.getByText('Delete'))
+        const confirmButton = await screen.findByText(/Confirm/i)
+        fireEvent.click(confirmButton)
 
-            expect(tagActions.bulkDelete).toHaveBeenCalledTimes(1)
-            expect(tagActions.bulkDelete).toHaveBeenCalledWith(
-                Object.keys(meta),
-            )
-        })
+        expect(tagActions.bulkDelete).toHaveBeenCalledTimes(1)
+        expect(tagActions.bulkDelete).toHaveBeenCalledWith(Object.keys(meta))
     })
 
     it('merge all tags when select-all is checked', async () => {
@@ -131,20 +125,16 @@ describe('ManageTags component', () => {
             </Provider>,
         )
 
-        await act(async () => {
-            await screen.findByText(tagsFixtures[0].name)
+        await screen.findByText(tagsFixtures[0].name)
 
-            fireEvent.click(
-                screen.getByRole('checkbox', { name: 'select-all' }),
-            )
+        fireEvent.click(screen.getByRole('checkbox', { name: 'select-all' }))
 
-            fireEvent.click(screen.getByText('Merge'))
-            const confirmButton = await screen.findByText(/Confirm/i)
-            fireEvent.click(confirmButton)
+        fireEvent.click(screen.getByText('Merge'))
+        const confirmButton = await screen.findByText(/Confirm/i)
+        fireEvent.click(confirmButton)
 
-            expect(tagActions.merge).toHaveBeenCalledTimes(1)
-            expect(tagActions.merge).toHaveBeenCalledWith(keys)
-        })
+        expect(tagActions.merge).toHaveBeenCalledTimes(1)
+        expect(tagActions.merge).toHaveBeenCalledWith(keys)
     })
 
     it('should untoggle select-all checkbox after merge if the checkbox was toggled', async () => {
@@ -163,19 +153,15 @@ describe('ManageTags component', () => {
             </Provider>,
         )
 
-        await act(async () => {
-            await screen.findByText(tagsFixtures[0].name)
+        await screen.findByText(tagsFixtures[0].name)
 
-            fireEvent.click(
-                screen.getByRole('checkbox', { name: 'select-all' }),
-            )
+        fireEvent.click(screen.getByRole('checkbox', { name: 'select-all' }))
 
-            fireEvent.click(screen.getByText('Merge'))
-            const confirmButton = await screen.findByText(/Confirm/i)
-            fireEvent.click(confirmButton)
+        fireEvent.click(screen.getByText('Merge'))
+        const confirmButton = await screen.findByText(/Confirm/i)
+        fireEvent.click(confirmButton)
 
-            expect(tagActions.selectAll).toHaveBeenCalledTimes(1)
-        })
+        expect(tagActions.selectAll).toHaveBeenCalledTimes(1)
     })
 
     it('should untoggle select-all checkbox after deletion if the checkbox was toggled', async () => {
@@ -194,19 +180,15 @@ describe('ManageTags component', () => {
             </Provider>,
         )
 
-        await act(async () => {
-            await screen.findByText(tagsFixtures[0].name)
+        await screen.findByText(tagsFixtures[0].name)
 
-            fireEvent.click(
-                screen.getByRole('checkbox', { name: 'select-all' }),
-            )
+        fireEvent.click(screen.getByRole('checkbox', { name: 'select-all' }))
 
-            fireEvent.click(screen.getByText('Delete'))
-            const confirmButton = await screen.findByText(/Confirm/i)
-            fireEvent.click(confirmButton)
+        fireEvent.click(screen.getByText('Delete'))
+        const confirmButton = await screen.findByText(/Confirm/i)
+        fireEvent.click(confirmButton)
 
-            expect(tagActions.bulkDelete).toHaveBeenCalledTimes(1)
-            expect(tagActions.selectAll).toHaveBeenCalledTimes(1)
-        })
+        expect(tagActions.bulkDelete).toHaveBeenCalledTimes(1)
+        expect(tagActions.selectAll).toHaveBeenCalledTimes(1)
     })
 })

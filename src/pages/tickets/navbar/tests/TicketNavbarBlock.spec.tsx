@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import { Navigation } from 'components/Navigation/Navigation'
 import { View, ViewCategoryNavbar, ViewVisibility } from 'models/view/types'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
-import { userEvent } from 'utils/testing/userEvent'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import { TicketNavbarBlock } from '../TicketNavbarBlock'
@@ -23,7 +23,7 @@ describe('<TicketNavbarBlock/>', () => {
         value: ViewVisibility.Public as ViewCategoryNavbar,
     }
 
-    it('should toggle the menu on clicking the dropdown toggle', () => {
+    it('should toggle the menu on clicking the dropdown toggle', async () => {
         render(
             <DndProvider backend={HTML5Backend}>
                 <Navigation.Root>
@@ -32,7 +32,7 @@ describe('<TicketNavbarBlock/>', () => {
             </DndProvider>,
         )
 
-        screen.getByRole('button', { name: 'add' }).click()
+        await userEvent.click(screen.getByRole('button', { name: 'add' }))
 
         expect(screen.getByRole('menu').getAttribute('aria-hidden')).toBe(
             'false',

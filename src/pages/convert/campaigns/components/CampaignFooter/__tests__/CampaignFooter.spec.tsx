@@ -92,18 +92,18 @@ describe('<CampaignFooter />', () => {
             expect(queryByText('Duplicate Campaign')).not.toBeInTheDocument()
         })
 
-        it('renders delete button with light modal when over campaigns limit', () => {
+        it('renders delete button with light modal when over campaigns limit', async () => {
             const { getByText } = renderComponent({
                 ...defaultProps,
                 isOverLimit: true,
             })
 
-            getByText('Delete Campaign').click()
+            userEvent.click(getByText('Delete Campaign'))
 
             expect(getByText('Learn About Convert')).toBeInTheDocument()
         })
 
-        it('renders delete button without light modal when over campaigns limit, but dismissed', () => {
+        it('renders delete button without light modal when over campaigns limit, but dismissed', async () => {
             useLocalStorageSpy.mockReturnValue([true])
 
             const { getByText, queryByText } = renderComponent({
@@ -111,7 +111,7 @@ describe('<CampaignFooter />', () => {
                 isOverLimit: true,
             })
 
-            getByText('Delete Campaign').click()
+            userEvent.click(getByText('Delete Campaign'))
 
             expect(queryByText('Learn About Convert')).not.toBeInTheDocument()
             expect(getByText('Confirm')).toBeInTheDocument()

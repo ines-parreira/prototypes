@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react'
 
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { useParams } from 'react-router-dom'
 
@@ -367,12 +367,33 @@ describe('<MacrosSettingsForm/>', () => {
         })
     })
 
-    it('should disable submit button when submitting form', () => {
+    it('should only trigger submit once when clicked twice quickly', async () => {
+        let resolve: (value: Macro) => void
+        const mockPromise = new Promise<Macro>((res) => {
+            resolve = res
+        })
+
+        mockCreateMacro.mockReturnValue(mockPromise)
         mockedUseParams.mockReturnValue({})
+
         render(<MacrosSettingsFormContainer {...minProps} />)
 
-        screen.getByText('Create macro').click()
-        screen.getByText('Create macro').click()
+        const button = screen.getByRole('button', { name: 'Create macro' })
+
+        // First click triggers submission (will stay pending)
+        await act(async () => {
+            button.click()
+        })
+
+        // Second click happens while still "submitting"
+        await act(async () => {
+            button.click()
+        })
+
+        // Resolve the async operation manually
+        act(() => {
+            resolve(newMacroFixture)
+        })
 
         expect(mockCreateMacro).toHaveBeenCalledTimes(1)
     })

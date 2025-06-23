@@ -1,6 +1,5 @@
-import React from 'react'
-
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { useRouteMatch } from 'react-router-dom'
@@ -23,7 +22,6 @@ import history from 'pages/history'
 import { notify } from 'state/notifications/actions'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { MacrosSettingsContent } from '../MacrosSettingsContent'
 
@@ -183,7 +181,7 @@ describe('<MacrosSettingsContent/>', () => {
         })
     })
 
-    it('should fetch the next macros when changing page', () => {
+    it('should fetch the next macros when changing page', async () => {
         render(
             <Provider
                 store={mockStore({
@@ -194,7 +192,7 @@ describe('<MacrosSettingsContent/>', () => {
             </Provider>,
         )
 
-        screen.getByText('keyboard_arrow_right').click()
+        await userEvent.click(screen.getByText('keyboard_arrow_right'))
         expect(mockUseListMacros).toHaveBeenNthCalledWith(
             2,
             {
@@ -208,7 +206,7 @@ describe('<MacrosSettingsContent/>', () => {
             },
         )
 
-        screen.getByText('keyboard_arrow_left').click()
+        await userEvent.click(screen.getByText('keyboard_arrow_left'))
         expect(mockUseListMacros).toHaveBeenNthCalledWith(
             3,
             {
@@ -223,7 +221,7 @@ describe('<MacrosSettingsContent/>', () => {
         )
     })
 
-    it('should fetch macros when sorting options change', () => {
+    it('should fetch macros when sorting options change', async () => {
         render(
             <Provider
                 store={mockStore({
@@ -234,7 +232,7 @@ describe('<MacrosSettingsContent/>', () => {
             </Provider>,
         )
 
-        userEvent.click(screen.getByText('Macro'))
+        await userEvent.click(screen.getByText('Macro'))
 
         expect(mockUseListMacros).toHaveBeenNthCalledWith(
             2,
@@ -249,7 +247,7 @@ describe('<MacrosSettingsContent/>', () => {
         )
     })
 
-    it('should refetch macros at previous page if last page is empty', () => {
+    it('should refetch macros at previous page if last page is empty', async () => {
         mockUseListMacros.mockReturnValue({
             data: {
                 data: {
@@ -272,30 +270,34 @@ describe('<MacrosSettingsContent/>', () => {
             </Provider>,
         )
 
-        screen.getByText('more_vert').click()
-        screen.getByText(/Delete/).click()
-        screen.getByText('Confirm').click()
+        await userEvent.click(screen.getByText('more_vert'))
+        await screen.findByText(/Delete/)
+        await userEvent.click(screen.getByText(/Delete/))
+        await screen.findByText('Confirm')
+        await userEvent.click(screen.getByText('Confirm'))
 
         expect(mockMutateDelete).toHaveBeenCalled()
         ;(
             mockMutateDelete.mock.calls[0] as { onSettled: () => void }[]
         )[1].onSettled()
 
-        expect(mockUseListMacros).toHaveBeenNthCalledWith(
-            2,
-            {
-                order_by: `${mockProperty}:${mockOrder}`,
-                cursor: 'prev_cursor',
-            },
-            {
-                query: {
-                    staleTime: expect.any(Number),
+        await waitFor(() => {
+            expect(mockUseListMacros).toHaveBeenNthCalledWith(
+                2,
+                {
+                    order_by: `${mockProperty}:${mockOrder}`,
+                    cursor: 'prev_cursor',
                 },
-            },
-        )
+                {
+                    query: {
+                        staleTime: expect.any(Number),
+                    },
+                },
+            )
+        })
     })
 
-    it('should refetch macros once a macro has been deleted', () => {
+    it('should refetch macros once a macro has been deleted', async () => {
         mockUseListMacros
             .mockReturnValueOnce({
                 data: {
@@ -331,29 +333,34 @@ describe('<MacrosSettingsContent/>', () => {
             </Provider>,
         )
 
-        screen.getByText('keyboard_arrow_right').click()
-        screen.getByText('more_vert').click()
-        screen.getByText(/Delete/).click()
-        screen.getByText('Confirm').click()
+        await userEvent.click(screen.getByText('keyboard_arrow_right'))
+        await screen.findByText('more_vert')
+        await userEvent.click(screen.getByText('more_vert'))
+        await screen.findByText(/Delete/)
+        await userEvent.click(screen.getByText(/Delete/))
+        await screen.findByText('Confirm')
+        await userEvent.click(screen.getByText('Confirm'))
         ;(
             mockMutateDelete.mock.calls[0] as { onSettled: () => void }[]
         )[1].onSettled()
 
-        expect(mockUseListMacros).toHaveBeenNthCalledWith(
-            3,
-            {
-                order_by: `${mockProperty}:${mockOrder}`,
-                cursor: undefined,
-            },
-            {
-                query: {
-                    staleTime: expect.any(Number),
+        await waitFor(() => {
+            expect(mockUseListMacros).toHaveBeenNthCalledWith(
+                3,
+                {
+                    order_by: `${mockProperty}:${mockOrder}`,
+                    cursor: undefined,
                 },
-            },
-        )
+                {
+                    query: {
+                        staleTime: expect.any(Number),
+                    },
+                },
+            )
+        })
     })
 
-    it('should duplicate macro with success', () => {
+    it('should duplicate macro with success', async () => {
         render(
             <Provider
                 store={mockStore({
@@ -364,8 +371,8 @@ describe('<MacrosSettingsContent/>', () => {
             </Provider>,
         )
 
-        screen.getAllByText('more_vert')[0].click()
-        screen.getByText(/Make a copy/).click()
+        await userEvent.click(screen.getAllByText('more_vert')[0])
+        await userEvent.click(screen.getByText(/Make a copy/))
 
         const id = 18
         ;(
@@ -409,7 +416,7 @@ describe('<MacrosSettingsContent/>', () => {
         )
     })
 
-    it('should not sort when searching', () => {
+    it('should not sort when searching', async () => {
         render(
             <Provider
                 store={mockStore({
@@ -425,7 +432,7 @@ describe('<MacrosSettingsContent/>', () => {
             target: { value: searchTerm },
         })
 
-        userEvent.click(screen.getByText('Macro'))
+        await userEvent.click(screen.getByText('Macro'))
 
         expect(mockUseListMacros).not.toHaveBeenNthCalledWith(
             2,
@@ -441,7 +448,7 @@ describe('<MacrosSettingsContent/>', () => {
         )
     })
 
-    it('should reset selected macros on tab change', () => {
+    it('should reset selected macros on tab change', async () => {
         render(
             <Provider
                 store={mockStore({
@@ -456,19 +463,19 @@ describe('<MacrosSettingsContent/>', () => {
         const checkboxFirstMacro = screen.getByLabelText(macrosFixtures[0].id!)
         const checkboxSecondMacro = screen.getByLabelText(macrosFixtures[1].id!)
 
-        checkboxAll.click()
-        screen.getByText('Active').click()
+        await userEvent.click(checkboxAll)
+        await userEvent.click(screen.getByText('Active'))
 
         expect(checkboxAll).not.toBeChecked()
         expect(checkboxFirstMacro).not.toBeChecked()
         expect(checkboxSecondMacro).not.toBeChecked()
 
-        checkboxFirstMacro.click()
+        await userEvent.click(checkboxFirstMacro)
 
         expect(checkboxFirstMacro).toBeChecked()
         expect(checkboxAll).not.toBeChecked()
 
-        screen.getByText('Archived').click()
+        await userEvent.click(screen.getByText('Archived'))
 
         expect(checkboxFirstMacro).not.toBeChecked()
     })
@@ -526,9 +533,7 @@ describe('<MacrosSettingsContent/>', () => {
         )
 
         // Navigate to next page to set a cursor
-        act(() => {
-            screen.getByText('keyboard_arrow_right').click()
-        })
+        await userEvent.click(screen.getByText('keyboard_arrow_right'))
 
         const searchTerm = 'foobar'
         act(() => {
@@ -579,9 +584,7 @@ describe('<MacrosSettingsContent/>', () => {
         )
 
         // Navigate to next page to set a cursor
-        act(() => {
-            screen.getByText('keyboard_arrow_right').click()
-        })
+        await userEvent.click(screen.getByText('keyboard_arrow_right'))
 
         // Simulate filter change
         const mockFilterParams = {

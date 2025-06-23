@@ -47,7 +47,7 @@ exports[`ShippingMethod create/update consignment and change shipping method: dr
   </div>
   <div
     data-floating-ui-portal=""
-    id="floating-ui-0"
+    id=":r1:"
   >
     <div
       class="overlay"
@@ -191,7 +191,7 @@ exports[`ShippingMethod create/update consignment and change shipping method: in
   </div>
   <div
     data-floating-ui-portal=""
-    id="floating-ui-0"
+    id=":r1:"
   />
 </body>
 `;
@@ -226,7 +226,7 @@ exports[`ShippingMethod create/update consignment and change shipping method: sh
   </div>
   <div
     data-floating-ui-portal=""
-    id="floating-ui-0"
+    id=":r1:"
   />
 </body>
 `;

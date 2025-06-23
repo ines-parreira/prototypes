@@ -84,6 +84,7 @@ function TableVirtuoso(props: TableVirtuosoProps<unknown, unknown>, _ref: any) {
                 <EmptyPlaceholder />
             )}
             {!!fixedHeaderContent && !!TableHead && (
+                // @ts-expect-error
                 <TableHead>{fixedHeaderContent()}</TableHead>
             )}
             {props.data?.map((value, index) => {

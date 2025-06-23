@@ -1,3 +1,5 @@
+import { waitFor } from '@testing-library/react'
+
 import { renderHook } from 'utils/testing/renderHook'
 
 import { useVisibilityState } from '../useVisibilityState'
@@ -35,7 +37,7 @@ describe('useVisibilityState', () => {
         expect(result.current).toBe(false)
     })
 
-    it('should update state when visibility changes', () => {
+    it('should update state when visibility changes', async () => {
         const { result } = renderHook(() => useVisibilityState())
         expect(result.current).toBe(true)
 
@@ -44,14 +46,18 @@ describe('useVisibilityState', () => {
         })
         document.dispatchEvent(mockVisibilityChange)
 
-        expect(result.current).toBe(false)
+        await waitFor(() => {
+            expect(result.current).toBe(false)
+        })
 
         Object.defineProperty(document, 'visibilityState', {
             value: 'visible',
         })
         document.dispatchEvent(mockVisibilityChange)
 
-        expect(result.current).toBe(true)
+        await waitFor(() => {
+            expect(result.current).toBe(true)
+        })
     })
 
     it('should clean up event listener on unmount', () => {

@@ -18,7 +18,7 @@ import './initSocketManager'
 
 import React from 'react'
 
-import { render } from 'react-dom'
+import {createRoot} from 'react-dom/client'
 
 import 'init'
 
@@ -47,5 +47,6 @@ if (process.env.NODE_ENV === 'development') {
 const container = document.getElementById('App')
 
 if (container) {
-    render(<Root store={store} />, container)
+    const root = createRoot(container)
+    root.render(<Root store={store} />)
 }

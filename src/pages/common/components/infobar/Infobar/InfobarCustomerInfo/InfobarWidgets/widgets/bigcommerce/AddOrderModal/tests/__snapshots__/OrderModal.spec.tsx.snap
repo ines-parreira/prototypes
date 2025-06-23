@@ -252,7 +252,6 @@ exports[`OrderModal should render Create Order 1`] = `
                     </i>
                   </span>
                 </button>
-                
               </div>
               <p
                 class="searchbarInfo"
@@ -428,11 +427,11 @@ exports[`OrderModal should render Create Order 1`] = `
   </div>
   <div
     data-floating-ui-portal=""
-    id="floating-ui-0"
+    id=":r3:"
   />
   <div
     data-floating-ui-portal=""
-    id="floating-ui-2"
+    id=":r5:"
   />
 </body>
 `;
@@ -689,7 +688,6 @@ exports[`OrderModal should render Duplicate Order 1`] = `
                     </i>
                   </span>
                 </button>
-                
               </div>
               <p
                 class="searchbarInfo"
@@ -868,11 +866,11 @@ exports[`OrderModal should render Duplicate Order 1`] = `
   </div>
   <div
     data-floating-ui-portal=""
-    id="floating-ui-9"
+    id=":r9:"
   />
   <div
     data-floating-ui-portal=""
-    id="floating-ui-11"
+    id=":rb:"
   />
 </body>
 `;

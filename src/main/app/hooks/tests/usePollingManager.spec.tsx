@@ -45,29 +45,30 @@ describe('usePollingManager', () => {
     })
 
     it('should start polling when user becomes active', () => {
+        mockAppSelector({ currentUser: { is_active: false } })
         const { rerender } = renderHook(() => usePollingManager())
         expect(pollingManager.start).not.toHaveBeenCalled()
 
-        mockAppSelector()
+        mockAppSelector({ currentUser: { is_active: true } })
         rerender()
         expect(pollingManager.start).toHaveBeenCalled()
     })
 
     it('should stop polling when user becomes inactive', () => {
-        mockAppSelector()
+        mockAppSelector({ currentUser: { is_active: true } })
         const { rerender } = renderHook(() => usePollingManager())
 
-        mockAppSelector({ currentUser: {} })
+        mockAppSelector({ currentUser: { is_active: false } })
         rerender()
         expect(pollingManager.stop).toHaveBeenCalled()
     })
 
     it("should not stop fetching recent views' counts", () => {
-        mockAppSelector()
+        mockAppSelector({ currentUser: { is_active: true } })
         const { rerender } = renderHook(() => usePollingManager())
 
         mockAppSelector({
-            currentUser: {},
+            currentUser: { is_active: false },
             shouldFetchActiveViewTickets: false,
         })
         rerender()
@@ -78,10 +79,13 @@ describe('usePollingManager', () => {
     })
 
     it("should stop fetching recent views' counts when user becomes inactive and active view has a chat filter", () => {
-        mockAppSelector()
+        mockAppSelector({ currentUser: { is_active: true } })
         const { rerender } = renderHook(() => usePollingManager())
 
-        mockAppSelector({ currentUser: {}, shouldFetchActiveViewTickets: true })
+        mockAppSelector({
+            currentUser: { is_active: false },
+            shouldFetchActiveViewTickets: true,
+        })
         getViewFiltersMock.mockReturnValue([
             {
                 operator: EqualityOperator.Eq,
@@ -95,7 +99,7 @@ describe('usePollingManager', () => {
     })
 
     it('should stop polling on unmount', () => {
-        mockAppSelector()
+        mockAppSelector({ currentUser: { is_active: true } })
         const { unmount } = renderHook(() => usePollingManager())
 
         unmount()

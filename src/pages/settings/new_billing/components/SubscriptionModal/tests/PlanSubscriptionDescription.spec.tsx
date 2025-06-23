@@ -1,6 +1,5 @@
-import React from 'react'
-
 import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { convertProduct } from 'fixtures/productPrices'
 import { ProductType } from 'models/billing/types'
@@ -52,7 +51,7 @@ describe('PlanSubscriptionDescription', () => {
         )
     })
 
-    it('should render correctly for enterprise plan', () => {
+    it('should render correctly for enterprise plan', async () => {
         renderWithStoreAndQueryClientProvider(
             <PlanSubscriptionDescription {...props} isEnterprisePlan={true} />,
         )
@@ -74,7 +73,7 @@ describe('PlanSubscriptionDescription', () => {
             currentSelectedPlan.num_quota_tickets.toString(),
         )
 
-        selectedPlan.click()
+        await userEvent.click(selectedPlan)
 
         const items = screen.getAllByRole('menuitem')
 
@@ -82,7 +81,7 @@ describe('PlanSubscriptionDescription', () => {
         expect(label).toEqual('Pay as you go')
         expect(items[0]).toHaveTextContent(label)
 
-        items[0].click()
+        await userEvent.click(items[0])
         expect(setSelectedPlanMock).toHaveBeenCalledWith(availablePlans[0])
     })
 })

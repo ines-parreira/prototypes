@@ -2,6 +2,7 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -15,7 +16,6 @@ import {
     updateCustomFieldValue,
 } from 'state/ticket/actions'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { userEvent } from 'utils/testing/userEvent'
 
 import DropdownField from '../DropdownField'
 
@@ -78,7 +78,7 @@ describe('<DropdownField />', () => {
         })
     })
 
-    it('should dispatch an error if the value is not in the choices', () => {
+    it('should dispatch an error if the value is not in the choices', async () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
@@ -92,11 +92,11 @@ describe('<DropdownField />', () => {
         expect(store.dispatch).toHaveBeenCalledWith(
             updateCustomFieldError(fieldState.id, true),
         )
-        userEvent.click(screen.getByRole('textbox'))
+        await userEvent.click(screen.getByRole('textbox'))
         expect(screen.queryByText('ss8')).toBeNull()
     })
 
-    it('should display all the items when focused and allow mouse navigation', () => {
+    it('should display all the items when focused and allow mouse navigation', async () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
@@ -110,15 +110,15 @@ describe('<DropdownField />', () => {
             </QueryClientProvider>,
         )
 
-        userEvent.click(screen.getByRole('textbox'))
+        await userEvent.click(screen.getByRole('textbox'))
         let navItem = screen.getByText('s1')
         expect(screen.getByText('s2'))
         // forth
-        userEvent.click(navItem)
+        await userEvent.click(navItem)
         expect(screen.getByText('ss1'))
         navItem = screen.getByText('s1')
         // and back
-        userEvent.click(navItem)
+        await userEvent.click(navItem)
         expect(screen.getByText('s2'))
     })
 
@@ -136,8 +136,8 @@ describe('<DropdownField />', () => {
             </QueryClientProvider>,
         )
 
-        userEvent.click(screen.getByRole('textbox'))
-        userEvent.click(screen.getByText('c1'))
+        await userEvent.click(screen.getByRole('textbox'))
+        await userEvent.click(screen.getByText('c1'))
         expect(store.dispatch).toHaveBeenNthCalledWith(
             1,
             updateCustomFieldError(fieldState.id, false),
@@ -164,8 +164,8 @@ describe('<DropdownField />', () => {
                 </Provider>
             </QueryClientProvider>,
         )
-        userEvent.click(screen.getByRole('textbox'))
-        userEvent.click(screen.getByText('c1'))
+        await userEvent.click(screen.getByRole('textbox'))
+        await userEvent.click(screen.getByText('c1'))
         await waitFor(() => {
             expect(store.dispatch).toHaveBeenLastCalledWith(
                 updateCustomFieldState(fieldState),
@@ -182,8 +182,8 @@ describe('<DropdownField />', () => {
             </QueryClientProvider>,
         )
 
-        userEvent.click(screen.getByRole('textbox'))
-        userEvent.click(screen.getByText(/Clear/))
+        await userEvent.click(screen.getByRole('textbox'))
+        await userEvent.click(screen.getByText(/Clear/))
         await waitFor(() => {
             expect(mockedServer.history.delete[0]).toBeDefined()
         })
@@ -199,14 +199,14 @@ describe('<DropdownField />', () => {
             </QueryClientProvider>,
         )
 
-        userEvent.click(screen.getByRole('textbox'))
-        userEvent.click(screen.getByText(/Clear/))
+        await userEvent.click(screen.getByRole('textbox'))
+        await userEvent.click(screen.getByText(/Clear/))
         await waitFor(() => {
             expect(mockedServer.history.delete).toHaveLength(0)
         })
     })
 
-    it('should not display a search input if not text choices', () => {
+    it('should not display a search input if not text choices', async () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
@@ -214,11 +214,11 @@ describe('<DropdownField />', () => {
                 </Provider>
             </QueryClientProvider>,
         )
-        userEvent.click(screen.getByRole('textbox'))
+        await userEvent.click(screen.getByRole('textbox'))
         expect(screen.queryByPlaceholderText('Search')).toBeNull()
     })
 
-    it('should display prediction icon in field and in list', () => {
+    it('should display prediction icon in field and in list', async () => {
         const props = {
             ...initialProps,
             fieldState: {
@@ -234,7 +234,7 @@ describe('<DropdownField />', () => {
                 </Provider>
             </QueryClientProvider>,
         )
-        userEvent.click(screen.getByRole('textbox'))
+        await userEvent.click(screen.getByRole('textbox'))
         expect(screen.getAllByText('auto_awesome')[0]).toBeInTheDocument()
     })
 

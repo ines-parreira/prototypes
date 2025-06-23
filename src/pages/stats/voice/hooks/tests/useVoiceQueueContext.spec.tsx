@@ -7,12 +7,8 @@ import { useVoiceQueueContext } from '../useVoiceQueueContext'
 
 describe('useVoiceQueueContext', () => {
     it('should throw an error if used outside of VoiceQueueProvider', () => {
-        const { result } = renderHook(() => useVoiceQueueContext())
-
-        expect(result.error).toEqual(
-            new Error(
-                'useVoiceQueueContext must be used within a VoiceQueueProvider',
-            ),
+        expect(() => renderHook(() => useVoiceQueueContext())).toThrow(
+            'useVoiceQueueContext must be used within a VoiceQueueProvider',
         )
     })
 

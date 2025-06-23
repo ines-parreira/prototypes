@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { act, render, screen, within } from '@testing-library/react'
+import { act, render, screen, waitFor, within } from '@testing-library/react'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import {
@@ -160,7 +160,7 @@ describe('<TableBodyRowExpandable />', () => {
         expect(screen.queryByText(level3Label)).not.toBeInTheDocument()
     })
 
-    it('should check if expand cell indent(left) style is applied based on depth level', () => {
+    it('should check if expand cell indent(left) style is applied based on depth level', async () => {
         const { container } = render(
             <TableBodyRowExpandable<WithChildren<Data>>
                 RowContentComponent={SampleRowContentComponentMock}
@@ -193,11 +193,13 @@ describe('<TableBodyRowExpandable />', () => {
         triggerWidthResize(1000)
         rafControl.run()
 
-        expect((expandCells[expandCellLevel0] as HTMLElement).style?.left).toBe(
-            `${COLUMN_WIDTH * expandCellLevel0}px`,
-        )
-        expect((expandCells[expandCellLevel1] as HTMLElement).style?.left).toBe(
-            `${COLUMN_WIDTH * expandCellLevel1}px`,
-        )
+        await waitFor(() => {
+            expect(
+                (expandCells[expandCellLevel0] as HTMLElement).style?.left,
+            ).toBe(`${COLUMN_WIDTH * expandCellLevel0}px`)
+            expect(
+                (expandCells[expandCellLevel1] as HTMLElement).style?.left,
+            ).toBe(`${COLUMN_WIDTH * expandCellLevel1}px`)
+        })
     })
 })

@@ -232,7 +232,7 @@ describe('<FieldForm/>', () => {
 
     it.each([true, false])(
         'should prompt for confirmation when closing the page with unsaved changes (%s)',
-        (error) => {
+        async (error) => {
             const onSubmit = error
                 ? jest.fn().mockRejectedValue('Error')
                 : jest.fn().mockResolvedValue({})
@@ -253,7 +253,7 @@ describe('<FieldForm/>', () => {
             expect(props.onSubmit).not.toHaveBeenCalled()
             expect(props.onClose).not.toHaveBeenCalled()
 
-            expect(screen.getByText('Save changes?'))
+            await screen.findByText('Save changes?')
             userEvent.click(
                 screen.getByRole('button', { name: 'Save Changes' }),
             )
@@ -267,13 +267,12 @@ describe('<FieldForm/>', () => {
         const { history } = renderWithRouter(<FieldForm {...defaultProps} />)
 
         const nameInput = screen.getByLabelText(/Name/)
-        await userEvent.clear(nameInput)
+        userEvent.clear(nameInput)
 
         history.push('/test')
 
-        await userEvent.click(
-            screen.getByRole('button', { name: 'Save Changes' }),
-        )
+        await screen.findByRole('button', { name: 'Save Changes' })
+        userEvent.click(screen.getByRole('button', { name: 'Save Changes' }))
 
         expect(notifyMock).toHaveBeenCalledWith({
             title: 'Unable to save, please complete all required fields',
@@ -329,7 +328,7 @@ describe('<FieldForm/>', () => {
         expect(updateMutateMock).toHaveBeenCalledWith(true)
     })
 
-    it('should not show the archive button opening a modal that closes itself when calling onClose', () => {
+    it('should not show the archive button opening a modal that closes itself when calling onClose', async () => {
         renderWithRouter(<FieldForm {...defaultProps} />)
 
         fireEvent.click(screen.getByText(/Archive/))
@@ -342,13 +341,16 @@ describe('<FieldForm/>', () => {
         )
 
         getLastMockCall(ArchiveConfirmationModalMock)[0].onClose()
-        expect(ArchiveConfirmationModalMock).toHaveBeenLastCalledWith(
-            expect.objectContaining({
-                customFieldLabel: defaultProps.field.label,
-                isOpen: false,
-            }),
-            {},
-        )
+
+        await waitFor(() => {
+            expect(ArchiveConfirmationModalMock).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    customFieldLabel: defaultProps.field.label,
+                    isOpen: false,
+                }),
+                {},
+            )
+        })
     })
 
     it.each(Object.values(OBJECT_TYPES))(

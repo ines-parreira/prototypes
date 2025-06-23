@@ -316,9 +316,13 @@ describe('SupportPerformanceRevenue', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should render the restricted feature page when where are no store integrations', () => {
+    it('should render the restricted feature page when there are no store integrations', () => {
         const store = mockStore({
             ...defaultState,
+            currentAccount: defaultState.currentAccount.setIn(
+                ['features', AccountFeature.RevenueStatistics, 'enabled'],
+                false,
+            ),
             integrations: fromJS([]),
         })
         const { container } = render(

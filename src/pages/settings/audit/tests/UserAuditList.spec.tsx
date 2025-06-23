@@ -128,7 +128,10 @@ describe('<UserAuditList/>', () => {
         })
 
         await waitForElementToBeRemoved(() => screen.getByText('Loader'))
-        expect(fetchEventsMock).toHaveBeenCalledTimes(4)
+
+        await waitFor(() => {
+            expect(fetchEventsMock).toHaveBeenCalledTimes(4)
+        })
     })
 
     it('should render the fetched events and page navigation', async () => {

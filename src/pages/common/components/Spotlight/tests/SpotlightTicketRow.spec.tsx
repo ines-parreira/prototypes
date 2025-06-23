@@ -1,6 +1,6 @@
 import React, { ComponentProps } from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -62,7 +62,7 @@ describe('<SpotlightTicketRow/>', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should render the open ticket info tooltip on hover', () => {
+    it('should render the open ticket info tooltip on hover', async () => {
         jest.useFakeTimers()
         const { getByText, getByRole } = render(
             <WrappedSpotlightTicketRow {...defaultProps} />,
@@ -70,7 +70,9 @@ describe('<SpotlightTicketRow/>', () => {
 
         fireEvent.mouseOver(getByText('email'))
         jest.runAllTimers()
-        expect(getByRole('tooltip')).toMatchSnapshot()
+        await waitFor(() => {
+            expect(getByRole('tooltip')).toMatchSnapshot()
+        })
     })
 
     it('should render the closed ticket info tooltip on hover', () => {

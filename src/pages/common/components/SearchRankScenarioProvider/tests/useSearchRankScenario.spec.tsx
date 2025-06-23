@@ -8,8 +8,7 @@ import useSearchRankScenarioContext from '../useSearchRankScenarioContext'
 
 describe('useSearchRankScenario', () => {
     it('should throw when used outside the provider', () => {
-        const { result } = renderHook(() => useSearchRankScenarioContext())
-        expect(result.error?.message).toBe(
+        expect(() => renderHook(() => useSearchRankScenarioContext())).toThrow(
             'useSearchRankContext should be used inside SearchRankScenarioProvider',
         )
     })

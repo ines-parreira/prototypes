@@ -127,7 +127,6 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
                 role="menu"
                 tabindex="-1"
               >
-                
                 <button
                   class="option option--focused dropdown-item"
                   role="menuitem"

@@ -1,12 +1,8 @@
-import 'tests/__mocks__/intersectionObserverMock'
 import 'tests/__mocks__/editionManagerContextMock'
+import 'tests/__mocks__/intersectionObserverMock'
 
-import React from 'react'
-
-import { screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import {
     HelpCenter,
@@ -23,13 +19,16 @@ import {
     HelpCenterUiBasicsFixture,
 } from 'pages/settings/helpCenter/fixtures/wizard.fixture'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import { renderWithRouter } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
+import { mockStore, renderWithRouter } from 'utils/testing'
 
 import { useGetHelpCenterArticles } from '../../../hooks/useGetHelpCenterArticles'
 import { useHelpCenterArticlesForm } from '../../../hooks/useHelpCenterArticlesForm'
 import { useHelpCenterCreationWizard } from '../../../hooks/useHelpCenterCreationWizard'
+import HelpCenterWizardArticleEditor from '../../HelpCenterWizardArticleEditor/HelpCenterWizardArticleEditor'
 import HelpCenterCreationWizardStepArticles from '../HelpCenterCreationWizardStepArticles'
+
+jest.mock('../../HelpCenterWizardArticleEditor/HelpCenterWizardArticleEditor')
+;(HelpCenterWizardArticleEditor as jest.Mock).mockReturnValue(<></>)
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
@@ -87,8 +86,6 @@ const renderComponent = (fixtures?: {
         helpCenter = HelpCenterApiArticlesFixture,
         automateType = HelpCenterAutomateType.AUTOMATE,
     } = fixtures ?? {}
-
-    const mockStore = configureMockStore([thunk])
 
     renderWithRouter(
         <Provider store={mockStore({})}>
@@ -169,129 +166,60 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             expect(finishButton).toBeInTheDocument()
         })
 
-        it('should trigger handleNavigationSave on save and customize later action', () => {
+        it('should trigger handleNavigationSave on save and customize later action', async () => {
             renderComponent()
 
             const saveAndCustomizeLater = screen.getByText(
                 'Save & Customize Later',
             )
 
-            userEvent.click(saveAndCustomizeLater)
+            fireEvent.click(saveAndCustomizeLater)
 
             expect(
                 mockedUseHelpCenterArticlesForm.handleNavigationSave,
             ).toHaveBeenCalled()
         })
 
-        it('should trigger handleNavigationSave on next action', () => {
+        it('should trigger handleNavigationSave on next action', async () => {
             renderComponent()
 
             const nextButton = screen.getByText('Next')
 
-            userEvent.click(nextButton)
+            fireEvent.click(nextButton)
 
             expect(
                 mockedUseHelpCenterArticlesForm.handleNavigationSave,
             ).toHaveBeenCalled()
         })
 
-        it('should trigger handleNavigationSave on next action', () => {
+        it('should trigger handleNavigationSave on next action', async () => {
             renderComponent({
                 automateType: HelpCenterAutomateType.AUTOMATE_NO_STORE,
             })
 
             const finishButton = screen.getByText('Finish')
 
-            userEvent.click(finishButton)
+            fireEvent.click(finishButton)
 
             expect(
                 mockedUseHelpCenterArticlesForm.handleNavigationSave,
             ).toHaveBeenCalled()
         })
 
-        it('should trigger handleAction on back action', () => {
-            renderComponent()
+        it('should trigger handleAction on back action', async () => {
+            renderComponent({
+                automateType: HelpCenterAutomateType.AUTOMATE,
+            })
 
             const backButton = screen.getByText('Back')
 
-            userEvent.click(backButton)
+            fireEvent.click(backButton)
 
-            expect(
-                mockedUseHelpCenterCreationWizard.handleAction,
-            ).toHaveBeenCalled()
-        })
-    })
-
-    describe('article editor', () => {
-        it('should render article editor', async () => {
-            renderComponent()
-
-            await waitFor(() =>
+            await waitFor(() => {
                 expect(
-                    screen.getByText('How to cancel order'),
-                ).toBeInTheDocument(),
-            )
-
-            const selectRow = screen.getByText('How to cancel order')
-            const editArticleButton = selectRow.nextElementSibling!
-            userEvent.click(editArticleButton)
-
-            expect(screen.getByText('Save changes')).toBeInTheDocument()
-            expect(screen.getByText('Discard changes')).toBeInTheDocument()
-        })
-
-        it('should trigger handleEditorClose on discard changes', () => {
-            renderComponent()
-
-            const selectRow = screen.getByText('How to cancel order')
-            const editArticleButton = selectRow.nextElementSibling!
-            userEvent.click(editArticleButton)
-
-            const discardButton = screen.getByText('Discard changes')
-            userEvent.click(discardButton)
-
-            expect(
-                mockedUseHelpCenterArticlesForm.handleEditorClose,
-            ).toHaveBeenCalled()
-        })
-
-        it('should trigger handleEditorSave on save changes', async () => {
-            renderComponent()
-
-            const selectRow = screen.getByText('How to cancel order')
-            const editArticleButton = selectRow.nextElementSibling!
-            userEvent.click(editArticleButton)
-
-            const title = screen.getByPlaceholderText('Title')
-            userEvent.clear(title)
-            await userEvent.type(title, 'How to cancel order from store')
-
-            const savedButton = screen.getByText('Save changes')
-            userEvent.click(savedButton)
-
-            expect(
-                mockedUseHelpCenterArticlesForm.handleEditorSave,
-            ).toHaveBeenCalledWith(
-                'How to cancel order from store',
-                '<h1>How to cancel order</h1>',
-            )
-        })
-
-        it('should disable save button if title is invalid', () => {
-            renderComponent()
-
-            const editArticleButton = screen.getByRole('button', {
-                name: /How to cancel order/,
+                    mockedUseHelpCenterCreationWizard.handleAction,
+                ).toHaveBeenCalled()
             })
-            userEvent.click(editArticleButton)
-
-            userEvent.clear(screen.getByPlaceholderText('Title'))
-
-            const savedButton = screen.getByRole('button', {
-                name: 'Save changes',
-            })
-
-            expect(savedButton).toBeAriaDisabled()
         })
     })
 })

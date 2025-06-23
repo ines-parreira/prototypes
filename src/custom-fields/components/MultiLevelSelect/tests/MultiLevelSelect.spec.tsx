@@ -51,10 +51,13 @@ describe('<MultiLevelSelect />', () => {
         initialProps.onChange.mockReset()
     })
 
-    it('should display all the items when focused and allow mouse navigation', () => {
+    it('should display all the items when focused and allow mouse navigation', async () => {
         render(<MultiLevelSelect {...initialProps} value="" />)
 
         userEvent.click(screen.getByRole('textbox'))
+
+        await screen.findByText('s1')
+
         let navItem = screen.getByText('s1')
         expect(screen.getByText('s2'))
         // forth
@@ -66,22 +69,34 @@ describe('<MultiLevelSelect />', () => {
         expect(screen.getByText('s2'))
     })
 
-    it('should call onChange with correct params and dismiss modal when selecting a value', () => {
+    it('should call onChange with correct params and dismiss modal when selecting a value', async () => {
         render(<MultiLevelSelect {...initialProps} />)
 
         userEvent.click(screen.getByRole('textbox'))
+
+        await screen.findByText('c1')
+
         userEvent.click(screen.getByText('c1'))
-        expect(initialProps.onChange).toHaveBeenCalledWith('s1::ss2::c1')
-        expect(screen.queryByTestId('floating-overlay')).toBe(null)
+
+        await waitFor(() => {
+            expect(initialProps.onChange).toHaveBeenCalledWith('s1::ss2::c1')
+            expect(screen.queryByTestId('floating-overlay')).toBe(null)
+        })
     })
 
-    it('should call onChange with correct params and dismiss modal when clearing the value', () => {
+    it('should call onChange with correct params and dismiss modal when clearing the value', async () => {
         render(<MultiLevelSelect {...initialProps} />)
 
         userEvent.click(screen.getByRole('textbox'))
+
+        await screen.findByText(/Clear/)
+
         userEvent.click(screen.getByText(/Clear/))
-        expect(initialProps.onChange).toHaveBeenCalledWith('')
-        expect(screen.queryByTestId('floating-overlay')).toBe(null)
+
+        await waitFor(() => {
+            expect(initialProps.onChange).toHaveBeenCalledWith('')
+            expect(screen.queryByTestId('floating-overlay')).toBe(null)
+        })
     })
 
     it('should not display a search input if not text choices', () => {
@@ -95,12 +110,17 @@ describe('<MultiLevelSelect />', () => {
         render(<MultiLevelSelect {...initialProps} />)
 
         userEvent.click(screen.getByRole('textbox'))
+
+        await screen.findByPlaceholderText('Search')
+
         await userEvent.type(screen.getByPlaceholderText('Search'), 's1')
-        expect(screen.getByText('a1')).toBeInTheDocument()
-        expect(screen.getByText('c1')).toBeInTheDocument()
-        expect(screen.getByText('c2')).toBeInTheDocument()
-        expect(screen.getByText('ss3')).toBeInTheDocument()
-        expect(screen.queryByText('s2')).not.toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('a1')).toBeInTheDocument()
+            expect(screen.getByText('c1')).toBeInTheDocument()
+            expect(screen.getByText('c2')).toBeInTheDocument()
+            expect(screen.queryByText('ss3')).toBeInTheDocument()
+            expect(screen.queryByText('s2')).not.toBeInTheDocument()
+        })
     })
 
     it('should show a span instead of an input when autoWidth is true', () => {
@@ -144,7 +164,7 @@ describe('<MultiLevelSelect />', () => {
         )
     })
 
-    it('should call onChange with correct params when multiple values are selected, and keep textbox open', () => {
+    it('should call onChange with correct params when multiple values are selected, and keep textbox open', async () => {
         render(
             <MultiLevelSelect
                 {...initialProps}
@@ -154,19 +174,28 @@ describe('<MultiLevelSelect />', () => {
         )
 
         userEvent.click(screen.getByRole('textbox'))
+
+        await screen.findByText('s2')
         userEvent.click(screen.getByText('s2'))
-        expect(initialProps.onChange).toHaveBeenCalledWith([
-            's2',
-            's1::ss2::c2',
-        ])
+
+        await waitFor(() => {
+            expect(initialProps.onChange).toHaveBeenCalledWith([
+                's2',
+                's1::ss2::c2',
+            ])
+        })
+
         userEvent.click(screen.getByText('s3'))
-        expect(initialProps.onChange).toHaveBeenCalledWith([
-            's3',
-            's1::ss2::c2',
-        ])
+
+        await waitFor(() => {
+            expect(initialProps.onChange).toHaveBeenCalledWith([
+                's3',
+                's1::ss2::c2',
+            ])
+        })
     })
 
-    it('should exclude a value when reselected in multiple mode', () => {
+    it('should exclude a value when reselected in multiple mode', async () => {
         render(
             <MultiLevelSelect
                 {...initialProps}
@@ -176,9 +205,14 @@ describe('<MultiLevelSelect />', () => {
         )
 
         userEvent.click(screen.getByRole('textbox'))
+
+        await screen.findByText('s2')
+
         userEvent.click(screen.getByText('s2'))
 
-        expect(initialProps.onChange).toHaveBeenCalledWith([])
+        await waitFor(() => {
+            expect(initialProps.onChange).toHaveBeenCalledWith([])
+        })
     })
 
     it('should reset path and update active state when toggled', () => {

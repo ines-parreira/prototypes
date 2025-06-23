@@ -118,7 +118,6 @@ exports[`RuleRecipeModal should render the modal 1`] = `
                     <div
                       class="descriptionBlock"
                     >
-                      
                       <div>
                         <label
                           class="ui-label-label-3864 label align-items-start"

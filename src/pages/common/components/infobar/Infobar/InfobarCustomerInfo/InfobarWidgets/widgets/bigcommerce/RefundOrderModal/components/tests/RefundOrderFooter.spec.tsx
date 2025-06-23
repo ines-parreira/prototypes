@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react'
 
-import { act, render, screen } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 
 import { userEvent } from 'utils/testing/userEvent'
 
@@ -49,19 +49,27 @@ describe('RefundOrderFooter', () => {
         // it will trigger a hook call with user's data
         await userEvent.type(screen.getByRole('textbox'), refundReason)
         act(() => jest.runAllTimers())
-        userEvent.click(screen.getByRole('combobox'))
-        userEvent.click(
+
+        await userEvent.click(screen.getByRole('combobox'))
+        await waitFor(() => {
+            expect(
+                screen.getByRole('option', { name: /Partially Shipped/ }),
+            ).toBeInTheDocument()
+        })
+        await userEvent.click(
             screen.getByRole('option', { name: /Partially Shipped/ }),
         )
 
-        expect(dispatchRefundOrderStateMock).toHaveBeenCalledTimes(2)
-        expect(dispatchRefundOrderStateMock).toHaveBeenNthCalledWith(1, {
-            type: BigCommerceRefundActionType.SetRefundReason,
-            refundReason: refundReason,
-        })
-        expect(dispatchRefundOrderStateMock).toHaveBeenNthCalledWith(2, {
-            type: BigCommerceRefundActionType.SetNewOrderStatus,
-            newOrderStatus: newOrderStatus,
+        await waitFor(() => {
+            expect(dispatchRefundOrderStateMock).toHaveBeenCalledTimes(2)
+            expect(dispatchRefundOrderStateMock).toHaveBeenNthCalledWith(1, {
+                type: BigCommerceRefundActionType.SetRefundReason,
+                refundReason: refundReason,
+            })
+            expect(dispatchRefundOrderStateMock).toHaveBeenNthCalledWith(2, {
+                type: BigCommerceRefundActionType.SetNewOrderStatus,
+                newOrderStatus: newOrderStatus,
+            })
         })
     })
 })

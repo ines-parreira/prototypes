@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { useLocation } from 'react-router-dom'
@@ -57,6 +57,53 @@ jest.mock(
             useLocation: jest.fn(),
         }) as Record<string, unknown>,
 )
+
+describe('CtaButton', () => {
+    it('is on new plan', async () => {
+        const props = {
+            isOnNewPlan: true,
+            canStartTrial: false,
+            showActivationModal: jest.fn(),
+            showEarlyAccessModal: jest.fn(),
+            startTrial: jest.fn(),
+        }
+        const { getByRole } = render(<CtaButton {...props} />)
+
+        await waitFor(() => {
+            expect(getByRole('button', { name: 'Activate' })).toBeDefined()
+        })
+    })
+
+    it('can start trial', async () => {
+        const props = {
+            isOnNewPlan: false,
+            canStartTrial: true,
+            showActivationModal: jest.fn(),
+            showEarlyAccessModal: jest.fn(),
+            startTrial: jest.fn(),
+        }
+        const { getByRole } = render(<CtaButton {...props} />)
+        await waitFor(() => {
+            expect(
+                getByRole('button', { name: 'Try Shopping Assistant' }),
+            ).toBeDefined()
+        })
+    })
+
+    it('show early access modal', async () => {
+        const props = {
+            isOnNewPlan: false,
+            canStartTrial: false,
+            showActivationModal: jest.fn(),
+            showEarlyAccessModal: jest.fn(),
+            startTrial: jest.fn(),
+        }
+        const { getByRole } = render(<CtaButton {...props} />)
+        await waitFor(() => {
+            expect(getByRole('button', { name: 'Upgrade' })).toBeDefined()
+        })
+    })
+})
 
 describe('useGmvInfluencedCtaButton', () => {
     beforeEach(() => {
@@ -178,7 +225,6 @@ describe('useGmvInfluencedCtaButton', () => {
     })
 
     it('should render the Try Shopping Assistant button when aiAgentType is support + on usd-5 plan + canStartTrial = true', async () => {
-        // startAiSalesAgentTrialForMultipleStoresMock.mockResolvedValue()
         const mockStoreActivations = {
             store1: {
                 configuration: {
@@ -225,44 +271,5 @@ describe('useGmvInfluencedCtaButton', () => {
         act(async () => {
             userEvent.click(button)
         })
-        // expect(startAiSalesAgentTrialForMultipleStoresMock).toHaveBeenCalled()
-    })
-})
-
-describe('CtaButton', () => {
-    it('is on new plan', () => {
-        const props = {
-            isOnNewPlan: true,
-            canStartTrial: false,
-            showActivationModal: jest.fn(),
-            showEarlyAccessModal: jest.fn(),
-            startTrial: jest.fn(),
-        }
-        render(<CtaButton {...props} />)
-        expect(screen.getByRole('button', { name: 'Activate' })).toBeDefined()
-    })
-    it('can start trial', () => {
-        const props = {
-            isOnNewPlan: false,
-            canStartTrial: true,
-            showActivationModal: jest.fn(),
-            showEarlyAccessModal: jest.fn(),
-            startTrial: jest.fn(),
-        }
-        render(<CtaButton {...props} />)
-        expect(
-            screen.getByRole('button', { name: 'Try Shopping Assistant' }),
-        ).toBeDefined()
-    })
-    it('show early access modal', () => {
-        const props = {
-            isOnNewPlan: false,
-            canStartTrial: false,
-            showActivationModal: jest.fn(),
-            showEarlyAccessModal: jest.fn(),
-            startTrial: jest.fn(),
-        }
-        render(<CtaButton {...props} />)
-        expect(screen.getByRole('button', { name: 'Upgrade' })).toBeDefined()
     })
 })

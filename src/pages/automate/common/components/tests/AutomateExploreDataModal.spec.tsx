@@ -43,7 +43,7 @@ jest.mock('pages/common/forms/SelectField/SelectField', () => ({
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
 describe('<AutomateExploreDataModal />', () => {
-    it('should format fields', () => {
+    it('should format fields', async () => {
         const modal = React.createRef<AutomateExploreDataModalHandle>()
 
         // Arrange
@@ -79,6 +79,8 @@ describe('<AutomateExploreDataModal />', () => {
         modal.current?.open()
 
         // Assert
+        await screen.findByRole('textbox', { name: 'Agent cost' })
+
         const resolutionTime = screen.getByRole('textbox', {
             name: 'Current resolution time',
         })
@@ -106,7 +108,7 @@ describe('<AutomateExploreDataModal />', () => {
         expect(ticketHandleTime).toHaveValue('2m')
     })
 
-    it('should submit fields', () => {
+    it('should submit fields', async () => {
         const modal = React.createRef<AutomateExploreDataModalHandle>()
 
         // Arrange
@@ -143,6 +145,7 @@ describe('<AutomateExploreDataModal />', () => {
         modal.current?.open()
 
         // Assert
+        await screen.findByRole('textbox', { name: 'Agent cost' })
         const resolutionTime = screen.getByRole('textbox', {
             name: 'Current resolution time',
         })
@@ -212,7 +215,7 @@ describe('<AutomateExploreDataModal />', () => {
         )
     })
 
-    it('should show **** when we have agent costs', () => {
+    it('should show **** when we have agent costs', async () => {
         const modal = React.createRef<AutomateExploreDataModalHandle>()
 
         // Arrange
@@ -248,12 +251,14 @@ describe('<AutomateExploreDataModal />', () => {
         modal.current?.open()
 
         // Assert
+        await screen.findByRole('textbox', { name: 'Agent cost' })
+
         expect(screen.getByRole('textbox', { name: 'Agent cost' })).toHaveValue(
             '****',
         )
     })
 
-    it('should fallback to default values when no initial data is provided', () => {
+    it('should fallback to default values when no initial data is provided', async () => {
         const modal = React.createRef<AutomateExploreDataModalHandle>()
 
         // Arrange
@@ -274,6 +279,8 @@ describe('<AutomateExploreDataModal />', () => {
         modal.current?.open()
 
         // Assert
+        await screen.findByRole('textbox', { name: 'Agent cost' })
+
         const agentCost = screen.getByRole('textbox', { name: 'Agent cost' })
         const hourly = screen.getByRole('button', { name: 'hourly' })
 
@@ -281,7 +288,7 @@ describe('<AutomateExploreDataModal />', () => {
         expect(hourly).toHaveAttribute('data-selected', 'true')
     })
 
-    it('should format input value', () => {
+    it('should format input value', async () => {
         const modal = React.createRef<AutomateExploreDataModalHandle>()
 
         // Arrange
@@ -300,6 +307,8 @@ describe('<AutomateExploreDataModal />', () => {
 
         // Act
         modal.current?.open()
+
+        await screen.findByRole('textbox', { name: 'Agent cost' })
 
         const agentCost = screen.getByRole('textbox', { name: 'Agent cost' })
 
@@ -309,7 +318,7 @@ describe('<AutomateExploreDataModal />', () => {
         expect(agentCost).toHaveValue('123,456,789.12')
     })
 
-    it('should recalculate cost from hourly to yearly', () => {
+    it('should recalculate cost from hourly to yearly', async () => {
         const modal = React.createRef<AutomateExploreDataModalHandle>()
 
         // Arrange
@@ -328,6 +337,8 @@ describe('<AutomateExploreDataModal />', () => {
 
         // Act
         modal.current?.open()
+
+        await screen.findByRole('textbox', { name: 'Agent cost' })
 
         const agentCost = screen.getByRole('textbox', { name: 'Agent cost' })
         const yearly = screen.getByRole('button', { name: 'yearly' })
@@ -340,7 +351,7 @@ describe('<AutomateExploreDataModal />', () => {
         expect(agentCost).toHaveValue('100,800')
     })
 
-    it('should recalculate cost from yearly to hourly', () => {
+    it('should recalculate cost from yearly to hourly', async () => {
         const modal = React.createRef<AutomateExploreDataModalHandle>()
 
         // Arrange
@@ -360,6 +371,7 @@ describe('<AutomateExploreDataModal />', () => {
         // Act
         modal.current?.open()
 
+        await screen.findByRole('button', { name: 'Update' })
         const agentCost = screen.getByRole('textbox', { name: 'Agent cost' })
         const yearly = screen.getByRole('button', { name: 'yearly' })
         const hourly = screen.getByRole('button', { name: 'hourly' })
@@ -378,7 +390,7 @@ describe('<AutomateExploreDataModal />', () => {
         expect(agentCost).toHaveValue('100.00')
     })
 
-    it('update button should be disabled when no changes are made or input is empty', () => {
+    it('update button should be disabled when no changes are made or input is empty', async () => {
         const modal = React.createRef<AutomateExploreDataModalHandle>()
 
         // Arrange
@@ -397,6 +409,8 @@ describe('<AutomateExploreDataModal />', () => {
 
         // Act
         modal.current?.open()
+
+        await screen.findByRole('button', { name: 'Update' })
 
         const updateButton = screen.getByRole('button', { name: 'Update' })
 

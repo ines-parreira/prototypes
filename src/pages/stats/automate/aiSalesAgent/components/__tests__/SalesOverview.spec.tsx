@@ -1,6 +1,6 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
@@ -37,6 +37,14 @@ jest.mock('react-router-dom', () => ({
 jest.mock('@gorgias/merchant-ui-kit', () => ({
     ...jest.requireActual('@gorgias/merchant-ui-kit'),
     Skeleton: () => <div>Skeleton</div>,
+}))
+
+jest.mock('pages/stats/automate/aiSalesAgent/components/RenderChart', () => ({
+    RenderChart: () => <div>Mocked Chart</div>,
+}))
+
+jest.mock('pages/stats/dashboards/DashboardComponent', () => ({
+    DashboardComponent: () => <div>Mocked Dashboard Component</div>,
 }))
 
 const mockUseFirstStoreWithAiSalesData = assumeMock(

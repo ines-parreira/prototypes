@@ -402,7 +402,7 @@ describe('<OngoingPhoneCall/>', () => {
         },
     )
 
-    it('should display notification and resume transfer buttons on transfer failure', () => {
+    it('should display notification and resume transfer buttons on transfer failure', async () => {
         mockUsePutCallParticipantOnHold.mockReturnValue({
             mutate: jest.fn(),
         })
@@ -444,8 +444,12 @@ describe('<OngoingPhoneCall/>', () => {
         )
 
         // the buttons should be enabled again
-        expect(screen.getByText('Connected')).toBeVisible()
-        expect(screen.getByLabelText('Hold phone call')).toBeAriaEnabled()
-        expect(screen.getByLabelText('Transfer phone call')).toBeAriaEnabled()
+        await waitFor(() => {
+            expect(screen.getByText('Connected')).toBeVisible()
+            expect(screen.getByLabelText('Hold phone call')).toBeAriaEnabled()
+            expect(
+                screen.getByLabelText('Transfer phone call'),
+            ).toBeAriaEnabled()
+        })
     })
 })

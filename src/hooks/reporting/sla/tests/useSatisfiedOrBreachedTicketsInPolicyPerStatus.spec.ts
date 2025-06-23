@@ -19,6 +19,16 @@ jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
 const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
 
+const mockData = {
+    data: {
+        value: null,
+        decile: null,
+        allData: [],
+    },
+    isFetching: false,
+    isError: false,
+}
+
 describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
     const startDate = '2021-05-01T00:00:00+02:00'
     const endDate = '2021-05-04T23:59:59+02:00'
@@ -31,6 +41,10 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
     const timeZone = 'UTC'
     const sorting = OrderDirection.Desc
     const slaStatus = TicketSLAStatus.Breached
+
+    beforeEach(() => {
+        useMetricPerDimensionMock.mockReturnValue(mockData)
+    })
 
     describe('useSatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
         it('should call a queryFactory', () => {

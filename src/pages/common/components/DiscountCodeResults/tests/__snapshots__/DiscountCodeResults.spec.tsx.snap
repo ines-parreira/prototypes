@@ -77,7 +77,6 @@ exports[`<DiscountCodeResults /> should render no results 1`] = `
           class="resultTotal"
         >
           0
-          
            Discounts
         </span>
       </div>
@@ -175,7 +174,6 @@ exports[`<DiscountCodeResults /> should render the component 1`] = `
         class="resultTotal"
       >
         0
-        
          Discounts
       </span>
     </div>
@@ -207,7 +205,7 @@ exports[`<DiscountCodeResults /> should render the discount codes 1`] = `
       <i
         class="icon material-icons md-2"
       >
-        more_horiz
+        search
       </i>
       <input
         class="form-control"
@@ -273,7 +271,6 @@ exports[`<DiscountCodeResults /> should render the discount codes 1`] = `
           class="resultTotal"
         >
           2
-          
            Discounts
         </span>
       </div>

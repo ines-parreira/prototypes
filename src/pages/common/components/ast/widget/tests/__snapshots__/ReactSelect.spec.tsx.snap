@@ -44,7 +44,6 @@ exports[`<ReactSelect/> should add warning for selected deprecated option 1`] = 
           role="menu"
           tabindex="-1"
         >
-          
           <button
             class="option option--focused dropdown-item"
             role="menuitem"
@@ -171,7 +170,6 @@ exports[`<ReactSelect/> should render normally as deprecated option is not selec
         role="menu"
         tabindex="-1"
       >
-        
         <button
           class="option option--focused dropdown-item"
           role="menuitem"
@@ -231,7 +229,6 @@ exports[`<ReactSelect/> should render with the correct options 1`] = `
         role="menu"
         tabindex="-1"
       >
-        
         <button
           class="option option--focused dropdown-item"
           role="menuitem"

@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { ContentState, EditorState, SelectionState } from 'draft-js'
 import { fromJS } from 'immutable'
 
@@ -105,7 +105,7 @@ describe('MentionSuggestions Component', () => {
         expect(container.firstChild).toBeNull()
     })
 
-    it('Should render suggestions', () => {
+    it('Should render suggestions', async () => {
         const callbacks = { onChange: jest.fn(), handleKeyCommand: undefined }
 
         render(
@@ -125,10 +125,12 @@ describe('MentionSuggestions Component', () => {
 
         callbacks.onChange(editorState)
 
-        expect(
-            screen.getByRole('option', {
-                name: new RegExp(mentionablePerson.name),
-            }),
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.getByRole('option', {
+                    name: new RegExp(mentionablePerson.name),
+                }),
+            ).toBeInTheDocument()
+        })
     })
 })

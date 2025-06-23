@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { act } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -302,29 +300,29 @@ describe('useHandoverCustomizationChatOnlineSettingsForm', () => {
                 )
             })
 
-            const promise = result.current.handleOnSave()
+            result.current.handleOnSave()
 
-            expect(result.current.isSaving).toBeTruthy()
+            await waitFor(() => {
+                expect(
+                    mapFormValuesToHandoverConfigurationData,
+                ).toHaveBeenCalled()
 
-            await promise
+                expect(mockUpsertHandoverConfiguration).toHaveBeenCalledWith(
+                    expectedHandoverConfigurationData,
+                )
 
-            expect(mapFormValuesToHandoverConfigurationData).toHaveBeenCalled()
+                expect(
+                    mapFromFormValuesToIntegrationPreferences,
+                ).not.toHaveBeenCalled()
 
-            expect(mockUpsertHandoverConfiguration).toHaveBeenCalledWith(
-                expectedHandoverConfigurationData,
-            )
+                expect(dispatch).not.toHaveBeenCalled()
 
-            expect(
-                mapFromFormValuesToIntegrationPreferences,
-            ).not.toHaveBeenCalled()
+                expect(mockNotifySuccess).toHaveBeenCalled()
 
-            expect(dispatch).not.toHaveBeenCalled()
+                expect(mockNotifyError).not.toHaveBeenCalled()
 
-            expect(mockNotifySuccess).toHaveBeenCalled()
-
-            expect(mockNotifyError).not.toHaveBeenCalled()
-
-            expect(result.current.isSaving).toBeFalsy()
+                expect(result.current.isSaving).toBeFalsy()
+            })
         })
 
         it('should trigger upsertHandoverConfiguration and notifyError when saving the form values fails with only handover configuration changes', async () => {
@@ -362,39 +360,37 @@ describe('useHandoverCustomizationChatOnlineSettingsForm', () => {
                 )
             })
 
-            const promise = result.current.handleOnSave()
+            result.current.handleOnSave()
 
-            expect(result.current.isSaving).toBeTruthy()
+            await waitFor(() => {
+                expect(
+                    mapFormValuesToHandoverConfigurationData,
+                ).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        accountId: expectedHandoverConfigurationData.accountId,
+                        storeName: expectedHandoverConfigurationData.storeName,
+                        shopType: expectedHandoverConfigurationData.shopType,
+                        integrationId:
+                            expectedHandoverConfigurationData.integrationId,
+                        integrationType: IntegrationType.GorgiasChat,
+                        formValues: newFormValues,
+                    }),
+                )
 
-            await promise
+                expect(mockUpsertHandoverConfiguration).toHaveBeenCalledWith(
+                    expectedHandoverConfigurationData,
+                )
 
-            expect(
-                mapFormValuesToHandoverConfigurationData,
-            ).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    accountId: expectedHandoverConfigurationData.accountId,
-                    storeName: expectedHandoverConfigurationData.storeName,
-                    shopType: expectedHandoverConfigurationData.shopType,
-                    integrationId:
-                        expectedHandoverConfigurationData.integrationId,
-                    integrationType: IntegrationType.GorgiasChat,
-                    formValues: newFormValues,
-                }),
-            )
+                expect(
+                    mapFromFormValuesToIntegrationPreferences,
+                ).not.toHaveBeenCalled()
 
-            expect(mockUpsertHandoverConfiguration).toHaveBeenCalledWith(
-                expectedHandoverConfigurationData,
-            )
+                expect(dispatch).not.toHaveBeenCalled()
 
-            expect(
-                mapFromFormValuesToIntegrationPreferences,
-            ).not.toHaveBeenCalled()
+                expect(mockNotifySuccess).not.toHaveBeenCalled()
 
-            expect(dispatch).not.toHaveBeenCalled()
-
-            expect(mockNotifySuccess).not.toHaveBeenCalled()
-
-            expect(mockNotifyError).toHaveBeenCalled()
+                expect(mockNotifyError).toHaveBeenCalled()
+            })
         })
     })
 
@@ -444,28 +440,25 @@ describe('useHandoverCustomizationChatOnlineSettingsForm', () => {
             )
         })
 
-        const promise = result.current.handleOnSave()
+        result.current.handleOnSave()
 
-        expect(result.current.isSaving).toBeTruthy()
+        await waitFor(() => {
+            expect(
+                mapFromFormValuesToIntegrationPreferences,
+            ).toHaveBeenCalledWith(newFormValues, mockIntegration)
 
-        await promise
+            expect(mockUpsertHandoverConfiguration).not.toHaveBeenCalled()
 
-        expect(mapFromFormValuesToIntegrationPreferences).toHaveBeenCalledWith(
-            newFormValues,
-            mockIntegration,
-        )
+            expect(dispatch).toHaveBeenCalled()
 
-        expect(mockUpsertHandoverConfiguration).not.toHaveBeenCalled()
+            expect(updateOrCreateIntegrationRequest).toHaveBeenCalled()
 
-        expect(dispatch).toHaveBeenCalled()
+            expect(mockNotifySuccess).toHaveBeenCalled()
 
-        expect(updateOrCreateIntegrationRequest).toHaveBeenCalled()
+            expect(mockNotifyError).not.toHaveBeenCalled()
 
-        expect(mockNotifySuccess).toHaveBeenCalled()
-
-        expect(mockNotifyError).not.toHaveBeenCalled()
-
-        expect(result.current.isSaving).toBeFalsy()
+            expect(result.current.isSaving).toBeFalsy()
+        })
     })
 
     it('should trigger all saves when there are changes in both handover configuration and preferences', async () => {
@@ -537,27 +530,25 @@ describe('useHandoverCustomizationChatOnlineSettingsForm', () => {
             )
         })
 
-        const promise = result.current.handleOnSave()
+        result.current.handleOnSave()
 
-        expect(result.current.isSaving).toBeTruthy()
+        await waitFor(() => {
+            expect(mapFormValuesToHandoverConfigurationData).toHaveBeenCalled()
 
-        await promise
+            expect(mapFromFormValuesToIntegrationPreferences).toHaveBeenCalled()
 
-        expect(mapFormValuesToHandoverConfigurationData).toHaveBeenCalled()
+            expect(mockUpsertHandoverConfiguration).toHaveBeenCalled()
 
-        expect(mapFromFormValuesToIntegrationPreferences).toHaveBeenCalled()
+            expect(dispatch).toHaveBeenCalled()
 
-        expect(mockUpsertHandoverConfiguration).toHaveBeenCalled()
+            expect(updateOrCreateIntegrationRequest).toHaveBeenCalled()
 
-        expect(dispatch).toHaveBeenCalled()
+            expect(mockNotifySuccess).toHaveBeenCalled()
 
-        expect(updateOrCreateIntegrationRequest).toHaveBeenCalled()
+            expect(mockNotifyError).not.toHaveBeenCalled()
 
-        expect(mockNotifySuccess).toHaveBeenCalled()
-
-        expect(mockNotifyError).not.toHaveBeenCalled()
-
-        expect(result.current.isSaving).toBeFalsy()
+            expect(result.current.isSaving).toBeFalsy()
+        })
     })
 
     it('should handle form errors when the online instructions field is bigger than the max length', async () => {
@@ -572,18 +563,24 @@ describe('useHandoverCustomizationChatOnlineSettingsForm', () => {
 
         await result.current.handleOnSave()
 
-        expect(result.current.hasError).toBe(true)
+        await waitFor(() => {
+            expect(result.current.hasError).toBe(true)
 
-        expect(result.current.isSaving).toBe(false)
+            expect(result.current.isSaving).toBe(false)
 
-        expect(mapFormValuesToHandoverConfigurationData).not.toHaveBeenCalled()
+            expect(
+                mapFormValuesToHandoverConfigurationData,
+            ).not.toHaveBeenCalled()
 
-        expect(mapFromFormValuesToIntegrationPreferences).not.toHaveBeenCalled()
+            expect(
+                mapFromFormValuesToIntegrationPreferences,
+            ).not.toHaveBeenCalled()
 
-        expect(mockUpsertHandoverConfiguration).not.toHaveBeenCalled()
+            expect(mockUpsertHandoverConfiguration).not.toHaveBeenCalled()
 
-        expect(dispatch).not.toHaveBeenCalled()
+            expect(dispatch).not.toHaveBeenCalled()
 
-        expect(mockNotifySuccess).not.toHaveBeenCalled()
+            expect(mockNotifySuccess).not.toHaveBeenCalled()
+        })
     })
 })

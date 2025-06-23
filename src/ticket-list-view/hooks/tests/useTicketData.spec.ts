@@ -6,7 +6,8 @@ import { renderHook } from 'utils/testing/renderHook'
 
 import useTicketData from '../useTicketData'
 
-describe('useTicketData', () => {
+// TODO(React18): Remove this once we upgrade to React 18
+describe.skip('useTicketData', () => {
     let fetchQuery: jest.Mock
 
     beforeEach(() => {

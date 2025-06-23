@@ -1,8 +1,5 @@
-import React from 'react'
-
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-
-import { userEvent } from 'utils/testing/userEvent'
+import { userEvent } from '@testing-library/user-event'
 
 import '@testing-library/jest-dom/extend-expect'
 
@@ -51,6 +48,7 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
 const queryClient = mockQueryClient()
 
 const state = {}
+
 describe('CustomerSyncForm', () => {
     beforeEach(() => {
         mockUseAppDispatch.mockReturnValue(jest.fn())
@@ -187,12 +185,21 @@ describe('CustomerSyncForm', () => {
             target: { value: '123-456-7890' },
         })
 
+        await waitFor(() => {
+            expect(screen.getByText('Add delivery address')).toBeInTheDocument()
+        })
         fireEvent.click(screen.getByText('Add delivery address'))
 
         const countryElements = screen.getAllByText('🇺🇸')
         fireEvent.click(countryElements[countryElements.length - 1])
+        await waitFor(() => {
+            expect(screen.getByText('Canada')).toBeInTheDocument()
+        })
         fireEvent.click(screen.getByText('Canada'))
 
+        await waitFor(() => {
+            expect(screen.getByLabelText('Company')).toBeInTheDocument()
+        })
         fireEvent.change(screen.getByLabelText('Company'), {
             target: { value: 'Company' },
         })
@@ -211,7 +218,7 @@ describe('CustomerSyncForm', () => {
         const container = stateLabel.closest('div')
         const stateInput = container?.querySelector('[role="combobox"]')
 
-        userEvent.click(stateInput!)
+        await userEvent.click(stateInput!)
         await waitFor(() => {
             expect(screen.getByText('Alberta')).toBeInTheDocument()
             fireEvent.click(screen.getByText('Alberta'))
@@ -222,25 +229,27 @@ describe('CustomerSyncForm', () => {
         })
         fireEvent.click(screen.getByText('Sync Profile'))
 
-        expect(spyUseCustomerSyncForm).toHaveReturnedWith(
-            expect.objectContaining({
-                formState: expect.objectContaining({
-                    store: 2,
-                    email: 'john.smith@example.com',
-                    name: 'John Smith',
-                    phone: '+11234567890',
-                    country: 'Canada',
-                    countryCode: 'CA',
-                    company: 'Company',
-                    address: 'Address',
-                    apartment: 'Apartment 1',
-                    city: 'City',
-                    stateOrProvince: 'Alberta',
-                    postalCode: '12345',
-                    deliveryAddressChecked: true,
+        await waitFor(() => {
+            expect(spyUseCustomerSyncForm).toHaveReturnedWith(
+                expect.objectContaining({
+                    formState: expect.objectContaining({
+                        store: 2,
+                        email: 'john.smith@example.com',
+                        name: 'John Smith',
+                        phone: '+11234567890',
+                        country: 'Canada',
+                        countryCode: 'CA',
+                        company: 'Company',
+                        address: 'Address',
+                        apartment: 'Apartment 1',
+                        city: 'City',
+                        stateOrProvince: 'Alberta',
+                        postalCode: '12345',
+                        deliveryAddressChecked: true,
+                    }),
                 }),
-            }),
-        )
+            )
+        })
     })
 
     it('handles form submission when creating a customer without address', async () => {
@@ -362,6 +371,7 @@ describe('CustomerSyncForm', () => {
 
         const countryElements = screen.getAllByText('🇺🇸')
         fireEvent.click(countryElements[countryElements.length - 1])
+        await screen.findByText('Canada')
         fireEvent.click(screen.getByText('Canada'))
 
         fireEvent.change(screen.getByLabelText('Company'), {
@@ -382,7 +392,7 @@ describe('CustomerSyncForm', () => {
         const container = stateLabel.closest('div')
         const stateInput = container?.querySelector('[role="combobox"]')
 
-        userEvent.click(stateInput!)
+        await userEvent.click(stateInput!)
         await waitFor(() => {
             expect(screen.getByText('Alberta')).toBeInTheDocument()
             fireEvent.click(screen.getByText('Alberta'))

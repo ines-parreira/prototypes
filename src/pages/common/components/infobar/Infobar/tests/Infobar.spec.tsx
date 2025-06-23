@@ -176,6 +176,32 @@ describe('<Infobar/>', () => {
         dateNowSpy.mockRestore()
     })
 
+    it('should render the error when loading error', async () => {
+        mockedSearch.mockImplementation(
+            () => () =>
+                Promise.resolve({
+                    error: 'generic_error',
+                    resp: {
+                        data: {
+                            data: [],
+                        },
+                    },
+                }),
+        )
+
+        const { container, getByTestId, findByText } = renderWithRouter(
+            <Provider store={store}>
+                <Infobar {...commonProps} />
+            </Provider>,
+        )
+
+        fireEvent.change(getByTestId('Search'), { target: { value: 'query' } })
+        fireEvent.keyDown(getByTestId('Search'), { key: 'Enter' })
+
+        await findByText(/Failed to do the search/i)
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
     it('should render ticket context', () => {
         const { container } = renderWithRouter(
             <Provider store={store}>
@@ -230,24 +256,6 @@ describe('<Infobar/>', () => {
             fireEvent.keyDown(getByTestId('Search'), { key: '{Backspace}' })
         })
 
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
-    it('should render the error when loading error', async () => {
-        mockedSearch.mockImplementation(
-            () => () => Promise.resolve({ error: 'generic_error' }),
-        )
-
-        const { container, getByTestId, getByText } = renderWithRouter(
-            <Provider store={store}>
-                <Infobar {...commonProps} />
-            </Provider>,
-        )
-
-        fireEvent.change(getByTestId('Search'), { target: { value: 'query' } })
-        fireEvent.keyDown(getByTestId('Search'), { key: 'Enter' })
-
-        await waitFor(() => getByText(/Failed to do the search/i))
         expect(container.firstChild).toMatchSnapshot()
     })
 

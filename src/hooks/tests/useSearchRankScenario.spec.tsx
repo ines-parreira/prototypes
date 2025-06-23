@@ -15,7 +15,6 @@ import useSearchRankScenario, {
 } from 'hooks/useSearchRankScenario'
 import { SearchEngine } from 'models/search/types'
 import { RootState, StoreDispatch } from 'state/types'
-// TODO(React18): Remove act import this once we upgrade to React 18
 import { act, renderHook } from 'utils/testing/renderHook'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()

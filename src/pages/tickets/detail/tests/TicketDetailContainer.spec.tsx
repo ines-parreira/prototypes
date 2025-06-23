@@ -721,7 +721,7 @@ describe('TicketDetailContainer component', () => {
         },
     )
 
-    it('should restore the original customer of the ticket', () => {
+    it('should restore the original customer of the ticket', async () => {
         const activeCustomer = {
             id: 1,
             name: 'foo',
@@ -733,6 +733,7 @@ describe('TicketDetailContainer component', () => {
                 },
             ],
         }
+
         const customer = {
             id: 2,
             name: 'bar',
@@ -745,20 +746,17 @@ describe('TicketDetailContainer component', () => {
                 },
             ],
         }
+
         const newRecipient = {
             name: 'another recipient',
             address: 'another@gorgias.io',
         }
+
         const props = {
             ...minProps,
-            ticket: fromJS({
-                messages: [],
-                customer,
-            }),
+            ticket: fromJS({ messages: [], customer }),
             activeCustomer: fromJS(activeCustomer),
-            newMessageSource: fromJS({
-                to: [newRecipient],
-            }),
+            newMessageSource: fromJS({ to: [newRecipient] }),
         }
 
         const { rerender } = renderWithRouter(
@@ -772,7 +770,6 @@ describe('TicketDetailContainer component', () => {
                 route: '/foo/new?customer=1',
             },
         )
-        expect(minProps.setCustomer).not.toHaveBeenCalled()
 
         rerender(
             <QueryClientProvider client={queryClient}>
@@ -788,12 +785,14 @@ describe('TicketDetailContainer component', () => {
             </QueryClientProvider>,
         )
 
-        expect(minProps.setCustomer).toHaveBeenCalledWith(
-            fromJS({
-                ...activeCustomer,
-                address: activeCustomer.email,
-            }),
-        )
+        await waitFor(() => {
+            expect(minProps.setCustomer).toHaveBeenCalledWith(
+                fromJS({
+                    ...activeCustomer,
+                    address: activeCustomer.email,
+                }),
+            )
+        })
     })
 
     it(

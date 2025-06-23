@@ -103,7 +103,6 @@ exports[`BusinessHours component should render default values 1`] = `
                         role="menu"
                         tabindex="-1"
                       >
-                        
                         <button
                           class="option option--focused dropdown-item"
                           role="menuitem"
@@ -402,7 +401,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                         role="menu"
                         tabindex="-1"
                       >
-                        
                         <button
                           class="option option--focused dropdown-item"
                           role="menuitem"
@@ -575,7 +573,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                         role="menu"
                         tabindex="-1"
                       >
-                        
                         <button
                           class="option option--focused dropdown-item"
                           role="menuitem"

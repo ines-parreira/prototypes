@@ -184,7 +184,6 @@ exports[`EntireOrderRefundOrderModal snapshot renders the initial state 1`] = `
                   >
                     subdirectory_arrow_right
                   </i>
-                  
                 </a>
               </div>
             </div>

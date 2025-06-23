@@ -1663,15 +1663,15 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
     </div>
     <div
       data-floating-ui-portal=""
-      id="floating-ui-65"
+      id=":r21:"
     />
     <div
       data-floating-ui-portal=""
-      id="floating-ui-67"
+      id=":r23:"
     />
     <div
       data-floating-ui-portal=""
-      id="floating-ui-69"
+      id=":r25:"
     />
   </body>,
   "container": <div>
@@ -3390,15 +3390,15 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
     </div>
     <div
       data-floating-ui-portal=""
-      id="floating-ui-71"
+      id=":r27:"
     />
     <div
       data-floating-ui-portal=""
-      id="floating-ui-73"
+      id=":r29:"
     />
     <div
       data-floating-ui-portal=""
-      id="floating-ui-75"
+      id=":r2b:"
     />
   </body>,
   "container": <div>
@@ -5117,15 +5117,15 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
     </div>
     <div
       data-floating-ui-portal=""
-      id="floating-ui-77"
+      id=":r2d:"
     />
     <div
       data-floating-ui-portal=""
-      id="floating-ui-79"
+      id=":r2f:"
     />
     <div
       data-floating-ui-portal=""
-      id="floating-ui-81"
+      id=":r2h:"
     />
   </body>,
   "container": <div>

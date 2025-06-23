@@ -29,10 +29,7 @@ describe('useSafeContext', () => {
         const TestContext = createContext<string | undefined>(undefined)
         TestContext.displayName = 'TestContext'
 
-        const { result } = renderHook(() => useSafeContext(TestContext))
-
-        expect(result.error).toBeDefined()
-        expect(result.error?.message).toBe(
+        expect(() => renderHook(() => useSafeContext(TestContext))).toThrow(
             'TestContext must be used within a TestContext.Provider',
         )
     })
@@ -41,9 +38,8 @@ describe('useSafeContext', () => {
         const TestContext = createContext<string | undefined>(undefined)
         TestContext.displayName = undefined
 
-        const { result } = renderHook(() => useSafeContext(TestContext))
-
-        expect(result.error).toBeDefined()
-        expect(result.error?.message).toBe('Context must have a displayName')
+        expect(() => renderHook(() => useSafeContext(TestContext))).toThrow(
+            'Context must have a displayName',
+        )
     })
 })

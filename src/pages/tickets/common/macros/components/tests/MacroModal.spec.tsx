@@ -1,6 +1,7 @@
 import React, { ComponentProps, ReactNode } from 'react'
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { fromJS, Map } from 'immutable'
 import MockDate from 'mockdate'
 
@@ -326,8 +327,8 @@ describe('<MacroModal />', () => {
     it('should delete macro', async () => {
         render(<MacroModal {...props} />)
 
-        screen.getByText(/Delete macro/i).click()
-        screen.getByText(/Confirm/i).click()
+        await userEvent.click(screen.getByText(/Delete macro/i))
+        await userEvent.click(screen.getByText(/Confirm/i))
 
         expect(mockMutateDelete).toHaveBeenCalledWith(
             {
@@ -346,11 +347,11 @@ describe('<MacroModal />', () => {
         })
     })
 
-    it('should not do anything when deleting a macro if id is missing', () => {
+    it('should not do anything when deleting a macro if id is missing', async () => {
         render(<MacroModal {...props} currentMacro={undefined} />)
 
-        screen.getByText(/Delete macro/i).click()
-        screen.getByText(/Confirm/i).click()
+        await userEvent.click(screen.getByText(/Delete macro/i))
+        await userEvent.click(screen.getByText(/Confirm/i))
 
         expect(mockMutateDelete).not.toHaveBeenCalledWith(
             {

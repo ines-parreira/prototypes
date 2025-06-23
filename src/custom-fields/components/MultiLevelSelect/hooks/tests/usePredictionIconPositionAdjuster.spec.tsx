@@ -1,13 +1,11 @@
-import React from 'react'
-
-import { act, render } from '@testing-library/react'
+import { act, render, waitFor } from '@testing-library/react'
 
 import { renderHook } from 'utils/testing/renderHook'
 
 import { usePredictionIconPositionAdjuster } from '../usePredictionIconPositionAdjuster'
 
 describe('usePredictionIconPositionAdjuster', () => {
-    it('should set reference of hidden text', () => {
+    it('should set reference of hidden text', async () => {
         const { result } = renderHook(() =>
             usePredictionIconPositionAdjuster({
                 value: 'inputValue',
@@ -20,13 +18,15 @@ describe('usePredictionIconPositionAdjuster', () => {
         act(() => {
             render(<div ref={result.current.hiddenRef} />)
 
-            expect(result.current).toMatchObject({
-                hiddenRef: { current: expect.any(Element) },
+            waitFor(() => {
+                expect(result.current).toMatchObject({
+                    hiddenRef: { current: expect.any(Element) },
+                })
             })
         })
     })
 
-    it('should set icon left position relative to hidden text', () => {
+    it('should set icon left position relative to hidden text', async () => {
         const { result, rerender } = renderHook(() =>
             usePredictionIconPositionAdjuster({
                 value: 'inputValue',
@@ -40,14 +40,16 @@ describe('usePredictionIconPositionAdjuster', () => {
             render(<div ref={result.current.hiddenRef} />)
             rerender()
 
-            expect(result.current).toMatchObject({
-                iconLeft: 6,
-                hiddenRef: { current: expect.any(Element) },
+            waitFor(() => {
+                expect(result.current).toMatchObject({
+                    iconLeft: 6,
+                    hiddenRef: { current: expect.any(Element) },
+                })
             })
         })
     })
 
-    it('should set icon left position relative to the limit defined by the input', () => {
+    it('should set icon left position relative to the limit defined by the input', async () => {
         const { result, rerender } = renderHook(() =>
             usePredictionIconPositionAdjuster({
                 value: 'inputValue',
@@ -61,9 +63,11 @@ describe('usePredictionIconPositionAdjuster', () => {
             render(<div ref={result.current.hiddenRef} />)
             rerender()
 
-            expect(result.current).toMatchObject({
-                iconLeft: -2,
-                hiddenRef: { current: expect.any(Element) },
+            waitFor(() => {
+                expect(result.current).toMatchObject({
+                    iconLeft: -2,
+                    hiddenRef: { current: expect.any(Element) },
+                })
             })
         })
     })

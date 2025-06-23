@@ -7,7 +7,6 @@ exports[`<QRCodeStep /> render() should render the component with the loading co
   >
     Scan the QR code with your authenticator app
   </div>
-  
   <div
     class="qrCodeLoadingContainer"
   >
@@ -110,7 +109,6 @@ exports[`<QRCodeStep /> render() should render the component without the qrcode 
   >
     Scan the QR code with your authenticator app
   </div>
-  
   <div
     class="headingBold mt24"
   >

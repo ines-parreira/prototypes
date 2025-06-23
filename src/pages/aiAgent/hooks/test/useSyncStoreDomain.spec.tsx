@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -150,7 +151,7 @@ describe('useSyncStoreDomain', () => {
         expect(result.current.syncTriggered).toBe(false)
     })
 
-    it('should set syncTriggered to true when handleTriggerSync is called and storeDomainIngestionLog is exist', () => {
+    it('should set syncTriggered to true when handleTriggerSync is called and storeDomainIngestionLog is exist', async () => {
         const { result } = renderHook(
             () =>
                 useSyncStoreDomain({
@@ -167,7 +168,9 @@ describe('useSyncStoreDomain', () => {
 
         result.current.handleTriggerSync()
 
-        expect(result.current.syncTriggered).toBe(true)
+        await waitFor(() => {
+            expect(result.current.syncTriggered).toBe(true)
+        })
     })
 
     it('should call handleOnSync when handleTriggerSync is called and storeDomainIngestionLog is not exist', () => {

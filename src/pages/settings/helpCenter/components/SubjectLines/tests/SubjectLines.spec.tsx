@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { fireEvent, screen } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Provider } from 'react-redux'
@@ -144,27 +144,31 @@ describe('<SubjectLines />', () => {
         expect(setIsDirty).toHaveBeenCalledWith(true)
     })
 
-    it('should call the updateContactForm function when a subject line is added', () => {
+    it('should call the updateContactForm function when a subject line is added', async () => {
         const updateContactForm = jest.fn()
         renderComponent(subjectLines, updateContactForm)
 
         screen.getByText(/add subject line/i).click()
 
-        expect(updateContactForm).toHaveBeenCalled()
-        expect(screen.getAllByRole('textbox').length).toBe(4)
-        expect(screen.getAllByRole('textbox')[3].nodeValue).toBe(null)
-        expect(setIsDirty).toHaveBeenCalledWith(true)
+        await waitFor(() => {
+            expect(updateContactForm).toHaveBeenCalled()
+            expect(screen.getAllByRole('textbox').length).toBe(4)
+            expect(screen.getAllByRole('textbox')[3].nodeValue).toBe(null)
+            expect(setIsDirty).toHaveBeenCalledWith(true)
+        })
     })
 
-    it('should call the updateContactForm function when a subject line is removed', () => {
+    it('should call the updateContactForm function when a subject line is removed', async () => {
         const updateContactForm = jest.fn()
         renderComponent(subjectLines, updateContactForm)
 
         screen.getAllByText(/delete/i)[0].click()
 
-        expect(updateContactForm).toHaveBeenCalled()
-        expect(screen.getAllByRole('textbox').length).toBe(2)
-        expect(setIsDirty).toHaveBeenCalledWith(true)
+        await waitFor(() => {
+            expect(updateContactForm).toHaveBeenCalled()
+            expect(screen.getAllByRole('textbox').length).toBe(2)
+            expect(setIsDirty).toHaveBeenCalledWith(true)
+        })
     })
 
     it('should call the updateContactForm function when a subject line is updated', () => {

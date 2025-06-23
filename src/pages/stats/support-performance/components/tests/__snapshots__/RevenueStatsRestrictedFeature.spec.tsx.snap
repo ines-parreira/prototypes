@@ -36,7 +36,6 @@ exports[`<RevenueStatsRestrictedFeature /> should render the restricted feature 
     <div
       class="slick-slider slick-initialized"
     >
-      
       <div
         class="slick-list"
       >
@@ -98,8 +97,6 @@ exports[`<RevenueStatsRestrictedFeature /> should render the restricted feature 
           </div>
         </div>
       </div>
-      
-      
     </div>
   </div>
 </div>

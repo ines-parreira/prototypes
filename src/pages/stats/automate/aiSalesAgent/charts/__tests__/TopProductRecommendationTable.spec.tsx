@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import moment from 'moment/moment'
 import { Provider } from 'react-redux'
 
@@ -83,7 +83,7 @@ describe('<TopProductRecommendationTable />', () => {
         expect(screen.getByText('No data available')).toBeInTheDocument()
     })
 
-    it('navigates pages correctly', () => {
+    it('navigates pages correctly', async () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <WarningBannerProvider isBannerVisible={false}>
@@ -98,16 +98,22 @@ describe('<TopProductRecommendationTable />', () => {
 
         // Navigate to next page
         screen.getByText('keyboard_arrow_right').click()
-        expect(screen.getByText('Product 1')).toBeInTheDocument()
-        expect(screen.queryByText('Product 20')).not.toBeInTheDocument()
+
+        await waitFor(() => {
+            expect(screen.getByText('Product 1')).toBeInTheDocument()
+            expect(screen.queryByText('Product 20')).not.toBeInTheDocument()
+        })
 
         // Navigate back to previous page
         screen.getByText('keyboard_arrow_left').click()
-        expect(screen.getByText('Product 20')).toBeInTheDocument()
-        expect(screen.queryByText('Product 1')).not.toBeInTheDocument()
+
+        await waitFor(() => {
+            expect(screen.getByText('Product 20')).toBeInTheDocument()
+            expect(screen.queryByText('Product 1')).not.toBeInTheDocument()
+        })
     })
 
-    it('sorts columns correctly', () => {
+    it('sorts columns correctly', async () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <WarningBannerProvider isBannerVisible={false}>
@@ -122,20 +128,33 @@ describe('<TopProductRecommendationTable />', () => {
 
         // Sort by CTR
         screen.getByText('Click rate').click()
-        expect(screen.getByText('Product 20')).toBeInTheDocument()
-        expect(screen.getByText('Product 19')).toBeInTheDocument()
+
+        await waitFor(() => {
+            expect(screen.getByText('Product 20')).toBeInTheDocument()
+            expect(screen.getByText('Product 19')).toBeInTheDocument()
+        })
 
         // Sort by Number of Recommendations
         screen.getByText('Times recommended').click()
-        expect(screen.getByText('Product 1')).toBeInTheDocument()
-        expect(screen.getByText('Product 2')).toBeInTheDocument()
+
+        await waitFor(() => {
+            expect(screen.getByText('Product 1')).toBeInTheDocument()
+            expect(screen.getByText('Product 2')).toBeInTheDocument()
+        })
 
         // Sort by BTR
         screen.getByText('Buy rate').click()
-        expect(screen.getByText('Product 1')).toBeInTheDocument()
-        expect(screen.getByText('Product 2')).toBeInTheDocument()
+
+        await waitFor(() => {
+            expect(screen.getByText('Product 1')).toBeInTheDocument()
+            expect(screen.getByText('Product 2')).toBeInTheDocument()
+        })
+
         screen.getByText('Buy rate').click()
-        expect(screen.getByText('Product 20')).toBeInTheDocument()
-        expect(screen.getByText('Product 19')).toBeInTheDocument()
+
+        await waitFor(() => {
+            expect(screen.getByText('Product 20')).toBeInTheDocument()
+            expect(screen.getByText('Product 19')).toBeInTheDocument()
+        })
     })
 })

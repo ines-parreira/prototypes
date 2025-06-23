@@ -1,6 +1,6 @@
 import React, { ComponentProps } from 'react'
 
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import FileField from 'pages/common/forms/FileField'
 import { assumeMock, getLastMockCall } from 'utils/testing'
@@ -67,7 +67,7 @@ describe('<CardEditForm/>', () => {
             },
         )
 
-        act(() => {
+        await waitFor(() => {
             ;(
                 getLastMockCall(mockedFileField)[0].onChange as (
                     value: string,
@@ -93,23 +93,25 @@ describe('<CardEditForm/>', () => {
         fireEvent.click(
             screen.getByLabelText(CardEditExports.ORDER_FIELD_LABEL),
         )
-        screen.getAllByRole('menuitem')[0].click()
+        await screen.getAllByRole('menuitem')[0].click()
 
         fireEvent.click(screen.getByText(CardEditExports.SUBMIT_BUTTON_TEXT))
 
-        expect(props.onCancel).not.toHaveBeenCalled()
-        expect(props.onSubmit).toHaveBeenNthCalledWith(
-            1,
-            expect.objectContaining({
-                title,
-                link,
-                color,
-                pictureUrl,
-                displayCard: false,
-                limit,
-                orderBy: props.orderByOptions[0].value,
-            }),
-        )
+        await waitFor(() => {
+            expect(props.onCancel).not.toHaveBeenCalled()
+            expect(props.onSubmit).toHaveBeenNthCalledWith(
+                1,
+                expect.objectContaining({
+                    title,
+                    link,
+                    color,
+                    pictureUrl,
+                    displayCard: false,
+                    limit,
+                    orderBy: props.orderByOptions[0].value,
+                }),
+            )
+        })
     })
 
     it('should not display the hidden fields', () => {

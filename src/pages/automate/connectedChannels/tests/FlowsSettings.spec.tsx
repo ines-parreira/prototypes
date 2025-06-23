@@ -250,15 +250,13 @@ describe('FlowsSettings', () => {
         fireEvent.click(addFlowButton)
         const searchInput = screen.getByPlaceholderText(/Search flows/i)
         fireEvent.change(searchInput, { target: { value: 'Flow 1' } })
-        await act(async () => {
-            await waitFor(
-                () => {
-                    expect(screen.getByText('Flow 1')).toBeInTheDocument()
-                    expect(screen.queryByText('Flow 2')).toBeNull()
-                },
-                { timeout: 1000 },
-            )
-        })
+        await waitFor(
+            () => {
+                expect(screen.getByText('Flow 1')).toBeInTheDocument()
+                expect(screen.queryByText('Flow 2')).toBeNull()
+            },
+            { timeout: 1000 },
+        )
     })
 
     it('should render the correct number of enabled workflows', () => {
@@ -376,15 +374,14 @@ describe('FlowsSettings', () => {
         const addFlowButton = screen.getByRole('button', { name: /add flow/i })
         expect(addFlowButton).toBeAriaDisabled()
 
-        await act(async () => {
-            fireEvent.mouseEnter(addFlowButton)
-            await waitFor(() => {
-                expect(
-                    screen.getByText(
-                        /You’ve reached the maximum number of Flows to display on this channel./i,
-                    ),
-                ).toBeInTheDocument()
-            })
+        fireEvent.mouseEnter(addFlowButton)
+
+        waitFor(() => {
+            expect(
+                screen.getByText(
+                    /You’ve reached the maximum number of Flows to display on this channel./i,
+                ),
+            ).toBeInTheDocument()
         })
     })
 
@@ -591,13 +588,14 @@ describe('FlowsSettings', () => {
 
         await act(async () => {
             fireEvent.mouseEnter(addFlowButton)
-            await waitFor(() => {
-                expect(
-                    screen.getByText(
-                        /reached the maximum number of Flows to display on this channel/i,
-                    ),
-                ).toBeInTheDocument()
-            })
+        })
+
+        waitFor(() => {
+            expect(
+                screen.getByText(
+                    /reached the maximum number of Flows to display on this channel/i,
+                ),
+            ).toBeInTheDocument()
         })
     })
 

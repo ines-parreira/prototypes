@@ -1,6 +1,8 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
-import { render } from '@testing-library/react'
+import { render, waitFor } from '@testing-library/react'
+
+import { userEvent } from 'utils/testing/userEvent'
 
 import AssignUser from '../AssignUser'
 import UserAssigneeDropdownMenu from '../UserAssigneeDropdownMenu'
@@ -27,12 +29,14 @@ describe('<AssignUser />', () => {
         expect(getByText('person')).toBeInTheDocument()
     })
 
-    it('should trigger callback on click', () => {
+    it('should trigger callback on click', async () => {
         const { getByText } = render(<AssignUser {...minProps} />)
-        getByText('person').click()
-        getByText('UserAssigneeDropdownMenuMock').click()
+        await userEvent.click(getByText('person'))
+        await userEvent.click(getByText('UserAssigneeDropdownMenuMock'))
 
-        expect(minProps.onClick).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(minProps.onClick).toHaveBeenCalled()
+        })
     })
 
     it('should be disabled', () => {

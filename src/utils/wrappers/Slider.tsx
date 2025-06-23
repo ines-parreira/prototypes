@@ -12,6 +12,7 @@ export type SliderRef = BaseSlider
 const Slider = forwardRef<BaseSlider, SliderProps>(
     ({ children, ...props }, ref) => {
         return (
+            // @ts-expect-error
             <BaseSlider ref={ref} {...props}>
                 {children}
             </BaseSlider>

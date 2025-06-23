@@ -347,7 +347,8 @@ const MissingKnowledgeSelect = ({
     }, [accountId])
 
     const handleChange = useCallback(
-        (value) => {
+        // TODO(React18): Remove any type
+        (value: any) => {
             const newValues = Array.isArray(value) ? value : [...values, value]
 
             const choicesToSubmit = newValues

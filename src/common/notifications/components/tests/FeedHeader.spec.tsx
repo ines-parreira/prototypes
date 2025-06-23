@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { FilterStatus } from '@knocklabs/react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 
 import {
     logEvent,
@@ -75,20 +75,27 @@ describe('<FeedHeader />', () => {
         expect(mockMarkAllAsRead).toHaveBeenCalled()
     })
 
-    it('should trigger the change of filtered notification status', () => {
+    it('should trigger the change of filtered notification status', async () => {
         useCountMock.mockReturnValue(1)
         const newStatus = 'unread'
 
         render(<FeedHeader {...props} />)
 
         screen.getByText('all').click()
+
+        await screen.findByText(new RegExp(newStatus, 'i'))
         screen.getByText(new RegExp(newStatus, 'i')).click()
 
-        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.NotificationCenter, {
-            type: NotificationCenterEventTypes.Filter,
-            value: newStatus,
+        await waitFor(() => {
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.NotificationCenter,
+                {
+                    type: NotificationCenterEventTypes.Filter,
+                    value: newStatus,
+                },
+            )
+            expect(props.setFilterStatus).toHaveBeenCalledWith(newStatus)
         })
-        expect(props.setFilterStatus).toHaveBeenCalledWith(newStatus)
     })
 
     it('should trigger the redirect to settings', () => {
