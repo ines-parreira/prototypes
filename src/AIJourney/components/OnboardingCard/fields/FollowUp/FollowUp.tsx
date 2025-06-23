@@ -22,7 +22,7 @@ export const FollowUpField = ({
             if (onChange) {
                 return onChange(option)
             }
-            return {}
+            return
         },
         [onChange],
     )

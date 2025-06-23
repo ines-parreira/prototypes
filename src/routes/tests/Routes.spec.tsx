@@ -214,6 +214,19 @@ describe('<Routes/>', () => {
             isLoading: false,
             data: undefined,
         })
+
+        jest.mocked(
+            require('hooks/useAllIntegrations').default,
+        ).mockReturnValue({
+            integrations: [
+                {
+                    id: 1,
+                    type: 'shopify',
+                    name: 'shopify-store',
+                    meta: { shop_name: 'shopify-store' },
+                },
+            ],
+        })
     })
 
     afterEach(() => {

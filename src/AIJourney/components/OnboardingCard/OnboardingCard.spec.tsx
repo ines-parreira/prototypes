@@ -33,6 +33,11 @@ describe('<OnboardingCard />', () => {
         const selectedOption = screen.getByText('1')
         await userEvent.click(selectedOption)
 
+        const phoneNumberDropdown = screen.getByText('Select')
+        await userEvent.click(phoneNumberDropdown)
+
+        await userEvent.click(screen.getByText('(415)-111-111'))
+
         expect(button).not.toBeDisabled()
         await userEvent.click(button)
 

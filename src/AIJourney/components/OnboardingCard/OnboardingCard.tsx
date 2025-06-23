@@ -7,6 +7,7 @@ import {
     EnableDiscountField,
     FollowUpField,
     MaximumDiscountField,
+    PhoneNumberField,
 } from './fields'
 
 import css from './OnboardingCard.less'
@@ -28,6 +29,7 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
     const [followUpValue, setFollowUpValue] = useState<number>()
     const [isDiscountEnabled, setIsDiscountEnabled] = useState(false)
     const [discountValue, setDiscountValue] = useState('')
+    const [phoneNumberValue, setPhoneNumberValue] = useState('')
 
     const handleDiscountToggle = () => {
         setIsDiscountEnabled((prev) => !prev)
@@ -36,11 +38,18 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
     const handleMaximumDiscountChange = (newValue: string) => {
         setDiscountValue(newValue)
     }
+
+    const handlePhoneNumberChange = (newValue: string) => {
+        setPhoneNumberValue(newValue)
+    }
+
     const followUpOptions = [1, 2, 3]
+    const optionsList = ['(415)-111-111', '(415)-222-222', '(415)-333-333']
 
     const isDiscountFieldValid = isDiscountEnabled ? !!discountValue : true
 
-    const shouldDisableButton = !isDiscountFieldValid || !followUpValue
+    const shouldDisableButton =
+        !isDiscountFieldValid || !followUpValue || !phoneNumberValue
 
     return (
         <div className={css.onboardingCard}>
@@ -56,6 +65,11 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
                     />
                 ) : (
                     <>
+                        <PhoneNumberField
+                            options={optionsList}
+                            value={phoneNumberValue}
+                            onChange={handlePhoneNumberChange}
+                        />
                         <FollowUpField
                             value={followUpValue}
                             options={followUpOptions}

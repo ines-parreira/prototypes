@@ -1,0 +1,99 @@
+:local {
+    .dropdownSelect {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 215px;
+        background: #fae5ff;
+        display: inline-flex;
+        height: 40px;
+        align-items: center;
+        flex-shrink: 0;
+        border-radius: var(--layout-spacing-s);
+        border: 0px;
+        padding: var(--layout-spacing-xxs) var(--layout-spacing-xs);
+        margin-bottom: var(--layout-spacing-xxs);
+        cursor: pointer;
+
+        &:hover {
+            background: #f5ccff;
+        }
+    }
+
+    .selectedOption {
+        color: #c334dd;
+        font-variant-numeric: lining-nums tabular-nums;
+        font-feature-settings:
+            'ss01' on,
+            'cv10' on;
+
+        font-family: Inter;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 24px;
+        align-self: center;
+
+        &--empty {
+            margin-left: var(--layout-spacing-xs);
+        }
+    }
+
+    .dropdownOptions {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        border-radius: var(--layout-spacing-s);
+        border: 1px solid #ececec;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(4px);
+        padding: var(--layout-spacing-xs);
+        list-style: none;
+        gap: var(--layout-spacing-xxs);
+        max-width: 215px;
+
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transform: translateY(-10px);
+        transition:
+            max-height 0.4s,
+            opacity 0.2s,
+            transform 0.4s;
+
+        &--open {
+            width: 100%;
+            height: auto;
+            max-height: 500px; // large enough to fit all options
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .dropdownOption {
+        display: flex;
+        justify-content: space-between;
+
+        align-items: center;
+        color: #222;
+        font-feature-settings:
+            'liga' off,
+            'clig' off;
+        font-family: Inter;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 24px;
+        height: var(--layout-spacing-m);
+        border-radius: var(--layout-spacing-s);
+        padding: var(--layout-spacing-s);
+
+        cursor: default;
+
+        &:hover {
+            background: var(--neutral-grey-2);
+        }
+    }
+}
