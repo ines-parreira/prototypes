@@ -52,4 +52,15 @@ describe('GlobalNavigationItem', () => {
         )
         expect(screen.getByRole('button')).toBeInTheDocument()
     })
+
+    it('should render an image icon', () => {
+        render(
+            <GlobalNavigationItem
+                icon={<img src="src/test" alt="test-img" />}
+                label="Home"
+            />,
+        )
+
+        expect(screen.getByAltText('test-img')).toBeInTheDocument()
+    })
 })
