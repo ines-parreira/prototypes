@@ -1,4 +1,4 @@
-import React, { ForwardedRef, forwardRef, useMemo } from 'react'
+import { ForwardedRef, forwardRef, useMemo, useState } from 'react'
 
 import { fromJS } from 'immutable'
 
@@ -12,6 +12,7 @@ import {
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useEffectOnce from 'hooks/useEffectOnce'
 import { IntegrationType } from 'models/integration/constants'
 import { ShopifyIntegration } from 'models/integration/types'
 import {
@@ -79,6 +80,15 @@ const TicketRichField = (
     const newMessageChannel = useAppSelector(getNewMessageChannel)
     const isNewMessagePublic = useAppSelector(getIsNewMessagePublic)
     const shopifyIntegrations = useAppSelector(getShopifyIntegrations)
+    const [key, setKey] = useState<string | undefined>()
+
+    /**
+     * Post React 18 migration, we need to set a key to the RichField component
+     * to force a re-render when the value changes.
+     */
+    useEffectOnce(() => {
+        setKey(props.value.html ?? props.value.text ?? 'rich-field-content')
+    })
 
     const toolbarContext: ToolbarContextType = useMemo(
         () => ({
@@ -214,6 +224,7 @@ const TicketRichField = (
     return (
         <ToolbarContext.Provider value={toolbarContext}>
             <RichField
+                key={key}
                 ref={ref}
                 canAddVideoPlayer={toolbarContext.canAddVideoPlayer}
                 onInsertVideoAddedFromPastedLink={() => {
