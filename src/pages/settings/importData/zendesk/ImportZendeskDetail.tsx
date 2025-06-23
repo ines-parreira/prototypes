@@ -13,7 +13,7 @@ import {
 } from 'reactstrap'
 import { bindActionCreators } from 'redux'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Button, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { useAppNode } from 'appNode'
 import { DateAndTimeFormatting } from 'constants/datetime'
@@ -21,7 +21,6 @@ import useEffectOnce from 'hooks/useEffectOnce'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { IntegrationType } from 'models/integration/constants'
 import { ZendeskIntegration } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import settingsCss from 'pages/settings/settings.less'
@@ -165,7 +164,9 @@ export const ImportZendeskDetail = ({
                                     </div>
                                     <a
                                         className="mb-1"
-                                        href="https://docs.gorgias.com/migrating-helpdesks/switching-from-zendesk"
+                                        href="https://link.gorgias.com/89f03c"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                     >
                                         <Button
                                             size="small"
