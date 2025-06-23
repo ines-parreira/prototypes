@@ -2,9 +2,7 @@ import { useState } from 'react'
 
 import { useHistory, useParams } from 'react-router-dom'
 
-import { Button } from '@gorgias/merchant-ui-kit'
-
-import { FieldPresentation } from '..'
+import { Button, FieldPresentation } from '../'
 import {
     EnableDiscountField,
     FollowUpField,
@@ -27,8 +25,8 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
     const history = useHistory()
     const { shopName } = useParams<{ shopName: string }>()
 
-    const [isDiscountEnabled, setIsDiscountEnabled] = useState(false)
     const [followUpValue, setFollowUpValue] = useState<number>()
+    const [isDiscountEnabled, setIsDiscountEnabled] = useState(false)
     const [discountValue, setDiscountValue] = useState('')
 
     const handleDiscountToggle = () => {
@@ -39,6 +37,10 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
         setDiscountValue(newValue)
     }
     const followUpOptions = [1, 2, 3]
+
+    const isDiscountFieldValid = isDiscountEnabled ? !!discountValue : true
+
+    const shouldDisableButton = !isDiscountFieldValid || !followUpValue
 
     return (
         <div className={css.onboardingCard}>
@@ -71,13 +73,12 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
                     </>
                 )}
                 <Button
+                    label="Continue"
                     onClick={() =>
                         history.push(`/app/ai-journey/${shopName}/activation`)
                     }
-                    isDisabled={isActivationStep}
-                >
-                    This is a placeholder button
-                </Button>
+                    isDisabled={shouldDisableButton}
+                />
             </div>
         </div>
     )

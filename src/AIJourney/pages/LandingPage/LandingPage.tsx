@@ -1,8 +1,7 @@
 import { useHistory, useParams } from 'react-router-dom'
 
-import { Button } from '@gorgias/merchant-ui-kit'
-
-import Icon from 'AIJourney/assets/AI-intro-icon.svg'
+import { Button } from 'AIJourney/components'
+import sphereIcon from 'assets/img/ai-journey/sphere.svg'
 
 import css from './LandingPage.less'
 
@@ -13,7 +12,7 @@ export const LandingPage = () => {
     return (
         <div className={css.container}>
             <div className={css.title}>
-                <img src={Icon} alt="Ai-icon" />
+                <img src={sphereIcon} alt="Ai-icon" />
                 <div className={css.badge}>
                     <span>AI Journey Performance</span>
                 </div>
@@ -26,17 +25,14 @@ export const LandingPage = () => {
                     opted-in subscribers from your platforms to personalizing
                     and delivering each message.
                 </span>
-                <div style={{ marginTop: '32px', alignSelf: 'center' }}>
-                    <Button
-                        onClick={() =>
-                            history.push(
-                                `/app/ai-journey/${shopName}/conversation-setup`,
-                            )
-                        }
-                    >
-                        This is a placeholder button
-                    </Button>
-                </div>
+                <Button
+                    label="Continue"
+                    onClick={() =>
+                        history.push(
+                            `/app/ai-journey/${shopName}/conversation-setup`,
+                        )
+                    }
+                />
             </div>
         </div>
     )

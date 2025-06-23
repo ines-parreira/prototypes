@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 
 import classNames from 'classnames'
 
@@ -23,6 +23,12 @@ export const MaximumDiscountField = ({
         },
         [onChange],
     )
+
+    useEffect(() => {
+        if (isDisabled && value) {
+            handleChange('')
+        }
+    }, [isDisabled, value, handleChange])
 
     const maximumDiscountFieldClass = classNames(css.maximumDiscountField, {
         [css['maximumDiscountField--disabled']]: isDisabled,

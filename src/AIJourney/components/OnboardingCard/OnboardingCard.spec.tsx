@@ -24,11 +24,17 @@ describe('<OnboardingCard />', () => {
         render(<OnboardingCard currentStep={'Conversation Setup'} />)
         expect(screen.getByText('Conversation Setup step')).toBeInTheDocument()
 
-        const placeholderButton = screen.getByText(
-            'This is a placeholder button',
-        )
-        expect(placeholderButton).toBeInTheDocument()
-        await userEvent.click(placeholderButton)
+        const buttonLabel = screen.getByText('Continue')
+        expect(buttonLabel).toBeInTheDocument()
+
+        const button = screen.getByTestId('ai-journey-button')
+        expect(button).toBeDisabled()
+
+        const selectedOption = screen.getByText('1')
+        await userEvent.click(selectedOption)
+
+        expect(button).not.toBeDisabled()
+        await userEvent.click(button)
 
         expect(mockHistoryPush).toHaveBeenCalledTimes(1)
     })

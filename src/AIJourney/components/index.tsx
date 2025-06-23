@@ -2,6 +2,7 @@ export { OnboardingStepSelector } from './OnboardingStepSelector/OnboardingStepS
 export { Selector } from './Selector/Selector'
 export { FieldPresentation } from './FieldPresentation/FieldPresentation'
 export { Info } from './Info/Info'
+export { Button } from './Button/Button'
 export { Switch } from './Switch/Switch'
 export { AiJourneyNavbar } from './Navbar/Navbar'
 export { PercentageInput } from './PercentageInput/PercentageInput'

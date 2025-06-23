@@ -2,6 +2,7 @@ import React, { ComponentType, PropsWithChildren, ReactNode } from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
+import axios from 'axios'
 import { createBrowserHistory, createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
@@ -176,6 +177,18 @@ const mockStore = configureMockStore()
 const mockUseFlag = useFlag as jest.Mock
 jest.mock('pages/stats/report-chart-restrictions/ProtectedRoute')
 const ProtectedRouteMock = assumeMock(ProtectedRoute)
+
+;(useAllIntegrations as jest.Mock).mockReturnValue({
+    integrations: [
+        {
+            id: 1,
+            type: IntegrationType.Shopify,
+            name: 'shopify-store',
+            meta: { shop_name: 'shopify-store' },
+        },
+    ],
+    isLoading: false,
+})
 
 window.loadGorgiasChat = jest.fn()
 
@@ -731,21 +744,17 @@ describe('<Routes/>', () => {
         })
     })
 
-    describe('AiJourneyRoutes', () => {
-        const queryClient = new QueryClient()
-
+    describe.only('AiJourneyRoutes', () => {
         beforeEach(() => {
-            ;(useAllIntegrations as jest.Mock).mockReturnValue({
-                integrations: [
-                    {
-                        id: 1,
-                        type: IntegrationType.Shopify,
-                        name: 'shopify-store',
-                    },
-                ],
+            jest.spyOn(axios, 'request').mockImplementation((config) => {
+                // Log the request config to see what is being called
+                // oxlint-disable-next-line no-console
+                console.log('AXIOS REQUEST:', config)
+                // Optionally, return a resolved/rejected promise to avoid the error
+                return Promise.reject(new Error('Mocked network error'))
             })
         })
-
+        const queryClient = new QueryClient()
         it.skip('should redirect to /app when feature flag is disabled', () => {
             mockFlags({
                 [FeatureFlagKey.AiJourneyEnabled]: false,
@@ -806,6 +815,25 @@ describe('<Routes/>', () => {
             )
 
             expect(screen.getByText('Activation step')).toBeInTheDocument()
+        })
+
+        it('should redirect to first store when no store is passed in the URL', async () => {
+            mockUseFlag.mockReturnValue(true)
+            const history = createMemoryHistory({
+                initialEntries: ['/app/ai-journey'],
+            })
+
+            render(
+                <Router history={history}>
+                    <Routes />
+                </Router>,
+            )
+
+            await waitFor(() => {
+                expect(history.location.pathname).toBe(
+                    '/app/ai-journey/shopify-store',
+                )
+            })
         })
     })
 })

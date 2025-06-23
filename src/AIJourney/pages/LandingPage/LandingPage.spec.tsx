@@ -22,11 +22,11 @@ describe('<LandingPage />', () => {
     it('should redirect to conversation-setup page when placeholder button is clicked', async () => {
         renderWithRouter(<LandingPage />)
 
-        const placeholderButton = screen.getByText(
-            'This is a placeholder button',
-        )
-        expect(placeholderButton).toBeInTheDocument()
-        await userEvent.click(placeholderButton)
+        const buttonLabel = screen.getByText('Continue')
+        expect(buttonLabel).toBeInTheDocument()
+
+        const button = screen.getByTestId('ai-journey-button')
+        await userEvent.click(button)
 
         expect(mockHistoryPush).toHaveBeenCalledTimes(1)
     })

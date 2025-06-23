@@ -13,4 +13,16 @@ describe('<MaximumDiscountField />', () => {
         render(<MaximumDiscountField />)
         expect(screen.getByText('Maximum amount')).toBeInTheDocument()
     })
+
+    it('should call onChange with empty string when disabled and value is set', () => {
+        const onChange = jest.fn()
+        render(
+            <MaximumDiscountField
+                value="10"
+                isDisabled={true}
+                onChange={onChange}
+            />,
+        )
+        expect(onChange).toHaveBeenCalledWith('')
+    })
 })
