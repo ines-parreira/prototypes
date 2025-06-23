@@ -1,6 +1,7 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { Meta, StoryFn } from '@storybook/react'
+import { userEvent } from '@storybook/test'
 import { within } from '@testing-library/react'
 import moment from 'moment'
 import { Provider } from 'react-redux'
@@ -8,7 +9,6 @@ import configureMockStore from 'redux-mock-store'
 
 import { ThemeProvider } from 'core/theme'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
-import { userEvent } from 'utils/testing/userEvent'
 
 const defaultState = {}
 const DATE = '2023-04-14T12:34:56.000Z'

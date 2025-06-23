@@ -1,6 +1,7 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { Meta, StoryFn } from '@storybook/react'
+import { userEvent } from '@storybook/test'
 import { within } from '@testing-library/react'
 import moment from 'moment'
 import { Provider } from 'react-redux'
@@ -9,7 +10,6 @@ import configureMockStore from 'redux-mock-store'
 import { ThemeProvider } from 'core/theme'
 import { FILTER_DROPDOWN_ICON } from 'pages/common/forms/FilterInput/constants'
 import { PeriodFilter } from 'pages/stats/common/filters/PeriodFilter'
-import { userEvent } from 'utils/testing/userEvent'
 
 const defaultState = {}
 
