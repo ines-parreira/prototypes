@@ -18,6 +18,7 @@ import {
     removeVoiceCallInLiveAgentsQueryCache,
     setWrapUpExpirationTimer,
     transformDateToUTCString,
+    updateAgentAvailabilityInLiveAgentsQueryCache,
     updateAgentStatusInLiveAgentsQueryCache,
     updateVoiceCallInLiveCallsQueryCache,
 } from '../utils'
@@ -510,6 +511,164 @@ describe('utils.ts', () => {
             setWrapUpExpirationTimer(timeouts, status)
 
             expect(timeouts.current['1-123']).toBeUndefined()
+        })
+    })
+
+    describe('updateAgentAvailabilityInLiveAgentsQueryCache', () => {
+        const agentId = 1
+        const availabilityUpdate = {
+            available: false,
+            forward_calls: false,
+            forward_when_offline: false,
+        }
+        const params: ListLiveCallQueueVoiceCallsParams = {
+            integration_ids: [1],
+            voice_queue_ids: [2],
+            agent_ids: [agentId],
+        }
+        const queryKey =
+            queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+        it('should update agent availability in cache', () => {
+            const oldData = {
+                data: {
+                    data: [
+                        {
+                            id: 1,
+                            available: true,
+                            name: 'Agent 1',
+                            forward_calls: true,
+                            forward_when_offline: true,
+                        },
+                    ],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, oldData)
+
+            updateAgentAvailabilityInLiveAgentsQueryCache(
+                agentId,
+                availabilityUpdate,
+                params,
+            )
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            id: 1,
+                            available: false,
+                            forward_calls: false,
+                            forward_when_offline: false,
+                            name: 'Agent 1',
+                        },
+                    ],
+                },
+            })
+        })
+
+        it('should not do anything if the agent is not in the data', () => {
+            const oldData = {
+                data: { data: [] },
+            }
+            appQueryClient.setQueryData(queryKey, oldData)
+
+            updateAgentAvailabilityInLiveAgentsQueryCache(
+                agentId,
+                availabilityUpdate,
+                params,
+            )
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: { data: [] },
+            })
+        })
+
+        it('should merge availability updates with existing agent data', () => {
+            const oldData = {
+                data: {
+                    data: [
+                        {
+                            id: 1,
+                            name: 'Agent 1',
+                            email: 'agent1@example.com',
+                            call_statuses: [
+                                {
+                                    status: AgentStatus.Ringing,
+                                    call_sid: '12345',
+                                },
+                            ],
+                        },
+                    ],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, oldData)
+
+            updateAgentAvailabilityInLiveAgentsQueryCache(
+                agentId,
+                availabilityUpdate,
+                params,
+            )
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            id: 1,
+                            available: false,
+                            forward_calls: false,
+                            forward_when_offline: false,
+                            name: 'Agent 1',
+                            email: 'agent1@example.com',
+                            call_statuses: [
+                                {
+                                    status: AgentStatus.Ringing,
+                                    call_sid: '12345',
+                                },
+                            ],
+                        },
+                    ],
+                },
+            })
+        })
+
+        it('should handle partial availability updates', () => {
+            const oldData = {
+                data: {
+                    data: [
+                        {
+                            id: 1,
+                            available: true,
+                            forward_calls: true,
+                            forward_when_offline: true,
+                            name: 'Agent 1',
+                            email: 'agent1@example.com',
+                        },
+                    ],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, oldData)
+
+            const partialUpdate = { available: false }
+            updateAgentAvailabilityInLiveAgentsQueryCache(
+                agentId,
+                partialUpdate,
+                params,
+            )
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            id: 1,
+                            available: false,
+                            forward_calls: true,
+                            forward_when_offline: true,
+                            name: 'Agent 1',
+                            email: 'agent1@example.com',
+                        },
+                    ],
+                },
+            })
         })
     })
 })

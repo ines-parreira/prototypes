@@ -22,6 +22,7 @@ import {
     removeVoiceCallInLiveAgentsQueryCache,
     setWrapUpExpirationTimer,
     transformDateToUTCString,
+    updateAgentAvailabilityInLiveAgentsQueryCache,
     updateAgentStatusInLiveAgentsQueryCache,
     updateVoiceCallInLiveCallsQueryCache,
 } from './utils'
@@ -100,6 +101,25 @@ export const useLiveVoiceUpdates = (
         processedEvents.current.add(event.id)
 
         switch (event.dataschema) {
+            case '//helpdesk/user-preferences.updated/1.0.0': {
+                const data = event.data
+                updateAgentAvailabilityInLiveAgentsQueryCache(
+                    data.user_id,
+                    {
+                        available: data.available,
+                        forward_calls:
+                            typeof data.forward_calls === 'boolean'
+                                ? data.forward_calls
+                                : undefined,
+                        forward_when_offline:
+                            typeof data.forward_when_offline === 'boolean'
+                                ? data.forward_when_offline
+                                : undefined,
+                    },
+                    params,
+                )
+                break
+            }
             case '//helpdesk/phone.voice-call.inbound.received/1.0.0': {
                 const data = event.data
                 const voiceCall = {

@@ -123,6 +123,35 @@ export const updateVoiceCallInLiveCallsQueryCache = (
     )
 }
 
+export const updateAgentAvailabilityInLiveAgentsQueryCache = (
+    agentId: number,
+    availability: Partial<LiveCallQueueAgent>,
+    params: ListLiveCallQueueVoiceCallsParams | undefined,
+) => {
+    const queryKey =
+        queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+    appQueryClient.setQueryData<ListLiveCallQueueAgentsResult>(
+        queryKey,
+        (oldData) => {
+            if (!oldData) return
+            const index = oldData.data.data.findIndex(
+                (agent) => agent.id === agentId,
+            )
+            if (index === -1) return oldData // Agent not found, no update needed
+
+            const newData = cloneDeep(oldData)
+            const existingAgent = newData.data.data[index]
+
+            const updatedAgent = merge({}, existingAgent, availability)
+
+            newData.data.data[index] = updatedAgent
+
+            return newData
+        },
+    )
+}
+
 export const updateAgentStatusInLiveAgentsQueryCache = (
     agentId: number,
     status: Partial<LiveCallQueueAgentCallStatusesItem>,

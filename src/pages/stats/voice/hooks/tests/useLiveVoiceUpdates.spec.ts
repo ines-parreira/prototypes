@@ -153,6 +153,81 @@ describe('useLiveVoiceUpdates', () => {
         expect(updatedStatusCreatedAt).toBe(statusCreatedAt)
     })
 
+    describe('handles user-preferences.updated event', () => {
+        const params = {
+            agent_ids: [1],
+            integration_ids: [2],
+            voice_queue_ids: [3],
+        }
+
+        const mockEvent = {
+            dataschema: '//helpdesk/user-preferences.updated/1.0.0',
+            data: {},
+        } as DomainEvent
+
+        it.each([
+            {
+                eventData: {
+                    available: false,
+                    forward_calls: true,
+                    forward_when_offline: true,
+                },
+                expectedData: {
+                    available: false,
+                    forward_calls: true,
+                    forward_when_offline: true,
+                },
+            },
+            {
+                eventData: {
+                    available: true,
+                    forward_calls: null,
+                    forward_when_offline: null,
+                },
+                expectedData: {
+                    available: true,
+                },
+            },
+        ])(
+            'should update the agent status in the live call queue',
+            ({ eventData, expectedData }) => {
+                const queryKey =
+                    queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+                const mockOldData = {
+                    data: {
+                        data: [agentStatus],
+                    },
+                }
+
+                appQueryClient.setQueryData(queryKey, mockOldData)
+
+                const { result } = renderHook(() =>
+                    useLiveVoiceUpdates(params, voiceCalls),
+                )
+
+                result.current.handleEvent({
+                    ...mockEvent,
+                    data: {
+                        user_id: agentStatus.id,
+                        ...eventData,
+                    },
+                } as DomainEvent)
+
+                expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                    data: {
+                        data: [
+                            {
+                                ...agentStatus,
+                                ...expectedData,
+                            },
+                        ],
+                    },
+                })
+            },
+        )
+    })
+
     describe('handles inbound.received event', () => {
         const params = {
             agent_ids: [1],
