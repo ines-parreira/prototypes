@@ -1,9 +1,6 @@
 import React, { useCallback } from 'react'
 
-import { fromJS } from 'immutable'
-
 import { ShopifyIntegration } from 'models/integration/types'
-import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAuthenticationPolling'
 import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
 
 import { useConfirmationModal } from '../hooks/useConfirmationModal'
@@ -29,9 +26,6 @@ export default function ShopifySettings({
 }: ShopifySettingsProps) {
     useQueryNotify()
 
-    const isAuthenticationPending = useAuthenticationPolling(
-        fromJS(integration),
-    )
     const shopName = integration?.meta?.shop_name
     const isActive = !integration?.deactivated_datetime
     const isCustomersImportOver =
@@ -93,7 +87,6 @@ export default function ShopifySettings({
                     <ShopifyActionButtons
                         needScopeUpdate={needScopeUpdate}
                         isActive={isActive}
-                        isAuthenticationPending={isAuthenticationPending}
                         isSubmitting={isSubmitting}
                         areIntegrationOptionsDirty={areIntegrationOptionsDirty}
                         onRetriggerOAuthFlow={retriggerOAuthFlow}

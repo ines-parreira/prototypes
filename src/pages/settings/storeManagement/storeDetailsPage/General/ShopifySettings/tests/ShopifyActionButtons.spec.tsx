@@ -8,7 +8,6 @@ describe('<ShopifyActionButtons />', () => {
     const minProps: ComponentProps<typeof ShopifyActionButtons> = {
         needScopeUpdate: false,
         isActive: true,
-        isAuthenticationPending: false,
         isSubmitting: false,
         areIntegrationOptionsDirty: false,
         onRetriggerOAuthFlow: jest.fn(),
@@ -93,19 +92,6 @@ describe('<ShopifyActionButtons />', () => {
         expect(
             screen.getByRole('button', { name: 'Delete Store' }),
         ).toHaveAttribute('aria-disabled', 'true')
-    })
-
-    it('should hide save button when authentication is pending', () => {
-        render(
-            <ShopifyActionButtons
-                {...minProps}
-                isAuthenticationPending={true}
-            />,
-        )
-
-        expect(
-            screen.queryByRole('button', { name: 'Save Changes' }),
-        ).not.toBeInTheDocument()
     })
 
     it('should handle cancel button click', () => {

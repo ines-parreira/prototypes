@@ -7,7 +7,6 @@ import css from './ShopifySettings.less'
 interface ShopifyActionButtonsProps {
     needScopeUpdate: boolean
     isActive: boolean
-    isAuthenticationPending: boolean
     isSubmitting: boolean
     areIntegrationOptionsDirty: boolean
     onRetriggerOAuthFlow: () => void
@@ -18,7 +17,6 @@ interface ShopifyActionButtonsProps {
 export function ShopifyActionButtons({
     needScopeUpdate,
     isActive,
-    isAuthenticationPending,
     isSubmitting,
     areIntegrationOptionsDirty,
     onRetriggerOAuthFlow,
@@ -42,24 +40,27 @@ export function ShopifyActionButtons({
                     Reconnect
                 </Button>
             )}
-            {!isAuthenticationPending && (
-                <Button
-                    type="submit"
-                    fillStyle="fill"
-                    intent="primary"
-                    isDisabled={isSubmitting || !areIntegrationOptionsDirty}
-                >
-                    Save Changes
-                </Button>
+            {isActive && (
+                <>
+                    <Button
+                        type="submit"
+                        fillStyle="fill"
+                        intent="primary"
+                        isDisabled={isSubmitting || !areIntegrationOptionsDirty}
+                    >
+                        Save Changes
+                    </Button>
+
+                    <Button
+                        fillStyle="fill"
+                        intent="secondary"
+                        onClick={onCancel}
+                        isDisabled={isSubmitting}
+                    >
+                        Cancel
+                    </Button>
+                </>
             )}
-            <Button
-                fillStyle="fill"
-                intent="secondary"
-                onClick={onCancel}
-                isDisabled={isSubmitting}
-            >
-                Cancel
-            </Button>
             <Button
                 fillStyle="ghost"
                 intent="destructive"

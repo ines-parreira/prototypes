@@ -59,6 +59,7 @@ export default function ActionButtons({
                         type="submit"
                         fillStyle="fill"
                         intent="primary"
+                        isLoading={isSubmitting}
                     >
                         Save Changes
                     </Button>

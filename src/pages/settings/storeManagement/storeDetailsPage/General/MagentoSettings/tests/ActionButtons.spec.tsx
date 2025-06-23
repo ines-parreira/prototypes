@@ -112,7 +112,9 @@ describe('<ActionButtons />', () => {
             <ActionButtons {...minProps} isSubmitting={true} />,
         )
 
-        const saveButton = screen.getByRole('button', { name: 'Save Changes' })
+        const saveButton = screen.getByRole('button', {
+            name: 'Loading... Save Changes',
+        })
         const deleteButton = screen.getByRole('button', {
             name: 'Delete Store',
         })
