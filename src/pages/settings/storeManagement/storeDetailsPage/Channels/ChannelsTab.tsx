@@ -85,7 +85,7 @@ export default function ChannelsTab({ storeId }: ChannelsTabProps) {
     }
 
     return (
-        <section className={css.channelsContainer}>
+        <section className={css.detailsContainer}>
             <SettingsCard>
                 <SettingsCardHeader>
                     <SettingsCardTitle>Channels</SettingsCardTitle>

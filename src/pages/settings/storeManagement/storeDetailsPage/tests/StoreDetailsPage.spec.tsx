@@ -6,9 +6,9 @@ import { MemoryRouter, Route } from 'react-router-dom'
 import { HttpResponse, Integration } from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'
+import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { assumeMock, renderWithStore } from 'utils/testing'
 
-import { mockQueryClientProvider } from '../../../../../tests/reactQueryTestingUtils'
 import { StoreManagementProvider } from '../../StoreManagementProvider'
 import ChannelsTab from '../Channels/ChannelsTab'
 import useStoreGetter from '../General/hooks/useStoreGetter'
@@ -23,11 +23,13 @@ jest.mock('../../hooks/useStoresWithMaps', () => ({
     default: () => ({
         enrichedStores: [
             {
-                id: '123',
-                name: 'Test Store',
-                url: 'https://test-store.com',
-                type: 'shopify',
-                channels: [],
+                store: {
+                    id: '123',
+                    name: 'Test Store',
+                    url: 'https://test-store.com',
+                    type: 'shopify',
+                    channels: [],
+                },
             },
         ],
         unassignedChannels: [],
@@ -109,10 +111,14 @@ describe('StoreDetailsPage', () => {
         const storeId = '123'
 
         renderWithStore(
-            <MemoryRouter initialEntries={[`/settings/stores/${storeId}`]}>
+            <MemoryRouter
+                initialEntries={[
+                    `/app/settings/store-management/${storeId}/settings`,
+                ]}
+            >
                 <QueryClientProvider>
                     <StoreManagementProvider>
-                        <Route path="/settings/stores/:id">
+                        <Route path="/app/settings/store-management/:id">
                             <StoreDetailsPage />
                         </Route>
                     </StoreManagementProvider>
@@ -125,7 +131,7 @@ describe('StoreDetailsPage', () => {
     })
 
     it('should render breadcrumbs with Store Management link and store name', () => {
-        const storeId = 123
+        const storeId = '123'
         const storeName = 'My Test Store'
 
         mockUseFlag.mockReturnValue(true)
@@ -168,40 +174,5 @@ describe('StoreDetailsPage', () => {
         )
 
         expect(screen.getByText(storeName)).toBeInTheDocument()
-    })
-
-    it('should render breadcrumbs with fallback name when store name is not available', () => {
-        const storeId = 123
-
-        mockUseFlag.mockReturnValue(true)
-
-        mockuseStoreGetter.mockReturnValue({
-            isFetching: false,
-            data: {
-                data: {
-                    id: storeId,
-                    type: 'shopify',
-                    meta: {},
-                },
-            } as unknown as HttpResponse<Integration>,
-            refetchStore: jest.fn(),
-        })
-
-        renderWithStore(
-            <MemoryRouter
-                initialEntries={[`/app/settings/store-management/${storeId}`]}
-            >
-                <QueryClientProvider>
-                    <StoreManagementProvider>
-                        <Route path="/app/settings/store-management/:id">
-                            <StoreDetailsPage />
-                        </Route>
-                    </StoreManagementProvider>
-                </QueryClientProvider>
-            </MemoryRouter>,
-            {},
-        )
-
-        expect(screen.getByText('Store Details')).toBeInTheDocument()
     })
 })

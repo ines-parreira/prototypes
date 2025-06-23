@@ -20,6 +20,9 @@ import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNa
 import ChannelsTab from './Channels/ChannelsTab'
 import General from './General/General'
 import useStoreGetter from './General/hooks/useStoreGetter'
+import StoreManagementStoreSelector from './StoreManagmentStoreSelector'
+
+import css from './StoreDetailsPage.less'
 
 export default function StoreDetailsPage() {
     const isMultiStoreEnabled = useFlag(FeatureFlagKey.MultiStore, false)
@@ -29,10 +32,6 @@ export default function StoreDetailsPage() {
 
     if (!isMultiStoreEnabled) {
         return null
-    }
-
-    if (isFetching) {
-        return <Loader role="status" />
     }
 
     const store = data?.data as unknown as StoreIntegration
@@ -47,12 +46,12 @@ export default function StoreDetailsPage() {
                                 Store Management
                             </Link>
                         </BreadcrumbItem>
-                        <BreadcrumbItem active>
-                            {store?.name || 'Store Details'}
-                        </BreadcrumbItem>
+                        <BreadcrumbItem active>{store?.name}</BreadcrumbItem>
                     </Breadcrumb>
                 }
-            />
+            >
+                <StoreManagementStoreSelector />
+            </PageHeader>
             <SecondaryNavbar>
                 <NavLink
                     to={`/app/settings/store-management/${id}/settings`}
@@ -69,14 +68,28 @@ export default function StoreDetailsPage() {
             </SecondaryNavbar>
             <Switch>
                 <Route path={`/app/settings/store-management/:id/channels`}>
-                    <ChannelsTab storeId={id} />
+                    {isFetching ? (
+                        <section className={css.detailsContainer}>
+                            <Loader role="status" />
+                        </section>
+                    ) : (
+                        <ChannelsTab storeId={id} />
+                    )}
                 </Route>
                 <Route path={`/app/settings/store-management/:id/settings`}>
-                    {data?.data && (
-                        <General
-                            refetchStore={refetchStore}
-                            store={data?.data as unknown as StoreIntegration}
-                        />
+                    {isFetching ? (
+                        <section className={css.detailsContainer}>
+                            <Loader role="status" />
+                        </section>
+                    ) : (
+                        data?.data && (
+                            <General
+                                refetchStore={refetchStore}
+                                store={
+                                    data?.data as unknown as StoreIntegration
+                                }
+                            />
+                        )
                     )}
                 </Route>
                 <Route path={`/app/settings/store-management/:id/`}>
