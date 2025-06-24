@@ -1,15 +1,16 @@
-// sort-imports-ignore
-import mockedVirtuoso from 'tests/mockedVirtuoso'
-
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { render } from '@testing-library/react'
-import { userEvent } from 'utils/testing/userEvent'
+import { userEvent } from '@testing-library/user-event'
 
 import { Customer } from 'models/customer/types'
 import { PickedCustomer } from 'models/search/types'
+import mockedVirtuoso from 'tests/mockedVirtuoso'
 
-import SpotlightScrollArea, { MAX_HEIGHT } from '../SpotlightScrollArea'
+import SpotlightScrollArea, {
+    GroupedSpotlightScrollArea,
+    MAX_HEIGHT,
+} from '../SpotlightScrollArea'
 
 jest.mock('react-virtuoso', () => mockedVirtuoso)
 
@@ -62,13 +63,13 @@ describe('<SpotlightScrollArea/>', () => {
         expect(container.firstChild).toHaveStyle(`height: ${MAX_HEIGHT}px`)
     })
 
-    it('should call loadMore when end area is reached', () => {
+    it('should call loadMore when end area is reached', async () => {
         const { getByText } = render(
             <SpotlightScrollArea {...minProps} canLoadMore={true} />,
         )
 
         const endTrigger = getByText('end area')
-        userEvent.click(endTrigger)
+        await userEvent.click(endTrigger)
 
         expect(minProps.loadMore).toHaveBeenCalled()
     })
@@ -84,7 +85,7 @@ describe('<SpotlightScrollArea/>', () => {
         expect(minProps.loadMore).not.toHaveBeenCalled()
     })
 
-    it('should call loadMore when end area is reached with no data', () => {
+    it('should call loadMore when end area is reached with no data', async () => {
         const { getByText } = render(
             <SpotlightScrollArea
                 {...{ ...minProps, data: [] }}
@@ -93,8 +94,144 @@ describe('<SpotlightScrollArea/>', () => {
         )
 
         const endTrigger = getByText('end area')
-        userEvent.click(endTrigger)
+        await userEvent.click(endTrigger)
 
         expect(minProps.loadMore).toHaveBeenCalled()
+    })
+
+    it('should render header when provided', () => {
+        const HeaderComponent = () => (
+            <div data-testid="custom-header">Custom Header</div>
+        )
+        const { getByTestId } = render(
+            <SpotlightScrollArea {...minProps} header={HeaderComponent} />,
+        )
+
+        expect(getByTestId('custom-header')).toBeInTheDocument()
+    })
+
+    it('should not render header when undefined', () => {
+        const { container } = render(
+            <SpotlightScrollArea {...minProps} header={undefined} />,
+        )
+
+        // Verify header component is not rendered
+        expect(
+            container.querySelector('[data-testid="custom-header"]'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should not render header when not provided', () => {
+        const propsWithoutHeader = { ...minProps }
+        delete propsWithoutHeader.header
+
+        const { container } = render(
+            <SpotlightScrollArea {...propsWithoutHeader} />,
+        )
+
+        // Verify header component is not rendered
+        expect(
+            container.querySelector('[data-testid="custom-header"]'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should adjust height calculation based on header presence', () => {
+        const HeaderComponent = () => <div>Header</div>
+
+        // Test with header
+        const { container: containerWithHeader } = render(
+            <SpotlightScrollArea {...minProps} header={HeaderComponent} />,
+        )
+
+        // Test without header
+        const { container: containerWithoutHeader } = render(
+            <SpotlightScrollArea {...minProps} header={undefined} />,
+        )
+
+        const withHeaderHeight = (containerWithHeader.firstChild as HTMLElement)
+            ?.style?.height
+        const withoutHeaderHeight = (
+            containerWithoutHeader.firstChild as HTMLElement
+        )?.style?.height
+
+        expect(withHeaderHeight).toBeDefined()
+        expect(withoutHeaderHeight).toBeDefined()
+        expect(withHeaderHeight).not.toBe(withoutHeaderHeight)
+    })
+})
+
+describe('<GroupedSpotlightScrollArea/>', () => {
+    const minGroupedProps: ComponentProps<typeof GroupedSpotlightScrollArea> = {
+        canLoadMore: false,
+        isLoading: false,
+        scrollerRef: { current: null },
+        itemContent: (index, groupIndex, data) => (
+            <div>{`${index} - group ${groupIndex} - item ${data ? (data as PickedCustomer).id : 'mock'}`}</div>
+        ),
+        groupCounts: [2, 1],
+        groupContent: (index: number) => <div>Group {index}</div>,
+    }
+
+    it('should render GroupedSpotlightScrollArea without header when not provided', () => {
+        const propsWithoutHeader = { ...minGroupedProps }
+        delete propsWithoutHeader.header
+
+        expect(() => {
+            render(<GroupedSpotlightScrollArea {...propsWithoutHeader} />)
+        }).not.toThrow()
+    })
+
+    it('should render GroupedSpotlightScrollArea without errors when header provided', () => {
+        const HeaderComponent = () => <div>Grouped Header</div>
+
+        expect(() => {
+            render(
+                <GroupedSpotlightScrollArea
+                    {...minGroupedProps}
+                    header={HeaderComponent}
+                />,
+            )
+        }).not.toThrow()
+    })
+
+    it('should render GroupedSpotlightScrollArea without errors when header is undefined', () => {
+        expect(() => {
+            render(
+                <GroupedSpotlightScrollArea
+                    {...minGroupedProps}
+                    header={undefined}
+                />,
+            )
+        }).not.toThrow()
+    })
+
+    it('should adjust height calculation based on header presence in GroupedSpotlightScrollArea', () => {
+        const HeaderComponent = () => <div>Grouped Header</div>
+
+        // Test with header
+        const { container: containerWithHeader } = render(
+            <GroupedSpotlightScrollArea
+                {...minGroupedProps}
+                header={HeaderComponent}
+            />,
+        )
+
+        // Test without header
+        const { container: containerWithoutHeader } = render(
+            <GroupedSpotlightScrollArea
+                {...minGroupedProps}
+                header={undefined}
+            />,
+        )
+
+        const withHeaderHeight = (containerWithHeader.firstChild as HTMLElement)
+            ?.style?.height
+        const withoutHeaderHeight = (
+            containerWithoutHeader.firstChild as HTMLElement
+        )?.style?.height
+
+        expect(withHeaderHeight).toBeDefined()
+        expect(withoutHeaderHeight).toBeDefined()
+        expect(withHeaderHeight).not.toBe(withoutHeaderHeight)
     })
 })

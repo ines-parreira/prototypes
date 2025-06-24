@@ -68,7 +68,10 @@ export default function TicketBody({
         }
     }, [groupedElementsWithShoppingAssistantEvents, voiceCallId])
 
-    const virtuosoComponents: Components = useMemo(
+    const virtuosoComponents: Components<
+        TicketElement | TicketMessage[] | ShoppingAssistantEvent,
+        any
+    > = useMemo(
         () => ({
             Item: ({ context: __context, style, children, ...rest }) => (
                 <div

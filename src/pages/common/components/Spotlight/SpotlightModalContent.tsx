@@ -332,7 +332,7 @@ export const SpotlightModalContent = ({
                     itemContent={(index) =>
                         itemContentCallback(index, data[index])
                     }
-                    groupContent={(index) => (
+                    groupContent={(index: number) => (
                         <GroupHeader
                             index={index}
                             onTabChange={onTabChange}

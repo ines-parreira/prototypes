@@ -496,8 +496,8 @@ importers:
         specifier: 4.4.2
         version: 4.4.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-virtuoso:
-        specifier: 2.19.0
-        version: 2.19.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        specifier: 4.12.8
+        version: 4.12.8(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       reactflow:
         specifier: ^11.8.3
         version: 11.8.3(@types/react@18.2.67)(immer@10.1.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -4799,15 +4799,6 @@ packages:
     resolution: {integrity: sha512-oCHlQeYOBIJIA2yWy2GnY5wE2A7hGHDyJplJo4lb+KEIBcJWRnDJDg8ywDwQS5VfWJrBBO3drzYZPFpWQjAMiQ==}
     peerDependencies:
       '@vanilla-extract/css': ^1.0.0
-
-  '@virtuoso.dev/react-urx@0.2.13':
-    resolution: {integrity: sha512-MY0ugBDjFb5Xt8v2HY7MKcRGqw/3gTpMlLXId2EwQvYJoC8sP7nnXjAxcBtTB50KTZhO0SbzsFimaZ7pSdApwA==}
-    engines: {node: '>=10'}
-    peerDependencies:
-      react: '>=16'
-
-  '@virtuoso.dev/urx@0.2.13':
-    resolution: {integrity: sha512-iirJNv92A1ZWxoOHHDYW/1KPoi83939o83iUBQHIim0i3tMeSKEh+bxhJdTHQ86Mr4uXx9xGUTq69cp52ZP8Xw==}
 
   '@vitest/expect@2.0.5':
     resolution: {integrity: sha512-yHZtwuP7JZivj65Gxoi8upUN2OzHTi3zVfjwdpu2WrvCZPLwsJ2Ey5ILIPccoW23dd/zQBlJ4/dhi7DWNyXCpA==}
@@ -9487,12 +9478,11 @@ packages:
       react: '>=16.6.0'
       react-dom: '>=16.6.0'
 
-  react-virtuoso@2.19.0:
-    resolution: {integrity: sha512-GeCleV9cmpYGh1Ldfgdu+4gADLzdWJ48qc4tWguFzYz7FvUSAoELe8268rR8zfIb5FcV3tqpsdvFS5i51c8jyA==}
-    engines: {node: '>=10'}
+  react-virtuoso@4.12.8:
+    resolution: {integrity: sha512-NMMKfDBr/+xZZqCQF3tN1SZsh6FwOJkYgThlfnsPLkaEhdyQo0EuWUzu3ix6qjnI7rYwJhMwRGoJBi+aiDfGsA==}
     peerDependencies:
-      react: '>=16 || >=17 || >= 18'
-      react-dom: '>=16 || >=17 || >= 18'
+      react: '>=16 || >=17 || >= 18 || >= 19'
+      react-dom: '>=16 || >=17 || >= 18 || >=19'
 
   react@18.2.0:
     resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
@@ -15797,13 +15787,6 @@ snapshots:
     dependencies:
       '@vanilla-extract/css': 1.17.1(babel-plugin-macros@3.1.0)
 
-  '@virtuoso.dev/react-urx@0.2.13(react@18.2.0)':
-    dependencies:
-      '@virtuoso.dev/urx': 0.2.13
-      react: 18.2.0
-
-  '@virtuoso.dev/urx@0.2.13': {}
-
   '@vitest/expect@2.0.5':
     dependencies:
       '@vitest/spy': 2.0.5
@@ -21492,10 +21475,8 @@ snapshots:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
-  react-virtuoso@2.19.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+  react-virtuoso@4.12.8(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
-      '@virtuoso.dev/react-urx': 0.2.13(react@18.2.0)
-      '@virtuoso.dev/urx': 0.2.13
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 

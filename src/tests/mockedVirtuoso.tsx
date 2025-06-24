@@ -37,7 +37,9 @@ function GroupedVirtuoso(
                 Array.from(props.groupCounts).map(
                     (_, index) =>
                         props.groupContent && (
-                            <div key={index}>{props.groupContent(index)}</div>
+                            <div key={index}>
+                                {props.groupContent(index, props.context)}
+                            </div>
                         ),
                 )}
             {props.groupCounts &&
@@ -81,7 +83,7 @@ function TableVirtuoso(props: TableVirtuosoProps<unknown, unknown>, _ref: any) {
     return (
         <table style={props.style} ref={_ref}>
             {props.data?.length === 0 && !!EmptyPlaceholder && (
-                <EmptyPlaceholder />
+                <EmptyPlaceholder context={props.context} />
             )}
             {!!fixedHeaderContent && !!TableHead && (
                 // @ts-expect-error
@@ -94,6 +96,8 @@ function TableVirtuoso(props: TableVirtuosoProps<unknown, unknown>, _ref: any) {
                         data-item-index={index}
                         key={index}
                         data-known-size={0}
+                        item={value}
+                        context={props.context}
                     >
                         {props.itemContent?.(index, value, undefined)}
                     </TableRow>

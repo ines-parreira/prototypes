@@ -60,7 +60,7 @@ type GroupedProps = Omit<Props, 'itemContent' | 'data' | 'loadMore'> & {
             | PicketVoiceCallWithHighlights,
     ) => ReactNode
     groupCounts: number[]
-    groupContent?: GroupContent
+    groupContent?: GroupContent<VirtuosoContext>
 }
 
 const SpotlightScrollArea = (
@@ -101,7 +101,10 @@ const SpotlightScrollArea = (
             }}
             itemContent={itemContent}
             context={{ isLoading }}
-            components={{ Footer, Header }}
+            components={{
+                Footer,
+                Header: Header ? () => <Header /> : undefined,
+            }}
         />
     )
 }
@@ -142,7 +145,10 @@ export const GroupedSpotlightScrollAreaComponent = (
             groupContent={groupContent}
             itemContent={itemContent}
             context={{ isLoading }}
-            components={{ Footer, Header }}
+            components={{
+                Footer,
+                Header: Header ? () => <Header /> : undefined,
+            }}
         />
     )
 }

@@ -188,7 +188,7 @@ export default function TicketListView({
         [bulkToggleUnread, clear, selectedTickets],
     )
 
-    const virtuosoComponents: Components = {
+    const virtuosoComponents: Components<TicketCompact, any> = {
         Item: ({
             children,
             ...props
