@@ -27,8 +27,8 @@ const SyncNotification = ({
     if (!isActive) {
         return (
             <Banner type="warning" fillStyle="fill">
-                Your store is disconnected. To keep syncing data with Gorgias,
-                please reconnect your store.
+                Your store is disconnected. Please reconnect your store to keep
+                syncing data with Gorgias.
             </Banner>
         )
     }
