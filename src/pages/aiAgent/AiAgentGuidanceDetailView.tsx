@@ -6,7 +6,6 @@ import { LocaleCode } from 'models/helpCenter/types'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 
 import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
-import { GuidanceBreadcrumbs } from './components/GuidanceBreadcrumbs/GuidanceBreadcrumbs'
 import { GuidanceForm } from './components/GuidanceForm/GuidanceForm'
 import { useGuidanceArticle } from './hooks/useGuidanceArticle'
 import { useGuidanceArticleMutation } from './hooks/useGuidanceArticleMutation'
@@ -88,15 +87,7 @@ export const AiAgentGuidanceDetailView = ({
     }
 
     return (
-        <AiAgentLayout
-            shopName={shopName}
-            title={
-                <GuidanceBreadcrumbs
-                    shopName={shopName}
-                    title={guidanceArticle.title}
-                />
-            }
-        >
+        <AiAgentLayout shopName={shopName} title={'Knowledge'}>
             <GuidanceForm
                 actionType="update"
                 availableActions={guidanceActions}

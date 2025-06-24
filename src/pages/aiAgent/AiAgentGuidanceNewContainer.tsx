@@ -6,7 +6,6 @@ import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/Guidan
 
 import { AiAgentGuidanceNewView } from './AiAgentGuidanceNewView'
 import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
-import { GuidanceBreadcrumbs } from './components/GuidanceBreadcrumbs/GuidanceBreadcrumbs'
 import { useAiAgentHelpCenter } from './hooks/useAiAgentHelpCenter'
 
 import css from './AiAgentMainViewContainer.less'
@@ -33,12 +32,7 @@ export const AiAgentGuidanceNewContainer = () => {
     }
 
     return (
-        <AiAgentLayout
-            title={
-                <GuidanceBreadcrumbs shopName={shopName} title="New guidance" />
-            }
-            shopName={shopName}
-        >
+        <AiAgentLayout title={'Knowledge'} shopName={shopName}>
             <AiAgentGuidanceNewView
                 shopName={shopName}
                 availableActions={guidanceActions}
