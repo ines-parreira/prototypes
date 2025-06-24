@@ -64,6 +64,29 @@ const dashboard: AnalyticsCustomReport = {
     children: [],
 }
 
+const createMock = mockCreateAnalyticsCustomReportHandler()
+const updateMock = mockUpdateAnalyticsCustomReportHandler()
+const deleteMock = mockDeleteAnalyticsCustomReportHandler()
+const listMock = mockListAnalyticsCustomReportsHandler()
+
+const localHandlers = [
+    createMock.handler,
+    updateMock.handler,
+    deleteMock.handler,
+    listMock.handler,
+]
+
+beforeAll(() => server.listen())
+beforeEach(() => {
+    server.use(...localHandlers)
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.removeQueries()
+})
+afterAll(() => server.close())
+
 const renderDashboardHook = () => {
     return renderHook(() => useDashboardActions(), {
         wrapper: ({ children }) => (
@@ -75,13 +98,6 @@ const renderDashboardHook = () => {
 }
 
 describe('useDashboardActions', () => {
-    beforeAll(() => server.listen())
-    afterEach(() => {
-        server.resetHandlers()
-        queryClient.removeQueries()
-    })
-    afterAll(() => server.close())
-
     const invalidateQueriesMock = jest.spyOn(queryClient, 'invalidateQueries')
 
     describe('duplicateReportHandler', () => {
@@ -94,10 +110,7 @@ describe('useDashboardActions', () => {
         } as CreateAnalyticsCustomReportBody
 
         it('should duplicate report and show success notification', async () => {
-            const createMock = mockCreateAnalyticsCustomReportHandler()
-            const listMock = mockListAnalyticsCustomReportsHandler()
             const waitForRequest = createMock.waitForRequest(server)
-            server.use(createMock.handler, listMock.handler)
 
             const { result } = renderDashboardHook()
             result.current.duplicateReportHandler(duplicateHandlerData)
@@ -121,7 +134,7 @@ describe('useDashboardActions', () => {
         })
 
         it('should show error notification when duplication fails', async () => {
-            const createMock = mockCreateAnalyticsCustomReportHandler(
+            const { handler } = mockCreateAnalyticsCustomReportHandler(
                 async () => {
                     const error = {
                         error: 'server error',
@@ -129,7 +142,7 @@ describe('useDashboardActions', () => {
                     return HttpResponse.json(error, { status: 500 })
                 },
             )
-            server.use(createMock.handler)
+            server.use(handler)
 
             const { result } = renderDashboardHook()
             result.current.duplicateReportHandler(duplicateHandlerData)
@@ -152,10 +165,6 @@ describe('useDashboardActions', () => {
         }
 
         it('should delete report and show success notification', async () => {
-            const deleteMock = mockDeleteAnalyticsCustomReportHandler()
-            const listMock = mockListAnalyticsCustomReportsHandler()
-            server.use(deleteMock.handler, listMock.handler)
-
             const { result } = renderDashboardHook()
             result.current.deleteReportHandler(deleteHandlerData)
 
@@ -173,7 +182,7 @@ describe('useDashboardActions', () => {
         })
 
         it('should show error notification when deletion fails', async () => {
-            const deleteMock = mockDeleteAnalyticsCustomReportHandler(
+            const { handler } = mockDeleteAnalyticsCustomReportHandler(
                 async () => {
                     const error = {
                         error: {
@@ -183,7 +192,7 @@ describe('useDashboardActions', () => {
                     return HttpResponse.json(error, { status: 500 })
                 },
             )
-            server.use(deleteMock.handler)
+            server.use(handler)
 
             const { result } = renderDashboardHook()
             result.current.deleteReportHandler(deleteHandlerData)
@@ -231,7 +240,25 @@ describe('useDashboardActions', () => {
 
             await waitForRequest(async (request: Request) => {
                 const requestBody = await request.json()
-                expect(requestBody).toEqual(updateHandlerData)
+                expect(requestBody).toEqual({
+                    name: 'Test Report',
+                    emoji: '',
+                    analytics_filter_id: null,
+                    type: 'custom',
+                    children: [
+                        {
+                            type: 'row',
+                            metadata: {},
+                            children: [
+                                {
+                                    type: 'chart',
+                                    config_id: '456',
+                                    metadata: {},
+                                },
+                            ],
+                        },
+                    ],
+                })
             })
 
             await waitFor(() => {
@@ -253,9 +280,6 @@ describe('useDashboardActions', () => {
         })
 
         it('should show a different message when saving multiple charts', async () => {
-            const updateMock = mockUpdateAnalyticsCustomReportHandler()
-            server.use(updateMock.handler)
-
             const { result } = renderDashboardHook()
             result.current.updateDashboardHandler({
                 ...updateHandlerData,
@@ -436,10 +460,7 @@ describe('useDashboardActions', () => {
 
             await waitForRequest(async (request: Request) => {
                 const requestBody = await request.json()
-                expect(requestBody).toEqual({
-                    id: dashboard.id,
-                    data: expectedPayload,
-                })
+                expect(requestBody).toEqual(expectedPayload)
             })
 
             await waitFor(() => {
@@ -463,9 +484,6 @@ describe('useDashboardActions', () => {
 
     describe('getDashboardsHandler', () => {
         it('should return dashboards', async () => {
-            const listMock = mockListAnalyticsCustomReportsHandler()
-            server.use(listMock.handler)
-
             const { result } = renderDashboardHook()
 
             await waitFor(() => {
@@ -507,7 +525,6 @@ describe('useDashboardActions', () => {
         }
 
         it('should call createDashboard action with correct params', async () => {
-            const createMock = mockCreateAnalyticsCustomReportHandler()
             const waitForRequest = createMock.waitForRequest(server)
             server.use(createMock.handler)
 

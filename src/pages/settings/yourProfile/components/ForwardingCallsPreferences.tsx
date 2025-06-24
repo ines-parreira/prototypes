@@ -49,6 +49,7 @@ function ForwardingCallsPreferences({
             </ToggleInput>
             <div className={css.forwardingPhoneNumber}>
                 <PhoneNumberInput
+                    name="forwarding_phone_number"
                     value={forwardingPhoneNumber ?? ''}
                     onChange={(value: string) =>
                         setPreference('forwarding_phone_number', value)

@@ -1,4 +1,4 @@
-import React, { createRef, RefObject } from 'react'
+import { createRef, RefObject } from 'react'
 
 import { AxiosError } from 'axios'
 import classnames from 'classnames'
@@ -226,8 +226,11 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
                         close
                     </IconButton>
                 )}
+                <label htmlFor={this.props.id} className="d-none">
+                    {this.props.id}
+                </label>
                 <Input
-                    id={this.id}
+                    id={this.props.id}
                     innerRef={this.inputRef}
                     onChange={this.handleOnChange as any}
                     disabled={disabled}

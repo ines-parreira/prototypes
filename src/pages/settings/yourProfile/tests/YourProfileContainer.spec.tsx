@@ -1,125 +1,509 @@
-import { render, screen } from '@testing-library/react'
-import { fromJS } from 'immutable'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, render, waitFor, within } from '@testing-library/react'
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
-import { AnyAction, Store } from 'redux'
+import { MemoryRouter } from 'react-router'
+import { Store } from 'redux'
 
+import {
+    mockGetCurrentUserHandler,
+    mockUpdateCurrentUserHandler,
+    mockUpdateCurrentUserSettingsHandler,
+} from '@gorgias/helpdesk-mocks'
+
+import { appQueryClient } from 'api/queryClient'
 import { UserRole } from 'config/types/user'
-import { StoreState } from 'state/types'
+import { ThemeProvider } from 'core/theme'
+import {
+    DateFormattingSetting,
+    TimeFormattingSetting,
+} from 'models/agents/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { userEvent } from 'utils/testing/userEvent'
 
+import { CurrentUser } from '../types'
 import YourProfileContainer from '../YourProfileContainer'
 
-// Mock the YourProfileView component
-jest.mock('../components/YourProfileView', () => ({
-    YourProfileView: ({
-        currentUser,
-        preferences,
-        isGorgiasAgent,
-    }: {
-        currentUser: any
-        preferences: any
-        isGorgiasAgent: boolean
-    }) => (
-        <div data-testid="your-profile-view">
-            <div data-testid="is-gorgias-agent">
-                {isGorgiasAgent.toString()}
-            </div>
-            <div data-testid="current-user">
-                {JSON.stringify(currentUser.toJS())}
-            </div>
-            <div data-testid="preferences">{JSON.stringify(preferences)}</div>
-        </div>
-    ),
-}))
+const server = setupServer()
 
-describe('YourProfileContainer', () => {
-    const mockStore = {
-        getState: () => ({
-            currentUser: fromJS({
-                role: { name: UserRole.GorgiasAgent },
-                name: 'Test User',
-                email: 'test@example.com',
-                bio: 'Test bio',
-                timezone: 'UTC',
-                language: 'en',
-                settings: {},
-                meta: {},
-                _internal: 'some internal data',
-            }),
-        }),
-        subscribe: jest.fn(),
-        dispatch: jest.fn(),
-        replaceReducer: jest.fn(),
-        [Symbol.observable]: jest.fn(),
-    } as unknown as Store<StoreState, AnyAction>
+const profilePictureUrl = 'https://config.gorgias.io/production/blabla'
 
-    const renderComponent = () => {
-        return render(
-            <Provider store={mockStore}>
-                <YourProfileContainer />
-            </Provider>,
-        )
+const preferences = {
+    id: 1,
+    type: 'preferences',
+    data: {
+        available: true,
+        date_format: 'en_GB',
+        time_format: '24-hour',
+        prefill_best_macro: false,
+        show_macros: false,
+        show_macros_suggestions: true,
+    },
+}
+
+const mockUploadFile = http.post('http://localhost/api/upload/', () =>
+    HttpResponse.json([
+        {
+            content_type: 'image/png',
+            name: 'profile-picture.png',
+            size: 194283,
+            url: profilePictureUrl,
+        },
+    ]),
+)
+const mockUpdateCurrentUserSettings = mockUpdateCurrentUserSettingsHandler()
+const mockUpdateCurrentUser = mockUpdateCurrentUserHandler()
+const mockGetCurrentUser = mockGetCurrentUserHandler(async ({ data }) =>
+    HttpResponse.json({
+        ...data,
+        settings: [preferences],
+    } as CurrentUser['data']),
+)
+
+const localHandlers = [
+    mockGetCurrentUser.handler,
+    mockUpdateCurrentUserSettings.handler,
+    mockUpdateCurrentUser.handler,
+    mockUploadFile,
+]
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    server.use(...localHandlers)
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+const Timezones = {
+    UTC: 'UTC',
+    EST: 'EST',
+}
+jest.mock('moment-timezone', () => {
+    const tz = (timezone: string) => ({
+        utcOffset: () => (timezone === Timezones.UTC ? '+0' : '+1'),
+        format: () => (timezone === Timezones.UTC ? '+0' : '+1'),
+    })
+    tz.names = () => Object.values(Timezones)
+    return {
+        tz,
     }
+})
 
-    it('renders YourProfileView with correct props', () => {
-        renderComponent()
+jest.mock('state/notifications/actions')
 
-        expect(screen.getByTestId('your-profile-view')).toBeInTheDocument()
-        expect(screen.getByTestId('is-gorgias-agent')).toHaveTextContent('true')
+const mockNotify = notify as jest.MockedFunction<typeof notify>
 
-        const currentUserData = JSON.parse(
-            screen.getByTestId('current-user').textContent || '{}',
-        )
-        expect(currentUserData).toEqual({
-            name: 'Test User',
-            email: 'test@example.com',
-            bio: 'Test bio',
-            timezone: 'UTC',
-            language: 'en',
-            settings: {},
-            meta: {},
+const mocksStore = {
+    getState: () => ({}),
+    dispatch: jest.fn(),
+    subscribe: jest.fn(),
+    replaceReducer: jest.fn(),
+} as unknown as Store
+
+const renderComponent = () => {
+    return render(
+        <MemoryRouter>
+            <Provider store={mocksStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <ThemeProvider>
+                        <YourProfileContainer />
+                    </ThemeProvider>
+                </QueryClientProvider>
+            </Provider>
+        </MemoryRouter>,
+    )
+}
+
+describe('Your profile page', () => {
+    const realDateNow = Date.now.bind(global.Date)
+    beforeEach(() => {
+        jest.resetAllMocks()
+        global.Date.now = jest.fn(() => 1587000000000)
+        Object.defineProperty(window, 'matchMedia', {
+            value: jest.fn(() => {
+                return {
+                    matches: false,
+                }
+            }),
+            writable: true,
         })
     })
 
-    it('correctly identifies non-Gorgias agent', () => {
-        const nonAgentStore = {
-            ...mockStore,
-            getState: () => ({
-                currentUser: fromJS({
-                    role: { name: 'other_role' },
-                    name: 'Test User',
-                    email: 'test@example.com',
-                }),
-            }),
-        } as unknown as Store<StoreState, AnyAction>
-
-        render(
-            <Provider store={nonAgentStore}>
-                <YourProfileContainer />
-            </Provider>,
-        )
-
-        expect(screen.getByTestId('is-gorgias-agent')).toHaveTextContent(
-            'false',
-        )
+    afterEach(() => {
+        jest.resetAllMocks()
+        global.Date.now = realDateNow
     })
 
-    it('handles empty currentUser data', () => {
-        const emptyStore = {
-            ...mockStore,
-            getState: () => ({
-                currentUser: fromJS({}),
-            }),
-        } as unknown as Store<StoreState, AnyAction>
+    describe('Personal informations section', () => {
+        it('should render the profile page with correct values', async () => {
+            const { getByText, getByRole } = renderComponent()
 
-        render(
-            <Provider store={emptyStore}>
-                <YourProfileContainer />
-            </Provider>,
-        )
+            await waitFor(() => {
+                expect(getByText('Your profile')).toBeInTheDocument()
+            })
 
-        const currentUserData = JSON.parse(
-            screen.getByTestId('current-user').textContent || '{}',
-        )
-        expect(currentUserData).toEqual({})
+            expect(getByRole('textbox', { name: /Your name/ })).toHaveValue(
+                mockGetCurrentUser.data.name,
+            )
+            expect(getByRole('textbox', { name: /Your email/ })).toHaveValue(
+                mockGetCurrentUser.data.email,
+            )
+            expect(getByRole('textbox', { name: /Your bio/ })).toHaveValue(
+                mockGetCurrentUser.data.bio,
+            )
+        })
+
+        it('should correctly disable inputs for a Gorgias agent', async () => {
+            const { handler } = mockGetCurrentUserHandler(async () =>
+                HttpResponse.json({
+                    ...mockGetCurrentUser.data,
+                    role: {
+                        name: UserRole.GorgiasAgent,
+                    },
+                }),
+            )
+            server.use(handler)
+
+            const { getByRole, getByText } = renderComponent()
+
+            await waitFor(() => {
+                expect(getByText('Your profile')).toBeInTheDocument()
+                expect(
+                    getByRole('textbox', { name: /Your name/ }),
+                ).toBeDisabled()
+                expect(
+                    getByRole('textbox', { name: /Your email/ }),
+                ).toBeDisabled()
+                expect(
+                    getByRole('textbox', { name: /Your bio/ }),
+                ).toBeDisabled()
+            })
+        })
+    })
+
+    describe('Date and time settings section', () => {
+        it('should render timezone select', async () => {
+            const { getAllByLabelText, getAllByRole, getByText } =
+                renderComponent()
+
+            await waitFor(() => {
+                expect(getByText('Your profile')).toBeInTheDocument()
+            })
+
+            const [timezone] = getAllByLabelText(/Timezone/)
+            await act(async () => {
+                await userEvent.click(timezone)
+            })
+            const options = getAllByRole('option')
+            expect(options).toHaveLength(2)
+
+            const [utcOption, estOption] = options as HTMLOptionElement[]
+
+            expect(utcOption).toHaveTextContent('(UTC+0) UTC')
+            expect(utcOption).toHaveAttribute('aria-selected', 'true')
+            expect(estOption).toHaveTextContent('(UTC+1) EST')
+            expect(estOption).toHaveAttribute('aria-selected', 'false')
+        })
+
+        it('should render date format', async () => {
+            const { getByText } = renderComponent()
+
+            await waitFor(() => {
+                expect(getByText('Your profile')).toBeInTheDocument()
+            })
+
+            const legend = getByText('Date format')
+            const fieldset = legend.closest('fieldset')!
+            const radios = within(fieldset).getAllByRole('radio')
+            expect(radios).toHaveLength(2)
+
+            expect(
+                within(fieldset).getByLabelText('Day/Month/Year'),
+            ).toHaveAttribute('checked')
+            expect(
+                within(fieldset).getByLabelText('Month/Day/Year'),
+            ).not.toHaveAttribute('checked')
+        })
+
+        it('should render time format', async () => {
+            const { getByText } = renderComponent()
+            await waitFor(() => {
+                expect(getByText('Your profile')).toBeInTheDocument()
+            })
+
+            const legend = getByText('Time format')
+            const fieldset = legend.closest('fieldset')!
+            const radios = within(fieldset).getAllByRole('radio')
+            expect(radios).toHaveLength(2)
+
+            expect(within(fieldset).getByLabelText('24-hour')).toHaveAttribute(
+                'checked',
+            )
+            expect(
+                within(fieldset).getByLabelText('AM/PM'),
+            ).not.toHaveAttribute('checked')
+        })
+    })
+
+    describe('Account preferences section', () => {
+        it('should render theme select', async () => {
+            const { getByLabelText, getByText } = renderComponent()
+
+            await waitFor(() => {
+                expect(getByText('Your profile')).toBeInTheDocument()
+            })
+
+            expect(getByLabelText(/System/)).not.toHaveAttribute('checked')
+            expect(getByLabelText(/Dark/)).not.toHaveAttribute('checked')
+            expect(getByLabelText(/Light/)).toHaveAttribute('checked')
+            expect(getByLabelText(/Classic/)).not.toHaveAttribute('checked')
+        })
+
+        it('should change the existing theme', async () => {
+            jest.spyOn(Storage.prototype, 'getItem').mockReturnValue('"light"')
+            const setThemeSpy = jest.fn()
+
+            jest.spyOn(require('core/theme'), 'useSetTheme').mockReturnValue(
+                setThemeSpy,
+            )
+
+            const { getByLabelText, getByText } = renderComponent()
+
+            await waitFor(() => {
+                expect(getByText('Your profile')).toBeInTheDocument()
+            })
+
+            await act(async () => {
+                await userEvent.click(getByLabelText(/Dark/i))
+            })
+
+            await waitFor(() => {
+                expect(setThemeSpy).toHaveBeenCalledWith('dark')
+            })
+        })
+
+        it('should render macro display', async () => {
+            const { handler } = mockGetCurrentUserHandler(async () =>
+                HttpResponse.json({
+                    ...mockGetCurrentUser.data,
+                    settings: [preferences],
+                } as CurrentUser['data']),
+            )
+            server.use(handler)
+
+            const { getByLabelText, getByText } = renderComponent()
+
+            await waitFor(() => {
+                expect(getByText('Your profile')).toBeInTheDocument()
+                expect(getByLabelText(/Macro prediction/)).not.toBeChecked()
+                expect(getByLabelText(/Macro suggestions/)).toBeChecked()
+                expect(
+                    getByLabelText(/Display macro search view by default/),
+                ).not.toBeChecked()
+            })
+        })
+
+        it('should expand to show the phone number field when enabling call forwarding', async () => {
+            const { getByLabelText, getByText } = renderComponent()
+
+            await waitFor(() => {
+                expect(getByText('Your profile')).toBeInTheDocument()
+            })
+
+            expect(getByLabelText(/forwarding_phone_number/)).toBeDisabled()
+            await act(async () => {
+                await userEvent.click(getByLabelText(/Enable call forwarding/i))
+            })
+            expect(getByLabelText(/forwarding_phone_number/)).toBeEnabled()
+        })
+    })
+
+    describe('Form submission section', () => {
+        it('should submit user data', async () => {
+            const { handler } = mockGetCurrentUserHandler(async () =>
+                HttpResponse.json({
+                    ...mockGetCurrentUser.data,
+                    settings: [
+                        {
+                            ...preferences,
+                            data: { ...preferences.data, time_format: 'AM/PM' },
+                        },
+                    ],
+                } as CurrentUser['data']),
+            )
+            server.use(handler)
+
+            const { getByRole, getByText } = renderComponent()
+
+            await waitFor(() => {
+                expect(getByText('Your profile')).toBeInTheDocument()
+            })
+
+            await act(async () => {
+                await userEvent.click(
+                    getByRole('radio', {
+                        name: '24-hour',
+                    }),
+                )
+
+                await userEvent.click(
+                    getByRole('button', { name: 'Save Changes' }),
+                )
+            })
+
+            await waitFor(() => {
+                expect(mockNotify).toHaveBeenCalledWith({
+                    status: NotificationStatus.Success,
+                    message: 'User successfully updated',
+                })
+            })
+        })
+
+        it('should submit user data and reset the password confirmation field because the email field was marked as changed', async () => {
+            const { getByRole, findByLabelText, getByText } = renderComponent()
+
+            await waitFor(() => {
+                expect(getByText('Your profile')).toBeInTheDocument()
+            })
+
+            await act(async () => {
+                await userEvent.type(
+                    getByRole('textbox', {
+                        name: 'Your email required',
+                    }),
+                    'alex@gorgias.com',
+                )
+            })
+
+            const passwordField = await findByLabelText(
+                /Password confirmation/i,
+            )
+
+            await act(async () => {
+                await userEvent.type(passwordField, 'a-password')
+                await userEvent.click(
+                    getByRole('button', { name: 'Save Changes' }),
+                )
+            })
+
+            await waitFor(() => {
+                expect(mockNotify).toHaveBeenCalledWith({
+                    status: NotificationStatus.Success,
+                    message: 'User successfully updated',
+                })
+            })
+        })
+
+        it('should submit user data and update user preferences because date format and time format preferences were changed', async () => {
+            const { handler } = mockGetCurrentUserHandler(async () =>
+                HttpResponse.json({
+                    ...mockGetCurrentUser.data,
+                    settings: [
+                        {
+                            ...preferences,
+                            data: {
+                                ...preferences.data,
+                                date_format: 'en_US',
+                                time_format: 'AM/PM',
+                            },
+                        },
+                    ],
+                } as CurrentUser['data']),
+            )
+            server.use(handler)
+            const { getByLabelText, getByText } = renderComponent()
+
+            await waitFor(() => {
+                expect(getByText('Your profile')).toBeInTheDocument()
+            })
+
+            await act(async () => {
+                await userEvent.click(
+                    getByLabelText(DateFormattingSetting.en_GB.label), // en_GB
+                )
+                await userEvent.click(getByLabelText(TimeFormattingSetting[0])) // 24-hour
+
+                await userEvent.click(getByText('Save Changes'))
+            })
+
+            await waitFor(() => {
+                expect(mockNotify).toHaveBeenCalledWith({
+                    status: NotificationStatus.Success,
+                    message: 'User successfully updated',
+                })
+            })
+        })
+    })
+
+    describe('Profile picture saving', () => {
+        it('should save profile picture', async () => {
+            const { getByLabelText, getByText } = renderComponent()
+            const waitForUpdateCurrentUserRequest =
+                mockUpdateCurrentUser.waitForRequest(server)
+
+            await waitFor(() => {
+                expect(getByText('Your profile')).toBeInTheDocument()
+            })
+
+            const fileInput = getByLabelText('profile-picture-input')
+
+            fireEvent.change(fileInput)
+
+            await waitForUpdateCurrentUserRequest(async (request) => {
+                const body = await request.json()
+                expect(body).toEqual({
+                    meta: {
+                        profile_picture_url: profilePictureUrl,
+                    },
+                })
+            })
+        })
+
+        it('should remove profile picture', async () => {
+            const { handler } = mockGetCurrentUserHandler(async () =>
+                HttpResponse.json({
+                    ...mockGetCurrentUser.data,
+                    meta: {
+                        profile_picture_url: profilePictureUrl,
+                    },
+                } as CurrentUser['data']),
+            )
+
+            server.use(handler)
+            const waitForUpdateCurrentUserRequest =
+                mockUpdateCurrentUser.waitForRequest(server)
+            const { getByText } = renderComponent()
+
+            await waitFor(() => {
+                expect(getByText('Your profile')).toBeInTheDocument()
+            })
+
+            await waitFor(async () => {
+                const removePictureButton = getByText('Remove Picture')
+                await act(async () => {
+                    await userEvent.click(removePictureButton)
+                })
+            })
+
+            await waitForUpdateCurrentUserRequest(async (request) => {
+                const body = await request.json()
+                expect(body).toEqual({
+                    meta: {
+                        profile_picture_url: null,
+                    },
+                })
+            })
+        })
     })
 })

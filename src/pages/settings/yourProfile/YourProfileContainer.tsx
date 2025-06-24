@@ -1,58 +1,64 @@
 import { useMemo } from 'react'
 
-import { fromJS } from 'immutable'
-import _pick from 'lodash/pick'
-import { connect, ConnectedProps } from 'react-redux'
+import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
+import { UserSettingType } from '@gorgias/helpdesk-types'
 
+import { DEFAULT_PREFERENCES } from 'config'
 import { UserRole } from 'config/types/user'
-import { getPreferences } from 'state/currentUser/selectors'
-import { StoreState } from 'state/types'
 
 import { YourProfileView } from './components/YourProfileView'
+import { ApplicationUserPreferencesSettings, CurrentUser } from './types'
 
-function mapStateToProps(state: StoreState) {
-    return {
-        currentUser: state.currentUser,
-        preferences: getPreferences(state),
-    }
-}
+function YourProfileContainer() {
+    const { data: currentUser } = useGetCurrentUser<CurrentUser>()
 
-const connector = connect(mapStateToProps)
-
-type YourProfileContainerProps = ConnectedProps<typeof connector>
-
-function YourProfileContainer({
-    currentUser,
-    preferences,
-}: YourProfileContainerProps) {
-    const isGorgiasAgent = useMemo(() => {
-        return currentUser.getIn(['role', 'name']) === UserRole.GorgiasAgent
-    }, [currentUser])
-
-    const prunedCurrentUser = useMemo(() => {
-        if (!currentUser.delete('_internal').isEmpty()) {
-            return fromJS(
-                _pick(currentUser.toJS(), [
-                    'name',
-                    'email',
-                    'bio',
-                    'timezone',
-                    'language',
-                    'settings',
-                    'meta',
-                ]),
-            )
+    const preferences = useMemo(() => {
+        if (!currentUser || !currentUser.data?.settings) {
+            return DEFAULT_PREFERENCES as Partial<
+                ApplicationUserPreferencesSettings['data']
+            >
         }
-        return fromJS({})
+
+        const settingsPreferences = currentUser.data.settings.find(
+            (setting) => setting.type === UserSettingType.Preferences,
+        ) as ApplicationUserPreferencesSettings
+
+        return {
+            ...DEFAULT_PREFERENCES,
+            ...(settingsPreferences?.data || {}),
+        } as Partial<ApplicationUserPreferencesSettings['data']>
     }, [currentUser])
+
+    const isGorgiasAgent = useMemo(
+        () => currentUser?.data?.role?.name === UserRole.GorgiasAgent,
+        [currentUser],
+    )
+
+    const currentUserProfileInfo = useMemo(
+        () => ({
+            id: currentUser?.data?.id,
+            name: currentUser?.data?.name,
+            email: currentUser?.data?.email,
+            bio: currentUser?.data?.bio,
+            timezone: currentUser?.data?.timezone,
+            language: currentUser?.data?.language,
+            settings: currentUser?.data?.settings,
+            meta: currentUser?.data?.meta,
+        }),
+        [currentUser],
+    )
+
+    if (!currentUser?.data) {
+        return <div>Loading...</div>
+    }
 
     return (
         <YourProfileView
-            currentUser={prunedCurrentUser}
+            currentUser={currentUserProfileInfo}
             preferences={preferences}
             isGorgiasAgent={isGorgiasAgent}
         />
     )
 }
 
-export default connector(YourProfileContainer)
+export default YourProfileContainer

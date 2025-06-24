@@ -1,7 +1,7 @@
 import { SyntheticEvent, useCallback, useMemo, useState } from 'react'
 
+import { useQueryClient } from '@tanstack/react-query'
 import classnames from 'classnames'
-import { Map } from 'immutable'
 import _isEqual from 'lodash/isEqual'
 import _merge from 'lodash/merge'
 import _omit from 'lodash/omit'
@@ -11,6 +11,12 @@ import moment from 'moment-timezone'
 import { Link } from 'react-router-dom'
 import { Form, FormGroup, FormText, Label } from 'reactstrap'
 
+import { queryKeys } from '@gorgias/helpdesk-queries'
+import {
+    UpdateUserBody,
+    UserSetting,
+    UserSettingType,
+} from '@gorgias/helpdesk-types'
 import {
     Avatar,
     Button,
@@ -20,14 +26,8 @@ import {
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { UploadType } from 'common/types'
-import {
-    EditableUserProfile,
-    UserSetting,
-    UserSettingType,
-} from 'config/types/user'
 import { useSetTheme, useTheme } from 'core/theme'
 import type { HelpdeskThemeName } from 'core/theme'
-import useAppDispatch from 'hooks/useAppDispatch'
 import Group from 'pages/common/components/layout/Group'
 import PageHeader from 'pages/common/components/PageHeader'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
@@ -36,8 +36,16 @@ import InputField from 'pages/common/forms/input/InputField'
 import settingsCss from 'pages/settings/settings.less'
 import DateAndTimeFormatting from 'pages/settings/yourProfile/components/DateAndTimeFormatting'
 import ThemeList from 'pages/settings/yourProfile/components/ThemeList'
-import { submitSetting, updateCurrentUser } from 'state/currentUser/actions'
 
+import {
+    useUpdateCurrentUserProfile,
+    useUpdateCurrentUserProfilePicture,
+} from '../hooks/useUpdateCurrentUserProfile'
+import {
+    useCreateCurrentUserProfileSettings,
+    useUpdateCurrentUserProfileSettings,
+} from '../hooks/useUpdateCurrentUserProfileSettings'
+import { ApplicationUserPreferencesSettings, CurrentUser } from '../types'
 import ForwardingCallsPreferences from './ForwardingCallsPreferences'
 
 import css from './YourProfileView.less'
@@ -61,7 +69,17 @@ const timezoneToOptionMap = new global.Map(
     ]),
 )
 
-const defaultContent = {
+type DefaultFormValues = {
+    name: string
+    email: string
+    bio: string
+    timezone: string
+    language: string
+    password_confirmation: string
+    meta: { profile_picture_url: string | null }
+}
+
+const defaultContent: DefaultFormValues = {
     name: '',
     email: '',
     password_confirmation: '',
@@ -72,8 +90,8 @@ const defaultContent = {
 }
 
 type YourProfileViewFunctionalProps = {
-    currentUser: Map<any, any>
-    preferences: Map<any, any>
+    currentUser: Partial<CurrentUser['data']>
+    preferences: Partial<ApplicationUserPreferencesSettings['data']>
     isGorgiasAgent: boolean
 }
 
@@ -82,7 +100,15 @@ export function YourProfileView({
     preferences,
     isGorgiasAgent,
 }: YourProfileViewFunctionalProps) {
-    const dispatch = useAppDispatch()
+    const queryClient = useQueryClient()
+    const { mutateAsync: updateCurrentUser } = useUpdateCurrentUserProfile()
+    const { mutateAsync: updateCurrentUserProfilePicture } =
+        useUpdateCurrentUserProfilePicture()
+    const { mutateAsync: updateCurrentUserSettings } =
+        useUpdateCurrentUserProfileSettings()
+    const { mutateAsync: createCurrentUserSettings } =
+        useCreateCurrentUserProfileSettings()
+
     const [isFormDirty, setIsFormDirty] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const theme = useTheme()
@@ -90,8 +116,8 @@ export function YourProfileView({
 
     const defaultFormValues = useMemo(() => {
         return _merge(defaultContent, {
-            ...currentUser.toJS(),
-            preferences: preferences.get('data').toJS(),
+            ...currentUser,
+            preferences,
         })
     }, [currentUser, preferences])
 
@@ -120,6 +146,7 @@ export function YourProfileView({
 
             const includedKeys = Object.keys(
                 _omit(defaultContent, [
+                    'id',
                     'preferences',
                     'settings',
                     'meta',
@@ -131,53 +158,49 @@ export function YourProfileView({
             const normalizedValues = _pick(
                 formValues,
                 includedKeys,
-            ) as EditableUserProfile
+            ) as UpdateUserBody
 
-            const existingPreferences = currentUser
-                .toJS()
-                .settings?.find(
-                    (setting: UserSetting) =>
-                        setting.type === UserSettingType.Preferences,
-                )
+            const existingPreferences = currentUser.settings?.find(
+                (setting) => setting.type === UserSettingType.Preferences,
+            )
 
-            await Promise.all([
-                dispatch(updateCurrentUser(normalizedValues)),
-                dispatch(
-                    submitSetting(
-                        {
-                            data: formValues.preferences,
-                            id: existingPreferences?.id,
-                            type: UserSettingType.Preferences,
-                        },
-                        false,
-                    ),
-                ),
-            ])
+            try {
+                await Promise.all([
+                    updateCurrentUser(normalizedValues),
+                    existingPreferences
+                        ? updateCurrentUserSettings({
+                              id: existingPreferences.id,
+                              data: {
+                                  type: UserSettingType.Preferences,
+                                  data: formValues.preferences,
+                              } as UserSetting,
+                          })
+                        : createCurrentUserSettings({
+                              data: {
+                                  type: UserSettingType.Preferences,
+                                  data: formValues.preferences,
+                              } as UserSetting,
+                          }),
+                ])
+            } catch {}
 
             setIsLoading(false)
             setIsFormDirty(false)
 
-            const hasChangedDateFormat =
-                defaultFormValues.preferences?.date_format !==
-                formValues.preferences?.date_format
-
-            const hasChangedTimeFormat =
-                defaultFormValues.preferences?.time_format !==
-                formValues.preferences?.time_format
-
-            const hasChangedLanguage =
-                defaultFormValues.language !== formValues.language
-
-            // Reload the page when modifying currentUser.language (e.g. the timeformat), to refresh all moment instances
-            if (
-                hasChangedDateFormat ||
-                hasChangedTimeFormat ||
-                hasChangedLanguage
-            ) {
-                window.location.reload()
-            }
+            await queryClient.invalidateQueries({
+                queryKey: [queryKeys.account.getCurrentUser()],
+            })
         },
-        [formValues, defaultFormValues, isGorgiasAgent, currentUser, dispatch],
+        [
+            formValues,
+            defaultFormValues,
+            isGorgiasAgent,
+            currentUser,
+            updateCurrentUser,
+            updateCurrentUserSettings,
+            createCurrentUserSettings,
+            queryClient,
+        ],
     )
 
     const handleInputChange = useCallback(
@@ -189,7 +212,7 @@ export function YourProfileView({
     )
 
     const handleProfilePictureChange = useCallback(
-        (picture_url: string | null) => {
+        async (picture_url: string | null) => {
             const meta = {
                 profile_picture_url: picture_url,
             }
@@ -199,13 +222,14 @@ export function YourProfileView({
                 meta,
             })
 
-            dispatch(
-                updateCurrentUser({
-                    meta,
-                }),
-            )
+            updateCurrentUserProfilePicture({
+                meta,
+            })
+            await queryClient.invalidateQueries({
+                queryKey: [queryKeys.account.getCurrentUser()],
+            })
         },
-        [formValues, dispatch],
+        [formValues, updateCurrentUserProfilePicture, queryClient],
     )
 
     const handleThemeChange = useCallback(
@@ -339,10 +363,12 @@ export function YourProfileView({
                                 </FormGroup>
                                 <DateAndTimeFormatting
                                     dateFormat={
-                                        formValues.preferences?.date_format
+                                        formValues.preferences?.date_format ??
+                                        ''
                                     }
                                     timeFormat={
-                                        formValues.preferences?.time_format
+                                        formValues.preferences?.time_format ??
+                                        ''
                                     }
                                     onSelectDateFormat={(value: string) => {
                                         handlePreferenceChange(
@@ -381,6 +407,7 @@ export function YourProfileView({
                             />
 
                             <FileField
+                                id="profile-picture-input"
                                 returnFiles={false}
                                 noPreview={true}
                                 onChange={handleProfilePictureChange}
@@ -453,7 +480,8 @@ export function YourProfileView({
                                             }
                                             value={
                                                 formValues.preferences
-                                                    ?.prefill_best_macro
+                                                    ?.prefill_best_macro ??
+                                                false
                                             }
                                             onChange={(value: boolean) => {
                                                 handlePreferenceChange(
@@ -500,7 +528,8 @@ export function YourProfileView({
                                             }
                                             value={
                                                 formValues.preferences
-                                                    ?.show_macros_suggestions
+                                                    ?.show_macros_suggestions ??
+                                                false
                                             }
                                             onChange={(value: boolean) => {
                                                 handlePreferenceChange(
@@ -536,7 +565,7 @@ export function YourProfileView({
                                             label="Display macro search view by default"
                                             value={
                                                 formValues.preferences
-                                                    ?.show_macros
+                                                    ?.show_macros ?? false
                                             }
                                             onChange={(value: boolean) => {
                                                 handlePreferenceChange(

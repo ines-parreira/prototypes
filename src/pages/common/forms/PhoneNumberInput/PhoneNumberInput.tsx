@@ -251,6 +251,9 @@ const PhoneNumberInput = (
                 </>
                 <TextInput
                     {...other}
+                    {...(other.name && {
+                        'aria-label': other.name,
+                    })}
                     ref={inputRef}
                     className={classnames({
                         [css.hiddenInput]: isCountrySelectVisible,
