@@ -7,7 +7,7 @@ import css from './FollowUp.less'
 type FollowUpFieldProps = {
     options?: number[]
     value?: number
-    onChange?: React.Dispatch<React.SetStateAction<number | undefined>>
+    onChange?: (value?: number) => void
 }
 
 export const FollowUpField = ({

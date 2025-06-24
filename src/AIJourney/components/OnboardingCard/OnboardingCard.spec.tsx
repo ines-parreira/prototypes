@@ -43,4 +43,11 @@ describe('<OnboardingCard />', () => {
 
         expect(mockHistoryPush).toHaveBeenCalledTimes(1)
     })
+
+    it('updates testSmsNumber when TestSMSField input changes (activation step)', async () => {
+        render(<OnboardingCard currentStep="Activation" />)
+        const input = screen.getByRole('textbox')
+        await userEvent.type(input, '123456789')
+        expect(input).toHaveValue('123456789')
+    })
 })

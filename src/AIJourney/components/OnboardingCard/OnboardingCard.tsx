@@ -2,12 +2,13 @@ import { useState } from 'react'
 
 import { useHistory, useParams } from 'react-router-dom'
 
-import { Button, FieldPresentation } from '../'
+import { Button } from '../'
 import {
     EnableDiscountField,
     FollowUpField,
     MaximumDiscountField,
     PhoneNumberField,
+    TestSMSField,
 } from './fields'
 
 import css from './OnboardingCard.less'
@@ -30,6 +31,7 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
     const [isDiscountEnabled, setIsDiscountEnabled] = useState(false)
     const [discountValue, setDiscountValue] = useState('')
     const [phoneNumberValue, setPhoneNumberValue] = useState('')
+    const [testSmsNumber, setTestSmsNumber] = useState('')
 
     const handleDiscountToggle = () => {
         setIsDiscountEnabled((prev) => !prev)
@@ -41,6 +43,10 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
 
     const handlePhoneNumberChange = (newValue: string) => {
         setPhoneNumberValue(newValue)
+    }
+
+    const handleTestSmsNumberChange = (newValue: string) => {
+        setTestSmsNumber(newValue)
     }
 
     const followUpOptions = [1, 2, 3]
@@ -59,10 +65,12 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
                     <span>{currentStep} step</span>
                 </div>
                 {isActivationStep ? (
-                    <FieldPresentation
-                        name="Test phone number"
-                        description="Select the phone number to preview your campaign"
-                    />
+                    <>
+                        <TestSMSField
+                            value={testSmsNumber}
+                            onChange={handleTestSmsNumberChange}
+                        />
+                    </>
                 ) : (
                     <>
                         <PhoneNumberField
