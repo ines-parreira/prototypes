@@ -27,9 +27,15 @@ type Props = {
     ticketId?: number
     shopperId: number | null
     onLoaded?: () => unknown
+    containerRef?: React.RefObject<HTMLDivElement>
 }
 
-export function Timeline({ ticketId = 0, shopperId, onLoaded }: Props) {
+export function Timeline({
+    ticketId = 0,
+    shopperId,
+    onLoaded,
+    containerRef,
+}: Props) {
     const hasTicketModal = useFlag(FeatureFlagKey.TimelineTicketModal)
     const [hasCalledOnLoaded, setHasCalledOnLoaded] = useState(false)
 
@@ -147,7 +153,11 @@ export function Timeline({ ticketId = 0, shopperId, onLoaded }: Props) {
                 )}
             </div>
             {!!modal.ticketId && (
-                <TicketModal summary={ticketSummary} {...modal} />
+                <TicketModal
+                    summary={ticketSummary}
+                    {...modal}
+                    containerRef={containerRef}
+                />
             )}
         </>
     )

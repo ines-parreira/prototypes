@@ -210,6 +210,7 @@ describe('<Timeline />', () => {
         })
 
         it('should call sort tickets when a SelectField option is clicked', () => {
+            useFlagMock.mockReturnValue(false)
             render(<Timeline shopperId={null} />)
 
             TicketCardMock.mockClear()
@@ -221,6 +222,48 @@ describe('<Timeline />', () => {
 
             expect(TicketCardMock.mock.calls[0][0].ticket).toEqual(ticket3)
             expect(TicketCardMock.mock.calls[1][0].ticket).toEqual(ticket1)
+        })
+
+        it('should call sort tickets when a dropdown option is clicked (drawer UX)', () => {
+            useFlagMock.mockReturnValue(true)
+            render(<Timeline shopperId={null} />)
+
+            TicketCardMock.mockClear()
+
+            // Click the sort button to open dropdown
+            fireEvent.click(screen.getByRole('button', { name: /sort/i }))
+
+            // Click on a sort option in the dropdown
+            fireEvent.click(screen.getAllByText('Created')[0])
+
+            expect(TicketCardMock.mock.calls[0][0].ticket).toEqual(ticket3)
+            expect(TicketCardMock.mock.calls[1][0].ticket).toEqual(ticket1)
+        })
+
+        it('should render SelectField when hasCTDrawerUX is false', () => {
+            useFlagMock.mockReturnValue(false)
+            render(<Timeline shopperId={null} />)
+
+            // Should render the SelectField combobox
+            expect(screen.getByRole('combobox')).toBeInTheDocument()
+
+            // Should not render the dropdown sort button
+            expect(
+                screen.queryByRole('button', { name: /sort/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render dropdown sort button when hasCTDrawerUX is true', () => {
+            useFlagMock.mockReturnValue(true)
+            render(<Timeline shopperId={null} />)
+
+            // Should render the dropdown sort button
+            expect(
+                screen.getByRole('button', { name: /sort/i }),
+            ).toBeInTheDocument()
+
+            // Should not render the SelectField combobox
+            expect(screen.queryByRole('combobox')).not.toBeInTheDocument()
         })
     })
 

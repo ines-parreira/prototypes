@@ -4,6 +4,7 @@ import classnames from 'classnames'
 
 import { IconButton } from '@gorgias/merchant-ui-kit'
 
+import { Drawer } from 'components/Drawer/Drawer'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
@@ -38,6 +39,9 @@ export const TicketView = ({
     onGoToNextTicket,
     onToggleUnread,
 }: Props) => {
+    const drawerContainerRef = useRef<HTMLDivElement>(null)
+    const hasCTDrawer = useFlag(FeatureFlagKey.CustomerTimelineDrawerUX)
+
     const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
     const pageRef = useRef<HTMLDivElement>(null)
     const ticketContentRef = useRef<HTMLDivElement>(null)
@@ -84,31 +88,87 @@ export const TicketView = ({
     )
 
     return (
-        <div className={css.outerView}>
-            {isTimelineOpen && (
-                <div className={classnames(css.timeline)}>
-                    <div className={classnames(css.timelineHeader)}>
-                        <span>Customer Timeline</span>
-                        <IconButton
-                            className={classnames(css.closeTrigger)}
-                            onClick={closeTimeline}
-                            id={TIMELINE_CLOSE_BUTTON_ID}
-                            icon="close"
-                            intent="secondary"
-                            fillStyle="ghost"
-                            title="Close timeline"
-                        />
-                    </div>
+        <div className={css.outerView} ref={drawerContainerRef}>
+            {hasCTDrawer ? (
+                <Drawer.Root
+                    container={drawerContainerRef.current}
+                    open={isTimelineOpen}
+                    modal={false}
+                    direction="right"
+                >
+                    <Drawer.Content
+                        className={css.timelineDrawer}
+                        aria-describedby="Customer timeline"
+                    >
+                        <Drawer.Title
+                            className={classnames(
+                                css.timelineHeader,
+                                css.rounded,
+                            )}
+                        >
+                            <span>Customer Timeline</span>
+                            <Drawer.Close asChild>
+                                <IconButton
+                                    className={classnames(css.closeTrigger)}
+                                    onClick={closeTimeline}
+                                    id={TIMELINE_CLOSE_BUTTON_ID}
+                                    icon="close"
+                                    intent="secondary"
+                                    fillStyle="ghost"
+                                    title="Close timeline"
+                                />
+                            </Drawer.Close>
+                        </Drawer.Title>
 
-                    <div className={classnames(css.timelineContainer, 'pb-4')}>
-                        <Timeline
-                            ticketId={ticket.get('id')}
-                            shopperId={shopperId}
-                            onLoaded={onTimelineLoaded}
-                        />
-                    </div>
-                </div>
+                        <div
+                            className={classnames(
+                                css.timelineDrawerContent,
+                                'pb-4',
+                            )}
+                        >
+                            <Timeline
+                                ticketId={ticket.get('id')}
+                                shopperId={shopperId}
+                                onLoaded={onTimelineLoaded}
+                                containerRef={drawerContainerRef}
+                            />
+                        </div>
+                    </Drawer.Content>
+                </Drawer.Root>
+            ) : (
+                <>
+                    {isTimelineOpen && (
+                        <div className={classnames(css.timeline)}>
+                            <div className={classnames(css.timelineHeader)}>
+                                <span>Customer Timeline</span>
+                                <IconButton
+                                    className={classnames(css.closeTrigger)}
+                                    onClick={closeTimeline}
+                                    id={TIMELINE_CLOSE_BUTTON_ID}
+                                    icon="close"
+                                    intent="secondary"
+                                    fillStyle="ghost"
+                                    title="Close timeline"
+                                />
+                            </div>
+
+                            <div
+                                className={classnames(
+                                    css.timelineContainer,
+                                    'pb-4',
+                                )}
+                            >
+                                <Timeline
+                                    ticketId={ticket.get('id')}
+                                    shopperId={shopperId}
+                                    onLoaded={onTimelineLoaded}
+                                />
+                            </div>
+                        </div>
+                    )}
+                </>
             )}
+
             <div className={css.view}>
                 <TicketHeaderWrapper
                     hideTicket={hideTicket}

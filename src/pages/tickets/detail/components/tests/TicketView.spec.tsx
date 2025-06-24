@@ -4,6 +4,7 @@ import { fireEvent, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
+import { useFlag } from 'core/flags'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
 import Timeline from 'timeline/Timeline'
@@ -24,6 +25,9 @@ jest.mock('../TicketHeaderWrapper/TicketHeaderWrapper', () => () => (
     <div>TicketHeaderWrapper</div>
 ))
 jest.mock('../ReplyForm', () => () => <div>ReplyForm</div>)
+
+jest.mock('core/flags')
+const mockUseFlag = useFlag as jest.Mock
 
 const TimelineMock = assumeMock(Timeline)
 const useTimelinePanelMock = assumeMock(useTimelinePanel)
@@ -47,6 +51,7 @@ describe('<TicketView />', () => {
             isOpen: false as boolean,
             closeTimeline: closeTimelineMock,
         } as unknown as ReturnType<typeof useTimelinePanel>)
+        mockUseFlag.mockImplementation(() => false)
     })
 
     const mockTicketState = fromJS({
@@ -180,5 +185,60 @@ describe('<TicketView />', () => {
                 top: 0,
             }),
         )
+    })
+
+    describe('Customer Timeline Drawer UX', () => {
+        it('should render timeline in drawer when feature flag is enabled', () => {
+            mockUseFlag.mockImplementation(() => true)
+            useTimelinePanelMock.mockReturnValue({
+                isOpen: true,
+                closeTimeline: closeTimelineMock,
+            } as unknown as ReturnType<typeof useTimelinePanel>)
+
+            const { container } = renderWithQueryClientProvider(
+                <Provider
+                    store={mockStore({
+                        ticket: mockTicketState,
+                        billing: mockBillingState,
+                        integrations: mockIntegrationsState,
+                    })}
+                >
+                    <TicketView {...minProps} />
+                </Provider>,
+            )
+
+            expect(
+                container.querySelector('.timelineDrawer'),
+            ).toBeInTheDocument()
+            expect(
+                container.querySelector('.timelineDrawerContent'),
+            ).toBeInTheDocument()
+        })
+
+        it('should render timeline in side panel when feature flag is disabled', () => {
+            mockUseFlag.mockImplementation(() => false)
+            useTimelinePanelMock.mockReturnValue({
+                isOpen: true,
+                closeTimeline: closeTimelineMock,
+            } as unknown as ReturnType<typeof useTimelinePanel>)
+
+            const { container } = renderWithQueryClientProvider(
+                <Provider
+                    store={mockStore({
+                        ticket: mockTicketState,
+                        billing: mockBillingState,
+                        integrations: mockIntegrationsState,
+                    })}
+                >
+                    <TicketView {...minProps} />
+                </Provider>,
+            )
+
+            expect(
+                container.querySelector('.timelineDrawer'),
+            ).not.toBeInTheDocument()
+
+            expect(container.querySelector('.timeline')).toBeInTheDocument()
+        })
     })
 })

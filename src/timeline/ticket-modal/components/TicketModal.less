@@ -21,4 +21,34 @@
         padding: var(--layout-spacing-xs) 12px;
         background: var(--neutral-grey-0);
     }
+
+    .ticketDrawer {
+        position: absolute;
+        z-index: 1050;
+        top: 0;
+        right: 0;
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        height: 100%;
+        width: 650px;
+        background: var(--neutral-grey-1);
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    }
+
+    .ticketDrawerContent {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow-y: auto;
+    }
+
+    .ticketDrawerFooter {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: var(--layout-spacing-xs);
+        padding: var(--layout-spacing-xs) 12px;
+        background: var(--neutral-grey-0);
+    }
 }

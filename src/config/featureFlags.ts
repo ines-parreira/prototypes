@@ -86,6 +86,7 @@ export enum FeatureFlagKey {
     ConvertContactForm = 'convert-contact-form',
     ConvertFloatingChatInput = 'convert-floating-chat-input',
     ConvertPerformanceView = 'convert-performance-view',
+    CustomerTimelineDrawerUX = 'linear.task_SUPXP-3671.customer-timeline-drawer-ux',
     DefaultEmailAddress = 'default-email-address',
     DontTriggerLoginsOnInactiveTabs = 'dont-trigger-logins-on-inactive-tabs',
     DTPCursorPolling = 'linear.project_ability-to-dictate-priority-of-tickets.frontend',
