@@ -34,8 +34,8 @@ export const useGetAiAgentFeedback = (
     return useQuery({
         queryKey: aiAgentFeedbackKeys.detail(messageIds),
         queryFn: () => getAIAgentTicketMessagesFeedback(messageIds),
-        enabled: messageIds.length > 0,
         ...overrides,
+        enabled: (overrides?.enabled ?? true) && messageIds.length > 0,
     })
 }
 

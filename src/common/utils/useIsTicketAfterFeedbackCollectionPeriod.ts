@@ -13,6 +13,8 @@ export const FIRST_CONSUMED_ORCH_EVENT_DATETIME = new Date(
     '2025-05-23T10:00:00Z',
 )
 export const NUMBER_OF_MONTHS_TO_SKIP_NEW_FEEDBACK_COLLECTION = 3
+const CACHE_TIME = 1000 * 60 * 60 * 1 // 1 hour
+const STALE_TIME = 1000 * 60 * 60 * 1 // 1 hour
 
 export const useTicketIsAfterFeedbackCollectionPeriod = () => {
     const ticket = useAppSelector(getTicketState)
@@ -23,6 +25,8 @@ export const useTicketIsAfterFeedbackCollectionPeriod = () => {
 
     const { data: aiAgentFeedback } = useGetAiAgentFeedback({
         refetchOnWindowFocus: false,
+        cacheTime: CACHE_TIME,
+        staleTime: STALE_TIME,
         enabled: isNewAgenticArchitectureEnabled,
     })
 
