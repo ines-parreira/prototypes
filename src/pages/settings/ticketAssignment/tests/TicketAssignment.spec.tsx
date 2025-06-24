@@ -314,11 +314,7 @@ describe('<TicketAssignment />', () => {
             </Provider>,
         )
 
-        fireEvent.click(
-            screen.getByText(
-                /Tickets that are re-opened will be allowed to exceed an/,
-            ),
-        )
+        fireEvent.click(screen.getByText(/Reopened tickets will exceed an/))
         fireEvent.click(screen.getByText('Save changes'))
 
         expect(submitSettingMock).toHaveBeenCalledWith({

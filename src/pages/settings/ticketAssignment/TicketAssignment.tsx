@@ -323,16 +323,15 @@ const TicketAssignment = () => {
                                                 }
                                                 caption={
                                                     <span>
-                                                        Tickets that are
-                                                        re-opened will be
-                                                        allowed to exceed an
-                                                        agent&apos;s max
-                                                        capacity as defined in{' '}
+                                                        Reopened tickets will
+                                                        exceed an agent&apos;s
+                                                        max capacity as defined
+                                                        in{' '}
                                                         <i>
                                                             Auto-assignment
                                                             limits
                                                         </i>{' '}
-                                                        settings below.
+                                                        settings below
                                                     </span>
                                                 }
                                             />
