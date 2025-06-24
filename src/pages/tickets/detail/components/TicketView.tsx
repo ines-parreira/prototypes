@@ -94,6 +94,7 @@ export const TicketView = ({
                     container={drawerContainerRef.current}
                     open={isTimelineOpen}
                     modal={false}
+                    handleOnly
                     direction="right"
                 >
                     <Drawer.Content

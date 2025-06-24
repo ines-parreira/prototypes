@@ -36,6 +36,7 @@ export function TicketModal({
             <Drawer.NestedRoot
                 open
                 direction="right"
+                handleOnly
                 container={containerRef?.current}
             >
                 <Drawer.Content className={css.ticketDrawer}>
