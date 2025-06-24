@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { OrderDirection } from 'models/api/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
@@ -8,7 +9,11 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
 import { useStoreManagementState } from '../StoreManagementProvider'
-import { columnsOrder, TableLabels } from './StoreManagementTableConfig'
+import {
+    columnsOrder,
+    StoreManagementTableColumn,
+    TableLabels,
+} from './StoreManagementTableConfig'
 import StoreManagementTableRow from './StoreManagementTableRow/StoreManagementTableRow'
 
 import css from './StoreManagementTable.less'
@@ -20,10 +25,16 @@ export const StoreManagementTable = () => {
         paginatedStores,
         setCurrentPage,
         isLoading,
+        sortOrder,
+        setSortOrder,
     } = useStoreManagementState()
 
     const onPageChangeCallback = (page: number) => {
         setCurrentPage(page)
+    }
+
+    const handleSortToggle = () => {
+        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
     }
 
     if (isLoading) {
@@ -43,6 +54,24 @@ export const StoreManagementTable = () => {
                                     justifyContent="left"
                                     className={css.headerCell}
                                     titleClassName={css.headerCellTitle}
+                                    direction={
+                                        column ===
+                                        StoreManagementTableColumn.StoreName
+                                            ? sortOrder === 'asc'
+                                                ? OrderDirection.Asc
+                                                : OrderDirection.Desc
+                                            : undefined
+                                    }
+                                    isOrderedBy={
+                                        column ===
+                                        StoreManagementTableColumn.StoreName
+                                    }
+                                    onClick={
+                                        column ===
+                                        StoreManagementTableColumn.StoreName
+                                            ? handleSortToggle
+                                            : undefined
+                                    }
                                 />
                             ))}
                             <HeaderCell key="cell-for-spacing" />

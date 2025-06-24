@@ -11,6 +11,7 @@ import useSafeContext from 'hooks/useSafeContext'
 import { Integration } from 'models/integration/types'
 
 import useStoresWithMaps from './hooks/useStoresWithMaps'
+import { sortStoresByName } from './StoreManagementProvider.helpers'
 import { StoreWithAssignedChannels } from './types'
 
 type StoreManagementContextType = {
@@ -25,6 +26,8 @@ type StoreManagementContextType = {
     setFilter: React.Dispatch<React.SetStateAction<string>>
     totalPages: number
     isLoading: boolean
+    sortOrder: 'asc' | 'desc'
+    setSortOrder: Dispatch<SetStateAction<'asc' | 'desc'>>
 }
 
 const StoreManagementContext = createContext<
@@ -45,13 +48,18 @@ export function StoreManagementProvider({ children }: { children: ReactNode }) {
 
     const [currentPage, setCurrentPage] = useState(1)
     const [filter, setFilter] = useState('')
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
+
+    const sortedStores = useMemo(() => {
+        return sortStoresByName(stores, sortOrder)
+    }, [stores, sortOrder])
 
     const filteredStores = useMemo(() => {
-        if (!filter) return stores
-        return stores.filter((store) =>
+        if (!filter) return sortedStores
+        return sortedStores.filter((store) =>
             store.store.name.toLowerCase().includes(filter.toLowerCase()),
         )
-    }, [stores, filter])
+    }, [sortedStores, filter])
 
     const paginatedStores = useMemo(() => {
         const startIndex = (currentPage - 1) * PAGE_SIZE
@@ -72,6 +80,8 @@ export function StoreManagementProvider({ children }: { children: ReactNode }) {
                 refetchIntegrations,
                 filter,
                 setFilter,
+                sortOrder,
+                setSortOrder,
                 isLoading,
             }}
         >

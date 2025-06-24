@@ -35,6 +35,8 @@ describe('StoreManagementTable', () => {
         isLoading: false,
         filter: '',
         setFilter: jest.fn(),
+        sortOrder: 'asc' as const,
+        setSortOrder: jest.fn(),
     }
 
     beforeEach(() => {
@@ -121,5 +123,36 @@ describe('StoreManagementTable', () => {
         )
 
         expect(screen.getByRole('status')).toBeInTheDocument()
+    })
+
+    it('calls setSortOrder when Store Name header is clicked and shows rows in ascending order', async () => {
+        render(
+            <StoreManagementProvider>
+                <StoreManagementTable />
+            </StoreManagementProvider>,
+        )
+
+        const storeNameHeader = screen.getByText('STORE NAME')
+        await userEvent.click(storeNameHeader)
+
+        expect(mockState.setSortOrder).toHaveBeenCalledWith('desc')
+    })
+
+    it('toggles sort order from desc to asc when Store Name header is clicked', async () => {
+        mockUseStoreManagementState.mockReturnValue({
+            ...mockState,
+            sortOrder: 'desc',
+        })
+
+        render(
+            <StoreManagementProvider>
+                <StoreManagementTable />
+            </StoreManagementProvider>,
+        )
+
+        const storeNameHeader = screen.getByText('STORE NAME')
+        await userEvent.click(storeNameHeader)
+
+        expect(mockState.setSortOrder).toHaveBeenCalledWith('asc')
     })
 })

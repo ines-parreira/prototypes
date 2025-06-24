@@ -48,6 +48,8 @@ const defaultMockContext = {
     isLoading: false,
     filter: '',
     setFilter: jest.fn(),
+    sortOrder: 'asc' as const,
+    setSortOrder: jest.fn(),
 }
 
 describe('StoreManagementStoreSelector', () => {
