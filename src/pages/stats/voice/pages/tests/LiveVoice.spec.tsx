@@ -125,14 +125,11 @@ describe('LiveVoice', () => {
             },
         }
         useChannelMock.mock.calls[0][0]?.onEvent!(event as DomainEvent)
-        expect(useLiveVoiceUpdatesMock).toHaveBeenCalledWith(
-            {
-                agent_ids: [1, 2],
-                integration_ids: [3, 4],
-                voice_queue_ids: [5, 6],
-            },
-            [],
-        )
+        expect(useLiveVoiceUpdatesMock).toHaveBeenCalledWith({
+            agent_ids: [1, 2],
+            integration_ids: [3, 4],
+            voice_queue_ids: [5, 6],
+        })
         expect(handleEventMock).toHaveBeenCalledWith(event)
     })
 

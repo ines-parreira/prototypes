@@ -48,7 +48,7 @@ function LiveVoice() {
         },
     )
 
-    const { channel, handleEvent } = useLiveVoiceUpdates(params, voiceCalls)
+    const { channel, handleEvent } = useLiveVoiceUpdates(params)
     useChannel({
         channel,
         onEvent: handleEvent,

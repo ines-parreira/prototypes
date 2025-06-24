@@ -71,7 +71,7 @@ describe('useLiveVoiceUpdates', () => {
             isLoading: false,
         } as any)
         useListLiveCallQueueVoiceCallsMock.mockReturnValue({
-            data: { data: [] },
+            data: voiceCalls,
             isLoading: false,
         } as any)
     })
@@ -80,9 +80,7 @@ describe('useLiveVoiceUpdates', () => {
         it('should return undefined channel if accountId is not available', () => {
             mockUseAccountId.mockReturnValue(undefined)
 
-            const { result } = renderHook(() =>
-                useLiveVoiceUpdates({}, undefined),
-            )
+            const { result } = renderHook(() => useLiveVoiceUpdates({}))
 
             expect(result.current.channel).toBeUndefined()
         })
@@ -91,9 +89,7 @@ describe('useLiveVoiceUpdates', () => {
             const accountId = 'test-account-id'
             mockUseAccountId.mockReturnValue(accountId)
 
-            const { result } = renderHook(() =>
-                useLiveVoiceUpdates({}, undefined),
-            )
+            const { result } = renderHook(() => useLiveVoiceUpdates({}))
 
             expect(result.current.channel).toEqual({
                 name: 'stats.liveVoice',
@@ -102,7 +98,7 @@ describe('useLiveVoiceUpdates', () => {
         })
     })
 
-    it('should  handle events only once', () => {
+    it('should handle events only once', () => {
         jest.useRealTimers()
 
         const queryKey = queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(
@@ -116,7 +112,7 @@ describe('useLiveVoiceUpdates', () => {
 
         appQueryClient.setQueryData(queryKey, mockOldData)
 
-        const { result } = renderHook(() => useLiveVoiceUpdates({}, voiceCalls))
+        const { result } = renderHook(() => useLiveVoiceUpdates({}))
 
         const mockEvent = {
             id: 'test-event-id',
@@ -151,6 +147,26 @@ describe('useLiveVoiceUpdates', () => {
             ? updatedCallStatuses[0]?.created_datetime
             : undefined
         expect(updatedStatusCreatedAt).toBe(statusCreatedAt)
+    })
+
+    it('should handle no response for all calls', () => {
+        useListLiveCallQueueVoiceCallsMock.mockReturnValue({
+            isLoading: true,
+            data: undefined,
+        } as any)
+
+        const { result } = renderHook(() => useLiveVoiceUpdates({}))
+
+        const mockEvent = {
+            id: 'test-event-id',
+            dataschema: '//helpdesk/phone.voice-call.inbound.ended/1.1.0',
+            data: {
+                voice_call_id: 123,
+            },
+        } as DomainEvent
+
+        // no exceptions are thrown when handling an event
+        result.current.handleEvent(mockEvent)
     })
 
     describe('handles user-preferences.updated event', () => {
@@ -202,9 +218,7 @@ describe('useLiveVoiceUpdates', () => {
 
                 appQueryClient.setQueryData(queryKey, mockOldData)
 
-                const { result } = renderHook(() =>
-                    useLiveVoiceUpdates(params, voiceCalls),
-                )
+                const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
                 result.current.handleEvent({
                     ...mockEvent,
@@ -263,9 +277,7 @@ describe('useLiveVoiceUpdates', () => {
 
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() =>
-                useLiveVoiceUpdates(params, voiceCalls),
-            )
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -285,9 +297,7 @@ describe('useLiveVoiceUpdates', () => {
 
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() =>
-                useLiveVoiceUpdates(params, voiceCalls),
-            )
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -331,9 +341,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() =>
-                useLiveVoiceUpdates(params, voiceCalls),
-            )
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -385,9 +393,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() =>
-                useLiveVoiceUpdates(params, voiceCalls),
-            )
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -417,7 +423,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() => useLiveVoiceUpdates(params, []))
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -429,6 +435,11 @@ describe('useLiveVoiceUpdates', () => {
         })
 
         it('should create the agent status in the live call queue', () => {
+            useListLiveCallQueueVoiceCallsMock.mockReturnValue({
+                data: [{ id: 123, external_id: 'abc' }],
+                isLoading: false,
+            } as any)
+
             const queryKey =
                 queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
 
@@ -439,9 +450,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() =>
-                useLiveVoiceUpdates(params, voiceCalls),
-            )
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -485,9 +494,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() =>
-                useLiveVoiceUpdates(params, voiceCalls),
-            )
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -519,6 +526,12 @@ describe('useLiveVoiceUpdates', () => {
         })
 
         it('should not update the agent status if the call_sid does not match', () => {
+            // the call is not in the list
+            useListLiveCallQueueVoiceCallsMock.mockReturnValue({
+                data: [],
+                isLoading: false,
+            } as any)
+
             const queryKey =
                 queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
 
@@ -529,7 +542,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() => useLiveVoiceUpdates(params, []))
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -574,9 +587,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() =>
-                useLiveVoiceUpdates(params, voiceCalls),
-            )
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -605,7 +616,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() => useLiveVoiceUpdates(params, []))
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -627,9 +638,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() =>
-                useLiveVoiceUpdates(params, voiceCalls),
-            )
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -673,9 +682,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() =>
-                useLiveVoiceUpdates(params, voiceCalls),
-            )
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -707,6 +714,12 @@ describe('useLiveVoiceUpdates', () => {
         })
 
         it('should not update the agent status if the call_sid does not match', () => {
+            // the call is not in the list
+            useListLiveCallQueueVoiceCallsMock.mockReturnValue({
+                data: [],
+                isLoading: false,
+            } as any)
+
             const queryKey =
                 queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
 
@@ -717,7 +730,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() => useLiveVoiceUpdates(params, []))
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -785,9 +798,7 @@ describe('useLiveVoiceUpdates', () => {
                 }
                 appQueryClient.setQueryData(queryKey, mockOldData)
 
-                const { result } = renderHook(() =>
-                    useLiveVoiceUpdates(params, voiceCalls),
-                )
+                const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
                 result.current.handleEvent(event)
 
@@ -817,9 +828,7 @@ describe('useLiveVoiceUpdates', () => {
                 }
                 appQueryClient.setQueryData(queryKey, mockOldData)
 
-                const { result } = renderHook(() =>
-                    useLiveVoiceUpdates(params, voiceCalls),
-                )
+                const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
                 result.current.handleEvent(event)
 
@@ -834,6 +843,12 @@ describe('useLiveVoiceUpdates', () => {
         it.each([mockUnansweredEvent, mockDeclinedEvent])(
             'should not update agent status in the list if the call is not in the list',
             (event) => {
+                // the call is not in the list
+                useListLiveCallQueueVoiceCallsMock.mockReturnValue({
+                    data: [],
+                    isLoading: false,
+                } as any)
+
                 const queryKey =
                     queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
 
@@ -844,9 +859,7 @@ describe('useLiveVoiceUpdates', () => {
                 }
                 appQueryClient.setQueryData(queryKey, mockOldData)
 
-                const { result } = renderHook(() =>
-                    useLiveVoiceUpdates(params, []),
-                )
+                const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
                 result.current.handleEvent(event)
 
@@ -885,7 +898,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() => useLiveVoiceUpdates(params, []))
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             const mockEvent = {
                 dataschema: dataschema,
@@ -928,9 +941,7 @@ describe('useLiveVoiceUpdates', () => {
                 }
                 appQueryClient.setQueryData(queryKey, mockOldData)
 
-                const { result } = renderHook(() =>
-                    useLiveVoiceUpdates(params, []),
-                )
+                const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
                 const mockEvent = {
                     dataschema: dataschema,
@@ -981,7 +992,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() => useLiveVoiceUpdates(params, []))
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -1020,7 +1031,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() => useLiveVoiceUpdates(params, []))
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -1066,9 +1077,7 @@ describe('useLiveVoiceUpdates', () => {
             } as DomainEvent
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() =>
-                useLiveVoiceUpdates(params, voiceCalls),
-            )
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -1121,9 +1130,7 @@ describe('useLiveVoiceUpdates', () => {
             } as DomainEvent
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() =>
-                useLiveVoiceUpdates(params, voiceCalls),
-            )
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -1181,9 +1188,7 @@ describe('useLiveVoiceUpdates', () => {
             } as DomainEvent
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() =>
-                useLiveVoiceUpdates(params, voiceCalls),
-            )
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -1240,9 +1245,7 @@ describe('useLiveVoiceUpdates', () => {
 
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() =>
-                useLiveVoiceUpdates(params, voiceCalls),
-            )
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -1287,9 +1290,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() =>
-                useLiveVoiceUpdates(params, voiceCalls),
-            )
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -1316,9 +1317,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() =>
-                useLiveVoiceUpdates(params, voiceCalls),
-            )
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -1374,9 +1373,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() =>
-                useLiveVoiceUpdates(params, voiceCalls),
-            )
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -1404,7 +1401,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() => useLiveVoiceUpdates(params, []))
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -1426,9 +1423,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() =>
-                useLiveVoiceUpdates(params, voiceCalls),
-            )
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockEvent)
 
@@ -1491,9 +1486,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() =>
-                useLiveVoiceUpdates(params, voiceCalls),
-            )
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockWrapUpStartedEvent)
 
@@ -1539,9 +1532,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() =>
-                useLiveVoiceUpdates(params, voiceCalls),
-            )
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             result.current.handleEvent(mockWrapUpEndedEvent)
 
@@ -1577,9 +1568,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() =>
-                useLiveVoiceUpdates(params, voiceCalls),
-            )
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
             const mockEvent = {
                 dataschema:
                     '//helpdesk/phone.voice-call.inbound.wrap-up-started/1.1.0',
@@ -1627,9 +1616,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             appQueryClient.setQueryData(queryKey, mockOldData)
 
-            const { result } = renderHook(() =>
-                useLiveVoiceUpdates(params, voiceCalls),
-            )
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
             const mockEvent = {
                 dataschema:
                     '//helpdesk/phone.voice-call.inbound.wrap-up-ended/1.1.0',

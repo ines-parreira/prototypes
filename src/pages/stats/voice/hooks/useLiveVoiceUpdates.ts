@@ -1,12 +1,13 @@
-import { MutableRefObject, useEffect, useMemo, useRef } from 'react'
+import { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
+import { omit } from 'lodash'
 
 import { DomainEvent } from '@gorgias/events'
 import {
     ListLiveCallQueueVoiceCallsParams,
-    LiveCallQueueVoiceCall,
     useListLiveCallQueueAgents,
+    useListLiveCallQueueVoiceCalls,
     VoiceCallDirection,
     VoiceCallStatus,
 } from '@gorgias/helpdesk-queries'
@@ -31,10 +32,12 @@ const CHANNEL_NAME = 'stats.liveVoice'
 
 export const useLiveVoiceUpdates = (
     params?: ListLiveCallQueueVoiceCallsParams,
-    voiceCalls?: LiveCallQueueVoiceCall[],
 ) => {
-    const processedEvents = useRef<Set<string>>(new Set())
     const useLiveUpdates = useFlags()[FeatureFlagKey.UseLiveVoiceUpdates]
+    const [voiceCallIdToSid, setVoiceCallIdToSid] = useState<
+        Record<number, string>
+    >({})
+    const processedEvents = useRef<Set<string>>(new Set())
     const timeouts: MutableRefObject<Record<string, NodeJS.Timeout>> = useRef(
         {},
     )
@@ -62,11 +65,36 @@ export const useLiveVoiceUpdates = (
         },
     })
 
-    const voiceCallIdToSid: Record<number, string> =
-        voiceCalls?.reduce(
-            (acc, call) => ({ ...acc, [call.id]: call.external_id }),
-            {},
-        ) ?? {}
+    // retrieve all voice calls without filters to map SIDs needed for agent statuses already in use when loading the page
+    const { data: allVoiceCalls } = useListLiveCallQueueVoiceCalls(
+        {},
+        {
+            http: {
+                paramsSerializer: {
+                    indexes: null,
+                },
+            },
+            query: {
+                refetchOnWindowFocus: false,
+                select: (data) => data.data.data,
+            },
+        },
+    )
+
+    useEffect(() => {
+        if (!allVoiceCalls) {
+            return
+        }
+
+        // keep track of all voice calls SIDs to map them to agent statuses
+        setVoiceCallIdToSid((prevState) => ({
+            ...prevState,
+            ...allVoiceCalls.reduce(
+                (acc, call) => ({ ...acc, [call.id]: call.external_id }),
+                {},
+            ),
+        }))
+    }, [allVoiceCalls, setVoiceCallIdToSid])
 
     useEffect(() => {
         // set up expiration timers for wrap-up statuses of the agents
@@ -122,6 +150,11 @@ export const useLiveVoiceUpdates = (
             }
             case '//helpdesk/phone.voice-call.inbound.received/1.0.0': {
                 const data = event.data
+                setVoiceCallIdToSid((prev) => ({
+                    ...prev,
+                    [data.voice_call_id]: data.call_sid,
+                }))
+
                 const voiceCall = {
                     id: data.voice_call_id,
                     integration_id: data.integration_id,
@@ -229,6 +262,9 @@ export const useLiveVoiceUpdates = (
                 const voiceCallSid = voiceCallIdToSid[event.data.voice_call_id]
                 if (voiceCallSid) {
                     removeVoiceCallInLiveAgentsQueryCache(voiceCallSid, params)
+                    setVoiceCallIdToSid((prev) =>
+                        omit(prev, event.data.voice_call_id),
+                    )
                 }
                 updateVoiceCallInLiveCallsQueryCache(
                     {
@@ -271,6 +307,11 @@ export const useLiveVoiceUpdates = (
             }
             case '//helpdesk/phone.voice-call.outbound.started/1.0.0': {
                 const data = event.data
+                setVoiceCallIdToSid((prev) => ({
+                    ...prev,
+                    [data.voice_call_id]: data.call_sid,
+                }))
+
                 const voiceCall = {
                     id: data.voice_call_id,
                     integration_id: data.integration_id,
