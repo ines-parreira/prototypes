@@ -14,7 +14,7 @@ import {
     products,
     proMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
-import { HelpdeskPlan } from 'models/billing/types'
+import { HelpdeskPlan, Product, ProductType } from 'models/billing/types'
 import * as convertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import { AccountFeature } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
@@ -33,7 +33,9 @@ jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
 describe('ConvertStatsNavbar', () => {
     const getState = (price: HelpdeskPlan, enabled = false): RootState => {
         const productsWithStarter = _cloneDeep(products)
-        productsWithStarter[0].prices.push(price)
+        const helpdeskProduct =
+            productsWithStarter[0] as Product<ProductType.Helpdesk>
+        helpdeskProduct.prices.push(price)
 
         return {
             billing: fromJS({ ...billingState, products: productsWithStarter }),

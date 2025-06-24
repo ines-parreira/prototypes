@@ -53,6 +53,7 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
         "type": "helpdesk",
         "prices": Immutable.List [
           Immutable.Map {
+            "tier": "Basic",
             "num_quota_tickets": 300,
             "public": true,
             "name": "Basic",
@@ -155,6 +156,7 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "integrations": 150,
           },
           Immutable.Map {
+            "tier": "Basic",
             "num_quota_tickets": 3600,
             "public": true,
             "name": "Basic",
@@ -257,6 +259,7 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "integrations": 150,
           },
           Immutable.Map {
+            "tier": "Pro",
             "num_quota_tickets": 2000,
             "public": true,
             "name": "Pro",
@@ -359,6 +362,7 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "integrations": 150,
           },
           Immutable.Map {
+            "tier": "Pro",
             "num_quota_tickets": 24000,
             "public": true,
             "name": "Pro",
@@ -461,6 +465,7 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "integrations": 150,
           },
           Immutable.Map {
+            "tier": "Advanced",
             "num_quota_tickets": 5000,
             "public": true,
             "name": "Advanced",
@@ -563,6 +568,7 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "integrations": 150,
           },
           Immutable.Map {
+            "tier": "Advanced",
             "num_quota_tickets": 60000,
             "public": true,
             "name": "Advanced",

@@ -9,7 +9,7 @@ import {
     HELPDESK_PRODUCT_ID,
     products,
 } from 'fixtures/productPrices'
-import { HelpdeskPlan } from 'models/billing/types'
+import { HelpdeskPlan, Product, ProductType } from 'models/billing/types'
 import { initialState } from 'state/stats/statsSlice'
 import { RootState } from 'state/types'
 
@@ -17,7 +17,9 @@ export const getStateWithHelpdeskPlan = (
     helpdeskPlan: HelpdeskPlan = basicMonthlyHelpdeskPlan,
 ) => {
     const productsWithExtraPrice = _cloneDeep(products)
-    productsWithExtraPrice[0].prices.push(helpdeskPlan)
+    const helpdeskProduct =
+        productsWithExtraPrice[0] as Product<ProductType.Helpdesk>
+    helpdeskProduct.prices.push(helpdeskPlan)
 
     return {
         integrations: fromJS(integrationsStateWithShopify),

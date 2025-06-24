@@ -14,6 +14,7 @@ import {
     products,
     starterHelpdeskPlan,
 } from 'fixtures/productPrices'
+import { Product, ProductType } from 'models/billing/types'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
 import { RootState, StoreDispatch } from 'state/types'
 
@@ -53,7 +54,9 @@ describe('AutomateSubscriptionButton', () => {
 
     it('should pass label "Upgrade" and undefined onClick and the state with AI Agent checked and basic plan modal opened to the upgrade button for the starter plan', () => {
         const availablePlansWithStarterPlan = _cloneDeep(products)
-        products[0].prices.push(starterHelpdeskPlan)
+        const helpdeskProduct =
+            availablePlansWithStarterPlan[0] as Product<ProductType.Helpdesk>
+        helpdeskProduct.prices.push(starterHelpdeskPlan)
 
         render(
             <Provider

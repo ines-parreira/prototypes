@@ -67,11 +67,21 @@ export type HelpdeskPlanFeatures = Record<
     AccountFeatureMetadata
 >
 
+export enum HelpdeskPlanTier {
+    STARTER = 'Starter',
+    BASIC = 'Basic',
+    ADVANCED = 'Advanced',
+    PRO = 'Pro',
+    CUSTOM = 'Custom',
+    OTHER = 'Other',
+}
+
 export type HelpdeskPlan = BasePlan & {
     num_quota_tickets: number
     integrations: number
     is_legacy: boolean
     features: HelpdeskPlanFeatures
+    tier: HelpdeskPlanTier
 }
 
 export type AutomatePlanFeatures = Record<

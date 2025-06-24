@@ -387,6 +387,7 @@ exports[`billing selectors getCheapestProductPrices should return the cheapest p
     "price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
     "product": "helpdesk",
     "public": true,
+    "tier": "Basic",
   },
   "sms": {
     "amount": 90,
@@ -610,6 +611,7 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
     "price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
     "product": "helpdesk",
     "public": true,
+    "tier": "Basic",
   },
   {
     "amount": 36000,
@@ -712,6 +714,7 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
     "price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
     "product": "helpdesk",
     "public": true,
+    "tier": "Pro",
   },
   {
     "amount": 60000,
@@ -814,6 +817,7 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
     "price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
     "product": "helpdesk",
     "public": true,
+    "tier": "Basic",
   },
   {
     "amount": 90000,
@@ -916,6 +920,7 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
     "price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
     "product": "helpdesk",
     "public": true,
+    "tier": "Advanced",
   },
   {
     "amount": 360000,
@@ -1018,6 +1023,7 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
     "price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
     "product": "helpdesk",
     "public": true,
+    "tier": "Pro",
   },
   {
     "amount": 900000,
@@ -1120,6 +1126,7 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
     "price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
     "product": "helpdesk",
     "public": true,
+    "tier": "Advanced",
   },
 ]
 `;
@@ -1426,6 +1433,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
     "product": "helpdesk",
     "public": true,
+    "tier": "Basic",
   },
   {
     "amount": 18000,
@@ -1608,6 +1616,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
     "product": "helpdesk",
     "public": true,
+    "tier": "Pro",
   },
   {
     "amount": 36000,
@@ -1757,6 +1766,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
     "product": "helpdesk",
     "public": true,
+    "tier": "Basic",
   },
   {
     "amount": 80000,
@@ -1873,6 +1883,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
     "product": "helpdesk",
     "public": true,
+    "tier": "Advanced",
   },
   {
     "amount": 110000,
@@ -2036,6 +2047,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
     "product": "helpdesk",
     "public": true,
+    "tier": "Pro",
   },
   {
     "amount": 450000,
@@ -2171,6 +2183,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
     "product": "helpdesk",
     "public": true,
+    "tier": "Advanced",
   },
 ]
 `;
@@ -2281,6 +2294,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
         "product": "helpdesk",
         "public": true,
+        "tier": "Basic",
       },
       {
         "amount": 60000,
@@ -2383,6 +2397,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
         "product": "helpdesk",
         "public": true,
+        "tier": "Basic",
       },
       {
         "amount": 36000,
@@ -2485,6 +2500,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
         "product": "helpdesk",
         "public": true,
+        "tier": "Pro",
       },
       {
         "amount": 360000,
@@ -2587,6 +2603,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
         "product": "helpdesk",
         "public": true,
+        "tier": "Pro",
       },
       {
         "amount": 90000,
@@ -2689,6 +2706,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
         "product": "helpdesk",
         "public": true,
+        "tier": "Advanced",
       },
       {
         "amount": 900000,
@@ -2791,6 +2809,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
         "product": "helpdesk",
         "public": true,
+        "tier": "Advanced",
       },
     ],
     "type": "helpdesk",

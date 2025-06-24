@@ -5,6 +5,7 @@ import {
     ConvertPlan,
     HelpdeskPlan,
     HelpdeskPlanFeatures,
+    HelpdeskPlanTier,
     Product,
     ProductType,
     SMSOrVoicePlan,
@@ -211,6 +212,7 @@ export const basicMonthlyHelpdeskPlan: HelpdeskPlan = {
     product: ProductType.Helpdesk,
     price_id: 'price_1LJBjWI9qXomtXqSPZn8LqlD',
     public: true,
+    tier: HelpdeskPlanTier.BASIC,
 }
 
 export const basicYearlyHelpdeskPlan: HelpdeskPlan = {
@@ -228,6 +230,7 @@ export const basicYearlyHelpdeskPlan: HelpdeskPlan = {
     product: ProductType.Helpdesk,
     price_id: 'price_1LJBjYI9qXomtXqSLEjOrpmV',
     public: true,
+    tier: HelpdeskPlanTier.BASIC,
 }
 
 export const proMonthlyHelpdeskPlan: HelpdeskPlan = {
@@ -245,6 +248,7 @@ export const proMonthlyHelpdeskPlan: HelpdeskPlan = {
     product: ProductType.Helpdesk,
     price_id: 'price_1LJBjaI9qXomtXqSvYfzmmEU',
     public: true,
+    tier: HelpdeskPlanTier.PRO,
 }
 
 export const proYearlyHelpdeskPlan: HelpdeskPlan = {
@@ -262,6 +266,7 @@ export const proYearlyHelpdeskPlan: HelpdeskPlan = {
     product: ProductType.Helpdesk,
     price_id: 'price_1LJBjbI9qXomtXqShB9YLy7V',
     public: true,
+    tier: HelpdeskPlanTier.PRO,
 }
 
 export const advancedMonthlyHelpdeskPlan: HelpdeskPlan = {
@@ -279,6 +284,7 @@ export const advancedMonthlyHelpdeskPlan: HelpdeskPlan = {
     product: ProductType.Helpdesk,
     price_id: 'price_1LJBjdI9qXomtXqS8RzPPA7K',
     public: true,
+    tier: HelpdeskPlanTier.ADVANCED,
 }
 
 export const advancedYearlyHelpdeskPlan: HelpdeskPlan = {
@@ -296,6 +302,7 @@ export const advancedYearlyHelpdeskPlan: HelpdeskPlan = {
     product: ProductType.Helpdesk,
     price_id: 'price_1LJBjfI9qXomtXqSeKJ5lJjD',
     public: true,
+    tier: HelpdeskPlanTier.ADVANCED,
 }
 
 export const basicMonthlyAutomationPlan: AutomatePlan = {
@@ -449,6 +456,7 @@ export const legacyBasicHelpdeskPlan: HelpdeskPlan = {
     product: ProductType.Helpdesk,
     price_id: 'price_1LJBlXI9qXomtXqSddDEgsDA',
     public: false,
+    tier: HelpdeskPlanTier.BASIC,
 }
 
 export const customHelpdeskPlan: HelpdeskPlan = {
@@ -466,6 +474,7 @@ export const customHelpdeskPlan: HelpdeskPlan = {
     product: ProductType.Helpdesk,
     price_id: 'price_1LJBjhI9qXomtXqSAUwsyU2z',
     public: true,
+    tier: HelpdeskPlanTier.CUSTOM,
 }
 
 export const starterHelpdeskPlan: HelpdeskPlan = {
@@ -483,6 +492,7 @@ export const starterHelpdeskPlan: HelpdeskPlan = {
     product: ProductType.Helpdesk,
     price_id: 'price_1LVt4TI9qXomtXqSeHydKB9S',
     public: false,
+    tier: HelpdeskPlanTier.STARTER,
 }
 
 export const voicePlan0: SMSOrVoicePlan = {
