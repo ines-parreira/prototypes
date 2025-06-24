@@ -4,6 +4,7 @@ import _get from 'lodash/get'
 
 import { QueryReturnType } from 'hooks/reporting/useMetricPerDimension'
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
+import { OrderDirection } from 'models/api/types'
 import { TicketCubeWithJoins } from 'models/reporting/cubes/TicketCube'
 import { usePostReporting } from 'models/reporting/queries'
 import {
@@ -14,7 +15,6 @@ import {
 } from 'models/reporting/queryFactories/voice-of-customer/sentimentPerProduct'
 import { StatsFilters } from 'models/stat/types'
 import { getPreviousPeriod } from 'utils/reporting'
-import { notUndefined } from 'utils/types'
 
 export enum Sentiment {
     Positive = 'Positive',
@@ -27,21 +27,12 @@ export type SentimentData = {
     value: number
 }
 
-export type SentimentMap = Partial<Record<Sentiment, SentimentData>>
+export type SentimentMap = Partial<Record<Sentiment, number>>
 
 export type DataPerProductPerSentiment = Record<
     string,
     SentimentMap | undefined
 >
-
-export const fromNormalizedData = (
-    normalizedData: DataPerProductPerSentiment,
-    sentiment: Sentiment,
-) =>
-    Object.values(normalizedData)
-        .filter(notUndefined)
-        .map((item) => item[sentiment])
-        .filter(notUndefined)
 
 export const useSentimentPerProduct = (
     statsFilters: StatsFilters,
@@ -49,11 +40,14 @@ export const useSentimentPerProduct = (
     sentimentCustomFieldId: number,
     sentiment: Sentiment,
     productId?: string,
+    sorting?: OrderDirection,
 ) => {
     const query = sentimentsTicketCountPerProductQueryFactory(
         statsFilters,
         timezone,
         sentimentCustomFieldId,
+        productId,
+        sorting,
     )
 
     const { data, isFetching, isError } = usePostReporting<
@@ -75,22 +69,35 @@ export const useSentimentPerProduct = (
             acc[productId] = acc[productId] || {}
             acc[productId] = {
                 ...acc[productId],
-                [sentiment]: {
-                    [PRODUCT_ID_DIMENSION]: productId,
-                    sentiment,
-                    value: Number(ticketCount),
-                },
+                [sentiment]: Number(ticketCount),
             }
 
             return acc
         }, {})
     }, [data])
 
-    const value: number | null = productId
-        ? _get(normalizedData, [productId, sentiment, 'value'], null)
-        : null
+    const allData = useMemo(() => {
+        if (!data) return []
 
-    const allData = fromNormalizedData(normalizedData, sentiment)
+        return data.reduce<SentimentData[]>((result, item) => {
+            if (
+                item[INTENT_DIMENSION] === sentiment &&
+                item[PRODUCT_ID_DIMENSION]
+            ) {
+                result.push({
+                    [PRODUCT_ID_DIMENSION]: item[PRODUCT_ID_DIMENSION],
+                    sentiment,
+                    value: Number(item[TICKET_COUNT_MEASURE]),
+                })
+            }
+
+            return result
+        }, [])
+    }, [data, sentiment])
+
+    const value: number | null = productId
+        ? _get(normalizedData, [productId, sentiment], null)
+        : null
 
     return {
         data: { value, allData },
@@ -104,6 +111,7 @@ export const usePositiveSentimentPerProduct = (
     timezone: string,
     sentimentCustomFieldId: number,
     productId?: string,
+    sorting?: OrderDirection,
 ) =>
     useSentimentPerProduct(
         statsFilters,
@@ -111,6 +119,7 @@ export const usePositiveSentimentPerProduct = (
         sentimentCustomFieldId,
         Sentiment.Positive,
         productId,
+        sorting,
     )
 
 export const useNegativeSentimentPerProduct = (
@@ -118,6 +127,7 @@ export const useNegativeSentimentPerProduct = (
     timezone: string,
     sentimentCustomFieldId: number,
     productId?: string,
+    sorting?: OrderDirection,
 ) =>
     useSentimentPerProduct(
         statsFilters,
@@ -125,13 +135,15 @@ export const useNegativeSentimentPerProduct = (
         sentimentCustomFieldId,
         Sentiment.Negative,
         productId,
+        sorting,
     )
 
 export const useNegativeSentimentsPerProductMetricTrend = (
     statsFilters: StatsFilters,
     timezone: string,
     sentimentCustomFieldId: number,
-    productId: string,
+    productId?: string,
+    sorting?: OrderDirection,
 ): MetricTrend => {
     const currentPeriodMetric = useSentimentPerProduct(
         statsFilters,
@@ -139,6 +151,7 @@ export const useNegativeSentimentsPerProductMetricTrend = (
         sentimentCustomFieldId,
         Sentiment.Negative,
         productId,
+        sorting,
     )
 
     const prevPeriodMetric = useSentimentPerProduct(
@@ -150,6 +163,7 @@ export const useNegativeSentimentsPerProductMetricTrend = (
         sentimentCustomFieldId,
         Sentiment.Negative,
         productId,
+        sorting,
     )
 
     return {
@@ -167,7 +181,8 @@ export const usePositiveSentimentsPerProductMetricTrend = (
     statsFilters: StatsFilters,
     timezone: string,
     sentimentCustomFieldId: number,
-    productId: string,
+    productId?: string,
+    sorting?: OrderDirection,
 ): MetricTrend => {
     const currentPeriodMetric = useSentimentPerProduct(
         statsFilters,
@@ -175,6 +190,7 @@ export const usePositiveSentimentsPerProductMetricTrend = (
         sentimentCustomFieldId,
         Sentiment.Positive,
         productId,
+        sorting,
     )
 
     const prevPeriodMetric = useSentimentPerProduct(
@@ -186,6 +202,7 @@ export const usePositiveSentimentsPerProductMetricTrend = (
         sentimentCustomFieldId,
         Sentiment.Positive,
         productId,
+        sorting,
     )
 
     return {

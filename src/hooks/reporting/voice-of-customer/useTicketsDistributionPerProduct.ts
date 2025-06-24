@@ -46,17 +46,23 @@ const sortBy = <T extends ItemType>(
 
     switch (sorting.field) {
         case ProductsPerTicketColumn.Product:
-            sortedData = _sortBy(currentTopData, PRODUCT_ID_FIELD)
+            sortedData = _sortBy(currentTopData, PRODUCT_NAME_FIELD)
             break
+
         case ProductsPerTicketColumn.TicketVolume:
-            sortedData = _sortBy(currentTopData, TICKET_COUNT_FIELD)
+            sortedData = _sortBy(currentTopData, (record) => {
+                const value = record[TICKET_COUNT_FIELD]
+                return value ? Number(value) : value
+            })
             break
+
         case ProductsPerTicketColumn.Delta: {
             sortedData = _sortBy(currentTopData, (record) => {
                 const prevValue = previousTopData.find(
                     (item) =>
                         item[PRODUCT_ID_FIELD] === record[PRODUCT_ID_FIELD],
                 )?.[TICKET_COUNT_FIELD]
+
                 return Number(record[TICKET_COUNT_FIELD]) - Number(prevValue)
             })
         }
@@ -78,7 +84,7 @@ export const useTicketsPerProductDistribution = (topAmount = 10) => {
     const { data, isFetching } = useTicketsPerProductTrend(
         cleanStatsFilters,
         userTimezone,
-        OrderDirection.Desc,
+        sorting.direction,
     )
 
     const currentTopData = getValuesUptoTopAmount(data.value, 0, topAmount)

@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 
 import { MetricPerDimensionWithEnrichment } from 'hooks/reporting/useMetricPerDimension'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -40,11 +40,6 @@ export const useProductsSorting = (
     const sorting = useAppSelector(getSorting)
     const productsLoading = useAppSelector(getProductsLoading)
 
-    const sortedProducts = useMemo(() => {
-        if (data === null) return []
-        return data.allData.map((item) => item[PRODUCT_ID_FIELD])
-    }, [data])
-
     useEffect(() => {
         if (
             column === ProductInsightsTableColumns.Product &&
@@ -64,9 +59,13 @@ export const useProductsSorting = (
 
     useEffect(() => {
         if (sorting.field === column && sorting.isLoading && !isFetching) {
+            const sortedProducts = data
+                ? data.allData.map((item) => item[PRODUCT_ID_FIELD])
+                : []
+
             dispatch(sortingLoaded(sortedProducts))
         }
-    }, [column, dispatch, sorting, sortedProducts, isFetching])
+    }, [column, dispatch, sorting, data, isFetching])
 
     useEffect(() => {
         if (sorting.field === column && !sorting.isLoading && isFetching) {

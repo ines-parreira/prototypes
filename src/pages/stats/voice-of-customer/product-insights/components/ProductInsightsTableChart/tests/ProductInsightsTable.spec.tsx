@@ -174,12 +174,14 @@ describe('ProductInsightsTable', () => {
             statsFilters,
             userTimezone,
             sentimentCustomFieldId,
+            undefined,
             order,
         )
         expect(useNegativeSentimentPerProductMock).toHaveBeenCalledWith(
             statsFilters,
             userTimezone,
             sentimentCustomFieldId,
+            undefined,
             order,
         )
         expect(useTicketCountPerProductWithEnrichmentMock).toHaveBeenCalledWith(
@@ -200,7 +202,7 @@ describe('ProductInsightsTable', () => {
     it('renders loading fallback rows when isLoading is true', () => {
         useSortedProductsWithDataMock.mockReturnValue({
             isLoading: true,
-            products: dummyProducts,
+            products: [],
         })
 
         render(

@@ -2,8 +2,6 @@ import { UseQueryResult } from '@tanstack/react-query'
 import moment from 'moment'
 
 import {
-    DataPerProductPerSentiment,
-    fromNormalizedData,
     Sentiment,
     useNegativeSentimentPerProduct,
     useNegativeSentimentsPerProductMetricTrend,
@@ -65,32 +63,6 @@ describe('useSentimentPerProduct', () => {
 
     const firstProductNegativeSentimentCount = 5
     const firstProductPositiveSentimentCount = 10
-    const normalizedData: DataPerProductPerSentiment = {
-        [firstProductId]: {
-            [Sentiment.Negative]: {
-                [PRODUCT_ID_DIMENSION]: firstProductId,
-                sentiment: Sentiment.Negative,
-                value: firstProductNegativeSentimentCount,
-            },
-            [Sentiment.Positive]: {
-                [PRODUCT_ID_DIMENSION]: firstProductId,
-                sentiment: Sentiment.Positive,
-                value: firstProductPositiveSentimentCount,
-            },
-        },
-        [secondProductId]: {
-            [Sentiment.Negative]: {
-                [PRODUCT_ID_DIMENSION]: secondProductId,
-                sentiment: Sentiment.Negative,
-                value: 30,
-            },
-            [Sentiment.Positive]: {
-                [PRODUCT_ID_DIMENSION]: secondProductId,
-                sentiment: Sentiment.Positive,
-                value: 15,
-            },
-        },
-    }
 
     const defaultReporting = {
         isFetching: false,
@@ -124,6 +96,7 @@ describe('useSentimentPerProduct', () => {
                     statsFilters,
                     timezone,
                     sentimentCustomFieldId,
+                    firstProductId,
                 ),
             ],
             expect.objectContaining({ select }),
@@ -183,22 +156,6 @@ describe('useSentimentPerProduct', () => {
         )
     })
 
-    it('returns normalized data per product and per sentiment', () => {
-        const { result } = renderHook(() =>
-            useSentimentPerProduct(
-                statsFilters,
-                timezone,
-                sentimentCustomFieldId,
-                Sentiment.Negative,
-                firstProductId,
-            ),
-        )
-
-        expect(result.current.data.allData).toEqual(
-            fromNormalizedData(normalizedData, Sentiment.Negative),
-        )
-    })
-
     it('returns `null` when product is missing', () => {
         const { result } = renderHook(() =>
             useSentimentPerProduct(
@@ -224,52 +181,6 @@ describe('useSentimentPerProduct', () => {
         )
 
         expect(result.current.data.value).toBeNull()
-    })
-
-    it('ignores entries that are missing product id', () => {
-        usePostReportingMock.mockReturnValue({
-            ...defaultReporting,
-            data: mockData.concat({
-                [INTENT_DIMENSION]: Sentiment.Positive,
-            } as any),
-        } as UseQueryResult)
-
-        const { result } = renderHook(() =>
-            useSentimentPerProduct(
-                statsFilters,
-                timezone,
-                sentimentCustomFieldId,
-                Sentiment.Negative,
-                'missing-product-id',
-            ),
-        )
-
-        expect(result.current.data.allData).toEqual(
-            fromNormalizedData(normalizedData, Sentiment.Negative),
-        )
-    })
-
-    it('ignores entries that are missing sentiment', () => {
-        usePostReportingMock.mockReturnValue({
-            ...defaultReporting,
-            data: mockData.concat({
-                [PRODUCT_ID_DIMENSION]: '123456',
-            } as any),
-        } as UseQueryResult)
-
-        const { result } = renderHook(() =>
-            useSentimentPerProduct(
-                statsFilters,
-                timezone,
-                sentimentCustomFieldId,
-                Sentiment.Negative,
-                'missing-product-id',
-            ),
-        )
-
-        expect(result.current.data.allData).toEqual(
-            fromNormalizedData(normalizedData, Sentiment.Negative),
-        )
     })
 
     it('returns `null` when no data', () => {

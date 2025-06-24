@@ -102,6 +102,7 @@ const getSortingQueryHook = (
                 statsFilters,
                 userTimezone,
                 sentimentCustomFieldId,
+                undefined,
                 sorting,
             )
     }
@@ -157,7 +158,7 @@ export const ProductInsightsTable = ({
                     ))}
                 </TableHead>
                 <TableBody>
-                    {isLoading ? (
+                    {isLoading && isEmpty ? (
                         <LoadingFallback columns={columnsOrder} />
                     ) : isEmpty ? (
                         <NoDataFallback colSpan={columnsOrder.length} />
