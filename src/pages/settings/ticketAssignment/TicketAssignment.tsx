@@ -311,7 +311,7 @@ const TicketAssignment = () => {
                                     {isExceedingMaxAgentCapacityEnabled && (
                                         <div className={settingsCss.mb16}>
                                             <CheckBoxField
-                                                label=" Allow re-opened tickets to exceed agent's max capacity"
+                                                label=" Allow reopened tickets to exceed agent's max capacity"
                                                 name="can_exceed_max_agent_capacity"
                                                 value={
                                                     canExceedMaxAgentCapacity
