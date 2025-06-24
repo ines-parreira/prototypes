@@ -1,0 +1,17 @@
+{
+    "url": "https://{{subdomain}}.zendesk.com/api/v2/tickets",
+    "body": {
+        "ticket": {
+            "comment": {
+                "body": "{{ticket.messages[-1]}}"
+            },
+            "priority": "high",
+            "subject": "A handover happened"
+        }
+    },
+    "headers": {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": "Basic {{basicToken}}"
+    }
+}

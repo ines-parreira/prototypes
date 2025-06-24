@@ -1,0 +1,13 @@
+{
+    "url": "https://api.intercom.io/messages",
+    "body": {
+        "message_type": "in_app",
+        "body": "{{ticket.messages[-1]}}"
+    },
+    "headers": {
+        "Content-Type": "application/json",
+        "X-Intercom-Version": "2.0",
+        "Authorization": "Bearer {{accessToken}}",
+        "Intercom-Version": "2.13"
+    }
+}

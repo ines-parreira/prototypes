@@ -25,6 +25,7 @@ src/utils/tests/reporting.spec.ts @gorgias/crm-reporting
 
 # Conv AI Orchestration scope
 src/pages/aiAgent/ @gorgias/conv-ai-orchestration
+src/pages/standalone/ @gorgias/conv-ai-orchestration
 
 # Conv AI scope @gorgias/conv-ai-actions
 
