@@ -114,7 +114,7 @@ function DropdownCustomItem({
     }, [value, option])
 
     return (
-        <li key={`${option.key}-${option.order}`}>
+        <li key={`${option.key}-${option.order}`} className={css.sortListItem}>
             <button
                 onClick={() => {
                     onChange(option)
