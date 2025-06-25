@@ -37,7 +37,10 @@ const GuidanceReferenceProvider = <T extends { id: string }>({
 }: Props<T>) => {
     const checkEnabled = actions.length > 0
     const { data, isLoading } = useFindAllGuidancesKnowledgeResources(
-        { actionsIds: actions.map((action) => action.id) },
+        {
+            actionsIds: actions.map((action) => action.id),
+            includeDisabled: true,
+        },
         {
             select,
             enabled: checkEnabled,

@@ -35,6 +35,14 @@ describe('<StoreTrackstarProvider />', () => {
         )
 
         expect(screen.getByText('action-1: false')).toBeInTheDocument()
+
+        expect(mockUseFindAllGuidancesKnowledgeResources).toHaveBeenCalledWith(
+            {
+                actionsIds: ['action-1'],
+                includeDisabled: true,
+            },
+            expect.any(Object),
+        )
     })
 
     it('should transform data to map', () => {

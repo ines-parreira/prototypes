@@ -676,6 +676,17 @@ declare namespace Components {
              * true
              */
             boolean | string
+            /**
+             * Include disabled resources
+             * example:
+             * true
+             */
+            includeDisabled?: /**
+             * Include disabled resources
+             * example:
+             * true
+             */
+            boolean | string
         }
         export interface GuidancesHydrateRequestDto {
             knowledge_resources_references: {
@@ -730,7 +741,7 @@ declare namespace Components {
                         tracking_url: string | null
                         tracking_number: string | null
                         created_at: string
-                        name: string
+                        name?: string | null
                         shipment_status?: string | null
                         fulfillment_status?: string | null
                         line_items: {
@@ -827,6 +838,16 @@ declare namespace Paths {
              * ]
              */
             export type ActionsIds = string[]
+            /**
+             * example:
+             * true
+             */
+            export type IncludeDisabled =
+                /**
+                 * example:
+                 * true
+                 */
+                boolean | string
         }
         export interface QueryParameters {
             accountId?: /**
@@ -842,6 +863,11 @@ declare namespace Paths {
              * ]
              */
             Parameters.ActionsIds
+            includeDisabled?: /**
+             * example:
+             * true
+             */
+            Parameters.IncludeDisabled
         }
         namespace Responses {
             export type $200 = Components.Schemas.KnowledgeResourceDto[]
@@ -859,6 +885,16 @@ declare namespace Paths {
                  * 1
                  */
                 string | number
+            /**
+             * example:
+             * true
+             */
+            export type IncludeDisabled =
+                /**
+                 * example:
+                 * true
+                 */
+                boolean | string
             /**
              * example:
              * true
@@ -939,6 +975,11 @@ declare namespace Paths {
              * true
              */
             Parameters.IncludeWithoutTags
+            includeDisabled?: /**
+             * example:
+             * true
+             */
+            Parameters.IncludeDisabled
         }
         namespace Responses {
             export type $200 = Components.Schemas.KnowledgeResourceDto[]
