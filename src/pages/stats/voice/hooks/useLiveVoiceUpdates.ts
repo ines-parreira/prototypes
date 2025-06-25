@@ -198,6 +198,7 @@ export const useLiveVoiceUpdates = (
                 }
                 break
             }
+            case '//helpdesk/phone.voice-call.inbound.canceled/1.0.0':
             case '//helpdesk/phone.voice-call.inbound.declined/1.0.0':
             case '//helpdesk/phone.voice-call.inbound.unanswered/1.0.0': {
                 const voiceCallSid = voiceCallIdToSid[event.data.voice_call_id]

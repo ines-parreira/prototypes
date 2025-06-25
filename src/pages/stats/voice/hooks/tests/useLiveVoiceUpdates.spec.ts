@@ -742,7 +742,7 @@ describe('useLiveVoiceUpdates', () => {
         })
     })
 
-    describe('handles declined/unanswered events', () => {
+    describe('handles declined/unanswered/canceled events', () => {
         const params = {
             agent_ids: [1],
             integration_ids: [2],
@@ -759,6 +759,14 @@ describe('useLiveVoiceUpdates', () => {
         } as DomainEvent
         const mockUnansweredEvent = {
             dataschema: '//helpdesk/phone.voice-call.inbound.declined/1.0.0',
+            data: {
+                voice_call_id: 123,
+                account_id: 1,
+                user_id: 1,
+            },
+        } as DomainEvent
+        const mockCanceledEvent = {
+            dataschema: '//helpdesk/phone.voice-call.inbound.canceled/1.0.0',
             data: {
                 voice_call_id: 123,
                 account_id: 1,
@@ -785,7 +793,7 @@ describe('useLiveVoiceUpdates', () => {
             ],
         }
 
-        it.each([mockUnansweredEvent, mockDeclinedEvent])(
+        it.each([mockUnansweredEvent, mockDeclinedEvent, mockCanceledEvent])(
             'should update agent status in the list when an agent declines a call',
             (event) => {
                 const queryKey =
@@ -815,7 +823,7 @@ describe('useLiveVoiceUpdates', () => {
             },
         )
 
-        it.each([mockUnansweredEvent, mockDeclinedEvent])(
+        it.each([mockUnansweredEvent, mockDeclinedEvent, mockCanceledEvent])(
             'should not update agent status in the list if agent is not in the list',
             (event) => {
                 const queryKey =
@@ -840,7 +848,7 @@ describe('useLiveVoiceUpdates', () => {
             },
         )
 
-        it.each([mockUnansweredEvent, mockDeclinedEvent])(
+        it.each([mockUnansweredEvent, mockDeclinedEvent, mockCanceledEvent])(
             'should not update agent status in the list if the call is not in the list',
             (event) => {
                 // the call is not in the list
