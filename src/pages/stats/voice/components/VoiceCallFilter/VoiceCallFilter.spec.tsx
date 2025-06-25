@@ -1,30 +1,11 @@
-import React from 'react'
-
 import { fireEvent, render } from '@testing-library/react'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 import { VoiceCallFilterDirection } from 'pages/stats/voice/models/types'
-import { assumeMock } from 'utils/testing'
 
 import VoiceCallFilter from './VoiceCallFilter'
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
-const useFlagMock = assumeMock(useFlag)
-
 describe('VoiceCallDirectionFilter', () => {
-    beforeEach(() => {
-        useFlagMock.mockImplementation((flag) => {
-            if (
-                flag === FeatureFlagKey.VoiceCallbackEnabled1 ||
-                flag === FeatureFlagKey.VoiceCallbackEnabled2
-            ) {
-                return true
-            }
-        })
-    })
-
     it('should render all filter', () => {
         const mockFilterSelect = jest.fn()
         const { getByText } = render(
@@ -45,39 +26,6 @@ describe('VoiceCallDirectionFilter', () => {
     })
 
     describe('Inbound filter', () => {
-        it('should allow selecting the filter with callback requests FF off', () => {
-            useFlagMock.mockImplementation((flag) => {
-                if (
-                    flag === FeatureFlagKey.VoiceCallbackEnabled1 ||
-                    flag === FeatureFlagKey.VoiceCallbackEnabled2
-                ) {
-                    return false
-                }
-            })
-
-            const mockFilterSelect = jest.fn()
-            const { getByText } = render(
-                <VoiceCallFilter onFilterSelect={mockFilterSelect} />,
-            )
-            const inboundFilter = getByText('Inbound')
-            expect(inboundFilter).toBeInTheDocument()
-
-            fireEvent.click(inboundFilter)
-
-            expect(mockFilterSelect).toHaveBeenCalledWith({
-                direction: VoiceCallFilterDirection.Inbound,
-                statuses: [
-                    VoiceCallDisplayStatus.Answered,
-                    VoiceCallDisplayStatus.Missed,
-                    VoiceCallDisplayStatus.Cancelled,
-                    VoiceCallDisplayStatus.Abandoned,
-                ],
-            })
-            expect(
-                getByText('Answered, Missed, Cancelled, Abandoned'),
-            ).toBeInTheDocument()
-        })
-
         it('should allow selecting the filter', () => {
             const mockFilterSelect = jest.fn()
             const { getByText } = render(

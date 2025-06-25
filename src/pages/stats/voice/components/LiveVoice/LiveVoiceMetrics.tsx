@@ -9,7 +9,6 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
 import { StatsFiltersWithLogicalOperator } from 'models/stat/types'
-import useIsCallbackRequestsEnabled from 'pages/integrations/integration/components/voice/useIsCallbackRequestsEnabled'
 import DashboardGridCell from 'pages/stats/common/layout/DashboardGridCell'
 import DashboardSection from 'pages/stats/common/layout/DashboardSection'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
@@ -33,7 +32,6 @@ export default function LiveVoiceMetrics({
     cleanStatsFilters,
 }: Props) {
     const useLiveUpdates = useFlags()[FeatureFlagKey.UseLiveVoiceUpdates]
-    const isCallbackRequestsEnabled = useIsCallbackRequestsEnabled()
 
     const {
         data: { timezone },
@@ -54,7 +52,6 @@ export default function LiveVoiceMetrics({
         liveVoiceCalls,
         isLoadingVoiceCalls,
         filters,
-        isCallbackRequestsEnabled,
     )
 
     // first metric card is always the "Calls in queue" metric,

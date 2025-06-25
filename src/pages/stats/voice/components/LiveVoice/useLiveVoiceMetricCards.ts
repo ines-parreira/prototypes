@@ -25,7 +25,6 @@ export default function useLiveVoiceMetricCards(
     liveVoiceCalls: LiveCallQueueVoiceCall[],
     isLoadingVoiceCalls: boolean,
     filters: StatsFilters,
-    isCallbackRequestsEnabled: boolean = false,
 ): MetricCardProps[] {
     const useLiveUpdates = useFlags()[FeatureFlagKey.UseLiveVoiceUpdates]
     const isFilteringByAgent = !isFilterEmpty(filters.agents)
@@ -44,83 +43,6 @@ export default function useLiveVoiceMetricCards(
         true,
         useLiveUpdates ? 30 * 1000 : undefined, // Disable refetching if live updates are not enabled
     )
-
-    if (!isCallbackRequestsEnabled) {
-        return [
-            {
-                title: constants.CALLS_IN_QUEUE_METRIC_TITLE,
-                hint: constants.CALLS_IN_QUEUE_METRIC_HINT,
-                metric: liveInQueueVoiceCallListMetric,
-                size: 4,
-            },
-            {
-                title: constants.AVERAGE_WAIT_TIME_METRIC_TITLE,
-                hint: constants.AVERAGE_WAIT_TIME_METRIC_HINT,
-                metric: summaryMetric,
-                measure:
-                    VoiceCallSummaryMeasure.VoiceCallSummaryAverageWaitTime,
-                metricValueFormat: 'duration',
-                metricName: VoiceMetric.QueueAverageWaitTime,
-                size: 4,
-            },
-            {
-                title: constants.AVERAGE_TALK_TIME_METRIC_TITLE,
-                hint: constants.AVERAGE_TALK_TIME_METRIC_HINT,
-                metric: summaryMetric,
-                measure:
-                    VoiceCallSummaryMeasure.VoiceCallSummaryAverageTalkTime,
-                metricValueFormat: 'duration',
-                metricName: VoiceMetric.QueueAverageTalkTime,
-                size: 4,
-            },
-            {
-                title: constants.INBOUND_CALLS_METRIC_TITLE,
-                hint: constants.INBOUND_CALLS_METRIC_HINT,
-                metric: summaryMetric,
-                measure: VoiceCallSummaryMeasure.VoiceCallSummaryInboundTotal,
-                metricName: VoiceMetric.QueueInboundCalls,
-                size: 6,
-            },
-            {
-                title: constants.OUTBOUND_CALLS_METRIC_TITLE,
-                hint: constants.OUTBOUND_CALLS_METRIC_HINT,
-                metric: summaryMetric,
-                measure: VoiceCallSummaryMeasure.VoiceCallSummaryOutboundTotal,
-                metricName: VoiceMetric.QueueOutboundCalls,
-                size: 6,
-            },
-            {
-                title: constants.UNANSWERED_INBOUND_CALLS_METRIC_TITLE,
-                hint: constants.UNANSWERED_INBOUND_CALLS_METRIC_HINT,
-                metric: summaryMetric,
-                measure:
-                    VoiceCallSummaryMeasure.VoiceCallSummaryUnansweredTotal,
-                metricName: VoiceMetric.QueueInboundUnansweredCalls,
-                size: 4,
-            },
-            {
-                title: constants.INBOUND_MISSED_CALLS_METRIC_TITLE,
-                hint: constants.INBOUND_MISSED_CALLS_METRIC_HINT,
-                metric: summaryMetric,
-                measure: VoiceCallSummaryMeasure.VoiceCallSummaryMissedTotal,
-                metricName: VoiceMetric.QueueInboundMissedCalls,
-                showPercentage: true,
-
-                size: 4,
-            },
-            {
-                title: constants.INBOUND_ABANDONED_CALLS_METRIC_TITLE,
-                hint: constants.INBOUND_ABANDONED_CALLS_METRIC_HINT,
-                metric: summaryMetric,
-                measure: VoiceCallSummaryMeasure.VoiceCallSummaryAbandonedTotal,
-                metricName: VoiceMetric.QueueInboundAbandonedCalls,
-                shouldHide: isFilteringByAgent,
-                showPercentage: true,
-
-                size: 4,
-            },
-        ]
-    }
 
     return [
         {

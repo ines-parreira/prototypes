@@ -27,7 +27,6 @@ import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { DEFAULT_TRANSCRIBE_PREFERENCES } from '../constants'
-import useIsCallbackRequestsEnabled from '../useIsCallbackRequestsEnabled'
 import {
     getDefaultValues,
     useDeletePhoneIntegration,
@@ -55,13 +54,6 @@ jest.mock('hooks/useNotify', () => ({
 jest.mock('state/integrations/actions')
 const fetchIntegrationsMock = assumeMock(fetchIntegrations)
 
-jest.mock(
-    'pages/integrations/integration/components/voice/useIsCallbackRequestsEnabled',
-)
-const useIsCallbackRequestsEnabledMock = assumeMock(
-    useIsCallbackRequestsEnabled,
-)
-
 const phoneIntegration = integrationsState.integrations.find(
     (integration) => integration.type === IntegrationType.Phone,
 ) as unknown as PhoneIntegration
@@ -77,10 +69,6 @@ describe('hooks', () => {
                 ),
                 initialProps: { integration: phoneIntegration },
             })
-
-        beforeEach(() => {
-            useIsCallbackRequestsEnabledMock.mockReturnValue(true)
-        })
 
         it('should call update with full payload', async () => {
             updateAllPhoneSettingsMock.mockReturnValue(
@@ -116,41 +104,6 @@ describe('hooks', () => {
                 'Integration settings successfully updated.',
             )
             expect(fetchIntegrationsMock).toHaveBeenCalled()
-        })
-
-        it('should exclude callback requests if FF is disabled', async () => {
-            useIsCallbackRequestsEnabledMock.mockReturnValue(false)
-
-            const { result } = render()
-
-            const submittableData = {
-                name: 'new name',
-                meta: {
-                    emoji: 'new emoji',
-                    phone_team_id: 2,
-                    preferences: { test: 'test', record_inbound_calls: true },
-                    callback_requests: {
-                        ...DEFAULT_CALLBACK_REQUESTS,
-                        enabled: true,
-                    },
-                },
-            } as any
-
-            result.current.onSubmit(submittableData)
-
-            await waitFor(() => {
-                expect(updateAllPhoneSettingsMock).toHaveBeenCalledWith(
-                    phoneIntegration.id,
-                    {
-                        ...submittableData,
-                        meta: {
-                            ...submittableData.meta,
-                            callback_requests: undefined,
-                        },
-                    },
-                    undefined,
-                )
-            })
         })
 
         it('should call exclude recording notification changes if disabled', async () => {

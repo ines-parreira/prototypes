@@ -121,85 +121,6 @@ describe('useLiveVoiceMetricCards', () => {
             index: 1,
             title: constants.AVERAGE_WAIT_TIME_METRIC_TITLE,
             hint: constants.AVERAGE_WAIT_TIME_METRIC_HINT,
-            metricValueFormat: 'duration',
-            metricName: VoiceMetric.QueueAverageWaitTime,
-            measure: VoiceCallSummaryMeasure.VoiceCallSummaryAverageWaitTime,
-            size: 4,
-        },
-        {
-            index: 2,
-            title: constants.AVERAGE_TALK_TIME_METRIC_TITLE,
-            hint: constants.AVERAGE_TALK_TIME_METRIC_HINT,
-            metricValueFormat: 'duration',
-            metricName: VoiceMetric.QueueAverageTalkTime,
-            measure: VoiceCallSummaryMeasure.VoiceCallSummaryAverageTalkTime,
-            size: 4,
-        },
-        {
-            index: 3,
-            title: constants.INBOUND_CALLS_METRIC_TITLE,
-            hint: constants.INBOUND_CALLS_METRIC_HINT,
-            metricName: VoiceMetric.QueueInboundCalls,
-            measure: VoiceCallSummaryMeasure.VoiceCallSummaryInboundTotal,
-            size: 6,
-        },
-        {
-            index: 4,
-            title: constants.OUTBOUND_CALLS_METRIC_TITLE,
-            hint: constants.OUTBOUND_CALLS_METRIC_HINT,
-            metricName: VoiceMetric.QueueOutboundCalls,
-            measure: VoiceCallSummaryMeasure.VoiceCallSummaryOutboundTotal,
-            size: 6,
-        },
-        {
-            index: 5,
-            title: constants.UNANSWERED_INBOUND_CALLS_METRIC_TITLE,
-            hint: constants.UNANSWERED_INBOUND_CALLS_METRIC_HINT,
-            metricName: VoiceMetric.QueueInboundUnansweredCalls,
-            measure: VoiceCallSummaryMeasure.VoiceCallSummaryUnansweredTotal,
-            size: 4,
-        },
-        {
-            index: 6,
-            title: constants.INBOUND_MISSED_CALLS_METRIC_TITLE,
-            hint: constants.INBOUND_MISSED_CALLS_METRIC_HINT,
-            metricName: VoiceMetric.QueueInboundMissedCalls,
-            measure: VoiceCallSummaryMeasure.VoiceCallSummaryMissedTotal,
-            size: 4,
-        },
-        {
-            index: 7,
-            title: constants.INBOUND_ABANDONED_CALLS_METRIC_TITLE,
-            hint: constants.INBOUND_ABANDONED_CALLS_METRIC_HINT,
-            metricName: VoiceMetric.QueueInboundAbandonedCalls,
-            measure: VoiceCallSummaryMeasure.VoiceCallSummaryAbandonedTotal,
-            size: 4,
-        },
-    ])(
-        'should return correct voice call count metric with callback requests FF off',
-        ({ index, title, hint, metricName, size, measure }) => {
-            useSummaryMetricMock.mockReturnValue(mockSummaryMetric as any)
-
-            const { result } = renderHook(() =>
-                useLiveVoiceMetricCards([], true, filters),
-            )
-
-            expect(result.current[index]).toMatchObject({
-                title: title,
-                hint: hint,
-                metric: mockSummaryMetric,
-                metricName: metricName,
-                measure,
-                size: size,
-            })
-        },
-    )
-
-    it.each([
-        {
-            index: 1,
-            title: constants.AVERAGE_WAIT_TIME_METRIC_TITLE,
-            hint: constants.AVERAGE_WAIT_TIME_METRIC_HINT,
             metricName: VoiceMetric.QueueAverageWaitTime,
             size: 4,
             measure: VoiceCallSummaryMeasure.VoiceCallSummaryAverageWaitTime,
@@ -275,7 +196,7 @@ describe('useLiveVoiceMetricCards', () => {
             useSummaryMetricMock.mockReturnValue(mockSummaryMetric as any)
 
             const { result } = renderHook(() =>
-                useLiveVoiceMetricCards([], true, filters, true),
+                useLiveVoiceMetricCards([], true, filters),
             )
 
             expect(result.current[index]).toMatchObject({
@@ -339,7 +260,6 @@ describe('useLiveVoiceMetricCards', () => {
                     true,
                     // @ts-ignore: Filters are not accepted but actually valid
                     { ...filters, ...additionalFilters },
-                    true,
                 ),
             )
 

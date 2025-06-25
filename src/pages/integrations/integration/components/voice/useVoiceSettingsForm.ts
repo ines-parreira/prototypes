@@ -28,13 +28,10 @@ import {
     DEFAULT_TRANSCRIBE_PREFERENCES,
     PHONE_INTEGRATION_BASE_URL,
 } from './constants'
-import useIsCallbackRequestsEnabled from './useIsCallbackRequestsEnabled'
 
 export function useFormSubmit(integration: PhoneIntegration) {
     const dispatch = useAppDispatch()
     const notify = useNotify()
-
-    const isCallbackRequestsEnabled = useIsCallbackRequestsEnabled()
 
     const { mutate: updateAllPhoneSettings } = useUpdateAllPhoneSettings({
         mutation: {
@@ -65,10 +62,6 @@ export function useFormSubmit(integration: PhoneIntegration) {
 
             if (!isRecordingEnabled) {
                 meta.recording_notification = undefined
-            }
-
-            if (!isCallbackRequestsEnabled) {
-                delete meta.callback_requests
             }
         }
 

@@ -4,7 +4,6 @@ import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { ProductType } from 'models/billing/types'
 import { FilterKey } from 'models/stat/types'
 import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPaywall'
-import useIsCallbackRequestsEnabled from 'pages/integrations/integration/components/voice/useIsCallbackRequestsEnabled'
 import { AnalyticsFooter } from 'pages/stats/common/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/common/layout/DashboardGridCell'
@@ -27,91 +26,51 @@ function VoiceOverview() {
     const isDuringBusinessHoursEnabled = useFlag(
         FeatureFlagKey.VoiceCallDuringBusinessHours,
     )
-    const isCallbackRequestsEnabled = useIsCallbackRequestsEnabled()
 
     useCleanStatsFilters()
 
-    const reportComponents = isCallbackRequestsEnabled
-        ? [
-              {
-                  chart: VoiceOverviewChart.VoiceCallVolumeTotalCallCountTrendChart,
-                  size: 3,
-              },
-              {
-                  chart: VoiceOverviewChart.VoiceCallVolumeMetricOutboundCallsCountTrend,
-                  size: 3,
-              },
-              {
-                  chart: VoiceOverviewChart.VoiceCallVolumeMetricInboundCallsCountTrend,
-                  size: 3,
-              },
-              {
-                  chart: VoiceOverviewChart.VoiceCallVolumeMetricUnansweredCallsCountTrendChart,
-                  size: 3,
-              },
-              {
-                  chart: VoiceOverviewChart.VoiceCallVolumeMetricMissedCallsCountTrendChart,
-                  size: 3,
-              },
-              {
-                  chart: VoiceOverviewChart.VoiceCallVolumeMetricCancelledCallsCountTrendChart,
-                  size: 3,
-              },
-              {
-                  chart: VoiceOverviewChart.VoiceCallVolumeMetricAbandonedCallsCountTrendChart,
-                  size: 3,
-              },
-              {
-                  chart: VoiceOverviewChart.VoiceCallVolumeMetricCallbackRequestedCallsCountTrendChart,
-                  size: 3,
-              },
-              {
-                  chart: VoiceOverviewChart.VoiceCallCallerExperienceAverageWaitTimeChart,
-                  size: 6,
-              },
-              {
-                  chart: VoiceOverviewChart.VoiceCallCallerExperienceAverageTalkTime,
-                  size: 6,
-              },
-          ]
-        : [
-              {
-                  chart: VoiceOverviewChart.VoiceCallVolumeTotalCallCountTrendChart,
-                  size: 4,
-              },
-              {
-                  chart: VoiceOverviewChart.VoiceCallVolumeMetricOutboundCallsCountTrend,
-                  size: 4,
-              },
-              {
-                  chart: VoiceOverviewChart.VoiceCallVolumeMetricInboundCallsCountTrend,
-                  size: 4,
-              },
-              {
-                  chart: VoiceOverviewChart.VoiceCallVolumeMetricUnansweredCallsCountTrendChart,
-                  size: 3,
-              },
-              {
-                  chart: VoiceOverviewChart.VoiceCallVolumeMetricMissedCallsCountTrendChart,
-                  size: 3,
-              },
-              {
-                  chart: VoiceOverviewChart.VoiceCallVolumeMetricCancelledCallsCountTrendChart,
-                  size: 3,
-              },
-              {
-                  chart: VoiceOverviewChart.VoiceCallVolumeMetricAbandonedCallsCountTrendChart,
-                  size: 3,
-              },
-              {
-                  chart: VoiceOverviewChart.VoiceCallCallerExperienceAverageWaitTimeChart,
-                  size: 6,
-              },
-              {
-                  chart: VoiceOverviewChart.VoiceCallCallerExperienceAverageTalkTime,
-                  size: 6,
-              },
-          ]
+    const reportComponents = [
+        {
+            chart: VoiceOverviewChart.VoiceCallVolumeTotalCallCountTrendChart,
+            size: 3,
+        },
+        {
+            chart: VoiceOverviewChart.VoiceCallVolumeMetricOutboundCallsCountTrend,
+            size: 3,
+        },
+        {
+            chart: VoiceOverviewChart.VoiceCallVolumeMetricInboundCallsCountTrend,
+            size: 3,
+        },
+        {
+            chart: VoiceOverviewChart.VoiceCallVolumeMetricUnansweredCallsCountTrendChart,
+            size: 3,
+        },
+        {
+            chart: VoiceOverviewChart.VoiceCallVolumeMetricMissedCallsCountTrendChart,
+            size: 3,
+        },
+        {
+            chart: VoiceOverviewChart.VoiceCallVolumeMetricCancelledCallsCountTrendChart,
+            size: 3,
+        },
+        {
+            chart: VoiceOverviewChart.VoiceCallVolumeMetricAbandonedCallsCountTrendChart,
+            size: 3,
+        },
+        {
+            chart: VoiceOverviewChart.VoiceCallVolumeMetricCallbackRequestedCallsCountTrendChart,
+            size: 3,
+        },
+        {
+            chart: VoiceOverviewChart.VoiceCallCallerExperienceAverageWaitTimeChart,
+            size: 6,
+        },
+        {
+            chart: VoiceOverviewChart.VoiceCallCallerExperienceAverageTalkTime,
+            size: 6,
+        },
+    ]
 
     return (
         <StatsPage

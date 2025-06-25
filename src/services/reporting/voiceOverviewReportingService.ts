@@ -43,11 +43,7 @@ interface VoiceReportData {
     averageTalkTimeTrend: MetricTrend
 }
 
-const saveReport = (
-    data: VoiceReportData,
-    period: Period,
-    shouldDisplayCallbackRequests: boolean = false,
-) => {
+const saveReport = (data: VoiceReportData, period: Period) => {
     const {
         totalCallsCountTrend,
         outboundCallsCountTrend,
@@ -68,112 +64,61 @@ const saveReport = (
     const formatDecimalValue = (value?: number | null) =>
         value ? formatMetricValue(value) : NOT_AVAILABLE_LABEL
 
-    const voiceOverviewData = shouldDisplayCallbackRequests
-        ? [
-              [EMPTY_LABEL, CURRENT_PERIOD_LABEL, PREVIOUS_PERIOD_LABEL],
-              [
-                  TOTAL_CALLS_METRIC_TITLE,
-                  formatIntegerValue(totalCallsCountTrend.data?.value),
-                  formatIntegerValue(totalCallsCountTrend.data?.prevValue),
-              ],
-              [
-                  OUTBOUND_CALLS_METRIC_TITLE,
-                  formatIntegerValue(outboundCallsCountTrend.data?.value),
-                  formatIntegerValue(outboundCallsCountTrend.data?.prevValue),
-              ],
-              [
-                  INBOUND_CALLS_METRIC_TITLE,
-                  formatIntegerValue(inboundCallsCountTrend.data?.value),
-                  formatIntegerValue(inboundCallsCountTrend.data?.prevValue),
-              ],
-              [
-                  UNANSWERED_CALLS_METRIC_TITLE,
-                  formatIntegerValue(unansweredCallsCountTrend.data?.value),
-                  formatIntegerValue(unansweredCallsCountTrend.data?.prevValue),
-              ],
-              [
-                  MISSED_CALLS_METRIC_TITLE,
-                  formatIntegerValue(missedCallsCountTrend.data?.value),
-                  formatIntegerValue(missedCallsCountTrend.data?.prevValue),
-              ],
-              [
-                  CANCELLED_CALLS_METRIC_TITLE,
-                  formatIntegerValue(cancelledCallsCountTrend.data?.value),
-                  formatIntegerValue(cancelledCallsCountTrend.data?.prevValue),
-              ],
-              [
-                  ABANDONED_CALLS_METRIC_TITLE,
-                  formatIntegerValue(abandonedCallsCountTrend.data?.value),
-                  formatIntegerValue(abandonedCallsCountTrend.data?.prevValue),
-              ],
-              [
-                  CALLBACK_REQUESTED_CALLS_METRIC_TITLE,
-                  formatIntegerValue(
-                      callbackRequestedCallsCountTrend.data?.value,
-                  ),
-                  formatIntegerValue(
-                      callbackRequestedCallsCountTrend.data?.prevValue,
-                  ),
-              ],
-              [
-                  AVERAGE_WAIT_TIME_METRIC_TITLE,
-                  formatDecimalValue(averageWaitTimeTrend.data?.value),
-                  formatDecimalValue(averageWaitTimeTrend.data?.prevValue),
-              ],
-              [
-                  AVERAGE_TALK_TIME_METRIC_TITLE,
-                  formatDecimalValue(averageTalkTimeTrend.data?.value),
-                  formatDecimalValue(averageTalkTimeTrend.data?.prevValue),
-              ],
-          ]
-        : [
-              [EMPTY_LABEL, CURRENT_PERIOD_LABEL, PREVIOUS_PERIOD_LABEL],
-              [
-                  TOTAL_CALLS_METRIC_TITLE,
-                  formatIntegerValue(totalCallsCountTrend.data?.value),
-                  formatIntegerValue(totalCallsCountTrend.data?.prevValue),
-              ],
-              [
-                  OUTBOUND_CALLS_METRIC_TITLE,
-                  formatIntegerValue(outboundCallsCountTrend.data?.value),
-                  formatIntegerValue(outboundCallsCountTrend.data?.prevValue),
-              ],
-              [
-                  INBOUND_CALLS_METRIC_TITLE,
-                  formatIntegerValue(inboundCallsCountTrend.data?.value),
-                  formatIntegerValue(inboundCallsCountTrend.data?.prevValue),
-              ],
-              [
-                  UNANSWERED_CALLS_METRIC_TITLE,
-                  formatIntegerValue(unansweredCallsCountTrend.data?.value),
-                  formatIntegerValue(unansweredCallsCountTrend.data?.prevValue),
-              ],
-              [
-                  MISSED_CALLS_METRIC_TITLE,
-                  formatIntegerValue(missedCallsCountTrend.data?.value),
-                  formatIntegerValue(missedCallsCountTrend.data?.prevValue),
-              ],
-              [
-                  CANCELLED_CALLS_METRIC_TITLE,
-                  formatIntegerValue(cancelledCallsCountTrend.data?.value),
-                  formatIntegerValue(cancelledCallsCountTrend.data?.prevValue),
-              ],
-              [
-                  ABANDONED_CALLS_METRIC_TITLE,
-                  formatIntegerValue(abandonedCallsCountTrend.data?.value),
-                  formatIntegerValue(abandonedCallsCountTrend.data?.prevValue),
-              ],
-              [
-                  AVERAGE_WAIT_TIME_METRIC_TITLE,
-                  formatDecimalValue(averageWaitTimeTrend.data?.value),
-                  formatDecimalValue(averageWaitTimeTrend.data?.prevValue),
-              ],
-              [
-                  AVERAGE_TALK_TIME_METRIC_TITLE,
-                  formatDecimalValue(averageTalkTimeTrend.data?.value),
-                  formatDecimalValue(averageTalkTimeTrend.data?.prevValue),
-              ],
-          ]
+    const voiceOverviewData = [
+        [EMPTY_LABEL, CURRENT_PERIOD_LABEL, PREVIOUS_PERIOD_LABEL],
+        [
+            TOTAL_CALLS_METRIC_TITLE,
+            formatIntegerValue(totalCallsCountTrend.data?.value),
+            formatIntegerValue(totalCallsCountTrend.data?.prevValue),
+        ],
+        [
+            OUTBOUND_CALLS_METRIC_TITLE,
+            formatIntegerValue(outboundCallsCountTrend.data?.value),
+            formatIntegerValue(outboundCallsCountTrend.data?.prevValue),
+        ],
+        [
+            INBOUND_CALLS_METRIC_TITLE,
+            formatIntegerValue(inboundCallsCountTrend.data?.value),
+            formatIntegerValue(inboundCallsCountTrend.data?.prevValue),
+        ],
+        [
+            UNANSWERED_CALLS_METRIC_TITLE,
+            formatIntegerValue(unansweredCallsCountTrend.data?.value),
+            formatIntegerValue(unansweredCallsCountTrend.data?.prevValue),
+        ],
+        [
+            MISSED_CALLS_METRIC_TITLE,
+            formatIntegerValue(missedCallsCountTrend.data?.value),
+            formatIntegerValue(missedCallsCountTrend.data?.prevValue),
+        ],
+        [
+            CANCELLED_CALLS_METRIC_TITLE,
+            formatIntegerValue(cancelledCallsCountTrend.data?.value),
+            formatIntegerValue(cancelledCallsCountTrend.data?.prevValue),
+        ],
+        [
+            ABANDONED_CALLS_METRIC_TITLE,
+            formatIntegerValue(abandonedCallsCountTrend.data?.value),
+            formatIntegerValue(abandonedCallsCountTrend.data?.prevValue),
+        ],
+        [
+            CALLBACK_REQUESTED_CALLS_METRIC_TITLE,
+            formatIntegerValue(callbackRequestedCallsCountTrend.data?.value),
+            formatIntegerValue(
+                callbackRequestedCallsCountTrend.data?.prevValue,
+            ),
+        ],
+        [
+            AVERAGE_WAIT_TIME_METRIC_TITLE,
+            formatDecimalValue(averageWaitTimeTrend.data?.value),
+            formatDecimalValue(averageWaitTimeTrend.data?.prevValue),
+        ],
+        [
+            AVERAGE_TALK_TIME_METRIC_TITLE,
+            formatDecimalValue(averageTalkTimeTrend.data?.value),
+            formatDecimalValue(averageTalkTimeTrend.data?.prevValue),
+        ],
+    ]
 
     const downloadFileName = getCsvFileNameWithDates(
         period,
@@ -189,9 +134,7 @@ const saveReport = (
     }
 }
 
-export const useVoiceOverviewReportData = (
-    shouldDisplayCallbackRequests: boolean = false,
-) => {
+export const useVoiceOverviewReportData = () => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
     const totalCallsCountTrend = useVoiceCallCountTrend(
@@ -275,11 +218,7 @@ export const useVoiceOverviewReportData = (
     }, [exportableData])
 
     return {
-        ...saveReport(
-            exportableData,
-            cleanStatsFilters.period,
-            shouldDisplayCallbackRequests,
-        ),
+        ...saveReport(exportableData, cleanStatsFilters.period),
         isLoading,
     }
 }
