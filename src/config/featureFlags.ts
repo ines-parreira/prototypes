@@ -80,7 +80,6 @@ export enum FeatureFlagKey {
     ChatTranscript = 'chat-transcript',
     MultiStoreIncludedChannels = 'linear.project_multistore.included_channels',
     ContactFormAutoEmbed = 'contact-form-auto-embed',
-    ContactFormExtraHtml = 'contact-form-extra-html',
     ConversationStarters = 'conversation-starters',
     ConvertChatInstallSnippet = 'convert-chat-install-snippet',
     ConvertContactForm = 'convert-contact-form',

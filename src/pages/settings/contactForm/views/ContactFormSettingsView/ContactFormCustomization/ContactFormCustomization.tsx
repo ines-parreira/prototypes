@@ -2,8 +2,6 @@ import { useEffect, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     ContactForm,
@@ -53,9 +51,7 @@ const ContactFormCustomization = (): JSX.Element => {
     const dispatch = useAppDispatch()
     const { updateContactForm, isLoading } = useContactFormApi()
     const contactForm = useCurrentContactForm()
-    const isContactFormExtraHtmlEnabled = useFlag(
-        FeatureFlagKey.ContactFormExtraHtml,
-    )
+
     const [isChangesModalShown, setIsChangesModalShown] = useState(false)
     const [isDirty, setIsDirty] = useState(false)
     const [extraHTML, setExtraHTML] = useState<ContactFormExtraHTML | null>(
@@ -217,29 +213,27 @@ const ContactFormCustomization = (): JSX.Element => {
                         handleToggleClick={onToggleClick}
                     />
                 </section>
-                {isContactFormExtraHtmlEnabled && (
-                    <ExtraHtmlSection
-                        extraHTML={extraHTML}
-                        isExtraHtmlToggled={isExtraHtmlToggled}
-                        setIsDirty={setIsDirty}
-                        setExtraHTML={(updater) => {
-                            setExtraHTML(updater)
-                            const updatedExtraHTML = updater(extraHTML)
-                            if (updatedExtraHTML) {
-                                setUpdateContactFormDto((prevState) => ({
-                                    ...prevState,
-                                    extra_html: {
-                                        extra_head: updatedExtraHTML.extra_head,
-                                        extra_head_deactivated_datetime:
-                                            updatedExtraHTML.extra_head_deactivated
-                                                ? new Date().toISOString()
-                                                : null,
-                                    },
-                                }))
-                            }
-                        }}
-                    />
-                )}
+                <ExtraHtmlSection
+                    extraHTML={extraHTML}
+                    isExtraHtmlToggled={isExtraHtmlToggled}
+                    setIsDirty={setIsDirty}
+                    setExtraHTML={(updater) => {
+                        setExtraHTML(updater)
+                        const updatedExtraHTML = updater(extraHTML)
+                        if (updatedExtraHTML) {
+                            setUpdateContactFormDto((prevState) => ({
+                                ...prevState,
+                                extra_html: {
+                                    extra_head: updatedExtraHTML.extra_head,
+                                    extra_head_deactivated_datetime:
+                                        updatedExtraHTML.extra_head_deactivated
+                                            ? new Date().toISOString()
+                                            : null,
+                                },
+                            }))
+                        }
+                    }}
+                />
                 <div className={contactFormCss.mtXl}>
                     <Button isDisabled={!isSaveChangesEnabled} onClick={onSave}>
                         Save Changes
