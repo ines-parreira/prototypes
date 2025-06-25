@@ -14,7 +14,9 @@ import {
     CreateAnalyticsCustomReportBody,
     CreateAnalyticsCustomReportBodyChildrenItem,
 } from '@gorgias/helpdesk-types'
+import { validateAnalyticsCustomReport } from '@gorgias/helpdesk-validators'
 
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import { isGorgiasApiError } from 'models/api/types'
 import {
     ChartConfig,
@@ -29,6 +31,7 @@ import {
     ReportsModalConfig,
 } from 'pages/stats/dashboards/types'
 import { BASE_STATS_PATH, STATS_ROUTES } from 'routes/constants'
+import { reportError } from 'utils/errors'
 import { notNull } from 'utils/types'
 
 const fromApiChart = (
@@ -94,11 +97,22 @@ export const dashboardChildFromApi = (
 }
 
 export const dashboardFromApi = (
-    report?: AnalyticsCustomReport,
+    maybeReport?: AnalyticsCustomReport,
 ): DashboardSchema | undefined => {
-    if (!report) {
+    if (!maybeReport) return undefined
+
+    const validation = validateAnalyticsCustomReport(maybeReport)
+    if (!validation.isValid) {
+        reportError(new Error('Invalid dashboard'), {
+            tags: { team: SentryTeam.CRM_REPORTING },
+            extra: { validationErrors: validation.errors },
+        })
+
         return undefined
     }
+
+    const report = validation.data
+
     return {
         analytics_filter_id: report.analytics_filter_id,
         id: report.id,

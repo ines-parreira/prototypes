@@ -1,5 +1,3 @@
-import React from 'react'
-
 import {
     fireEvent,
     screen,
@@ -9,7 +7,10 @@ import {
 import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
-import { useGetAnalyticsCustomReport } from '@gorgias/helpdesk-queries'
+import {
+    AnalyticsCustomReport,
+    useGetAnalyticsCustomReport,
+} from '@gorgias/helpdesk-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { AGENT_ROLE, BASIC_AGENT_ROLE } from 'config/user'
@@ -28,10 +29,8 @@ import {
     DASHBOARD_SCHEMA_ERROR,
     DashboardPage,
 } from 'pages/stats/dashboards/DashboardPage'
-import {
-    DashboardChildType,
-    DashboardSchema,
-} from 'pages/stats/dashboards/types'
+import { DashboardChildType } from 'pages/stats/dashboards/types'
+import { dashboardFromApi } from 'pages/stats/dashboards/utils'
 import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('react-router-dom', () => ({
@@ -59,7 +58,6 @@ jest.mock('pages/stats/dashboards/Dashboard')
 const DashboardMock = assumeMock(Dashboard)
 
 const mockUseParams = assumeMock(useParams)
-const dashboardId = '2'
 
 jest.mock('pages/stats/dashboards/DashboardActionButton')
 const DashboardActionButtonMock = assumeMock(DashboardActionButton)
@@ -83,20 +81,37 @@ describe('DashboardPage', () => {
         currentUser: fromJS({ ...user, role: { name: AGENT_ROLE } }),
     }
 
+    const dashboardId = '2'
     const dashboardName = 'Dashboard'
 
-    const dashboard: DashboardSchema = {
+    const rawDashboard: AnalyticsCustomReport = {
         id: Number(dashboardId),
         analytics_filter_id: 1,
         name: dashboardName,
         emoji: null,
+        type: 'custom',
+        account_id: 1,
+        created_by: 2,
+        updated_by: 2,
+        created_datetime: '2023-01-01T00:00:00.000Z',
+        updated_datetime: '2023-01-01T00:00:00.000Z',
+        deleted_datetime: null,
         children: [
             {
-                type: DashboardChildType.Chart,
-                config_id: 'config_id',
+                type: DashboardChildType.Row,
+                metadata: {},
+                children: [
+                    {
+                        type: DashboardChildType.Chart,
+                        metadata: {},
+                        config_id: 'customer_satisfaction_trend_card',
+                    },
+                ],
             },
         ],
     }
+
+    const dashboard = dashboardFromApi(rawDashboard)!
 
     const updateDashboardMock = jest.fn()
 
@@ -134,7 +149,7 @@ describe('DashboardPage', () => {
         ))
 
         useGetAnalyticsCustomReportMock.mockReturnValue({
-            data: { data: dashboard },
+            data: { data: rawDashboard },
             isLoading: false,
         } as any)
 
@@ -168,7 +183,7 @@ describe('DashboardPage', () => {
 
     it('should render fallback when no charts are present', () => {
         useGetAnalyticsCustomReportMock.mockReturnValue({
-            data: { data: { ...dashboard, children: [] } },
+            data: { data: { ...rawDashboard, children: [] } },
             isLoading: false,
         } as any)
 
@@ -178,27 +193,6 @@ describe('DashboardPage', () => {
     })
 
     it('should render actions button', () => {
-        useGetAnalyticsCustomReportMock.mockReturnValue({
-            data: {
-                data: {
-                    ...dashboard,
-                    children: [
-                        {
-                            children: [
-                                {
-                                    config_id:
-                                        'customer_satisfaction_trend_card',
-                                    type: 'chart',
-                                },
-                            ],
-                            type: 'row',
-                        },
-                    ],
-                },
-            },
-            isLoading: false,
-        } as any)
-
         renderWithStore(<DashboardPage />, defaultState)
 
         expect(screen.getByText(MOCKED_BUTTON_LABEL)).toBeInTheDocument()

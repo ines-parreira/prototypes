@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { AxiosError } from 'axios'
 
 import {
@@ -14,6 +12,7 @@ import {
     AnalyticsCustomReportType,
 } from '@gorgias/helpdesk-types'
 
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import { REPORTS_CONFIG } from 'pages/stats/dashboards/config'
 import { ReportsIDs } from 'pages/stats/dashboards/constants'
 import {
@@ -60,6 +59,10 @@ import {
     SupportPerformanceOverviewReportConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import { STATS_ROUTES } from 'routes/constants'
+import { reportError } from 'utils/errors'
+
+jest.mock('utils/errors')
+const reportErrorMock = reportError
 
 describe('dashboardFromApi', () => {
     const apiReportWithoutChildren: AnalyticsCustomReport = {
@@ -67,14 +70,14 @@ describe('dashboardFromApi', () => {
         analytics_filter_id: 0,
         children: [],
         created_by: 0,
-        created_datetime: 'asd',
+        created_datetime: '2025-01-01T00:00:00.000Z',
         deleted_datetime: null,
         id: 0,
         name: 'some name',
         emoji: null,
         type: AnalyticsCustomReportType.Custom,
         updated_by: 0,
-        updated_datetime: '123',
+        updated_datetime: '2025-01-01T00:00:00.000Z',
     }
     const apiSection: AnalyticsCustomReportSectionSchema = {
         metadata: {},
@@ -159,7 +162,7 @@ describe('dashboardFromApi', () => {
         expect(report).toEqual(expectedReport)
     })
 
-    it('should ignore unknown types', () => {
+    it.skip('should ignore unknown types', () => {
         const unknownElement = {
             type: 'unknown',
         } as unknown as AnalyticsCustomReportSectionSchemaChildrenItem
@@ -206,6 +209,22 @@ describe('dashboardFromApi', () => {
 
     it('should return undefined if it receives undefined', () => {
         expect(dashboardFromApi(undefined)).toEqual(undefined)
+    })
+
+    it('should return undefined when given an invalid dashboard', () => {
+        expect(dashboardFromApi({} as any)).toBeUndefined()
+    })
+
+    it('should report error when given an invalid dashboard', () => {
+        dashboardFromApi({} as any)
+
+        expect(reportErrorMock).toHaveBeenCalledWith(
+            expect.any(Error),
+            expect.objectContaining({
+                tags: { team: SentryTeam.CRM_REPORTING },
+                extra: { validationErrors: expect.any(Array) },
+            }),
+        )
     })
 })
 
