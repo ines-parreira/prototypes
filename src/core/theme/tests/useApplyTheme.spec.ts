@@ -13,12 +13,12 @@ const useThemeMock = assumeMock(useTheme)
 describe('useApplyTheme', () => {
     it('should add the theme class to the body', () => {
         useThemeMock.mockReturnValue({
-            resolvedName: THEME_NAME.Light,
+            resolvedName: THEME_NAME.Classic,
         } as Theme)
 
         renderHook(() => useApplyTheme())
 
-        expect(document.body.classList.contains(THEME_NAME.Light)).toBe(true)
+        expect(document.body.classList.contains(THEME_NAME.Classic)).toBe(true)
     })
 
     it('should remove all other theme classes from the body', () => {
@@ -30,7 +30,8 @@ describe('useApplyTheme', () => {
 
         renderHook(() => useApplyTheme())
 
+        expect(document.body.classList.contains(THEME_NAME.Classic)).toBe(true)
         expect(document.body.classList.contains(THEME_NAME.Dark)).toBe(false)
-        expect(document.body.classList.contains(THEME_NAME.Light)).toBe(true)
+        expect(document.body.classList.contains(THEME_NAME.Light)).toBe(false)
     })
 })

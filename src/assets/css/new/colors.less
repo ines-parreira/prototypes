@@ -1,5 +1,6 @@
 @import '~@gorgias/design-tokens/dist/css/colorTokens';
 @import 'stats/colors';
+@import '~@gorgias/design-tokens/dist/css/color/merchantClassic.css';
 @import '~@gorgias/design-tokens/dist/css/color/merchantDark.css';
 @import '~@gorgias/design-tokens/dist/css/color/merchantLight.css';
 
@@ -19,9 +20,24 @@
         --scrollbar-track: var(--neutral-grey-1);
     }
 
+    :global(.classic),
     :global(.light),
     :global(.dark) {
         --accessory-magenta-25: #c34ced;
+    }
+
+    :global(.classic) {
+        --navbar-link-hover-background-color: var(--neutral-grey-5);
+        --navbar-link-hover-text: var(--neutral-grey-2);
+        --navbar-chat-ticket-new: var(--neutral-grey-2);
+
+        --navbar-block-toggle-active-color: var(--neutral-grey-0);
+        --navbar-block-toggle-active-background-color: var(--neutral-grey-4);
+        --navbar-block-toggle-hover-background-color: var(--neutral-grey-6);
+        --navbar-block-toggle-hover-color: var(--neutral-grey-1);
+
+        --scrollbar-thumb: var(--neutral-grey-5);
+        --scrollbar-track: var(--neutral-grey-6);
     }
 
     /*---  Colors  ---*/

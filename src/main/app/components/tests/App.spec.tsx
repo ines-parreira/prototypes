@@ -2,7 +2,6 @@ import { screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 
 import { useFlag } from 'core/flags'
-import { THEME_NAME, useTheme } from 'core/theme'
 import { useRedirectDeprecatedTicketRoutes } from 'tickets/core/hooks'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
@@ -67,13 +66,7 @@ jest.mock('../../../../AlertBanners/components/ImpersonationBanner', () =>
     jest.fn(() => <div>ImpersonatedBanner</div>),
 )
 
-jest.mock('core/theme', () => ({
-    ...jest.requireActual('core/theme'),
-    useApplyTheme: jest.fn(),
-    useTheme: jest.fn(),
-}))
-const useThemeMock = useTheme as jest.Mock
-
+jest.mock('core/theme', () => ({ useApplyTheme: jest.fn() }))
 jest.mock('../../hooks/useSetBanners', () => ({
     useSetBanners: jest.fn(),
 }))
@@ -86,7 +79,6 @@ describe('App component', () => {
     beforeEach(() => {
         history = createMemoryHistory()
         useFlagMock.mockReturnValue(false)
-        useThemeMock.mockReturnValue({ resolvedName: THEME_NAME.Light })
     })
 
     it('should render its children', () => {

@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react'
 
-import cn from 'classnames'
 import { useHistory } from 'react-router-dom'
 
 import AlertBanners from 'AlertBanners'
@@ -9,7 +8,7 @@ import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/
 import { NotificationsOverlay, NotificationsToasts } from 'common/notifications'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
-import { THEME_NAME, useApplyTheme, useTheme } from 'core/theme'
+import { useApplyTheme } from 'core/theme'
 import useHasPhone from 'hooks/useHasPhone'
 import { isAiAgentOnboarding } from 'main/app/utils/isAiAgentOnboarding'
 import { AlertNotifications } from 'notifications'
@@ -41,7 +40,6 @@ type Props = {
 }
 
 export default function App({ children }: Props) {
-    const theme = useTheme()
     const history = useHistory()
     const hasGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
     const hasPhone = useHasPhone()
@@ -94,9 +92,6 @@ export default function App({ children }: Props) {
                 )}
                 <ScriptTagMigrationModal />
                 <Spotlight />
-                {theme.resolvedName === THEME_NAME.Classic && (
-                    <div className={cn(css.classicBackdrop, 'dark')} />
-                )}
                 <div className={css.content}>
                     <NotificationsOverlay />
                     {children}
