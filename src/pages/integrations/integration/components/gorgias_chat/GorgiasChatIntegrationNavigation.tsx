@@ -84,7 +84,7 @@ const GorgiasChatIntegrationNavigation = ({ integration }: Props) => {
 
             {hasAutomate && (
                 <NavLink to={`${baseURL}/automate`} exact>
-                    Automate
+                    Automation Features
                     {isStoreNotConnected && (
                         <img
                             alt="status icon"

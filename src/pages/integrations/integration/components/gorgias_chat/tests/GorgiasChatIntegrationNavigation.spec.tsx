@@ -63,7 +63,7 @@ describe('<GorgiasChatIntegrationNavigation />', () => {
         },
     })
 
-    it('should render automate tab', () => {
+    it('should render automation features tab', () => {
         mockGetHasAutomate.mockReturnValue(true)
         render(
             <Provider store={store}>
@@ -72,10 +72,10 @@ describe('<GorgiasChatIntegrationNavigation />', () => {
                 ></GorgiasChatIntegrationNavigation>
             </Provider>,
         )
-        expect(screen.getByText('Automate')).toBeInTheDocument()
+        expect(screen.getByText('Automation Features')).toBeInTheDocument()
     })
 
-    it('should not render automate tab', () => {
+    it('should not render automation features tab', () => {
         mockGetHasAutomate.mockReturnValue(false)
         render(
             <Provider store={store}>
@@ -84,7 +84,9 @@ describe('<GorgiasChatIntegrationNavigation />', () => {
                 ></GorgiasChatIntegrationNavigation>
             </Provider>,
         )
-        expect(screen.queryByText('Automate')).not.toBeInTheDocument()
+        expect(
+            screen.queryByText('Automation Features'),
+        ).not.toBeInTheDocument()
     })
 
     it('should render GorgiasChatIntegrationNavigation', () => {

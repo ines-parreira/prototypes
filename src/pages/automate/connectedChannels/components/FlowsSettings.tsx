@@ -206,6 +206,20 @@ export const FlowsSettings = ({
 
     return (
         <div className="full-width">
+            <div className={css.automationDescription}>
+                <span>
+                    Flows and Order Management are automation features powered
+                    by AI Agent.{' '}
+                    <a
+                        href="https://docs.gorgias.com/en-US/articles/automations-279714"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Learn more
+                    </a>
+                </span>
+            </div>
+
             <div className={css.labelWrapper}>
                 <Label className={css.label}>Flows</Label>
 

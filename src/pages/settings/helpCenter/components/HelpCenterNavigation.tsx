@@ -90,7 +90,7 @@ export const HelpCenterNavigation: React.FC<Props> = ({
             <NavLink to={`${baseURL}/publish-track`}>Publish & Track</NavLink>
             {hasAutomate && (
                 <NavLink to={`${baseURL}/automate`}>
-                    AI Agent
+                    Automation Features
                     {!helpCenterShopName && (
                         <img
                             alt="status icon"

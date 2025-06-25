@@ -206,7 +206,7 @@ const ContactFormSettingsView = (): JSX.Element => {
                 {Object.entries({
                     ...navLinks,
                     ...(hasAutomate
-                        ? { 'AI Agent': CONTACT_FORM_AUTOMATE_PATH }
+                        ? { 'Automation Features': CONTACT_FORM_AUTOMATE_PATH }
                         : {}),
                 }).map(([name, to]) => (
                     <NavLink
@@ -214,7 +214,7 @@ const ContactFormSettingsView = (): JSX.Element => {
                         to={insertContactFormIdParam(to, contactFormId)}
                     >
                         {name}
-                        {name === 'AI Agent' &&
+                        {name === 'Automation Features' &&
                             !contactForm.shop_integration && (
                                 <img
                                     alt="status icon"

@@ -87,7 +87,7 @@ describe('HelpCenterNavigation', () => {
         )
     })
 
-    it('should not render the AI Agent tab when `hasAutomate` is false', () => {
+    it('should not render the Automation Features tab when `hasAutomate` is false', () => {
         mockGetHasAutomate.mockReturnValue(false)
         renderWithStoreAndQueryClientProvider(
             <HelpCenterNavigation
@@ -96,10 +96,12 @@ describe('HelpCenterNavigation', () => {
             />,
             defaultState,
         )
-        expect(screen.queryByText(/AI Agent/i)).not.toBeInTheDocument()
+        expect(
+            screen.queryByText(/Automation Features/i),
+        ).not.toBeInTheDocument()
     })
 
-    it('should display automate menu item', () => {
+    it('should display automation features menu item', () => {
         mockGetHasAutomate.mockReturnValue(true)
         renderWithStoreAndQueryClientProvider(
             <HelpCenterNavigation
@@ -108,7 +110,7 @@ describe('HelpCenterNavigation', () => {
             />,
             defaultState,
         )
-        expect(screen.getByText(/AI Agent/i)).toBeInTheDocument()
+        expect(screen.getByText(/Automation Features/i)).toBeInTheDocument()
     })
 
     it('should display a red dot whenever shop name is not provided', () => {
