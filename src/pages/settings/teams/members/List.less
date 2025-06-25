@@ -1,0 +1,26 @@
+:local {
+    .pageHeader {
+        flex-wrap: nowrap;
+    }
+
+    .item {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        ol {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+
+            li {
+                width: auto;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 100%;
+            }
+        }
+    }
+}

@@ -30,6 +30,7 @@ import CheckBox from 'pages/common/forms/CheckBox'
 import withRouter from 'pages/common/utils/withRouter'
 import settingsCss from 'pages/settings/settings.less'
 import css from 'pages/settings/teams/List.less'
+import membersCss from 'pages/settings/teams/members/List.less'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import {
@@ -285,8 +286,9 @@ export class MembersListContainer extends Component<Props, State> {
         return (
             <div className={classnames(css.component, 'full-width')}>
                 <PageHeader
+                    className={membersCss.pageHeader}
                     title={
-                        <Breadcrumb>
+                        <Breadcrumb className={membersCss.item}>
                             <BreadcrumbItem>
                                 <NavLink to="/app/settings/teams" exact>
                                     Teams
