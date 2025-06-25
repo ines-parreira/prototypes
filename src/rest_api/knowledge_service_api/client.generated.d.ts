@@ -50,6 +50,18 @@ declare namespace Components {
              */
             createdDatetime: string // date-time
         }
+        export interface EarliestExecutionDto {
+            /**
+             * Execution identifier
+             * example:
+             * 571ec9ca-2adb-4e68-b5c7-c31d1b0a9630
+             */
+            executionId: string
+            /**
+             * Execution timestamp
+             */
+            timestamp: string // date-time
+        }
         export interface FeedbackDto {
             /**
              * Account ID
@@ -1026,6 +1038,12 @@ declare namespace Paths {
             export type $200 = Components.Schemas.KnowledgeResourceDto
         }
     }
+    namespace GetEarliestExecutionFeedback {
+        namespace Responses {
+            export type $200 = Components.Schemas.EarliestExecutionDto
+            export interface $403 {}
+        }
+    }
     namespace HydrateGuidanceKnowledgeResources {
         export type RequestBody = Components.Schemas.GuidancesHydrateRequestDto
         namespace Responses {
@@ -1207,6 +1225,14 @@ export interface OperationMethods {
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UpsertFeedbackFeedback.Responses.$201>
     /**
+     * getEarliestExecutionFeedback - Get the earliest execution id and timestamp for an account
+     */
+    'getEarliestExecutionFeedback'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.GetEarliestExecutionFeedback.Responses.$200>
+    /**
      * readyHealth
      */
     'readyHealth'(
@@ -1300,6 +1326,16 @@ export interface PathsDictionary {
             data?: Paths.UpsertFeedbackFeedback.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.UpsertFeedbackFeedback.Responses.$201>
+    }
+    ['/api/feedback/earliest-execution']: {
+        /**
+         * getEarliestExecutionFeedback - Get the earliest execution id and timestamp for an account
+         */
+        'get'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.GetEarliestExecutionFeedback.Responses.$200>
     }
     ['/api/health/ready']: {
         /**

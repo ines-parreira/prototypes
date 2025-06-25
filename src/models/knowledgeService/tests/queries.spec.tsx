@@ -14,6 +14,7 @@ import {
     knowledgeResourcesDefinitionKeys,
     STALE_TIME_MS,
     useFindAllGuidancesKnowledgeResources,
+    useGetEarliestExecution,
     useGetFeedback,
 } from '../queries'
 
@@ -27,6 +28,7 @@ describe('knowledgeService queries', () => {
     const mockClient = {
         findFeedbackFeedback: jest.fn(),
         findAllGuidancesKnowledgeResources: jest.fn(),
+        getEarliestExecutionFeedback: jest.fn(),
     }
 
     beforeEach(() => {
@@ -65,6 +67,13 @@ describe('knowledgeService queries', () => {
             expect(feedbackDefinitionKeys.get('123')).toEqual([
                 'feedback',
                 '123',
+            ])
+        })
+
+        it('should generate correct earliestExecution key', () => {
+            expect(feedbackDefinitionKeys.earliestExecution()).toEqual([
+                'feedback',
+                'earliestExecution',
             ])
         })
     })
@@ -170,6 +179,106 @@ describe('knowledgeService queries', () => {
                 expect.objectContaining({
                     staleTime: customStaleTime,
                     retry: customRetry,
+                }),
+            )
+        })
+    })
+
+    describe('useGetEarliestExecution', () => {
+        const mockResponse = {
+            data: {
+                executionId: 'test-execution-id-123',
+                timestamp: '2024-01-01T00:00:00.000Z',
+            },
+        }
+
+        beforeEach(() => {
+            mockClient.getEarliestExecutionFeedback.mockResolvedValue(
+                mockResponse,
+            )
+        })
+
+        it('should call API with correct parameters', async () => {
+            const { result } = renderHook(() => useGetEarliestExecution(), {
+                wrapper,
+            })
+
+            // Initial state should be loading
+            expect(result.current.isLoading).toBe(true)
+
+            // Wait for the query to complete
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+            // Verify API was called with correct params
+            expect(
+                mockClient.getEarliestExecutionFeedback,
+            ).toHaveBeenCalledWith(
+                {},
+                {
+                    paramsSerializer: {
+                        indexes: false,
+                    },
+                },
+            )
+
+            // Verify data is correct
+            expect(result.current.data).toEqual(mockResponse.data)
+        })
+
+        it('should use correct stale and cache times', async () => {
+            // We need to spy on useQuery's options directly
+            const useQuerySpy = jest.spyOn(
+                require('@tanstack/react-query'),
+                'useQuery',
+            )
+
+            renderHook(() => useGetEarliestExecution(), { wrapper })
+
+            expect(useQuerySpy).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    staleTime: STALE_TIME_MS,
+                    cacheTime: CACHE_TIME_MS,
+                }),
+            )
+        })
+
+        it('should allow overriding query options', async () => {
+            const customStaleTime = 5000
+            const customRetry = false
+
+            const useQuerySpy = jest.spyOn(
+                require('@tanstack/react-query'),
+                'useQuery',
+            )
+
+            renderHook(
+                () =>
+                    useGetEarliestExecution({
+                        staleTime: customStaleTime,
+                        retry: customRetry,
+                    }),
+                { wrapper },
+            )
+
+            expect(useQuerySpy).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    staleTime: customStaleTime,
+                    retry: customRetry,
+                }),
+            )
+        })
+
+        it('should use correct query key', async () => {
+            const useQuerySpy = jest.spyOn(
+                require('@tanstack/react-query'),
+                'useQuery',
+            )
+
+            renderHook(() => useGetEarliestExecution(), { wrapper })
+
+            expect(useQuerySpy).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    queryKey: feedbackDefinitionKeys.earliestExecution(),
                 }),
             )
         })

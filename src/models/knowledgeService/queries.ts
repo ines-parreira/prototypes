@@ -14,6 +14,8 @@ export const feedbackDefinitionKeys = {
     list: (params: Paths.FindFeedbackFeedback.QueryParameters) =>
         [...feedbackDefinitionKeys.lists(), params] as const,
     get: (id: string) => [FEEDBACK_QUERY_KEY, id] as const,
+    earliestExecution: () =>
+        [...feedbackDefinitionKeys.all(), 'earliestExecution'] as const,
 }
 
 const KNOWLEDGE_RESOURCES_QUERY_KEY = 'knowledge-resources'
@@ -66,6 +68,31 @@ export const useFindAllGuidancesKnowledgeResources = <T>(
             const client = await getGorgiasKsApiClient()
             const response = await client.findAllGuidancesKnowledgeResources(
                 params,
+                {},
+                {
+                    paramsSerializer: {
+                        indexes: false,
+                    },
+                },
+            )
+            return response.data
+        },
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+        ...overrides,
+    })
+}
+
+export const useGetEarliestExecution = (
+    overrides?: UseQueryOptions<
+        Awaited<Paths.GetEarliestExecutionFeedback.Responses.$200>
+    >,
+) => {
+    return useQuery({
+        queryKey: feedbackDefinitionKeys.earliestExecution(),
+        queryFn: async () => {
+            const client = await getGorgiasKsApiClient()
+            const response = await client.getEarliestExecutionFeedback(
                 {},
                 {
                     paramsSerializer: {

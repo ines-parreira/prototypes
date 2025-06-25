@@ -332,6 +332,29 @@
                 "tags": ["feedback"]
             }
         },
+        "/api/feedback/earliest-execution": {
+            "get": {
+                "operationId": "getEarliestExecutionFeedback",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Earliest execution id and timestamp",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EarliestExecutionDto"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Feedback feature is not available"
+                    }
+                },
+                "summary": "Get the earliest execution id and timestamp for an account",
+                "tags": ["feedback"]
+            }
+        },
         "/api/health/ready": {
             "get": {
                 "operationId": "readyHealth",
@@ -1623,6 +1646,22 @@
                     "objectId",
                     "executions"
                 ]
+            },
+            "EarliestExecutionDto": {
+                "type": "object",
+                "properties": {
+                    "executionId": {
+                        "type": "string",
+                        "description": "Execution identifier",
+                        "example": "571ec9ca-2adb-4e68-b5c7-c31d1b0a9630"
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Execution timestamp"
+                    }
+                },
+                "required": ["executionId", "timestamp"]
             },
             "FeedbackUpsertRequestDto": {
                 "type": "object",
