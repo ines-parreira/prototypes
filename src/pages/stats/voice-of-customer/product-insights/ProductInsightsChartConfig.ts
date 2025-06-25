@@ -16,9 +16,9 @@ export const ProductInsightsChartConfig = {
     [ProductInsightsChart.TopAIIntentsOverTimeChart]: {
         title: 'Top AI Intents over time',
         hint: {
-            title: 'Top AI classified intents. Sort by specific AI Intents using filters. Read more about intents',
+            title: 'The topic of the conversation with your customers, identified by AI. Read more',
             link: 'https://docs.gorgias.com/en-US/customer-intents-81924',
-            linkText: 'here.',
+            linkText: ' about intents.',
         },
     },
     [ProductInsightsChart.TopProductsPerIntentChart]: {

@@ -4,12 +4,15 @@ import {
     useCustomFieldsTimeSeries,
 } from 'hooks/reporting/useCustomFieldsTimeSeries'
 import {
+    AMOUNT_OF_PRODUCTS_TO_SHOW,
+    AMOUNT_OF_SELECTED_INTENTS,
     useAIIntentsForProductTimeSeries,
     useAIIntentsTimeSeries,
 } from 'hooks/reporting/voice-of-customer/useAIIntentsTimeSeries'
 import { ReportingGranularity } from 'models/reporting/types'
 import { TicketTimeReference } from 'models/stat/types'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
+import { TOP_INTENTS_PER_PAGE } from 'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentConfig'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -55,8 +58,8 @@ describe('useAIIntentsTimeSeries', () => {
         expect(useAIIntentCustomFieldsTimeSeriesMock).toHaveBeenCalledWith({
             selectedCustomFieldId: intentCustomFieldId,
             ticketFieldsTicketTimeReference: TicketTimeReference.CreatedAt,
-            datasetVisibilityItems: 5,
-            topAmount: 5,
+            topAmount: TOP_INTENTS_PER_PAGE,
+            datasetVisibilityItems: AMOUNT_OF_SELECTED_INTENTS,
         })
         expect(result.current).toEqual(response)
     })
@@ -90,8 +93,8 @@ describe('useAIIntentsForProductTimeSeries', () => {
 
         expect(useCustomFieldsForProductTimeSeriesMock).toHaveBeenCalledWith({
             selectedCustomFieldId: intentCustomFieldId,
-            datasetVisibilityItems: 5,
-            topAmount: 5,
+            datasetVisibilityItems: AMOUNT_OF_PRODUCTS_TO_SHOW,
+            topAmount: AMOUNT_OF_PRODUCTS_TO_SHOW,
             productId,
         })
         expect(result.current).toEqual(response)
