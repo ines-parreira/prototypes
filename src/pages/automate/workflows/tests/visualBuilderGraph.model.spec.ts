@@ -2390,36 +2390,6 @@ describe('errors', () => {
             })
         })
 
-        it('should add an error if a number condition value is zero', () => {
-            const node: LLMPromptTriggerNodeType = {
-                ...buildNodeCommonProperties(),
-                type: 'llm_prompt_trigger',
-                data: {
-                    touched: {
-                        conditions: { 0: true },
-                    },
-                    instructions: '',
-                    inputs: [],
-                    conditionsType: 'and',
-                    conditions: [{ equals: [{ var: 'variable1' }, 0] }],
-                    requires_confirmation: false,
-                },
-            }
-
-            const errors = getLLMPromptTriggerNodeErrors(node, [
-                {
-                    type: 'number',
-                    value: 'variable1',
-                    nodeType: 'http_request',
-                    name: '',
-                },
-            ])
-
-            expect(errors).toEqual({
-                conditions: { 0: 'Enter a value' },
-            })
-        })
-
         it('should add an error if a date condition value is empty', () => {
             const node: LLMPromptTriggerNodeType = {
                 ...buildNodeCommonProperties(),
@@ -2935,59 +2905,6 @@ describe('errors', () => {
             })
         })
 
-        it('should add an error for zero value in a numeric condition', () => {
-            const edges: VisualBuilderEdge[] = [
-                {
-                    ...buildEdgeCommonProperties(),
-                    id: 'edge1',
-                    source: 'node1',
-                    target: 'node2',
-                    data: {
-                        name: '',
-                        conditions: {
-                            and: [{ equals: [{ var: 'variable1' }, 0] }],
-                        },
-                    },
-                },
-            ]
-            const node: ConditionsNodeType = {
-                ...buildNodeCommonProperties(),
-                id: 'node1',
-                type: 'conditions',
-                data: {
-                    touched: {
-                        branches: {
-                            edge1: {
-                                conditions: {
-                                    0: true,
-                                },
-                            },
-                        },
-                    },
-                    name: '',
-                },
-            }
-
-            const errors = getConditionsNodeErrors(edges, node, [
-                {
-                    type: 'number',
-                    value: 'variable1',
-                    nodeType: 'http_request',
-                    name: '',
-                },
-            ])
-
-            expect(errors).toEqual({
-                branches: {
-                    edge1: {
-                        conditions: {
-                            0: 'Enter a value',
-                        },
-                    },
-                },
-            })
-        })
-
         it('should add an error for empty value in a date condition', () => {
             const edges: VisualBuilderEdge[] = [
                 {
@@ -3187,35 +3104,6 @@ describe('errors', () => {
             const errors = getReusableLLMPromptTriggerNodeErrors(node, [
                 {
                     type: 'string',
-                    value: 'variable1',
-                    nodeType: 'http_request',
-                    name: '',
-                },
-            ])
-
-            expect(errors).toEqual({
-                conditions: { 0: 'Enter a value' },
-            })
-        })
-
-        it('should add an error if a number condition value is zero', () => {
-            const node: ReusableLLMPromptTriggerNodeType = {
-                ...buildNodeCommonProperties(),
-                type: 'reusable_llm_prompt_trigger',
-                data: {
-                    touched: {
-                        conditions: { 0: true },
-                    },
-                    inputs: [],
-                    conditionsType: 'and',
-                    conditions: [{ equals: [{ var: 'variable1' }, 0] }],
-                    requires_confirmation: false,
-                },
-            }
-
-            const errors = getReusableLLMPromptTriggerNodeErrors(node, [
-                {
-                    type: 'number',
                     value: 'variable1',
                     nodeType: 'http_request',
                     name: '',

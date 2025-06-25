@@ -1,7 +1,5 @@
 import React, { useCallback } from 'react'
 
-import { produce } from 'immer'
-
 import {
     BooleanSchema,
     ConditionKey,
@@ -31,11 +29,7 @@ import { DateConditionType } from './conditions/DateConditionType'
 import { NumberConditionType } from './conditions/NumberConditionType'
 import { StringConditionType } from './conditions/StringConditionType'
 import { getOperatorListByVariable } from './constants'
-import {
-    isExistenceOperator,
-    isIntervalOperator,
-    isStringOrNumberOperator,
-} from './utils'
+import { handleOperatorSelectLogic } from './handleOperatorSelectLogic'
 
 import css from './ConditionsNodeEditor.less'
 
@@ -192,48 +186,19 @@ export const ConditionsBranchBody = ({
     )
 
     const handleOperatorSelect = useCallback(
-        (condition: ConditionSchema, index: number) => (nextValue: string) => {
-            const nextKey = nextValue as AllKeys<typeof condition>
-            const key = Object.keys(condition)[0] as AllKeys<typeof condition>
-
-            if (nextKey === key) return
-
-            onConditionChange(
-                produce(condition, (draft) => {
-                    const schema = draft[key]
-
-                    if (!schema) {
-                        return
-                    }
-
-                    if (
-                        isIntervalOperator(nextKey) &&
-                        key !== 'lessThanInterval' &&
-                        key !== 'greaterThanInterval'
-                    ) {
-                        draft[nextKey] = [schema[0], '-1d']
-                    } else if (isExistenceOperator(nextKey)) {
-                        draft[nextKey] = [schema[0]]
-                    } else if (
-                        isExistenceOperator(key) &&
-                        isStringOrNumberOperator(nextKey)
-                    ) {
-                        draft[nextKey] = [schema[0], undefined]
-                    } else if (
-                        (nextKey === 'lessThan' && key !== 'greaterThan') ||
-                        (nextKey === 'greaterThan' && key !== 'lessThan')
-                    ) {
-                        draft[nextKey] = [schema[0], undefined]
-                    } else {
-                        // @ts-expect-error
-                        draft[nextKey] = draft[key]
-                    }
-
-                    delete draft[key]
-                }),
-                index,
-            )
-        },
+        (
+            condition: ConditionSchema,
+            index: number,
+            variable: WorkflowVariable,
+        ) =>
+            (nextValue: string) => {
+                const updated = handleOperatorSelectLogic(
+                    condition,
+                    nextValue as ConditionKey,
+                    variable,
+                )
+                onConditionChange(updated, index)
+            },
         [onConditionChange],
     )
 
@@ -320,6 +285,7 @@ export const ConditionsBranchBody = ({
                                             onOperatorSelect={handleOperatorSelect(
                                                 condition,
                                                 index,
+                                                variable,
                                             )}
                                             isDisabled={isDisabled}
                                             icon={

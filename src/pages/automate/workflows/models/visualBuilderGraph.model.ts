@@ -1879,8 +1879,7 @@ export function getLLMPromptTriggerNodeErrors(
                     )
                 } else if (
                     variable.type === 'number' &&
-                    typeof schema[1] === 'number' &&
-                    !schema[1]
+                    typeof schema[1] !== 'number'
                 ) {
                     errors = mergeErrors(
                         errors,
@@ -2241,8 +2240,7 @@ export function getConditionsNodeErrors(
                         )
                     } else if (
                         variable.type === 'number' &&
-                        typeof schema[1] === 'number' &&
-                        !schema[1]
+                        typeof schema[1] !== 'number'
                     ) {
                         errors = mergeErrors(
                             errors,
@@ -2401,8 +2399,7 @@ export function getReusableLLMPromptTriggerNodeErrors(
                     )
                 } else if (
                     variable.type === 'number' &&
-                    typeof schema[1] === 'number' &&
-                    !schema[1]
+                    typeof schema[1] !== 'number'
                 ) {
                     errors = mergeErrors(
                         errors,

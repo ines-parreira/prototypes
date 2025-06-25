@@ -50,7 +50,8 @@ export const isStringOrNumberOperator = (
     | 'startsWith'
     | 'lessThan'
     | 'greaterThan'
-    | 'greaterOrEqual' =>
+    | 'greaterOrEqual'
+    | 'lessOrEqual' =>
     key === 'equals' ||
     key === 'notEqual' ||
     key === 'contains' ||
@@ -59,4 +60,16 @@ export const isStringOrNumberOperator = (
     key === 'startsWith' ||
     key === 'lessThan' ||
     key === 'greaterThan' ||
-    key === 'greaterOrEqual'
+    key === 'greaterOrEqual' ||
+    key === 'lessOrEqual'
+
+export const getDefaultValueForType = (type: WorkflowVariable['type']) => {
+    switch (type) {
+        case 'number':
+            return 0
+        case 'string':
+            return ''
+        default:
+            return undefined
+    }
+}
