@@ -173,8 +173,7 @@ describe('<ShopifyIntegration/>', () => {
                             integration={fromJS({
                                 meta: {
                                     sync_customer_notes: true,
-                                    default_address_phone_matching_enabled:
-                                        false,
+                                    default_address_phone_matching_enabled: false,
                                 },
                             })}
                         />

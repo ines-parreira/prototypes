@@ -140,8 +140,7 @@ describe('useAutomationRateTimeSeriesData', () => {
 
         it('should use NonFilteredDenominator InAutomationRate when the flag is enabled', () => {
             mockFlags({
-                [FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate]:
-                    true,
+                [FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate]: true,
             })
 
             const { result } = renderHook(() =>

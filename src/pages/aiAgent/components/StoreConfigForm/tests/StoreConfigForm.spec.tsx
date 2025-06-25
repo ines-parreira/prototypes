@@ -2081,8 +2081,7 @@ describe('<StoreConfigForm />', () => {
 
         it('should show the Ticket Fields section if the FF is activated', () => {
             mockFlags({
-                [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]:
-                    true,
+                [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]: true,
             })
 
             const { container } = renderComponent()
@@ -2356,15 +2355,13 @@ describe('<StoreConfigForm />', () => {
     describe('custom fields', () => {
         beforeEach(() => {
             mockFlags({
-                [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]:
-                    true,
+                [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]: true,
             })
         })
 
         it('should not display the custom fields settings card when FF custom-fields is disabled', () => {
             mockFlags({
-                [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]:
-                    false,
+                [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]: false,
             })
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,

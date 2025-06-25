@@ -145,8 +145,7 @@ describe('<Magento2/>', () => {
     describe('Not in price', () => {
         const productsWithMagentoDisabled = _cloneDeep(products)
         const basicPriceWithMagentoDisabled = basicMonthlyHelpdeskPlan
-        basicPriceWithMagentoDisabled.features.magento_integration.enabled =
-            false
+        basicPriceWithMagentoDisabled.features.magento_integration.enabled = false
         productsWithMagentoDisabled[0].prices[0] = basicPriceWithMagentoDisabled
 
         const noEnabledFeatureStore = mockStore({

@@ -109,37 +109,37 @@ describe('<TwoFactorAuthenticationSection />', () => {
                 /TwoFactorAuthenticationModal mocked/,
             )
             expect(modalQuery).toBeNull()
-        }),
-            it.each([true, false])(
-                'should open or not the Two-Factor Authentication Modal via queryParam',
-                (has2FAEnabled) => {
-                    const store = mockStore({
-                        currentUser: fromJS({
-                            has_2fa_enabled: has2FAEnabled,
-                        }),
-                    })
+        })
+        it.each([true, false])(
+            'should open or not the Two-Factor Authentication Modal via queryParam',
+            (has2FAEnabled) => {
+                const store = mockStore({
+                    currentUser: fromJS({
+                        has_2fa_enabled: has2FAEnabled,
+                    }),
+                })
 
-                    renderWithRouter(
-                        <Provider store={store}>
-                            <TwoFactorAuthenticationSection />
-                        </Provider>,
-                        {
-                            path: 'app/settings/password-2fa',
-                            route: 'app/settings/password-2fa?enforce_2fa_setup_modal=true',
-                        },
-                    )
+                renderWithRouter(
+                    <Provider store={store}>
+                        <TwoFactorAuthenticationSection />
+                    </Provider>,
+                    {
+                        path: 'app/settings/password-2fa',
+                        route: 'app/settings/password-2fa?enforce_2fa_setup_modal=true',
+                    },
+                )
 
-                    const modalQuery = screen.queryByText(
-                        /TwoFactorAuthenticationModal mocked/,
-                    )
+                const modalQuery = screen.queryByText(
+                    /TwoFactorAuthenticationModal mocked/,
+                )
 
-                    if (has2FAEnabled) {
-                        expect(modalQuery).toBeNull()
-                    } else {
-                        expect(modalQuery).not.toBeNull()
-                    }
-                },
-            )
+                if (has2FAEnabled) {
+                    expect(modalQuery).toBeNull()
+                } else {
+                    expect(modalQuery).not.toBeNull()
+                }
+            },
+        )
 
         it('should show the enforcement message without the date', () => {
             const store = mockStore({

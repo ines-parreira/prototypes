@@ -142,7 +142,9 @@ fs.writeFileSync(outputPath, JSON.stringify(mergedConfig), 'utf8')
 
 // Format using prettier
 try {
-    execSync(`prettier --write ${outputPath}`, { stdio: 'inherit' })
+    execSync(`prettier --write --experimental-cli ${outputPath}`, {
+        stdio: 'inherit',
+    })
     // eslint-disable-next-line no-console
     console.log(
         'ESLint configurations merged and formatted successfully to .oxlintrc.json!',

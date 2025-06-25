@@ -367,8 +367,7 @@ export default function ConditionsNodeEditor({
                                                                 [item.id]: {
                                                                     conditions:
                                                                         {
-                                                                            [index]:
-                                                                                true,
+                                                                            [index]: true,
                                                                         },
                                                                 },
                                                             },
