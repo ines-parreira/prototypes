@@ -488,7 +488,7 @@ describe('ExternalFilesSection', () => {
         fireEvent.click(openArticlesButton)
 
         expect(history.push).toHaveBeenCalledWith(
-            '/app/ai-agent/shopify/test/knowledge/sources/file-articles/1',
+            '/app/ai-agent/shopify/test/knowledge/sources/file-articles/1/articles',
             { selectedResource: ingestedFile },
         )
     })

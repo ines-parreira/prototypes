@@ -89,7 +89,7 @@ describe('PublicSourcesItem', () => {
             openArticlesButton.click()
 
             expect(history.push).toHaveBeenCalledWith(
-                '/app/ai-agent/shopify/test/knowledge/sources/url-articles/1',
+                '/app/ai-agent/shopify/test/knowledge/sources/url-articles/1/articles',
                 {
                     selectedResource: source,
                 },

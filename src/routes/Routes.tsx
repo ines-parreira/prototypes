@@ -651,13 +651,25 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                                             }
                                         />
                                         <Route
-                                            path={`${path}/knowledge/sources/url-articles/:articleIngestionId`}
+                                            path={`${path}/knowledge/sources/url-articles/:articleIngestionId/articles/:articleId`}
                                             component={
                                                 AiAgentUrlSourcesArticleContainer
                                             }
                                         />
                                         <Route
-                                            path={`${path}/knowledge/sources/file-articles/:fileIngestionId`}
+                                            path={`${path}/knowledge/sources/url-articles/:articleIngestionId/articles`}
+                                            component={
+                                                AiAgentUrlSourcesArticleContainer
+                                            }
+                                        />
+                                        <Route
+                                            path={`${path}/knowledge/sources/file-articles/:fileIngestionId/articles/:articleId`}
+                                            component={
+                                                AiAgentExternalDocumentsArticleContainer
+                                            }
+                                        />{' '}
+                                        <Route
+                                            path={`${path}/knowledge/sources/file-articles/:fileIngestionId/articles`}
                                             component={
                                                 AiAgentExternalDocumentsArticleContainer
                                             }

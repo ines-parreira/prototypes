@@ -4,7 +4,7 @@ import { SourceItem } from './types'
 
 type ArticleIngestionLog = Components.Schemas.ArticleIngestionLogDto
 
-const convertArticleIngestionStatus = (
+export const convertArticleIngestionStatus = (
     status: ArticleIngestionLog['status'],
 ): SourceItem['status'] => {
     switch (status) {

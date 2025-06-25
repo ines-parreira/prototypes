@@ -4,6 +4,7 @@ import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useSearchParam } from 'hooks/useSearchParam'
+import { useIngestionDomainBannerDismissed } from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed'
 import Button from 'pages/common/components/button/Button'
 import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
 import { notify } from 'state/notifications/actions'
@@ -57,6 +58,10 @@ export const PublicSourcesSection = ({
 
     const { articleIngestionLogsStatus } = usePublicResourcesPooling({
         helpCenterId,
+        shopName,
+    })
+
+    const { resetAllBanner } = useIngestionDomainBannerDismissed({
         shopName,
     })
 
@@ -159,6 +164,7 @@ export const PublicSourcesSection = ({
                 logConnectedPublicUrl(url)
             }
             await addPublicResource([url])
+            resetAllBanner()
         } catch {
             setSources((prev) =>
                 prev.map((source) =>
@@ -172,7 +178,7 @@ export const PublicSourcesSection = ({
                 notify({
                     status: NotificationStatus.Error,
                     message:
-                        'Error during Public URL sync. Try different URL or contact support',
+                        'We couldn’t sync your URL. Please try again or contact support if the issue persists.',
                 }),
             )
         }

@@ -151,10 +151,23 @@ describe('useAiAgentNavigation', () => {
         )
 
         expect(result.current.routes.urlArticles(42)).toBe(
-            '/app/ai-agent/shopify/test/knowledge/sources/url-articles/42',
+            '/app/ai-agent/shopify/test/knowledge/sources/url-articles/42/articles',
         )
         expect(result.current.routes.fileArticles(99)).toBe(
-            '/app/ai-agent/shopify/test/knowledge/sources/file-articles/99',
+            '/app/ai-agent/shopify/test/knowledge/sources/file-articles/99/articles',
+        )
+    })
+
+    it('should return correct urlArticlesDetail and fileArticlesDetail paths', () => {
+        const { result } = renderHook(() =>
+            useAiAgentNavigation({ shopName: 'test' }),
+        )
+
+        expect(result.current.routes.urlArticlesDetail(42, 7)).toBe(
+            '/app/ai-agent/shopify/test/knowledge/sources/url-articles/42/articles/7',
+        )
+        expect(result.current.routes.fileArticlesDetail(99, 14)).toBe(
+            '/app/ai-agent/shopify/test/knowledge/sources/file-articles/99/articles/14',
         )
     })
 

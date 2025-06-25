@@ -3,10 +3,11 @@ import React from 'react'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 
 import {
     useGetArticleIngestionLogs,
+    useGetFileIngestion,
     useGetHelpCenterArticle,
 } from 'models/helpCenter/queries'
 import { HeaderType } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
@@ -14,6 +15,7 @@ import { useIngestionDomainBannerDismissed } from 'pages/aiAgent/AiAgentScrapedD
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import { usePublicResourceMutation } from 'pages/aiAgent/hooks/usePublicResourcesMutation'
 import { usePublicResourcesPooling } from 'pages/aiAgent/hooks/usePublicResourcesPooling'
+import history from 'pages/history'
 import { getSingleHelpCenterResponseFixtureWithTranslation } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 import { assumeMock } from 'utils/testing'
@@ -23,6 +25,7 @@ import AiAgentExternalSourceArticlesView from '../AiAgentExternalSourceArticlesV
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useLocation: jest.fn(),
+    useParams: jest.fn(),
 }))
 
 jest.mock('models/helpCenter/queries')
@@ -32,10 +35,13 @@ jest.mock('pages/aiAgent/hooks/usePublicResourcesPooling')
 jest.mock(
     'pages/aiAgent/AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed',
 )
+jest.mock('pages/history')
 
 const mockUseLocation = assumeMock(useLocation)
+const mockUseParams = assumeMock(useParams)
 const mockUseGetHelpCenterArticle = assumeMock(useGetHelpCenterArticle)
 const mockUseGetArticleIngestionLogs = assumeMock(useGetArticleIngestionLogs)
+const mockUseGetFileIngestion = assumeMock(useGetFileIngestion)
 const mockUseGuidanceArticleMutation = assumeMock(useGuidanceArticleMutation)
 const mockUsePublicResourceMutation = assumeMock(usePublicResourceMutation)
 const mockUsePublicResourcesPooling = assumeMock(usePublicResourcesPooling)
@@ -91,7 +97,9 @@ const renderComponent = (props = {}) => {
     }
 
     return renderWithStoreAndQueryClientAndRouter(
-        <AiAgentExternalSourceArticlesView {...defaultProps} {...props} />,
+        (
+            <AiAgentExternalSourceArticlesView {...defaultProps} {...props} />
+        ) as React.ReactElement,
         defaultState,
     )
 }
@@ -122,6 +130,12 @@ describe('AiAgentExternalSourceArticlesView', () => {
             error: null,
         } as any)
 
+        mockUseGetFileIngestion.mockReturnValue({
+            data: { data: [] },
+            isLoading: false,
+            error: null,
+        } as any)
+
         mockUseGuidanceArticleMutation.mockReturnValue({
             updateGuidanceArticle: jest.fn(),
             isGuidanceArticleUpdating: false,
@@ -143,6 +157,9 @@ describe('AiAgentExternalSourceArticlesView', () => {
             isDismissed: false,
             dismissBanner: jest.fn(),
         } as any)
+        mockUseParams.mockReturnValue({
+            articleId: undefined,
+        })
     })
 
     it('should render the component with correct title for external document', () => {
@@ -171,6 +188,9 @@ describe('AiAgentExternalSourceArticlesView', () => {
     })
 
     it('should handle article selection', () => {
+        mockUseParams.mockReturnValue({
+            articleId: '1',
+        })
         renderComponent()
 
         // Click on the first article row
@@ -336,5 +356,127 @@ describe('AiAgentExternalSourceArticlesView', () => {
             // Sync button should not be present for external documents
             expect(screen.queryByText('Sync')).not.toBeInTheDocument()
         })
+    })
+
+    it('should fetch and display URL when navigating directly to route (no location state)', () => {
+        // Clear previous mock and set up new mock for direct navigation
+        mockUseGetArticleIngestionLogs.mockReturnValue({
+            data: [
+                {
+                    id: Number(mockedFileIngestionId),
+                    url: 'https://example.com/direct-navigation-url',
+                    latest_sync: '2024-01-15T00:00:00Z',
+                    created_datetime: '2024-01-01T00:00:00Z',
+                    status: 'SUCCESSFUL',
+                    article_ids: [1, 2],
+                },
+            ],
+            isLoading: false,
+            error: null,
+        } as any)
+
+        mockUseLocation.mockReturnValue({
+            state: {
+                selectedResource: null,
+            },
+        } as any)
+
+        renderComponent({ headerType: HeaderType.URL })
+
+        // The URL should be displayed from the fetched resource data
+        expect(
+            screen.getByText('https://example.com/direct-navigation-url'),
+        ).toBeInTheDocument()
+
+        // Verify that useGetArticleIngestionLogs was called to fetch the resource
+        expect(mockUseGetArticleIngestionLogs).toHaveBeenCalledWith(
+            {
+                help_center_id: mockedHelpCenterId,
+                ids: [Number(mockedFileIngestionId)],
+            },
+            {
+                enabled: true, // Should be enabled since no location state is available
+            },
+        )
+    })
+
+    it('should fetch and display filename when navigating directly to file route (no location state)', () => {
+        // Clear previous mock and set up new mock for direct navigation to file
+        mockUseGetFileIngestion.mockReturnValue({
+            data: {
+                data: [
+                    {
+                        id: Number(mockedFileIngestionId),
+                        filename: 'test-document.pdf',
+                        uploaded_datetime: '2024-01-15T00:00:00Z',
+                        status: 'SUCCESSFUL',
+                        snippets_article_ids: [1, 2],
+                        help_center_id: mockedHelpCenterId,
+                        type: 'pdf',
+                        size_bytes: 1024,
+                        google_storage_url:
+                            'https://storage.googleapis.com/test.pdf',
+                        meta: null,
+                    },
+                ],
+            },
+            isLoading: false,
+            error: null,
+        } as any)
+
+        // Clear location state to simulate direct navigation
+        mockUseLocation.mockReturnValue({
+            state: {
+                selectedResource: null,
+            },
+        } as any)
+
+        renderComponent({ headerType: HeaderType.ExternalDocument })
+
+        // The filename should be displayed from the fetched resource data
+        expect(screen.getByText('test-document.pdf')).toBeInTheDocument()
+
+        // Verify that useGetFileIngestion was called to fetch the resource
+        expect(mockUseGetFileIngestion).toHaveBeenCalledWith(
+            {
+                help_center_id: mockedHelpCenterId,
+                ids: [Number(mockedFileIngestionId)],
+            },
+            {
+                enabled: true, // Should be enabled since no location state is available
+            },
+        )
+    })
+
+    it('should navigate to the article list for URL header type when closing the article detail modal', () => {
+        const mockHistoryPush = jest.spyOn(history, 'push')
+        renderComponent({ headerType: HeaderType.URL })
+
+        // Click on the first article row to open the modal
+        const articleRow = screen.getByRole('row', { name: /Test article 1/i })
+        fireEvent.click(articleRow)
+
+        // Close the selected article
+        const closeButton = screen.getByAltText('hide-view-icon')
+        fireEvent.click(closeButton)
+
+        // Should navigate to the article list for URL header type
+        expect(mockHistoryPush).toHaveBeenCalledWith(
+            expect.stringContaining('/url-articles/'),
+        )
+    })
+
+    it('should navigate to the article detail for URL header type when selecting an article', () => {
+        const mockHistoryPush = jest.spyOn(history, 'push')
+        renderComponent({ headerType: HeaderType.URL })
+
+        // Click on the first article row to trigger navigation to detail
+        const articleRow = screen.getByRole('row', { name: /Test article 1/i })
+        fireEvent.click(articleRow)
+
+        // Should navigate to the article detail for URL header type
+        expect(mockHistoryPush).toHaveBeenCalledWith(
+            expect.stringContaining('/url-articles/123/articles/1'),
+        )
     })
 })
