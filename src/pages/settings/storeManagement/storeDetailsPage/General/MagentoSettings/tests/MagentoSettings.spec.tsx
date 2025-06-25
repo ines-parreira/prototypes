@@ -1,4 +1,4 @@
-import { fireEvent, screen } from '@testing-library/react'
+import { act, fireEvent, screen, within } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -148,5 +148,130 @@ describe('<MagentoSettings/>', () => {
         expect(window.location.href).toContain(
             'https://example.com/auth?store_url=https://test-store.com&admin_url_suffix=admin',
         )
+    })
+
+    it('should show UnsavedChangesModal when there are unsaved changes and user navigates away - manual form', async () => {
+        const integration = {
+            meta: {
+                store_url: 'https://test-store.com',
+                admin_url_suffix: 'admin',
+                is_manual: true,
+            },
+        } as Magento2Integration
+
+        const { history } = renderComponent(
+            <MagentoSettings {...minProps} integration={integration} />,
+        )
+
+        const input = screen.getByRole('textbox', {
+            name: 'Consumer key',
+        })
+        fireEvent.change(input, { target: { value: 'new value' } })
+
+        await act(async () => {
+            history.push('/different-route')
+        })
+
+        expect(screen.queryByText('Save changes?')).toBeInTheDocument()
+    })
+
+    it('should show UnsavedChangesModal when there are unsaved changes and user navigates away - one click form', async () => {
+        const integration = {
+            meta: {
+                store_url: 'https://test-store.com',
+                admin_url_suffix: 'admin',
+                is_manual: false,
+            },
+        } as Magento2Integration
+
+        const { history } = renderComponent(
+            <MagentoSettings {...minProps} integration={integration} />,
+        )
+
+        const input = screen.getByPlaceholderText('ex: admin_45f1c')
+        fireEvent.change(input, { target: { value: 'new value' } })
+
+        await act(async () => {
+            history.push('/different-route')
+        })
+
+        expect(screen.queryByText('Save changes?')).toBeInTheDocument()
+    })
+
+    it('should not show UnsavedChangesModal when there are no unsaved changes', async () => {
+        const integration = {
+            meta: {
+                store_url: 'https://test-store.com',
+                admin_url_suffix: 'admin',
+                is_manual: true,
+            },
+        } as Magento2Integration
+
+        const { history } = renderComponent(
+            <MagentoSettings {...minProps} integration={integration} />,
+        )
+
+        await act(async () => {
+            history.push('/different-route')
+        })
+
+        expect(screen.queryByText('Save changes?')).not.toBeInTheDocument()
+    })
+
+    it('should call handleUpdate when Save Changes button is clicked in UnsavedChangesModal', async () => {
+        const mockHandleUpdate = jest.fn()
+        const integration = {
+            meta: {
+                store_url: 'https://test-store.com',
+                admin_url_suffix: 'admin',
+                is_manual: true,
+            },
+        } as Magento2Integration
+
+        const mockUseManualForm = {
+            defaultValues: {
+                adminURLSuffix: 'admin',
+                consumerKey: '',
+                consumerSecret: '',
+                accessToken: '',
+                accessTokenSecret: '',
+            },
+            isSubmitting: false,
+            handleUpdate: mockHandleUpdate,
+            storeURL: 'https://test-store.com',
+        }
+
+        jest.spyOn(
+            require('../hooks/useManualForm'),
+            'useManualForm',
+        ).mockReturnValue(mockUseManualForm)
+
+        const { history } = renderComponent(
+            <MagentoSettings {...minProps} integration={integration} />,
+        )
+
+        const input = screen.getByRole('textbox', {
+            name: 'Consumer key',
+        })
+        fireEvent.change(input, { target: { value: 'test-key' } })
+
+        await act(async () => {
+            history.push('/different-route')
+        })
+
+        expect(screen.getByText('Save changes?')).toBeInTheDocument()
+        const dialog = screen.getByRole('dialog')
+        const saveButton = within(dialog).getByRole('button', {
+            name: 'Save Changes',
+        })
+        fireEvent.click(saveButton)
+
+        expect(mockHandleUpdate).toHaveBeenCalledWith({
+            adminURLSuffix: 'admin',
+            consumerKey: 'test-key',
+            consumerSecret: '',
+            accessToken: '',
+            accessTokenSecret: '',
+        })
     })
 })

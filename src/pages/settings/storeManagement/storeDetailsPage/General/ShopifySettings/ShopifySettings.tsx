@@ -1,6 +1,7 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useRef } from 'react'
 
 import { ShopifyIntegration } from 'models/integration/types'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
 
 import { useConfirmationModal } from '../hooks/useConfirmationModal'
@@ -25,6 +26,8 @@ export default function ShopifySettings({
     refetchStore,
 }: ShopifySettingsProps) {
     useQueryNotify()
+
+    const promptRef = useRef<{ onLeaveContext: () => void }>(null)
 
     const shopName = integration?.meta?.shop_name
     const isActive = !integration?.deactivated_datetime
@@ -101,6 +104,13 @@ export default function ShopifySettings({
                 onConfirm={onConfirmationModalSave}
                 onCancel={onConfirmationModalDiscard}
                 isLoading={isSubmitting}
+            />
+            <UnsavedChangesPrompt
+                ref={promptRef}
+                shouldShowSaveButton
+                shouldShowDiscardButton
+                onSave={saveIntegrationMeta}
+                when={areIntegrationOptionsDirty}
             />
         </>
     )

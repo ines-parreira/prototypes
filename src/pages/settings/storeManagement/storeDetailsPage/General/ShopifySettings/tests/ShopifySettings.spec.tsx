@@ -1,4 +1,4 @@
-import { fireEvent, screen } from '@testing-library/react'
+import { act, fireEvent, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -196,5 +196,49 @@ describe('<ShopifySettings/>', () => {
         expect(syncNotesToggle).toHaveAttribute('aria-checked', 'true')
         expect(matchingToggle).toHaveAttribute('aria-checked', 'false')
         expect(saveChangesButton).toHaveAttribute('aria-disabled', 'true')
+    })
+
+    it('should show UnsavedChangesModal when there are unsaved changes and user navigates away', async () => {
+        const integration = {
+            meta: {
+                shop_name: 'test-store',
+                sync_customer_notes: true,
+                default_address_phone_matching_enabled: false,
+            },
+        } as ShopifyIntegration
+
+        const { history } = renderComponent(
+            <ShopifySettings {...minProps} integration={integration} />,
+        )
+
+        const syncNotesToggle = findToggle('Sync customer notes with Shopify')
+
+        fireEvent.click(syncNotesToggle!)
+
+        await act(async () => {
+            history.push('/different-route')
+        })
+
+        expect(screen.queryByText('Save changes?')).toBeInTheDocument()
+    })
+
+    it('should not show UnsavedChangesModal when there are no unsaved changes', async () => {
+        const integration = {
+            meta: {
+                shop_name: 'test-store',
+                sync_customer_notes: true,
+                default_address_phone_matching_enabled: false,
+            },
+        } as ShopifyIntegration
+
+        const { history } = renderComponent(
+            <ShopifySettings {...minProps} integration={integration} />,
+        )
+
+        await act(async () => {
+            history.push('/different-route')
+        })
+
+        expect(screen.queryByText('Save changes?')).not.toBeInTheDocument()
     })
 })
