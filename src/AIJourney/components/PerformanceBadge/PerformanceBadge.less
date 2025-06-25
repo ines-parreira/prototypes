@@ -1,0 +1,31 @@
+:local {
+    .performanceBadge {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: var(--layout-spacing-s);
+        grid-row: 1;
+        grid-column: 2;
+    }
+
+    .badge {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: var(--layout-spacing-s);
+
+        padding: var(--layout-spacing-xs) var(--layout-spacing-s);
+        margin: var(--layout-spacing-xs);
+
+        border: 1px solid var(--neutral-grey-2);
+        border-radius: var(--layout-spacing-m);
+
+        box-shadow: 2px 2px 20px 0px rgba(0, 0, 0, 0.05);
+
+        font-weight: 600;
+        background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.4) 0%,
+            #fff 100%
+        );
+    }
+}

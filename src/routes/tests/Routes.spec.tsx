@@ -848,5 +848,22 @@ describe('<Routes/>', () => {
                 )
             })
         })
+
+        it('should redirect to first store when no store is passed in the URL', async () => {
+            mockUseFlag.mockReturnValue(true)
+            const history = createMemoryHistory({
+                initialEntries: ['/app/ai-journey/shopify-store/performance'],
+            })
+
+            render(
+                <Router history={history}>
+                    <Routes />
+                </Router>,
+            )
+
+            expect(
+                screen.getByText('AI Journey Performance'),
+            ).toBeInTheDocument()
+        })
     })
 })

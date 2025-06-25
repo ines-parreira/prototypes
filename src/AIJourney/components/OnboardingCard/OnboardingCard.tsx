@@ -48,14 +48,20 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
     const handleTestSmsNumberChange = (newValue: string) => {
         setTestSmsNumber(newValue)
     }
+    const handleContinue = () => {
+        if (!isActivationStep) {
+            history.push(`/app/ai-journey/${shopName}/activation`)
+        } else history.push(`/app/ai-journey/${shopName}/performance`)
+    }
 
     const followUpOptions = [1, 2, 3]
     const optionsList = ['(415)-111-111', '(415)-222-222', '(415)-333-333']
 
     const isDiscountFieldValid = isDiscountEnabled ? !!discountValue : true
 
-    const shouldDisableButton =
-        !isDiscountFieldValid || !followUpValue || !phoneNumberValue
+    const shouldDisableButton = isActivationStep
+        ? !testSmsNumber
+        : !isDiscountFieldValid || !followUpValue || !phoneNumberValue
 
     return (
         <div className={css.onboardingCard}>
@@ -96,9 +102,7 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
                 )}
                 <Button
                     label="Continue"
-                    onClick={() =>
-                        history.push(`/app/ai-journey/${shopName}/activation`)
-                    }
+                    onClick={handleContinue}
                     isDisabled={shouldDisableButton}
                 />
             </div>

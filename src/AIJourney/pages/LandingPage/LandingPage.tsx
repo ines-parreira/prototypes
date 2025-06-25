@@ -1,7 +1,6 @@
 import { useHistory, useParams } from 'react-router-dom'
 
-import { Button } from 'AIJourney/components'
-import sphereIcon from 'assets/img/ai-journey/sphere.svg'
+import { Button, PerformanceBadge } from 'AIJourney/components'
 
 import css from './LandingPage.less'
 
@@ -11,12 +10,7 @@ export const LandingPage = () => {
 
     return (
         <div className={css.container}>
-            <div className={css.title}>
-                <img src={sphereIcon} alt="Ai-icon" />
-                <div className={css.badge}>
-                    <span>AI Journey Performance</span>
-                </div>
-            </div>
+            <PerformanceBadge />
             <div className={css.content}>
                 <span>
                     AI Journey automatically creates and sends personalized SMS

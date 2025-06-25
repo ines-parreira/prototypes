@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom'
 
 import { AiJourneyNavbar } from 'AIJourney/components'
-import { LandingPage } from 'AIJourney/pages'
+import { LandingPage, Performance } from 'AIJourney/pages'
 import { AiJourneyOnboarding } from 'AIJourney/pages/AiJourneyOnboarding/AiJourneyOnboarding'
 import useAllIntegrations from 'hooks/useAllIntegrations'
 import App from 'pages/App'
@@ -76,6 +76,18 @@ export function AiJourneyRoutes({ match: { path } }: RouteComponentProps) {
                     <App
                         content={(props) => (
                             <AiJourneyOnboarding {...props} step="activation" />
+                        )}
+                        navbar={AiJourneyNavbar}
+                    />
+                )}
+            />
+            <Route
+                path={`${path}/:shopName/performance`}
+                exact
+                render={() => (
+                    <App
+                        content={(props) => (
+                            <Performance {...props} step="activation" />
                         )}
                         navbar={AiJourneyNavbar}
                     />
