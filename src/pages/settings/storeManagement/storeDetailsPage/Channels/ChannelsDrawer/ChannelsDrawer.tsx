@@ -11,7 +11,7 @@ import DrawerContent from './DrawerContent'
 import css from './ChannelsDrawer.less'
 
 interface ChannelsDrawerProps {
-    isLoading?: boolean
+    isLoading: boolean
     activeChannel: ChannelWithMetadata
     changes: ChannelChange[]
     onCloseDrawer: () => void

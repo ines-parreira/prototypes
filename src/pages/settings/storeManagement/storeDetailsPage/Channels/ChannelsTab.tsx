@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
@@ -44,7 +44,7 @@ export default function ChannelsTab({ storeId }: ChannelsTabProps) {
     const { mutateAsync: createMapping } = useCreateStoreMapping()
     const { mutateAsync: deleteMapping } = useDeleteStoreMapping()
     const { handleMappingResults } = useNotifications(channels)
-
+    const [mapUpdateInProgress, setMapUpdateInProgress] = useState(false)
     const { activeChannel, setActiveChannelType, reset, changes, setChanges } =
         useActiveChannel(channels)
 
@@ -58,30 +58,35 @@ export default function ChannelsTab({ storeId }: ChannelsTabProps) {
         reset()
     }
     const onSaveDrawer = async () => {
-        const errors: { channelId: number }[] = []
-        await Promise.allSettled(
-            changes.map(async (change) => {
-                try {
-                    if (change.action === 'add') {
-                        await createMapping([
-                            {
-                                store_id: Number(storeId),
-                                integration_id: change.channelId,
-                            },
-                        ])
-                    } else {
-                        await deleteMapping([change.channelId])
+        setMapUpdateInProgress(true)
+        try {
+            const errors: { channelId: number }[] = []
+            await Promise.allSettled(
+                changes.map(async (change) => {
+                    try {
+                        if (change.action === 'add') {
+                            await createMapping([
+                                {
+                                    store_id: Number(storeId),
+                                    integration_id: change.channelId,
+                                },
+                            ])
+                        } else {
+                            await deleteMapping([change.channelId])
+                        }
+                    } catch {
+                        errors.push({
+                            channelId: change.channelId,
+                        })
                     }
-                } catch {
-                    errors.push({
-                        channelId: change.channelId,
-                    })
-                }
-            }),
-        )
-        handleMappingResults(errors, changes)
-        refetchMapping()
-        reset()
+                }),
+            )
+            handleMappingResults(errors, changes)
+            refetchMapping()
+            reset()
+        } finally {
+            setMapUpdateInProgress(false)
+        }
     }
 
     return (
@@ -108,6 +113,7 @@ export default function ChannelsTab({ storeId }: ChannelsTabProps) {
             </SettingsCard>
             {activeChannel && (
                 <ChannelsDrawer
+                    isLoading={mapUpdateInProgress}
                     activeChannel={activeChannel}
                     changes={changes}
                     setChanges={setChanges}
