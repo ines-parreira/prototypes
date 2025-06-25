@@ -265,6 +265,11 @@ export default function HttpRequestEditor({
                                         },
                                     })
                                 }}
+                                allowFilters={
+                                    triggerNode.type === 'llm_prompt_trigger' ||
+                                    triggerNode.type ===
+                                        'reusable_llm_prompt_trigger'
+                                }
                             />
                         </div>
                         <div className={css.formField}>

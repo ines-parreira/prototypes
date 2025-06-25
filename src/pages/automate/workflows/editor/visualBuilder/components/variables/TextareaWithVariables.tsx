@@ -5,14 +5,9 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import classnames from 'classnames'
 import { ContentState, EditorState, Modifier } from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
-import { Popover } from 'reactstrap'
 
 import createWorkflowVariablesPlugin from 'pages/automate/workflows/draftjs/plugins/variables'
-import {
-    extractVariablesFromText,
-    parseWorkflowVariable,
-    toLiquidSyntax,
-} from 'pages/automate/workflows/models/variables.model'
+import { toLiquidSyntax } from 'pages/automate/workflows/models/variables.model'
 import {
     WorkflowVariable,
     WorkflowVariableList,
@@ -20,13 +15,13 @@ import {
 } from 'pages/automate/workflows/models/variables.types'
 import WorkflowVariablePicker from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariablePicker'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
-import TextInput from 'pages/common/forms/input/TextInput'
 import { insertText } from 'utils'
 import {
     contentStateFromTextOrHTML,
     EditorHandledNotHandled,
-    getEntitySelectionState,
 } from 'utils/editor'
+
+import LiquidFilterPopover from './LiquidFilterPopover'
 
 import css from './TextareaWithVariables.less'
 
@@ -80,37 +75,6 @@ const TextareaWithVariables = ({
         },
         [],
     )
-
-    const variable = useMemo(() => {
-        if (!entityKey) {
-            return null
-        }
-
-        const contentState = editorState.getCurrentContent()
-        const value =
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            contentState.getEntity(entityKey).getData().value as string
-
-        const rawVariable = extractVariablesFromText(value)?.[0]
-
-        if (!rawVariable) {
-            return null
-        }
-
-        const variable = parseWorkflowVariable(
-            rawVariable.value,
-            variables || [],
-        )
-
-        if (!variable) {
-            return null
-        }
-
-        return {
-            ...variable,
-            filter: rawVariable.filter,
-        }
-    }, [entityKey, variables, editorState])
 
     const plugins = useMemo(
         () => [
@@ -232,71 +196,15 @@ const TextareaWithVariables = ({
                             plugins={plugins}
                             handlePastedText={handlePastedText}
                         />
-                        {popoverTarget && entityKey && variable && (
-                            <Popover
-                                key={entityKey}
-                                isOpen={isPopoverOpen}
-                                toggle={() => {
-                                    setIsPopoverOpen(!isPopoverOpen)
-                                }}
-                                target={popoverTarget}
-                                trigger="legacy"
-                                placement="right"
-                            >
-                                <TextInput
-                                    value={variable.filter || ''}
-                                    autoFocus
-                                    onChange={(nextFilter) => {
-                                        const contentState =
-                                            editorState.getCurrentContent()
-
-                                        const nextValue = toLiquidSyntax({
-                                            value: variable.value,
-                                            filter: nextFilter,
-                                        })
-
-                                        let newContentState =
-                                            contentState.mergeEntityData(
-                                                entityKey,
-                                                {
-                                                    value: nextValue,
-                                                },
-                                            )
-
-                                        let newEditorState = EditorState.push(
-                                            editorState,
-                                            newContentState,
-                                            'apply-entity',
-                                        )
-
-                                        const selection =
-                                            getEntitySelectionState(
-                                                newContentState,
-                                                entityKey,
-                                            )
-
-                                        if (selection) {
-                                            newContentState =
-                                                Modifier.replaceText(
-                                                    newContentState,
-                                                    selection,
-                                                    nextValue,
-                                                    undefined,
-                                                    entityKey,
-                                                )
-
-                                            newEditorState = EditorState.push(
-                                                newEditorState,
-                                                newContentState,
-                                                'change-block-data',
-                                            )
-                                        }
-
-                                        handleChange(newEditorState)
-                                    }}
-                                />
-                            </Popover>
-                        )}
+                        <LiquidFilterPopover
+                            isOpen={isPopoverOpen}
+                            onToggle={() => setIsPopoverOpen(!isPopoverOpen)}
+                            target={popoverTarget}
+                            entityKey={entityKey}
+                            editorState={editorState}
+                            variables={variables}
+                            onChange={handleChange}
+                        />
                     </div>
                     <div className={css.variables}>
                         <WorkflowVariablePicker

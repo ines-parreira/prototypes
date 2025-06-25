@@ -33,6 +33,8 @@ import InputGroup, {
 import { insertText } from 'utils'
 import { contentStateFromTextOrHTML } from 'utils/editor'
 
+import LiquidFilterPopover from './LiquidFilterPopover'
+
 import css from './TextInputWithVariables.less'
 
 type Props = {
@@ -46,6 +48,7 @@ type Props = {
     isDisabled?: boolean
     toolTipMessage?: string | null
     error?: string
+    allowFilters?: boolean
 }
 
 const TextInputWithVariables = (
@@ -60,26 +63,43 @@ const TextInputWithVariables = (
         isDisabled,
         toolTipMessage = 'Variables are automatically created and can be used to recall information from previous steps in a flow',
         error,
+        allowFilters,
     }: Props,
     ref: ForwardedRef<Editor>,
 ) => {
     const editorRef = useRef<Editor | null>(null)
+
+    const [editorState, setEditorState] = useState(() =>
+        EditorState.createWithContent(contentStateFromTextOrHTML(value)),
+    )
 
     useImperativeHandle(ref, () => editorRef.current!)
 
     const dropdownTargetRef = useRef<HTMLDivElement>(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
-    const plugins = useMemo(
-        () => [
-            createWorkflowVariablesPlugin({ size: 'small' }),
-            createSingleLinePlugin({ stripEntities: false }),
-        ],
+    const [isPopoverOpen, setIsPopoverOpen] = useState(false)
+    const [popoverTarget, setPopoverTarget] = useState<HTMLElement | null>(null)
+    const [entityKey, setEntityKey] = useState<string | null>(null)
+
+    const handleVariableTagClick = useCallback(
+        (entityKey: string, element: HTMLElement) => {
+            setPopoverTarget(element)
+            setEntityKey(entityKey)
+            setIsPopoverOpen(true)
+        },
         [],
     )
 
-    const [editorState, setEditorState] = useState(() =>
-        EditorState.createWithContent(contentStateFromTextOrHTML(value)),
+    const plugins = useMemo(
+        () => [
+            createWorkflowVariablesPlugin({
+                size: 'small',
+                onClick: allowFilters ? handleVariableTagClick : undefined,
+            }),
+            createSingleLinePlugin({ stripEntities: false }),
+        ],
+        [handleVariableTagClick, allowFilters],
     )
 
     const handleChange = useCallback(
@@ -178,6 +198,17 @@ const TextInputWithVariables = (
                                             onBlur?.()
                                         }}
                                         placeholder={placeholder}
+                                    />
+                                    <LiquidFilterPopover
+                                        isOpen={isPopoverOpen}
+                                        onToggle={() =>
+                                            setIsPopoverOpen(!isPopoverOpen)
+                                        }
+                                        target={popoverTarget}
+                                        entityKey={entityKey}
+                                        editorState={editorState}
+                                        variables={variables}
+                                        onChange={handleChange}
                                     />
                                 </div>
                                 <div

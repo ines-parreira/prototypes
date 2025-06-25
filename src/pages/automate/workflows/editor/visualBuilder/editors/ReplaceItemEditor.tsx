@@ -51,6 +51,7 @@ export default function ReplaceItemEditor({
                                     },
                                 })
                             }}
+                            allowFilters={true}
                         />
                     </div>
                     <div className={css.formField}>
@@ -76,6 +77,7 @@ export default function ReplaceItemEditor({
                                     },
                                 })
                             }}
+                            allowFilters={true}
                         />
                     </div>
                     <div className={css.formField}>
@@ -103,6 +105,7 @@ export default function ReplaceItemEditor({
                                     },
                                 })
                             }}
+                            allowFilters={true}
                         />
                     </div>
                     <div className={css.formField}>
@@ -128,6 +131,7 @@ export default function ReplaceItemEditor({
                                     },
                                 })
                             }}
+                            allowFilters={true}
                         />
                     </div>
                 </div>

@@ -52,6 +52,7 @@ export default function UpdateShippingAddressEditor({
                                     },
                                 })
                             }}
+                            allowFilters={true}
                         />
                     </div>
                     <div className={css.formField}>
@@ -78,6 +79,7 @@ export default function UpdateShippingAddressEditor({
                                     },
                                 })
                             }}
+                            allowFilters={true}
                         />
                     </div>
                     <div className={css.formField}>
@@ -104,6 +106,7 @@ export default function UpdateShippingAddressEditor({
                                     },
                                 })
                             }}
+                            allowFilters={true}
                         />
                     </div>
                     <div className={css.formField}>
@@ -130,6 +133,7 @@ export default function UpdateShippingAddressEditor({
                                     },
                                 })
                             }}
+                            allowFilters={true}
                         />
                     </div>
                     <div className={css.formField}>
@@ -156,6 +160,7 @@ export default function UpdateShippingAddressEditor({
                                     },
                                 })
                             }}
+                            allowFilters={true}
                         />
                     </div>
                     <div className={css.formField}>
@@ -182,6 +187,7 @@ export default function UpdateShippingAddressEditor({
                                     },
                                 })
                             }}
+                            allowFilters={true}
                         />
                     </div>
                     <div className={css.formField}>
@@ -234,6 +240,7 @@ export default function UpdateShippingAddressEditor({
                                     },
                                 })
                             }}
+                            allowFilters={true}
                         />
                     </div>
                     <div className={css.formField}>
@@ -286,6 +293,7 @@ export default function UpdateShippingAddressEditor({
                                     },
                                 })
                             }}
+                            allowFilters={true}
                         />
                     </div>
                 </div>

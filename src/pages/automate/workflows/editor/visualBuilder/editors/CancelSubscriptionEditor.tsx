@@ -51,6 +51,7 @@ export default function CancelSubscriptionEditor({
                                     },
                                 })
                             }}
+                            allowFilters={true}
                         />
                     </div>
                     <div className={css.formField}>
@@ -76,6 +77,7 @@ export default function CancelSubscriptionEditor({
                                     },
                                 })
                             }}
+                            allowFilters={true}
                         />
                     </div>
                 </div>
