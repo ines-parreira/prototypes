@@ -1,0 +1,114 @@
+:local {
+    .infoText {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .onboardingAdditionalInfo {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--layout-spacing-xs);
+        font-size: 12px;
+        align-items: center;
+    }
+
+    .demo {
+        display: flex;
+        padding: var(--layout-spacing-xs) var(--layout-spacing-s)
+            var(--layout-spacing-s) var(--layout-spacing-s);
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--layout-spacing-s);
+        border-radius: var(--layout-spacing-s);
+        background-color: var(--neutral-grey-1);
+        max-width: 320px;
+    }
+
+    @media (max-width: 1024px) {
+        .demo {
+            max-width: 275px;
+        }
+    }
+
+    .productImage {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        padding: var(--layout-spacing-s);
+        width: 72px;
+        height: 72px;
+        border-radius: var(--layout-spacing-s);
+        background: var(--neutral-grey-0);
+    }
+
+    .textContainer {
+        display: flex;
+        flex-direction: column;
+        max-width: 75%;
+    }
+
+    .primaryText {
+        color: var(--neutral-grey-6);
+        font-weight: 500;
+    }
+
+    .oldPrice {
+        text-decoration: line-through;
+    }
+
+    .secondaryText {
+        color: var(--neutral-grey-5);
+        font-weight: 500;
+    }
+
+    .revenueGrow {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: var(--layout-spacing-s);
+        gap: var(--layout-spacing-xs);
+        padding: var(--layout-spacing-xs);
+        max-width: 320px;
+    }
+
+    @media (max-width: 1024px) {
+        .revenueGrow {
+            max-width: 275px;
+        }
+    }
+
+    .speedometerImage {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        width: 200px;
+        border-radius: var(--layout-spacing-s);
+        background: var(--neutral-grey-0);
+    }
+
+    .speedometerImage img {
+        max-width: 100%;
+        display: block;
+    }
+
+    .revenueGrowText {
+        color: var(--neutral-grey-6);
+        max-width: 65%;
+    }
+
+    .bold {
+        font-weight: 600;
+    }
+
+    .revenueIncreaveValue {
+        position: absolute;
+        color: #0eb263;
+        font-weight: 600;
+    }
+}

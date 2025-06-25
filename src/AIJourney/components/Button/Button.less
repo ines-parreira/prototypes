@@ -14,12 +14,26 @@
         transition:
             height 0.2s linear,
             background 0.2s linear;
-        margin-top: auto;
+        margin: var(--layout-spacing-s);
+        max-width: 400px;
 
         &--disabled {
             opacity: 0.5;
         }
     }
+
+    @media (max-width: 900px) {
+        .fakeBorder {
+            margin: var(--layout-spacing-xxs);
+        }
+    }
+
+    @media (min-width: 1920px) {
+        .fakeBorder {
+            margin: var(--layout-spacing-l);
+        }
+    }
+
     .button {
         position: relative;
         width: 100%;

@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import { renderWithRouter } from 'utils/testing'
@@ -27,7 +27,8 @@ describe('<LandingPage />', () => {
 
         const button = screen.getByTestId('ai-journey-button')
         await userEvent.click(button)
-
-        expect(mockHistoryPush).toHaveBeenCalledTimes(1)
+        await waitFor(() => {
+            expect(mockHistoryPush).toHaveBeenCalledTimes(1)
+        })
     })
 })
