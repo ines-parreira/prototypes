@@ -31,8 +31,12 @@ export const useGetAlreadyUsedEmailIntegrationIds = (
 
     const { data: onboardingsData } = useGetOnboardings()
     const onboardings = onboardingsData ?? []
-    const otherActiveOnboardings = onboardings.filter((onboarding) =>
-        otherActiveStoreNames.includes(onboarding.shopName ?? ''),
+
+    // Select onboardings from other active store names that have not yet been completed
+    const otherActiveOnboardings = onboardings.filter(
+        (onboarding) =>
+            otherActiveStoreNames.includes(onboarding.shopName ?? '') &&
+            !onboarding.completedDatetime,
     )
 
     const { data: storeConfigurationsResponse } =

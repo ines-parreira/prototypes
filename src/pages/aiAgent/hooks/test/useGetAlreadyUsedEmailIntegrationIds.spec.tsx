@@ -65,6 +65,7 @@ const defaultOnboardingData: OnboardingData = {
     currentStepName: 'channels',
     emailIntegrationIds: [],
     chatIntegrationIds: [],
+    completedDatetime: undefined,
 }
 
 const defaultStoreConfiguration: StoreConfiguration = {
@@ -341,5 +342,80 @@ describe('useGetAlreadyUsedEmailIntegrationIds', () => {
         // Only email from 'test-shop' should be returned (ID 2) because it exists in shopify integrations
         // 'existing-shop-in-shopify' should be filtered out because it doesn't exist in shopify integrations
         expect(result.current).toEqual([2])
+    })
+
+    it('should exclude completed onboardings from already used email integrations', async () => {
+        useGetOnboardingsMock.mockReturnValue({
+            data: [
+                {
+                    ...defaultOnboardingData,
+                    shopName: 'test-shop',
+                    emailIntegrationIds: [1, 2],
+                    completedDatetime: '2024-01-01T00:00:00',
+                },
+                {
+                    ...defaultOnboardingData,
+                    shopName: 'other-shop',
+                    emailIntegrationIds: [3, 4],
+                    completedDatetime: undefined,
+                },
+            ],
+            isLoading: false,
+        } as UseQueryResult<OnboardingData[]>)
+
+        useGetStoresConfigurationForAccountMock.mockReturnValue({
+            data: {
+                storeConfigurations: [
+                    {
+                        ...defaultStoreConfiguration,
+                        storeName: 'test-shop',
+                        monitoredEmailIntegrations: [
+                            { id: 1, email: 'email2@example.com' },
+                        ],
+                    },
+                ] as StoreConfiguration[],
+            },
+            isLoading: false,
+        } as UseQueryResult<StoreConfigurationsResponse>)
+
+        const { result } = renderHook(
+            () => useGetAlreadyUsedEmailIntegrationIds('current-shop'),
+            { wrapper },
+        )
+
+        // Email integration 1 is used because it's part of the store configuration of other-shop
+        // Email integration 2 is not used because the onboarding of test-shop is complete and thus ignored
+        // Email integrations 3 and 4 are used because they are part of the onboarding of other-shop
+        expect(result.current).toEqual([1, 3, 4])
+    })
+
+    it('should return no email integration IDs when there is an onboarding without shop name', async () => {
+        useGetOnboardingsMock.mockReturnValue({
+            data: [
+                {
+                    ...defaultOnboardingData,
+                    shopName: undefined,
+                    emailIntegrationIds: [1],
+                    completedDatetime: '2024-01-01T00:00:00',
+                },
+            ],
+            isLoading: false,
+        } as UseQueryResult<OnboardingData[]>)
+
+        useGetStoresConfigurationForAccountMock.mockReturnValue({
+            data: {
+                storeConfigurations: [] as StoreConfiguration[],
+            },
+            isLoading: false,
+        } as UseQueryResult<StoreConfigurationsResponse>)
+
+        const { result } = renderHook(
+            () => useGetAlreadyUsedEmailIntegrationIds(),
+            {
+                wrapper,
+            },
+        )
+
+        expect(result.current).toEqual([])
     })
 })
