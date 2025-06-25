@@ -4,6 +4,7 @@ import {
     Chart,
     ChartOptions,
     Scale,
+    ScriptableContext,
     ScriptableScaleContext,
     TooltipItem,
 } from 'chart.js'
@@ -62,6 +63,30 @@ type Props = {
 }
 
 export const CHART_TOOLTIP_TARGET = 'barChartTooltip'
+
+export const BAR_BORDER_RADIUS = 4
+
+export function getBorderRadius(ctx: ScriptableContext<'bar'>) {
+    const { datasetIndex, chart, dataIndex } = ctx
+    const datasets = chart.data.datasets
+    const topIndex = datasets.length - 1
+    const topDataset = datasets[topIndex]
+
+    if (
+        datasetIndex === topIndex &&
+        topDataset.data[dataIndex] !== 0 &&
+        !chart.getDatasetMeta(topIndex).hidden
+    ) {
+        return {
+            topLeft: BAR_BORDER_RADIUS,
+            topRight: BAR_BORDER_RADIUS,
+            bottomLeft: 0,
+            bottomRight: 0,
+        }
+    }
+
+    return 0
+}
 
 export function BarChart({
     data,
@@ -140,7 +165,7 @@ export function BarChart({
                     ...(defaultDatasetVisibility && {
                         hidden: !defaultDatasetVisibility[index],
                     }),
-                    borderRadius: 4,
+                    borderRadius: getBorderRadius,
                     minBarLength: 2,
                 }
             }),

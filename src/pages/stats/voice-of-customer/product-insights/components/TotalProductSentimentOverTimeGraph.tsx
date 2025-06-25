@@ -1,7 +1,7 @@
 import analyticsColors from 'assets/css/new/stats/modern.json'
 import { useSentimentsCustomFieldsTimeSeries } from 'hooks/reporting/useCustomFieldsTimeSeries'
 import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
-import { BarChart } from 'pages/stats/common/components/charts/BarChart/BarChart'
+import BarChart from 'pages/stats/common/components/charts/BarChart/BarChart'
 
 export const CHART_COLORS = [
     analyticsColors['analytics'].data.pink.value,
@@ -42,7 +42,7 @@ export const TotalProductSentimentOverTimeGraph = ({
             isStacked={true}
             isLoading={isFetching}
             hasBackground
-            _displayLegacyTooltip
+            withTooltipTotal
             displayLegend
             legendOnLeft
             customColors={CHART_COLORS}

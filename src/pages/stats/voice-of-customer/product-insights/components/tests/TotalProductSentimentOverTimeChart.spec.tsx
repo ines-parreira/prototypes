@@ -3,7 +3,7 @@ import { render } from '@testing-library/react'
 import { useSentimentsCustomFieldsTimeSeries } from 'hooks/reporting/useCustomFieldsTimeSeries'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import ChartCard from 'pages/stats/common/components/ChartCard'
-import { BarChart } from 'pages/stats/common/components/charts/BarChart/BarChart'
+import BarChart from 'pages/stats/common/components/charts/BarChart/BarChart'
 import { TotalProductSentimentOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TotalProductSentimentOverTimeChart'
 import {
     CHART_COLORS,
@@ -86,7 +86,6 @@ describe('TotalProductSentimentOverTimeChart', () => {
 
         expect(BarChartMock).toHaveBeenCalledWith(
             {
-                _displayLegacyTooltip: true,
                 customColors: CHART_COLORS,
                 data: data,
                 displayLegend: true,
@@ -94,6 +93,7 @@ describe('TotalProductSentimentOverTimeChart', () => {
                 isLoading: false,
                 isStacked: true,
                 legendOnLeft: true,
+                withTooltipTotal: true,
             },
             {},
         )

@@ -6,8 +6,10 @@ import colors from '@gorgias/design-tokens/tokens/colors'
 import { ThemeProvider } from 'core/theme'
 import { ticketsCreatedDataItem } from 'fixtures/chart'
 import BarChart, {
+    BAR_BORDER_RADIUS,
     BarChart as BarChartWithoutTheme,
     CHART_TOOLTIP_TARGET,
+    getBorderRadius,
 } from 'pages/stats/common/components/charts/BarChart/BarChart'
 import { useCustomTooltip } from 'pages/stats/common/useCustomTooltip'
 import { assumeMock } from 'utils/testing'
@@ -167,5 +169,144 @@ describe('<BarChart />', () => {
         >['title']
 
         expect(callbacksTitle([])).toBeUndefined()
+    })
+
+    describe('getBorderRadius', () => {
+        const createContext = ({
+            datasetIndex,
+            dataIndex,
+            datasets,
+            isHidden = false,
+        }: {
+            datasetIndex: number
+            dataIndex: number
+            datasets: any[]
+            isHidden?: boolean
+        }) =>
+            ({
+                datasetIndex,
+                dataIndex,
+                chart: {
+                    getDatasetMeta: () => ({ hidden: isHidden }),
+                    data: { datasets },
+                },
+            }) as any
+
+        const withBorderRadius = {
+            topLeft: BAR_BORDER_RADIUS,
+            topRight: BAR_BORDER_RADIUS,
+            bottomLeft: 0,
+            bottomRight: 0,
+        }
+
+        it('returns `0` when datasets array is empty', () => {
+            const context = createContext({
+                datasetIndex: 0,
+                dataIndex: 0,
+                datasets: [],
+            })
+            const actual = getBorderRadius(context)
+
+            expect(actual).toBe(0)
+        })
+
+        it('returns `0` when datasetIndex is not the top index', () => {
+            const datasets = [
+                { data: [10, 20, 30] },
+                { data: [15, 25, 35] },
+                { data: [20, 30, 40] },
+            ]
+            const context = createContext({
+                datasetIndex: 0,
+                dataIndex: 1,
+                datasets,
+            })
+
+            const actual = getBorderRadius(context)
+
+            expect(actual).toBe(0)
+        })
+
+        it('returns `0` when topDataset data value is 0', () => {
+            const datasets = [{ data: [10, 20, 30] }, { data: [15, 0, 35] }]
+            const context = createContext({
+                datasetIndex: 1,
+                dataIndex: 1,
+                datasets,
+            })
+
+            const actual = getBorderRadius(context)
+
+            expect(actual).toBe(0)
+        })
+
+        it('returns `0` when dataset is hidden', () => {
+            const datasets = [{ data: [10, 20, 30] }, { data: [15, 25, 35] }]
+            const context = createContext({
+                datasetIndex: 1,
+                dataIndex: 1,
+                datasets,
+                isHidden: true,
+            })
+
+            const actual = getBorderRadius(context)
+
+            expect(actual).toBe(0)
+        })
+
+        it('returns border radius object when all conditions are met', () => {
+            const datasets = [{ data: [10, 20, 30] }, { data: [15, 25, 35] }]
+            const context = createContext({
+                datasetIndex: 1,
+                dataIndex: 1,
+                datasets,
+            })
+
+            const actual = getBorderRadius(context)
+
+            expect(actual).toEqual(withBorderRadius)
+        })
+
+        it('returns border radius object for single dataset with non-zero data', () => {
+            const datasets = [{ data: [15, 25, 35] }]
+            const context = createContext({
+                datasetIndex: 0,
+                dataIndex: 1,
+                datasets,
+            })
+
+            const actual = getBorderRadius(context)
+
+            expect(actual).toEqual(withBorderRadius)
+        })
+
+        it('returns `0` for single dataset with zero data', () => {
+            const datasets = [{ data: [0, 25, 35] }]
+            const context = createContext({
+                datasetIndex: 0,
+                dataIndex: 0,
+                datasets,
+            })
+
+            const actual = getBorderRadius(context)
+
+            expect(actual).toBe(0)
+        })
+
+        it('handles undefined data gracefully', () => {
+            const datasets = [
+                { data: [10, 20, 30] },
+                { data: [15, undefined, 35] },
+            ]
+            const context = createContext({
+                datasetIndex: 1,
+                dataIndex: 1,
+                datasets,
+            })
+
+            const actual = getBorderRadius(context)
+
+            expect(actual).toEqual(withBorderRadius)
+        })
     })
 })
