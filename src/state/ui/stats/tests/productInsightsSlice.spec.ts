@@ -1,5 +1,11 @@
+import { fromJS } from 'immutable'
+
 import { opposite, OrderDirection } from 'models/api/types'
-import { Product } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableConfig'
+import {
+    LeadColumn,
+    Product,
+} from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableConfig'
+import { AccountSettingType } from 'state/currentAccount/types'
 import { RootState } from 'state/types'
 import { PRODUCT_INSIGHTS_SLICE_NAME } from 'state/ui/stats/constants'
 import {
@@ -7,15 +13,17 @@ import {
     getProductsLoading,
     getSliceState,
     getSortedProducts,
+    getSorting,
     initialState,
     productInsightsSlice,
     ProductInsightsSliceState,
+    productsLoading,
     setProducts,
     sortingLoaded,
     sortingLoading,
     sortingSet,
 } from 'state/ui/stats/productInsightsSlice'
-import { ProductInsightsTableColumns } from 'state/ui/stats/types'
+import { ProductInsightsTableColumns, TableView } from 'state/ui/stats/types'
 import { getSortByName } from 'utils/getSortByName'
 
 describe('productInsightsSlice', () => {
@@ -42,6 +50,15 @@ describe('productInsightsSlice', () => {
 
             expect(newState.products).toEqual(products)
             expect(newState.productsLoading).toBe(false)
+        })
+
+        it('should set products loading state', () => {
+            const newState = productInsightsSlice.reducer(
+                { ...initialState, productsLoading: false },
+                productsLoading(),
+            )
+
+            expect(newState.productsLoading).toBe(true)
         })
 
         it('should set sorting enable the loading state and clear previous sorting', () => {
@@ -127,6 +144,49 @@ describe('productInsightsSlice', () => {
             const productsLoading = getProductsLoading(state)
 
             expect(productsLoading).toEqual(sliceState.productsLoading)
+        })
+
+        it('should return sorting field if visible in the table', () => {
+            const sorting = getSorting(state)
+
+            expect(sorting.field).toEqual(sliceState.sorting.field)
+        })
+
+        it('should return default sorting field if current one is not visible in the table', () => {
+            let activeViewId = 'current-view'
+            let settingId = 'some-id'
+            const activeView: TableView<ProductInsightsTableColumns, never> = {
+                id: activeViewId,
+                name: 'Some name',
+                metrics: [],
+            }
+            const stateWithTableSettings = {
+                currentAccount: fromJS({
+                    settings: [
+                        {
+                            id: settingId,
+                            type: AccountSettingType.ProductInsightsTableConfig,
+                            data: {
+                                active_view: activeViewId,
+                                views: [activeView],
+                            },
+                        },
+                    ],
+                    _internal: {
+                        loading: {},
+                    },
+                }),
+                ui: {
+                    stats: {
+                        statsTables: {
+                            [PRODUCT_INSIGHTS_SLICE_NAME]: sliceState,
+                        },
+                    },
+                },
+            } as RootState
+            const sorting = getSorting(stateWithTableSettings)
+
+            expect(sorting.field).toEqual(LeadColumn)
         })
 
         it('should return products sorted according to the sorting state with unsorted products last', () => {

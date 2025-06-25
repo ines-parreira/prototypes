@@ -1,7 +1,13 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
+import { getActiveViewFromTableSetting } from 'hooks/reporting/useTableConfigSetting'
 import { OrderDirection } from 'models/api/types'
-import { Product } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableConfig'
+import {
+    LeadColumn,
+    Product,
+    productInsightsTableActiveView,
+} from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableConfig'
+import { getProductInsightsTableConfigSettingsJS } from 'state/currentAccount/selectors'
 import { RootState } from 'state/types'
 import { PRODUCT_INSIGHTS_SLICE_NAME } from 'state/ui/stats/constants'
 import { ProductInsightsTableColumns } from 'state/ui/stats/types'
@@ -33,6 +39,9 @@ export const productInsightsSlice = createSlice({
     name: PRODUCT_INSIGHTS_SLICE_NAME,
     initialState,
     reducers: {
+        productsLoading(state) {
+            state.productsLoading = true
+        },
         setProducts(state, action: PayloadAction<Product[]>) {
             state.products = action.payload
             state.productsLoading = false
@@ -58,8 +67,13 @@ export const productInsightsSlice = createSlice({
     },
 })
 
-export const { setProducts, sortingSet, sortingLoading, sortingLoaded } =
-    productInsightsSlice.actions
+export const {
+    productsLoading,
+    setProducts,
+    sortingSet,
+    sortingLoading,
+    sortingLoaded,
+} = productInsightsSlice.actions
 
 export const getSliceState = (state: RootState) =>
     state.ui.stats.statsTables[productInsightsSlice.name]
@@ -76,7 +90,22 @@ export const getProductsLoading = createSelector(
 
 export const getSorting = createSelector(
     getSliceState,
-    (state) => state.sorting,
+    getProductInsightsTableConfigSettingsJS,
+    (state, tableSettings) => {
+        const activeViewFromSettings = getActiveViewFromTableSetting<
+            ProductInsightsTableColumns,
+            never
+        >(tableSettings)
+        const activeView =
+            activeViewFromSettings ?? productInsightsTableActiveView
+        const fieldVisible =
+            activeView.metrics.find(
+                (column) => column.id === state.sorting.field,
+            )?.visibility ?? false
+        const sortingField = fieldVisible ? state.sorting.field : LeadColumn
+
+        return { ...state.sorting, field: sortingField }
+    },
 )
 
 export const getSortedProducts = createSelector(

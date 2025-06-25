@@ -9,7 +9,7 @@ import { AccountSettingTableConfig } from 'state/currentAccount/types'
 import { RootState, StoreDispatch, StoreState } from 'state/types'
 import { TableColumnSet, TableRowSet, TableView } from 'state/ui/stats/types'
 
-const getActiveViewFromTableSetting = <
+export const getActiveViewFromTableSetting = <
     T extends TableColumnSet,
     R extends TableRowSet,
 >(

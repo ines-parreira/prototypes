@@ -20,6 +20,7 @@ import { RootState } from 'state/types'
 import { PRODUCT_INSIGHTS_SLICE_NAME } from 'state/ui/stats/constants'
 import {
     initialState,
+    productsLoading,
     setProducts,
     sortingLoaded,
     sortingLoading,
@@ -181,6 +182,46 @@ describe('useSortedProducts', () => {
                     })),
                 ),
             )
+        })
+
+        it('should trigger products loading state', () => {
+            const column = ProductInsightsTableColumns.Product
+            const isFetching = true
+            const state = {
+                stats: {
+                    filters: statsFilters,
+                },
+                ui: {
+                    stats: {
+                        filters: {
+                            cleanStatsFilters: statsFilters,
+                        },
+                        statsTables: {
+                            [PRODUCT_INSIGHTS_SLICE_NAME]: {
+                                ...initialState,
+                                productsLoading: false,
+                                sorting: {
+                                    ...initialState.sorting,
+                                    field: column,
+                                },
+                            },
+                        },
+                    },
+                },
+            } as RootState
+            const store = mockStore(state)
+
+            renderHook(
+                () =>
+                    useProductsSorting(column, dataWithEnrichment, isFetching),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={store}>{children}</Provider>
+                    ),
+                },
+            )
+
+            expect(store.getActions()).toContainEqual(productsLoading())
         })
 
         it('should store empty array of loaded products in state', () => {
