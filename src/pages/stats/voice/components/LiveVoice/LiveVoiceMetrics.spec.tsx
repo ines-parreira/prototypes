@@ -1,6 +1,7 @@
 import { ComponentProps } from 'react'
 
 import { render } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
 import { Moment } from 'moment'
 
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-queries'
@@ -127,7 +128,7 @@ describe('LiveVoiceMetrics', () => {
                     hint: 'Metric hint',
                     metric: {
                         data: 1,
-                        isFetching: false,
+                        isLoading: false,
                     },
                     size: 4,
                 },
@@ -177,7 +178,7 @@ describe('LiveVoiceMetrics', () => {
                 hint: 'Metric hint',
                 metric: {
                     data: 1,
-                    isFetching: false,
+                    isLoading: false,
                 },
                 size: 4,
             },
@@ -208,5 +209,41 @@ describe('LiveVoiceMetrics', () => {
             }),
             {},
         )
+    })
+
+    it('should display last updated info', () => {
+        mockFlags({ [FeatureFlagKey.UseLiveVoiceUpdates]: true })
+
+        useLiveVoiceMetricCardsMock.mockReturnValue([
+            {
+                title: 'Metric 1',
+                hint: 'Metric hint',
+                metric: {
+                    data: 1,
+                },
+                size: 4,
+            },
+            {
+                title: 'Metric 2',
+                hint: 'Metric hint',
+                metric: {
+                    data: 1,
+                    isLoading: false,
+                    dataUpdatedAt: 1750765755000,
+                },
+                size: 4,
+            },
+        ])
+
+        const { getByText } = renderComponent({
+            liveVoiceCalls: liveVoiceCalls,
+            isLoadingVoiceCalls: false,
+        })
+
+        expect(
+            getByText(
+                'KPI cards last updated: 11:49 (auto-refresh every 30 seconds)',
+            ),
+        ).toBeInTheDocument()
     })
 })

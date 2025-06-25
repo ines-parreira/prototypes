@@ -1,5 +1,8 @@
+import { mockFlags } from 'jest-launchdarkly-mock'
+
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-queries'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { agents } from 'fixtures/agents'
 import { useSummaryMetric } from 'hooks/reporting/useSummaryMetric'
 import { VoiceCallSummaryMeasure } from 'models/reporting/cubes/VoiceCallSummaryCube'
@@ -63,6 +66,7 @@ const filters: StatsFilters = {
 describe('useLiveVoiceMetricCards', () => {
     beforeEach(() => {
         filterLiveCallsByStatusMock.mockReturnValue(sampleLiveVoiceCalls)
+        mockFlags({ [FeatureFlagKey.UseLiveVoiceUpdates]: true })
     })
 
     it.each([
@@ -107,6 +111,8 @@ describe('useLiveVoiceMetricCards', () => {
 
         expect(useSummaryMetricMock).toHaveBeenCalledWith(
             liveVoiceCallSummaryQueryFactoryMock(filters),
+            true,
+            30 * 1000,
         )
     })
 

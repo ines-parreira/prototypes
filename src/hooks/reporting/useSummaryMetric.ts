@@ -8,6 +8,7 @@ import { ReportingQuery } from 'models/reporting/types'
 export function useSummaryMetric<TCube extends Cubes = Cubes>(
     query: ReportingQuery<TCube>,
     enabled: boolean = true,
+    refetchInterval: number | undefined = undefined,
 ): UseQueryResult<Record<TCube['measures'], number | null>, unknown> {
     const currentPeriodMetric = usePostReporting<
         QueryReturnType<TCube['measures']>,
@@ -31,6 +32,7 @@ export function useSummaryMetric<TCube extends Cubes = Cubes>(
 
             return formattedData
         },
+        refetchInterval: refetchInterval,
     })
 
     return currentPeriodMetric

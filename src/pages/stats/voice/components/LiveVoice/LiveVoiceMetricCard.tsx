@@ -16,7 +16,8 @@ type FullProps = {
     hint: string
     metric: {
         data?: number | null | Record<VoiceCallSummaryMeasure, number | null>
-        isFetching: boolean
+        isLoading?: boolean
+        dataUpdatedAt?: number | null
     }
     metricValueFormat?: MetricValueFormat
     metricName?: VoiceMetric
@@ -68,7 +69,7 @@ const LiveVoiceMetricCardFull = ({
     measure,
 }: FullProps) => {
     const value = getMetricValue(metric.data, measure)
-    const isLoading = metric.isFetching
+    const isLoading = metric.isLoading
     const percentageOfValue = getMetricValue(
         metric.data,
         VoiceCallSummaryMeasure.VoiceCallSummaryInboundTotal,
