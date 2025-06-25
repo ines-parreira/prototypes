@@ -1,0 +1,81 @@
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        display: flex;
+        padding: var(--layout-spacing-s);
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        align-self: stretch;
+
+        border-radius: var(--border-radius-xl, 12px);
+        background: var(--neutral-grey-0);
+        box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.04);
+
+        background-image:
+            linear-gradient(var(--neutral-grey-0), var(--neutral-grey-0)),
+            linear-gradient(
+                315deg,
+                var(--Purple-purple-500, #a084e1) 20.19%,
+                var(--Fuchsia-fuchsia-300, #fc8ae9) 50%,
+                var(--Orange-orange-500, #ff9a57) 80%
+            );
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
+        border: 1px solid transparent;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    .actions {
+        display: flex;
+        align-items: center;
+    }
+
+    .expandedActions {
+        gap: var(--layout-spacing-xs);
+    }
+
+    .collapsedActions {
+        gap: var(--layout-spacing-s);
+    }
+
+    .expanderIcon {
+        cursor: pointer;
+        font-size: 18px;
+    }
+
+    .title {
+        color: var(--neutral-grey-6);
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .description {
+        color: var(--neutral-grey-5);
+        font-size: 14px;
+        font-weight: 400;
+        letter-spacing: -0.14px;
+        padding-top: var(--layout-spacing-xxs);
+        padding-bottom: var(--layout-spacing-m);
+    }
+
+    .primaryActionButton {
+        background-color: var(--neutral-grey-6) !important;
+        color: var(--neutral-grey-0) !important;
+        border-color: var(--neutral-grey-6) !important;
+        height: 24px;
+        padding: 0 var(--layout-spacing-xs);
+    }
+
+    .secondaryActionButton {
+        height: 24px;
+        padding: 0px 12px !important;
+    }
+}
