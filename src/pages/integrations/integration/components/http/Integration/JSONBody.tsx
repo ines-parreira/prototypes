@@ -14,7 +14,7 @@ import { SelectableOption } from 'pages/common/forms/SelectField/types'
 import { CONTEXT_SPECIAL_VARIABLE, DEFAULT_FORM } from './constants'
 
 type Props = {
-    form: HTTPForm
+    form: HTTPForm | null
     onChange: (value: HTTPForm) => void
 }
 
@@ -36,7 +36,7 @@ export default class JSONBody extends Component<Props, State> {
     }
 
     UNSAFE_componentWillMount() {
-        if (!this._formIsPresetOption(this.props.form)) {
+        if (!this._formIsPresetOption(this.props?.form)) {
             this.setState({ cachedForm: this.props.form })
         }
     }

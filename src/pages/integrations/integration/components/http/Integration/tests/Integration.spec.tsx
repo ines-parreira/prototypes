@@ -127,7 +127,7 @@ describe('HTTP Integration', () => {
                     'ticket-assignment-updated': false,
                     'ticket-status-updated': false,
                 },
-                form: '',
+                form: null,
             },
         })
 
@@ -332,6 +332,7 @@ describe('HTTP Integration', () => {
             expect(
                 screen.getByLabelText('Request content type'),
             ).toBeInTheDocument()
+            expect(screen.getByText('Request Body (JSON)')).toBeInTheDocument()
         })
 
         it('should not show request content type for GET method', () => {
@@ -344,6 +345,9 @@ describe('HTTP Integration', () => {
 
             expect(
                 screen.queryByLabelText('Request content type'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Request Body (JSON)'),
             ).not.toBeInTheDocument()
         })
     })

@@ -1,4 +1,4 @@
-import React, { Component, SyntheticEvent } from 'react'
+import { Component, SyntheticEvent } from 'react'
 
 import { fromJS } from 'immutable'
 import { isArray } from 'lodash'
@@ -48,7 +48,7 @@ type Props = {
 
 type State = {
     description: string
-    form?: HTTPForm
+    form?: HTTPForm | null
     headers: Field[]
     isTestShown: boolean
     method?: HttpMethod
@@ -82,7 +82,7 @@ export class Integration extends Component<Props, State> {
         ticketAssignmentUpdated: false,
         ticketStatusUpdated: false,
         headers: [],
-        form: '',
+        form: null,
     }
 
     isInitialized: boolean | undefined
@@ -169,7 +169,7 @@ export class Integration extends Component<Props, State> {
     }
 
     _onRequestContentTypeChange(value: string) {
-        const form = this.state.form
+        const form = this.state.form as HTTPForm | null
 
         if (value === ContentType.Json) {
             this.setState({
@@ -224,7 +224,7 @@ export class Integration extends Component<Props, State> {
     _handleSubmit = (evt: SyntheticEvent<HTMLFormElement>) => {
         evt.preventDefault()
 
-        let form = this.state.form
+        let form = this.state.form as HTTPForm | null
 
         if (this.state.requestContentType !== ContentType.Json) {
             form = form instanceof Array ? this._parametersToObject(form) : form
@@ -334,9 +334,8 @@ export class Integration extends Component<Props, State> {
             ticketMessageFailed,
             ticketAssignmentUpdated,
             ticketStatusUpdated,
+            form,
         } = this.state
-
-        const form = this.state.form
 
         const isSubmitting = this._isSubmitting()
 
@@ -655,11 +654,10 @@ export class Integration extends Component<Props, State> {
                                     />
                                 </FormGroup>
                                 {method !== HttpMethod.Get &&
-                                    form &&
                                     (requestContentType === ContentType.Json ? (
                                         <JSONBody
-                                            form={form}
-                                            onChange={(form: HTTPForm) =>
+                                            form={form as HTTPForm | null}
+                                            onChange={(form: HTTPForm | null) =>
                                                 this.setState({ form })
                                             }
                                         />
