@@ -130,6 +130,7 @@ export default function TicketBody({
                     ref={virtuosoRef}
                     className={classnames(css.wrapper)}
                     components={virtuosoComponents}
+                    skipAnimationFrameInResizeObserver
                     customScrollParent={
                         customScrollParentRef?.current || undefined
                     }
