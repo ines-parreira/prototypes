@@ -3,9 +3,7 @@ import React, { ReactNode } from 'react'
 import { SegmentEvent } from 'common/segment'
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import { useGridSize } from 'hooks/useGridSize'
-import useLocalStorage from 'hooks/useLocalStorage'
 import type { Period } from 'models/stat/types'
-import TipsToggle from 'pages/common/components/TipsToggle/TipsToggle'
 import BigNumberMetric from 'pages/stats/common/components/BigNumberMetric'
 import MetricCard from 'pages/stats/common/components/MetricCard'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
@@ -17,10 +15,7 @@ import {
     MetricTrendFormat,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {
-    OverviewMetric,
-    STATS_TIPS_VISIBILITY_KEY,
-} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { TooltipData } from 'pages/stats/types'
 import { getBadgeTooltipForPreviousPeriod } from 'pages/stats/utils'
 import {
@@ -39,7 +34,6 @@ import css from './IntentPerformance.less'
 export type IntentsPerformanceProps = {
     sectionTitle: string
     sectionSubtitle?: string
-    shouldDisplayTipsCTA: boolean
     period: Period
     metrics: Array<{
         title: string
@@ -61,16 +55,10 @@ export type IntentsPerformanceProps = {
 export const IntentsPerformance = ({
     sectionTitle,
     sectionSubtitle,
-    shouldDisplayTipsCTA,
     period,
     metrics,
 }: IntentsPerformanceProps) => {
     const getGridCellSize = useGridSize()
-
-    const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
-        STATS_TIPS_VISIBILITY_KEY,
-        false,
-    )
 
     const metricsConfig = metrics.map((metric) => {
         const formattedMetric = formatMetricValue(
@@ -101,14 +89,7 @@ export const IntentsPerformance = ({
     })
 
     let titleExtra
-    if (shouldDisplayTipsCTA) {
-        titleExtra = (
-            <TipsToggle
-                isVisible={!!areTipsVisible}
-                onClick={() => setAreTipsVisible(!areTipsVisible)}
-            />
-        )
-    } else if (sectionSubtitle) {
+    if (sectionSubtitle) {
         titleExtra = (
             <div className={css.sectionSubtitle}>{sectionSubtitle}</div>
         )
@@ -126,7 +107,6 @@ export const IntentsPerformance = ({
                         title={config.title}
                         hint={config.hint}
                         isLoading={config.trend.isFetching}
-                        tip={areTipsVisible ? config.tip : undefined}
                     >
                         <BigNumberMetric
                             isLoading={config.trend.isFetching}

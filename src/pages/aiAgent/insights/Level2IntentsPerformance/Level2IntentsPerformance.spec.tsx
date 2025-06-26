@@ -103,7 +103,7 @@ describe('Level2IntentsPerformance', () => {
             .props as unknown as IntentsPerformanceProps
         const metrics = componentProps.metrics
 
-        expect(metrics[0].title).toBe('Success rate uplift opportunity')
+        expect(metrics[0].title).toBe('Improvement potential')
         expect(metrics[0].trend.data?.value).toBe(10)
         expect(metrics[0]?.trend.data?.prevValue).toBe(5)
 

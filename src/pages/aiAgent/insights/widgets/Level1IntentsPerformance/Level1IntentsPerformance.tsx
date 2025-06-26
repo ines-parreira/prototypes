@@ -8,25 +8,11 @@ import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
-import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { IntentsPerformance } from 'pages/aiAgent/insights/widgets/IntentsPerformance/IntentsPerformance'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
-import PerformanceTip from 'pages/stats/common/components/PerformanceTip'
 import { getPageStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 import { AIInsightsMetric } from 'state/ui/stats/types'
-
-const getPerformanceTipType = (
-    top10P: number,
-    avg: number,
-    value?: number | null,
-) => {
-    if (value === null || value === undefined) return 'neutral'
-    if (value > top10P) return 'success'
-    if (value > avg) return 'light-success'
-    if (value > 0) return 'light-error'
-    return 'neutral'
-}
 
 export const Level1IntentsPerformance = () => {
     const pageStatsFilters = useAppSelector(
@@ -50,8 +36,6 @@ export const Level1IntentsPerformance = () => {
     const { intentCustomFieldId, outcomeCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
 
-    const aiAgentNavigation = useAiAgentNavigation({ shopName })
-
     const hasAiAgentTicket =
         aiAgentMetrics.coverageTrend.isFetching ||
         (aiAgentMetrics.coverageTrend?.data?.value &&
@@ -72,8 +56,7 @@ export const Level1IntentsPerformance = () => {
                 </AIBanner>
             )}
             <IntentsPerformance
-                sectionTitle="Optimize AI Agent performance"
-                shouldDisplayTipsCTA={true}
+                sectionTitle="AI Agent performance"
                 period={pageStatsFilters.period}
                 metrics={[
                     {
@@ -84,18 +67,6 @@ export const Level1IntentsPerformance = () => {
                         trend: aiAgentMetrics.coverageTrend,
                         interpretAs: 'more-is-better',
                         metricFormat: 'decimal-to-percent-precision-1',
-                        tip: (
-                            <PerformanceTip showBenchmark={false}>
-                                Set up all{' '}
-                                <a
-                                    target="blank"
-                                    href={aiAgentNavigation.routes.configuration()}
-                                >
-                                    channels & email addresses
-                                </a>{' '}
-                                to improve your ticket coverage rate of AI Agent
-                            </PerformanceTip>
-                        ),
                         drillDownMetric:
                             AIInsightsMetric.TicketDrillDownPerCoverageRate,
                         drillDownMetricAdditionalData: {
@@ -112,26 +83,6 @@ export const Level1IntentsPerformance = () => {
                         },
                         trend: aiAgentMetrics.aiAgentAutomatedInteractionTrend,
                         interpretAs: 'more-is-better',
-                        tip: (
-                            <PerformanceTip showBenchmark={false}>
-                                Check out our{' '}
-                                <a
-                                    target="blank"
-                                    href="https://link.gorgias.com/aut-playbook"
-                                >
-                                    {' '}
-                                    Automation Playbook
-                                </a>{' '}
-                                for tactical tips on how to use AI Agent to its
-                                full potential. Visit
-                                <a target="blank" href="/app/settings/billing">
-                                    {' '}
-                                    billing
-                                </a>{' '}
-                                to make sure your AI Agent plan is the right
-                                size for you.
-                            </PerformanceTip>
-                        ),
                     },
                     {
                         title: 'Success rate',
@@ -142,19 +93,6 @@ export const Level1IntentsPerformance = () => {
                         trend: aiAgentMetrics.aiAgentSuccessRate,
                         interpretAs: 'more-is-better',
                         metricFormat: 'decimal-to-percent-precision-1',
-                        tip: (
-                            <PerformanceTip showBenchmark={false}>
-                                Review your existing{' '}
-                                <a
-                                    target="blank"
-                                    href={aiAgentNavigation.routes.guidance}
-                                >
-                                    knowledge
-                                </a>{' '}
-                                and add missing one to improve your success rate
-                                of AI Agent.
-                            </PerformanceTip>
-                        ),
                     },
                     {
                         title: 'Customer satisfaction',
@@ -165,20 +103,6 @@ export const Level1IntentsPerformance = () => {
                         trend: aiAgentMetrics.aiAgentCSAT,
                         interpretAs: 'more-is-better',
                         metricFormat: 'decimal-precision-1',
-                        tip: (
-                            <PerformanceTip
-                                topTen="4.7"
-                                avgMerchant="4.2"
-                                type={getPerformanceTipType(
-                                    4.7,
-                                    4.2,
-                                    aiAgentMetrics.aiAgentCSAT.data?.value,
-                                )}
-                            >
-                                Take advantage of satisfied customers to ask
-                                nicely for a review.
-                            </PerformanceTip>
-                        ),
                         drillDownMetric:
                             AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
                         drillDownMetricAdditionalData: {

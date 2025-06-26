@@ -38,20 +38,13 @@ export const OptimizeContainer = () => {
         >
             <div className={css.section}>
                 <AdjustedPeriodFilter />
-
                 <Level1IntentsPerformance />
             </div>
 
             <div className={css.section}>
                 <IntentTableWidget
-                    title="Intents"
-                    description="Explore intents detected from AI Agent tickets to assess performance, review knowledge recommendations, and analyze topics within each intent. "
-                    tableTitle="All intents"
-                    tableHint={{
-                        title: 'List of all intents detected in tickets that involved AI Agent.',
-                        link: 'https://link.gorgias.com/ac4ad7',
-                        linkText: 'Learn about intents',
-                    }}
+                    tableTitle="Performance by intent"
+                    tableDescription="Intents are the primary topics identified in tickets. Explore how AI Agent performs across these topics and sub-topics, and identify where better knowledge could improve success or satisfaction. <a href='https://link.gorgias.com/e873df' target='_blank'>Learn more about intents.</a>"
                     intentLevel={INTENT_LEVEL}
                 />
             </div>

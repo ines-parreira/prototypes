@@ -423,7 +423,89 @@ describe('Intent Table components', () => {
             )
 
             expect(screen.queryByText('1')).toBeNull()
-            expect(screen.getByText('Intent')).toBeInTheDocument
+            expect(screen.getByText('Intent')).toBeInTheDocument()
+        })
+
+        it('renders table with description', () => {
+            const paginatedIntents = {
+                ...defaultPaginatedIntents,
+                perPage: 10,
+            }
+
+            useAppSelectorMock.mockReturnValue(paginatedIntents)
+            useStatsFiltersMock.mockReturnValue({
+                cleanStatsFilters: filters,
+                userTimezone,
+            } as unknown as ReturnType<typeof useStatsFilters>)
+            const store = mockStore({
+                ...initialState,
+                ui: {
+                    stats: {
+                        insightsSlice: {
+                            paginatedIntents: paginatedIntents,
+                            isSortingLoading: false,
+                            sorting: {
+                                field: IntentTableColumn.SuccessRateUpliftOpportunity,
+                                direction: 'desc',
+                                isLoading: false,
+                            },
+                        },
+                    },
+                },
+            })
+
+            renderWithProvider(
+                <IntentTableWithDefaultState
+                    tableTitle="Test Table"
+                    tableDescription="Test Description"
+                />,
+                store,
+            )
+
+            expect(screen.getByText('Test Description')).toBeInTheDocument()
+        })
+
+        it('renders table without description when tableDescription is not valid', () => {
+            const paginatedIntents = {
+                ...defaultPaginatedIntents,
+                perPage: 10,
+            }
+
+            useAppSelectorMock.mockReturnValue(paginatedIntents)
+            useStatsFiltersMock.mockReturnValue({
+                cleanStatsFilters: filters,
+                userTimezone,
+            } as unknown as ReturnType<typeof useStatsFilters>)
+            const store = mockStore({
+                ...initialState,
+                ui: {
+                    stats: {
+                        insightsSlice: {
+                            paginatedIntents: paginatedIntents,
+                            isSortingLoading: false,
+                            sorting: {
+                                field: IntentTableColumn.SuccessRateUpliftOpportunity,
+                                direction: 'desc',
+                                isLoading: false,
+                            },
+                        },
+                    },
+                },
+            })
+
+            renderWithProvider(
+                <IntentTableWithDefaultState
+                    tableTitle="Test Table"
+                    tableDescription={
+                        (<div>Test Description</div>) as unknown as string
+                    }
+                />,
+                store,
+            )
+
+            expect(
+                screen.queryByText('Test Description'),
+            ).not.toBeInTheDocument()
         })
     })
 })

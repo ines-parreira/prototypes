@@ -53,13 +53,12 @@ export const Level2IntentsPerformance = () => {
             sectionSubtitle={
                 intentId ? transformIntentName(intentId) : undefined
             }
-            shouldDisplayTipsCTA={false}
             period={pageStatsFilters.period}
             metrics={[
                 {
-                    title: 'Success rate uplift opportunity',
+                    title: 'Improvement potential',
                     hint: {
-                        title: `Estimated potential to improve your success rate, based on the number of tickets that haven't been automated. \nExample: If there are 100 total AI agent tickets and a given intent / topic has 15 tickets that have not been automated, the uplift opportunity is 15%.`,
+                        title: "The percentage of AI Agent tickets for this intent that didn't result in a successful automation. Higher values suggest a greater opportunity to improve knowledge or coverage. This is calculated as tickets that didn't result in a successful automation for this intent divided by total AI Agent tickets.",
                     },
                     trend: aiAgentMetrics.successRateUpliftOpportunityPerIntent,
                     interpretAs: 'more-is-better',

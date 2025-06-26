@@ -32,8 +32,7 @@ export const TableColumnsOrder: IntentTableColumn[] = [
 
 export const TableLabels: Record<IntentTableColumn, string> = {
     [IntentTableColumn.IntentName]: 'Intent',
-    [IntentTableColumn.SuccessRateUpliftOpportunity]:
-        'Success rate uplift opportunity',
+    [IntentTableColumn.SuccessRateUpliftOpportunity]: 'Improvement potential',
     [IntentTableColumn.Tickets]: 'Tickets',
     [IntentTableColumn.SuccessRate]: 'Success Rate',
     [IntentTableColumn.AvgCustomerSatisfaction]: 'AVG CSAT',
@@ -55,15 +54,13 @@ export const IntentsColumnsConfig: Partial<
 > = {
     [IntentTableColumn.IntentName]: {
         format: 'decimal',
-        hint: {
-            title: 'The primary topic or issue identified by AI Agent in a ticket',
-        },
+        hint: null,
         perAgent: false,
     },
     [IntentTableColumn.SuccessRateUpliftOpportunity]: {
         format: 'decimal-percent-to-integer-percent',
         hint: {
-            title: `Estimated potential to improve your success rate, based on the number of tickets that haven't been automated. \nExample: If there are 100 total AI agent tickets and a given intent / topic has 15 tickets that have not been automated, the uplift opportunity is 15%.`,
+            title: "The percentage of AI Agent tickets for this intent that didn't result in a successful automation. Higher values suggest a greater opportunity to improve knowledge or coverage. This is calculated as tickets that didn't result in a successful automation for this intent divided by total AI Agent tickets.",
         },
         perAgent: true,
         notAvailableText: '-',

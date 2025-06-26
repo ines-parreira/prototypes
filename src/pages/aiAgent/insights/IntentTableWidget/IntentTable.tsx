@@ -39,6 +39,7 @@ import {
     isSortingMetricLoading,
     pageSet,
 } from 'state/ui/stats/insightsSlice'
+import { sanitizeHtmlDefault } from 'utils/html'
 
 import { useIntentQuery } from './hooks/useIntentQuery'
 import { LoadingIntentCellContent } from './IntentTableCells'
@@ -335,10 +336,12 @@ export const LoadingTableRows = ({
 
 export const IntentTableWithDefaultState = ({
     tableTitle,
+    tableDescription,
     tableHint,
     intentLevel,
 }: {
     tableTitle: string
+    tableDescription?: string
     tableHint?: {
         title: string
         link: string
@@ -375,6 +378,20 @@ export const IntentTableWithDefaultState = ({
                     shouldRemoveButtonBorder ? intentTableCss.noBorder : ''
                 }
             >
+                {tableDescription && (
+                    <div
+                        className={intentTableCss.tableDescription}
+                        dangerouslySetInnerHTML={
+                            typeof tableDescription === 'string'
+                                ? {
+                                      __html: sanitizeHtmlDefault(
+                                          tableDescription,
+                                      ),
+                                  }
+                                : undefined
+                        }
+                    ></div>
+                )}
                 {(paginatedIntents && paginatedIntents.intents.length > 0) ||
                 isSortingLoading ? (
                     <IntentTable

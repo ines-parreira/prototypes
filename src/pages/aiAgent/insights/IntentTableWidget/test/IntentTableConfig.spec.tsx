@@ -127,7 +127,7 @@ describe('TableConfig Utilities and Hooks', () => {
             expect(TableLabels[IntentTableColumn.IntentName]).toBe('Intent')
             expect(
                 TableLabels[IntentTableColumn.SuccessRateUpliftOpportunity],
-            ).toBe('Success rate uplift opportunity')
+            ).toBe('Improvement potential')
             expect(TableLabels[IntentTableColumn.Tickets]).toBe('Tickets')
         })
     })

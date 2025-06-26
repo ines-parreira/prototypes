@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -106,7 +106,6 @@ describe('IntentsPerformance', () => {
         render(
             <IntentsPerformance
                 sectionTitle="Title of the section"
-                shouldDisplayTipsCTA={true}
                 period={period}
                 metrics={[metric1, metric2, metric3, metric4]}
             />,
@@ -131,7 +130,6 @@ describe('IntentsPerformance', () => {
         render(
             <IntentsPerformance
                 sectionTitle="Title of the section"
-                shouldDisplayTipsCTA={false}
                 period={period}
                 metrics={[metric1, metric2, metric3, metric4]}
                 sectionSubtitle="Subtitle of the section"
@@ -141,63 +139,10 @@ describe('IntentsPerformance', () => {
         expect(screen.getByText('Subtitle of the section')).toBeInTheDocument()
     })
 
-    it('shows hints correctly', () => {
-        mockUseLocalStorage.mockReturnValue([true, jest.fn()])
-
-        render(
-            <IntentsPerformance
-                sectionTitle="Title of the section"
-                shouldDisplayTipsCTA={false}
-                period={period}
-                metrics={[metric1, metric2, metric3, metric4]}
-            />,
-        )
-
-        const toggleButton = screen.queryByRole('button')
-        expect(toggleButton).not.toBeInTheDocument()
-
-        expect(screen.getByText('Coverage rate tip')).toBeInTheDocument()
-        expect(
-            screen.getByText('Automated interactions tip'),
-        ).toBeInTheDocument()
-        expect(screen.getByText('Success rate tip')).toBeInTheDocument()
-        expect(
-            screen.getByText('Customer satisfaction tip'),
-        ).toBeInTheDocument()
-    })
-
-    it('hides hints correctly', () => {
-        const mockSetAreTipsVisible = jest.fn()
-        mockUseLocalStorage.mockReturnValue([false, mockSetAreTipsVisible])
-
-        render(
-            <IntentsPerformance
-                sectionTitle="Title of the section"
-                shouldDisplayTipsCTA={true}
-                period={period}
-                metrics={[metric1, metric2, metric3, metric4]}
-            />,
-        )
-
-        expect(screen.queryByText('Coverage rate tip')).not.toBeInTheDocument()
-        expect(
-            screen.queryByText('Automated interactions tip'),
-        ).not.toBeInTheDocument()
-        expect(screen.queryByText('Success rate tip')).not.toBeInTheDocument()
-        expect(
-            screen.queryByText('Customer satisfaction tip'),
-        ).not.toBeInTheDocument()
-
-        const toggleButton = screen.getByRole('button')
-        fireEvent.click(toggleButton)
-        expect(mockSetAreTipsVisible).toHaveBeenCalledWith(true)
-    })
-
     it('only renders a TrendBadge when previous value is available', () => {
         const { container } = render(
             <IntentsPerformance
                 sectionTitle="Title of the section"
-                shouldDisplayTipsCTA={true}
                 period={period}
                 metrics={[
                     metric1,
@@ -222,7 +167,6 @@ describe('IntentsPerformance', () => {
         const { container } = render(
             <IntentsPerformance
                 sectionTitle="Title of the section"
-                shouldDisplayTipsCTA={true}
                 period={period}
                 metrics={[
                     {
@@ -246,14 +190,13 @@ describe('IntentsPerformance', () => {
 
         expect(
             container.getElementsByClassName('react-loading-skeleton'),
-        ).toHaveLength(3)
+        ).toHaveLength(2)
     })
 
     it('renders a placeholder when data is unavailable', () => {
         render(
             <IntentsPerformance
                 sectionTitle="Title of the section"
-                shouldDisplayTipsCTA={true}
                 period={period}
                 metrics={[
                     {
@@ -269,9 +212,5 @@ describe('IntentsPerformance', () => {
         )
 
         expect(screen.getByText('-')).toBeInTheDocument()
-        expect(screen.getByText('No data')).toBeInTheDocument()
-        expect(
-            screen.getByText('No data available for the selected filters.'),
-        ).toBeInTheDocument()
     })
 })
