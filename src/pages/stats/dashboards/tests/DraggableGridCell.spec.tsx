@@ -9,6 +9,7 @@ import {
     createIsDragging,
     createMoveHandler,
     createMoveRawHandler,
+    DraggableGridCell,
     DraggablePreview,
     MeasureRect,
     useMeasure,
@@ -32,8 +33,28 @@ const dummyRect = {
     right: 100,
 }
 
-jest.mock('react-dnd', () => ({ useDragLayer: jest.fn(), useDrag: jest.fn() }))
+jest.mock('react-dnd', () => ({
+    useDragLayer: jest.fn(),
+    useDrag: jest.fn(),
+    useDrop: jest.fn(),
+}))
+
+jest.mock('react-dnd-html5-backend', () => ({
+    getEmptyImage: jest.fn(() => ({})),
+}))
+
+jest.mock('hooks/useId', () => () => 'mock-id')
+
+jest.mock('pages/stats/common/layout/DashboardGrid', () => 'div')
+jest.mock('pages/stats/common/layout/DashboardGridCell', () => 'div')
+jest.mock('pages/common/forms/input/IconInput', () => 'span')
+jest.mock('@gorgias/merchant-ui-kit', () => ({
+    Tooltip: 'div',
+}))
+
 const mockUseDragLayer = assumeMock(useDragLayer)
+const mockUseDrag = assumeMock(require('react-dnd').useDrag)
+const mockUseDrop = assumeMock(require('react-dnd').useDrop)
 
 const createDummyDragItem = ({
     configId = '1',
@@ -681,5 +702,102 @@ describe('createMoveRawHandler', () => {
             'chart-1',
             'after',
         )
+    })
+})
+
+describe('<DraggableGridCell/>', () => {
+    const mockOnMove = jest.fn()
+    const mockOnDrop = jest.fn()
+    const mockFindChartIndex = jest.fn()
+    const mockSchema: DashboardChartSchema = {
+        config_id: 'test-chart',
+        type: DashboardChildType.Chart,
+    }
+
+    beforeEach(() => {
+        mockOnMove.mockClear()
+        mockOnDrop.mockClear()
+        mockFindChartIndex.mockClear()
+
+        // Mock useDrag to return the expected structure and capture the item function
+        mockUseDrag.mockReturnValue([
+            { isDragging: false },
+            jest.fn(), // drag ref
+            jest.fn(), // preview ref
+        ])
+
+        // Mock useDrop to return the expected structure
+        mockUseDrop.mockReturnValue([
+            {}, // collected props
+            jest.fn(), // drop ref
+        ])
+    })
+
+    it('should render DraggableGridCell', () => {
+        const { container } = render(
+            <DraggableGridCell
+                size={4}
+                schema={mockSchema}
+                onMove={mockOnMove}
+                onDrop={mockOnDrop}
+                findChartIndex={mockFindChartIndex}
+            >
+                <div>Test Content</div>
+            </DraggableGridCell>,
+        )
+
+        expect(container.firstChild).toBeInTheDocument()
+    })
+
+    it('should call useDrag with item function that returns the created item', () => {
+        render(
+            <DraggableGridCell
+                size={4}
+                schema={mockSchema}
+                onMove={mockOnMove}
+                onDrop={mockOnDrop}
+                findChartIndex={mockFindChartIndex}
+            >
+                <div>Test Content</div>
+            </DraggableGridCell>,
+        )
+
+        // Verify useDrag was called
+        expect(mockUseDrag).toHaveBeenCalled()
+
+        // Get the configuration passed to useDrag
+        const useDragConfig = mockUseDrag.mock.calls[0][0]
+
+        // Verify the item property is a function
+        expect(typeof useDragConfig.item).toBe('function')
+
+        // Call the item function and verify it returns the expected structure
+        const itemResult = useDragConfig.item()
+        expect(itemResult).toEqual(
+            expect.objectContaining({
+                config_id: 'test-chart',
+                type: 'card', // createDragItem sets type to ChartType.Card
+                size: 4,
+                element: expect.any(Object),
+                rect: expect.any(Object),
+            }),
+        )
+    })
+
+    it('should pass correct type to useDrag', () => {
+        render(
+            <DraggableGridCell
+                size={4}
+                schema={mockSchema}
+                onMove={mockOnMove}
+                onDrop={mockOnDrop}
+                findChartIndex={mockFindChartIndex}
+            >
+                <div>Test Content</div>
+            </DraggableGridCell>,
+        )
+
+        const useDragConfig = mockUseDrag.mock.calls[0][0]
+        expect(useDragConfig.type).toBe('card')
     })
 })

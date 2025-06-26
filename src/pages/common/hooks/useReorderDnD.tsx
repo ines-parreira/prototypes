@@ -29,19 +29,23 @@ export const useReorderDnD = <ItemType extends DragItemRequired>(
     const $dropRef = useRef<HTMLTableRowElement>(null)
     const $dragRef = useRef<HTMLDivElement>(null)
 
-    const [{ handlerId }, drop] = useDrop({
+    const [{ handlerId }, drop] = useDrop<
+        ItemType,
+        void,
+        { handlerId: string | symbol | null }
+    >({
         accept: acceptEntities,
         collect(monitor) {
             return {
                 handlerId: monitor.getHandlerId(),
             }
         },
-        drop(item: ItemType, monitor) {
+        drop(item, monitor) {
             if (callbacks.onDrop) {
                 callbacks.onDrop(item, monitor)
             }
         },
-        hover(item: ItemType, monitor) {
+        hover(item, monitor) {
             // Prevent hovering effect if the item cannot be dropped here
             if (!$dropRef.current || !monitor.canDrop()) {
                 return
@@ -85,7 +89,8 @@ export const useReorderDnD = <ItemType extends DragItemRequired>(
     })
 
     const [{ isDragging }, drag, preview] = useDrag({
-        item: dragItem,
+        type: dragItem.type,
+        item: () => ({ ...dragItem, type: dragItem.type }),
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),

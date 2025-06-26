@@ -67,6 +67,7 @@ export function TicketNavbarBlock({
     const categoryRef = useRef<HTMLDivElement>(null)
 
     const [{ isDragging }, drag] = useDrag({
+        type: TicketNavbarElementType.Category,
         item: {
             id: value,
             type: TicketNavbarElementType.Category,

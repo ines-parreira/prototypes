@@ -720,10 +720,20 @@ describe('SimplifiedStepBuilder', () => {
         const stepItems = container.querySelectorAll('[draggable="true"]')
         expect(stepItems).toHaveLength(2)
 
-        // Simulate drag and drop
-        fireEvent.dragStart(stepItems[1]) // Start dragging second item
-        fireEvent.dragOver(stepItems[0]) // Drag over first item
-        fireEvent.drop(stepItems[0]) // Drop on first item
+        // Simulate drag and drop with proper coordinates
+        const dragElement = stepItems[1] as HTMLElement
+        const dropElement = stepItems[0] as HTMLElement
+
+        // Get bounding rectangles for realistic coordinates
+        const dragRect = dragElement.getBoundingClientRect()
+
+        const clientX = dragRect.left + dragRect.width / 2
+        const clientY = dragRect.top + dragRect.height / 2
+
+        fireEvent.dragStart(dragElement, { clientX, clientY })
+        fireEvent.dragEnter(dropElement, { clientX, clientY })
+        fireEvent.dragOver(dropElement, { clientX, clientY })
+        fireEvent.drop(dropElement, { clientX, clientY })
 
         // Verify the dispatch was called with the correct reordering action
         expect(mockDispatch).toHaveBeenCalledWith({
@@ -1134,9 +1144,20 @@ describe('SimplifiedStepBuilder', () => {
         const stepItems = container.querySelectorAll('[draggable="true"]')
         expect(stepItems).toHaveLength(2)
 
-        fireEvent.dragStart(stepItems[1])
-        fireEvent.dragOver(stepItems[0])
-        fireEvent.drop(stepItems[0])
+        // Simulate drag and drop with proper coordinates
+        const dragElement = stepItems[1] as HTMLElement
+        const dropElement = stepItems[0] as HTMLElement
+
+        // Get bounding rectangles for realistic coordinates
+        const dragRect = dragElement.getBoundingClientRect()
+
+        const clientX = dragRect.left + dragRect.width / 2
+        const clientY = dragRect.top + dragRect.height / 2
+
+        fireEvent.dragStart(dragElement, { clientX, clientY })
+        fireEvent.dragEnter(dropElement, { clientX, clientY })
+        fireEvent.dragOver(dropElement, { clientX, clientY })
+        fireEvent.drop(dropElement, { clientX, clientY })
 
         expect(mockDispatch).toHaveBeenCalledWith({
             type: 'REORDER_REUSABLE_LLM_PROMPT_CALL_NODE',
@@ -1321,9 +1342,19 @@ describe('SimplifiedStepBuilder', () => {
         expect(stepItems).toHaveLength(3)
 
         // Simulate complex reordering: move last item to first position
-        fireEvent.dragStart(stepItems[2]) // Start dragging third item
-        fireEvent.dragOver(stepItems[0]) // Drag over first item
-        fireEvent.drop(stepItems[0]) // Drop on first item
+        const dragElement = stepItems[2] as HTMLElement
+        const dropElement = stepItems[0] as HTMLElement
+
+        // Get bounding rectangles for realistic coordinates
+        const dragRect = dragElement.getBoundingClientRect()
+
+        const clientX = dragRect.left + dragRect.width / 2
+        const clientY = dragRect.top + dragRect.height / 2
+
+        fireEvent.dragStart(dragElement, { clientX, clientY })
+        fireEvent.dragEnter(dropElement, { clientX, clientY })
+        fireEvent.dragOver(dropElement, { clientX, clientY })
+        fireEvent.drop(dropElement, { clientX, clientY })
 
         // Verify the dispatch was called with the correct reordering action
         expect(mockDispatch).toHaveBeenCalledWith({
@@ -1451,9 +1482,19 @@ describe('SimplifiedStepBuilder', () => {
         expect(stepItems).toHaveLength(2)
 
         // Simulate reordering
-        fireEvent.dragStart(stepItems[1]) // Start dragging second item
-        fireEvent.dragOver(stepItems[0]) // Drag over first item
-        fireEvent.drop(stepItems[0]) // Drop on first item
+        const dragElement = stepItems[1] as HTMLElement
+        const dropElement = stepItems[0] as HTMLElement
+
+        // Get bounding rectangles for realistic coordinates
+        const dragRect = dragElement.getBoundingClientRect()
+
+        const clientX = dragRect.left + dragRect.width / 2
+        const clientY = dragRect.top + dragRect.height / 2
+
+        fireEvent.dragStart(dragElement, { clientX, clientY })
+        fireEvent.dragEnter(dropElement, { clientX, clientY })
+        fireEvent.dragOver(dropElement, { clientX, clientY })
+        fireEvent.drop(dropElement, { clientX, clientY })
 
         expect(mockDispatch).toHaveBeenCalledWith({
             type: 'REORDER_REUSABLE_LLM_PROMPT_CALL_NODE',

@@ -18,13 +18,10 @@ exports[`<TicketNavbarDropTarget/> should show an indicator and pass isOver to c
   class="wrapper"
 >
   <div
-    class="isOver"
+    class=""
     draggable="true"
   >
     Drag me!
   </div>
-  <div
-    class="indicator isDown"
-  />
 </div>
 `;

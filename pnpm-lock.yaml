@@ -250,8 +250,8 @@ importers:
         specifier: 1.0.2
         version: 1.0.2(react@18.2.0)
       dnd-core:
-        specifier: 11.1.3
-        version: 11.1.3
+        specifier: 16.0.1
+        version: 16.0.1
       draft-convert:
         specifier: 2.1.4
         version: 2.1.4(draft-js@0.10.5(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -430,11 +430,11 @@ importers:
         specifier: 3.0.0
         version: 3.0.0(react@18.2.0)
       react-dnd:
-        specifier: 11.1.3
-        version: 11.1.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        specifier: 16.0.1
+        version: 16.0.1(@types/hoist-non-react-statics@3.3.5)(@types/node@22.13.13)(@types/react@18.2.67)(react@18.2.0)
       react-dnd-html5-backend:
-        specifier: 11.1.3
-        version: 11.1.3
+        specifier: 16.0.1
+        version: 16.0.1
       react-dom:
         specifier: catalog:react
         version: 18.2.0(react@18.2.0)
@@ -3634,14 +3634,14 @@ packages:
   '@radix-ui/rect@1.1.0':
     resolution: {integrity: sha512-A9+lCBZoaMJlVKcRBz2YByCG+Cp2t6nAnMnNba+XiWxnj6r4JUFqfsgwocMBZU9LPtdxC6wB56ySYpc7LQIoJg==}
 
-  '@react-dnd/asap@4.0.0':
-    resolution: {integrity: sha512-0XhqJSc6pPoNnf8DhdsPHtUhRzZALVzYMTzRwV4VI6DJNJ/5xxfL9OQUwb8IH5/2x7lSf7nAZrnzUD+16VyOVQ==}
+  '@react-dnd/asap@5.0.2':
+    resolution: {integrity: sha512-WLyfoHvxhs0V9U+GTsGilGgf2QsPl6ZZ44fnv0/b8T3nQyvzxidxsg/ZltbWssbsRDlYW8UKSQMTGotuTotZ6A==}
 
-  '@react-dnd/invariant@2.0.0':
-    resolution: {integrity: sha512-xL4RCQBCBDJ+GRwKTFhGUW8GXa4yoDfJrPbLblc3U09ciS+9ZJXJ3Qrcs/x2IODOdIE5kQxvMmE2UKyqUictUw==}
+  '@react-dnd/invariant@4.0.2':
+    resolution: {integrity: sha512-xKCTqAK/FFauOM9Ta2pswIyT3D8AQlfrYdOi/toTPEhqCuAs1v5tcJ3Y08Izh1cJ5Jchwy9SeAXmMg6zrKs2iw==}
 
-  '@react-dnd/shallowequal@2.0.0':
-    resolution: {integrity: sha512-Pc/AFTdwZwEKJxFJvlxrSmGe/di+aAOBn60sremrpLo6VI/6cmiUYNNwlI5KNYttg7uypzA3ILPMPgxB2GYZEg==}
+  '@react-dnd/shallowequal@4.0.2':
+    resolution: {integrity: sha512-/RVXdLvJxLg4QKvMoM5WlwNR9ViO9z8B/qPcc+C0Sa/teJY7QG7kJ441DwzOjMYEY7GmU4dj5EcGHIkKZiQZCA==}
 
   '@react-native/assets-registry@0.78.0':
     resolution: {integrity: sha512-PPHlTRuP9litTYkbFNkwveQFto3I94QRWPBBARU0cH/4ks4EkfCfb/Pdb3AHgtJi58QthSHKFvKTQnAWyHPs7w==}
@@ -6254,8 +6254,8 @@ packages:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
     engines: {node: '>=8'}
 
-  dnd-core@11.1.3:
-    resolution: {integrity: sha512-QugF55dNW+h+vzxVJ/LSJeTeUw9MCJ2cllhmVThVPEtF16ooBkxj0WBE5RB+AceFxMFo1rO6bJKXtqKl+JNnyA==}
+  dnd-core@16.0.1:
+    resolution: {integrity: sha512-HK294sl7tbw6F6IeuK16YSBUoorvHpY8RHO+9yFfaJyCDVb6n7PRcezrOEOa2SBCqiYpemh5Jx20ZcjKdFAVng==}
 
   dns-packet@5.4.0:
     resolution: {integrity: sha512-EgqGeaBB8hLiHLZtp/IbaDQTL8pZ0+IvwzSHA6d7VyMDM+B9hgddEMa9xjK5oYnw0ci0JQ6g2XCD7/f6cafU6g==}
@@ -9373,14 +9373,23 @@ packages:
   react-devtools-core@6.1.1:
     resolution: {integrity: sha512-TFo1MEnkqE6hzAbaztnyR5uLTMoz6wnEWwWBsCUzNt+sVXJycuRJdDqvL078M4/h65BI/YO5XWTaxZDWVsW0fw==}
 
-  react-dnd-html5-backend@11.1.3:
-    resolution: {integrity: sha512-/1FjNlJbW/ivkUxlxQd7o3trA5DE33QiRZgxent3zKme8DwF4Nbw3OFVhTRFGaYhHFNL1rZt6Rdj1D78BjnNLw==}
+  react-dnd-html5-backend@16.0.1:
+    resolution: {integrity: sha512-Wu3dw5aDJmOGw8WjH1I1/yTH+vlXEL4vmjk5p+MHxP8HuHJS1lAGeIdG/hze1AvNeXWo/JgULV87LyQOr+r5jw==}
 
-  react-dnd@11.1.3:
-    resolution: {integrity: sha512-8rtzzT8iwHgdSC89VktwhqdKKtfXaAyC4wiqp0SywpHG12TTLvfOoL6xNEIUWXwIEWu+CFfDn4GZJyynCEuHIQ==}
+  react-dnd@16.0.1:
+    resolution: {integrity: sha512-QeoM/i73HHu2XF9aKksIUuamHPDvRglEwdHL4jsp784BgUuWcg6mzfxT0QDdQz8Wj0qyRKx2eMg8iZtWvU4E2Q==}
     peerDependencies:
-      react: '>= 16.9.0'
-      react-dom: '>= 16.9.0'
+      '@types/hoist-non-react-statics': '>= 3.3.1'
+      '@types/node': '>= 12'
+      '@types/react': '>= 16'
+      react: '>= 16.14'
+    peerDependenciesMeta:
+      '@types/hoist-non-react-statics':
+        optional: true
+      '@types/node':
+        optional: true
+      '@types/react':
+        optional: true
 
   react-docgen-typescript@2.2.2:
     resolution: {integrity: sha512-tvg2ZtOpOi6QDwsb3GZhOjDkkX0h8Z2gipvTg6OVMUyoYoURhEiRNePT8NZItTVCDh39JJHnLdfCOkzoLbFnTg==}
@@ -14333,11 +14342,11 @@ snapshots:
 
   '@radix-ui/rect@1.1.0': {}
 
-  '@react-dnd/asap@4.0.0': {}
+  '@react-dnd/asap@5.0.2': {}
 
-  '@react-dnd/invariant@2.0.0': {}
+  '@react-dnd/invariant@4.0.2': {}
 
-  '@react-dnd/shallowequal@2.0.0': {}
+  '@react-dnd/shallowequal@4.0.2': {}
 
   '@react-native/assets-registry@0.78.0': {}
 
@@ -17558,10 +17567,10 @@ snapshots:
     dependencies:
       path-type: 4.0.0
 
-  dnd-core@11.1.3:
+  dnd-core@16.0.1:
     dependencies:
-      '@react-dnd/asap': 4.0.0
-      '@react-dnd/invariant': 2.0.0
+      '@react-dnd/asap': 5.0.2
+      '@react-dnd/invariant': 4.0.2
       redux: 4.2.1
 
   dns-packet@5.4.0:
@@ -21428,18 +21437,22 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  react-dnd-html5-backend@11.1.3:
+  react-dnd-html5-backend@16.0.1:
     dependencies:
-      dnd-core: 11.1.3
+      dnd-core: 16.0.1
 
-  react-dnd@11.1.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+  react-dnd@16.0.1(@types/hoist-non-react-statics@3.3.5)(@types/node@22.13.13)(@types/react@18.2.67)(react@18.2.0):
     dependencies:
-      '@react-dnd/shallowequal': 2.0.0
-      '@types/hoist-non-react-statics': 3.3.5
-      dnd-core: 11.1.3
+      '@react-dnd/invariant': 4.0.2
+      '@react-dnd/shallowequal': 4.0.2
+      dnd-core: 16.0.1
+      fast-deep-equal: 3.1.3
       hoist-non-react-statics: 3.3.2
       react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
+    optionalDependencies:
+      '@types/hoist-non-react-statics': 3.3.5
+      '@types/node': 22.13.13
+      '@types/react': 18.2.67
 
   react-docgen-typescript@2.2.2(typescript@5.3.3):
     dependencies:

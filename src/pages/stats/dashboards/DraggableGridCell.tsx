@@ -168,7 +168,8 @@ export const DraggableGridCell = ({
     })
 
     const [{ isDragging }, drag, preview] = useDrag({
-        item,
+        type: item.type,
+        item: () => item,
         collect: (monitor) => ({ isDragging: monitor.isDragging() }),
         isDragging: createIsDragging(item),
     })

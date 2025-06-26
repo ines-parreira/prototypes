@@ -47,9 +47,10 @@ export const EditColumnsItem = ({
         },
     })
     const [, drag] = useDrag({
+        type: 'item',
         item: {
-            type: 'item',
             ...option,
+            type: 'item',
         },
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),

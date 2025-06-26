@@ -63,6 +63,7 @@ export default function NavbarBlock({
     const categoryRef = useRef<HTMLHeadingElement>(null)
 
     const [{ isDragging }, drag] = useDrag({
+        type: TicketNavbarElementType.Category,
         item: {
             id: value,
             type: TicketNavbarElementType.Category,

@@ -1,19 +1,15 @@
 import React, { HTMLProps, ReactNode, useEffect, useRef, useState } from 'react'
 
 import classnames from 'classnames'
-import {
-    DragObjectWithType,
-    DropTargetHookSpec,
-    DropTargetMonitor,
-    useDrop,
-} from 'react-dnd'
+import { DropTargetHookSpec, DropTargetMonitor, useDrop } from 'react-dnd'
 
 import { ViewCategoryNavbar } from 'models/view/types'
 
 import css from './TicketNavbarDropTarget.less'
 
-export interface TicketNavbarDragObject extends DragObjectWithType {
+export interface TicketNavbarDragObject {
     id: number | ViewCategoryNavbar
+    type: string | symbol
 }
 
 export enum TicketNavbarDropDirection {
@@ -101,7 +97,24 @@ const TicketNavbarDropTarget = ({
             if (!onDrop) {
                 return
             }
-            const result = onDrop(item, monitor, indicatorPosition)
+            // Calculate direction at drop time to avoid race conditions
+            let dropDirection = indicatorPosition
+            const boundingRect = wrapperRef.current?.getBoundingClientRect()
+            const clientOffset = monitor.getClientOffset()
+
+            if (
+                monitor.canDrop() &&
+                boundingRect &&
+                clientOffset &&
+                monitor.isOver({ shallow })
+            ) {
+                dropDirection =
+                    clientOffset.y < boundingRect.top + boundingRect.height / 2
+                        ? TicketNavbarDropDirection.Up
+                        : TicketNavbarDropDirection.Down
+            }
+
+            const result = onDrop(item, monitor, dropDirection)
 
             if (result) {
                 return result as TicketNavbarDropResult

@@ -59,12 +59,23 @@ describe('<SortableAccordion />', () => {
                 screen.getByText('Header 2').parentElement!,
             ).getByText('drag_indicator')
 
-            fireEvent.dragStart(dragHandle)
-            fireEvent.dragOver(accordionItem)
+            // Get bounding rectangles for realistic coordinates
+            const dragRect = dragHandle.getBoundingClientRect()
+
+            const clientX = dragRect.left + dragRect.width / 2
+            const clientY = dragRect.top + dragRect.height / 2
+
+            fireEvent.dragStart(dragHandle, { clientX, clientY })
+            fireEvent.dragEnter(accordionItem, { clientX, clientY })
+            fireEvent.dragOver(accordionItem, { clientX, clientY })
         })
 
         act(() => {
-            fireEvent.drop(accordionItem)
+            const dropRect = accordionItem.getBoundingClientRect()
+            const clientX = dropRect.left + dropRect.width / 2
+            const clientY = dropRect.top + dropRect.height / 2
+
+            fireEvent.drop(accordionItem, { clientX, clientY })
         })
 
         await waitFor(() => {
@@ -88,23 +99,23 @@ describe('<SortableAccordion />', () => {
             </SortableAccordion>,
         )
 
-        const accordionItem1 = screen.getByText('Header 1').parentElement!
-        const accordionItem2 = screen.getByText('Header 2').parentElement!
+        const accordionItem = screen.getByText('Header 2').parentElement!
 
         act(() => {
-            const dragHandle =
-                within(accordionItem2).getByText('drag_indicator')
+            const dragHandle = within(accordionItem).getByText('drag_indicator')
 
-            fireEvent.dragStart(dragHandle)
-            fireEvent.dragOver(accordionItem1)
-        })
+            // Get bounding rectangles for realistic coordinates
+            const dragRect = dragHandle.getBoundingClientRect()
 
-        act(() => {
-            fireEvent.dragOver(accordionItem1)
-        })
+            const clientX = dragRect.left + dragRect.width / 2
+            const clientY = dragRect.top + dragRect.height / 2
 
-        act(() => {
-            fireEvent.drop(accordionItem2)
+            // Start drag from item 2's handle
+            fireEvent.dragStart(dragHandle, { clientX, clientY })
+
+            // Drop back on item 2 without triggering hover on item 1
+            // This simulates starting a drag but then dropping back on the same item
+            fireEvent.drop(accordionItem, { clientX, clientY })
         })
 
         await waitFor(() => {

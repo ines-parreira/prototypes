@@ -16,10 +16,8 @@ export const DndProvider = ({
     manager,
 }: Props) => {
     if (manager) {
-        // @ts-expect-error
         return <BaseDndProvider manager={manager}>{children}</BaseDndProvider>
     }
 
-    // @ts-expect-error
     return <BaseDndProvider backend={backend}>{children}</BaseDndProvider>
 }

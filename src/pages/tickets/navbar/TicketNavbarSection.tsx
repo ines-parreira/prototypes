@@ -52,6 +52,7 @@ export function TicketNavbarSectionContainer({
         [section],
     )
     const [{ isDragging }, drag] = useDrag({
+        type: TicketNavbarElementType.Section,
         item: {
             id: section.id,
             type: TicketNavbarElementType.Section,

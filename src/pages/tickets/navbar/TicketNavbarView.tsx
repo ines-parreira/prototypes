@@ -40,6 +40,7 @@ export const TicketNavbarView = ({
         [currentUser, view],
     )
     const [{ isDragging }, drag] = useDrag({
+        type: TicketNavbarElementType.View,
         item: {
             id: view.id,
             type: TicketNavbarElementType.View,
