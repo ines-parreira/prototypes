@@ -2,36 +2,84 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
+import { HttpResponse } from '@gorgias/helpdesk-queries'
+
 import { SentryTeam } from 'common/const/sentryTeamNames'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import {
     helpCenterKeys,
     useCopyArticle,
     useCreateArticle,
     useDeleteArticle,
+    useGetMultipleHelpCenterArticleLists,
     useUpdateArticleTranslation,
 } from 'models/helpCenter/queries'
 import { LocaleCode } from 'models/helpCenter/types'
-import { reportError } from 'utils/errors'
-
-import { CreateGuidanceArticle, UpdateGuidanceArticle } from '../types'
 import {
     mapGuidanceToArticleApi,
     mapUpdateGuidanceArticleToArticleApi,
-} from '../utils/guidance.utils'
+} from 'pages/aiAgent/utils/guidance.utils'
+import { reportError } from 'utils/errors'
+
+import { CreateGuidanceArticle, UpdateGuidanceArticle } from '../types'
+import { getGuidanceArticleQueryParams } from './useGuidanceArticles'
 
 export const useGuidanceArticleMutation = ({
     guidanceHelpCenterId,
 }: {
     guidanceHelpCenterId: number
 }) => {
+    const isIncreaseGuidanceCreationLimit = useFlag(
+        FeatureFlagKey.IncreaseGuidanceCreationLimit,
+    )
     const queryClient = useQueryClient()
+
+    const guidanceArticleKeys = helpCenterKeys.articles(guidanceHelpCenterId)
+    const guidanceArticleWithQueryParamsKeys = helpCenterKeys.articles(
+        guidanceHelpCenterId,
+        getGuidanceArticleQueryParams(isIncreaseGuidanceCreationLimit),
+    )
+
     const {
         mutateAsync: createArticleMutateAsync,
         isLoading: isArticleCreationLoading,
     } = useCreateArticle({
-        onSuccess: async () => {
+        onMutate: async ([, , payload]) => {
+            await queryClient.cancelQueries({
+                queryKey: guidanceArticleKeys,
+            })
+
+            const optimisticArticle = {
+                id: new Date().valueOf(),
+                help_center_id: guidanceHelpCenterId,
+                created_datetime: new Date().toISOString(),
+                updated_datetime: new Date().toISOString(),
+                translation: {
+                    created_datetime: new Date().toISOString(),
+                    updated_datetime: new Date().toISOString(),
+                    ...(payload.translation || {}),
+                },
+            }
+
+            queryClient.setQueryData<
+                HttpResponse<
+                    ReturnType<
+                        typeof useGetMultipleHelpCenterArticleLists
+                    >['articles']
+                >
+            >(guidanceArticleWithQueryParamsKeys, (old: any) => {
+                if (!old?.data) return old
+                return {
+                    ...old,
+                    data: [optimisticArticle, ...old.data],
+                }
+            })
+        },
+
+        onSettled: async () => {
             await queryClient.invalidateQueries({
-                queryKey: helpCenterKeys.articles(guidanceHelpCenterId),
+                queryKey: guidanceArticleKeys,
             })
         },
     })
@@ -40,9 +88,30 @@ export const useGuidanceArticleMutation = ({
         mutateAsync: deleteArticleMutateAsync,
         isLoading: isGuidanceArticleDeleting,
     } = useDeleteArticle({
-        onSuccess: async () => {
+        onMutate: async ([, pathParams]) => {
+            await queryClient.cancelQueries({
+                queryKey: guidanceArticleKeys,
+            })
+
+            queryClient.setQueryData<
+                HttpResponse<
+                    ReturnType<
+                        typeof useGetMultipleHelpCenterArticleLists
+                    >['articles']
+                >
+            >(guidanceArticleWithQueryParamsKeys, (old: any) => {
+                if (!old?.data) return old
+                return {
+                    ...old,
+                    data: old.data.filter(
+                        (article: any) => article.id !== pathParams.id,
+                    ),
+                }
+            })
+        },
+        onSettled: async () => {
             await queryClient.invalidateQueries({
-                queryKey: helpCenterKeys.articles(guidanceHelpCenterId),
+                queryKey: guidanceArticleKeys,
             })
         },
     })
@@ -51,9 +120,40 @@ export const useGuidanceArticleMutation = ({
         mutateAsync: updateArticleTranslationAsync,
         isLoading: isUpdateArticleTranslationLoading,
     } = useUpdateArticleTranslation({
-        onSuccess: async () => {
+        onMutate: async ([, pathParams, updatedData]) => {
+            await queryClient.cancelQueries({
+                queryKey: guidanceArticleKeys,
+            })
+
+            queryClient.setQueryData<
+                HttpResponse<
+                    ReturnType<
+                        typeof useGetMultipleHelpCenterArticleLists
+                    >['articles']
+                >
+            >(guidanceArticleWithQueryParamsKeys, (old) => {
+                if (!old?.data) return old
+
+                return {
+                    ...old,
+                    data: old.data.map((article) => {
+                        return article.id === pathParams.article_id
+                            ? {
+                                  ...article,
+                                  translation: {
+                                      ...article.translation,
+                                      ...updatedData,
+                                  },
+                              }
+                            : article
+                    }),
+                }
+            })
+        },
+
+        onSettled: async () => {
             await queryClient.invalidateQueries({
-                queryKey: helpCenterKeys.articles(guidanceHelpCenterId),
+                queryKey: guidanceArticleKeys,
             })
         },
     })
@@ -72,11 +172,13 @@ export const useGuidanceArticleMutation = ({
             const payload = mapGuidanceToArticleApi(createGuidanceArticle)
 
             try {
-                await createArticleMutateAsync([
+                const article = await createArticleMutateAsync([
                     undefined,
                     { help_center_id: guidanceHelpCenterId },
                     payload,
                 ])
+
+                return article?.data
             } catch (error) {
                 reportError(error, {
                     tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
@@ -101,7 +203,7 @@ export const useGuidanceArticleMutation = ({
             )
 
             try {
-                await updateArticleTranslationAsync([
+                const updatedArticle = await updateArticleTranslationAsync([
                     undefined,
                     {
                         article_id: articleId,
@@ -110,6 +212,7 @@ export const useGuidanceArticleMutation = ({
                     },
                     payload,
                 ])
+                return updatedArticle?.data
             } catch (error) {
                 reportError(error, {
                     tags: { team: SentryTeam.CONVAI_KNOWLEDGE },

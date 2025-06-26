@@ -225,7 +225,7 @@ export const AiAgentReasoning = ({
                         <KnowledgeSourcePopover
                             id={resource.resourceId}
                             key={`resource-${index}`}
-                            type={resource.resourceType}
+                            knowledgeResourceType={resource.resourceType}
                             url={resourceData.url}
                             title={resourceData.title}
                             content={resourceData.content}

@@ -247,7 +247,7 @@ describe('useGetResourceData', () => {
         )
 
         expect(useGetMultipleHelpCenter).toHaveBeenCalledWith(
-            [100],
+            [100, 200],
             expect.objectContaining({ enabled: true }),
         )
 
@@ -1008,6 +1008,7 @@ describe('useGetResourcesReasoningMetadata', () => {
             title: 'Article Title',
             content: 'Article Content',
             url: expect.any(String),
+            helpCenterId: 100,
         })
 
         expect(result.current.data[1]).toEqual({

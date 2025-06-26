@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import {
     useMutation,
@@ -237,7 +237,7 @@ export const useGetMultipleHelpCenterArticleLists = (
 ) => {
     const { client } = useHelpCenterApi()
 
-    const isQueryEnabled = (queryIndex: number) =>
+    const getQueryEnabledStatus = (queryIndex: number) =>
         !!client && !!helpCenterIds[queryIndex] && (overrides?.enabled ?? true)
 
     const queries = useQueries({
@@ -250,13 +250,13 @@ export const useGetMultipleHelpCenterArticleLists = (
                     queryParams,
                 }),
             ...overrides,
-            enabled: isQueryEnabled(i),
+            enabled: getQueryEnabledStatus(i),
         })),
     })
 
     // Compute loading state
     const isLoading = queries.some(
-        (query, i) => isQueryEnabled(i) && query.isLoading,
+        (query, i) => getQueryEnabledStatus(i) && query.isLoading,
     )
 
     // Combine articles from all help centers and add helpCenterId to each article
@@ -369,8 +369,16 @@ export const useGetMultipleHelpCenter = (
 ) => {
     const { client: helpCenterClient } = useHelpCenterApi()
 
+    const getQueryEnabledStatus = useCallback(
+        (queryIndex: number) =>
+            !!helpCenterClient &&
+            !!helpCenterIds[queryIndex] &&
+            (overrides?.enabled ?? true),
+        [helpCenterClient, helpCenterIds, overrides?.enabled],
+    )
+
     const queries = useQueries({
-        queries: helpCenterIds.map((helpCenterId) => ({
+        queries: helpCenterIds.map((helpCenterId, i) => ({
             queryKey: [...helpCenterKeys.detail(helpCenterId), queryParameters],
             queryFn: async () =>
                 getHelpCenter(
@@ -379,14 +387,17 @@ export const useGetMultipleHelpCenter = (
                     queryParameters,
                 ),
             ...overrides,
-            enabled: overrides === undefined || overrides.enabled,
+            enabled: getQueryEnabledStatus(i),
             refetchOnWindowFocus: false,
         })),
     })
 
     const isLoading = useMemo(
-        () => queries.some((query) => query.isLoading),
-        [queries],
+        () =>
+            queries.some(
+                (query, i) => getQueryEnabledStatus(i) && query.isLoading,
+            ),
+        [queries, getQueryEnabledStatus],
     )
 
     const helpCenters = queries.map((query) => query.data)
@@ -829,8 +840,16 @@ export const useGetMultipleFileIngestion = (
 ) => {
     const { client: helpCenterClient } = useHelpCenterApi()
 
+    const getQueryEnabledStatus = useCallback(
+        (queryIndex: number) =>
+            !!helpCenterClient &&
+            helpCenterIds[queryIndex] > 0 &&
+            (overrides?.enabled ?? true),
+        [helpCenterClient, helpCenterIds, overrides?.enabled],
+    )
+
     const queries = useQueries({
-        queries: helpCenterIds.map((helpCenterId) => ({
+        queries: helpCenterIds.map((helpCenterId, i) => ({
             queryKey: helpCenterKeys.fileIngestions(
                 helpCenterId,
                 fileParams?.ids ? { ids: fileParams.ids } : undefined,
@@ -843,18 +862,18 @@ export const useGetMultipleFileIngestion = (
                 return result
             },
             ...overrides,
-            enabled:
-                !!helpCenterClient &&
-                helpCenterId > 0 &&
-                (overrides === undefined || overrides.enabled),
+            enabled: getQueryEnabledStatus(i),
             refetchOnWindowFocus: false,
         })),
     })
 
     // Track loading state
     const isLoading = useMemo(
-        () => queries.some((query) => query.isLoading),
-        [queries],
+        () =>
+            queries.some(
+                (query, i) => getQueryEnabledStatus(i) && query.isLoading,
+            ),
+        [queries, getQueryEnabledStatus],
     )
 
     // Combine all ingested files and add helpCenterId to each

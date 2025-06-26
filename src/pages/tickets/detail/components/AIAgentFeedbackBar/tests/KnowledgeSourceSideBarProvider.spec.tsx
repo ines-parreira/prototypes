@@ -18,7 +18,7 @@ const useSplitTicketViewMocked = assumeMock(useSplitTicketView)
 
 const mockResource = {
     id: '123',
-    type: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+    knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
     url: 'https://example.com',
     title: 'Test Resource',
     content: '<p>Test</p>',

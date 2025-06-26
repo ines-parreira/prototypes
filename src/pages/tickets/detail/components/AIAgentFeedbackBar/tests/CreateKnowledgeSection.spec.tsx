@@ -1,6 +1,10 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
+import { useFlag } from 'core/flags'
+import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
+
 import CreateKnowledgeSection from '../CreateKnowledgeSection'
+import { AiAgentKnowledgeResourceTypeEnum } from '../types'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     useAiAgentNavigation: () => ({
@@ -10,9 +14,31 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     }),
 }))
 
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = useFlag as jest.Mock
+
+jest.mock(
+    'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar',
+)
+const useKnowledgeSourceSideBarMocked = useKnowledgeSourceSideBar as jest.Mock
+
+const shopName = 'MyShop'
+const helpCenterId = 123
+
 describe('CreateKnowledgeSection', () => {
-    const shopName = 'MyShop'
-    const helpCenterId = 123
+    beforeEach(() => {
+        mockUseFlag.mockReturnValue(false)
+        useKnowledgeSourceSideBarMocked.mockReturnValue({
+            selectedResource: null,
+            mode: null,
+            openPreview: jest.fn(),
+            openEdit: jest.fn(),
+            openCreate: jest.fn(),
+            closeModal: jest.fn(),
+        })
+    })
 
     it('should render the component and toggles dropdown', () => {
         render(
@@ -84,5 +110,32 @@ describe('CreateKnowledgeSection', () => {
         expect(
             screen.queryByText('Create Help Center article'),
         ).not.toBeInTheDocument()
+    })
+
+    it('should call openCreate on create guidance click when enableKnowledgeManagementFromTicketView is enabled', () => {
+        mockUseFlag.mockReturnValue(true)
+        render(
+            <CreateKnowledgeSection
+                shopName={shopName}
+                helpCenterId={helpCenterId}
+            />,
+        )
+
+        const button = screen.getByRole('button', { name: /Create knowledge/i })
+        fireEvent.click(button)
+
+        const guidanceLink = screen.getByText('Create Guidance')
+        if (guidanceLink) {
+            fireEvent.click(guidanceLink)
+        }
+
+        expect(guidanceLink.closest('a')).not.toHaveAttribute(
+            'href',
+            '/mock/guidance-templates',
+        )
+
+        expect(
+            useKnowledgeSourceSideBarMocked().openCreate,
+        ).toHaveBeenCalledWith(AiAgentKnowledgeResourceTypeEnum.GUIDANCE)
     })
 })

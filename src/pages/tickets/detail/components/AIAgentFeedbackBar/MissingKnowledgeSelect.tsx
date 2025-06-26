@@ -1,10 +1,4 @@
-import React, {
-    RefObject,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react'
+import { RefObject, useCallback, useEffect, useMemo, useState } from 'react'
 
 import cn from 'classnames'
 
@@ -55,6 +49,7 @@ export type ChoiceOption = {
         url?: string
         title?: string
         content?: string
+        helpCenterId?: string
     }
     label: string
     value: string
@@ -499,7 +494,8 @@ export const KnowledgeTag = ({ choice, handleRemove }: KnowledgeTagProps) => {
         url: meta?.url || '',
         title: meta?.title || '',
         content: meta?.content || '',
-        type,
+        knowledgeResourceType: type,
+        helpCenterId: meta?.helpCenterId || '',
     }
 
     const label = choice.displayLabel.split('::').pop()

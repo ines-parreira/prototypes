@@ -98,8 +98,9 @@ export type SuggestedResourceValue = z.infer<
 
 export type KnowledgeResourcePreview = {
     id: string
-    type: AiAgentKnowledgeResourceTypeEnum
+    knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum
     url: string
     title: string
     content: string
+    helpCenterId?: string
 }

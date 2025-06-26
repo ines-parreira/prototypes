@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
+import { useFlag } from 'core/flags'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { assumeMock } from 'utils/testing'
 
@@ -12,6 +13,7 @@ const defaultResource = {
         isDeleted: false,
         title: 'Test Knowledge Title',
         url: 'https://example.com',
+        helpCenterId: '1',
     },
     resource: {
         id: 'resource-1',
@@ -35,8 +37,12 @@ const mockResource = (overrides = {}) =>
         ...overrides,
     }) as unknown as KnowledgeResource
 
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+const useFlagMock = useFlag as jest.Mock
+
 describe('KnowledgeSourceFeedback', () => {
     beforeEach(() => {
+        useFlagMock.mockReturnValue(false)
         useKnowledgeSourceSideBarMocked.mockReturnValue({
             selectedResource: null,
             mode: null,

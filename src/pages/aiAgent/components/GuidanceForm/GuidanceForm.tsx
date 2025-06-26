@@ -10,6 +10,12 @@ import { useFlag } from 'core/flags'
 import Caption from 'gorgias-design-system/Input/Caption'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
+import {
+    GUIDANCE_EDITOR_DEFAULT_HEIGHT,
+    GUIDANCE_EDITOR_DEFAULT_LABEL,
+    GUIDANCE_EDITOR_DEFAULT_MAX_CHARS,
+    GUIDANCE_EDITOR_DEFAULT_PLACEHOLDER,
+} from 'pages/aiAgent/components/GuidanceEditor/variables'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { useGuidanceAiSuggestions } from 'pages/aiAgent/hooks/useGuidanceAiSuggestions'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
@@ -242,7 +248,7 @@ export const GuidanceForm = ({
                             <NewGuidanceEditor
                                 content={formState.content}
                                 handleUpdateContent={onContentChange}
-                                label="Instructions"
+                                label={GUIDANCE_EDITOR_DEFAULT_LABEL}
                                 shopName={shopName}
                                 availableActions={availableActions}
                             />
@@ -254,11 +260,11 @@ export const GuidanceForm = ({
                     ) : (
                         <GuidanceEditor
                             onChange={onContentChange}
-                            label="Instructions"
+                            label={GUIDANCE_EDITOR_DEFAULT_LABEL}
                             value={formState.content}
-                            placeholder="e.g. If no order data is found for a customer asking a question about their order, you will ask the customer to confirm their order number and the email address."
-                            maxChars={5000}
-                            height={320}
+                            placeholder={GUIDANCE_EDITOR_DEFAULT_PLACEHOLDER}
+                            maxChars={GUIDANCE_EDITOR_DEFAULT_MAX_CHARS}
+                            height={GUIDANCE_EDITOR_DEFAULT_HEIGHT}
                         />
                     )}
 

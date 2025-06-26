@@ -1,3 +1,4 @@
+import { StoreConfiguration } from 'models/aiAgent/types'
 import { Action, Guidance, Knowledge } from 'models/aiAgentFeedback/types'
 import { TicketMessage } from 'models/ticket/types'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
@@ -110,3 +111,32 @@ export const knowledgeResourceShouldBeLink = (
         AiAgentKnowledgeResourceTypeEnum.ARTICLE,
         AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
     ].includes(type)
+
+export function getKnowledgeResourceTypeLabel(
+    type?: AiAgentKnowledgeResourceTypeEnum,
+): string {
+    switch (type) {
+        case AiAgentKnowledgeResourceTypeEnum.GUIDANCE:
+            return 'Guidance'
+        case AiAgentKnowledgeResourceTypeEnum.ARTICLE:
+            return 'Help Center article'
+        default:
+            return ''
+    }
+}
+
+export function getHelpCenterIdByResourceType(
+    storeConfiguration?: StoreConfiguration,
+    type?: AiAgentKnowledgeResourceTypeEnum,
+) {
+    switch (type) {
+        case AiAgentKnowledgeResourceTypeEnum.GUIDANCE:
+            return storeConfiguration?.guidanceHelpCenterId
+        case AiAgentKnowledgeResourceTypeEnum.ARTICLE:
+            return storeConfiguration?.helpCenterId
+                ? storeConfiguration.helpCenterId
+                : undefined
+        default:
+            return
+    }
+}

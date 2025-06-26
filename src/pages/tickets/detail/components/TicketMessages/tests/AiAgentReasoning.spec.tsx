@@ -32,11 +32,17 @@ jest.mock(
     'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePopover',
     () => ({
         __esModule: true,
-        default: ({ children, type, title, content, url }: any) => {
+        default: ({
+            children,
+            knowledgeResourceType,
+            title,
+            content,
+            url,
+        }: any) => {
             const mockRef = { current: null }
             return (
                 <div
-                    data-testid={`knowledge-source-popover-${type}`}
+                    data-testid={`knowledge-source-popover-${knowledgeResourceType}`}
                     data-title={title}
                     data-content={content}
                     data-url={url}

@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
+import { useFlag } from 'core/flags'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { getResourceMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
 import { assumeMock } from 'utils/testing'
@@ -135,8 +136,15 @@ jest.mock(
 
 const getResourceMetadataMock = assumeMock(getResourceMetadata)
 
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+
+const mockUseFlag = useFlag as jest.Mock
+
 describe('MissingKnowledgeSelect', () => {
     beforeEach(() => {
+        mockUseFlag.mockReturnValue(false)
         getResourceMetadataMock.mockReturnValue({
             title: '',
             content: '',
@@ -595,6 +603,46 @@ describe('MissingKnowledgeSelect', () => {
         expect(
             screen.getByText(/This is an extremely long text/),
         ).toBeInTheDocument()
+    })
+
+    it('renders KnowledgeTag with onClick instead of href when feature flag enabled and type GUIDANCE', () => {
+        const openPreviewMock = jest.fn()
+        mockUseFlag.mockReturnValue(true)
+        useKnowledgeSourceSideBarMocked.mockReturnValue({
+            selectedResource: null,
+            mode: null,
+            openPreview: openPreviewMock,
+            openEdit: jest.fn(),
+            openCreate: jest.fn(),
+            closeModal: jest.fn(),
+        })
+        render(
+            <KnowledgeTag
+                choice={{
+                    meta: {
+                        url: 'https://example.com',
+                        title: 'Knowledge Tag Test',
+                        content: 'This is a test',
+                        helpCenterId: '1',
+                    },
+                    displayLabel: 'Test::test',
+                    label: 'Test::test',
+                    value: 'test-test',
+                    type: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                }}
+                handleRemove={jest.fn()}
+            />,
+        )
+
+        fireEvent.click(screen.getByText('test'))
+        expect(openPreviewMock).toHaveBeenCalledWith({
+            content: 'This is a test',
+            id: 'test-test',
+            title: 'Knowledge Tag Test',
+            knowledgeResourceType: 'GUIDANCE',
+            url: 'https://example.com',
+            helpCenterId: '1',
+        })
     })
 
     it('renders not render if choice is undefined', () => {

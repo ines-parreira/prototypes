@@ -12,9 +12,12 @@ import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
 import { getSectionIdByName } from 'state/entities/sections/selectors'
 import { getTicketState } from 'state/ticket/selectors'
 import { getViewsState } from 'state/views/selectors'
+import { assumeMock } from 'utils/testing'
 
 import useGoToNextTicket from '../../TicketNavigation/hooks/useGoToNextTicket'
 import AIAgentSimplifiedFeedback from '../AIAgentSimplifiedFeedback'
+import KnowledgeSourceSideBar from '../KnowledgeSourceSideBar'
+import { AiAgentKnowledgeResourceTypeEnum } from '../types'
 import { useEnrichFeedbackData } from '../useEnrichFeedbackData'
 
 jest.mock('@gorgias/merchant-ui-kit', () => {
@@ -23,6 +26,9 @@ jest.mock('@gorgias/merchant-ui-kit', () => {
         Tooltip: () => <div>Tooltip</div>,
     }
 })
+
+jest.mock('../KnowledgeSourceSideBar')
+const KnowledgeSourceSideBarMock = assumeMock(KnowledgeSourceSideBar)
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = useAppSelector as jest.Mock
@@ -37,7 +43,14 @@ const useGoToNextTicketMock = useGoToNextTicket as jest.Mock
 jest.mock('models/knowledgeService/mutations')
 const useUpsertFeedbackMock = useUpsertFeedback as jest.Mock
 jest.mock('pages/aiAgent/hooks/useStoreConfiguration', () => ({
-    useStoreConfiguration: () => ({ storeConfiguration: {} }),
+    useStoreConfiguration: () => ({
+        storeConfiguration: {
+            shopName: 'test nema',
+            shopType: 'shopify',
+            guidanceHelpCenterId: 123,
+            helpCenterId: 456,
+        },
+    }),
 }))
 jest.mock(
     'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar',
@@ -69,6 +82,9 @@ const initialFeedbackData = {
 
 describe('AIAgentSimplifiedFeedback', () => {
     beforeEach(() => {
+        KnowledgeSourceSideBarMock.mockReturnValue(
+            <div>KnowledgeSourceSideBar</div>,
+        )
         jest.useFakeTimers()
         useGoToNextTicketMock.mockReturnValue({
             goToTicket: jest.fn(),
@@ -1297,5 +1313,183 @@ describe('AIAgentSimplifiedFeedback', () => {
 
         // Should not call mutateAsync when executionId is missing
         expect(mutateAsyncMock).not.toHaveBeenCalled()
+    })
+
+    it('should render KnowledgeSourceSideBar when there is no helpCenterId within selected resources if helpCenter is present', () => {
+        useKnowledgeSourceSideBarMocked.mockReturnValue({
+            selectedResource: {
+                knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+            },
+            mode: null,
+            openPreview: jest.fn(),
+            openEdit: jest.fn(),
+            openCreate: jest.fn(),
+            closeModal: jest.fn(),
+        })
+
+        useEnrichFeedbackDataMock.mockReturnValue({
+            ...initialFeedbackData,
+            enrichedData: {
+                knowledgeResources: [
+                    {
+                        resource: {
+                            id: '123',
+                            title: 'Test Article',
+                            resourceType: 'ARTICLE',
+                            resourceSetId: 'set1',
+                            resourceLocale: null,
+                            metadata: {
+                                title: 'Test Article',
+                                url: 'https://example.com',
+                                isDeleted: false,
+                            },
+                        },
+                        id: '123',
+                        resourceId: '123',
+                        resourceType: 'ARTICLE',
+                        resourceSetId: 'set1',
+                        resourceLocale: null,
+                        resourceTitle: 'Test Article',
+                        feedback: {
+                            id: 1,
+                            objectType: 'TICKET',
+                            objectId: '123',
+                            targetType: 'KNOWLEDGE_RESOURCE',
+                            targetId: '123',
+                            feedbackValue: null,
+                            submittedBy: 1,
+                            createdDatetime: '2023-10-01T00:00:00Z',
+                            updatedDatetime: '2023-10-01T00:00:00Z',
+                            feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
+                        },
+                    },
+                ],
+            },
+            helpCenters: [{ id: 456, name: 'Help Center 1' }],
+            isLoading: false,
+        })
+
+        render(<AIAgentSimplifiedFeedback />)
+
+        expect(screen.getByText('KnowledgeSourceSideBar')).toBeInTheDocument()
+    })
+
+    it('should render KnowledgeSourceSideBar when selected resource has helpCenterId and helpCenter is present', () => {
+        useKnowledgeSourceSideBarMocked.mockReturnValue({
+            selectedResource: {
+                knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                helpCenterId: '456',
+            },
+            mode: null,
+            openPreview: jest.fn(),
+            openEdit: jest.fn(),
+            openCreate: jest.fn(),
+            closeModal: jest.fn(),
+        })
+
+        useEnrichFeedbackDataMock.mockReturnValue({
+            ...initialFeedbackData,
+            enrichedData: {
+                knowledgeResources: [
+                    {
+                        resource: {
+                            id: '123',
+                            title: 'Test Article',
+                            resourceType: 'ARTICLE',
+                            resourceSetId: 'set1',
+                            resourceLocale: null,
+                            metadata: {
+                                title: 'Test Article',
+                                url: 'https://example.com',
+                                isDeleted: false,
+                            },
+                        },
+                        id: '123',
+                        resourceId: '123',
+                        resourceType: 'ARTICLE',
+                        resourceSetId: 'set1',
+                        resourceLocale: null,
+                        resourceTitle: 'Test Article',
+                        feedback: {
+                            id: 1,
+                            objectType: 'TICKET',
+                            objectId: '123',
+                            targetType: 'KNOWLEDGE_RESOURCE',
+                            targetId: '123',
+                            feedbackValue: null,
+                            submittedBy: 1,
+                            createdDatetime: '2023-10-01T00:00:00Z',
+                            updatedDatetime: '2023-10-01T00:00:00Z',
+                            feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
+                        },
+                    },
+                ],
+            },
+            helpCenters: [{ id: 456, name: 'Help Center 1' }],
+            isLoading: false,
+        })
+
+        render(<AIAgentSimplifiedFeedback />)
+
+        expect(screen.getByText('KnowledgeSourceSideBar')).toBeInTheDocument()
+    })
+
+    it('should not render KnowledgeSourceSideBar when helpCenter is not present', () => {
+        useKnowledgeSourceSideBarMocked.mockReturnValue({
+            selectedResource: null,
+            mode: null,
+            openPreview: jest.fn(),
+            openEdit: jest.fn(),
+            openCreate: jest.fn(),
+            closeModal: jest.fn(),
+        })
+
+        useEnrichFeedbackDataMock.mockReturnValue({
+            ...initialFeedbackData,
+            enrichedData: {
+                knowledgeResources: [
+                    {
+                        resource: {
+                            id: '123',
+                            title: 'Test Article',
+                            resourceType: 'ARTICLE',
+                            resourceSetId: 'set1',
+                            resourceLocale: null,
+                            metadata: {
+                                title: 'Test Article',
+                                url: 'https://example.com',
+                                isDeleted: false,
+                            },
+                        },
+                        id: '123',
+                        resourceId: '123',
+                        resourceType: 'ARTICLE',
+                        resourceSetId: 'set1',
+                        resourceLocale: null,
+                        resourceTitle: 'Test Article',
+                        feedback: {
+                            id: 1,
+                            objectType: 'TICKET',
+                            objectId: '123',
+                            targetType: 'KNOWLEDGE_RESOURCE',
+                            targetId: '123',
+                            feedbackValue: null,
+                            submittedBy: 1,
+                            createdDatetime: '2023-10-01T00:00:00Z',
+                            updatedDatetime: '2023-10-01T00:00:00Z',
+                            feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
+                        },
+                    },
+                ],
+            },
+            helpCenters: [{ id: 456, name: 'Help Center 1' }],
+            isLoading: false,
+        })
+
+        render(<AIAgentSimplifiedFeedback />)
+
+        expect(
+            screen.queryByText('KnowledgeSourceSideBar'),
+        ).not.toBeInTheDocument()
     })
 })

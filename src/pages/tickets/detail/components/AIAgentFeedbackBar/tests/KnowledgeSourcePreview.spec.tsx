@@ -23,7 +23,7 @@ describe('KnowledgeSourcePreview', () => {
         title: 'Test Title',
         content: '<p>This is a test content.</p>',
         url: 'https://example.com',
-        type: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+        knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
         lastUpdatedAt: '2023-10-10T12:00:00Z',
     }
 
@@ -32,6 +32,40 @@ describe('KnowledgeSourcePreview', () => {
 
         expect(screen.getByText('Test Title')).toBeInTheDocument()
         expect(screen.getByText('This is a test content.')).toBeInTheDocument()
+    })
+
+    it('renders knowledge type', () => {
+        const { rerender } = render(
+            <KnowledgeSourcePreview
+                {...defaultProps}
+                knowledgeResourceType={
+                    AiAgentKnowledgeResourceTypeEnum.GUIDANCE
+                }
+            />,
+        )
+
+        expect(screen.getByText('Guidance')).toBeInTheDocument()
+
+        rerender(
+            <KnowledgeSourcePreview
+                {...defaultProps}
+                knowledgeResourceType={AiAgentKnowledgeResourceTypeEnum.ARTICLE}
+            />,
+        )
+
+        expect(screen.getByText('Help Center article')).toBeInTheDocument()
+
+        rerender(
+            <KnowledgeSourcePreview
+                {...defaultProps}
+                knowledgeResourceType={'unkonwn' as any}
+            />,
+        )
+
+        expect(screen.queryByText('Guidance')).not.toBeInTheDocument()
+        expect(
+            screen.queryByText('Help Center article'),
+        ).not.toBeInTheDocument()
     })
 
     it('renders last updated date', () => {
@@ -60,5 +94,15 @@ describe('KnowledgeSourcePreview', () => {
         fireEvent.click(closeButton)
 
         expect(mockOnClose).toHaveBeenCalled()
+    })
+
+    it('calls onEdit when edit button is clicked', () => {
+        const mockOnEdit = jest.fn()
+        render(<KnowledgeSourcePreview {...defaultProps} onEdit={mockOnEdit} />)
+
+        const editButton = screen.getByText('edit')
+        fireEvent.click(editButton)
+
+        expect(mockOnEdit).toHaveBeenCalled()
     })
 })

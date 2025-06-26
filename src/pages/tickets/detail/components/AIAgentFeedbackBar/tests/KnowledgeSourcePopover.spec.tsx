@@ -12,7 +12,7 @@ const popoverProps = {
     url: 'https://admin.shopify.com/store/artemisathletix/orders/5994752147558',
     title: 'Order #3584',
     content: 'Order #3584',
-    type: AiAgentKnowledgeResourceTypeEnum.ORDER,
+    knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum.ORDER,
     id: 'order-3584',
 }
 

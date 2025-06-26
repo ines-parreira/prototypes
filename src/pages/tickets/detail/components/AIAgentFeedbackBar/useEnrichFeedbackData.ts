@@ -288,6 +288,7 @@ export const getResourceMetadata = (
                       title: article.translation.title ?? '',
                       content: article.translation.content ?? '',
                       url: articleUrl ?? '',
+                      helpCenterId: article.helpCenterId,
                   }
                 : emptyMetadata
         }
@@ -295,11 +296,13 @@ export const getResourceMetadata = (
             const guidance = guidanceArticles.find(
                 (guidance) => guidance.id === idAsNumber,
             )
+
             return guidance
                 ? {
                       title: guidance.title ?? '',
                       content: guidance.content ?? '',
                       url: aiAgentRoutes?.guidanceArticleEdit(idAsNumber),
+                      helpCenterId: guidance.helpCenterId,
                   }
                 : emptyMetadata
         }
@@ -591,9 +594,11 @@ export const useGetResourceData = ({
             },
         )
 
+    const helpCenterIds = [...faqHelpCenterIds, ...guidanceHelpCenterIds]
+
     const { helpCenters, isLoading: isHelpCentersLoading } =
-        useGetMultipleHelpCenter(faqHelpCenterIds, {
-            enabled: queriesEnabled && faqHelpCenterIds.length > 0,
+        useGetMultipleHelpCenter(helpCenterIds, {
+            enabled: queriesEnabled && helpCenterIds.length > 0,
             refetchOnWindowFocus: false,
             staleTime: DEFAULT_STALE_TIME,
             cacheTime: DEFAULT_CACHE_TIME,
@@ -649,8 +654,8 @@ export const useGetResourceData = ({
 
     // Fetch actions
     const { actions, isLoading: isActionsLoading } = useActionResources(
-        shopName ?? '',
-        shopType ?? '',
+        shopName,
+        shopType,
         queriesEnabled,
     )
 
@@ -690,8 +695,8 @@ export const useEnrichFeedbackData = ({
     ticketId: number
     storeConfiguration?: StoreConfiguration
 }) => {
-    const shopName = storeConfiguration?.storeName
-    const shopType = storeConfiguration?.shopType
+    const shopName = storeConfiguration?.storeName ?? ''
+    const shopType = storeConfiguration?.shopType ?? ''
     const queriesEnabled = !!shopName && !!shopType && !!data
 
     // Extract helpCenter IDs from the feedback data
@@ -716,25 +721,21 @@ export const useEnrichFeedbackData = ({
         guidanceHelpCenterIds: relatedHelpCenterData.guidanceHelpCenterIds,
         snippetHelpCenterIds: relatedHelpCenterData.snippetHelpCenterIds,
         ticketId,
-        shopName: storeConfiguration?.storeName ?? '',
-        shopType: storeConfiguration?.shopType ?? '',
+        shopName: shopName,
+        shopType: shopType,
     })
 
     // Process the fetched data into the final structure
-    const enrichedData = useProcessResources(
-        data?.executions,
-        storeConfiguration?.storeName ?? '',
-        {
-            articles,
-            guidanceArticles,
-            sourceItems: sourceItems ?? [],
-            storeWebsiteQuestions,
-            ingestedFiles: ingestedFiles ?? [],
-            macros,
-            actions,
-            helpCenters,
-        },
-    )
+    const enrichedData = useProcessResources(data?.executions, shopName, {
+        articles,
+        guidanceArticles,
+        sourceItems: sourceItems ?? [],
+        storeWebsiteQuestions,
+        ingestedFiles: ingestedFiles ?? [],
+        macros,
+        actions,
+        helpCenters,
+    })
 
     return {
         isLoading,
@@ -761,6 +762,9 @@ export const useGetResourcesReasoningMetadata = ({
     storeConfiguration?: StoreConfiguration
     queriesEnabled?: boolean
 }) => {
+    const shopName = storeConfiguration?.storeName ?? ''
+    const shopType = storeConfiguration?.shopType ?? ''
+
     const relatedHelpCenterData = resources.reduce(
         (acc, resource) => {
             if (!resource.resourceSetId) {
@@ -808,8 +812,8 @@ export const useGetResourcesReasoningMetadata = ({
         queriesEnabled,
         ...relatedHelpCenterData,
         ticketId,
-        shopName: storeConfiguration?.storeName ?? '',
-        shopType: storeConfiguration?.shopType ?? '',
+        shopName,
+        shopType,
     })
 
     return {
@@ -821,7 +825,7 @@ export const useGetResourcesReasoningMetadata = ({
                     title: resource.resourceTitle,
                     type: resource.resourceType,
                 },
-                storeConfiguration?.storeName ?? '',
+                shopName,
                 {
                     articles,
                     guidanceArticles,

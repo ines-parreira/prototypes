@@ -11,11 +11,28 @@
 
     .previewContent {
         grid-row: span 2;
+
+        .title {
+            .heading-section-semibold;
+        }
     }
 
     .lastUpdatedAt {
         .caption-regular;
         color: var(--neutral-grey-5);
         margin-bottom: var(--layout-spacing-xs);
+    }
+
+    .guidanceEditorContainer {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-m);
+    }
+
+    .footer {
+        gap: var(--layout-spacing-xs);
+        .deleteButton {
+            margin-left: auto;
+        }
     }
 }

@@ -1,9 +1,15 @@
 import { ldClientMock } from 'jest-launchdarkly-mock'
 
+import { StoreConfiguration } from 'models/aiAgent/types'
 import { Knowledge } from 'models/aiAgentFeedback/types'
 
 import { AiAgentKnowledgeResourceTypeEnum } from '../types'
-import { getKnowledgeUrl, mapToKnowledgeSourceType } from '../utils'
+import {
+    getHelpCenterIdByResourceType,
+    getKnowledgeResourceTypeLabel,
+    getKnowledgeUrl,
+    mapToKnowledgeSourceType,
+} from '../utils'
 
 describe('getKnowledgeUrl', () => {
     beforeEach(() => {
@@ -84,5 +90,66 @@ describe('mapToKnowledgeSourceType', () => {
         expect(
             mapToKnowledgeSourceType(AiAgentKnowledgeResourceTypeEnum.ORDER),
         ).toBe('order')
+    })
+})
+
+describe('getKnowledgeResourceTypeLabel', () => {
+    it('returns "Guidance" for GUIDANCE type', () => {
+        expect(
+            getKnowledgeResourceTypeLabel(
+                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+            ),
+        ).toBe('Guidance')
+    })
+
+    it('returns "Help Center article" for ARTICLE type', () => {
+        expect(
+            getKnowledgeResourceTypeLabel(
+                AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+            ),
+        ).toBe('Help Center article')
+    })
+
+    it('returns empty string for undefined', () => {
+        expect(getKnowledgeResourceTypeLabel(undefined)).toBe('')
+    })
+})
+
+describe('getHelpCenterIdByResourceType', () => {
+    const storeConfiguration = {
+        guidanceHelpCenterId: 123,
+        helpCenterId: 456,
+    } as StoreConfiguration
+
+    it('returns guidanceHelpCenterId as string when type is GUIDANCE', () => {
+        const result = getHelpCenterIdByResourceType(
+            storeConfiguration,
+            AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+        )
+        expect(result).toBe(123)
+    })
+
+    it('returns helpCenterId as string when type is ARTICLE', () => {
+        const result = getHelpCenterIdByResourceType(
+            storeConfiguration,
+            AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+        )
+        expect(result).toBe(456)
+    })
+
+    it('returns undefined when helpCenterId is missing', () => {
+        const result = getHelpCenterIdByResourceType(
+            { guidanceHelpCenterId: 123 } as StoreConfiguration,
+            AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+        )
+        expect(result).toBeUndefined()
+    })
+
+    it('returns undefined for unknown type', () => {
+        const result = getHelpCenterIdByResourceType(
+            storeConfiguration,
+            undefined,
+        )
+        expect(result).toBeUndefined()
     })
 })

@@ -12,7 +12,7 @@ type KnowledgeSourcePopoverProps = {
     url: string
     title: string
     content: string
-    type: AiAgentKnowledgeResourceTypeEnum
+    knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum
     id: string
     children: (
         ref: React.RefObject<HTMLElement>,
@@ -28,7 +28,7 @@ const KnowledgeSourcePopover = ({
     url,
     title,
     content,
-    type,
+    knowledgeResourceType,
     children,
     onClick,
 }: KnowledgeSourcePopoverProps) => {
@@ -41,14 +41,14 @@ const KnowledgeSourcePopover = ({
             AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
             AiAgentKnowledgeResourceTypeEnum.MACRO,
             AiAgentKnowledgeResourceTypeEnum.ARTICLE,
-        ].includes(type)
+        ].includes(knowledgeResourceType)
 
         return {
             href: url ?? '',
             popoverTitle: title || '',
             body: showBody && content ? stripHTML(content) : null,
         }
-    }, [url, title, content, type])
+    }, [url, title, content, knowledgeResourceType])
 
     const openPopover = useCallback(() => {
         clearTimeout()
@@ -93,7 +93,9 @@ const KnowledgeSourcePopover = ({
                     >
                         <div className={css.type}>
                             <KnowledgeSourceIcon
-                                type={mapToKnowledgeSourceType(type)}
+                                type={mapToKnowledgeSourceType(
+                                    knowledgeResourceType,
+                                )}
                                 withLabel
                             />
                         </div>

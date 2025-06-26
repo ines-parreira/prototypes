@@ -77,8 +77,9 @@ const KnowledgeSourceFeedback = ({
         url: resource.metadata?.url || '',
         title: resource.metadata?.title || resource.resource?.resourceTitle,
         content: resource.metadata?.content,
-        type: resource.resource
+        knowledgeResourceType: resource.resource
             .resourceType as AiAgentKnowledgeResourceTypeEnum,
+        helpCenterId: resource.resource.resourceSetId,
     }
 
     const onClick =

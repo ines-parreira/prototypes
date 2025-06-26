@@ -9,11 +9,13 @@ import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
+import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import AutoSaveBadge from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
 import CreateKnowledgeSection from 'pages/tickets/detail/components/AIAgentFeedbackBar/CreateKnowledgeSection'
 import FeedbackInternalNote from 'pages/tickets/detail/components/AIAgentFeedbackBar/FeedbackInternalNote'
 import { useFeedbackActions } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackActions'
+import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import KnowledgeSourceFeedback from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceFeedback'
 import { KnowledgeSourceFeedbackSkeleton } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceFeedbackSkeleton'
 import KnowledgeSourceSideBar from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBar'
@@ -24,7 +26,9 @@ import {
     AutoSaveState,
     KnowledgeResource,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import { UnsavedChangesModalProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/UnsavedChangesModalProvider'
 import { useEnrichFeedbackData } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
+import { getHelpCenterIdByResourceType } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getSectionIdByName } from 'state/entities/sections/selectors'
@@ -37,6 +41,8 @@ const AIAgentSimplifiedFeedback = () => {
     const [loadingMutations, setLoadingMutations] = useState<string[]>()
     const viewsState = useAppSelector(getViewsState)
     const existingSections = useAppSelector(getSectionIdByName)
+    const { selectedResource } = useKnowledgeSourceSideBar()
+
     const showNextTicketButton =
         viewsState.getIn(['active', 'section_id']) ===
         existingSections['AI Agent']
@@ -94,6 +100,8 @@ const AIAgentSimplifiedFeedback = () => {
         accountDomain: account.get('domain') as string,
         enabled: !!shopName,
     })
+
+    const shopType = storeConfiguration?.shopType ?? ''
 
     const {
         isLoading: isLoadingEnrichedData,
@@ -250,6 +258,29 @@ const AIAgentSimplifiedFeedback = () => {
         setFreeFormFeedback(value)
     }
 
+    const helpCenter = useMemo(() => {
+        if (!helpCenters || !selectedResource) return null
+
+        if (!selectedResource?.helpCenterId) {
+            const storeConfigurationHelpCenterId =
+                getHelpCenterIdByResourceType(
+                    storeConfiguration,
+                    selectedResource.knowledgeResourceType,
+                )
+            return helpCenters.find(
+                (helpCenter) =>
+                    !!helpCenter &&
+                    helpCenter.id === storeConfigurationHelpCenterId,
+            )
+        }
+
+        return helpCenters.find(
+            (helpCenter) =>
+                !!helpCenter &&
+                helpCenter.id === Number(selectedResource.helpCenterId),
+        )
+    }, [helpCenters, selectedResource, storeConfiguration])
+
     return (
         <>
             <div className={css.container}>
@@ -358,10 +389,18 @@ const AIAgentSimplifiedFeedback = () => {
                 </div>
             )}
 
-            <KnowledgeSourceSideBar
-                articles={articles}
-                guidanceArticles={guidanceArticles}
-            />
+            {!!helpCenter && (
+                <CurrentHelpCenterContext.Provider value={helpCenter}>
+                    <UnsavedChangesModalProvider>
+                        <KnowledgeSourceSideBar
+                            articles={articles}
+                            guidanceArticles={guidanceArticles}
+                            shopName={shopName}
+                            shopType={shopType}
+                        />
+                    </UnsavedChangesModalProvider>
+                </CurrentHelpCenterContext.Provider>
+            )}
         </>
     )
 }

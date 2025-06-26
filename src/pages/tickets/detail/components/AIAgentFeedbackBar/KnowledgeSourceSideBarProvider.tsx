@@ -80,10 +80,10 @@ export function KnowledgeSourceSideBarProvider({
     )
 
     const openCreate = useCallback(
-        (type: AiAgentKnowledgeResourceTypeEnum) => {
+        (knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum) => {
             setSelectedResource({
                 id: '',
-                type,
+                knowledgeResourceType,
                 url: '',
                 title: '',
                 content: '',
