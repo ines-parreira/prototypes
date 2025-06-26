@@ -129,11 +129,14 @@ export const KnowledgeStep: React.FC<StepProps> = ({
                     titleBlack="Great, start building "
                     titleMagenta="AI Agent's knowledge"
                 />
-                <AIBanner fillStyle="fill">
-                    Your AI Agent leverages different knowledge resources to
-                    provide accurate responses to customers. You can update or
-                    expand your knowledge resources anytime in your settings.
-                </AIBanner>
+                <div className={css.banner}>
+                    <AIBanner fillStyle="fill">
+                        Your AI Agent leverages different knowledge resources to
+                        provide accurate responses to customers. You can update
+                        or expand your knowledge resources anytime in your
+                        settings.
+                    </AIBanner>
+                </div>
                 <Card className={css.card}>
                     <CardContent>{renderContent()}</CardContent>
                 </Card>

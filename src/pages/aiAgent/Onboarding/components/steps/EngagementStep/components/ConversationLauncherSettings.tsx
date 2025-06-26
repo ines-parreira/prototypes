@@ -49,8 +49,9 @@ export const ConversationLauncherSettings = ({
                     <EngagementSettingsCardImage
                         alt="image showing an example of the Ask anything input"
                         src={assetsUrl(
-                            '/img/ai-agent/ai_agent_floating_input.png',
+                            '/img/ai-agent/ai_agent_floating_input_small.png',
                         )}
+                        className={css.cardImage}
                     />
 
                     <EngagementSettingsCardContent>

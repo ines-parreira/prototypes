@@ -104,7 +104,7 @@ describe('TriggerOnSearchSettings', () => {
             )
             expect(image).toHaveAttribute(
                 'src',
-                '/img/ai-agent/ai_agent_trigger_on_search.png',
+                '/img/ai-agent/ai_agent_trigger_on_search_small.png',
             )
         })
     })

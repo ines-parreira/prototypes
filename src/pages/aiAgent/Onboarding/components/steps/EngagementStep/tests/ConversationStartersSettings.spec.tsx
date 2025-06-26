@@ -109,7 +109,7 @@ describe('ConversationStartersSettings', () => {
             )
             expect(image).toHaveAttribute(
                 'src',
-                '/img/ai-agent/ai_agent_conversation_starters.png',
+                '/img/ai-agent/ai_agent_conversation_starters_small.png',
             )
         })
     })

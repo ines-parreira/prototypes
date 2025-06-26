@@ -54,8 +54,9 @@ export const ConversationStartersSettings = ({
                 <EngagementSettingsCardImage
                     alt="image showing an example of the conversation starters"
                     src={assetsUrl(
-                        '/img/ai-agent/ai_agent_conversation_starters.png',
+                        '/img/ai-agent/ai_agent_conversation_starters_small.png',
                     )}
+                    className={css.cardImage}
                 />
 
                 <EngagementSettingsCardContent>

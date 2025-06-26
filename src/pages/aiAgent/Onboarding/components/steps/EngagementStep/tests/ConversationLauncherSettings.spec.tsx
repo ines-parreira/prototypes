@@ -104,7 +104,7 @@ describe('ConversationLauncherSettings', () => {
             )
             expect(image).toHaveAttribute(
                 'src',
-                '/img/ai-agent/ai_agent_floating_input.png',
+                '/img/ai-agent/ai_agent_floating_input_small.png',
             )
         })
     })

@@ -48,8 +48,9 @@ export const TriggerOnSearchSettings = ({
                 <EngagementSettingsCardImage
                     alt="image showing an example of the trigger on search"
                     src={assetsUrl(
-                        '/img/ai-agent/ai_agent_trigger_on_search.png',
+                        '/img/ai-agent/ai_agent_trigger_on_search_small.png',
                     )}
+                    className={css.cardImage}
                 />
 
                 <EngagementSettingsCardContent>

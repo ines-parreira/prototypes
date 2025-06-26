@@ -76,7 +76,7 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
         <TrackerCircleCard
             isLoading={data.isAverageOrderValueLoading}
             percentage={100}
-            label={compactInteger(data.averageOrderValue).toString() + '$'}
+            label={`$${compactInteger(data.averageOrderValue).toString()}`}
             title="Average order value"
         />
     )

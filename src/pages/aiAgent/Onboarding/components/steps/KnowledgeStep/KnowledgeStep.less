@@ -18,6 +18,10 @@
         }
     }
 
+    .banner {
+        padding-top: var(--layout-spacing-s);
+    }
+
     [class*='ConvAiOnboardingLayout--onboardingBody'] {
         @media @tablets-up {
             display: flex;
@@ -25,13 +29,13 @@
 
         [class*='ConvAiOnboardingLayout--onboardingContentContainer'] {
             @media @tablets-up {
-                width: 50%;
+                width: calc(2 / 3 * 100%);
             }
         }
 
         [class*='ConvAiOnboardingLayout--onboardingPreviewContainerWrapper'] {
             @media @tablets-up {
-                width: 50%;
+                width: calc(1 / 3 * 100%);
             }
 
             max-width: 100%;
