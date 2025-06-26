@@ -15,7 +15,7 @@ export type GlobalNavigationItemTooltipTrigger = 'hover'[]
 type GlobalNavigationItemProps<E extends React.ElementType> =
     PolymorphicProps<E> & {
         'data-candu-id'?: string
-        icon: string | ReactNode
+        icon: string
         label: string
         isActive?: boolean
         tooltip?: ReactNode
@@ -48,11 +48,7 @@ export default function GlobalNavigationItem<E extends React.ElementType>({
             data-candu-id={props['data-candu-id']}
             aria-label={label}
         >
-            {typeof icon === 'string' ? (
-                <i className="material-icons-round">{icon}</i>
-            ) : (
-                icon
-            )}
+            <i className="material-icons-round">{icon}</i>
 
             {children}
             {tooltip && (

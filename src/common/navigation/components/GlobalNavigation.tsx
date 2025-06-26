@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 
-import psychologyIcon from 'assets/img/icons/psychology-bulb.svg'
 import css from 'common/navigation/components/GlobalNavigation.less'
 import GlobalNavigationItem from 'common/navigation/components/GlobalNavigationItem'
 import { GlobalNavigationSpotlight } from 'common/navigation/components/GlobalNavigationSpotlight'
@@ -149,12 +148,7 @@ export default function GlobalNavigation() {
                     {!isVoiceOfCustomerRestricted && (
                         <GlobalNavigationItem
                             as={Link}
-                            icon={
-                                <img
-                                    alt="psychology-bulb"
-                                    src={psychologyIcon}
-                                />
-                            }
+                            icon="psychology"
                             label="Statistics"
                             isActive={
                                 activeItem === MenuItemName.VoiceOfCustomer
