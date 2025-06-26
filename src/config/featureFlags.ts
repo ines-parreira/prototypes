@@ -53,6 +53,7 @@ export enum FeatureFlagKey {
     BigCommerceRefundOrder = 'bigcommerce-refund-order',
     BillingSummaryTotalWithCoupons = 'billing-summary-total-with-coupons',
     BotUserEdition = 'bot-user-edition',
+    CustomBusinessHours = 'business-hours-by-integration',
     CanExceedMaxAgentCapacity = 'linear.task_SUPXP-3147.disable-exceeding-max-agent-capacity-option',
     CatchPNErrors = 'linear.task_SUPXP-3152.catch-pn-errors',
     ChangeAutomateSettingButtomPosition = 'change-automate-settings-button-position',

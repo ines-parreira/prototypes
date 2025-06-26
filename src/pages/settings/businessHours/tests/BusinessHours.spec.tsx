@@ -18,7 +18,9 @@ describe('BusinessHours component', () => {
             <BusinessHoursContainer
                 submitSetting={mockSubmitSetting}
                 businessHoursSettings={fromJS({})}
-            />,
+            >
+                <div>Custom Business Hours</div>
+            </BusinessHoursContainer>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -52,7 +54,9 @@ describe('BusinessHours component', () => {
                     }),
                 })}
             >
-                <BusinessHours />
+                <BusinessHours>
+                    <div>Custom Business Hours</div>
+                </BusinessHours>
             </Provider>,
         )
 

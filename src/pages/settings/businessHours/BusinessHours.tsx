@@ -24,7 +24,11 @@ import { DEFAULT_BUSINESS_HOUR, MAX_BUSINESS_HOURS } from './constants'
 import settingsCss from '../settings.less'
 import css from './BusinessHours.less'
 
-type Props = ConnectedProps<typeof connector>
+type BusinessHoursProps = {
+    children: React.ReactNode
+}
+
+type Props = ConnectedProps<typeof connector> & BusinessHoursProps
 
 type State = {
     items: List<any>
@@ -96,6 +100,7 @@ export class BusinessHoursContainer extends Component<Props, State> {
                         className={classnames(
                             'body-regular',
                             settingsCss.contentWrapper,
+                            'mb-5',
                         )}
                     >
                         <div className={settingsCss.mb32}>
@@ -208,6 +213,7 @@ export class BusinessHoursContainer extends Component<Props, State> {
                             </Button>
                         </Form>
                     </div>
+                    {this.props.children}
                 </div>
             </div>
         )

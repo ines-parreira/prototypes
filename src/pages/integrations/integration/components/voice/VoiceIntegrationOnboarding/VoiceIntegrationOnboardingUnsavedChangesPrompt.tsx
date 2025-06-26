@@ -1,8 +1,8 @@
 import { useContext } from 'react'
 
+import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
 import { WizardContext } from 'pages/common/components/wizard/Wizard'
 
-import VoiceFormUnsavedChangesPrompt from '../VoiceFormUnsavedChangesPrompt'
 import { VoiceIntegrationOnboardingStep } from './constants'
 import { useOnboardingForm } from './useVoiceOnboardingForm'
 
@@ -26,7 +26,7 @@ export default function VoiceIntegrationOnboardingUnsavedChangesPrompt({
     ) : undefined
 
     return (
-        <VoiceFormUnsavedChangesPrompt
+        <FormUnsavedChangesPrompt
             title="Leave voice integration setup?"
             body={body}
             onSave={onSubmit}

@@ -24,11 +24,17 @@ jest.mock('../useVoiceSettingsForm')
 const useFormSubmitMock = assumeMock(useFormSubmit)
 const useDeletePhoneIntegrationMock = assumeMock(useDeletePhoneIntegration)
 
-jest.mock('../VoiceFormUnsavedChangesPrompt', () => (props: any) => (
-    <div data-testid="unsaved-changes-prompt" onClick={() => props.onSave()}>
-        VoiceFormUnsavedChangesPrompt
-    </div>
-))
+jest.mock(
+    'pages/common/components/FormUnsavedChangesPrompt',
+    () => (props: any) => (
+        <div
+            data-testid="unsaved-changes-prompt"
+            onClick={() => props.onSave()}
+        >
+            FormUnsavedChangesPrompt
+        </div>
+    ),
+)
 
 jest.mock('../VoiceIntegrationSettingsFormGeneralSection', () => () => (
     <div>VoiceIntegrationSettingsFormGeneralSection</div>

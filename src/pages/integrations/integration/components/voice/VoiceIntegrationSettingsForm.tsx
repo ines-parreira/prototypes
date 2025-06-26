@@ -4,6 +4,7 @@ import { PhoneIntegration } from '@gorgias/helpdesk-queries'
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 
 import { PHONE_INTEGRATION_BASE_URL } from './constants'
@@ -12,7 +13,6 @@ import {
     useFormSubmit,
 } from './useVoiceSettingsForm'
 import GenericVoiceFormSubmitButton from './VoiceFormSubmitButton'
-import VoiceFormUnsavedChangesPrompt from './VoiceFormUnsavedChangesPrompt'
 import VoiceIntegrationSettingsFormCallFlowSection from './VoiceIntegrationSettingsFormCallFlowSection'
 import VoiceIntegrationSettingsFormGeneralSection from './VoiceIntegrationSettingsFormGeneralSection'
 
@@ -65,7 +65,7 @@ function VoiceIntegrationSettingsForm({ integration }: Props): JSX.Element {
                     Delete integration
                 </ConfirmButton>
             </div>
-            <VoiceFormUnsavedChangesPrompt onSave={onSubmit} />
+            <FormUnsavedChangesPrompt onSave={onSubmit} />
         </>
     )
 }

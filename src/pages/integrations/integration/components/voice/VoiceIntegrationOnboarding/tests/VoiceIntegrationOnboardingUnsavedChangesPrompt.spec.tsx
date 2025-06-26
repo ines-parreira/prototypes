@@ -1,9 +1,9 @@
 import { render } from '@testing-library/react'
 
+import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
 import { WizardContext } from 'pages/common/components/wizard/Wizard'
 import { assumeMock } from 'utils/testing'
 
-import VoiceFormUnsavedChangesPrompt from '../../VoiceFormUnsavedChangesPrompt'
 import { VoiceIntegrationOnboardingStep } from '../constants'
 import VoiceIntegrationOnboardingUnsavedChangesPrompt from '../VoiceIntegrationOnboardingUnsavedChangesPrompt'
 
@@ -13,10 +13,8 @@ jest.mock('../useVoiceOnboardingForm', () => ({
     }),
 }))
 
-jest.mock('../../VoiceFormUnsavedChangesPrompt')
-const VoiceFormUnsavedChangesPromptMock = assumeMock(
-    VoiceFormUnsavedChangesPrompt,
-)
+jest.mock('pages/common/components/FormUnsavedChangesPrompt')
+const FormUnsavedChangesPromptMock = assumeMock(FormUnsavedChangesPrompt)
 
 describe('VoiceIntegrationOnboardingUnsavedChangesPrompt', () => {
     const renderComponent = ({
@@ -40,15 +38,15 @@ describe('VoiceIntegrationOnboardingUnsavedChangesPrompt', () => {
     }
 
     beforeEach(() => {
-        VoiceFormUnsavedChangesPromptMock.mockReturnValue(
-            <div>VoiceFormUnsavedChangesPrompt</div>,
+        FormUnsavedChangesPromptMock.mockReturnValue(
+            <div>FormUnsavedChangesPrompt</div>,
         )
     })
 
     it('should render with correct title', () => {
         renderComponent()
 
-        expect(VoiceFormUnsavedChangesPromptMock).toHaveBeenCalledWith(
+        expect(FormUnsavedChangesPromptMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 title: 'Leave voice integration setup?',
                 body: undefined,
@@ -60,7 +58,7 @@ describe('VoiceIntegrationOnboardingUnsavedChangesPrompt', () => {
     it('should show body text when hasNewPhoneNumber is true', () => {
         renderComponent({ hasNewPhoneNumber: true })
 
-        expect(VoiceFormUnsavedChangesPromptMock).toHaveBeenCalledWith(
+        expect(FormUnsavedChangesPromptMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 body: expect.anything(),
             }),
@@ -71,7 +69,7 @@ describe('VoiceIntegrationOnboardingUnsavedChangesPrompt', () => {
     it('should not show body text when hasNewPhoneNumber is false', () => {
         renderComponent({ hasNewPhoneNumber: false })
 
-        expect(VoiceFormUnsavedChangesPromptMock).toHaveBeenCalledWith(
+        expect(FormUnsavedChangesPromptMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 shouldShowSaveButton: false,
             }),
@@ -85,7 +83,7 @@ describe('VoiceIntegrationOnboardingUnsavedChangesPrompt', () => {
             activeStep: VoiceIntegrationOnboardingStep.ConfigureRoutingBehavior,
         })
 
-        expect(VoiceFormUnsavedChangesPromptMock).toHaveBeenCalledWith(
+        expect(FormUnsavedChangesPromptMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 shouldShowSaveButton: true,
             }),
@@ -99,7 +97,7 @@ describe('VoiceIntegrationOnboardingUnsavedChangesPrompt', () => {
             activeStep: VoiceIntegrationOnboardingStep.AddPhoneNumber,
         })
 
-        expect(VoiceFormUnsavedChangesPromptMock).toHaveBeenCalledWith(
+        expect(FormUnsavedChangesPromptMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 shouldShowSaveButton: false,
             }),

@@ -17,7 +17,7 @@ exports[`BusinessHours component should render default values 1`] = `
     class="pageContainer"
   >
     <div
-      class="body-regular contentWrapper"
+      class="body-regular contentWrapper mb-5"
     >
       <div
         class="mb32"
@@ -296,6 +296,9 @@ exports[`BusinessHours component should render default values 1`] = `
         </button>
       </form>
     </div>
+    <div>
+      Custom Business Hours
+    </div>
   </div>
 </div>
 `;
@@ -317,7 +320,7 @@ exports[`BusinessHours component should render values from state 1`] = `
     class="pageContainer"
   >
     <div
-      class="body-regular contentWrapper"
+      class="body-regular contentWrapper mb-5"
     >
       <div
         class="mb32"
@@ -767,6 +770,9 @@ exports[`BusinessHours component should render values from state 1`] = `
           </span>
         </button>
       </form>
+    </div>
+    <div>
+      Custom Business Hours
     </div>
   </div>
 </div>

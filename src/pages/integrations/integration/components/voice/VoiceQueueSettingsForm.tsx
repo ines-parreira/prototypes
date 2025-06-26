@@ -9,13 +9,13 @@ import {
 } from '@gorgias/helpdesk-validators'
 
 import { Form, toFormErrors } from 'core/forms'
+import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
 
 import { DEFAULT_QUEUE_VALUES } from './constants'
 import {
     mergeInitialValuesWithDefaultValues,
     queueSettingsCustomValidation,
 } from './utils'
-import VoiceFormUnsavedChangesPrompt from './VoiceFormUnsavedChangesPrompt'
 
 export default function VoiceQueueSettingsForm<
     T extends UpdateVoiceQueue | CreateVoiceQueue,
@@ -59,7 +59,7 @@ export default function VoiceQueueSettingsForm<
                 validator={validator}
             >
                 {children}
-                <VoiceFormUnsavedChangesPrompt onSave={onSubmit} />
+                <FormUnsavedChangesPrompt onSave={onSubmit} />
             </Form>
         </>
     )

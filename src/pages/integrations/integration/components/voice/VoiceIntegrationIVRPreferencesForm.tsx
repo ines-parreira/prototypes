@@ -7,6 +7,7 @@ import { CheckBoxField } from '@gorgias/merchant-ui-kit'
 
 import { FormField, FormSubmitButton } from 'core/forms'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
 import css from 'pages/integrations/integration/components/voice/VoiceIntegrationIVRPreferences.less'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 
@@ -14,7 +15,6 @@ import {
     useDeletePhoneIntegration,
     useFormSubmit,
 } from './useVoiceSettingsForm'
-import VoiceFormUnsavedChangesPrompt from './VoiceFormUnsavedChangesPrompt'
 import VoiceIntegrationSettingsFormGeneralSection from './VoiceIntegrationSettingsFormGeneralSection'
 
 type Props = {
@@ -75,7 +75,7 @@ export default function VoiceIntegrationIVRPreferencesForm({
                     Delete integration
                 </ConfirmButton>
             </div>
-            <VoiceFormUnsavedChangesPrompt onSave={onSubmit} />
+            <FormUnsavedChangesPrompt onSave={onSubmit} />
         </div>
     )
 }

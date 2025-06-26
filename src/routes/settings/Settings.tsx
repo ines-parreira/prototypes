@@ -12,7 +12,7 @@ import Access from 'pages/settings/access/Access'
 import APIView from 'pages/settings/api/APIView'
 import UserAuditList from 'pages/settings/audit/UserAuditList'
 import AutoMergeSettings from 'pages/settings/autoMerge/AutoMergeSettings'
-import BusinessHours from 'pages/settings/businessHours/BusinessHours'
+import BusinessHoursPage from 'pages/settings/businessHours/BusinessHoursPage'
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import SatisfactionSurveyView from 'pages/settings/satisfactionSurveys/SatisfactionSurveyView'
 import SidebarSettings from 'pages/settings/sidebar/SidebarSettings'
@@ -172,7 +172,7 @@ export function SettingRoutes() {
                     })}
                 </Route>
                 <Route path={`${path}/business-hours`} exact>
-                    {renderAppSettings(BusinessHours, {
+                    {renderAppSettings(BusinessHoursPage, {
                         roleParams: [ADMIN_ROLE, PageSection.BusinessHours],
                     })}
                 </Route>

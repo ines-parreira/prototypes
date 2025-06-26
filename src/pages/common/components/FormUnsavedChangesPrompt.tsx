@@ -14,7 +14,7 @@ type Props<T extends FieldValues> = {
     'shouldShowDiscardButton' | 'shouldShowSaveButton' | 'body' | 'title'
 >
 
-function VoiceFormUnsavedChangesPrompt<T extends FieldValues>({
+function FormUnsavedChangesPrompt<T extends FieldValues>({
     onSave,
     ...modalProps
 }: Props<T>) {
@@ -40,4 +40,4 @@ function VoiceFormUnsavedChangesPrompt<T extends FieldValues>({
     )
 }
 
-export default VoiceFormUnsavedChangesPrompt
+export default FormUnsavedChangesPrompt
