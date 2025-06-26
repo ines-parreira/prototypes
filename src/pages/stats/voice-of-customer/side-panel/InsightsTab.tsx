@@ -105,27 +105,35 @@ const SelectSorting = ({
     )
 }
 
+const sortAscending = {
+    label: 'Sort ascending (A-Z)',
+    field: TicketPerIntentSortingField.CustomFieldValueString,
+    direction: OrderDirection.Asc,
+}
+
+const sortDescending = {
+    label: 'Sort descending (Z-A)',
+    field: TicketPerIntentSortingField.CustomFieldValueString,
+    direction: OrderDirection.Desc,
+}
+
+const sortHighestTicketQuantity = {
+    label: 'Highest ticket quantity',
+    field: TicketPerIntentSortingField.TicketCount,
+    direction: OrderDirection.Desc,
+}
+
+const sortLowestTicketQuantity = {
+    label: 'Lowest ticket quantity',
+    field: TicketPerIntentSortingField.TicketCount,
+    direction: OrderDirection.Asc,
+}
+
 export const sortingOptions: SortingOption[] = [
-    {
-        label: 'Sort ascending (A-Z)',
-        field: TicketPerIntentSortingField.CustomFieldValueString,
-        direction: OrderDirection.Asc,
-    },
-    {
-        label: 'Sort descending (Z-A)',
-        field: TicketPerIntentSortingField.CustomFieldValueString,
-        direction: OrderDirection.Desc,
-    },
-    {
-        label: 'Highest ticket quantity',
-        field: TicketPerIntentSortingField.TicketCount,
-        direction: OrderDirection.Desc,
-    },
-    {
-        label: 'Lowest ticket quantity',
-        field: TicketPerIntentSortingField.TicketCount,
-        direction: OrderDirection.Asc,
-    },
+    sortAscending,
+    sortDescending,
+    sortHighestTicketQuantity,
+    sortLowestTicketQuantity,
 ]
 
 const useSelectedProduct = () => {
@@ -141,7 +149,9 @@ const InsightsTabContent = ({
 }) => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
-    const [sorting, setSorting] = useState<SortingOption>(sortingOptions[0])
+    const [sorting, setSorting] = useState<SortingOption>(
+        sortHighestTicketQuantity,
+    )
     const setSortingCallback = useCallback(
         (option: SortingOption) => {
             setSorting(option)
