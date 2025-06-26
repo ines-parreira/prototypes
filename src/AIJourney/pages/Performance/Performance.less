@@ -4,27 +4,9 @@
         width: 100vw;
     }
 
-    .digestCard {
-        background: linear-gradient(
-            145deg,
-            var(--accessory-magenta-2) 0%,
-            var(--neutral-grey-0) 30%
-        );
-        border-radius: var(--layout-spacing-s);
-        border: 1px solid var(--neutral-grey-2);
-    }
-
-    .digestHeader {
-        padding: var(--layout-spacing-m);
-    }
-
-    .digestMetrics {
-        display: flex;
-        flex-direction: row;
-        gap: var(--layout-spacing-l);
-
-        padding: var(--layout-spacing-m);
-
-        border-top: 1px solid var(--neutral-grey-2);
+    @media (max-width: 768px) {
+        .container {
+            padding: 0px;
+        }
     }
 }
