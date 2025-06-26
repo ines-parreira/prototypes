@@ -23,7 +23,7 @@ import {
     UseEnrichedPostReportingQueryData,
 } from 'models/reporting/queries'
 import { customFieldsTicketCountWithSortQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import { productsTicketCountPerIntentQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent'
+import { ticketCountForIntentQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent'
 import { EnrichmentFields } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import { DEFAULT_SORTING_DIRECTION } from 'pages/stats/voice-of-customer/product-insights/constants'
@@ -219,7 +219,7 @@ const PRODUCT_ID_DIMENSION = TicketProductsEnrichedDimension.ProductId
 // Mock current period data for products
 appQueryClient.setQueryData(
     reportingKeys.postEnriched({
-        query: productsTicketCountPerIntentQueryFactory(
+        query: ticketCountForIntentQueryFactory(
             statsFilters,
             'UTC',
             intentCustomFieldId,
@@ -240,7 +240,7 @@ appQueryClient.setQueryData(
 // Mock previous period data for products
 appQueryClient.setQueryData(
     reportingKeys.postEnriched({
-        query: productsTicketCountPerIntentQueryFactory(
+        query: ticketCountForIntentQueryFactory(
             {
                 ...statsFilters,
                 period: getPreviousPeriod(statsFilters.period),

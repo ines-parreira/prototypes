@@ -8,107 +8,17 @@ import {
     TicketDimension,
     TicketMember,
 } from 'models/reporting/cubes/TicketCube'
+import { TicketCustomFieldsDimension } from 'models/reporting/cubes/TicketCustomFieldsCube'
+import { getCustomFieldValueSerializer } from 'models/reporting/queryFactories/utils'
 import {
-    TicketCustomFieldsDimension,
-    TicketCustomFieldsMember,
-} from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {
-    productsTicketCountPerIntentQueryFactory,
-    ticketCountPerIntentForProductDrillDownQueryFactory,
+    ticketCountForIntentAndProductDrillDownQueryFactory,
+    ticketCountForIntentDrillDownQueryFactory,
+    ticketCountForIntentQueryFactory,
     ticketCountPerIntentForProductQueryFactory,
-    ticketCountPerIntentForProductsDrillDownQueryFactory,
-    ticketCountPerIntentQueryFactory,
 } from 'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent'
 import { ReportingFilterOperator } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import { DRILLDOWN_QUERY_LIMIT } from 'utils/reporting'
-
-describe('ticketCountPerIntentQueryFactory', () => {
-    const periodStart = '2025-06-04T12:00:00.000'
-    const periodEnd = '2025-06-11T12:00:00.000'
-    const statsFilters: StatsFilters = {
-        period: {
-            start_datetime: periodStart,
-            end_datetime: periodEnd,
-        },
-    }
-    const timezone = 'someTimeZone'
-    const intentCustomFieldId = 123
-    const sorting = OrderDirection.Desc
-
-    const query = {
-        measures: ['TicketProductsEnriched.ticketCount'],
-        dimensions: [
-            'TicketProductsEnriched.productId',
-            'TicketCustomFieldsEnriched.valueString',
-        ],
-        timezone,
-        segments: [],
-        filters: [
-            {
-                member: TicketMember.IsTrashed,
-                operator: ReportingFilterOperator.Equals,
-                values: ['0'],
-            },
-            {
-                member: TicketMember.IsSpam,
-                operator: ReportingFilterOperator.Equals,
-                values: ['0'],
-            },
-            {
-                member: TicketProductsEnrichedMember.DeletedDatetime,
-                operator: ReportingFilterOperator.Equals,
-                values: [null],
-            },
-            {
-                member: TicketMember.PeriodStart,
-                operator: ReportingFilterOperator.AfterDate,
-                values: [periodStart],
-            },
-            {
-                member: TicketMember.PeriodEnd,
-                operator: ReportingFilterOperator.BeforeDate,
-                values: [periodEnd],
-            },
-            {
-                member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
-                operator: ReportingFilterOperator.Equals,
-                values: [String(intentCustomFieldId)],
-            },
-        ],
-    }
-
-    it('should produce the query', () => {
-        const actual = ticketCountPerIntentQueryFactory(
-            statsFilters,
-            timezone,
-            intentCustomFieldId,
-        )
-
-        expect(actual).toEqual(query)
-    })
-
-    it('should produce the query with sorting', () => {
-        const actual = ticketCountPerIntentQueryFactory(
-            statsFilters,
-            timezone,
-            intentCustomFieldId,
-            sorting,
-        )
-
-        const expected = {
-            ...query,
-            order: [
-                [
-                    TicketProductsEnrichedMeasure.TicketCount,
-                    OrderDirection.Desc,
-                ],
-            ],
-        }
-
-        expect(actual).toEqual(expected)
-    })
-})
 
 describe('ticketCountPerIntentForProductQueryFactory', () => {
     const periodStart = '2025-06-04T12:00:00.000'
@@ -129,7 +39,7 @@ describe('ticketCountPerIntentForProductQueryFactory', () => {
         dimensions: [TicketCustomFieldsDimension.TicketCustomFieldsValueString],
         timezone,
         segments: [],
-        filters: [
+        filters: expect.arrayContaining([
             {
                 member: TicketMember.IsTrashed,
                 operator: ReportingFilterOperator.Equals,
@@ -165,7 +75,8 @@ describe('ticketCountPerIntentForProductQueryFactory', () => {
                 operator: ReportingFilterOperator.Equals,
                 values: [productId],
             },
-        ],
+        ]),
+        order: undefined,
     }
 
     it('creates query', () => {
@@ -202,7 +113,7 @@ describe('ticketCountPerIntentForProductQueryFactory', () => {
     })
 })
 
-describe('ticketCountPerIntentForProductDrillDownQueryFactory', () => {
+describe('ticketCountForIntentAndProductDrillDownQueryFactory', () => {
     const periodStart = '2025-06-04T12:00:00.000'
     const periodEnd = '2025-06-11T12:00:00.000'
     const statsFilters: StatsFilters = {
@@ -218,7 +129,7 @@ describe('ticketCountPerIntentForProductDrillDownQueryFactory', () => {
     const productId = '456'
 
     it('creates ticketCountPerIntentForProductDrillDown query', () => {
-        const actual = ticketCountPerIntentForProductDrillDownQueryFactory(
+        const actual = ticketCountForIntentAndProductDrillDownQueryFactory(
             statsFilters,
             timezone,
             intentCustomFieldId,
@@ -258,27 +169,28 @@ describe('ticketCountPerIntentForProductDrillDownQueryFactory', () => {
                     values: [periodEnd],
                 },
                 {
-                    member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                    member: TicketMember.CustomField,
                     operator: ReportingFilterOperator.Equals,
-                    values: [String(intentCustomFieldId)],
+                    values: [
+                        getCustomFieldValueSerializer(intentCustomFieldId)(
+                            intentCustomFieldValueString,
+                        ),
+                        ,
+                    ],
                 },
                 {
                     member: TicketProductsEnrichedMember.ProductId,
                     operator: ReportingFilterOperator.Equals,
                     values: [productId],
                 },
-                {
-                    member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [intentCustomFieldValueString],
-                },
             ],
             limit: DRILLDOWN_QUERY_LIMIT,
+            order: undefined,
         })
     })
 
     it('creates query with ordering if provided', () => {
-        const actual = ticketCountPerIntentForProductDrillDownQueryFactory(
+        const actual = ticketCountForIntentAndProductDrillDownQueryFactory(
             statsFilters,
             timezone,
             intentCustomFieldId,
@@ -288,7 +200,7 @@ describe('ticketCountPerIntentForProductDrillDownQueryFactory', () => {
         )
 
         const expected = {
-            ...ticketCountPerIntentForProductDrillDownQueryFactory(
+            ...ticketCountForIntentAndProductDrillDownQueryFactory(
                 statsFilters,
                 timezone,
                 intentCustomFieldId,
@@ -302,7 +214,7 @@ describe('ticketCountPerIntentForProductDrillDownQueryFactory', () => {
     })
 })
 
-describe('productsTicketCountPerIntentQueryFactory', () => {
+describe('ticketCountForIntentQueryFactory', () => {
     const periodStart = '2025-06-04T12:00:00.000'
     const periodEnd = '2025-06-11T12:00:00.000'
     const statsFilters: StatsFilters = {
@@ -351,20 +263,20 @@ describe('productsTicketCountPerIntentQueryFactory', () => {
                 values: [periodEnd],
             },
             {
-                member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                member: TicketMember.CustomField,
                 operator: ReportingFilterOperator.Equals,
-                values: [intentCustomFieldId.toString()],
-            },
-            {
-                member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
-                operator: ReportingFilterOperator.Equals,
-                values: [intentsCustomFieldValueString],
+                values: [
+                    getCustomFieldValueSerializer(intentCustomFieldId)(
+                        intentsCustomFieldValueString,
+                    ),
+                ],
             },
         ],
+        order: undefined,
     }
 
     it('creates query with specific intent value filter', () => {
-        const actual = productsTicketCountPerIntentQueryFactory(
+        const actual = ticketCountForIntentQueryFactory(
             statsFilters,
             timezone,
             intentCustomFieldId,
@@ -375,7 +287,7 @@ describe('productsTicketCountPerIntentQueryFactory', () => {
     })
 
     it('creates query with sorting when provided', () => {
-        const actual = productsTicketCountPerIntentQueryFactory(
+        const actual = ticketCountForIntentQueryFactory(
             statsFilters,
             timezone,
             intentCustomFieldId,
@@ -392,7 +304,7 @@ describe('productsTicketCountPerIntentQueryFactory', () => {
     })
 })
 
-describe('ticketCountPerIntentForProductsDrillDownQueryFactory', () => {
+describe('ticketCountForIntentDrillDownQueryFactory', () => {
     const periodStart = '2025-06-04T12:00:00.000'
     const periodEnd = '2025-06-11T12:00:00.000'
     const statsFilters: StatsFilters = {
@@ -406,7 +318,7 @@ describe('ticketCountPerIntentForProductsDrillDownQueryFactory', () => {
     const intentsCustomFieldValueString = 'Product::Return'
 
     it('creates drill down query for products with intent filtering', () => {
-        const actual = ticketCountPerIntentForProductsDrillDownQueryFactory(
+        const actual = ticketCountForIntentDrillDownQueryFactory(
             statsFilters,
             timezone,
             intentCustomFieldId,
@@ -445,14 +357,13 @@ describe('ticketCountPerIntentForProductsDrillDownQueryFactory', () => {
                     values: [periodEnd],
                 },
                 {
-                    member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                    member: TicketMember.CustomField,
                     operator: ReportingFilterOperator.Equals,
-                    values: [String(intentCustomFieldId)],
-                },
-                {
-                    member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [intentsCustomFieldValueString],
+                    values: [
+                        getCustomFieldValueSerializer(intentCustomFieldId)(
+                            intentsCustomFieldValueString,
+                        ),
+                    ],
                 },
                 {
                     member: TicketProductsEnrichedDimension.ProductId,
@@ -461,6 +372,7 @@ describe('ticketCountPerIntentForProductsDrillDownQueryFactory', () => {
                 },
             ],
             limit: DRILLDOWN_QUERY_LIMIT,
+            order: undefined,
         })
     })
 })

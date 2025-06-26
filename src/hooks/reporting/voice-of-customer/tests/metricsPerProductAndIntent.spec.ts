@@ -12,9 +12,8 @@ import {
 } from 'hooks/reporting/voice-of-customer/metricsPerProductAndIntent'
 import { OrderDirection } from 'models/api/types'
 import {
-    productsTicketCountPerIntentQueryFactory,
+    ticketCountForIntentQueryFactory,
     ticketCountPerIntentForProductQueryFactory,
-    ticketCountPerIntentQueryFactory,
 } from 'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent'
 import { StatsFilters } from 'models/stat/types'
 import { assumeMock } from 'utils/testing'
@@ -31,11 +30,8 @@ const useMetricPerDimensionWithEnrichmentMock = assumeMock(
     useMetricPerDimensionWithEnrichment,
 )
 const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
-const ticketCountPerIntentQueryFactoryMock = assumeMock(
-    ticketCountPerIntentQueryFactory,
-)
 const productsTicketCountPerIntentQueryFactoryMock = assumeMock(
-    productsTicketCountPerIntentQueryFactory,
+    ticketCountForIntentQueryFactory,
 )
 
 describe('metricsPerProductAndIntent', () => {
@@ -76,7 +72,6 @@ describe('metricsPerProductAndIntent', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        ticketCountPerIntentQueryFactoryMock.mockReturnValue(mockQuery)
         productsTicketCountPerIntentQueryFactoryMock.mockReturnValue(mockQuery)
         useMetricPerDimensionMock.mockReturnValue(mockResult)
         useMetricPerDimensionWithEnrichmentMock.mockReturnValue(
@@ -147,9 +142,7 @@ describe('metricsPerProductAndIntent', () => {
                 ),
             )
 
-            expect(
-                productsTicketCountPerIntentQueryFactory,
-            ).toHaveBeenCalledWith(
+            expect(ticketCountForIntentQueryFactory).toHaveBeenCalledWith(
                 statsFilters,
                 timezone,
                 intentCustomFieldId,
@@ -173,9 +166,7 @@ describe('metricsPerProductAndIntent', () => {
                 ),
             )
 
-            expect(
-                productsTicketCountPerIntentQueryFactory,
-            ).toHaveBeenCalledWith(
+            expect(ticketCountForIntentQueryFactory).toHaveBeenCalledWith(
                 statsFilters,
                 timezone,
                 intentCustomFieldId,

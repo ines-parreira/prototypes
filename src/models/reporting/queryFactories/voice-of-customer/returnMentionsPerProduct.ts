@@ -6,9 +6,12 @@ import {
 import {
     TicketCubeWithJoins,
     TicketDimension,
+    TicketMember,
 } from 'models/reporting/cubes/TicketCube'
-import { TicketCustomFieldsMember } from 'models/reporting/cubes/TicketCustomFieldsCube'
-import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'models/reporting/queryFactories/utils'
+import {
+    getCustomFieldValueSerializer,
+    TICKET_CUSTOM_FIELDS_API_SEPARATOR,
+} from 'models/reporting/queryFactories/utils'
 import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import {
@@ -39,15 +42,12 @@ export const returnMentionsPerProductQueryFactory = (
             statsFilters,
         ),
         {
-            member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
-            operator: ReportingFilterOperator.Equals,
-            values: [String(intentCustomFieldId)],
-        },
-        {
-            member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+            member: TicketMember.CustomField,
             operator: ReportingFilterOperator.StartsWith,
             values: [
-                `${RETURN_MENTION_L1_INTENT}${TICKET_CUSTOM_FIELDS_API_SEPARATOR}`,
+                getCustomFieldValueSerializer(intentCustomFieldId)(
+                    `${RETURN_MENTION_L1_INTENT}${TICKET_CUSTOM_FIELDS_API_SEPARATOR}`,
+                ),
             ],
         },
     ],

@@ -12,7 +12,6 @@ import {
     PRODUCT_ENRICHMENT_FIELDS,
     ProductEnrichmentFields,
 } from 'hooks/reporting/voice-of-customer/metricsPerProduct'
-import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { INTENT_DIMENSION } from 'hooks/reporting/voice-of-customer/useTopIntentPerProduct'
 import { withEnrichment } from 'hooks/reporting/withEnrichment'
 import { OrderDirection } from 'models/api/types'
@@ -34,7 +33,7 @@ import {
 } from 'models/reporting/queryFactories/voice-of-customer/sentimentPerProduct'
 import { ticketCountPerProductQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/ticketsWithProducts'
 import { EnrichmentFields } from 'models/reporting/types'
-import { StatsFilters } from 'models/stat/types'
+import { Sentiment, StatsFilters } from 'models/stat/types'
 import { activeParams } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 import { ProductInsightsTableChart } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableChart'
 import { PRODUCT_INSIGHTS_SLICE_NAME } from 'state/ui/stats/constants'

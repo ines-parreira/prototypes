@@ -1,6 +1,6 @@
 import analyticsColors from 'assets/css/new/stats/modern.json'
 import { useSentimentsCustomFieldsTimeSeries } from 'hooks/reporting/useCustomFieldsTimeSeries'
-import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
+import { Sentiment } from 'models/stat/types'
 import BarChart from 'pages/stats/common/components/charts/BarChart/BarChart'
 
 export const CHART_COLORS = [

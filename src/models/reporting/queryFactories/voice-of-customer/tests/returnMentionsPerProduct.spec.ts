@@ -5,9 +5,14 @@ import {
     TicketProductsEnrichedDimension,
     TicketProductsEnrichedMeasure,
 } from 'models/reporting/cubes/core/TicketProductsEnrichedCube'
-import { TicketDimension } from 'models/reporting/cubes/TicketCube'
-import { TicketCustomFieldsMember } from 'models/reporting/cubes/TicketCustomFieldsCube'
-import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'models/reporting/queryFactories/utils'
+import {
+    TicketDimension,
+    TicketMember,
+} from 'models/reporting/cubes/TicketCube'
+import {
+    getCustomFieldValueSerializer,
+    TICKET_CUSTOM_FIELDS_API_SEPARATOR,
+} from 'models/reporting/queryFactories/utils'
 import {
     returnMentionsPerProductDrillDownQueryFactory,
     returnMentionsPerProductQueryFactory,
@@ -57,15 +62,12 @@ describe('return mentions per product', () => {
                         statsFilters,
                     ),
                     {
-                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
-                        operator: ReportingFilterOperator.Equals,
-                        values: [String(intentCustomFieldId)],
-                    },
-                    {
-                        member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+                        member: TicketMember.CustomField,
                         operator: ReportingFilterOperator.StartsWith,
                         values: [
-                            `${RETURN_MENTION_L1_INTENT}${TICKET_CUSTOM_FIELDS_API_SEPARATOR}`,
+                            getCustomFieldValueSerializer(intentCustomFieldId)(
+                                `${RETURN_MENTION_L1_INTENT}${TICKET_CUSTOM_FIELDS_API_SEPARATOR}`,
+                            ),
                         ],
                     },
                 ],
@@ -95,15 +97,12 @@ describe('return mentions per product', () => {
                         statsFilters,
                     ),
                     {
-                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
-                        operator: ReportingFilterOperator.Equals,
-                        values: [String(intentCustomFieldId)],
-                    },
-                    {
-                        member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+                        member: TicketMember.CustomField,
                         operator: ReportingFilterOperator.StartsWith,
                         values: [
-                            `${RETURN_MENTION_L1_INTENT}${TICKET_CUSTOM_FIELDS_API_SEPARATOR}`,
+                            getCustomFieldValueSerializer(intentCustomFieldId)(
+                                `${RETURN_MENTION_L1_INTENT}${TICKET_CUSTOM_FIELDS_API_SEPARATOR}`,
+                            ),
                         ],
                     },
                 ],
@@ -121,14 +120,17 @@ describe('return mentions per product', () => {
             const customFieldIdFilter = query.filters.find(
                 (filter) =>
                     typeof filter === 'object' &&
-                    filter.member ===
-                        TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                    filter.member === TicketMember.CustomField,
             )
 
             expect(customFieldIdFilter).toEqual({
-                member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
-                operator: ReportingFilterOperator.Equals,
-                values: [String(intentCustomFieldId)],
+                member: TicketMember.CustomField,
+                operator: ReportingFilterOperator.StartsWith,
+                values: [
+                    getCustomFieldValueSerializer(intentCustomFieldId)(
+                        `${RETURN_MENTION_L1_INTENT}${TICKET_CUSTOM_FIELDS_API_SEPARATOR}`,
+                    ),
+                ],
             })
         })
 
@@ -142,15 +144,16 @@ describe('return mentions per product', () => {
             const returnMentionFilter = query.filters.find(
                 (filter) =>
                     typeof filter === 'object' &&
-                    filter.member ===
-                        TicketCustomFieldsMember.TicketCustomFieldsValueString,
+                    filter.member === TicketMember.CustomField,
             )
 
             expect(returnMentionFilter).toEqual({
-                member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+                member: TicketMember.CustomField,
                 operator: ReportingFilterOperator.StartsWith,
                 values: [
-                    `${RETURN_MENTION_L1_INTENT}${TICKET_CUSTOM_FIELDS_API_SEPARATOR}`,
+                    getCustomFieldValueSerializer(intentCustomFieldId)(
+                        `${RETURN_MENTION_L1_INTENT}${TICKET_CUSTOM_FIELDS_API_SEPARATOR}`,
+                    ),
                 ],
             })
         })
@@ -179,15 +182,12 @@ describe('return mentions per product', () => {
                         statsFilters,
                     ),
                     {
-                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
-                        operator: ReportingFilterOperator.Equals,
-                        values: [String(intentCustomFieldId)],
-                    },
-                    {
-                        member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+                        member: TicketMember.CustomField,
                         operator: ReportingFilterOperator.StartsWith,
                         values: [
-                            `${RETURN_MENTION_L1_INTENT}${TICKET_CUSTOM_FIELDS_API_SEPARATOR}`,
+                            getCustomFieldValueSerializer(intentCustomFieldId)(
+                                `${RETURN_MENTION_L1_INTENT}${TICKET_CUSTOM_FIELDS_API_SEPARATOR}`,
+                            ),
                         ],
                     },
                     {
@@ -220,15 +220,12 @@ describe('return mentions per product', () => {
                         statsFilters,
                     ),
                     {
-                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
-                        operator: ReportingFilterOperator.Equals,
-                        values: [String(intentCustomFieldId)],
-                    },
-                    {
-                        member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+                        member: TicketMember.CustomField,
                         operator: ReportingFilterOperator.StartsWith,
                         values: [
-                            `${RETURN_MENTION_L1_INTENT}${TICKET_CUSTOM_FIELDS_API_SEPARATOR}`,
+                            getCustomFieldValueSerializer(intentCustomFieldId)(
+                                `${RETURN_MENTION_L1_INTENT}${TICKET_CUSTOM_FIELDS_API_SEPARATOR}`,
+                            ),
                         ],
                     },
                     {
@@ -252,14 +249,17 @@ describe('return mentions per product', () => {
             const customFieldIdFilter = query.filters.find(
                 (filter) =>
                     typeof filter === 'object' &&
-                    filter.member ===
-                        TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                    filter.member === TicketMember.CustomField,
             )
 
             expect(customFieldIdFilter).toEqual({
-                member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
-                operator: ReportingFilterOperator.Equals,
-                values: [String(intentCustomFieldId)],
+                member: TicketMember.CustomField,
+                operator: ReportingFilterOperator.StartsWith,
+                values: [
+                    getCustomFieldValueSerializer(intentCustomFieldId)(
+                        `${RETURN_MENTION_L1_INTENT}${TICKET_CUSTOM_FIELDS_API_SEPARATOR}`,
+                    ),
+                ],
             })
         })
 
@@ -274,15 +274,16 @@ describe('return mentions per product', () => {
             const returnMentionFilter = query.filters.find(
                 (filter) =>
                     typeof filter === 'object' &&
-                    filter.member ===
-                        TicketCustomFieldsMember.TicketCustomFieldsValueString,
+                    filter.member === TicketMember.CustomField,
             )
 
             expect(returnMentionFilter).toEqual({
-                member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+                member: TicketMember.CustomField,
                 operator: ReportingFilterOperator.StartsWith,
                 values: [
-                    `${RETURN_MENTION_L1_INTENT}${TICKET_CUSTOM_FIELDS_API_SEPARATOR}`,
+                    getCustomFieldValueSerializer(intentCustomFieldId)(
+                        `${RETURN_MENTION_L1_INTENT}${TICKET_CUSTOM_FIELDS_API_SEPARATOR}`,
+                    ),
                 ],
             })
         })

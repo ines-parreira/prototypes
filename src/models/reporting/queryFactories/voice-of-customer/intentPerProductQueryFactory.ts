@@ -8,9 +8,15 @@ import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMember,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
+import { customFieldsTicketCountTimeSeriesQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import { injectCustomFieldId } from 'models/reporting/queryFactories/utils'
 import { ticketsWithProductsQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/ticketsWithProducts'
-import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
-import { StatsFilters } from 'models/stat/types'
+import {
+    ReportingFilterOperator,
+    ReportingGranularity,
+    ReportingQuery,
+} from 'models/reporting/types'
+import { Sentiment, StatsFilters } from 'models/stat/types'
 import { formatReportingQueryDate } from 'utils/reporting'
 
 export const ticketCountPerProductAndIntentQueryFactory = (
@@ -43,3 +49,36 @@ export const ticketCountPerProductAndIntentQueryFactory = (
     ],
     order: [[TicketProductsEnrichedMeasure.TicketCount, OrderDirection.Desc]],
 })
+
+export const intentsWithProductsTicketCountTimeseriesQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    sentimentCustomFieldId: string,
+    sentimentValueStrings: Sentiment[],
+    sorting?: OrderDirection,
+) => {
+    const baseQuery = customFieldsTicketCountTimeSeriesQueryFactory(
+        injectCustomFieldId(
+            filters,
+            Number(sentimentCustomFieldId),
+            sentimentValueStrings,
+        ),
+        timezone,
+        granularity,
+        sentimentCustomFieldId,
+        sorting,
+    )
+
+    return {
+        ...baseQuery,
+        filters: [
+            ...baseQuery.filters,
+            {
+                member: TicketProductsEnrichedDimension.ProductId,
+                operator: ReportingFilterOperator.NotEquals,
+                values: ['null'],
+            },
+        ],
+    }
+}

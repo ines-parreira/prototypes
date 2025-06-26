@@ -11,6 +11,7 @@ import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMember,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
+import { injectCustomFieldId } from 'models/reporting/queryFactories/utils'
 import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import {
@@ -43,10 +44,9 @@ export type TicketsPerIntentOrderField = OrderField<
     typeof TicketPerIntentSortingField
 >
 
-export const ticketCountPerIntentQueryFactory = (
+const ticketCountPerIntentQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
-    intentCustomFieldId: number,
     sorting?: OrderDirection,
     sortingField: TicketsPerIntentOrderField = TicketPerIntentSortingField.TicketCount,
 ): ReportingQuery<TicketCubeWithJoins> => ({
@@ -64,34 +64,24 @@ export const ticketCountPerIntentQueryFactory = (
             TicketMessagesEnrichedFirstResponseTimesMembers,
             statsFilters,
         ),
-        {
-            member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
-            operator: ReportingFilterOperator.Equals,
-            values: [String(intentCustomFieldId)],
-        },
     ],
     order: sorting ? [[sortingField, sorting]] : undefined,
 })
 
-export const productsTicketCountPerIntentQueryFactory = (
+export const ticketCountForIntentQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
     intentCustomFieldId: number,
     intentsCustomFieldValueString: string,
     sorting?: OrderDirection,
 ) => {
-    const { filters, ...baseQuery } = ticketCountPerIntentQueryFactory(
-        statsFilters,
+    const baseQuery = ticketCountPerIntentQueryFactory(
+        injectCustomFieldId(statsFilters, intentCustomFieldId, [
+            intentsCustomFieldValueString,
+        ]),
         timezone,
-        intentCustomFieldId,
         sorting,
     )
-
-    filters.push({
-        member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
-        operator: ReportingFilterOperator.Equals,
-        values: [intentsCustomFieldValueString],
-    })
 
     return {
         ...baseQuery,
@@ -99,7 +89,6 @@ export const productsTicketCountPerIntentQueryFactory = (
             TicketProductsEnrichedDimension.ProductId,
             TicketProductsEnrichedDimension.StoreId,
         ],
-        filters,
     }
 }
 
@@ -114,7 +103,6 @@ export const ticketCountPerIntentForProductQueryFactory = (
     const baseQuery = ticketCountPerIntentQueryFactory(
         statsFilters,
         timezone,
-        intentCustomFieldId,
         sorting,
         sortingField,
     )
@@ -129,34 +117,45 @@ export const ticketCountPerIntentForProductQueryFactory = (
         values: [productId],
     })
 
+    baseQuery.filters.push({
+        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+        operator: ReportingFilterOperator.Equals,
+        values: [String(intentCustomFieldId)],
+    })
+
     return baseQuery
 }
 
-export const ticketCountPerIntentForProductDrillDownQueryFactory = (
+export const ticketCountForIntentAndProductDrillDownQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
     intentCustomFieldId: number,
     intentsCustomFieldValueString: string,
     productId: string,
     sorting?: OrderDirection,
+    sortingField?: TicketsPerIntentOrderField,
 ): ReportingQuery<TicketCubeWithJoins> => {
-    const { filters, ...baseQuery } =
-        ticketCountPerIntentForProductQueryFactory(
-            statsFilters,
-            timezone,
-            intentCustomFieldId,
-            productId,
-        )
+    const baseQuery = ticketCountPerIntentQueryFactory(
+        injectCustomFieldId(statsFilters, intentCustomFieldId, [
+            intentsCustomFieldValueString,
+        ]),
+        timezone,
+        sorting,
+        sortingField,
+    )
 
-    filters.push({
-        member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+    baseQuery.dimensions = [
+        TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+    ]
+
+    baseQuery.filters.push({
+        member: TicketProductsEnrichedDimension.ProductId,
         operator: ReportingFilterOperator.Equals,
-        values: [intentsCustomFieldValueString],
+        values: [productId],
     })
 
     return {
         ...baseQuery,
-        filters,
         dimensions: [TicketDimension.TicketId],
         limit: DRILLDOWN_QUERY_LIMIT,
         order: sorting
@@ -165,27 +164,23 @@ export const ticketCountPerIntentForProductDrillDownQueryFactory = (
     }
 }
 
-export const ticketCountPerIntentForProductsDrillDownQueryFactory = (
+export const ticketCountForIntentDrillDownQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
     intentCustomFieldId: number,
     intentsCustomFieldValueString: string,
 ): ReportingQuery<TicketCubeWithJoins> => {
     const { filters, ...baseQuery } = ticketCountPerIntentQueryFactory(
-        statsFilters,
+        injectCustomFieldId(statsFilters, intentCustomFieldId, [
+            intentsCustomFieldValueString,
+        ]),
         timezone,
-        intentCustomFieldId,
     )
 
     return {
         ...baseQuery,
         filters: [
             ...filters,
-            {
-                member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
-                operator: ReportingFilterOperator.Equals,
-                values: [intentsCustomFieldValueString],
-            },
             {
                 member: TicketProductsEnrichedDimension.ProductId,
                 operator: ReportingFilterOperator.NotEquals,

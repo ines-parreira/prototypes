@@ -4,11 +4,9 @@ import {
     useTimeSeries,
     useTimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
-import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { OrderDirection } from 'models/api/types'
 import { Cubes } from 'models/reporting/cubes'
 import { TicketProductsEnrichedDimension } from 'models/reporting/cubes/core/TicketProductsEnrichedCube'
-import { TicketCustomFieldsDimension } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { closedTicketsTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
 import { messagesReceivedTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesReceived'
 import { messagesSentTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
@@ -27,12 +25,13 @@ import {
     totalTaggedTicketCountOnCreatedDatetimeTimeSeriesFactory,
     totalTaggedTicketCountTimeSeriesFactory,
 } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
+import { intentsWithProductsTicketCountTimeseriesQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/intentPerProductQueryFactory'
 import {
     ReportingFilterOperator,
     ReportingGranularity,
     TimeSeriesQuery,
 } from 'models/reporting/types'
-import { StatsFilters, TicketTimeReference } from 'models/stat/types'
+import { Sentiment, StatsFilters, TicketTimeReference } from 'models/stat/types'
 
 type TimeSeriesQueryFactory<TCube extends Cubes> = (
     filters: StatsFilters,
@@ -173,35 +172,18 @@ export const useSentimentsCustomFieldsTicketCountTimeSeries = (
     sentimentValueStrings: Sentiment[],
     sorting?: OrderDirection,
     enabled = true,
-) => {
-    const queryFactory = customFieldsTicketCountTimeSeriesQueryFactory(
-        filters,
-        timezone,
-        granularity,
-        sentimentCustomFieldId,
-        sorting,
-    )
-
-    return useTimeSeriesPerDimension(
-        {
-            ...queryFactory,
-            filters: [
-                ...queryFactory.filters,
-                {
-                    member: TicketCustomFieldsDimension.TicketCustomFieldsValueString,
-                    operator: ReportingFilterOperator.Equals,
-                    values: sentimentValueStrings,
-                },
-                {
-                    member: TicketProductsEnrichedDimension.ProductId,
-                    operator: ReportingFilterOperator.NotEquals,
-                    values: ['null'],
-                },
-            ],
-        },
+) =>
+    useTimeSeriesPerDimension(
+        intentsWithProductsTicketCountTimeseriesQueryFactory(
+            filters,
+            timezone,
+            granularity,
+            sentimentCustomFieldId,
+            sentimentValueStrings,
+            sorting,
+        ),
         enabled,
     )
-}
 
 export const useCustomFieldsTicketCountForProductTimeSeries = (
     filters: StatsFilters,

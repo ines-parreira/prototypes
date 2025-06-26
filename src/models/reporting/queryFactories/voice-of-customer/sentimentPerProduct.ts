@@ -1,4 +1,3 @@
-import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { OrderDirection } from 'models/api/types'
 import {
     TicketProductsEnrichedDimension,
@@ -12,13 +11,13 @@ import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMember,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
-import { injectDrillDownCustomFieldId } from 'models/reporting/queryFactories/utils'
+import { injectCustomFieldId } from 'models/reporting/queryFactories/utils'
 import {
     ReportingFilter,
     ReportingFilterOperator,
     ReportingQuery,
 } from 'models/reporting/types'
-import { StatsFilters } from 'models/stat/types'
+import { Sentiment, StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -91,9 +90,7 @@ export const sentimentsTicketCountPerProductDrillDownQueryFactory = (
     sorting = OrderDirection.Desc,
 ): ReportingQuery<TicketCubeWithJoins> => {
     const baseQuery = sentimentsTicketCountPerProductQueryFactory(
-        injectDrillDownCustomFieldId(statsFilters, Number(customFieldId), [
-            sentiment,
-        ]),
+        injectCustomFieldId(statsFilters, Number(customFieldId), [sentiment]),
         timezone,
         customFieldId,
         productId,

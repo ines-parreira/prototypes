@@ -9,7 +9,6 @@ import thunk from 'redux-thunk'
 import { appQueryClient } from 'api/queryClient'
 import { AI_MANAGED_TYPES, OBJECT_TYPES } from 'custom-fields/constants'
 import { customFieldDefinitionKeys } from 'custom-fields/hooks/queries/queries'
-import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { reportingKeys } from 'models/reporting/queries'
 import {
     INTENT_DIMENSION,
@@ -17,7 +16,7 @@ import {
     sentimentsTicketCountPerProductQueryFactory,
     TICKET_COUNT_MEASURE,
 } from 'models/reporting/queryFactories/voice-of-customer/sentimentPerProduct'
-import { StatsFilters } from 'models/stat/types'
+import { Sentiment, StatsFilters } from 'models/stat/types'
 import { activeParams } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 import { PositiveSentimentsPerProductKpiChart } from 'pages/stats/voice-of-customer/side-panel/PositiveSentimentsPerProductKpiChart'
 import {

@@ -2,7 +2,6 @@ import { UseQueryResult } from '@tanstack/react-query'
 import moment from 'moment'
 
 import {
-    Sentiment,
     useNegativeSentimentPerProduct,
     useNegativeSentimentsPerProductMetricTrend,
     usePositiveSentimentPerProduct,
@@ -16,7 +15,7 @@ import {
     sentimentsTicketCountPerProductQueryFactory,
     TICKET_COUNT_MEASURE,
 } from 'models/reporting/queryFactories/voice-of-customer/sentimentPerProduct'
-import { StatsFilters } from 'models/stat/types'
+import { Sentiment, StatsFilters } from 'models/stat/types'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 

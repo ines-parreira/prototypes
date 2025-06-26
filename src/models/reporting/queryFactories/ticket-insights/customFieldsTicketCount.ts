@@ -24,7 +24,7 @@ import {
     addFieldIdToCustomFieldValues,
     countUniquePrefixes,
     deduplicateCustomFields,
-    injectDrillDownCustomFieldId,
+    injectCustomFieldId,
 } from 'models/reporting/queryFactories/utils'
 import { PRODUCT_ID_DIMENSION } from 'models/reporting/queryFactories/voice-of-customer/sentimentPerProduct'
 import {
@@ -326,7 +326,7 @@ export const customFieldsTicketCountPerTicketDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const baseQuery = customFieldsTicketCountQueryFactory(
-        injectDrillDownCustomFieldId(
+        injectCustomFieldId(
             filters,
             Number(customFieldId),
             customFieldsValueStrings,

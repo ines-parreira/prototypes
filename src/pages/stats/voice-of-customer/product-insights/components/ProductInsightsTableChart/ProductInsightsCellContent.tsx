@@ -1,10 +1,8 @@
 import _isNil from 'lodash/isNil'
 
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
-import {
-    Sentiment,
-    useSentimentPerProduct,
-} from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
+import { useSentimentPerProduct } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
+import { Sentiment } from 'models/stat/types'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import {

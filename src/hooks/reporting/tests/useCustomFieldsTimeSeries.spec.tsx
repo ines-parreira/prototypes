@@ -20,13 +20,12 @@ import {
     useCustomFieldsTimeSeries,
     useSentimentsCustomFieldsTimeSeries,
 } from 'hooks/reporting/useCustomFieldsTimeSeries'
-import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { ReportingGranularity } from 'models/reporting/types'
-import { TicketTimeReference } from 'models/stat/types'
+import { Sentiment, TicketTimeReference } from 'models/stat/types'
 import { initialState } from 'state/stats/statsSlice'
 import { RootState } from 'state/types'
 import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'

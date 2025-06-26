@@ -9,7 +9,7 @@ import {
     TicketProductsEnrichedMeasure,
 } from 'models/reporting/cubes/core/TicketProductsEnrichedCube'
 import {
-    productsTicketCountPerIntentQueryFactory,
+    ticketCountForIntentQueryFactory,
     ticketCountPerIntentForProductQueryFactory,
     TicketsPerIntentOrderField,
 } from 'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent'
@@ -58,7 +58,7 @@ export const useProductsTicketCountsPerIntentWithEnrichment = (
     TicketProductsEnrichedDimension
 > =>
     useMetricPerDimensionWithEnrichment(
-        productsTicketCountPerIntentQueryFactory(
+        ticketCountForIntentQueryFactory(
             statsFilters,
             timezone,
             intentsCustomFieldId,

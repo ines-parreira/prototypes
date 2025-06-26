@@ -24,10 +24,9 @@ import {
     useTimeSeries,
     useTimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
-import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { OrderDirection } from 'models/api/types'
 import { TicketProductsEnrichedDimension } from 'models/reporting/cubes/core/TicketProductsEnrichedCube'
-import { TicketCustomFieldsDimension } from 'models/reporting/cubes/TicketCustomFieldsCube'
+import { TicketMember } from 'models/reporting/cubes/TicketCube'
 import { closedTicketsTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
 import { messagesSentTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
 import { ticketsCreatedTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
@@ -43,12 +42,16 @@ import {
     totalTaggedTicketCountOnCreatedDatetimeTimeSeriesFactory,
     totalTaggedTicketCountTimeSeriesFactory,
 } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
-import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import {
+    getCustomFieldValueSerializer,
+    withDefaultLogicalOperator,
+} from 'models/reporting/queryFactories/utils'
 import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'models/reporting/types'
 import {
+    Sentiment,
     StatsFilters,
     TagFilterInstanceId,
     TicketTimeReference,
@@ -548,19 +551,23 @@ describe('time series', () => {
             expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
                 {
                     ...baseQuery,
-                    filters: [
+                    filters: expect.arrayContaining([
                         ...baseQuery.filters,
                         {
-                            member: TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+                            member: TicketMember.CustomField,
                             operator: ReportingFilterOperator.Equals,
-                            values: sentimentValueStrings,
+                            values: sentimentValueStrings.map(
+                                getCustomFieldValueSerializer(
+                                    Number(sentimentCustomFieldId),
+                                ),
+                            ),
                         },
                         {
                             member: TicketProductsEnrichedDimension.ProductId,
                             operator: ReportingFilterOperator.NotEquals,
                             values: ['null'],
                         },
-                    ],
+                    ]),
                 },
                 enabled,
             )
@@ -581,19 +588,23 @@ describe('time series', () => {
             expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
                 {
                     ...baseQuery,
-                    filters: [
+                    filters: expect.arrayContaining([
                         ...baseQuery.filters,
                         {
-                            member: TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+                            member: TicketMember.CustomField,
                             operator: ReportingFilterOperator.Equals,
-                            values: sentimentValueStrings,
+                            values: sentimentValueStrings.map(
+                                getCustomFieldValueSerializer(
+                                    Number(sentimentCustomFieldId),
+                                ),
+                            ),
                         },
                         {
                             member: TicketProductsEnrichedDimension.ProductId,
                             operator: ReportingFilterOperator.NotEquals,
                             values: ['null'],
                         },
-                    ],
+                    ]),
                 },
                 true,
             )

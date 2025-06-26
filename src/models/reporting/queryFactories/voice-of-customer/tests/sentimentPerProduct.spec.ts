@@ -1,4 +1,3 @@
-import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { OrderDirection } from 'models/api/types'
 import {
     TicketProductsEnrichedDimension,
@@ -18,7 +17,7 @@ import {
     TICKET_COUNT_MEASURE,
 } from 'models/reporting/queryFactories/voice-of-customer/sentimentPerProduct'
 import { ReportingFilterOperator } from 'models/reporting/types'
-import { StatsFilters } from 'models/stat/types'
+import { Sentiment, StatsFilters } from 'models/stat/types'
 
 describe('sentimentsTicketCountPerProduct', () => {
     const timezone = 'someTimeZone'

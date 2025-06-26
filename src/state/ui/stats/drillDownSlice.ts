@@ -3,7 +3,6 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { appQueryClient } from 'api/queryClient'
-import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { createJob } from 'models/job/resources'
 import {
     ConvertJobContext,
@@ -12,7 +11,7 @@ import {
     JobContext,
     JobType,
 } from 'models/job/types'
-import { TicketTimeReference } from 'models/stat/types'
+import { Sentiment, TicketTimeReference } from 'models/stat/types'
 import { AiSalesAgentDrillDownMetrics } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'

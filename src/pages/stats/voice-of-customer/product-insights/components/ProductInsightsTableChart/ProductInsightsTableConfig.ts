@@ -3,7 +3,6 @@ import {
     useTicketCountPerProductWithEnrichment,
 } from 'hooks/reporting/voice-of-customer/metricsPerProduct'
 import {
-    Sentiment,
     useNegativeSentimentPerProduct,
     useNegativeSentimentsPerProductMetricTrend,
     usePositiveSentimentPerProduct,
@@ -12,6 +11,7 @@ import {
 import { returnMentionsPerProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/returnMentionsPerProduct'
 import { sentimentsTicketCountPerProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/sentimentPerProduct'
 import { ticketCountForProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/ticketsWithProducts'
+import { Sentiment } from 'models/stat/types'
 import { isMediumOrSmallScreen } from 'pages/common/utils/mobile'
 import { Domain } from 'pages/stats/common/drill-down/types'
 import { MOBILE_METRIC_COLUMN_WIDTH } from 'pages/stats/support-performance/agents/AgentsTableConfig'

@@ -329,7 +329,7 @@ const removeDuplicateFilterInstances =
         return filter
     }
 
-export const injectDrillDownCustomFieldId = (
+export const injectCustomFieldId = (
     statsFilters: StatsFilters,
     customFieldId: number,
     customFieldsValueStrings: string[] | null,

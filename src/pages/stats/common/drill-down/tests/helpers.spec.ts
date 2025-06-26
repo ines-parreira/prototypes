@@ -1,6 +1,5 @@
 import moment from 'moment'
 
-import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
 import {
     discountCodesOfferedDrillDownQueryFactory,
@@ -19,8 +18,8 @@ import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/util
 import { returnMentionsPerProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/returnMentionsPerProduct'
 import { sentimentsTicketCountPerProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/sentimentPerProduct'
 import {
-    ticketCountPerIntentForProductDrillDownQueryFactory,
-    ticketCountPerIntentForProductsDrillDownQueryFactory,
+    ticketCountForIntentAndProductDrillDownQueryFactory,
+    ticketCountForIntentDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent'
 import { ticketCountForProductDrillDownQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/ticketsWithProducts'
 import {
@@ -31,7 +30,7 @@ import {
     voiceCallListQueryFactory,
     waitingTimeCallsListQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
-import { StatsFilters, TicketTimeReference } from 'models/stat/types'
+import { Sentiment, StatsFilters, TicketTimeReference } from 'models/stat/types'
 import { CSAT_DRILL_DOWN_LABEL } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableConfig'
 import { AiSalesAgentChart } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
@@ -111,11 +110,11 @@ const sentimentsTicketCountPerProductDrillDownQueryFactoryMock = assumeMock(
 jest.mock(
     'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent',
 )
-const ticketCountPerIntentForProductDrillDownQueryFactoryMock = assumeMock(
-    ticketCountPerIntentForProductDrillDownQueryFactory,
+const ticketCountForIntentAndProductDrillDownQueryFactoryMock = assumeMock(
+    ticketCountForIntentAndProductDrillDownQueryFactory,
 )
-const ticketCountPerIntentForProductsDrillDownQueryFactoryMock = assumeMock(
-    ticketCountPerIntentForProductsDrillDownQueryFactory,
+const ticketCountForIntentDrillDownQueryFactoryMock = assumeMock(
+    ticketCountForIntentDrillDownQueryFactory,
 )
 
 jest.mock('models/reporting/queryFactories/voice/voiceCall')
@@ -1043,7 +1042,7 @@ describe('getDrillDownQuery', () => {
         getDrillDownQuery(customFieldMetric)(statsFilters, timezone)
 
         expect(
-            ticketCountPerIntentForProductDrillDownQueryFactoryMock,
+            ticketCountForIntentAndProductDrillDownQueryFactoryMock,
         ).toHaveBeenCalledWith(
             statsFilters,
             timezone,
@@ -1074,7 +1073,7 @@ describe('getDrillDownQuery', () => {
         getDrillDownQuery(customFieldMetric)(statsFilters, timezone)
 
         expect(
-            ticketCountPerIntentForProductsDrillDownQueryFactoryMock,
+            ticketCountForIntentDrillDownQueryFactoryMock,
         ).toHaveBeenCalledWith(
             statsFilters,
             timezone,

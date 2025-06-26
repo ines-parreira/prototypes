@@ -7,7 +7,7 @@ import {
     FilterOperatorMap,
     getCustomFieldValueSerializer,
     hasFilter,
-    injectDrillDownCustomFieldId,
+    injectCustomFieldId,
     isAggregationWindowFilter,
     isCustomFieldFilter,
     isPeriodFilter,
@@ -435,11 +435,9 @@ describe('utils', () => {
             }
             const drillDownValues = ['xyz']
 
-            const updatedFilters = injectDrillDownCustomFieldId(
-                filters,
-                customFieldId,
-                ['xyz'],
-            )
+            const updatedFilters = injectCustomFieldId(filters, customFieldId, [
+                'xyz',
+            ])
 
             expect(updatedFilters.period).toEqual(filters.period)
             expect(updatedFilters[FilterKey.CustomFields]).toEqual([

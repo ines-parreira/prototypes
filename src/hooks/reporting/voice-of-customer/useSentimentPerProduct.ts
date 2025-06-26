@@ -13,13 +13,8 @@ import {
     sentimentsTicketCountPerProductQueryFactory,
     TICKET_COUNT_MEASURE,
 } from 'models/reporting/queryFactories/voice-of-customer/sentimentPerProduct'
-import { StatsFilters } from 'models/stat/types'
+import { Sentiment, StatsFilters } from 'models/stat/types'
 import { getPreviousPeriod } from 'utils/reporting'
-
-export enum Sentiment {
-    Positive = 'Positive',
-    Negative = 'Negative',
-}
 
 export type SentimentData = {
     [PRODUCT_ID_DIMENSION]: string

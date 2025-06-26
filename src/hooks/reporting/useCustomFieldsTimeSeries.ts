@@ -19,11 +19,10 @@ import {
 } from 'hooks/reporting/timeSeries'
 import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
-import { Sentiment } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { OrderDirection } from 'models/api/types'
 import { TicketCustomFieldsDimension } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'models/reporting/queryFactories/utils'
-import { TicketTimeReference } from 'models/stat/types'
+import { Sentiment, TicketTimeReference } from 'models/stat/types'
 import { formatTimeSeries, getFormat } from 'pages/stats/common/utils'
 import { TICKET_CUSTOM_FIELDS_NEW_SEPARATOR } from 'pages/stats/utils'
 

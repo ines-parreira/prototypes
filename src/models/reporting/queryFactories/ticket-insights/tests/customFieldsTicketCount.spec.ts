@@ -25,7 +25,7 @@ import {
     customFieldsTicketCountWithSortQueryFactory,
     customFieldsTicketTotalCountQueryFactory,
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import { injectDrillDownCustomFieldId } from 'models/reporting/queryFactories/utils'
+import { injectCustomFieldId } from 'models/reporting/queryFactories/utils'
 import {
     ReportingFilter,
     ReportingFilterOperator,
@@ -309,12 +309,11 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 customFieldsValueStrings,
                 statsFilters.period,
             )
-            const filtersWithDrillDownCustomField =
-                injectDrillDownCustomFieldId(
-                    statsFilters,
-                    Number(customFieldId),
-                    customFieldsValueStrings,
-                )
+            const filtersWithDrillDownCustomField = injectCustomFieldId(
+                statsFilters,
+                Number(customFieldId),
+                customFieldsValueStrings,
+            )
 
             expect(query).toEqual({
                 ...customFieldsTicketCountQueryFactory(

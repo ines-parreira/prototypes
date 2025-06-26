@@ -437,3 +437,8 @@ export enum TicketTimeReference {
     TaggedAt = 'tagged_at',
     CreatedAt = 'created_at',
 }
+
+export enum Sentiment {
+    Positive = 'Positive',
+    Negative = 'Negative',
+}
