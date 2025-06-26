@@ -289,12 +289,25 @@ describe('AiAgentExternalSourceArticlesView', () => {
                 state: {
                     selectedResource: {
                         url: 'https://example.com/test.pdf',
+                        id: Number(mockedFileIngestionId),
                     },
                 },
             } as any)
         })
 
         it('should handle successful sync', async () => {
+            // Mock the status as not loading initially so sync button is clickable
+            mockUsePublicResourcesPooling.mockReturnValue({
+                articleIngestionLogs: [
+                    {
+                        id: Number(mockedFileIngestionId),
+                        url: 'https://example.com/test.pdf',
+                        status: 'SUCCESSFUL',
+                        created_datetime: '2024-01-01T00:00:00Z',
+                    },
+                ],
+            } as any)
+
             mockAddPublicResource.mockResolvedValue({})
 
             renderComponent({ headerType: HeaderType.URL })
@@ -322,10 +335,6 @@ describe('AiAgentExternalSourceArticlesView', () => {
                 expect(mockAddPublicResource).toHaveBeenCalledWith([
                     'https://example.com/test.pdf',
                 ])
-            })
-
-            await waitFor(() => {
-                expect(mockResetAllBanner).toHaveBeenCalled()
             })
         })
 
@@ -355,6 +364,51 @@ describe('AiAgentExternalSourceArticlesView', () => {
 
             // Sync button should not be present for external documents
             expect(screen.queryByText('Sync')).not.toBeInTheDocument()
+        })
+
+        it('should reset banners when syncing URL if banner is dismissed', async () => {
+            mockUseIngestionDomainBannerDismissed.mockReturnValue({
+                resetAllBanner: mockResetAllBanner,
+                isDismissed: true,
+                dismissBanner: jest.fn(),
+            } as any)
+            mockUsePublicResourcesPooling.mockReturnValue({
+                articleIngestionLogs: [
+                    {
+                        id: Number(mockedFileIngestionId),
+                        url: 'https://example.com/test.pdf',
+                        status: 'SUCCESSFUL',
+                        created_datetime: '2024-01-01T00:00:00Z',
+                    },
+                ],
+            } as any)
+
+            mockAddPublicResource.mockResolvedValue({})
+
+            renderComponent({ headerType: HeaderType.URL })
+
+            // Find and click the initial sync button to open modal
+            const syncButton = screen.getByText('Sync')
+            fireEvent.click(syncButton)
+
+            // Wait for modal to open and click the sync button in the modal
+            await waitFor(() => {
+                expect(screen.getByText('Sync URL')).toBeInTheDocument()
+            })
+
+            // Click the sync button in the modal footer
+            const modalSyncButtons = screen.getAllByText('Sync')
+            const modalSyncButton = modalSyncButtons.find((button) =>
+                button.closest('.footer'),
+            )
+            if (modalSyncButton) {
+                fireEvent.click(modalSyncButton)
+            }
+
+            // Wait for async operations
+            await waitFor(() => {
+                expect(mockResetAllBanner).toHaveBeenCalled()
+            })
         })
     })
 

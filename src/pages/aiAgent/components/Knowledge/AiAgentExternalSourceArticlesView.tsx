@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import { useQueryClient } from '@tanstack/react-query'
 import { useLocation, useParams } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
+    helpCenterKeys,
     useGetArticleIngestionLogs,
     useGetFileIngestion,
 } from 'models/helpCenter/queries'
@@ -80,7 +82,6 @@ type LocationState = {
         createdDatetime?: string
         latestSync?: string
         status?: string
-        articleIds?: number[]
     }
 }
 
@@ -206,6 +207,7 @@ const AiAgentExternalSourceArticlesView = ({
     const [syncTriggered, setSyncTriggered] = useState(false)
     const [isLocalSyncing, setIsLocalSyncing] = useState(false)
 
+    const queryClient = useQueryClient()
     const { data, isLoading, refetch } = fetchArticles(
         helpCenterId,
         fileIngestionId,
@@ -217,7 +219,7 @@ const AiAgentExternalSourceArticlesView = ({
         })
 
     const { addPublicResource } = usePublicResourceMutation({ helpCenterId })
-    const { resetAllBanner } = useIngestionDomainBannerDismissed({
+    const { resetAllBanner, isDismissed } = useIngestionDomainBannerDismissed({
         shopName,
         pageName: PAGE_NAME.URL,
     })
@@ -229,13 +231,11 @@ const AiAgentExternalSourceArticlesView = ({
 
     const polledSyncStatus =
         articleIngestionLogs?.find((a) => a.id === resourceData?.id)?.status ??
-        null
+        ARTICLE_INGESTION_LOGS_STATUS.PENDING
 
-    const syncStatus =
-        isLocalSyncing && !polledSyncStatus
-            ? ARTICLE_INGESTION_LOGS_STATUS.PENDING
-            : polledSyncStatus
-
+    const syncStatus = isLocalSyncing
+        ? ARTICLE_INGESTION_LOGS_STATUS.PENDING
+        : polledSyncStatus
     const articles: BaseArticle[] = useMemo(
         () => normalizeArticles(data as BaseArticle[]),
         [data],
@@ -320,11 +320,14 @@ const AiAgentExternalSourceArticlesView = ({
             setIsLocalSyncing(true)
             try {
                 await addPublicResource([fileUrl])
-                resetAllBanner()
-            } catch {
-                setIsLocalSyncing(false)
+                await queryClient.invalidateQueries({
+                    queryKey: helpCenterKeys.articleIngestionLogs(helpCenterId),
+                })
             } finally {
                 setSyncTriggered(false)
+            }
+            if (isDismissed) {
+                resetAllBanner()
             }
         }
     }
@@ -341,7 +344,7 @@ const AiAgentExternalSourceArticlesView = ({
             storeUrl={storeUrl}
             isFetchLoading={isLoading}
             syncTriggered={syncTriggered}
-            syncStoreDomainStatus={syncStatus}
+            syncStoreDomainStatus={polledSyncStatus}
             title={
                 headerType === HeaderType.ExternalDocument
                     ? 'Document'

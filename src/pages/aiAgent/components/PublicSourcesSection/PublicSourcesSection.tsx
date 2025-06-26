@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from 'react'
 
+import { useQueryClient } from '@tanstack/react-query'
+
 import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useSearchParam } from 'hooks/useSearchParam'
+import { helpCenterKeys } from 'models/helpCenter/queries'
+import { getArticleIngestionLogs } from 'models/helpCenter/resources'
 import { useIngestionDomainBannerDismissed } from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed'
+import {
+    ARTICLE_INGESTION_LOGS_STATUS,
+    WIZARD_POST_COMPLETION_QUERY_KEY,
+    WIZARD_POST_COMPLETION_STATE,
+} from 'pages/aiAgent/constants'
 import Button from 'pages/common/components/button/Button'
 import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import {
-    ARTICLE_INGESTION_LOGS_STATUS,
-    WIZARD_POST_COMPLETION_QUERY_KEY,
-    WIZARD_POST_COMPLETION_STATE,
-} from '../../constants'
 import { usePublicResourceMutation } from '../../hooks/usePublicResourcesMutation'
 import { usePublicResourcesPooling } from '../../hooks/usePublicResourcesPooling'
 import { PublicSourcesItem } from './PublicSourcesItem'
@@ -64,6 +68,7 @@ export const PublicSourcesSection = ({
     const { resetAllBanner } = useIngestionDomainBannerDismissed({
         shopName,
     })
+    const queryClient = useQueryClient()
 
     useEffect(() => {
         const pendingResourcesCount = articleIngestionLogsStatus.filter(
@@ -158,6 +163,27 @@ export const PublicSourcesSection = ({
                     : { ...source },
             )
 
+            queryClient.setQueryData(
+                helpCenterKeys.articleIngestionLogs(helpCenterId, {
+                    ids: [sourceId],
+                }),
+                (
+                    previous:
+                        | Awaited<ReturnType<typeof getArticleIngestionLogs>>
+                        | undefined,
+                ) => {
+                    return (
+                        previous
+                            ?.filter((s) => s.id === sourceId)
+                            ?.map((resource) => {
+                                return {
+                                    ...resource,
+                                    status: ARTICLE_INGESTION_LOGS_STATUS.PENDING,
+                                }
+                            }) ?? []
+                    )
+                },
+            )
             setSources(newSources)
             handleChangePublicResource(newSources)
             if (logConnectedPublicUrl) {

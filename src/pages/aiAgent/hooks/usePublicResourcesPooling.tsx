@@ -10,12 +10,14 @@ import {
     useGetArticleIngestionLogs,
 } from 'models/helpCenter/queries'
 import { getArticleIngestionLogs } from 'models/helpCenter/resources'
+import { useIngestionDomainBannerDismissed } from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed'
 import history from 'pages/history'
 import { Components } from 'rest_api/help_center_api/client.generated'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { reportError } from 'utils/errors'
 
+import { PAGE_NAME } from '../AiAgentScrapedDomainContent/constant'
 import { updateArticleIngestionLogs } from '../components/PublicSourcesSection/utils'
 import {
     ArticleIngestionLogsStatus,
@@ -53,6 +55,11 @@ export const usePublicResourcesPooling = ({
             enabled: enabled || false,
         },
     )
+
+    const { resetAllBanner } = useIngestionDomainBannerDismissed({
+        shopName,
+        pageName: PAGE_NAME.URL,
+    })
 
     const processingArticleIngestionIds = useMemo(
         () =>
@@ -167,11 +174,13 @@ export const usePublicResourcesPooling = ({
             (log) => log.status === 'FAILED',
         )
 
+        resetAllBanner()
         if (
             !!wizardQueryParam ||
             window.location.pathname.includes(routes.urlArticles(ids[0]))
-        )
+        ) {
             return
+        }
 
         if (isAllSuccess) {
             void dispatch(
@@ -220,6 +229,7 @@ export const usePublicResourcesPooling = ({
         queryClient,
         routes,
         wizardQueryParam,
+        resetAllBanner,
     ])
 
     const articleIngestionLogsStatus = useMemo(() => {
