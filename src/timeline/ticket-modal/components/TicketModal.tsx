@@ -108,6 +108,7 @@ export function TicketModal({
             classNameDialog={css.dialog}
             isOpen
             onClose={onClose}
+            forceFocus
         >
             <TicketModalProvider>
                 <ModalBody className={css.body}>

@@ -32,7 +32,7 @@ export function TicketDetail({
 
     return (
         <div
-            className={cn(css.container, {
+            className={cn(css.container, 'shortcuts-enable', {
                 'ticket-thread-revamp': hasTicketThreadRevamp,
             })}
         >

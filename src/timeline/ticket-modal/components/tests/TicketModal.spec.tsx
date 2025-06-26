@@ -34,10 +34,10 @@ jest.mock('tickets/ticket-detail/components/TicketDetail', () => ({
         }: {
             additionalHeaderActions: ReactNode
         }) => (
-            <>
+            <div>
                 <div>TicketDetail</div>
                 {additionalHeaderActions}
-            </>
+            </div>
         ),
     ),
 }))
