@@ -1,0 +1,37 @@
+:local {
+    .analyticsCard {
+        border: 1px solid var(--neutral-grey-2);
+        border-radius: var(--layout-spacing-s);
+        padding: var(--layout-spacing-s);
+        padding-top: 0px;
+        max-width: 50vw;
+    }
+
+    .status {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: var(--layout-spacing-xs);
+        padding: var(--layout-spacing-s) 0px;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .statusBadge {
+        border-radius: var(--layout-spacing-s);
+        width: fit-content;
+        padding: var(--layout-spacing-xxs) var(--layout-spacing-xs);
+
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--neutral-grey-0);
+
+        &--live {
+            background: var(--Feedback-Variations-Success_3, #20c08c);
+        }
+        &--paused {
+            background: rgba(239, 76, 0, 0.2);
+            color: #ef4c00;
+        }
+    }
+}

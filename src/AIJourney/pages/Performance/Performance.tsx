@@ -1,4 +1,4 @@
-import { DigestCard } from 'AIJourney/components'
+import { AnalyticsCard, DigestCard } from 'AIJourney/components'
 
 import css from './Performance.less'
 
@@ -22,6 +22,8 @@ export const Performance = () => {
     return (
         <div className={css.container}>
             <DigestCard content={digestContent} metrics={digestMetrics} />
+            <AnalyticsCard status="live" />
+            <AnalyticsCard status="paused" />
         </div>
     )
 }
