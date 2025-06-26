@@ -1,43 +1,44 @@
-import React, { UIEventHandler, useState } from 'react'
+import React, {
+    UIEventHandler,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react'
 
 import classNames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { isEqual } from 'lodash'
 import { useParams } from 'react-router-dom'
 
-import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { useAIAgentInsightsDataset } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
-import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
+import { INTENT_LEVEL } from 'hooks/reporting/automate/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
-import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import {
     Intent,
     IntentTableColumn,
     PaginatedIntents,
 } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
-import css from 'pages/common/components/table/cells/HeaderCellProperty.less'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { TableBodyRowExpandable } from 'pages/common/components/table/TableBodyRowExpandable'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import ChartCard from 'pages/stats/common/components/ChartCard'
+import css from 'pages/stats/common/components/Table/BreakdownTable.less'
 import { AgentsHeaderCellContent } from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
-import { AIInsightsMetrics } from 'state/ui/stats/drillDownSlice'
 import {
     getPaginatedIntents,
     isSortingMetricLoading,
     pageSet,
 } from 'state/ui/stats/insightsSlice'
-import { AIInsightsMetric } from 'state/ui/stats/types'
 
-import {
-    IntentAvgCsatCellContent,
-    IntentDefaultCellContent,
-    IntentNameCellContent,
-    IntentSuccessRateUpliftOpportunitiesCellContent,
-    LoadingIntentCellContent,
-} from './IntentTableCells'
+import { useIntentQuery } from './hooks/useIntentQuery'
+import { LoadingIntentCellContent } from './IntentTableCells'
 import {
     getColumnContentAlignment,
     getColumnWidth,
@@ -46,6 +47,10 @@ import {
     TableLabels,
     useIntentSortingQuery,
 } from './IntentTableConfig'
+import {
+    IntentTableExpandedRowContent,
+    IntentTableExpandedRowContentProps,
+} from './IntentTableExpandedRowContent'
 
 import intentTableCss from './IntentTable.less'
 
@@ -73,41 +78,101 @@ export const IntentTable = ({
     intentLevel?: number
 }) => {
     const dispatch = useAppDispatch()
+    const { intents, allIntents, currentPage, perPage } = paginatedIntents
 
     const [ref, { width }] = useMeasure<HTMLDivElement>()
     const [isTableScrolled, setIsTableScrolled] = useState(false)
-    const { intents, allIntents, currentPage, perPage } = paginatedIntents
+    const [selectedIntentId, setSelectedIntentId] = useState<string>()
+    const [childrenDataMap, setChildrenDataMap] = useState<Record<string, any>>(
+        {},
+    )
+    const isAiAgentOptimize1PageLayoutEnabled =
+        useFlags()[FeatureFlagKey.AiAgentOptimize1PageLayout]
 
     const isSortingLoading = useAppSelector(isSortingMetricLoading)
-    const aiAgentUserId = useAIAgentUserId()
-
-    const { intentCustomFieldId, outcomeCustomFieldId } =
-        useGetCustomTicketsFieldsDefinitionData()
 
     const { intentId, shopName } = useParams<{
         shopName: string
         intentId: string
     }>()
 
-    const integrationIds = useGetTicketChannelsStoreIntegrations(shopName)
+    const childrenQuery = useIntentQuery(
+        IntentTableColumn.SuccessRateUpliftOpportunity,
+        shopName,
+        selectedIntentId,
+        intentLevel ? intentLevel + 1 : INTENT_LEVEL + 1,
+        !!selectedIntentId && isAiAgentOptimize1PageLayoutEnabled,
+    )
+
+    useEffect(() => {
+        if (!selectedIntentId || !isAiAgentOptimize1PageLayoutEnabled) {
+            return
+        }
+
+        const intentsArray = Array.isArray(childrenQuery.data)
+            ? childrenQuery.data
+            : []
+
+        const newChildrenData = intentsArray.map((childIntent) => ({
+            intent: childIntent,
+            intentLevel: intentLevel ? intentLevel + 1 : INTENT_LEVEL + 1,
+            allIntents: intentsArray,
+            isTableScrolled,
+            hasChildren: false,
+            children: [],
+            level: intentLevel ?? INTENT_LEVEL,
+        }))
+
+        setChildrenDataMap((prevMap) => {
+            const existing = prevMap[selectedIntentId] ?? {
+                data: [],
+                isLoading: false,
+            }
+            const next = {
+                data: newChildrenData,
+                isLoading: childrenQuery.isLoading,
+            }
+
+            const isUnchanged =
+                isEqual(existing.data, next.data) &&
+                existing.isLoading === next.isLoading
+
+            return isUnchanged
+                ? prevMap
+                : {
+                      ...prevMap,
+                      [selectedIntentId]: next,
+                  }
+        })
+    }, [
+        childrenQuery.isLoading,
+        childrenQuery.data,
+        selectedIntentId,
+        isTableScrolled,
+        intentLevel,
+        isAiAgentOptimize1PageLayoutEnabled,
+    ])
+
+    const shouldLazyLoadChildren = useMemo(() => {
+        return (
+            intentLevel === INTENT_LEVEL && isAiAgentOptimize1PageLayoutEnabled
+        )
+    }, [intentLevel, isAiAgentOptimize1PageLayoutEnabled])
+
+    const onLazyLoadChildren = useCallback(
+        (intent: Intent) => {
+            if (
+                intentLevel === INTENT_LEVEL &&
+                isAiAgentOptimize1PageLayoutEnabled
+            ) {
+                setSelectedIntentId(intent.id)
+            }
+        },
+        [intentLevel, isAiAgentOptimize1PageLayoutEnabled],
+    )
 
     const onPageChangeCallback = (page: number) => {
         dispatch(pageSet(page))
-    }
-
-    const getTableCellComponent = (column: IntentTableColumn) => {
-        switch (column) {
-            case IntentTableColumn.IntentName:
-                return IntentNameCellContent
-            case IntentTableColumn.SuccessRateUpliftOpportunity:
-                return IntentSuccessRateUpliftOpportunitiesCellContent
-            case IntentTableColumn.AvgCustomerSatisfaction:
-                return IntentAvgCsatCellContent
-            // case IntentTableColumn.Resources:
-            //     return IntentResourcesCellContent
-            default:
-                return IntentDefaultCellContent
-        }
     }
 
     const handleScroll: UIEventHandler<HTMLDivElement> = (event) => {
@@ -118,53 +183,9 @@ export const IntentTable = ({
         }
     }
 
-    const getDrillDownMetricData = ({
-        column,
-        intent,
-    }: {
-        column: IntentTableColumn
-        intent: Intent
-    }): AIInsightsMetrics | null => {
-        const intentName = intent[IntentTableColumn.IntentName]
-        switch (column) {
-            case IntentTableColumn.Tickets:
-                return {
-                    metricName: AIInsightsMetric.TicketCustomFieldsTicketCount,
-                    title: intentName,
-                    intentFieldValues: [intent.id],
-                    intentFieldId: intentCustomFieldId ?? null,
-                    outcomeFieldId: outcomeCustomFieldId ?? null,
-                    integrationIds: integrationIds,
-                    customFieldId: null,
-                    customFieldValue: null,
-                }
-            case IntentTableColumn.AvgCustomerSatisfaction:
-                if (
-                    !aiAgentUserId ||
-                    !intentCustomFieldId ||
-                    !outcomeCustomFieldId
-                ) {
-                    return null
-                }
-
-                return {
-                    metricName:
-                        AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
-                    title: intentName,
-                    perAgentId: aiAgentUserId,
-                    intentFieldId: intentCustomFieldId,
-                    outcomeFieldId: outcomeCustomFieldId,
-                    intentFieldValues: [intent.id],
-                    integrationIds: integrationIds,
-                }
-            default:
-                return null
-        }
-    }
-
     return (
         <>
-            <div ref={ref} className={css.container} onScroll={handleScroll}>
+            <div ref={ref} onScroll={handleScroll}>
                 <TableWrapper
                     className={classNames(
                         css.table,
@@ -199,35 +220,56 @@ export const IntentTable = ({
                                 justifyContent={getColumnContentAlignment(
                                     column,
                                 )}
+                                colSpan={index === 0 ? 2 : 1}
                             />
                         ))}
                     </TableHead>
                     <TableBody>
                         {!isSortingLoading ? (
-                            intents.map((intent) => (
-                                <TableBodyRow
-                                    key={intent[IntentTableColumn.IntentName]}
-                                >
-                                    {TableColumnsOrder.map((column) => (
-                                        <React.Fragment key={column}>
-                                            {React.createElement(
-                                                getTableCellComponent(column),
-                                                {
-                                                    intent,
-                                                    column,
-                                                    allIntents,
-                                                    drillDownMetricData:
-                                                        getDrillDownMetricData({
-                                                            column,
-                                                            intent,
-                                                        }),
-                                                    intentLevel,
-                                                },
-                                            )}
-                                        </React.Fragment>
-                                    ))}
-                                </TableBodyRow>
-                            ))
+                            intents.map((intent) => {
+                                return (
+                                    <TableBodyRowExpandable<IntentTableExpandedRowContentProps>
+                                        key={
+                                            intent[IntentTableColumn.IntentName]
+                                        }
+                                        innerClassName={intentTableCss.small}
+                                        rowContentProps={{
+                                            intent,
+                                            intentLevel,
+                                            allIntents,
+                                            isTableScrolled,
+                                            hasChildren:
+                                                isAiAgentOptimize1PageLayoutEnabled,
+                                            children:
+                                                childrenDataMap[intent.id]
+                                                    ?.data || [],
+                                        }}
+                                        lazyLoadChildren={
+                                            shouldLazyLoadChildren
+                                        }
+                                        onClickCallback={() =>
+                                            onLazyLoadChildren(intent)
+                                        }
+                                        RowContentComponent={
+                                            IntentTableExpandedRowContent
+                                        }
+                                        SkeletonComponent={() => (
+                                            <LoadingTableRows
+                                                numberOfLoadingRows={1}
+                                                intentLevel={
+                                                    intentLevel
+                                                        ? intentLevel + 1
+                                                        : INTENT_LEVEL + 1
+                                                }
+                                            />
+                                        )}
+                                        isLoading={
+                                            childrenDataMap[intent.id]
+                                                ?.isLoading
+                                        }
+                                    />
+                                )
+                            })
                         ) : (
                             <LoadingTableRows />
                         )}
@@ -248,15 +290,23 @@ export const IntentTable = ({
     )
 }
 
-export const LoadingTableRows = () => {
-    const numberOfLoadingRows = 4
+export const LoadingTableRows = ({
+    numberOfLoadingRows = 4,
+    intentLevel = INTENT_LEVEL,
+}: {
+    numberOfLoadingRows?: number
+    intentLevel?: number
+}) => {
     const loadingRows = Array.from(
         { length: numberOfLoadingRows },
         (_, index) => (
             <TableBodyRow key={`loading-row-${index}`}>
                 {TableColumnsOrder.map((column) => (
                     <React.Fragment key={column}>
-                        <LoadingIntentCellContent column={column} />
+                        <LoadingIntentCellContent
+                            column={column}
+                            intentLevel={intentLevel}
+                        />
                     </React.Fragment>
                 ))}
             </TableBodyRow>

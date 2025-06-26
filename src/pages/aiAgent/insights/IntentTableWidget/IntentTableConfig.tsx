@@ -95,12 +95,15 @@ export const IntentsColumnsConfig: Partial<
     // },
 }
 
-export const INTENT_NAME_COLUMN_WIDTH = isExtraLargeScreen() ? 160 : 300
+export const INTENT_NAME_COLUMN_WIDTH = isExtraLargeScreen() ? 160 : 500
 export const MOBILE_INTENT_NAME_COLUMN_WIDTH = 140
 export const METRIC_COLUMN_WIDTH = 140
 export const MOBILE_METRIC_COLUMN_WIDTH = 120
 export const SUCCESS_RATE_UPLIFT_OPPORTUNITY_COLUMN_WIDTH = 160
 export const MOBILE_SUCCESS_RATE_UPLIFT_OPPORTUNITY_COLUMN_WIDTH = 140
+
+// Prevent table header from moving when loading children rows
+export const CHILDREN_SKELETON_METRIC_COLUMN_WIDTH = 110
 
 export const getColumnWidth = (column: IntentTableColumn) => {
     if (isMediumOrSmallScreen()) {
@@ -121,6 +124,17 @@ export const getColumnWidth = (column: IntentTableColumn) => {
             return INTENT_NAME_COLUMN_WIDTH
         default:
             return METRIC_COLUMN_WIDTH
+    }
+}
+
+export const getChildrenSkeletonColumnWidth = (column: IntentTableColumn) => {
+    switch (column) {
+        case IntentTableColumn.IntentName:
+            return isMediumOrSmallScreen()
+                ? MOBILE_INTENT_NAME_COLUMN_WIDTH
+                : INTENT_NAME_COLUMN_WIDTH
+        default:
+            return CHILDREN_SKELETON_METRIC_COLUMN_WIDTH
     }
 }
 

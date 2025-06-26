@@ -2,12 +2,15 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen } from '@testing-library/react'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
+import { INTENT_LEVEL } from 'hooks/reporting/automate/utils'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -56,6 +59,15 @@ jest.mock('hooks/integrations/useGetTicketChannelsStoreIntegrations')
 const getTicketChannelsStoreIntegrationsMock = assumeMock(
     useGetTicketChannelsStoreIntegrations,
 )
+
+jest.mock('pages/aiAgent/insights/IntentTableWidget/hooks/useIntentQuery')
+const useIntentQueryMock = assumeMock(
+    require('pages/aiAgent/insights/IntentTableWidget/hooks/useIntentQuery')
+        .useIntentQuery,
+)
+
+jest.mock('launchdarkly-react-client-sdk')
+const useFlagsMock = assumeMock(useFlags)
 
 const mockStore = configureMockStore([thunk])
 const defaultPaginatedIntents = {
@@ -145,6 +157,17 @@ describe('Intent Table components', () => {
             useGetCustomTicketsFieldsDefinitionDataMock.mockReturnValue({
                 intentCustomFieldId: null,
                 outcomeCustomFieldId: null,
+            })
+            useIntentQueryMock.mockReturnValue({
+                data: [
+                    {
+                        id: 'order::track::details',
+                        [IntentTableColumn.IntentName]: 'order/track/details',
+                        [IntentTableColumn.SuccessRateUpliftOpportunity]: 5,
+                        [IntentTableColumn.AvgCustomerSatisfaction]: 4.2,
+                    },
+                ],
+                isLoading: false,
             })
         })
         it('renders table with data', () => {
@@ -291,6 +314,27 @@ describe('Intent Table components', () => {
                 expect(drillDownTrigger).not.toBeNull()
                 expect(drillDownTrigger).toHaveClass('highlighted')
             })
+        })
+
+        it('should expand intent children when parent intent is clicked', () => {
+            useFlagsMock.mockReturnValue({
+                [FeatureFlagKey.AiAgentOptimize1PageLayout]: true,
+            } as any)
+
+            const store = mockStore(initialState)
+
+            renderWithProvider(
+                <IntentTable
+                    paginatedIntents={defaultPaginatedIntents}
+                    intentLevel={INTENT_LEVEL}
+                />,
+                store,
+            )
+
+            const expandIcons = screen.getAllByText('arrow_right')
+            fireEvent.click(expandIcons[0])
+
+            expect(screen.getByText('order/track/details')).toBeInTheDocument()
         })
     })
     describe('LoadingTableRows', () => {

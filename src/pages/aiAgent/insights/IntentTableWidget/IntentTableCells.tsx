@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 
+import classnames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useHistory, useParams } from 'react-router-dom'
 
@@ -12,6 +13,7 @@ import useId from 'hooks/useId'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { BadgeWithTiers } from 'pages/aiAgent/insights/IntentTableWidget/BadgeWithTiers/BadgeWithTiers'
 import {
+    getChildrenSkeletonColumnWidth,
     getColumnWidth,
     IntentRowConfig,
     IntentsColumnsConfig,
@@ -204,14 +206,22 @@ export const IntentSuccessRateUpliftOpportunitiesCellContent = ({
 
 export const LoadingIntentCellContent = ({
     column,
+    intentLevel = INTENT_LEVEL,
 }: {
     column: IntentTableColumn
+    intentLevel?: number
 }) => {
     return (
         <BodyCellWrapper
             bodyCellProps={{
-                justifyContent: 'right',
-                width: getColumnWidth(column),
+                justifyContent:
+                    column === IntentTableColumn.IntentName ? 'left' : 'right',
+                width:
+                    intentLevel === INTENT_LEVEL
+                        ? getColumnWidth(column)
+                        : getChildrenSkeletonColumnWidth(column),
+                colSpan: column === IntentTableColumn.IntentName ? 2 : 1,
+                hasMarginLeft: column === IntentTableColumn.IntentName,
             }}
             isLoading={true}
         ></BodyCellWrapper>
@@ -227,18 +237,22 @@ export const BodyCellWrapper = ({
     isLoading?: boolean
     bodyCellProps: {
         width: number
-        justifyContent?: 'right'
+        justifyContent?: 'right' | 'left'
         isClickable?: boolean
+        colSpan?: number
+        hasMarginLeft?: boolean
     }
 }) => {
     return (
         <BodyCell
+            colSpan={bodyCellProps.colSpan}
             justifyContent={bodyCellProps.justifyContent}
-            innerClassName={
+            innerClassName={classnames(
                 bodyCellProps.isClickable
                     ? intentTableCss.clickableCell
-                    : intentTableCss.notClickableCell
-            }
+                    : intentTableCss.notClickableCell,
+                bodyCellProps.hasMarginLeft ? intentTableCss.loadingRow : '',
+            )}
         >
             {isLoading ? (
                 <Skeleton

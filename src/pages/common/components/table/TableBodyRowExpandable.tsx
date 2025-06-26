@@ -16,6 +16,10 @@ type Props<T> = {
     rowContentProps: WithChildren<T & { onClick?: () => void }>
     innerClassName?: string
     isDefaultExpanded?: boolean
+    onClickCallback?: () => void
+    lazyLoadChildren?: boolean
+    SkeletonComponent?: FC
+    isLoading?: boolean
 }
 
 export const COLUMN_WIDTH = 24
@@ -28,9 +32,16 @@ export const TableBodyRowExpandable = <T,>({
     rowContentProps,
     innerClassName,
     isDefaultExpanded = false,
+    onClickCallback,
+    lazyLoadChildren,
+    SkeletonComponent,
+    isLoading,
 }: Props<T>) => {
     const [isExpanded, setIsExpanded] = useState(isDefaultExpanded)
-    const toggleExpand = () => setIsExpanded(!isExpanded)
+    const toggleExpand = () => {
+        setIsExpanded(!isExpanded)
+        onClickCallback?.()
+    }
     const isMobile = useScreenSize() === SCREEN_SIZE.SMALL
 
     return (
@@ -48,7 +59,8 @@ export const TableBodyRowExpandable = <T,>({
                     }}
                     innerClassName={classnames(css.expandCell, innerClassName)}
                 >
-                    {rowContentProps.children.length > 0 && (
+                    {(rowContentProps.children.length > 0 ||
+                        lazyLoadChildren) && (
                         <i
                             className={classnames(
                                 'material-icons-round',
@@ -65,19 +77,26 @@ export const TableBodyRowExpandable = <T,>({
                     level={level}
                 />
             </TableBodyRow>
-            {isExpanded &&
-                rowContentProps.children.map((tag, index) => (
-                    <TableBodyRowExpandable<T>
-                        key={index}
-                        level={level + 1}
-                        RowContentComponent={RowContentComponent}
-                        rowContentProps={{
-                            ...rowContentProps,
-                            ...tag,
-                            onClick: toggleExpand,
-                        }}
-                    />
-                ))}
+            {isExpanded && (
+                <>
+                    {lazyLoadChildren && isLoading && SkeletonComponent && (
+                        <SkeletonComponent />
+                    )}
+                    {(!lazyLoadChildren || !isLoading) &&
+                        rowContentProps.children.map((tag, index) => (
+                            <TableBodyRowExpandable<T>
+                                key={index}
+                                level={level + 1}
+                                RowContentComponent={RowContentComponent}
+                                rowContentProps={{
+                                    ...rowContentProps,
+                                    ...tag,
+                                    onClick: toggleExpand,
+                                }}
+                            />
+                        ))}
+                </>
+            )}
         </>
     )
 }

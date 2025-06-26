@@ -14,6 +14,7 @@ type AgentsHeaderCellContentProps = {
         direction: OrderDirection
         isOrderedBy: boolean
     }
+    colSpan?: number
 }
 
 export const AgentsHeaderCellContent = ({
@@ -23,6 +24,7 @@ export const AgentsHeaderCellContent = ({
     title,
     hint,
     useSortingQuery,
+    colSpan = 1,
 }: AgentsHeaderCellContentProps) => {
     const { sortCallback, direction, isOrderedBy } = useSortingQuery()
 
@@ -40,6 +42,7 @@ export const AgentsHeaderCellContent = ({
             width={width}
             justifyContent={justifyContent}
             className={className}
+            colSpan={colSpan}
         >
             {hint && <HintTooltip {...hint} />}
         </HeaderCellProperty>
