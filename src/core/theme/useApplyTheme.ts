@@ -10,7 +10,11 @@ export default function useApplyTheme() {
     const theme = useTheme()
 
     useEffect(() => {
+        const actualTheme =
+            theme.resolvedName === THEME_NAME.Classic
+                ? THEME_NAME.Light
+                : theme.resolvedName
         document.body.classList.remove(...themeClassNames)
-        document.body.classList.add(theme.resolvedName)
+        document.body.classList.add(actualTheme)
     }, [theme.resolvedName])
 }

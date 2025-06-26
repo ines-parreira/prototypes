@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import { Link } from 'react-router-dom'
 
 import css from 'common/navigation/components/GlobalNavigation.less'
@@ -14,6 +15,7 @@ import { useNavBarShortcuts } from 'common/navigation/hooks/useNavBarShortcuts'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
+import { useTheme } from 'core/theme'
 import useAppSelector from 'hooks/useAppSelector'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
@@ -22,6 +24,7 @@ import { getCurrentUser } from 'state/currentUser/selectors'
 import { hasRole } from 'utils'
 
 export default function GlobalNavigation() {
+    const theme = useTheme()
     const currentUser = useAppSelector(getCurrentUser)
     const activeItem = useActiveItem()
     const navBarMenuIcon = useNavBarMenuIcon()
@@ -43,7 +46,9 @@ export default function GlobalNavigation() {
 
     return (
         <nav
-            className={css.container}
+            className={cn(css.container, {
+                dark: theme.resolvedName === 'classic',
+            })}
             onMouseOver={onNavHover}
             onMouseLeave={onNavLeave}
             onFocus={onNavHover}

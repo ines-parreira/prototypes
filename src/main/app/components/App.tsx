@@ -9,7 +9,7 @@ import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/
 import { NotificationsOverlay, NotificationsToasts } from 'common/notifications'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
-import { useApplyTheme } from 'core/theme'
+import { THEME_NAME, useApplyTheme, useTheme } from 'core/theme'
 import { useAxiomMigration } from 'hooks/useAxiomMigration'
 import useHasPhone from 'hooks/useHasPhone'
 import { isAiAgentOnboarding } from 'main/app/utils/isAiAgentOnboarding'
@@ -44,6 +44,7 @@ type Props = {
 export default function App({ children }: Props) {
     const { hasFlag: hasAxiomMigration, isEnabled: isAxiomEnabled } =
         useAxiomMigration()
+    const theme = useTheme()
     const history = useHistory()
     const hasGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
     const hasPhone = useHasPhone()
@@ -74,6 +75,7 @@ export default function App({ children }: Props) {
         <AppNode
             className={cn({
                 axiom: hasAxiomMigration && isAxiomEnabled,
+                classic: theme.resolvedName === THEME_NAME.Classic,
                 globalNav: hasGlobalNav,
             })}
         >

@@ -4,6 +4,7 @@ import type { ReactNode, RefObject } from 'react'
 import cn from 'classnames'
 
 import { NotificationsButton } from 'common/notifications'
+import { useTheme } from 'core/theme'
 import useAppSelector from 'hooks/useAppSelector'
 import HomePageLink from 'pages/common/components/HomePageLink'
 import SpotlightButton from 'pages/common/components/Spotlight/SpotlightButton'
@@ -37,6 +38,7 @@ export default function Navbar({
     splitTicketViewToggle,
     title,
 }: Props) {
+    const theme = useTheme()
     const isOpenedPanel = useAppSelector(getIsOpenedPanel('navbar'))
 
     const navbarRef = useRef<HTMLDivElement | null>(null)
@@ -62,7 +64,10 @@ export default function Navbar({
     return (
         <div
             ref={navbarRef}
-            className={cn(css.sidebar, { [css.isResizing]: isResizing })}
+            className={cn(css.sidebar, {
+                [css.isResizing]: isResizing,
+                dark: theme.resolvedName === 'classic',
+            })}
             {...(enableResize && { style: { width: `${width}px` } })}
         >
             <div
