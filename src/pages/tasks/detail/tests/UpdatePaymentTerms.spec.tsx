@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import React from 'react'
-
 import { render, screen, waitFor } from '@testing-library/react'
-import user from '@testing-library/user-event'
+import userEvent from '@testing-library/user-event'
 
 import UpdatePaymentTermsPage from '../UpdatePaymentTerms'
 
@@ -68,11 +66,11 @@ describe('Update Payment Terms Page', () => {
         render(<UpdatePaymentTermsPage />)
         const input = screen.getByRole('combobox')
 
-        user.click(input)
+        await userEvent.click(input)
 
         const option = await screen.findByRole('option', { name: /45/i })
 
-        user.click(option)
+        await userEvent.click(option)
 
         const button = screen.getByRole('button', { name: 'Update' })
         expect(button).toBeEnabled()
@@ -82,18 +80,18 @@ describe('Update Payment Terms Page', () => {
         render(<UpdatePaymentTermsPage />)
         const input = screen.getByRole('combobox')
 
-        user.click(input)
+        await userEvent.click(input)
 
         const option = await screen.findByRole('option', { name: /60/i })
 
-        user.click(option)
+        await userEvent.click(option)
 
         const button = screen.getByRole('button', { name: 'Update' })
 
         // Ensure the button is enabled
         expect(button).toBeEnabled()
 
-        user.click(button)
+        await userEvent.click(button)
 
         expect(useUpdatePaymentTermsWithSideEffectsMock).toHaveBeenCalledTimes(
             1,

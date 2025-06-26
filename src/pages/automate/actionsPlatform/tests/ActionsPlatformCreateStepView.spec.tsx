@@ -1,5 +1,3 @@
-import React from 'react'
-
 import {
     act,
     fireEvent,
@@ -8,6 +6,7 @@ import {
     waitFor,
     within,
 } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -107,13 +106,9 @@ describe('<ActionsPlatformCreateStepView />', () => {
             )
         })
 
-        act(() => {
-            fireEvent.click(screen.getByText('Shopify'))
-        })
+        await userEvent.click(screen.getByText('Shopify'))
 
-        act(() => {
-            fireEvent.click(screen.getByText('Use'))
-        })
+        await userEvent.click(screen.getByText('Use'))
 
         await waitFor(() => {
             expect(screen.queryByText('Select App')).not.toBeInTheDocument()

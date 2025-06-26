@@ -1,6 +1,5 @@
-import React from 'react'
-
-import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -13,7 +12,6 @@ import { BASE_STATS_PATH, STATS_ROUTES } from 'routes/constants'
 import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
 import { isTeamLead } from 'utils'
 import { assumeMock } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import {
@@ -118,9 +116,7 @@ describe('DashboardsNavbarBlock', () => {
                 </DndProvider>,
             )
 
-            act(() => {
-                userEvent.click(screen.getByText('keyboard_arrow_down'))
-            })
+            await userEvent.click(screen.getByText('keyboard_arrow_down'))
 
             await waitFor(() => {
                 expect(screen.getByText('Report 1')).toBeInTheDocument()
@@ -197,7 +193,7 @@ describe('DashboardsNavbarBlock', () => {
             expect(screen.queryByText('info')).not.toBeInTheDocument()
         })
 
-        it('should report clicks on add icon clicked', () => {
+        it('should report clicks on add icon clicked', async () => {
             renderWithQueryClientAndRouter(
                 <DndProvider backend={HTML5Backend}>
                     <Accordion.Root>
@@ -207,7 +203,7 @@ describe('DashboardsNavbarBlock', () => {
             )
             const addIcon = screen.getByText('add')
             expect(addIcon).toBeEnabled()
-            userEvent.click(addIcon)
+            await userEvent.click(addIcon)
 
             expect(logEventMock).toHaveBeenCalledWith(
                 SegmentEvent.StatDashboardNavCreateChartClicked,
@@ -232,7 +228,9 @@ describe('DashboardsNavbarBlock', () => {
             const infoIcon = screen.getByText('info')
             expect(infoIcon).toBeInTheDocument()
             expect(screen.queryByText('add')).not.toBeInTheDocument()
-            userEvent.hover(infoIcon)
+
+            await userEvent.hover(infoIcon)
+
             await waitFor(() => {
                 expect(
                     screen.getByText(RESTRICTION_MESSAGE),

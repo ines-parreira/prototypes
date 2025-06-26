@@ -111,7 +111,9 @@ describe(`App`, () => {
 
         expect(container.firstChild).toMatchSnapshot()
         await screen.findAllByText(new RegExp(dummyAppData.name))
-        expect(container.firstChild).toMatchSnapshot()
+        await waitFor(() => {
+            expect(container.firstChild).toMatchSnapshot()
+        })
     })
 
     it('should render the connections tab when there are connected integrations', async () => {
