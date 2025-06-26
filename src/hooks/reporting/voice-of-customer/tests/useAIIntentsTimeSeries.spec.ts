@@ -12,7 +12,7 @@ import {
 import { ReportingGranularity } from 'models/reporting/types'
 import { TicketTimeReference } from 'models/stat/types'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
-import { TOP_INTENTS_PER_PAGE } from 'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentConfig'
+import { TOP_INTENTS_PER_PAGE } from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentConfig'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 

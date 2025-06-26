@@ -6,13 +6,15 @@ import { Route, Switch } from 'react-router-dom'
 
 import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
 import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
+import { VoiceOfCustomerNavbarContainer } from 'pages/stats/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerNavbarContainer'
 import { ProductInsightsPage } from 'pages/stats/voice-of-customer/product-insights/ProductInsightsPage'
-import { VoiceOfCustomerNavbarContainer } from 'pages/stats/voice-of-customer/VoiceOfCustomerNavbarContainer'
 import { VOICE_OF_CUSTOMER_ROUTES } from 'routes/constants'
 import { VoiceOfCustomerRoutes } from 'routes/VoiceOfCustomerRoutes'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
-jest.mock('pages/stats/voice-of-customer/VoiceOfCustomerNavbarContainer')
+jest.mock(
+    'pages/stats/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerNavbarContainer',
+)
 const VoiceOfCustomerNavbarContainerMock = assumeMock(
     VoiceOfCustomerNavbarContainer,
 )

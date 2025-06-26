@@ -7,11 +7,11 @@ import {
     TREND_BADGE_FORMAT,
 } from 'pages/stats/common/components/TrendBadge'
 import { formatMetricTrend } from 'pages/stats/common/utils'
-import { DEFAULT_SORTING_VALUE } from 'pages/stats/voice-of-customer/product-insights/constants'
 import {
     LeadColumn,
     TopProductsPerIntentColumn,
-} from 'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentConfig'
+} from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentConfig'
+import { DEFAULT_SORTING_VALUE } from 'pages/stats/voice-of-customer/constants'
 
 export const formatProductsPerIntentsTableData = (
     data: {

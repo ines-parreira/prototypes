@@ -5,7 +5,7 @@ import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'models/reporting/queryFactor
 import { StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import { IntentCard } from 'pages/stats/common/components/IntentCard'
 import { useOpenDrillDownModal } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
-import { VoiceOfCustomerMetricWithDrillDown } from 'pages/stats/voice-of-customer/VoiceOfCustomerMetricConfig'
+import { VoiceOfCustomerMetricWithDrillDown } from 'pages/stats/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerMetricConfig'
 import { getPreviousPeriod } from 'utils/reporting'
 
 type Product = { id: string; name: string }

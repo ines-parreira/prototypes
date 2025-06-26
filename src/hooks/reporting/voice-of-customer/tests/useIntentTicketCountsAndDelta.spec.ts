@@ -10,7 +10,7 @@ import {
     TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { ReportingGranularity } from 'models/reporting/types'
-import { TopProductsPerIntentColumn } from 'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentConfig'
+import { TopProductsPerIntentColumn } from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentConfig'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 

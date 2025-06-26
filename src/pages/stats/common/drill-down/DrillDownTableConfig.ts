@@ -36,12 +36,12 @@ import {
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { TagsMetricConfig } from 'pages/stats/ticket-insights/tags/TagsMetricConfig'
 import { TicketFieldsMetricConfig } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
-import { TicketVolumeConfig } from 'pages/stats/voice-of-customer/product-insights/charts/TicketVolumeConfig'
-import { ProductInsightsColumnWithDrillDownConfig } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableConfig'
+import { TicketVolumeConfig } from 'pages/stats/voice-of-customer/charts/ChangeInTicketVolumeChart/ticketVolumeConfig'
+import { ProductInsightsColumnWithDrillDownConfig } from 'pages/stats/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
 import {
     VoiceOfCustomerMetricWithDrillDown,
     VoiceOfCustomerMetricWithDrillDownConfig,
-} from 'pages/stats/voice-of-customer/VoiceOfCustomerMetricConfig'
+} from 'pages/stats/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerMetricConfig'
 import { VoiceDrillDownConfig } from 'pages/stats/voice/VoiceConfigs/VoiceDrillDownConfig'
 import {
     AgentMetricColumn,

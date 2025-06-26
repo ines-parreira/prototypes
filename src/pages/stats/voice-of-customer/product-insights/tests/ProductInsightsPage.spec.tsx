@@ -11,16 +11,16 @@ import { DrillDownModal } from 'pages/stats/common/drill-down/DrillDownModal'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import { ChartsActionMenu } from 'pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
-import { TicketVolumeTable } from 'pages/stats/voice-of-customer/product-insights/charts/TicketVolumeTable'
-import { TopAIIntentsOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/charts/TopAIIntentsOverTimeChart'
-import { ProductInsightsTableChart } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableChart'
-import { TotalProductSentimentOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TotalProductSentimentOverTimeChart'
+import { TicketVolumeTable } from 'pages/stats/voice-of-customer/charts/ChangeInTicketVolumeChart/TicketVolumeTable'
+import { ProductInsightsTableChart } from 'pages/stats/voice-of-customer/charts/ProductInsightsTableChart/ProductInsightsTableChart'
+import { TopAIIntentsOverTimeChart } from 'pages/stats/voice-of-customer/charts/TopAIIntentsOverTimeChart/TopAIIntentsOverTimeChart'
+import { TopProductsPerAIIntentChart } from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentChart'
+import { TotalTicketSentimentOverTimeChart } from 'pages/stats/voice-of-customer/charts/TotalTicketSentimentOverTimeChart/TotalTicketSentimentOverTimeChart'
+import { VoCSidePanel } from 'pages/stats/voice-of-customer/components/VoCSidePanel/VoCSidePanel'
 import {
     PRODUCT_INSIGHTS_PAGE_TITLE,
     ProductInsightsPage,
 } from 'pages/stats/voice-of-customer/product-insights/ProductInsightsPage'
-import { TopProductsPerIntentChart } from 'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentChart'
-import { VoCSidePanel } from 'pages/stats/voice-of-customer/side-panel/VoCSidePanel'
 import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('hooks/reporting/useCleanStatsFilters')
@@ -33,23 +33,23 @@ const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 jest.mock('hooks/reporting/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)
 jest.mock(
-    'pages/stats/voice-of-customer/product-insights/charts/TopAIIntentsOverTimeChart',
+    'pages/stats/voice-of-customer/charts/TopAIIntentsOverTimeChart/TopAIIntentsOverTimeChart',
 )
 const TopAIIntentsOverTimeChartMock = assumeMock(TopAIIntentsOverTimeChart)
 jest.mock('pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu')
 const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
 jest.mock(
-    'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentChart',
+    'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentChart',
 )
-const TopProductsPerIntentChartMock = assumeMock(TopProductsPerIntentChart)
+const TopProductsPerAIIntentChartMock = assumeMock(TopProductsPerAIIntentChart)
 jest.mock(
-    'pages/stats/voice-of-customer/product-insights/components/TotalProductSentimentOverTimeChart',
+    'pages/stats/voice-of-customer/charts/TotalTicketSentimentOverTimeChart/TotalTicketSentimentOverTimeChart',
 )
-const TotalProductSentimentOverTimeChartMock = assumeMock(
-    TotalProductSentimentOverTimeChart,
+const TotalTicketSentimentOverTimeChartMock = assumeMock(
+    TotalTicketSentimentOverTimeChart,
 )
 jest.mock(
-    'pages/stats/voice-of-customer/product-insights/charts/TicketVolumeTable',
+    'pages/stats/voice-of-customer/charts/ChangeInTicketVolumeChart/TicketVolumeTable',
 )
 const TicketVolumeTableMock = assumeMock(TicketVolumeTable)
 jest.mock(
@@ -59,10 +59,10 @@ const useGetCustomTicketsFieldsDefinitionDataMock = assumeMock(
     useGetCustomTicketsFieldsDefinitionData,
 )
 jest.mock(
-    'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableChart',
+    'pages/stats/voice-of-customer/charts/ProductInsightsTableChart/ProductInsightsTableChart',
 )
 const ProductInsightsTableChartMock = assumeMock(ProductInsightsTableChart)
-jest.mock('pages/stats/voice-of-customer/side-panel/VoCSidePanel')
+jest.mock('pages/stats/voice-of-customer/components/VoCSidePanel/VoCSidePanel')
 const VoCSidePanelMock = assumeMock(VoCSidePanel)
 
 describe('ProductInsightsPage', () => {
@@ -77,8 +77,8 @@ describe('ProductInsightsPage', () => {
     }
 
     beforeEach(() => {
-        TotalProductSentimentOverTimeChartMock.mockImplementation(() => <div />)
-        TopProductsPerIntentChartMock.mockImplementation(() => <div />)
+        TotalTicketSentimentOverTimeChartMock.mockImplementation(() => <div />)
+        TopProductsPerAIIntentChartMock.mockImplementation(() => <div />)
         DrillDownModalMock.mockImplementation(() => <div />)
         ChartsActionMenuMock.mockImplementation(() => <div />)
         FiltersPanelWrapperMock.mockImplementation(() => <div />)

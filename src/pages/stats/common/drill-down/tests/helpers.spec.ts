@@ -58,8 +58,8 @@ import {
     ChannelsTableLabels,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import { ProductInsightsColumnWithDrillDownConfig } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableConfig'
-import { VoiceOfCustomerMetricWithDrillDown } from 'pages/stats/voice-of-customer/VoiceOfCustomerMetricConfig'
+import { ProductInsightsColumnWithDrillDownConfig } from 'pages/stats/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
+import { VoiceOfCustomerMetricWithDrillDown } from 'pages/stats/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerMetricConfig'
 import { MEDIAN_RESOLUTION_TIME_LABEL } from 'services/reporting/constants'
 import {
     AgentsMetrics,

@@ -2,7 +2,7 @@ import { AiSalesAgentChart } from 'pages/stats/automate/aiSalesAgent/AiSalesAgen
 import { MetricsConfig } from 'pages/stats/common/drill-down/DrillDownTableConfig'
 import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import { VoiceOfCustomerMetricWithDrillDown } from 'pages/stats/voice-of-customer/VoiceOfCustomerMetricConfig'
+import { VoiceOfCustomerMetricWithDrillDown } from 'pages/stats/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerMetricConfig'
 import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 import { ProductsPerTicketColumn } from 'state/ui/stats/productsPerTicketSlice'
 import {

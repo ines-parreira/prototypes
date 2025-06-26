@@ -4,16 +4,16 @@ import {
     TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { DEFAULT_BADGE_TEXT } from 'pages/stats/common/components/TrendBadge'
-import { DEFAULT_SORTING_VALUE } from 'pages/stats/voice-of-customer/product-insights/constants'
+import {
+    LeadColumn,
+    TopProductsPerIntentColumn,
+} from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentConfig'
+import { DEFAULT_SORTING_VALUE } from 'pages/stats/voice-of-customer/constants'
 import {
     formatProductsPerIntentsTableData,
     formatTrendData,
     getColumnsSortingValue,
 } from 'pages/stats/voice-of-customer/product-insights/helpers'
-import {
-    LeadColumn,
-    TopProductsPerIntentColumn,
-} from 'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentConfig'
 import { assumeMock } from 'utils/testing'
 
 jest.mock(

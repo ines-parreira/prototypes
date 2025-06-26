@@ -3,7 +3,7 @@ import {
     useCustomFieldsForProductTimeSeries,
 } from 'hooks/reporting/useCustomFieldsTimeSeries'
 import { TicketTimeReference } from 'models/stat/types'
-import { TOP_INTENTS_PER_PAGE } from 'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentConfig'
+import { TOP_INTENTS_PER_PAGE } from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentConfig'
 
 export const AMOUNT_OF_PRODUCTS_TO_SHOW = 5
 export const AMOUNT_OF_SELECTED_INTENTS = 3

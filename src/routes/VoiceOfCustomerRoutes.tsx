@@ -12,8 +12,8 @@ import { logPageChange } from 'common/segment'
 import App from 'pages/App'
 import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
 import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
+import { VoiceOfCustomerNavbarContainer } from 'pages/stats/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerNavbarContainer'
 import { ProductInsightsPage } from 'pages/stats/voice-of-customer/product-insights/ProductInsightsPage'
-import { VoiceOfCustomerNavbarContainer } from 'pages/stats/voice-of-customer/VoiceOfCustomerNavbarContainer'
 import { VOICE_OF_CUSTOMER_ROUTES } from 'routes/constants'
 
 export const VoiceOfCustomerRoutes = () => {

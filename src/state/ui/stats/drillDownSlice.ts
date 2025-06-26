@@ -16,7 +16,7 @@ import { AiSalesAgentDrillDownMetrics } from 'pages/stats/automate/aiSalesAgent/
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import { VoiceOfCustomerMetricWithDrillDown } from 'pages/stats/voice-of-customer/VoiceOfCustomerMetricConfig'
+import { VoiceOfCustomerMetricWithDrillDown } from 'pages/stats/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerMetricConfig'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

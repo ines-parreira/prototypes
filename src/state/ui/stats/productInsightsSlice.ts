@@ -6,7 +6,7 @@ import {
     LeadColumn,
     Product,
     productInsightsTableActiveView,
-} from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableConfig'
+} from 'pages/stats/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
 import { getProductInsightsTableConfigSettingsJS } from 'state/currentAccount/selectors'
 import { RootState } from 'state/types'
 import { PRODUCT_INSIGHTS_SLICE_NAME } from 'state/ui/stats/constants'

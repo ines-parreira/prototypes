@@ -13,9 +13,9 @@ import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownMo
 import {
     TopProductsPerIntentColumn,
     TopProductsPerIntentColumnConfig,
-} from 'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentConfig'
-import { TopProductsPerIntentTable } from 'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentTable'
-import { VoCSidePanelTrigger } from 'pages/stats/voice-of-customer/side-panel/VoCSidePanelTrigger'
+} from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentConfig'
+import { TopProductsPerIntentTable } from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentTable'
+import { VoCSidePanelTrigger } from 'pages/stats/voice-of-customer/components/VoCSidePanelTrigger/VoCSidePanelTrigger'
 import { assumeMock } from 'utils/testing'
 import { userEvent } from 'utils/testing/userEvent'
 
@@ -39,7 +39,9 @@ jest.mock(
 const useProductsTicketCountsPerIntentDistributionMock = assumeMock(
     useProductsTicketCountsPerIntentDistribution,
 )
-jest.mock('pages/stats/voice-of-customer/side-panel/VoCSidePanelTrigger')
+jest.mock(
+    'pages/stats/voice-of-customer/components/VoCSidePanelTrigger/VoCSidePanelTrigger',
+)
 const VoCSidePanelTriggerMock = assumeMock(VoCSidePanelTrigger)
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)

@@ -5,8 +5,8 @@ import {
     useGetCustomTicketsFieldsDefinitionData,
 } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { NO_DATA_AVAILABLE_COMPONENT_TEXT } from 'pages/stats/common/components/NoDataAvailable'
-import { TopProductsPerIntentChart } from 'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentChart'
-import { TopProductsPerIntentTable } from 'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentTable'
+import { TopProductsPerAIIntentChart } from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentChart'
+import { TopProductsPerIntentTable } from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentTable'
 import { assumeMock } from 'utils/testing'
 
 jest.mock(
@@ -16,7 +16,7 @@ const useGetCustomTicketsFieldsDefinitionDataMock = assumeMock(
     useGetCustomTicketsFieldsDefinitionData,
 )
 jest.mock(
-    'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentTable',
+    'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentTable',
 )
 const TopProductsPerIntentTableMock = assumeMock(TopProductsPerIntentTable)
 
@@ -31,7 +31,7 @@ describe('TopProductsPerIntentChart', () => {
             sentimentCustomFieldId: TICKET_FIELD_ID_NOT_AVAILABLE,
         })
 
-        render(<TopProductsPerIntentChart />)
+        render(<TopProductsPerAIIntentChart />)
 
         expect(
             screen.getByText(NO_DATA_AVAILABLE_COMPONENT_TEXT),
@@ -46,7 +46,7 @@ describe('TopProductsPerIntentChart', () => {
             sentimentCustomFieldId: 789,
         })
 
-        render(<TopProductsPerIntentChart />)
+        render(<TopProductsPerAIIntentChart />)
 
         expect(TopProductsPerIntentTableMock).toHaveBeenCalledWith(
             { intentCustomFieldId: intentCustomFieldId },

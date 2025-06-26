@@ -45,15 +45,15 @@ import {
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { TagsMetricConfig } from 'pages/stats/ticket-insights/tags/TagsMetricConfig'
 import { TicketFieldsMetricConfig } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
-import { TicketVolumeConfig } from 'pages/stats/voice-of-customer/product-insights/charts/TicketVolumeConfig'
+import { TicketVolumeConfig } from 'pages/stats/voice-of-customer/charts/ChangeInTicketVolumeChart/ticketVolumeConfig'
 import {
     ProductInsightsColumnConfig,
     ProductInsightsColumnWithDrillDownConfig,
-} from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableConfig'
+} from 'pages/stats/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
 import {
     VoiceOfCustomerMetricWithDrillDown,
     VoiceOfCustomerMetricWithDrillDownConfig,
-} from 'pages/stats/voice-of-customer/VoiceOfCustomerMetricConfig'
+} from 'pages/stats/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerMetricConfig'
 import { VoiceAgentsMetricsConfig } from 'pages/stats/voice/VoiceConfigs/VoiceAgentMetricsConfig'
 import { VoiceMetricsConfig } from 'pages/stats/voice/VoiceConfigs/VoiceMetricsConfig'
 import {

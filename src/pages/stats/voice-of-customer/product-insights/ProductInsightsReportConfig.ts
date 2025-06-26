@@ -3,19 +3,19 @@ import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import { ReportsIDs } from 'pages/stats/dashboards/constants'
 import { ChartType, ReportConfig } from 'pages/stats/dashboards/types'
 import { AGENT_PERFORMANCE_SECTION_TITLE } from 'pages/stats/support-performance/agents/AgentsTableChart'
-import { ChangeInTicketVolumeChart } from 'pages/stats/voice-of-customer/product-insights/charts/ChangeInTicketVolumeChart'
-import { TopAIIntentsOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/charts/TopAIIntentsOverTimeChart'
-import { ProductInsightsTableChart } from 'pages/stats/voice-of-customer/product-insights/components/ProductInsightsTableChart/ProductInsightsTableChart'
-import { TotalProductSentimentOverTimeChart } from 'pages/stats/voice-of-customer/product-insights/components/TotalProductSentimentOverTimeChart'
+import { ChangeInTicketVolumeChart } from 'pages/stats/voice-of-customer/charts/ChangeInTicketVolumeChart/ChangeInTicketVolumeChart'
+import { ProductInsightsTableChart } from 'pages/stats/voice-of-customer/charts/ProductInsightsTableChart/ProductInsightsTableChart'
+import { TopAIIntentsOverTimeChart } from 'pages/stats/voice-of-customer/charts/TopAIIntentsOverTimeChart/TopAIIntentsOverTimeChart'
+import { TopProductsPerAIIntentChart } from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentChart'
+import { TotalTicketSentimentOverTimeChart } from 'pages/stats/voice-of-customer/charts/TotalTicketSentimentOverTimeChart/TotalTicketSentimentOverTimeChart'
 import {
     TICKET_VOLUME_CHART_LABEL,
     TICKET_VOLUME_CHART_TOOLTIP,
-} from 'pages/stats/voice-of-customer/product-insights/constants'
+} from 'pages/stats/voice-of-customer/constants'
 import {
     ProductInsightsChart,
     ProductInsightsChartConfig,
 } from 'pages/stats/voice-of-customer/product-insights/ProductInsightsChartConfig'
-import { TopProductsPerIntentChart } from 'pages/stats/voice-of-customer/product-insights/TopProductsPerIntentChart'
 import { VOICE_OF_CUSTOMER_ROUTES } from 'routes/constants'
 
 export const PRODUCT_INSIGHTS_PERSISTENT_FILTERS: StaticFilter[] = [
@@ -39,14 +39,14 @@ export const ProductInsightsPlaceholderReportConfig: ReportConfig<ProductInsight
         reportName: AGENT_PERFORMANCE_SECTION_TITLE,
         reportPath: VOICE_OF_CUSTOMER_ROUTES.PRODUCT_INSIGHTS,
         charts: {
-            [ProductInsightsChart.TotalProductSentimentOverTimeChart]: {
-                chartComponent: TotalProductSentimentOverTimeChart,
+            [ProductInsightsChart.TotalTicketSentimentOverTimeChart]: {
+                chartComponent: TotalTicketSentimentOverTimeChart,
                 label: ProductInsightsChartConfig[
-                    ProductInsightsChart.TotalProductSentimentOverTimeChart
+                    ProductInsightsChart.TotalTicketSentimentOverTimeChart
                 ].title,
                 description:
                     ProductInsightsChartConfig[
-                        ProductInsightsChart.TotalProductSentimentOverTimeChart
+                        ProductInsightsChart.TotalTicketSentimentOverTimeChart
                     ].hint.title,
                 csvProducer: null,
                 chartType: ChartType.Graph,
@@ -77,14 +77,14 @@ export const ProductInsightsPlaceholderReportConfig: ReportConfig<ProductInsight
                 csvProducer: null,
                 chartType: ChartType.Table,
             },
-            [ProductInsightsChart.TopProductsPerIntentChart]: {
-                chartComponent: TopProductsPerIntentChart,
+            [ProductInsightsChart.TopProductsPerAIIntentChart]: {
+                chartComponent: TopProductsPerAIIntentChart,
                 label: ProductInsightsChartConfig[
-                    ProductInsightsChart.TopProductsPerIntentChart
+                    ProductInsightsChart.TopProductsPerAIIntentChart
                 ].title,
                 description:
                     ProductInsightsChartConfig[
-                        ProductInsightsChart.TopProductsPerIntentChart
+                        ProductInsightsChart.TopProductsPerAIIntentChart
                     ].hint.title,
                 csvProducer: null,
                 chartType: ChartType.Graph,
