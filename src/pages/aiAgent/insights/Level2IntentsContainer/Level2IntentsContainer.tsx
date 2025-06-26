@@ -42,7 +42,7 @@ export const Level2IntentsContainer = () => {
                     intentLevel={INTENT_LEVEL + 1}
                     tableHint={{
                         title: 'List of all intents detected in tickets that involved AI Agent.',
-                        link: 'https://docs.gorgias.com/en-US/customer-intents-81924',
+                        link: 'https://link.gorgias.com/ac4ad7',
                         linkText: 'Learn about intents',
                     }}
                 />

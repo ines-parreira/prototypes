@@ -49,7 +49,7 @@ export const OptimizeContainer = () => {
                     tableTitle="All intents"
                     tableHint={{
                         title: 'List of all intents detected in tickets that involved AI Agent.',
-                        link: 'https://docs.gorgias.com/en-US/customer-intents-81924',
+                        link: 'https://link.gorgias.com/ac4ad7',
                         linkText: 'Learn about intents',
                     }}
                     intentLevel={INTENT_LEVEL}
