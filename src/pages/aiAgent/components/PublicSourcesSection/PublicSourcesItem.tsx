@@ -70,6 +70,18 @@ const isUrlWithDocumentExtension = (url: string): boolean => {
     }
 }
 
+const isDeleteDisabled = (
+    createdDatetime: string,
+    status: SourceItem['status'],
+): boolean => {
+    const createdDate = new Date(createdDatetime)
+    const now = new Date()
+    const hourInMs = 60 * 60 * 1000
+    const isLessThanOneHourOld =
+        now.getTime() - createdDate.getTime() < hourInMs
+    return isLessThanOneHourOld && status === 'loading'
+}
+
 const getInputError = (
     isInvalid: boolean,
     isGorgiasHelpCenterUrl: boolean,
@@ -291,6 +303,10 @@ export const PublicSourcesItem = ({
                                 ref={elementRef}
                                 aria-label="Delete public URL"
                                 icon="close"
+                                isDisabled={isDeleteDisabled(
+                                    source.createdDatetime,
+                                    source.status,
+                                )}
                             />
                         )}
                     </ConfirmationPopover>
@@ -302,6 +318,10 @@ export const PublicSourcesItem = ({
                         onClick={handleDelete}
                         aria-label="Delete public URL"
                         icon="close"
+                        isDisabled={isDeleteDisabled(
+                            source.createdDatetime,
+                            source.status,
+                        )}
                     />
                 )}
                 {isAiAgentFilesAndUrlsKnowledgeVisible && (
