@@ -27,7 +27,7 @@ describe('CreateNewChannel', () => {
         renderWithRouter(<CreateNewChannel activeChannel={activeChannel} />)
         expect(screen.getByText(/add new email/i)).toHaveAttribute(
             'to',
-            '/app/settings/channels/email',
+            '/app/settings/channels/email/new',
         )
     })
 
@@ -37,17 +37,7 @@ describe('CreateNewChannel', () => {
 
         expect(screen.getByText(/add new chat/i)).toHaveAttribute(
             'to',
-            '/app/settings/channels/chat',
-        )
-    })
-
-    it('should render whatsApp channel link correctly', () => {
-        const activeChannel = createMockChannel('whatsApp')
-        renderWithRouter(<CreateNewChannel activeChannel={activeChannel} />)
-
-        expect(screen.getByText(/add new whatsapp/i)).toHaveAttribute(
-            'to',
-            '/app/settings/channels/whatsapp',
+            '/app/settings/channels/gorgias_chat/new/create-wizard',
         )
     })
 
@@ -57,7 +47,7 @@ describe('CreateNewChannel', () => {
 
         expect(screen.getByText(/add new help center/i)).toHaveAttribute(
             'to',
-            '/app/settings/channels/help-center',
+            '/app/settings/help-center/new',
         )
     })
 
@@ -67,7 +57,7 @@ describe('CreateNewChannel', () => {
 
         expect(screen.getByText(/add new contact form/i)).toHaveAttribute(
             'to',
-            '/app/settings/channels/contact-form',
+            '/app/settings/contact-form/new',
         )
     })
 
@@ -77,7 +67,7 @@ describe('CreateNewChannel', () => {
 
         expect(screen.getByText(/add new phone/i)).toHaveAttribute(
             'to',
-            '/app/settings/channels/phone',
+            '/app/settings/channels/phone/new',
         )
     })
 
@@ -87,7 +77,17 @@ describe('CreateNewChannel', () => {
 
         expect(screen.getByText(/add new sms/i)).toHaveAttribute(
             'to',
-            '/app/settings/channels/sms',
+            '/app/settings/channels/sms/new',
+        )
+    })
+
+    it('should render whatsApp channel link correctly', () => {
+        const activeChannel = createMockChannel('whatsApp')
+        renderWithRouter(<CreateNewChannel activeChannel={activeChannel} />)
+
+        expect(screen.getByText(/add new whatsapp/i)).toHaveAttribute(
+            'to',
+            '/app/settings/integrations/whatsapp/integrations',
         )
     })
 
@@ -97,7 +97,7 @@ describe('CreateNewChannel', () => {
 
         expect(screen.getByText(/add new facebook/i)).toHaveAttribute(
             'to',
-            '/app/settings/channels/facebook',
+            '/app/settings/integrations/facebook',
         )
     })
 
@@ -107,7 +107,7 @@ describe('CreateNewChannel', () => {
 
         expect(screen.getByText(/add new tiktok shop/i)).toHaveAttribute(
             'to',
-            '/app/settings/channels/tiktok-shop',
+            '/app/settings/integrations/app/653a626236234a4ec85eca67',
         )
     })
 })

@@ -11,28 +11,37 @@ interface CreateNewChannelProps {
 }
 
 const CHANNEL_CONFIG: Record<ChannelTypes, { path: string; label: string }> = {
-    email: { path: '/app/settings/channels/email', label: 'Email' },
-    chat: { path: '/app/settings/channels/chat', label: 'Chat' },
+    email: { path: '/app/settings/channels/email/new', label: 'Email' },
+    chat: {
+        path: '/app/settings/channels/gorgias_chat/new/create-wizard',
+        label: 'Chat',
+    },
     helpCenter: {
-        path: '/app/settings/channels/help-center',
+        path: '/app/settings/help-center/new',
         label: 'Help Center',
     },
     contactForm: {
-        path: '/app/settings/channels/contact-form',
+        path: '/app/settings/contact-form/new',
         label: 'Contact Form',
     },
     voice: {
-        path: '/app/settings/channels/phone',
+        path: '/app/settings/channels/phone/new',
         label: 'Phone',
     },
     sms: {
-        path: '/app/settings/channels/sms',
+        path: '/app/settings/channels/sms/new',
         label: 'SMS',
     },
-    whatsApp: { path: '/app/settings/channels/whatsapp', label: 'WhatsApp' },
-    facebook: { path: '/app/settings/channels/facebook', label: 'Facebook' },
+    whatsApp: {
+        path: '/app/settings/integrations/whatsapp/integrations',
+        label: 'WhatsApp',
+    },
+    facebook: {
+        path: '/app/settings/integrations/facebook',
+        label: 'Facebook',
+    },
     tiktokShop: {
-        path: '/app/settings/channels/tiktok-shop',
+        path: '/app/settings/integrations/app/653a626236234a4ec85eca67',
         label: 'TikTok Shop',
     },
 }
