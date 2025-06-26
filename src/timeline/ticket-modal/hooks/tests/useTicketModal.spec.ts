@@ -1,8 +1,14 @@
 import { act } from '@testing-library/react'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { useTicketModal } from '../useTicketModal'
+
+jest.mock('common/segment', () => ({
+    ...jest.requireActual('common/segment'),
+    logEvent: jest.fn(),
+}))
 
 describe('useTicketModal', () => {
     it('should return the default props', () => {
@@ -64,7 +70,7 @@ describe('useTicketModal', () => {
         })
     })
 
-    it('should navigate to the next ticket', () => {
+    it('should navigate to the next ticket and track the event', () => {
         const { result } = renderHook(() => useTicketModal([1, 2, 3]))
 
         act(() => {
@@ -76,9 +82,12 @@ describe('useTicketModal', () => {
         })
 
         expect(result.current.ticketId).toBe(2)
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.CustomerTimelineModalNextClicked,
+        )
     })
 
-    it('should navigate to the previous ticket', () => {
+    it('should navigate to the previous ticket and track the event', () => {
         const { result } = renderHook(() => useTicketModal([1, 2, 3]))
 
         act(() => {
@@ -90,6 +99,9 @@ describe('useTicketModal', () => {
         })
 
         expect(result.current.ticketId).toBe(2)
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.CustomerTimelineModalPrevClicked,
+        )
     })
 
     it('should close', () => {

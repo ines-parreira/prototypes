@@ -1,5 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import { logEvent, SegmentEvent } from 'common/segment'
+
 export function useTicketModal(ticketIds: number[]) {
     const [ticketId, setTicketId] = useState<number | null>(null)
 
@@ -30,6 +32,7 @@ export function useTicketModal(ticketIds: number[]) {
             !nextTicketId
                 ? undefined
                 : () => {
+                      logEvent(SegmentEvent.CustomerTimelineModalNextClicked)
                       setTicketId(nextTicketId)
                   },
         [nextTicketId],
@@ -40,6 +43,7 @@ export function useTicketModal(ticketIds: number[]) {
             !previousTicketId
                 ? undefined
                 : () => {
+                      logEvent(SegmentEvent.CustomerTimelineModalPrevClicked)
                       setTicketId(previousTicketId)
                   },
         [previousTicketId],

@@ -1,17 +1,31 @@
 import { ReactNode } from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import { IconButton } from '@gorgias/merchant-ui-kit'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { TicketDetail } from 'tickets/ticket-detail'
 import { assumeMock } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { TicketModal } from '../TicketModal'
 import { TicketModalProvider } from '../TicketModalProvider'
+
+jest.mock('common/segment', () => ({
+    ...jest.requireActual('common/segment'),
+    logEvent: jest.fn(),
+}))
+
+jest.mock('@gorgias/merchant-ui-kit', () => ({
+    ...jest.requireActual('@gorgias/merchant-ui-kit'),
+    IconButton: jest.fn(() => <div>IconButton</div>),
+}))
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
 
 jest.mock('tickets/ticket-detail/components/TicketDetail', () => ({
     TicketDetail: jest.fn(
@@ -30,15 +44,6 @@ jest.mock('tickets/ticket-detail/components/TicketDetail', () => ({
 
 jest.mock('../TicketModalProvider', () => ({
     TicketModalProvider: jest.fn(({ children }) => children),
-}))
-
-jest.mock('@gorgias/merchant-ui-kit', () => ({
-    ...jest.requireActual('@gorgias/merchant-ui-kit'),
-    IconButton: jest.fn(() => <div>IconButton</div>),
-}))
-
-jest.mock('core/flags', () => ({
-    useFlag: jest.fn(),
 }))
 
 const TicketDetailMock = assumeMock(TicketDetail)
@@ -84,11 +89,17 @@ describe('TicketModal', () => {
         )
     })
 
-    it('should render a link to the full ticket', () => {
+    it('should render a tracked link to the full ticket', () => {
         render(<TicketModal {...defaultProps} />)
         const el = screen.getByText('View Ticket')
         expect(el).toBeInTheDocument()
         expect(el.closest('a')).toHaveAttribute('href', '/app/ticket/1')
+
+        fireEvent.click(el)
+
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.CustomerTimelineModalViewTicketClicked,
+        )
     })
 
     it('should disable the navigation if no onNext / onPrevious handlers are passed', () => {
@@ -112,7 +123,7 @@ describe('TicketModal', () => {
         render(<TicketModal {...defaultProps} />)
 
         const el = screen.getByText('Next')
-        userEvent.click(el)
+        fireEvent.click(el)
 
         expect(defaultProps.onNext).toHaveBeenCalled()
     })
@@ -121,7 +132,7 @@ describe('TicketModal', () => {
         render(<TicketModal {...defaultProps} />)
 
         const el = screen.getByText('Previous')
-        userEvent.click(el)
+        fireEvent.click(el)
 
         expect(defaultProps.onPrevious).toHaveBeenCalled()
     })
@@ -161,7 +172,7 @@ describe('TicketModal', () => {
             expect(nextEl).toBeInTheDocument()
         })
 
-        it('should render "View Ticket" link', () => {
+        it('should render "View Ticket" link and log event', () => {
             render(<TicketModal {...defaultProps} />)
 
             const viewTicketEl = screen.getByText('View Ticket')
@@ -169,6 +180,12 @@ describe('TicketModal', () => {
             expect(viewTicketEl.closest('a')).toHaveAttribute(
                 'href',
                 '/app/ticket/1',
+            )
+
+            fireEvent.click(viewTicketEl)
+
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.CustomerTimelineModalViewTicketClicked,
             )
         })
     })

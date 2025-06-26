@@ -1,6 +1,7 @@
 import { TicketCompact } from '@gorgias/helpdesk-queries'
 import { Button, IconButton } from '@gorgias/merchant-ui-kit'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { Drawer } from 'components/Drawer/Drawer'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
@@ -86,6 +87,11 @@ export function TicketModal({
                                 rel="noreferrer"
                                 target="_blank"
                                 trailingIcon="open_in_new"
+                                onClick={() => {
+                                    logEvent(
+                                        SegmentEvent.CustomerTimelineModalViewTicketClicked,
+                                    )
+                                }}
                             >
                                 View Ticket
                             </Button>
@@ -128,6 +134,11 @@ export function TicketModal({
                     rel="noreferrer"
                     target="_blank"
                     trailingIcon="open_in_new"
+                    onClick={() => {
+                        logEvent(
+                            SegmentEvent.CustomerTimelineModalViewTicketClicked,
+                        )
+                    }}
                 >
                     View Ticket
                 </Button>
