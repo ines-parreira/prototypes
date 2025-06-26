@@ -1,11 +1,10 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { getTicket } from '@gorgias/helpdesk-client'
 
-import { useFlag } from 'core/flags'
 import {
     useSearchCustomer,
     useSearchEmailTickets,
@@ -23,17 +22,12 @@ jest.mock('models/aiAgent/queries', () => ({
     useSearchEmailTickets: jest.fn(),
 }))
 
-jest.mock('core/flags', () => ({
-    useFlag: jest.fn(),
-}))
-
 jest.mock('@gorgias/helpdesk-client', () => ({
     getTicket: jest.fn(),
 }))
 
 const mockUseSearchCustomer = jest.mocked(useSearchCustomer)
 const mockUseSearchEmailTickets = jest.mocked(useSearchEmailTickets)
-const mockUseFlag = jest.mocked(useFlag)
 const mockGetTicket = jest.mocked(getTicket)
 
 const mockOnCustomerChange = jest.fn()
@@ -61,7 +55,6 @@ describe('PlaygroundCustomerSelection', () => {
         mockOnCustomerChange.mockClear()
         mockOnTicketChange.mockClear()
         mockGetTicket.mockClear()
-        mockUseFlag.mockReturnValue(true) // Default: feature flag enabled
 
         mockUseSearchCustomer.mockReturnValue({
             isLoading: false,
@@ -162,24 +155,13 @@ describe('PlaygroundCustomerSelection', () => {
         })
     })
 
-    test('shows existing ticket option when feature flag is enabled', () => {
-        mockUseFlag.mockReturnValue(true)
+    test('shows existing ticket option', () => {
         renderComponent()
 
         expect(screen.getByText('Existing ticket')).toBeInTheDocument()
     })
 
-    test('hides existing ticket option when feature flag is disabled', () => {
-        mockUseFlag.mockReturnValue(false)
-        renderComponent()
-
-        expect(screen.queryByText('Existing ticket')).not.toBeInTheDocument()
-        expect(screen.getAllByText('New customer')).toHaveLength(2) // One in selected value, one in options
-        expect(screen.getByText('Existing customer')).toBeInTheDocument()
-    })
-
     test('renders ticket search component when existing ticket is selected', () => {
-        mockUseFlag.mockReturnValue(true)
         renderComponent()
 
         // Select existing ticket option
@@ -193,8 +175,6 @@ describe('PlaygroundCustomerSelection', () => {
     })
 
     test('real ticket search integration - searches and selects ticket', async () => {
-        mockUseFlag.mockReturnValue(true)
-
         mockUseSearchEmailTickets.mockReturnValue({
             isLoading: false,
             error: null,
@@ -259,44 +239,5 @@ describe('PlaygroundCustomerSelection', () => {
                 message: 'Test message content',
             })
         })
-    })
-
-    test('resets to new customer when feature flag becomes disabled and existing ticket was selected', () => {
-        // Start with flag enabled
-        mockUseFlag.mockReturnValue(true)
-        const { rerender } = renderComponent()
-
-        // Select existing ticket option
-        const existingTicketOption = screen.getByText('Existing ticket')
-        fireEvent.click(existingTicketOption)
-
-        // Verify existing ticket is selected (ticket search input should be visible)
-        expect(
-            screen.getByPlaceholderText('Search by ticket id or email subject'),
-        ).toBeInTheDocument()
-
-        // Now disable the feature flag
-        mockUseFlag.mockReturnValue(false)
-
-        // Re-render with disabled flag
-        rerender(
-            <QueryClientProvider client={mockQueryClient()}>
-                <PlaygroundCustomerSelection
-                    onCustomerChange={mockOnCustomerChange}
-                    onTicketChange={mockOnTicketChange}
-                    customer={DEFAULT_PLAYGROUND_CUSTOMER}
-                    isDisabled={false}
-                />
-            </QueryClientProvider>,
-        )
-
-        // Should automatically reset to "New customer" and hide existing ticket option
-        // This covers line 104 - the feature flag reset logic
-        expect(screen.queryByText('Existing ticket')).not.toBeInTheDocument()
-        expect(
-            screen.queryByPlaceholderText(
-                'Search by ticket id or email subject',
-            ),
-        ).not.toBeInTheDocument()
     })
 })

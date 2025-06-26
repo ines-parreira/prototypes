@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Ticket } from '@gorgias/helpdesk-client'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import { Value } from 'pages/common/forms/SelectField/types'
 
@@ -58,10 +56,6 @@ export const PlaygroundCustomerSelection = ({
     customer,
     isDisabled,
 }: Props) => {
-    const isExistingTicketEnabled = useFlag(
-        FeatureFlagKey.AiAgentPlaygroundExistingTicket,
-    )
-
     const [senderSelectedOption, setSenderSelectedOption] = useState<string>(
         SenderTypeValues.NEW_CUSTOMER,
     )
@@ -95,26 +89,8 @@ export const PlaygroundCustomerSelection = ({
         }
     }, [customer])
 
-    // Reset to "New customer" if "Existing ticket" is selected but feature flag is disabled.
-    // TODO: To remove this once the feature flag is fully enabled.
-    useEffect(() => {
-        if (
-            !isExistingTicketEnabled &&
-            senderSelectedOption === SenderTypeValues.EXISTING_TICKET
-        ) {
-            setSenderSelectedOption(SenderTypeValues.NEW_CUSTOMER)
-        }
-    }, [isExistingTicketEnabled, senderSelectedOption])
-
     const customerEmail =
         customer.id === DEFAULT_PLAYGROUND_CUSTOMER.id ? '' : customer.email
-
-    // Filter options based on feature flag
-    const availableOptions = senderSelectOptions.filter(
-        (option) =>
-            option.value !== SenderTypeValues.EXISTING_TICKET ||
-            isExistingTicketEnabled,
-    )
 
     return (
         <div className={css.container}>
@@ -123,7 +99,7 @@ export const PlaygroundCustomerSelection = ({
                 showSelectedOption
                 value={senderSelectedOption}
                 onChange={handleSenderSelectChange}
-                options={availableOptions}
+                options={senderSelectOptions}
                 className={css.senderSelect}
                 disabled={isDisabled}
             />

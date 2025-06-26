@@ -32,8 +32,6 @@ export enum FeatureFlagKey {
     AiAgentVariablesAndActionsInGuidance = 'ai-agent-variables-and-actions-in-guidance',
     AIAgentWelcomePage = 'ai-agent-welcome-page',
     AiJourneyEnabled = 'ai-journey-enabled',
-    /** https://app.launchdarkly.com/projects/default/flags/linear.task_AIACTV-4120.ai-agent-playground-existing-ticket */
-    AiAgentPlaygroundExistingTicket = 'linear.task_AIACTV-4120.ai-agent-playground-existing-ticket',
     AiSalesAgentActivationEmailSettings = 'linear.project_ai-sales-agent-email-settings',
     AiSalesAgentBeta = 'ai-sales-agent-beta',
     AiSalesAgentBypassPlanCheck = 'ai-sales-agent-bypass-plan-check',
