@@ -2,13 +2,12 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import { INTENT_LEVEL } from 'hooks/reporting/automate/utils'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
@@ -66,8 +65,8 @@ const useIntentQueryMock = assumeMock(
         .useIntentQuery,
 )
 
-jest.mock('launchdarkly-react-client-sdk')
-const useFlagsMock = assumeMock(useFlags)
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 const mockStore = configureMockStore([thunk])
 const defaultPaginatedIntents = {
@@ -317,9 +316,7 @@ describe('Intent Table components', () => {
         })
 
         it('should expand intent children when parent intent is clicked', () => {
-            useFlagsMock.mockReturnValue({
-                [FeatureFlagKey.AiAgentOptimize1PageLayout]: true,
-            } as any)
+            useFlagMock.mockReturnValue(true)
 
             const store = mockStore(initialState)
 

@@ -7,15 +7,18 @@ import React, {
 } from 'react'
 
 import classNames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { isEqual } from 'lodash'
 import { useParams } from 'react-router-dom'
 
+import { logEvent } from 'common/segment/segment'
+import { SegmentEvent } from 'common/segment/types'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useAIAgentInsightsDataset } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
 import { INTENT_LEVEL } from 'hooks/reporting/automate/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useEffectOnce from 'hooks/useEffectOnce'
 import useMeasure from 'hooks/useMeasure'
 import {
     Intent,
@@ -86,8 +89,10 @@ export const IntentTable = ({
     const [childrenDataMap, setChildrenDataMap] = useState<Record<string, any>>(
         {},
     )
-    const isAiAgentOptimize1PageLayoutEnabled =
-        useFlags()[FeatureFlagKey.AiAgentOptimize1PageLayout]
+    const isAiAgentOptimize1PageLayoutEnabled = useFlag(
+        FeatureFlagKey.AiAgentOptimize1PageLayout,
+        false,
+    )
 
     const isSortingLoading = useAppSelector(isSortingMetricLoading)
 
@@ -153,6 +158,12 @@ export const IntentTable = ({
         isAiAgentOptimize1PageLayoutEnabled,
     ])
 
+    useEffectOnce(() => {
+        logEvent(SegmentEvent.AiAgentOptimizePageChanged, {
+            page: 1,
+        })
+    })
+
     const shouldLazyLoadChildren = useMemo(() => {
         return (
             intentLevel === INTENT_LEVEL && isAiAgentOptimize1PageLayoutEnabled
@@ -166,6 +177,10 @@ export const IntentTable = ({
                 isAiAgentOptimize1PageLayoutEnabled
             ) {
                 setSelectedIntentId(intent.id)
+
+                logEvent(SegmentEvent.AiAgentOptimizeToggleClicked, {
+                    intent: intent.id,
+                })
             }
         },
         [intentLevel, isAiAgentOptimize1PageLayoutEnabled],
@@ -173,6 +188,9 @@ export const IntentTable = ({
 
     const onPageChangeCallback = (page: number) => {
         dispatch(pageSet(page))
+        logEvent(SegmentEvent.AiAgentOptimizePageChanged, {
+            page,
+        })
     }
 
     const handleScroll: UIEventHandler<HTMLDivElement> = (event) => {
