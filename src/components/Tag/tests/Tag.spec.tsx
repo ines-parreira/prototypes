@@ -1,12 +1,14 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { THEME_NAME, themeTokenMap, useTheme } from 'core/theme'
-import { assumeMock } from 'utils/testing'
 
 import { Tag } from '../Tag'
 
-jest.mock('core/theme/useTheme.ts', () => jest.fn())
-const useThemeMock = assumeMock(useTheme)
+jest.mock('core/theme', () => ({
+    ...jest.requireActual('core/theme'),
+    useTheme: jest.fn(),
+}))
+const useThemeMock = jest.mocked(useTheme)
 
 describe('<Tag />', () => {
     beforeEach(() => {

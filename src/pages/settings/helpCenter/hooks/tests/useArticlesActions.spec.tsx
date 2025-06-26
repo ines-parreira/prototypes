@@ -201,39 +201,40 @@ jest.mock('../useCategoriesActions', () => {
     }
 })
 
-const mockGetSingleArticleEnglish = jest
-    .fn()
-    .mockResolvedValue(getSingleArticleEnglish)
-
-jest.mock('state/entities/helpCenter/articles', () => ({
-    deleteArticle: jest.fn().mockReturnValue({
-        type: 'HELPCENTER/ARTICLES/DELETE_ARTICLE',
-        payload: {},
-    }),
-    saveArticles: jest.fn().mockReturnValue({
-        type: 'HELPCENTER/ARTICLES/SAVE_ARTICLES',
-        payload: {},
-    }),
-    updateArticle: jest.fn().mockReturnValue({
-        type: 'HELPCENTER/ARTICLES/UPDATE_ARTICLE',
-        payload: {},
-    }),
-    pushArticleSupportedLocales: jest.fn().mockReturnValue({
-        type: 'HELPCENTER/ARTICLES/UPDATE_ARTICLE',
-        payload: {},
-    }),
-    updateArticlesOrder: jest.fn().mockReturnValue({
-        type: 'HELPCENTER/ARTICLES/UPDATE_ARTICLES_ORDER',
-        payload: {},
-    }),
-    removeLocaleFromArticle: jest.fn().mockReturnValue({
-        type: 'HELPCENTER/ARTICLES/REMOVE_ARTICLE_LOCALE',
-        payload: {},
-    }),
-    getArticlesById: jest.fn().mockReturnValue({
-        '1': { ...mockGetSingleArticleEnglish, category_id: 1 },
-    }),
-}))
+jest.mock('state/entities/helpCenter/articles', () => {
+    const mockGetSingleArticleEnglish = jest
+        .fn()
+        .mockResolvedValue(getSingleArticleEnglish)
+    return {
+        deleteArticle: jest.fn().mockReturnValue({
+            type: 'HELPCENTER/ARTICLES/DELETE_ARTICLE',
+            payload: {},
+        }),
+        saveArticles: jest.fn().mockReturnValue({
+            type: 'HELPCENTER/ARTICLES/SAVE_ARTICLES',
+            payload: {},
+        }),
+        updateArticle: jest.fn().mockReturnValue({
+            type: 'HELPCENTER/ARTICLES/UPDATE_ARTICLE',
+            payload: {},
+        }),
+        pushArticleSupportedLocales: jest.fn().mockReturnValue({
+            type: 'HELPCENTER/ARTICLES/UPDATE_ARTICLE',
+            payload: {},
+        }),
+        updateArticlesOrder: jest.fn().mockReturnValue({
+            type: 'HELPCENTER/ARTICLES/UPDATE_ARTICLES_ORDER',
+            payload: {},
+        }),
+        removeLocaleFromArticle: jest.fn().mockReturnValue({
+            type: 'HELPCENTER/ARTICLES/REMOVE_ARTICLE_LOCALE',
+            payload: {},
+        }),
+        getArticlesById: jest.fn().mockReturnValue({
+            '1': { ...mockGetSingleArticleEnglish, category_id: 1 },
+        }),
+    }
+})
 
 jest.mock('state/ui/helpCenter/selectors', () => ({
     getViewLanguage: () => 'en-US',

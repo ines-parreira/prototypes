@@ -1,6 +1,7 @@
 import React, { ComponentProps } from 'react'
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -12,7 +13,6 @@ import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import { PickedTicket } from 'models/search/types'
 import SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
-import { userEvent } from 'utils/testing/userEvent'
 
 const mockStore = configureMockStore([thunk])
 
@@ -75,7 +75,7 @@ describe('<SpotlightTicketRow/>', () => {
         })
     })
 
-    it('should render the closed ticket info tooltip on hover', () => {
+    it('should render the closed ticket info tooltip on hover', async () => {
         jest.useFakeTimers()
         const { getByText, getByRole } = render(
             <WrappedSpotlightTicketRow
@@ -87,8 +87,10 @@ describe('<SpotlightTicketRow/>', () => {
         )
 
         fireEvent.mouseOver(getByText('email'))
-        jest.runAllTimers()
-        expect(getByRole('tooltip')).toMatchSnapshot()
+
+        await waitFor(() => {
+            expect(getByRole('tooltip')).toMatchSnapshot()
+        })
     })
 
     it('should render without customer name', () => {
@@ -161,14 +163,16 @@ describe('<SpotlightTicketRow/>', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should call onClick when ticket row is clicked', () => {
+    it('should call onClick when ticket row is clicked', async () => {
         const { container } = render(
             <WrappedSpotlightTicketRow {...defaultProps} />,
         )
         if (container.firstChild) {
             userEvent.click(container.firstChild as Element)
         }
-        expect(mockOnClick).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(mockOnClick).toHaveBeenCalled()
+        })
     })
 
     it('should render title with item.excerpt value form props', () => {

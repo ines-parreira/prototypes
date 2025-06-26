@@ -93,7 +93,12 @@ describe('<ActionsPlatformEditAppFormView />', () => {
             })
         })
 
-        await flushPromises()
+        await waitFor(() => {
+            const saveButton = screen
+                .getByText('Save Changes')
+                .closest('button')
+            expect(saveButton).not.toBeDisabled()
+        })
 
         act(() => {
             fireEvent.click(screen.getByText('Save Changes'))

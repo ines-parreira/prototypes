@@ -326,8 +326,8 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
       </div>
     </header>
     <div
-      class="container collapse show"
-      style=""
+      class="container collapsing"
+      style="height: 0px;"
     >
       <div
         class="content"

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, render, screen, waitFor } from '@testing-library/react'
 
 import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
@@ -36,7 +36,7 @@ describe('TicketVoiceCallDuration', () => {
         expect(screen.getByText(/duration/i)).toBeInTheDocument()
     })
 
-    it('should render the duration of an ongoing call', () => {
+    it('should render the duration of an ongoing call', async () => {
         ifFinalVoiceCallStatusSpy.mockReturnValue(false)
 
         renderComponent({ status: VoiceCallStatus.Connected })
@@ -44,7 +44,9 @@ describe('TicketVoiceCallDuration', () => {
 
         getFormattedDurationOngoingCallSpy.mockReturnValueOnce('31s')
         jest.advanceTimersByTime(1000)
-        expect(screen.getByText(/connected: 31s/i)).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText(/connected: 31s/i)).toBeInTheDocument()
+        })
     })
 
     it.each([

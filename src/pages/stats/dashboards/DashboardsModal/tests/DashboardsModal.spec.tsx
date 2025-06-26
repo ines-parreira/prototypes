@@ -199,7 +199,9 @@ describe('AddChartsModal', () => {
     })
 
     it('should show a notification error if the number of selected charts is more than MAX_CHECKED_CHARTS', () => {
-        jest.replaceProperty(constants, 'MAX_CHECKED_CHARTS', 1 as any)
+        jest.spyOn(constants, 'MAX_CHECKED_CHARTS', 'get').mockReturnValue(
+            1 as any,
+        )
 
         render(<DashboardsModal {...props} />, {})
 

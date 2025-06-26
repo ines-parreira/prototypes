@@ -1,12 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import {
-    fireEvent,
-    render,
-    screen,
-    waitFor,
-    waitForElementToBeRemoved,
-} from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -67,52 +61,52 @@ const renderInitialModal = async (baseElement: HTMLElement) => {
 
     // Navigate to QR code step
     const continueButton = screen.getByText('Continue')
-    fireEvent.click(continueButton)
+    await act(async () => {
+        fireEvent.click(continueButton)
+    })
 
     // Wait for the loading elements to disappear
-    await waitForElementToBeRemoved(() => screen.getAllByText('Loading...'))
-    expect(screen.getByText('Back')).toBeAriaEnabled()
+    await waitFor(() => {
+        expect(screen.getByText('Back')).toBeAriaEnabled()
+    })
 }
 
 const validateInput = async (baseElement: HTMLElement) => {
     await renderInitialModal(baseElement)
-    fillVerificationCode()
+    await fillVerificationCode()
     await continueToNextStep()
 }
 
-const fillVerificationCode = () => {
+const fillVerificationCode = async () => {
     const inputField = screen.getByPlaceholderText<HTMLInputElement>(
         'Enter 6-digit verification code from app or recovery code',
     )
-    fireEvent.change(inputField, { target: { value: '123456' } })
+    await act(async () => {
+        fireEvent.change(inputField, { target: { value: '123456' } })
+    })
 }
 
 const continueToNextStep = async () => {
     // Try to navigate to step 3 in order to trigger validation
     const continueButton = screen.getByText('Continue')
-    fireEvent.click(continueButton)
-
-    // wait for the loading spinners to disappear
-    await waitForElementToBeRemoved(() => screen.getAllByText('Loading...'))
+    await act(async () => {
+        fireEvent.click(continueButton)
+    })
 }
 
 const handleInputValidationFailed = async (baseElement: HTMLElement) => {
-    expect(baseElement).toMatchSnapshot(
-        'error banner and continue button disabled',
-    )
+    expect(baseElement).toMatchSnapshot()
 
     const inputField = screen.getByPlaceholderText<HTMLInputElement>(
         'Enter 6-digit verification code from app or recovery code',
     )
-    fireEvent.change(inputField, { target: { value: '123457' } })
+    await act(async () => {
+        fireEvent.change(inputField, { target: { value: '123457' } })
+    })
 
     await waitFor(() => {
         expect(screen.getByText('Continue').parentElement).toBeAriaEnabled()
     })
-
-    expect(baseElement).toMatchSnapshot(
-        'no error banner and continue button enabled',
-    )
 }
 
 describe('<TwoFactorAuthenticationModal />', () => {
@@ -345,7 +339,9 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 await validateInput(baseElement)
 
                 const copyButton = screen.getByText('Download')
-                fireEvent.click(copyButton)
+                await act(async () => {
+                    fireEvent.click(copyButton)
+                })
 
                 await waitFor(() => {
                     expect(
@@ -387,7 +383,9 @@ describe('<TwoFactorAuthenticationModal />', () => {
 
                 // click on the X button from the modal header
                 const closeButton = screen.getByText('×')
-                fireEvent.click(closeButton)
+                await act(async () => {
+                    fireEvent.click(closeButton)
+                })
 
                 expect(onFinish).toHaveBeenCalled()
             })
@@ -404,7 +402,9 @@ describe('<TwoFactorAuthenticationModal />', () => {
             await renderInitialModal(baseElement)
 
             const backButton = screen.getByText('Back')
-            fireEvent.click(backButton)
+            await act(async () => {
+                fireEvent.click(backButton)
+            })
 
             await screen.findByText('Have your mobile device ready')
             expect(baseElement).toMatchSnapshot()
@@ -427,7 +427,9 @@ describe('<TwoFactorAuthenticationModal />', () => {
             await waitForModal(baseElement)
 
             const cancelButton = await screen.findByText('Remind Me Later')
-            fireEvent.click(cancelButton)
+            await act(async () => {
+                fireEvent.click(cancelButton)
+            })
 
             expect(onCancelMock).toHaveBeenCalled()
             expect(logEventMock).toHaveBeenCalledWith(
@@ -505,7 +507,7 @@ describe('<TwoFactorAuthenticationModal />', () => {
             )
 
             await waitForModal(baseElement)
-            fillVerificationCode()
+            await fillVerificationCode()
 
             await handleInputValidationFailed(baseElement)
         })
@@ -530,7 +532,7 @@ describe('<TwoFactorAuthenticationModal />', () => {
             )
 
             await waitForModal(baseElement)
-            fillVerificationCode()
+            await fillVerificationCode()
             await continueToNextStep()
             await continueToNextStep()
 

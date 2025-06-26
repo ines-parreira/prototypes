@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { fireEvent, render, screen } from '@testing-library/react'
 import { Call } from '@twilio/voice-sdk'
 import { fromJS } from 'immutable'
@@ -24,7 +22,6 @@ describe('<OutgoingPhoneCall/>', () => {
     ])
 
     beforeEach(() => {
-        jest.resetAllMocks()
         state = {
             integrations: fromJS({
                 integrations: [

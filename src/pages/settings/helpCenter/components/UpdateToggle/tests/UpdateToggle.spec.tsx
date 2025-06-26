@@ -25,9 +25,8 @@ jest.mock('../../../hooks/useHelpCenterApi', () => {
     }
 })
 
-const mockNotify = jest.fn()
 jest.mock('../../../../../../state/notifications/actions', () => ({
-    notify: mockNotify,
+    notify: jest.fn(),
 }))
 
 jest.mock('../../../hooks/useHelpCenterIdParam', () => {

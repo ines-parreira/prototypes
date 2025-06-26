@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
@@ -48,11 +46,11 @@ const invoiceRequiringPaymentMethod: Invoice = {
     metadata: { payment_service: PaymentType.Stripe },
 }
 
-jest.mock('services/gorgiasApi.ts', () => () => {
-    return {
+jest.mock('services/gorgiasApi', () => {
+    return jest.fn().mockImplementation(() => ({
         payInvoice: mockPayInvoice,
         confirmInvoicePayment: mockConfirmInvoicePayment,
-    }
+    }))
 })
 
 describe('PaymentsHistoryView', () => {

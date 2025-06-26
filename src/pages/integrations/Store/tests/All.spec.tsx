@@ -157,7 +157,16 @@ describe('<All />', () => {
         }
         mockApi.onGet('/api/apps/').reply(200, { data: dummyApps })
 
-        renderWithRouter(
+        const { rerender } = renderWithRouter(
+            <Provider store={store}>
+                <All />
+            </Provider>,
+        )
+        await waitFor(() => {
+            expect(screen.queryByText(/Loading/)).toBe(null)
+        })
+
+        rerender(
             <Provider store={store}>
                 <All />
             </Provider>,

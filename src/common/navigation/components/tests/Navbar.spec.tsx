@@ -38,14 +38,11 @@ jest.mock('pages/tickets/navbar/CreateTicketNavbarButton', () => () => (
 jest.mock('pages/tickets/navbar/PlaceCallNavbarButton', () => () => (
     <div>PlaceCallNavbarButton</div>
 ))
-jest.mock(
-    '../MainNavigation',
-    () =>
-        ({
-            ...jest.requireActual('../MainNavigation'),
-            default: () => <div>MainNavigation</div>,
-        }) as typeof import('../MainNavigation'),
-)
+jest.mock('../MainNavigation', () => ({
+    __esModule: true,
+    ...jest.requireActual('../MainNavigation'),
+    default: () => <div>MainNavigation</div>,
+}))
 jest.mock('../UserMenuWithToggle', () => () => <div>UserMenuWithToggle</div>)
 
 const mockNavBarContextValues: NavBarContextType = {

@@ -26,7 +26,7 @@ jest.mock('../useHelpCenterApi', () => {
                             data: [],
                             meta: {
                                 page: 1,
-                                nbPages: 1,
+                                nb_pages: 1,
                             },
                         },
                     }),
@@ -36,7 +36,7 @@ jest.mock('../useHelpCenterApi', () => {
 })
 
 jest.mock('state/entities/helpCenter/helpCenters', () => ({
-    getHelpCenterFAQList: jest.fn(() => ({})),
+    getHelpCenterFAQList: jest.fn(() => []),
     helpCentersFetched: jest.fn().mockReturnValue({
         type: 'HELPCENTER/HELPCENTERS_FETCHED',
         payload: {},

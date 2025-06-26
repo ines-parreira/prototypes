@@ -4,11 +4,9 @@ exports[`<AISuggestionContactReason /> should display feeback message  1`] = `
 <div>
   <div
     class="container"
-    style="height: 0px; visibility: hidden;"
   >
     <div
-      class="collapse"
-      style=""
+      class="collapse show"
     >
       <div
         class="container"

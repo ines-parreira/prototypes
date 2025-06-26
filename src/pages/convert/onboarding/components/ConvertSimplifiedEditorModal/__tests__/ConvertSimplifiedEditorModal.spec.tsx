@@ -2,6 +2,7 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -29,8 +30,7 @@ import { getNewMessageAttachments } from 'state/newMessage/selectors'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { getLDClient } from 'utils/launchDarkly'
-import { assumeMock, flushPromises } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
+import { assumeMock } from 'utils/testing'
 
 import ConvertSimplifiedEditorModal from '../ConvertSimplifiedEditorModal'
 
@@ -212,29 +212,35 @@ describe('<ConvertSimplifiedEditorModal />', () => {
             </QueryClientProvider>,
         )
 
-        await flushPromises()
-
-        act(() => {
+        await act(async () => {
             userEvent.click(screen.getByText('Generate'))
         })
 
-        await flushPromises()
+        await waitFor(() => {
+            expect(screen.getByText(/Apply/)).toBeInTheDocument()
+        })
 
-        act(() => {
+        await act(async () => {
             userEvent.click(screen.getByText(/Apply/))
         })
 
-        act(() => {
+        await waitFor(() => {
+            expect(screen.getByText('Save')).toBeInTheDocument()
+        })
+
+        await act(async () => {
             userEvent.click(screen.getByText('Save'))
         })
 
-        expect(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            updateCampaignMock.mock.calls[0][0][2].meta,
-        ).toEqual(
-            expect.objectContaining({
-                copySuggestion: 'Suggestion 1',
-            }),
-        )
+        await waitFor(() => {
+            expect(
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                updateCampaignMock.mock.calls[0][0][2].meta,
+            ).toEqual(
+                expect.objectContaining({
+                    copySuggestion: 'Suggestion 1',
+                }),
+            )
+        })
     })
 })

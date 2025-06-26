@@ -414,24 +414,17 @@ exports[`App should render the advanced tab 2`] = `
     </nav>
   </div>
   <div
-    class="p-4"
+    class="container"
   >
-    <h2
-      class="mb-4"
+    <div
+      class="inner"
+      style="min-height: 300px;"
     >
-      Granted permissions
-    </h2>
-    <p>
-      This application does not have any permission.
-    </p>
-    <h2
-      class="mb-4 mt-5"
-    >
-      Error Logs
-    </h2>
-    <p>
-      No errors to show from the past 7 days.
-    </p>
+      <i
+        class="icon-custom icon-circle-o-notch md-spin"
+        style="font-size: 40px;"
+      />
+    </div>
   </div>
 </div>
 `;

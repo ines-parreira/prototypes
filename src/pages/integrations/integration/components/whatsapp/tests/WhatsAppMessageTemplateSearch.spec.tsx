@@ -28,6 +28,7 @@ jest.mock(
     'pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown',
     () =>
         ({
+            __esModule: true,
             ...jest.requireActual(
                 'pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown',
             ),

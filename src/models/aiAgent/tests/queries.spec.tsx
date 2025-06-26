@@ -405,12 +405,12 @@ describe('queries', () => {
 
             const mutationFn = (
                 useMutationSpy.mock.calls[0][0] as unknown as {
-                    mutationFn: (args: CreatePlaygroundBody) => any
+                    mutationFn: (args: CreatePlaygroundBody[]) => any
                 }
             ).mutationFn
 
             await expect(
-                mutationFn(customToneOfVoicePreviewFixture),
+                mutationFn([customToneOfVoicePreviewFixture]),
             ).resolves.toEqual(mockData)
         })
     })
@@ -694,11 +694,11 @@ describe('queries', () => {
 
             const mutationFn = (
                 useMutationSpy.mock.calls[0][0] as unknown as {
-                    mutationFn: () => any
+                    mutationFn: (params: any[]) => any
                 }
             ).mutationFn
 
-            await expect(mutationFn()).resolves.toEqual(mockResponse)
+            await expect(mutationFn([])).resolves.toEqual(mockResponse)
         })
 
         it('should handle errors correctly', async () => {
@@ -709,11 +709,11 @@ describe('queries', () => {
 
             const mutationFn = (
                 useMutationSpy.mock.calls[0][0] as unknown as {
-                    mutationFn: () => any
+                    mutationFn: (params: any[]) => any
                 }
             ).mutationFn
 
-            await expect(mutationFn()).rejects.toThrow('Test error')
+            await expect(mutationFn([])).rejects.toThrow('Test error')
         })
     })
 

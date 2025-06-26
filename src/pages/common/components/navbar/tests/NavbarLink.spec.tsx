@@ -8,12 +8,10 @@ import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import { STATS_ROUTES } from 'routes/constants'
 import { assumeMock } from 'utils/testing'
 
-const NavLinkMock = ({ children, ...props }: { children: React.ReactNode }) => (
-    <div {...props}>{children}</div>
-)
-
 jest.mock('react-router-dom', () => ({
-    NavLink: NavLinkMock,
+    NavLink: ({ children, ...props }: { children: React.ReactNode }) => (
+        <div {...props}>{children}</div>
+    ),
     useRouteMatch: jest.fn(),
     match: { isExact: true },
 }))

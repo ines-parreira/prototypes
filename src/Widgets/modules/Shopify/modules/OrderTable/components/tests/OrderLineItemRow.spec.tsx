@@ -1,6 +1,6 @@
 import React, { ComponentProps } from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -262,7 +262,7 @@ describe('<OrderLineItemRow/>', () => {
                 expect(logEventMock).toHaveBeenCalledWith(event)
             },
         )
-        it('should disable removing the line during the debounce duration', () => {
+        it('should disable removing the line during the debounce duration', async () => {
             const payload = fromJS(shopifyDraftOrderPayloadFixture()) as Map<
                 any,
                 any
@@ -284,9 +284,11 @@ describe('<OrderLineItemRow/>', () => {
                 screen.getByRole('button', { name: 'close' }),
             ).toBeAriaDisabled()
             jest.advanceTimersByTime(1001)
-            expect(
-                screen.getByRole('button', { name: 'close' }),
-            ).toBeAriaEnabled()
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: 'close' }),
+                ).toBeAriaEnabled()
+            })
         })
     })
     describe('on delete line', () => {

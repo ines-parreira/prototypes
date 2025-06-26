@@ -23,7 +23,7 @@ describe('useDelayedAsyncFn hook', () => {
         })
     })
 
-    it('should be loading after delay', () => {
+    it('should be loading after delay', async () => {
         const mockAsync = () => new Promise(() => null)
         const { result } = renderHook(() =>
             useDelayedAsyncFn(mockAsync, [], 200),
@@ -34,7 +34,9 @@ describe('useDelayedAsyncFn hook', () => {
             void result.current[1]()
         })
         jest.runAllTimers()
-        expect(result.current[0].loading).toBe(true)
+        await waitFor(() => {
+            expect(result.current[0].loading).toBe(true)
+        })
     })
 
     it('should not set loading to true if async call is not pending', async () => {

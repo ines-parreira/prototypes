@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe, Stripe } from '@stripe/stripe-js'
 import { fireEvent, render, screen } from '@testing-library/react'
@@ -11,6 +9,7 @@ import { StripeElementsProvider } from '../StripeElementsProvider'
 
 jest.mock('@stripe/stripe-js')
 jest.mock('@stripe/react-stripe-js')
+jest.mock('pages/settings/new_billing/utils/reportCRMGrowthError')
 
 assumeMock(Elements).mockImplementation(({ children }) => (
     <div>
@@ -18,8 +17,11 @@ assumeMock(Elements).mockImplementation(({ children }) => (
     </div>
 ))
 
-jest.mock('core/theme/useTheme.ts', () => jest.fn())
-const useThemeMock = assumeMock(useTheme)
+jest.mock('core/theme', () => ({
+    ...jest.requireActual('core/theme'),
+    useTheme: jest.fn(),
+}))
+const useThemeMock = jest.mocked(useTheme)
 
 describe('StripeElementsProvider', () => {
     beforeEach(() => {

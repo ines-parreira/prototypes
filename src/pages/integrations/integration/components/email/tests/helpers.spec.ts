@@ -231,6 +231,9 @@ describe('helpers', () => {
         })
 
         it('should return false for base email integrations', () => {
+            isBaseEmailIntegrationSpy.mockReturnValue(true)
+            isCommonDomainSpy.mockReturnValue(false)
+
             expect(
                 canIntegrationDomainBeVerified({
                     meta: {

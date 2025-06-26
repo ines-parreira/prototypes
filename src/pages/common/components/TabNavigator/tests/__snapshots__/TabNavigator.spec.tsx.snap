@@ -30,9 +30,5 @@ exports[`<TabNavigator /> should render 1`] = `
       </span>
     </div>
   </div>
-  <div
-    class="activeIndicator"
-    style="width: 0px; left: 0px;"
-  />
 </div>
 `;

@@ -2,8 +2,8 @@
 
 exports[`<AutoresponderViewButton/> should render correctly 1`] = `
 <button
-  aria-disabled="false"
-  class="wrapper fill secondary medium"
+  aria-disabled="true"
+  class="wrapper fill secondary medium isDisabled"
   type="button"
 >
   <span

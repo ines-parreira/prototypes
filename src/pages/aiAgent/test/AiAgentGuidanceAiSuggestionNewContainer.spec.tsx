@@ -37,7 +37,7 @@ jest.mock('../hooks/useAiAgentOnboardingNotification', () => ({
 }))
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock(
-    'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent.js',
+    'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent',
     () => {
         const ComponentToMock = () => <div />
         return ComponentToMock

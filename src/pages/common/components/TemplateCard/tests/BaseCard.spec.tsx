@@ -1,12 +1,15 @@
 import { render, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { userEvent } from '@testing-library/user-event'
 
 import { THEME_NAME, useTheme } from 'core/theme'
 
 import BaseCard from '../BaseCard'
 
-jest.mock('core/theme/useTheme.ts', () => jest.fn())
-const useThemeMock = useTheme as jest.Mock
+jest.mock('core/theme', () => ({
+    ...jest.requireActual('core/theme'),
+    useTheme: jest.fn(),
+}))
+const useThemeMock = jest.mocked(useTheme)
 
 describe('<BaseCard />', () => {
     const props = {
@@ -16,6 +19,7 @@ describe('<BaseCard />', () => {
 
     beforeEach(() => {
         useThemeMock.mockReturnValue({
+            ...jest.requireActual('core/theme'),
             name: THEME_NAME.Classic,
             resolvedName: THEME_NAME.Classic,
         })
@@ -62,6 +66,7 @@ describe('<BaseCard />', () => {
         ['dark', THEME_NAME.Dark, 'dark'],
     ])('should apply specific style for %s theme', (_, theme, className) => {
         useThemeMock.mockReturnValue({
+            ...jest.requireActual('core/theme'),
             name: theme,
             resolvedName: theme,
         })

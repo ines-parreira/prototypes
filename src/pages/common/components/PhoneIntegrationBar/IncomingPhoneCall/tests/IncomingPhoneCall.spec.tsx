@@ -55,7 +55,6 @@ describe('<IncomingPhoneCall />', () => {
         )
 
     beforeEach(() => {
-        jest.resetAllMocks()
         mockedServer.reset()
         history = {
             location: {

@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-import React, { useCallback, useEffect, useRef } from 'react'
+import { LegacyRef, useCallback, useEffect, useRef } from 'react'
 
 import bytes from 'bytes'
 import classnames from 'classnames'
@@ -17,7 +15,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import { config, FroalaEditor } from './froala-config'
-import FroalaEditorComponent from './FroalaEditorComponent.js'
+import FroalaEditorComponent from './FroalaEditorComponent'
 import {
     createOnCloseEventHandler,
     generateEditorAttachmentHTML,
@@ -102,7 +100,7 @@ const HelpCenterEditor = ({
     return (
         <FroalaEditorComponent
             model={value}
-            ref={editorRef}
+            ref={editorRef as LegacyRef<FroalaEditorComponent>}
             onModelChange={onModelChange}
             tag="textarea"
             config={{

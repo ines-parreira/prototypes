@@ -68,7 +68,6 @@ describe('AIAgentDraftMessage', () => {
         isTrial: false,
     }
     beforeEach(() => {
-        jest.resetAllMocks()
         getSelectedAIMessageMock.mockReturnValue(mockMessage)
         useAIAgentSendFeedbackMock.mockReturnValue({
             aiAgentSendFeedback: jest.fn(),

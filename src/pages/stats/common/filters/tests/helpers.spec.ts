@@ -1,6 +1,5 @@
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
-import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
 import {
     CustomFieldSavedFilter,
     FilterKey,
@@ -24,34 +23,30 @@ import {
     toApiFormatted,
 } from 'pages/stats/common/filters/helpers'
 import { Channel } from 'services/channels'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-const mockedChannels = [
-    {
-        id: '1',
-        name: 'Email',
-        slug: TicketMessageSourceType.Email,
-    },
-    {
-        id: '2',
-        name: 'Chat',
-        slug: TicketMessageSourceType.Chat,
-    },
-    {
-        id: '3',
-        name: 'Phone',
-        slug: TicketMessageSourceType.Phone,
-    },
-] as Channel[]
-
-const mockedQueryClient = mockQueryClient({
-    cachedData: [[mockChannelsQueryKeys.list(), mockedChannels]],
-})
+function getMockedChannels() {
+    return [
+        {
+            id: '1',
+            name: 'Email',
+            slug: TicketMessageSourceType.Email,
+        },
+        {
+            id: '2',
+            name: 'Chat',
+            slug: TicketMessageSourceType.Chat,
+        },
+        {
+            id: '3',
+            name: 'Phone',
+            slug: TicketMessageSourceType.Phone,
+        },
+    ] as Channel[]
+}
 
 jest.mock('api/queryClient', () => ({
     appQueryClient: {
-        ...mockedQueryClient,
-        getQueryData: jest.fn(() => ({ data: mockedChannels })),
+        getQueryData: jest.fn(() => ({ data: getMockedChannels() })),
     },
 }))
 
@@ -62,24 +57,24 @@ jest.mock('common/segment', () => ({
 
 describe('filterChannels', () => {
     it('should return all channels when no filter is provided', () => {
-        expect(filterChannels(mockedChannels)).toEqual(mockedChannels)
+        expect(filterChannels(getMockedChannels())).toEqual(getMockedChannels())
     })
 
     it('should return channels matching the filter array', () => {
         expect(
-            filterChannels(mockedChannels, [
+            filterChannels(getMockedChannels(), [
                 TicketMessageSourceType.Email,
                 TicketMessageSourceType.Phone,
             ]),
-        ).toEqual([mockedChannels[0], mockedChannels[2]])
+        ).toEqual([getMockedChannels()[0], getMockedChannels()[2]])
     })
 
     it('should return channels matching the filter function', () => {
         expect(
-            filterChannels(mockedChannels, (channel) =>
+            filterChannels(getMockedChannels(), (channel) =>
                 channel.name.includes('Chat'),
             ),
-        ).toEqual([mockedChannels[1]])
+        ).toEqual([getMockedChannels()[1]])
     })
 })
 

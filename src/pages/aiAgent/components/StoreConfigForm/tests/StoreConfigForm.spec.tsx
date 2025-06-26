@@ -54,6 +54,20 @@ import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import { StoreConfigForm } from '../StoreConfigForm'
 
+jest.mock('pages/aiAgent/providers/AiAgentFormChangesProvider', () => ({
+    __esModule: true,
+    default: jest.fn(({ children }) => children),
+}))
+
+jest.mock('pages/history', () => ({
+    __esModule: true,
+    default: {
+        push: jest.fn(),
+        replace: jest.fn(),
+        listen: jest.fn(),
+    },
+}))
+
 const queryClient = mockQueryClient()
 
 jest.mock('utils/errors')
@@ -143,10 +157,12 @@ jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification', () => ({
     useAiAgentOnboardingNotification: jest.fn(),
 }))
 jest.mock('state/billing/selectors', () => ({
-    __esModule: true,
     getHasAutomate: jest.fn(),
 }))
-jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
+jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
+    __esModule: true,
+    default: jest.fn(),
+}))
 
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
 
@@ -196,7 +212,10 @@ mockedUsePublicResources.mockReturnValue({
 } as unknown as ReturnType<typeof usePublicResources>)
 
 const mockDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    __esModule: true,
+    default: () => mockDispatch,
+}))
 
 const mockStore = configureMockStore([thunk])
 

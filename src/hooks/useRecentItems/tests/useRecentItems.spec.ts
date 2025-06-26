@@ -55,13 +55,13 @@ describe('useRecentItems', () => {
             }),
         )
 
-        await waitFor(() => result.current)
-
-        expect(result.current).toEqual(
-            expect.objectContaining({
-                isGettingItems: false,
-            }),
-        )
+        await waitFor(() => {
+            expect(result.current).toEqual(
+                expect.objectContaining({
+                    isGettingItems: false,
+                }),
+            )
+        })
     })
 
     it('should observe table', async () => {
@@ -95,7 +95,9 @@ describe('useRecentItems', () => {
         const { result } = renderHook(() => useRecentItems(RecentItems.Tickets))
         await waitFor(() => result.current)
 
-        expect(result.current.items).toEqual(['baz', 'bar', 'foo'])
+        await waitFor(() => {
+            expect(result.current.items).toEqual(['baz', 'bar', 'foo'])
+        })
     })
 
     it('should set item', async () => {

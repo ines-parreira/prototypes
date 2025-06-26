@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { act, fireEvent, screen } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 
 import { IntegrationType } from 'models/integration/constants'
@@ -161,15 +161,20 @@ describe('<ActionsPlatformAppForm />', () => {
             <ActionsPlatformAppForm apps={[app]} onSubmit={mockOnSubmit} />,
         )
 
-        act(() => {
+        await act(async () => {
             fireEvent.focus(screen.getByText('Select an App'))
         })
 
-        act(() => {
+        await act(async () => {
             fireEvent.click(screen.getByText('Test App'))
         })
 
-        act(() => {
+        await waitFor(() => {
+            expect(screen.getByText('Test App')).toBeInTheDocument()
+            expect(screen.queryByText('Select an App')).not.toBeInTheDocument()
+        })
+
+        await act(async () => {
             fireEvent.change(
                 screen.getByPlaceholderText('https://link.gorgias.com/xyz'),
                 {
@@ -178,9 +183,12 @@ describe('<ActionsPlatformAppForm />', () => {
             )
         })
 
-        await flushPromises()
+        await waitFor(() => {
+            const createButton = screen.getByText('Create App settings')
+            expect(createButton).toBeEnabled()
+        })
 
-        act(() => {
+        await act(async () => {
             fireEvent.click(screen.getByText('Create App settings'))
         })
 
@@ -389,21 +397,24 @@ describe('<ActionsPlatformAppForm />', () => {
             />,
         )
 
-        act(() => {
+        await act(async () => {
             fireEvent.change(screen.getByLabelText('Input label'), {
                 target: { value: 'Test API Key Label' },
             })
         })
 
-        act(() => {
+        await act(async () => {
             fireEvent.change(screen.getByLabelText('Instructions URL text'), {
                 target: { value: 'Test Instructions URL text' },
             })
         })
 
-        await flushPromises()
+        await waitFor(() => {
+            const saveButton = screen.getByText('Save Changes')
+            expect(saveButton).toBeEnabled()
+        })
 
-        act(() => {
+        await act(async () => {
             fireEvent.click(screen.getByText('Save Changes'))
         })
 
@@ -436,15 +447,18 @@ describe('<ActionsPlatformAppForm />', () => {
             />,
         )
 
-        act(() => {
+        await act(async () => {
             fireEvent.change(screen.getByLabelText('Instructions URL text'), {
                 target: { value: 'Test Instructions URL text' },
             })
         })
 
-        await flushPromises()
+        await waitFor(() => {
+            const saveButton = screen.getByText('Save Changes')
+            expect(saveButton).toBeEnabled()
+        })
 
-        act(() => {
+        await act(async () => {
             fireEvent.click(screen.getByText('Save Changes'))
         })
 

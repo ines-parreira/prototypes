@@ -128,6 +128,27 @@ describe('TicketSearchDropdownSelectView', () => {
     })
 
     it('should display search results', async () => {
+        // Set up mock to simulate the actual behavior:
+        // First call returns no data, second call returns search results
+        const mockRefetch = jest.fn()
+        mockUseSearchTickets
+            .mockReturnValueOnce({
+                isLoading: false,
+                error: null,
+                isRefetching: false,
+                isRefetchError: false,
+                data: null,
+                refetch: mockRefetch,
+            } as unknown as ReturnType<typeof useSearchEmailTickets>)
+            .mockReturnValue({
+                isLoading: false,
+                error: null,
+                isRefetching: false,
+                isRefetchError: false,
+                data: { data: { data: mockTicketSearchResults } },
+                refetch: mockRefetch,
+            } as unknown as ReturnType<typeof useSearchEmailTickets>)
+
         const { rerender } = renderComponent()
 
         // Start typing to trigger search
@@ -137,30 +158,44 @@ describe('TicketSearchDropdownSelectView', () => {
 
         await userEvent.type(searchInput, 'test')
 
-        // Update the mock to return data after typing
-        const mockRefetch = jest.fn()
-        mockUseSearchTickets.mockReturnValue({
-            isLoading: false,
-            error: null,
-            isRefetching: false,
-            isRefetchError: false,
-            data: { data: { data: mockTicketSearchResults } },
-            refetch: mockRefetch,
-        } as unknown as ReturnType<typeof useSearchEmailTickets>)
-
+        // Force re-render to pick up the new mock value
         rerender(<TicketSearchDropdownSelectView onSelect={mockOnSelect} />)
 
-        await waitFor(() => {
-            expect(
-                screen.getByText('Test Ticket 1 - John Doe - 123'),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByText('Test Ticket 2 - Jane Smith - 124'),
-            ).toBeInTheDocument()
-        })
+        await waitFor(
+            () => {
+                expect(
+                    screen.getByText('Test Ticket 1 - John Doe - 123'),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText('Test Ticket 2 - Jane Smith - 124'),
+                ).toBeInTheDocument()
+            },
+            { timeout: 2000 },
+        )
     })
 
     it('should show "No results found" when search returns empty results', async () => {
+        // Set up mock to simulate the actual behavior:
+        // First call returns no data, second call returns empty results
+        const mockRefetch = jest.fn()
+        mockUseSearchTickets
+            .mockReturnValueOnce({
+                isLoading: false,
+                error: null,
+                isRefetching: false,
+                isRefetchError: false,
+                data: null,
+                refetch: mockRefetch,
+            } as unknown as ReturnType<typeof useSearchEmailTickets>)
+            .mockReturnValue({
+                isLoading: false,
+                error: null,
+                isRefetching: false,
+                isRefetchError: false,
+                data: { data: { data: [] } },
+                refetch: mockRefetch,
+            } as unknown as ReturnType<typeof useSearchEmailTickets>)
+
         const { rerender } = renderComponent()
 
         const searchInput = screen.getByPlaceholderText(
@@ -169,21 +204,15 @@ describe('TicketSearchDropdownSelectView', () => {
 
         await userEvent.type(searchInput, 'nonexistent')
 
-        // Update mock to return empty results
-        mockUseSearchTickets.mockReturnValue({
-            isLoading: false,
-            error: null,
-            isRefetching: false,
-            isRefetchError: false,
-            data: { data: { data: [] } },
-            refetch: jest.fn(),
-        } as unknown as ReturnType<typeof useSearchEmailTickets>)
-
+        // Force re-render to pick up the new mock value
         rerender(<TicketSearchDropdownSelectView onSelect={mockOnSelect} />)
 
-        await waitFor(() => {
-            expect(screen.getByText('No results found')).toBeInTheDocument()
-        })
+        await waitFor(
+            () => {
+                expect(screen.getByText('No results found')).toBeInTheDocument()
+            },
+            { timeout: 2000 },
+        )
     })
 
     it('should handle ticket selection and fetch full ticket', async () => {
@@ -209,11 +238,14 @@ describe('TicketSearchDropdownSelectView', () => {
             await userEvent.type(searchInput, 'test')
         })
 
-        await waitFor(() => {
-            expect(
-                screen.getByText('Test Ticket 1 - John Doe - 123'),
-            ).toBeInTheDocument()
-        })
+        await waitFor(
+            () => {
+                expect(
+                    screen.getByText('Test Ticket 1 - John Doe - 123'),
+                ).toBeInTheDocument()
+            },
+            { timeout: 2000 },
+        )
 
         await act(async () => {
             await userEvent.click(
@@ -253,11 +285,14 @@ describe('TicketSearchDropdownSelectView', () => {
             await userEvent.type(searchInput, 'test')
         })
 
-        await waitFor(() => {
-            expect(
-                screen.getByText('Test Ticket 1 - John Doe - 123'),
-            ).toBeInTheDocument()
-        })
+        await waitFor(
+            () => {
+                expect(
+                    screen.getByText('Test Ticket 1 - John Doe - 123'),
+                ).toBeInTheDocument()
+            },
+            { timeout: 2000 },
+        )
 
         // Test arrow down navigation
         await act(async () => {
@@ -304,13 +339,12 @@ describe('TicketSearchDropdownSelectView', () => {
         expect(mockRefetch).not.toHaveBeenCalled()
 
         // Should call refetch after debounce delay
-        await act(async () => {
-            jest.runAllTimers()
-        })
-
-        await waitFor(() => {
-            expect(mockRefetch).toHaveBeenCalled()
-        })
+        await waitFor(
+            () => {
+                expect(mockRefetch).toHaveBeenCalled()
+            },
+            { timeout: 2000 },
+        )
     })
 
     it('should handle ticket selection error gracefully', async () => {
@@ -336,11 +370,14 @@ describe('TicketSearchDropdownSelectView', () => {
             await userEvent.type(searchInput, 'test')
         })
 
-        await waitFor(() => {
-            expect(
-                screen.getByText('Test Ticket 1 - John Doe - 123'),
-            ).toBeInTheDocument()
-        })
+        await waitFor(
+            () => {
+                expect(
+                    screen.getByText('Test Ticket 1 - John Doe - 123'),
+                ).toBeInTheDocument()
+            },
+            { timeout: 2000 },
+        )
 
         await act(async () => {
             await userEvent.click(
@@ -387,13 +424,16 @@ describe('TicketSearchDropdownSelectView', () => {
             await userEvent.type(searchInput, 'test')
         })
 
-        await waitFor(() => {
-            expect(
-                screen.getByText(
-                    'Test Ticket 3 - nousername@example.com - 125',
-                ),
-            ).toBeInTheDocument()
-        })
+        await waitFor(
+            () => {
+                expect(
+                    screen.getByText(
+                        'Test Ticket 3 - nousername@example.com - 125',
+                    ),
+                ).toBeInTheDocument()
+            },
+            { timeout: 2000 },
+        )
     })
 
     it('should handle tickets without customer at all', async () => {
@@ -424,9 +464,14 @@ describe('TicketSearchDropdownSelectView', () => {
             await userEvent.type(searchInput, 'test')
         })
 
-        await waitFor(() => {
-            expect(screen.getByText('Test Ticket 4 - 126')).toBeInTheDocument()
-        })
+        await waitFor(
+            () => {
+                expect(
+                    screen.getByText('Test Ticket 4 - 126'),
+                ).toBeInTheDocument()
+            },
+            { timeout: 2000 },
+        )
     })
 
     it('should be disabled when isDisabled prop is true', () => {

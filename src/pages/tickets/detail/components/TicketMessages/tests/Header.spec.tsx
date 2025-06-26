@@ -16,6 +16,7 @@ jest.mock('pages/tickets/detail/components/TicketMessages/Meta')
 jest.mock(
     'pages/tickets/detail/components/TicketMessages/SourceActionsHeader',
     () => ({
+        __esModule: true,
         default: () => null,
     }),
 )

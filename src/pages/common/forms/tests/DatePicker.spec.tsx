@@ -4,22 +4,19 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Options } from 'daterangepicker'
 import moment from 'moment-timezone'
 
-import { THEME_NAME } from 'core/theme'
-import DatePicker from 'pages/common/forms/DatePicker'
+import { THEME_NAME, useTheme } from 'core/theme'
+import { DatePicker } from 'pages/common/forms/DatePicker'
 
-jest.mock('core/theme/useTheme.ts', () => {
-    const { THEME_NAME, themeTokenMap } =
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        require('core/theme') as typeof import('core/theme')
-
-    return () => ({
-        name: THEME_NAME.Classic,
-        resolvedName: THEME_NAME.Classic,
-        tokens: themeTokenMap[THEME_NAME.Classic],
-    })
-})
+jest.mock('core/theme', () => ({
+    ...jest.requireActual('core/theme'),
+    useTheme: jest.fn(),
+}))
 
 describe('DatePicker', () => {
+    let localStorageMock: { [key: string]: string }
+    let matchMediaMock: jest.SpyInstance
+    const useThemeMock = useTheme as jest.MockedFunction<typeof useTheme>
+
     const datetime = moment('2021-05-12')
 
     const minProps: ComponentProps<typeof DatePicker> = {
@@ -48,8 +45,43 @@ describe('DatePicker', () => {
     }
 
     beforeEach(() => {
+        useThemeMock.mockReturnValue({
+            resolvedName: THEME_NAME.Classic,
+            name: THEME_NAME.Classic,
+        } as any)
+
+        localStorageMock = {
+            theme: JSON.stringify(THEME_NAME.Classic),
+        }
+
+        Object.defineProperty(window, 'localStorage', {
+            value: {
+                getItem: jest.fn(
+                    (key: string) => localStorageMock[key] || null,
+                ),
+                setItem: jest.fn((key: string, value: string) => {
+                    localStorageMock[key] = value
+                }),
+                removeItem: jest.fn((key: string) => {
+                    delete localStorageMock[key]
+                }),
+                clear: jest.fn(() => {
+                    localStorageMock = {}
+                }),
+            },
+            writable: true,
+        })
+
+        matchMediaMock = jest.spyOn(window, 'matchMedia')
+        matchMediaMock.mockReturnValue({ matches: false })
+
         const mockDate = new Date('2021-05-14T12:34:56.000Z')
         global.Date.now = jest.fn(() => mockDate.getTime())
+    })
+
+    afterEach(() => {
+        matchMediaMock.mockRestore()
+        jest.clearAllMocks()
     })
 
     it('should render a date range picker', () => {
@@ -154,12 +186,17 @@ describe('DatePicker', () => {
         expect(onSubmit.mock.calls).toMatchSnapshot()
     })
 
-    it('should open the datepicker with multiple themes', () => {
+    it('should open the datepicker with multiple themes', async () => {
         render(
             <DatePicker {...minProps} isOpen={true}>
                 <button>Select a date</button>
             </DatePicker>,
         )
+
+        await waitFor(() => {
+            const elements = document.getElementsByClassName('daterangepicker')
+            expect(elements.length).toBeGreaterThan(0)
+        })
 
         const [dateRangePickerElement] = document.getElementsByClassName(
             'daterangepicker',

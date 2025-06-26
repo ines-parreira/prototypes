@@ -1,34 +1,60 @@
+import { waitFor } from '@testing-library/react'
+
 import { THEME_NAME } from '@gorgias/design-tokens'
 
-import useLocalStorage from 'hooks/useLocalStorage'
-import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
 import useActualTheme from '../useActualTheme'
 
-jest.mock('hooks/useLocalStorage', () => jest.fn())
-const useLocalStorageMock = assumeMock(useLocalStorage)
-
 describe('useActualTheme', () => {
-    it('should return the theme from localstorage', () => {
-        const setTheme = jest.fn()
-        useLocalStorageMock.mockReturnValue([
-            THEME_NAME.Light,
-            setTheme,
-            () => {},
-        ])
-        const { result } = renderHook(() => useActualTheme())
+    let localStorageMock: { [key: string]: string }
 
-        expect(result.current).toEqual([THEME_NAME.Light, expect.any(Function)])
-        expect(setTheme).not.toHaveBeenCalled()
+    beforeEach(() => {
+        localStorageMock = {}
+
+        Object.defineProperty(window, 'localStorage', {
+            value: {
+                getItem: jest.fn(
+                    (key: string) => localStorageMock[key] || null,
+                ),
+                setItem: jest.fn((key: string, value: string) => {
+                    localStorageMock[key] = value
+                }),
+                removeItem: jest.fn((key: string) => {
+                    delete localStorageMock[key]
+                }),
+                clear: jest.fn(() => {
+                    localStorageMock = {}
+                }),
+            },
+            writable: true,
+        })
     })
 
-    it('should return and set the classic theme if localstorage returns an unknown value', () => {
-        const setTheme = jest.fn()
-        useLocalStorageMock.mockReturnValue(['modern', setTheme, () => {}])
+    afterEach(() => {
+        jest.clearAllMocks()
+    })
+
+    it('should return the theme from localstorage', () => {
+        // Set up localStorage to return a valid theme
+        localStorageMock.theme = JSON.stringify(THEME_NAME.Light)
+
         const { result } = renderHook(() => useActualTheme())
 
         expect(result.current).toEqual([THEME_NAME.Light, expect.any(Function)])
-        expect(setTheme).toHaveBeenCalledWith(THEME_NAME.Light)
+    })
+
+    it('should return and set the light theme if localstorage returns an unknown value', async () => {
+        // Set up localStorage to return an unknown theme
+        localStorageMock.theme = JSON.stringify('modern')
+
+        const { result } = renderHook(() => useActualTheme())
+
+        expect(result.current).toEqual([THEME_NAME.Light, expect.any(Function)])
+
+        // Wait for the useEffect to run and update localStorage
+        await waitFor(() => {
+            expect(JSON.parse(localStorageMock.theme)).toBe(THEME_NAME.Light)
+        })
     })
 })

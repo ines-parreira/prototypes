@@ -25,6 +25,7 @@ jest.mock('models/voiceCall/resources')
 const searchCallsWithHighlightsMock = assumeMock(searchVoiceCallsWithHighlights)
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 jest.mock('hooks/useSearchRankScenario', () => ({
+    __esModule: true,
     ...jest.requireActual<Record<string, unknown>>(
         'hooks/useSearchRankScenario',
     ),

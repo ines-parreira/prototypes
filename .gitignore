@@ -21,6 +21,7 @@ npm-debug.log
 .babel.json
 node_modules
 .history
+.swc/
 
 # Translations
 *.mo

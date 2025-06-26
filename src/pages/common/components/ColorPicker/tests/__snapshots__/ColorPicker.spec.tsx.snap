@@ -32,12 +32,11 @@ exports[`<ColorPicker /> should display popup on button click with default color
   </div>
   <div>
     <div
-      class="fade show"
+      class="fade"
     >
       <div
         class="popover show bs-popover-auto"
-        style="position: absolute; top: 0px; left: 0px; transform: translate3d(NaNpx, NaNpx, 0); will-change: transform;"
-        x-placement="bottom"
+        style="position: absolute; opacity: 0; pointer-events: none; top: 0px; left: 0px;"
       >
         <div
           class="popover-inner"

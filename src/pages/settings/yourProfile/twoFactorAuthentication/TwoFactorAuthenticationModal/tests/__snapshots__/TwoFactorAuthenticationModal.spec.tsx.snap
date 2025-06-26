@@ -376,7 +376,7 @@ abcdefgh16"
 </body>
 `;
 
-exports[`<TwoFactorAuthenticationModal /> render() Validate verification code should render modal with error banner because saving the secret failed: error banner and continue button disabled 1`] = `
+exports[`<TwoFactorAuthenticationModal /> render() Validate verification code should render modal with error banner because saving the secret failed 1`] = `
 <body
   class="modal-open"
 >
@@ -547,8 +547,8 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               class="modal-footer"
             >
               <button
-                aria-disabled="false"
-                class="wrapper fill secondary medium"
+                aria-disabled="true"
+                class="wrapper fill secondary medium isDisabled"
                 type="button"
               >
                 <span
@@ -562,194 +562,36 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 class="wrapper fill primary medium isDisabled"
                 type="button"
               >
-                <span
-                  class="content"
+                <svg
+                  class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 spinner"
+                  height="22"
+                  preserveAspectRatio="xMidYMid meet"
+                  role="status"
+                  viewBox="0 0 20 20"
+                  width="22"
                 >
-                  Continue
-                </span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="modal-backdrop show"
-      />
-    </div>
-  </div>
-</body>
-`;
-
-exports[`<TwoFactorAuthenticationModal /> render() Validate verification code should render modal with error banner because saving the secret failed: no error banner and continue button enabled 1`] = `
-<body
-  class="modal-open"
->
-  <div />
-  <div
-    style="position: relative; z-index: 1050; display: block;"
-    tabindex="-1"
-  >
-    <div
-      class=""
-    >
-      <div
-        class="modal show"
-        role="dialog"
-        style="display: block;"
-        tabindex="-1"
-      >
-        <div
-          class="modal-dialog"
-          role="document"
-          style="max-width: 600px;"
-        >
-          <div
-            class="modal-content"
-          >
-            <div
-              class="modal-header"
-            >
-              <h5
-                class="modal-title"
-              >
-                Verify two-factor authentication
-              </h5>
-              <button
-                aria-label="Close"
-                class="close"
-                type="button"
-              >
-                <span
-                  aria-hidden="true"
-                >
-                  ×
-                </span>
-              </button>
-            </div>
-            <div
-              class="modal-body"
-            >
-              <div
-                class="wrapper mb-4"
-              >
-                <div
-                  class="step previousStep"
-                >
-                  <span
-                    class="stepIndex"
-                  >
-                    <span
-                      class="checkIcon"
-                    >
-                      <i
-                        class="material-icons"
-                      >
-                        check
-                      </i>
-                    </span>
-                  </span>
-                  App Setup
-                </div>
-                <div
-                  class="line"
-                />
-                <div
-                  class="step activeStep"
-                >
-                  <span
-                    class="stepIndex"
-                  >
-                    2
-                  </span>
-                  Verify
-                </div>
-                <div
-                  class="line"
-                />
-                <div
-                  class="step"
-                >
-                  <span
-                    class="stepIndex"
-                  >
-                    3
-                  </span>
-                  Recovery Codes
-                </div>
-              </div>
-              <div
-                class="headingBold mb16"
-              >
-                Scan the QR code with your authenticator app
-              </div>
-              <div
-                class="qrCodeContainer"
-              >
-                <img
-                  alt="The QR Code to scan"
-                  id="qrCodeImage"
-                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAYAAAB1PADUAAAAAklEQVR4AewaftIAAATZSURBVO3BQY4cSRIEQdNA/f/Lun30UwCJ9GoOuSaCP1K15KRq0UnVopOqRSdVi06qFp1ULTqpWnRSteikatFJ1aKTqkUnVYtOqhadVC06qVr0yUtAfpOaGyCTmk1AbtRMQJ5QMwH5TWreOKladFK16KRq0SfL1GwC8oSaCcgTam7UPKFmk5pNQDadVC06qVp0UrXoky8D8oSaJ4A8oeYJIJOaCcik5jcBeULNN51ULTqpWnRSteiTf4yaCcgEZFJzo+YJIJOaCcik5l9yUrXopGrRSdWiT/5xam6AvKFmAjIBuQEyqfmbnVQtOqladFK16JMvU/ObgExqJiCbgNyo+SY1/yUnVYtOqhadVC36ZBmQP0nNBGRSMwGZ1ExAJjUTkEnNBGRSMwGZ1NwA+S87qVp0UrXopGrRJy+p+ZsAmdRMQCY1E5BJzTep+ZucVC06qVp0UrXok5eATGomIJvUTGpu1NwAmdRMQJ4AMql5A8gmNd90UrXopGrRSdUi/JEXgNyomYDcqNkE5Ak1N0Bu1NwA+SY1N0Bu1LxxUrXopGrRSdUi/JE/CMikZgLyhpoJyKTmTwIyqZmA3KiZgExqftNJ1aKTqkUnVYs+eQnIjZobNTdqboBMajYBmdRMQCY1E5BJzZ8EZFKz6aRq0UnVopOqRZ+8pGYCcgNkUjMBuVEzqbkBMql5Qs0TQCY1TwCZ1LwB5DedVC06qVp0UrUIf+QFIJOaCcikZhOQJ9RMQN5QMwH5L1FzA2RS88ZJ1aKTqkUnVYs+WQbkBsikZgJyo+ZGzQ2QSc0E5Akgk5oJyKRmAjKpmYBMam6APKFm00nVopOqRSdViz75MjU3QG7UPAFkk5oJyKTmRs2Nmhs1E5A3gExqNp1ULTqpWnRStQh/ZBGQGzU3QG7UPAFkUjMBmdRMQG7UTEAmNb8JyI2abzqpWnRSteikatEnLwG5UTMBmdTcqJmATGomIDdAnlAzAZmATGomIE+omYC8oeYGyKTmjZOqRSdVi06qFn2yTM0TQCY1E5BJzQTkRs0NkCfU3AC5UTMBuVEzAZnUvKFm00nVopOqRSdViz75MiBvqLlR84aaGyCTmgnIpOZPAjKpuQEyqXnjpGrRSdWik6pFn/wyNROQCcgTaiYgk5obIJOaSc2NmgnIpGYCcgPkCSCTmgnIpOabTqoWnVQtOqlahD/yFwMyqXkDyBNqboBMaiYgk5ongExqJiBPqHnjpGrRSdWik6pFn7wE5DepmdRMQCY1N0B+E5AngExqnlDzm06qFp1ULTqpWvTJMjWbgNwAmdTcAHlCzRtqboDcqPkmIJOaN06qFp1ULTqpWvTJlwF5Qs2fpGYC8oaaJ4C8AeRGzTedVC06qVp0UrXok38ckCeATGpugExqboBMar4JyI2aTSdVi06qFp1ULfrk/5yaCcgEZJOaCcikZgIyqZmATGpugExqNp1ULTqpWnRSteiTL1PzTWomIJOaCcgbaiYgN0AmNTdAJjUTkEnNjZoJyDedVC06qVp0UrXok2VAfhOQGyCTmhs1E5AbNROQSc0EZFIzAZmAvAFkUvNNJ1WLTqoWnVQtwh+pWnJSteikatFJ1aKTqkUnVYtOqhadVC06qVp0UrXopGrRSdWik6pFJ1WLTqoWnVQt+h8x8UUwJOxn0QAAAABJRU5ErkJggg=="
-                />
-              </div>
-              <div
-                style="display: flex; flex-direction: column; align-items: center;"
-              >
-                <button
-                  aria-disabled="false"
-                  class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432"
-                  type="button"
-                >
-                  <span
-                    class="ui-button-content-a432"
-                  >
-                    Can't scan the QR code?
-                  </span>
-                </button>
-              </div>
-              <div
-                class="headingBold mt24"
-              >
-                Enter one-time code below
-              </div>
-              <div
-                class="textSection mb16"
-              >
-                The unique one-time code will appear that regenerates every 30 seconds.
-              </div>
-              <div>
-                <div
-                  class="wrapper"
-                >
-                  <input
-                    class="input"
-                    id="input-text-9"
-                    name="verificationCode"
-                    placeholder="Enter 6-digit verification code from app or recovery code"
-                    type="text"
-                    value=""
+                  <circle
+                    class="ui-loadingspinner-dot-4660"
+                    cx="10"
+                    cy="10"
+                    fill="none"
+                    r="6"
+                    stroke-width="2"
                   />
-                </div>
-              </div>
-            </div>
-            <div
-              class="modal-footer"
-            >
-              <button
-                aria-disabled="false"
-                class="wrapper fill secondary medium"
-                type="button"
-              >
-                <span
-                  class="content"
-                >
-                  Back
-                </span>
-              </button>
-              <button
-                aria-disabled="false"
-                class="wrapper fill primary medium"
-                type="button"
-              >
+                  <circle
+                    class="ui-loadingspinner-circle-4660"
+                    cx="10"
+                    cy="10"
+                    fill="none"
+                    r="6"
+                    stroke-width="2"
+                  />
+                  <span
+                    class="sr-only"
+                  >
+                    Loading...
+                  </span>
+                </svg>
                 <span
                   class="content"
                 >
@@ -768,7 +610,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
 </body>
 `;
 
-exports[`<TwoFactorAuthenticationModal /> render() Validate verification code should render modal with error banner because validation failed: error banner and continue button disabled 1`] = `
+exports[`<TwoFactorAuthenticationModal /> render() Validate verification code should render modal with error banner because validation failed 1`] = `
 <body
   class="modal-open"
 >
@@ -939,8 +781,8 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               class="modal-footer"
             >
               <button
-                aria-disabled="false"
-                class="wrapper fill secondary medium"
+                aria-disabled="true"
+                class="wrapper fill secondary medium isDisabled"
                 type="button"
               >
                 <span
@@ -954,194 +796,36 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 class="wrapper fill primary medium isDisabled"
                 type="button"
               >
-                <span
-                  class="content"
+                <svg
+                  class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 spinner"
+                  height="22"
+                  preserveAspectRatio="xMidYMid meet"
+                  role="status"
+                  viewBox="0 0 20 20"
+                  width="22"
                 >
-                  Continue
-                </span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="modal-backdrop show"
-      />
-    </div>
-  </div>
-</body>
-`;
-
-exports[`<TwoFactorAuthenticationModal /> render() Validate verification code should render modal with error banner because validation failed: no error banner and continue button enabled 1`] = `
-<body
-  class="modal-open"
->
-  <div />
-  <div
-    style="position: relative; z-index: 1050; display: block;"
-    tabindex="-1"
-  >
-    <div
-      class=""
-    >
-      <div
-        class="modal show"
-        role="dialog"
-        style="display: block;"
-        tabindex="-1"
-      >
-        <div
-          class="modal-dialog"
-          role="document"
-          style="max-width: 600px;"
-        >
-          <div
-            class="modal-content"
-          >
-            <div
-              class="modal-header"
-            >
-              <h5
-                class="modal-title"
-              >
-                Verify two-factor authentication
-              </h5>
-              <button
-                aria-label="Close"
-                class="close"
-                type="button"
-              >
-                <span
-                  aria-hidden="true"
-                >
-                  ×
-                </span>
-              </button>
-            </div>
-            <div
-              class="modal-body"
-            >
-              <div
-                class="wrapper mb-4"
-              >
-                <div
-                  class="step previousStep"
-                >
-                  <span
-                    class="stepIndex"
-                  >
-                    <span
-                      class="checkIcon"
-                    >
-                      <i
-                        class="material-icons"
-                      >
-                        check
-                      </i>
-                    </span>
-                  </span>
-                  App Setup
-                </div>
-                <div
-                  class="line"
-                />
-                <div
-                  class="step activeStep"
-                >
-                  <span
-                    class="stepIndex"
-                  >
-                    2
-                  </span>
-                  Verify
-                </div>
-                <div
-                  class="line"
-                />
-                <div
-                  class="step"
-                >
-                  <span
-                    class="stepIndex"
-                  >
-                    3
-                  </span>
-                  Recovery Codes
-                </div>
-              </div>
-              <div
-                class="headingBold mb16"
-              >
-                Scan the QR code with your authenticator app
-              </div>
-              <div
-                class="qrCodeContainer"
-              >
-                <img
-                  alt="The QR Code to scan"
-                  id="qrCodeImage"
-                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAYAAAB1PADUAAAAAklEQVR4AewaftIAAATZSURBVO3BQY4cSRIEQdNA/f/Lun30UwCJ9GoOuSaCP1K15KRq0UnVopOqRSdVi06qFp1ULTqpWnRSteikatFJ1aKTqkUnVYtOqhadVC06qVr0yUtAfpOaGyCTmk1AbtRMQJ5QMwH5TWreOKladFK16KRq0SfL1GwC8oSaCcgTam7UPKFmk5pNQDadVC06qVp0UrXoky8D8oSaJ4A8oeYJIJOaCcik5jcBeULNN51ULTqpWnRSteiTf4yaCcgEZFJzo+YJIJOaCcik5l9yUrXopGrRSdWiT/5xam6AvKFmAjIBuQEyqfmbnVQtOqladFK16JMvU/ObgExqJiCbgNyo+SY1/yUnVYtOqhadVC36ZBmQP0nNBGRSMwGZ1ExAJjUTkEnNBGRSMwGZ1NwA+S87qVp0UrXopGrRJy+p+ZsAmdRMQCY1E5BJzTep+ZucVC06qVp0UrXok5eATGomIJvUTGpu1NwAmdRMQJ4AMql5A8gmNd90UrXopGrRSdUi/JEXgNyomYDcqNkE5Ak1N0Bu1NwA+SY1N0Bu1LxxUrXopGrRSdUi/JE/CMikZgLyhpoJyKTmTwIyqZmA3KiZgExqftNJ1aKTqkUnVYs+eQnIjZobNTdqboBMajYBmdRMQCY1E5BJzZ8EZFKz6aRq0UnVopOqRZ+8pGYCcgNkUjMBuVEzqbkBMql5Qs0TQCY1TwCZ1LwB5DedVC06qVp0UrUIf+QFIJOaCcikZhOQJ9RMQN5QMwH5L1FzA2RS88ZJ1aKTqkUnVYs+WQbkBsikZgJyo+ZGzQ2QSc0E5Akgk5oJyKRmAjKpmYBMam6APKFm00nVopOqRSdViz75MjU3QG7UPAFkk5oJyKTmRs2Nmhs1E5A3gExqNp1ULTqpWnRStQh/ZBGQGzU3QG7UPAFkUjMBmdRMQG7UTEAmNb8JyI2abzqpWnRSteikatEnLwG5UTMBmdTcqJmATGomIDdAnlAzAZmATGomIE+omYC8oeYGyKTmjZOqRSdVi06qFn2yTM0TQCY1E5BJzQTkRs0NkCfU3AC5UTMBuVEzAZnUvKFm00nVopOqRSdViz75MiBvqLlR84aaGyCTmgnIpOZPAjKpuQEyqXnjpGrRSdWik6pFn/wyNROQCcgTaiYgk5obIJOaSc2NmgnIpGYCcgPkCSCTmgnIpOabTqoWnVQtOqlahD/yFwMyqXkDyBNqboBMaiYgk5ongExqJiBPqHnjpGrRSdWik6pFn7wE5DepmdRMQCY1N0B+E5AngExqnlDzm06qFp1ULTqpWvTJMjWbgNwAmdTcAHlCzRtqboDcqPkmIJOaN06qFp1ULTqpWvTJlwF5Qs2fpGYC8oaaJ4C8AeRGzTedVC06qVp0UrXok38ckCeATGpugExqboBMar4JyI2aTSdVi06qFp1ULfrk/5yaCcgEZJOaCcikZgIyqZmATGpugExqNp1ULTqpWnRSteiTL1PzTWomIJOaCcgbaiYgN0AmNTdAJjUTkEnNjZoJyDedVC06qVp0UrXok2VAfhOQGyCTmhs1E5AbNROQSc0EZFIzAZmAvAFkUvNNJ1WLTqoWnVQtwh+pWnJSteikatFJ1aKTqkUnVYtOqhadVC06qVp0UrXopGrRSdWik6pFJ1WLTqoWnVQt+h8x8UUwJOxn0QAAAABJRU5ErkJggg=="
-                />
-              </div>
-              <div
-                style="display: flex; flex-direction: column; align-items: center;"
-              >
-                <button
-                  aria-disabled="false"
-                  class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432"
-                  type="button"
-                >
-                  <span
-                    class="ui-button-content-a432"
-                  >
-                    Can't scan the QR code?
-                  </span>
-                </button>
-              </div>
-              <div
-                class="headingBold mt24"
-              >
-                Enter one-time code below
-              </div>
-              <div
-                class="textSection mb16"
-              >
-                The unique one-time code will appear that regenerates every 30 seconds.
-              </div>
-              <div>
-                <div
-                  class="wrapper"
-                >
-                  <input
-                    class="input"
-                    id="input-text-7"
-                    name="verificationCode"
-                    placeholder="Enter 6-digit verification code from app or recovery code"
-                    type="text"
-                    value=""
+                  <circle
+                    class="ui-loadingspinner-dot-4660"
+                    cx="10"
+                    cy="10"
+                    fill="none"
+                    r="6"
+                    stroke-width="2"
                   />
-                </div>
-              </div>
-            </div>
-            <div
-              class="modal-footer"
-            >
-              <button
-                aria-disabled="false"
-                class="wrapper fill secondary medium"
-                type="button"
-              >
-                <span
-                  class="content"
-                >
-                  Back
-                </span>
-              </button>
-              <button
-                aria-disabled="false"
-                class="wrapper fill primary medium"
-                type="button"
-              >
+                  <circle
+                    class="ui-loadingspinner-circle-4660"
+                    cx="10"
+                    cy="10"
+                    fill="none"
+                    r="6"
+                    stroke-width="2"
+                  />
+                  <span
+                    class="sr-only"
+                  >
+                    Loading...
+                  </span>
+                </svg>
                 <span
                   class="content"
                 >
@@ -2699,160 +2383,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
 </body>
 `;
 
-exports[`<TwoFactorAuthenticationModal /> render() should render the modal with an error banner because the code is not valid: error banner and continue button disabled 1`] = `
-<body
-  class="modal-open"
->
-  <div />
-  <div
-    style="position: relative; z-index: 1050; display: block;"
-    tabindex="-1"
-  >
-    <div
-      class=""
-    >
-      <div
-        class="modal show"
-        role="dialog"
-        style="display: block;"
-        tabindex="-1"
-      >
-        <div
-          class="modal-dialog"
-          role="document"
-          style="max-width: 600px;"
-        >
-          <div
-            class="modal-content"
-          >
-            <div
-              class="modal-header"
-            >
-              <h5
-                class="modal-title"
-              >
-                Verify your password
-              </h5>
-              <button
-                aria-label="Close"
-                class="close"
-                type="button"
-              >
-                <span
-                  aria-hidden="true"
-                >
-                  ×
-                </span>
-              </button>
-            </div>
-            <div
-              class="modal-body"
-            >
-              <div
-                class="wrapper mb-4"
-              >
-                <div
-                  class="step activeStep"
-                >
-                  <span
-                    class="stepIndex"
-                  >
-                    1
-                  </span>
-                  Password
-                </div>
-                <div
-                  class="line"
-                />
-                <div
-                  class="step"
-                >
-                  <span
-                    class="stepIndex"
-                  >
-                    2
-                  </span>
-                  App Setup
-                </div>
-                <div
-                  class="line"
-                />
-                <div
-                  class="step"
-                >
-                  <span
-                    class="stepIndex"
-                  >
-                    3
-                  </span>
-                  Verify
-                </div>
-                <div
-                  class="line"
-                />
-                <div
-                  class="step"
-                >
-                  <span
-                    class="stepIndex"
-                  >
-                    4
-                  </span>
-                  Recovery Codes
-                </div>
-              </div>
-              <div
-                class="headingBold"
-              >
-                Verify your code
-              </div>
-              <div
-                class="textSection mb16"
-              >
-                Enter a verification code from your authenticator app or a recovery code
-              </div>
-              <div>
-                <div
-                  class="wrapper"
-                >
-                  <input
-                    class="input"
-                    id="input-text-21"
-                    name="verificationCode"
-                    placeholder="Enter 6-digit verification code from app or recovery code"
-                    type="text"
-                    value=""
-                  />
-                </div>
-              </div>
-            </div>
-            <div
-              class="modal-footer"
-            >
-              <button
-                aria-disabled="false"
-                class="wrapper fill primary medium"
-                type="button"
-              >
-                <span
-                  class="content"
-                >
-                  Continue
-                </span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="modal-backdrop show"
-      />
-    </div>
-  </div>
-</body>
-`;
-
-exports[`<TwoFactorAuthenticationModal /> render() should render the modal with an error banner because the code is not valid: no error banner and continue button enabled 1`] = `
+exports[`<TwoFactorAuthenticationModal /> render() should render the modal with an error banner because the code is not valid 1`] = `
 <body
   class="modal-open"
 >

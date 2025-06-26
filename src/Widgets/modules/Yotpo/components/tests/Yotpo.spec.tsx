@@ -12,6 +12,7 @@ jest.mock('Widgets/modules/Template', () => {
         'Widgets/modules/Template',
     )
     return {
+        __esModule: true,
         ...templateExports,
         default: jest.fn(),
     }

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { AxiosError } from 'axios'
 import { fromJS, List, Map } from 'immutable'

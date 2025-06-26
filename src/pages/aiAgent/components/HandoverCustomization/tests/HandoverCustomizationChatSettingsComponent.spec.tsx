@@ -1,4 +1,4 @@
-import { fireEvent, screen, within } from '@testing-library/react'
+import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 
 import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
 import { useHandoverCustomizationChatFallbackSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatFallbackSettingsForm'
@@ -428,7 +428,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
             expect(getChatErrorDrawerTitle()).toBeUndefined()
         })
 
-        it('should close drawer when clicking on cancel button', () => {
+        it('should close drawer when clicking on cancel button', async () => {
             ;(
                 useHandoverCustomizationChatSettings as jest.Mock
             ).mockReturnValue({
@@ -457,7 +457,9 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
             fireEvent.click(screen.getByRole('button', { name: /cancel/i }))
             jest.advanceTimersByTime(300)
 
-            expect(drawerTitle).not.toBeVisible()
+            await waitFor(() => {
+                expect(drawerTitle).not.toBeVisible()
+            })
         })
 
         it('should close drawer when clicking on cancel button if there are changes', async () => {
@@ -478,7 +480,9 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
             fireEvent.click(screen.getByRole('button', { name: /cancel/i }))
             jest.advanceTimersByTime(300)
 
-            expect(drawerTitle).not.toBeVisible()
+            await waitFor(() => {
+                expect(drawerTitle).not.toBeVisible()
+            })
         })
     })
 

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -9,6 +7,7 @@ import thunk from 'redux-thunk'
 import { user as currentUserFixture } from 'fixtures/users'
 import { view as mockViewFixture } from 'fixtures/views'
 import { ViewVisibility } from 'models/view/types'
+import GorgiasApi from 'services/gorgiasApi'
 import { viewUpdated } from 'state/entities/views/actions'
 import { userEvent } from 'utils/testing/userEvent'
 
@@ -19,12 +18,11 @@ const mockData = fromJS({
     shared_with_teams: [],
     shared_with_users: [],
 })
-jest.mock('services/gorgiasApi.ts', () => () => ({
-    getViewSharing: jest.fn().mockResolvedValue(mockData),
-    setViewSharing: jest.fn().mockResolvedValue(mockViewFixture),
-}))
+jest.mock('services/gorgiasApi')
 
 jest.mock('state/entities/views/actions.ts')
+
+const GorgiasApiMock = jest.mocked(GorgiasApi)
 
 describe('<ViewSharingModal/>', () => {
     const minProps = {
@@ -35,6 +33,18 @@ describe('<ViewSharingModal/>', () => {
 
     const store = mockStore({
         currentUser: fromJS(currentUserFixture),
+    })
+
+    beforeEach(() => {
+        GorgiasApiMock.mockImplementation(
+            () =>
+                ({
+                    getViewSharing: jest.fn().mockResolvedValue(mockData),
+                    setViewSharing: jest
+                        .fn()
+                        .mockResolvedValue(mockViewFixture),
+                }) as unknown as GorgiasApi,
+        )
     })
 
     it('should render as public', async () => {

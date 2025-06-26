@@ -84,12 +84,11 @@ afterEach(() => {
 afterAll(() => {
     server.close()
 })
-
-const Timezones = {
-    UTC: 'UTC',
-    EST: 'EST',
-}
 jest.mock('moment-timezone', () => {
+    const Timezones = {
+        UTC: 'UTC',
+        EST: 'EST',
+    }
     const tz = (timezone: string) => ({
         utcOffset: () => (timezone === Timezones.UTC ? '+0' : '+1'),
         format: () => (timezone === Timezones.UTC ? '+0' : '+1'),
@@ -128,7 +127,6 @@ const renderComponent = () => {
 describe('Your profile page', () => {
     const realDateNow = Date.now.bind(global.Date)
     beforeEach(() => {
-        jest.resetAllMocks()
         global.Date.now = jest.fn(() => 1587000000000)
         Object.defineProperty(window, 'matchMedia', {
             value: jest.fn(() => {
@@ -141,7 +139,6 @@ describe('Your profile page', () => {
     })
 
     afterEach(() => {
-        jest.resetAllMocks()
         global.Date.now = realDateNow
     })
 

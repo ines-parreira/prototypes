@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Call } from '@twilio/voice-sdk'
 import MockAdapter from 'axios-mock-adapter'
@@ -87,7 +85,6 @@ describe('<OngoingPhoneCall/>', () => {
     }
 
     beforeEach(() => {
-        jest.resetAllMocks()
         mockedServer.reset()
 
         store = mockStore({

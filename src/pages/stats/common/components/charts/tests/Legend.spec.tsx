@@ -1,8 +1,7 @@
-import { act, render, screen } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 
 import colors from '@gorgias/design-tokens/tokens/colors'
-
-import { userEvent } from 'utils/testing/userEvent'
 
 import Legend from '../Legend'
 
@@ -50,7 +49,11 @@ describe('<Legend />', () => {
             userEvent.hover(screen.getByText(itemsWithTooltip[0].label))
         })
 
-        expect(await screen.findByRole('tooltip')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getAllByRole('tooltip').length).toBe(
+                itemsWithTooltip.length,
+            )
+        })
     })
 
     it('should render  the checkbox legend with tooltip', async () => {
@@ -64,6 +67,10 @@ describe('<Legend />', () => {
             userEvent.hover(screen.getByText(itemsWithTooltip[0].label))
         })
 
-        expect(await screen.findByRole('tooltip')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getAllByRole('tooltip').length).toBe(
+                itemsWithTooltip.length,
+            )
+        })
     })
 })

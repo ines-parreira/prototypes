@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 
 import Collapse from '../Collapse'
 
@@ -55,7 +55,7 @@ describe('<Collapse />', () => {
         expect(screen.getByText('FooBar').style[prop]).toBe('')
     })
 
-    it('should apply correct classes', () => {
+    it('should apply correct classes', async () => {
         const { rerender } = render(<Collapse isOpen={false}>FooBar</Collapse>)
         rerender(<Collapse isOpen>FooBar</Collapse>)
         expect(screen.getByText('FooBar')).toHaveClass('isCollapsing')
@@ -65,7 +65,9 @@ describe('<Collapse />', () => {
         rerender(<Collapse isOpen={false}>FooBar</Collapse>)
         expect(screen.getByText('FooBar')).toHaveClass('isCollapsing')
         jest.advanceTimersByTime(350)
-        expect(screen.getByText('FooBar')).toHaveClass('isCollapsed')
+        await waitFor(() => {
+            expect(screen.getByText('FooBar')).toHaveClass('isCollapsed')
+        })
     })
 
     it.each([
@@ -73,7 +75,7 @@ describe('<Collapse />', () => {
         ['width', 'horizontal'],
     ] as const)(
         'should set inline style to 0 when isOpen changes to false and remove after transition',
-        (prop, direction) => {
+        async (prop, direction) => {
             const { rerender } = render(
                 <Collapse isOpen direction={direction}>
                     FooBar
@@ -86,7 +88,9 @@ describe('<Collapse />', () => {
             )
             expect(screen.getByText('FooBar').style[prop]).toBe('0px')
             jest.advanceTimersByTime(350)
-            expect(screen.getByText('FooBar').style[prop]).toBe('')
+            await waitFor(() => {
+                expect(screen.getByText('FooBar').style[prop]).toBe('')
+            })
         },
     )
 })

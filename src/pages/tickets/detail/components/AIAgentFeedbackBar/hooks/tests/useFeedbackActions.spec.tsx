@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { renderHook } from 'utils/testing/renderHook'
 
 import { ChoiceOption } from '../../MissingKnowledgeSelect'
@@ -67,6 +65,7 @@ describe('useFeedbackActions', () => {
                 sourceItems: [] as any[],
                 macros: [] as any[],
                 ingestedFiles: [] as any[],
+                storeWebsiteQuestions: [] as any[],
                 enrichedData: {
                     knowledgeResources: [],
                     freeForm: null,
@@ -198,6 +197,7 @@ describe('useFeedbackActions', () => {
                     sourceItems: mockData.sourceItems,
                     macros: mockData.macros,
                     ingestedFiles: mockData.ingestedFiles,
+                    storeWebsiteQuestions: mockData.storeWebsiteQuestions,
                     enrichedData: mockData.enrichedData,
                     setLoadingMutations: setLoadingMutationsMock as any,
                 } as any),
@@ -258,6 +258,7 @@ describe('useFeedbackActions', () => {
                     sourceItems: mockData.sourceItems,
                     macros: mockData.macros,
                     ingestedFiles: mockData.ingestedFiles,
+                    storeWebsiteQuestions: mockData.storeWebsiteQuestions,
                     enrichedData: mockData.enrichedData,
                     setLoadingMutations: setLoadingMutationsMock as any,
                 } as any),

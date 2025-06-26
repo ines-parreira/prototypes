@@ -1,11 +1,51 @@
-/* eslint-disable */
-import { Component } from 'react'
+import { Component, ReactNode } from 'react'
 
 import { FroalaEditor } from './froala-config'
 
-let lastId = 0
-export default class FroalaEditorFunctionality extends Component {
-    constructor(props) {
+interface FroalaConfig {
+    immediateReactModelUpdate?: boolean
+    reactIgnoreAttrs?: string[] | null
+    initOnClick?: boolean
+    events?: { [key: string]: ((...args: any[]) => void) | undefined }
+    [key: string]: any
+}
+
+interface FroalaEditorProps {
+    tag?: string
+    config?: FroalaConfig
+    model?: string | { [key: string]: any }
+    onManualControllerReady?: (controls: {
+        initialize: () => void
+        destroy: () => void
+        getEditor: () => any
+    }) => void
+    onModelChange?: (content: string) => void
+    skipReset?: boolean
+    children?: ReactNode
+}
+
+interface ManualController {
+    initialize: () => void
+    destroy: () => void
+    getEditor: () => any
+}
+
+export default class FroalaEditorFunctionality extends Component<FroalaEditorProps> {
+    private defaultTag: string
+    private tag: string
+    private listeningEvents: any[]
+    private element: HTMLElement | null
+    private editor: any
+    private config: FroalaConfig
+    private editorInitialized: boolean
+    private SPECIAL_TAGS: string[]
+    private INNER_HTML_ATTR: string
+    private hasSpecialTag: boolean
+    private oldModel: string | { [key: string]: any } | null
+    private el: HTMLElement | null = null
+    private _initEvents?: (() => void)[]
+
+    constructor(props: FroalaEditorProps) {
         super(props)
 
         // Tag on which the editor is initialized.
@@ -36,8 +76,8 @@ export default class FroalaEditorFunctionality extends Component {
 
     // After first time render.
     componentDidMount() {
-        let tagName = this.el.tagName.toLowerCase()
-        if (this.SPECIAL_TAGS.indexOf(tagName) != -1) {
+        let tagName = this.el!.tagName.toLowerCase()
+        if (this.SPECIAL_TAGS.indexOf(tagName) !== -1) {
             this.tag = tagName
             this.hasSpecialTag = true
         }
@@ -54,7 +94,9 @@ export default class FroalaEditorFunctionality extends Component {
     }
 
     componentDidUpdate() {
-        if (JSON.stringify(this.oldModel) == JSON.stringify(this.props.model)) {
+        if (
+            JSON.stringify(this.oldModel) === JSON.stringify(this.props.model)
+        ) {
             return
         }
 
@@ -62,14 +104,14 @@ export default class FroalaEditorFunctionality extends Component {
     }
 
     // Return cloned object
-    clone(item) {
+    clone(item: any): any {
         const me = this
         if (!item) {
             return item
         } // null, undefined values check
 
         let types = [Number, String, Boolean],
-            result
+            result: any
 
         // normalizing primitives if someone did new String('aaa'), or new Number('444');
         types.forEach(function (type) {
@@ -81,7 +123,11 @@ export default class FroalaEditorFunctionality extends Component {
         if (typeof result === 'undefined') {
             if (Object.prototype.toString.call(item) === '[object Array]') {
                 result = []
-                item.forEach(function (child, index, array) {
+                item.forEach(function (
+                    child: any,
+                    index: number,
+                    __array: any[],
+                ) {
                     result[index] = me.clone(child)
                 })
             } else if (typeof item === 'object') {
@@ -94,9 +140,9 @@ export default class FroalaEditorFunctionality extends Component {
                         result = new Date(item)
                     } else {
                         // it is an object literal
-                        result = {}
+                        result = {} as any
                         for (var i in item) {
-                            result[i] = me.clone(item[i])
+                            ;(result as any)[i] = me.clone(item[i])
                         }
                     }
                 } else {
@@ -138,8 +184,8 @@ export default class FroalaEditorFunctionality extends Component {
         this.editor = new FroalaEditor(this.element, this.config)
     }
 
-    setContent(firstTime) {
-        if (this.props.model || this.props.model == '') {
+    setContent(firstTime?: boolean) {
+        if (this.props.model || this.props.model === '') {
             this.oldModel = this.props.model
 
             if (this.hasSpecialTag) {
@@ -150,7 +196,7 @@ export default class FroalaEditorFunctionality extends Component {
         }
     }
 
-    setNormalTagContent(firstTime) {
+    setNormalTagContent(firstTime?: boolean) {
         let self = this
 
         function htmlSet() {
@@ -186,18 +232,21 @@ export default class FroalaEditorFunctionality extends Component {
     }
 
     setSpecialTagContent() {
-        let tags = this.props.model
+        let tags = this.props.model as { [key: string]: any }
 
         // add tags on element
         if (tags) {
             for (let attr in tags) {
-                if (tags.hasOwnProperty(attr) && attr != this.INNER_HTML_ATTR) {
-                    this.element.setAttribute(attr, tags[attr])
+                if (
+                    tags.hasOwnProperty(attr) &&
+                    attr !== this.INNER_HTML_ATTR
+                ) {
+                    this.element!.setAttribute(attr, tags[attr])
                 }
             }
 
             if (tags.hasOwnProperty(this.INNER_HTML_ATTR)) {
-                this.element.innerHTML = tags[this.INNER_HTML_ATTR]
+                this.element!.innerHTML = tags[this.INNER_HTML_ATTR]
             }
         }
     }
@@ -222,13 +271,13 @@ export default class FroalaEditorFunctionality extends Component {
     generateManualController() {
         let self = this
 
-        let controls = {
+        let controls: ManualController = {
             initialize: () => self.createEditor.call(self),
             destroy: () => self.destroyEditor.call(self),
             getEditor: () => self.getEditor.call(self),
         }
 
-        this.props.onManualControllerReady(controls)
+        this.props.onManualControllerReady!(controls)
     }
 
     updateModel() {
@@ -236,25 +285,25 @@ export default class FroalaEditorFunctionality extends Component {
             return
         }
 
-        let modelContent = ''
+        let modelContent: string | { [key: string]: any } = ''
 
         if (this.hasSpecialTag) {
-            let attributeNodes = this.element.attributes
-            let attrs = {}
+            let attributeNodes = this.element!.attributes
+            let attrs: { [key: string]: any } = {}
 
             for (let i = 0; i < attributeNodes.length; i++) {
                 let attrName = attributeNodes[i].name
                 if (
                     this.config.reactIgnoreAttrs &&
-                    this.config.reactIgnoreAttrs.indexOf(attrName) != -1
+                    this.config.reactIgnoreAttrs.indexOf(attrName) !== -1
                 ) {
                     continue
                 }
                 attrs[attrName] = attributeNodes[i].value
             }
 
-            if (this.element.innerHTML) {
-                attrs[this.INNER_HTML_ATTR] = this.element.innerHTML
+            if (this.element!.innerHTML) {
+                attrs[this.INNER_HTML_ATTR] = this.element!.innerHTML
             }
 
             modelContent = attrs
@@ -266,7 +315,7 @@ export default class FroalaEditorFunctionality extends Component {
         }
 
         this.oldModel = modelContent
-        this.props.onModelChange(modelContent)
+        this.props.onModelChange(modelContent as string)
     }
 
     initListeners() {
@@ -291,12 +340,15 @@ export default class FroalaEditorFunctionality extends Component {
     }
 
     // register event on jquery editor element
-    registerEvent(eventName, callback) {
+    registerEvent(
+        eventName: string,
+        callback?: ((...args: any[]) => void) | undefined,
+    ) {
         if (!eventName || !callback) {
             return
         }
 
-        if (eventName == 'initialized') {
+        if (eventName === 'initialized') {
             if (!this._initEvents) this._initEvents = []
             this._initEvents.push(callback)
         } else {
@@ -309,10 +361,11 @@ export default class FroalaEditorFunctionality extends Component {
     }
 
     render() {
+        const TagName = this.tag as keyof JSX.IntrinsicElements
         return (
-            <this.tag ref={(el) => (this.el = el)}>
+            <TagName ref={(el: any) => (this.el = el)}>
                 {this.props.children}
-            </this.tag>
+            </TagName>
         )
     }
 }

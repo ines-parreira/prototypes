@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
 import { StaticRouter } from 'react-router-dom'
 
@@ -11,14 +9,11 @@ import RoutesWrapper from '../RoutesWrapper'
 jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
 const useFlagMock = assumeMock(useFlag)
 
-jest.mock(
-    '../PanelRoutes',
-    () =>
-        ({
-            ...jest.requireActual('../PanelRoutes'),
-            default: () => <div>PanelRoutes</div>,
-        }) as typeof import('../PanelRoutes'),
-)
+jest.mock('../PanelRoutes', () => ({
+    __esModule: true,
+    ...jest.requireActual('../PanelRoutes'),
+    default: () => <div>PanelRoutes</div>,
+}))
 jest.mock('../Routes', () => () => <div>Routes</div>)
 
 describe('RoutesWrapper', () => {

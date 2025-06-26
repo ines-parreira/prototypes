@@ -21,6 +21,9 @@ import { mockQueryClient } from './reactQueryTestingUtils'
 
 import './customMatchers'
 
+const { THEME_NAME, themeTokenMap } =
+    require('core/theme') as typeof import('core/theme')
+
 // Set default moment timezone
 const moment = jest.requireActual('moment-timezone')
 ;(moment as { tz: MomentTimezone }).tz.setDefault(envVars.TZ || 'UTC')
@@ -308,17 +311,13 @@ global.fetch = jest.fn(() =>
     Promise.resolve({ arrayBuffer: () => ({}) } as Response),
 )
 
-jest.mock('core/theme/useTheme.ts', () => {
-    const { THEME_NAME, themeTokenMap } =
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        require('core/theme') as typeof import('core/theme')
-
-    return () => ({
+jest.mock('core/theme/useTheme.ts', () =>
+    jest.fn(() => ({
         name: THEME_NAME.Light,
         resolvedName: THEME_NAME.Light,
         tokens: themeTokenMap[THEME_NAME.Light],
-    })
-})
+    })),
+)
 
 jest.mock('utils/launchDarkly')
 

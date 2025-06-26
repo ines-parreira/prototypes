@@ -1,9 +1,7 @@
-import React from 'react'
-
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 
 import { useSearchCustomer } from 'models/aiAgent/queries'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { CustomerSearchDropdownSelectView } from './CustomerSearchDropdownSelectView'
 
@@ -28,11 +26,13 @@ describe('CustomerSearchDropdownSelectView', () => {
             error: null,
             isRefetching: false,
             isRefetchError: false,
-            data: {
-                data: { data: [] },
-            },
+            data: undefined,
             refetch: jest.fn(),
         } as unknown as ReturnType<typeof useSearchCustomer>)
+    })
+
+    afterEach(() => {
+        jest.clearAllMocks()
     })
 
     it('renders without crashing', () => {
@@ -66,9 +66,7 @@ describe('CustomerSearchDropdownSelectView', () => {
             error: null,
             isRefetching: false,
             isRefetchError: false,
-            data: {
-                data: { data: [customer] },
-            },
+            data: undefined,
             refetch: refetchMock,
         } as unknown as ReturnType<typeof useSearchCustomer>)
 
@@ -81,9 +79,14 @@ describe('CustomerSearchDropdownSelectView', () => {
             />,
         )
         const input = screen.getByRole('textbox')
-        await userEvent.type(input, 'test@example.com')
 
-        await waitFor(() => expect(refetchMock).toHaveBeenCalled())
+        await act(async () => {
+            await userEvent.type(input, 'test@example.com')
+        })
+
+        await waitFor(() => expect(refetchMock).toHaveBeenCalled(), {
+            timeout: 2000,
+        })
     })
 
     it('dropdown visibility based on state', async () => {
@@ -107,7 +110,10 @@ describe('CustomerSearchDropdownSelectView', () => {
             />,
         )
         const input = screen.getByRole('textbox')
-        await userEvent.type(input, 'test@example.com')
+
+        await act(async () => {
+            await userEvent.type(input, 'test@example.com')
+        })
 
         await waitFor(() => {
             expect(screen.getByRole('listbox')).toBeInTheDocument()
@@ -136,10 +142,20 @@ describe('CustomerSearchDropdownSelectView', () => {
             />,
         )
         const input = screen.getByRole('textbox')
-        await userEvent.type(input, 'test@example.com')
 
-        const option = await screen.findByText('test@example.com')
-        userEvent.click(option)
+        await act(async () => {
+            await userEvent.type(input, 'test@example.com')
+        })
+
+        const option = await screen.findByText(
+            'test@example.com',
+            {},
+            { timeout: 2000 },
+        )
+
+        await act(async () => {
+            await userEvent.click(option)
+        })
 
         await waitFor(() =>
             expect(onSelectMock).toHaveBeenCalledWith({

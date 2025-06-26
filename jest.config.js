@@ -191,9 +191,22 @@ module.exports = {
 
     // A map from regular expressions to paths to transformers
     transform: {
-        '\\.[jt]sx?$': ['babel-jest', { configFile: './babel.config.json' }],
+        '^.+\\.(t|j)sx?$': [
+            '@swc/jest',
+            {
+                jsc: {
+                    transform: {
+                        react: {
+                            runtime: 'automatic',
+                        },
+                    },
+                    experimental: {
+                        plugins: [['swc_mut_cjs_exports', {}]],
+                    },
+                },
+            },
+        ],
     },
-
     // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
     transformIgnorePatterns: [
         '/node_modules/(?!.pnpm|jsonpath-plus|@gorgias|lodash-es|react-dnd|react-dnd-html5-backend|dnd-core|@react-dnd)',

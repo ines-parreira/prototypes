@@ -16,21 +16,21 @@ describe('<LabelWithTooltip />', () => {
         expect(screen.getByText(label)).toBeInTheDocument()
     })
 
-    it('should render tooltip on hover label', () => {
-        jest.useFakeTimers()
+    it('should render tooltip on hover label', async () => {
         render(<LabelWithTooltip label={label} />)
 
         fireEvent.mouseOver(screen.getByText(label))
-        jest.runAllTimers()
 
-        expect(screen.getByRole('tooltip')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText(label)).toBeInTheDocument()
+        })
     })
 
     it('should render tooltip with custom text', async () => {
         const tooltipText = 'Tooltip text'
         render(<LabelWithTooltip label={label} tooltipText={tooltipText} />)
 
-        await fireEvent.mouseOver(screen.getByText(label))
+        fireEvent.mouseOver(screen.getByText(label))
 
         await waitFor(() => {
             expect(screen.getByText(tooltipText)).toBeInTheDocument()

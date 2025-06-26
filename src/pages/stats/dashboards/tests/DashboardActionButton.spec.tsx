@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { render, screen, waitFor, within } from '@testing-library/react'
 
 import { useDownloadDashboardData } from 'hooks/reporting/dashboards/useDownloadDashboardData'
@@ -20,13 +18,15 @@ import { assumeMock } from 'utils/testing'
 import { userEvent } from 'utils/testing/userEvent'
 
 const mockPush = jest.fn()
-const baseURL = '/some/path'
-const liveOverviewURL = `${baseURL}/live-overview`
+function getBaseURL() {
+    return '/some/path'
+}
+const liveOverviewURL = `${getBaseURL()}/live-overview`
 
 jest.mock('react-router-dom', () => ({
     useLocation: jest
         .fn()
-        .mockReturnValue({ pathname: `${baseURL}/dashboards` }),
+        .mockReturnValue({ pathname: `${getBaseURL()}/dashboards` }),
     useHistory: () => ({
         push: mockPush,
     }),

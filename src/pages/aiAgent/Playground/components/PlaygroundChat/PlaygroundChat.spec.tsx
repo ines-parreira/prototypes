@@ -49,7 +49,7 @@ jest.mock('../../../hooks/useAiAgentOnboardingNotification', () => ({
 }))
 
 jest.mock(
-    'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent.js',
+    'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent',
     () => () => <div />,
 )
 jest.mock('hooks/useSearchParam', () => ({

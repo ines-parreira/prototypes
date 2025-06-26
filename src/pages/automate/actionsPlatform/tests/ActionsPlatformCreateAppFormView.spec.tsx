@@ -60,6 +60,8 @@ mockUseApps.mockReturnValue({
 
 describe('<ActionsPlatformCreateAppFormView />', () => {
     beforeEach(() => {
+        mockCreateActionsApp.mockClear()
+        mockCreateActionsApp.mockResolvedValue(undefined)
         mockUseCreateActionsApp.mockReturnValue({
             isLoading: false,
             createActionsApp: mockCreateActionsApp,
@@ -108,20 +110,29 @@ describe('<ActionsPlatformCreateAppFormView />', () => {
 
         await flushPromises()
 
-        act(() => {
+        // Ensure form is valid before submission
+        await waitFor(() => {
+            const submitButton = screen.getByText('Create App settings')
+            expect(submitButton).not.toBeDisabled()
+        })
+
+        await act(async () => {
             fireEvent.click(screen.getByText('Create App settings'))
         })
 
-        expect(mockCreateActionsApp).toHaveBeenCalledWith([
-            { id: 'someid' },
-            {
-                id: 'someid',
-                auth_type: 'api-key',
-                auth_settings: {
-                    url: 'https://example.com',
+        await waitFor(() => {
+            expect(mockCreateActionsApp).toHaveBeenCalledWith([
+                { id: 'someid' },
+                {
+                    id: 'someid',
+                    auth_type: 'api-key',
+                    auth_settings: {
+                        url: 'https://example.com',
+                    },
                 },
-            },
-        ])
+            ])
+        })
+
         await waitFor(() => {
             expect(historyPushSpy).toHaveBeenCalledWith(
                 '/app/ai-agent/actions-platform/apps',

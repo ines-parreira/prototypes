@@ -33,7 +33,6 @@ import { RootState, StoreDispatch } from 'state/types'
 import { toJS } from 'utils'
 import { getLDClient } from 'utils/launchDarkly'
 import { assumeMock, flushPromises } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { Campaign } from '../../../types/Campaign'
 import { CampaignDetailsForm } from '../CampaignDetailsForm'
@@ -211,7 +210,7 @@ describe('<CampaignDetailsForm />', () => {
             )
 
             act(() => {
-                userEvent.click(screen.getByText(/Publish your campaign/))
+                fireEvent.click(screen.getByText(/Publish your campaign/))
             })
 
             await waitFor(() => {
@@ -236,7 +235,7 @@ describe('<CampaignDetailsForm />', () => {
             )
 
             act(() => {
-                userEvent.click(screen.getByText(/Publish your campaign/))
+                fireEvent.click(screen.getByText(/Publish your campaign/))
             })
 
             await waitFor(() => {
@@ -245,7 +244,7 @@ describe('<CampaignDetailsForm />', () => {
                 ).toBeAriaEnabled()
             })
 
-            userEvent.click(screen.getByRole('button', { name: 'Create' }))
+            fireEvent.click(screen.getByRole('button', { name: 'Create' }))
 
             await waitFor(() => {
                 const activateButton = screen.getByText('Create')
@@ -294,7 +293,7 @@ describe('<CampaignDetailsForm />', () => {
             )
 
             act(() => {
-                userEvent.click(screen.getByText(/Publish your campaign/))
+                fireEvent.click(screen.getByText(/Publish your campaign/))
             })
 
             const scheduleOption = result.container.querySelector(
@@ -323,7 +322,7 @@ describe('<CampaignDetailsForm />', () => {
             )
 
             act(() => {
-                userEvent.click(screen.getByText(/Publish your campaign/))
+                fireEvent.click(screen.getByText(/Publish your campaign/))
             })
 
             const scheduleOption = result.container.querySelector(
@@ -331,10 +330,10 @@ describe('<CampaignDetailsForm />', () => {
             ) as Element
 
             act(() => {
-                userEvent.click(scheduleOption)
+                fireEvent.click(scheduleOption)
             })
 
-            userEvent.click(
+            fireEvent.click(
                 screen.getByRole('button', { name: 'Update Campaign' }),
             )
 
@@ -369,18 +368,18 @@ describe('<CampaignDetailsForm />', () => {
                 </Provider>,
             )
 
-            act(() => {
-                userEvent.click(screen.getByText(/Generate/))
+            await act(async () => {
+                fireEvent.click(screen.getByText(/Generate/))
             })
 
             await flushPromises()
 
-            act(() => {
-                userEvent.click(screen.getByText(/Apply/))
+            await act(async () => {
+                fireEvent.click(screen.getByText(/Apply/))
             })
 
-            act(() => {
-                userEvent.click(screen.getByText(/Update Campaign/))
+            await act(async () => {
+                fireEvent.click(screen.getByText(/Update Campaign/))
             })
 
             expect(onUpdateCampaign).toHaveBeenCalledTimes(1)
@@ -414,18 +413,18 @@ describe('<CampaignDetailsForm />', () => {
                 </Provider>,
             )
 
-            act(() => {
-                userEvent.click(screen.getByText(/Generate/))
+            await act(async () => {
+                fireEvent.click(screen.getByText(/Generate/))
             })
 
             await flushPromises()
 
-            act(() => {
-                userEvent.click(screen.getByText(/Apply/))
+            await act(async () => {
+                fireEvent.click(screen.getByText(/Apply/))
             })
 
             act(() => {
-                userEvent.click(screen.getByText(/Update Campaign/))
+                fireEvent.click(screen.getByText(/Update Campaign/))
             })
 
             expect(onUpdateCampaign).toHaveBeenCalledTimes(1)
@@ -582,7 +581,7 @@ describe('<CampaignDetailsForm />', () => {
                 )
             })
 
-            userEvent.click(
+            fireEvent.click(
                 screen.getByRole('button', { name: 'Update Campaign' }),
             )
             await waitFor(() => {

@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 
@@ -9,11 +9,13 @@ import VerificationForm, {
 
 jest.mock(
     '../EmailOutboundVerification/VerificationForm/VerificationForm',
-    () =>
-        ({
-            ...jest.requireActual(
-                '../EmailOutboundVerification/VerificationForm/VerificationForm',
-            ),
+    () => {
+        const actual = jest.requireActual(
+            '../EmailOutboundVerification/VerificationForm/VerificationForm',
+        )
+        return {
+            ...actual,
+            __esModule: true,
             default: (props: ComponentProps<typeof VerificationForm>) => (
                 <div data-testid="verification-form">
                     <button
@@ -22,7 +24,8 @@ jest.mock(
                     />
                 </div>
             ),
-        }) as Record<any, any>,
+        }
+    },
 )
 
 describe('SingleSenderVerificationFormModal', () => {

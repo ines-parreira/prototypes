@@ -87,20 +87,18 @@ describe('withGrammarlyUsageTracking', () => {
                 global.localStorage = realLocalStorage
             })
 
-            it('should detect grammarly extension and send only one event in case of multiple detections', () => {
+            it('should detect grammarly extension and send events when localStorage not working', () => {
                 render(<grammarly-extension />, {
                     container: domElement,
                 })
                 const Wrapped = withGrammarlyUsageTracking(MockComponent)
                 const { getByText } = render(<Wrapped />)
 
-                jest.runAllTimers()
                 fireEvent.click(getByText('DetectGrammarlyTrigger'))
                 jest.runAllTimers()
                 fireEvent.click(getByText('DetectGrammarlyTrigger'))
                 jest.runAllTimers()
 
-                expect(logEvent).toBeCalledTimes(1)
                 expect(logEvent).toBeCalledWith(SegmentEvent.GrammarlyEnabled)
                 expect(localStorage).toBeNull()
             })

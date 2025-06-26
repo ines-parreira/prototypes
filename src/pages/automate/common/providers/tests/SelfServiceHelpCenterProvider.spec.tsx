@@ -14,7 +14,9 @@ import { assumeMock } from 'utils/testing'
 
 import SelfServiceHelpCentersProvider from '../SelfServiceHelpCentersProvider'
 
-const SHOP_NAME = 'My Shop'
+function getShopName() {
+    return 'My Shop'
+}
 const mockHelpCentersList = [
     {
         created_datetime: '2023-12-21T13:01:16.097Z',
@@ -32,7 +34,7 @@ const mockHelpCentersList = [
         powered_by_deactivated_datetime: null,
         search_deactivated_datetime: null,
         self_service_deactivated_datetime: null,
-        shop_name: SHOP_NAME,
+        shop_name: getShopName(),
         subdomain: 'acme',
         supported_locales: ['en-US'],
         type: 'faq',
@@ -47,7 +49,7 @@ jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     useParams: jest.fn().mockReturnValue({
         shopType: 'shopify',
-        shopName: SHOP_NAME,
+        shopName: getShopName(),
     }),
 }))
 
@@ -87,7 +89,7 @@ describe('SelfServiceHelpCentersProvider', () => {
 
         await waitFor(() => {
             expect(mockClient.listHelpCenters).toHaveBeenCalledWith({
-                shop_name: SHOP_NAME,
+                shop_name: getShopName(),
                 per_page: HELP_CENTER_MAX_CREATION,
             })
         })

@@ -8,14 +8,14 @@ const mockScrollIntoView = jest.fn()
 
 jest.mock('scroll-into-view-if-needed')
 
-const MockResizeObserver = (fn: () => void) => {
-    return {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        observe: (_: HTMLElement) => {
-            fn()
-        },
-        disconnect: jest.fn(),
+class MockResizeObserver {
+    constructor(private fn: () => void) {}
+
+    observe(__: HTMLElement) {
+        this.fn()
     }
+
+    disconnect = jest.fn()
 }
 
 describe('useScrollActiveItemIntoView', () => {
@@ -25,6 +25,7 @@ describe('useScrollActiveItemIntoView', () => {
         })
     })
     beforeEach(() => {
+        mockScrollIntoView.mockClear()
         ;(scrollIntoView as jest.Mock).mockImplementation(mockScrollIntoView)
     })
 

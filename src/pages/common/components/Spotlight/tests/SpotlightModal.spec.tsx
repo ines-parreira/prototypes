@@ -2,7 +2,7 @@
 import mockedVirtuoso from 'tests/mockedVirtuoso'
 
 import React, { ComponentProps, ReactPortal } from 'react'
-import { userEvent } from 'utils/testing/userEvent'
+import { userEvent } from '@testing-library/user-event'
 
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { createBrowserHistory } from 'history'
@@ -319,7 +319,7 @@ describe('<SpotlightModal/>', () => {
             expect(advancedSearchButton).not.toBeInTheDocument()
         })
 
-        it('should navigate to tickets advanced search on click when modal is opened and log event', () => {
+        it('should navigate to tickets advanced search on click when modal is opened and log event', async () => {
             renderWithRouter(<WrappedSpotlightModal {...minProps} />)
 
             const ticketsTab = getTicketsTab()
@@ -327,23 +327,27 @@ describe('<SpotlightModal/>', () => {
             const advancedSearchButton = screen.getByText('Advanced Search')
             userEvent.click(advancedSearchButton)
 
-            expect(logEventMock).toHaveBeenCalledWith(
-                SegmentEvent.GlobalSearchAdvancedButtonClick,
-            )
+            await waitFor(() => {
+                expect(logEventMock).toHaveBeenCalledWith(
+                    SegmentEvent.GlobalSearchAdvancedButtonClick,
+                )
+            })
         })
 
-        it('should navigate to tickets advanced search on Federated Search', () => {
+        it('should navigate to tickets advanced search on Federated Search', async () => {
             renderWithRouter(<WrappedSpotlightModal {...minProps} />)
 
             const advancedSearchButton = screen.getByText('Advanced Search')
             userEvent.click(advancedSearchButton)
 
-            expect(history.push).toHaveBeenCalledWith({
-                pathname: TICKETS_ADVANCED_SEARCH_PATH,
+            await waitFor(() => {
+                expect(history.push).toHaveBeenCalledWith({
+                    pathname: TICKETS_ADVANCED_SEARCH_PATH,
+                })
+                expect(logEventMock).toHaveBeenCalledWith(
+                    SegmentEvent.GlobalSearchAdvancedButtonClick,
+                )
             })
-            expect(logEventMock).toHaveBeenCalledWith(
-                SegmentEvent.GlobalSearchAdvancedButtonClick,
-            )
         })
 
         it('should navigate to customers advanced search on click when modal is opened on the customers tab and log event', async () => {
@@ -356,12 +360,14 @@ describe('<SpotlightModal/>', () => {
             const advancedSearchButton = getByText('Advanced Search')
             userEvent.click(advancedSearchButton)
 
-            expect(history.push).toHaveBeenCalledWith({
-                pathname: CUSTOMERS_ADVANCED_SEARCH_PATH,
+            await waitFor(() => {
+                expect(history.push).toHaveBeenCalledWith({
+                    pathname: CUSTOMERS_ADVANCED_SEARCH_PATH,
+                })
             })
         })
 
-        it('should close the modal when navigating to advanced search ', () => {
+        it('should close the modal when navigating to advanced search ', async () => {
             renderWithRouter(<WrappedSpotlightModal {...minProps} />)
 
             const ticketsTab = getTicketsTab()
@@ -369,7 +375,9 @@ describe('<SpotlightModal/>', () => {
             const advancedSearchButton = screen.getByText('Advanced Search')
             userEvent.click(advancedSearchButton)
 
-            expect(mockCloseModal).toHaveBeenCalled()
+            await waitFor(() => {
+                expect(mockCloseModal).toHaveBeenCalled()
+            })
         })
 
         it('should not navigate to advanced search on keypress when modal is closed', async () => {
@@ -411,47 +419,61 @@ describe('<SpotlightModal/>', () => {
         })
 
         it('should handle shift + enter shortcut after key input when search input is focused and navigate to advanced search', async () => {
-            jest.useFakeTimers()
             renderWithRouter(<WrappedSpotlightModal {...minProps} />, {
                 history,
             })
             const ticketsTab = getTicketsTab()
             await userEvent.click(ticketsTab)
-            await act(flushPromises)
             const searchInput = screen.getByPlaceholderText('Search...')
 
-            await userEvent.type(searchInput, 'foo')
-            await act(flushPromises)
-            jest.runOnlyPendingTimers()
-            await act(flushPromises)
-            fireEnterShortcutUsingKeyboardEvent(searchInput, '{shift}{enter}')
-            await act(flushPromises)
-
-            expect(history.push).toHaveBeenCalledWith({
-                pathname: TICKETS_ADVANCED_SEARCH_PATH,
-                search: stringify({ q: 'foo' }),
+            await act(async () => {
+                await userEvent.type(searchInput, 'foo')
             })
+
+            await act(async () => {
+                fireEnterShortcutUsingKeyboardEvent(
+                    searchInput,
+                    '{shift}{enter}',
+                )
+            })
+
+            await waitFor(
+                () => {
+                    expect(history.push).toHaveBeenCalledWith({
+                        pathname: TICKETS_ADVANCED_SEARCH_PATH,
+                        search: stringify({ q: 'foo' }),
+                    })
+                },
+                { timeout: 2000 },
+            )
         })
 
         it('should handle shift + enter shortcut after key input when search input is not focused and navigate to advanced search', async () => {
-            jest.useFakeTimers()
             renderWithRouter(<WrappedSpotlightModal {...minProps} />)
-            await act(flushPromises)
             const ticketsTab = getTicketsTab()
             await userEvent.click(ticketsTab)
             const searchInput = screen.getByPlaceholderText('Search...')
 
-            await userEvent.type(searchInput, 'foo')
-            await act(flushPromises)
-            jest.runOnlyPendingTimers()
-            await act(flushPromises)
-            fireEnterShortcutUsingKeyboardEvent(searchInput, '{shift}{enter}')
-            await act(flushPromises)
-
-            expect(history.push).toHaveBeenCalledWith({
-                pathname: TICKETS_ADVANCED_SEARCH_PATH,
-                search: stringify({ q: 'foo' }),
+            await act(async () => {
+                await userEvent.type(searchInput, 'foo')
             })
+
+            await act(async () => {
+                fireEnterShortcutUsingKeyboardEvent(
+                    searchInput,
+                    '{shift}{enter}',
+                )
+            })
+
+            await waitFor(
+                () => {
+                    expect(history.push).toHaveBeenCalledWith({
+                        pathname: TICKETS_ADVANCED_SEARCH_PATH,
+                        search: stringify({ q: 'foo' }),
+                    })
+                },
+                { timeout: 2000 },
+            )
         })
 
         it('should not set a query string search param when no input was performed', async () => {
@@ -471,21 +493,29 @@ describe('<SpotlightModal/>', () => {
 
     it('should not set a query string search param when input was deleted', async () => {
         renderWithRouter(<WrappedSpotlightModal {...minProps} />)
-        await act(flushPromises)
 
         const searchInput = screen.getByPlaceholderText('Search...')
-        await userEvent.type(searchInput, 'foo')
-        jest.runOnlyPendingTimers()
-        act(flushPromises)
-        fireEnterShortcutUsingKeyboardEvent(
-            searchInput,
-            '{backspace}{backspace}{backspace}',
-        )
-        fireEnterShortcutUsingKeyboardEvent(searchInput, '{shift}{enter}')
 
-        expect(history.push).toHaveBeenCalledWith({
-            pathname: TICKETS_ADVANCED_SEARCH_PATH,
+        await act(async () => {
+            await userEvent.type(searchInput, 'foo')
         })
+
+        await act(async () => {
+            await userEvent.clear(searchInput)
+        })
+
+        await act(async () => {
+            fireEnterShortcutUsingKeyboardEvent(searchInput, '{shift}{enter}')
+        })
+
+        await waitFor(
+            () => {
+                expect(history.push).toHaveBeenCalledWith({
+                    pathname: TICKETS_ADVANCED_SEARCH_PATH,
+                })
+            },
+            { timeout: 2000 },
+        )
     })
 
     // TODO(React18): Remove this once we upgrade to React 18

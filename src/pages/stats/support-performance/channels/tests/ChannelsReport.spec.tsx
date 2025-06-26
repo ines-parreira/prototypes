@@ -24,8 +24,6 @@ import { RootState } from 'state/types'
 import { channelsSlice, initialState } from 'state/ui/stats/channelsSlice'
 import { assumeMock, renderWithStore } from 'utils/testing'
 
-const componentMock = () => <div />
-
 jest.mock('pages/stats/common/drill-down/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
@@ -45,17 +43,17 @@ jest.mock(
 jest.mock(
     'pages/stats/support-performance/channels/ChannelsDownloadDataButton',
     () => ({
-        ChannelsDownloadDataButton: componentMock,
+        ChannelsDownloadDataButton: () => <div />,
     }),
 )
 jest.mock(
     'pages/stats/support-performance/channels/ChannelsHeaderCellContent',
     () => ({
-        ChannelsHeaderCellContent: componentMock,
+        ChannelsHeaderCellContent: () => <div />,
     }),
 )
 jest.mock('pages/stats/support-performance/channels/ChannelsTable', () => ({
-    ChannelsTable: componentMock,
+    ChannelsTable: () => <div />,
 }))
 jest.mock('pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu')
 const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
@@ -71,7 +69,7 @@ describe('ChannelsReport', () => {
     } as RootState
 
     beforeEach(() => {
-        ChartsActionMenuMock.mockReturnValue(componentMock as any)
+        ChartsActionMenuMock.mockReturnValue((() => <div />) as any)
     })
 
     it('should render channels report component', () => {

@@ -84,7 +84,6 @@ describe('<OverviewChartCard />', () => {
         ],
     } as ReturnType<typeof useTimeSeries>
     beforeEach(() => {
-        jest.resetAllMocks()
         useTicketsCreatedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
         useTicketsClosedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
         useTicketsRepliedTimeSeriesMock.mockReturnValue(defaultTimeSeries)

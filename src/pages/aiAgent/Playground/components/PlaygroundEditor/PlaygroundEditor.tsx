@@ -1,5 +1,5 @@
 import { FROALA_KEY } from 'config'
-import FroalaEditorComponent from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent.js'
+import FroalaEditorComponent from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent'
 
 import { PlaygroundTemplateMessage } from '../../types'
 import { PlaygroundActions } from '../PlaygroundActions/PlaygroundActions'

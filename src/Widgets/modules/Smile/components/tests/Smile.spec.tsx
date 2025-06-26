@@ -1,4 +1,4 @@
-import React, { ComponentProps, useContext } from 'react'
+import { ComponentProps, useContext } from 'react'
 
 import { render } from '@testing-library/react'
 
@@ -12,6 +12,7 @@ jest.mock('Widgets/modules/Template', () => {
         'Widgets/modules/Template',
     )
     return {
+        __esModule: true,
         ...templateExports,
         default: jest.fn(),
     }

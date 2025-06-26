@@ -43,26 +43,12 @@ exports[`<MacroSelect/> should render 1`] = `
         role="menu"
         tabindex="-1"
       >
-        <button
-          class="option option--focused dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
         >
-          <span>
-            Cancel Order
-          </span>
-        </button>
-        <button
-          class="option dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          <span>
-            Do Not Waive Fee
-          </span>
-        </button>
+          No result
+        </h6>
       </div>
     </div>
   </div>
