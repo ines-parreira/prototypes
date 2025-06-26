@@ -83,6 +83,7 @@
         "@formatjs/intl-numberformat": "5.5.0",
         "@formatjs/intl-pluralrules": "3.4.7",
         "@gorgias/analytics-ui-kit": "0.1.14",
+        "@gorgias/axiom": "^0.4.0",
         "@gorgias/branding-assets": "^0.2.1",
         "@gorgias/design-tokens": "^0.10.5",
         "@gorgias/event-tracker-api": "1.1.0",

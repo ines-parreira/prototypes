@@ -46,6 +46,7 @@ export enum FeatureFlagKey {
     AutomateNonFilteredDenominatorInAutomationRate = 'use-non-filtered-automated-interactions-in-automation-rate-denominator',
     AutomateOverviewChannelsFilter = 'automate-overview-channels-filter',
     AutomateSettingsRevamp = 'linear.project_automate-settings-revamp.access',
+    AxiomMigration = 'linear.project_ui-kit-foundations-migration',
     BannerCarousel = 'banner-carousel',
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigCommerceRefundOrder = 'bigcommerce-refund-order',

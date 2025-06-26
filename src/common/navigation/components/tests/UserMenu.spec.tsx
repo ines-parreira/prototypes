@@ -1,12 +1,12 @@
-import React from 'react'
 import type { ReactNode } from 'react'
 
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { StaticRouter } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { THEME_NAME, themeTokenMap, useTheme } from 'core/theme'
+import { useAxiomMigration } from 'hooks/useAxiomMigration'
 import {
     ActivityEvents,
     clearActivityTrackerSession,
@@ -33,6 +33,9 @@ jest.mock('pages/common/components/NoticeableIndicator', () => () => (
     <div>NoticeableIndicator</div>
 ))
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('hooks/useAxiomMigration', () => ({ useAxiomMigration: jest.fn() }))
+const useAxiomMigrationMock = useAxiomMigration as jest.Mock
+
 jest.mock(
     'services/activityTracker',
     () =>
@@ -59,6 +62,9 @@ const useThemeMock = assumeMock(useTheme)
 const getCurrentUserMock = assumeMock(getCurrentUser)
 
 jest.mock('../AvailabilityToggle', () => () => <div>AvailabilityToggle</div>)
+jest.mock('../AxiomMigrationToggle', () => ({
+    AxiomMigrationToggle: () => <div>AxiomMigrationToggle</div>,
+}))
 jest.mock('../MainNavigation', () => () => <div>MainNavigation</div>)
 jest.mock('../OfficeHours', () => () => <div>OfficeHours</div>)
 jest.mock('../ThemeMenu', () => () => <div>ThemeMenu</div>)
@@ -76,6 +82,7 @@ describe('UserMenu', () => {
 
     beforeEach(() => {
         onClose = jest.fn()
+        useAxiomMigrationMock.mockReturnValue({ hasFlag: false })
         useThemeMock.mockReturnValue({
             name: THEME_NAME.Classic,
             resolvedName: THEME_NAME.Classic,
@@ -89,18 +96,29 @@ describe('UserMenu', () => {
     })
 
     it('should render the main screen', () => {
-        const { getByText } = render(<UserMenu onClose={onClose} />, {
+        render(<UserMenu onClose={onClose} />, {
             wrapper,
         })
 
-        expect(getByText('AvailabilityToggle')).toBeInTheDocument()
-        expect(getByText(ignoreHTML('Theme:Classic'))).toBeInTheDocument()
-        expect(getByText('Your profile')).toBeInTheDocument()
-        expect(getByText('Gorgias updates')).toBeInTheDocument()
-        expect(getByText('Learn')).toBeInTheDocument()
-        expect(getByText('OfficeHours')).toBeInTheDocument()
-        expect(getByText('Refer a friend & earn')).toBeInTheDocument()
-        expect(getByText('Log out')).toBeInTheDocument()
+        expect(screen.getByText('AvailabilityToggle')).toBeInTheDocument()
+        expect(
+            screen.queryByText('AxiomMigrationToggle'),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.getByText(ignoreHTML('Theme:Classic')),
+        ).toBeInTheDocument()
+        expect(screen.getByText('Your profile')).toBeInTheDocument()
+        expect(screen.getByText('Gorgias updates')).toBeInTheDocument()
+        expect(screen.getByText('Learn')).toBeInTheDocument()
+        expect(screen.getByText('OfficeHours')).toBeInTheDocument()
+        expect(screen.getByText('Refer a friend & earn')).toBeInTheDocument()
+        expect(screen.getByText('Log out')).toBeInTheDocument()
+    })
+
+    it('should render the axiom migration toggle if the fla is enabled', () => {
+        useAxiomMigrationMock.mockReturnValue({ hasFlag: true })
+        render(<UserMenu onClose={onClose} />, { wrapper })
+        expect(screen.getByText('AxiomMigrationToggle')).toBeInTheDocument()
     })
 
     it.each([

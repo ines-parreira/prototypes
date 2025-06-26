@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import cn from 'classnames'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { THEME_CONFIGS, useTheme } from 'core/theme'
 import useAppSelector from 'hooks/useAppSelector'
+import { useAxiomMigration } from 'hooks/useAxiomMigration'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItemLabel from 'pages/common/components/dropdown/DropdownItemLabel'
@@ -21,6 +22,7 @@ import shortcutManager from 'services/shortcutManager'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 import AvailabilityToggle from './AvailabilityToggle'
+import { AxiomMigrationToggle } from './AxiomMigrationToggle'
 import NavbarLink from './NavbarLink'
 import OfficeHours from './OfficeHours'
 import ThemeMenu from './ThemeMenu'
@@ -39,6 +41,7 @@ type Props = {
 }
 
 export default function UserMenu({ onClose }: Props) {
+    const { hasFlag: hasAxiomMigration } = useAxiomMigration()
     const theme = useTheme()
     const currentUser = useAppSelector(getCurrentUser)
     const [activeScreen, setActiveScreen] = useState<ActiveScreen>(
@@ -51,6 +54,12 @@ export default function UserMenu({ onClose }: Props) {
         <Screens activeScreen={activeScreen}>
             <Screen name={ActiveScreen.Main}>
                 <AvailabilityToggle />
+                {hasAxiomMigration && (
+                    <>
+                        <hr className={css.separator} />
+                        <AxiomMigrationToggle />
+                    </>
+                )}
                 <hr className={css.separator} />
                 <button
                     onClick={() => {

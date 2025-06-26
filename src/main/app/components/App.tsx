@@ -1,5 +1,6 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
+import cn from 'classnames'
 import { useHistory } from 'react-router-dom'
 
 import AlertBanners from 'AlertBanners'
@@ -9,6 +10,7 @@ import { NotificationsOverlay, NotificationsToasts } from 'common/notifications'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { useApplyTheme } from 'core/theme'
+import { useAxiomMigration } from 'hooks/useAxiomMigration'
 import useHasPhone from 'hooks/useHasPhone'
 import { isAiAgentOnboarding } from 'main/app/utils/isAiAgentOnboarding'
 import { AlertNotifications } from 'notifications'
@@ -40,6 +42,8 @@ type Props = {
 }
 
 export default function App({ children }: Props) {
+    const { hasFlag: hasAxiomMigration, isEnabled: isAxiomEnabled } =
+        useAxiomMigration()
     const history = useHistory()
     const hasGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
     const hasPhone = useHasPhone()
@@ -67,7 +71,12 @@ export default function App({ children }: Props) {
     const isOnboarding = isAiAgentOnboarding(history.location.pathname)
 
     return (
-        <AppNode className={hasGlobalNav ? 'globalNav' : undefined}>
+        <AppNode
+            className={cn({
+                axiom: hasAxiomMigration && isAxiomEnabled,
+                globalNav: hasGlobalNav,
+            })}
+        >
             <UIKitRootNodeProvider>
                 <SessionChangeDetection />
                 <NotificationsToasts />
