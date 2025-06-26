@@ -85,23 +85,24 @@ describe('RealtimeAppProvider', () => {
     })
 
     it.each([
-        ['acme', true],
-        ['artemisathletix', true],
-        ['yakovishen', true],
-        ['walter-test', true],
-        ['other', false],
-    ])(`should set PNWorkerLogVerbosity to %s`, (domain, expected) => {
-        window.GORGIAS_STATE.currentAccount.domain = domain
+        ['yakovishen', true, 0],
+        ['other', false, 5],
+    ])(
+        `should set PNWorkerLogVerbosity to %s`,
+        (domain, expected, logLevel) => {
+            window.GORGIAS_STATE.currentAccount.domain = domain
 
-        render(<RealtimeAppProvider>foo</RealtimeAppProvider>)
+            render(<RealtimeAppProvider>foo</RealtimeAppProvider>)
 
-        expect(MockRealtimeProvider).toHaveBeenCalledWith(
-            expect.objectContaining({
-                subscriptionWorkerLogVerbosity: expected,
-            }),
-            {},
-        )
-    })
+            expect(MockRealtimeProvider).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    subscriptionWorkerLogVerbosity: expected,
+                    logLevel,
+                }),
+                {},
+            )
+        },
+    )
 
     it('should call reportError when there is an error', () => {
         const pnError = new Error(`PubNub Status error`)

@@ -4,6 +4,7 @@ import { toPlainObject } from 'lodash'
 
 import {
     ExponentialRetryPolicy,
+    RealtimeLogLevel,
     RealtimeProvider,
     RealtimeStatus,
 } from '@gorgias/realtime'
@@ -19,12 +20,7 @@ import { useErrorThreshold } from './hooks/useErrorThreshold'
 
 const pubNubWorkerUrl = window.PUBNUB_WORKER_URL
 
-const PNLogVerbosityWhitelistedAccounts = [
-    'acme',
-    'artemisathletix',
-    'yakovishen',
-    'walter-test',
-]
+const LoggingEnabledAccounts = ['yakovishen']
 
 const realtimeRetryPolicy = ExponentialRetryPolicy({
     minimumDelay: 2,
@@ -77,13 +73,17 @@ const RealtimeAppProvider = ({ children }: RealtimeAppProviderProps) => {
         displayRealtimeConnectivityBanner,
     )
 
-    const pubNubWorkerLogVerbosity = useMemo(
+    const isLoggingEnabled = useMemo(
         () =>
-            PNLogVerbosityWhitelistedAccounts.includes(
+            LoggingEnabledAccounts.includes(
                 window.GORGIAS_STATE.currentAccount.domain,
             ),
         [],
     )
+
+    const logLevel = useMemo(() => {
+        return isLoggingEnabled ? RealtimeLogLevel.Trace : RealtimeLogLevel.None
+    }, [isLoggingEnabled])
 
     const handleErrorStatus = useCallback(
         (status: RealtimeStatus) => {
@@ -130,10 +130,11 @@ const RealtimeAppProvider = ({ children }: RealtimeAppProviderProps) => {
             subscriptionWorkerUrl={pubNubWorkerUrl}
             subscriptionWorkerUnsubscribeOfflineClients={true}
             subscriptionWorkerOfflineClientsCheckInterval={5}
-            subscriptionWorkerLogVerbosity={pubNubWorkerLogVerbosity}
+            subscriptionWorkerLogVerbosity={isLoggingEnabled}
             retryConfiguration={realtimeRetryPolicy}
             onErrorStatus={handleErrorStatus}
             onReconnectStatus={handleReconnectStatus}
+            logLevel={logLevel as number}
         >
             {children}
         </RealtimeProvider>
