@@ -20,6 +20,7 @@ import {
 } from 'pages/settings/contactForm/constants'
 import { useContactFormApi } from 'pages/settings/contactForm/hooks/useContactFormApi'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
+import useViewStoreMapping from 'pages/settings/contactForm/hooks/useViewStoreMapping'
 import { insertContactFormIdParam } from 'pages/settings/contactForm/utils/navigation'
 import settingsCss from 'pages/settings/settings.less'
 import { notify as notifyAction } from 'state/notifications/actions'
@@ -37,6 +38,7 @@ const ContactFormCreateView = ({
     const { defaultIntegration, emailIntegrations } = useEmailIntegrations()
     const { checkContactFormName, isReady } = useContactFormApi()
     const [isNameInvalid, setIsNameInvalid] = useState(false)
+    const { handleStoreMapping } = useViewStoreMapping()
 
     const [createContactFormDto, setCreateContactFormDto] =
         useState<CreateContactFormDto>(() => {
@@ -61,6 +63,7 @@ const ContactFormCreateView = ({
                 })
                 return
             }
+            handleStoreMapping(newContactForm)
             // immediately navigate to the customization page with the success case
             navigateToContactFormCustomization(newContactForm.id)
             void notify({

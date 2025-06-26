@@ -29,6 +29,7 @@ import { useContactFormApi } from 'pages/settings/contactForm/hooks/useContactFo
 import { useCurrentContactForm } from 'pages/settings/contactForm/hooks/useCurrentContactForm'
 import { useDefaultEmailSelectedBanner } from 'pages/settings/contactForm/hooks/useDefaultEmailSelectedBanner'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
+import usePreferencesStoreMapping from 'pages/settings/contactForm/hooks/usePreferencesStoreMapping'
 import { catchAsync } from 'pages/settings/contactForm/utils/errorHandling'
 import css from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPreferences/ContactFormPreferences.less'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
@@ -60,6 +61,10 @@ const ContactFormPreferences = (): JSX.Element => {
             | 'shop_integration_id'
         >
     >({})
+
+    const { handleStoreMappingCreation } = usePreferencesStoreMapping({
+        contactForm,
+    })
 
     const hasAutomate = useAppSelector(getHasAutomate)
 
@@ -108,9 +113,10 @@ const ContactFormPreferences = (): JSX.Element => {
     }
 
     const onSave = async () => {
-        const [error, result] = await catchAsync(() =>
-            updateContactForm(contactForm.id, updateContactFormDto),
-        )
+        const [error, result] = await catchAsync(async () => {
+            await handleStoreMappingCreation(updateContactFormDto)
+            return updateContactForm(contactForm.id, updateContactFormDto)
+        })
 
         const isUpdated = !error && result
 

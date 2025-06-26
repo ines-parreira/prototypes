@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
@@ -20,6 +21,7 @@ import { billingState } from '../../../../../../fixtures/billing'
 import { integrationsStateWithShopify } from '../../../../../../fixtures/integrations'
 import { ContactForm } from '../../../../../../models/contactForm/types'
 import { RootState, StoreDispatch } from '../../../../../../state/types'
+import { mockQueryClient } from '../../../../../../tests/reactQueryTestingUtils'
 import { renderWithRouter } from '../../../../../../utils/testing'
 import { getLocalesResponseFixture } from '../../../../helpCenter/fixtures/getLocalesResponse.fixtures'
 import { useSupportedLocales } from '../../../../helpCenter/providers/SupportedLocales'
@@ -33,6 +35,7 @@ jest.mock('pages/settings/contactForm/hooks/useContactFormApi')
 
 const mockedUseContactFormApi = jest.mocked(useContactFormApi)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+const queryClient = mockQueryClient()
 
 const FORM_ID = 1
 const defaultState: Partial<RootState> = {
@@ -80,11 +83,13 @@ const renderView = ({
 
     return renderWithRouter(
         <Provider store={mockStore(state)}>
-            <CurrentContactFormContext.Provider
-                value={{ ...ContactFormFixture, ...contactFormState }}
-            >
-                <ContactFormPreferences />
-            </CurrentContactFormContext.Provider>
+            <QueryClientProvider client={queryClient}>
+                <CurrentContactFormContext.Provider
+                    value={{ ...ContactFormFixture, ...contactFormState }}
+                >
+                    <ContactFormPreferences />
+                </CurrentContactFormContext.Provider>
+            </QueryClientProvider>
         </Provider>,
         {
             path,
