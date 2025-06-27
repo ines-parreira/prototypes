@@ -136,6 +136,26 @@ describe('store-configuration-validation', () => {
             ).toEqual(expected)
         })
 
+        it('should throw an error if signature is empty and useEmailIntegrationSignature is true', () => {
+            const formValues: FormValues = {
+                ...VALID_FORM_VALUES,
+                signature: '',
+                useEmailIntegrationSignature: true,
+                emailChannelDeactivatedDatetime: null,
+                wizard: undefined,
+            }
+            expect(() =>
+                getValidStoreConfigurationFormValues(
+                    formValues,
+                    [],
+                    false,
+                    false,
+                    undefined,
+                    DEFAULT_OPTIONS,
+                ),
+            ).toThrow(StoreConfigurationValidationMessage.SignatureEmpty)
+        })
+
         it('should return default values for signature and monitored integrations if wizard is not completed', () => {
             const formValues: FormValues = {
                 ...VALID_FORM_VALUES,
