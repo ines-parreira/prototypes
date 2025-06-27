@@ -52,6 +52,11 @@ jobs:
           key: ${{ needs.install-dependencies.outputs.cache-key }}
           path: node_modules
 
+      - name: Install node
+        uses: gorgias/reusable-actions/.github/actions/setup-node@main
+        with:
+          node-version: ${{ needs.workspace-vars.outputs.node-version }}
+
       - name: Run deprecation analysis
         run: pnpm platform:deprecated-analysis
 
