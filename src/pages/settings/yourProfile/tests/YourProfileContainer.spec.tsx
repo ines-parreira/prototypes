@@ -14,6 +14,7 @@ import {
 
 import { appQueryClient } from 'api/queryClient'
 import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import { ThemeProvider } from 'core/theme'
 import {
     DateFormattingSetting,
@@ -40,6 +41,10 @@ const preferences = {
         prefill_best_macro: false,
         show_macros: false,
         show_macros_suggestions: true,
+        'language-preferences': {
+            primary: 'en',
+            proficient: [],
+        },
     },
 }
 
@@ -98,6 +103,11 @@ jest.mock('moment-timezone', () => {
         tz,
     }
 })
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = useFlag as jest.Mock
 
 jest.mock('state/notifications/actions')
 
@@ -199,8 +209,8 @@ describe('Your profile page', () => {
             })
 
             const [timezone] = getAllByLabelText(/Timezone/)
-            await act(async () => {
-                await userEvent.click(timezone)
+            act(() => {
+                userEvent.click(timezone)
             })
             const options = getAllByRole('option')
             expect(options).toHaveLength(2)
@@ -281,8 +291,8 @@ describe('Your profile page', () => {
                 expect(getByText('Your profile')).toBeInTheDocument()
             })
 
-            await act(async () => {
-                await userEvent.click(getByLabelText(/Dark/i))
+            act(() => {
+                userEvent.click(getByLabelText(/Dark/i))
             })
 
             await waitFor(() => {
@@ -319,8 +329,8 @@ describe('Your profile page', () => {
             })
 
             expect(getByLabelText(/forwarding_phone_number/)).toBeDisabled()
-            await act(async () => {
-                await userEvent.click(getByLabelText(/Enable call forwarding/i))
+            act(() => {
+                userEvent.click(getByLabelText(/Enable call forwarding/i))
             })
             expect(getByLabelText(/forwarding_phone_number/)).toBeEnabled()
         })
@@ -347,16 +357,14 @@ describe('Your profile page', () => {
                 expect(getByText('Your profile')).toBeInTheDocument()
             })
 
-            await act(async () => {
-                await userEvent.click(
+            act(() => {
+                userEvent.click(
                     getByRole('radio', {
                         name: '24-hour',
                     }),
                 )
 
-                await userEvent.click(
-                    getByRole('button', { name: 'Save Changes' }),
-                )
+                userEvent.click(getByRole('button', { name: 'Save Changes' }))
             })
 
             await waitFor(() => {
@@ -374,8 +382,8 @@ describe('Your profile page', () => {
                 expect(getByText('Your profile')).toBeInTheDocument()
             })
 
-            await act(async () => {
-                await userEvent.type(
+            act(() => {
+                userEvent.type(
                     getByRole('textbox', {
                         name: 'Your email required',
                     }),
@@ -387,11 +395,9 @@ describe('Your profile page', () => {
                 /Password confirmation/i,
             )
 
-            await act(async () => {
-                await userEvent.type(passwordField, 'a-password')
-                await userEvent.click(
-                    getByRole('button', { name: 'Save Changes' }),
-                )
+            act(() => {
+                userEvent.type(passwordField, 'a-password')
+                userEvent.click(getByRole('button', { name: 'Save Changes' }))
             })
 
             await waitFor(() => {
@@ -425,13 +431,13 @@ describe('Your profile page', () => {
                 expect(getByText('Your profile')).toBeInTheDocument()
             })
 
-            await act(async () => {
-                await userEvent.click(
+            act(() => {
+                userEvent.click(
                     getByLabelText(DateFormattingSetting.en_GB.label), // en_GB
                 )
-                await userEvent.click(getByLabelText(TimeFormattingSetting[0])) // 24-hour
+                userEvent.click(getByLabelText(TimeFormattingSetting[0])) // 24-hour
 
-                await userEvent.click(getByText('Save Changes'))
+                userEvent.click(getByText('Save Changes'))
             })
 
             await waitFor(() => {
@@ -488,8 +494,8 @@ describe('Your profile page', () => {
 
             await waitFor(async () => {
                 const removePictureButton = getByText('Remove Picture')
-                await act(async () => {
-                    await userEvent.click(removePictureButton)
+                await act(() => {
+                    userEvent.click(removePictureButton)
                 })
             })
 
@@ -498,6 +504,135 @@ describe('Your profile page', () => {
                 expect(body).toEqual({
                     meta: {
                         profile_picture_url: null,
+                    },
+                })
+            })
+        })
+    })
+
+    describe('Conversation settings section', () => {
+        it('should not display the conversation settings section when the feature flag is disabled', async () => {
+            mockUseFlag.mockImplementation(() => false)
+
+            const { getByText, queryByText } = renderComponent()
+
+            await waitFor(() => {
+                expect(getByText('Your profile')).toBeInTheDocument()
+            })
+
+            expect(queryByText('Conversation settings')).not.toBeInTheDocument()
+        })
+        it('should display the conversation settings without the user primary language when he has none', async () => {
+            mockUseFlag.mockImplementation(() => true)
+            const { handler } = mockGetCurrentUserHandler(async () =>
+                HttpResponse.json({
+                    ...mockGetCurrentUser.data,
+                    settings: [
+                        {
+                            ...preferences,
+                            data: {
+                                ...preferences.data,
+                                'language-preferences': {
+                                    primary: undefined,
+                                    proficient: [],
+                                },
+                            },
+                        },
+                    ],
+                } as unknown as CurrentUser['data']),
+            )
+            server.use(handler)
+
+            const { getByText, getByTestId, getAllByText } = renderComponent()
+
+            await waitFor(() => {
+                expect(getByText('Your profile')).toBeInTheDocument()
+            })
+
+            expect(
+                getByTestId('default-translation-language'),
+            ).toContainElement(getAllByText('English')[0])
+        })
+        it('should display the conversation settings with the user primary language when he has one', async () => {
+            mockUseFlag.mockImplementation(() => true)
+
+            const { getByText, getByTestId, getAllByText } = renderComponent()
+
+            await waitFor(() => {
+                expect(getByText('Your profile')).toBeInTheDocument()
+            })
+
+            expect(
+                getByTestId('default-translation-language'),
+            ).toContainElement(getAllByText('English')[0])
+        })
+
+        it('should display the conversation settings with the user proficient languages when he has some', async () => {
+            mockUseFlag.mockImplementation(() => true)
+            const { handler } = mockGetCurrentUserHandler(async () =>
+                HttpResponse.json({
+                    ...mockGetCurrentUser.data,
+                    settings: [
+                        {
+                            ...preferences,
+                            data: {
+                                ...preferences.data,
+                                'language-preferences': {
+                                    primary: 'en',
+                                    proficient: ['fr'],
+                                },
+                            },
+                        },
+                    ],
+                } as unknown as CurrentUser['data']),
+            )
+            server.use(handler)
+
+            const { getByText, getByTestId, getAllByText } = renderComponent()
+
+            await waitFor(() => {
+                expect(getByText('Your profile')).toBeInTheDocument()
+            })
+
+            expect(getByTestId('proficient-languages')).toContainElement(
+                getAllByText('English')[1],
+            )
+            expect(getByTestId('proficient-languages')).toContainElement(
+                getAllByText('French')[0],
+            )
+        })
+        it('should allow the user to update the Conversation settings', async () => {
+            mockUseFlag.mockImplementation(() => true)
+
+            const waitForUpdateCurrentUserSettingsRequest =
+                mockUpdateCurrentUserSettings.waitForRequest(server)
+
+            const { getByText, getAllByText, getByLabelText } =
+                renderComponent()
+
+            await waitFor(() => {
+                expect(getByText('Your profile')).toBeInTheDocument()
+            })
+
+            act(() => {
+                userEvent.click(getByLabelText(/Languages you know/i))
+                userEvent.click(getAllByText(/French/i)[0])
+            })
+
+            act(() => {
+                userEvent.click(getByText('Save Changes'))
+            })
+
+            await waitForUpdateCurrentUserSettingsRequest(async (request) => {
+                const body = await request.json()
+                expect(body).toEqual({
+                    type: 'preferences',
+                    data: {
+                        ...preferences.data,
+                        'language-preferences': {
+                            primary: 'en',
+                            proficient: ['fr'],
+                        },
                     },
                 })
             })

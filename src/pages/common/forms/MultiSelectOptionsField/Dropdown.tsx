@@ -1,4 +1,4 @@
-import React, { ComponentType, useState } from 'react'
+import { ComponentType, useState } from 'react'
 
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
@@ -13,6 +13,7 @@ import { Option } from './types'
 import css from './Dropdown.less'
 
 type Props = {
+    id?: string
     placeholder: string
     value: string
     options: Option[]
@@ -41,6 +42,7 @@ export default function Dropdown(props: Props) {
         onDelete,
         placeholder,
         isCompact,
+        id,
     } = props
 
     const [previousOptions, setPreviousOptions] = useState(options)
@@ -86,6 +88,7 @@ export default function Dropdown(props: Props) {
             >
                 <DropdownToggle tag="div" data-toggle="dropdown">
                     <Input
+                        id={id}
                         placeholder={placeholder}
                         value={value}
                         isFocused={isFocused}

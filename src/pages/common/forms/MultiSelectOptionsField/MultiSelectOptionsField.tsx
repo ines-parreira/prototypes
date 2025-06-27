@@ -12,6 +12,7 @@ import { Option } from './types'
 import css from './MultiSelectOptionsField.less'
 
 type Props = {
+    id?: string
     allowCustomOptions?: boolean
     matchInput?: boolean
     options?: Option[]
@@ -56,6 +57,7 @@ export default function MultiSelectOptionsField(props: Props) {
         onChange,
         onInputChange,
         onSelectTag,
+        id,
     } = props
 
     const [previousOptions, setPreviousOptions] = React.useState(options)
@@ -243,6 +245,7 @@ export default function MultiSelectOptionsField(props: Props) {
                     />
                 ))}
                 <Dropdown
+                    id={id}
                     placeholder={`Add ${plural}...`}
                     value={input}
                     options={displayOptions}

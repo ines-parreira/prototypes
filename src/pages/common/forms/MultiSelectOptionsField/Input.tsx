@@ -16,6 +16,7 @@ type Props = {
     onDown: () => void
     onChange: (value: string) => void
     isCompact?: boolean
+    id?: string
 }
 
 export default class Input extends Component<Props> {
@@ -98,10 +99,11 @@ export default class Input extends Component<Props> {
     }
 
     render() {
-        const { placeholder, value, onFocus, isCompact } = this.props
+        const { placeholder, value, onFocus, isCompact, id } = this.props
 
         return (
             <input
+                id={id}
                 ref={this.inputRef}
                 className={classnames(css.input, {
                     [css.compact]: isCompact,

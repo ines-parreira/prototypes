@@ -9,7 +9,7 @@ import _pick from 'lodash/pick'
 import _sortBy from 'lodash/sortBy'
 import moment from 'moment-timezone'
 import { Link } from 'react-router-dom'
-import { Form, FormGroup, FormText, Label } from 'reactstrap'
+import { Form, FormGroup, FormText } from 'reactstrap'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import {
@@ -20,19 +20,27 @@ import {
 import {
     Avatar,
     Button,
+    Label,
     SelectField,
     ToggleField,
 } from '@gorgias/merchant-ui-kit'
+import type { SelectFieldOption } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { UploadType } from 'common/types'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { ISO639English } from 'constants/languages'
+import { useFlag } from 'core/flags'
 import { useSetTheme, useTheme } from 'core/theme'
 import type { HelpdeskThemeName } from 'core/theme'
 import Group from 'pages/common/components/layout/Group'
 import PageHeader from 'pages/common/components/PageHeader'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import Caption from 'pages/common/forms/Caption/Caption'
 import FileField from 'pages/common/forms/FileField'
 import InputField from 'pages/common/forms/input/InputField'
+import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import settingsCss from 'pages/settings/settings.less'
 import DateAndTimeFormatting from 'pages/settings/yourProfile/components/DateAndTimeFormatting'
 import ThemeList from 'pages/settings/yourProfile/components/ThemeList'
@@ -89,6 +97,13 @@ const defaultContent: DefaultFormValues = {
     meta: { profile_picture_url: null },
 }
 
+const defaultPreferences = {
+    ['language-preferences']: {
+        primary: undefined,
+        proficient: [] as string[],
+    },
+}
+
 type YourProfileViewFunctionalProps = {
     currentUser: Partial<CurrentUser['data']>
     preferences: Partial<ApplicationUserPreferencesSettings['data']>
@@ -100,6 +115,7 @@ export function YourProfileView({
     preferences,
     isGorgiasAgent,
 }: YourProfileViewFunctionalProps) {
+    const hasMessagesTranslations = useFlag(FeatureFlagKey.MessagesTranslations)
     const queryClient = useQueryClient()
     const { mutateAsync: updateCurrentUser } = useUpdateCurrentUserProfile()
     const { mutateAsync: updateCurrentUserProfilePicture } =
@@ -117,7 +133,10 @@ export function YourProfileView({
     const defaultFormValues = useMemo(() => {
         return _merge(defaultContent, {
             ...currentUser,
-            preferences,
+            preferences: {
+                ...defaultPreferences,
+                ...preferences,
+            },
         })
     }, [currentUser, preferences])
 
@@ -164,6 +183,10 @@ export function YourProfileView({
                 (setting) => setting.type === UserSettingType.Preferences,
             )
 
+            const newPreferences = hasMessagesTranslations
+                ? formValues.preferences
+                : _omit(formValues.preferences, ['language-preferences'])
+
             try {
                 await Promise.all([
                     updateCurrentUser(normalizedValues),
@@ -172,14 +195,14 @@ export function YourProfileView({
                               id: existingPreferences.id,
                               data: {
                                   type: UserSettingType.Preferences,
-                                  data: formValues.preferences,
-                              } as UserSetting,
+                                  data: newPreferences,
+                              } as unknown as UserSetting,
                           })
                         : createCurrentUserSettings({
                               data: {
                                   type: UserSettingType.Preferences,
-                                  data: formValues.preferences,
-                              } as UserSetting,
+                                  data: newPreferences,
+                              } as unknown as UserSetting,
                           }),
                 ])
             } catch {}
@@ -200,6 +223,7 @@ export function YourProfileView({
             updateCurrentUserSettings,
             createCurrentUserSettings,
             queryClient,
+            hasMessagesTranslations,
         ],
     )
 
@@ -243,7 +267,13 @@ export function YourProfileView({
     )
 
     const handlePreferenceChange = useCallback(
-        (preferenceKey: string, value: boolean | string) => {
+        (
+            preferenceKey: string,
+            value:
+                | boolean
+                | string
+                | Record<string, string | string[] | undefined>,
+        ) => {
             setFormValues({
                 ...formValues,
                 preferences: {
@@ -254,6 +284,66 @@ export function YourProfileView({
             setIsFormDirty(true)
         },
         [formValues],
+    )
+
+    const translationLanguageOptions = useMemo(
+        () =>
+            Object.entries(ISO639English).map(([code, name]) => ({
+                icon: undefined,
+                value: code,
+                name: name,
+            })),
+        [],
+    )
+
+    const primarySelectedOption = useMemo(
+        () =>
+            translationLanguageOptions.find(
+                (option) =>
+                    option.value ===
+                    formValues.preferences?.['language-preferences']?.primary,
+            ),
+        [translationLanguageOptions, formValues.preferences],
+    )
+
+    const handlePrimaryLanguageChange = useCallback(
+        (language: SelectFieldOption) => {
+            handlePreferenceChange('language-preferences', {
+                ...(formValues.preferences?.['language-preferences'] ?? {}),
+                primary: language.value,
+            })
+        },
+        [formValues.preferences, handlePreferenceChange],
+    )
+
+    const proficientLanguagesOptions = useMemo(
+        () =>
+            Object.entries(ISO639English).map(([code, name]) => ({
+                value: code,
+                label: name,
+            })) as Option[],
+        [],
+    )
+
+    const proficientSelectedOptions = useMemo(
+        () =>
+            (formValues.preferences?.['language-preferences']?.proficient.map(
+                (value) =>
+                    proficientLanguagesOptions.find(
+                        (option) => option.value === value,
+                    ),
+            ) as Option[]) ?? ([] as Option[]),
+        [formValues.preferences, proficientLanguagesOptions],
+    )
+
+    const handleProficientLanguagesChange = useCallback(
+        (options: Option[]) => {
+            handlePreferenceChange('language-preferences', {
+                ...(formValues.preferences?.['language-preferences'] ?? {}),
+                proficient: options.map((option) => option.value),
+            })
+        },
+        [formValues.preferences, handlePreferenceChange],
     )
 
     return (
@@ -267,9 +357,14 @@ export function YourProfileView({
             />
             <PageHeader title="Your profile" />
             <div className={settingsCss.pageContainer}>
-                <div className={settingsCss.headingSection}>
+                <h2
+                    className={classnames(
+                        settingsCss.headingSection,
+                        css.headings,
+                    )}
+                >
                     Personal information
-                </div>
+                </h2>
                 <Form onSubmit={handleSubmit}>
                     <div className="flex flex-wrap">
                         <div className={settingsCss.leftSideWrapper}>
@@ -341,9 +436,33 @@ export function YourProfileView({
                                     isDisabled={isGorgiasAgent}
                                 />
                             </div>
-                            <div className={settingsCss.headingSection}>
+                            {hasMessagesTranslations && (
+                                <>
+                                    <h3
+                                        className={classnames(
+                                            settingsCss.headingSubsection,
+                                            css.headings,
+                                        )}
+                                    >
+                                        Theme
+                                    </h3>
+                                    <div className={settingsCss.section}>
+                                        <ThemeList
+                                            savedTheme={theme.name}
+                                            onChangeTheme={handleThemeChange}
+                                        />
+                                    </div>
+                                </>
+                            )}
+
+                            <h2
+                                className={classnames(
+                                    settingsCss.headingSection,
+                                    css.headings,
+                                )}
+                            >
                                 Date and time settings
-                            </div>
+                            </h2>
                             <div className={settingsCss.section}>
                                 <FormGroup className={settingsCss.inputField}>
                                     <SelectField
@@ -436,22 +555,115 @@ export function YourProfileView({
                         </FormGroup>
                     </div>
                     <div className={settingsCss.contentWrapper}>
-                        <div className={settingsCss.headingSection}>
-                            Account preferences
-                        </div>
-                        <div className={settingsCss.section}>
-                            <div className={settingsCss.headingSubsection}>
-                                Theme
-                            </div>
+                        {!hasMessagesTranslations && (
+                            <h2
+                                className={classnames(
+                                    settingsCss.headingSection,
+                                    css.headings,
+                                )}
+                            >
+                                Account preferences
+                            </h2>
+                        )}
+
+                        {hasMessagesTranslations && (
                             <div className={settingsCss.section}>
-                                <ThemeList
-                                    savedTheme={theme.name}
-                                    onChangeTheme={handleThemeChange}
-                                />
+                                <h3
+                                    className={classnames(
+                                        settingsCss.headingSubsection,
+                                        css.headings,
+                                    )}
+                                >
+                                    Conversation settings
+                                </h3>
+                                <div className={settingsCss.subsection}>
+                                    <FormGroup
+                                        className={css.conversationSettings}
+                                    >
+                                        <div data-testid="default-translation-language">
+                                            <SelectField<
+                                                (typeof translationLanguageOptions)[number]
+                                            >
+                                                label="Default translation language"
+                                                options={
+                                                    translationLanguageOptions
+                                                }
+                                                selectedOption={
+                                                    primarySelectedOption
+                                                }
+                                                optionMapper={(option) => ({
+                                                    value: option.name,
+                                                })}
+                                                onChange={
+                                                    handlePrimaryLanguageChange
+                                                }
+                                            />
+                                            <Caption>
+                                                Choose the default language
+                                                you&apos;d like to translate
+                                                into.
+                                            </Caption>
+                                        </div>
+
+                                        <div
+                                            data-testid="proficient-languages"
+                                            className={css.proficientLanguages}
+                                        >
+                                            <Label htmlFor="proficient-languages">
+                                                Languages you know
+                                            </Label>
+                                            <MultiSelectOptionsField
+                                                id="proficient-languages"
+                                                plural="Languages"
+                                                options={
+                                                    proficientLanguagesOptions
+                                                }
+                                                selectedOptions={
+                                                    proficientSelectedOptions
+                                                }
+                                                onChange={
+                                                    handleProficientLanguagesChange
+                                                }
+                                            />
+                                            <Caption>
+                                                Messages received in these
+                                                languages will not be
+                                                auto-translated
+                                            </Caption>
+                                        </div>
+                                    </FormGroup>
+                                </div>
                             </div>
-                            <div className={settingsCss.headingSubsection}>
+                        )}
+
+                        <div className={settingsCss.section}>
+                            {!hasMessagesTranslations && (
+                                <>
+                                    <h3
+                                        className={classnames(
+                                            settingsCss.headingSubsection,
+                                            css.headings,
+                                        )}
+                                    >
+                                        Theme
+                                    </h3>
+                                    <div className={settingsCss.section}>
+                                        <ThemeList
+                                            savedTheme={theme.name}
+                                            onChangeTheme={handleThemeChange}
+                                        />
+                                    </div>
+                                </>
+                            )}
+
+                            <h3
+                                className={classnames(
+                                    settingsCss.headingSubsection,
+                                    css.headings,
+                                )}
+                            >
                                 Macro display
-                            </div>
+                            </h3>
                             <div className={settingsCss.subsection}>
                                 <FormGroup
                                     className={classnames(
