@@ -41,6 +41,11 @@ jest.mock('hooks/useAppDispatch', () =>
     jest.fn().mockImplementation(() => jest.fn()),
 )
 jest.mock('models/helpCenter/queries')
+jest.mock('../useStoreToChannelMappings', () => ({
+    useStoreToChannelMappings: () => ({
+        handleStoreToChannelMapping: jest.fn(),
+    }),
+}))
 
 const mockedUseCreateHelpCenter = jest.mocked(useCreateHelpCenter)
 const mockedUseUpdateHelpCenter = jest.mocked(useUpdateHelpCenter)

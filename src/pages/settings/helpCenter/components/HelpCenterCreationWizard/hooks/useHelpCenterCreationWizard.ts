@@ -45,6 +45,7 @@ import {
     mapApiHelpCenterToUIHelpCenter,
     mapUIHelpCenterToApiHelpCenter,
 } from '../HelpCenterCreationWizardUtils'
+import { useStoreToChannelMappings } from './useStoreToChannelMappings'
 
 const defaultHelpCenter: HelpCenterCreationWizard = {
     name: '',
@@ -115,6 +116,8 @@ export const useHelpCenterCreationWizard = (
     const dispatch = useAppDispatch()
     const enableArticleRecommendation = useEnableArticleRecommendation()
     const navigateWizardSteps = useNavigateWizardSteps()
+
+    const { handleStoreToChannelMapping } = useStoreToChannelMappings()
 
     const allStoreIntegrations = useAppSelector(
         getIntegrationsByTypes([
@@ -258,13 +261,14 @@ export const useHelpCenterCreationWizard = (
             ...payload,
             stepName: stepName ?? step,
         })
-
         const helpCenterAction = () =>
             isUpdate
                 ? handleUpdateHelpCenter(tempHelpCenterData)
                 : handleCreateHelpCenter(tempHelpCenterData)
 
         const helpCenter = await helpCenterAction()
+
+        await handleStoreToChannelMapping(isUpdate, helpCenter)
 
         if (redirectTo) {
             const searchParams =
