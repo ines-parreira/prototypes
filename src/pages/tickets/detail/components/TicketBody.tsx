@@ -131,6 +131,8 @@ export default function TicketBody({
                     className={classnames(css.wrapper)}
                     components={virtuosoComponents}
                     skipAnimationFrameInResizeObserver
+                    increaseViewportBy={{ top: 2000, bottom: 0 }}
+                    overscan={{ reverse: 2000, main: 0 }}
                     customScrollParent={
                         customScrollParentRef?.current || undefined
                     }
