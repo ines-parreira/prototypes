@@ -85,8 +85,7 @@ describe('OrderModal', () => {
     })
 
     it('should render Create Order', async () => {
-        const { rerender, baseElement } = render(<div id="App" />)
-        rerender(
+        render(
             <>
                 <div id="App" />
                 <Provider store={store}>
@@ -95,14 +94,53 @@ describe('OrderModal', () => {
             </>,
         )
 
+        // Wait for the modal to render
         await screen.findByText('Address')
 
-        expect(baseElement).toMatchSnapshot()
+        // Check that the modal title is correct for create order
+        expect(screen.getByText('Create order')).toBeInTheDocument()
+
+        // Check that the modal has the correct structure and elements
+        expect(screen.getByRole('dialog')).toBeInTheDocument()
+
+        // Check for radio buttons for order type selection
+        expect(screen.getAllByLabelText('Draft order')).toHaveLength(2)
+        expect(screen.getAllByLabelText('Paid order')).toHaveLength(2)
+
+        // Check for the Products section
+        expect(screen.getByText('Products')).toBeInTheDocument()
+
+        // Check for the Address section
+        expect(screen.getByText('Address')).toBeInTheDocument()
+
+        // Check for Comments & Notes section
+        expect(screen.getByText('Comments & Notes')).toBeInTheDocument()
+
+        // Check for form labels
+        expect(screen.getByLabelText('Comment')).toBeInTheDocument()
+        expect(screen.getByLabelText('Staff note')).toBeInTheDocument()
+
+        // Check for action buttons
+        expect(
+            screen.getByRole('button', { name: /Cancel/i }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: /Create Draft Order/i }),
+        ).toBeInTheDocument()
+
+        // Check for close button in header
+        expect(screen.getByText(/close/i)).toBeInTheDocument()
+
+        // Check for shipping address checkbox
+        expect(
+            screen.getByLabelText(
+                'Shipping address is same as billing address',
+            ),
+        ).toBeInTheDocument()
     })
 
     it('should render Duplicate Order', async () => {
-        const { rerender, baseElement } = render(<div id="App" />)
-        rerender(
+        render(
             <>
                 <div id="App" />
                 <Provider store={store}>
@@ -111,9 +149,49 @@ describe('OrderModal', () => {
             </>,
         )
 
+        // Wait for the modal to render
         await screen.findByText('Address')
 
-        expect(baseElement).toMatchSnapshot()
+        // Check that the modal title is correct for duplicate order
+        expect(screen.getByText('Duplicate order')).toBeInTheDocument()
+
+        // Check that the modal has the correct structure and elements
+        expect(screen.getByRole('dialog')).toBeInTheDocument()
+
+        // Check for radio buttons for order type selection
+        expect(screen.getAllByLabelText('Draft order')).toHaveLength(2)
+        expect(screen.getAllByLabelText('Paid order')).toHaveLength(2)
+
+        // Check for the Products section
+        expect(screen.getByText('Products')).toBeInTheDocument()
+
+        // Check for the Address section
+        expect(screen.getByText('Address')).toBeInTheDocument()
+
+        // Check for Comments & Notes section
+        expect(screen.getByText('Comments & Notes')).toBeInTheDocument()
+
+        // Check for form labels
+        expect(screen.getByLabelText('Comment')).toBeInTheDocument()
+        expect(screen.getByLabelText('Staff note')).toBeInTheDocument()
+
+        // Check for action buttons
+        expect(
+            screen.getByRole('button', { name: /Cancel/i }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: /Create Draft Order/i }),
+        ).toBeInTheDocument()
+
+        // Check for close button in header
+        expect(screen.getByText(/close/i)).toBeInTheDocument()
+
+        // Check for shipping address checkbox
+        expect(
+            screen.getByLabelText(
+                'Shipping address is same as billing address',
+            ),
+        ).toBeInTheDocument()
     })
 })
 
