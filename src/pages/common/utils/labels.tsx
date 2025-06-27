@@ -69,7 +69,11 @@ export function AgentLabel({
         <div className={classnames(css.AgentLabel, className)} id={id}>
             {showAvatar ? (
                 hasTicketThreadRevamp ? (
-                    <Avatar name={name} size="sm" />
+                    <Avatar
+                        name={name}
+                        size="sm"
+                        url={profilePictureUrl ?? undefined}
+                    />
                 ) : (
                     <DEPRECATED_Avatar
                         name={name}
@@ -339,6 +343,7 @@ export const UserAssigneeLabel = ({
     assigneeUser: Map<any, any>
     size?: number
 }) => {
+    const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
     const agents = useAppSelector(getHumanAgents)
 
     const agent = agents.find(
@@ -350,13 +355,22 @@ export const UserAssigneeLabel = ({
 
     return assigneeUser.isEmpty() ? null : (
         <div className={css.assigneeLabelContainer}>
-            <DEPRECATED_Avatar
-                name={assigneeUser.get('name')}
-                email={assigneeUser.get('email')}
-                url={avatarUrl}
-                size={size || 26}
-                className={css.assigneeLabelAvatar}
-            />
+            {hasTicketThreadRevamp ? (
+                <Avatar
+                    isAgent={!!agent}
+                    name={assigneeUser.get('name')}
+                    url={avatarUrl}
+                    size="sm"
+                />
+            ) : (
+                <DEPRECATED_Avatar
+                    name={assigneeUser.get('name')}
+                    email={assigneeUser.get('email')}
+                    url={avatarUrl}
+                    size={size || 26}
+                    className={css.assigneeLabelAvatar}
+                />
+            )}
             <div
                 className="d-inline-block"
                 dangerouslySetInnerHTML={{

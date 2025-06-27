@@ -1,8 +1,9 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { fireEvent, render, RenderResult } from '@testing-library/react'
+import { fireEvent, render, RenderResult, screen } from '@testing-library/react'
 
 import { User } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import { VoiceCall, VoiceCallRecordingType } from 'models/voiceCall/types'
 import { useVoiceRecordingsContext } from 'pages/common/hooks/useVoiceRecordingsContext'
 import { assumeMock } from 'utils/testing'
@@ -18,6 +19,9 @@ const voiceCall = {
     has_call_recording: false,
 } as VoiceCall
 const icon = 'phone'
+
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+const useFlagMock = assumeMock(useFlag)
 
 jest.mock(
     '../TicketVoiceCallAudios',
@@ -43,6 +47,9 @@ jest.mock(
 jest.mock('pages/common/components/Avatar/Avatar', () => () => (
     <div>Avatar</div>
 ))
+jest.mock('pages/tickets/detail/components/TicketMessages/Avatar', () => ({
+    Avatar: () => <div>New Avatar</div>,
+}))
 jest.mock('../TicketVoiceCallSummary', () => () => <div>Summary</div>)
 
 jest.mock('pages/common/hooks/useVoiceRecordingsContext')
@@ -79,6 +86,10 @@ describe('TicketVoiceCallContainer', () => {
         toggleRecordingOpened: mockToggleRecording,
     })
 
+    beforeEach(() => {
+        useFlagMock.mockReturnValue(false)
+    })
+
     it('renders the component with all props', () => {
         const { getByText } = renderComponent({
             voiceCall: {
@@ -106,6 +117,27 @@ describe('TicketVoiceCallContainer', () => {
         expect(getByText('Call Recording')).toBeInTheDocument()
         expect(getByText('Voicemail left')).toBeInTheDocument()
         expect(getByText('Summary')).toBeInTheDocument()
+    })
+
+    it('should render the new avatar if the ticket thread revamp is enabled', () => {
+        useFlagMock.mockReturnValue(true)
+        renderComponent({
+            voiceCall: {
+                ...voiceCall,
+                has_call_recording: true,
+                has_voicemail: true,
+                summaries: [
+                    {
+                        id: 1,
+                        summary: 'Summary',
+                        created_datetime: '2022-01-01T00:00:00.000Z',
+                        recording_id: 1,
+                    },
+                ],
+            },
+        })
+
+        expect(screen.getByText('New Avatar')).toBeInTheDocument()
     })
 
     it('renders does not render summary if null', () => {

@@ -183,20 +183,6 @@
         margin-left: 34px;
         line-height: 20px;
 
-        &::before {
-            bottom: calc(50% + 12px);
-            height: auto;
-        }
-
-        &::after {
-            content: '';
-            position: absolute;
-            top: calc(50% + 12px);
-            left: 0;
-            bottom: 0;
-            border-left: 1px solid var(--neutral-grey-3);
-        }
-
         &.last {
             &::after {
                 display: none;
@@ -204,7 +190,15 @@
         }
     }
 
+    .icon {
+        outline: 2px solid var(--neutral-grey-0);
+    }
+
     .icon.success {
         background-color: var(--main-primary);
+    }
+
+    .equalFiller {
+        margin-left: 6px;
     }
 }

@@ -1,15 +1,18 @@
-import React, { ComponentProps, useEffect } from 'react'
+import { ComponentProps, useEffect } from 'react'
 
 import classNames from 'classnames'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { User } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import { RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import { Customer } from 'models/customer/types'
 import { VoiceCall, VoiceCallRecordingType } from 'models/voiceCall/types'
-import Avatar from 'pages/common/components/Avatar/Avatar'
+import DEPRECATED_Avatar from 'pages/common/components/Avatar/Avatar'
 import { useVoiceRecordingsContext } from 'pages/common/hooks/useVoiceRecordingsContext'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { Avatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
 
 import ControlledCollapsibleDetails from './ControlledCollapsibleDetails'
 import TicketVoiceCallAudios from './TicketVoiceCallAudios'
@@ -38,6 +41,7 @@ export default function TicketVoiceCallContainer({
     icon,
     source,
 }: Props) {
+    const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
     const { isRecordingOpened, toggleRecordingOpened } =
         useVoiceRecordingsContext()
     const { setRecentItem } = useRecentItems<VoiceCall>(RecentItems.Calls)
@@ -48,7 +52,14 @@ export default function TicketVoiceCallContainer({
 
     return (
         <div className={css.container}>
-            <Avatar name={user?.name} size={36} />
+            {hasTicketThreadRevamp ? (
+                <Avatar
+                    isAgent={user && 'role' in user}
+                    name={user?.name ?? ''}
+                />
+            ) : (
+                <DEPRECATED_Avatar name={user?.name} size={36} />
+            )}
             <div className={css.callDetails}>
                 <div className={css.row}>
                     <div className={css.header}>

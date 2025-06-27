@@ -196,6 +196,26 @@ describe('components utils: labels', () => {
                     expect(result.firstChild).toMatchSnapshot()
                 })
             })
+
+            it('should render the new avatar when the ticket thread revamp is enabled', () => {
+                useFlagMock.mockReturnValue(true)
+                render(
+                    <Provider store={mockStore({})}>
+                        <labels.UserAssigneeLabel
+                            assigneeUser={fromJS({
+                                name: 'Mario',
+                                email: 'mario@gorgias.io',
+                                meta: {
+                                    profile_picture_url:
+                                        'https://gorgias.io/avatar.png',
+                                },
+                            })}
+                        />
+                    </Provider>,
+                )
+
+                expect(screen.getByText('Avatar')).toBeInTheDocument()
+            })
         })
 
         describe('ValueRendered', () => {
@@ -305,6 +325,18 @@ describe('components utils: labels', () => {
 
             const avatar = screen.getByTestId('avatar')
             expect(avatar).toBeInTheDocument()
+        })
+
+        it('should render a new avatar if the ticket thread revamp flag is enabled', () => {
+            useFlagMock.mockReturnValue(true)
+            render(
+                <labels.AgentLabel
+                    name="Marie Curie"
+                    profilePictureUrl="https://gorgias.io/profilepicture.png"
+                />,
+            )
+
+            expect(screen.getByText('Avatar')).toBeInTheDocument()
         })
 
         it('should render the name of the agent because a name is passed', () => {
