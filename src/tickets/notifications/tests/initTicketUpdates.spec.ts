@@ -19,6 +19,7 @@ describe('initTicketUpdates', () => {
             'user.mentioned',
             'ticket.snooze-expired',
             'ticket.assigned',
+            'ticket.last-message-failed',
         ]
         notifications.forEach((notificationType) => {
             expect(registerNotification).toHaveBeenCalledWith(

@@ -15,5 +15,6 @@ type Ticket = {
 
 export type TicketPayload = {
     sender?: PickedActor
+    customer?: PickedActor
     ticket: Ticket
 }

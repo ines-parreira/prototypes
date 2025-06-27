@@ -11,6 +11,7 @@ import css from './SourceIcon.less'
 export const AUTOMATE_ICON = 'automate_icon'
 export const AI_AGENT_ICON = 'ai_agent_icon'
 export const WARNING_ICON = 'warning_icon'
+export const ERROR_ICON = 'error_icon'
 
 type Props = {
     type?: ChannelLike
@@ -135,6 +136,9 @@ const sourceTypeToIcon = (sourceType?: ChannelLike) => {
             break
         case WARNING_ICON:
             icon.name = 'warning'
+            break
+        case ERROR_ICON:
+            icon.name = 'error'
             break
     }
 

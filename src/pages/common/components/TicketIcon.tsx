@@ -7,6 +7,7 @@ import useId from 'hooks/useId'
 import type { ChannelLike } from 'models/channel/types'
 import SourceIcon, {
     AI_AGENT_ICON,
+    ERROR_ICON,
     WARNING_ICON,
 } from 'pages/common/components/SourceIcon'
 import css from 'pages/common/components/TicketIcon.less'
@@ -25,6 +26,8 @@ export default function TicketIcon({
     const isOpen = status === TicketStatus.Open
     const isAiAgentIcon = channel === AI_AGENT_ICON
     const isWarningIcon = channel === WARNING_ICON
+    const isErrorIcon = channel === ERROR_ICON
+
     return (
         <div
             className={classnames(
@@ -33,6 +36,7 @@ export default function TicketIcon({
                     [css.isOpen]: isOpen,
                     [css.isAiAgentIcon]: isAiAgentIcon,
                     [css.isWarningIcon]: isWarningIcon,
+                    [css.isErrorIcon]: isErrorIcon,
                 },
                 className,
             )}

@@ -6,6 +6,7 @@ export default function transformKnockNotification(
     item: FeedItem<RawNotification>,
 ): Notification | null {
     const { data, id, inserted_at, read_at, seen_at } = item
+
     if (!data) return null
 
     return {

@@ -1,5 +1,6 @@
 import { registerCategory, registerNotification } from 'common/notifications'
 
+import MessageFailedNotification from './components/MessageFailedNotification'
 import TicketNotification from './components/TicketNotification'
 import UserMentionedNotification from './components/UserMentionedNotification'
 import type { TicketPayload } from './types'
@@ -46,5 +47,14 @@ registerNotification<TicketPayload>({
     settings: {
         type: 'ticket-updates',
         label: 'Assigned to a ticket',
+    },
+})
+registerNotification({
+    type: 'ticket.last-message-failed',
+    component: MessageFailedNotification,
+    workflow: 'ticket-last-message-failed',
+    settings: {
+        type: 'ticket-updates',
+        label: 'Message failed',
     },
 })
