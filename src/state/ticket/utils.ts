@@ -35,7 +35,7 @@ import {
     responseSourceType,
     sourceTypeToChannel,
 } from 'tickets/common/utils'
-import { generateTicketMessagesId, getActionTemplate } from 'utils'
+import { getActionTemplate } from 'utils'
 
 import { EMPTY_SENDER, TICKET_CHANNEL_NAMES } from './constants'
 import { getProperty } from './selectors'
@@ -1002,12 +1002,10 @@ export function humanizeChannel(channelName: ChannelIdentifier): string {
 
 export function buildFirstTicketMessage(
     ticketMessage: TicketMessage,
-    ticketMessagesId: string,
+    messagePosition: number,
     ticketMeta: Map<any, any> | null,
 ): TicketMessage {
-    // Only modify the first ticket message of the first ticket messages group, identifiable via the id = "message-1"
-    if (ticketMessagesId !== generateTicketMessagesId(1) || !ticketMeta)
-        return ticketMessage
+    if (messagePosition !== 0 || !ticketMeta) return ticketMessage
 
     const ticketMetaObj = ticketMeta.toJS()
     if (isGorgiasContactFormTicketMeta(ticketMetaObj)) {

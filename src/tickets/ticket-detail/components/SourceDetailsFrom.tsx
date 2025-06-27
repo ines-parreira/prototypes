@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import css from './SourceDetails.less'
+import css from './SourceDetailsFrom.less'
 
 type Props = { label: string; children?: ReactNode }
 

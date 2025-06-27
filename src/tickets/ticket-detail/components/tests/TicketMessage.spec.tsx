@@ -1,18 +1,20 @@
 import { render, screen } from '@testing-library/react'
 
+import {
+    isTicketMessageDeleted,
+    isTicketMessageHidden,
+} from 'models/ticket/predicates'
+
 import type { FailedFlag, TicketMessageElement } from '../../types'
 import { MessageAvatar } from '../MessageAvatar'
 import { MessageBody } from '../MessageBody'
 import { MessageContent } from '../MessageContent'
 import { MessageError } from '../MessageError'
 import { MessageHeader } from '../MessageHeader'
-import { MessageMetadata } from '../MessageMetadata'
 import { TicketMessage } from '../TicketMessage'
 
 jest.mock('../MessageContent', () => ({
-    MessageContent: jest.fn(({ metadata }) => (
-        <div>MessageContent {metadata}</div>
-    )),
+    MessageContent: jest.fn(() => <div>MessageContent</div>),
 }))
 jest.mock('../MessageBody', () => ({
     MessageBody: jest.fn(({ children }) => <div>body {children}</div>),
@@ -31,6 +33,10 @@ jest.mock('tickets/ticket-detail/components/MessageMetadata', () => {
         MessageMetadata: jest.fn(() => <div>Message Metadata</div>),
     }
 })
+jest.mock('models/ticket/predicates', () => ({
+    isTicketMessageDeleted: jest.fn(() => false),
+    isTicketMessageHidden: jest.fn(() => false),
+}))
 
 describe('TicketMessage', () => {
     const mockedElement = {
@@ -111,6 +117,16 @@ describe('TicketMessage', () => {
     })
 
     describe('MessageHeader', () => {
+        it('should call predicates', () => {
+            render(<TicketMessage element={mockedElement} />)
+            expect(isTicketMessageDeleted).toHaveBeenCalledWith(
+                mockedElement.data,
+            )
+            expect(isTicketMessageHidden).toHaveBeenCalledWith(
+                mockedElement.data,
+            )
+        })
+
         it('should render the message header for non-minimal messages', () => {
             render(<TicketMessage element={mockedElement} />)
             expect(screen.getByText('MessageHeader')).toBeInTheDocument()
@@ -119,6 +135,9 @@ describe('TicketMessage', () => {
                     message: mockedElement.data,
                     isAI: false,
                     isFailed: false,
+                    isMessageDeleted: false,
+                    isMessageHidden: false,
+                    readonly: true,
                 }),
                 expect.any(Object),
             )
@@ -142,7 +161,6 @@ describe('TicketMessage', () => {
                 {
                     message: mockedElement.data,
                     isFailed: false,
-                    metadata: false,
                 },
                 expect.anything(),
             )
@@ -155,7 +173,6 @@ describe('TicketMessage', () => {
                 {
                     message: mockedElement.data,
                     isFailed: false,
-                    metadata: false,
                 },
                 expect.anything(),
             )
@@ -172,16 +189,8 @@ describe('TicketMessage', () => {
                 {
                     message: mockedElement.data,
                     isFailed: false,
-                    metadata: expect.anything(),
                 },
                 expect.anything(),
-            )
-
-            expect(MessageMetadata).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    message: mockedElement.data,
-                }),
-                expect.any(Object),
             )
         })
     })

@@ -4,7 +4,7 @@ import { TicketMessage } from 'models/ticket/types'
 
 import SourceActionsFooter from './SourceActionsFooter'
 
-import css from './SourceDetails.less'
+import css from './SourceDetailsFooter.less'
 
 type Props = {
     message: TicketMessage

@@ -80,7 +80,7 @@ export function MessageStatusIndicator({ message }: Props) {
 
     return (
         <span>
-            <i id={elementId} className="material-icons-outlined mr-2">
+            <i id={elementId} className="material-icons-outlined">
                 {indicator}
             </i>
             <Tooltip placement="top" target={elementId} className={css.tooltip}>

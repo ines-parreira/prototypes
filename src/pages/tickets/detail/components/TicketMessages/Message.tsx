@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
-import classNames from 'classnames'
+import cn from 'classnames'
 
 import { TicketMessage as TicketMessageType } from '@gorgias/helpdesk-types'
 
@@ -8,18 +8,18 @@ import { hasFailedAction, isFailed, isPending } from 'models/ticket/predicates'
 import { TicketMessage } from 'models/ticket/types'
 import { MessageActions } from 'tickets/ticket-detail/components/MessageActions'
 import { MessageAttachments } from 'tickets/ticket-detail/components/MessageAttachments'
+import { MessageMetadata } from 'tickets/ticket-detail/components/MessageMetadata'
 
 import Body from './Body'
 import Errors from './Errors'
 import ReplyDetailsCard from './ReplyDetailsCard'
-import SourceDetailsHeader from './SourceDetailsHeader'
+import SourceActionsHeader from './SourceActionsHeader'
 
 import css from './Message.less'
 
 type Props = {
     message: TicketMessage
     setStatus?: (status: string) => void
-    showMessageStatusIndicator?: boolean
     showSourceDetails: boolean
     ticketId: number
     isAIAgentMessage: boolean
@@ -29,7 +29,6 @@ type Props = {
 export default function Message({
     message,
     setStatus,
-    showMessageStatusIndicator,
     showSourceDetails,
     ticketId,
     isAIAgentMessage,
@@ -40,23 +39,21 @@ export default function Message({
 
     return (
         <div
-            className={classNames(css.wrapper, {
+            className={cn(css.wrapper, {
                 [css.hasSourceDetails]: showSourceDetails,
             })}
             onMouseEnter={() => setIsOver(true)}
             onMouseLeave={() => setIsOver(false)}
         >
             {showSourceDetails && (
-                <SourceDetailsHeader
-                    className={css.sourceDetails}
-                    contentClassName={css.sourceDetailsContent}
-                    message={message}
-                    showMessageStatusIndicator={
-                        isOver || showMessageStatusIndicator
-                    }
-                    hideTimestamp={!isOver}
-                    showIntents={isOver}
-                />
+                <div
+                    className={cn(css.rightWrapper, {
+                        [css.visible]: isOver,
+                    })}
+                >
+                    <SourceActionsHeader message={message} />
+                    <MessageMetadata message={message as TicketMessageType} />
+                </div>
             )}
             {!!message?.meta?.replied_to && (
                 <ReplyDetailsCard reply={message.meta.replied_to} />

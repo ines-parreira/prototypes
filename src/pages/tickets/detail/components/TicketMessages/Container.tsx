@@ -17,21 +17,19 @@ import { getDisplayCustomerLastSeenOnChat } from 'pages/common/components/infoba
 import { scrollToReactNode } from 'pages/common/utils/keyboard'
 import SimplifiedAIAgentBanner from 'pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner'
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
+import { MessageHeader } from 'tickets/ticket-detail/components/MessageHeader'
 
 import AIAgentBanner from './AIAgentBanner'
 import AIAgentMessageEvents from './AIAgentMessageEvents'
 import { AiAgentReasoning } from './AiAgentReasoning'
 import { Avatar } from './Avatar'
 import Footer from './Footer'
-import Header from './Header'
-import SourceDetailsHeader from './SourceDetailsHeader'
 
 import css from './Container.less'
 
 const classNames = classNamesBind.bind(css)
 
 type Props = {
-    id: string
     className?: string
     message: TicketMessage
     // Ideally we only want to pass the messages but as this is a hotfix I'll only add those and not deprecate the sole message object
@@ -252,20 +250,12 @@ export class Container extends Component<Props> {
                                     isMessageDeleted,
                             })}
                         >
-                            <Header
-                                id={this.props.id}
+                            <MessageHeader
                                 message={message}
-                                hasError={isFailed(message)}
+                                isFailed={isFailed(message)}
                                 isMessageHidden={isMessageHidden}
                                 isMessageDeleted={isMessageDeleted}
-                                isMessageFromAIAgent={isAIAgentMessage}
-                                sourceDetails={
-                                    <SourceDetailsHeader
-                                        className={css.sourceDetails}
-                                        message={message}
-                                        isMessageDeleted={isMessageDeleted}
-                                    />
-                                }
+                                isAI={isAIAgentMessage}
                             />
                             {!isAIAgentInternalNote && children}
                             {isAIAgentMessage &&
@@ -292,7 +282,6 @@ export class Container extends Component<Props> {
                                 ))}
 
                             <Footer
-                                id={this.props.id}
                                 message={message}
                                 isMessageHidden={isMessageHidden}
                                 isMessageDeleted={isMessageDeleted}

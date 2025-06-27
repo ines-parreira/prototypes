@@ -29,10 +29,7 @@ exports[`Container should render 1`] = `
     class="bodyWrapper"
   >
     <div>
-      Header
-      <div>
-        SourceDetailsHeader
-      </div>
+      MessageHeader
     </div>
     <div>
       Footer

@@ -31,7 +31,6 @@ import SatisfactionSurvey from 'pages/tickets/detail/components/SatisfactionSurv
 import TicketMessages from 'pages/tickets/detail/components/TicketMessages/TicketMessages'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getLastCustomerMessage, getTicketState } from 'state/ticket/selectors'
-import { generateTicketMessagesId } from 'utils'
 import { reportError } from 'utils/errors'
 
 import { TicketEventPrivateReplyData } from '../../../../models/event/types'
@@ -94,7 +93,6 @@ const TicketBodyElement = ({
                 customer={ticket.get('customer')}
                 hasCursor={hasCursor}
                 highlightedElements={highlightedElements}
-                id={generateTicketMessagesId(index)}
                 lastCustomerMessage={lastCustomerMessage}
                 lastMessageDatetimeAfterMount={lastMessageDatetimeAfterMount}
                 messages={element}

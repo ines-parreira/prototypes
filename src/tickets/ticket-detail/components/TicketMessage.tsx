@@ -1,5 +1,10 @@
 import cn from 'classnames'
 
+import {
+    isTicketMessageDeleted,
+    isTicketMessageHidden,
+} from 'models/ticket/predicates'
+
 import { isErrorFlag } from '../helpers/isErrorFlag'
 import { TicketMessageElement } from '../types'
 import { MessageAvatar } from './MessageAvatar'
@@ -7,7 +12,6 @@ import { MessageBody } from './MessageBody'
 import { MessageContent } from './MessageContent'
 import { MessageError } from './MessageError'
 import { MessageHeader } from './MessageHeader'
-import { MessageMetadata } from './MessageMetadata'
 
 import css from './TicketMessage.less'
 
@@ -20,15 +24,9 @@ export function TicketMessage({ element }: Props) {
     const isMinimal = element.flags?.includes('minimal') ?? false
     const error = element.flags?.find(isErrorFlag)?.[1]
 
-    const messageMetadata = <MessageMetadata message={element.data} />
-
     const messageBody = (
         <MessageBody message={element.data} isAI={isAI}>
-            <MessageContent
-                message={element.data}
-                isFailed={Boolean(error)}
-                metadata={isMinimal && messageMetadata}
-            />
+            <MessageContent message={element.data} isFailed={Boolean(error)} />
             {error && <MessageError error={error} />}
         </MessageBody>
     )
@@ -52,10 +50,16 @@ export function TicketMessage({ element }: Props) {
                     />
                     <div className={css.headerContainer}>
                         <MessageHeader
-                            isAI={element.flags?.includes('ai') ?? false}
-                            isFailed={Boolean(error)}
                             message={element.data}
-                            messageMetadata={messageMetadata}
+                            isFailed={Boolean(error)}
+                            isMessageDeleted={isTicketMessageDeleted(
+                                element.data,
+                            )}
+                            isMessageHidden={isTicketMessageHidden(
+                                element.data,
+                            )}
+                            isAI={isAI}
+                            readonly
                         />
                         {messageBody}
                     </div>

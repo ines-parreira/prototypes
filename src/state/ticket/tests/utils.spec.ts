@@ -34,7 +34,6 @@ import {
 import { getEmailChannels } from 'state/integrations/selectors'
 import { TICKET_CHANNEL_NAMES } from 'state/ticket/constants'
 import { RootState } from 'state/types'
-import * as utils from 'utils'
 
 import {
     buildFirstTicketMessage,
@@ -1786,51 +1785,35 @@ describe('ticket utils', () => {
     describe('buildFirstTicketMessage', () => {
         it('returns the ticket message untouched if this is not the first ticket message of the first ticket messages group', () => {
             const ticketMessage = {} as TicketMessage
-            const ticketMessageId = utils.generateTicketMessagesId(2)
             const ticketMeta = fromJS({})
 
             expect(
-                buildFirstTicketMessage(
-                    ticketMessage,
-                    ticketMessageId,
-                    ticketMeta,
-                ),
+                buildFirstTicketMessage(ticketMessage, 2, ticketMeta),
             ).toEqual(ticketMessage)
         })
 
         it('returns the ticket message untouched if there is no ticket meta to process', () => {
             const ticketMessage = {} as TicketMessage
-            const ticketMessageId = utils.generateTicketMessagesId(1)
             const ticketMeta = null
 
             expect(
-                buildFirstTicketMessage(
-                    ticketMessage,
-                    ticketMessageId,
-                    ticketMeta,
-                ),
+                buildFirstTicketMessage(ticketMessage, 0, ticketMeta),
             ).toEqual(ticketMessage)
         })
 
         it('returns the ticket message untouched if the ticket meta fields are not relevant', () => {
             const ticketMessage = {} as TicketMessage
-            const ticketMessageId = utils.generateTicketMessagesId(1)
             const ticketMeta = fromJS({
                 other: 'field',
             })
 
             expect(
-                buildFirstTicketMessage(
-                    ticketMessage,
-                    ticketMessageId,
-                    ticketMeta,
-                ),
+                buildFirstTicketMessage(ticketMessage, 0, ticketMeta),
             ).toEqual(ticketMessage)
         })
 
         it('returns the transformed ticket message if the ticket meta fields contain a relevant "gorgias_contact_form" field', () => {
             const ticketMessage = {} as TicketMessage
-            const ticketMessageId = utils.generateTicketMessagesId(1)
             const gorgiasContactFormMeta: GorgiasContactFormTicketMeta = {
                 contact_form_id: 1,
                 contact_form_locale_id: 1,
@@ -1844,11 +1827,7 @@ describe('ticket utils', () => {
             })
 
             expect(
-                buildFirstTicketMessage(
-                    ticketMessage,
-                    ticketMessageId,
-                    ticketMeta,
-                ),
+                buildFirstTicketMessage(ticketMessage, 0, ticketMeta),
             ).toMatchObject({
                 meta: {
                     current_page: gorgiasContactFormMeta.host_url,

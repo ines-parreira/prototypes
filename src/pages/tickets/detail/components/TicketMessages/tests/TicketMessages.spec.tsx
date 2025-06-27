@@ -26,7 +26,6 @@ import {
     TRIAL_MESSAGE_TAG,
 } from '../../AIAgentFeedbackBar/constants'
 import { messageFeedback } from '../../AIAgentFeedbackBar/tests/fixtures'
-import Message from '../Message'
 import TicketMessages from '../TicketMessages'
 
 jest.mock('state/ui/ticketAIAgentFeedback')
@@ -49,15 +48,6 @@ jest.mock('pages/tickets/detail/components/TicketMessages/Message', () =>
     jest.fn(() => <p>Message</p>),
 )
 
-jest.mock('pages/tickets/detail/components/TicketMessages/Header', () => () => (
-    <p>Header</p>
-))
-
-jest.mock(
-    'pages/tickets/detail/components/TicketMessages/SourceDetailsHeader',
-    () => jest.fn(() => <p>SourceDetailsHeader</p>),
-)
-
 jest.mock('pages/tickets/detail/components/TicketMessages/Body', () =>
     jest.fn(() => <p>Body</p>),
 )
@@ -71,6 +61,10 @@ jest.mock(
     'pages/tickets/detail/components/AIAgentDraftMessage/AIAgentDraftMessage',
     () => jest.fn(() => <p>AIAgentDraftMessage</p>),
 )
+
+jest.mock('tickets/ticket-detail/components/MessageHeader', () => ({
+    MessageHeader: jest.fn(() => <p>MessageHeader</p>),
+}))
 
 jest.mock('utils/launchDarkly')
 const allFlagsMock = getLDClient().allFlags as jest.MockedFunction<
@@ -345,68 +339,5 @@ describe('TicketMessages', () => {
         )
 
         expect(container).toBeEmptyDOMElement()
-    })
-
-    it('should render the status indicators on all messages as they differ', () => {
-        const props = {
-            ...defaultProps,
-            messages: [
-                {
-                    ...defaultProps.messages[0],
-                    id: 42,
-                    body_html: '<p> some text </p>',
-                },
-                {
-                    ...defaultProps.messages[0],
-                    id: 43,
-                    failed_datetime: '2021-01-01T00:00:00Z',
-                },
-            ],
-        }
-
-        render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketMessages {...props} />
-            </Provider>,
-        )
-
-        expect(Message).toHaveBeenCalledWith(
-            expect.objectContaining({
-                showMessageStatusIndicator: true,
-            }),
-            expect.anything(),
-        )
-    })
-
-    it("should not render the message status indicators since they're all the same", () => {
-        const props = {
-            ...defaultProps,
-            messages: [
-                {
-                    ...defaultProps.messages[0],
-                    id: 42,
-                    body_html: '<p> some text </p>',
-                    sent_datetime: '2021-01-01T00:00:00Z',
-                },
-                {
-                    ...defaultProps.messages[0],
-                    id: 43,
-                    sent_datetime: '2021-01-01T03:00:00Z',
-                },
-            ],
-        }
-
-        render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketMessages {...props} />
-            </Provider>,
-        )
-
-        expect(Message).toHaveBeenCalledWith(
-            expect.objectContaining({
-                showMessageStatusIndicator: false,
-            }),
-            expect.anything(),
-        )
     })
 })

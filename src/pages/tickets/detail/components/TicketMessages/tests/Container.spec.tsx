@@ -12,10 +12,9 @@ import {
 } from 'models/ticket/tests/mocks'
 import { MessageMetadataType, TicketMessage } from 'models/ticket/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
+import { MessageHeader } from 'tickets/ticket-detail/components/MessageHeader'
 
 import Container from '../Container'
-import Header from '../Header'
-import SourceDetailsHeader from '../SourceDetailsHeader'
 
 const customer = fromJS({
     integrations: {
@@ -43,14 +42,9 @@ jest.mock('pages/tickets/detail/components/TicketMessages/Footer', () => () => (
     <div>Footer</div>
 ))
 
-jest.mock('pages/tickets/detail/components/TicketMessages/Header', () =>
-    jest.fn(({ sourceDetails }) => <div>Header{sourceDetails}</div>),
-)
-
-jest.mock(
-    'pages/tickets/detail/components/TicketMessages/SourceDetailsHeader',
-    () => jest.fn(() => <div>SourceDetailsHeader</div>),
-)
+jest.mock('tickets/ticket-detail/components/MessageHeader', () => ({
+    MessageHeader: jest.fn(() => <div>MessageHeader</div>),
+}))
 
 jest.mock(
     'pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner',
@@ -190,17 +184,10 @@ describe('Container', () => {
         expect(getByText('Avatar')).toMatchSnapshot()
     })
 
-    it('should call Header with the correct props', () => {
+    it('should call MessageHeader with the correct props', () => {
         render(<Container {...props} />)
 
-        expect(Header).toHaveBeenCalledWith(
-            expect.objectContaining({
-                message: props.message,
-                sourceDetails: expect.any(Object),
-            }),
-            expect.any(Object),
-        )
-        expect(SourceDetailsHeader).toHaveBeenCalledWith(
+        expect(MessageHeader).toHaveBeenCalledWith(
             expect.objectContaining({
                 message: props.message,
             }),

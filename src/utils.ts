@@ -1312,13 +1312,6 @@ export function includes<TPossibilities extends TValue, TValue>(
     return possibilities.includes(value)
 }
 
-/**
- * Utility to generate a unique id for a TicketMessages component.
- */
-export function generateTicketMessagesId(index: number) {
-    return `message-${index}`
-}
-
 export function isTouchEvent(
     event: MouseEvent | TouchEvent | MouseEventReact | TouchEventReact,
 ): event is TouchEvent | TouchEventReact {

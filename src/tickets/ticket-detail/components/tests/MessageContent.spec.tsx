@@ -68,21 +68,6 @@ describe('MessageContent', () => {
         expect(screen.getByText('Plain text content')).toBeInTheDocument()
     })
 
-    it('should render metadata when available', () => {
-        render(
-            <MessageContent
-                message={mockMessage}
-                isFailed={false}
-                metadata={<div>Metadata</div>}
-            />,
-        )
-
-        expect(screen.getByText('Metadata')).toBeInTheDocument()
-        expect(
-            document.querySelector('.ticket-detail-metadata'),
-        ).toBeInTheDocument()
-    })
-
     it('should apply failed class when isFailed is true', () => {
         render(<MessageContent message={mockMessage} isFailed={true} />)
 

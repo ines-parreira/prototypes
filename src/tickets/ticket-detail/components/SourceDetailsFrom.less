@@ -1,23 +1,4 @@
 :local {
-    .wrapper {
-        font-size: 12px;
-        font-weight: 500;
-        color: var(--neutral-grey-4);
-        display: flex;
-        flex-grow: 1;
-        justify-content: flex-end;
-        padding-bottom: var(--layout-spacing-xxs);
-        transition: padding 0.16s ease-out;
-
-        &:empty {
-            padding-bottom: 0;
-        }
-    }
-
-    .content {
-        display: flex;
-    }
-
     .from {
         color: hsl(
             var(--neutral-grey-4-h),
@@ -48,15 +29,5 @@
             );
             text-decoration: underline !important;
         }
-    }
-
-    & :not(:hover) .hideTimestamp {
-        display: none;
-    }
-}
-
-.ticket-thread-revamp :local {
-    .wrapper {
-        padding-bottom: 0;
     }
 }

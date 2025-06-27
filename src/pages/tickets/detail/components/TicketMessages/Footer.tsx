@@ -9,7 +9,6 @@ import css from './Footer.less'
 const classNames = classNamesBind.bind(css)
 
 type Props = {
-    id: string
     message: TicketMessage
     isMessageHidden: boolean
     isMessageDeleted: boolean

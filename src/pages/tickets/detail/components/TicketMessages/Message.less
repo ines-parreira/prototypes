@@ -2,20 +2,19 @@
     position: relative;
 
     &.hasSourceDetails {
-        padding-top: 8px;
+        margin-top: 8px;
     }
 
-    .sourceDetails {
-        width: 100%;
+    .rightWrapper {
         position: absolute;
-        right: -10px;
-        pointer-events: none;
-    }
-
-    .sourceDetailsContent {
-        z-index: 1;
-        padding: 4px 10px;
+        right: 0;
+        top: calc(var(--layout-spacing-xxs) * -1);
+        display: none;
+        gap: var(--layout-spacing-xs);
         align-items: center;
-        pointer-events: all;
+
+        &.visible {
+            display: flex;
+        }
     }
 }

@@ -8,11 +8,10 @@
     justify-content: space-between;
     align-items: center;
     overflow: visible;
-    padding-bottom: var(--layout-spacing-xxs);
-    transition: padding 0.16s ease-out;
+    padding-bottom: var(--layout-spacing-xs);
     line-height: 26px;
 
-    &.hasError div {
+    &.failed div {
         color: var(--neutral-grey-4);
     }
 
@@ -55,12 +54,12 @@
                 calc(var(--feedback-error-1-l) - 22%)
         );
     }
-}
 
-.ticket-thread-revamp :local {
-    .timestamp {
-        .caption-regular();
-
-        color: var(--neutral-grey-4);
+    .rightWrapper {
+        display: flex;
+        flex-grow: 1;
+        flex-shrink: 0;
+        gap: var(--layout-spacing-xs);
+        justify-content: flex-end;
     }
 }

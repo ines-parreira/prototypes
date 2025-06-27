@@ -4,8 +4,6 @@ import { fromJS, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Moment } from 'moment'
 
-import type { TicketMessage } from '@gorgias/helpdesk-types'
-
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
@@ -22,7 +20,6 @@ import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents } from 'state/ticket/selectors'
 import { buildFirstTicketMessage } from 'state/ticket/utils'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
-import { getMessageStatus } from 'tickets/ticket-detail/components/MessageStatusIndicator'
 
 import AIAgentDraftMessage from '../AIAgentDraftMessage/AIAgentDraftMessage'
 import {
@@ -35,7 +32,6 @@ import Container from './Container'
 import Message from './Message'
 
 type Props = {
-    id: string
     messages: TicketMessage_DEPRECATED[]
     ticketId: number
     timezone: string
@@ -50,7 +46,6 @@ type Props = {
 }
 
 export default function TicketMessages({
-    id,
     messages,
     ticketId,
     timezone,
@@ -71,7 +66,11 @@ export default function TicketMessages({
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
     const accountId = useAppSelector(getCurrentAccountId)
 
-    const message = buildFirstTicketMessage(messages[0], id, ticketMeta)
+    const message = buildFirstTicketMessage(
+        messages[0],
+        messagePosition,
+        ticketMeta,
+    )
 
     const shouldDisplayAuditLogEvents = useAppSelector(
         getShouldDisplayAuditLogEvents,
@@ -125,15 +124,6 @@ export default function TicketMessages({
         return null
     }
 
-    // if all messages have the same status, we want to display it only on the first
-    // message of the group
-    const showMessageStatusIndicator = messages
-        .map((message) => getMessageStatus(message as TicketMessage))
-        .some(
-            (messageStatus, _, messageStatuses) =>
-                messageStatus !== messageStatuses[0],
-        )
-
     const containerContainsHighlightedMessages =
         messages
             .map(
@@ -179,7 +169,6 @@ export default function TicketMessages({
 
     return (
         <Container
-            id={id}
             message={message}
             messages={messages}
             hasCursor={hasCursor}
@@ -207,14 +196,14 @@ export default function TicketMessages({
                 (message: TicketMessage_DEPRECATED, index: number) => {
                     return (
                         <Message
-                            key={message.id || `${id}-${index}`}
+                            key={
+                                message.id ||
+                                `message-${messagePosition}-${index}`
+                            }
                             message={message}
                             ticketId={ticketId}
                             setStatus={setStatus}
                             showSourceDetails={!!index}
-                            showMessageStatusIndicator={
-                                showMessageStatusIndicator
-                            }
                             isAIAgentMessage={isAIAgentMessage}
                             messagePosition={messagePosition}
                         />

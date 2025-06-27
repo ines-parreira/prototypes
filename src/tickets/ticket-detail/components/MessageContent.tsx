@@ -14,14 +14,9 @@ import css from './MessageContent.less'
 type MessageContentProps = {
     message: TicketMessage
     isFailed: boolean
-    metadata?: React.ReactNode
 }
 
-export function MessageContent({
-    message,
-    isFailed,
-    metadata,
-}: MessageContentProps) {
+export function MessageContent({ message, isFailed }: MessageContentProps) {
     const {
         body_html: rawHtml,
         body_text: rawText,
@@ -66,12 +61,6 @@ export function MessageContent({
                     className={css.content}
                     dangerouslySetInnerHTML={{ __html: processedContent }}
                 />
-                {!!metadata && (
-                    // Global class used by the TicketMessage component
-                    <div className={cn('ticket-detail-metadata', css.metadata)}>
-                        {metadata}
-                    </div>
-                )}
             </div>
             {isTruncated && (
                 <span className={css['disclaimerTruncatedMessage']}>

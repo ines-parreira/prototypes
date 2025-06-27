@@ -13,10 +13,13 @@ jest.mock('tickets/ticket-detail/components/MessageActions', () => ({
 jest.mock('tickets/ticket-detail/components/MessageAttachments', () => ({
     MessageAttachments: () => <div>Attachments</div>,
 }))
+jest.mock('tickets/ticket-detail/components/MessageMetadata', () => ({
+    MessageMetadata: () => <div>MessageMetadata</div>,
+}))
 jest.mock('../Body', () => () => <div>Body</div>)
 jest.mock('../Errors', () => () => <div>Errors</div>)
 jest.mock('../ReplyDetailsCard', () => () => <div>ReplyDetailsCard</div>)
-jest.mock('../SourceDetailsHeader', () => () => <div>SourceDetailsHeader</div>)
+jest.mock('../SourceActionsHeader', () => () => <div>SourceActionsHeader</div>)
 
 describe('Message', () => {
     const defaultProps = {
@@ -46,7 +49,8 @@ describe('Message', () => {
         const { getByText } = render(
             <Message {...defaultProps} showSourceDetails />,
         )
-        expect(getByText('SourceDetailsHeader')).toBeInTheDocument()
+        expect(getByText('SourceActionsHeader')).toBeInTheDocument()
+        expect(getByText('MessageMetadata')).toBeInTheDocument()
     })
 
     it('should display an embedded reply details card if meta.replied_to is present', () => {

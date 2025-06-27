@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 
 import classnames from 'classnames'
 import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
@@ -7,7 +7,6 @@ import type { TicketMessage } from 'models/ticket/types'
 import PrivateReplyModal from 'pages/common/components/PrivateReplyToFBComment/PrivateReplyModal/PrivateReplyModal'
 import IntentsFeedback from 'pages/tickets/detail/components/TicketMessages/IntentsFeedback/IntentsFeedback'
 
-import SourceDetailsContext from '../SourceDetailsContext'
 import HideAction from './CollapsedActions/HideAction'
 import IntentsAction from './CollapsedActions/IntentsAction'
 import PrivateReplyAction from './CollapsedActions/PrivateReplyAction'
@@ -86,8 +85,6 @@ const CollapsedSourceActions: React.FC<CollapsedSourceActionsProps> = ({
         created_datetime: messageCreatedDatetime,
     } = message
 
-    const { setFocus } = useContext(SourceDetailsContext)
-
     const [isOpen, setOpen] = useState(false)
 
     const [showReplyModal, setShowReplyModal] = useState(false)
@@ -97,9 +94,8 @@ const CollapsedSourceActions: React.FC<CollapsedSourceActionsProps> = ({
     const hideIntents = useCallback(() => setShowIntents(false), [])
 
     const close = useCallback(() => {
-        setFocus(false)
         setOpen(false)
-    }, [setFocus])
+    }, [])
 
     const onContentMouseLeave = useCallback(() => {
         close()
@@ -125,7 +121,6 @@ const CollapsedSourceActions: React.FC<CollapsedSourceActionsProps> = ({
                 key={String(showIntents)}
                 isOpen={isOpen}
                 toggle={() => {
-                    setFocus(true)
                     setOpen(!isOpen)
                 }}
                 onMouseLeave={close}

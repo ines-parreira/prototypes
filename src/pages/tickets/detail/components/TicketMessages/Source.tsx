@@ -7,6 +7,7 @@ import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { DateAndTimeFormatting } from 'constants/datetime'
 import { useFlag } from 'core/flags'
+import useId from 'hooks/useId'
 import { isTicketMessageSourceType } from 'models/ticket/predicates'
 import { Meta, SourceAddress, Source as SourceType } from 'models/ticket/types'
 import SourceIcon from 'pages/common/components/SourceIcon'
@@ -18,7 +19,6 @@ import { humanizeChannel } from 'state/ticket/utils'
 import css from './Source.less'
 
 type Props = {
-    id: string
     isForwarded: boolean
     createdDatetime: string
     source: SourceType
@@ -29,13 +29,13 @@ type Props = {
 
 export default function Source({
     createdDatetime,
-    id,
     isForwarded,
     source,
     channel,
     containerRef,
     meta,
 }: Props) {
+    const id = `source-${useId()}`
     const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
     const channelIdentifier = source.type ?? channel
     const sourceChannel = isTicketMessageSourceType(channelIdentifier)

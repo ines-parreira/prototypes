@@ -6,9 +6,6 @@
         &:hover {
             background-color: var(--neutral-grey-1);
         }
-        &:first-of-type {
-            margin-top: 0;
-        }
         &:not(.minimal) {
             display: flex;
             column-gap: var(--layout-spacing-s);
@@ -17,18 +14,10 @@
 
     .minimal {
         margin-top: calc(-1 * var(--layout-spacing-xxs));
-        &:hover {
-            :global {
-                .ticket-detail-metadata {
-                    display: block;
-                }
-            }
-        }
     }
 
     .minimalBodyContainer {
-        --avatar-size: 36px;
-        padding-left: calc(var(--avatar-size) + var(--layout-spacing-s));
+        padding-left: calc(36px + var(--layout-spacing-s));
     }
 
     .ai {
@@ -62,9 +51,15 @@
 }
 
 .ticket-thread-revamp :local {
+    --avatar-size: 36px;
+    --avatar-header-gap: var(--layout-spacing-xs);
     .container {
-        gap: var(--layout-spacing-xs);
-        padding: var(--layout-spacing-s);
+        gap: var(--avatar-header-gap);
+        padding: var(--layout-spacing-xs) var(--layout-spacing-s);
+    }
+
+    .minimalBodyContainer {
+        padding-left: calc(var(--avatar-size) + var(--avatar-header-gap));
     }
 
     .internal {
