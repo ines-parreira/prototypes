@@ -124,7 +124,7 @@ describe('DashboardsNavbarBlock', () => {
             })
         })
 
-        it('should correctly navigate to the dashboard detail page when a link is clicked', () => {
+        it('should correctly navigate to the dashboard detail page when a link is clicked', async () => {
             const mockData = [{ id: '1', name: 'Report 1', emoji: '📊' }]
 
             useDashboardActionsMock.mockReturnValue({
@@ -139,7 +139,9 @@ describe('DashboardsNavbarBlock', () => {
                 </DndProvider>,
             )
 
-            waitFor(() => {
+            await userEvent.click(screen.getByText('keyboard_arrow_down'))
+
+            await waitFor(() => {
                 const reportLink = screen.getByText('Report 1')
                 expect(reportLink.parentElement).toHaveAttribute(
                     'href',
