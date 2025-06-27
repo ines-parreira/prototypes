@@ -4,7 +4,7 @@ import { userEvent } from '@testing-library/user-event'
 import {
     TrialAlertBanner,
     TrialAlertBannerProps,
-} from '../components/TrialAlertBanner'
+} from '../components/TrialAlertBanner/TrialAlertBanner'
 
 describe('TrialAlertBanner', () => {
     const defaultProps: TrialAlertBannerProps = {
