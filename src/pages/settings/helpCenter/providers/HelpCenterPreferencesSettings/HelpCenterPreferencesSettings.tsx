@@ -31,6 +31,7 @@ import { changeViewLanguage } from 'state/ui/helpCenter/actions'
 import { reportError } from 'utils/errors'
 
 import { getGenericMessageFromError } from '../../utils'
+import { useHelpCenterShopConnection } from './useHelpCenterShopConnection'
 
 export type HelpCenterPreferencesState = {
     defaultLanguage: LocaleCode
@@ -88,6 +89,8 @@ export const HelpCenterPreferencesSettings = ({
     const [preferences, updatePreferences] =
         useState<HelpCenterPreferencesState>(defaultPreferences)
     const [isSavingInProgress, setIsSavingInProgress] = useState(false)
+    const { handleShopConnectionChange } =
+        useHelpCenterShopConnection(helpCenter)
 
     const defaultLanguageChanged = useMemo(
         () => helpCenter.default_locale !== preferences.defaultLanguage,
@@ -177,20 +180,12 @@ export const HelpCenterPreferencesSettings = ({
             }
 
             if (connectedShopChanged) {
-                const { data: updatedHelpCenter } =
-                    await client.updateHelpCenter(
-                        { help_center_id: helpCenter.id },
-                        {
-                            shop_name: preferences.connectedShop.shopName,
-                            shop_integration_id:
-                                preferences.connectedShop.shopIntegrationId,
-                            self_service_deactivated:
-                                preferences.connectedShop
-                                    .selfServiceDeactivated,
-                        },
-                    )
-
-                dispatch(helpCenterUpdated(updatedHelpCenter))
+                const updatedHelpCenter = await handleShopConnectionChange(
+                    preferences.connectedShop,
+                )
+                if (updatedHelpCenter) {
+                    dispatch(helpCenterUpdated(updatedHelpCenter))
+                }
             }
 
             void dispatch(
@@ -223,6 +218,7 @@ export const HelpCenterPreferencesSettings = ({
         helpCenter.id,
         dispatch,
         connectedShopChanged,
+        handleShopConnectionChange,
     ])
 
     const handleSupportedLocalesChange = useCallback(async () => {

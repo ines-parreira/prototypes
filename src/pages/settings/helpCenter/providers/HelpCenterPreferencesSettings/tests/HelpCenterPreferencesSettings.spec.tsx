@@ -1,23 +1,28 @@
 import { ReactNode } from 'react'
 
+import { QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook, waitFor } from '@testing-library/react'
 import axios from 'axios'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import { LocaleCode } from 'models/helpCenter/types'
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import * as useHelpCenterActions from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
 import * as helpCenterApi from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { HelpCenterClient } from 'rest_api/help_center_api/client'
 import { RootState, StoreDispatch } from 'state/types'
 
+import { mockQueryClient } from '../../../../../../tests/reactQueryTestingUtils'
 import {
     HelpCenterPreferencesSettings,
     useHelpCenterPreferencesSettings,
 } from '../HelpCenterPreferencesSettings'
+import * as useHelpCenterShopConnectionModule from '../useHelpCenterShopConnection'
 
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([])
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const defaultState: Partial<RootState> = {
     entities: {
@@ -29,6 +34,8 @@ const defaultState: Partial<RootState> = {
     } as any,
     ui: { helpCenter: { currentId: 1, viewLanguage: 'fr-FR' } } as any,
 }
+
+const queryClient = mockQueryClient()
 
 describe('HelpCenterPreferencesSettings', () => {
     let store: ReturnType<typeof mockStore>
@@ -54,6 +61,13 @@ describe('HelpCenterPreferencesSettings', () => {
         jest.spyOn(helpCenterApi, 'useHelpCenterApi').mockReturnValue({
             client: mockClient,
             isReady: true,
+        })
+        jest.spyOn(
+            useHelpCenterActions,
+            'useHelpCenterActions',
+        ).mockReturnValue({
+            fetchHelpCenterTranslations: jest.fn().mockResolvedValue({}),
+            getHelpCenterCustomDomain: jest.fn().mockResolvedValue({}),
         })
     })
 
@@ -129,9 +143,11 @@ describe('HelpCenterPreferencesSettings', () => {
         const wrapper = ({ children }: { children?: ReactNode }) => (
             <Provider store={store}>
                 <CurrentHelpCenterContext.Provider value={helpCenter}>
-                    <HelpCenterPreferencesSettings helpCenter={helpCenter}>
-                        {children}
-                    </HelpCenterPreferencesSettings>
+                    <QueryClientProvider client={queryClient}>
+                        <HelpCenterPreferencesSettings helpCenter={helpCenter}>
+                            {children}
+                        </HelpCenterPreferencesSettings>
+                    </QueryClientProvider>
                 </CurrentHelpCenterContext.Provider>
             </Provider>
         )
@@ -143,17 +159,14 @@ describe('HelpCenterPreferencesSettings', () => {
             },
         )
 
-        // Wait for the hook to be initialized
         await waitFor(() => {
             expect(result.current).not.toBeNull()
         })
 
-        // Call resetPreferences which internally calls updatePreferencesFromData
         await act(async () => {
             result.current.resetPreferences()
         })
 
-        // Wait for the preferences to be updated
         await waitFor(() => {
             expect(result.current.preferences).toEqual({
                 defaultLanguage: 'en-US',
@@ -169,5 +182,89 @@ describe('HelpCenterPreferencesSettings', () => {
                 },
             })
         })
+    })
+
+    it('should handle connected shop change in savePreferences', async () => {
+        const mockHandleShopConnectionChange = jest.fn()
+        const updatedHelpCenter = {
+            ...getSingleHelpCenterResponseFixture,
+            shop_name: 'Updated Shop',
+            shop_integration_id: 456,
+        }
+
+        mockHandleShopConnectionChange.mockResolvedValue(updatedHelpCenter)
+
+        jest.spyOn(
+            useHelpCenterShopConnectionModule,
+            'useHelpCenterShopConnection',
+        ).mockReturnValue({
+            storeMappings: [],
+            handleShopConnectionChange: mockHandleShopConnectionChange,
+        })
+
+        const helpCenter = {
+            ...getSingleHelpCenterResponseFixture,
+            shop_name: 'Original Shop',
+            shop_integration_id: 123,
+            self_service_deactivated_datetime: null,
+        }
+
+        const wrapper = ({ children }: { children?: ReactNode }) => (
+            <Provider store={store}>
+                <CurrentHelpCenterContext.Provider value={helpCenter}>
+                    <QueryClientProvider client={queryClient}>
+                        <HelpCenterPreferencesSettings helpCenter={helpCenter}>
+                            {children}
+                        </HelpCenterPreferencesSettings>
+                    </QueryClientProvider>
+                </CurrentHelpCenterContext.Provider>
+            </Provider>
+        )
+
+        const { result } = renderHook(
+            () => useHelpCenterPreferencesSettings(),
+            {
+                wrapper,
+            },
+        )
+
+        await waitFor(() => {
+            expect(result.current).not.toBeNull()
+        })
+
+        await act(async () => {
+            result.current.updatePreferences({
+                connectedShop: {
+                    shopName: 'Updated Shop',
+                    shopIntegrationId: 456,
+                    selfServiceDeactivated: false,
+                },
+            })
+        })
+
+        await act(async () => {
+            await result.current.savePreferences()
+        })
+
+        expect(mockHandleShopConnectionChange).toHaveBeenCalledWith({
+            shopName: 'Updated Shop',
+            shopIntegrationId: 456,
+            selfServiceDeactivated: false,
+        })
+
+        const actions = store.getActions()
+        expect(actions).toContainEqual({
+            type: 'HELPCENTER/HELPCENTER_UPDATED',
+            payload: updatedHelpCenter,
+        })
+        expect(
+            actions.some(
+                (action) =>
+                    action.type === 'reapop/upsertNotification' &&
+                    action.payload.message ===
+                        'Help Center updated with success' &&
+                    action.payload.status === 'success',
+            ),
+        ).toBe(true)
     })
 })
