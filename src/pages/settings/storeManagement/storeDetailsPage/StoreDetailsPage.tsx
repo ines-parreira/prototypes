@@ -17,6 +17,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
+import { useStoreManagementState } from '../StoreManagementProvider'
 import ChannelsTab from './Channels/ChannelsTab'
 import General from './General/General'
 import useStoreGetter from './General/hooks/useStoreGetter'
@@ -28,7 +29,14 @@ export default function StoreDetailsPage() {
     const isMultiStoreEnabled = useFlag(FeatureFlagKey.MultiStore, false)
     const { id } = useParams<{ id: string }>()
 
-    const { isFetching, data, refetchStore } = useStoreGetter(Number(id))
+    const {
+        isFetching: isFetchingStore,
+        data,
+        refetchStore,
+    } = useStoreGetter(Number(id))
+    const { isLoading: isFetchingStoresWithMaps } = useStoreManagementState()
+
+    const isFetching = isFetchingStore || isFetchingStoresWithMaps
 
     if (!isMultiStoreEnabled) {
         return null
